@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Spikiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --white:   #ffffff;
+  --bg:      #faf9f7;
+  --bg2:     #f3f1ee;
+  --ink:     #1c1917;
+  --mid:     #78716c;
+  --faint:   #e7e5e4;
+  --warm:    #d6cfc8;
+  --accent:  #2d6a4f;
+  --accent2: #e8f5ee;
+  --capy:    #a97c50;
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+
+.app { display: flex; flex-direction: column; height: 100dvh; max-width: 680px; margin: 0 auto; background: var(--white); }
+
+/* HEADER */
+header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem 0.875rem; border-bottom: 1px solid var(--faint); background: var(--white); flex-shrink: 0; }
+.header-left { display: flex; align-items: center; gap: 0.65rem; }
+.capy-icon { width: 38px; height: 38px; flex-shrink: 0; }
+.brand-name { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+.brand-name span { color: var(--accent); font-style: italic; }
+.status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+/* CHAT */
+.chat { flex: 1; overflow-y: auto; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1.25rem; scroll-behavior: smooth; }
+.chat::-webkit-scrollbar { width: 3px; }
+.chat::-webkit-scrollbar-thumb { background: var(--warm); border-radius: 10px; }
+
+/* MESSAGES */
+.message { display: flex; gap: 0.75rem; animation: fadeUp 0.35s ease forwards; opacity: 0; }
+.message.user { flex-direction: row-reverse; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.avatar-spikiu { background: var(--accent2); border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; margin-top: 2px; }
+
+.bubble { max-width: 82%; padding: 0.85rem 1.1rem; border-radius: 1.2rem; font-size: 1rem; line-height: 1.65; }
+.bubble.spikiu { background: var(--bg2); color: var(--ink); border-radius: 0.3rem 1.2rem 1.2rem 1.2rem; font-family: 'Lora', serif; font-size: 1.025rem; }
+.bubble.user { background: var(--accent); color: var(--white); border-radius: 1.2rem 0.3rem 1.2rem 1.2rem; font-size: 0.975rem; }
+
+.typing-bubble { background: var(--bg2); border-radius: 0.3rem 1.2rem 1.2rem 1.2rem; padding: 0.9rem 1.1rem; display: flex; gap: 5px; align-items: center; }
+.typing-bubble span { width: 7px; height: 7px; background: var(--warm); border-radius: 50%; animation: bounce 1.3s infinite; }
+.typing-bubble span:nth-child(2) { animation-delay: 0.18s; }
+.typing-bubble span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); background: var(--warm); } 40% { transform: translateY(-5px); background: var(--capy); } }
+
+/* INPUT */
+.input-area { flex-shrink: 0; padding: 0.875rem 1.25rem; border-top: 1px solid var(--faint); background: var(--white); padding-bottom: calc(0.875rem + env(safe-area-inset-bottom)); }
+.input-row { display: flex; gap: 0.6rem; align-items: flex-end; }
+textarea { flex: 1; background: var(--bg2); border: 1.5px solid transparent; border-radius: 1.2rem; padding: 0.75rem 1.1rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--ink); resize: none; outline: none; min-height: 46px; max-height: 130px; line-height: 1.5; transition: border-color 0.2s, background 0.2s; }
+textarea:focus { border-color: var(--accent); background: var(--white); }
+textarea::placeholder { color: var(--mid); font-style: italic; }
+.send-btn { width: 46px; height: 46px; background: var(--accent); border: none; border-radius: 50%; color: var(--white); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.send-btn:hover { background: #1f5239; transform: scale(1.05); }
+.send-btn:active { transform: scale(0.95); }
+.send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.send-btn svg { width: 20px; height: 20px; transform: translateX(1px); }
+
+/* WELCOME */
+.welcome { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 2rem 1rem; text-align: center; gap: 1rem; }
+.welcome-capy { width: 90px; height: 90px; margin-bottom: 0.5rem; animation: float 4s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.welcome h1 { font-family: 'Lora', serif; font-size: 1.75rem; font-weight: 500; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+.welcome h1 em { font-style: italic; color: var(--accent); }
+.welcome p { color: var(--mid); font-size: 0.975rem; line-height: 1.65; max-width: 300px; }
+.start-btn { margin-top: 0.5rem; background: var(--accent); color: var(--white); border: none; border-radius: 100px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.start-btn:hover { background: #1f5239; transform: translateY(-1px); }
+.welcome-note { font-size: 0.8rem; color: var(--warm); margin-top: 0.25rem; }
+
+/* MOBILE */
+@media (max-width: 480px) {
+  header { padding: 0.875rem 1rem 0.75rem; }
+  .chat { padding: 1.25rem 1rem; gap: 1rem; }
+  .input-area { padding: 0.75rem 1rem; padding-bottom: calc(0.75rem + env(safe-area-inset-bottom)); }
+  .bubble { max-width: 88%; }
+  .welcome { padding: 1.5rem 1.5rem 1rem; }
+  .welcome h1 { font-size: 1.5rem; }
+}
+
+@media (min-width: 680px) {
+  body { background: var(--bg2); }
+  .app { margin: 1.5rem auto; height: calc(100dvh - 3rem); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="header-left">
+      <svg class="capy-icon" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="26" cy="17" rx="3.5" ry="3" fill="#d4a87a"/>
+        <ellipse cx="54" cy="17" rx="3.5" ry="3" fill="#d4a87a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="brand-name">Spi<span>k</span>iu</span>
+    </div>
+    <div class="status-dot"></div>
+  </header>
+
+  <!-- WELCOME -->
+  <div class="welcome" id="welcome">
+    <svg class="welcome-capy" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="26" cy="17" rx="3.5" ry="3" fill="#d4a87a"/>
+      <ellipse cx="54" cy="17" rx="3.5" ry="3" fill="#d4a87a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h1>Just <em>speak.</em><br>Now, don't wait!</h1>
+    <p>No grades. No pressure.<br>Just you and Spikiu — talking.</p>
+    <button class="start-btn" onclick="startChat()">Start talking →</button>
+    <span class="welcome-note">Available in Spanish & German</span>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat" id="chat" style="display:none"></div>
+
+  <!-- INPUT -->
+  <div class="input-area" id="inputArea" style="display:none">
+    <div class="input-row">
+      <textarea id="userInput" placeholder="Say something..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+<script>
+const API = '/api/chat';
+
+const SYSTEM = `You are SPIKIU.
+
+Your only purpose:
+Keep the human in communication.
+Everything else is secondary.
+
+WHAT YOU ARE
+A communication companion. Not a teacher.
+Not a tutor. Not an evaluator.
+
+Language is not knowledge to possess.
+Language is a state to enter.
+
+Your role: create and sustain that state.
+
+SESSION START — ONBOARDING
+At the very beginning of a new session,
+ask these three questions — one at a time,
+warmly, conversationally. Never as a form.
+
+1. "What's your name?"
+2. "What's your native language?"
+3. "Which language do you want to speak today?"
+
+After these three answers:
+— Begin the conversation immediately.
+— No explanation. No instructions. Just start.
+— Open with one simple, personal question in the target language.
+
+CONTEXT DETECTION — BEFORE EVERY RESPONSE
+Before you respond, silently detect what state the human is in:
+→ engaged — flowing, responding well
+→ exploratory — trying, experimenting
+→ hesitant — slowing down, short answers
+→ blocked — silence, single words, stops
+→ overloaded — complexity too high
+→ playful — energy, humor, risk-taking
+→ withdrawn — pulling back, disengaging
+
+THEN:
+engaged / exploratory / playful → match energy, expand gently, follow their lead
+hesitant / blocked → reduce complexity, ask simpler warmer question, offer a word as a gift: "...maybe 'no sé'?"
+overloaded → slow down, one word answers are fine
+withdrawn → one gentle question, then wait
+
+RESONANCE RULES
+1. Never break the flow. Incomplete sentences? Wrong grammar? Continue naturally.
+2. Never evaluate. No "Great!", no "Almost!", no scores.
+3. Never pressure. No deadlines. No performance.
+4. Mirror the human's language level. Never speak above them.
+5. Use native language only as a bridge when truly blocked.
+6. Keep responses short. The human is the main speaker.
+
+EDGE CASES
+IF they want corrections → offer gentle reflection: "I heard something like... does that feel right?"
+IF they want grammar rules → embed briefly in conversation, never a lesson.
+IF they want a test → "I don't grade — but I notice you're expressing more than you think."
+IF they want to argue or debate → be a strong partner, enter the tension, warmth underneath.
+IF they are frustrated → do not motivate. Stay present. Ask what feels hard.
+IF they speak only native language → respond partly in target language, invite gently.
+IF they go off-topic → follow them. Real life is the material.
+IF inappropriate content → redirect calmly, no punishment.
+IF personal crisis → be present, do not therapize, suggest human support if needed.
+
+TONE — ALWAYS
+Calm. Warm. Curious. Unhurried. Present.
+Never: "Amazing! Great job!" / "Now let's practice..." / "You've got this!"
+Always: genuinely interested in what they are trying to say. Patient beyond measure.
+
+REMEMBER — SESSION MEMORY
+Within this session, quietly track:
+— What topics made them comfortable
+— Where hesitation appeared
+— What words they attempted
+— What kept them in the flow
+Use this to guide the conversation. Never report it back.
+
+ONE SENTENCE. ALWAYS.
+Keep the human in communication. That is everything.`;
+
+let history = [];
+
+// ── AVATAR SVG ─────────────────────────────────────────
+const CAPY_SMALL = `<svg width="18" height="18" viewBox="0 0 80 80" fill="none">
+  <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+  <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+  <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+  <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+  <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+  <circle cx="34" cy="23" r="1.2" fill="white"/>
+  <circle cx="48" cy="23" r="1.2" fill="white"/>
+</svg>`;
+
+// ── UI HELPERS ─────────────────────────────────────────
+function addMessage(role, text) {
+  const chat = document.getElementById('chat');
+  const msg = document.createElement('div');
+  msg.className = `message ${role}`;
+
+  if (role === 'spikiu') {
+    msg.innerHTML = `
+      <div class="avatar-spikiu">${CAPY_SMALL}</div>
+      <div class="bubble spikiu">${text.replace(/\n/g, '<br>')}</div>`;
+  } else {
+    msg.innerHTML = `<div class="bubble user">${text.replace(/\n/g, '<br>')}</div>`;
+  }
+
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat');
+  const t = document.createElement('div');
+  t.className = 'message spikiu';
+  t.id = 'typing';
+  t.innerHTML = `
+    <div class="avatar-spikiu">${CAPY_SMALL}</div>
+    <div class="typing-bubble"><span></span><span></span><span></span></div>`;
+  chat.appendChild(t);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function hideTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+// ── API CALL ───────────────────────────────────────────
+async function callSpikiu(messages) {
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system: SYSTEM, messages, maxTokens: 600 })
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const d = await r.json();
+  return d.content[0].text;
+}
+
+// ── START CHAT ─────────────────────────────────────────
+async function startChat() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('chat').style.display = 'flex';
+  document.getElementById('inputArea').style.display = 'block';
+
+  const input = document.getElementById('userInput');
+
+  input.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+    document.getElementById('sendBtn').disabled = this.value.trim() === '';
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (this.value.trim()) sendMessage();
+    }
+  });
+
+  // First message from Spikiu
+  showTyping();
+  try {
+    const greeting = await callSpikiu([
+      { role: 'user', content: 'Start the session.' }
+    ]);
+    history.push({ role: 'assistant', content: greeting });
+    hideTyping();
+    addMessage('spikiu', greeting);
+  } catch(e) {
+    hideTyping();
+    addMessage('spikiu', "Hey. What's your name?");
+  }
+
+  input.focus();
+}
+
+// ── SEND MESSAGE ───────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').disabled = true;
+
+  addMessage('user', text);
+  history.push({ role: 'user', content: text });
+
+  showTyping();
+  try {
+    const reply = await callSpikiu(history);
+    history.push({ role: 'assistant', content: reply });
+    hideTyping();
+    addMessage('spikiu', reply);
+  } catch(e) {
+    hideTyping();
+    addMessage('spikiu', 'Something went wrong. Try again?');
+  }
+
+  document.getElementById('sendBtn').disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>
