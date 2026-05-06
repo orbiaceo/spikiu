@@ -462,10 +462,14 @@ async function startChat() {
     }
   });
 
+  // Disclaimer — shown immediately, no API call
+  addMessage('spikiu', "👋 Kurzer Hinweis bevor wir starten:\n\nDu bist Teil unseres Beta-Tests. Nach diesem Chat wird alles gelöscht — keine Daten, keine Erinnerung.\n\nIn Zukunft kannst du dich einloggen und Spikiu erinnert sich an dich, deine Ziele und deine Geschichte. 🐾\n\nAber jetzt — lass uns reden.");
+
+  await new Promise(r => setTimeout(r, 1500));
   showTyping();
   try {
     const greeting = await callSpikiu([
-      { role: 'user', content: 'Start the session with your organic onboarding. Begin with a warm greeting and ask the first question.' }
+      { role: 'user', content: 'Start. Warm greeting. Ask name only. Max 2 sentences.' }
     ]);
     history.push({ role: 'assistant', content: greeting });
     hideTyping();
