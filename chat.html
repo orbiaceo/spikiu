@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Spikiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --white:   #ffffff;
+  --bg:      #faf9f7;
+  --bg2:     #f3f1ee;
+  --ink:     #1c1917;
+  --mid:     #78716c;
+  --faint:   #e7e5e4;
+  --warm:    #d6cfc8;
+  --accent:  #2d6a4f;
+  --accent2: #e8f5ee;
+  --capy:    #a97c50;
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+
+.app { display: flex; flex-direction: column; height: 100dvh; max-width: 680px; margin: 0 auto; background: var(--white); }
+
+header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem 0.875rem; border-bottom: 1px solid var(--faint); background: var(--white); flex-shrink: 0; }
+.header-left { display: flex; align-items: center; gap: 0.65rem; }
+.capy-icon { width: 38px; height: 38px; flex-shrink: 0; }
+.brand-name { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+.brand-name span { color: var(--accent); font-style: italic; }
+.status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+.chat { flex: 1; overflow-y: auto; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1.25rem; scroll-behavior: smooth; }
+.chat::-webkit-scrollbar { width: 3px; }
+.chat::-webkit-scrollbar-thumb { background: var(--warm); border-radius: 10px; }
+
+.message { display: flex; gap: 0.75rem; animation: fadeUp 0.35s ease forwards; opacity: 0; }
+.message.user { flex-direction: row-reverse; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.avatar-spikiu { background: var(--accent2); border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; margin-top: 2px; }
+
+.bubble { max-width: 82%; padding: 0.85rem 1.1rem; border-radius: 1.2rem; font-size: 1rem; line-height: 1.65; }
+.bubble.spikiu { background: var(--bg2); color: var(--ink); border-radius: 0.3rem 1.2rem 1.2rem 1.2rem; font-family: 'Lora', serif; font-size: 1.025rem; }
+.bubble.user { background: var(--accent); color: var(--white); border-radius: 1.2rem 0.3rem 1.2rem 1.2rem; font-size: 0.975rem; }
+
+.typing-bubble { background: var(--bg2); border-radius: 0.3rem 1.2rem 1.2rem 1.2rem; padding: 0.9rem 1.1rem; display: flex; gap: 5px; align-items: center; }
+.typing-bubble span { width: 7px; height: 7px; background: var(--warm); border-radius: 50%; animation: bounce 1.3s infinite; }
+.typing-bubble span:nth-child(2) { animation-delay: 0.18s; }
+.typing-bubble span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); background: var(--warm); } 40% { transform: translateY(-5px); background: var(--capy); } }
+
+.welcome { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 2rem 1rem; text-align: center; gap: 1rem; }
+.welcome-capy { width: 90px; height: 90px; margin-bottom: 0.5rem; animation: float 4s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.welcome h1 { font-family: 'Lora', serif; font-size: 1.75rem; font-weight: 500; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+.welcome h1 em { font-style: italic; color: var(--accent); }
+.welcome p { color: var(--mid); font-size: 0.975rem; line-height: 1.65; max-width: 300px; }
+.start-btn { margin-top: 0.5rem; background: var(--accent); color: var(--white); border: none; border-radius: 100px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.start-btn:hover { background: #1f5239; transform: translateY(-1px); }
+.welcome-note { font-size: 0.8rem; color: var(--warm); margin-top: 0.25rem; }
+
+.input-area { flex-shrink: 0; padding: 0.875rem 1.25rem; border-top: 1px solid var(--faint); background: var(--white); padding-bottom: calc(0.875rem + env(safe-area-inset-bottom)); }
+.input-row { display: flex; gap: 0.6rem; align-items: flex-end; }
+textarea { flex: 1; background: var(--bg2); border: 1.5px solid transparent; border-radius: 1.2rem; padding: 0.75rem 1.1rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--ink); resize: none; outline: none; min-height: 48px; max-height: 130px; line-height: 1.5; transition: border-color 0.2s, background 0.2s; }
+textarea:focus { border-color: var(--accent); background: var(--white); }
+textarea::placeholder { color: var(--mid); font-style: italic; }
+.send-btn { width: 46px; height: 46px; background: var(--accent); border: none; border-radius: 50%; color: var(--white); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.send-btn:hover { background: #1f5239; transform: scale(1.05); }
+.send-btn:active { transform: scale(0.95); }
+.send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.send-btn svg { width: 20px; height: 20px; transform: translateX(1px); }
+
+.back-link { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--mid); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+.back-link:hover { color: var(--ink); }
+
+@media (max-width: 480px) {
+  header { padding: 0.875rem 1rem 0.75rem; }
+  .chat { padding: 1.25rem 1rem; gap: 1rem; }
+  .input-area { padding: 0.75rem 1rem; padding-bottom: calc(0.75rem + env(safe-area-inset-bottom)); }
+  .bubble { max-width: 88%; }
+  .welcome { padding: 1.5rem 1.5rem 1rem; }
+  .welcome h1 { font-size: 1.5rem; }
+}
+
+@media (min-width: 680px) {
+  body { background: var(--bg2); }
+  .app { margin: 1.5rem auto; height: calc(100dvh - 3rem); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="header-left">
+      <svg class="capy-icon" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="brand-name">Spi<span>k</span>iu</span>
+    </div>
+    <a href="index.html" class="back-link">← Home</a>
+  </header>
+
+  <div class="welcome" id="welcome">
+    <svg class="welcome-capy" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h1>Just <em>speak.</em><br>Now, don't wait!</h1>
+    <p>No grades. No pressure.<br>Just you and Spikiu — talking.</p>
+    <button class="start-btn" onclick="startChat()">Start talking →</button>
+    <span class="welcome-note">Available in Spanish & German</span>
+  </div>
+
+  <div class="chat" id="chat" style="display:none"></div>
+
+  <div class="input-area" id="inputArea" style="display:none">
+    <div class="input-row">
+      <textarea id="userInput" placeholder="Say something..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = '/api/chat';
+
+// ── PHASE MANAGEMENT ─────────────────────────────────
+// Phase 0: Disclaimer (no API)
+// Phase 1: Onboarding EN (name + native lang + target lang)
+// Phase 2: Self-introduction + Needs Analysis (in native language)
+// Phase 3: Free conversation
+
+let phase = 0;
+let history = [];
+let exchangeCount = 0;
+let userProfile = { name: '', nativeLang: '', targetLang: '' };
+
+// ── SYSTEM PROMPTS PER PHASE ──────────────────────────
+
+const SYSTEM_ONBOARDING = `You are SPIKIU. Respond ONLY in English.
+Ask the user their name. One warm sentence. Nothing else.`;
+
+const SYSTEM_LANG = `You are SPIKIU. Respond ONLY in English.
+You already know the user's name. Now ask in ONE friendly sentence:
+what is their native language AND which language they want to speak with you.
+Example: "Nice to meet you, [name]! What's your native language — and which language would you like to practice with me?"`;
+
+const SYSTEM_NEEDS = (name, nativeLang, targetLang) => `You are SPIKIU — a language companion. Not a teacher. A presence.
+
+The user's name is ${name}. Their native language is ${nativeLang}. They want to practice ${targetLang}.
+
+IMPORTANT: Respond in ${nativeLang} from now on.
+
+PHASE 2 — TWO STEPS:
+
+STEP A — INTRODUCE YOURSELF (do this first, once):
+Brief. Warm. Personalized for ${name}.
+Tell them you are not a teacher — you are a companion.
+Mention 2-3 things you can do together (conversation, exam prep, role-play, debate).
+Mention beta: "Wir sind in der Beta-Phase — bald wird dein persönliches Dashboard da sein."
+End with one question about their goal.
+
+STEP B — NEEDS ANALYSIS (after introduction, 4 questions max, one at a time):
+1. Current level in ${targetLang}
+2. Why they need it (work, travel, family, exam)
+3. Specific goal and timeline
+4. Available time per week
+
+After 4 answers — propose a personal path. Short. Concrete. Wait for confirmation.
+Only after confirmation: switch to free conversation in ${targetLang}.
+
+IMPORTANT — NEVER BLOCK:
+If at any point the user requests a PDF, exercise or material:
+Generate it immediately — regardless of phase.
+Use what you know so far. Never say "first we need to finish."
+End the material with [PDF_AVAILABLE].
+After generating: invite them to continue when ready.
+Example: "Hier ist dein erstes Blatt — drück es aus. Wenn du zurück bist, machen wir weiter. 🐾"
+
+LEARNING PLAN — DEIN WEG:
+When generating a learning plan or program:
+— ALWAYS write it completely. Never cut it short.
+— Structure it clearly with phases, goals, topics.
+— ALWAYS end with [PDF_AVAILABLE] so the user can download it.
+— If the response feels long — write it anyway. Completeness first.`;
+
+const SYSTEM_MAIN = (name, nativeLang, targetLang) => `You are SPIKIU — a language companion. Not a teacher. A presence.
+
+IDENTITY
+No students. No lessons. No teacher. Two beings helping each other.
+You ask. You also share, laugh, disagree, wonder.
+
+USER PROFILE
+Name: ${name} · Native: ${nativeLang} · Learning: ${targetLang}
+
+MIRROR RULE — ABSOLUTE
+Match complexity exactly. 1 word → 1 sentence. 1 sentence → 2 max.
+One question per response. Never two. When in doubt: cut in half.
+
+NEVER REFUSE SUPPORT
+You CAN: word lists, grammar, dialogues, exercises, exam prep, corrections.
+Never say "use another platform." Transform every request into dialogue.
+End vocabulary lists or structured content with [PDF_AVAILABLE].
+
+NO PRAISE — EVER
+Never: "Gut!" "Super!" "Fantastisch!" Just continue naturally.
+
+CONTEXT DETECTION (silent)
+engaged/playful → match energy
+hesitant/blocked → simplify, offer word as gift
+overloaded → one idea only
+bored → change topic immediately
+withdrawn → one gentle question, wait
+
+LANGUAGE
+Respond in ${targetLang}. Mirror their level exactly.
+Mix languages? Join them. Bridge with ${nativeLang} only when truly blocked.
+
+ROLES (fluid, never announced)
+Friend · Opponent · Patient · Colleague · Storyteller · Someone who needs help
+
+CULTURE
+No fixed culture. Enter every world with curiosity. Zero judgment.
+
+CHECK-IN
+Every 5-7 exchanges naturally: "Magst du das Thema wechseln?"
+
+BETA
+If materials are generated, mention naturally:
+"Bald kannst du alles in deinem persönlichen Dashboard speichern."
+
+MATERIALS GENERATION
+— Vocabulary lists or structured text → end with [PDF_AVAILABLE]
+— Learning plans / Dein Weg → write COMPLETELY then end with [PDF_AVAILABLE]
+— Interactive exercises → start with [HTML_EXERCISE] then wrap HTML in [html] ... [/html]
+— Use simple HTML with inline CSS and inline JavaScript for exercises.
+— Never send raw HTML without [HTML_EXERCISE] tag.
+— NEVER cut a response short when generating structured content.
+  If it needs 800 words — write 800 words. Completeness always wins.
+
+ONE TRUTH
+You accompany the human to discover they can already speak the language.`;
+
+// ── CAPYBARA ──────────────────────────────────────────
+const CAPY_SMALL = `<svg width="18" height="18" viewBox="0 0 80 80" fill="none">
+  <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+  <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+  <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+  <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+  <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+  <circle cx="34" cy="23" r="1.2" fill="white"/>
+  <circle cx="48" cy="23" r="1.2" fill="white"/>
+</svg>`;
+
+// ── MARKDOWN PARSER ───────────────────────────────────
+function parseMarkdown(text) {
+  return text
+    .replace(/^#{4}\s+(.+)$/gm, '<h4 style="font-family:\'Playfair Display\',serif;font-size:1rem;font-weight:700;color:#1c1917;margin:1rem 0 0.3rem;">$1</h4>')
+    .replace(/^#{3}\s+(.+)$/gm, '<h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#1c1917;margin:1.2rem 0 0.4rem;">$1</h3>')
+    .replace(/^#{2}\s+(.+)$/gm, '<h2 style="font-family:\'Playfair Display\',serif;font-size:1.2rem;font-weight:700;color:#2d6a4f;margin:1.5rem 0 0.5rem;">$1</h2>')
+    .replace(/^#{1}\s+(.+)$/gm, '<h1 style="font-family:\'Playfair Display\',serif;font-size:1.4rem;font-weight:700;color:#2d6a4f;margin:1.5rem 0 0.5rem;">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^---+$/gm, '<hr style="border:none;border-top:1px solid #e7e5e4;margin:1rem 0;">')
+    .replace(/^[-•]\s+(.+)$/gm, '<li style="margin:0.3rem 0;padding-left:0.5rem;">$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g, '<ul style="list-style:none;padding:0;margin:0.5rem 0;">$&</ul>')
+    .replace(/^\d+\.\s+(.+)$/gm, '<li style="margin:0.3rem 0;padding-left:0.5rem;">$1</li>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+// ── MARKDOWN TO PLAIN TEXT (for PDF) ──────────────────
+function markdownToPlain(text) {
+  return text
+    .replace(/^#{1,4}\s+/gm, '')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/^---+$/gm, '────────────────────────')
+    .replace(/^[-•]\s+/gm, '  • ')
+    .replace(/^\d+\.\s+/gm, (m) => '  ' + m);
+}
+function addMessage(role, text) {
+  const chat = document.getElementById('chat');
+  const msg = document.createElement('div');
+  msg.className = 'message ' + role;
+  const hasPDF = text.includes('[PDF_AVAILABLE]');
+  const hasHTML = text.includes('[HTML_EXERCISE]');
+  let cleanText = text.replace('[PDF_AVAILABLE]', '').replace('[HTML_EXERCISE]', '').trim();
+  let htmlContent = '';
+  if (hasHTML) {
+    const m = cleanText.match(/\[html\]([\s\S]*?)\[\/html\]/);
+    if (m) { htmlContent = m[1].trim(); cleanText = cleanText.replace(/\[html\][\s\S]*?\[\/html\]/, '').trim(); }
+  }
+  if (role === 'spikiu') {
+    const rendered = parseMarkdown(cleanText);
+    let extra = '';
+    if (htmlContent) {
+      const safeHtml = htmlContent.replace(/"/g, '&quot;');
+      extra += '<div style="margin-top:0.8rem;border:1.5px solid #e7e5e4;border-radius:12px;overflow:hidden;">';
+      extra += '<div style="background:#f3f1ee;padding:0.4rem 1rem;font-size:0.72rem;font-weight:600;color:#78716c;">Interaktive Übung</div>';
+      extra += '<iframe srcdoc="' + safeHtml + '" style="width:100%;border:none;height:280px;"></iframe>';
+      extra += '</div>';
+    }
+    if (hasPDF) extra += '<button onclick="downloadPDF(this)" data-content="' + encodeURIComponent(cleanText) + '" style="margin-top:0.6rem;background:#2d6a4f;color:white;border:none;border-radius:100px;padding:0.5rem 1.2rem;font-size:0.82rem;font-family:DM Sans,sans-serif;cursor:pointer;">⬇ Als PDF herunterladen</button>';
+    msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div><div style="flex:1;min-width:0;"><div class="bubble spikiu">' + rendered + '</div>' + extra + '</div>';
+  } else {
+    msg.innerHTML = '<div class="bubble user">' + text.split('\n').join('<br>') + '</div>';
+  }
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function downloadPDF(btn) {
+  const raw = decodeURIComponent(btn.getAttribute('data-content'));
+  const plain = markdownToPlain(raw);
+  const date = new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'long', year:'numeric'});
+  const win = window.open('', '_blank');
+  const html = [
+    '<!DOCTYPE html><html><head><title>Spikiu</title>',
+    '<style>',
+    'body{font-family:Georgia,serif;max-width:680px;margin:40px auto;padding:0 2rem;color:#1a1612;line-height:1.8;font-size:15px;}',
+    '.header{border-bottom:2px solid #2d6a4f;padding-bottom:1.5rem;margin-bottom:2rem;display:flex;justify-content:space-between;}',
+    '.logo{font-family:Georgia,serif;font-size:1.8rem;font-weight:700;color:#2d6a4f;}',
+    '.date{font-size:0.8rem;color:#888;}',
+    'pre{white-space:pre-wrap;font-size:15px;line-height:1.8;}',
+    '.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e8e0d5;font-size:0.75rem;color:#aaa;text-align:center;}',
+    '@media print{body{margin:20px;}}',
+    '</style></head><body>',
+    '<div class="header"><span class="logo">Spikiu</span><span class="date">', date, '</span></div>',
+    '<pre>', plain, '</pre>',
+    '<div class="footer">spikiu.com &middot; Dein persönlicher Sprachweg</div>',
+    '</body></html>'
+  ].join('');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 500);
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat');
+  const t = document.createElement('div');
+  t.className = 'message spikiu';
+  t.id = 'typing';
+  t.innerHTML = `<div class="avatar-spikiu">${CAPY_SMALL}</div><div class="typing-bubble"><span></span><span></span><span></span></div>`;
+  chat.appendChild(t);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function hideTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function getMaxTokens(text) {
+  const w = text.trim().split(/\s+/).length;
+  const structural = /vocabular|liste|übung|exercise|prüfung|exam|dele|goethe|erklär|grammar|dialog|lernplan|programm|weg|plan|pdf|schreib|erstell|mach mir|zeig mir/i.test(text);
+  if (structural) return 1500;
+  if (w <= 2) return 100;
+  if (w <= 5) return 180;
+  if (w <= 15) return 300;
+  return 500;
+}
+
+async function callAPI(system, messages, maxTokens) {
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system, messages, maxTokens })
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const d = await r.json();
+  return d.content[0].text;
+}
+
+// ── START CHAT ────────────────────────────────────────
+async function startChat() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('chat').style.display = 'flex';
+  document.getElementById('inputArea').style.display = 'block';
+
+  const input = document.getElementById('userInput');
+  input.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+    document.getElementById('sendBtn').disabled = this.value.trim() === '';
+  });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (this.value.trim()) sendMessage();
+    }
+  });
+
+  // Phase 0: Disclaimer — no API call
+  addMessage('spikiu', "👋 Quick note before we start:\n\nYou're part of our beta test. After this chat everything is deleted — no data, no memory.\n\nIn the future you'll be able to log in and Spikiu will remember you, your goals and your story. 🐾\n\nBut now — let's talk.");
+  phase = 1;
+
+  // Phase 1: Ask name in English
+  setTimeout(async () => {
+    showTyping();
+    try {
+      const greeting = await callAPI(SYSTEM_ONBOARDING, [{ role: 'user', content: 'Start.' }], 60);
+      history.push({ role: 'assistant', content: greeting });
+      hideTyping();
+      addMessage('spikiu', greeting);
+    } catch(e) {
+      hideTyping();
+      addMessage('spikiu', "Hey! What's your name?");
+    }
+  }, 1500);
+
+  input.focus();
+}
+
+// ── SEND MESSAGE ──────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').disabled = true;
+  exchangeCount++;
+
+  addMessage('user', text);
+
+  showTyping();
+  try {
+    let reply = '';
+
+    // PHASE 1: Onboarding — collect name then languages
+    if (phase === 1) {
+      if (!userProfile.name) {
+        userProfile.name = text;
+        history.push({ role: 'user', content: text });
+        reply = await callAPI(SYSTEM_LANG, history, 80);
+        history.push({ role: 'assistant', content: reply });
+      } else {
+        history.push({ role: 'user', content: text });
+        phase = 2;
+        exchangeCount = 0;
+        reply = await callAPI(
+          SYSTEM_NEEDS(userProfile.name, 'their native language', 'their target language'),
+          [...history, { role: 'user', content: `[CONTEXT: User said: "${text}". Parse native language and target language. Then introduce yourself and start needs analysis in their native language.]` }],
+          400
+        );
+        history.push({ role: 'assistant', content: reply });
+      }
+    }
+
+    // PHASE 2: Needs analysis — switch to phase 3 after confirmation or 6 exchanges
+    else if (phase === 2) {
+      history.push({ role: 'user', content: text });
+      const confirmed = /\bja\b|yes|ok|gut|perfekt|einverstanden|sí|claro|genau|super/i.test(text);
+      if (confirmed && exchangeCount >= 3 || exchangeCount >= 6) {
+        phase = 3;
+        exchangeCount = 0;
+      }
+      reply = await callAPI(
+        SYSTEM_NEEDS(userProfile.name, 'their native language', 'their target language'),
+        history,
+        getMaxTokens(text)
+      );
+      history.push({ role: 'assistant', content: reply });
+    }
+
+    // PHASE 3: Free conversation
+    else {
+      history.push({ role: 'user', content: text });
+      reply = await callAPI(
+        SYSTEM_MAIN(userProfile.name, 'their native language', 'their target language'),
+        history,
+        getMaxTokens(text)
+      );
+      history.push({ role: 'assistant', content: reply });
+    }
+
+    hideTyping();
+    addMessage('spikiu', reply);
+
+  } catch(e) {
+    hideTyping();
+    addMessage('spikiu', 'Something went wrong. Try again?');
+  }
+
+  document.getElementById('sendBtn').disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>
