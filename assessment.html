@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lola — Spikiu · Spikiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:   #ffffff;
+  --off:     #faf8f5;
+  --off2:    #f2ede6;
+  --ink:     #1a1612;
+  --mid:     #6b6158;
+  --faint:   #e8e0d5;
+  --warm:    #c8bfb0;
+  --green:   #2d5a3d;
+  --green2:  #e5efe8;
+  --green3:  #1a3d28;
+  --gold:    #a07228;
+  --gold2:   #f5ead8;
+}
+
+body {
+  background: var(--off);
+  color: var(--ink);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--faint);
+  padding: 0 5vw;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none;
+}
+
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.nav-logo-text em { color: var(--green); font-style: italic; }
+
+.back-link {
+  font-size: 0.85rem;
+  color: var(--mid);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--ink); }
+
+/* ── MAIN ── */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 5vw 5rem;
+}
+
+/* ── LOLA INTRO ── */
+.lola-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--faint);
+  border-left: 3px solid var(--green);
+  border-radius: 0 12px 12px 0;
+  padding: 1.8rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.lola-avatar {
+  width: 48px;
+  height: 48px;
+  background: var(--green2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+}
+
+.lola-intro-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.lola-intro-text p {
+  font-size: 0.92rem;
+  color: var(--mid);
+  line-height: 1.65;
+}
+
+/* ── FORM ── */
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--faint);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.form-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--faint);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.form-group:last-child { margin-bottom: 0; }
+
+label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+label span {
+  color: var(--mid);
+  font-weight: 400;
+  font-size: 0.78rem;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--faint);
+  border-radius: 8px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--off);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  appearance: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--green);
+  background: var(--white);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--warm);
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6158' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+/* ── SUBMIT ── */
+.form-footer {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.btn-submit {
+  width: 100%;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: 100px;
+  padding: 1rem;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-submit:hover { background: var(--green3); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.form-note {
+  font-size: 0.78rem;
+  color: var(--warm);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── LOADING ── */
+.loading-state {
+  display: none;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--white);
+  border: 1px solid var(--faint);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--faint);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1.2rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-state p {
+  color: var(--mid);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.loading-state strong { color: var(--ink); }
+
+/* ── RESULT ── */
+.result-state {
+  display: none;
+}
+
+.result-header {
+  background: var(--green);
+  border-radius: 16px 16px 0 0;
+  padding: 2rem 2.5rem;
+  color: var(--white);
+}
+
+.result-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.result-header p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.75);
+}
+
+.result-body {
+  background: var(--white);
+  border: 1px solid var(--faint);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  padding: 2rem 2.5rem;
+}
+
+.result-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.summary-item {
+  background: var(--off);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+}
+
+.summary-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.2rem;
+}
+
+.summary-value {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.result-info {
+  background: var(--gold2);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.btn-download {
+  width: 100%;
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  border-radius: 100px;
+  padding: 0.9rem;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-download:hover { background: var(--green); }
+
+.btn-start {
+  width: 100%;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: 100px;
+  padding: 1rem;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-start:hover { background: var(--green3); transform: translateY(-1px); }
+
+.btn-later {
+  width: 100%;
+  background: transparent;
+  color: var(--mid);
+  border: none;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn-later:hover { color: var(--ink); }
+
+.price-display {
+  text-align: center;
+  padding: 1.2rem;
+  background: var(--green2);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.price-display .price {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.price-display .price-note {
+  font-size: 0.8rem;
+  color: var(--mid);
+  margin-top: 0.2rem;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  main { padding: 2rem 1.25rem 4rem; }
+  .form-card { padding: 1.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .time-row { grid-template-columns: 1fr; }
+  .result-summary { grid-template-columns: 1fr; }
+  .result-header { padding: 1.5rem; }
+  .result-body { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="nav-logo-text">Spi<em>k</em>iu</span>
+  </a>
+  <a href="index.html" class="back-link">← Zurück</a>
+</header>
+
+<main>
+
+  <!-- LOLA INTRO -->
+  <div class="lola-intro">
+    <div class="lola-avatar">
+      <svg width="28" height="28" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="lola-intro-text">
+      <h2>Willkommen bei Spikiu!</h2>
+      <p>In wenigen Schritten analysieren wir deine Lernziele und erstellen deinen persönlichen Lernweg — kostenlos und unverbindlich. Bitte füll das Formular vollständig aus.</p>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <form id="lolaForm" class="form-card" onsubmit="submitForm(event)">
+
+    <div class="form-section-title">Persönliche Angaben</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Dein Name</label>
+        <input type="text" id="name" placeholder="Vorname" required>
+      </div>
+      <div class="form-group">
+        <label for="nativeLang">Muttersprache</label>
+        <select id="nativeLang" required>
+          <option value="">Bitte wählen</option>
+          <option value="Deutsch">Deutsch</option>
+          <option value="Spanisch">Spanisch</option>
+          <option value="Englisch">Englisch</option>
+          <option value="Französisch">Französisch</option>
+          <option value="Italienisch">Italienisch</option>
+          <option value="Portugiesisch">Portugiesisch</option>
+          <option value="Griechisch">Griechisch</option>
+          <option value="Russisch">Russisch</option>
+          <option value="Arabisch">Arabisch</option>
+          <option value="Chinesisch">Chinesisch</option>
+          <option value="Japanisch">Japanisch</option>
+          <option value="Andere">Andere</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="targetLang">Welche Sprache möchtest du lernen?</label>
+      <select id="targetLang" required>
+        <option value="">Bitte wählen</option>
+        <option value="Spanisch">Spanisch 🇪🇸</option>
+        <option value="Deutsch">Deutsch 🇩🇪</option>
+      </select>
+      <p style="font-size:0.78rem;color:var(--mid);margin-top:0.4rem;">Spikiu unterrichtet derzeit Spanisch und Deutsch. Weitere Sprachen folgen.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="currentLevel">Dein aktuelles Niveau</label>
+      <select id="currentLevel" required>
+        <option value="">Bitte wählen</option>
+        <option value="Keine Vorkenntnisse (A0)">Keine Vorkenntnisse — ich fange bei Null an</option>
+        <option value="Anfänger (A1)">A1 — ich kenne einige Wörter und Phrasen</option>
+        <option value="Grundkenntnisse (A2)">A2 — ich kann einfache Sätze verstehen und bilden</option>
+        <option value="Mittelstufe (B1)">B1 — ich kann mich in alltäglichen Situationen verständigen</option>
+        <option value="Fortgeschritten (B2)">B2 — ich spreche fließend, aber mit Lücken</option>
+        <option value="Oberstufe (C1)">C1 — ich spreche sehr gut, möchte verfeinern</option>
+        <option value="Mastery (C2)">C2 — ich bin nahezu muttersprachlich</option>
+      </select>
+    </div>
+
+    <div class="form-section-title" style="margin-top:1.5rem">Lernziele</div>
+
+    <div class="form-group">
+      <label for="goal">Was möchtest du konkret erreichen?</label>
+      <textarea id="goal" placeholder="Erzähl uns dein Ziel — so konkret wie möglich. Zum Beispiel: In welchen Situationen brauchen Sie die Sprache? Gibt es ein konkretes Ereignis, eine Prüfung, einen beruflichen Anlass?" required style="min-height:110px;"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="context">Was hat dich bisher gehindert? <span>(optional)</span></label>
+      <textarea id="context" placeholder="Z.B. Zeitmangel, schlechte Erfahrungen mit Sprachkursen, Sprechangst..." style="min-height:70px;"></textarea>
+    </div>
+
+    <div class="time-row">
+      <div class="form-group">
+        <label for="hoursPerWeek">Deine Lernzeit <span>(Stunden/Woche)</span></label>
+        <select id="hoursPerWeek" required>
+          <option value="">Bitte wählen</option>
+          <option value="1-2 Stunden">1–2 Stunden</option>
+          <option value="3-4 Stunden">3–4 Stunden</option>
+          <option value="5-7 Stunden">5–7 Stunden</option>
+          <option value="8+ Stunden">8+ Stunden</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="timeline">Dein Zeitraum</label>
+        <select id="timeline" required>
+          <option value="">Bitte wählen</option>
+          <option value="1 Monat">1 Monat</option>
+          <option value="3 Monate">3 Monate</option>
+          <option value="6 Monate">6 Monate</option>
+          <option value="12 Monate">12 Monate</option>
+          <option value="Kein festes Datum">Kein festes Datum</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Meinen Lernweg erstellen →
+      </button>
+      <p class="form-note">Deine Angaben werden nur zur Erstellung deines persönlichen Lernwegs verwendet.</p>
+    </div>
+
+  </form>
+
+  <!-- LOADING -->
+  <div class="loading-state" id="loadingState">
+    <div class="loading-spinner"></div>
+    <p><strong>Lola analysiert Ihre Angaben...</strong><br>
+    Ihr persönlicher Lernweg wird erstellt.<br>
+    Einen Moment bitte.</p>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-state" id="resultState">
+    <div class="result-header">
+      <h2 id="resultTitle">Ihr persönlicher Lernweg ist fertig.</h2>
+      <p id="resultSubtitle">Spikiu · spikiu.com</p>
+    </div>
+    <div class="result-body">
+
+      <div class="result-summary" id="resultSummary"></div>
+
+      <div class="result-info">
+        Ihr Lernmaterial wird individuell für dich erstellt und in deinem persönlichen Dashboard bereitgestellt. Dort findest du interaktive Lerneinheiten sowie Materialien im PDF-Format, die du herunterladen kannst.<br><br>
+        <strong>Spikiu</strong>, Dein persönlicher Lernbegleiter, kennt Ihren Lernweg. Er begleitet dich Schritt für Schritt weiter — wie ein Muttersprachler, der dir jederzeit zur Seite steht.
+      </div>
+
+      <div class="price-display">
+        <div class="price">29€ <span style="font-size:1rem;font-weight:400;color:var(--mid)">/Monat</span></div>
+        <div class="price-note">Flatrate · Jederzeit kündbar · Kein Kleingedrucktes</div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-download" id="downloadBtn" onclick="downloadPlan()">
+          ⬇ Lernweg als PDF herunterladen
+        </button>
+        <button class="btn-start" onclick="startWithSpikiu()">
+          Mit Spikiu starten →
+        </button>
+        <button class="btn-later" onclick="decideLater()">
+          Später entscheiden
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<script>
+const API = '/api/chat';
+let generatedPlan = '';
+let userProfile = {};
+
+async function submitForm(e) {
+  e.preventDefault();
+
+  const name         = document.getElementById('name').value.trim();
+  const nativeLang   = document.getElementById('nativeLang').value;
+  const targetLang   = document.getElementById('targetLang').value;
+  const currentLevel = document.getElementById('currentLevel').value;
+  const context      = document.getElementById('context').value.trim();
+  const hoursPerWeek = document.getElementById('hoursPerWeek').value;
+  const timeline     = document.getElementById('timeline').value;
+
+  userProfile = { name, nativeLang, targetLang, currentLevel, goal, context, hoursPerWeek, timeline };
+
+  // Show loading
+  document.getElementById('lolaForm').style.display = 'none';
+  document.getElementById('loadingState').style.display = 'block';
+  document.getElementById('lolaForm').style.display = 'none';
+
+  try {
+    const PLAN_SYSTEM = `You are SPIKIU — a language companion, not a teacher.
+Write "Dein Lernweg" — a personal path document — for the learner below.
+
+CRITICAL RULES:
+- Write in German, using DU (informal) — Spikiu speaks directly to the learner
+- Spikiu writes this document — Lola only conducted the interview
+- Be warm, direct, personal — use their name and their exact words
+- COMPACT — maximum 1 page when printed
+- NO generic phrases like "Sie werden können" or "Lola spricht langsam"
+- Every sentence must reference their specific goal and context
+
+DOCUMENT STRUCTURE:
+
+# Dein Lernweg — ${targetLang} für ${name}
+
+**Dein Ziel:** [their exact goal in their own words — quote it]
+**Dein Niveau:** ${currentLevel}
+**Dein Zeitraum:** ${timeline} · ${hoursPerWeek} pro Woche
+
+---
+
+### 🌰 [Phase name from their world] — [duration]
+[2-3 sentences: what happens here, specific to their goal. No bullet lists.]
+
+### 🌱 [Phase name] — [duration]
+[2-3 sentences: specific to their goal.]
+
+### 🌿 [Phase name] — [duration]
+[2-3 sentences: specific to their goal.]
+
+---
+
+### Was ich für dich tue
+Ich bin kein Lehrer. Ich bin dein Gesprächspartner — immer da, immer auf deinem Niveau, immer an deinem Ziel. Wir üben echte Situationen aus deinem Leben: [2 specific examples from their goal]. Du lernst keine Vokabellisten — du lernst sprechen.
+
+### Dein erster Schritt heute
+[One concrete thing they can do TODAY with Spikiu. 10 minutes. Very specific.]
+
+---
+*Dein persönlicher Sprachweg · Spikiu · spikiu.com*`;
+
+    const response = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: PLAN_SYSTEM,
+        messages: [{
+          role: 'user',
+          content: `Learner profile:
+Name: ${name}
+Native language: ${nativeLang}
+Target language: ${targetLang}
+Current level: ${currentLevel}
+Goal: ${goal}
+${context ? 'What has hindered them so far: ' + context : ''}
+Available time: ${hoursPerWeek} per week
+Timeline: ${timeline}
+
+Please write the complete learning plan now.`
+        }],
+        maxTokens: 3500
+      })
+    });
+
+    const data = await response.json();
+    generatedPlan = data.content[0].text;
+
+    // Save to localStorage for Spikiu
+    localStorage.setItem('spikiu_profile', JSON.stringify(userProfile));
+    localStorage.setItem('spikiu_plan', generatedPlan);
+
+    // Show result
+    document.getElementById('loadingState').style.display = 'none';
+    showResult();
+
+  } catch(err) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('lolaForm').style.display = 'block';
+    alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+  }
+}
+
+function showResult() {
+  const { name, nativeLang, targetLang, currentLevel, goal, hoursPerWeek, timeline } = userProfile;
+
+  document.getElementById('resultTitle').textContent = name + ', Ihr Lernweg ist bereit.';
+
+  // Summary cards
+  const summaryData = [
+    { label: 'Name', value: name },
+    { label: 'Muttersprache', value: nativeLang },
+    { label: 'Zielsprache', value: targetLang },
+    { label: 'Niveau', value: currentLevel },
+    { label: 'Zeitraum', value: timeline },
+    { label: 'Lernzeit', value: hoursPerWeek + '/Woche' },
+  ];
+
+  document.getElementById('resultSummary').innerHTML = summaryData.map(d =>
+    '<div class="summary-item"><div class="summary-label">' + d.label + '</div><div class="summary-value">' + d.value + '</div></div>'
+  ).join('');
+
+  document.getElementById('resultState').style.display = 'block';
+  document.getElementById('resultState').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function downloadPlan() {
+  const { name, targetLang, currentLevel, timeline, hoursPerWeek, goal } = userProfile;
+  const date = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  // Convert markdown to styled HTML for PDF
+  let html = generatedPlan
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^---+$/gm, '<hr>')
+    .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+
+  const win = window.open('', '_blank');
+  win.document.write([
+    '<!DOCTYPE html><html><head>',
+    '<title>Dein Lernweg — Spikiu</title>',
+    '<meta charset="UTF-8">',
+    '<style>',
+    '@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Instrument+Sans:wght@300;400;500;600&display=swap");',
+    '*{margin:0;padding:0;box-sizing:border-box;}',
+    'body{font-family:"Instrument Sans",sans-serif;max-width:680px;margin:0 auto;padding:2.5rem;color:#1a1612;line-height:1.75;font-size:14px;background:#fff;}',
+
+    // Header
+    '.doc-header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:1.5rem;border-bottom:2px solid #2d5a3d;margin-bottom:2rem;}',
+    '.doc-logo{font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:700;color:#2d5a3d;letter-spacing:-0.02em;}',
+    '.doc-logo em{font-style:italic;color:#2d5a3d;}',
+    '.doc-meta{font-size:0.75rem;color:#888;text-align:right;line-height:1.6;}',
+
+    // Title
+    'h1{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:700;color:#1a1612;letter-spacing:-0.02em;margin-bottom:0.8rem;line-height:1.2;}',
+
+    // Goal box
+    '.goal-box{background:#f5ead8;border-left:3px solid #a07228;border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:0.9rem;line-height:1.65;}',
+    '.goal-box strong{color:#a07228;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.3rem;}',
+
+    // Meta pills
+    '.meta-row{display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.8rem;}',
+    '.meta-pill{background:#e5efe8;color:#2d5a3d;font-size:0.72rem;font-weight:600;padding:0.25rem 0.75rem;border-radius:100px;}',
+
+    // Divider
+    'hr{border:none;border-top:1px solid #e8e0d5;margin:1.5rem 0;}',
+
+    // Phases
+    'h3{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#2d5a3d;margin:1.2rem 0 0.5rem;line-height:1.3;}',
+    'h2{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#1a1612;margin:1.5rem 0 0.5rem;}',
+    'p{margin-bottom:0.7rem;color:#1a1612;}',
+    'ul{padding-left:1.2rem;margin-bottom:0.8rem;}',
+    'li{margin-bottom:0.3rem;color:#6b6158;}',
+    'strong{color:#1a1612;font-weight:600;}',
+    'em{font-style:italic;color:#2d5a3d;}',
+
+    // Footer
+    '.doc-footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid #e8e0d5;display:flex;justify-content:space-between;align-items:center;}',
+    '.doc-footer-logo{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#2d5a3d;}',
+    '.doc-footer-note{font-size:0.72rem;color:#aaa;}',
+
+    '@media print{',
+    '  body{margin:0;padding:1.5rem;}',
+    '  @page{margin:1.5cm;}',
+    '}',
+    '</style></head><body>',
+
+    '<div class="doc-header">',
+    '  <span class="doc-logo">Spi<em>k</em>iu</span>',
+    '  <div class="doc-meta">Dein Lernweg<br>' + date + '</div>',
+    '</div>',
+
+    '<div class="goal-box">',
+    '  <strong>Dein Ziel</strong>',
+    '  ' + goal,
+    '</div>',
+
+    '<div class="meta-row">',
+    '  <span class="meta-pill">' + targetLang + '</span>',
+    '  <span class="meta-pill">' + currentLevel + '</span>',
+    '  <span class="meta-pill">' + timeline + '</span>',
+    '  <span class="meta-pill">' + hoursPerWeek + '/Woche</span>',
+    '</div>',
+
+    html,
+
+    '<div class="doc-footer">',
+    '  <span class="doc-footer-logo">Spikiu</span>',
+    '  <span class="doc-footer-note">spikiu.com · Dein persönlicher Sprachweg</span>',
+    '</div>',
+
+    '</body></html>'
+  ].join(''));
+  win.document.close();
+  setTimeout(() => win.print(), 600);
+}
+
+function startWithSpikiu() {
+  // Profile already saved in localStorage
+  window.location.href = 'chat.html';
+}
+
+function decideLater() {
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
