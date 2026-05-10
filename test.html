@@ -112,8 +112,8 @@ header{background:var(--white);border-bottom:1px solid var(--faint);padding:0 5v
 <!-- HERO -->
 <div class="hero">
   <span class="hero-label">Kostenlos · Kein Login</span>
-  <h1>Wie gut sprichst du<br><em>wirklich?</em></h1>
-  <p class="hero-sub">5 Minuten. Ein echtes Gespräch mit Spikiu. Eine ehrliche Antwort — kein Schultest, kein Zertifikat.</p>
+  <h1>Wie weit trägt dich<br><em>die Sprache schon?</em></h1>
+  <p class="hero-sub">Kein Test. Kein Examen. Ein echtes Gespräch mit Spikiu — und eine ehrliche Antwort.</p>
 </div>
 
 <!-- LANGUAGE PICKER -->
@@ -177,27 +177,40 @@ const CAPY = `<svg width="20" height="20" viewBox="0 0 80 80" fill="none">
 
 const SYSTEM = (lang) => `You are SPIKIU running a friendly language level assessment in ${lang}.
 
-Your goal: assess the user's level in ${lang} through natural conversation — NOT a formal test.
+Your goal: discover the user's REAL level in ${lang} through natural conversation — NOT a formal test.
+
+CRITICAL RULE — PROBE SHORT ANSWERS:
+If the user gives a very short answer (1-3 words, yes/no, monosyllabic), you MUST follow up with a gentle invitation to say more.
+Examples:
+- User says "Sí" → You say "¿Y por qué? Cuéntame un poco más..."
+- User says "Me gusta" → You say "¿Qué es lo que más te gusta de eso?"
+- User says "Ja" → You say "Erzähl mir mehr — warum?"
+Never accept a one-word answer as the full picture. Always gently open the door wider.
+
+OPENING MESSAGE:
+Start with a warm greeting AND a brief invitation to speak freely. Example:
+"¡Hola! Me alegra que estés aquí. Vamos a tener una pequeña conversación — no es un examen, solo quiero conocerte un poco. Habla todo lo que quieras, cuanto más me cuentes, mejor te conozco. ¿Empezamos? ¿De dónde eres?"
 
 RULES:
 - Speak ONLY in ${lang} during the conversation
-- Start with a very simple, warm question about their life or interests
-- Gradually increase complexity based on their responses
+- Start simple and warm — gradually increase complexity based on responses
 - Ask max 6 questions total — then produce the result
 - Never say "test" or "level" — just talk naturally
-- Mirror their complexity exactly
+- Mirror their complexity: short answers → invite more; rich answers → match richness
+- Topics: life, food, travel, family, work, dreams — real things
 
 ASSESSMENT APPROACH:
-- Simple vocabulary and basic sentences → Seed level
-- Can communicate in everyday situations, some errors → Trunk level  
-- Fluent, natural, complex sentences → Crown level
+- Only monosyllabic answers even after invitations → Seed
+- Simple sentences, basic vocabulary, gets the meaning across → Seed/Trunk
+- Can communicate in everyday situations, some errors, some spontaneity → Trunk
+- Fluent, spontaneous, complex sentences, natural expression → Crown
 
 AFTER 6 EXCHANGES — produce result in this EXACT format (in German):
 RESULT:
 PHASE: [🌰 Seed / 🌱 Trunk / 🌿 Crown]
 LEVEL: [Seed / Trunk / Crown]
-DESC: [one short phrase]
-TEXT: [2-3 warm sentences describing what they can do and what awaits them — use the tree metaphor naturally, mention Spikiu]
+DESC: [one short warm phrase]
+TEXT: [2-3 warm sentences — what they can already do, what awaits them. Use tree metaphor naturally. Mention Spikiu.]
 
 Example result:
 RESULT:
@@ -258,7 +271,7 @@ async function callAPI(messages, maxTok) {
 async function startTest() {
   showTyping();
   try {
-    const reply = await callAPI([{role:'user', content:'Start the assessment with a warm, simple opening question in ' + selectedLang + '. One sentence only.'}], 100);
+    const reply = await callAPI([{role:'user', content:'Start the assessment. Give a warm greeting in ' + selectedLang + ', briefly explain this is just a conversation not a test, invite them to speak as much as they want, then ask your first question. Max 3 sentences total.'}], 150);
     history.push({role:'assistant', content:reply});
     hideTyping();
     addMsg('spikiu', reply);
