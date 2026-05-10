@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Spikiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --white:   #ffffff;
+  --bg:      #faf9f7;
+  --bg2:     #f3f1ee;
+  --ink:     #1c1917;
+  --mid:     #78716c;
+  --faint:   #e7e5e4;
+  --warm:    #d6cfc8;
+  --accent:  #2d6a4f;
+  --accent2: #e8f5ee;
+  --capy:    #a97c50;
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+
+.app { display: flex; flex-direction: column; height: 100dvh; max-width: 680px; margin: 0 auto; background: var(--white); }
+
+header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem 0.875rem; border-bottom: 1px solid var(--faint); background: var(--white); flex-shrink: 0; }
+.header-left { display: flex; align-items: center; gap: 0.65rem; }
+.capy-icon { width: 38px; height: 38px; flex-shrink: 0; }
+.brand-name { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+.brand-name span { color: var(--accent); font-style: italic; }
+.status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+.chat { flex: 1; overflow-y: auto; padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1.25rem; scroll-behavior: smooth; }
+.chat::-webkit-scrollbar { width: 3px; }
+.chat::-webkit-scrollbar-thumb { background: var(--warm); border-radius: 10px; }
+
+.message { display: flex; gap: 0.75rem; animation: fadeUp 0.35s ease forwards; opacity: 0; }
+.message.user { flex-direction: row-reverse; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.avatar-spikiu { background: var(--accent2); border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; margin-top: 2px; }
+
+.bubble { max-width: 82%; padding: 0.85rem 1.1rem; border-radius: 1.2rem; font-size: 1rem; line-height: 1.65; }
+.bubble.spikiu { background: var(--bg2); color: var(--ink); border-radius: 0.3rem 1.2rem 1.2rem 1.2rem; font-family: 'Lora', serif; font-size: 1.025rem; }
+.bubble.user { background: var(--accent); color: var(--white); border-radius: 1.2rem 0.3rem 1.2rem 1.2rem; font-size: 0.975rem; }
+
+.typing-bubble { background: var(--bg2); border-radius: 0.3rem 1.2rem 1.2rem 1.2rem; padding: 0.9rem 1.1rem; display: flex; gap: 5px; align-items: center; }
+.typing-bubble span { width: 7px; height: 7px; background: var(--warm); border-radius: 50%; animation: bounce 1.3s infinite; }
+.typing-bubble span:nth-child(2) { animation-delay: 0.18s; }
+.typing-bubble span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); background: var(--warm); } 40% { transform: translateY(-5px); background: var(--capy); } }
+
+.welcome { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 2rem 1rem; text-align: center; gap: 1rem; }
+.welcome-capy { width: 90px; height: 90px; margin-bottom: 0.5rem; animation: float 4s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.welcome h1 { font-family: 'Lora', serif; font-size: 1.75rem; font-weight: 500; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+.welcome h1 em { font-style: italic; color: var(--accent); }
+.welcome p { color: var(--mid); font-size: 0.975rem; line-height: 1.65; max-width: 300px; }
+.start-btn { margin-top: 0.5rem; background: var(--accent); color: var(--white); border: none; border-radius: 100px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.start-btn:hover { background: #1f5239; transform: translateY(-1px); }
+.welcome-note { font-size: 0.8rem; color: var(--warm); margin-top: 0.25rem; }
+
+.input-area { flex-shrink: 0; padding: 0.875rem 1.25rem; border-top: 1px solid var(--faint); background: var(--white); padding-bottom: calc(0.875rem + env(safe-area-inset-bottom)); }
+.input-row { display: flex; gap: 0.6rem; align-items: flex-end; }
+textarea { flex: 1; background: var(--bg2); border: 1.5px solid transparent; border-radius: 1.2rem; padding: 0.75rem 1.1rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--ink); resize: none; outline: none; min-height: 48px; max-height: 130px; line-height: 1.5; transition: border-color 0.2s, background 0.2s; }
+textarea:focus { border-color: var(--accent); background: var(--white); }
+textarea::placeholder { color: var(--mid); font-style: italic; }
+.send-btn { width: 46px; height: 46px; background: var(--accent); border: none; border-radius: 50%; color: var(--white); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+.send-btn:hover { background: #1f5239; transform: scale(1.05); }
+.send-btn:active { transform: scale(0.95); }
+.send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.send-btn svg { width: 20px; height: 20px; transform: translateX(1px); }
+
+.back-link { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--mid); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+.back-link:hover { color: var(--ink); }
+.lesson-btn { background: var(--accent); color: var(--white); border: none; border-radius: 100px; padding: 0.4rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; white-space: nowrap; }
+.lesson-btn:hover { background: #1f5239; transform: translateY(-1px); }
+.lesson-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.header-right { display: flex; align-items: center; gap: 0.8rem; }
+
+@media (max-width: 480px) {
+  header { padding: 0.875rem 1rem 0.75rem; }
+  .chat { padding: 1.25rem 1rem; gap: 1rem; }
+  .input-area { padding: 0.75rem 1rem; padding-bottom: calc(0.75rem + env(safe-area-inset-bottom)); }
+  .bubble { max-width: 88%; }
+  .welcome { padding: 1.5rem 1.5rem 1rem; }
+  .welcome h1 { font-size: 1.5rem; }
+}
+
+@media (min-width: 680px) {
+  body { background: var(--bg2); }
+  .app { margin: 1.5rem auto; height: calc(100dvh - 3rem); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="header-left">
+      <svg class="capy-icon" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="brand-name">Spi<span>k</span>iu</span>
+    </div>
+    <div class="header-right">
+      <button class="lesson-btn" id="lessonBtn" onclick="generateLesson()" title="Lektion aus diesem Gespräch erstellen">
+        📚 Lektion
+      </button>
+      <a href="dashboard.html" class="back-link">← Dashboard</a>
+    </div>
+  </header>
+
+  <div class="welcome" id="welcome">
+    <svg class="welcome-capy" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h1>Just <em>speak.</em><br>Now, don't wait!</h1>
+    <p>No grades. No pressure.<br>Just you and Spikiu — talking.</p>
+    <button class="start-btn" onclick="startChat()">Start talking →</button>
+    <span class="welcome-note">Available in Spanish & German</span>
+  </div>
+
+  <div class="chat" id="chat" style="display:none"></div>
+
+  <div class="input-area" id="inputArea" style="display:none">
+    <div class="input-row">
+      <textarea id="userInput" placeholder="Say something..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = '/api/chat';
+
+// ── PHASE MANAGEMENT ─────────────────────────────────
+// Phase 0: Disclaimer (no API)
+// Phase 1: Onboarding EN (name + native lang + target lang)
+// Phase 2: Self-introduction + Needs Analysis (in native language)
+// Phase 3: Free conversation
+
+let phase = 0;
+let history = [];
+let exchangeCount = 0;
+let userProfile = { name: '', nativeLang: '', targetLang: '' };
+let lolaplan = '';
+
+// ── READ ASSESSMENT PROFILE ───────────────────────────
+function loadLolaProfile() {
+  try {
+    const saved = localStorage.getItem('spikiu_profile');
+    const savedPlan = localStorage.getItem('spikiu_plan');
+    if (saved) {
+      const p = JSON.parse(saved);
+      userProfile.name = p.name || '';
+      userProfile.nativeLang = p.nativeLang || '';
+      userProfile.targetLang = p.targetLang || '';
+      userProfile.goal = p.goal || '';
+      userProfile.currentLevel = p.currentLevel || '';
+      userProfile.hoursPerWeek = p.hoursPerWeek || '';
+      userProfile.timeline = p.timeline || '';
+      lolaplan = savedPlan || '';
+      return !!(userProfile.name && userProfile.targetLang);
+    }
+  } catch(e) {}
+  return false;
+}
+
+// ── SYSTEM PROMPTS PER PHASE ──────────────────────────
+
+const SYSTEM_ONBOARDING = `You are SPIKIU. Respond ONLY in English.
+Ask the user their name. One warm sentence. Nothing else.`;
+
+const SYSTEM_LANG = `You are SPIKIU. Respond ONLY in English.
+You already know the user's name. Now ask in ONE friendly sentence:
+what is their native language AND which language they want to speak with you.
+Example: "Nice to meet you, [name]! What's your native language — and which language would you like to practice with me?"`;
+
+const SYSTEM_NEEDS = (name, nativeLang, targetLang) => `You are SPIKIU — a warm companion, not a teacher.
+
+User: ${name} | Native: ${nativeLang} | Learning: ${targetLang}
+ALWAYS respond in ${nativeLang}.
+
+YOUR JOB: Collect exactly these 4 things, one question at a time:
+1. Current level in ${targetLang}
+2. Concrete goal (what they want to DO with the language)
+3. Timeline or deadline
+4. Available time per week
+
+RULES:
+- ONE question per message. Short. Warm. Never two questions.
+- No advice, no plan, no preview yet.
+- Once you have all 4 answers, write a SHORT plan summary (4-6 lines max) directly in chat.
+  Format it clearly but briefly — like a friend sketching it on a napkin.
+  End with exactly this line: "Einverstanden?" (always this word, regardless of language)
+- After that: wait. Do nothing else.`;
+
+const SYSTEM_MAIN = (name, nativeLang, targetLang) => `You are SPIKIU — a language companion. Not a teacher in the traditional sense — a companion, a presence.
+
+IDENTITY
+No hierarchy. No judgment. Two beings helping each other. Two beings helping each other.
+You ask. You also share, laugh, disagree, wonder.
+
+USER PROFILE
+Name: ${name} · Native: ${nativeLang} · Learning: ${targetLang}
+${userProfile.goal ? 'Goal: ' + userProfile.goal : ''}
+${userProfile.currentLevel ? 'Level: ' + userProfile.currentLevel : ''}
+${userProfile.timeline ? 'Timeline: ' + userProfile.timeline : ''}
+${lolaplan ? '\nLEARNING PLAN (from assessment):\n' + lolaplan.substring(0, 600) + '...' : ''}
+
+MIRROR RULE — ABSOLUTE
+Match complexity exactly. 1 word → 1 sentence. 1 sentence → 2 max.
+One question per response. Never two. When in doubt: cut in half.
+
+NEVER REFUSE SUPPORT
+You CAN: word lists, grammar, dialogues, exercises, exam prep, corrections.
+Never say "use another platform." Transform every request into dialogue.
+End vocabulary lists or structured content with [PDF_AVAILABLE].
+
+NO PRAISE — EVER
+Never: "Gut!" "Super!" "Fantastisch!" Just continue naturally.
+
+NEVER IN CONVERSATION
+— Invent mnemonic tricks or fake word associations
+— Say things like "KANADA = müde" or "klingt wie..."
+— These creative techniques belong ONLY in generated lesson files, never in chat
+— Speak naturally. No memory tricks. No invented similarities.
+
+LESSON BUTTON RULE — IMPORTANT
+If the user asks for a summary, printout, lesson, PDF, "what we learned", exercises to take home, or anything to review later:
+NEVER generate it in the chat.
+Instead respond warmly and point to the button. Examples:
+- (ES) "¡Claro! Haz clic en el botón 📚 arriba — Spikiu genera una lección interactiva con todo lo que hemos trabajado. La puedes descargar y repasar cuando quieras."
+- (DE) "Klar! Klick auf den 📚 Lektion Button oben — Spikiu erstellt daraus eine komplette interaktive Lektion zum Herunterladen."
+- (EN) "Sure! Click the 📚 button above — Spikiu will generate an interactive lesson from our conversation. You can download and review it anytime."
+Always match the language the user is writing in.
+
+CONTEXT DETECTION (silent)
+engaged/playful → match energy
+hesitant/blocked → simplify, offer word as gift
+overloaded → one idea only
+bored → change topic immediately
+withdrawn → one gentle question, wait
+
+LANGUAGE — CRITICAL RULES
+Level: ${userProfile.currentLevel || 'unknown'}
+
+SPANISH DIALECT RULE:
+If communicating in Spanish — always use neutral, standard Spanish (español neutro).
+NO voseo (Argentine/Uruguayan). NO regional slang unless the user explicitly uses it first.
+Use: tú, hablas, quieres — never: vos, hablás, querés.
+
+IF level contains "Seed" (complete beginner):
+— ALWAYS respond in ${nativeLang}
+— Introduce ${targetLang} words ONE AT A TIME, embedded in ${nativeLang} sentences
+— Example: "En alemán, 'hola' se dice **Hallo**. ¿Lo repites?"
+— NEVER write full paragraphs in ${targetLang}
+— NEVER mix 3 languages in one message
+— The user understands NOTHING in ${targetLang} yet — treat them accordingly
+
+IF level contains "Trunk":
+— Respond in ${targetLang} but switch to ${nativeLang} immediately if they seem lost
+— Bridge naturally, never abandon them
+
+IF level contains "Crown":
+— Only ${targetLang} — full immersion
+
+IF level unknown:
+— Start in ${nativeLang}, observe, adapt
+
+ABSOLUTE RULE: Never mix German explanations with Spanish text with English words in the same response. Pick ONE language per response and stay there.
+
+ROLES (fluid, never announced)
+Friend · Opponent · Patient · Colleague · Storyteller · Someone who needs help
+
+CULTURE
+No fixed culture. Enter every world with curiosity. Zero judgment.
+
+CHECK-IN
+Every 5-7 exchanges naturally: "Magst du das Thema wechseln?"
+
+BETA
+If materials are generated, mention naturally:
+"Bald kannst du alles in deinem persönlichen Dashboard speichern."
+
+MATERIALS GENERATION — CRITICAL RULES
+
+When generating a LEARNING PLAN (Dein Weg / Tu camino):
+STEP 1: Write a SHORT summary in chat (max 5 bullet points).
+STEP 2: Then write the FULL plan for PDF — start with [PDF_AVAILABLE] on its own line.
+STEP 3: The full plan goes AFTER [PDF_AVAILABLE] — write it completely, never cut it short.
+STEP 4: The user sees the summary in chat + download button for full plan.
+
+Example:
+"Hier ist dein persönlicher Weg — kurz zusammengefasst:
+• Phase 1: Aussprache und Rhythmus (4 Wochen)
+• Phase 2: Verbformen aktivieren (6 Wochen)
+• Phase 3: Freie Kommunikation (ongoing)
+Das vollständige Programm kannst du hier herunterladen:"
+
+[PDF_AVAILABLE]
+## Dein Weg — Spanisch für Rolf
+**Ziel:** Wie ein Madrider klingen und kommunizieren
+**Zeitraum:** 4 Monate · 3x pro Woche
+
+### Phase 1 — Aussprache und Rhythmus (Wochen 1-4)
+...complete detailed plan...
+
+When generating VOCABULARY LISTS or EXERCISES:
+— Write them fully in chat with Markdown formatting.
+— End with [PDF_AVAILABLE] for download.
+
+When generating INTERACTIVE EXERCISES:
+— Start with [HTML_EXERCISE]
+— Write a short intro.
+— Then [html]...complete HTML with inline CSS and JS...[/html]
+
+NEVER apologize for missing content. NEVER offer a second PDF.
+If the plan is complete — it is complete. Move on.
+
+ONE TRUTH
+You accompany the human to discover they can already speak the language.`;
+
+// ── CAPYBARA ──────────────────────────────────────────
+const CAPY_SMALL = `<svg width="18" height="18" viewBox="0 0 80 80" fill="none">
+  <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+  <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+  <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+  <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+  <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+  <circle cx="34" cy="23" r="1.2" fill="white"/>
+  <circle cx="48" cy="23" r="1.2" fill="white"/>
+</svg>`;
+
+// ── MARKDOWN PARSER ───────────────────────────────────
+function parseMarkdown(text) {
+  return text
+    .replace(/^#{4}\s+(.+)$/gm, '<h4 style="font-family:\'Playfair Display\',serif;font-size:1rem;font-weight:700;color:#1c1917;margin:1rem 0 0.3rem;">$1</h4>')
+    .replace(/^#{3}\s+(.+)$/gm, '<h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#1c1917;margin:1.2rem 0 0.4rem;">$1</h3>')
+    .replace(/^#{2}\s+(.+)$/gm, '<h2 style="font-family:\'Playfair Display\',serif;font-size:1.2rem;font-weight:700;color:#2d6a4f;margin:1.5rem 0 0.5rem;">$1</h2>')
+    .replace(/^#{1}\s+(.+)$/gm, '<h1 style="font-family:\'Playfair Display\',serif;font-size:1.4rem;font-weight:700;color:#2d6a4f;margin:1.5rem 0 0.5rem;">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^---+$/gm, '<hr style="border:none;border-top:1px solid #e7e5e4;margin:1rem 0;">')
+    .replace(/^[-•]\s+(.+)$/gm, '<li style="margin:0.3rem 0;padding-left:0.5rem;">$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g, '<ul style="list-style:none;padding:0;margin:0.5rem 0;">$&</ul>')
+    .replace(/^\d+\.\s+(.+)$/gm, '<li style="margin:0.3rem 0;padding-left:0.5rem;">$1</li>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+// ── MARKDOWN TO PLAIN TEXT (for PDF) ──────────────────
+function markdownToPlain(text) {
+  return text
+    .replace(/^#{1,4}\s+/gm, '')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/^---+$/gm, '────────────────────────')
+    .replace(/^[-•]\s+/gm, '  • ')
+    .replace(/^\d+\.\s+/gm, (m) => '  ' + m);
+}
+function addMessage(role, text) {
+  const chat = document.getElementById('chat');
+  const msg = document.createElement('div');
+  msg.className = 'message ' + role;
+  const hasPDF = text.includes('[PDF_AVAILABLE]');
+  const hasWorksheet = text.includes('[WORKSHEET]');
+  const hasHTML = text.includes('[HTML_EXERCISE]');
+
+  let cleanText, pdfContent;
+
+  if (hasPDF) {
+    // Plan: only show text BEFORE tag in chat, full content in PDF
+    cleanText = text.split('[PDF_AVAILABLE]')[0].trim();
+    pdfContent = text.split('[PDF_AVAILABLE]')[1].trim();
+  } else if (hasWorksheet) {
+    // Worksheet: show full content in chat, also downloadable as PDF
+    cleanText = text.replace('[WORKSHEET]', '').trim();
+    pdfContent = cleanText;
+  } else {
+    cleanText = text.replace('[HTML_EXERCISE]', '').trim();
+    pdfContent = cleanText;
+  }
+  let htmlContent = '';
+  if (hasHTML) {
+    const m = cleanText.match(/\[html\]([\s\S]*?)\[\/html\]/);
+    if (m) { htmlContent = m[1].trim(); cleanText = cleanText.replace(/\[html\][\s\S]*?\[\/html\]/, '').trim(); }
+  }
+  if (role === 'spikiu') {
+    const rendered = parseMarkdown(cleanText);
+    let extra = '';
+    if (htmlContent) {
+      const safeHtml = htmlContent.replace(/"/g, '&quot;');
+      extra += '<div style="margin-top:0.8rem;border:1.5px solid #e7e5e4;border-radius:12px;overflow:hidden;">';
+      extra += '<div style="background:#f3f1ee;padding:0.4rem 1rem;font-size:0.72rem;font-weight:600;color:#78716c;">Interaktive Übung</div>';
+      extra += '<iframe srcdoc="' + safeHtml + '" style="width:100%;border:none;height:280px;"></iframe>';
+      extra += '</div>';
+    }
+    if (hasPDF) extra += '<button onclick="downloadPDF(this)" data-content="' + encodeURIComponent(pdfContent) + '" style="margin-top:0.6rem;background:#2d6a4f;color:white;border:none;border-radius:100px;padding:0.5rem 1.2rem;font-size:0.82rem;font-family:DM Sans,sans-serif;cursor:pointer;">⬇ Als PDF herunterladen</button>';
+    msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div><div style="flex:1;min-width:0;"><div class="bubble spikiu">' + rendered + '</div>' + extra + '</div>';
+  } else {
+    msg.innerHTML = '<div class="bubble user">' + text.split('\n').join('<br>') + '</div>';
+  }
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function downloadPDF(btn) {
+  const raw = decodeURIComponent(btn.getAttribute('data-content'));
+  if (typeof window.jspdf === 'undefined') {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = function() { renderPDF(raw); };
+    document.head.appendChild(s);
+  } else { renderPDF(raw); }
+}
+
+function renderPDF(raw) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, H = 297, mL = 20, mR = 20, mB = 25, usable = W - mL - mR;
+  const date = new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'long', year:'numeric'});
+  let y = 0;
+
+  function header() {
+    doc.setFillColor(45,106,79); doc.rect(0,0,W,16,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(255,255,255);
+    doc.text('Spikiu', mL, 11);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8);
+    doc.text(date, W-mR, 11, {align:'right'});
+    y = 26;
+  }
+  function footer() {
+    doc.setFontSize(7); doc.setTextColor(180,180,180);
+    doc.text('spikiu.com · Dein persönlicher Sprachweg', W/2, H-8, {align:'center'});
+  }
+  function checkY(need) {
+    if (y + need > H - mB) { footer(); doc.addPage(); header(); }
+  }
+
+  header();
+  const lines = raw.split('\n');
+  for (const line of lines) {
+    if (!line.trim()) { y += 2; continue; }
+    if (/^## /.test(line)) {
+      checkY(14); y += 3;
+      doc.setFillColor(232,245,238); doc.rect(mL-2, y-5.5, usable+4, 9, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(26,74,56);
+      const t = line.replace(/^## /,'');
+      doc.text(t, mL, y); y += 8;
+    } else if (/^### /.test(line)) {
+      checkY(12); y += 5;
+      const t = line.replace(/^### /,'');
+      doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(45,106,79);
+      doc.text(t, mL, y);
+      doc.setDrawColor(45,106,79); doc.setLineWidth(0.25);
+      doc.line(mL, y+1, mL+doc.getTextWidth(t), y+1);
+      y += 7;
+    } else if (/^---/.test(line)) {
+      checkY(6); y += 2;
+      doc.setDrawColor(200,195,190); doc.setLineWidth(0.25);
+      doc.line(mL, y, W-mR, y); y += 4;
+    } else if (/^[-•] /.test(line)) {
+      const t = '• ' + line.replace(/^[-•] /,'').replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1');
+      const wrapped = doc.splitTextToSize(t, usable-5);
+      checkY(wrapped.length*4.5+1);
+      doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(50,45,40);
+      doc.text(wrapped, mL+4, y); y += wrapped.length*4.5+1;
+    } else if (/^\*\*/.test(line)) {
+      const m = line.match(/^\*\*(.+?)\*\*:?\s*(.*)/);
+      if (m) {
+        checkY(6);
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(28,25,23);
+        const label = m[1]+':';
+        doc.text(label, mL, y);
+        const lw = doc.getTextWidth(label+' ');
+        const rest = m[2].replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1');
+        if (rest) {
+          doc.setFont('helvetica','normal'); doc.setTextColor(70,65,60);
+          const wrapped = doc.splitTextToSize(rest, usable-lw);
+          doc.text(wrapped, mL+lw, y); y += wrapped.length*4.5+1;
+        } else { y += 5; }
+      }
+    } else if (/^\*[^*]/.test(line)) {
+      const t = line.replace(/^\*/,'').replace(/\*$/,'');
+      checkY(6);
+      doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(160,155,150);
+      doc.text(t, W/2, y, {align:'center'}); y += 5;
+    } else {
+      const t = line.replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1');
+      const wrapped = doc.splitTextToSize(t, usable);
+      checkY(wrapped.length*4.5+1);
+      doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(50,45,40);
+      doc.text(wrapped, mL, y); y += wrapped.length*4.5+1;
+    }
+  }
+  footer();
+  doc.save('Spikiu_DeinWeg.pdf');
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat');
+  const t = document.createElement('div');
+  t.className = 'message spikiu';
+  t.id = 'typing';
+  t.innerHTML = `<div class="avatar-spikiu">${CAPY_SMALL}</div><div class="typing-bubble"><span></span><span></span><span></span></div>`;
+  chat.appendChild(t);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function hideTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function getMaxTokens(text) {
+  const w = text.trim().split(/\s+/).length;
+
+  // Detect structured content requests — language independent
+  // Long user message = likely needs longer response
+  const structural = /vocabular|liste|übung|exercise|prüfung|exam|dele|goethe|erklär|grammar|dialog|lernplan|programm|plan|pdf|schreib|erstell|mach mir|zeig mir|prepare|create|generate|make|write|lesson|exercise|homework|test|quiz|simulation|vorbereitung|preparation/i.test(text);
+
+  if (structural) return 3500;
+
+  // Scale with message length — longer input = longer response needed
+  if (w <= 2)  return 120;   // One word answers
+  if (w <= 5)  return 200;   // Short phrases
+  if (w <= 15) return 400;   // Normal sentences
+  if (w <= 30) return 600;   // Longer messages
+  return 800;                // Very long messages
+}
+
+async function callAPI(system, messages, maxTokens) {
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system, messages, maxTokens })
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const d = await r.json();
+  return d.content[0].text;
+}
+
+// ── START CHAT ────────────────────────────────────────
+async function startChat() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('chat').style.display = 'flex';
+  document.getElementById('inputArea').style.display = 'block';
+
+  const input = document.getElementById('userInput');
+  input.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+    document.getElementById('sendBtn').disabled = this.value.trim() === '';
+  });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (this.value.trim()) sendMessage();
+    }
+  });
+
+  // Check for assessment profile
+  const hasProfile = loadLolaProfile();
+
+  // Disclaimer — in native language if known
+  const nativeLang = userProfile.nativeLang || '';
+  let disclaimer;
+  if (nativeLang.toLowerCase().includes('español') || nativeLang.toLowerCase().includes('spanish') || nativeLang.toLowerCase().includes('span')) {
+    disclaimer = "👋 Antes de empezar:\n\nSoy Spikiu — tu compañero de idiomas. Después de nuestra conversación, puedes generar una lección interactiva con todo lo que hemos trabajado juntos.\n\nSolo tienes que hacer clic en el botón 📚 Lektion arriba. La lección se descarga y puedes repasarla cuando quieras.\n\n¡Empecemos!";
+  } else if (nativeLang.toLowerCase().includes('deutsch') || nativeLang.toLowerCase().includes('german')) {
+    disclaimer = "👋 Kurz bevor wir anfangen:\n\nIch bin Spikiu — dein Sprachbegleiter. Nach unserem Gespräch kannst du eine interaktive Lektion mit allem was wir geübt haben erstellen.\n\nKlick einfach auf den 📚 Lektion Button oben. Die Lektion wird heruntergeladen — zum Nacharbeiten wann du willst.\n\nLos geht's!";
+  } else {
+    disclaimer = "👋 Before we start:\n\nI'm Spikiu — your language companion. After our conversation, you can generate an interactive lesson with everything we've worked on together.\n\nJust click the 📚 Lektion button above. The lesson downloads and you can review it whenever you want.\n\nLet's go!";
+  }
+  addMessage('spikiu', disclaimer);
+
+  setTimeout(async () => {
+    showTyping();
+    try {
+      if (hasProfile) {
+        // Skip onboarding — assessment already done
+        phase = 3;
+
+        // Determine start language based on level
+        const level = userProfile.currentLevel || '';
+        const isSeed = level.includes('Seed');
+        const isCrown = level.includes('Crown');
+
+        // Seed → start in native language
+        // Trunk → start in target language but switch if needed
+        // Crown → only target language
+        const startLang = isSeed
+          ? userProfile.nativeLang
+          : userProfile.targetLang;
+
+        const langInstruction = isSeed
+          ? 'IMPORTANT: This user is a complete beginner (Seed level). Start and speak in their native language (' + userProfile.nativeLang + '). Only introduce a few words in ' + userProfile.targetLang + ' gradually. Make them feel safe first.'
+          : isCrown
+          ? 'IMPORTANT: This user is advanced (Crown level). Speak ONLY in ' + userProfile.targetLang + ' — full immersion.'
+          : 'Start in ' + userProfile.targetLang + ' but if they respond in their native language (' + userProfile.nativeLang + '), gently mix both languages until they feel confident.';
+
+        const ctx = '[CONTEXT: User completed the assessment. Name: ' + userProfile.name
+          + ', Native: ' + userProfile.nativeLang
+          + ', Target: ' + userProfile.targetLang
+          + ', Level: ' + level
+          + ', Goal: ' + (userProfile.goal || '')
+          + ', Timeline: ' + (userProfile.timeline || '')
+          + '. ' + langInstruction
+          + ' Greet them warmly by name, reference their specific goal. Max 3 sentences. Do NOT do onboarding again.]';
+
+        const greeting = await callAPI(
+          SYSTEM_MAIN(userProfile.name, userProfile.nativeLang, userProfile.targetLang),
+          [{ role: 'user', content: ctx }],
+          200
+        );
+        history.push({ role: 'assistant', content: greeting });
+        hideTyping();
+        addMessage('spikiu', greeting);
+      } else {
+        // Normal onboarding
+        phase = 1;
+        const greeting = await callAPI(SYSTEM_ONBOARDING, [{ role: 'user', content: 'Start.' }], 60);
+        history.push({ role: 'assistant', content: greeting });
+        hideTyping();
+        addMessage('spikiu', greeting);
+      }
+    } catch(e) {
+      hideTyping();
+      phase = 1;
+      addMessage('spikiu', "Hey! What's your name?");
+    }
+  }, 1500);
+
+  input.focus();
+}
+
+// ── SEND MESSAGE ──────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').disabled = true;
+  exchangeCount++;
+
+  addMessage('user', text);
+
+  showTyping();
+  try {
+    let reply = '';
+
+    // PHASE 1: Onboarding — collect name then languages
+    if (phase === 1) {
+      if (!userProfile.name) {
+        userProfile.name = text;
+        history.push({ role: 'user', content: text });
+        reply = await callAPI(SYSTEM_LANG, history, 80);
+        history.push({ role: 'assistant', content: reply });
+      } else {
+        history.push({ role: 'user', content: text });
+        phase = 2;
+        exchangeCount = 0;
+
+        // Parse native and target language from user's answer
+        const parsedLangs = await callAPI(
+          'Extract the native language and target language from the user message. Reply with ONLY this JSON format: {"native":"German","target":"Spanish"} — use English language names.',
+          [{ role: 'user', content: text }],
+          60
+        );
+        try {
+          const langs = JSON.parse(parsedLangs);
+          userProfile.nativeLang = langs.native || 'German';
+          userProfile.targetLang = langs.target || 'Spanish';
+        } catch(e) {
+          userProfile.nativeLang = 'German';
+          userProfile.targetLang = 'Spanish';
+        }
+
+        reply = await callAPI(
+          SYSTEM_NEEDS(userProfile.name, userProfile.nativeLang, userProfile.targetLang),
+          [...history, { role: 'user', content: '[CONTEXT: Native language: ' + userProfile.nativeLang + ', Target language: ' + userProfile.targetLang + '. Introduce yourself ONCE briefly (max 2 sentences) and ask ONE question about their goal.]' }],
+          300
+        );
+        history.push({ role: 'assistant', content: reply });
+      }
+    }
+
+    // PHASE 2: Needs analysis
+    else if (phase === 2) {
+      history.push({ role: 'user', content: text });
+
+      // User confirmed the short plan summary
+      const confirmed = /^(ja|yes|ok|gut|perfekt|einverstanden|sí|claro|genau|super|klar|gerne|passt|alright|great|oui|si\b)/i.test(text.trim());
+
+      if (confirmed && exchangeCount >= 3) {
+        phase = 3;
+        exchangeCount = 0;
+
+        // Brief chat message
+        hideTyping();
+        addMessage('spikiu', '🐾 Einen Moment — ich erstelle deinen persönlichen Weg...');
+
+        // Generate full PDF plan
+        showTyping();
+        const conversationSummary = history.map(m => m.role + ': ' + m.content).join('\n');
+
+        const PLAN_SYSTEM = `You are SPIKIU — a companion, not a teacher or course provider.
+
+Write "Dein persönlicher Weg" — a personal path document — based on the needs analysis below.
+
+SPIKIU PHILOSOPHY:
+- No "Kurs", no "Lektion", no "Lehrplan". This is a personal path.
+- "Sprache lernt man nicht. Man betritt sie."
+- Written warmly TO the person, using their name, their words, their context.
+- Phases named after their journey, not "Phase 1/2/3".
+- No grades, no tests, no certificates.
+
+DOCUMENT (Markdown, write fully, never truncate):
+
+## Dein persönlicher Weg — [Zielsprache] für [Name]
+**Dein Ziel:** [their exact goal in their own words]
+**Dein Zeitraum:** [their timeline]
+**Deine Zeit:** [hours per week]
+
+---
+
+### 🌰 [Phase name from their world] — [duration]
+**Was hier passiert:** [what this is about — specific to them, not generic]
+**Du wirst können:**
+- [concrete thing they'll do in their real life]
+- [concrete thing]
+- [concrete thing]
+**So üben wir:** [specific scenarios, roleplays, topics from THEIR context]
+
+### 🌱 [Phase name] — [duration]
+[complete, same structure]
+
+### 🌿 [Phase name] — [duration]
+[complete, same structure]
+
+---
+
+### Dein erster Schritt heute
+[One thing they can do TODAY. Specific. 10 minutes max.]
+
+---
+
+### Was Spikiu für dich bedeutet
+[2-3 warm sentences: not a teacher, a companion on their specific journey. Reference their goal.]
+
+---
+*Erstellt von Spikiu · spikiu.com*`;
+
+        const planReply = await callAPI(
+          PLAN_SYSTEM,
+          [{ role: 'user', content: 'Needs analysis conversation:\n\n' + conversationSummary + '\n\nWrite the complete personal path document now.' }],
+          3500
+        );
+        hideTyping();
+        addMessage('spikiu', '[PDF_AVAILABLE]' + planReply);
+
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('userInput').focus();
+        return;
+
+      } else {
+        // Continue needs analysis
+        reply = await callAPI(
+          SYSTEM_NEEDS(userProfile.name, userProfile.nativeLang, userProfile.targetLang),
+          history,
+          getMaxTokens(text)
+        );
+        history.push({ role: 'assistant', content: reply });
+      }
+    }
+
+    // PHASE 3: Free conversation
+    else {
+      history.push({ role: 'user', content: text });
+      reply = await callAPI(
+        SYSTEM_MAIN(userProfile.name, userProfile.nativeLang, userProfile.targetLang),
+        history,
+        getMaxTokens(text)
+      );
+      history.push({ role: 'assistant', content: reply });
+    }
+
+    hideTyping();
+    addMessage('spikiu', reply);
+
+  } catch(e) {
+    hideTyping();
+    addMessage('spikiu', 'Something went wrong. Try again?');
+  }
+
+  document.getElementById('sendBtn').disabled = false;
+  input.focus();
+}// ── GENERATE LESSON ───────────────────────────────────
+async function generateLesson() {
+  if (history.length < 2) {
+    addMessage('spikiu', 'Wir brauchen erst ein bisschen Gespräch — dann kann ich eine Lektion daraus erstellen. 🐾');
+    return;
+  }
+
+  const btn = document.getElementById('lessonBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Erstelle...';
+
+  const conversationText = history.map(m =>
+    (m.role === 'user' ? 'Lerner: ' : 'Spikiu: ') + m.content
+  ).join('\n');
+
+  const LESSON_SYSTEM = `You are SPIKIU. Create a complete interactive HTML lesson from the conversation.
+
+PRONUNCIATION SYSTEM — Simple like Google Translate:
+- Write pronunciation exactly as it sounds in German
+- No special symbols, no IPA
+- Use only normal letters: a e i o u, plus these: á é í ó ú (for stress)
+- Example: "Buenos días" → "Bwénos díjas"
+- Example: "Gracias" → "Grájzias"
+- Example: "Hola" → "Óla"
+- Make it so anyone can read it immediately without instructions
+
+MNEMONICS — Creative, funny, unforgettable:
+- Use wordplay, rhymes, absurd images
+- Connect the foreign word to a German/familiar word that sounds similar
+- Example: "Hola" → "Hol mal kurz die Sonne rein — HOLA!"
+- Example: "Gracias" → "Ein Greis tanzt: GRA-ZIAS!"
+- Example: "Buenos días" → "Buen... klingt wie 'Bühne' — du betritts die Bühne und strahlst: Buenos días!"
+- Be creative — the more absurd, the better remembered
+
+TOGGLE BUTTONS — Use EXACTLY this pattern (never deviate):
+<button class="toggle-btn" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.textContent=this.nextElementSibling.style.display==='block'?'Merkhilfe verbergen':'💡 Merkhilfe zeigen'">💡 Merkhilfe zeigen</button>
+<div class="mnemo" style="display:none">
+  [mnemonic text here]
+</div>
+
+QUIZ BUTTONS — Use EXACTLY this pattern:
+<button class="choice-btn" onclick="showResult(this,'correct')">Antwort A</button>
+<button class="choice-btn" onclick="showResult(this,'wrong')">Antwort B</button>
+
+And include this JS function:
+function showResult(btn, type) {
+  var parent = btn.parentElement;
+  var btns = parent.querySelectorAll('.choice-btn');
+  btns.forEach(function(b) { b.disabled = true; });
+  var msg = parent.querySelector('.result');
+  if(type==='correct') { btn.style.background='#2d6a4f'; msg.innerHTML='✅ Richtig!'; msg.style.color='#2d6a4f'; }
+  else { btn.style.background='#c0392b'; msg.innerHTML='❌ Nicht ganz.'; msg.style.color='#c0392b'; }
+}
+
+DESIGN:
+- Google Fonts: Playfair Display + Instrument Sans
+- Colors: #2d6a4f (green), #faf8f5 (bg), #a07228 (gold for pronunciation), #1a1612 (text)
+- Cards: white, border-radius 16px, shadow 0 4px 20px rgba(0,0,0,0.08)
+- Buttons: border-radius 100px, background #2d6a4f, color white
+
+STRUCTURE:
+1. Header with Spikiu logo and lesson title
+2. Vocabulary cards (one per word/phrase): Greek/Spanish/German word, simple pronunciation in gold, German meaning, toggle Merkhilfe button
+3. Dialog section
+4. Quick reference table
+5. Interactive quiz (min 5 questions)
+6. Footer: "Spikiu · spikiu.com"
+
+Write COMPLETE HTML. Never truncate. All JS inline. All toggle buttons must work.`;
+
+  try {
+    const response = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: LESSON_SYSTEM,
+        messages: [{
+          role: 'user',
+          content: 'Create the complete interactive lesson from this conversation:\n\n' + conversationText
+        }],
+        maxTokens: 4000
+      })
+    });
+
+    const data = await response.json();
+    let lessonHTML = data.content[0].text;
+
+    // Clean up if wrapped in markdown
+    lessonHTML = lessonHTML.replace(/^```html\n?/, '').replace(/\n?```$/, '').trim();
+
+    // Download as .html file
+    const blob = new Blob([lessonHTML], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'spikiu-lektion.html';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    addMessage('spikiu', '📚 Deine Lektion ist fertig — sie wurde heruntergeladen. Öffne die Datei in deinem Browser um zu üben. 🐾');
+
+  } catch(e) {
+    addMessage('spikiu', 'Etwas ist schiefgelaufen. Versuch es nochmal.');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '📚 Lektion';
+}
+</script>
+</body>
+</html>
