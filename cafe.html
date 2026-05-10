@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Im Café — Spikiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Instrument+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+:root{--white:#ffffff;--off:#faf8f5;--off2:#f2ede6;--ink:#1a1612;--mid:#6b6158;--faint:#e8e0d5;--warm:#c8bfb0;--green:#2d5a3d;--green2:#e5efe8;--green3:#1a3d28;--gold:#a07228;--gold2:#f5ead8;--capy:#c9956a;}
+body{background:var(--off);color:var(--ink);font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+.overlay{display:none;position:fixed;inset:0;background:var(--off);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;text-align:center;padding:2rem;}
+.overlay.active{display:flex;}
+.capy-float{animation:float 2s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.overlay-text{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ink);line-height:1.6;max-width:320px;}
+.dots span{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin:0 3px;animation:dot 1.4s infinite;}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+header{background:var(--white);border-bottom:1px solid var(--faint);padding:0 5vw;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.logo-text em{color:var(--green);font-style:italic;}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-link{font-size:.83rem;color:var(--mid);text-decoration:none;transition:color .2s;}
+.nav-link:hover{color:var(--ink);}
+.hero{background:var(--ink);padding:4rem 5vw 3rem;color:var(--white);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(160,114,40,0.25) 0%,transparent 70%);pointer-events:none;}
+.book-tags{display:flex;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .8rem;border-radius:100px;}
+.tag-both{background:rgba(160,114,40,0.2);color:#e8b86d;}
+.tag-level{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:.8rem;}
+.hero h1 em{font-style:italic;color:var(--capy);}
+.hero-sub{font-family:'Lora',serif;font-size:1.05rem;color:rgba(255,255,255,.6);font-style:italic;margin-bottom:2rem;}
+.hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
+.btn-t{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:var(--white);padding:.75rem 1.5rem;border-radius:100px;font-size:.88rem;font-weight:600;border:none;cursor:pointer;transition:all .25s;text-decoration:none;font-family:'Instrument Sans',sans-serif;}
+.btn-t:hover{background:var(--green3);transform:translateY(-1px);}
+.btn-gold{background:var(--gold);}
+.btn-gold:hover{background:#8a6020;}
+.btn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.3);}
+.btn-ghost:hover{border-color:rgba(255,255,255,.7);}
+.ch-nav{background:var(--white);border-bottom:1px solid var(--faint);padding:0 5vw;display:flex;overflow-x:auto;scrollbar-width:none;}
+.ch-nav::-webkit-scrollbar{display:none;}
+.ch-btn{padding:1rem 1.2rem;font-size:.82rem;font-weight:500;color:var(--mid);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Instrument Sans',sans-serif;}
+.ch-btn:hover{color:var(--ink);}
+.ch-btn.active{color:var(--green);border-bottom-color:var(--green);font-weight:600;}
+.content{max-width:900px;margin:0 auto;padding:2.5rem 5vw 5rem;}
+.chapter{display:none;animation:fadeIn .4s ease;}
+.chapter.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ch-num{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--warm);margin-bottom:.4rem;}
+.ch-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.2;margin-bottom:2rem;}
+.text-wrap{margin-bottom:2rem;}
+.mono-text{background:var(--white);border:1px solid var(--faint);border-radius:12px;padding:1.5rem;}
+.mono-label{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:1rem;}
+.mono-body{font-family:'Lora',serif;font-size:.97rem;line-height:1.85;}
+.dual-dialog{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem;}
+.dialog-box{background:var(--off2);border-radius:12px;padding:1.4rem;}
+.dialog-lang{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem;}
+.dialog-lang.es{color:#c60b1e;}
+.dialog-lang.de{color:var(--green);}
+.d-line{display:flex;gap:.6rem;margin-bottom:.8rem;align-items:flex-start;}
+.d-line:last-child{margin-bottom:0;}
+.d-who{font-size:.7rem;font-weight:700;color:var(--warm);width:65px;flex-shrink:0;padding-top:.1rem;letter-spacing:.05em;text-transform:uppercase;}
+.d-who.you{color:var(--green);}
+.d-who.you-es{color:#c60b1e;}
+.d-text{font-family:'Lora',serif;font-size:.92rem;color:var(--ink);line-height:1.55;}
+.d-trans{font-size:.8rem;color:var(--mid);font-style:italic;margin-top:.15rem;}
+.section-head{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem;}
+.section-head::after{content:'';flex:1;height:1px;background:var(--faint);}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.6rem;margin-bottom:2rem;}
+.v-card{background:var(--white);border:1px solid var(--faint);border-radius:10px;padding:.9rem 1rem;transition:border-color .2s;}
+.v-card:hover{border-color:var(--green);}
+.v-word{font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.2rem;}
+.v-pron{font-size:.78rem;color:var(--gold);font-weight:500;margin-bottom:.3rem;}
+.v-trans{font-size:.82rem;color:var(--mid);}
+.spikiu-q{background:var(--green);border-radius:16px;padding:1.8rem 2rem;margin-bottom:2rem;}
+.sq-label{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:.5rem;}
+.sq-text{font-family:'Lora',serif;font-size:1rem;color:var(--white);font-style:italic;line-height:1.6;margin-bottom:1rem;}
+.btn-practice{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);color:var(--white);padding:.6rem 1.2rem;border-radius:100px;font-size:.83rem;font-weight:600;border:1.5px solid rgba(255,255,255,.3);cursor:pointer;transition:all .2s;text-decoration:none;font-family:'Instrument Sans',sans-serif;}
+.btn-practice:hover{background:rgba(255,255,255,.25);}
+.ch-nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--faint);}
+.btn-prev,.btn-next{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;border-radius:100px;font-size:.88rem;font-weight:600;border:1.5px solid var(--faint);background:var(--white);color:var(--ink);cursor:pointer;transition:all .2s;font-family:'Instrument Sans',sans-serif;}
+.btn-prev:hover,.btn-next:hover{border-color:var(--green);color:var(--green);}
+.btn-prev:disabled,.btn-next:disabled{opacity:.3;cursor:not-allowed;}
+.btn-next{background:var(--green);color:var(--white);border-color:var(--green);}
+.btn-next:hover{background:var(--green3);border-color:var(--green3);color:var(--white);}
+#translationBadge{display:none;font-size:.78rem;background:var(--green2);color:var(--green);padding:.2rem .7rem;border-radius:100px;font-weight:600;}
+@media(max-width:640px){.hero{padding:3rem 1.5rem 2rem;}.content{padding:2rem 1.25rem 4rem;}header,.ch-nav{padding:0 1.25rem;}.dual-dialog{grid-template-columns:1fr;}.vocab-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay">
+  <svg class="capy-float" width="80" height="80" viewBox="0 0 80 80" fill="none">
+    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+    <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>
+  <div class="overlay-text" id="overlayText">Spikiu bereitet dein Buch vor...<br><span style="font-size:.9rem;opacity:.7">Einen Moment bitte.</span></div>
+  <div class="dots"><span></span><span></span><span></span></div>
+</div>
+<header>
+  <a href="dashboard.html" class="logo">
+    <svg width="28" height="28" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="logo-text">Spi<em>k</em>iu</span>
+  </a>
+  <div class="nav-right">
+    <span id="translationBadge"></span>
+    <a href="dashboard.html" class="nav-link">← Dashboard</a>
+  </div>
+</header>
+<div class="hero">
+  <div class="book-tags">
+    <span class="tag tag-both">Deutsch 🇩🇪 · Spanisch 🇪🇸</span>
+    <span class="tag tag-level">🌰 Seed · 🌱 Trunk</span>
+  </div>
+  <h1>Im<br><em>Café.</em></h1>
+  <p class="hero-sub">Zwei Sprachen. Ein Ort.</p>
+  <div class="hero-actions">
+    <button class="btn-t" id="translateBtn" onclick="activateTranslation()">🌍 In meiner Sprache lesen</button>
+    <a href="books/cafe.epub" download class="btn-t btn-gold">📖 EPUB herunterladen</a>
+    <a href="chat.html" class="btn-t btn-ghost">🐾 Mit Spikiu üben →</a>
+  </div>
+</div>
+<nav class="ch-nav">
+  <button class="ch-btn active" onclick="showChapter(0,this)">1 · Der erste Kaffee</button>
+  <button class="ch-btn" onclick="showChapter(1,this)">2 · Die Arbeit</button>
+  <button class="ch-btn" onclick="showChapter(2,this)">3 · Das Gespräch</button>
+  <button class="ch-btn" onclick="showChapter(3,this)">📚 Glossar</button>
+</nav>
+<div class="content">
+
+<div class="chapter active" id="ch-0">
+  <div class="ch-num">Kapitel 1</div>
+  <h2 class="ch-title">Der erste Kaffee</h2>
+  <div class="text-wrap"><div class="mono-text"><div class="mono-label">Deutsch · Español</div>
+  <div class="mono-body" id="de-0">Ein Café. Irgendwo in Europa.<br><br>Vielleicht Madrid. Vielleicht Berlin. Vielleicht München oder Barcelona.<br><br>Das spielt keine Rolle. Ein Café ist überall gleich — und überall anders.<br><br>Du setzt dich. Du schaust die Karte an.<br><br><em style="color:var(--mid)">Cortado. Cappuccino. Flat White.</em><br><br>Kaffee hat keine Grenzen. Aber die Bestellung hat eine Sprache.<br><br>Du entscheidest: Heute auf Spanisch.<br><br><em style="color:var(--mid)">„Un cortado, por favor."</em><br><br>Der Barista nickt. Er lächelt nicht. Er macht einfach deinen Kaffee. Schnell. Gut.<br><br>Das ist genug.</div>
+  </div></div>
+  <div class="section-head">Dialog — Spanisch &amp; Deutsch</div>
+  <div class="dual-dialog">
+    <div class="dialog-box">
+      <div class="dialog-lang es">🇪🇸 Español</div>
+      <div class="d-line"><div class="d-who">Barista</div><div><div class="d-text">¿Qué te pongo?</div><div class="d-trans" id="dt-0-0"></div></div></div>
+      <div class="d-line"><div class="d-who you-es">Tú</div><div><div class="d-text">Un cortado, por favor.</div><div class="d-trans" id="dt-0-1"></div></div></div>
+      <div class="d-line"><div class="d-who">Barista</div><div><div class="d-text">¿Para aquí o para llevar?</div><div class="d-trans" id="dt-0-2"></div></div></div>
+      <div class="d-line"><div class="d-who you-es">Tú</div><div><div class="d-text">Para aquí.</div><div class="d-trans" id="dt-0-3"></div></div></div>
+    </div>
+    <div class="dialog-box">
+      <div class="dialog-lang de">🇩🇪 Deutsch</div>
+      <div class="d-line"><div class="d-who">Barista</div><div><div class="d-text">Was darf es sein?</div></div></div>
+      <div class="d-line"><div class="d-who you">Du</div><div><div class="d-text">Einen Cappuccino, bitte.</div></div></div>
+      <div class="d-line"><div class="d-who">Barista</div><div><div class="d-text">Zum Hier trinken?</div></div></div>
+      <div class="d-line"><div class="d-who you">Du</div><div><div class="d-text">Ja, bitte.</div></div></div>
+    </div>
+  </div>
+  <div class="section-head">Schlüsselwörter</div>
+  <div class="vocab-grid">
+    <div class="v-card"><div class="v-word">Cortado</div><div class="v-pron">kor-TA-do</div><div class="v-trans" id="vn-0-0">Kaffee mit wenig Milch</div></div>
+    <div class="v-card"><div class="v-word">Para aquí</div><div class="v-pron">PA-ra a-KI</div><div class="v-trans" id="vn-0-1">Zum Hierbleiben</div></div>
+    <div class="v-card"><div class="v-word">Para llevar</div><div class="v-pron">PA-ra lye-BAR</div><div class="v-trans" id="vn-0-2">Zum Mitnehmen</div></div>
+    <div class="v-card"><div class="v-word">Zum Hier trinken</div><div class="v-pron">tsoom HIER trin-ken</div><div class="v-trans" id="vn-0-3">Para aquí</div></div>
+    <div class="v-card"><div class="v-word">Was darf es sein?</div><div class="v-pron">vas DARF es zain</div><div class="v-trans" id="vn-0-4">¿Qué te pongo?</div></div>
+  </div>
+  <div class="spikiu-q"><div class="sq-label">Spikiu fragt dich</div><div class="sq-text">"Du bist im Café. Bestell deinen Lieblingskaffee — auf Spanisch oder Deutsch."</div><a href="chat.html" class="btn-practice">Mit Spikiu üben →</a></div>
+  <div class="ch-nav-bottom"><button class="btn-prev" disabled>← Zurück</button><button class="btn-next" onclick="showChapter(1,document.querySelectorAll('.ch-btn')[1])">Weiter →</button></div>
+</div>
+
+<div class="chapter" id="ch-1">
+  <div class="ch-num">Kapitel 2</div>
+  <h2 class="ch-title">Die Arbeit</h2>
+  <div class="text-wrap"><div class="mono-text"><div class="mono-label">Deutsch · Español</div>
+  <div class="mono-body" id="de-1">Du arbeitest im Café.<br><br>Laptop. Kopfhörer. Eine leere Tasse.<br><br>Du brauchst noch einen Kaffee. Aber du möchtest nicht laut rufen. Das macht man hier nicht.<br><br>Du wartest bis der Barista vorbeikommt.<br><br><em style="color:var(--mid)">„Perdona, ¿me pones otro?"</em><br><br>Kannst du mir noch einen machen? — einfach, direkt, höflich.<br><br>Auf Deutsch wäre es: <em style="color:var(--mid)">„Entschuldigung, könnte ich bitte noch einen haben?"</em><br><br>Beide funktionieren. Beide sind richtig. Beide sind menschlich.</div>
+  </div></div>
+  <div class="section-head">Dialog — Spanisch &amp; Deutsch</div>
+  <div class="dual-dialog">
+    <div class="dialog-box">
+      <div class="dialog-lang es">🇪🇸 Español</div>
+      <div class="d-line"><div class="d-who you-es">Tú</div><div><div class="d-text">Perdona, ¿me pones otro café?</div><div class="d-trans" id="dt-1-0"></div></div></div>
+      <div class="d-line"><div class="d-who">Barista</div><div><div class="d-text">Claro. ¿El mismo?</div><div class="d-trans" id="dt-1-1"></div></div></div>
+      <div class="d-line"><div class="d-who you-es">Tú</div><div><div class="d-text">Sí, gracias.</div><div class="d-trans" id="dt-1-2"></div></div></div>
+    </div>
+    <div class="dialog-box">
+      <div class="dialog-lang de">🇩🇪 Deutsch</div>
+      <div class="d-line"><div class="d-who you">Du</div><div><div class="d-text">Entschuldigung — könnte ich noch einen Kaffee haben?</div></div></div>
+      <div class="d-line"><div class="d-who">Barista</div><div><div class="d-text">Natürlich. Den gleichen?</div></div></div>
+      <div class="d-line"><div class="d-who you">Du</div><div><div class="d-text">Ja, bitte. Danke.</div></div></div>
+    </div>
+  </div>
+  <div class="section-head">Schlüsselwörter</div>
+  <div class="vocab-grid">
+    <div class="v-card"><div class="v-word">¿Me pones otro?</div><div class="v-pron">me PO-nes O-tro</div><div class="v-trans" id="vn-1-0">Noch einen bitte</div></div>
+    <div class="v-card"><div class="v-word">El mismo</div><div class="v-pron">el MIS-mo</div><div class="v-trans" id="vn-1-1">Den gleichen</div></div>
+    <div class="v-card"><div class="v-word">Claro</div><div class="v-pron">KLA-ro</div><div class="v-trans" id="vn-1-2">Natürlich / Klar</div></div>
+    <div class="v-card"><div class="v-word">Noch einen</div><div class="v-pron">noch EI-nen</div><div class="v-trans" id="vn-1-3">¿Me pones otro?</div></div>
+    <div class="v-card"><div class="v-word">Den gleichen</div><div class="v-pron">den GLEI-chen</div><div class="v-trans" id="vn-1-4">El mismo</div></div>
+  </div>
+  <div class="spikiu-q"><div class="sq-label">Spikiu fragt dich</div><div class="sq-text">"Du möchtest noch etwas bestellen. Wie fragst du — auf Spanisch und auf Deutsch?"</div><a href="chat.html" class="btn-practice">Mit Spikiu üben →</a></div>
+  <div class="ch-nav-bottom"><button class="btn-prev" onclick="showChapter(0,document.querySelectorAll('.ch-btn')[0])">← Zurück</button><button class="btn-next" onclick="showChapter(2,document.querySelectorAll('.ch-btn')[2])">Weiter →</button></div>
+</div>
+
+<div class="chapter" id="ch-2">
+  <div class="ch-num">Kapitel 3</div>
+  <h2 class="ch-title">Das Gespräch</h2>
+  <div class="text-wrap"><div class="mono-text"><div class="mono-label">Deutsch · Español</div>
+  <div class="mono-body" id="de-2">Neben dir sitzt jemand. Auch mit Laptop.<br><br>Ihr schaut euch kurz an. Nickt. Das reicht.<br><br>Dann — nach einer Stunde — fragt er:<br><br><em style="color:var(--mid)">„¿Puedo usar tu cargador?"</em><br><br>Kann ich dein Ladekabel benutzen?<br><br>Du verstehst. Du gibst es ihm.<br><br><em style="color:var(--mid)">„Gracias."</em><br><br><em style="color:var(--mid)">„De nada."</em><br><br>Zwei Wörter. Ein Moment. Eine kleine menschliche Verbindung.<br><br>Das ist Sprache. Nicht Grammatik. Nicht Vokabeln. Sondern: ein Mensch fragt. Ein anderer antwortet.</div>
+  </div></div>
+  <div class="section-head">Dialog — Spanisch &amp; Deutsch</div>
+  <div class="dual-dialog">
+    <div class="dialog-box">
+      <div class="dialog-lang es">🇪🇸 Español</div>
+      <div class="d-line"><div class="d-who">Mann</div><div><div class="d-text">¿Puedo usar tu cargador un momento?</div><div class="d-trans" id="dt-2-0"></div></div></div>
+      <div class="d-line"><div class="d-who you-es">Tú</div><div><div class="d-text">Sí, claro.</div><div class="d-trans" id="dt-2-1"></div></div></div>
+      <div class="d-line"><div class="d-who">Mann</div><div><div class="d-text">Muchas gracias.</div><div class="d-trans" id="dt-2-2"></div></div></div>
+      <div class="d-line"><div class="d-who you-es">Tú</div><div><div class="d-text">De nada.</div><div class="d-trans" id="dt-2-3"></div></div></div>
+    </div>
+    <div class="dialog-box">
+      <div class="dialog-lang de">🇩🇪 Deutsch</div>
+      <div class="d-line"><div class="d-who">Mann</div><div><div class="d-text">Darf ich kurz dein Ladekabel benutzen?</div></div></div>
+      <div class="d-line"><div class="d-who you">Du</div><div><div class="d-text">Ja, natürlich.</div></div></div>
+      <div class="d-line"><div class="d-who">Mann</div><div><div class="d-text">Vielen Dank.</div></div></div>
+      <div class="d-line"><div class="d-who you">Du</div><div><div class="d-text">Gern.</div></div></div>
+    </div>
+  </div>
+  <div class="section-head">Schlüsselwörter</div>
+  <div class="vocab-grid">
+    <div class="v-card"><div class="v-word">¿Puedo usar...?</div><div class="v-pron">PWEH-do u-SAR</div><div class="v-trans" id="vn-2-0">Darf ich... benutzen?</div></div>
+    <div class="v-card"><div class="v-word">Cargador</div><div class="v-pron">kar-ga-DOR</div><div class="v-trans" id="vn-2-1">Ladekabel</div></div>
+    <div class="v-card"><div class="v-word">Muchas gracias</div><div class="v-pron">MU-tschas GRA-syas</div><div class="v-trans" id="vn-2-2">Vielen Dank</div></div>
+    <div class="v-card"><div class="v-word">De nada</div><div class="v-pron">de NA-da</div><div class="v-trans" id="vn-2-3">Gern / Bitte</div></div>
+    <div class="v-card"><div class="v-word">Gern</div><div class="v-pron">gern</div><div class="v-trans" id="vn-2-4">De nada</div></div>
+  </div>
+  <div class="spikiu-q"><div class="sq-label">Spikiu fragt dich</div><div class="sq-text">"Jemand neben dir braucht etwas. Was sagst du — auf Spanisch oder Deutsch?"</div><a href="chat.html" class="btn-practice">Mit Spikiu üben →</a></div>
+  <div class="ch-nav-bottom"><button class="btn-prev" onclick="showChapter(1,document.querySelectorAll('.ch-btn')[1])">← Zurück</button><button class="btn-next" onclick="showChapter(3,document.querySelectorAll('.ch-btn')[3])">Glossar →</button></div>
+</div>
+
+<div class="chapter" id="ch-3">
+  <div class="ch-num">Alle Kapitel</div>
+  <h2 class="ch-title">Glossar</h2>
+  <table style="width:100%;border-collapse:collapse;margin-top:1rem">
+    <thead><tr>
+      <th style="text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);padding:.6rem .8rem;border-bottom:2px solid var(--faint)">Wort / Palabra</th>
+      <th style="text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);padding:.6rem .8rem;border-bottom:2px solid var(--faint)">Aussprache</th>
+      <th style="text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);padding:.6rem .8rem;border-bottom:2px solid var(--faint)" id="native-col">Übersetzung</th>
+    </tr></thead>
+    <tbody>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">Cortado</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">kor-TA-do</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-0">Kaffee mit wenig Milch</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">Para aquí</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">PA-ra a-KI</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-1">Zum Hierbleiben</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">Para llevar</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">PA-ra lye-BAR</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-2">Zum Mitnehmen</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">¿Me pones otro?</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">me PO-nes O-tro</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-3">Noch einen bitte</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">El mismo</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">el MIS-mo</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-4">Den gleichen</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">Claro</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">KLA-ro</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-5">Natürlich / Klar</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">¿Puedo usar...?</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">PWEH-do u-SAR</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-6">Darf ich benutzen?</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">Muchas gracias</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">MU-tschas GRA-syas</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-7">Vielen Dank</td></tr>
+      <tr><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);font-weight:600">De nada</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--gold);font-size:.82rem">de NA-da</td><td style="padding:.7rem .8rem;border-bottom:1px solid var(--faint);color:var(--mid)" id="gn-8">Gern / Bitte</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:2rem;text-align:center"><a href="chat.html" class="btn-t" style="display:inline-flex">🐾 Mit Spikiu weiterüben →</a></div>
+  <div class="ch-nav-bottom"><button class="btn-prev" onclick="showChapter(2,document.querySelectorAll('.ch-btn')[2])">← Kapitel 3</button><button class="btn-next" disabled>Ende ✓</button></div>
+</div>
+
+</div>
+<script>
+const API='/api/chat';
+let nativeLang='Deutsch';
+function getProfile(){try{const p=localStorage.getItem('spikiu_profile');return p?JSON.parse(p):null;}catch(e){return null;}}
+function showChapter(idx,btn){document.querySelectorAll('.chapter').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('active'));document.getElementById('ch-'+idx).classList.add('active');btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+async function activateTranslation(){
+  const profile=getProfile();
+  nativeLang=profile?profile.nativeLang:'Englisch';
+  if(nativeLang==='Deutsch'||nativeLang==='Spanisch'){alert('Das Buch ist bereits in beiden Sprachen — Deutsch und Spanisch!');return;}
+  document.getElementById('overlay').classList.add('active');
+  document.getElementById('translateBtn').disabled=true;
+  const texts={
+    ch0:document.getElementById('de-0').innerText,
+    ch1:document.getElementById('de-1').innerText,
+    ch2:document.getElementById('de-2').innerText
+  };
+  try{
+    const prompt=`Translate to ${nativeLang}. Return ONLY valid JSON: {"chapters":["ch0","ch1","ch2"],"dialogs":[["Für hier oder zum Mitnehmen?","Für hier."],["Noch einen? Den gleichen?","Ja, danke."],["Darf ich dein Ladekabel benutzen?","Ja, klar.","Vielen Dank.","Gern."]]}
+CHAPTERS:
+0:${texts.ch0}
+1:${texts.ch1}
+2:${texts.ch2}`;
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Professional translator. Return only valid JSON.',messages:[{role:'user',content:prompt}],maxTokens:3000})});
+    const data=await r.json();
+    let raw=data.content[0].text.trim().replace(/^```json?\n?/,'').replace(/\n?```$/,'').trim();
+    const t=JSON.parse(raw);
+    for(let i=0;i<3;i++){
+      const deEl=document.getElementById('de-'+i);
+      if(deEl&&t.chapters[i]){
+        const parent=deEl.closest('.mono-text');
+        parent.outerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem"><div style="background:var(--white);border:1px solid var(--faint);border-top:3px solid var(--green);border-radius:12px;padding:1.5rem"><div style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:1rem">Deutsch · Español</div><div style="font-family:Lora,serif;font-size:.97rem;line-height:1.85">'+deEl.innerHTML+'</div></div><div style="background:var(--white);border:1px solid var(--faint);border-top:3px solid var(--gold);border-radius:12px;padding:1.5rem"><div style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">'+nativeLang+'</div><div style="font-family:Lora,serif;font-size:.97rem;line-height:1.85">'+t.chapters[i].replace(/\n/g,'<br>')+'</div></div></div>';
+      }
+    }
+    const badge=document.getElementById('translationBadge');badge.textContent='🌍 '+nativeLang;badge.style.display='inline-block';
+  }catch(err){console.error(err);document.getElementById('translateBtn').disabled=false;}
+  document.getElementById('overlay').classList.remove('active');
+}
+window.addEventListener('load',function(){const p=getProfile();if(p&&p.nativeLang)document.getElementById('translateBtn').textContent='🌍 In '+p.nativeLang+' lesen';});
+</script>
+</body>
+</html>
