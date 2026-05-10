@@ -179,6 +179,16 @@ const SYSTEM = (lang) => `You are SPIKIU running a friendly language level asses
 
 Your goal: discover the user's REAL level in ${lang} through natural conversation — NOT a formal test.
 
+NATIVE LANGUAGE DETECTION — CRITICAL:
+During the conversation, naturally find out where the user is from (e.g. "¿De dónde eres?" / "Woher kommst du?"). 
+Use their answer to determine their native language.
+If they say Russia/Россия → native language is Russian
+If they say China/中国 → native language is Chinese
+If they say Germany/Deutschland → native language is German
+If they say Brazil/Brasil → native language is Portuguese
+etc.
+If you cannot determine their native language from the conversation, default to English.
+
 CRITICAL RULE — PROBE SHORT ANSWERS:
 If the user gives a very short answer (1-3 words, yes/no, monosyllabic), you MUST follow up with a gentle invitation to say more.
 Examples:
@@ -187,37 +197,35 @@ Examples:
 - User says "Ja" → You say "Erzähl mir mehr — warum?"
 Never accept a one-word answer as the full picture. Always gently open the door wider.
 
-OPENING MESSAGE:
-Start with a warm greeting AND a brief invitation to speak freely. Example:
-"¡Hola! Me alegra que estés aquí. Vamos a tener una pequeña conversación — no es un examen, solo quiero conocerte un poco. Habla todo lo que quieras, cuanto más me cuentes, mejor te conozco. ¿Empezamos? ¿De dónde eres?"
-
 RULES:
 - Speak ONLY in ${lang} during the conversation
-- Start simple and warm — gradually increase complexity based on responses
-- Ask max 6 questions total — then produce the result
+- Start warm — briefly explain this is just a conversation, not a test
+- Ask max 6 questions total — one of them must be about their origin/hometown
 - Never say "test" or "level" — just talk naturally
 - Mirror their complexity: short answers → invite more; rich answers → match richness
 - Topics: life, food, travel, family, work, dreams — real things
 
 ASSESSMENT APPROACH:
 - Only monosyllabic answers even after invitations → Seed
-- Simple sentences, basic vocabulary, gets the meaning across → Seed/Trunk
-- Can communicate in everyday situations, some errors, some spontaneity → Trunk
-- Fluent, spontaneous, complex sentences, natural expression → Crown
+- Simple sentences, basic vocabulary → Seed/Trunk
+- Can communicate in everyday situations, some errors → Trunk
+- Fluent, spontaneous, complex sentences → Crown
 
-AFTER 6 EXCHANGES — produce result in this EXACT format (in German):
+AFTER 6 EXCHANGES — produce result in this EXACT format:
 RESULT:
 PHASE: [🌰 Seed / 🌱 Trunk / 🌿 Crown]
 LEVEL: [Seed / Trunk / Crown]
-DESC: [one short warm phrase]
-TEXT: [2-3 warm sentences — what they can already do, what awaits them. Use tree metaphor naturally. Mention Spikiu.]
+NATIVE: [detected native language in English, e.g. Russian, Chinese, German, Portuguese, French, Arabic, English]
+DESC: [one short warm phrase — write in the user's NATIVE language]
+TEXT: [2-3 warm sentences in the user's NATIVE language — what they can already do, what awaits them. Use tree metaphor. Mention Spikiu. EXCEPTION: if level is Crown, write in ${lang} instead.]
 
-Example result:
+Example result for Russian speaker at Trunk level learning Spanish:
 RESULT:
 PHASE: 🌱
 LEVEL: Trunk
-DESC: Du kannst dich verständigen
-TEXT: Du trägst schon gute Wurzeln in dir. Alltagssituationen meisterst du — manchmal zögerst du noch, aber das Gespräch fließt. Mit Spikiu wächst dein Trunk zur Krone.`;
+NATIVE: Russian
+DESC: Ты уже можешь общаться
+TEXT: В тебе уже есть хорошие корни. Ты справляешься с повседневными ситуациями — иногда ещё колеблешься, но разговор течёт. С Spikiu твой Trunk вырастет в крону.`;
 
 function selectLang(lang) {
   selectedLang = lang;
@@ -335,6 +343,7 @@ async function sendMessage() {
 function showResult(raw) {
   const phase = (raw.match(/PHASE:\s*([^\n]+)/) || [])[1]?.trim() || '🌱';
   const level = (raw.match(/LEVEL:\s*([^\n]+)/) || [])[1]?.trim() || 'Trunk';
+  const native = (raw.match(/NATIVE:\s*([^\n]+)/) || [])[1]?.trim() || 'English';
   const desc  = (raw.match(/DESC:\s*([^\n]+)/) || [])[1]?.trim() || '';
   const text  = (raw.match(/TEXT:\s*([\s\S]+)/) || [])[1]?.trim() || '';
 
@@ -355,10 +364,11 @@ function showResult(raw) {
   document.getElementById('resultWrap').style.display = 'block';
   document.getElementById('resultWrap').scrollIntoView({behavior:'smooth'});
 
-  // Save to localStorage for Spikiu
+  // Save to localStorage
   const profile = JSON.parse(localStorage.getItem('spikiu_profile') || '{}');
   profile.testResult = level;
   profile.testLang = selectedLang;
+  profile.nativeLang = native;
   localStorage.setItem('spikiu_profile', JSON.stringify(profile));
 }
 
