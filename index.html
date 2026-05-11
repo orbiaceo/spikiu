@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Dein Weg zur Sprache</title>
+<meta name="description" content="Spikiu ist kein Sprachkurs. Kein Lehrer. Keine App die dich vergisst. Spikiu ist dein persönlicher Weg zur Sprache — durch echte Begegnungen.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --white:#ffffff;
+  --off:#faf8f5;
+  --off2:#f2ede6;
+  --ink:#1a1612;
+  --mid:#6b6158;
+  --faint:#e8e0d5;
+  --warm:#c8bfb0;
+  --green:#2d5a3d;
+  --green2:#e5efe8;
+  --green3:#1a3d28;
+  --gold:#a07228;
+  --gold2:#f5ead8;
+  --red:#b83232;
+  --capy:#c9956a;
+}
+
+body{background:var(--white);color:var(--ink);font-family:'Instrument Sans',sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* LANG BAR */
+.lang-bar{background:var(--ink);padding:0.4rem 5vw;display:flex;justify-content:flex-end;gap:1.5rem;}
+.lang-btn{background:none;border:none;color:#666;font-family:'Instrument Sans',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;padding:0.2rem 0;transition:color 0.2s;}
+.lang-btn:hover,.lang-btn.active{color:var(--capy);}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--faint);padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:0.7rem;text-decoration:none;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;}
+.nav-logo-text em{color:var(--green);font-style:italic;}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--mid);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--ink);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:0.4rem;background:none;border:none;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all 0.3s;}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--white);z-index:999;padding:5rem 2rem 2rem;flex-direction:column;gap:1.5rem;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:'Instrument Sans',sans-serif;font-size:1.2rem;font-weight:600;color:var(--ink);text-decoration:none;padding:0.8rem 0;border-bottom:1px solid var(--faint);}
+.mobile-menu a:last-child{border-bottom:none;}
+.mobile-menu .btn-nav-mobile{background:var(--green);color:var(--white)!important;padding:1rem 2rem;border-radius:100px;text-align:center;border-bottom:none!important;margin-top:0.5rem;}
+.mobile-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--mid);}
+.btn-nav{background:var(--ink);color:var(--white)!important;padding:0.55rem 1.4rem;border-radius:100px;font-size:0.85rem!important;font-weight:600!important;transition:background 0.2s!important;}
+.btn-nav:hover{background:var(--green)!important;}
+
+/* HERO */
+.hero{padding:6rem 5vw 4rem;max-width:960px;margin:0 auto;text-align:center;}
+.hero-capy{margin-bottom:1.5rem;}
+.hero-capy svg{width:72px;height:72px;animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,5.2rem);font-weight:900;line-height:1.05;letter-spacing:-0.03em;color:var(--ink);margin-bottom:1.2rem;}
+h1 em, h2 em{font-style:italic;font-family:inherit;}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--mid);max-width:580px;margin:0 auto 2.5rem;line-height:1.75;}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--green);color:var(--white);padding:1rem 2.5rem;border-radius:100px;font-size:1rem;font-weight:600;text-decoration:none;transition:all 0.25s;border:2px solid var(--green);}
+.btn-primary:hover{background:var(--green3);border-color:var(--green3);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--ink);padding:1rem 2.5rem;border-radius:100px;font-size:1rem;font-weight:600;text-decoration:none;border:2px solid var(--faint);transition:all 0.25s;}
+.btn-ghost:hover{border-color:var(--ink);}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--faint);max-width:1100px;margin:0 auto;}
+
+/* PROBLEM */
+.problem{background:var(--ink);padding:5rem 5vw;color:var(--white);}
+.problem-inner{max-width:820px;margin:0 auto;}
+.section-label{display:block;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--capy);margin-bottom:1.2rem;}
+.problem h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;line-height:1.12;letter-spacing:-0.02em;margin-bottom:2rem;color:var(--white);}
+.problem h2 em{font-style:italic;color:var(--capy);}
+.not-list{list-style:none;margin-bottom:2.5rem;display:flex;flex-direction:column;gap:0.8rem;}
+.not-list li{display:flex;align-items:flex-start;gap:1rem;font-size:1.1rem;color:#aaa;line-height:1.5;font-family:'Playfair Display',serif;font-style:italic;}
+.not-list li::before{content:"×";color:var(--red);font-size:1.3rem;font-weight:700;flex-shrink:0;font-style:normal;font-family:'Instrument Sans',sans-serif;}
+.quote-block{background:rgba(255,255,255,0.04);border-left:3px solid var(--capy);border-radius:0 12px 12px 0;padding:1.8rem 2rem;margin:2.5rem 0;}
+.quote-block blockquote{font-family:'Playfair Display',serif;font-size:1.15rem;font-style:italic;color:var(--white);line-height:1.7;margin-bottom:0.8rem;}
+.quote-block cite{font-size:0.82rem;color:#555;font-style:normal;}
+
+/* FREE TOOLS */
+.free-tools{background:var(--off);padding:5rem 5vw;}
+.free-tools-header{text-align:center;max-width:600px;margin:0 auto 3rem;}
+.free-tools-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.8rem;}
+.free-tools-header p{color:var(--mid);font-size:1rem;line-height:1.7;}
+.free-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1000px;margin:0 auto;}
+.free-card{background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:2rem;transition:all 0.25s;text-decoration:none;color:var(--ink);display:block;}
+.free-card:hover{border-color:var(--green);box-shadow:0 4px 24px rgba(45,90,61,0.1);transform:translateY(-2px);}
+.free-icon{font-size:2.5rem;margin-bottom:1rem;display:block;}
+.free-tag{font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);background:var(--green2);padding:0.25rem 0.7rem;border-radius:100px;display:inline-block;margin-bottom:0.8rem;}
+.free-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem;line-height:1.2;}
+.free-card p{font-size:0.88rem;color:var(--mid);line-height:1.6;margin-bottom:1.2rem;}
+.free-link{font-size:0.85rem;font-weight:600;color:var(--green);display:flex;align-items:center;gap:0.3rem;}
+
+/* SOLUTION */
+.solution{padding:5rem 5vw;background:var(--white);}
+.solution-inner{max-width:820px;margin:0 auto;}
+.solution h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.12;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.solution h2 em{font-style:italic;color:var(--green);}
+.solution-text{font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:1.2rem;}
+.solution-text strong{color:var(--ink);}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--faint);border-radius:12px;overflow:hidden;margin:2.5rem 0;}
+.pillar{background:var(--white);padding:1.8rem 1.5rem;text-align:center;}
+.pillar-icon{font-size:2rem;margin-bottom:0.8rem;}
+.pillar-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:0.4rem;}
+.pillar-desc{font-size:0.85rem;color:var(--mid);line-height:1.6;}
+.solution-cta{text-align:center;margin-top:2.5rem;}
+.btn-large{display:inline-block;background:var(--green);color:var(--white);padding:1.1rem 3rem;border-radius:100px;font-size:1.1rem;font-weight:600;text-decoration:none;transition:all 0.25s;}
+.btn-large:hover{background:var(--green3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,90,61,0.25);}
+.solution-note{display:block;margin-top:0.8rem;font-size:0.82rem;color:var(--warm);}
+
+/* PRODUCTS */
+.products{background:var(--off);padding:5rem 5vw;}
+.products-header{text-align:center;max-width:600px;margin:0 auto 3rem;}
+.products-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.8rem;}
+.products-header p{color:var(--mid);font-size:1rem;line-height:1.7;}
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:960px;margin:0 auto;}
+.product-card{border:1.5px solid var(--faint);border-radius:16px;padding:2.2rem;background:var(--white);transition:all 0.25s;}
+.product-card:hover{border-color:var(--green);box-shadow:0 4px 20px rgba(45,90,61,0.08);}
+.product-card.featured{border-color:var(--green);background:var(--green2);}
+.product-tag{display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);background:rgba(45,90,61,0.1);padding:0.25rem 0.7rem;border-radius:100px;margin-bottom:1rem;}
+.product-card.featured .product-tag{background:var(--green);color:var(--white);}
+.product-icon{font-size:2.2rem;margin-bottom:1rem;display:block;}
+.product-card h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:0.6rem;line-height:1.2;}
+.product-card>p{font-size:0.92rem;color:var(--mid);line-height:1.65;margin-bottom:1.5rem;}
+.price-big{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--ink);line-height:1;}
+.price-big span{font-size:1rem;font-weight:400;color:var(--mid);font-family:'Instrument Sans',sans-serif;}
+.price-note{font-size:0.8rem;color:var(--mid);margin-top:0.3rem;margin-bottom:1.5rem;}
+.conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.8rem;}
+.conv-item{background:rgba(255,255,255,0.7);border:1px solid var(--faint);border-radius:8px;padding:0.9rem 0.7rem;text-align:center;}
+.conv-min{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1;}
+.conv-label{font-size:0.7rem;color:var(--mid);margin-top:0.15rem;}
+.conv-price{font-size:0.85rem;color:var(--green);font-weight:600;margin-top:0.3rem;}
+.rate-note{font-size:0.78rem;color:var(--mid);text-align:center;margin-bottom:1.3rem;font-style:italic;}
+.btn-card{display:block;text-align:center;padding:0.85rem;border-radius:100px;font-size:0.92rem;font-weight:600;text-decoration:none;transition:all 0.25s;background:var(--green);color:var(--white);}
+.btn-card:hover{background:var(--green3);}
+.btn-card-outline{background:transparent;color:var(--green);border:2px solid var(--green);}
+.btn-card-outline:hover{background:var(--green);color:var(--white);}
+
+/* KIDS */
+.kids{background:var(--off2);padding:5rem 5vw;}
+.kids-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+.kids-parents h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--ink);margin-bottom:1.2rem;line-height:1.2;}
+.kids-parents h2 em{font-style:italic;color:var(--green);}
+.kids-parents p{color:var(--mid);font-size:0.95rem;line-height:1.75;margin-bottom:1rem;}
+.kids-parents strong{color:var(--ink);}
+.kids-youth{background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:2rem;}
+.kids-youth h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:1rem;line-height:1.2;}
+.kids-youth p{color:var(--mid);font-size:0.92rem;line-height:1.7;margin-bottom:0.8rem;}
+.kids-youth strong{color:var(--green);}
+.btn-kids{display:inline-block;margin-top:1rem;background:var(--capy);color:var(--white);padding:0.8rem 2rem;border-radius:100px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:all 0.25s;}
+.btn-kids:hover{background:#a87850;}
+
+/* FREE DOWNLOADS */
+.downloads{background:var(--off2);padding:5rem 5vw;}
+.downloads-header{text-align:center;max-width:600px;margin:0 auto 3rem;}
+.downloads-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.8rem;}
+.downloads-header p{color:var(--mid);font-size:1rem;line-height:1.7;}
+.downloads-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:960px;margin:0 auto 2.5rem;}
+.download-card{background:var(--white);border:1.5px solid var(--faint);border-radius:12px;padding:1.8rem 1.5rem;text-align:center;}
+.download-icon{font-size:2.5rem;margin-bottom:1rem;display:block;}
+.download-card h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem;}
+.download-card p{font-size:0.85rem;color:var(--mid);line-height:1.6;}
+
+/* COMING SOON */
+.coming{background:var(--white);padding:5rem 5vw;}
+.coming-header{text-align:center;max-width:600px;margin:0 auto 3rem;}
+.coming-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.8rem;}
+.coming-header p{color:var(--mid);font-size:1rem;line-height:1.7;}
+.coming-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:960px;margin:0 auto 2.5rem;}
+.coming-card{background:var(--off);border:1.5px solid var(--faint);border-radius:12px;padding:1.8rem 1.5rem;text-align:center;position:relative;}
+.coming-badge{position:absolute;top:1rem;right:1rem;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--off2);color:var(--mid);padding:0.2rem 0.6rem;border-radius:100px;}
+.coming-icon{font-size:2.5rem;margin-bottom:1rem;display:block;}
+.coming-card h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem;}
+.coming-card p{font-size:0.85rem;color:var(--mid);line-height:1.6;}
+.notify-form{max-width:480px;margin:0 auto;display:flex;gap:0.6rem;flex-wrap:wrap;}
+.notify-form input{flex:1;min-width:220px;background:var(--white);border:1.5px solid var(--faint);border-radius:100px;padding:0.85rem 1.4rem;font-family:'Instrument Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;transition:border-color 0.2s;}
+.notify-form input:focus{border-color:var(--green);}
+.notify-form input::placeholder{color:var(--warm);}
+.btn-notify{background:var(--ink);color:var(--white);border:none;border-radius:100px;padding:0.85rem 1.8rem;font-family:'Instrument Sans',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn-notify:hover{background:var(--green);}
+
+
+/* LERNWELTEN / BOOKS */
+.books{background:var(--ink);padding:5rem 5vw;}
+.books-header{text-align:center;max-width:600px;margin:0 auto 3rem;}
+.books-header .section-label{display:block;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--capy);margin-bottom:1.2rem;}
+.books-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--white);letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.8rem;}
+.books-header p{color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.7;}
+.books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:960px;margin:0 auto;}
+.book-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column;transition:all 0.25s;}
+.book-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.15);}
+.book-lang{font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.8rem;}
+.book-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:0.3rem;}
+.book-title em{font-style:italic;color:var(--capy);}
+.book-tagline{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:1.5rem;font-style:italic;flex:1;}
+.book-actions{display:flex;flex-direction:column;gap:0.5rem;}
+.btn-book-primary{display:block;text-align:center;padding:0.6rem;border-radius:100px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:all 0.2s;color:var(--white);}
+.btn-book-primary.de{background:var(--green);}
+.btn-book-primary.de:hover{background:var(--green3);}
+.btn-book-primary.es{background:#c60b1e;}
+.btn-book-primary.es:hover{background:#a00918;}
+.btn-book-primary.both{background:var(--gold);}
+.btn-book-primary.both:hover{background:#8a6020;}
+.btn-book-epub{display:block;text-align:center;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);padding:0.5rem;border-radius:100px;font-size:0.78rem;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,0.12);transition:all 0.2s;}
+.btn-book-epub:hover{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);}
+
+/* FINAL CTA */
+.final-cta{background:var(--green);padding:5rem 5vw;text-align:center;}
+.final-cta h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:var(--white);letter-spacing:-0.02em;line-height:1.12;margin-bottom:1rem;}
+.final-cta h2 em{font-style:italic;color:#a8d5b8;}
+.final-cta p{color:rgba(255,255,255,0.75);font-size:1.05rem;max-width:480px;margin:0 auto 2rem;line-height:1.7;}
+.btn-white{display:inline-block;background:var(--white);color:var(--green3);padding:1.1rem 3rem;border-radius:100px;font-size:1.05rem;font-weight:700;text-decoration:none;transition:all 0.25s;}
+.btn-white:hover{background:var(--off);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+
+/* FOOTER */
+footer{background:var(--ink);padding:2.5rem 5vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);}
+.footer-logo em{color:var(--capy);font-style:italic;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{color:#555;text-decoration:none;font-size:0.85rem;transition:color 0.2s;}
+.footer-links a:hover{color:#999;}
+.footer-copy{color:#444;font-size:0.8rem;}
+
+/* SOCIAL */
+.social-strip{background:var(--off2);padding:2.5rem 5vw;text-align:center;}
+.social-strip p{color:var(--mid);font-size:0.9rem;margin-bottom:1rem;}
+.social-icons{display:flex;gap:1rem;justify-content:center;}
+.social-icon{width:44px;height:44px;background:var(--white);border:1.5px solid var(--faint);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink);font-size:1.1rem;transition:all 0.2s;}
+.social-icon:hover{border-color:var(--green);color:var(--green);}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:0 1.25rem;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero{padding:4rem 1.5rem 3rem;}
+  .problem,.solution,.products,.kids,.downloads,.coming,.free-tools,.final-cta{padding:3.5rem 1.5rem;}
+  .free-grid,.products-grid,.coming-grid,.downloads-grid,.books-grid{grid-template-columns:1fr;}
+  .kids-inner{grid-template-columns:1fr;}
+  .pillars{grid-template-columns:1fr;}
+  footer{flex-direction:column;text-align:center;padding:2rem 1.5rem;}
+  .footer-links{justify-content:center;}
+}
+
+@media(max-width:480px){
+  .conv-grid{grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:2.4rem;}
+}
+
+/* MULTILANG */
+[data-lang]{display:none;}
+[data-lang].active{display:block;}
+</style>
+</head>
+<body>
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('de')">DE</button>
+  <button class="lang-btn" onclick="setLang('es')">ES</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="nav-logo-text">Spi<em>k</em>iu</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#products">Lernabenteuer</a></li>
+    <li><a href="#free">Gratis</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="#kids">Kinder & Jugendliche</a></li>
+    <li><a href="assessment.html" class="btn-nav">Jetzt starten →</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menü">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()">✕</button>
+  <a href="#products" onclick="toggleMenu()" data-lang-de="Lernabenteuer" data-lang-es="Aventuras" data-lang-en="Learning Adventures">Lernabenteuer</a>
+  <a href="#free" onclick="toggleMenu()" data-lang-de="Gratis" data-lang-es="Gratis" data-lang-en="Free">Gratis</a>
+  <a href="dashboard.html" data-lang-de="Dashboard" data-lang-es="Dashboard" data-lang-en="Dashboard">Dashboard</a>
+  <a href="#kids" onclick="toggleMenu()" data-lang-de="Kinder & Jugendliche" data-lang-es="Niños" data-lang-en="Kids">Kinder & Jugendliche</a>
+  <a href="assessment.html" class="btn-nav-mobile" data-lang-de="Jetzt starten →" data-lang-es="Empezar →" data-lang-en="Get started →">Jetzt starten →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-capy">
+    <svg width="72" height="72" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <h1>Du kennst die Wörter.<br><em>Du kannst sie nur nicht sagen.</em></h1>
+    <p class="hero-sub">Bis zu 70% aller Erwachsenen, die eine Sprache lernen, geben auf. Nicht weil sie zu wenig gelernt haben. Weil Sprechen sich zu gefährlich anfühlte.</p>
+    <div class="hero-actions">
+      <a href="assessment.html" class="btn-primary">Dein Weg beginnt hier →</a>
+      <a href="#free" class="btn-ghost">Gratis ausprobieren</a>
+    </div>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <h1>Ya conoces las palabras.<br><em>Solo que no puedes decirlas.</em></h1>
+    <p class="hero-sub">Hasta el 70% de los adultos que aprenden un idioma abandonan. No porque no estudiaron suficiente. Porque hablar se sentía demasiado peligroso.</p>
+    <div class="hero-actions">
+      <a href="assessment.html" class="btn-primary">Tu camino empieza aquí →</a>
+      <a href="#free" class="btn-ghost">Probar gratis</a>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <h1>You know the words.<br><em>You just can't say them.</em></h1>
+    <p class="hero-sub">Up to 70% of adult language learners quit. Not because they didn't study enough. Because speaking felt too dangerous.</p>
+    <div class="hero-actions">
+      <a href="assessment.html" class="btn-primary">Your journey starts here →</a>
+      <a href="#free" class="btn-ghost">Try for free</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FREE TOOLS -->
+<section class="free-tools" id="free">
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <div class="free-tools-header">
+      <span class="section-label">Gratis · Kein Login</span>
+      <h2>Probier es aus.<br>Heute. Ohne irgendetwas.</h2>
+      <p>Spikiu schenkt dir den ersten Schritt — ohne Bedingungen.</p>
+    </div>
+    <div class="free-grid">
+      <a href="test.html" class="free-card">
+        <span class="free-icon">🧪</span>
+        <span class="free-tag">Kostenlos · Kein Login</span>
+        <h3>Wie weit trägt dich die Sprache schon?</h3>
+        <p>Ein kurzes Gespräch mit Spikiu. Keine Noten, kein Test — nur ein ehrlicher Moment mit der Sprache.</p>
+        <span class="free-link">Test starten →</span>
+      </a>
+      <a href="wort.html" class="free-card">
+        <span class="free-icon">🌱</span>
+        <span class="free-tag">Täglich · Gratis</span>
+        <h3>Wort des Tages</h3>
+        <p>Jeden Tag ein Wort mit Geschichte — nicht mit Definition. Auf Spanisch oder Deutsch.</p>
+        <span class="free-link">Abonnieren →</span>
+      </a>
+      <a href="#" class="free-card">
+        <span class="free-icon">😄</span>
+        <span class="free-tag">Interaktiv · Gratis</span>
+        <h3>Kulturschock-Karten</h3>
+        <p>Du bist in Madrid. Es ist 22 Uhr. Du gehst ins Restaurant. Die Küche ist noch geschlossen.</p>
+        <span class="free-link">Mehr entdecken →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="free-tools-header">
+      <span class="section-label">Gratis. Sin más.</span>
+      <h2>Pruébalo.<br>Hoy. Sin nada más.</h2>
+      <p>Spikiu te regala el primer paso — sin condiciones.</p>
+    </div>
+    <div class="free-grid">
+      <a href="test.html" class="free-card">
+        <span class="free-icon">🧪</span>
+        <span class="free-tag">Gratis · Sin registro</span>
+        <h3>¿Hasta dónde te lleva ya el idioma?</h3>
+        <p>Una breve conversación con Spikiu. Sin notas, sin presión — solo un momento honesto con la lengua.</p>
+        <span class="free-link">Empezar el test →</span>
+      </a>
+      <a href="wort.html" class="free-card">
+        <span class="free-icon">🌱</span>
+        <span class="free-tag">Diario · Gratis</span>
+        <h3>Palabra del día</h3>
+        <p>Cada día una palabra con historia — no con definición. En español o alemán.</p>
+        <span class="free-link">Suscribirse →</span>
+      </a>
+      <a href="#" class="free-card">
+        <span class="free-icon">😄</span>
+        <span class="free-tag">Interactivo · Gratis</span>
+        <h3>Tarjetas de choque cultural</h3>
+        <p>Estás en Madrid. Son las 22h. Entras al restaurante. La cocina aún está cerrada.</p>
+        <span class="free-link">Descubrir más →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="free-tools-header">
+      <span class="section-label">Free. Just because.</span>
+      <h2>Try it.<br>Today. Without anything.</h2>
+      <p>Spikiu gives you the first step — no strings attached.</p>
+    </div>
+    <div class="free-grid">
+      <a href="test.html" class="free-card">
+        <span class="free-icon">🧪</span>
+        <span class="free-tag">Free · No login</span>
+        <h3>How far does the language already carry you?</h3>
+        <p>A short conversation with Spikiu. No grades, no pressure — just an honest moment with the language.</p>
+        <span class="free-link">Start test →</span>
+      </a>
+      <a href="wort.html" class="free-card">
+        <span class="free-icon">🌱</span>
+        <span class="free-tag">Daily · Free</span>
+        <h3>Word of the Day</h3>
+        <p>Every day a word with a story — not a definition. In Spanish or German.</p>
+        <span class="free-link">Subscribe →</span>
+      </a>
+      <a href="#" class="free-card">
+        <span class="free-icon">😄</span>
+        <span class="free-tag">Interactive · Free</span>
+        <h3>Culture Shock Cards</h3>
+        <p>You're in Madrid. It's 10pm. You go to a restaurant. The kitchen is still closed.</p>
+        <span class="free-link">Discover more →</span>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-inner">
+
+    <!-- DE -->
+    <div data-lang="de" class="active">
+      <span class="section-label">Das eigentliche Problem</span>
+      <h2>Die Sprach&shy;industrie<br>verkauft dir <em>das Falsche.</em></h2>
+      <div class="quote-block">
+        <blockquote>Warum vergisst du alles, was du in der Schule gelernt hast?<br>Weil Angst das Gehirn blockiert. Buchstäblich.<br><br>Wenn du dich sicher fühlst — fließt die Sprache.<br>Spikiu öffnet diesen Filter.<br>Das ist dein Gehirn. Nicht unsere Theorie.</blockquote>
+      </div>
+    </div>
+
+    <!-- ES -->
+    <div data-lang="es">
+      <span class="section-label">El problema real</span>
+      <h2>La industria del idioma<br>te vende <em>lo equivocado.</em></h2>
+      <div class="quote-block">
+        <blockquote>¿Por qué olvidas todo lo que aprendiste en el colegio?<br>Porque el miedo bloquea el cerebro. Literalmente.<br><br>Cuando te sientes seguro — el idioma fluye.<br>Spikiu abre ese filtro.<br>Es tu cerebro. No nuestra teoría.</blockquote>
+      </div>
+    </div>
+
+    <!-- EN -->
+    <div data-lang="en">
+      <span class="section-label">The real problem</span>
+      <h2>The language industry<br>sells you <em>the wrong thing.</em></h2>
+      <div class="quote-block">
+        <blockquote>Why do you forget everything you learned at school?<br>Because fear blocks the brain. Literally.<br><br>When you feel safe — language flows.<br>Spikiu opens that filter.<br>Your brain. Not our theory.</blockquote>
+      </div>
+    </div>
+
+    <!-- COMIC -->
+    <div style="margin-top:3rem">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:860px;margin:0 auto">
+
+        <!-- Panel 1 -->
+        <div style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden">
+          <svg viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <!-- Background -->
+            <rect width="160" height="140" fill="#1a1a2e"/>
+            <!-- Calendar: Tag 365 -->
+            <rect x="50" y="8" width="60" height="44" rx="4" fill="#e8e0d5" stroke="#c8bfb0" stroke-width="1.5"/>
+            <rect x="50" y="8" width="60" height="14" rx="4" fill="#c60b1e"/>
+            <text x="80" y="19" font-family="Arial" font-size="7" fill="white" text-anchor="middle" font-weight="bold">TAG</text>
+            <text x="80" y="44" font-family="Arial" font-size="18" fill="#1a1612" text-anchor="middle" font-weight="bold">365</text>
+            <!-- Man (simple South Park style) -->
+            <circle cx="60" cy="95" r="14" fill="#f5d5a0" stroke="#1a1612" stroke-width="1.5"/>
+            <rect x="48" y="108" width="24" height="22" rx="3" fill="#2d5a3d" stroke="#1a1612" stroke-width="1.5"/>
+            <line x1="48" y1="118" x2="38" y2="128" stroke="#f5d5a0" stroke-width="3" stroke-linecap="round"/>
+            <line x1="72" y1="118" x2="82" y2="128" stroke="#f5d5a0" stroke-width="3" stroke-linecap="round"/>
+            <line x1="52" y1="130" x2="52" y2="142" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+            <line x1="68" y1="130" x2="68" y2="142" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+            <!-- Duolingo owl -->
+            <ellipse cx="108" cy="95" rx="16" ry="18" fill="#58cc02"/>
+            <ellipse cx="108" cy="88" rx="10" ry="10" fill="#89e219"/>
+            <circle cx="104" cy="88" r="4" fill="white"/><circle cx="112" cy="88" r="4" fill="white"/>
+            <circle cx="104" cy="88" r="2" fill="#1a1612"/><circle cx="112" cy="88" r="2" fill="#1a1612"/>
+            <path d="M104 94 Q108 97 112 94" stroke="#ff9900" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <rect x="96" y="105" width="24" height="20" rx="3" fill="#58cc02" stroke="#45a800" stroke-width="1"/>
+            <!-- Bubble from owl -->
+            <rect x="75" y="60" width="55" height="20" rx="8" fill="white"/>
+            <polygon points="108,80 104,88 112,88" fill="white"/>
+            <text x="102" y="73" font-family="Arial" font-size="6.5" fill="#1a1612" text-anchor="middle">🔥 Streak!</text>
+            <text x="102" y="82" font-family="Arial" font-size="5.5" fill="#58cc02" text-anchor="middle">Weiter so!</text>
+          </svg>
+          <div style="padding:.6rem;font-size:.65rem;color:rgba(255,255,255,0.6);text-align:center;line-height:1.4">Tag 365 mit Duolingo. Streak perfekt.</div>
+        </div>
+
+        <!-- Panel 2 -->
+        <div style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden">
+          <svg viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <rect width="160" height="140" fill="#1a1a2e"/>
+            <!-- Mexican man -->
+            <circle cx="50" cy="72" r="14" fill="#c8956a" stroke="#1a1612" stroke-width="1.5"/>
+            <!-- Sombrero -->
+            <ellipse cx="50" cy="60" rx="20" ry="5" fill="#a07228" stroke="#1a1612" stroke-width="1"/>
+            <rect x="44" y="52" width="12" height="10" rx="2" fill="#a07228" stroke="#1a1612" stroke-width="1"/>
+            <rect x="40" y="85" width="20" height="22" rx="3" fill="#c60b1e" stroke="#1a1612" stroke-width="1.5"/>
+            <line x1="40" y1="95" x2="30" y2="108" stroke="#c8956a" stroke-width="3" stroke-linecap="round"/>
+            <line x1="60" y1="95" x2="70" y2="108" stroke="#c8956a" stroke-width="3" stroke-linecap="round"/>
+            <!-- Speech bubble -->
+            <rect x="68" y="52" width="72" height="32" rx="8" fill="white"/>
+            <polygon points="72,84 68,92 80,84" fill="white"/>
+            <text x="104" y="65" font-family="Arial" font-size="9" fill="#1a1612" text-anchor="middle" font-weight="bold">¡Hola!</text>
+            <text x="104" y="78" font-family="Arial" font-size="7.5" fill="#1a1612" text-anchor="middle">¿Cómo estás?</text>
+            <!-- Our man standing -->
+            <circle cx="130" cy="100" r="12" fill="#f5d5a0" stroke="#1a1612" stroke-width="1.5"/>
+            <rect x="120" y="112" width="20" height="18" rx="3" fill="#2d5a3d" stroke="#1a1612" stroke-width="1.5"/>
+          </svg>
+          <div style="padding:.6rem;font-size:.65rem;color:rgba(255,255,255,0.6);text-align:center;line-height:1.4">Erster echter Mexikaner. Erste echte Frage.</div>
+        </div>
+
+        <!-- Panel 3 -->
+        <div style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden">
+          <svg viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <rect width="160" height="140" fill="#1a1a2e"/>
+            <!-- Mexican man waiting -->
+            <circle cx="40" cy="72" r="14" fill="#c8956a" stroke="#1a1612" stroke-width="1.5"/>
+            <ellipse cx="40" cy="60" rx="20" ry="5" fill="#a07228" stroke="#1a1612" stroke-width="1"/>
+            <rect x="34" y="52" width="12" height="10" rx="2" fill="#a07228" stroke="#1a1612" stroke-width="1"/>
+            <rect x="30" y="85" width="20" height="22" rx="3" fill="#c60b1e" stroke="#1a1612" stroke-width="1.5"/>
+            <!-- Question marks floating -->
+            <text x="62" y="60" font-family="Arial" font-size="14" fill="rgba(255,255,255,0.3)">?</text>
+            <text x="74" y="48" font-family="Arial" font-size="10" fill="rgba(255,255,255,0.2)">?</text>
+            <text x="85" y="65" font-family="Arial" font-size="12" fill="rgba(255,255,255,0.25)">?</text>
+            <!-- Our man — frozen, sweating -->
+            <circle cx="118" cy="80" r="14" fill="#f5d5a0" stroke="#1a1612" stroke-width="1.5"/>
+            <!-- Sweat drops -->
+            <ellipse cx="133" cy="72" rx="3" ry="4" fill="#6bb8ff" opacity="0.7"/>
+            <ellipse cx="136" cy="78" rx="2" ry="3" fill="#6bb8ff" opacity="0.5"/>
+            <!-- Blank face -->
+            <line x1="113" y1="80" x2="117" y2="80" stroke="#1a1612" stroke-width="1.5"/>
+            <line x1="119" y1="80" x2="123" y2="80" stroke="#1a1612" stroke-width="1.5"/>
+            <line x1="113" y1="86" x2="123" y2="86" stroke="#1a1612" stroke-width="1.5"/>
+            <rect x="106" y="93" width="24" height="22" rx="3" fill="#2d5a3d" stroke="#1a1612" stroke-width="1.5"/>
+            <!-- Empty bubble -->
+            <rect x="60" y="85" width="44" height="22" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="82" y="100" font-family="Arial" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">...</text>
+          </svg>
+          <div style="padding:.6rem;font-size:.65rem;color:rgba(255,255,255,0.6);text-align:center;line-height:1.4">365 Tage. Kein einziges Wort.</div>
+        </div>
+
+        <!-- Panel 4 -->
+        <div style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden">
+          <svg viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <rect width="160" height="140" fill="#1a1a2e"/>
+            <!-- Duolingo owl with flag -->
+            <ellipse cx="50" cy="78" rx="16" ry="18" fill="#58cc02"/>
+            <ellipse cx="50" cy="71" rx="10" ry="10" fill="#89e219"/>
+            <circle cx="46" cy="71" r="4" fill="white"/><circle cx="54" cy="71" r="4" fill="white"/>
+            <circle cx="46" cy="71" r="2" fill="#1a1612"/><circle cx="54" cy="71" r="2" fill="#1a1612"/>
+            <!-- Big smile -->
+            <path d="M44 77 Q50 82 56 77" stroke="#ff9900" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="38" y="94" width="24" height="20" rx="3" fill="#58cc02"/>
+            <!-- Flag pole -->
+            <line x1="62" y1="95" x2="62" y2="65" stroke="#c8bfb0" stroke-width="2"/>
+            <rect x="62" y="65" width="28" height="18" rx="2" fill="#58cc02"/>
+            <text x="76" y="77" font-family="Arial" font-size="6" fill="white" text-anchor="middle" font-weight="bold">🔥 Streak!</text>
+            <!-- Speech bubble -->
+            <rect x="72" y="38" width="76" height="24" rx="8" fill="#58cc02"/>
+            <polygon points="78,62 74,70 86,62" fill="#58cc02"/>
+            <text x="110" y="53" font-family="Arial" font-size="7" fill="white" text-anchor="middle" font-weight="bold">Weiter so! 🔥</text>
+          </svg>
+          <div style="padding:.6rem;font-size:.65rem;color:rgba(255,255,255,0.6);text-align:center;line-height:1.4">Die Eule ist stolz. Du verstehst noch nichts.</div>
+        </div>
+
+      </div>
+      <p style="text-align:center;font-size:.78rem;color:rgba(255,255,255,0.3);margin-top:1rem;font-style:italic">Sprache ist kein Wissen, das man sammelt. Sprache ist ein Zustand, den man betritt.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution">
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <div class="solution-inner">
+      <span class="section-label">Eine andere Art von Präsenz</span>
+      <h2>Kein Sprachkurs.<br>Kein Lehrer und kein Prüfer.<br><em>Kein Kurs der dich vergisst.</em></h2>
+      <p class="solution-text">Spikiu ist ein <strong>einfühlsamer Begleiter</strong>, der sich dir anpasst — deinen Zielen, deinem Tempo, deinen Blockaden. Das Gespräch bricht nie ab.</p>
+      <p class="solution-text">Dein Gehirn lernt, wenn es sich sicher fühlt. Wenn etwas wichtig ist. Wenn jemand wirklich zuhört. Spikiu schafft genau diesen Moment.</p>
+      <div class="pillars">
+        <div class="pillar"><div class="pillar-icon">🌊</div><div class="pillar-title">Kein Druck</div><div class="pillar-desc">Keine Noten, keine Streaks. Nur dein Weg.</div></div>
+        <div class="pillar"><div class="pillar-icon">🎯</div><div class="pillar-title">Nur für dich</div><div class="pillar-desc">Deine Ziele, dein Tempo, deine Geschichte.</div></div>
+        <div class="pillar"><div class="pillar-icon">🔄</div><div class="pillar-title">Erinnert sich</div><div class="pillar-desc">Spikiu kennt dich. Und wächst mit dir.</div></div>
+      </div>
+      <div class="solution-cta">
+        <a href="chat.html" class="btn-large">Dein Weg beginnt hier →</a>
+        <span class="solution-note">Spanisch & Deutsch · Kein Login nötig zum Ausprobieren</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="solution-inner">
+      <span class="section-label">Una presencia diferente</span>
+      <h2>Sin curso de idiomas.<br>Sin profesor. Sin examinador.<br><em>Sin nada que te olvide.</em></h2>
+      <p class="solution-text">Spikiu es un <strong>acompañante empático</strong> que se adapta a ti — tus objetivos, tu ritmo, tus bloqueos. La conversación nunca se detiene.</p>
+      <p class="solution-text">Tu cerebro aprende cuando se siente seguro. Cuando algo importa. Cuando alguien realmente escucha. Spikiu crea exactamente ese momento.</p>
+      <div class="pillars">
+        <div class="pillar"><div class="pillar-icon">🌊</div><div class="pillar-title">Sin presión</div><div class="pillar-desc">Sin notas, sin rachas. Solo tu camino.</div></div>
+        <div class="pillar"><div class="pillar-icon">🎯</div><div class="pillar-title">Solo para ti</div><div class="pillar-desc">Tus objetivos, tu ritmo, tu historia.</div></div>
+        <div class="pillar"><div class="pillar-icon">🔄</div><div class="pillar-title">Te recuerda</div><div class="pillar-desc">Spikiu te conoce. Y crece contigo.</div></div>
+      </div>
+      <div class="solution-cta">
+        <a href="chat.html" class="btn-large">Tu camino empieza aquí →</a>
+        <span class="solution-note">Español & Alemán · Sin registro para probar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="solution-inner">
+      <span class="section-label">A different kind of presence</span>
+      <h2>No language course.<br>No teacher. No examiner.<br><em>Nothing that forgets you.</em></h2>
+      <p class="solution-text">Spikiu is an <strong>empathetic companion</strong> that adapts to you — your goals, your pace, your blocks. The conversation never stops.</p>
+      <p class="solution-text">Your brain learns when it feels safe. When something matters. When someone really listens. Spikiu creates exactly that moment.</p>
+      <div class="pillars">
+        <div class="pillar"><div class="pillar-icon">🌊</div><div class="pillar-title">No pressure</div><div class="pillar-desc">No grades, no streaks. Just your path.</div></div>
+        <div class="pillar"><div class="pillar-icon">🎯</div><div class="pillar-title">Only for you</div><div class="pillar-desc">Your goals, your pace, your story.</div></div>
+        <div class="pillar"><div class="pillar-icon">🔄</div><div class="pillar-title">Remembers you</div><div class="pillar-desc">Spikiu knows you. And grows with you.</div></div>
+      </div>
+      <div class="solution-cta">
+        <a href="chat.html" class="btn-large">Your journey starts here →</a>
+        <span class="solution-note">Spanish & German · No login needed to try</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- LERNPROGRAMM + MOMENT -->
+<section style="background:var(--white);padding:5rem 5vw;">
+  <div data-lang="de" class="active" style="max-width:820px;margin:0 auto;">
+    <span class="section-label">Dein persönlicher Weg</span>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:1.5rem;">Spikiu begleitet dich.<br><em style="color:var(--green);">Mit einem Plan.</em></h2>
+    <p style="font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:1rem;">Spikiu begleitet dich nicht nur im Gespräch. Er kennt dein Ziel — und baut deinen Weg während du ihn gehst.</p>
+    <p style="font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:2.5rem;">Vokabellisten, Übungen, Prüfungssimulationen, Dialoge — alles entsteht für dich. Genau dann wenn du es brauchst. Nicht aus einem Katalog. Aus deiner Geschichte.</p>
+    <div style="background:var(--gold2);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:2rem 2.5rem;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:1.2rem;">Was ist dein Moment?</h3>
+      <p style="font-size:1rem;color:var(--mid);line-height:1.85;margin-bottom:1.2rem;">Ein Vorstellungsgespräch auf Deutsch.<br>Ein Vortrag vor dem Team auf Spanisch.<br>Ein Abend mit der Familie deiner Frau — und du verstehst jeden Witz.<br>Eine DELE-Prüfung die du wirklich bestehst.</p>
+      <p style="font-size:1rem;color:var(--ink);line-height:1.7;font-style:italic;font-family:'Playfair Display',serif;">Spikiu begleitet dich bis dorthin. Nicht mit Zertifikaten. Nicht mit Punkten. Mit echten Gesprächen. Mit deinem persönlichen Weg. Und du hörst auf wenn du willst — nicht wenn wir sagen dass du fertig bist.</p>
+    </div>
+  </div>
+  <div data-lang="es" style="max-width:820px;margin:0 auto;">
+    <span class="section-label">Tu camino personal</span>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:1.5rem;">Spikiu te acompaña.<br><em style="color:var(--green);">Con un plan.</em></h2>
+    <p style="font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:1rem;">Spikiu no solo conversa contigo. Conoce tu objetivo — y construye tu camino mientras lo recorres.</p>
+    <p style="font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:2.5rem;">Listas de vocabulario, ejercicios, simulaciones de examen, diálogos — todo se crea para ti. Exactamente cuando lo necesitas. No de un catálogo. De tu historia.</p>
+    <div style="background:var(--gold2);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:2rem 2.5rem;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:1.2rem;">¿Cuál es tu momento?</h3>
+      <p style="font-size:1rem;color:var(--mid);line-height:1.85;margin-bottom:1.2rem;">Una entrevista de trabajo en alemán.<br>Una presentación ante tu equipo en español.<br>Una noche con la familia de tu pareja — y entiendes cada chiste.<br>Un examen DELE que realmente apruebas.</p>
+      <p style="font-size:1rem;color:var(--ink);line-height:1.7;font-style:italic;font-family:'Playfair Display',serif;">Spikiu te acompaña hasta ahí. Sin certificados. Sin puntos. Con conversaciones reales. Con tu camino personal. Y paras cuando quieres — no cuando nosotros decimos que estás listo.</p>
+    </div>
+  </div>
+  <div data-lang="en" style="max-width:820px;margin:0 auto;">
+    <span class="section-label">Your personal path</span>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:1.5rem;">Spikiu accompanies you.<br><em style="color:var(--green);">With a plan.</em></h2>
+    <p style="font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:1rem;">Spikiu doesn't just talk with you. It knows your goal — and builds your path as you walk it.</p>
+    <p style="font-size:1.1rem;color:var(--mid);line-height:1.8;margin-bottom:2.5rem;">Vocabulary lists, exercises, exam simulations, dialogues — everything is created for you. Exactly when you need it. Not from a catalogue. From your story.</p>
+    <div style="background:var(--gold2);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:2rem 2.5rem;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:1.2rem;">What is your moment?</h3>
+      <p style="font-size:1rem;color:var(--mid);line-height:1.85;margin-bottom:1.2rem;">A job interview in German.<br>A presentation to your team in Spanish.<br>An evening with your partner's family — and you understand every joke.<br>A DELE exam you actually pass.</p>
+      <p style="font-size:1rem;color:var(--ink);line-height:1.7;font-style:italic;font-family:'Playfair Display',serif;">Spikiu accompanies you there. No certificates. No points. Real conversations. Your personal path. And you stop when you want — not when we say you're done.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <div class="products-header">
+      <span class="section-label">Lernabenteuer</span>
+      <h2>Dein Weg. Dein Tempo.<br>Deine Sprache.</h2>
+      <p>Wähle dein Lernabenteuer mit Spikiu oder auch Begegnungen mit echten Muttersprachlern.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card featured">
+        <span class="product-tag">Spikiu · 24/7</span>
+        <span class="product-icon">🌳</span>
+        <h3>Spikiu Lernabenteuer</h3>
+        <p>Dein persönlicher Weg mit Spikiu. Spanisch oder Deutsch. Jederzeit. Ohne Bindung.</p>
+        <div class="price-big">29€ <span>/Monat</span></div>
+        <p class="price-note">Wenn du möchtest, begleitet dich Spikiu weiter — ohne Verpflichtung.</p>
+        <a href="assessment.html" class="btn-card">Meinen Weg beginnen →</a>
+      </div>
+      <div class="product-card">
+        <span class="product-tag">Live · Muttersprachler</span>
+        <span class="product-icon">🎙️</span>
+        <h3>Live Begegnungen</h3>
+        <p>Echte Gespräche mit Muttersprachlern. Einzeln oder in der Gruppe. Flexibel buchbar.</p>
+        <div class="conv-grid">
+          <div class="conv-item"><div class="conv-min">30</div><div class="conv-label">Minuten</div><div class="conv-price">35€</div></div>
+          <div class="conv-item"><div class="conv-min">60</div><div class="conv-label">Minuten</div><div class="conv-price">60€</div></div>
+          <div class="conv-item"><div class="conv-min">Gruppe</div><div class="conv-label">60 Min</div><div class="conv-price">20€/P.</div></div>
+          <div class="conv-item"><div class="conv-min">5×60</div><div class="conv-label">Min Paket</div><div class="conv-price">270€</div></div>
+        </div>
+        <p class="rate-note">Keine Bindung · Jederzeit buchbar</p>
+        <a href="#" class="btn-card btn-card-outline">Termin buchen →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="products-header">
+      <span class="section-label">Aventuras de aprendizaje</span>
+      <h2>Tu camino. Tu ritmo.<br>Tu idioma.</h2>
+      <p>Elige tu aventura con Spikiu o también encuentros con hablantes nativos reales.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card featured">
+        <span class="product-tag">Spikiu · 24/7</span>
+        <span class="product-icon">🌳</span>
+        <h3>Aventura Spikiu</h3>
+        <p>Tu camino personal con Spikiu. Español o alemán. Cuando quieras. Sin compromiso.</p>
+        <div class="price-big">29€ <span>/mes</span></div>
+        <p class="price-note">Si quieres, Spikiu te acompaña — sin compromiso.</p>
+        <a href="assessment.html" class="btn-card">Comenzar mi camino →</a>
+      </div>
+      <div class="product-card">
+        <span class="product-tag">En vivo · Nativos</span>
+        <span class="product-icon">🎙️</span>
+        <h3>Encuentros en vivo</h3>
+        <p>Conversaciones reales con hablantes nativos. Individual o en grupo. Reserva flexible.</p>
+        <div class="conv-grid">
+          <div class="conv-item"><div class="conv-min">30</div><div class="conv-label">minutos</div><div class="conv-price">35€</div></div>
+          <div class="conv-item"><div class="conv-min">60</div><div class="conv-label">minutos</div><div class="conv-price">60€</div></div>
+          <div class="conv-item"><div class="conv-min">Grupo</div><div class="conv-label">60 min</div><div class="conv-price">20€/p.</div></div>
+          <div class="conv-item"><div class="conv-min">5×60</div><div class="conv-label">Min paquete</div><div class="conv-price">270€</div></div>
+        </div>
+        <p class="rate-note">Sin compromiso · Reserva cuando quieras</p>
+        <a href="#" class="btn-card btn-card-outline">Reservar →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="products-header">
+      <span class="section-label">Learning adventures</span>
+      <h2>Your path. Your pace.<br>Your language.</h2>
+      <p>Choose your adventure with Spikiu or also encounters with real native speakers.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card featured">
+        <span class="product-tag">Spikiu · 24/7</span>
+        <span class="product-icon">🌳</span>
+        <h3>Spikiu Learning Adventure</h3>
+        <p>Your personal journey with Spikiu. Spanish or German. Anytime. No commitment.</p>
+        <div class="price-big">29€ <span>/month</span></div>
+        <p class="price-note">Spikiu accompanies you further — no commitment.</p>
+        <a href="assessment.html" class="btn-card">Begin my journey →</a>
+      </div>
+      <div class="product-card">
+        <span class="product-tag">Live · Native speakers</span>
+        <span class="product-icon">🎙️</span>
+        <h3>Live Encounters</h3>
+        <p>Real conversations with native speakers. One-on-one or group. Flexible booking.</p>
+        <div class="conv-grid">
+          <div class="conv-item"><div class="conv-min">30</div><div class="conv-label">minutes</div><div class="conv-price">35€</div></div>
+          <div class="conv-item"><div class="conv-min">60</div><div class="conv-label">minutes</div><div class="conv-price">60€</div></div>
+          <div class="conv-item"><div class="conv-min">Group</div><div class="conv-label">60 min</div><div class="conv-price">20€/p.</div></div>
+          <div class="conv-item"><div class="conv-min">5×60</div><div class="conv-label">Min pack</div><div class="conv-price">270€</div></div>
+        </div>
+        <p class="rate-note">No commitment · Book anytime</p>
+        <a href="#" class="btn-card btn-card-outline">Book now →</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- KIDS -->
+<section class="kids" id="kids">
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <div class="kids-inner">
+      <div class="kids-parents">
+        <span class="section-label" style="color:var(--green)">Für Kinder & Jugendliche</span>
+        <h2>Ihr Kind lernt seit Jahren Englisch.<br><em>Aber schweigt.</em></h2>
+        <p>Das ist kein Versagen. Das ist das System.</p>
+        <p>Spikiu spricht mit Ihrem Kind — über <strong>Fußball, Musik, Gaming, das Leben</strong>. Ohne Noten. Ohne Druck. Ohne Angst.</p>
+        <p>Einfach ein Gespräch das Spaß macht. Und nebenbei — entsteht die Sprache.</p>
+        <a href="chat.html" class="btn-kids">Kostenlos ausprobieren →</a>
+      </div>
+      <div class="kids-youth">
+        <h3>Du lernst Spanisch seit drei Jahren. Und wirst rot wenn dich jemand anspricht.</h3>
+        <p>Bei Spikiu gibt es keine Prüfung. Kein <strong>"Falsch!"</strong> Kein Lehrer der dich anschaut.</p>
+        <p>Nur du — und ein Gespräch über das was dich wirklich interessiert. <strong>Fußball. Gaming. Musik. Dein Leben.</strong></p>
+        <p>Versuch es. Einmal. Kostenlos.</p>
+        <a href="chat.html" class="btn-kids">Jetzt sprechen →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="kids-inner">
+      <div class="kids-parents">
+        <span class="section-label" style="color:var(--green)">Para niños y jóvenes</span>
+        <h2>Su hijo lleva años estudiando inglés.<br><em>Pero se queda en silencio.</em></h2>
+        <p>No es su culpa. Es el sistema.</p>
+        <p>Spikiu habla con su hijo — de <strong>fútbol, música, gaming, su vida</strong>. Sin notas. Sin presión. Sin miedo.</p>
+        <p>Solo una conversación que da gusto. Y sin darse cuenta — la lengua emerge.</p>
+        <a href="chat.html" class="btn-kids">Probar gratis →</a>
+      </div>
+      <div class="kids-youth">
+        <h3>Llevas años estudiando inglés. Y te pones rojo cuando alguien te habla.</h3>
+        <p>En Spikiu no hay examen. No hay <strong>"¡Incorrecto!"</strong> No hay profesor mirándote.</p>
+        <p>Solo tú — y una conversación sobre lo que te gusta de verdad. <strong>Fútbol. Gaming. Música. Tu vida.</strong></p>
+        <p>Pruébalo. Una vez. Gratis.</p>
+        <a href="chat.html" class="btn-kids">Hablar ahora →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="kids-inner">
+      <div class="kids-parents">
+        <span class="section-label" style="color:var(--green)">For children & young people</span>
+        <h2>Your child has been studying English for years.<br><em>And goes silent.</em></h2>
+        <p>That's not failure. That's what the system does.</p>
+        <p>Spikiu talks with your child — about <strong>football, music, gaming, life</strong>. No grades. No pressure. No fear.</p>
+        <p>Just a conversation they enjoy. And without noticing — the language emerges.</p>
+        <a href="chat.html" class="btn-kids">Try for free →</a>
+      </div>
+      <div class="kids-youth">
+        <h3>You've been studying Spanish for years. And go red when someone speaks to you.</h3>
+        <p>At Spikiu there's no exam. No <strong>"Wrong!"</strong> No teacher watching you.</p>
+        <p>Just you — and a conversation about what you actually care about. <strong>Football. Gaming. Music. Your life.</strong></p>
+        <p>Try it. Once. Free.</p>
+        <a href="chat.html" class="btn-kids">Talk now →</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- FREE DOWNLOADS -->
+<section class="downloads" id="downloads">
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <div class="downloads-header">
+      <span class="section-label">Immer gratis</span>
+      <h2>Zum Herunterladen.<br>Zum Ausdrucken. Zum Behalten.</h2>
+      <p>Weil gute Materialien allen gehören sollten.</p>
+    </div>
+    <div class="downloads-grid">
+      <div class="download-card"><span class="download-icon">📚</span><h3>Spikiu Bücher</h3><p>Adaptierte Klassiker für Sprachlernende. Don Quijote auf A2. Kafka auf B1.</p></div>
+      <div class="download-card"><span class="download-icon">📝</span><h3>Prüfungssimulationen</h3><p>DELE · Goethe · Interaktiv und als PDF. Üben ohne Druck.</p></div>
+      <div class="download-card"><span class="download-icon">🎥</span><h3>Spikiu auf YouTube</h3><p>Videos die wirklich helfen. Nicht Grammatik — Kommunikation.</p></div>
+    </div>
+    <form class="notify-form" onsubmit="handleNotify(event)">
+      <input type="email" placeholder="deine@email.com" required>
+      <button type="submit" class="btn-notify">Zugang erhalten →</button>
+    </form>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="downloads-header">
+      <span class="section-label">Siempre gratis</span>
+      <h2>Para descargar.<br>Para imprimir. Para quedarse.</h2>
+      <p>Porque los buenos materiales deberían ser de todos.</p>
+    </div>
+    <div class="downloads-grid">
+      <div class="download-card"><span class="download-icon">📚</span><h3>Libros Spikiu</h3><p>Clásicos adaptados para aprendices. Don Quijote en A2. Kafka en B1.</p></div>
+      <div class="download-card"><span class="download-icon">📝</span><h3>Simulaciones de examen</h3><p>DELE · Goethe · Interactivo y en PDF. Practicar sin presión.</p></div>
+      <div class="download-card"><span class="download-icon">🎥</span><h3>Spikiu en YouTube</h3><p>Videos que realmente ayudan. No gramática — comunicación.</p></div>
+    </div>
+    <form class="notify-form" onsubmit="handleNotify(event)">
+      <input type="email" placeholder="tu@email.com" required>
+      <button type="submit" class="btn-notify">Obtener acceso →</button>
+    </form>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="downloads-header">
+      <span class="section-label">Always free</span>
+      <h2>To download.<br>To print. To keep.</h2>
+      <p>Because good materials should belong to everyone.</p>
+    </div>
+    <div class="downloads-grid">
+      <div class="download-card"><span class="download-icon">📚</span><h3>Spikiu Books</h3><p>Adapted classics for language learners. Don Quijote at A2. Kafka at B1.</p></div>
+      <div class="download-card"><span class="download-icon">📝</span><h3>Exam simulations</h3><p>DELE · Goethe · Interactive and PDF. Practice without pressure.</p></div>
+      <div class="download-card"><span class="download-icon">🎥</span><h3>Spikiu on YouTube</h3><p>Videos that actually help. Not grammar — communication.</p></div>
+    </div>
+    <form class="notify-form" onsubmit="handleNotify(event)">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit" class="btn-notify">Get access →</button>
+    </form>
+  </div>
+
+</section>
+
+<!-- COMING SOON -->
+<section class="coming">
+
+  <!-- DE -->
+  <div data-lang="de" class="active">
+    <div class="coming-header">
+      <span class="section-label">Demnächst</span>
+      <h2>Mehr von Spikiu</h2>
+      <p>Sei der Erste der es erfährt.</p>
+    </div>
+    <div class="coming-grid">
+      <div class="coming-card">
+        <span class="coming-badge">2026</span>
+        <span class="coming-icon">🎥</span>
+        <h3>Live Workshops</h3>
+        <p>München Präsenz + Online. Gruppen oder individuell.</p>
+      </div>
+      <div class="coming-card">
+        <span class="coming-badge">2026</span>
+        <span class="coming-icon">🎧</span>
+        <h3>Spikiu Audio</h3>
+        <p>Lernen beim Joggen, Kochen, Pendeln. Spikiu spricht mit dir.</p>
+      </div>
+      <div class="coming-card">
+        <span class="coming-badge">Bald</span>
+        <span class="coming-icon">
+          <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+            <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+            <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+            <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+            <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="34" cy="23" r="1.2" fill="white"/>
+            <circle cx="48" cy="23" r="1.2" fill="white"/>
+            <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        </span>
+        <h3>Spikiu Shop</h3>
+        <p>Dein Capybara. T-Shirts, Tassen, Stresspuppen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="coming-header">
+      <span class="section-label">Próximamente</span>
+      <h2>Más de Spikiu</h2>
+      <p>Sé el primero en saberlo.</p>
+    </div>
+    <div class="coming-grid">
+      <div class="coming-card">
+        <span class="coming-badge">2026</span>
+        <span class="coming-icon">🎥</span>
+        <h3>Talleres en vivo</h3>
+        <p>Múnich presencial + online. Grupos o individual.</p>
+      </div>
+      <div class="coming-card">
+        <span class="coming-badge">2026</span>
+        <span class="coming-icon">🎧</span>
+        <h3>Spikiu Audio</h3>
+        <p>Aprende corriendo, cocinando, viajando. Spikiu habla contigo.</p>
+      </div>
+      <div class="coming-card">
+        <span class="coming-badge">Pronto</span>
+        <span class="coming-icon">
+          <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+            <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+            <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+            <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+            <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="34" cy="23" r="1.2" fill="white"/>
+            <circle cx="48" cy="23" r="1.2" fill="white"/>
+            <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        </span>
+        <h3>Tienda Spikiu</h3>
+        <p>Tu capibara. Camisetas, tazas, muñecos antiestres.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="coming-header">
+      <span class="section-label">Coming soon</span>
+      <h2>More from Spikiu</h2>
+      <p>Be the first to know.</p>
+    </div>
+    <div class="coming-grid">
+      <div class="coming-card">
+        <span class="coming-badge">2026</span>
+        <span class="coming-icon">🎥</span>
+        <h3>Live Workshops</h3>
+        <p>Munich in-person + online. Groups or individual.</p>
+      </div>
+      <div class="coming-card">
+        <span class="coming-badge">2026</span>
+        <span class="coming-icon">🎧</span>
+        <h3>Spikiu Audio</h3>
+        <p>Learn while running, cooking, commuting. Spikiu talks with you.</p>
+      </div>
+      <div class="coming-card">
+        <span class="coming-badge">Soon</span>
+        <span class="coming-icon">
+          <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+            <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+            <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+            <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+            <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="34" cy="23" r="1.2" fill="white"/>
+            <circle cx="48" cy="23" r="1.2" fill="white"/>
+            <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        </span>
+        <h3>Spikiu Shop</h3>
+        <p>Your capybara. T-shirts, mugs, stress toys.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- SOCIAL -->
+<div class="social-strip">
+  <p>Folge Spikiu · Sigue a Spikiu · Follow Spikiu</p>
+  <div class="social-icons">
+    <a href="#" class="social-icon" title="Instagram">📸</a>
+    <a href="#" class="social-icon" title="YouTube">▶️</a>
+    <a href="#" class="social-icon" title="TikTok">🎵</a>
+    <a href="#" class="social-icon" title="LinkedIn">💼</a>
+    <a href="#" class="social-icon" title="WhatsApp">💬</a>
+  </div>
+</div>
+
+
+
+<!-- LERNWELTEN -->
+<section class="books">
+
+  <div data-lang="de" class="active">
+    <div class="books-header">
+      <span class="section-label">Spikiu Bücher</span>
+      <h2>Lernwelten.</h2>
+      <p>Kurze narrative Bücher — echte Orte, echte Gespräche.<br>Zum Lesen, Üben, Entdecken.</p>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-lang">Deutsch 🇩🇪</div>
+        <div class="book-title">Neu in <em>Berlin.</em></div>
+        <div class="book-tagline">Ein Buch für alle, die ankommen.</div>
+        <div class="book-actions">
+          <a href="berlin.html" class="btn-book-primary de">📖 Lesen &amp; Üben</a>
+          <a href="books/berlin.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-lang">Spanisch 🇪🇸</div>
+        <div class="book-title">Unterwegs in <em>Madrid.</em></div>
+        <div class="book-tagline">Eine Stadt. Tausend Gespräche.</div>
+        <div class="book-actions">
+          <a href="madrid.html" class="btn-book-primary es">📖 Lesen &amp; Üben</a>
+          <a href="books/madrid.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-lang">Deutsch 🇩🇪 · Spanisch 🇪🇸</div>
+        <div class="book-title">Im <em>Café.</em></div>
+        <div class="book-tagline">Zwei Sprachen. Ein Ort.</div>
+        <div class="book-actions">
+          <a href="cafe.html" class="btn-book-primary both">📖 Lesen &amp; Üben</a>
+          <a href="books/cafe.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-lang="es">
+    <div class="books-header">
+      <span class="section-label">Libros Spikiu</span>
+      <h2>Mundos de aprendizaje.</h2>
+      <p>Libros narrativos breves — lugares reales, conversaciones reales.<br>Para leer, practicar, descubrir.</p>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-lang">Alemán 🇩🇪</div>
+        <div class="book-title">Neu in <em>Berlin.</em></div>
+        <div class="book-tagline">Un libro para todos los que llegan.</div>
+        <div class="book-actions">
+          <a href="berlin.html" class="btn-book-primary de">📖 Leer y practicar</a>
+          <a href="books/berlin.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-lang">Español 🇪🇸</div>
+        <div class="book-title">Unterwegs in <em>Madrid.</em></div>
+        <div class="book-tagline">Una ciudad. Mil conversaciones.</div>
+        <div class="book-actions">
+          <a href="madrid.html" class="btn-book-primary es">📖 Leer y practicar</a>
+          <a href="books/madrid.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-lang">Alemán 🇩🇪 · Español 🇪🇸</div>
+        <div class="book-title">Im <em>Café.</em></div>
+        <div class="book-tagline">Dos idiomas. Un lugar.</div>
+        <div class="book-actions">
+          <a href="cafe.html" class="btn-book-primary both">📖 Leer y practicar</a>
+          <a href="books/cafe.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-lang="en">
+    <div class="books-header">
+      <span class="section-label">Spikiu Books</span>
+      <h2>Learning worlds.</h2>
+      <p>Short narrative books — real places, real conversations.<br>To read, practice, discover.</p>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-lang">German 🇩🇪</div>
+        <div class="book-title">Neu in <em>Berlin.</em></div>
+        <div class="book-tagline">A book for everyone who arrives.</div>
+        <div class="book-actions">
+          <a href="berlin.html" class="btn-book-primary de">📖 Read &amp; Practice</a>
+          <a href="books/berlin.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-lang">Spanish 🇪🇸</div>
+        <div class="book-title">Unterwegs in <em>Madrid.</em></div>
+        <div class="book-tagline">One city. A thousand conversations.</div>
+        <div class="book-actions">
+          <a href="madrid.html" class="btn-book-primary es">📖 Read &amp; Practice</a>
+          <a href="books/madrid.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-lang">German 🇩🇪 · Spanish 🇪🇸</div>
+        <div class="book-title">Im <em>Café.</em></div>
+        <div class="book-tagline">Two languages. One place.</div>
+        <div class="book-actions">
+          <a href="cafe.html" class="btn-book-primary both">📖 Read &amp; Practice</a>
+          <a href="books/cafe.epub" download class="btn-book-epub">EPUB ⬇</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div data-lang="de" class="active">
+    <h2>Einfach sprechen.<br><em>Jetzt. Nicht warten.</em></h2>
+    <p>Kein Druck. Kein Urteil. Nur du und Spikiu — auf deinem Weg.</p>
+    <a href="assessment.html" class="btn-white">Jetzt starten — kostenlos →</a>
+  </div>
+  <div data-lang="es">
+    <h2>Solo habla.<br><em>Ahora. No esperes.</em></h2>
+    <p>Sin presión. Sin juicios. Solo tú y Spikiu — en tu camino.</p>
+    <a href="assessment.html" class="btn-white">Empezar ahora — gratis →</a>
+  </div>
+  <div data-lang="en">
+    <h2>Just speak.<br><em>Now. Don't wait.</em></h2>
+    <p>No pressure. No judgment. Just you and Spikiu — on your path.</p>
+    <a href="assessment.html" class="btn-white">Start now — free →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Spi<em>k</em>iu</span>
+  <div class="footer-links">
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutz</a>
+    <a href="#">Kontakt</a>
+  </div>
+  <span class="footer-copy">© 2026 Spikiu · spikiu.com</span>
+</footer>
+
+<script>
+let currentLang = 'de';
+
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('open') ? 'hidden' : '';
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    const isActive = el.getAttribute('data-lang') === lang;
+    el.classList.toggle('active', isActive);
+    el.style.display = isActive ? (el.tagName === 'A' ? 'inline-block' : 'block') : 'none';
+  });
+  // Translate mobile menu links
+  document.querySelectorAll('[data-lang-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-lang-' + lang);
+  });
+  document.documentElement.lang = lang;
+  // Save preference
+  localStorage.setItem('spikiu_lang', lang);
+}
+
+function handleNotify(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  const orig = btn.textContent;
+  btn.textContent = currentLang === 'de' ? 'Danke! ✓' : currentLang === 'es' ? '¡Gracias! ✓' : 'Thanks! ✓';
+  btn.style.background = '#2d5a3d';
+  e.target.querySelector('input').value = '';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
+  return false;
+}
+
+// Check saved preference first, then browser language — EN as universal fallback
+const savedLang = localStorage.getItem('spikiu_lang');
+const bl = navigator.language.slice(0,2);
+if (savedLang && ['de','es','en'].includes(savedLang)) setLang(savedLang);
+else if (bl === 'de') setLang('de');
+else if (bl === 'es') setLang('es');
+else setLang('en'); // English as universal fallback for Russian, Chinese, Arabic, etc.
+</script>
+</body>
+</html>
