@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu Lektion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Instrument+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--white:#ffffff;--off:#faf8f5;--off2:#f2ede6;--ink:#1a1612;--mid:#6b6158;--faint:#e8e0d5;--warm:#c8bfb0;--green:#2d5a3d;--green2:#e5efe8;--green3:#1a3d28;--gold:#a07228;--gold2:#f5ead8;--capy:#c9956a;}
+body{background:var(--off);color:var(--ink);font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;}
+
+header{background:var(--white);border-bottom:1px solid var(--faint);padding:0 5vw;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.logo-text em{color:var(--green);font-style:italic;}
+.nav-right{display:flex;align-items:center;gap:.8rem;}
+.nav-link{font-size:.83rem;color:var(--mid);text-decoration:none;}
+
+/* LOADING */
+.loading{text-align:center;padding:5rem 2rem;max-width:500px;margin:0 auto;}
+.loading-capy{animation:float 2s ease-in-out infinite;margin-bottom:1.5rem;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.loading h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:.5rem;}
+.loading p{color:var(--mid);font-size:.9rem;margin-bottom:1.5rem;}
+.dots span{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin:0 3px;animation:dot 1.4s infinite;}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* LESSON CONTENT */
+.lesson-wrap{max-width:760px;margin:0 auto;padding:2rem 5vw 5rem;display:none;}
+.lesson-header{margin-bottom:2rem;}
+.lesson-meta{font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--warm);margin-bottom:.5rem;}
+.lesson-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.2;}
+
+/* ACTION BAR */
+.action-bar{display:flex;gap:.8rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+.btn-download{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:var(--white);padding:.7rem 1.4rem;border-radius:100px;font-size:.88rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:'Instrument Sans',sans-serif;}
+.btn-download:hover{background:var(--green3);}
+.btn-dashboard{display:inline-flex;align-items:center;gap:.5rem;background:var(--white);color:var(--ink);padding:.7rem 1.4rem;border-radius:100px;font-size:.88rem;font-weight:600;border:1.5px solid var(--faint);text-decoration:none;transition:all .2s;}
+.btn-dashboard:hover{border-color:var(--green);color:var(--green);}
+
+/* LESSON HTML DISPLAY */
+#lessonFrame{width:100%;border:1px solid var(--faint);border-radius:16px;background:var(--white);min-height:400px;}
+
+/* ERROR */
+.error{text-align:center;padding:4rem 2rem;color:var(--mid);}
+.error h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:.8rem;}
+
+@media(max-width:600px){header{padding:0 1.25rem;}.lesson-wrap{padding:1.5rem 1.25rem 4rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="dashboard.html" class="logo">
+    <svg width="28" height="28" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="logo-text">Spi<em>k</em>iu</span>
+  </a>
+  <div class="nav-right">
+    <a href="chat.html" class="nav-link">← Zurück zum Chat</a>
+  </div>
+</header>
+
+<!-- LOADING -->
+<div class="loading" id="loadingState">
+  <svg class="loading-capy" width="70" height="70" viewBox="0 0 80 80" fill="none">
+    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+    <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>
+  <h2>Spikiu erstellt deine Lektion...</h2>
+  <p id="loadingSubtext">Einen Moment bitte.</p>
+  <div class="dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- LESSON -->
+<div class="lesson-wrap" id="lessonWrap">
+  <div class="lesson-header">
+    <div class="lesson-meta" id="lessonMeta"></div>
+    <div class="lesson-title" id="lessonTitle">Deine Lektion</div>
+  </div>
+  <div class="action-bar">
+    <button class="btn-download" onclick="downloadLesson()">⬇ Als HTML herunterladen</button>
+    <a href="dashboard.html" class="btn-dashboard">📚 Im Dashboard speichern</a>
+  </div>
+  <iframe id="lessonFrame" scrolling="yes" frameborder="0"></iframe>
+</div>
+
+<!-- ERROR -->
+<div class="error" id="errorState" style="display:none">
+  <h2>Etwas ist schiefgelaufen.</h2>
+  <p>Bitte geh zurück und versuche es erneut.</p>
+  <a href="chat.html" style="color:var(--green);font-weight:600">← Zurück zum Chat</a>
+</div>
+
+<script>
+const API = '/api/chat';
+
+function getProfile() {
+  try { return JSON.parse(localStorage.getItem('spikiu_profile') || '{}'); } catch(e) { return {}; }
+}
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('spikiu_history') || '[]'); } catch(e) { return []; }
+}
+
+// Generate session title
+function sessionTitle(profile) {
+  const now = new Date();
+  const date = now.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'2-digit'});
+  const sessions = JSON.parse(localStorage.getItem('spikiu_sessions') || '[]');
+  const n = sessions.length + 1;
+  return `Session ${n} · ${date}`;
+}
+
+async function generate() {
+  const profile = getProfile();
+  const history = getHistory();
+
+  if (!history || history.length < 2) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    document.getElementById('errorState').querySelector('h2').textContent = 'Kein Gespräch gefunden.';
+    document.getElementById('errorState').querySelector('p').textContent = 'Bitte zuerst mit Spikiu sprechen.';
+    return;
+  }
+
+  // Update loading text based on native language
+  const nl = (profile.nativeLang || '').toLowerCase();
+  const isES = nl.includes('span') || nl.includes('español');
+  const isDE = nl.includes('deut') || nl.includes('german');
+  if (isES) document.getElementById('loadingSubtext').textContent = 'Un momento por favor...';
+  else if (!isDE) document.getElementById('loadingSubtext').textContent = 'Just a moment please...';
+
+  const conversationText = history.map(m =>
+    (m.role === 'user' ? 'Student: ' : 'Spikiu: ') + m.content
+  ).join('\n');
+
+  const title = sessionTitle(profile);
+
+  const SYSTEM = `You are SPIKIU. Create a complete interactive HTML lesson from this conversation.
+User's native language: ${profile.nativeLang || 'unknown — use English'}.
+Target language: ${profile.targetLang || 'German'}.
+User level: ${profile.currentLevel || 'Seed'}.
+
+ABSOLUTE RULE — NO MNEMONICS EVER:
+Never invent word associations, rhymes, absurd images or memory tricks.
+Banned: "KANADA = müde", "Ein Greis tanzt", creative comparisons.
+
+INSTEAD — use this FIXED 3-PART MINI-ANALYSIS for each word/phrase:
+
+🔤 GRAMMATIK: identify each word's role [verb][noun][pronoun][modal][infinitive][article]
+   Name special structures simply. Example: "Können Sie mir helfen?"
+   → Können [modal] + Sie [formal pronoun] + mir [dative] + helfen [infinitive, end]
+   → Germanic bracket structure: Können Sie [...] helfen
+
+🌍 BEDEUTUNG: compare to user's native language. 1 sentence max.
+   helfen ≈ "to help" / "ayudar" — same root as English "help"
+
+🗣 AUSSPRACHE: only when non-obvious. Simple phonetics, no IPA.
+   "helfen → HEL-fen, H is a soft breath"
+
+QUIZ BUTTONS — use EXACTLY:
+<button class="choice-btn" onclick="sr(this,'correct')">Answer</button>
+<button class="choice-btn" onclick="sr(this,'wrong')">Answer</button>
+<p class="result"></p>
+
+JS function to include:
+function sr(btn,type){var p=btn.parentElement;p.querySelectorAll('.choice-btn').forEach(function(b){b.disabled=true;});var m=p.querySelector('.result');if(type==='correct'){btn.style.background='#2d6a4f';m.innerHTML='✅';m.style.color='#2d6a4f';}else{btn.style.background='#c0392b';m.innerHTML='❌';m.style.color='#c0392b';}}
+
+DESIGN:
+Fonts: Playfair Display + Instrument Sans (Google Fonts)
+Colors: #2d6a4f green, #faf8f5 bg, #a07228 gold, #1a1612 text, #f2ede6 analysis bg
+Mini-analysis box: background #f2ede6, border-left 3px solid #a07228, padding 1rem, border-radius 8px
+Cards: white, border-radius 16px, box-shadow 0 4px 20px rgba(0,0,0,0.08)
+
+STRUCTURE:
+1. Header: Spikiu logo + session title "${title}"
+2. For each vocabulary item/phrase from conversation:
+   - Word/phrase prominently displayed in target language
+   - Translation in ${profile.nativeLang || 'English'}
+   - Mini-analysis box (Grammatik + Bedeutung + Aussprache if needed)
+3. Full dialog replay
+4. Quick reference table
+5. Interactive quiz (min 5 questions)
+6. Footer: "Spikiu · spikiu.com"
+
+Write COMPLETE HTML. Never truncate. All JS inline.`;
+
+  try {
+    const r = await fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system: SYSTEM,
+        messages: [{role:'user', content: 'Create the complete lesson from this conversation:\n\n' + conversationText}],
+        maxTokens: 4000
+      })
+    });
+    const data = await r.json();
+    let html = data.content[0].text.trim().replace(/^```html?\n?/,'').replace(/\n?```$/,'').trim();
+
+    // Save to localStorage for dashboard
+    const sessions = JSON.parse(localStorage.getItem('spikiu_sessions') || '[]');
+    const session = {
+      id: sessions.length + 1,
+      title,
+      date: new Date().toISOString(),
+      html,
+      topic: profile.targetLang || 'Deutsch'
+    };
+    sessions.push(session);
+    localStorage.setItem('spikiu_sessions', JSON.stringify(sessions));
+    localStorage.setItem('spikiu_lesson_html', html);
+    localStorage.setItem('spikiu_lesson_title', title);
+
+    // Show lesson
+    document.getElementById('lessonMeta').textContent = title;
+    document.getElementById('lessonTitle').textContent =
+      isES ? 'Tu lección' : isDE ? 'Deine Lektion' : 'Your lesson';
+
+    // Display in iframe
+    const frame = document.getElementById('lessonFrame');
+    frame.srcdoc = html;
+    frame.style.height = '600px';
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('lessonWrap').style.display = 'block';
+
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+  }
+}
+
+function downloadLesson() {
+  const html = localStorage.getItem('spikiu_lesson_html');
+  const title = localStorage.getItem('spikiu_lesson_title') || 'spikiu-lektion';
+  if (!html) return;
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = title.replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Start
+generate();
+</script>
+</body>
+</html>
