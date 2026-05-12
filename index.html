@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Coming back soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #faf9f7;
+  color: #1c1917;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.wrap {
+  max-width: 400px;
+}
+
+svg.capy {
+  width: 80px;
+  height: 80px;
+  animation: float 4s ease-in-out infinite;
+  margin-bottom: 2rem;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+h1 {
+  font-family: 'Lora', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+h1 em { font-style: italic; color: #2d6a4f; }
+
+p {
+  color: #78716c;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #2d6a4f;
+  border-radius: 50%;
+  margin: 2rem auto 0;
+  animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <svg class="capy" viewBox="0 0 80 80" fill="none">
+    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+    <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+    <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+    <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="34" cy="23" r="1.2" fill="white"/>
+    <circle cx="48" cy="23" r="1.2" fill="white"/>
+    <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <h1>Spikiu wird<br><em>gerade besser.</em></h1>
+  <p>Wir sind gleich wieder da. 🐾</p>
+  <span class="dot"></span>
+</div>
+</body>
+</html>
