@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --white:#ffffff;--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;
+  --faint:#e8e4df;--warm:#d4cdc6;--accent:#2d6a4f;--accent2:#e8f2ed;
+  --accent3:#1a4a38;--capy:#c9956a;--gold:#a07830;--sidebar:#1a1816;
+}
+body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh; }
+.app { display:grid;grid-template-columns:240px 1fr;min-height:100vh; }
+.sidebar { background:var(--sidebar);padding:2rem 1.5rem;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto; }
+.sidebar-logo { font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:var(--white);letter-spacing:-0.02em;margin-bottom:2.5rem;display:flex;align-items:center;gap:0.6rem;text-decoration:none; }
+.sidebar-logo em { color:var(--capy);font-style:italic; }
+.nav-label { font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#444;margin-bottom:0.6rem;padding-left:0.75rem;margin-top:1.5rem; }
+.nav-item { display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.75rem;border-radius:8px;color:#666;text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.15s;cursor:pointer;margin-bottom:0.2rem; }
+.nav-item:hover { background:rgba(255,255,255,0.06);color:#aaa; }
+.nav-item.active { background:rgba(45,106,79,0.2);color:#a8d5be; }
+.nav-item svg { width:16px;height:16px;flex-shrink:0;opacity:0.7; }
+.sidebar-bottom { margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06); }
+.user-chip { display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.75rem; }
+.user-avatar { width:32px;height:32px;background:var(--capy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:0.9rem;font-weight:700;color:white;flex-shrink:0; }
+.user-name { font-size:0.85rem;font-weight:600;color:#aaa; }
+.user-plan { font-size:0.72rem;color:#444;margin-top:0.1rem; }
+.main { padding:2.5rem;max-width:900px; }
+.topbar { display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem; }
+.greeting h1 { font-family:'Lora',serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.2; }
+.greeting h1 em { color:var(--accent);font-style:italic; }
+.greeting p { font-size:0.88rem;color:var(--mid);margin-top:0.2rem; }
+.btn-speak { background:var(--accent);color:var(--white);padding:0.75rem 1.8rem;border-radius:100px;font-size:0.92rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all 0.2s;white-space:nowrap; }
+.btn-speak:hover { background:var(--accent3);transform:translateY(-1px); }
+.notification { display:flex;align-items:flex-start;gap:0.8rem;padding:1rem 1.2rem;background:var(--accent2);border-radius:10px;margin-bottom:1.5rem;border-left:3px solid var(--accent); }
+.notification-icon { font-size:1.1rem;flex-shrink:0;margin-top:0.1rem; }
+.notification-text { font-size:0.85rem;color:var(--accent3);line-height:1.5; }
+.notification-text strong { font-weight:600; }
+.tree-hero { background:var(--white);border:1.5px solid var(--faint);border-radius:20px;padding:2rem;margin-bottom:1.5rem;display:grid;grid-template-columns:1fr 160px;gap:2rem;align-items:center; }
+.tree-level { display:inline-flex;align-items:center;gap:0.4rem;background:var(--accent2);color:var(--accent);font-size:0.78rem;font-weight:700;padding:0.25rem 0.8rem;border-radius:100px;margin-bottom:0.8rem; }
+.tree-info h2 { font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:0.8rem; }
+.tree-stats { display:flex;gap:1.5rem;margin-bottom:1.2rem;flex-wrap:wrap; }
+.stat-num { font-family:'Lora',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1; }
+.stat-label { font-size:0.72rem;color:var(--mid);margin-top:0.2rem; }
+.progress-label { display:flex;justify-content:space-between;font-size:0.75rem;color:var(--mid);margin-bottom:0.4rem; }
+.progress-bar { height:6px;background:var(--faint);border-radius:100px;overflow:hidden; }
+.progress-fill { height:100%;background:linear-gradient(90deg,var(--accent),#5aa080);border-radius:100px;width:0;transition:width 1s ease; }
+.tree-svg-wrap { display:flex;justify-content:center; }
+.grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem; }
+.card { background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:1.5rem;transition:border-color 0.2s; }
+.card:hover { border-color:var(--warm); }
+.card-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem; }
+.card-title { font-family:'Lora',serif;font-size:0.95rem;font-weight:700;color:var(--ink); }
+.card-tag { font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--accent2);padding:0.2rem 0.6rem;border-radius:100px; }
+.path-steps { display:flex;flex-direction:column;gap:0.8rem; }
+.path-step { display:flex;gap:0.8rem;align-items:flex-start; }
+.step-dot { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0;margin-top:0.1rem; }
+.step-dot.done { background:var(--accent);color:white; }
+.step-dot.active { background:var(--capy);color:white; }
+.step-dot.pending { background:var(--faint);color:var(--mid); }
+.step-name { font-size:0.85rem;font-weight:600;color:var(--ink);margin-bottom:0.1rem; }
+.step-name.done { color:var(--mid);text-decoration:line-through; }
+.step-desc { font-size:0.75rem;color:var(--mid);line-height:1.5; }
+.lesson-blocks { display:flex;flex-direction:column;gap:0.7rem; }
+.lesson-block { background:var(--off);border-radius:8px;padding:0.75rem 1rem; }
+.lesson-block-title { font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--capy);margin-bottom:0.3rem; }
+.lesson-block-content { font-size:0.85rem;color:var(--mid);line-height:1.5; }
+.lesson-block-content strong { color:var(--ink); }
+.books-grid { display:flex;flex-direction:column;gap:0.7rem; }
+.book-item { display:flex;align-items:center;gap:0.9rem;padding:0.75rem 1rem;background:var(--off);border-radius:8px;text-decoration:none;transition:background 0.15s;cursor:pointer; }
+.book-item:hover { background:var(--faint); }
+.book-icon { width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0; }
+.book-icon.reader { background:rgba(45,106,79,0.12); }
+.book-icon.glossary { background:rgba(201,149,106,0.15); }
+.book-icon.grammar { background:rgba(160,120,48,0.12); }
+.book-name { font-size:0.85rem;font-weight:600;color:var(--ink); }
+.book-desc { font-size:0.75rem;color:var(--mid);margin-top:0.1rem; }
+.book-arrow { margin-left:auto;color:var(--warm);font-size:0.9rem; }
+.upgrade-banner { background:var(--ink);border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem; }
+.upgrade-banner h3 { font-family:'Lora',serif;font-size:1rem;font-weight:700;color:var(--white);margin-bottom:0.3rem; }
+.upgrade-banner p { font-size:0.82rem;color:#666;line-height:1.5; }
+.upgrade-tree { font-size:1.4rem; }
+.btn-upgrade { background:var(--capy);color:var(--white);padding:0.7rem 1.5rem;border-radius:100px;font-size:0.85rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:background 0.2s; }
+.btn-upgrade:hover { background:var(--gold); }
+.sessions-list { display:flex;flex-direction:column;gap:0.7rem; }
+.session-item { display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem;background:var(--off);border-radius:8px; }
+.session-day { font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:var(--ink);line-height:1; }
+.session-month { font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid); }
+.session-name { font-size:0.85rem;font-weight:600;color:var(--ink); }
+.session-time { font-size:0.75rem;color:var(--mid);margin-top:0.1rem; }
+.session-badge { font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:100px;background:var(--accent2);color:var(--accent); }
+.btn-book { display:block;text-align:center;margin-top:1rem;padding:0.65rem;border:1.5px solid var(--faint);border-radius:100px;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;transition:all 0.2s; }
+.btn-book:hover { border-color:var(--accent);color:var(--accent); }
+@media (max-width:768px) {
+  .app { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .main { padding:1.5rem; }
+  .tree-hero { grid-template-columns:1fr; }
+  .tree-svg-wrap { display:none; }
+  .grid-2 { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <svg width="24" height="24" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/></svg>
+    Spi<em>k</em>iu
+  </a>
+  <div class="nav-label">Main</div>
+  <a class="nav-item active" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Dashboard
+  </a>
+  <a class="nav-item" href="chat.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Start talking
+  </a>
+  <a class="nav-item" href="books.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    My Books
+  </a>
+  <a class="nav-item" href="sessions.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Live Sessions
+  </a>
+  <div class="nav-label">Progress</div>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    My Path
+  </a>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    History
+  </a>
+  <div class="nav-label">Account</div>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Settings
+  </a>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">Ana Müller</div>
+        <div class="user-plan">Free · 1 conversation left</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="topbar">
+    <div class="greeting">
+      <h1>Good morning, <em>Ana.</em></h1>
+      <p>Your tree is waiting. Last session: 2 days ago.</p>
+    </div>
+    <a href="chat.html" class="btn-speak">Start talking →</a>
+  </div>
+
+  <div class="notification">
+    <span class="notification-icon">🌱</span>
+    <div class="notification-text">
+      <strong>1 conversation left on your free plan.</strong> After that, your tree stops growing. Start your free week of Premium — no card needed.
+    </div>
+  </div>
+
+  <!-- TREE HERO -->
+  <div class="tree-hero">
+    <div class="tree-info">
+      <div class="tree-level">🌱 Sprout — Level 2 of 4</div>
+      <h2>Your Growth Tree — Spanish</h2>
+      <div class="tree-stats">
+        <div class="stat"><div class="stat-num">7</div><div class="stat-label">conversations</div></div>
+        <div class="stat"><div class="stat-num">7</div><div class="stat-label">lessons</div></div>
+        <div class="stat"><div class="stat-num">142</div><div class="stat-label">words learned</div></div>
+        <div class="stat"><div class="stat-num">3h</div><div class="stat-label">total time</div></div>
+      </div>
+      <div class="progress-label"><span>Progress to 🌿 Branch</span><span>35%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+    </div>
+    <div class="tree-svg-wrap">
+      <svg viewBox="0 0 160 220" width="160" height="220">
+        <ellipse cx="80" cy="210" rx="45" ry="5" fill="#d4cdc6" opacity="0.5"/>
+        <path d="M72 205 q-8 3-14 10" stroke="#8b5e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M80 207 q0 5 0 12" stroke="#8b5e3c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M88 205 q8 3 14 10" stroke="#8b5e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M72 207 q-1-25 0-55 q2-22 8-42" stroke="#8b5e3c" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M88 207 q1-25 0-55 q-2-22-8-42" stroke="#6b4226" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="80" cy="120" rx="32" ry="26" fill="#3d8062"/>
+        <ellipse cx="62" cy="130" rx="22" ry="18" fill="#2d6a4f"/>
+        <ellipse cx="98" cy="130" rx="22" ry="18" fill="#2d6a4f"/>
+        <ellipse cx="80" cy="110" rx="26" ry="20" fill="#4a9070"/>
+        <path d="M74 150 q-14-10-26-16" stroke="#6b4226" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
+        <path d="M86 150 q14-10 26-16" stroke="#6b4226" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
+        <ellipse cx="80" cy="200" rx="7" ry="4" fill="#c9956a"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- UPGRADE -->
+  <div class="upgrade-banner">
+    <div class="upgrade-tree">🌱 → 🌿</div>
+    <div>
+      <h3>Your tree wants to keep growing.</h3>
+      <p>Unlimited conversations · Lessons after every chat · Your personal Reader · First week free.</p>
+    </div>
+    <a href="#" class="btn-upgrade">Start free week →</a>
+  </div>
+
+  <div class="grid-2">
+
+    <!-- LEARNING PATH -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Your Learning Path</span>
+        <span class="card-tag">Spanish</span>
+      </div>
+      <div class="path-steps">
+        <div class="path-step">
+          <div class="step-dot done">✓</div>
+          <div>
+            <div class="step-name done">Assessment & First Words</div>
+            <div class="step-desc">Completed · Week 1</div>
+          </div>
+        </div>
+        <div class="path-step">
+          <div class="step-dot active">2</div>
+          <div>
+            <div class="step-name">Everyday Conversations</div>
+            <div class="step-desc">In progress — greetings, daily situations</div>
+          </div>
+        </div>
+        <div class="path-step">
+          <div class="step-dot pending">3</div>
+          <div>
+            <div class="step-name">Work & Professional</div>
+            <div class="step-desc">Meetings, emails, client calls</div>
+          </div>
+        </div>
+        <div class="path-step">
+          <div class="step-dot pending">4</div>
+          <div>
+            <div class="step-name">🌳 Crown — Goal Reached</div>
+            <div class="step-desc">Full professional communication in Madrid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAST LESSON -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Last Lesson</span>
+        <span class="card-tag">2 days ago</span>
+      </div>
+      <div class="lesson-blocks">
+        <div class="lesson-block">
+          <div class="lesson-block-title">Semantics</div>
+          <div class="lesson-block-content">
+            <strong>negociar</strong> — to negotiate<br>
+            <strong>el plazo</strong> — the deadline<br>
+            <strong>acordar</strong> — to agree on
+          </div>
+        </div>
+        <div class="lesson-block">
+          <div class="lesson-block-title">Phonetics</div>
+          <div class="lesson-block-content">
+            The <strong>rr</strong> in Spanish — tongue vibration.<br>
+            Practice: <em>reunión, resultado, reunir</em>
+          </div>
+        </div>
+        <div class="lesson-block">
+          <div class="lesson-block-title">Grammar</div>
+          <div class="lesson-block-content">
+            <strong>Subjuntivo</strong> for wishes:<br>
+            <em>"Espero que podamos acordar..."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="grid-2">
+
+    <!-- BOOKS -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">My Books</span>
+        <a href="books.html" style="font-size:0.78rem;color:var(--accent);text-decoration:none;font-weight:600;">See all →</a>
+      </div>
+      <div class="books-grid">
+        <a href="books.html" class="book-item">
+          <div class="book-icon reader">📖</div>
+          <div><div class="book-name">Reader — Spanish</div><div class="book-desc">Chapter 3 of 12 · In progress</div></div>
+          <span class="book-arrow">›</span>
+        </a>
+        <a href="books.html" class="book-item">
+          <div class="book-icon glossary">📒</div>
+          <div><div class="book-name">Glossary</div><div class="book-desc">142 words · German</div></div>
+          <span class="book-arrow">›</span>
+        </a>
+        <a href="books.html" class="book-item">
+          <div class="book-icon grammar">📗</div>
+          <div><div class="book-name">Grammar</div><div class="book-desc">Subjuntivo · In progress</div></div>
+          <span class="book-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- SESSIONS -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Live Sessions</span>
+        <a href="sessions.html" style="font-size:0.78rem;color:var(--accent);text-decoration:none;font-weight:600;">Book →</a>
+      </div>
+      <div class="sessions-list">
+        <div class="session-item">
+          <div style="text-align:center;min-width:40px;">
+            <div class="session-day">24</div>
+            <div class="session-month">May</div>
+          </div>
+          <div class="session-info">
+            <div class="session-name">María González</div>
+            <div class="session-time">11:00 – 11:45 · Spanish · 1 person</div>
+          </div>
+          <span class="session-badge">Confirmed</span>
+        </div>
+      </div>
+      <a href="sessions.html" class="btn-book">+ Book another session</a>
+    </div>
+
+  </div>
+
+</main>
+</div>
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => { document.getElementById('pf').style.width = '35%'; }, 300);
+});
+</script>
+</body>
+</html>
