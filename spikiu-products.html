@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — What's included</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+:root {
+  --white:   #ffffff;
+  --off:     #faf9f7;
+  --ink:     #1a1816;
+  --mid:     #6b6560;
+  --faint:   #e8e4df;
+  --accent:  #2d6a4f;
+  --accent2: #e8f2ed;
+  --accent3: #1a4a38;
+  --capy:    #c9956a;
+}
+body { background: var(--white); color: var(--ink); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 5vw; border-bottom: 1px solid var(--faint); }
+.logo { font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+.logo em { color: var(--accent); font-style: italic; }
+.back-link { font-size: 0.88rem; color: var(--mid); text-decoration: none; }
+.back-link:hover { color: var(--ink); }
+
+.block { padding: 5rem 5vw; max-width: 720px; margin: 0 auto; }
+.tag { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+.block h2 { font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 2rem; }
+.block h2 em { color: var(--accent); font-style: italic; }
+
+.item { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.2rem 0; border-bottom: 1px solid var(--faint); }
+.item:last-of-type { border-bottom: none; }
+.item-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.1rem;
+}
+.item-icon svg { width: 100%; height: 100%; }
+.item-body h4 { font-family: 'Lora', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+.item-body p { font-size: 0.88rem; color: var(--mid); line-height: 1.6; }
+
+.price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+.price { font-family: 'Lora', serif; font-size: 2.5rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.price span { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--mid); font-weight: 400; margin-left: 0.4rem; }
+
+.btn { display: inline-block; background: var(--accent); color: var(--white); padding: 1rem 2.5rem; border-radius: 100px; font-size: 1rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+.btn:hover { background: var(--accent3); transform: translateY(-1px); }
+
+.divider { height: 1px; background: var(--faint); max-width: 720px; margin: 0 auto; }
+
+.reader-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--faint); border-radius: 12px; overflow: hidden; margin-top: 1rem; }
+.reader-col { background: var(--white); padding: 1.2rem 1.4rem; }
+.reader-col.yours { background: var(--accent2); }
+.reader-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.6rem; display: block; }
+.reader-col.yours .reader-label { color: var(--accent); }
+.reader-text { font-family: 'Lora', serif; font-size: 0.88rem; font-style: italic; color: var(--mid); line-height: 1.7; }
+.reader-col.yours .reader-text { color: var(--ink); }
+
+.tabs { display: flex; gap: 0.4rem; margin-bottom: 0.8rem; }
+.tab { font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 100px; border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+.tab.active { background: var(--accent); color: white; }
+
+footer { background: var(--ink); padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 5rem; }
+.footer-logo { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); }
+.footer-logo em { color: var(--capy); font-style: italic; }
+.footer-copy { font-size: 0.78rem; color: #555; }
+
+@media (max-width: 600px) {
+  .reader-compare { grid-template-columns: 1fr; }
+  .price-row { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Spi<em>k</em>iu</a>
+  <a href="index.html" class="back-link">← Back</a>
+</nav>
+
+<!-- FREE -->
+<div class="block" id="free">
+  <span class="tag">For Free</span>
+  <h2>Everything you need<br>to <em>start speaking.</em></h2>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36" fill="none">
+      <path d="M18 4a14 14 0 1 1-9.9 4.1" stroke="#6b9080" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M18 9a9 9 0 1 0 6.4 2.6" stroke="#87a98a" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M18 14a4 4 0 1 1-2.8 1.2" stroke="#a4c3a7" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="18" cy="18" r="1.5" fill="#6b9080"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>Assessment</h4>
+      <p>Two questions. Spikiu knows where you are and where you want to go.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <ellipse cx="11" cy="20" rx="4" ry="6" fill="#c9956a"/>
+      <circle cx="8" cy="11" r="1.5" fill="#b8845a"/>
+      <circle cx="11" cy="9" r="1.5" fill="#b8845a"/>
+      <circle cx="14" cy="11" r="1.3" fill="#b8845a"/>
+      <ellipse cx="25" cy="26" rx="4" ry="6" fill="#a07830"/>
+      <circle cx="22" cy="17" r="1.5" fill="#8b5e3c"/>
+      <circle cx="25" cy="15" r="1.5" fill="#8b5e3c"/>
+      <circle cx="28" cy="17" r="1.3" fill="#8b5e3c"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>Your learning path</h4>
+      <p>A personal plan built in the conversation.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <path d="M6 8 a4 4 0 0 1 4-4 h16 a4 4 0 0 1 4 4 v12 a4 4 0 0 1-4 4 h-10 l-6 5 v-5 h-0 a4 4 0 0 1-4-4 z" fill="#2d6a4f"/>
+      <circle cx="13" cy="14" r="1.4" fill="#e8f2ed"/>
+      <circle cx="18" cy="14" r="1.4" fill="#e8f2ed"/>
+      <circle cx="23" cy="14" r="1.4" fill="#e8f2ed"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>3 conversations</h4>
+      <p>You speak. Spikiu listens. The conversation never stops.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <rect x="7" y="5" width="22" height="26" rx="2" fill="#d4a548"/>
+      <rect x="7" y="5" width="4" height="26" fill="#a07830"/>
+      <line x1="14" y1="11" x2="25" y2="11" stroke="#8b6420" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="14" y1="16" x2="25" y2="16" stroke="#8b6420" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="14" y1="21" x2="22" y2="21" stroke="#8b6420" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="14" y1="26" x2="20" y2="26" stroke="#8b6420" stroke-width="1.4" stroke-linecap="round"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>3 lessons</h4>
+      <p>After every conversation — what you said, what you learned, what comes next.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <rect x="7" y="6" width="22" height="6" rx="1" fill="#c66e4f"/>
+      <rect x="9" y="14" width="22" height="6" rx="1" fill="#2d6a4f"/>
+      <rect x="6" y="22" width="22" height="6" rx="1" fill="#a07830"/>
+      <line x1="11" y1="9" x2="25" y2="9" stroke="#fff" stroke-width="0.8" opacity="0.5"/>
+      <line x1="13" y1="17" x2="27" y2="17" stroke="#fff" stroke-width="0.8" opacity="0.5"/>
+      <line x1="10" y1="25" x2="24" y2="25" stroke="#fff" stroke-width="0.8" opacity="0.5"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>3 books</h4>
+      <p>Reader · Glossary · Grammar — from your first words to confident conversation.</p>
+    </div>
+  </div>
+
+  <div class="price-row">
+    <div class="price">€0 <span>no card needed</span></div>
+    <a href="chat.html" class="btn">Start talking →</a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PREMIUM -->
+<div class="block" id="premium">
+  <span class="tag">Premium</span>
+  <h2>Spikiu knows you.<br><em>Your world. Your language.</em></h2>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <circle cx="18" cy="13" r="9" fill="#2d6a4f"/>
+      <circle cx="13" cy="10" r="5" fill="#3d8062"/>
+      <circle cx="23" cy="10" r="5" fill="#3d8062"/>
+      <rect x="17" y="20" width="2" height="8" fill="#8b5e3c"/>
+      <path d="M18 28 q-4 1-6 4" stroke="#8b5e3c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M18 28 q4 1 6 4" stroke="#8b5e3c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M18 30 q0 2 0 4" stroke="#8b5e3c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>Memory</h4>
+      <p>Every conversation builds on the last. No repeating yourself.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <path d="M5 18 c0-4 3-7 7-7 3 0 4 2 6 5 l 2 2 l 2 -2 c2-3 3-5 6-5 4 0 7 3 7 7 s-3 7-7 7 c-3 0-4-2-6-5 l -2 -2 l -2 2 c-2 3-3 5-6 5-4 0-7-3-7-7z"
+        fill="none" stroke="#3d2b1f" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>Unlimited conversations & lessons</h4>
+      <p>Speak as much as you want. A lesson after every conversation, automatically.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <path d="M4 8 h12 a3 3 0 0 1 2 1 v18 a2 2 0 0 0-2-1 h-12 z" fill="#c9956a"/>
+      <path d="M32 8 h-12 a3 3 0 0 0-2 1 v18 a2 2 0 0 1 2-1 h12 z" fill="#b8845a"/>
+      <line x1="7" y1="13" x2="15" y2="13" stroke="#8b5e3c" stroke-width="0.8"/>
+      <line x1="7" y1="17" x2="15" y2="17" stroke="#8b5e3c" stroke-width="0.8"/>
+      <line x1="7" y1="21" x2="13" y2="21" stroke="#8b5e3c" stroke-width="0.8"/>
+      <line x1="21" y1="13" x2="29" y2="13" stroke="#6b4226" stroke-width="0.8"/>
+      <line x1="21" y1="17" x2="29" y2="17" stroke="#6b4226" stroke-width="0.8"/>
+      <line x1="21" y1="21" x2="27" y2="21" stroke="#6b4226" stroke-width="0.8"/>
+    </svg></span>
+    <div class="item-body">
+      <h4>Your Reader</h4>
+      <p>Not the standard book. Yours — built around your world.</p>
+      <div style="margin-top:1rem;">
+        <div class="tabs">
+          <button class="tab active" onclick="showTab('biz', this)">Business</button>
+          <button class="tab" onclick="showTab('travel', this)">Travel</button>
+        </div>
+        <div class="reader-compare">
+          <div class="reader-col">
+            <span class="reader-label">Standard</span>
+            <div class="reader-text" id="std-biz">"María entra en el hotel.<br>— Buenos días. Tengo una reserva.<br>— ¿A nombre de quién?<br>— García. Juan García."</div>
+            <div class="reader-text" id="std-travel" style="display:none">"Pedro llega a la estación.<br>— Un billete para Madrid, por favor.<br>— ¿De ida o de ida y vuelta?<br>— Solo de ida."</div>
+          </div>
+          <div class="reader-col yours">
+            <span class="reader-label">Yours</span>
+            <div class="reader-text" id="your-biz">"Carlos entra en la sala de reuniones.<br>— Buenos días. Empecemos.<br>El cliente mira los números.<br>— ¿Podemos negociar los plazos?"</div>
+            <div class="reader-text" id="your-travel" style="display:none">"Ana llega al aeropuerto de Madrid.<br>— ¿Dónde está la salida de trenes?<br>— Al fondo a la derecha.<br>Tiene dos horas. Suficiente."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <span class="item-icon"><svg viewBox="0 0 36 36">
+      <circle cx="18" cy="18" r="14" fill="#a07830" opacity="0.15"/>
+      <text x="6" y="14" font-size="8" fill="#2d6a4f" font-family="Georgia" font-weight="700">A</text>
+      <text x="14" y="11" font-size="7" fill="#c9956a" font-family="Arial">中</text>
+      <text x="23" y="14" font-size="8" fill="#a07830" font-family="Georgia" font-weight="700">あ</text>
+      <text x="6" y="25" font-size="7" fill="#4a7a72" font-family="Arial">ñ</text>
+      <text x="15" y="29" font-size="8" fill="#1a4a38" font-family="Georgia">Я</text>
+      <text x="24" y="28" font-size="8" fill="#c66e4f" font-family="Georgia">ع</text>
+    </svg></span>
+    <div class="item-body">
+      <h4>Glossary & Grammar in your language</h4>
+      <p>Whatever your native language — Spikiu speaks it.</p>
+    </div>
+  </div>
+
+  <div class="price-row">
+    <div class="price">€29 <span>/ month · 1 week free</span></div>
+    <a href="chat.html" class="btn">Start talking →</a>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">Spi<em>k</em>iu</span>
+  <span class="footer-copy">© 2026 Spikiu · spikiu.com</span>
+</footer>
+
+<script>
+function showTab(type, btn) {
+  ['biz','travel'].forEach(t => {
+    document.getElementById('std-' + t).style.display = t === type ? 'block' : 'none';
+    document.getElementById('your-' + t).style.display = t === type ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

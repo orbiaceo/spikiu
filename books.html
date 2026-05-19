@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — My Books</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --white:#ffffff;--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;
+  --faint:#e8e4df;--warm:#d4cdc6;--accent:#2d6a4f;--accent2:#e8f2ed;
+  --accent3:#1a4a38;--capy:#c9956a;--gold:#a07830;--sidebar:#1a1816;
+}
+body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh; }
+.app { display:grid;grid-template-columns:240px 1fr;min-height:100vh; }
+
+/* SIDEBAR — same as dashboard */
+.sidebar { background:var(--sidebar);padding:2rem 1.5rem;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto; }
+.sidebar-logo { font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:var(--white);letter-spacing:-0.02em;margin-bottom:2.5rem;display:flex;align-items:center;gap:0.6rem;text-decoration:none; }
+.sidebar-logo em { color:var(--capy);font-style:italic; }
+.nav-label { font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#444;margin-bottom:0.6rem;padding-left:0.75rem;margin-top:1.5rem; }
+.nav-item { display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.75rem;border-radius:8px;color:#666;text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.15s;margin-bottom:0.2rem; }
+.nav-item:hover { background:rgba(255,255,255,0.06);color:#aaa; }
+.nav-item.active { background:rgba(45,106,79,0.2);color:#a8d5be; }
+.nav-item svg { width:16px;height:16px;flex-shrink:0;opacity:0.7; }
+.sidebar-bottom { margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06); }
+.user-chip { display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.75rem; }
+.user-avatar { width:32px;height:32px;background:var(--capy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:0.9rem;font-weight:700;color:white;flex-shrink:0; }
+.user-name { font-size:0.85rem;font-weight:600;color:#aaa; }
+.user-plan { font-size:0.72rem;color:#444;margin-top:0.1rem; }
+
+/* MAIN */
+.main { padding:2.5rem;max-width:900px; }
+.page-header { margin-bottom:2rem; }
+.page-header h1 { font-family:'Lora',serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.2; }
+.page-header h1 em { color:var(--accent);font-style:italic; }
+.page-header p { font-size:0.88rem;color:var(--mid);margin-top:0.3rem; }
+
+/* BOOK TABS */
+.book-tabs { display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap; }
+.book-tab { padding:0.6rem 1.2rem;border-radius:100px;border:1.5px solid var(--faint);background:var(--white);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--mid);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem; }
+.book-tab:hover { border-color:var(--warm); }
+.book-tab.active { background:var(--accent);border-color:var(--accent);color:white; }
+
+/* BOOK CONTENT */
+.book-content { display:none; }
+.book-content.active { display:block; }
+
+/* READER */
+.reader-layout { display:grid;grid-template-columns:200px 1fr;gap:2rem;align-items:start; }
+
+.chapter-list { background:var(--white);border:1.5px solid var(--faint);border-radius:14px;padding:1.2rem;position:sticky;top:2rem; }
+.chapter-list-title { font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem; }
+.chapter-item { display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.6rem;border-radius:8px;cursor:pointer;transition:background 0.15s;font-size:0.82rem;color:var(--mid);font-weight:500; }
+.chapter-item:hover { background:var(--off); }
+.chapter-item.active { background:var(--accent2);color:var(--accent);font-weight:600; }
+.chapter-item.done { color:var(--warm); }
+.chapter-num { font-family:'DM Sans',monospace;font-size:0.7rem;color:var(--warm);min-width:20px; }
+
+.reader-text { background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:2.5rem; }
+.chapter-header { margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--faint); }
+.chapter-label { font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--capy);margin-bottom:0.5rem; }
+.chapter-title { font-family:'Lora',serif;font-size:1.5rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2; }
+
+.reader-body { font-family:'Lora',serif;font-size:1.05rem;line-height:1.9;color:var(--ink); }
+.reader-body p { margin-bottom:1.2rem; }
+.reader-body .dialogue { padding-left:1.2rem;border-left:2px solid var(--faint);margin:1rem 0; }
+.reader-body .dialogue p { margin-bottom:0.5rem;font-style:italic; }
+.reader-body .dialogue strong { color:var(--accent3);font-style:normal; }
+.reader-body .scene { font-size:0.85rem;color:var(--mid);font-style:italic;margin-bottom:1rem;font-family:'DM Sans',sans-serif; }
+
+.reader-nav { display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--faint); }
+.btn-chapter { padding:0.6rem 1.2rem;border-radius:100px;border:1.5px solid var(--faint);background:var(--white);font-size:0.82rem;font-weight:600;color:var(--mid);cursor:pointer;text-decoration:none;transition:all 0.2s; }
+.btn-chapter:hover { border-color:var(--accent);color:var(--accent); }
+.btn-chapter.next { background:var(--accent);border-color:var(--accent);color:white; }
+.btn-chapter.next:hover { background:var(--accent3); }
+
+/* GLOSSARY */
+.glossary-filters { display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap; }
+.filter-btn { padding:0.4rem 0.9rem;border-radius:100px;border:1.5px solid var(--faint);background:var(--white);font-size:0.78rem;font-weight:600;color:var(--mid);cursor:pointer;transition:all 0.2s; }
+.filter-btn:hover { border-color:var(--warm); }
+.filter-btn.active { background:var(--capy);border-color:var(--capy);color:white; }
+
+.glossary-table { width:100%;border-collapse:collapse;background:var(--white);border-radius:14px;overflow:hidden;border:1.5px solid var(--faint); }
+.glossary-table th { text-align:left;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);padding:0.9rem 1.2rem;border-bottom:1px solid var(--faint);background:var(--off); }
+.glossary-table td { padding:0.85rem 1.2rem;border-bottom:1px solid var(--faint);vertical-align:top;font-size:0.88rem; }
+.glossary-table tr:last-child td { border-bottom:none; }
+.glossary-table tr:hover td { background:var(--off); }
+.word-es { font-family:'Lora',serif;font-weight:700;color:var(--ink);font-size:0.95rem; }
+.word-de { color:var(--mid); }
+.word-phonetic { font-family:'DM Sans',monospace;font-size:0.78rem;color:var(--capy); }
+.word-example { font-size:0.8rem;color:var(--mid);font-style:italic;margin-top:0.2rem; }
+.word-level { display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:100px;background:var(--accent2);color:var(--accent); }
+
+/* GRAMMAR */
+.grammar-layout { display:grid;grid-template-columns:200px 1fr;gap:2rem; }
+.grammar-nav { background:var(--white);border:1.5px solid var(--faint);border-radius:14px;padding:1.2rem;position:sticky;top:2rem; }
+.grammar-nav-title { font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem; }
+.grammar-nav-item { display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.6rem;border-radius:8px;cursor:pointer;font-size:0.82rem;color:var(--mid);font-weight:500;transition:background 0.15s; }
+.grammar-nav-item:hover { background:var(--off); }
+.grammar-nav-item.active { background:var(--accent2);color:var(--accent);font-weight:600; }
+
+.grammar-content { background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:2.5rem; }
+.grammar-section-label { font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem; }
+.grammar-title { font-family:'Lora',serif;font-size:1.4rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;margin-bottom:1.5rem; }
+.grammar-body { font-size:0.95rem;color:var(--mid);line-height:1.8; }
+.grammar-body p { margin-bottom:1rem; }
+.grammar-body strong { color:var(--ink); }
+
+.rule-box { background:var(--accent2);border-radius:10px;padding:1.2rem 1.5rem;margin:1.2rem 0;border-left:3px solid var(--accent); }
+.rule-box-title { font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem; }
+.rule-box p { font-size:0.88rem;color:var(--accent3);margin-bottom:0.3rem; }
+.rule-box p:last-child { margin-bottom:0; }
+
+.example-table { width:100%;border-collapse:collapse;margin:1rem 0; }
+.example-table th { text-align:left;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);padding:0.5rem 0;border-bottom:1px solid var(--faint); }
+.example-table td { padding:0.6rem 0;border-bottom:1px solid var(--faint);font-size:0.88rem; }
+.example-table tr:last-child td { border-bottom:none; }
+.es-col { font-family:'Lora',serif;color:var(--ink);font-weight:500; }
+.de-col { color:var(--mid); }
+
+.humour-note { background:rgba(201,149,106,0.1);border-radius:8px;padding:0.8rem 1rem;margin:1rem 0;font-size:0.82rem;color:var(--capy);font-style:italic;border-left:2px solid var(--capy); }
+
+@media (max-width:768px) {
+  .app { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .main { padding:1.5rem; }
+  .reader-layout,.grammar-layout { grid-template-columns:1fr; }
+  .chapter-list,.grammar-nav { display:none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <svg width="24" height="24" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/></svg>
+    Spi<em>k</em>iu
+  </a>
+  <div class="nav-label">Main</div>
+  <a class="nav-item" href="dashboard.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Dashboard
+  </a>
+  <a class="nav-item" href="chat.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Start talking
+  </a>
+  <a class="nav-item active" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    My Books
+  </a>
+  <a class="nav-item" href="sessions.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Live Sessions
+  </a>
+  <div class="nav-label">Progress</div>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    My Path
+  </a>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">Ana Müller</div>
+        <div class="user-plan">Free · 1 conversation left</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="page-header">
+    <h1>My <em>Books</em></h1>
+    <p>Spanish · Reader · Glossary · Grammar</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="book-tabs">
+    <button class="book-tab active" onclick="showBook('reader')">📖 Reader</button>
+    <button class="book-tab" onclick="showBook('glossary')">📒 Glossary</button>
+    <button class="book-tab" onclick="showBook('grammar')">📗 Grammar</button>
+  </div>
+
+  <!-- ── READER ── -->
+  <div class="book-content active" id="book-reader">
+    <div class="reader-layout">
+
+      <!-- Chapter list -->
+      <div class="chapter-list">
+        <div class="chapter-list-title">Chapters</div>
+        <div class="chapter-item done"><span class="chapter-num">01</span> Arrival in Madrid</div>
+        <div class="chapter-item done"><span class="chapter-num">02</span> The First Meeting</div>
+        <div class="chapter-item active"><span class="chapter-num">03</span> A Coffee on Gran Vía</div>
+        <div class="chapter-item"><span class="chapter-num">04</span> The Negotiation</div>
+        <div class="chapter-item"><span class="chapter-num">05</span> A Weekend in Toledo</div>
+        <div class="chapter-item"><span class="chapter-num">06</span> The Client Dinner</div>
+        <div class="chapter-item"><span class="chapter-num">07</span> A Phone Call</div>
+        <div class="chapter-item"><span class="chapter-num">08</span> The Presentation</div>
+        <div class="chapter-item"><span class="chapter-num">09</span> Misunderstandings</div>
+        <div class="chapter-item"><span class="chapter-num">10</span> The Decision</div>
+        <div class="chapter-item"><span class="chapter-num">11</span> Last Day</div>
+        <div class="chapter-item"><span class="chapter-num">12</span> On the Way Home</div>
+      </div>
+
+      <!-- Chapter text -->
+      <div class="reader-text">
+        <div class="chapter-header">
+          <div class="chapter-label">Chapter 3</div>
+          <div class="chapter-title">A Coffee on Gran Vía</div>
+        </div>
+        <div class="reader-body">
+          <p class="scene">Madrid, 10:30 in the morning. Carlos and Ana are sitting in a small café near the Telefónica building. The street is already full of people.</p>
+
+          <p>Ana stirs her coffee slowly. She looks out onto the street and thinks about yesterday's meeting. Something was not quite right — but she cannot say exactly what.</p>
+
+          <p>Carlos notices her silence.</p>
+
+          <div class="dialogue">
+            <p><strong>Carlos:</strong> — ¿En qué piensas?</p>
+            <p><strong>Ana:</strong> — En la reunión de ayer. Creo que hay algo que no entendí bien.</p>
+            <p><strong>Carlos:</strong> — ¿Qué parte exactamente?</p>
+            <p><strong>Ana:</strong> — Cuando hablaron de los plazos. No estoy segura si acordaron tres semanas o tres meses.</p>
+          </div>
+
+          <p>Carlos laughs quietly. It is a warm laugh — not mocking, just understanding.</p>
+
+          <div class="dialogue">
+            <p><strong>Carlos:</strong> — Tres semanas. Pero no te preocupes — yo también me confundo a veces.</p>
+            <p><strong>Ana:</strong> — ¿De verdad?</p>
+            <p><strong>Carlos:</strong> — De verdad. El español de los negocios tiene sus propias reglas.</p>
+          </div>
+
+          <p>Ana smiles. She takes a sip of her coffee and looks at the street again. This time with a little more calm.</p>
+
+          <div class="dialogue">
+            <p><strong>Ana:</strong> — ¿Puedes explicarme cómo funciona exactamente?</p>
+            <p><strong>Carlos:</strong> — Con mucho gusto. Pero primero — ¿otro café?</p>
+          </div>
+
+        </div>
+
+        <div class="reader-nav">
+          <a href="#" class="btn-chapter">← Chapter 2</a>
+          <a href="#" class="btn-chapter next">Chapter 4 →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── GLOSSARY ── -->
+  <div class="book-content" id="book-glossary">
+
+    <div class="glossary-filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">🌰 Seed</button>
+      <button class="filter-btn">🌱 Sprout</button>
+      <button class="filter-btn">🌿 Branch</button>
+      <button class="filter-btn">Work</button>
+      <button class="filter-btn">Travel</button>
+      <button class="filter-btn">Daily life</button>
+    </div>
+
+    <table class="glossary-table">
+      <thead>
+        <tr>
+          <th>Spanish</th>
+          <th>German</th>
+          <th>Phonetics</th>
+          <th>Example</th>
+          <th>Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="word-es">negociar</div></td>
+          <td><div class="word-de">verhandeln</div></td>
+          <td><div class="word-phonetic">/ne·go·θjar/</div></td>
+          <td><div class="word-example"><em>Necesitamos negociar los plazos.</em></div></td>
+          <td><span class="word-level">🌱 Sprout</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">el plazo</div></td>
+          <td><div class="word-de">die Frist, der Termin</div></td>
+          <td><div class="word-phonetic">/ˈpla·θo/</div></td>
+          <td><div class="word-example"><em>¿Cuál es el plazo para entregar?</em></div></td>
+          <td><span class="word-level">🌱 Sprout</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">acordar</div></td>
+          <td><div class="word-de">vereinbaren, beschließen</div></td>
+          <td><div class="word-phonetic">/a·kor·ˈðar/</div></td>
+          <td><div class="word-example"><em>Acordamos reunirnos el lunes.</em></div></td>
+          <td><span class="word-level">🌱 Sprout</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">la reunión</div></td>
+          <td><div class="word-de">das Meeting, die Besprechung</div></td>
+          <td><div class="word-phonetic">/re·u·ˈnjon/</div></td>
+          <td><div class="word-example"><em>La reunión empieza a las diez.</em></div></td>
+          <td><span class="word-level">🌱 Sprout</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">preocuparse</div></td>
+          <td><div class="word-de">sich Sorgen machen</div></td>
+          <td><div class="word-phonetic">/pre·o·ku·ˈpar·se/</div></td>
+          <td><div class="word-example"><em>No te preocupes — todo va bien.</em></div></td>
+          <td><span class="word-level">🌰 Seed</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">con mucho gusto</div></td>
+          <td><div class="word-de">sehr gerne, mit Vergnügen</div></td>
+          <td><div class="word-phonetic">/kon ˈmu·tʃo ˈɡus·to/</div></td>
+          <td><div class="word-example"><em>— ¿Puedes ayudarme? — Con mucho gusto.</em></div></td>
+          <td><span class="word-level">🌰 Seed</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">de verdad</div></td>
+          <td><div class="word-de">wirklich, ehrlich</div></td>
+          <td><div class="word-phonetic">/de βer·ˈðað/</div></td>
+          <td><div class="word-example"><em>¿De verdad no lo sabías?</em></div></td>
+          <td><span class="word-level">🌰 Seed</span></td>
+        </tr>
+        <tr>
+          <td><div class="word-es">exactamente</div></td>
+          <td><div class="word-de">genau, exakt</div></td>
+          <td><div class="word-phonetic">/ek·sak·ta·ˈmen·te/</div></td>
+          <td><div class="word-example"><em>Exactamente lo que necesitaba.</em></div></td>
+          <td><span class="word-level">🌰 Seed</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── GRAMMAR ── -->
+  <div class="book-content" id="book-grammar">
+    <div class="grammar-layout">
+
+      <div class="grammar-nav">
+        <div class="grammar-nav-title">Topics</div>
+        <div class="grammar-nav-item active">Subjuntivo Present</div>
+        <div class="grammar-nav-item">Ser vs. Estar</div>
+        <div class="grammar-nav-item">Preterito vs. Imperfecto</div>
+        <div class="grammar-nav-item">Por vs. Para</div>
+        <div class="grammar-nav-item">Reflexive Verbs</div>
+        <div class="grammar-nav-item">Conditional</div>
+      </div>
+
+      <div class="grammar-content">
+        <div class="grammar-section-label">Grammar · Sprout Level</div>
+        <div class="grammar-title">The Subjuntivo Present</div>
+
+        <div class="grammar-body">
+
+          <p>The <strong>Subjuntivo</strong> is the part of Spanish that makes Germans nervous — and for good reason. In German, you say <em>"Ich hoffe, dass er kommt."</em> In Spanish, "comes" turns into something else entirely. But don't panic. Once you understand the logic, it is actually quite satisfying.</p>
+
+          <div class="humour-note">
+            🐾 Think of the Subjuntivo as Spikiu's way of saying: "I'm not sure this will happen, but I really want it to." Like hoping for a good coffee in an airport.
+          </div>
+
+          <p><strong>When do you use it?</strong></p>
+          <p>Whenever you express a wish, a doubt, an emotion, or a recommendation — you use the Subjuntivo in the second part of the sentence.</p>
+
+          <div class="rule-box">
+            <div class="rule-box-title">The pattern</div>
+            <p><strong>Espero que</strong> + Subjuntivo</p>
+            <p><strong>Quiero que</strong> + Subjuntivo</p>
+            <p><strong>Es importante que</strong> + Subjuntivo</p>
+            <p><strong>No creo que</strong> + Subjuntivo</p>
+          </div>
+
+          <p><strong>How to form it:</strong></p>
+          <p>Take the <em>yo</em> form of the present tense → remove the <em>-o</em> → add the new endings.</p>
+
+          <table class="example-table">
+            <thead>
+              <tr>
+                <th>Person</th>
+                <th class="es-col">hablar (to speak)</th>
+                <th class="de-col">German</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>yo</td><td class="es-col">hable</td><td class="de-col">ich spreche</td></tr>
+              <tr><td>tú</td><td class="es-col">hables</td><td class="de-col">du sprichst</td></tr>
+              <tr><td>él/ella</td><td class="es-col">hable</td><td class="de-col">er/sie spricht</td></tr>
+              <tr><td>nosotros</td><td class="es-col">hablemos</td><td class="de-col">wir sprechen</td></tr>
+              <tr><td>vosotros</td><td class="es-col">habléis</td><td class="de-col">ihr sprecht</td></tr>
+              <tr><td>ellos</td><td class="es-col">hablen</td><td class="de-col">sie sprechen</td></tr>
+            </tbody>
+          </table>
+
+          <p><strong>Real examples from Ana's conversations:</strong></p>
+
+          <div class="rule-box">
+            <div class="rule-box-title">From Chapter 3</div>
+            <p><em>"Espero que <strong>podamos</strong> acordar los plazos."</em></p>
+            <p>→ I hope we <strong>can</strong> agree on the deadlines.</p>
+            <p style="margin-top:0.5rem;"><em>"No creo que <strong>sea</strong> tan difícil."</em></p>
+            <p>→ I don't think it <strong>is</strong> that difficult.</p>
+          </div>
+
+          <div class="humour-note">
+            🐾 The irregular verbs in Subjuntivo? Yes, they exist. But here's the secret: the most common ones — ser, estar, ir, haber — you will learn naturally from conversations. Spikiu will bring them back at the right moment.
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+function showBook(type) {
+  document.querySelectorAll('.book-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.book-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('book-' + type).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
