@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Coming back soon</title>
+<meta name="description" content="Spikiu is getting better for you. We'll be back very soon.">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --white:#ffffff; --bg:#faf9f7; --bg2:#f3f1ee;
+  --ink:#1a1816; --mid:#6b6560; --warm:#d4cdc6;
+  --accent:#2d6a4f; --capy:#c9956a;
+}
+html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+.wrap { min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem 1.5rem; text-align:center; gap:1.5rem; }
+.capy { width:140px; height:140px; animation:float 4s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+.brand { font-family:'Lora',serif; font-size:2rem; font-weight:700; letter-spacing:-0.02em; color:var(--ink); }
+.brand em { color:var(--accent); font-style:italic; }
+h1 { font-family:'Lora',serif; font-size:clamp(1.6rem,4vw,2.4rem); font-weight:700; letter-spacing:-0.02em; line-height:1.15; color:var(--ink); max-width:580px; }
+h1 em { font-style:italic; color:var(--accent); }
+p { font-size:1.05rem; line-height:1.7; color:var(--mid); max-width:420px; }
+.dots { display:flex; gap:0.6rem; margin-top:0.5rem; }
+.dots span { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:bounce 1.4s infinite; }
+.dots span:nth-child(2) { animation-delay:0.2s; }
+.dots span:nth-child(3) { animation-delay:0.4s; }
+@keyframes bounce { 0%,80%,100%{opacity:0.3; transform:translateY(0);} 40%{opacity:1; transform:translateY(-6px); background:var(--capy);} }
+.footer { margin-top:2rem; font-size:0.82rem; color:var(--warm); font-style:italic; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <svg class="capy" viewBox="0 0 80 80" fill="none">
+    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+    <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+    <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+    <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="34" cy="23" r="1.2" fill="white"/>
+    <circle cx="48" cy="23" r="1.2" fill="white"/>
+    <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <div class="brand">Spi<em>k</em>iu</div>
+
+  <h1>Spikiu is <em>getting better</em> for you.</h1>
+  <p>We're working on something special. Come back very soon to start speaking — without fear.</p>
+
+  <div class="dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="footer">🐾 See you soon · spikiu.com</div>
+
+</div>
+
+</body>
+</html>
