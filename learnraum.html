@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dein Lernraum — Spikiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --white:   #ffffff;
+  --bg:      #faf9f7;
+  --bg2:     #f3f1ee;
+  --ink:     #1a1816;
+  --mid:     #6b6560;
+  --faint:   #e8e4df;
+  --warm:    #d4cdc6;
+  --accent:  #2d6a4f;
+  --accent2: #e8f2ed;
+  --accent3: #1a4a38;
+  --capy:    #c9956a;
+  --dim:     #c4beb8;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+/* ── BOOKMARK BANNER ────────────────────────────────── */
+.bookmark-hint {
+  background: var(--accent2);
+  border: 1px solid rgba(45,106,79,0.15);
+  border-radius: 100px;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.82rem;
+  color: var(--accent3);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.bookmark-hint strong { font-weight: 600; }
+
+/* ── HEADER ─────────────────────────────────────────── */
+.header {
+  text-align: center;
+  padding: 1rem 0 1.5rem;
+}
+
+.capy-waiting {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 1rem;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-4px) scale(1.02); }
+}
+
+.greeting {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+
+.greeting em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.subgreeting {
+  font-size: 0.95rem;
+  color: var(--mid);
+  font-style: italic;
+}
+
+/* ── TREE — THE GROWING PATH ────────────────────────── */
+.tree {
+  background: var(--white);
+  border: 1px solid var(--faint);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.tree-title {
+  font-family: 'Lora', serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.tree-stages {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.tree-stages::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent) 0%, var(--accent) 25%, var(--dim) 25%, var(--dim) 100%);
+  z-index: 0;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  flex: 1;
+}
+
+.stage-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--dim);
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s;
+}
+
+.stage.active .stage-icon {
+  background: var(--accent2);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 6px rgba(45,106,79,0.08);
+}
+
+.stage.dim .stage-icon {
+  opacity: 0.4;
+  filter: grayscale(0.6);
+}
+
+.stage-label {
+  font-family: 'Lora', serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.2;
+  padding: 0 0.2rem;
+}
+
+.stage.dim .stage-label { color: var(--dim); }
+
+.tree-content {
+  border-top: 1px solid var(--faint);
+  padding-top: 1.5rem;
+  font-family: 'Lora', serif;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.tree-content h2 {
+  font-family: 'Lora', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 0.7rem;
+  line-height: 1.3;
+}
+
+.tree-content h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 1.2rem 0 0.4rem;
+}
+
+.tree-content strong { font-weight: 600; color: var(--ink); }
+.tree-content em { font-style: italic; color: var(--accent); }
+
+.tree-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0;
+}
+
+.tree-content li {
+  padding: 0.3rem 0 0.3rem 1.3rem;
+  position: relative;
+  font-size: 0.93rem;
+  color: var(--mid);
+}
+
+.tree-content li::before {
+  content: '·';
+  position: absolute;
+  left: 0.5rem;
+  color: var(--capy);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.tree-content hr {
+  border: none;
+  border-top: 1px solid var(--faint);
+  margin: 1.2rem 0;
+}
+
+/* ── CONVERSATIONS — THE INVITATIONS ────────────────── */
+.conversations {
+  margin: 2rem 0 1.5rem;
+}
+
+.conversations-label {
+  font-family: 'Lora', serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.conversation-cards {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.conv-card {
+  background: var(--white);
+  border: 1.5px solid var(--faint);
+  border-radius: 16px;
+  padding: 1.1rem 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.conv-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(45,106,79,0.08);
+}
+
+.conv-card.done {
+  opacity: 0.6;
+  background: var(--bg2);
+}
+
+.conv-card.done:hover {
+  transform: none;
+  border-color: var(--faint);
+  box-shadow: none;
+  cursor: default;
+}
+
+.conv-number {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent2);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.conv-card.done .conv-number {
+  background: var(--dim);
+  color: var(--white);
+}
+
+.conv-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.conv-title {
+  font-family: 'Lora', serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.15rem;
+}
+
+.conv-sub {
+  font-size: 0.83rem;
+  color: var(--mid);
+}
+
+.conv-arrow {
+  color: var(--accent);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.conv-card:hover .conv-arrow { transform: translateX(3px); }
+.conv-card.done .conv-arrow { color: var(--dim); }
+
+/* ── FOOTER ─────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--faint);
+  font-size: 0.78rem;
+  color: var(--warm);
+}
+
+.footer a {
+  color: var(--mid);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--warm);
+}
+
+.footer a:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ── EMPTY STATE ────────────────────────────────────── */
+.empty {
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+.empty h1 {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 1.5rem 0 0.8rem;
+  color: var(--ink);
+}
+
+.empty p {
+  color: var(--mid);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.empty-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--white);
+  text-decoration: none;
+  padding: 0.85rem 2rem;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.empty-btn:hover { background: var(--accent3); }
+
+@media (max-width: 480px) {
+  .app { padding: 1rem 1rem 2rem; }
+  .tree { padding: 1.5rem 1rem; }
+  .stage-icon { width: 48px; height: 48px; font-size: 1.4rem; }
+  .stage-label { font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- Content injected by JS -->
+
+</div>
+
+<script>
+// ── LOAD PATH FROM LOCALSTORAGE ───────────────────────
+let learnData = null;
+try {
+  const raw = localStorage.getItem('spikiu_learnpath');
+  if (raw) learnData = JSON.parse(raw);
+} catch(e) {}
+
+const app = document.getElementById('app');
+
+// ── EMPTY STATE — no path yet ─────────────────────────
+if (!learnData || !learnData.name) {
+  app.innerHTML = `
+    <div class="empty">
+      <svg width="100" height="100" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <h1>Dein Lernraum wartet noch</h1>
+      <p>Sprich erst mit Spikiu, damit wir gemeinsam<br>deinen persönlichen Weg finden.</p>
+      <a href="chat.html" class="empty-btn">Mit Spikiu sprechen →</a>
+    </div>
+  `;
+} else {
+  renderLernraum();
+}
+
+// ── RENDER FULL LERNRAUM ──────────────────────────────
+function renderLernraum() {
+  const name = learnData.name;
+  const targetLang = learnData.targetLang;
+  const sessionsCompleted = learnData.sessionsCompleted || 0;
+
+  // Capybara SVG
+  const capySVG = `<svg class="capy-waiting" viewBox="0 0 80 80" fill="none">
+    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+    <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+    <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+    <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="34" cy="23" r="1.2" fill="white"/>
+    <circle cx="48" cy="23" r="1.2" fill="white"/>
+    <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>`;
+
+  app.innerHTML = `
+    <div class="bookmark-hint">
+      🔖 <span><strong>Tipp:</strong> Speichere diese Seite als Lesezeichen — so findest du deinen Lernraum immer wieder.</span>
+    </div>
+
+    <div class="header">
+      ${capySVG}
+      <h1 class="greeting">${escapeHtml(name)}s <em>Lernraum</em></h1>
+      <p class="subgreeting">Spikiu wartet schon. 🐾</p>
+    </div>
+
+    <div class="tree">
+      <div class="tree-title">Dein Weg</div>
+      <div class="tree-stages">
+        <div class="stage active">
+          <div class="stage-icon">🌰</div>
+          <div class="stage-label">Erste Schritte</div>
+        </div>
+        <div class="stage dim">
+          <div class="stage-icon">🌱</div>
+          <div class="stage-label">Wachsen</div>
+        </div>
+        <div class="stage dim">
+          <div class="stage-icon">🌿</div>
+          <div class="stage-label">Fließen</div>
+        </div>
+        <div class="stage dim">
+          <div class="stage-icon">👑</div>
+          <div class="stage-label">Ankommen</div>
+        </div>
+      </div>
+      <div class="tree-content">
+        ${renderPlan(learnData.plan)}
+      </div>
+    </div>
+
+    <div class="conversations">
+      <div class="conversations-label">Deine ersten drei Gespräche</div>
+      <div class="conversation-cards">
+        ${renderConvCard(1, sessionsCompleted)}
+        ${renderConvCard(2, sessionsCompleted)}
+        ${renderConvCard(3, sessionsCompleted)}
+      </div>
+    </div>
+
+    <div class="footer">
+      Spikiu · spikiu.com · <a href="chat.html" onclick="resetPath(event)">Neuen Lernraum beginnen</a>
+    </div>
+  `;
+}
+
+// ── RENDER ONE CONVERSATION CARD ──────────────────────
+function renderConvCard(num, completed) {
+  const isDone = num <= completed;
+  const isNext = num === completed + 1;
+  const titles = {
+    1: 'Erstes Gespräch',
+    2: 'Zweites Gespräch',
+    3: 'Drittes Gespräch'
+  };
+  const subs = {
+    1: 'Ein erster Schritt — ohne Druck.',
+    2: 'Tiefer eintauchen.',
+    3: 'Frei sprechen lernen.'
+  };
+  const doneSub = '✓ Schon erlebt';
+
+  if (isDone) {
+    return `
+      <div class="conv-card done">
+        <div class="conv-number">✓</div>
+        <div class="conv-body">
+          <div class="conv-title">${titles[num]}</div>
+          <div class="conv-sub">${doneSub}</div>
+        </div>
+        <div class="conv-arrow">·</div>
+      </div>
+    `;
+  }
+  return `
+    <a href="chat.html?session=${num}" class="conv-card" onclick="markSessionStart(${num})">
+      <div class="conv-number">${num}</div>
+      <div class="conv-body">
+        <div class="conv-title">${titles[num]}</div>
+        <div class="conv-sub">${subs[num]}</div>
+      </div>
+      <div class="conv-arrow">→</div>
+    </a>
+  `;
+}
+
+// ── MARK SESSION AS STARTED ───────────────────────────
+function markSessionStart(num) {
+  // We track sessions as completed once they're started — beta simplification
+  try {
+    const data = JSON.parse(localStorage.getItem('spikiu_learnpath') || '{}');
+    if ((data.sessionsCompleted || 0) < num) {
+      data.sessionsCompleted = num;
+      localStorage.setItem('spikiu_learnpath', JSON.stringify(data));
+    }
+  } catch(e) {}
+}
+
+// ── RENDER PLAN MARKDOWN → HTML ───────────────────────
+function renderPlan(md) {
+  if (!md) return '<p style="color:var(--mid);font-style:italic;">Dein Weg wird gerade geschrieben...</p>';
+
+  return md
+    .replace(/^#{3}\s+(.+)$/gm, '<h3>$1</h3>')
+    .replace(/^#{2}\s+(.+)$/gm, '<h2>$1</h2>')
+    .replace(/^#{1}\s+(.+)$/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^---+$/gm, '<hr>')
+    .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>(\n|$))+/g, m => '<ul>' + m + '</ul>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/(?<!>)\n(?!<)/g, '<br>');
+}
+
+// ── RESET PATH ────────────────────────────────────────
+function resetPath(e) {
+  e.preventDefault();
+  if (confirm('Möchtest du wirklich neu beginnen? Dein aktueller Lernraum wird dabei gelöscht.')) {
+    try { localStorage.removeItem('spikiu_learnpath'); } catch(err) {}
+    window.location.href = 'chat.html';
+  }
+}
+
+// ── HTML ESCAPE ───────────────────────────────────────
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+</script>
+</body>
+</html>
