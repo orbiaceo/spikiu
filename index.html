@@ -3,98 +3,562 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spikiu — Coming back soon</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<title>Spikiu — Speak Without Fear</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:   #ffffff;
+  --off:     #faf9f7;
+  --ink:     #1a1816;
+  --mid:     #6b6560;
+  --faint:   #e8e4df;
+  --warm:    #d4cdc6;
+  --accent:  #2d6a4f;
+  --accent2: #e8f2ed;
+  --accent3: #1a4a38;
+  --capy:    #c9956a;
+  --gold:    #a07830;
+}
 
 body {
-  background: #faf9f7;
-  color: #1c1917;
+  background: var(--white);
+  color: var(--ink);
   font-family: 'DM Sans', sans-serif;
-  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  padding: 1.1rem 5vw;
+  border-bottom: 1px solid var(--faint);
+  background: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Lora', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.logo em { color: var(--accent); font-style: italic; }
+
+.btn-start {
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.6rem 1.5rem;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-start:hover { background: var(--accent3); }
+
+/* ── HERO ── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 2rem;
+  padding: 5rem 5vw 3rem;
 }
 
-.wrap {
-  max-width: 400px;
-}
-
-svg.capy {
-  width: 80px;
-  height: 80px;
-  animation: float 4s ease-in-out infinite;
+.capy-wrap {
   margin-bottom: 2rem;
+  animation: float 4s ease-in-out infinite;
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
 
-h1 {
+.hero h1 {
   font-family: 'Lora', serif;
-  font-size: 2rem;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  max-width: 700px;
+  margin-bottom: 1.2rem;
+}
+.hero h1 em { color: var(--accent); font-style: italic; }
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: var(--mid);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+/* ── FREE / PAID SPLIT ── */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0;
+  max-width: 680px;
+  width: 100%;
+  margin-bottom: 2rem;
+  border: 1.5px solid var(--faint);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.split-divider {
+  background: var(--faint);
+}
+
+.split-col {
+  padding: 2rem 2.2rem;
+  background: var(--white);
+}
+
+.split-col.free { background: var(--accent2); }
+
+.split-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.8rem;
+  border-radius: 100px;
   margin-bottom: 1rem;
 }
 
-h1 em { font-style: italic; color: #2d6a4f; }
+.split-col.free .split-tag {
+  background: var(--accent);
+  color: var(--white);
+}
 
-p {
-  color: #78716c;
+.split-col.premium .split-tag {
+  background: var(--faint);
+  color: var(--mid);
+}
+
+.split-col h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+  line-height: 1.2;
+}
+
+.split-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.split-list li {
+  font-size: 0.88rem;
+  color: var(--mid);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.5;
+}
+
+.split-list li::before {
+  content: "✓";
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.split-col.premium .split-list li::before {
+  color: var(--capy);
+}
+
+.price {
+  margin-top: 1.2rem;
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.price span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: var(--mid);
+  font-weight: 400;
+}
+
+/* ── CTA BUTTONS ── */
+.cta-group {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  border-radius: 100px;
   font-size: 1rem;
-  line-height: 1.7;
-  font-weight: 300;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 2px solid var(--accent);
+}
+.btn-primary:hover {
+  background: var(--accent3);
+  border-color: var(--accent3);
+  transform: translateY(-1px);
 }
 
-.dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: #2d6a4f;
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  padding: 1rem 2rem;
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--faint);
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--ink); }
+
+.hero-note {
+  font-size: 0.78rem;
+  color: var(--warm);
+  margin-top: 1rem;
+}
+
+/* ── HOW IT WORKS ── */
+.how {
+  background: var(--off);
+  padding: 5rem 5vw;
+}
+
+.section-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--capy);
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
+
+.how h2 {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin-bottom: 3rem;
+  color: var(--ink);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--faint);
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.step {
+  background: var(--white);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.step-num {
+  width: 36px;
+  height: 36px;
+  background: var(--accent2);
   border-radius: 50%;
-  margin: 2rem auto 0;
-  animation: pulse 2.5s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  margin: 0 auto 1rem;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.7); }
+.step h4 {
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.step p {
+  font-size: 0.82rem;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* ── TESTIMONIAL ── */
+.testimonial {
+  padding: 5rem 5vw;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+blockquote {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+blockquote::before {
+  content: '"';
+  color: var(--accent);
+  font-size: 3rem;
+  line-height: 0;
+  vertical-align: -0.4em;
+  margin-right: 0.1em;
+}
+
+.testimonial-author {
+  font-size: 0.85rem;
+  color: var(--mid);
+}
+.testimonial-author strong {
+  color: var(--ink);
+  font-weight: 600;
+  display: block;
+}
+
+/* ── FINAL CTA ── */
+.final {
+  background: var(--accent);
+  padding: 5rem 5vw;
+  text-align: center;
+}
+
+.final h2 {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.final h2 em { font-style: italic; color: #a8d5be; }
+
+.final p {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-white {
+  background: var(--white);
+  color: var(--accent3);
+  padding: 1rem 2.8rem;
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-white:hover {
+  background: var(--off);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  padding: 2rem 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Lora', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.footer-logo em { color: var(--capy); font-style: italic; }
+.footer-copy { font-size: 0.78rem; color: #555; }
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  .split { grid-template-columns: 1fr; }
+  .split-divider { display: none; }
+  .split-col { padding: 1.5rem; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .hero { padding: 3.5rem 1.5rem 2.5rem; }
+  .how { padding: 3.5rem 1.5rem; }
+  footer { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <svg class="capy" viewBox="0 0 80 80" fill="none">
-    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
-    <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
-    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
-    <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
-    <circle cx="38" cy="33" r="1" fill="#6b4226"/>
-    <circle cx="42" cy="33" r="1" fill="#6b4226"/>
-    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
-    <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
-    <circle cx="34" cy="23" r="1.2" fill="white"/>
-    <circle cx="48" cy="23" r="1.2" fill="white"/>
-    <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
-    <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
-    <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
-    <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
-    <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
-    <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
-    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-  </svg>
 
-  <h1>Spikiu wird<br><em>gerade besser.</em></h1>
-  <p>Wir sind gleich wieder da. 🐾</p>
-  <span class="dot"></span>
-</div>
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Spi<em>k</em>iu</a>
+  <a href="chat.html" class="btn-start">Start free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Capybara -->
+  <div class="capy-wrap">
+    <svg width="88" height="88" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+
+  <p style="font-family:'Lora',serif; font-style:italic; font-size:clamp(0.9rem,1.8vw,1.1rem); color:var(--mid); margin-bottom:1.5rem; letter-spacing:0.01em;">
+    In a world of noise — one place to speak and learn with calm.
+  </p>
+
+  <h1><em>Speak now.</em></h1>
+
+  <p class="hero-sub">
+    The words are already inside you.<br>
+    Spikiu helps you bring them into conversation.
+  </p>
+
+  <!-- FREE vs PREMIUM SPLIT -->
+  <div class="split">
+    <div class="split-col free">
+      <span class="split-tag">For Free</span>
+      <h3>Start today</h3>
+      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;">Assessment · Learning path · 3 conversations · 3 books</p>
+      <a href="spikiu-products.html#free" style="font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:600;">What's included →</a>
+      <div class="price" style="margin-top:1rem;">€0 <span>no card needed</span></div>
+    </div>
+
+    <div class="split-divider"></div>
+
+    <div class="split-col premium">
+      <span class="split-tag">Premium</span>
+      <h3>Made for you</h3>
+      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;">Your coach · Your book · Your language · Unlimited</p>
+      <a href="spikiu-products.html#premium" style="font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:600;">What's included →</a>
+      <div class="price" style="margin-top:1rem;">€8 <span>/ month · 1 week free</span></div>
+    </div>
+  </div>
+
+  <div class="cta-group">
+    <a href="chat.html" class="btn-primary">Start talking — it's free →</a>
+  </div>
+
+  <span class="hero-note">Available in Spanish, German & English · No registration needed</span>
+
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <blockquote>
+    After 20 minutes with Spikiu I spoke more Spanish than in three years with other Apps. It doesn't feel like learning. It feels like talking.
+  </blockquote>
+  <div class="testimonial-author">
+    <strong>Michael T.</strong>
+    Munich, Germany
+  </div>
+</section>
+
+<!-- SPIKIU FOR TEAMS -->
+<section style="background: var(--ink); padding: 5rem 5vw;">
+  <div style="max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2.5rem;">
+
+    <div>
+      <span style="display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--capy); margin-bottom:1rem;">For Companies</span>
+      <h2 style="font-family:'Lora',serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; color:var(--white); letter-spacing:-0.02em; line-height:1.1; margin-bottom:1rem;">
+        Spikiu<br><em style="color:var(--capy); font-style:italic;">for Teams.</em>
+      </h2>
+      <p style="color:#888; font-size:1rem; line-height:1.75; max-width:380px; margin-bottom:1.5rem;">
+        Real communication for international teams.<br>
+        Built around your world — your meetings, your clients, your language.
+      </p>
+      <a href="spikiu-teams.html" style="font-size:0.88rem; color:var(--capy); text-decoration:none; font-weight:600; border-bottom:1px solid rgba(201,149,106,0.4); padding-bottom:2px;">Learn more →</a>
+    </div>
+
+    <div style="border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:2rem; min-width:220px; text-align:center;">
+      <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#555; margin-bottom:1.2rem;">Pricing</div>
+      <div style="font-family:'Lora',serif; font-size:2.2rem; font-weight:700; color:var(--white); line-height:1;">On request</div>
+      <div style="font-size:0.78rem; color:#555; margin-top:0.4rem;">Assessment · Syllabus · Training</div>
+      <a href="spikiu-teams.html" style="display:block; margin-top:1.5rem; background:var(--capy); color:var(--white); padding:0.8rem 1.5rem; border-radius:100px; font-size:0.88rem; font-weight:600; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='#a07830'" onmouseout="this.style.background='var(--capy)'">Request a proposal →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <h2>Just speak.<br><em>Now. Don't wait.</em></h2>
+  <p>No registration. No credit card. Just open the chat.</p>
+  <a href="chat.html" class="btn-white">Start talking — it's free →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Spi<em>k</em>iu</span>
+  <span class="footer-copy">© 2026 Spikiu · spikiu.com</span>
+</footer>
+
+<script>
+function showReader(type) {
+  ['biz','travel','family'].forEach(t => {
+    document.getElementById('reader-' + t).style.display = t === type ? 'block' : 'none';
+    const tab = document.getElementById('tab-' + t);
+    tab.style.background = t === type ? 'var(--accent)' : 'transparent';
+    tab.style.color = t === type ? 'white' : 'var(--accent)';
+  });
+}
+</script>
 </body>
 </html>
