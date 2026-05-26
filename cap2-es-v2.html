@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu Reader — Kapitel 2 · Mi nuevo piso</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --paper:    #fdfaf3;
+  --white:    #ffffff;
+  --ink:      #1a1612;
+  --mid:      #6b6560;
+  --faint:    #ece4d3;
+  --warm:     #d8c9aa;
+  --accent:   #2d6a4f;
+  --accent2:  #e8f2ed;
+  --capy:     #b8845a;
+  --gold:     #9a6e2a;
+  --highlight:#fff2c9;
+  --paper-dk: #f3ead7;
+  --green:    #2d6a4f;
+  --red:      #c0392b;
+  --green-bg: #e6f3eb;
+  --red-bg:   #fbe9e6;
+}
+
+body { background: var(--warm); font-family: 'DM Sans', sans-serif; color: var(--ink); padding: 2rem 1rem; line-height: 1.6; min-height: 100vh; }
+.book { max-width: 720px; margin: 0 auto; background: var(--paper); border-radius: 16px; padding: 56px 56px 40px; box-shadow: 0 12px 48px rgba(0,0,0,0.14); }
+
+.chapter-tabs { position: sticky; top: -56px; background: var(--paper); margin: -56px -56px 32px; padding: 1.1rem 56px; border-bottom: 1px solid var(--faint); display: flex; gap: 0.5rem; z-index: 10; flex-wrap: wrap; }
+.chapter-tab { background: transparent; border: 1.5px solid var(--faint); padding: 0.55rem 1.1rem; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: var(--mid); transition: all 0.18s; }
+.chapter-tab:hover { background: var(--accent2); border-color: var(--accent); color: var(--accent); }
+.chapter-tab.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+.book-header { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 22px; border-bottom: 2px solid var(--ink); margin-bottom: 32px; }
+.book-brand { display: flex; align-items: center; gap: 0.6rem; }
+.book-brand-name { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
+.book-brand-name em { color: var(--accent); font-style: italic; }
+.book-meta { text-align: right; font-size: 0.74rem; color: var(--mid); line-height: 1.5; }
+.book-meta strong { color: var(--ink); font-weight: 700; }
+.book-level { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.22rem 0.7rem; border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; margin-top: 0.5rem; }
+
+.section { margin-bottom: 52px; }
+.section:last-child { margin-bottom: 0; }
+.section-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+.section-title { font-family: 'Lora', serif; font-size: 2rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.8rem; }
+.section-title em { color: var(--accent); font-style: italic; }
+.section-subtitle { font-family: 'Lora', serif; font-style: italic; font-size: 1.05rem; color: var(--mid); margin-bottom: 2rem; line-height: 1.5; }
+
+.reader-text { font-family: 'Lora', serif; font-size: 1.08rem; line-height: 1.85; color: var(--ink); }
+.reader-text p { margin-bottom: 1.1rem; }
+.reader-text p:first-of-type::first-letter { font-family: 'Lora', serif; font-size: 3.2rem; font-weight: 700; color: var(--accent); float: left; line-height: 0.9; margin: 0.3rem 0.5rem -0.2rem 0; }
+.es { color: var(--accent); font-weight: 600; font-style: italic; }
+.es-help { font-size: 0.78rem; color: var(--mid); font-style: italic; font-weight: normal; }
+.dialogue { display: block; margin: 0.3rem 0; padding-left: 1rem; border-left: 2px solid var(--faint); }
+.reader-note { background: var(--paper-dk); border-left: 3px solid var(--capy); padding: 1rem 1.4rem; border-radius: 0 8px 8px 0; margin: 2rem 0 1rem; font-size: 0.92rem; line-height: 1.6; }
+.reader-note strong { color: var(--capy); }
+
+.gram-intro { font-family: 'Lora', serif; font-size: 1.05rem; line-height: 1.75; margin-bottom: 1.5rem; }
+.gram-intro em { font-style: italic; color: var(--accent); }
+.gram-twins { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.8rem; }
+.gram-twin { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.2rem 1.4rem; }
+.gram-twin-name { font-family: 'Lora', serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-bottom: 0.3rem; }
+.gram-twin-tagline { font-size: 0.78rem; color: var(--mid); font-style: italic; margin-bottom: 0.9rem; }
+.gram-twin-example { font-family: 'Lora', serif; font-size: 0.98rem; background: var(--paper); padding: 0.6rem 0.9rem; border-radius: 6px; font-style: italic; border-left: 2px solid var(--accent); }
+.gram-rule { background: var(--accent2); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.2rem 1.4rem; margin: 1.5rem 0; }
+.gram-rule h4 { font-family: 'Lora', serif; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+.gram-rule p { font-size: 0.95rem; line-height: 1.65; }
+.gram-markers { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.gram-marker-col { background: var(--white); border: 1px solid var(--faint); border-radius: 10px; padding: 1rem 1.2rem; }
+.gram-marker-col h5 { font-family: 'Lora', serif; font-weight: 700; font-size: 0.92rem; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--faint); }
+.gram-marker-col h5 .badge { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.1rem 0.5rem; border-radius: 100px; font-size: 0.65rem; font-weight: 700; margin-left: 0.4rem; }
+.gram-marker-col ul { list-style: none; font-size: 0.9rem; line-height: 1.9; }
+.gram-marker-col ul li::before { content: "→ "; color: var(--accent); font-weight: 700; }
+.m { color: var(--mid); }
+.gram-tip { background: var(--paper-dk); border-radius: 10px; padding: 1.2rem 1.4rem; margin-top: 1.5rem; font-size: 0.92rem; line-height: 1.65; }
+.gram-tip strong { color: var(--capy); }
+.gram-tip em { font-style: italic; color: var(--accent); }
+
+.exercise { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; }
+.exercise.answered { border-color: var(--accent); }
+.ex-num { font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-right: 0.4rem; }
+.ex-prompt { font-size: 0.96rem; line-height: 1.6; margin-bottom: 0.9rem; font-weight: 500; }
+.ex-prompt .es { font-style: italic; color: var(--accent); font-weight: 600; }
+.ex-prompt .help { font-size: 0.78rem; color: var(--mid); font-style: italic; font-weight: normal; }
+.ex-options { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.ex-options li { padding: 0; margin: 0; }
+.ex-option { background: var(--paper); border: 1.5px solid var(--faint); border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.95rem; cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 0.7rem; font-family: inherit; width: 100%; text-align: left; }
+.ex-option:hover:not(.locked) { background: var(--accent2); border-color: var(--accent); }
+.ex-option .letter { width: 26px; height: 26px; background: var(--white); border: 1.5px solid var(--faint); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: var(--mid); flex-shrink: 0; transition: all 0.18s; }
+.ex-option.correct { background: var(--green-bg) !important; border-color: var(--green) !important; }
+.ex-option.correct .letter { background: var(--green) !important; color: white !important; border-color: var(--green) !important; }
+.ex-option.incorrect { background: var(--red-bg) !important; border-color: var(--red) !important; }
+.ex-option.incorrect .letter { background: var(--red) !important; color: white !important; border-color: var(--red) !important; }
+.ex-option.locked { cursor: default; }
+.ex-feedback { margin-top: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.5; display: none; }
+.ex-feedback.show { display: block; }
+.ex-feedback.right { background: var(--green-bg); color: var(--green); border-left: 3px solid var(--green); }
+.ex-feedback.wrong { background: var(--red-bg); color: var(--red); border-left: 3px solid var(--red); }
+.ex-feedback em { color: var(--ink); font-style: italic; }
+
+.gloss-item { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; }
+.gloss-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.9rem; flex-wrap: wrap; padding-bottom: 0.7rem; border-bottom: 1px solid var(--faint); }
+.gloss-num { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+.gloss-word { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; }
+.gloss-trans { font-size: 0.84rem; color: var(--capy); font-style: italic; }
+
+.book-footer { margin-top: 52px; padding-top: 24px; border-top: 1px solid var(--faint); text-align: center; font-size: 0.84rem; color: var(--mid); line-height: 1.7; }
+.book-footer strong { color: var(--accent); font-weight: 600; }
+.book-footer em { color: var(--capy); font-style: italic; }
+.tier-note { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.3rem 0.9rem; border-radius: 100px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; margin-top: 0.8rem; }
+
+@media (max-width: 600px) {
+  body { padding: 0.8rem 0.5rem; }
+  .book { padding: 28px 22px 24px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 1.6rem; }
+  .reader-text { font-size: 1rem; }
+  .gram-twins, .gram-markers { grid-template-columns: 1fr; }
+  .chapter-tabs { margin: -28px -22px 24px; padding: 0.9rem 22px; top: -28px; }
+  .chapter-tab { font-size: 0.78rem; padding: 0.45rem 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="book">
+
+  <!-- BACK TO BOOKS -->
+  <a href="books.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:transparent;border:1.5px solid var(--faint);padding:0.5rem 1rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;margin-bottom:1rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--faint)';this.style.color='var(--mid)'">← Books</a>
+
+  <div class="chapter-tabs">
+    <button class="chapter-tab active" onclick="scrollSec(0,this)">📖 Reader</button>
+    <button class="chapter-tab" onclick="scrollSec(1,this)">⚙ Grammatik</button>
+    <button class="chapter-tab" onclick="scrollSec(2,this)">📒 Glossar</button>
+  </div>
+
+  <div class="book-header">
+    <div class="book-brand">
+      <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="book-brand-name">Spi<em>k</em>iu Reader</span>
+    </div>
+    <div class="book-meta">
+      <strong>Kapitel 2</strong><br>
+      Spanisch für Deutsche
+      <div class="book-level">A1 · Free</div>
+    </div>
+  </div>
+
+  <!-- ─────────────── READER ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Lektüre · Kapitel 2</div>
+    <h1 class="section-title">Mi <em>nuevo piso</em></h1>
+    <p class="section-subtitle">In dem Lukas zwei neue Mitbewohner kennenlernt, eine Tortilla isst und entdeckt, dass „hostia" mehr als ein Wort ist.</p>
+
+    <div class="reader-text">
+
+      <p>Drinnen riecht es nach Knoblauch. Lukas kommt aus dem Treppenhaus, das nach altem Holz roch, in eine Wohnung, die nach <em>Essen</em> riecht. <em>Echtes Essen. Nicht Kantine, nicht Mikrowelle. Etwas, das jemand gerade kocht.</em></p>
+
+      <p>María nimmt ihm den roten Koffer ab. <span class="es">"¡Qué pesada! ¿Has traído piedras de Hamburgo?"</span> <span class="es-help">Wie schwer! Hast du Steine aus Hamburg mitgebracht?</span> Sie lacht. Lukas lacht auch.</p>
+
+      <p><span class="es">"Casi. Libros."</span> <span class="es-help">Fast. Bücher.</span></p>
+
+      <p><span class="es">"¡Ay, un alemán con libros! Mi madre va a estar contenta."</span> <span class="es-help">Ein Deutscher mit Büchern! Meine Mutter wird begeistert sein.</span></p>
+
+      <p>Lukas versteht nicht ganz, warum Marías Mutter sich darüber freuen sollte. Aber er nickt und sagt: <span class="es">"Vale."</span> <em>Ein Wort, das er heute zum dritten Mal hört. Es scheint vieles zu bedeuten.</em></p>
+
+      <p>María führt ihn durch die Wohnung. Der Flur ist eng, mit Bildern an den Wänden — schwarz-weiße Fotos von Madrid, eine bunte Karte von Spanien, ein Bild von einer Katze, die Lukas nicht sofort als Foto erkennt (es sieht aus wie ein Gemälde).</p>
+
+      <p class="dialogue"><span class="es">"Aquí está la cocina."</span> <span class="es-help">Hier ist die Küche.</span></p>
+
+      <p>Lukas sieht hinein: klein, gelb, voll mit Töpfen und Gläsern. Auf dem Herd steht eine Pfanne mit etwas Gelbem und Dickem.</p>
+
+      <p>An der Pfanne steht ein Mann. Mittelgroß, schwarze lockige Haare, ein altes T-Shirt mit dem Logo einer Band, die Lukas nicht kennt. Er dreht sich um — riesiges Lächeln — und schreit fast:</p>
+
+      <p class="dialogue"><span class="es">"¡QUIIIIILLO! ¿Cómo va eso? Tú eres el alemán, ¿no?"</span> <span class="es-help">Heeey! Wie läuft's? Du bist der Deutsche, oder?</span></p>
+
+      <p>Lukas blinzelt. <em>Quillo? Was ist quillo?</em> Aber er versteht „alemán" und „¿no?" und nickt.</p>
+
+      <p><span class="es">"Sí. Soy Lukas."</span></p>
+
+      <p><span class="es">"¡Pablo! Andaluz. De Sevilla. Encantadísimo."</span></p>
+
+      <p>Pablo drückt ihm die Hand. Stark. <em>Wirklich stark.</em> Lukas merkt, dass seine eigene Hand vielleicht zu lasch war. <em>In Deutschland drücken wir nicht so. Hier vielleicht schon. Mental notiert.</em></p>
+
+      <p>Pablo zeigt auf die Pfanne. <span class="es">"Estoy haciendo una tortilla. ¿Tienes hambre?"</span> <span class="es-help">Ich mache gerade eine Tortilla. Hast du Hunger?</span></p>
+
+      <p>Lukas denkt nach. Er hat seit dem Flugzeug nichts gegessen. <span class="es">"Sí, mucha."</span> <em>Eigentlich „sí, mucho" wäre falsch — das hat er aus seinem Lehrbuch gelernt. Hunger ist weiblich auf Spanisch. „Mucha hambre". Kleine Triumphe.</em></p>
+
+      <p><span class="es">"Pues, en quince minutos."</span> <span class="es-help">Also, in fünfzehn Minuten.</span> Pablo dreht sich wieder zur Pfanne.</p>
+
+      <p>María führt Lukas weiter. <span class="es">"Aquí está el baño. Aquí el salón. Y aquí..."</span> Sie öffnet eine Tür. <span class="es">"Aquí está tu habitación."</span> <span class="es-help">Hier ist dein Zimmer.</span></p>
+
+      <p>Lukas tritt ein. Sein Zimmer ist klein. Ein Bett (Einzelbett), ein Schreibtisch unter dem Fenster, ein Schrank mit einer Tür, die nicht ganz schließt. Aber das Fenster geht auf einen Innenhof — und im Fenster gegenüber, auf der Fensterbank, schläft eine Katze in der Sonne. <em>Eine getigerte. Mit einem weißen Bauch.</em></p>
+
+      <p>María sieht, wohin Lukas schaut. <span class="es">"Ese es Goyo. El gato de los vecinos. Está siempre allí."</span> <span class="es-help">Das ist Goyo. Die Katze der Nachbarn. Er ist immer dort.</span></p>
+
+      <p><span class="es">"¿Goyo?"</span> fragt Lukas.</p>
+
+      <p><span class="es">"Sí. Como Francisco de Goya, el pintor. Los vecinos son artistas."</span></p>
+
+      <p>Lukas lächelt. <em>Eine Katze namens Goya. Madrid.</em></p>
+
+      <p>Im Wohnzimmer sitzt jemand auf dem Sofa und liest. Eine Frau, Anfang dreißig, die kurzen blonden Haare, eine Brille, die ein bisschen zu groß für ihr Gesicht ist. Sie hebt die Augen vom Buch.</p>
+
+      <p class="dialogue"><span class="es">"Hola. Tú eres Lukas, ¿verdad? Yo soy Carmen."</span> <span class="es-help">Hallo. Du bist Lukas, oder? Ich bin Carmen.</span></p>
+
+      <p>Ihre Stimme ist ruhig. Anders als die von Pablo. Lukas hat das Gefühl, dass sie ihn — ohne ihn zu kennen — schon ein bisschen versteht.</p>
+
+      <p><span class="es">"Sí. Mucho gusto."</span></p>
+
+      <p>Carmen lächelt leicht und liest weiter. María lacht. <span class="es">"Carmen es así. No habla mucho, pero escucha todo."</span> <span class="es-help">Carmen ist so. Sie spricht wenig, aber hört alles.</span></p>
+
+      <p>Aus der Küche kommt Pablos Stimme: <span class="es">"¡La cena está lista! ¡A la mesa!"</span> <span class="es-help">Das Abendessen ist fertig! An den Tisch!</span></p>
+
+      <p>Die vier setzen sich um den kleinen Küchentisch. Auf dem Tisch: die Tortilla — golden, dick, ein bisschen am Rand verbrannt — Brot, eine Flasche Wein, vier Gläser. Pablo schneidet die Tortilla in vier große Stücke.</p>
+
+      <p>María hebt ihr Glas. <span class="es">"Por Lukas. Bienvenido a la casa."</span> <span class="es-help">Auf Lukas. Willkommen im Haus.</span></p>
+
+      <p>Sie stoßen an. <em>Auch das geht hier anders. In Hamburg schauen wir uns in die Augen beim Anstoßen. Hier auch. Aber stärker. Länger.</em></p>
+
+      <p>Lukas probiert die Tortilla. <em>Oh.</em> Sie ist warm, weich, der Kartoffel-Geschmack ist intensiver, als er erwartet hatte. Er sagt nichts. Er isst weiter.</p>
+
+      <p>Pablo, mit vollem Mund: <span class="es">"¿Te gusta?"</span> <span class="es-help">Schmeckt's dir?</span></p>
+
+      <p><span class="es">"Muchísimo."</span> <span class="es-help">Sehr.</span> Ein Wort, das er aus einer App gelernt hat. Er hatte es nie laut gesagt. Heute zum ersten Mal.</p>
+
+      <p>Pablo strahlt. <span class="es">"¡Hostia, qué bien! La tortilla de mi madre es mejor, pero la mía no está mal."</span> <span class="es-help">Mensch, super! Die Tortilla meiner Mutter ist besser, aber meine ist auch nicht schlecht.</span></p>
+
+      <p><em>Hostia.</em> Lukas merkt sich das Wort. <em>Wahrscheinlich ein Ausruf. Vielleicht stark, vielleicht nicht. Später frage ich María.</em></p>
+
+      <p>Während sie essen, erklärt María Lukas die wichtigsten Dinge:</p>
+
+      <p>— <span class="es">"Aquí están las llaves del piso."</span> <span class="es-help">Hier sind die Wohnungsschlüssel.</span> Sie legt einen Schlüsselbund auf den Tisch. Lukas nimmt ihn. Schwer.</p>
+
+      <p>— <span class="es">"El agua caliente funciona... a veces. La caldera es vieja."</span> <span class="es-help">Das Warmwasser funktioniert... manchmal. Der Boiler ist alt.</span></p>
+
+      <p>— <span class="es">"Y nunca, NUNCA, tires papel al WC. Las tuberías son antiguas. Hay un cartel, ¿lo ves?"</span> <span class="es-help">Und niemals, NIEMALS, wirf Papier ins WC. Die Rohre sind alt. Es hängt ein Schild, siehst du es?</span></p>
+
+      <p>Sie zeigt zur Wand. Tatsächlich: ein Schild, handgeschrieben mit rotem Stift: <strong>NO ARROJAR PAPEL AL WC. ¡GRACIAS!</strong></p>
+
+      <p>Lukas lacht. <em>Mein erstes spanisches Schild. Auf einer Toilette. Sehr Madrid.</em></p>
+
+      <p>Pablo schaut Lukas an. <span class="es">"¿Y tú qué estudias?"</span></p>
+
+      <p><span class="es">"Arquitectura. En la ETSAM."</span></p>
+
+      <p><span class="es">"¡Hostia, qué chulo!"</span></p>
+
+      <p>Lukas merkt sich, dass „hostia" wahrscheinlich nichts Schlimmes ist. <em>Pablo benutzt es alle drei Minuten und Carmen schaut nicht schockiert.</em></p>
+
+      <p>Carmen, von der anderen Seite des Tisches, sehr ruhig: <span class="es">"Yo soy ingeniera. Trabajo en una empresa de energías renovables. En Galicia me llaman 'la rara' porque me gusta el silencio."</span> <span class="es-help">Ich bin Ingenieurin. Ich arbeite in einer Firma für erneuerbare Energien. In Galicien nennen sie mich „die Seltsame", weil ich Stille mag.</span></p>
+
+      <p>Lukas versteht „ingeniera", „trabajo", „Galicia", „silencio". <em>Die Hälfte. Reicht für jetzt.</em></p>
+
+      <p>Sie essen weiter. Pablo erzählt, dass er Musiker ist, dass er Cajón spielt (ein Holzkasten zum Sitzen und Trommeln), dass er manchmal in Bars in Lavapiés spielt. María erzählt, dass sie Journalistin ist, freie Mitarbeiterin bei verschiedenen Zeitungen, dass sie früher in Berlin gelebt hat — <em>Berlin! María kennt Berlin! Lukas merkt sich das.</em></p>
+
+      <p>Um elf Uhr abends macht Lukas die Augen zu. Mitten am Tisch. Eine Sekunde lang. Maria sieht es.</p>
+
+      <p><span class="es">"Lukas, vete a dormir. Mañana hay más Madrid."</span> <span class="es-help">Lukas, geh schlafen. Morgen gibt es mehr Madrid.</span></p>
+
+      <p>Lukas steht auf. Sagt allen <span class="es">"Buenas noches"</span> und geht in sein Zimmer.</p>
+
+      <p>Er schließt die Tür. Setzt sich auf das Bett. Das Bett knarrt ein bisschen.</p>
+
+      <p>Er öffnet den roten Koffer. Sucht zwischen den Klamotten. Findet, was er sucht: ein kleines gerahmtes Foto. <em>Seine Eltern, vor der Haustür ihres Hauses in Hamburg, vor zwei Sommern. Sein Vater hält einen Apfel in der Hand. Seine Mutter lacht.</em></p>
+
+      <p>Lukas stellt das Foto auf den Schreibtisch. Schaut es eine Weile an. Dann steht er auf, schaut zum Fenster.</p>
+
+      <p>Goyo, die Katze, schläft immer noch auf der Fensterbank gegenüber. <em>Egal, was passiert in Madrid, Goyo schläft.</em></p>
+
+      <p>Lukas lächelt. Schaltet das Licht aus.</p>
+
+      <p>Liegt im Bett. Hört das Geschirr in der Küche, Marías leise Stimme, Pablos lautes Lachen, irgendwo eine Tür, die zufällt. Geräusche, die nicht seine waren — und doch jetzt schon ein bisschen seine sind.</p>
+
+      <p>Er schließt die Augen.</p>
+
+      <p><em>Esto es mi casa. Por ahora.</em></p>
+
+      <p>Sein erster Satz, der direkt auf Spanisch in seinem Kopf entsteht.</p>
+
+      <div class="reader-note">
+        <strong>🐾 Spikiu flüstert dir zu:</strong> Hast du gemerkt, wie oft heute das Wort <em>"está"</em> oder <em>"hay"</em> kam? <em>"Aquí está la cocina. Aquí está tu habitación. Hay un cartel."</em> Das sind die zwei wichtigsten Wörter, um eine Wohnung zu beschreiben. Auf der nächsten Seite zeige ich dir den Unterschied — er ist klein, aber er ändert alles.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────── GRAMMAR ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Grammatik ohne Schnickschnack</div>
+    <h1 class="section-title">Hay vs. está in <em>dreißig Sekunden</em></h1>
+    <p class="section-subtitle">Im Spanischen heißt „es gibt" und „ist da" nicht dasselbe. <strong>Hay</strong> = etwas existiert (neu). <strong>Está</strong> = etwas Bestimmtes ist an einem Ort.</p>
+
+    <div class="gram-intro">
+      <p>Im Deutschen sagen wir „<em>es gibt</em>" (allgemein) und „<em>ist hier</em>" (bestimmt). Im Spanischen sind das zwei verschiedene Wörter: <strong>hay</strong> für Existenz, <strong>está/están</strong> für Lage. Die einfache Frage zur Entscheidung: <em>Hat das Ding einen bestimmten Artikel?</em> Ja → <em>está</em>. Nein → <em>hay</em>.</p>
+    </div>
+
+    <div class="gram-twins">
+      <div class="gram-twin">
+        <div class="gram-twin-name">HAY</div>
+        <div class="gram-twin-tagline">es gibt / es existiert</div>
+        <div class="gram-twin-example">"<strong>Hay</strong> <em>un</em> cartel."<br>"<strong>Hay</strong> <em>una</em> tortilla."<br>"<strong>Hay</strong> pan." (ohne Artikel)</div>
+      </div>
+      <div class="gram-twin">
+        <div class="gram-twin-name">ESTÁ / ESTÁN</div>
+        <div class="gram-twin-tagline">ist (befindet sich) hier/dort</div>
+        <div class="gram-twin-example">"<em>La</em> cocina <strong>está</strong> aquí."<br>"<em>Las</em> llaves <strong>están</strong> ahí."<br>"Goyo <strong>está</strong> en la ventana."</div>
+      </div>
+    </div>
+
+    <div class="gram-rule">
+      <h4>🫏 Eselsbrücke für deutschsprachige Lerner</h4>
+      <p>"<strong>Wohnungsführung oder Hinweis?</strong>"<br>
+      Wenn du auf etwas Bestimmtes <em>zeigst</em> („das hier ist...") → <strong>está</strong>.<br>
+      Wenn du etwas Neues <em>erwähnst</em> („übrigens, in der Wohnung gibt es...") → <strong>hay</strong>.<br>
+      <strong>Trick mit dem Artikel:</strong> hat das Wort <em>el/la/los/las</em> oder ist es ein Eigenname (Goyo, María)? → <em>está</em>. Hat es <em>un/una</em> oder gar keinen Artikel? → <em>hay</em>.</p>
+    </div>
+
+    <div class="gram-tip">
+      <strong>🐾 Zwei kleine Fallen:</strong><br><br>
+      <strong>1.</strong> <em>hay</em> ändert sich nie. Egal ob eine Sache oder hundert:<br>
+      → <em>Hay un libro</em> · <em>Hay diez libros</em> (immer „hay")<br><br>
+      <strong>2.</strong> <em>está</em> wird zu <em>están</em> im Plural:<br>
+      → <em>El libro <strong>está</strong> aquí</em> · <em>Los libros <strong>están</strong> aquí</em><br><br>
+      <strong>Klassischer Anfängerfehler:</strong> <em>"Está un cartel"</em> ❌ — klingt für Spanier wie „der Schild ist da", obwohl du gerade erst von ihm sprichst. Es muss <em>"Hay un cartel"</em> heißen.
+    </div>
+
+    <h3 style="font-family:'Lora',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;">🎯 Übung — hay oder está/están?</h3>
+
+    <div class="exercise" data-correct="1">
+      <p class="ex-prompt"><span class="ex-num">1.</span> <span class="es">En la cocina _____ una tortilla en la sartén.</span> <span class="help">— In der Küche ist eine Tortilla in der Pfanne.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>está</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>hay</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>están</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="0">
+      <p class="ex-prompt"><span class="ex-num">2.</span> <span class="es">La habitación de Lukas _____ al fondo del pasillo.</span> <span class="help">— Lukas' Zimmer ist am Ende des Flurs.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>está</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>hay</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>son</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="2">
+      <p class="ex-prompt"><span class="ex-num">3.</span> <span class="es">Las llaves del piso _____ en la mesa de la cocina.</span> <span class="help">— Die Wohnungsschlüssel sind auf dem Küchentisch.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>hay</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>está</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>están</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="1">
+      <p class="ex-prompt"><span class="ex-num">4.</span> <span class="es">En el baño _____ un cartel: "No arrojar papel al WC".</span> <span class="help">— Im Bad ist ein Schild.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>está</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>hay</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>es</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="2">
+      <p class="ex-prompt"><span class="ex-num">5.</span> <span class="es">Goyo, el gato, _____ en la ventana de los vecinos.</span> <span class="help">— Goyo, die Katze, ist am Fenster der Nachbarn.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>hay</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>están</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>está</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+  </div>
+
+  <!-- ─────────────── GLOSSARY ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Vokabel-Übungen · Kapitel 2</div>
+    <h1 class="section-title">Die Wörter der <em>Wohnung</em></h1>
+    <p class="section-subtitle">Acht Wörter, mit denen du jede spanische WG beschreiben kannst — vom Bad bis zur Katze des Nachbarn.</p>
+
+    <!-- 1 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">1.</span>
+        <span class="gloss-word">la habitación</span>
+        <span class="gloss-trans">das Zimmer</span>
+      </div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">Wie beschreibt Lukas sein neues Zimmer?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>pequeña, con una ventana al patio</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>grande, con balcón a la calle</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>en la cocina, sin ventana</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">2.</span>
+        <span class="gloss-word">la cocina</span>
+        <span class="gloss-trans">die Küche</span>
+      </div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">Wer kocht in dieser Küche, als Lukas ankommt?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>María</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Pablo</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Carmen</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">3.</span>
+        <span class="gloss-word">el baño</span>
+        <span class="gloss-trans">das Badezimmer</span>
+      </div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">Was hängt im Bad an der Wand?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>una foto de Madrid</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>un cuadro de Goya</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>un cartel: "No arrojar papel al WC"</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">4.</span>
+        <span class="gloss-word">el salón</span>
+        <span class="gloss-trans">das Wohnzimmer</span>
+      </div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">Was macht Carmen im salón, als Lukas eintritt?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>está leyendo en el sofá</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>está viendo la televisión</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>está cocinando</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">5.</span>
+        <span class="gloss-word">la ventana</span>
+        <span class="gloss-trans">das Fenster</span>
+      </div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">Was sieht Lukas durch das Fenster seines Zimmers?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>la Gran Vía</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>un patio interior y al gato Goyo</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>el aeropuerto</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">6.</span>
+        <span class="gloss-word">la llave / las llaves</span>
+        <span class="gloss-trans">der Schlüssel / die Schlüssel</span>
+      </div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">Was sagt María beim Übergeben der Schlüssel?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>"Aquí está la llave."</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>"Hay una llave en la mesa."</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>"Aquí están las llaves del piso."</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">7.</span>
+        <span class="gloss-word">la tortilla (española)</span>
+        <span class="gloss-trans">die spanische Tortilla (Kartoffel-Omelett)</span>
+      </div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">Was ist eine <em>tortilla española</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>ein dünner Maisfladen wie in Mexiko</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>ein Süßgebäck</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>ein dickes Omelett mit Kartoffeln</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="gloss-item">
+      <div class="gloss-head">
+        <span class="gloss-num">8.</span>
+        <span class="gloss-word">chulo / chula · ¡hostia!</span>
+        <span class="gloss-trans">cool, schick · Mensch! / Wow!</span>
+      </div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">Pablo sagt <em>"¡Hostia, qué chulo!"</em> über Lukas' Architekturstudium. Was meint er?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>"Wow, wie cool!"</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>"Boah, wie traurig!"</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>"Mist, wie kompliziert!"</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="book-footer">
+    <strong>Ende von Kapitel 2.</strong><br>
+    In <strong>Kapitel 3</strong> nimmt María Lukas zu seiner ersten <em>tertulia</em> mit — und Lukas entdeckt, dass es in Spanien zwei verschiedene Vergangenheiten gibt, und dass sogar Spanier sie manchmal verwechseln.<br>
+    <em>spikiu.com — donde la lengua se camina, no se estudia.</em>
+    <div class="tier-note">🌱 Free-Version · Ohne Personalisierung</div>
+  </div>
+
+</div>
+
+<script>
+const FEEDBACK = {
+  g0: { right: "Genau! <em>una tortilla</em> mit unbestimmtem Artikel = neue Information → <strong>hay</strong>.", wrong: "Nicht ganz. <em>una tortilla</em> ist unbestimmt — es wird zum ersten Mal erwähnt → <strong>hay</strong>." },
+  g1: { right: "Perfekt! <em>la habitación</em> ist bestimmt → wir lokalisieren sie → <strong>está</strong>.", wrong: "Nicht ganz. <em>La habitación de Lukas</em> ist eine bestimmte Sache mit Artikel → <strong>está</strong>." },
+  g2: { right: "Sehr gut! <em>las llaves</em> ist Mehrzahl + bestimmt → <strong>están</strong>.", wrong: "Nicht ganz. <em>Las llaves</em> = bestimmt + Mehrzahl → <strong>están</strong>." },
+  g3: { right: "Stimmt! <em>un cartel</em> ist unbestimmt → <strong>hay</strong>.", wrong: "Nicht ganz. <em>Un cartel</em> = unbestimmt = neue Information → <strong>hay</strong>." },
+  g4: { right: "Genau! Goyo ist ein Eigenname (bestimmt) → <strong>está</strong>.", wrong: "Nicht ganz. Goyo ist ein konkreter Kater mit Namen → <strong>está</strong>." },
+  v0: { right: "Richtig! Klein, mit Fenster auf den Innenhof — und Goyo, die Katze, gegenüber.", wrong: "Nicht ganz. Das Zimmer ist <strong>klein</strong> und das Fenster geht auf einen <strong>Innenhof</strong>." },
+  v1: { right: "Genau! Pablo macht eine Tortilla, als Lukas in die Küche kommt.", wrong: "Es ist Pablo, der gerade kocht. Er trägt ein altes Band-T-Shirt und schreit zur Begrüßung." },
+  v2: { right: "Stimmt! Ein handgeschriebenes Schild mit rotem Stift: <em>NO ARROJAR PAPEL AL WC</em>.", wrong: "Im Bad hängt ein <strong>Schild</strong>: <em>No arrojar papel al WC</em> — die alten Rohre vertragen kein Klopapier." },
+  v3: { right: "Genau! Carmen sitzt auf dem Sofa und liest, als Lukas zum ersten Mal in den Salón tritt.", wrong: "Carmen liest auf dem Sofa. Sie ist die ruhige Mitbewohnerin." },
+  v4: { right: "Perfekt! Ein Innenhof — und Goyo, der Kater der Nachbarn, schläft auf der Fensterbank gegenüber.", wrong: "Lukas sieht einen <strong>Innenhof</strong> und den schlafenden Kater <em>Goyo</em>." },
+  v5: { right: "Richtig! María sagt: <em>'Aquí están las llaves del piso.'</em> Mehrere Schlüssel = están.", wrong: "Es heißt <strong>'Aquí están las llaves'</strong>. <em>Las llaves</em> ist Mehrzahl, also <em>están</em>." },
+  v6: { right: "Genau! Ein dickes Omelett mit Kartoffeln (und manchmal Zwiebel). Klassiker der spanischen Küche.", wrong: "Eine <em>tortilla española</em> ist ein dickes <strong>Kartoffel-Omelett</strong>. Nicht zu verwechseln mit der mexikanischen Tortilla (Maisfladen)." },
+  v7: { right: "Genau! Beides positive Ausrufe. <em>¡Hostia!</em> ist umgangssprachlich und sehr verbreitet — wie deutsches <em>Mensch!</em> oder <em>Wow!</em>.", wrong: "<em>¡Hostia!</em> = Mensch! / Wow! (Ausruf) · <em>chulo</em> = cool, schick. Beides sehr alltäglich." }
+};
+const KEYS = ['g0','g1','g2','g3','g4','v0','v1','v2','v3','v4','v5','v6','v7'];
+
+document.querySelectorAll('.exercise').forEach((ex, idx) => {
+  const correctIdx = parseInt(ex.getAttribute('data-correct'), 10);
+  const fbEl = ex.querySelector('.ex-feedback');
+  const key = KEYS[idx];
+  const feedback = FEEDBACK[key] || { right: 'Correct!', wrong: 'Try again.' };
+
+  ex.querySelectorAll('.ex-option').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (ex.classList.contains('locked')) return;
+      const chosen = parseInt(btn.getAttribute('data-i'), 10);
+      const correctBtn = ex.querySelector(`.ex-option[data-i="${correctIdx}"]`);
+      ex.classList.add('locked', 'answered');
+      ex.querySelectorAll('.ex-option').forEach(b => b.classList.add('locked'));
+      if (chosen === correctIdx) {
+        btn.classList.add('correct');
+        fbEl.className = 'ex-feedback show right';
+        fbEl.innerHTML = '✓ ' + feedback.right;
+      } else {
+        btn.classList.add('incorrect');
+        if (correctBtn) correctBtn.classList.add('correct');
+        fbEl.className = 'ex-feedback show wrong';
+        fbEl.innerHTML = '✗ ' + feedback.wrong;
+      }
+    });
+  });
+});
+
+function scrollSec(idx, btn) {
+  document.querySelectorAll('.chapter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const sections = document.querySelectorAll('.book > .section');
+  if (sections[idx]) sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
