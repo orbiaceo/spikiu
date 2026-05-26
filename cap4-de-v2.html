@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu Reader — Capítulo 4 · In der Bäckerei</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --paper:#fdfaf3; --white:#ffffff; --ink:#1a1612; --mid:#6b6560;
+  --faint:#ece4d3; --warm:#d8c9aa; --accent:#2d6a4f; --accent2:#e8f2ed;
+  --capy:#b8845a; --gold:#9a6e2a; --highlight:#fff2c9; --paper-dk:#f3ead7;
+  --green:#2d6a4f; --red:#c0392b; --green-bg:#e6f3eb; --red-bg:#fbe9e6;
+}
+body { background: var(--warm); font-family: 'DM Sans', sans-serif; color: var(--ink); padding: 2rem 1rem; line-height: 1.6; min-height: 100vh; }
+.book { max-width: 720px; margin: 0 auto; background: var(--paper); border-radius: 16px; padding: 56px 56px 40px; box-shadow: 0 12px 48px rgba(0,0,0,0.14); }
+
+.chapter-tabs { position: sticky; top: 0; background: var(--paper); margin: -56px -56px 32px; padding: 1.1rem 56px; border-bottom: 1px solid var(--faint); display: flex; gap: 0.5rem; z-index: 10; flex-wrap: wrap; }
+.chapter-tab { background: transparent; border: 1.5px solid var(--faint); padding: 0.55rem 1.1rem; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: var(--mid); transition: all 0.18s; }
+.chapter-tab:hover { background: var(--accent2); border-color: var(--accent); color: var(--accent); }
+.chapter-tab.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+.book-header { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 22px; border-bottom: 2px solid var(--ink); margin-bottom: 32px; }
+.book-brand { display: flex; align-items: center; gap: 0.6rem; }
+.book-brand-name { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
+.book-brand-name em { color: var(--accent); font-style: italic; }
+.book-meta { text-align: right; font-size: 0.74rem; color: var(--mid); line-height: 1.5; }
+.book-meta strong { color: var(--ink); font-weight: 700; }
+.book-level { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.22rem 0.7rem; border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; margin-top: 0.5rem; }
+
+.section { margin-bottom: 52px; }
+.section:last-child { margin-bottom: 0; }
+.section-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+.section-title { font-family: 'Lora', serif; font-size: 2rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.8rem; }
+.section-title em { color: var(--accent); font-style: italic; }
+.section-subtitle { font-family: 'Lora', serif; font-style: italic; font-size: 1.05rem; color: var(--mid); margin-bottom: 2rem; line-height: 1.5; }
+
+.reader-text { font-family: 'Lora', serif; font-size: 1.08rem; line-height: 1.85; color: var(--ink); }
+.reader-text p { margin-bottom: 1.1rem; }
+.reader-text p:first-of-type::first-letter { font-family: 'Lora', serif; font-size: 3.2rem; font-weight: 700; color: var(--accent); float: left; line-height: 0.9; margin: 0.3rem 0.5rem -0.2rem 0; }
+.de { color: var(--accent); font-weight: 600; font-style: italic; }
+.de-help { font-size: 0.78rem; color: var(--mid); font-style: italic; font-weight: normal; }
+.dialogue { display: block; margin: 0.3rem 0; padding-left: 1rem; border-left: 2px solid var(--faint); }
+.reader-note { background: var(--paper-dk); border-left: 3px solid var(--capy); padding: 1rem 1.4rem; border-radius: 0 8px 8px 0; margin: 2rem 0 1rem; font-size: 0.92rem; line-height: 1.6; }
+.reader-note strong { color: var(--capy); }
+.menu-board { background: var(--paper-dk); border: 2px dashed var(--capy); border-radius: 10px; padding: 1rem 1.5rem; margin: 1rem 0; font-family: 'Lora', serif; font-style: italic; color: var(--ink); }
+.menu-board .item { display: flex; justify-content: space-between; padding: 0.2rem 0; }
+.menu-board h6 { font-family: 'DM Sans', sans-serif; font-style: normal; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--capy); margin-bottom: 0.5rem; }
+
+.gram-intro { font-family: 'Lora', serif; font-size: 1.05rem; line-height: 1.75; margin-bottom: 1.5rem; }
+.gram-intro em { font-style: italic; color: var(--accent); }
+.gram-twins { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.8rem; }
+.gram-twin { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.2rem 1.4rem; }
+.gram-twin-name { font-family: 'Lora', serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-bottom: 0.3rem; }
+.gram-twin-tagline { font-size: 0.78rem; color: var(--mid); font-style: italic; margin-bottom: 0.9rem; }
+.gram-twin-example { font-family: 'Lora', serif; font-size: 0.98rem; background: var(--paper); padding: 0.6rem 0.9rem; border-radius: 6px; font-style: italic; border-left: 2px solid var(--accent); }
+.gram-rule { background: var(--accent2); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.2rem 1.4rem; margin: 1.5rem 0; }
+.gram-rule h4 { font-family: 'Lora', serif; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+.gram-rule p { font-size: 0.95rem; line-height: 1.65; }
+
+.case-table { background: var(--white); border: 1px solid var(--faint); border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; }
+.case-row { display: grid; grid-template-columns: 100px 1fr 1fr; gap: 0.6rem; padding: 0.5rem 0; border-bottom: 1px dotted var(--faint); font-size: 0.92rem; align-items: center; }
+.case-row:last-child { border-bottom: none; }
+.case-row.header { font-weight: 700; color: var(--accent); font-family: 'Lora', serif; padding-bottom: 0.6rem; }
+.case-row .nom { color: var(--mid); }
+.case-row .acc { color: var(--accent); font-weight: 700; font-family: 'Lora', serif; }
+.case-row .label { font-size: 0.75rem; color: var(--mid); font-style: italic; }
+
+.formula-list { background: var(--white); border: 1px solid var(--faint); border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; }
+.formula-list .formula { display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px dotted var(--faint); font-size: 0.95rem; }
+.formula-list .formula:last-child { border-bottom: none; }
+.formula-list .level { font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 100px; flex-shrink: 0; }
+.formula-list .level.top { background: #d4edda; color: #155724; }
+.formula-list .level.mid { background: #fff3cd; color: #856404; }
+.formula-list .level.low { background: #f8d7da; color: #721c24; }
+.formula-list .text { font-family: 'Lora', serif; }
+.formula-list .text em { color: var(--accent); font-style: italic; }
+
+.gram-tip { background: var(--paper-dk); border-radius: 10px; padding: 1.2rem 1.4rem; margin-top: 1.5rem; font-size: 0.92rem; line-height: 1.65; }
+.gram-tip strong { color: var(--capy); }
+.gram-tip em { font-style: italic; color: var(--accent); }
+
+.exercise { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; }
+.exercise.answered { border-color: var(--accent); }
+.ex-num { font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-right: 0.4rem; }
+.ex-prompt { font-size: 0.96rem; line-height: 1.6; margin-bottom: 0.9rem; font-weight: 500; }
+.ex-prompt .de { font-style: italic; color: var(--accent); font-weight: 600; }
+.ex-prompt .help { font-size: 0.78rem; color: var(--mid); font-style: italic; font-weight: normal; }
+.ex-options { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.ex-options li { padding: 0; margin: 0; }
+.ex-option { background: var(--paper); border: 1.5px solid var(--faint); border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.95rem; cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 0.7rem; font-family: inherit; width: 100%; text-align: left; }
+.ex-option:hover:not(.locked) { background: var(--accent2); border-color: var(--accent); }
+.ex-option .letter { width: 26px; height: 26px; background: var(--white); border: 1.5px solid var(--faint); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: var(--mid); flex-shrink: 0; transition: all 0.18s; }
+.ex-option.correct { background: var(--green-bg) !important; border-color: var(--green) !important; }
+.ex-option.correct .letter { background: var(--green) !important; color: white !important; border-color: var(--green) !important; }
+.ex-option.incorrect { background: var(--red-bg) !important; border-color: var(--red) !important; }
+.ex-option.incorrect .letter { background: var(--red) !important; color: white !important; border-color: var(--red) !important; }
+.ex-option.locked { cursor: default; }
+.ex-feedback { margin-top: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.5; display: none; }
+.ex-feedback.show { display: block; }
+.ex-feedback.right { background: var(--green-bg); color: var(--green); border-left: 3px solid var(--green); }
+.ex-feedback.wrong { background: var(--red-bg); color: var(--red); border-left: 3px solid var(--red); }
+.ex-feedback em { color: var(--ink); font-style: italic; }
+
+.gloss-item { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; }
+.gloss-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.9rem; flex-wrap: wrap; padding-bottom: 0.7rem; border-bottom: 1px solid var(--faint); }
+.gloss-num { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+.gloss-word { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; }
+.gloss-trans { font-size: 0.84rem; color: var(--capy); font-style: italic; }
+
+.book-footer { margin-top: 52px; padding-top: 24px; border-top: 1px solid var(--faint); text-align: center; font-size: 0.84rem; color: var(--mid); line-height: 1.7; }
+.book-footer strong { color: var(--accent); font-weight: 600; }
+.book-footer em { color: var(--capy); font-style: italic; }
+.tier-note { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.3rem 0.9rem; border-radius: 100px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; margin-top: 0.8rem; }
+.beta-end { background: linear-gradient(135deg, var(--accent2), var(--paper-dk)); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; text-align: left; font-size: 0.92rem; line-height: 1.7; }
+.beta-end strong { color: var(--accent); }
+
+@media (max-width: 600px) {
+  body { padding: 0.8rem 0.5rem; }
+  .book { padding: 28px 22px 24px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 1.6rem; }
+  .reader-text { font-size: 1rem; }
+  .gram-twins { grid-template-columns: 1fr; }
+  .case-row { grid-template-columns: 80px 1fr 1fr; font-size: 0.85rem; }
+  .chapter-tabs { margin: -28px -22px 24px; padding: 0.9rem 22px; top: 0; }
+  .chapter-tab { font-size: 0.78rem; padding: 0.45rem 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="book">
+
+  <!-- BACK TO BOOKS -->
+  <a href="books.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:transparent;border:1.5px solid var(--faint);padding:0.5rem 1rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;margin-bottom:1rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--faint)';this.style.color='var(--mid)'">← Books</a>
+
+  <div class="chapter-tabs">
+    <button class="chapter-tab active" onclick="scrollSec(0,this)">📖 Reader</button>
+    <button class="chapter-tab" onclick="scrollSec(1,this)">⚙ Gramática</button>
+    <button class="chapter-tab" onclick="scrollSec(2,this)">📒 Glosario</button>
+  </div>
+
+  <div class="book-header">
+    <div class="book-brand">
+      <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="book-brand-name">Spi<em>k</em>iu Reader</span>
+    </div>
+    <div class="book-meta">
+      <strong>Capítulo 4</strong><br>
+      Alemán para hispanohablantes
+      <div class="book-level">A1/A2 · Free</div>
+    </div>
+  </div>
+
+  <!-- ─────────────── READER ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Lectura · Capítulo 4</div>
+    <h1 class="section-title">In der <em>Bäckerei</em></h1>
+    <p class="section-subtitle">En el que Marta entra sola por primera vez en una Bäckerei, descubre que en Alemania hay treinta tipos de Brötchen, y encuentra a Frau Schultz — la mujer que va a hacer del barrio un sitio donde alguien la reconoce.</p>
+
+    <div class="reader-text">
+
+      <p>Domingo por la mañana, ocho y media. La <span class="de">Wohnung</span> está en silencio. Felix duerme. Jonas está fuera, en casa de unos amigos en Prenzlauer Berg. Anna ha salido a correr — <em>Anna siempre sale a correr a las siete y media de la mañana, incluso en invierno</em>.</p>
+
+      <p>Marta tiene hambre. Y un plan: <strong>ir sola a la Bäckerei</strong>. Sin Jonas como traductor. Sin Felix como animador. Solo ella, sus diez días de alemán acumulados, y un panadero berlinés que probablemente no tiene tiempo para titubeos.</p>
+
+      <p>Se viste rápido. Vaqueros, jersey gris, las zapatillas. Coge el monedero, las llaves del piso, y sale. En el portal — el olor de madera vieja y café del vecino del primer piso — respira hondo.</p>
+
+      <p><em>Voy a la panadería. Voy a pedir algo. Voy a pagar. Voy a salir. Cuatro acciones. Puedo con esto.</em></p>
+
+      <p>En la calle, Berlín domingo es otra ciudad: más silenciosa, casi sin coches, parejas paseando perros, ciclistas tranquilos. <em>En Madrid los domingos por la mañana ya hay terrazas llenas. Aquí — la ciudad respira.</em></p>
+
+      <p>Tres calles más abajo, en la esquina con la Skalitzer Straße, está la <span class="de">Bäckerei</span>. Marta la ve cada día pero nunca ha entrado. Una fachada estrecha pintada de verde oscuro, un cartel pintado a mano: <strong>BÄCKEREI SCHULTZ — seit 1962</strong>. En el escaparate: cestas de pan, una tarta de manzana cortada, pequeños carteles de cartón con precios escritos a mano.</p>
+
+      <p>Marta empuja la puerta. Una campanilla suena — <em>ding</em>. Dentro: el olor inmediato y poderoso de pan recién horneado. <em>Olor que despierta hambres que no sabías que tenías.</em></p>
+
+      <p>El local es pequeño. Vitrinas de cristal a la derecha, llenas. Una caja registradora antigua a la izquierda. Estantes con paquetes de café y mermeladas al fondo. Y ya hay tres personas en la fila delante de Marta.</p>
+
+      <p>Marta se coloca al final. Y observa. <em>Observar primero. Hablar después. Regla número uno del extranjero.</em></p>
+
+      <p>Detrás del mostrador: una mujer de unos sesenta y cinco años. Pelo corto, blanco con un toque rubio. Gafas pequeñas en la punta de la nariz. Un delantal blanco con el logo de la Bäckerei bordado en verde. Manos rápidas, eficientes. Una sonrisa breve para cada cliente, pero verdadera.</p>
+
+      <p><em>Frau Schultz. Tiene que ser ella.</em></p>
+
+      <p>La primera clienta — una señora con un carrito de la compra — pide algo rapidísimo. Marta capta solo: <em>"Drei Brötchen und ein Vollkornbrot, bitte."</em> <span class="de-help">Tres panecillos y un pan integral, por favor.</span> Pago. Cambio. <em>"Schönen Sonntag."</em> Fuera.</p>
+
+      <p>El segundo — un hombre con un perro pequeño esperando fuera — pide algo aún más rápido. Marta no entiende nada.</p>
+
+      <p>La tercera — una chica de la edad de Marta — pide un café para llevar y un croissant. Marta entiende el croissant. <em>Croissant es internacional, gracias a Dios.</em></p>
+
+      <p>Y de repente — su turno.</p>
+
+      <p>Frau Schultz levanta los ojos y la mira por encima de las gafas pequeñas. <span class="de">"Was darf's sein?"</span> <span class="de-help">¿Qué te pongo? (literalmente: qué debe ser)</span></p>
+
+      <p>Marta no entiende la frase exacta. Pero entiende la pregunta. Mira las vitrinas. Y se queda paralizada.</p>
+
+      <p>Hay tantos panes. Tantos panecillos. Algunos redondos. Algunos largos. Algunos con semillas. Algunos espolvoreados de harina. Algunos negros como el carbón. Algunos casi blancos. <em>No sé los nombres. No sé qué quiero. No sé qué pedir.</em></p>
+
+      <p>Marta señala con el dedo un panecillo redondo con semillas de sésamo encima. <span class="de">"Eh... das, bitte. Und das. Und das."</span> <span class="de-help">Eh... ese, por favor. Y ese. Y ese.</span></p>
+
+      <p>Tres panecillos diferentes. Frau Schultz los coge con unas pinzas y los pone en una bolsa de papel marrón. <span class="de">"Sonst noch was?"</span> <span class="de-help">¿Algo más?</span></p>
+
+      <p>Marta no entiende. Pero entiende la entonación. <em>Pregunta si quiero algo más.</em></p>
+
+      <p>Y aquí Marta hace algo que no había planeado. Algo valiente. Algo que en Madrid haría sin pensar pero que en Berlín, en alemán, cuesta. Hace una pregunta:</p>
+
+      <p class="dialogue"><span class="de">"Entschuldigung... was ist das?"</span> <span class="de-help">Disculpe... ¿qué es eso?</span></p>
+
+      <p>Señala uno de los panecillos que se ha llevado. El que tiene las semillas. Frau Schultz mira. Una pausa. Y luego — la primera sonrisa completa de Frau Schultz.</p>
+
+      <p><span class="de">"Das ist ein Sesambrötchen. Mit Sesam. Sehr lecker mit Käse."</span> <span class="de-help">Es un panecillo de sésamo. Con sésamo. Muy bueno con queso.</span></p>
+
+      <p>Marta repite, lentamente: <span class="de">"Sesambrötchen."</span></p>
+
+      <p>Frau Schultz asiente. <span class="de">"Genau."</span> <span class="de-help">Exacto.</span></p>
+
+      <p>Y entonces — porque a veces las panaderas alemanas tienen tiempo cuando una clienta lo merece — Frau Schultz señala los otros dos panecillos.</p>
+
+      <p><span class="de">"Das ist ein Mohnbrötchen. Mit Mohn — wie sagt man... amapola? Und das hier ist ein Roggenbrötchen. Aus Roggen. Etwas dunkler. Sehr deutsch."</span> <span class="de-help">Este es un panecillo de amapola. Con amapola — como se dice... amapola? Y este es un panecillo de centeno. De centeno. Un poco más oscuro. Muy alemán.</span></p>
+
+      <p>Marta repite cada palabra. <em>Sesambrötchen. Mohnbrötchen. Roggenbrötchen.</em> Su cerebro la guarda. <em>Como un niño recibiendo los nombres de las cosas por primera vez.</em></p>
+
+      <p>Frau Schultz observa. <span class="de">"Bist du neu hier?"</span> <span class="de-help">¿Eres nueva aquí?</span></p>
+
+      <p><span class="de">"Ja. Ich komme aus Spanien. Aus Madrid. Ich bin hier neun Monate."</span></p>
+
+      <p>Frau Schultz asiente. <span class="de">"Madrid. Schön. Ich war einmal in Madrid. Vor vielen Jahren. Sehr heiß."</span> <span class="de-help">Madrid. Bonito. Yo estuve una vez en Madrid. Hace muchos años. Muy caluroso.</span></p>
+
+      <p>Marta sonríe. <em>Una mujer berlinesa que estuvo en Madrid hace décadas. Y se acuerda del calor.</em></p>
+
+      <p>La mujer detrás de Marta carraspea suavemente. <em>Pequeña presión berlinesa.</em></p>
+
+      <p>Frau Schultz vuelve a la velocidad normal. <span class="de">"Drei Brötchen. Zwei Euro zehn."</span> <span class="de-help">Tres panecillos. Dos euros diez.</span></p>
+
+      <p>Marta paga con un billete de cinco. Frau Schultz le da el cambio. Y luego — y esto Marta no lo esperaba — Frau Schultz coge un cuarto panecillo de la vitrina y lo añade a la bolsa.</p>
+
+      <p><span class="de">"Das ist ein Käsebrötchen. Mit Käse oben. Probier mal. Geschenk."</span> <span class="de-help">Este es un panecillo de queso. Con queso encima. Pruébalo. Regalo.</span></p>
+
+      <p><em>Geschenk. Regalo.</em></p>
+
+      <p>Marta no sabe qué decir. <em>Frau Schultz, sin saberlo, acaba de hacerme un ancla en el barrio.</em></p>
+
+      <p><span class="de">"Vielen Dank. Vielen, vielen Dank."</span> <span class="de-help">Muchas gracias. Muchas, muchas gracias.</span></p>
+
+      <p>Frau Schultz hace un gesto pequeño con la mano — <em>no es nada</em>. <span class="de">"Komm wieder."</span> <span class="de-help">Vuelve.</span></p>
+
+      <p>Marta sale a la calle. La campanilla suena — <em>ding</em>. El aire fresco. La bolsa de papel marrón caliente entre las manos — caliente porque los panecillos están recién horneados.</p>
+
+      <p>Camina a casa despacio. <em>Despacio porque algo bueno acaba de pasar y no quiero que se termine.</em></p>
+
+      <p>En el portal, antes de subir, Marta abre la bolsa. Saca el Käsebrötchen — el regalo. Lo huele. El queso fundido encima, todavía un poco tibio. Le da un mordisco ahí mismo, en el portal, sin esperar a subir.</p>
+
+      <p><em>Está bueno. De verdad bueno. No es solo queso y pan. Es queso fuerte, pan crujiente por fuera, blando por dentro, las semillas que dan textura. Una cosa simple hecha muy bien.</em></p>
+
+      <p>En la cocina del piso, Marta pone los panecillos en una cesta. Hace café. Saca queso, mantequilla, mermelada. Se sienta sola en la mesa. Desayuna mirando por la ventana.</p>
+
+      <p>Anna llega del running cuando Marta ya está en su segundo café. Ve los panecillos. Sonríe.</p>
+
+      <p><span class="de">"Du warst bei Frau Schultz."</span> <span class="de-help">Has estado en Frau Schultz.</span></p>
+
+      <p><span class="de">"Ja. Allein. Mein erstes Mal."</span> <span class="de-help">Sí. Sola. Mi primera vez.</span></p>
+
+      <p>Anna se sirve café. Coge un panecillo de la cesta. Lo unta con mantequilla.</p>
+
+      <p><span class="de">"Sie ist eine gute Frau. Sie merkt sich Gesichter."</span> <span class="de-help">Es una buena mujer. Se acuerda de las caras.</span></p>
+
+      <p>Y Marta entiende: <em>Esa frase es una bendición. Una mujer que se acuerda de mi cara, en una ciudad que todavía no me conoce.</em></p>
+
+      <p>Aquella noche, Marta apunta tres palabras en el cuaderno donde guarda su nuevo alemán:</p>
+
+      <p style="background:var(--paper-dk);border:2px solid var(--capy);border-radius:6px;padding:0.8rem 1.2rem;font-family:'Lora',serif;font-style:italic;font-size:1rem;color:var(--ink);margin:1rem 0;">Sesambrötchen · Mohnbrötchen · Roggenbrötchen · <strong>Käsebrötchen (Geschenk)</strong></p>
+
+      <p>Y debajo, en español, una nota personal:</p>
+
+      <p><em>Frau Schultz se acuerda de mi cara.</em></p>
+
+      <div class="reader-note">
+        <strong>🐾 Spikiu te susurra al oído:</strong> ¿Has notado que Marta hoy ha hecho algo grande con muy poco? Cinco palabras: <em>Was ist das? Entschuldigung. Sesambrötchen. Vielen Dank. Komm wieder.</em> Con eso ha conseguido un panecillo de regalo y una panadera amiga. En la siguiente página te enseño cómo se pide algo en alemán — la diferencia entre <em>"ein Brötchen"</em> y <em>"einen Kaffee"</em> y por qué a veces cambia la palabra "uno".
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────── GRAMÁTICA ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Gramática, directo al grano</div>
+    <h1 class="section-title">El acusativo en <em>treinta segundos</em></h1>
+    <p class="section-subtitle">El alemán tiene una manía: cuando algo es víctima de la acción, le pone una "n" al artículo masculino. Femenino y neutro se libran.</p>
+
+    <div class="gram-intro">
+      <p>El <strong>acusativo</strong> es lo que le pasa a una palabra cuando es la <em>víctima de un verbo</em>. <em>Quiero un café</em> → el café es la víctima de tu querer. <em>Como una manzana</em> → la manzana es la víctima de tu hambre.</p>
+      <br>
+      <p>En español, esa víctima no se queja: el artículo "un/una" no cambia nunca. En alemán <strong>solo el masculino protesta</strong>: añade una <em>n</em>. Ein → ein<strong>en</strong>. Las palabras femeninas y neutras pasan sin enterarse.</p>
+    </div>
+
+    <div class="gram-rule">
+      <h4>🫏 Eselsbrücke para hispanohablantes</h4>
+      <p>"<strong>El macho recibe el golpe y le sale un chichó<u>n</u></strong>".<br>
+      <em>Ein</em> + víctima del verbo + masculino = <strong>einen</strong> (con su chichón).<br>
+      Femenino y neutro: ni se inmutan. <em>eine</em> y <em>ein</em> tal cual.</p>
+    </div>
+
+    <h4 style="font-family:'Lora',serif;font-size:1rem;font-weight:700;margin:1.5rem 0 0.5rem;">📊 Las tres formas en acción</h4>
+
+    <div class="case-table">
+      <div class="case-row header">
+        <div>género</div>
+        <div>cuando es protagonista</div>
+        <div>cuando es víctima</div>
+      </div>
+      <div class="case-row">
+        <div><span class="label">masculino<br>(der)</span></div>
+        <div><span class="nom">ein Kaffee</span><br><span class="label">der Kaffee ist gut</span></div>
+        <div><span class="acc">einen Kaffee</span> 🥊<br><span class="label">ich möchte einen Kaffee</span></div>
+      </div>
+      <div class="case-row">
+        <div><span class="label">femenino<br>(die)</span></div>
+        <div><span class="nom">eine Brezel</span><br><span class="label">die Brezel ist warm</span></div>
+        <div><span class="nom">eine Brezel</span><br><span class="label">ich möchte eine Brezel</span></div>
+      </div>
+      <div class="case-row">
+        <div><span class="label">neutro<br>(das)</span></div>
+        <div><span class="nom">ein Brötchen</span><br><span class="label">das Brötchen ist lecker</span></div>
+        <div><span class="nom">ein Brötchen</span><br><span class="label">ich möchte ein Brötchen</span></div>
+      </div>
+    </div>
+
+    <h4 style="font-family:'Lora',serif;font-size:1rem;font-weight:700;margin:1.5rem 0 0.5rem;">🥨 En la Bäckerei suena así:</h4>
+
+    <div class="formula-list">
+      <div class="formula"><span class="level top">der</span><span class="text"><em>Ich möchte <strong>einen</strong> Kaffee.</em> <span style="color:var(--mid);font-size:0.82rem;">— café masculino → chichón</span></span></div>
+      <div class="formula"><span class="level top">die</span><span class="text"><em>Ich möchte <strong>eine</strong> Brezel.</em> <span style="color:var(--mid);font-size:0.82rem;">— brezel femenina → ileso</span></span></div>
+      <div class="formula"><span class="level top">das</span><span class="text"><em>Ich möchte <strong>ein</strong> Brötchen.</em> <span style="color:var(--mid);font-size:0.82rem;">— brötchen neutro → ileso</span></span></div>
+    </div>
+
+    <div class="gram-tip">
+      <strong>🐾 Truco de barra:</strong> Cuando aprendas una palabra masculina nueva, mémorízala ya con el chichón puesto:<br><br>
+      → <em>der Kaffee · einen Kaffee</em> ☕<br>
+      → <em>der Tee · einen Tee</em> 🍵<br>
+      → <em>der Apfel · einen Apfel</em> 🍎<br>
+      → <em>der Saft · einen Saft</em> 🧃<br><br>
+      Como un dúo inseparable. Cuando llegues a la cafetería, sale solo: <strong>"einen Kaffee, bitte"</strong>.<br><br>
+      <strong>Buena noticia:</strong> en una Bäckerei casi todo es neutro (<em>das Brötchen, das Brot</em>). Tu primera salida sola al pan es el sitio más amable para practicar. El chichón te esperará en la cafetería.
+    </div>
+
+    <h3 style="font-family:'Lora',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;">🎯 Ejercicio — ein, eine o einen?</h3>
+
+    <div class="exercise" data-correct="2">
+      <p class="ex-prompt"><span class="ex-num">1.</span> Marta en la Bäckerei: <span class="de">"Ich möchte _____ Sesambrötchen, bitte."</span> <span class="help">— Quisiera un panecillo de sésamo (das Brötchen = neutro).</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>einen</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>eine</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>ein</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="0">
+      <p class="ex-prompt"><span class="ex-num">2.</span> En el café: <span class="de">"Ich möchte _____ Kaffee, bitte."</span> <span class="help">— Quisiera un café (der Kaffee = masculino).</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>einen</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>eine</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>ein</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="1">
+      <p class="ex-prompt"><span class="ex-num">3.</span> <span class="de">"Ich möchte _____ Brezel, bitte."</span> <span class="help">— Quisiera una rosca de pan salada (die Brezel = femenino).</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>einen</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>eine</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>ein</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="0">
+      <p class="ex-prompt"><span class="ex-num">4.</span> <span class="de">"Ich möchte _____ Apfel."</span> <span class="help">— Quisiera una manzana (der Apfel = masculino).</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>einen</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>eine</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>ein</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="2">
+      <p class="ex-prompt"><span class="ex-num">5.</span> <span class="de">"Ich möchte _____ Bier, bitte."</span> <span class="help">— Quisiera una cerveza (das Bier = neutro).</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>einen</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>eine</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>ein</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+  </div>
+
+  <!-- ─────────────── GLOSARIO ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Ejercicios de vocabulario · Capítulo 4</div>
+    <h1 class="section-title">Las palabras de la <em>Bäckerei</em></h1>
+    <p class="section-subtitle">Nueve palabras que te salvan en cualquier panadería alemana — desde el Brötchen hasta el regalo inesperado.</p>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">1.</span><span class="gloss-word">die Bäckerei</span><span class="gloss-trans">la panadería tradicional</span></div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">¿Qué diferencia una <em>Bäckerei</em> tradicional alemana de un supermercado?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Solo vende café.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Solo abre los domingos.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Pan recién horneado, decenas de tipos, una panadera o panadero que te conoce.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">2.</span><span class="gloss-word">das Brötchen · der Plural: die Brötchen</span><span class="gloss-trans">el panecillo · los panecillos</span></div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">¿Cuál es la singularidad de <em>Brötchen</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Es un pan grande para muchas personas.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Es un diminutivo (de Brot) — por eso es neutro, y existen decenas de variedades con nombres específicos.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Solo se come en el norte de Alemania.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">3.</span><span class="gloss-word">Sesambrötchen · Mohnbrötchen · Roggenbrötchen · Käsebrötchen</span><span class="gloss-trans">panecillo de sésamo · de amapola · de centeno · de queso</span></div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">¿Cómo se forman estos nombres en alemán?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Ingrediente + Brötchen pegado en una sola palabra (es palabra compuesta).</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>"Brötchen mit" + ingrediente (siempre con preposición).</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Brötchen + adjetivo "de" + ingrediente.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">4.</span><span class="gloss-word">Was darf's sein? · Sonst noch was?</span><span class="gloss-trans">¿Qué te pongo? · ¿Algo más?</span></div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">¿Qué significa literalmente <em>Was darf's sein?</em></p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>¿Cuánto cuesta?</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>¿Qué debe ser? — fórmula fija para "¿qué te pongo?" en panaderías y carnicerías.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>¿Qué tal estás?</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">5.</span><span class="gloss-word">Entschuldigung · was ist das?</span><span class="gloss-trans">disculpe · ¿qué es eso?</span></div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">¿Por qué la frase <em>"Entschuldigung, was ist das?"</em> es tan útil para un extranjero?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Porque suena muy formal.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Porque es una frase corta y memorizable.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Por todas las anteriores — y porque convierte tu desconocimiento en aprendizaje activo.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">6.</span><span class="gloss-word">lecker · sehr lecker</span><span class="gloss-trans">rico · muy rico</span></div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">¿En qué situación NO se usa <em>lecker</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Para describir un libro o una película.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Para describir una comida.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Para describir un café o una bebida.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">7.</span><span class="gloss-word">das Geschenk · probier mal</span><span class="gloss-trans">el regalo · prueba (esto)</span></div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">¿Qué significa el gesto de Frau Schultz de añadir un Brötchen extra como <em>Geschenk</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Es lo normal en cualquier Bäckerei — pasa con cada clienta.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Es un gesto personal — la panadera ha decidido tratar a Marta como vecina, no como turista.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Es una obligación legal para comercios pequeños.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">8.</span><span class="gloss-word">Komm wieder · Vielen Dank</span><span class="gloss-trans">vuelve · muchas gracias</span></div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">¿Por qué <em>"Komm wieder"</em> es una despedida importante?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Es una orden estricta — tienes que volver.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Es solo una fórmula vacía sin significado real.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Es una invitación cálida — la panadera te cuenta entre sus clientas habituales desde ya.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">9.</span><span class="gloss-word">Sie merkt sich Gesichter</span><span class="gloss-trans">se acuerda de las caras</span></div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">¿Por qué Anna dice esta frase con valor especial?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Porque en una ciudad grande como Berlín, que alguien te reconozca crea un sentido de pertenencia profundo.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Porque Frau Schultz tiene problemas de memoria.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Porque es una expresión idiomática que significa "es mayor".</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="book-footer">
+    <strong>Fin del Capítulo 4.</strong><br>
+    <em>Fin del paquete beta del Reader alemán.</em>
+
+    <div class="beta-end">
+      🐾 <strong>Has llegado al final de los primeros cuatro capítulos.</strong> Marta ha aterrizado en Berlín, ha conocido a sus compañeros de piso, ha vivido el silencio del Stammtisch y ha hecho su primera amistad alemana — Frau Schultz, la panadera que se acuerda de las caras.<br><br>
+      En los próximos capítulos (disponibles en la versión completa de Spikiu): Marta empieza la universidad, Tom le enseña a leer un periódico alemán, viene la primera Navidad en Berlín sin su familia, los primeros copos de nieve, la primera vez que sueña en alemán.<br><br>
+      <strong>spikiu.com</strong> — donde el idioma se camina, no se estudia.
+    </div>
+
+    <div class="tier-note">🌱 Versión gratuita · Sin personalización</div>
+  </div>
+
+</div>
+
+<script>
+var FEEDBACK = {
+  g0: { right: "Genau! <em>Das Broetchen</em> es neutro. Por eso es <strong>ein</strong>, no <strong>einen</strong>. El neutro nunca cambia al pedir algo.", wrong: "Es <strong>ein Sesambroetchen</strong>. Broetchen es neutro (das) y el articulo neutro nunca cambia al pedir algo. Solo el masculino cambia." },
+  g1: { right: "Stimmt! <em>Der Kaffee</em> es masculino, y al ser lo que pides (lo que recibes), el articulo cambia a <strong>einen</strong>. Esta es la unica forma que cambia.", wrong: "Es <strong>einen Kaffee</strong>. Kaffee es masculino (der). Cuando pides algo masculino, el articulo cambia de <em>ein</em> a <em>einen</em> (con n al final). Esto solo le pasa al masculino." },
+  g2: { right: "Perfekt! <em>Die Brezel</em> es femenino. El femenino <strong>eine</strong> nunca cambia. Buena noticia.", wrong: "Es <strong>eine Brezel</strong>. Brezel es femenino (die) y el articulo femenino se queda siempre como <em>eine</em>. No te va a traicionar." },
+  g3: { right: "Genau! <em>Der Apfel</em> es masculino. Por eso al pedirlo se transforma en <strong>einen Apfel</strong>. El masculino siempre lleva la n cuando lo pides.", wrong: "Es <strong>einen Apfel</strong>. Apfel es masculino (der) y al pedirlo el articulo se vuelve <em>einen</em>. Si lo memorizas como <em>der Apfel = einen Apfel</em>, no fallaras." },
+  g4: { right: "Stimmt! <em>Das Bier</em> es neutro. El articulo neutro <strong>ein</strong> nunca cambia al pedir algo. En aleman la cerveza es neutro (sorpresa para hispanohablantes).", wrong: "Es <strong>ein Bier</strong>. Bier es neutro (das, no die). El articulo neutro se queda siempre como <em>ein</em>. Nunca cambia al pedir." },
+  v0: { right: "Genau! Una Baeckerei es pan recien horneado, decenas de variedades, y casi siempre una panadera o panadero que conoce a sus clientes. Es una institucion social de barrio.", wrong: "Una <strong>Baeckerei</strong> tradicional alemana es pan recien horneado, decenas de variedades, y un vinculo personal con la panadera o el panadero. Es lo opuesto al pan de supermercado." },
+  v1: { right: "Si! <em>Broetchen</em> es el diminutivo de <em>Brot</em> (pan). Todos los diminutivos en aleman terminados en -chen son <strong>neutros</strong>, y los broetchen tienen decenas de variedades en cada region.", wrong: "<em>Broetchen</em> es el <strong>diminutivo de Brot</strong>. Por eso es neutro (das). En Alemania existen decenas de variedades con nombres especificos — cada region tiene los suyos. Es un universo en si mismo." },
+  v2: { right: "Genau! En aleman se forman palabras compuestas pegando dos sustantivos: <em>Sesam + Broetchen = Sesambroetchen</em>. El genero del compuesto sigue al ultimo elemento (das Broetchen, por lo tanto das Sesambroetchen).", wrong: "Se forman <strong>pegando los sustantivos en una sola palabra</strong>: Sesam + Broetchen = Sesambroetchen. Esto es una caracteristica clave del aleman — palabras compuestas que pueden ser kilometricas pero siguen una logica clara." },
+  v3: { right: "Si! <em>Was darf's sein?</em> es la formula fija en panaderias, carnicerias y pequenos comercios. Literalmente <em>que debe ser</em>. Se usa decenas de veces al dia en toda Alemania.", wrong: "Literalmente significa <strong>que debe ser</strong>, y es la formula fija para <em>que te pongo</em>. La oiras en cada Baeckerei, Metzgerei o pequeno comercio. Memorizala — la oiras muchas veces." },
+  v4: { right: "Perfekt! Es las tres cosas a la vez — formal, corta, y sobre todo <strong>convierte tu desconocimiento en aprendizaje activo</strong>. La gente disfruta enseñando los nombres de sus cosas.", wrong: "Es <strong>todas las anteriores</strong>. Y especialmente lo ultimo: una pregunta como esta convierte tu desconocimiento en una mini-clase regalada. La mayoria de gente disfruta enseñando los nombres de las cosas de su pais." },
+  v5: { right: "Genau! <em>Lecker</em> se usa SOLO para comida y bebida. Para un libro o pelicula se diria <em>gut, spannend, interessant</em>, etc. <em>Lecker</em> es siempre gastronomico.", wrong: "<strong>Lecker es exclusivamente gastronomico</strong>. Para un libro o pelicula se dice <em>gut, spannend, interessant</em>. <em>Lecker</em> solo se aplica a comida y bebida. Decir <em>ein leckeres Buch</em> seria un error gracioso." },
+  v6: { right: "Si! El <em>Geschenk</em> de Frau Schultz no es comercial — es personal. La panadera ha decidido tratar a Marta como vecina y no como turista de paso. Marca el inicio de una relacion de barrio.", wrong: "Es <strong>un gesto personal de Frau Schultz</strong>. No es habitual ni obligatorio. Significa que la panadera ha decidido contar a Marta entre sus clientas, no como turista de paso." },
+  v7: { right: "Genau! <em>Komm wieder</em> es <strong>una invitacion calida</strong>. Frau Schultz esta diciendo: te espero, ya formas parte de mis clientes habituales. En Alemania, frases asi tienen peso real.", wrong: "<em>Komm wieder</em> es <strong>una invitacion calida</strong>. Frau Schultz no esta dando una orden ni recitando una formula vacia — esta diciendo que cuenta con que Marta vuelva. En Alemania las palabras tienen peso." },
+  v8: { right: "Si! En una ciudad grande como Berlin, donde puedes pasar dias sin que nadie te diga tu nombre, una persona que se acuerda de tu cara es un <strong>ancla emocional</strong>. Crea sentido de pertenencia.", wrong: "En una ciudad grande como Berlin, que alguien se acuerde de tu cara crea un <strong>ancla emocional</strong>. Es lo opuesto al anonimato urbano. Anna sabe que Frau Schultz acaba de regalar a Marta algo mas importante que un Broetchen — la ha registrado como vecina." }
+};
+var KEYS = ['g0','g1','g2','g3','g4','v0','v1','v2','v3','v4','v5','v6','v7','v8'];
+
+document.querySelectorAll('.exercise').forEach(function(ex, idx) {
+  var correctIdx = parseInt(ex.getAttribute('data-correct'), 10);
+  var fbEl = ex.querySelector('.ex-feedback');
+  var key = KEYS[idx];
+  var feedback = FEEDBACK[key] || { right: 'Correct!', wrong: 'Try again.' };
+
+  ex.querySelectorAll('.ex-option').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (ex.classList.contains('locked')) return;
+      var chosen = parseInt(btn.getAttribute('data-i'), 10);
+      var correctBtn = ex.querySelector('.ex-option[data-i="' + correctIdx + '"]');
+      ex.classList.add('locked', 'answered');
+      ex.querySelectorAll('.ex-option').forEach(function(b) { b.classList.add('locked'); });
+      if (chosen === correctIdx) {
+        btn.classList.add('correct');
+        fbEl.className = 'ex-feedback show right';
+        fbEl.innerHTML = '\u2713 ' + feedback.right;
+      } else {
+        btn.classList.add('incorrect');
+        if (correctBtn) correctBtn.classList.add('correct');
+        fbEl.className = 'ex-feedback show wrong';
+        fbEl.innerHTML = '\u2717 ' + feedback.wrong;
+      }
+    });
+  });
+});
+
+function scrollSec(idx, btn) {
+  document.querySelectorAll('.chapter-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  var sections = document.querySelectorAll('.book > .section');
+  if (sections[idx]) sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
