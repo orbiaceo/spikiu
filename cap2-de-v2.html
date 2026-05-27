@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu Reader — Capítulo 2 · Meine neue WG</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --paper:#fdfaf3; --white:#ffffff; --ink:#1a1612; --mid:#6b6560;
+  --faint:#ece4d3; --warm:#d8c9aa; --accent:#2d6a4f; --accent2:#e8f2ed;
+  --capy:#b8845a; --gold:#9a6e2a; --highlight:#fff2c9; --paper-dk:#f3ead7;
+  --green:#2d6a4f; --red:#c0392b; --green-bg:#e6f3eb; --red-bg:#fbe9e6;
+}
+body { background: var(--warm); font-family: 'DM Sans', sans-serif; color: var(--ink); padding: 2rem 1rem; line-height: 1.6; min-height: 100vh; }
+.book { max-width: 720px; margin: 0 auto; background: var(--paper); border-radius: 16px; padding: 56px 56px 40px; box-shadow: 0 12px 48px rgba(0,0,0,0.14); }
+
+.chapter-tabs { position: sticky; top: 0; background: var(--paper); margin: -56px -56px 32px; padding: 1.1rem 56px; border-bottom: 1px solid var(--faint); display: flex; gap: 0.5rem; z-index: 10; flex-wrap: wrap; }
+.chapter-tab { background: transparent; border: 1.5px solid var(--faint); padding: 0.55rem 1.1rem; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: var(--mid); transition: all 0.18s; }
+.chapter-tab:hover { background: var(--accent2); border-color: var(--accent); color: var(--accent); }
+.chapter-tab.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+.book-header { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 22px; border-bottom: 2px solid var(--ink); margin-bottom: 32px; }
+.book-brand { display: flex; align-items: center; gap: 0.6rem; }
+.book-brand-name { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
+.book-brand-name em { color: var(--accent); font-style: italic; }
+.book-meta { text-align: right; font-size: 0.74rem; color: var(--mid); line-height: 1.5; }
+.book-meta strong { color: var(--ink); font-weight: 700; }
+.book-level { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.22rem 0.7rem; border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; margin-top: 0.5rem; }
+
+.section { margin-bottom: 52px; }
+.section:last-child { margin-bottom: 0; }
+.section-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+.section-title { font-family: 'Lora', serif; font-size: 2rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.8rem; }
+.section-title em { color: var(--accent); font-style: italic; }
+.section-subtitle { font-family: 'Lora', serif; font-style: italic; font-size: 1.05rem; color: var(--mid); margin-bottom: 2rem; line-height: 1.5; }
+
+.reader-text { font-family: 'Lora', serif; font-size: 1.08rem; line-height: 1.85; color: var(--ink); }
+.reader-text p { margin-bottom: 1.1rem; }
+.reader-text p:first-of-type::first-letter { font-family: 'Lora', serif; font-size: 3.2rem; font-weight: 700; color: var(--accent); float: left; line-height: 0.9; margin: 0.3rem 0.5rem -0.2rem 0; }
+.de { color: var(--accent); font-weight: 600; font-style: italic; }
+.de-help { font-size: 0.78rem; color: var(--mid); font-style: italic; font-weight: normal; }
+.dialogue { display: block; margin: 0.3rem 0; padding-left: 1rem; border-left: 2px solid var(--faint); }
+.reader-note { background: var(--paper-dk); border-left: 3px solid var(--capy); padding: 1rem 1.4rem; border-radius: 0 8px 8px 0; margin: 2rem 0 1rem; font-size: 0.92rem; line-height: 1.6; }
+.reader-note strong { color: var(--capy); }
+
+.gram-intro { font-family: 'Lora', serif; font-size: 1.05rem; line-height: 1.75; margin-bottom: 1.5rem; }
+.gram-intro em { font-style: italic; color: var(--accent); }
+.gram-twins { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.8rem; }
+.gram-twin { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.2rem 1.1rem; text-align: center; }
+.gram-twin-name { font-family: 'Lora', serif; font-weight: 700; font-size: 1.3rem; color: var(--accent); margin-bottom: 0.3rem; }
+.gram-twin-tagline { font-size: 0.78rem; color: var(--mid); font-style: italic; margin-bottom: 0.6rem; }
+.gram-twin-example { font-family: 'Lora', serif; font-size: 0.92rem; background: var(--paper); padding: 0.5rem 0.8rem; border-radius: 6px; font-style: italic; border-left: 2px solid var(--accent); text-align: left; }
+.gram-rule { background: var(--accent2); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1.2rem 1.4rem; margin: 1.5rem 0; }
+.gram-rule h4 { font-family: 'Lora', serif; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+.gram-rule p { font-size: 0.95rem; line-height: 1.65; }
+
+.gender-table { background: var(--white); border: 1px solid var(--faint); border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; }
+.gender-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.6rem; padding: 0.5rem 0; border-bottom: 1px dotted var(--faint); font-size: 0.92rem; }
+.gender-row:last-child { border-bottom: none; }
+.gender-row.header { font-weight: 700; color: var(--accent); font-family: 'Lora', serif; padding-bottom: 0.6rem; }
+.gender-row .cell { padding: 0 0.3rem; }
+.gender-row .gword { font-style: italic; color: var(--ink); }
+
+.gram-tip { background: var(--paper-dk); border-radius: 10px; padding: 1.2rem 1.4rem; margin-top: 1.5rem; font-size: 0.92rem; line-height: 1.65; }
+.gram-tip strong { color: var(--capy); }
+.gram-tip em { font-style: italic; color: var(--accent); }
+
+.exercise { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; }
+.exercise.answered { border-color: var(--accent); }
+.ex-num { font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-right: 0.4rem; }
+.ex-prompt { font-size: 0.96rem; line-height: 1.6; margin-bottom: 0.9rem; font-weight: 500; }
+.ex-prompt .de { font-style: italic; color: var(--accent); font-weight: 600; }
+.ex-prompt .help { font-size: 0.78rem; color: var(--mid); font-style: italic; font-weight: normal; }
+.ex-options { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.ex-options li { padding: 0; margin: 0; }
+.ex-option { background: var(--paper); border: 1.5px solid var(--faint); border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.95rem; cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 0.7rem; font-family: inherit; width: 100%; text-align: left; }
+.ex-option:hover:not(.locked) { background: var(--accent2); border-color: var(--accent); }
+.ex-option .letter { width: 26px; height: 26px; background: var(--white); border: 1.5px solid var(--faint); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: var(--mid); flex-shrink: 0; transition: all 0.18s; }
+.ex-option.correct { background: var(--green-bg) !important; border-color: var(--green) !important; }
+.ex-option.correct .letter { background: var(--green) !important; color: white !important; border-color: var(--green) !important; }
+.ex-option.incorrect { background: var(--red-bg) !important; border-color: var(--red) !important; }
+.ex-option.incorrect .letter { background: var(--red) !important; color: white !important; border-color: var(--red) !important; }
+.ex-option.locked { cursor: default; }
+.ex-feedback { margin-top: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.5; display: none; }
+.ex-feedback.show { display: block; }
+.ex-feedback.right { background: var(--green-bg); color: var(--green); border-left: 3px solid var(--green); }
+.ex-feedback.wrong { background: var(--red-bg); color: var(--red); border-left: 3px solid var(--red); }
+.ex-feedback em { color: var(--ink); font-style: italic; }
+
+.gloss-item { background: var(--white); border: 1.5px solid var(--faint); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; }
+.gloss-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.9rem; flex-wrap: wrap; padding-bottom: 0.7rem; border-bottom: 1px solid var(--faint); }
+.gloss-num { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+.gloss-word { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; }
+.gloss-trans { font-size: 0.84rem; color: var(--capy); font-style: italic; }
+
+.book-footer { margin-top: 52px; padding-top: 24px; border-top: 1px solid var(--faint); text-align: center; font-size: 0.84rem; color: var(--mid); line-height: 1.7; }
+.book-footer strong { color: var(--accent); font-weight: 600; }
+.book-footer em { color: var(--capy); font-style: italic; }
+.tier-note { display: inline-block; background: var(--accent2); color: var(--accent); padding: 0.3rem 0.9rem; border-radius: 100px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; margin-top: 0.8rem; }
+
+@media (max-width: 600px) {
+  body { padding: 0.8rem 0.5rem; }
+  .book { padding: 28px 22px 24px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 1.6rem; }
+  .reader-text { font-size: 1rem; }
+  .gram-twins { grid-template-columns: 1fr; }
+  .gender-row { grid-template-columns: 1fr 1fr 1fr; font-size: 0.85rem; }
+  .chapter-tabs { margin: -28px -22px 24px; padding: 0.9rem 22px; top: 0; }
+  .chapter-tab { font-size: 0.78rem; padding: 0.45rem 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="book">
+
+  <!-- BACK TO BOOKS -->
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;"><a href="books.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:transparent;border:1.5px solid var(--faint);padding:0.5rem 1rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--faint)';this.style.color='var(--mid)'">← Books</a><a href="chat.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:transparent;border:1.5px solid var(--faint);padding:0.5rem 1rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--faint)';this.style.color='var(--mid)'">💬 Chat</a><a href="dashboard.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:transparent;border:1.5px solid var(--faint);padding:0.5rem 1rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--faint)';this.style.color='var(--mid)'">← Dashboard</a></div>
+
+  <div class="chapter-tabs">
+    <button class="chapter-tab active" onclick="scrollSec(0,this)">📖 Reader</button>
+    <button class="chapter-tab" onclick="scrollSec(1,this)">⚙ Gramática</button>
+    <button class="chapter-tab" onclick="scrollSec(2,this)">📒 Glosario</button>
+  </div>
+
+  <div class="book-header">
+    <div class="book-brand">
+      <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/>
+        <circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="book-brand-name">Spi<em>k</em>iu Reader</span>
+    </div>
+    <div class="book-meta">
+      <strong>Capítulo 2</strong><br>
+      Alemán para hispanohablantes
+      <div class="book-level">A1 · Free</div>
+    </div>
+  </div>
+
+  <!-- ─────────────── READER ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Lectura · Capítulo 2</div>
+    <h1 class="section-title">Meine <em>neue WG</em></h1>
+    <p class="section-subtitle">En el que Marta descubre que en Alemania la cena puede ser pan y queso, que las cervezas tienen nombre, y que dos compañeros de piso muy distintos pueden vivir bajo el mismo techo sin gritarse.</p>
+
+    <div class="reader-text">
+
+      <p>Dentro de la <span class="de">Wohnung</span> <span class="de-help">— el piso</span> huele a café. Café fuerte, recién hecho. Marta sigue a Jonas por un pasillo largo. Techos altos, suelo de madera que cruje un poco, una bici colgada en la pared, fotos en blanco y negro de Berlín antes del muro.</p>
+
+      <p><span class="de">"Das ist der Flur. Hier links — die Küche. Geradeaus — das Wohnzimmer. Und hinten — die Zimmer."</span> <span class="de-help">Este es el pasillo. A la izquierda — la cocina. Recto — el salón. Y al fondo — las habitaciones.</span></p>
+
+      <p>Marta capta tres palabras: <em>Küche, Wohnzimmer, Zimmer</em>. Lo demás se escapa. Pero sonríe y asiente. <em>El truco universal — otra vez.</em></p>
+
+      <p>En la <span class="de">Küche</span> <span class="de-help">— la cocina</span> hay una persona. Hombre, treinta más o menos, alto, con el pelo rubio y revuelto, una camiseta de una banda que Marta no conoce, vaqueros viejos. Está cortando pan en una tabla. Un pan oscuro, denso, grande. <em>Como un ladrillo.</em></p>
+
+      <p>Levanta la cabeza, sonríe enorme y dice — muy alto:</p>
+
+      <p class="dialogue"><span class="de">"Servusss! Du musst die Marta sein! I bin der Felix!"</span> <span class="de-help">¡Holaaa! ¡Tú debes de ser Marta! ¡Yo soy Felix!</span></p>
+
+      <p>Marta parpadea. <em>Servus? I bin? ¿Qué es esto?</em> Ha estudiado <em>"Hallo"</em>, no <em>"Servus"</em>. Y <em>"ich bin"</em>, no <em>"i bin"</em>. <em>Aquí pasa algo raro.</em></p>
+
+      <p>Jonas, detrás de ella, ríe. <span class="de">"Marta, das ist Felix. Er kommt aus Bayern. München. Er spricht ein bisschen anders."</span> <span class="de-help">Marta, este es Felix. Viene de Baviera. Múnich. Habla un poco diferente.</span></p>
+
+      <p>Felix se ríe. Tiende la mano. Esta vez Marta ya sabe — solo mano, no besos.</p>
+
+      <p><span class="de">"Hallo, Felix. Ich bin Marta. Ich bin aus Madrid."</span></p>
+
+      <p><span class="de">"Madrid! Olé! Ich liebe Madrid. Sangría, paella, fiesta!"</span></p>
+
+      <p>Marta se ríe. <em>El mismo cliché en todas partes. Sangría y paella. Como si los madrileños bebiéramos sangría todos los días.</em> Pero Felix lo dice con tanto entusiasmo que es difícil enfadarse.</p>
+
+      <p>En ese momento, otra persona aparece. Una mujer, treinta y tantos, alta, delgada, pelo castaño corto, gafas redondas, jersey gris. Camina muy tranquila. Se acerca, hace una pequeña inclinación con la cabeza.</p>
+
+      <p class="dialogue"><span class="de">"Hallo. Ich bin Anna. Willkommen."</span></p>
+
+      <p>Tres palabras. Voz baja. Una sonrisa pequeña pero verdadera.</p>
+
+      <p>Marta entiende inmediatamente: <em>Anna es lo opuesto a Felix. Y los dos son alemanes.</em></p>
+
+      <p>Jonas explica: <span class="de">"Anna kommt aus Hamburg. Sie ist Ingenieurin. Felix ist Musiker."</span> <span class="de-help">Anna viene de Hamburgo. Es ingeniera. Felix es músico.</span></p>
+
+      <p><em>Norte y sur. Silencio y ruido. Ingeniería y música. Y aquí, en este piso, en Berlín, viven juntos. Y aparentemente sin matarse.</em></p>
+
+      <p>Felix señala la mesa de la cocina. <span class="de">"Komm, komm! Wir essen jetzt was. Du hast bestimmt Hunger nach dem Flug."</span> <span class="de-help">¡Ven, ven! Vamos a comer algo ahora. Seguro que tienes hambre después del vuelo.</span></p>
+
+      <p>Marta mira la mesa. Y se queda un segundo confundida.</p>
+
+      <p>Sobre la mesa hay: <span class="de">das Brot</span> <span class="de-help">— el pan</span> oscuro cortado en rebanadas gruesas, <span class="de">der Käse</span> <span class="de-help">— el queso</span> en tres tipos diferentes, <span class="de">die Butter</span> <span class="de-help">— la mantequilla</span> en un plato pequeño, salchichón cortado fino, pepinillos en un cuenco, mostaza, y cuatro botellas de cerveza.</p>
+
+      <p><em>¿Esto es la cena? ¿No hay nada caliente?</em></p>
+
+      <p>Jonas, que aparentemente lee mentes, dice: <span class="de">"In Deutschland heißt das Abendbrot. Kein warmes Essen. Nur Brot, Käse, ein bisschen Fleisch. Und Bier, natürlich."</span> <span class="de-help">En Alemania se llama Abendbrot. Sin comida caliente. Solo pan, queso, un poco de carne. Y cerveza, claro.</span></p>
+
+      <p><em>Abendbrot.</em> Marta lo aprende sin entender del todo. <em>Pan-de-la-tarde. Cena fría. Vale. Mente abierta.</em></p>
+
+      <p>Felix abre una cerveza con un mechero — un truco de bar. Le ofrece la botella a Marta. <span class="de">"Magst du Bier?"</span> <span class="de-help">¿Te gusta la cerveza?</span></p>
+
+      <p>Marta acepta. <span class="de">"Ja. Danke."</span> En Madrid bebe poca cerveza, pero esto parece importante.</p>
+
+      <p>Los cuatro se sientan alrededor de la mesa cuadrada. Anna trae un cuchillo afilado. Felix corta más queso. Jonas pone música muy bajita — algo electrónico, tranquilo, casi sin melodía.</p>
+
+      <p>Felix levanta su botella. <span class="de">"Prost! Auf Marta!"</span> <span class="de-help">¡Salud! ¡Por Marta!</span></p>
+
+      <p>Las cuatro botellas chocan. <em>Y aquí Marta hace algo importante. Mira a los ojos de cada uno mientras choca la botella. Lo había leído en un blog antes de venir: en Alemania, si no miras a los ojos al brindar, son siete años de mala suerte en la cama. Una superstición rara, pero Marta no se arriesga.</em></p>
+
+      <p>Felix asiente con aprobación. <span class="de">"Sehr gut! Du schaust in die Augen. Du bist keine Touristin."</span> <span class="de-help">¡Muy bien! Miras a los ojos. No eres una turista.</span></p>
+
+      <p>Marta sonríe. <em>Cinco minutos en Berlín y ya he hecho algo bien.</em></p>
+
+      <p>Comen. Marta prueba el pan. Es denso. Sabroso. Sabe a semillas, a corteza, a algo serio. <em>No es el pan blanco español. Es otro tipo de pan. Como si fuera un alimento de verdad y no un acompañamiento.</em></p>
+
+      <p>Prueba el queso. Uno es muy fuerte, casi pica. Otro es suave, cremoso. El tercero, con pequeños agujeros. <em>Cada uno es un mundo. Los españoles tenemos manchego. Los alemanes tienen veintisiete tipos de queso en una sola cena.</em></p>
+
+      <p>Felix le pregunta cosas. Despacio, pero con palabras nuevas. <em>Wo... wohnst... du... in... Madrid?</em></p>
+
+      <p>Marta responde lo mejor que puede. <span class="de">"Ich wohne in Madrid. In... eh... cerca del centro."</span></p>
+
+      <p>Anna, desde el otro lado de la mesa, dice suavemente: <span class="de">"In der Nähe vom Zentrum."</span></p>
+
+      <p>Marta repite, agradecida. <span class="de">"In der Nähe vom Zentrum. Danke."</span></p>
+
+      <p>Anna asiente. No dice nada más. Pero Marta entiende: <em>Anna va a ser la persona que la ayude con el alemán de verdad. Felix le enseñará las palabras divertidas. Jonas, las prácticas. Pero Anna, la lengua exacta.</em></p>
+
+      <p>Después de una hora, Marta empieza a notar el cansancio del vuelo. Los ojos le pesan. Felix lo ve.</p>
+
+      <p><span class="de">"Du bist müde. Komm, ich zeige dir dein Zimmer."</span> <span class="de-help">Estás cansada. Ven, te enseño tu habitación.</span></p>
+
+      <p>Marta se levanta. <span class="de">"Gute Nacht. Danke für alles."</span> <span class="de-help">Buenas noches. Gracias por todo.</span></p>
+
+      <p>Coros de <span class="de">"Gute Nacht"</span>. Jonas levanta su botella en saludo. Anna sonríe — esa sonrisa pequeña pero real.</p>
+
+      <p>Su habitación es pequeña. Una cama. Un escritorio bajo la ventana. Un armario IKEA — porque, aparentemente, en Alemania también hay IKEA. Pero la ventana da a un patio interior con árboles. <em>Árboles de verdad. En Madrid en mi piso veía un muro.</em></p>
+
+      <p>Marta deja la maleta amarilla en el suelo. Saca el cargador del móvil. Lo enchufa. Se sienta en la cama. La cama cruje suavemente.</p>
+
+      <p>Mira por la ventana. En un piso del otro lado del patio — luz amarilla, una cocina pequeña — un señor mayor cocina algo. Solo. Sin prisa. Hay algo bonito en esa imagen, aunque Marta no sabría decir el qué.</p>
+
+      <p>Se quita los zapatos. Se tumba sobre la colcha. Sin desvestirse. <em>Solo cinco minutos,</em> piensa. <em>Cinco minutos y luego me ducho.</em></p>
+
+      <p>Se duerme en treinta segundos.</p>
+
+      <p>En la cocina, Felix abre otra cerveza. Jonas lava un plato. Anna recoge el queso y lo guarda en la nevera, cada tipo en su propio recipiente. <em>Por supuesto, cada tipo en su propio recipiente.</em></p>
+
+      <p>Felix dice bajito: <span class="de">"Sie ist nett, oder?"</span> <span class="de-help">Es maja, ¿verdad?</span></p>
+
+      <p>Jonas asiente. <span class="de">"Ja. Sehr."</span></p>
+
+      <p>Anna, mientras cierra el frigorífico, dice solo: <span class="de">"Sie wird Berlin mögen."</span> <span class="de-help">A Marta le va a gustar Berlín.</span></p>
+
+      <p>Y por alguna razón, los tres saben que tiene razón.</p>
+
+      <div class="reader-note">
+        <strong>🐾 Spikiu te susurra al oído:</strong> ¿Has notado cómo el alemán tiene tres palabras para "el/la/lo"? <em>Der Käse. Die Butter. Das Brot.</em> Esto es lo más confuso del alemán para los hispanohablantes — y también lo más importante. En la siguiente página te enseño los tres géneros y un truco para no volverte loco.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────── GRAMÁTICA ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Gramática, directo al grano</div>
+    <h1 class="section-title">Los tres géneros en <em>treinta segundos</em></h1>
+    <p class="section-subtitle">El alemán inventó un tercer género — el <strong>neutro</strong> — solo para complicarte la vida. <em>Das Mädchen</em> (la chica) es neutro. <em>Die Sonne</em> (el sol) es femenino. Bienvenida al caos.</p>
+
+    <div class="gram-intro">
+      <p>Mientras tú en español tienes dos géneros (<em>el / la</em>), el alemán tiene <strong>tres</strong>: masculino (<em>der</em>), femenino (<em>die</em>) y neutro (<em>das</em>). Mala noticia: <strong>el género no sigue lógica</strong>. La luna es masculina, el sol es femenino, la chica es neutra. Las reglas internas hay que olvidarse de buscarlas.</p>
+    </div>
+
+    <div class="gram-twins">
+      <div class="gram-twin">
+        <div class="gram-twin-name">DER</div>
+        <div class="gram-twin-tagline">masculino</div>
+        <div class="gram-twin-example"><strong>der</strong> Käse<br><strong>der</strong> Tisch<br><strong>der</strong> Mond 🌙</div>
+      </div>
+      <div class="gram-twin">
+        <div class="gram-twin-name">DIE</div>
+        <div class="gram-twin-tagline">femenino</div>
+        <div class="gram-twin-example"><strong>die</strong> Butter<br><strong>die</strong> Küche<br><strong>die</strong> Sonne ☀️</div>
+      </div>
+      <div class="gram-twin">
+        <div class="gram-twin-name">DAS</div>
+        <div class="gram-twin-tagline">neutro</div>
+        <div class="gram-twin-example"><strong>das</strong> Brot<br><strong>das</strong> Bier<br><strong>das</strong> Mädchen 👧</div>
+      </div>
+    </div>
+
+    <div class="gram-rule">
+      <h4>🫏 Eselsbrücke para hispanohablantes</h4>
+      <p>"<strong>La palabra y su artículo viajan siempre juntos. Como pareja.</strong>"<br>
+      No memorices <em>Brot</em>. Memoriza <em>das Brot</em>. No <em>Küche</em>. <em>Die Küche</em>. Una sílaba más, años de confusión menos.<br>
+      Si los aprendes separados, los olvidarás. Si los aprendes juntos, los recordarás juntos.</p>
+    </div>
+
+    <div class="gram-tip">
+      <strong>🐾 Algunos atajos (no infalibles, pero ayudan):</strong><br><br>
+      → Terminadas en <strong>-ung</strong>, <strong>-heit</strong>, <strong>-keit</strong>, <strong>-schaft</strong> → casi siempre <em>die</em> (femenino): <em>die Wohnung, die Freiheit</em><br>
+      → Terminadas en <strong>-chen</strong>, <strong>-lein</strong> (diminutivos) → siempre <em>das</em> (neutro): <em>das Mädchen, das Brötchen</em><br>
+      → Días, meses, estaciones, puntos cardinales → siempre <em>der</em>: <em>der Montag, der Sommer</em><br><br>
+      <strong>Sorpresa cultural:</strong> en alemán la cerveza es neutro (<em>das Bier</em>), no femenino. Imagínate la cara del español que pide "una cerveza" y le hablan de ella como si fuera un objeto sin género. Bienvenida a Berlín.
+    </div>
+
+    <h3 style="font-family:'Lora',serif;font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;">🎯 Ejercicio — der, die o das?</h3>
+
+    <div class="exercise" data-correct="2">
+      <p class="ex-prompt"><span class="ex-num">1.</span> Felix corta <span class="de">_____ Brot</span> en rebanadas. <span class="help">— Felix corta el pan en rebanadas.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>der</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>die</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>das</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="1">
+      <p class="ex-prompt"><span class="ex-num">2.</span> En <span class="de">_____ Küche</span> hay tres personas. <span class="help">— En la cocina hay tres personas.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>der</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>die</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>das</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="0">
+      <p class="ex-prompt"><span class="ex-num">3.</span> <span class="de">_____ Käse</span> es muy fuerte. <span class="help">— El queso es muy fuerte.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>der</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>die</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>das</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="2">
+      <p class="ex-prompt"><span class="ex-num">4.</span> Felix dice <span class="de">"Prost!"</span> y bebe <span class="de">_____ Bier</span>. <span class="help">— Felix dice "¡Salud!" y bebe la cerveza.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>der</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>die</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>das</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+    <div class="exercise" data-correct="1">
+      <p class="ex-prompt"><span class="ex-num">5.</span> <span class="de">_____ Wohnung</span> tiene techos altísimos. <span class="help">— El piso tiene techos altísimos.</span></p>
+      <ul class="ex-options">
+        <li><button class="ex-option" data-i="0"><span class="letter">A</span>der</button></li>
+        <li><button class="ex-option" data-i="1"><span class="letter">B</span>die</button></li>
+        <li><button class="ex-option" data-i="2"><span class="letter">C</span>das</button></li>
+      </ul>
+      <div class="ex-feedback"></div>
+    </div>
+
+  </div>
+
+  <!-- ─────────────── GLOSARIO ─────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Ejercicios de vocabulario · Capítulo 2</div>
+    <h1 class="section-title">Las palabras del <em>Abendbrot</em></h1>
+    <p class="section-subtitle">Nueve palabras y costumbres que vas a usar en cualquier piso compartido alemán — desde el pan hasta el primer brindis.</p>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">1.</span><span class="gloss-word">die WG (Wohngemeinschaft)</span><span class="gloss-trans">el piso compartido</span></div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">¿Qué significa exactamente <em>WG</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>"Wohngebäude" — un edificio de viviendas</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>"Wohngemeinschaft" — una comunidad de personas que viven en el mismo piso</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>"Wohnungsamt" — una oficina de viviendas</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">2.</span><span class="gloss-word">das Abendbrot</span><span class="gloss-trans">la cena fría tradicional alemana</span></div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">¿Qué contiene típicamente un <em>Abendbrot</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>una sopa caliente y pasta</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>arroz con verduras y carne asada</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>pan, queso, embutidos, mantequilla, pepinillos — todo frío</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">3.</span><span class="gloss-word">das Brot</span><span class="gloss-trans">el pan</span></div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">¿Cómo describiría Marta el pan alemán típico comparado con el español?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>denso, oscuro, con semillas — un alimento serio en sí mismo</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>blanco, blando, parecido a una baguette</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>dulce, como un brioche francés</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">4.</span><span class="gloss-word">Prost! · in die Augen schauen</span><span class="gloss-trans">¡Salud! · mirar a los ojos</span></div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">¿Por qué Marta mira a los ojos de cada uno al brindar?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Porque le da vergüenza mirar la cerveza.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Superstición alemana: no mirar a los ojos al brindar = siete años de mala suerte.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Solo es educación, sin razón cultural.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">5.</span><span class="gloss-word">Servus · I bin</span><span class="gloss-trans">Hola (Baviera/Austria) · Yo soy (dialecto bávaro)</span></div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">¿Por qué Felix dice <em>"Servus"</em> y <em>"I bin"</em> en vez de <em>"Hallo"</em> y <em>"ich bin"</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Porque tiene un problema de pronunciación.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Porque está bromeando con Marta.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Porque viene de Baviera y allí se habla un dialecto distinto.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">6.</span><span class="gloss-word">die Küche · das Wohnzimmer · der Flur · das Zimmer</span><span class="gloss-trans">la cocina · el salón · el pasillo · la habitación</span></div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">¿Qué tienen en común <em>Wohnzimmer</em> y <em>Zimmer</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Ambos son neutros (das) y contienen la palabra "Zimmer" (habitación).</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Ambos son femeninos (die).</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Ambos son masculinos (der).</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">7.</span><span class="gloss-word">der Käse · die Butter · das Bier</span><span class="gloss-trans">el queso · la mantequilla · la cerveza</span></div>
+      <div class="exercise" data-correct="1">
+        <p class="ex-prompt">¿Cuál de estas tres palabras es <strong>neutra</strong> (das) en alemán?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>der Käse</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>das Bier</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>die Butter</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">8.</span><span class="gloss-word">in der Nähe vom Zentrum</span><span class="gloss-trans">cerca del centro</span></div>
+      <div class="exercise" data-correct="2">
+        <p class="ex-prompt">Marta intenta decir "cerca del centro" y mezcla español con alemán. ¿Cuál es la forma correcta en alemán?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>cerca des Zentrums</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>nahe von das Zentrum</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>in der Nähe vom Zentrum</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-head"><span class="gloss-num">9.</span><span class="gloss-word">Gute Nacht · Danke für alles</span><span class="gloss-trans">Buenas noches · Gracias por todo</span></div>
+      <div class="exercise" data-correct="0">
+        <p class="ex-prompt">¿Cuándo se usa <em>"Gute Nacht"</em>?</p>
+        <ul class="ex-options">
+          <li><button class="ex-option" data-i="0"><span class="letter">A</span>Solo al irse a dormir o al despedirse muy tarde por la noche.</button></li>
+          <li><button class="ex-option" data-i="1"><span class="letter">B</span>Como saludo al llegar a una fiesta.</button></li>
+          <li><button class="ex-option" data-i="2"><span class="letter">C</span>Después del mediodía y por la tarde.</button></li>
+        </ul>
+        <div class="ex-feedback"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="book-footer">
+    <strong>Fin del Capítulo 2.</strong><br>
+    En el <strong>Capítulo 3</strong>, Jonas lleva a Marta a su primer <em>Stammtisch</em> en una <em>Kneipe</em> de Kreuzberg — y Marta descubre que en Alemania la gente puede pasar treinta segundos en silencio sin que nadie se sienta incómodo.<br>
+    <em>spikiu.com — donde el idioma se camina, no se estudia.</em>
+    <div class="tier-note">🌱 Versión gratuita · Sin personalización</div>
+  </div>
+
+</div>
+
+<script>
+var FEEDBACK = {
+  g0: { right: "Genau! <em>Das Brot</em> es neutro. Una de las palabras mas comunes del aleman.", wrong: "Es <strong>das Brot</strong> (neutro). El pan en aleman es das, no der ni die." },
+  g1: { right: "Perfekt! <em>Die Kueche</em> es femenino. Todas las palabras en <em>-e</em> tienden a ser femeninas.", wrong: "Es <strong>die Kueche</strong>. Muchas palabras alemanas que terminan en <em>-e</em> son femeninas." },
+  g2: { right: "Stimmt! <em>Der Kaese</em> es masculino. Los productos lacteos en aleman son muy variados de genero — hay que memorizarlos uno a uno.", wrong: "Es <strong>der Kaese</strong> (masculino). Los nombres de productos lacteos no siguen una regla fija — hay que aprender cada uno con su articulo." },
+  g3: { right: "Genau! <em>Das Bier</em> es neutro. Aunque en espanol decimos <em>la cerveza</em>, en aleman es das. Choca al principio pero pronto se interioriza.", wrong: "Es <strong>das Bier</strong> (neutro). Aunque en espanol es femenino (la cerveza), en aleman es neutro. Un cambio de chip mental para hispanohablantes." },
+  g4: { right: "Genial! <em>Die Wohnung</em> es femenino. Recuerda: palabras terminadas en <em>-ung</em> son casi siempre <em>die</em>.", wrong: "Es <strong>die Wohnung</strong> (femenino). Las palabras alemanas terminadas en <em>-ung</em> (Wohnung, Zeitung, Ordnung) son casi siempre femeninas." },
+  v0: { right: "Genau! <em>WG</em> es la abreviatura de <em>Wohngemeinschaft</em> — literalmente <em>comunidad de vivienda</em>. En Alemania es comunisimo en estudiantes y jovenes profesionales.", wrong: "Es <strong>Wohngemeinschaft</strong> — comunidad de vivienda. Cuando un aleman dice <em>ich wohne in einer WG</em>, esta diciendo <em>comparto piso</em>." },
+  v1: { right: "Si! El <em>Abendbrot</em> es la cena tipica alemana — fria, simple, ritual. Muy distinta a la cena espanola caliente.", wrong: "El <strong>Abendbrot</strong> es pan, queso, embutidos, mantequilla, pepinillos — todo frio. Es una tradicion alemana profunda. La cena espanola caliente es excepcion, no la regla." },
+  v2: { right: "Perfecto! El pan aleman es denso, oscuro, lleno de semillas. No es acompanamiento — es alimento principal. Hay tiendas especializadas (<em>Baeckerei</em>) con cien tipos.", wrong: "El pan aleman es <strong>denso, oscuro, con semillas</strong>. Muy distinto al pan blanco espanol. En Alemania el pan es protagonista, no acompanamiento." },
+  v3: { right: "Genau! Es una supersticion real y muy seria en Alemania. <em>Anstossen ohne in die Augen zu schauen</em> = mala suerte. No te arriesgues.", wrong: "Es <strong>una supersticion alemana real</strong>. Quien no mira a los ojos al brindar se atribuye siete anos de mala suerte (sobre todo en la cama). Mejor mirar siempre." },
+  v4: { right: "Si! Felix es de Munich y habla con acento bavaro. <em>Servus</em> = hola en Baviera y Austria. <em>I bin</em> = la forma dialectal de <em>ich bin</em>. Muy comun en el sur.", wrong: "Felix es <strong>de Baviera</strong> y habla un dialecto distinto al alto aleman estandar. <em>Servus</em> y <em>I bin</em> son formas bavaras totalmente normales en el sur." },
+  v5: { right: "Genau! Las palabras compuestas con <em>Zimmer</em> son todas neutras: <em>das Wohnzimmer, das Badezimmer, das Schlafzimmer</em>.", wrong: "<strong>Zimmer</strong> es neutro (das Zimmer). Y todas las palabras compuestas con Zimmer tambien son neutras: <em>das Wohnzimmer, das Badezimmer</em>. En aleman el genero del compuesto sigue al ultimo elemento." },
+  v6: { right: "Perfekt! <em>Das Bier</em> es neutro. Sorprende al espanol pero asi es. Una de las palabras mas usadas en Berlin.", wrong: "<strong>Das Bier</strong> es neutro (das). <em>Der Kaese</em> es masculino y <em>die Butter</em> es femenino. El alemán no sigue la lógica del español para géneros." },
+  v7: { right: "Si! La construccion correcta es <em>in der Naehe vom Zentrum</em>. <em>Vom</em> es la contraccion de <em>von dem</em>.", wrong: "La forma correcta es <strong>in der Naehe vom Zentrum</strong>. Es una construccion fija — vale la pena memorizarla en bloque, sin diseccionar." },
+  v8: { right: "Genau! <em>Gute Nacht</em> es solo para irse a dormir o despedirse muy tarde. No se usa como saludo de llegada.", wrong: "<strong>Gute Nacht</strong> es solo para irse a dormir o despedirse muy tarde. Para llegar a una fiesta se dice <em>Hallo</em> o <em>Guten Abend</em>. Es un error muy comun de hispanohablantes (que decimos <em>buenas noches</em> como saludo y despedida)." }
+};
+var KEYS = ['g0','g1','g2','g3','g4','v0','v1','v2','v3','v4','v5','v6','v7','v8'];
+
+document.querySelectorAll('.exercise').forEach(function(ex, idx) {
+  var correctIdx = parseInt(ex.getAttribute('data-correct'), 10);
+  var fbEl = ex.querySelector('.ex-feedback');
+  var key = KEYS[idx];
+  var feedback = FEEDBACK[key] || { right: 'Correct!', wrong: 'Try again.' };
+
+  ex.querySelectorAll('.ex-option').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (ex.classList.contains('locked')) return;
+      var chosen = parseInt(btn.getAttribute('data-i'), 10);
+      var correctBtn = ex.querySelector('.ex-option[data-i="' + correctIdx + '"]');
+      ex.classList.add('locked', 'answered');
+      ex.querySelectorAll('.ex-option').forEach(function(b) { b.classList.add('locked'); });
+      if (chosen === correctIdx) {
+        btn.classList.add('correct');
+        fbEl.className = 'ex-feedback show right';
+        fbEl.innerHTML = '\u2713 ' + feedback.right;
+      } else {
+        btn.classList.add('incorrect');
+        if (correctBtn) correctBtn.classList.add('correct');
+        fbEl.className = 'ex-feedback show wrong';
+        fbEl.innerHTML = '\u2717 ' + feedback.wrong;
+      }
+    });
+  });
+});
+
+function scrollSec(idx, btn) {
+  document.querySelectorAll('.chapter-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  var sections = document.querySelectorAll('.book > .section');
+  if (sections[idx]) sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
