@@ -20,10 +20,29 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress } = profile;
+  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
+
+  // ── FRESHNESS ─────────────────────────────────────────
+  // How long since the user was last here? Tells Spikiu whether
+  // this is a first meeting, a quick return, or a long absence.
+  // Spikiu's opener depends on this — no more "Nice to meet you"
+  // after 3 minutes away.
+  const MIN = 60 * 1000;
+  const HOUR = 60 * MIN;
+  const DAY = 24 * HOUR;
+  let freshness = 'first';
+  if (typeof timeSinceLastSeen === 'number' && timeSinceLastSeen >= 0) {
+    if      (timeSinceLastSeen <  10 * MIN)  freshness = 'veryFresh';
+    else if (timeSinceLastSeen <   6 * HOUR) freshness = 'fresh';
+    else if (timeSinceLastSeen <       DAY)  freshness = 'sameDay';
+    else if (timeSinceLastSeen <   2 * DAY)  freshness = 'yesterday';
+    else if (timeSinceLastSeen <   7 * DAY)  freshness = 'recentDays';
+    else if (timeSinceLastSeen <  30 * DAY)  freshness = 'longGone';
+    else                                     freshness = 'veryLongGone';
+  }
 
   // ── READER CONTEXT BLOCK ───────────────────────────────
   // English Reader doesn't exist yet — but Spikiu should know
@@ -66,18 +85,56 @@ ${readerContextBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════
-This is the user's FIRST conversation with you in English after the assessment.
+The user just opened the chat. Your opener depends on HOW LONG they were away.
 
-Open warmly, in English, AT THEIR LEVEL. Keep it short — match their level exactly:
-- A1 / Beginner → 1-2 very simple sentences: "Hi ${name}! How are you?"
-- A2 → 2-3 simple sentences, present tense: "Hi ${name}! Good to see you. How was your day?"
-- B1 → 3 sentences, past tense possible: "Hi ${name}! How was your weekend?"
-- B2+ → richer language, can reference their goal/context
+TIME SINCE LAST SEEN: ${freshness}
 
-ONE question to invite them to speak. Never two. Never overwhelm.
-Use 🐾 once, naturally.
+ABSOLUTE RULE — NEVER, EVER, in any opener:
+- "Nice to meet you"
+- "Good to meet you"
+- Any first-meeting language
+You ALREADY know this person. You did the assessment together. They are not new.
 
-NEVER mention the Reader in the opener.
+OPEN ACCORDING TO ${freshness}:
+
+• "first" — Very first conversation after the assessment.
+  Warm, simple, no first-meeting platitudes. Examples by level:
+  A1 → "Hi ${name}! How are you?"
+  A2 → "Hi ${name}! How was your day?"
+  B1 → "Hi ${name}! How was your weekend?"
+  B2+ → richer language, can reference their goal/context.
+
+• "veryFresh" — Less than 10 minutes ago.
+  Like they never left. Casual.
+  "Back already, ${name}? 🐾 What's on your mind?"
+  "Hey, you're back. Where were we?"
+  NEVER greet as if it's a new day.
+
+• "fresh" — A few hours, same session feel.
+  "Hi ${name} 🐾 Up for another round?"
+  "There you are. How's it going?"
+
+• "sameDay" — Earlier today (6h–1d).
+  "Hi again, ${name}. 🐾"  or  "Good to see you again today."
+
+• "yesterday" — About a day ago.
+  "Hi ${name}! 🐾 How was yesterday?"
+  or simply "There you are. How are you?"
+
+• "recentDays" — A few days, less than a week.
+  "Hi ${name}, good to see you 🐾 What have you been up to?"
+
+• "longGone" — A week to a month.
+  "Hi ${name}, it's been a while! 🐾 How are you?"
+
+• "veryLongGone" — Over a month.
+  "${name}, you're back! 🐾 I was wondering how you were doing."
+
+RULES IN ALL CASES:
+- Match their level exactly (A1 → very simple; B2 → richer).
+- ONE question to invite them to speak. Never two. Never overwhelm.
+- Use 🐾 once, naturally — not forced.
+- NEVER mention the Reader in the opener.
 
 ═══════════════════════════════════════════════════════════
 LANGUAGE — ABSOLUTE
