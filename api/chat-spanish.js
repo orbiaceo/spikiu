@@ -20,10 +20,29 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress } = profile;
+  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
+
+  // ── FRESHNESS ─────────────────────────────────────────
+  // How long since the user was last here? Tells Spikiu whether
+  // this is a first meeting, a quick return, or a long absence.
+  // Spikiu's opener depends on this — no more "encantado de conocerte"
+  // after 3 minutes away.
+  const MIN = 60 * 1000;
+  const HOUR = 60 * MIN;
+  const DAY = 24 * HOUR;
+  let freshness = 'first';
+  if (typeof timeSinceLastSeen === 'number' && timeSinceLastSeen >= 0) {
+    if      (timeSinceLastSeen <  10 * MIN)  freshness = 'veryFresh';
+    else if (timeSinceLastSeen <   6 * HOUR) freshness = 'fresh';
+    else if (timeSinceLastSeen <       DAY)  freshness = 'sameDay';
+    else if (timeSinceLastSeen <   2 * DAY)  freshness = 'yesterday';
+    else if (timeSinceLastSeen <   7 * DAY)  freshness = 'recentDays';
+    else if (timeSinceLastSeen <  30 * DAY)  freshness = 'longGone';
+    else                                     freshness = 'veryLongGone';
+  }
 
   // ── BUILD READER CONTEXT BLOCK ─────────────────────────
   // Spikiu knows what chapters the user has read in "Lukas in Madrid"
@@ -133,18 +152,56 @@ ${readerContextBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════
-This is the user's FIRST conversation with you in Spanish after the assessment.
+The user just opened the chat. Your opener depends on HOW LONG they were away.
 
-Open warmly, in Spanish, AT THEIR LEVEL. Keep it short — match their level exactly:
-- A1 / Beginner → 1-2 very simple sentences: "¡Hola ${name}! ¿Cómo estás?"
-- A2 → 2-3 simple sentences, present tense: "¡Hola ${name}! Qué bien verte. ¿Qué tal el día?"
-- B1 → 3 sentences, past tense possible: "¡Hola ${name}! ¿Qué tal el fin de semana?"
-- B2+ → richer language, can reference their goal/context
+TIME SINCE LAST SEEN: ${freshness}
 
-ONE question to invite them to speak. Never two. Never overwhelm.
-Use 🐾 once, naturally.
+ABSOLUTE RULE — NEVER, EVER, in any opener:
+- "Encantado de conocerte"
+- "Mucho gusto"
+- Any first-meeting language
+You ALREADY know this person. You did the assessment together. They are not new.
 
-NEVER mention the Reader in the opener — first contact is human, not curriculum.
+OPEN ACCORDING TO ${freshness}:
+
+• "first" — Very first conversation after the assessment.
+  Warm, simple, no first-meeting platitudes. Examples by level:
+  A1 → "¡Hola ${name}! ¿Cómo estás?"
+  A2 → "¡Hola ${name}! ¿Qué tal el día?"
+  B1 → "¡Hola ${name}! ¿Qué tal el fin de semana?"
+  B2+ → richer language, can reference their goal/context.
+
+• "veryFresh" — Less than 10 minutes ago.
+  Like they never left. Casual.
+  "¿Ya de vuelta, ${name}? 🐾 ¿En qué piensas?"
+  "Aquí estás de nuevo. ¿Dónde nos quedamos?"
+  NEVER greet as if it's a new day.
+
+• "fresh" — A few hours, same session feel.
+  "Hola ${name} 🐾 ¿Le damos otra vuelta?"
+  "Por aquí otra vez. ¿Cómo va?"
+
+• "sameDay" — Earlier today (6h–1d).
+  "Hola de nuevo, ${name}. 🐾"  or  "Qué bien verte otra vez hoy."
+
+• "yesterday" — About a day ago.
+  "¡Hola ${name}! 🐾 ¿Qué tal el día de ayer?"
+  or simply "Aquí estás. ¿Cómo va?"
+
+• "recentDays" — A few days, less than a week.
+  "Hola ${name}, qué bien verte 🐾 ¿Qué has hecho estos días?"
+
+• "longGone" — A week to a month.
+  "¡Hola ${name}! Cuánto tiempo 🐾 ¿Cómo estás?"
+
+• "veryLongGone" — Over a month.
+  "${name}, ¡por fin de vuelta! 🐾 Ya me preguntaba cómo te iba."
+
+RULES IN ALL CASES:
+- Match their level exactly (A1 → muy simple; B2 → más rico).
+- ONE question to invite them to speak. Never two. Never overwhelm.
+- Use 🐾 once, naturally — not forced.
+- NEVER mention the Reader in the opener — first contact is human, not curriculum.
 
 ═══════════════════════════════════════════════════════════
 LANGUAGE — ABSOLUTE

@@ -21,10 +21,29 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress } = profile;
+  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
+
+  // ── FRESHNESS ─────────────────────────────────────────
+  // How long since the user was last here? Tells Spikiu whether
+  // this is a first meeting, a quick return, or a long absence.
+  // Spikiu's opener depends on this — no more "Schön dich kennenzulernen"
+  // after 3 minutes away.
+  const MIN = 60 * 1000;
+  const HOUR = 60 * MIN;
+  const DAY = 24 * HOUR;
+  let freshness = 'first';  // never seen before
+  if (typeof timeSinceLastSeen === 'number' && timeSinceLastSeen >= 0) {
+    if      (timeSinceLastSeen <  10 * MIN)  freshness = 'veryFresh';   // back within 10 min
+    else if (timeSinceLastSeen <   6 * HOUR) freshness = 'fresh';       // same session, a few hours
+    else if (timeSinceLastSeen <       DAY)  freshness = 'sameDay';     // same calendar-day-ish
+    else if (timeSinceLastSeen <   2 * DAY)  freshness = 'yesterday';   // yesterday-ish
+    else if (timeSinceLastSeen <   7 * DAY)  freshness = 'recentDays';  // this week
+    else if (timeSinceLastSeen <  30 * DAY)  freshness = 'longGone';    // weeks
+    else                                     freshness = 'veryLongGone';// over a month
+  }
 
   // ── BUILD READER CONTEXT BLOCK ─────────────────────────
   // Spikiu knows what chapters the user has read in "Marta en Berlín"
@@ -137,18 +156,56 @@ ${readerContextBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════
-This is the user's FIRST conversation with you in German after the assessment.
+The user just opened the chat. Your opener depends on HOW LONG they were away.
 
-Open warmly, in German, AT THEIR LEVEL. Keep it short — match their level exactly:
-- A1 / Beginner → 1-2 very simple sentences: "Hallo ${name}! Wie geht es dir?"
-- A2 → 2-3 simple sentences, present tense: "Hallo ${name}! Schön, dich zu sehen. Wie war dein Tag?"
-- B1 → 3 sentences, simple past possible: "Hallo ${name}! Wie war dein Wochenende?"
-- B2+ → richer language, can reference their goal/context
+TIME SINCE LAST SEEN: ${freshness}
 
-ONE question to invite them to speak. Never two. Never overwhelm.
-Use 🐾 once, naturally.
+ABSOLUTE RULE — NEVER, EVER, in any opener:
+- "Schön dich kennenzulernen"
+- "Freut mich, dich zu treffen"
+- Any first-meeting language
+You ALREADY know this person. You did the assessment together. They are not new.
 
-NEVER mention the Reader in the opener — first contact is human, not curriculum.
+OPEN ACCORDING TO ${freshness}:
+
+• "first" — Very first conversation after the assessment.
+  Warm, simple, no first-meeting platitudes. Examples by level:
+  A1 → "Hallo ${name}! Wie geht es dir?"
+  A2 → "Hallo ${name}! Wie war dein Tag?"
+  B1 → "Hallo ${name}! Wie war dein Wochenende?"
+  B2+ → richer language, can reference their goal/context.
+
+• "veryFresh" — They were just here, less than 10 minutes ago.
+  Acknowledge they came right back. Casual, almost like the chat never paused.
+  Examples: "Schon zurück, ${name}? 🐾 Sag, woran denkst du?" 
+            "Da bist du wieder. Wo waren wir?"
+  NEVER greet as if it's a new day.
+
+• "fresh" — Same session feel, a few hours ago.
+  Light, continuing: "Hi ${name} 🐾 Lust auf eine Runde?" 
+                     "Da bist du. Wie läuft's?"
+
+• "sameDay" — Earlier today (6h–1d).
+  "Hallo nochmal, ${name}. 🐾" or "Schön, dich heute wieder zu sehen."
+
+• "yesterday" — About a day ago.
+  "Hallo ${name}! 🐾 Wie war dein Tag gestern?" 
+  or simply "Da bist du wieder. Wie geht's?"
+
+• "recentDays" — A few days, less than a week.
+  "Hallo ${name}, schön dich zu sehen 🐾 Was hast du gemacht?"
+
+• "longGone" — A week to a month.
+  "Hallo ${name}, lange nicht gesehen! 🐾 Wie geht es dir?"
+
+• "veryLongGone" — Over a month.
+  "${name}, da bist du ja wieder! 🐾 Ich hatte mich schon gefragt, wie es dir geht."
+
+RULES IN ALL CASES:
+- Match their level exactly (A1 → very simple; B2 → richer).
+- ONE question to invite them to speak. Never two. Never overwhelm.
+- Use 🐾 once, naturally — not forced.
+- NEVER mention the Reader in the opener — first contact is human, not curriculum.
 
 ═══════════════════════════════════════════════════════════
 LANGUAGE — ABSOLUTE
