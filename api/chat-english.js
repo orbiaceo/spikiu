@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen } = profile;
+  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
@@ -42,6 +42,32 @@ export default async function handler(req, res) {
     else if (timeSinceLastSeen <   7 * DAY)  freshness = 'recentDays';
     else if (timeSinceLastSeen <  30 * DAY)  freshness = 'longGone';
     else                                     freshness = 'veryLongGone';
+  }
+
+  // ── LAST CONVERSATION MEMORY ──────────────────────────
+  // Spikiu remembers what was discussed in the previous session.
+  // Today this is a full plain-text transcript; later it may be a
+  // Haiku-generated summary. Either way, this block is inserted as
+  // contextual knowledge — NOT as the running message history.
+  let memoryBlock = '';
+  if (typeof lastConversationMemory === 'string' && lastConversationMemory.trim().length > 0) {
+    memoryBlock = `
+═══════════════════════════════════════════════════════════
+MEMORY — WHAT YOU TALKED ABOUT LAST TIME
+═══════════════════════════════════════════════════════════
+This is what you talked about with ${name} last time. Read it as your
+own memory. You KNOW this. Refer to it naturally when relevant — but
+NEVER force it at the start, never as an interrogation ("Last time you
+told me..."). Memory like a human, not like a diary.
+
+If the user continues a topic — pick it up.
+If they start a new one — follow them, don't mention the old one.
+If they ask "where were we?" — THEN you may summarize explicitly.
+
+LAST CONVERSATION TRANSCRIPT:
+${lastConversationMemory.trim()}
+═══════════════════════════════════════════════════════════
+`;
   }
 
   // ── READER CONTEXT BLOCK ───────────────────────────────
@@ -81,7 +107,7 @@ Register preference: ${register || 'casual'}
 Life stage: ${ageStage || 'adult'}
 
 You ALREADY KNOW this person. You did the assessment together. Treat them as someone you remember.
-${readerContextBlock}
+${readerContextBlock}${memoryBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════
