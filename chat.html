@@ -219,6 +219,39 @@ function buildReaderProgress(targetLang) {
   };
 }
 
+// ── BUILD LAST-CONVERSATION MEMORY ─────────────────────
+// Today (beta): turn the stored last conversation into a plain-text
+// transcript that Spikiu can read as context.
+// Later (post-Supabase + Haiku): replace the body of this function
+// with a per-conversation summary fetched from the backend. The
+// downstream contract — a string field called `lastConversationMemory`
+// in the profile — stays identical, so no backend rewrite needed.
+function buildLastConversationMemory(lastConversation) {
+  if (!Array.isArray(lastConversation) || lastConversation.length === 0) {
+    return null;
+  }
+
+  // Skip leading assistant message if it's the opener (no preceding user turn)
+  // so we don't waste tokens on Spikiu's own hellos from last time.
+  const lines = lastConversation
+    .filter(m => m && typeof m.content === 'string' && m.content.trim().length > 0)
+    .map(m => {
+      const speaker = m.role === 'user' ? 'USER' : 'SPIKIU';
+      // Strip any of the internal markers Spikiu uses (lesson triggers, PDF marks, etc.)
+      const clean = m.content
+        .replace(/\[LESSON_REQUEST:[^\]]*\]/g, '')
+        .replace(/\[LESSON_FROM_CONVERSATION\]/g, '')
+        .replace(/\[PDF_AVAILABLE\]/g, '')
+        .replace(/\[OPEN_CONVERSATION\]/g, '')
+        .trim();
+      return clean ? `${speaker}: ${clean}` : '';
+    })
+    .filter(Boolean);
+
+  if (lines.length === 0) return null;
+  return lines.join('\n');
+}
+
 // ── UI HELPERS ─────────────────────────────────────────
 function addMessage(role, text) {
   const chat = document.getElementById('chat');
@@ -377,6 +410,23 @@ async function resumeConversation(user) {
     // Build reader progress for THIS user
     const readerProgress = buildReaderProgress(user.profile.targetLang);
 
+    // ── FRESHNESS ─────────────────────────────────────────
+    // How long since the user was last here? Spikiu reads this
+    // and adjusts his greeting (no more "Schön dich kennenzulernen"
+    // after 3 minutes away).
+    let timeSinceLastSeen = null;
+    if (user.lastSeenAt) {
+      try { timeSinceLastSeen = Date.now() - new Date(user.lastSeenAt).getTime(); }
+      catch(e) { timeSinceLastSeen = null; }
+    }
+
+    // ── MEMORY OF LAST CONVERSATION ───────────────────────
+    // Spikiu remembers what was talked about in the previous session.
+    // Today: full last conversation as plain text. Later (post-beta):
+    // can be replaced by a Haiku-generated summary — same field name,
+    // different content, no backend changes needed.
+    const lastConversationMemory = buildLastConversationMemory(user.lastConversation);
+
     const reply = await apiChat(
       user.profile.targetLang,
       [],
@@ -384,12 +434,21 @@ async function resumeConversation(user) {
         name: user.name,
         nativeLang: user.nativeLang,
         ...user.profile,
-        readerProgress: readerProgress  // ← NEW: Spikiu sees what user reads
+        readerProgress: readerProgress,
+        timeSinceLastSeen: timeSinceLastSeen,
+        lastConversationMemory: lastConversationMemory
       }
     );
     hideTyping();
     session.history.push({ role: 'assistant', content: reply });
     addMessage('spikiu', reply);
+
+    // Update lastSeenAt so the next session computes a fresh diff
+    try {
+      user.lastSeenAt = new Date().toISOString();
+      localStorage.setItem('spikiu_user', JSON.stringify(user));
+    } catch(e) {}
+
   } catch(e) {
     hideTyping();
     const fallback = user.profile.targetLang === 'German'
@@ -457,6 +516,18 @@ window.sendMessage = async function() {
       // Re-build reader progress on EVERY message — user might have read a chapter mid-chat
       const readerProgress = buildReaderProgress(session.profile.targetLang);
 
+      // Compute freshness from stored lastSeenAt (BEFORE updating it)
+      let timeSinceLastSeen = null;
+      try {
+        const rawF = localStorage.getItem('spikiu_user');
+        if (rawF) {
+          const uF = JSON.parse(rawF);
+          if (uF.lastSeenAt) {
+            timeSinceLastSeen = Date.now() - new Date(uF.lastSeenAt).getTime();
+          }
+        }
+      } catch(e) {}
+
       const reply = await apiChat(
         session.profile.targetLang,
         session.history,
@@ -464,7 +535,8 @@ window.sendMessage = async function() {
           name: session.name,
           nativeLang: session.nativeLang,
           ...session.profile,
-          readerProgress: readerProgress  // ← NEW
+          readerProgress: readerProgress,  // ← NEW
+          timeSinceLastSeen: timeSinceLastSeen
         }
       );
       session.history.push({ role: 'assistant', content: reply });
@@ -491,6 +563,7 @@ window.sendMessage = async function() {
         if (rawU) {
           const u = JSON.parse(rawU);
           u.lastConversation = session.history;
+          u.lastSeenAt = new Date().toISOString();
           localStorage.setItem('spikiu_user', JSON.stringify(u));
         }
       } catch(e) {}
@@ -650,7 +723,8 @@ async function generateRoadmapAndRedirect() {
       nativeLang: session.nativeLang,
       profile: session.profile,
       roadmap: roadmap,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      lastSeenAt: new Date().toISOString()
     }));
 
     const goodbyeMsg = session.nativeLang === 'Deutsch'
