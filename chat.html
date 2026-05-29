@@ -370,20 +370,17 @@ window.startChat = function() {
     });
   }
 
-  // Check if user already completed assessment
+  // Check if user already completed Beratung (assessment.html)
   const existingUser = loadExistingUser();
 
   if (existingUser && existingUser.profile && existingUser.profile.targetLang) {
     resumeConversation(existingUser);
   } else {
-    addMessage('spikiu', "👋 Quick note before we start:\n\nYou're part of our beta. After this chat everything is deleted — no data, no memory.\n\nIn the future you'll be able to log in and Spikiu will remember you, your goals and your story. 🐾\n\nBut now — let's talk.");
-    session.phase = 1;
-
-    setTimeout(() => {
-      const opener = "Welcome to Spikiu! 🐾\n\nWhat is your mother language?";
-      addMessage('spikiu', opener);
-      session.onboardingHistory.push({ role: 'assistant', content: opener });
-    }, 1200);
+    // ── LEGACY phase 1+2 (Onboarding + Assessment in chat) — REPLACED by assessment.html ──
+    // The old conversational onboarding/assessment now lives in assessment.html as a card flow.
+    // No profile = user landed on chat.html directly — send them through Beratung first.
+    window.location.replace('assessment.html');
+    return;
   }
 
   input.focus();
