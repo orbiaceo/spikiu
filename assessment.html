@@ -754,6 +754,163 @@ function generateRecos() {
   return recos;
 }
 
+// ═══ BUILD DETERMINISTIC ROADMAP ═══
+// Frontend-only roadmap (no backend call). Format matches what
+// dashboard.html / renderRoadmapPoster expects.
+function buildRoadmap() {
+  const lang = data.nativeLang || 'English';
+  const target = TARGET_NAMES_BY_LOCALE[lang][data.targetLang];
+  const roadmapStrings = R_STRINGS[lang];
+
+  // Dates — 6 months from today, split into 3 phases
+  const start = new Date();
+  const end = new Date(start.getTime() + 180 * 24 * 60 * 60 * 1000);
+  const fmt = d => d.toLocaleDateString(
+    lang === 'Deutsch' ? 'de-DE' : lang === 'Español' ? 'es-ES' : 'en-GB',
+    { day: '2-digit', month: 'long', year: 'numeric' }
+  );
+  const fmtShort = d => d.toLocaleDateString(
+    lang === 'Deutsch' ? 'de-DE' : lang === 'Español' ? 'es-ES' : 'en-GB',
+    { day: '2-digit', month: 'short' }
+  );
+
+  const p1End = new Date(start.getTime() + 60 * 24 * 60 * 60 * 1000);
+  const p2End = new Date(start.getTime() + 120 * 24 * 60 * 60 * 1000);
+
+  // Destination items derived from priority + goals
+  const goalLabelKey = {
+    conversations:'goal.conv', introduce:'goal.intro', phone:'goal.phone',
+    email:'goal.email', messages:'goal.msg', reading:'goal.read',
+    presentation:'goal.pres', exam:'goal.exam', academic:'goal.acad', 'work-comm':'goal.work'
+  };
+  const destination = (data.goals || []).slice(0, 4).map(g => t(goalLabelKey[g]));
+  if (destination.length === 0) destination.push(t('goal.conv'));
+
+  // Phases — split the roadmap steps into 3 chunks
+  const stepLines = t('roadmap.' + (data.level || 'A1'));
+  const chunk = Math.ceil(stepLines.length / 3);
+  const phases = [
+    {
+      icon: '🌱',
+      dates: `${fmtShort(start)} → ${fmtShort(p1End)}`,
+      duration: roadmapStrings.weeks2,
+      name: roadmapStrings.phase1Name,
+      focus: roadmapStrings.phase1Focus,
+      activities: stepLines.slice(0, chunk)
+    },
+    {
+      icon: '🌿',
+      dates: `${fmtShort(p1End)} → ${fmtShort(p2End)}`,
+      duration: roadmapStrings.weeks2,
+      name: roadmapStrings.phase2Name,
+      focus: roadmapStrings.phase2Focus,
+      activities: stepLines.slice(chunk, chunk * 2)
+    },
+    {
+      icon: '🌳',
+      dates: `${fmtShort(p2End)} → ${fmtShort(end)}`,
+      duration: roadmapStrings.weeks2,
+      name: roadmapStrings.phase3Name,
+      focus: roadmapStrings.phase3Focus,
+      activities: stepLines.slice(chunk * 2)
+    }
+  ];
+
+  return {
+    name: data.name,
+    targetLang: target,
+    subtitle: roadmapStrings.subtitle,
+    startDate: fmt(start),
+    endDate: fmt(end),
+    destinationLabel: roadmapStrings.destinationLabel,
+    destination: destination,
+    phasesLabel: roadmapStrings.phasesLabel,
+    phases: phases,
+    commitmentLabel: roadmapStrings.commitmentLabel,
+    commitment: roadmapStrings.commitment.replace('{time}', timeLabel()),
+    deadlineShort: fmt(end),
+    deadlineLabel: roadmapStrings.deadlineLabel,
+    footerLeft: roadmapStrings.footerLeft,
+    footerRight: roadmapStrings.footerRight
+  };
+}
+
+function timeLabel() {
+  const map = {
+    Deutsch: {
+      '<1': 'weniger als 1 Stunde pro Woche', '1-3': '1–3 Stunden pro Woche',
+      '3-5': '3–5 Stunden pro Woche', '5-10': '5–10 Stunden pro Woche',
+      '10+': 'mehr als 10 Stunden pro Woche'
+    },
+    'Español': {
+      '<1': 'menos de 1 hora por semana', '1-3': '1–3 horas por semana',
+      '3-5': '3–5 horas por semana', '5-10': '5–10 horas por semana',
+      '10+': 'más de 10 horas por semana'
+    },
+    English: {
+      '<1': 'less than 1 hour per week', '1-3': '1–3 hours per week',
+      '3-5': '3–5 hours per week', '5-10': '5–10 hours per week',
+      '10+': 'more than 10 hours per week'
+    }
+  };
+  return (map[data.nativeLang] || map.English)[data.weeklyTime] || '';
+}
+
+// ═══ ROADMAP STRING BUNDLE ═══
+const R_STRINGS = {
+  Deutsch: {
+    subtitle: 'Drei Etappen — ein konkreter Weg.',
+    destinationLabel: 'Was ich erreichen will',
+    phasesLabel: 'Dein Weg in drei Etappen',
+    phase1Name: 'Fundament',
+    phase1Focus: 'Grundlagen und Selbstvertrauen aufbauen',
+    phase2Name: 'Aufbau',
+    phase2Focus: 'Sicherheit gewinnen, Wortschatz erweitern',
+    phase3Name: 'Anwendung',
+    phase3Focus: 'Frei sprechen, eigene Themen meistern',
+    weeks2: '~2 Monate',
+    commitmentLabel: 'Mein Versprechen',
+    commitment: 'Ich investiere {time} in mein Ziel. Spikiu begleitet mich dabei.',
+    deadlineLabel: 'Ziel',
+    footerLeft: 'Mein persönlicher Plan',
+    footerRight: 'Mit Spikiu'
+  },
+  'Español': {
+    subtitle: 'Tres etapas — un camino concreto.',
+    destinationLabel: 'Lo que quiero lograr',
+    phasesLabel: 'Tu camino en tres etapas',
+    phase1Name: 'Fundamento',
+    phase1Focus: 'Construir bases y confianza',
+    phase2Name: 'Crecimiento',
+    phase2Focus: 'Ganar seguridad, ampliar vocabulario',
+    phase3Name: 'Aplicación',
+    phase3Focus: 'Hablar con libertad, dominar tus temas',
+    weeks2: '~2 meses',
+    commitmentLabel: 'Mi compromiso',
+    commitment: 'Dedico {time} a mi objetivo. Spikiu me acompaña.',
+    deadlineLabel: 'Meta',
+    footerLeft: 'Mi plan personal',
+    footerRight: 'Con Spikiu'
+  },
+  English: {
+    subtitle: 'Three phases — one concrete path.',
+    destinationLabel: 'What I want to achieve',
+    phasesLabel: 'Your path in three phases',
+    phase1Name: 'Foundation',
+    phase1Focus: 'Build the basics and confidence',
+    phase2Name: 'Growth',
+    phase2Focus: 'Gain security, expand vocabulary',
+    phase3Name: 'Application',
+    phase3Focus: 'Speak freely, master your own topics',
+    weeks2: '~2 months',
+    commitmentLabel: 'My promise',
+    commitment: 'I invest {time} in my goal. Spikiu walks with me.',
+    deadlineLabel: 'Goal',
+    footerLeft: 'My personal plan',
+    footerRight: 'With Spikiu'
+  }
+};
+
 // ═══ SAVE & REDIRECT ═══
 function saveAndRedirect() {
   // Build a level-readable string consistent with what chat-*.js expects
@@ -763,10 +920,13 @@ function saveAndRedirect() {
   const motivText = (data.motivation || []).slice(0, 3).join(', ');
   const goalText = (data.goals || []).slice(0, 3).join(', ');
 
+  const targetDisplay = TARGET_NAMES_BY_LOCALE[data.nativeLang || 'English'][data.targetLang];
+
   const profile = {
     name: data.name,
     nativeLang: data.nativeLang,
     targetLang: data.targetLang,
+    targetLangDisplay: targetDisplay,
     level: levelMap[data.level] || data.level,
     levelCode: data.level,
     motivation: motivText,
@@ -783,12 +943,17 @@ function saveAndRedirect() {
     ageStage: ''
   };
 
-  // Persist to localStorage (Spikiu chat reads it on load)
+  // Build deterministic roadmap (frontend-only — no backend call)
+  const roadmap = buildRoadmap();
+
+  // Persist to localStorage (Spikiu chat + dashboard read it on load)
   try {
     localStorage.setItem('spikiu_user', JSON.stringify({
       name: data.name,
       nativeLang: data.nativeLang,
+      targetLangDisplay: targetDisplay,
       profile: profile,
+      roadmap: roadmap,
       createdAt: new Date().toISOString(),
       lastSeenAt: new Date().toISOString()
     }));
@@ -797,8 +962,8 @@ function saveAndRedirect() {
     localStorage.setItem('spikiu_lang', langMap[data.nativeLang] || 'en');
   } catch(e) { console.error('Storage failed', e); }
 
-  // Off to the chat
-  window.location.href = 'chat.html';
+  // Off to the dashboard so the user immediately sees their plan
+  window.location.href = 'dashboard.html';
 }
 
 // ═══ INIT ═══
