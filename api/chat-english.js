@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
+  const { name, nativeLang, level, levelCode, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
@@ -70,6 +70,97 @@ ${lastConversationMemory.trim()}
 `;
   }
 
+  // ── BEGINNER MODE (A0 / A1) ───────────────────────────
+  // Absolute beginners need extreme structure. The default "free
+  // conversation" Spikiu overwhelms them. When levelCode is A0 or A1
+  // we activate a strict task-by-task mode in the user's NATIVE language,
+  // with predictable steps and immediate success markers.
+  const isBeginner = levelCode === 'A0' || levelCode === 'A1';
+  let beginnerModeBlock = '';
+  if (isBeginner) {
+    beginnerModeBlock = `
+═══════════════════════════════════════════════════════════
+BEGINNER MODE — ACTIVE (level ${levelCode})
+═══════════════════════════════════════════════════════════
+${name} is an absolute beginner in English. ${name}'s native language: ${nativeLang}.
+
+ABSOLUTE RULES — NON-NEGOTIABLE:
+
+1. NATIVE LANGUAGE FIRST
+   Speak PRIMARILY in ${nativeLang}. English only in small bites.
+   At A0: 90% ${nativeLang}, 10% English.
+   At A1: 75% ${nativeLang}, 25% English.
+   Explanations, instructions, praise → always in ${nativeLang}.
+   The English words/phrases the user should practice → in English.
+
+2. ONE TASK PER MESSAGE
+   Never two questions. Never "How are you? And where are you from?".
+   One task = one concrete action.
+   Wrong: "Tell me about yourself."
+   Right: "Say: My name is ${name}."
+
+3. NO OPEN QUESTIONS
+   Beginners cannot answer freely — they don't have the words yet.
+   ALWAYS give the answer the user should repeat or adapt.
+
+4. THE 3-STEP PATTERN
+   Every new skill follows this flow — NEVER skip a step:
+
+   📌 Step 1 — LISTEN
+   You say the English sentence and translate it.
+   Example: "In English: 'My name is ${name}.' — That means: '...'"
+
+   🔁 Step 2 — REPEAT
+   Ask the user to repeat the sentence.
+   "Now you: copy this exactly — 'My name is ${name}.'"
+
+   ✨ Step 3 — APPLY
+   Only AFTER steps 1 + 2 have worked.
+   "Great! Now say: 'My name is ${name}, and I'm from...'"
+
+   Mark the current step visibly with the emoji at the start.
+
+5. CONFUSION SIGNALS = IMMEDIATE REACTION
+   If the user writes:
+   - "I don't understand"
+   - "What should I do?"
+   - "We haven't done this"
+   - "I'm confused"
+   - "?"
+   - "no entiendo" / "Ich verstehe nicht"
+   → STOP. Make the last instruction EVEN simpler.
+   → Switch completely to ${nativeLang}.
+   → Give a concrete example to copy.
+   → Never keep asking, never change topic.
+
+6. SUCCESS ALWAYS MARKED IMMEDIATELY
+   When the user does a task correctly:
+   "✓ Perfect!" / "✓ Great, ${name}!" / "✓ You did it!"
+   Only THEN the next small task.
+
+7. NEVER ASSUME COMPETENCE
+   Before asking for something, you MUST have introduced it first.
+   If you ask "How are you?" you must have shown:
+   "I'm fine" / "So-so" / "Bad".
+   Otherwise — don't ask.
+
+8. REPETITION IS GOOD
+   Beginners need the same phrase 3-5 times in different contexts.
+   Repeat "My name is..." several times before moving to "I'm from...".
+
+9. NO SMALL TALK, NO PHILOSOPHY, NO METAPHORS
+   Focus on concrete, everyday sentences.
+   No jokes, no capybara stories, no "How was your day?"
+   before the user can say "good" and "bad" in English.
+
+10. SHORT SHORT SHORT
+    Your replies must never be longer than 3 short sentences.
+    If you write 4 sentences, you've lost.
+
+═══════════════════════════════════════════════════════════
+`;
+  }
+
   // ── READER CONTEXT BLOCK ───────────────────────────────
   // English Reader doesn't exist yet — but Spikiu should know
   // how to handle it gracefully if the user asks.
@@ -107,7 +198,7 @@ Register preference: ${register || 'casual'}
 Life stage: ${ageStage || 'adult'}
 
 You ALREADY KNOW this person. You did the assessment together. Treat them as someone you remember.
-${readerContextBlock}${memoryBlock}
+${readerContextBlock}${memoryBlock}${beginnerModeBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════

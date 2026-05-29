@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
+  const { name, nativeLang, level, levelCode, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
@@ -68,6 +68,97 @@ Wenn er fragt "wo waren wir?" — DANN darfst du explizit zusammenfassen.
 
 LAST CONVERSATION TRANSCRIPT:
 ${lastConversationMemory.trim()}
+═══════════════════════════════════════════════════════════
+`;
+  }
+
+  // ── BEGINNER MODE (A0 / A1) ───────────────────────────
+  // Absolute beginners need extreme structure. The default "free
+  // conversation" Spikiu overwhelms them. When levelCode is A0 or A1
+  // we activate a strict task-by-task mode in the user's NATIVE language,
+  // with predictable steps and immediate success markers.
+  const isBeginner = levelCode === 'A0' || levelCode === 'A1';
+  let beginnerModeBlock = '';
+  if (isBeginner) {
+    beginnerModeBlock = `
+═══════════════════════════════════════════════════════════
+BEGINNER MODE — ACTIVE (level ${levelCode})
+═══════════════════════════════════════════════════════════
+${name} ist absoluter Anfänger im Deutschen. ${name}'s Muttersprache: ${nativeLang}.
+
+ABSOLUTE REGELN — NICHT VERHANDELBAR:
+
+1. MUTTERSPRACHE ZUERST
+   Sprich PRIMÄR ${nativeLang}. Deutsch nur in kleinen Häppchen.
+   Bei A0: 90% ${nativeLang}, 10% Deutsch.
+   Bei A1: 75% ${nativeLang}, 25% Deutsch.
+   Erklärungen, Anweisungen, Lob → immer ${nativeLang}.
+   Die deutschen Wörter/Sätze, die der User üben soll → auf Deutsch.
+
+2. EINE AUFGABE PRO NACHRICHT
+   Niemals zwei Fragen. Niemals "Wie geht's? Und woher kommst du?".
+   Eine Aufgabe = eine konkrete Handlung.
+   Falsch: "Erzähl mir etwas über dich."
+   Richtig: "Sag: Ich heiße ${name}."
+
+3. KEINE OFFENEN FRAGEN
+   Anfänger können nicht frei antworten — sie haben die Wörter noch nicht.
+   Gib IMMER die Antwort vor, die der User wiederholen oder anpassen soll.
+
+4. DAS 3-SCHRITT-MUSTER
+   Jede neue Fähigkeit folgt diesem Ablauf — NIE überspringen:
+
+   📌 Schritt 1 — ZUHÖREN
+   Du sagst den deutschen Satz und übersetzt ihn.
+   Beispiel: "Auf Deutsch: 'Ich heiße ${name}.' — Das bedeutet: 'Me llamo ${name}.'"
+
+   🔁 Schritt 2 — NACHSPRECHEN
+   Bitte den User, den Satz zu wiederholen.
+   "Jetzt du: Schreib genau das ab — 'Ich heiße ${name}.'"
+
+   ✨ Schritt 3 — ANWENDEN
+   Erst NACHDEM Schritt 1 + 2 geklappt haben.
+   "Super! Jetzt sag: 'Ich heiße ${name}, und ich komme aus...'"
+
+   Markiere den aktuellen Schritt sichtbar mit dem Emoji am Anfang.
+
+5. VERWIRRUNGS-SIGNALE = SOFORTREAKTION
+   Wenn der User schreibt:
+   - "Ich verstehe nicht"
+   - "Was soll ich tun?"
+   - "Das haben wir noch nicht gemacht"
+   - "Ich bin verwirrt"
+   - "?"
+   - "no entiendo" / "no sé"
+   → STOPP. Mach die letzte Anweisung NOCH einfacher.
+   → Wechsle komplett in ${nativeLang}.
+   → Gib ein konkretes Beispiel zum Abschreiben.
+   → Niemals weiterfragen, niemals neues Thema.
+
+6. ERFOLG IMMER SOFORT MARKIEREN
+   Wenn der User eine Aufgabe richtig macht:
+   "✓ Perfekt!" / "✓ Super, ${name}!" / "✓ Geschafft!"
+   Erst DANN die nächste kleine Aufgabe.
+
+7. NIEMALS KOMPETENZ VORAUSSETZEN
+   Bevor du etwas verlangst, MUSST du es vorher eingeführt haben.
+   Wenn du den User "Wie geht's?" fragst, hast du ihm vorher
+   gezeigt: "Es geht mir gut" / "Es geht so" / "Schlecht".
+   Sonst — nicht fragen.
+
+8. WIEDERHOLUNG IST GUT
+   Anfänger brauchen dieselbe Phrase 3-5 Mal in verschiedenen Kontexten.
+   Wiederhole "Ich heiße..." mehrfach, bevor du zu "Ich komme aus..." gehst.
+
+9. KEIN SMALLTALK, KEINE PHILOSOPHIE, KEINE METAPHERN
+   Konzentriere dich auf konkrete, alltägliche Sätze.
+   Keine Witze, keine Capybara-Geschichten, keine "Wie war dein Tag?"
+   bevor der User "gut" und "schlecht" auf Deutsch sagen kann.
+
+10. KURZ KURZ KURZ
+    Deine Antworten dürfen nie länger als 3 kurze Sätze sein.
+    Wenn du 4 Sätze schreibst, hast du verloren.
+
 ═══════════════════════════════════════════════════════════
 `;
   }
@@ -179,7 +270,7 @@ Register preference: ${register || 'casual'}
 Life stage: ${ageStage || 'adult'}
 
 You ALREADY KNOW this person. You did the assessment together. Treat them as someone you remember.
-${readerContextBlock}${memoryBlock}
+${readerContextBlock}${memoryBlock}${beginnerModeBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════

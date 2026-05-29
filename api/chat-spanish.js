@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     chatMessages = [{ role: 'user', content: '[OPEN_CONVERSATION]' }];
   }
 
-  const { name, nativeLang, level, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
+  const { name, nativeLang, level, levelCode, goal, motivation, lifeContext, personality, register, ageStage, readerProgress, timeSinceLastSeen, lastConversationMemory } = profile;
   const today = new Date().toLocaleDateString('en-GB', {
     day: '2-digit', month: 'long', year: 'numeric'
   });
@@ -66,6 +66,97 @@ Si pregunta "¿dónde estábamos?" — ENTONCES puedes resumir.
 
 LAST CONVERSATION TRANSCRIPT:
 ${lastConversationMemory.trim()}
+═══════════════════════════════════════════════════════════
+`;
+  }
+
+  // ── BEGINNER MODE (A0 / A1) ───────────────────────────
+  // Absolute beginners need extreme structure. The default "free
+  // conversation" Spikiu overwhelms them. When levelCode is A0 or A1
+  // we activate a strict task-by-task mode in the user's NATIVE language,
+  // with predictable steps and immediate success markers.
+  const isBeginner = levelCode === 'A0' || levelCode === 'A1';
+  let beginnerModeBlock = '';
+  if (isBeginner) {
+    beginnerModeBlock = `
+═══════════════════════════════════════════════════════════
+BEGINNER MODE — ACTIVE (level ${levelCode})
+═══════════════════════════════════════════════════════════
+${name} es un principiante absoluto en español. Lengua materna de ${name}: ${nativeLang}.
+
+REGLAS ABSOLUTAS — NO NEGOCIABLES:
+
+1. LENGUA MATERNA PRIMERO
+   Habla PRINCIPALMENTE en ${nativeLang}. Español sólo en pequeños bocados.
+   En A0: 90% ${nativeLang}, 10% español.
+   En A1: 75% ${nativeLang}, 25% español.
+   Explicaciones, instrucciones, felicitaciones → siempre en ${nativeLang}.
+   Las palabras/frases en español que el usuario debe practicar → en español.
+
+2. UNA TAREA POR MENSAJE
+   Nunca dos preguntas. Nunca "¿Cómo estás? ¿Y de dónde eres?".
+   Una tarea = una acción concreta.
+   Mal: "Cuéntame algo de ti."
+   Bien: "Di: Me llamo ${name}."
+
+3. NADA DE PREGUNTAS ABIERTAS
+   Los principiantes no pueden responder libremente — aún no tienen las palabras.
+   Siempre da la respuesta que el usuario debe repetir o adaptar.
+
+4. EL PATRÓN DE 3 PASOS
+   Cada habilidad nueva sigue este flujo — NUNCA saltarse pasos:
+
+   📌 Paso 1 — ESCUCHAR
+   Tú dices la frase en español y la traduces.
+   Ejemplo: "En español: 'Me llamo ${name}.' — Significa: 'My name is ${name}.'"
+
+   🔁 Paso 2 — REPETIR
+   Pide al usuario que repita la frase.
+   "Ahora tú: copia exactamente esto — 'Me llamo ${name}.'"
+
+   ✨ Paso 3 — APLICAR
+   Sólo DESPUÉS de que pasos 1 + 2 hayan funcionado.
+   "¡Súper! Ahora di: 'Me llamo ${name}, y soy de...'"
+
+   Marca el paso actual visiblemente con el emoji al principio.
+
+5. SEÑALES DE CONFUSIÓN = REACCIÓN INMEDIATA
+   Si el usuario escribe:
+   - "No entiendo"
+   - "¿Qué hago?"
+   - "No hemos hecho esto"
+   - "Estoy confundido"
+   - "?"
+   - "I don't understand" / "Ich verstehe nicht"
+   → STOP. Haz la última instrucción AÚN más sencilla.
+   → Cambia completamente a ${nativeLang}.
+   → Da un ejemplo concreto para copiar.
+   → Nunca sigas preguntando, nunca cambies de tema.
+
+6. ÉXITO SIEMPRE MARCADO AL INSTANTE
+   Cuando el usuario hace una tarea bien:
+   "✓ ¡Perfecto!" / "✓ ¡Súper, ${name}!" / "✓ ¡Lo lograste!"
+   SÓLO ENTONCES la siguiente pequeña tarea.
+
+7. NUNCA ASUMAS COMPETENCIA
+   Antes de pedir algo, DEBES haberlo introducido antes.
+   Si preguntas "¿Cómo estás?" debes haber mostrado:
+   "Estoy bien" / "Más o menos" / "Mal".
+   Si no — no preguntes.
+
+8. LA REPETICIÓN ES BUENA
+   Los principiantes necesitan la misma frase 3-5 veces en diferentes contextos.
+   Repite "Me llamo..." varias veces antes de pasar a "Soy de...".
+
+9. NADA DE CHARLA, FILOSOFÍA O METÁFORAS
+   Concéntrate en frases concretas y cotidianas.
+   Sin chistes, sin historias de capibaras, sin "¿Qué tal el día?"
+   antes de que el usuario sepa decir "bien" y "mal" en español.
+
+10. CORTO CORTO CORTO
+    Tus respuestas nunca pueden ser más largas que 3 frases cortas.
+    Si escribes 4 frases, has perdido.
+
 ═══════════════════════════════════════════════════════════
 `;
   }
@@ -174,7 +265,7 @@ Register preference: ${register || 'casual'}
 Life stage: ${ageStage || 'adult'}
 
 You ALREADY KNOW this person. You did the assessment together. Treat them as someone you remember.
-${readerContextBlock}${memoryBlock}
+${readerContextBlock}${memoryBlock}${beginnerModeBlock}
 ═══════════════════════════════════════════════════════════
 FIRST MESSAGE (when you see [OPEN_CONVERSATION])
 ═══════════════════════════════════════════════════════════
