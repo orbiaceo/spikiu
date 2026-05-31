@@ -86,6 +86,94 @@ textarea::placeholder { color: var(--mid); font-style: italic; }
   body { background: var(--bg2); }
   .app { margin: 1.5rem auto; height: calc(100dvh - 3rem); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
 }
+/* ── HÄPPCHEN CARD ───────────────────── */
+.haeppchen-card {
+  width: 100%;
+  max-width: 480px;
+  margin: 0.5rem 0 0.8rem;
+  background: #ffffff;
+  border: 2px solid var(--accent, #2d6a4f);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(45, 106, 79, 0.12);
+  animation: cardIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.hc-header {
+  background: var(--accent, #2d6a4f);
+  color: #ffffff;
+  padding: 0.85rem 1.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hc-intro {
+  padding: 1rem 1.3rem 0.4rem;
+  font-size: 0.95rem;
+  color: #1a1816;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.hc-items {
+  padding: 0.5rem 1.3rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.hc-item {
+  background: #faf9f7;
+  border-radius: 12px;
+  padding: 0.75rem 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+.hc-num {
+  background: var(--accent, #2d6a4f);
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+.hc-text { flex: 1; }
+.hc-target {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a4a38;
+  line-height: 1.3;
+}
+.hc-native {
+  font-size: 0.83rem;
+  color: #78716c;
+  margin-top: 0.2rem;
+}
+.hc-button {
+  width: 100%;
+  background: #1a1816;
+  color: #ffffff;
+  border: none;
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.hc-button:hover { background: #2d6a4f; }
+.hc-button:disabled { background: #c0b8a8; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
@@ -253,19 +341,95 @@ function buildLastConversationMemory(lastConversation) {
 }
 
 // ── UI HELPERS ─────────────────────────────────────────
+// ── HÄPPCHEN PARSER ─────────────────────
+// Spikiu emits a card via the marker [HÄPPCHEN]{json}[/HÄPPCHEN].
+// We strip the marker out of the chat bubble and render a visual card instead.
+function parseHaeppchen(text) {
+  const m = text.match(/\[HÄPPCHEN\]([\s\S]*?)\[\/HÄPPCHEN\]/);
+  if (!m) return { cleanText: text, haeppchen: null };
+  let json = null;
+  try { json = JSON.parse(m[1].trim()); } catch(e) { console.error('Häppchen JSON parse failed', e); }
+  const cleanText = text.replace(/\[HÄPPCHEN\][\s\S]*?\[\/HÄPPCHEN\]/, '').trim();
+  return { cleanText, haeppchen: json };
+}
+
+// ── READY MESSAGES BY NATIVE LANGUAGE ───
+const READY_MSG = {
+  Deutsch: 'Ich bin bereit',
+  'Español': 'Estoy listo',
+  English: "I'm ready"
+};
+
+function renderHaeppchenCard(container, data) {
+  if (!data || !Array.isArray(data.items)) return;
+  const lang = (session && session.nativeLang) || 'English';
+  const readyLabel = data.readyButton || READY_MSG[lang] || READY_MSG.English;
+
+  const card = document.createElement('div');
+  card.className = 'haeppchen-card';
+  card.innerHTML = `
+    <div class="hc-header">🐾 ${data.title || 'Häppchen'}</div>
+    <div class="hc-intro">${data.intro || ''}</div>
+    <div class="hc-items">
+      ${data.items.map((it, i) => `
+        <div class="hc-item">
+          <div class="hc-num">${i+1}</div>
+          <div class="hc-text">
+            <div class="hc-target">${escapeHtml(it.target || '')}</div>
+            <div class="hc-native">${escapeHtml(it.native || '')}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <button class="hc-button" type="button">${readyLabel} →</button>
+  `;
+  const btn = card.querySelector('.hc-button');
+  btn.addEventListener('click', () => {
+    btn.disabled = true;
+    btn.textContent = '✓ ' + readyLabel;
+    // Auto-send the ready message so Spikiu enters practice mode
+    const input = document.getElementById('userInput');
+    if (input) {
+      input.value = readyLabel;
+      sendMessage();
+    }
+  });
+  container.appendChild(card);
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 function addMessage(role, text) {
   const chat = document.getElementById('chat');
   const msg = document.createElement('div');
   msg.className = 'message ' + role;
 
   if (role === 'spikiu') {
-    const rendered = parseMarkdown(text);
+    const { cleanText, haeppchen } = parseHaeppchen(text);
+    const rendered = parseMarkdown(cleanText);
     msg.innerHTML = `<div class="avatar-spikiu">${CAPY_SMALL}</div><div style="flex:1;min-width:0;"><div class="bubble spikiu">${rendered}</div></div>`;
+    chat.appendChild(msg);
+
+    // If Spikiu offered a Häppchen, render the card right after the bubble
+    if (haeppchen) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'message spikiu';
+      wrapper.innerHTML = `<div class="avatar-spikiu" style="opacity:0;">.</div><div style="flex:1;min-width:0;"></div>`;
+      const slot = wrapper.querySelector('div:last-child');
+      renderHaeppchenCard(slot, haeppchen);
+      chat.appendChild(wrapper);
+    }
   } else {
     msg.innerHTML = `<div class="bubble user">${text.split('\n').join('<br>')}</div>`;
+    chat.appendChild(msg);
   }
 
-  chat.appendChild(msg);
   chat.scrollTop = chat.scrollHeight;
 }
 
