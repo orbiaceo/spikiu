@@ -354,7 +354,7 @@ function parseHaeppchen(text) {
 }
 
 // ── READY MESSAGES BY NATIVE LANGUAGE ───
-const READY_MSG = {
+const HAEPPCHEN_READY = {
   Deutsch: 'Ich bin bereit',
   'Español': 'Estoy listo',
   English: "I'm ready"
@@ -363,7 +363,7 @@ const READY_MSG = {
 function renderHaeppchenCard(container, data) {
   if (!data || !Array.isArray(data.items)) return;
   const lang = (session && session.nativeLang) || 'English';
-  const readyLabel = data.readyButton || READY_MSG[lang] || READY_MSG.English;
+  const readyLabel = data.readyButton || HAEPPCHEN_READY[lang] || HAEPPCHEN_READY.English;
 
   const card = document.createElement('div');
   card.className = 'haeppchen-card';
