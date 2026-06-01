@@ -511,6 +511,27 @@ const ROADMAP_POSTER_CSS = `
   from { opacity:0; transform: translateY(-4px); }
   to   { opacity:1; transform: translateY(0); }
 }
+
+/* ── LESSON GENERATION BUTTON STATES ───────────────── */
+.btn-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  vertical-align: -2px;
+  margin-right: 0.45rem;
+  animation: btnSpin 0.8s linear infinite;
+}
+@keyframes btnSpin {
+  to { transform: rotate(360deg); }
+}
+.btn-loading {
+  opacity: 0.7;
+  cursor: wait !important;
+  pointer-events: none;
+}
 .lp-footer { margin-top:32px; padding-top:16px; border-top:1px solid #e8e4df; display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#6b6560; }
 .lp-footer-cap { font-family:'Lora',serif; font-style:italic; color:#2d6a4f; }
 @media (max-width:600px) {
@@ -998,6 +1019,42 @@ function renderLessonsList(user) {
 }
 
 // ── GENERATE LESSON FROM LAST CONVERSATION (dashboard button) ──
+// Loading-state helper for BOTH buttons (main + secondary).
+// Disables them, swaps the inner content for an animated spinner + localized
+// "Lektion wird erstellt..." text, and restores them on error.
+const LESSON_LOADING_LABELS = {
+  'Deutsch': 'Lektion wird erstellt…',
+  'Español': 'Creando lección…',
+  'English': 'Creating lesson…'
+};
+const LESSON_DEFAULT_LABELS = {
+  'Deutsch': 'Lektion aus letztem Gespräch',
+  'Español': 'Lección de la última conversación',
+  'English': 'Make lesson from last chat'
+};
+
+function setLessonBtnsLoading(loading, nativeLang) {
+  const lang = nativeLang || 'English';
+  const loadingText = LESSON_LOADING_LABELS[lang] || LESSON_LOADING_LABELS.English;
+  const defaultText = LESSON_DEFAULT_LABELS[lang] || LESSON_DEFAULT_LABELS.English;
+
+  ['lesson-from-convo-btn', 'lesson-from-convo-btn-2'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    if (loading) {
+      btn.disabled = true;
+      btn.classList.add('btn-loading');
+      btn.innerHTML = `<span class="btn-spinner"></span><span>${loadingText}</span>`;
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('btn-loading');
+      // Restore original markup: emoji + labeled span (label id matches the renderLessonsList target)
+      const labelId = id === 'lesson-from-convo-btn' ? 'lesson-from-convo-label' : 'lesson-from-convo-label-2';
+      btn.innerHTML = `📝 <span id="${labelId}">${defaultText}</span>`;
+    }
+  });
+}
+
 async function generateLessonFromLastConvo() {
   const raw = localStorage.getItem('spikiu_user');
   if (!raw) return;
@@ -1008,8 +1065,7 @@ async function generateLessonFromLastConvo() {
     return;
   }
 
-  const btn = document.getElementById('lesson-from-convo-btn') || document.getElementById('lesson-from-convo-btn-2');
-  if (btn) btn.textContent = '⏳ Generating...';
+  setLessonBtnsLoading(true, user.nativeLang);
 
   try {
     const r = await fetch('/api/generate-lesson', {
@@ -1025,7 +1081,7 @@ async function generateLessonFromLastConvo() {
     const d = await r.json();
     if (!d.lesson) {
       alert('Could not generate lesson. Try again.');
-      if (btn) btn.textContent = '📝 Make lesson from last chat';
+      setLessonBtnsLoading(false, user.nativeLang);
       return;
     }
 
@@ -1039,14 +1095,15 @@ async function generateLessonFromLastConvo() {
     user.lessons = [...(user.lessons || []), newLesson];
     localStorage.setItem('spikiu_user', JSON.stringify(user));
 
-    // Re-render with new lesson
+    // Re-render lessons list — this restores the buttons to their default state
+    // through renderLessonsList, so no manual setLessonBtnsLoading(false) needed.
     renderLessonsList(user);
     // Open the new lesson immediately
     openLesson(newLesson.id);
   } catch(e) {
     console.error(e);
     alert('Something went wrong. Try again.');
-    if (btn) btn.textContent = '📝 Make lesson from last chat';
+    setLessonBtnsLoading(false, user.nativeLang);
   }
 }
 
