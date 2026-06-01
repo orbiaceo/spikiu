@@ -109,7 +109,7 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <a href="index.html" class="sidebar-logo">
-    <svg width="24" height="24" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/></svg>
+    <svg width="24" height="24" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
     Spi<em>k</em>iu
   </a>
   <div class="nav-label">Main</div>
@@ -474,12 +474,43 @@ const ROADMAP_POSTER_CSS = `
 .lp-dialogue-text { font-size:0.92rem; line-height:1.55; }
 .lp-dialogue-text .lp-trans { display:block; font-size:0.78rem; color:#6b6560; font-style:italic; margin-top:2px; }
 .lp-quiz-item { background:white; border:1px solid #e8e4df; border-radius:10px; padding:14px 16px; margin-bottom:10px; }
-.lp-quiz-question { font-weight:600; font-size:0.92rem; margin-bottom:0.6rem; }
+.lp-quiz-question { font-weight:600; font-size:0.92rem; margin-bottom:0.7rem; }
 .lp-quiz-question .lp-num { color:#2d6a4f; font-weight:700; margin-right:0.4rem; }
-.lp-quiz-options { list-style:none; display:flex; flex-direction:column; gap:4px; padding:0; }
-.lp-quiz-options li { padding:6px 12px; background:#faf9f7; border-radius:6px; font-size:0.86rem; }
-.lp-quiz-answer { margin-top:10px; font-size:0.8rem; color:#6b6560; font-style:italic; }
-.lp-quiz-answer strong { color:#2d6a4f; font-style:normal; }
+.lp-quiz-options { list-style:none; display:flex; flex-direction:column; gap:6px; padding:0; margin:0; }
+.lp-quiz-opt {
+  display:flex; align-items:center; gap:0.5rem;
+  padding:9px 12px; background:#faf9f7;
+  border:1.5px solid transparent; border-radius:8px;
+  font-size:0.88rem; cursor:pointer;
+  font-family:inherit; text-align:left; width:100%;
+  color:#1a1816; transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.lp-quiz-opt:hover:not(:disabled) { background:#f0ede5; border-color:#d6d0c4; }
+.lp-quiz-opt:disabled { cursor:default; }
+.lp-quiz-opt .lp-quiz-mark {
+  margin-left:auto; font-weight:700; font-size:1rem; opacity:0;
+  transition: opacity 0.2s;
+}
+.lp-quiz-opt.correct {
+  background:#e8f5ee; border-color:#2d6a4f; color:#1a4a38; font-weight:600;
+}
+.lp-quiz-opt.correct .lp-quiz-mark { color:#2d6a4f; opacity:1; }
+.lp-quiz-opt.wrong {
+  background:#fdebe9; border-color:#c0392b; color:#a02e22;
+}
+.lp-quiz-opt.wrong .lp-quiz-mark { color:#c0392b; opacity:1; }
+.lp-quiz-answer {
+  margin-top:12px; padding:10px 12px;
+  background:#faf9f7; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0;
+  font-size:0.85rem; color:#1a1816; line-height:1.5;
+  display:none; animation: lpFadeIn 0.25s ease;
+}
+.lp-quiz-answer.visible { display:block; }
+.lp-quiz-answer strong { color:#2d6a4f; }
+@keyframes lpFadeIn {
+  from { opacity:0; transform: translateY(-4px); }
+  to   { opacity:1; transform: translateY(0); }
+}
 .lp-footer { margin-top:32px; padding-top:16px; border-top:1px solid #e8e4df; display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#6b6560; }
 .lp-footer-cap { font-family:'Lora',serif; font-style:italic; color:#2d6a4f; }
 @media (max-width:600px) {
@@ -766,15 +797,45 @@ function renderLessonPoster(l) {
     </div>
   `).join('');
 
-  const quizHtml = (l.quiz || []).map((q, i) => `
-    <div class="lp-quiz-item">
-      <div class="lp-quiz-question"><span class="lp-num">${i+1}.</span>${q.question || ''}</div>
-      <ul class="lp-quiz-options">
-        ${(q.options || []).map(o => `<li>${o}</li>`).join('')}
-      </ul>
-      <div class="lp-quiz-answer"><strong>Answer:</strong> ${q.answer || ''}</div>
-    </div>
-  `).join('');
+  // ── INTERACTIVE QUIZ ──────────────────────────────────
+  // Parse the "answer" field to detect which option is correct.
+  // Expected formats from generate-lesson.js (all supported):
+  //   "b) ..."     → letter b is correct
+  //   "b"          → letter b is correct
+  //   "Option B — ..."  → letter B is correct
+  // Then each option (a, b, c, ...) becomes a clickable button.
+  // On click: wrong → red, correct option auto-highlighted green,
+  // explanation revealed, all buttons disabled.
+  function correctLetterFromAnswer(answerText, optionsLen) {
+    if (!answerText) return null;
+    const m = String(answerText).trim().match(/^[^a-z]*([a-z])\b/i);
+    if (!m) return null;
+    const letter = m[1].toLowerCase();
+    const idx = letter.charCodeAt(0) - 97; // a=0, b=1, c=2
+    return (idx >= 0 && idx < optionsLen) ? letter : null;
+  }
+  const quizHtml = (l.quiz || []).map((q, qIdx) => {
+    const opts = q.options || [];
+    const correct = correctLetterFromAnswer(q.answer, opts.length);
+    const optionsButtons = opts.map((o, oIdx) => {
+      const letter = String.fromCharCode(97 + oIdx); // a, b, c
+      const isCorrect = (letter === correct);
+      const safeText = String(o).replace(/"/g, '&quot;');
+      return `<li><button type="button" class="lp-quiz-opt"
+        data-correct="${isCorrect ? '1' : '0'}"
+        data-q="${qIdx}"
+        onclick="lpQuizClick(this, ${qIdx})">
+        <span class="lp-quiz-label">${safeText}</span>
+        <span class="lp-quiz-mark"></span>
+      </button></li>`;
+    }).join('');
+    return `
+    <div class="lp-quiz-item" data-quiz-idx="${qIdx}">
+      <div class="lp-quiz-question"><span class="lp-num">${qIdx+1}.</span>${q.question || ''}</div>
+      <ul class="lp-quiz-options">${optionsButtons}</ul>
+      <div class="lp-quiz-answer" id="lp-answer-${qIdx}"><strong>Answer:</strong> ${q.answer || ''}</div>
+    </div>`;
+  }).join('');
 
   return `
     <div class="lp-lesson">
@@ -829,6 +890,37 @@ function renderLessonPoster(l) {
     </div>
   `;
 }
+
+// ── INTERACTIVE QUIZ CLICK HANDLER ─────────────────────
+// Wrong click → red. Correct option auto-highlighted green.
+// Explanation revealed below. All options disabled after first click.
+// Global so it's reachable from the dynamically injected modal HTML.
+window.lpQuizClick = function(btn, qIdx) {
+  const item = btn.closest('.lp-quiz-item');
+  if (!item || item.dataset.answered === '1') return;
+  item.dataset.answered = '1';
+
+  const isCorrect = btn.dataset.correct === '1';
+  const allBtns = item.querySelectorAll('.lp-quiz-opt');
+
+  // Mark the clicked one + always highlight the correct one
+  allBtns.forEach(b => {
+    b.disabled = true;
+    const mark = b.querySelector('.lp-quiz-mark');
+    if (b.dataset.correct === '1') {
+      b.classList.add('correct');
+      if (mark) mark.textContent = '✓';
+    }
+    if (b === btn && !isCorrect) {
+      b.classList.add('wrong');
+      if (mark) mark.textContent = '✗';
+    }
+  });
+
+  // Reveal the explanation
+  const ans = item.querySelector('.lp-quiz-answer');
+  if (ans) ans.classList.add('visible');
+};
 
 // ── OPEN/CLOSE LESSON MODAL ────────────────────────────
 function openLesson(lessonId) {
