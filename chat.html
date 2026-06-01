@@ -213,6 +213,15 @@ textarea::placeholder { color: var(--mid); font-style: italic; }
   letter-spacing: -0.02em;
   color: #1a1816;
 }
+.reels-phonetic {
+  font-size: 1rem;
+  color: #8a847d;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+.reels-phonetic::before { content: '['; }
+.reels-phonetic::after  { content: ']'; }
 .reels-divider {
   width: 40px;
   height: 2px;
@@ -745,6 +754,7 @@ function buildReelsItemSlide(item, i) {
   content.innerHTML = `
     <div class="reels-item-num">${i + 1} / ${reelsState.items.length}</div>
     <div class="reels-target">${escapeHtml(item.target || '')}</div>
+    ${item.phonetic ? `<div class="reels-phonetic">${escapeHtml(item.phonetic)}</div>` : ''}
     <div class="reels-divider"></div>
     <div class="reels-native">${escapeHtml(item.native || '')}</div>
   `;
