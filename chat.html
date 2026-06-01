@@ -1531,10 +1531,11 @@ window.sendMessage = async function() {
     }
   } catch(e) {
     hideTyping();
-    // ── DEBUG MODE — show the real error so we can diagnose without Vercel logs ──
-    const msg = (e && e.message) ? String(e.message) : 'Unknown error';
-    addMessage('spikiu', `🔧 **DEBUG**\n\nFehler beim API-Call:\n\n\`${msg}\`\n\nBitte Screenshot oder Text kopieren und an Spikiu-Entwickler schicken.`);
-    console.error(e);
+    // User sees a friendly bubble in their native language.
+    // The technical error (Anthropic body, status, msg count) goes to the
+    // browser console for diagnosis without exposing internals to the user.
+    addMessage('spikiu', t('error.generic'));
+    console.error('[Spikiu] API error in sendMessage:', e);
   }
 
   document.getElementById('sendBtn').disabled = false;
@@ -1551,9 +1552,8 @@ async function startAssessment() {
     session.assessmentHistory.push({ role: 'assistant', content: result.reply });
   } catch(e) {
     hideTyping();
-    const msg = (e && e.message) ? String(e.message) : 'Unknown error';
-    addMessage('spikiu', `🔧 **DEBUG (assessment)**\n\n\`${msg}\``);
-    console.error(e);
+    addMessage('spikiu', t('error.generic'));
+    console.error('[Spikiu] API error in startAssessment:', e);
   }
 }
 
@@ -1731,7 +1731,8 @@ const I18N = {
     'reset.body': 'You\'ll start fresh. This conversation will be deleted.',
     'reset.saveLesson': 'Save it as a lesson in my dashboard first.',
     'reset.cancel': 'Cancel',
-    'reset.confirm': 'Reset'
+    'reset.confirm': 'Reset',
+    'error.generic': 'Something went wrong — Spikiu can\'t answer right now. Try again in a moment 🐾'
   },
   de: {
     'nav.dashboard': '← Mein Spikiu',
@@ -1747,7 +1748,8 @@ const I18N = {
     'reset.body': 'Du fängst frisch an. Diese Konversation wird gelöscht.',
     'reset.saveLesson': 'Vorher als Lektion in meinem Dashboard speichern.',
     'reset.cancel': 'Abbrechen',
-    'reset.confirm': 'Zurücksetzen'
+    'reset.confirm': 'Zurücksetzen',
+    'error.generic': 'Etwas ist schiefgelaufen — Spikiu kann gerade nicht antworten. Probier es gleich nochmal 🐾'
   },
   es: {
     'nav.dashboard': '← Mi Spikiu',
@@ -1763,7 +1765,8 @@ const I18N = {
     'reset.body': 'Empiezas de cero. Esta conversación se borra.',
     'reset.saveLesson': 'Guardarla antes como lección en mi panel.',
     'reset.cancel': 'Cancelar',
-    'reset.confirm': 'Reiniciar'
+    'reset.confirm': 'Reiniciar',
+    'error.generic': 'Algo salió mal — Spikiu no puede responder ahora. Inténtalo en un momento 🐾'
   }
 };
 
@@ -1774,6 +1777,7 @@ const I18N = {
     lang = I18N[browser] ? browser : 'en';
   }
   document.documentElement.lang = lang;
+  window.__spikiuLang = lang;
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -1784,6 +1788,12 @@ const I18N = {
     if (I18N[lang][key]) el.placeholder = I18N[lang][key];
   });
 })();
+
+// Global helper for runtime i18n lookups (error bubbles, dynamic UI etc.)
+window.t = function(key, fallback) {
+  const lang = window.__spikiuLang || 'en';
+  return (I18N[lang] && I18N[lang][key]) || (I18N.en && I18N.en[key]) || (fallback || key);
+};
 </script>
 </body>
 </html>
