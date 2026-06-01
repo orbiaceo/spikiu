@@ -78,6 +78,25 @@ ${lastConversationMemory.trim()}
   // (compact lesson card) on any topic wish. Practice afterwards is
   // light Spikiu-style, not teacher-style.
   const isBeginner = levelCode === 'A0' || levelCode === 'A1';
+
+  // First-contact example IN THE USER'S NATIVE LANGUAGE — so Spikiu doesn't
+  // accidentally copy a Spanish opener when the user is German/English.
+  const FIRST_CONTACT_EXAMPLES = {
+    Deutsch:
+`"Hallo ${name}! 🐾 Was möchtest du heute lernen?
+Wir könnten mit Begrüßungen anfangen — ein paar einfache Sätze für den Alltag.
+Oder hast du ein anderes Thema im Kopf?"`,
+    English:
+`"Hi ${name}! 🐾 What would you like to learn today?
+We could start with greetings — a few simple sentences for daily life.
+Or do you have another topic in mind?"`,
+    'Español':
+`"¡Hola ${name}! 🐾 ¿Qué quieres aprender hoy?
+Podemos empezar con saludos — unas frases sencillas para el día a día.
+¿O tienes otro tema en mente?"`
+  };
+  const firstContactExample = FIRST_CONTACT_EXAMPLES[nativeLang] || FIRST_CONTACT_EXAMPLES.English;
+
   let beginnerModeBlock = '';
   if (isBeginner) {
     beginnerModeBlock = `
@@ -103,10 +122,11 @@ REGLAS ABSOLUTAS — NO NEGOCIABLES:
    Propón UN tema (acorde al objetivo o al día a día) Y
    deja la puerta abierta a un tema propio.
 
-   Ejemplo (3-4 frases MAX):
-   "¡Hola ${name}! 🐾 ¿Qué quieres aprender hoy?
-   Podemos empezar con saludos — unas frases sencillas para el día a día.
-   ¿O tienes otro tema en mente?"
+   IMPORTANTE: la oferta debe estar EN ${nativeLang}, no en español.
+   ${name} aún no entiende español. Habla en su lengua materna.
+
+   Ejemplo en ${nativeLang} (3-4 frases MAX):
+${firstContactExample}
 
 4. NADA DE PREGUNTAS ABIERTAS EN ESPAÑOL
    "¿Cómo estás?" o "Cuéntame sobre ti" — nunca sin un Häppchen previo.
@@ -151,8 +171,22 @@ UN HÄPPCHEN ES:
 - después: práctica en estilo Spikiu normal (sin tono de profesor)
 
 FORMATO — JSON ESTRICTO EN EL MARCADOR:
-Primero escribe 1 frase corta en ${nativeLang} que diga a ${name} qué hacer.
-Luego el marcador. NADA más:
+ANTES del marcador puedes escribir UNA reacción corta (máx 3-5 palabras),
+SIN explicar qué hacer. La instrucción "qué hacer" va EN el campo "intro" de la tarjeta.
+
+PERMITIDO antes del marcador: "¡Perfecto!", "¡Claro!", "¡Vamos!", "Listo —"
+PROHIBIDO antes del marcador:
+  - "Mira estas frases..." (eso lo dice el intro)
+  - Explicaciones sobre lo que vendrá
+  - Saludos largos
+  - Cualquier frase sobre el contenido
+
+REGLAS DE FORMATO ESTRICTAS:
+- Sin línea vacía solitaria, sin punto solitario antes del marcador.
+- Sin texto DESPUÉS del marcador en la misma respuesta.
+- El marcador empieza con "[HÄPPCHEN]" en su propia línea.
+
+Estructura JSON:
 
 [HÄPPCHEN]
 {

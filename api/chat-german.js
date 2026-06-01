@@ -80,6 +80,25 @@ ${lastConversationMemory.trim()}
   // (compact lesson card) on any topic wish. Practice afterwards is
   // light Spikiu-style, not teacher-style.
   const isBeginner = levelCode === 'A0' || levelCode === 'A1';
+
+  // First-contact example IN THE USER'S NATIVE LANGUAGE — so Spikiu doesn't
+  // accidentally copy a German opener when the user is Spanish/English.
+  const FIRST_CONTACT_EXAMPLES = {
+    Deutsch:
+`"Hallo ${name}! 🐾 Was möchtest du heute lernen?
+Wir könnten mit Begrüßungen anfangen — ein paar einfache Sätze für den Alltag.
+Oder hast du ein anderes Thema im Kopf?"`,
+    English:
+`"Hi ${name}! 🐾 What would you like to learn today?
+We could start with greetings — a few simple sentences for daily life.
+Or do you have another topic in mind?"`,
+    'Español':
+`"¡Hola ${name}! 🐾 ¿Qué quieres aprender hoy?
+Podemos empezar con saludos — unas frases sencillas para el día a día.
+¿O tienes otro tema en mente?"`
+  };
+  const firstContactExample = FIRST_CONTACT_EXAMPLES[nativeLang] || FIRST_CONTACT_EXAMPLES.English;
+
   let beginnerModeBlock = '';
   if (isBeginner) {
     beginnerModeBlock = `
@@ -105,10 +124,11 @@ ABSOLUTE REGELN — NICHT VERHANDELBAR:
    Stelle EIN Thema vor (passend zum Roadmap-Ziel oder Alltag) UND
    lass die Tür offen für ein eigenes Thema.
 
-   Beispiel (3-4 Sätze MAX):
-   "Hallo ${name}! 🐾 Was möchtest du heute lernen?
-   Wir könnten mit Begrüßungen anfangen — ein paar einfache
-   Sätze für den Alltag. Oder hast du ein anderes Thema im Kopf?"
+   WICHTIG: das Angebot MUSS in ${nativeLang} sein, nicht auf Deutsch.
+   ${name} versteht Deutsch noch nicht. Sprich in seiner Muttersprache.
+
+   Beispiel in ${nativeLang} (3-4 Sätze MAX):
+${firstContactExample}
 
 4. KEINE OFFENEN FRAGEN AUF DEUTSCH
    "Wie geht's?" oder "Erzähl mir über dich" — niemals ohne vorheriges Häppchen.
@@ -154,8 +174,22 @@ EIN HÄPPCHEN IST:
 - danach: Übung im normalen Spikiu-Stil (kein Lehrer-Ton)
 
 FORMAT — STRICT JSON IM MARKER:
-Schreibe zuerst 1 kurzen Satz in ${nativeLang}, der ${name} sagt was er tun soll.
-Dann den Marker. NICHTS sonst:
+VOR dem Marker darfst du EINE kurze Reaktion schreiben (max 3-5 Wörter),
+OHNE zu erklären was zu tun ist. Die "was tun"-Anweisung steht IM "intro"-Feld der Karte.
+
+ERLAUBT vor dem Marker: "Perfekt!", "Klar!", "Los geht's!", "Bereit —"
+VERBOTEN vor dem Marker:
+  - "Schau dir diese Sätze an..." (das sagt das intro)
+  - Erklärungen was kommt
+  - Lange Begrüßungen
+  - Jede Aussage über den Inhalt
+
+STRIKTE FORMAT-REGELN:
+- Keine einzelne Leerzeile, kein einzelner Punkt vor dem Marker.
+- Kein Text NACH dem Marker in derselben Antwort.
+- Marker beginnt mit "[HÄPPCHEN]" auf eigener Zeile.
+
+JSON-Struktur:
 
 [HÄPPCHEN]
 {
