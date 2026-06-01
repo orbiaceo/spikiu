@@ -289,6 +289,135 @@ textarea::placeholder { color: var(--mid); font-style: italic; }
 .reels-btn.primary-green { background: var(--accent, #2d6a4f); }
 .reels-btn.primary-green:hover { background: #1a4a38; }
 
+/* ── HEADER MENU (three-dot) ─────────── */
+.menu-wrap { position: relative; }
+.menu-btn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #6b6560;
+  font-size: 1.3rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.menu-btn:hover { background: rgba(0,0,0,0.06); color: #1a1816; }
+
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--faint, #e7e5e4);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  min-width: 220px;
+  padding: 0.4rem 0;
+  z-index: 50;
+  display: none;
+  animation: menuPop 0.18s ease;
+}
+@keyframes menuPop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.menu-dropdown.open { display: block; }
+.menu-item {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 0.7rem 1rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: #1a1816;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.menu-item:hover { background: var(--bg2, #f3f1ee); }
+.menu-item.danger { color: #c0392b; }
+.menu-item.danger:hover { background: #fdebe9; }
+
+/* ── RESET MODAL ────────────────────── */
+.reset-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,24,22,0.5);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.reset-modal.open { display: flex; }
+.reset-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.8rem 1.6rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.reset-card h3 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1a1816;
+}
+.reset-card p {
+  font-size: 0.95rem;
+  color: #6b6560;
+  line-height: 1.55;
+  margin-bottom: 1.1rem;
+}
+.reset-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: var(--bg2, #f3f1ee);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.4rem;
+  cursor: pointer;
+}
+.reset-check input { margin-top: 0.2rem; flex-shrink: 0; cursor: pointer; }
+.reset-check span {
+  font-size: 0.9rem;
+  color: #1a1816;
+  line-height: 1.5;
+}
+.reset-actions { display: flex; gap: 0.6rem; }
+.reset-btn {
+  flex: 1;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.reset-btn.cancel {
+  background: transparent;
+  color: #6b6560;
+  border: 1.5px solid var(--faint, #e7e5e4);
+}
+.reset-btn.cancel:hover { border-color: #1a1816; color: #1a1816; }
+.reset-btn.confirm {
+  background: #c0392b;
+  color: #ffffff;
+}
+.reset-btn.confirm:hover { background: #a02e22; }
+.reset-btn:disabled { opacity: 0.5; cursor: wait; }
+
 </style>
 </head>
 <body>
@@ -323,8 +452,31 @@ textarea::placeholder { color: var(--mid); font-style: italic; }
     <div class="header-right">
       <a href="books.html" class="back-link" data-i18n="nav.books">📚 Books</a>
       <a href="dashboard.html" class="back-link" data-i18n="nav.dashboard">← Dashboard</a>
+      <div class="menu-wrap">
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" onclick="toggleMenu(event)">⋯</button>
+        <div class="menu-dropdown" id="menuDropdown">
+          <button class="menu-item" id="menuSaveLesson" onclick="menuSaveLesson()" data-i18n="menu.saveLesson">Lektion aus diesem Chat speichern</button>
+          <button class="menu-item danger" onclick="openResetModal()" data-i18n="menu.reset">Chat zurücksetzen</button>
+        </div>
+      </div>
     </div>
   </header>
+
+  <!-- RESET MODAL -->
+  <div class="reset-modal" id="resetModal">
+    <div class="reset-card">
+      <h3 data-i18n="reset.title">Chat zurücksetzen?</h3>
+      <p data-i18n="reset.body">Du fängst frisch an. Diese Konversation wird gelöscht.</p>
+      <label class="reset-check">
+        <input type="checkbox" id="resetSaveLesson" checked>
+        <span data-i18n="reset.saveLesson">Vorher als Lektion in mein Dashboard speichern.</span>
+      </label>
+      <div class="reset-actions">
+        <button class="reset-btn cancel" onclick="closeResetModal()" data-i18n="reset.cancel">Abbrechen</button>
+        <button class="reset-btn confirm" id="resetConfirmBtn" onclick="confirmReset()" data-i18n="reset.confirm">Zurücksetzen</button>
+      </div>
+    </div>
+  </div>
 
   <div class="welcome" id="welcome">
     <svg class="welcome-capy" viewBox="0 0 80 80" fill="none">
@@ -882,6 +1034,146 @@ function attachReelsSwipe(overlay) {
   });
 }
 
+// ═══════════════════════════════════════════════════════
+// CHAT LOG PERSISTENCE — WhatsApp-style
+// ═══════════════════════════════════════════════════════
+// The conversation survives page navigation, accidental back-button,
+// app switch and tab close. It only clears when the user explicitly
+// hits "Chat zurücksetzen" in the header menu.
+//
+// Stored as localStorage['spikiu_chat_log'] = { updatedAt, messages: [...] }
+// Each message: { role: 'spikiu'|'user', text: string }
+// Spikiu messages keep their full text including [HÄPPCHEN]/[LESSON_FROM_CONVERSATION]
+// markers so the UI can fully re-render (Reels stay re-openable from history).
+
+let chatLog = [];
+
+function loadChatLog() {
+  try {
+    const raw = localStorage.getItem('spikiu_chat_log');
+    if (!raw) return [];
+    const data = JSON.parse(raw);
+    return Array.isArray(data.messages) ? data.messages : [];
+  } catch(e) { return []; }
+}
+
+function saveChatLog() {
+  try {
+    localStorage.setItem('spikiu_chat_log', JSON.stringify({
+      updatedAt: new Date().toISOString(),
+      messages: chatLog
+    }));
+  } catch(e) { /* localStorage full or unavailable — silent */ }
+}
+
+function clearChatLog() {
+  try { localStorage.removeItem('spikiu_chat_log'); } catch(e) {}
+  chatLog = [];
+}
+
+function appendToChatLog(role, text) {
+  chatLog.push({ role, text });
+  saveChatLog();
+}
+
+// ═══ RESTORE on chat.html load ═══
+function restoreChatFromLog(user, log) {
+  // Hydrate session from user profile (same as resumeConversation does)
+  session.phase = 3;
+  session.name = user.name;
+  session.nativeLang = user.nativeLang;
+  session.profile = user.profile;
+  session.history = [];
+  chatLog = log.slice();
+
+  // Re-render each stored message + reconstruct session.history for the API
+  log.forEach(m => {
+    addMessage(m.role, m.text, { skipSave: true, skipReels: true });
+    if (m.role === 'spikiu') {
+      session.history.push({ role: 'assistant', content: m.text });
+    } else {
+      session.history.push({ role: 'user', content: m.text });
+    }
+  });
+
+  // Update lastSeenAt — but NO new greeting, we continue where we left off
+  try {
+    user.lastSeenAt = new Date().toISOString();
+    localStorage.setItem('spikiu_user', JSON.stringify(user));
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════
+// HEADER MENU (three-dot)
+// ═══════════════════════════════════════════════════════
+window.toggleMenu = function(e) {
+  if (e) e.stopPropagation();
+  const dropdown = document.getElementById('menuDropdown');
+  dropdown.classList.toggle('open');
+};
+// Close menu on any outside click
+document.addEventListener('click', function() {
+  const dropdown = document.getElementById('menuDropdown');
+  if (dropdown) dropdown.classList.remove('open');
+});
+
+window.menuSaveLesson = async function() {
+  document.getElementById('menuDropdown').classList.remove('open');
+  if (!session.history || session.history.length === 0) return;
+  const btn = document.getElementById('menuSaveLesson');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    await generateLessonFromConversation();
+    btn.textContent = '✓';
+  } catch(e) {
+    btn.textContent = original;
+  }
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.disabled = false;
+  }, 1800);
+};
+
+// ═══ RESET MODAL ═══
+window.openResetModal = function() {
+  document.getElementById('menuDropdown').classList.remove('open');
+  document.getElementById('resetModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+window.closeResetModal = function() {
+  document.getElementById('resetModal').classList.remove('open');
+  document.body.style.overflow = '';
+};
+window.confirmReset = async function() {
+  const btn = document.getElementById('resetConfirmBtn');
+  btn.disabled = true;
+  const wantsLesson = document.getElementById('resetSaveLesson').checked;
+
+  // Optionally save the conversation as a lesson before wiping
+  if (wantsLesson && session.history && session.history.length > 0) {
+    try { await generateLessonFromConversation(); } catch(e) {}
+  }
+
+  // Wipe the chat log; keep the user profile + roadmap
+  clearChatLog();
+  session.history = [];
+
+  // Restart fresh: hide the modal, clear the DOM, re-trigger resume flow
+  closeResetModal();
+  const chatEl = document.getElementById('chat');
+  if (chatEl) chatEl.innerHTML = '';
+  btn.disabled = false;
+
+  const user = loadExistingUser();
+  if (user && user.profile && user.profile.targetLang) {
+    resumeConversation(user);
+  } else {
+    window.location.replace('assessment.html');
+  }
+};
+
 function escapeHtml(s) {
   return String(s)
     .replace(/&/g, '&amp;')
@@ -890,7 +1182,8 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
-function addMessage(role, text) {
+function addMessage(role, text, opts) {
+  opts = opts || {};
   const chat = document.getElementById('chat');
   const msg = document.createElement('div');
   msg.className = 'message ' + role;
@@ -905,7 +1198,8 @@ function addMessage(role, text) {
     }
 
     // If Spikiu offered a Häppchen → open the full-screen Reels overlay
-    if (haeppchen) {
+    // Skip auto-opening on restore — the user already saw it before.
+    if (haeppchen && !opts.skipReels) {
       // Tiny delay so the lead-in bubble renders first, then Reels takes over
       setTimeout(() => openReels(haeppchen), cleanText ? 350 : 0);
     }
@@ -915,6 +1209,9 @@ function addMessage(role, text) {
   }
 
   chat.scrollTop = chat.scrollHeight;
+
+  // Persist this bubble unless the caller is replaying from log
+  if (!opts.skipSave) appendToChatLog(role, text);
 }
 
 function showTyping() {
@@ -1022,7 +1319,13 @@ window.startChat = function() {
   const existingUser = loadExistingUser();
 
   if (existingUser && existingUser.profile && existingUser.profile.targetLang) {
-    resumeConversation(existingUser);
+    // WhatsApp-style: if a chat log exists, continue where we left off
+    const savedLog = loadChatLog();
+    if (savedLog.length > 0) {
+      restoreChatFromLog(existingUser, savedLog);
+    } else {
+      resumeConversation(existingUser);
+    }
   } else {
     // ── LEGACY phase 1+2 (Onboarding + Assessment in chat) — REPLACED by assessment.html ──
     // The old conversational onboarding/assessment now lives in assessment.html as a card flow.
@@ -1405,7 +1708,14 @@ const I18N = {
     'welcome.sub': 'No grades. No pressure.<br>Just you and Spikiu — talking.',
     'welcome.cta': 'Start talking →',
     'welcome.note': 'Spanish · German · English',
-    'input.placeholder': 'Say something...'
+    'input.placeholder': 'Say something...',
+    'menu.saveLesson': 'Save this chat as a lesson',
+    'menu.reset': 'Reset chat',
+    'reset.title': 'Reset chat?',
+    'reset.body': 'You\'ll start fresh. This conversation will be deleted.',
+    'reset.saveLesson': 'Save it as a lesson in my dashboard first.',
+    'reset.cancel': 'Cancel',
+    'reset.confirm': 'Reset'
   },
   de: {
     'nav.dashboard': '← Mein Spikiu',
@@ -1414,7 +1724,14 @@ const I18N = {
     'welcome.sub': 'Keine Noten. Kein Druck.<br>Nur du und Spikiu — im Gespräch.',
     'welcome.cta': 'Jetzt sprechen →',
     'welcome.note': 'Spanisch · Deutsch · Englisch',
-    'input.placeholder': 'Sag etwas...'
+    'input.placeholder': 'Sag etwas...',
+    'menu.saveLesson': 'Lektion aus diesem Chat speichern',
+    'menu.reset': 'Chat zurücksetzen',
+    'reset.title': 'Chat zurücksetzen?',
+    'reset.body': 'Du fängst frisch an. Diese Konversation wird gelöscht.',
+    'reset.saveLesson': 'Vorher als Lektion in meinem Dashboard speichern.',
+    'reset.cancel': 'Abbrechen',
+    'reset.confirm': 'Zurücksetzen'
   },
   es: {
     'nav.dashboard': '← Mi Spikiu',
@@ -1423,7 +1740,14 @@ const I18N = {
     'welcome.sub': 'Sin notas. Sin presión.<br>Solo tú y Spikiu — hablando.',
     'welcome.cta': 'Empieza a hablar →',
     'welcome.note': 'Español · Alemán · Inglés',
-    'input.placeholder': 'Di algo...'
+    'input.placeholder': 'Di algo...',
+    'menu.saveLesson': 'Guardar esta conversación como lección',
+    'menu.reset': 'Reiniciar chat',
+    'reset.title': '¿Reiniciar el chat?',
+    'reset.body': 'Empiezas de cero. Esta conversación se borra.',
+    'reset.saveLesson': 'Guardarla antes como lección en mi panel.',
+    'reset.cancel': 'Cancelar',
+    'reset.confirm': 'Reiniciar'
   }
 };
 
