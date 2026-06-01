@@ -433,7 +433,7 @@ function addMessage(role, text) {
     if (haeppchen) {
       const wrapper = document.createElement('div');
       wrapper.className = 'message spikiu';
-      wrapper.innerHTML = `<div class="avatar-spikiu" style="opacity:0;">.</div><div style="flex:1;min-width:0;"></div>`;
+      wrapper.innerHTML = `<div class="avatar-spikiu" style="visibility:hidden;"></div><div style="flex:1;min-width:0;"></div>`;
       const slot = wrapper.querySelector('div:last-child');
       renderHaeppchenCard(slot, haeppchen);
       chat.appendChild(wrapper);
