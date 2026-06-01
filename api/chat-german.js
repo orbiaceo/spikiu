@@ -760,6 +760,12 @@ ONE TRUTH
 You accompany the human to discover they can already speak German.`;
 
   try {
+    // ── DIAGNOSTIC: log the request size so we can spot context-window blow-ups ──
+    const systemLen = systemPrompt.length;
+    const messagesLen = JSON.stringify(chatMessages).length;
+    const messageCount = chatMessages.length;
+    console.log(`[chat-german] req size — system=${systemLen} chars, messages=${messagesLen} chars, count=${messageCount}`);
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -776,7 +782,12 @@ You accompany the human to discover they can already speak German.`;
     });
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: 'API request failed' });
+      // ── DIAGNOSTIC: log the Anthropic error body so we can see WHY it failed ──
+      let errorBody = '';
+      try { errorBody = await response.text(); } catch(e) { errorBody = '(could not read body)'; }
+      console.error(`[chat-german] Anthropic API ${response.status} — body: ${errorBody.slice(0, 2000)}`);
+      console.error(`[chat-german] req sizes — system=${systemLen} chars, messages=${messagesLen} chars, count=${messageCount}`);
+      return res.status(response.status).json({ error: 'API request failed', detail: errorBody.slice(0, 500) });
     }
 
     const data = await response.json();
@@ -785,6 +796,7 @@ You accompany the human to discover they can already speak German.`;
     return res.status(200).json({ reply });
 
   } catch (err) {
+    console.error(`[chat-german] caught:`, err && err.stack ? err.stack : err);
     return res.status(500).json({ error: err.message });
   }
 }
