@@ -193,11 +193,31 @@ Estructura JSON:
   "title": "<nombre del tema en ${nativeLang}, 1-3 palabras>",
   "intro": "<UNA frase en ${nativeLang}: qué debe hacer ${name} con la tarjeta, p. ej. 'Mira estas frases, apréndelas un momento, después practicamos.'>",
   "items": [
-    { "target": "<frase en español>", "native": "<traducción en ${nativeLang}>" },
-    { "target": "<frase en español>", "native": "<traducción en ${nativeLang}>" }
+    { "target": "<frase en español>", "phonetic": "<lectura fonética simple para alguien que habla ${nativeLang}>", "native": "<traducción en ${nativeLang}>" },
+    { "target": "<frase en español>", "phonetic": "<lectura fonética simple para alguien que habla ${nativeLang}>", "native": "<traducción en ${nativeLang}>" }
   ]
 }
 [/HÄPPCHEN]
+
+REGLA FONÉTICA — IMPORTANTE:
+El campo "phonetic" es una guía de pronunciación PARA HABLANTES de ${nativeLang}.
+NO uses IPA. NO uses símbolos raros. Escribe como si fuera una palabra normal en ${nativeLang}.
+Marca la sílaba tónica con un acento agudo (´) en la vocal acentuada.
+
+Ejemplos por lengua materna:
+- Para hablantes de Deutsch (¿Cuánto cuesta?): "kuánto kuésta"
+- Para hablantes de Deutsch (Hola): "óla"
+- Para hablantes de Deutsch (Buenos días): "buénos días"
+- Para hablantes de English (¿Cuánto cuesta?): "kwánto kwéssta"
+- Para hablantes de English (Hola): "óh-la"
+- Para hablantes de English (Buenos días): "bwáy-noss dée-ass"
+
+REGLAS:
+- Minúsculas (excepto nombres propios y inicio de frase).
+- Sin corchetes — el frontend los añade.
+- Sin barras / o paréntesis.
+- Una sola línea por frase.
+- Si "target" tiene varias frases, separa con espacios normales.
 
 REGLAS DEL HÄPPCHEN:
 - 2-5 items, NUNCA más. Variable según tema (saludos: 3; escena de café: 5).

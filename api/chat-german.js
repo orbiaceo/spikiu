@@ -196,11 +196,30 @@ JSON-Struktur:
   "title": "<Thema-Name in ${nativeLang}, 1-3 Wörter>",
   "intro": "<EIN Satz in ${nativeLang}: was ${name} mit der Karte tun soll, z.B. 'Schau dir diese Sätze an, lerne sie kurz, dann üben wir.'>",
   "items": [
-    { "target": "<deutscher Satz>", "native": "<Übersetzung in ${nativeLang}>" },
-    { "target": "<deutscher Satz>", "native": "<Übersetzung in ${nativeLang}>" }
+    { "target": "<deutscher Satz>", "phonetic": "<einfache Ausspracheangabe für ${nativeLang}-Sprecher>", "native": "<Übersetzung in ${nativeLang}>" },
+    { "target": "<deutscher Satz>", "phonetic": "<einfache Ausspracheangabe für ${nativeLang}-Sprecher>", "native": "<Übersetzung in ${nativeLang}>" }
   ]
 }
 [/HÄPPCHEN]
+
+PHONETIK-REGEL — WICHTIG:
+Das Feld "phonetic" ist eine Aussprache-Hilfe FÜR ${nativeLang}-Sprecher.
+KEIN IPA. KEINE seltsamen Symbole. Schreibe als wäre es ein normales Wort in ${nativeLang}.
+Markiere die betonte Silbe mit einem Akut (´) auf dem betonten Vokal.
+
+Beispiele nach Muttersprache:
+- Für Spanier (Guten Morgen): "gúten mórguen"
+- Für Spanier (Wie geht es dir?): "ví guéit es dír"
+- Für Spanier (Auf Wiedersehen): "áuf vídersehen"
+- Für Englisch-Sprecher (Guten Morgen): "GOO-ten MOR-gen"
+- Für Englisch-Sprecher (Wie geht es dir?): "vee GAYT es DEER"
+
+REGELN:
+- Kleinbuchstaben (außer Eigennamen und Satzanfänge bei Spanisch-Lernern).
+- Keine eckigen Klammern — das Frontend fügt sie hinzu.
+- Keine Schrägstriche / oder Klammern.
+- Eine Zeile pro Satz.
+- Falls "target" mehrere Sätze hat, mit normalem Abstand trennen.
 
 REGELN FÜRS HÄPPCHEN:
 - 2-5 items, NIE mehr. Variabel je nach Thema (Begrüßungen: 3; Café-Szene: 5).

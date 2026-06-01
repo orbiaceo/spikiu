@@ -193,11 +193,30 @@ JSON structure:
   "title": "<topic name in ${nativeLang}, 1-3 words>",
   "intro": "<ONE sentence in ${nativeLang}: what ${name} should do with the card, e.g. 'Look at these sentences, learn them briefly, then we practice.'>",
   "items": [
-    { "target": "<English sentence>", "native": "<translation in ${nativeLang}>" },
-    { "target": "<English sentence>", "native": "<translation in ${nativeLang}>" }
+    { "target": "<English sentence>", "phonetic": "<simple pronunciation guide for ${nativeLang} speakers>", "native": "<translation in ${nativeLang}>" },
+    { "target": "<English sentence>", "phonetic": "<simple pronunciation guide for ${nativeLang} speakers>", "native": "<translation in ${nativeLang}>" }
   ]
 }
 [/HÄPPCHEN]
+
+PHONETIC RULE — IMPORTANT:
+The "phonetic" field is a pronunciation guide FOR ${nativeLang} speakers.
+NO IPA. NO strange symbols. Write as if it were a normal word in ${nativeLang}.
+Mark the stressed syllable with an acute accent (´) on the stressed vowel.
+
+Examples by native language:
+- For German speakers (Good morning): "gúd mórning"
+- For German speakers (How are you?): "háu ar júh"
+- For German speakers (Thank you very much): "ßénk júh véri matsch"
+- For Spanish speakers (Good morning): "gud mórnin"
+- For Spanish speakers (How are you?): "jáu ar yú"
+
+RULES:
+- Lowercase (except proper nouns and sentence starts when relevant).
+- No brackets — the frontend adds them.
+- No slashes / or parentheses.
+- One line per sentence.
+- If "target" has multiple sentences, separate with normal spaces.
 
 HÄPPCHEN RULES:
 - 2-5 items, NEVER more. Variable by topic (greetings: 3; café scene: 5).
