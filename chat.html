@@ -344,12 +344,22 @@ function buildLastConversationMemory(lastConversation) {
 // ── HÄPPCHEN PARSER ─────────────────────
 // Spikiu emits a card via the marker [HÄPPCHEN]{json}[/HÄPPCHEN].
 // We strip the marker out of the chat bubble and render a visual card instead.
+// We also scrub stray artifacts (lone punctuation lines, trailing whitespace,
+// empty lines) that the LLM sometimes emits adjacent to the marker.
 function parseHaeppchen(text) {
   const m = text.match(/\[HÄPPCHEN\]([\s\S]*?)\[\/HÄPPCHEN\]/);
   if (!m) return { cleanText: text, haeppchen: null };
   let json = null;
   try { json = JSON.parse(m[1].trim()); } catch(e) { console.error('Häppchen JSON parse failed', e); }
-  const cleanText = text.replace(/\[HÄPPCHEN\][\s\S]*?\[\/HÄPPCHEN\]/, '').trim();
+  // Remove the marker block itself
+  let cleanText = text.replace(/\[HÄPPCHEN\][\s\S]*?\[\/HÄPPCHEN\]/, '');
+  // Scrub lone-punctuation / empty-content lines (e.g. a stray "." the LLM emits)
+  cleanText = cleanText
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0 && !/^[.\-—_·•]+$/.test(line))
+    .join('\n')
+    .trim();
   return { cleanText, haeppchen: json };
 }
 
@@ -412,9 +422,12 @@ function addMessage(role, text) {
 
   if (role === 'spikiu') {
     const { cleanText, haeppchen } = parseHaeppchen(text);
-    const rendered = parseMarkdown(cleanText);
-    msg.innerHTML = `<div class="avatar-spikiu">${CAPY_SMALL}</div><div style="flex:1;min-width:0;"><div class="bubble spikiu">${rendered}</div></div>`;
-    chat.appendChild(msg);
+    // Only render the text bubble if there's actually text to show
+    if (cleanText) {
+      const rendered = parseMarkdown(cleanText);
+      msg.innerHTML = `<div class="avatar-spikiu">${CAPY_SMALL}</div><div style="flex:1;min-width:0;"><div class="bubble spikiu">${rendered}</div></div>`;
+      chat.appendChild(msg);
+    }
 
     // If Spikiu offered a Häppchen, render the card right after the bubble
     if (haeppchen) {
