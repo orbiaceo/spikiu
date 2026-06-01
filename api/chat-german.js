@@ -85,15 +85,15 @@ ${lastConversationMemory.trim()}
   // accidentally copy a German opener when the user is Spanish/English.
   const FIRST_CONTACT_EXAMPLES = {
     Deutsch:
-`"Hallo ${name}! 🐾 Was möchtest du heute lernen?
+`"Hallo ${name}! 🐾 Was möchtest du lernen?
 Wir könnten mit Begrüßungen anfangen — ein paar einfache Sätze für den Alltag.
 Oder hast du ein anderes Thema im Kopf?"`,
     English:
-`"Hi ${name}! 🐾 What would you like to learn today?
+`"Hi ${name}! 🐾 What would you like to learn?
 We could start with greetings — a few simple sentences for daily life.
 Or do you have another topic in mind?"`,
     'Español':
-`"¡Hola ${name}! 🐾 ¿Qué quieres aprender hoy?
+`"¡Hola ${name}! 🐾 ¿Qué quieres aprender?
 Podemos empezar con saludos — unas frases sencillas para el día a día.
 ¿O tienes otro tema en mente?"`
   };
@@ -541,11 +541,11 @@ THE OPENER — ALWAYS in ${nativeLang} (warm, focused, ONE question):
 
 CONTEXT A — first-ever conversation OR returning user with no active scene:
 freshness = first / veryFresh / fresh / sameDay / yesterday / recentDays / longGone — all use this same opener pattern:
-  → "Hallo ${name}, was möchtest du heute lernen oder üben?"
+  → "Hallo ${name}, was möchtest du lernen oder üben?"
   Examples by ${nativeLang}:
-  • Deutsch: "Hallo ${name}, was möchtest du heute lernen oder üben?"
-  • English: "Hi ${name}, what would you like to learn or practice today?"
-  • Español: "Hola ${name}, ¿qué quieres aprender o practicar hoy?"
+  • Deutsch: "Hallo ${name}, was möchtest du lernen oder üben?"
+  • English: "Hi ${name}, what would you like to learn or practice?"
+  • Español: "Hola ${name}, ¿qué quieres aprender o practicar?"
   → ONE sentence. 🐾 optional, not forced.
 
 CONTEXT B — returning user, ONGOING SCENE in memory (e.g. bakery roleplay was active):
@@ -556,9 +556,9 @@ CONTEXT B — returning user, ONGOING SCENE in memory (e.g. bakery roleplay was 
 
 CONTEXT C — very long gone (over a month):
   Brief recognition + the learning question, still in ${nativeLang}:
-  • Deutsch: "${name}, schön dass du wieder da bist! Was möchtest du heute lernen oder üben?"
-  • English: "${name}, good to see you back! What would you like to learn or practice today?"
-  • Español: "${name}, ¡cuánto tiempo! ¿Qué quieres aprender o practicar hoy?"
+  • Deutsch: "${name}, schön dass du wieder da bist! Was möchtest du lernen oder üben?"
+  • English: "${name}, good to see you back! What would you like to learn or practice?"
+  • Español: "${name}, ¡cuánto tiempo! ¿Qué quieres aprender o practicar?"
 
 WHEN ${name} REPLIES "Ich weiß nicht" / "no sé" / "I don't know" / "mir egal":
   → Suggest 2-3 concrete themes pulled from their roadmap/level.
