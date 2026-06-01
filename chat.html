@@ -1273,6 +1273,19 @@ async function apiChat(targetLang, messages, profile) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages, profile, maxTokens: 600 })
   });
+
+  // ── DEBUG MODE — surface the real backend error instead of swallowing it ──
+  // When the backend returns 4xx/5xx, the JSON has { error, detail } where
+  // `detail` is the slice of the Anthropic response body. We throw a tagged
+  // error so the catch in sendMessage can show it as a chat bubble.
+  if (!r.ok) {
+    let d = {};
+    try { d = await r.json(); } catch(e) {}
+    const detailStr = d.detail ? ` · detail: ${typeof d.detail === 'string' ? d.detail : JSON.stringify(d.detail)}` : '';
+    const errStr = d.error ? d.error : 'API request failed';
+    throw new Error(`[${r.status}] ${errStr}${detailStr} · msgs=${messages.length}`);
+  }
+
   const d = await r.json();
   return d.reply;
 }
@@ -1518,7 +1531,9 @@ window.sendMessage = async function() {
     }
   } catch(e) {
     hideTyping();
-    addMessage('spikiu', 'Something went wrong. Try again? 🐾');
+    // ── DEBUG MODE — show the real error so we can diagnose without Vercel logs ──
+    const msg = (e && e.message) ? String(e.message) : 'Unknown error';
+    addMessage('spikiu', `🔧 **DEBUG**\n\nFehler beim API-Call:\n\n\`${msg}\`\n\nBitte Screenshot oder Text kopieren und an Spikiu-Entwickler schicken.`);
     console.error(e);
   }
 
@@ -1536,7 +1551,8 @@ async function startAssessment() {
     session.assessmentHistory.push({ role: 'assistant', content: result.reply });
   } catch(e) {
     hideTyping();
-    addMessage('spikiu', 'Something went wrong. Try again? 🐾');
+    const msg = (e && e.message) ? String(e.message) : 'Unknown error';
+    addMessage('spikiu', `🔧 **DEBUG (assessment)**\n\n\`${msg}\``);
     console.error(e);
   }
 }
