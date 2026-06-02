@@ -272,10 +272,10 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.8rem;">
       <div style="display:flex;align-items:center;gap:0.6rem;">
         <span style="font-size:1.4rem;">🗺️</span>
-        <h2 style="font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:#1a4a38;">My Language Roadmap</h2>
+        <h2 id="roadmap-card-title" style="font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:#1a4a38;">Mein Weg</h2>
       </div>
       <div style="display:flex;gap:0.5rem;">
-        <button onclick="openRoadmap()" style="background:#2d6a4f;color:white;border:none;border-radius:100px;padding:0.5rem 1.2rem;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">View Roadmap →</button>
+        <button id="roadmap-card-btn" onclick="openRoadmap()" style="background:#2d6a4f;color:white;border:none;border-radius:100px;padding:0.5rem 1.2rem;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Ansehen →</button>
       </div>
     </div>
     <p id="roadmap-summary" style="font-size:0.92rem;color:#6b6560;line-height:1.6;">Your Roadmap is ready.</p>
@@ -285,8 +285,8 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
   <div id="roadmap-modal" style="display:none;position:fixed;inset:0;background:rgba(26,24,22,0.9);backdrop-filter:blur(8px);z-index:1000;overflow-y:auto;padding:2rem 1rem;">
     <div style="max-width:794px;margin:0 auto;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding:0 0.5rem;flex-wrap:wrap;gap:0.5rem;">
-        <button onclick="closeRoadmap()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:0.55rem 1.2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;">← Back</button>
-        <span style="color:rgba(255,255,255,0.5);font-size:0.78rem;font-family:'DM Sans',sans-serif;">💡 Cmd/Ctrl + P para imprimir o guardar como PDF</span>
+        <button id="roadmap-back-btn" onclick="closeRoadmap()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:0.55rem 1.2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;">← Zurück</button>
+        <span id="roadmap-print-tip" style="color:rgba(255,255,255,0.5);font-size:0.78rem;font-family:'DM Sans',sans-serif;">💡 Cmd/Ctrl + P zum Drucken oder als PDF speichern</span>
       </div>
       <div id="roadmap-poster"></div>
     </div>
@@ -814,91 +814,97 @@ const CAPY_LOGO = `<svg width="32" height="32" viewBox="0 0 80 80" fill="none">
 
 // ── RENDER ROADMAP POSTER FROM JSON ────────────────────
 function renderRoadmapPoster(r, nativeLang) {
-  if (!r || !r.phases) return '<p style="color:white;text-align:center;padding:2rem;">Roadmap data not found.</p>';
+  if (!r || !r.page2) {
+    const nf = { 'Deutsch':'Lernweg nicht gefunden.', 'Español':'Camino no encontrado.', 'English':'Path not found.' };
+    return `<p style="color:white;text-align:center;padding:2rem;">${nf[nativeLang] || nf['English']}</p>`;
+  }
 
-  // Title label in user's native language — "Roadmap" stays untranslated
-  const titleLabels = {
-    'Deutsch': 'Meine Language Roadmap',
-    'Español': 'Mi Language Roadmap',
-    'English': 'My Language Roadmap'
-  };
-  const titleLabel = titleLabels[nativeLang] || titleLabels['English'];
+  const meta = r.meta || {};
+  const p1 = r.page1 || {};
+  const p2 = r.page2 || {};
+  const portrait = p1.portrait || {};
+  const ziel = p1.ziel || {};
+  const zeit = p1.zeitplan || {};
+  const versp = p1.versprechen || {};
+  const etappen = Array.isArray(p2.etappen) ? p2.etappen : [];
+  const nl = meta.nativeLang || nativeLang || 'Deutsch';
 
-  const phasesHtml = (r.phases || []).map(p => `
-    <div class="rm-phase">
-      <div class="rm-phase-top">
-        <span class="rm-phase-icon">${p.icon || '🌱'}</span>
-        <span class="rm-phase-date">${p.dates || ''}<br>${p.duration || ''}</span>
-      </div>
-      <div class="rm-phase-name">${p.name || ''}</div>
-      <div class="rm-phase-focus">${p.focus || ''}</div>
-      <ul class="rm-phase-activities">
-        ${(p.activities || []).map(a => `<li>${a}</li>`).join('')}
-      </ul>
-    </div>
-  `).join('');
+  const pageWord = { 'Deutsch':'Seite', 'Español':'Página', 'English':'Page' }[nl] || 'Seite';
+  const ROW = {
+    'Deutsch':  { ziel:'Ziel', inhalt:'Lerninhalt', spikiu:'Mit Spikiu', ende:'Am Ende' },
+    'Español':  { ziel:'Meta', inhalt:'Contenido', spikiu:'Con Spikiu', ende:'Al final' },
+    'English':  { ziel:'Goal', inhalt:'Focus', spikiu:'With Spikiu', ende:'By the end' }
+  }[nl] || { ziel:'Ziel', inhalt:'Lerninhalt', spikiu:'Mit Spikiu', ende:'Am Ende' };
 
-  const destinationHtml = (r.destination || []).map(d => `<li>${d}</li>`).join('');
+  // Bildschirm-Stile inline → kein CSS-Eingriff nötig (A4-Druckschliff folgt in Schritt 5)
+  const PAGE = "background:#fff;color:#1a1816;max-width:794px;margin:0 auto 1.5rem;border-radius:14px;padding:2rem 2.2rem;font-family:'DM Sans',sans-serif;";
+  const PLABEL = "font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#2d6a4f;text-align:center;margin-bottom:0.8rem;";
+  const TITLE = "font-family:'Lora',serif;font-size:1.6rem;font-weight:700;text-align:center;line-height:1.2;margin-bottom:0.2rem;";
+  const METAL = "text-align:center;font-size:0.85rem;color:#6b6560;margin-bottom:1.4rem;";
+  const BOX = "border:1.5px solid #e8e0d0;border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem;";
+  const H3 = "font-family:'Lora',serif;font-size:1rem;font-weight:700;color:#2d6a4f;margin-bottom:0.6rem;";
+
+  const zielItems = (ziel.items || []).map(i =>
+    `<li style="padding:0.35rem 0 0.35rem 1.6rem;position:relative;font-size:0.95rem;line-height:1.5;">
+       <span style="position:absolute;left:0;color:#2d6a4f;font-weight:700;">✓</span>${i}</li>`).join('');
+
+  const etappenHtml = etappen.map(et => {
+    const inhalt = (et.lerninhalt || []).map(b =>
+      `<li style="padding:0.15rem 0 0.15rem 0.9rem;position:relative;font-size:0.92rem;line-height:1.45;">
+         <span style="position:absolute;left:0.15rem;color:#2d6a4f;font-weight:700;">·</span>${b}</li>`).join('');
+    const rowLbl = "font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#2d6a4f;display:block;margin-bottom:0.2rem;";
+    return `
+      <div style="border:1.5px solid #e8e0d0;border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem;">
+        <div style="display:flex;align-items:baseline;gap:0.5rem;">
+          <span style="font-size:1.3rem;">${et.icon || '🌱'}</span>
+          <span style="font-family:'Lora',serif;font-size:1.15rem;font-weight:700;">${et.name || ''}</span>
+        </div>
+        <div style="font-size:0.8rem;color:#6b6560;margin-bottom:0.8rem;">${et.dates || ''} · ${et.duration || ''}</div>
+        ${et.ziel ? `<div style="margin-bottom:0.7rem;"><span style="${rowLbl}">${ROW.ziel}</span><p style="font-size:0.93rem;line-height:1.5;">${et.ziel}</p></div>` : ''}
+        ${inhalt ? `<div style="margin-bottom:0.7rem;"><span style="${rowLbl}">${ROW.inhalt}</span><ul style="list-style:none;">${inhalt}</ul></div>` : ''}
+        ${et.wieSpikiuHilft ? `<div style="margin-bottom:0.7rem;"><span style="${rowLbl}">${ROW.spikiu}</span><p style="font-size:0.93rem;line-height:1.5;">${et.wieSpikiuHilft}</p></div>` : ''}
+        ${et.endziel ? `<div><span style="${rowLbl}">${ROW.ende}</span><p style="font-size:0.93rem;line-height:1.5;font-style:italic;color:#1a4a38;">${et.endziel}</p></div>` : ''}
+      </div>`;
+  }).join('');
 
   return `
-    <div class="rm-page">
-      <div class="rm-header">
-        <div class="rm-brand">
-          ${CAPY_LOGO}
-          <span class="rm-brand-name">Spi<em>k</em>iu</span>
+    <div class="rm-page" style="${PAGE}">
+      <div style="${PLABEL}">${pageWord} 1</div>
+      <h1 style="${TITLE}">${meta.name || ''} — <em style="color:#2d6a4f;font-style:italic;">${meta.targetLang || ''}</em></h1>
+      <div style="${METAL}">${meta.startDate || ''} → ${meta.endDate || ''}</div>
+
+      ${portrait.body ? `<div style="${BOX}background:#e8f2ed;border-color:#2d6a4f;">
+        ${portrait.title ? `<div style="${H3}">${portrait.title}</div>` : ''}
+        <p style="font-style:italic;line-height:1.65;font-size:0.96rem;">${portrait.body}</p></div>` : ''}
+
+      ${zielItems ? `<div style="${BOX}"><div style="${H3}">${ziel.label || ''}</div>
+        <ul style="list-style:none;">${zielItems}</ul></div>` : ''}
+
+      <div style="${BOX}">
+        <div style="${H3}">${zeit.label || ''}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-bottom:0.7rem;font-size:0.9rem;">
+          <span style="font-weight:600;">${zeit.start || ''}</span>
+          <span style="flex:1;height:2px;background:#2d6a4f;opacity:0.4;border-radius:2px;"></span>
+          <span style="font-weight:600;">${zeit.end || ''}</span>
         </div>
-        <div class="rm-timeline">
-          <strong>Roadmap</strong><br>
-          ${r.startDate || ''} → ${r.endDate || ''}
-        </div>
+        ${zeit.weeklyCommitment ? `<p style="font-size:0.9rem;color:#1a1816;font-weight:600;">${zeit.weeklyCommitment}</p>` : ''}
+        ${zeit.deadlineNote ? `<p style="font-size:0.9rem;color:#6b6560;">${zeit.deadlineNote}</p>` : ''}
       </div>
-      <div class="rm-title-block">
-        <div class="rm-title-label">${titleLabel}</div>
-        <h1 class="rm-title">${r.name || ''} → <em>${r.targetLang || ''}</em></h1>
-        <p class="rm-subtitle">${r.subtitle || ''}</p>
-      </div>
-      <div class="rm-destination">
-        <div class="rm-dest-label">🎯 ${r.destinationLabel || 'What I will be able to do'}</div>
-        <ul class="rm-dest-list">${destinationHtml}</ul>
-      </div>
-      <div class="rm-phases-label">${r.phasesLabel || 'The path'}</div>
-      <div class="rm-phases">${phasesHtml}</div>
-      <div class="rm-commitment">
-        <div class="rm-commit-text">
-          <strong>${r.commitmentLabel || 'My promise'}:</strong> ${r.commitment || ''}
-        </div>
-        <div class="rm-commit-date">
-          ${r.deadlineShort || ''}
-          <small>${r.deadlineLabel || ''}</small>
-        </div>
-      </div>
-      <div class="rm-footer">
-        <span>spikiu.com · ${r.footerLeft || ''}</span>
-        <span class="rm-footer-cap">🐾 ${r.footerRight || ''}</span>
-      </div>
+
+      ${versp.text ? `<div style="${BOX}background:#e8f2ed;border-color:#2d6a4f;">
+        <div style="${H3}">${versp.label || ''}</div>
+        <p style="line-height:1.6;color:#1a4a38;font-size:0.96rem;">${versp.text}</p></div>` : ''}
+
+      <div style="text-align:right;font-size:0.78rem;color:#6b6560;margin-top:0.5rem;">spikiu.com 🐾</div>
     </div>
-    ${r.portrait ? `
-    <div class="rm-page rm-portrait-page">
-      <div class="rm-header">
-        <div class="rm-brand">
-          ${CAPY_LOGO}
-          <span class="rm-brand-name">Spi<em>k</em>iu</span>
-        </div>
-        <div class="rm-timeline">
-          <strong>${r.portraitTitle || 'A portrait of you'}</strong><br>
-          ${r.name || ''}
-        </div>
-      </div>
-      <div class="rm-portrait-content">
-        <div class="rm-portrait-icon">🐾</div>
-        <div class="rm-portrait-text">${(r.portrait || '').replace(/\n/g, '<br>')}</div>
-      </div>
-      <div class="rm-footer">
-        <span>spikiu.com · ${r.footerLeft || ''}</span>
-        <span class="rm-footer-cap">🐾 ${r.footerRight || ''}</span>
-      </div>
+
+    <div class="rm-page" style="${PAGE}">
+      <div style="${PLABEL}">${pageWord} 2</div>
+      ${p2.title ? `<h1 style="${TITLE}">${p2.title}</h1>` : ''}
+      ${p2.subtitle ? `<div style="${METAL}">${p2.subtitle}</div>` : '<div style="margin-bottom:1rem;"></div>'}
+      ${etappenHtml}
+      <div style="text-align:right;font-size:0.78rem;color:#6b6560;margin-top:0.5rem;">spikiu.com 🐾</div>
     </div>
-    ` : ''}
   `;
 }
 
@@ -1301,12 +1307,27 @@ function loadUser() {
     if (user.roadmap) {
       document.getElementById('roadmap-card').style.display = 'block';
       const r = user.roadmap;
-      const summaries = {
-        'Deutsch': `Deine Roadmap für <strong>${r.targetLang || user.targetLangDisplay}</strong> ist bereit. Drei Etappen bis zu deinem Ziel.`,
-        'Español': `Tu Roadmap para <strong>${r.targetLang || user.targetLangDisplay}</strong> está lista. Tres etapas hasta tu meta.`,
-        'English': `Your Roadmap for <strong>${r.targetLang || user.targetLangDisplay}</strong> is ready. Three phases to your goal.`
+      const targetName = (r.meta && r.meta.targetLang) || user.targetLangDisplay || '';
+      const nl = user.nativeLang || 'Deutsch';
+
+      const cardTitles = { 'Deutsch':'Mein Weg', 'Español':'Mi camino', 'English':'My path' };
+      const cardBtns   = { 'Deutsch':'Ansehen →', 'Español':'Ver →', 'English':'View →' };
+      const backLabels = { 'Deutsch':'← Zurück', 'Español':'← Atrás', 'English':'← Back' };
+      const printTips  = {
+        'Deutsch':'💡 Cmd/Ctrl + P zum Drucken oder als PDF speichern',
+        'Español':'💡 Cmd/Ctrl + P para imprimir o guardar como PDF',
+        'English':'💡 Cmd/Ctrl + P to print or save as PDF'
       };
-      document.getElementById('roadmap-summary').innerHTML = summaries[user.nativeLang] || summaries['English'];
+      const summaries = {
+        'Deutsch': `Dein Weg zu <strong>${targetName}</strong> ist bereit. Drei Etappen bis zu deinem Ziel.`,
+        'Español': `Tu camino hacia el <strong>${targetName}</strong> está listo. Tres etapas hasta tu meta.`,
+        'English': `Your path to <strong>${targetName}</strong> is ready. Three stages to your goal.`
+      };
+      document.getElementById('roadmap-card-title').textContent = cardTitles[nl] || cardTitles['English'];
+      document.getElementById('roadmap-card-btn').textContent = cardBtns[nl] || cardBtns['English'];
+      document.getElementById('roadmap-back-btn').textContent = backLabels[nl] || backLabels['English'];
+      document.getElementById('roadmap-print-tip').textContent = printTips[nl] || printTips['English'];
+      document.getElementById('roadmap-summary').innerHTML = summaries[nl] || summaries['English'];
     }
 
     // Render lessons list
