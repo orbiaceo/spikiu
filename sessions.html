@@ -150,19 +150,120 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 .trainer-tags { display:flex;gap:0.4rem;margin-top:0.4rem;flex-wrap:wrap; }
 .trainer-tag { font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:100px;background:var(--faint);color:var(--mid); }
 
+/* ── MOBILE HEADER + DRAWER ─────────────────────────── */
+.mobile-header {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: var(--white);
+  border-bottom: 1px solid var(--faint);
+  padding: 0.75rem 1rem;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hamburger {
+  background: #f3f1ee;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--ink);
+}
+.hamburger:hover { background: var(--faint); }
+.hamburger:active { transform: scale(0.94); }
+.hamburger svg { width: 20px; height: 20px; }
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: 'Lora', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mobile-logo em { color: var(--accent); font-style: italic; }
+.mobile-logo svg { width: 24px; height: 24px; }
+.backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 95;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.backdrop.show { display: block; opacity: 1; }
+
 @media (max-width:768px) {
+  .mobile-header { display: flex; }
   .app { grid-template-columns:1fr; }
-  .sidebar { display:none; }
-  .main { padding:1.5rem; }
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100dvh;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 100;
+    overflow-y: auto;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main { padding:1.5rem 1.1rem; }
   .price-bar { gap:0.5rem; }
 }
 </style>
 </head>
 <body>
+
+<!-- MOBILE HEADER (hamburger + logo) — visible only ≤768px -->
+<header class="mobile-header">
+  <button class="hamburger" onclick="openSidebar()" aria-label="Menü öffnen">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <a href="dashboard.html" class="mobile-logo">
+    <svg viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    Spi<em>k</em>iu
+  </a>
+</header>
+
+<!-- BACKDROP for closing the drawer -->
+<div class="backdrop" id="backdrop" onclick="closeSidebar()"></div>
+
 <div class="app">
 
 <!-- SIDEBAR -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <a href="index.html" class="sidebar-logo">
     <svg width="24" height="24" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
     Spi<em>k</em>iu
@@ -442,6 +543,28 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 </div>
 
 <script>
+// ── MOBILE SIDEBAR DRAWER ─────────────────────────────
+window.openSidebar = function() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('backdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('show');
+  document.body.style.overflow = '';
+};
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.sidebar .nav-item').forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 768px)').matches) closeSidebar();
+    });
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSidebar();
+});
+
 let selectedDay = null;
 let selectedTime = null;
 let selectedTrainer = 'María González';
