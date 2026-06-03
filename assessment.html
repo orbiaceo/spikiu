@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +27,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
 header {
   display: flex;
   align-items: center;
@@ -48,6 +49,7 @@ header {
 }
 .logo em { color: var(--accent); font-style: italic; }
 .logo svg { width: 28px; height: 28px; }
+
 .progress {
   flex: 1;
   height: 6px;
@@ -93,6 +95,7 @@ main {
   from { opacity: 0; transform: translateX(20px); }
   to { opacity: 1; transform: translateX(0); }
 }
+
 .card h1 {
   font-family: 'Lora', serif;
   font-size: clamp(1.6rem, 5vw, 2rem);
@@ -110,37 +113,25 @@ main {
   margin-bottom: 1.8rem;
   line-height: 1.5;
 }
-.field-label {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 1.6rem 0 0.7rem;
-}
-.field-label .opt { font-weight: 400; color: var(--mid); }
 
-input[type="text"], textarea {
+input[type="text"] {
   width: 100%;
   background: var(--white);
   border: 2px solid var(--ink);
+  border-radius: 100px;
+  padding: 1.1rem 1.5rem;
   font-family: 'DM Sans', sans-serif;
   font-size: 1.05rem;
   color: var(--ink);
   outline: none;
 }
-input[type="text"] { border-radius: 100px; padding: 1.1rem 1.5rem; }
-textarea {
-  border-radius: 18px;
-  padding: 1rem 1.25rem;
-  border: 2px solid var(--faint);
-  min-height: 110px;
-  resize: vertical;
-  line-height: 1.5;
-  font-size: 1rem;
-}
-textarea:focus { border-color: var(--accent); }
-input::placeholder, textarea::placeholder { color: #b8b0a4; }
+input[type="text"]::placeholder { color: #b8b0a4; }
 
-.options { display: flex; flex-direction: column; gap: 0.7rem; }
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
 .option {
   background: var(--white);
   border: 1.5px solid var(--faint);
@@ -164,27 +155,41 @@ input::placeholder, textarea::placeholder { color: #b8b0a4; }
 .option-content { flex: 1; }
 .option-sub { font-size: 0.82rem; color: var(--mid); font-weight: 400; margin-top: 0.2rem; }
 
-.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.chip {
-  background: var(--white);
+.option.multi::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   border: 1.5px solid var(--faint);
-  border-radius: 100px;
-  padding: 0.6rem 1.1rem;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--ink);
-  cursor: pointer;
-  transition: all 0.16s;
+  flex-shrink: 0;
+  background: var(--white);
+  display: inline-block;
+  transition: all 0.18s;
 }
-.chip:hover { border-color: var(--accent); }
-.chip.selected { border-color: var(--accent); background: var(--accent2); color: var(--accent3); }
+.option.multi.selected::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  content: "✓";
+  color: white;
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 22px;
+}
+
+.option.star::after {
+  content: "☆";
+  font-size: 1.5rem;
+  color: var(--faint);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.option.star.selected::after { content: "★"; color: var(--accent); }
 
 .bottom {
   position: sticky;
   bottom: 0;
   background: linear-gradient(to top, var(--bg) 70%, transparent);
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 1.5rem;
 }
 .btn-next {
   width: 100%;
@@ -205,92 +210,30 @@ input::placeholder, textarea::placeholder { color: #b8b0a4; }
 .btn-next:hover:not(:disabled) { background: var(--accent3); transform: translateY(-1px); }
 .btn-next:disabled { background: #d4cdc6; color: #8a8580; cursor: not-allowed; }
 
-/* ── Generieren: Spinner / Fehler ── */
-.gen-center { text-align: center; padding: 3rem 0; }
-.spinner {
-  width: 48px; height: 48px; margin: 0 auto 1.4rem;
-  border: 4px solid var(--faint);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
+.result-card { text-align: center; padding: 1rem 0 2rem; }
+.result-icon { font-size: 3.5rem; margin-bottom: 1rem; animation: pop 0.5s ease; }
+@keyframes pop { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+.result-card h1 { text-align: center; margin-bottom: 1.5rem; }
+.result-box {
+  background: var(--white);
+  border: 1.5px solid var(--faint);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: left;
+  margin-bottom: 1rem;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-.gen-text { font-size: 1.05rem; color: var(--mid); }
-.gen-leaf { font-size: 2rem; animation: pop 0.5s ease; }
-
-/* ── Lernweg-Dokument (page1/page2) ── */
-.doc { padding-bottom: 2rem; }
-.doc-pagelabel {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--accent);
-  text-align: center; margin: 0.5rem 0 1.2rem;
+.result-box h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
 }
-.doc-title {
-  font-family: 'Lora', serif; font-size: clamp(1.5rem, 5vw, 1.9rem);
-  font-weight: 700; text-align: center; line-height: 1.2; margin-bottom: 0.3rem;
-}
-.doc-title em { color: var(--accent); font-style: italic; }
-.doc-meta { text-align: center; font-size: 0.85rem; color: var(--mid); margin-bottom: 1.6rem; }
-
-.doc-box {
-  background: var(--white); border: 1.5px solid var(--faint);
-  border-radius: 16px; padding: 1.4rem; margin-bottom: 1rem; text-align: left;
-}
-.doc-box h3 {
-  font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 700;
-  color: var(--accent); margin-bottom: 0.7rem;
-}
-.doc-portrait p { font-style: italic; line-height: 1.65; color: var(--ink); font-size: 0.98rem; }
-.doc-ziel ul { list-style: none; }
-.doc-ziel li { padding: 0.4rem 0 0.4rem 1.7rem; position: relative; font-size: 0.96rem; line-height: 1.5; }
-.doc-ziel li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-
-.doc-zeitplan .timeline {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 0.5rem; margin-bottom: 0.8rem; font-size: 0.9rem;
-}
-.doc-zeitplan .tl-point { font-weight: 600; color: var(--ink); }
-.doc-zeitplan .tl-line { flex: 1; height: 2px; background: var(--accent); border-radius: 2px; opacity: 0.4; }
-.doc-zeitplan .meta-line { font-size: 0.9rem; color: var(--mid); line-height: 1.5; }
-.doc-zeitplan .meta-line strong { color: var(--ink); font-weight: 600; }
-
-.doc-versprechen { background: var(--accent2); border-color: var(--accent); }
-.doc-versprechen p { line-height: 1.6; color: var(--accent3); font-size: 0.98rem; }
-
-.doc-sep { height: 1px; background: var(--faint); margin: 2rem 0 1.6rem; }
-
-.etappa {
-  background: var(--white); border: 1.5px solid var(--faint);
-  border-radius: 16px; padding: 1.4rem; margin-bottom: 1rem; text-align: left;
-}
-.etappa-head { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.2rem; }
-.etappa-icon { font-size: 1.4rem; }
-.etappa-name { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-.etappa-dates { font-size: 0.82rem; color: var(--mid); margin-bottom: 0.9rem; }
-.etappa-row { margin-bottom: 0.8rem; }
-.etappa-row:last-child { margin-bottom: 0; }
-.etappa-row .lbl {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--accent); display: block; margin-bottom: 0.25rem;
-}
-.etappa-row p { font-size: 0.94rem; line-height: 1.5; color: var(--ink); }
-.etappa-row ul { list-style: none; }
-.etappa-row li { padding: 0.2rem 0 0.2rem 1rem; position: relative; font-size: 0.94rem; line-height: 1.45; color: var(--ink); }
-.etappa-row li::before { content: "·"; position: absolute; left: 0.2rem; color: var(--accent); font-weight: 700; }
-.etappa-row.endziel p { font-style: italic; color: var(--accent3); }
-
-.btn-go {
-  width: 100%; display: block; margin-top: 1.4rem;
-  background: var(--ink); color: var(--white); border: none; border-radius: 100px;
-  padding: 1.1rem; font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 600; cursor: pointer;
-  transition: all 0.2s; text-decoration: none; text-align: center;
-}
-.btn-go:hover { background: var(--accent3); transform: translateY(-1px); }
-.btn-retry {
-  background: var(--accent); color: #fff; border: none; border-radius: 100px;
-  padding: 0.9rem 1.8rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
-  cursor: pointer; margin-top: 1.2rem;
-}
+.result-box p { font-size: 0.92rem; color: var(--mid); line-height: 1.6; }
+.result-box ul { list-style: none; }
+.result-box ul li { padding: 0.4rem 0; border-bottom: 1px solid var(--faint); font-size: 0.92rem; }
+.result-box ul li:last-child { border: none; }
+.result-box ul li strong { color: var(--ink); }
 
 @media (min-width: 720px) { main { padding: 4rem 1.5rem 1rem; } }
 </style>
@@ -326,10 +269,10 @@ input::placeholder, textarea::placeholder { color: #b8b0a4; }
 
 <main>
 
-  <!-- CARD 1 — Muttersprache -->
+  <!-- CARD 1 — Mother language (always English, neutral start) -->
   <div class="card active" data-card="1">
-    <h1>Deine <em>Muttersprache</em>?</h1>
-    <p class="card-sub">In dieser Sprache reden wir miteinander.</p>
+    <h1>Your <em>mother language</em>?</h1>
+    <p class="card-sub">This is the language we'll talk in.</p>
     <div class="options" data-field="nativeLang">
       <button class="option" data-value="Deutsch"><span class="option-flag">🇩🇪</span><span class="option-content">Deutsch</span></button>
       <button class="option" data-value="Español"><span class="option-flag">🇪🇸</span><span class="option-content">Español</span></button>
@@ -339,318 +282,671 @@ input::placeholder, textarea::placeholder { color: #b8b0a4; }
 
   <!-- CARD 2 — Name -->
   <div class="card" data-card="2">
-    <h1 data-i18n="q.name">Wie heißt du?</h1>
-    <p class="card-sub" data-i18n="q.nameSub">Wir nennen dich beim Vornamen.</p>
+    <h1 data-i18n="q.name">What's your name?</h1>
+    <p class="card-sub" data-i18n="q.nameSub">We'll call you by your first name.</p>
     <input type="text" id="name" placeholder="" autocomplete="given-name">
   </div>
 
-  <!-- CARD 3 — Zielsprache -->
+  <!-- CARD 3 — Target Language -->
   <div class="card" data-card="3">
-    <h1 data-i18n="q.target">Welche Sprache willst du <em>sprechen</em>?</h1>
+    <h1 data-i18n="q.target">Which language do you want to <em>speak</em>?</h1>
     <div class="options" data-field="targetLang">
-      <button class="option" data-value="Spanish"><span class="option-flag">🇪🇸</span><span class="option-content" data-i18n="lang.es">Spanisch</span></button>
-      <button class="option" data-value="German"><span class="option-flag">🇩🇪</span><span class="option-content" data-i18n="lang.de">Deutsch</span></button>
-      <button class="option" data-value="English"><span class="option-flag">🇬🇧</span><span class="option-content" data-i18n="lang.en">Englisch</span></button>
+      <button class="option" data-value="Spanish"><span class="option-flag">🇪🇸</span><span class="option-content" data-i18n="lang.es">Spanish</span></button>
+      <button class="option" data-value="German"><span class="option-flag">🇩🇪</span><span class="option-content" data-i18n="lang.de">German</span></button>
+      <button class="option" data-value="English"><span class="option-flag">🇬🇧</span><span class="option-content" data-i18n="lang.en">English</span></button>
     </div>
   </div>
 
   <!-- CARD 4 — Level -->
   <div class="card" data-card="4">
-    <h1 data-i18n="q.level">Wo stehst du <em>gerade</em>?</h1>
-    <p class="card-sub" data-i18n="q.levelSub">Ganz ehrlich — kein richtig oder falsch.</p>
+    <h1 data-i18n="q.level">How much can you <em>already</em>?</h1>
     <div class="options" data-field="level">
-      <button class="option" data-value="A0"><div class="option-content"><div data-i18n="lvl.a0.t">Ganz von vorne</div><div class="option-sub" data-i18n="lvl.a0.s">Ich fange bei Null an</div></div></button>
-      <button class="option" data-value="A1"><div class="option-content"><div data-i18n="lvl.a1.t">Ein paar Wörter</div><div class="option-sub" data-i18n="lvl.a1.s">Hallo, Danke, ein paar Sätze</div></div></button>
-      <button class="option" data-value="A2"><div class="option-content"><div data-i18n="lvl.a2.t">Einfache Gespräche</div><div class="option-sub" data-i18n="lvl.a2.s">Vorstellen, einkaufen, fragen</div></div></button>
-      <button class="option" data-value="B1"><div class="option-content"><div data-i18n="lvl.b1.t">Ich komme durch</div><div class="option-sub" data-i18n="lvl.b1.s">Verstehe das Meiste, mache noch Fehler</div></div></button>
-      <button class="option" data-value="B2"><div class="option-content"><div data-i18n="lvl.b2.t">Ziemlich sicher</div><div class="option-sub" data-i18n="lvl.b2.s">Ich folge Diskussionen und mache mit</div></div></button>
+      <button class="option" data-value="A0">
+        <div class="option-content">
+          <div data-i18n="lvl.a0.t">Nothing</div>
+          <div class="option-sub" data-i18n="lvl.a0.s">I start from scratch</div>
+        </div>
+      </button>
+      <button class="option" data-value="A1">
+        <div class="option-content">
+          <div data-i18n="lvl.a1.t">A few words</div>
+          <div class="option-sub" data-i18n="lvl.a1.s">Hello, thanks, a few sentences</div>
+        </div>
+      </button>
+      <button class="option" data-value="A2">
+        <div class="option-content">
+          <div data-i18n="lvl.a2.t">Simple conversations</div>
+          <div class="option-sub" data-i18n="lvl.a2.s">I can introduce myself, shop, ask</div>
+        </div>
+      </button>
+      <button class="option" data-value="B1">
+        <div class="option-content">
+          <div data-i18n="lvl.b1.t">Intermediate</div>
+          <div class="option-sub" data-i18n="lvl.b1.s">I understand most, still make mistakes</div>
+        </div>
+      </button>
+      <button class="option" data-value="B2">
+        <div class="option-content">
+          <div data-i18n="lvl.b2.t">Almost fluent</div>
+          <div class="option-sub" data-i18n="lvl.b2.s">I can follow and join discussions</div>
+        </div>
+      </button>
     </div>
   </div>
 
-  <!-- CARD 5 — Antrieb -->
+  <!-- CARD 5 — Motivation (Multi) -->
   <div class="card" data-card="5">
-    <h1><span data-i18n="q.drive">Warum möchtest du</span> <em id="lang-name-5"></em> <span data-i18n="q.drive2">lernen?</span></h1>
-    <p class="card-sub" data-i18n="q.driveSub">Such dir aus, schreib frei, oder beides. Alles freiwillig.</p>
-
-    <div class="field-label" data-i18n="q.driveChips">Was passt? <span class="opt" data-i18n="opt">(optional)</span></div>
-    <div class="chips" data-field="motivation" id="drive-chips">
-      <button class="chip" data-value="travel" data-i18n="mot.travel">Reisen</button>
-      <button class="chip" data-value="work" data-i18n="mot.work">Arbeit</button>
-      <button class="chip" data-value="exam" data-i18n="mot.exam">Prüfung</button>
-      <button class="chip" data-value="family" data-i18n="mot.family">Familie</button>
-      <button class="chip" data-value="study" data-i18n="mot.study">Studium</button>
-      <button class="chip" data-value="interest" data-i18n="mot.interest">Interesse</button>
-      <button class="chip" data-value="daily" data-i18n="mot.daily">Alltag</button>
+    <h1><span data-i18n="q.why">Why are you learning</span> <em id="lang-name-5"></em>?</h1>
+    <p class="card-sub" data-i18n="q.multi">Multiple answers possible</p>
+    <div class="options" data-field="motivation" data-multi="true">
+      <button class="option multi" data-value="travel"><div class="option-content" data-i18n="mot.travel">Travel</div></button>
+      <button class="option multi" data-value="work"><div class="option-content" data-i18n="mot.work">Work</div></button>
+      <button class="option multi" data-value="study"><div class="option-content" data-i18n="mot.study">Studies</div></button>
+      <button class="option multi" data-value="exam"><div class="option-content" data-i18n="mot.exam">Exam</div></button>
+      <button class="option multi" data-value="family"><div class="option-content" data-i18n="mot.family">Family or friends</div></button>
+      <button class="option multi" data-value="interest"><div class="option-content" data-i18n="mot.interest">Personal interest</div></button>
+      <button class="option multi" data-value="daily"><div class="option-content" data-i18n="mot.daily">Daily life</div></button>
     </div>
-
-    <div class="field-label" data-i18n="q.driveText">Erzähl, was dich treibt. <span class="opt" data-i18n="opt">(optional)</span></div>
-    <textarea id="driveText" data-i18n-ph="q.drivePh" placeholder="z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren"></textarea>
   </div>
 
-  <!-- CARD 6 — Zeit pro Woche -->
+  <!-- CARD 6 — Goals (Multi) -->
   <div class="card" data-card="6">
-    <h1 data-i18n="q.time">Wie viel <em>Zeit</em> pro Woche?</h1>
-    <div class="options" data-field="weeklyTime">
-      <button class="option" data-value="<1"><div class="option-content" data-i18n="time.lt1">Weniger als 1 Stunde</div></button>
-      <button class="option" data-value="1-3"><div class="option-content" data-i18n="time.1to3">1–3 Stunden</div></button>
-      <button class="option" data-value="3-5"><div class="option-content" data-i18n="time.3to5">3–5 Stunden</div></button>
-      <button class="option" data-value="5-10"><div class="option-content" data-i18n="time.5to10">5–10 Stunden</div></button>
-      <button class="option" data-value="10+"><div class="option-content" data-i18n="time.10plus">Mehr als 10 Stunden</div></button>
+    <h1 data-i18n="q.goals">What do you want to <em>be able to do</em>?</h1>
+    <p class="card-sub" data-i18n="q.multi">Multiple answers possible</p>
+    <div class="options" data-field="goals" data-multi="true">
+      <button class="option multi" data-value="conversations"><div class="option-content" data-i18n="goal.conv">Have conversations</div></button>
+      <button class="option multi" data-value="introduce"><div class="option-content" data-i18n="goal.intro">Introduce myself</div></button>
+      <button class="option multi" data-value="phone"><div class="option-content" data-i18n="goal.phone">Make phone calls</div></button>
+      <button class="option multi" data-value="email"><div class="option-content" data-i18n="goal.email">Write emails</div></button>
+      <button class="option multi" data-value="messages"><div class="option-content" data-i18n="goal.msg">Write messages</div></button>
+      <button class="option multi" data-value="reading"><div class="option-content" data-i18n="goal.read">Read texts</div></button>
+      <button class="option multi" data-value="presentation"><div class="option-content" data-i18n="goal.pres">Give presentations</div></button>
+      <button class="option multi" data-value="exam"><div class="option-content" data-i18n="goal.exam">Pass exams</div></button>
+      <button class="option multi" data-value="academic"><div class="option-content" data-i18n="goal.acad">Write academic texts</div></button>
+      <button class="option multi" data-value="work-comm"><div class="option-content" data-i18n="goal.work">Communicate at work</div></button>
     </div>
   </div>
 
-  <!-- CARD 7 — Deadline -->
+  <!-- CARD 7 — Priority (built from card 6) -->
   <div class="card" data-card="7">
-    <h1 data-i18n="q.deadline">Hast du ein <em>Datum</em> im Kopf?</h1>
-    <p class="card-sub" data-i18n="q.deadlineSub">Damit dein Weg ein Ziel mit Horizont bekommt.</p>
-    <div class="options" data-field="deadline">
-      <button class="option" data-value="3m"><div class="option-content" data-i18n="dl.3m">In 3 Monaten</div></button>
-      <button class="option" data-value="6m"><div class="option-content" data-i18n="dl.6m">In 6 Monaten</div></button>
-      <button class="option" data-value="1y"><div class="option-content" data-i18n="dl.1y">In einem Jahr</div></button>
-      <button class="option" data-value="none"><div class="option-content" data-i18n="dl.none">Kein festes Datum</div></button>
+    <h1 data-i18n="q.priority">What's <em>most important</em> to you?</h1>
+    <p class="card-sub" data-i18n="q.prioritySub">Pick your top goal</p>
+    <div class="options" data-field="topPriority" id="priority-options"></div>
+  </div>
+
+  <!-- CARD 8 — Time -->
+  <div class="card" data-card="8">
+    <h1 data-i18n="q.time">How much <em>time</em> per week?</h1>
+    <div class="options" data-field="weeklyTime">
+      <button class="option" data-value="<1"><div class="option-content" data-i18n="time.lt1">Less than 1 hour</div></button>
+      <button class="option" data-value="1-3"><div class="option-content" data-i18n="time.1to3">1–3 hours</div></button>
+      <button class="option" data-value="3-5"><div class="option-content" data-i18n="time.3to5">3–5 hours</div></button>
+      <button class="option" data-value="5-10"><div class="option-content" data-i18n="time.5to10">5–10 hours</div></button>
+      <button class="option" data-value="10+"><div class="option-content" data-i18n="time.10plus">More than 10 hours</div></button>
     </div>
   </div>
 
-  <!-- CARD 8 — Generieren + Lernweg -->
-  <div class="card" data-card="8">
-    <div id="gen-loading" class="gen-center">
-      <div class="spinner"></div>
-      <p class="gen-text" id="gen-loading-text">Spikiu baut deinen Weg…</p>
+  <!-- CARD 9 — Learning style (Multi) -->
+  <div class="card" data-card="9">
+    <h1 data-i18n="q.style">How do you <em>like to learn</em>?</h1>
+    <p class="card-sub" data-i18n="q.multi">Multiple answers possible</p>
+    <div class="options" data-field="learningStyle" data-multi="true">
+      <button class="option multi" data-value="reading"><div class="option-content" data-i18n="st.read">Reading</div></button>
+      <button class="option multi" data-value="listening"><div class="option-content" data-i18n="st.listen">Listening</div></button>
+      <button class="option multi" data-value="speaking"><div class="option-content" data-i18n="st.speak">Speaking</div></button>
+      <button class="option multi" data-value="writing"><div class="option-content" data-i18n="st.write">Writing</div></button>
+      <button class="option multi" data-value="mixed"><div class="option-content" data-i18n="st.mixed">Mixed</div></button>
     </div>
-    <div id="gen-error" class="gen-center" style="display:none;">
-      <div class="gen-leaf">🥀</div>
-      <p class="gen-text" id="gen-error-text">Da ging was schief.</p>
-      <button class="btn-retry" id="gen-retry" onclick="generate()">Nochmal versuchen</button>
+  </div>
+
+  <!-- CARD 10 — Result -->
+  <div class="card" data-card="10">
+    <div class="result-card">
+      <div class="result-icon">🐾</div>
+      <h1><span data-i18n="res.done">Done,</span> <em id="result-name"></em>.</h1>
+      <p class="card-sub" data-i18n="res.sub">Here is your personal learning path.</p>
+
+      <div class="result-box">
+        <h3 data-i18n="res.goal">Your goal</h3>
+        <p id="result-summary"></p>
+      </div>
+
+      <div class="result-box">
+        <h3 data-i18n="res.path">Your learning path</h3>
+        <ul id="result-roadmap"></ul>
+      </div>
+
+      <div class="result-box">
+        <h3 data-i18n="res.recos">We recommend</h3>
+        <ul id="result-recos"></ul>
+      </div>
     </div>
-    <div id="gen-result" style="display:none;"></div>
   </div>
 
 </main>
 
 <div class="bottom">
-  <button class="btn-next" id="btn-next" disabled onclick="next()">Weiter</button>
+  <button class="btn-next" id="btn-next" disabled onclick="next()">Next</button>
 </div>
 
 <script>
-const TOTAL_DATA_CARDS = 7;
-const data = { motivation: [] };
+const TOTAL_CARDS = 10;
+const TOTAL_QUESTIONS = 9;
 let current = 1;
+const data = {};
 
-const TARGET_NAMES = {
+// ═══ I18N — switches after Card 1 ═══
+const I18N = {
+  Deutsch: {
+    'btn.next': 'Weiter',
+    'btn.done': 'Fertig',
+    'btn.start': 'Loslegen →',
+    'q.name': 'Wie heißt du?',
+    'q.nameSub': 'Wir nennen dich beim Vornamen.',
+    'q.target': 'Welche Sprache willst du <em>sprechen</em>?',
+    'q.level': 'Wie viel kannst du <em>schon</em>?',
+    'q.why': 'Warum lernst du',
+    'q.goals': 'Was willst du <em>können</em>?',
+    'q.priority': 'Was ist dir <em>am wichtigsten</em>?',
+    'q.prioritySub': 'Wähle dein wichtigstes Ziel',
+    'q.time': 'Wie viel <em>Zeit</em> pro Woche?',
+    'q.style': 'Wie lernst du am <em>liebsten</em>?',
+    'q.multi': 'Mehrere Antworten möglich',
+    'lang.es': 'Spanisch', 'lang.de': 'Deutsch', 'lang.en': 'Englisch',
+    'lvl.a0.t': 'Nichts', 'lvl.a0.s': 'Ich fange bei Null an',
+    'lvl.a1.t': 'Ein paar Wörter', 'lvl.a1.s': 'Hallo, Danke, ein paar Sätze',
+    'lvl.a2.t': 'Einfache Gespräche', 'lvl.a2.s': 'Ich kann mich vorstellen, einkaufen, fragen',
+    'lvl.b1.t': 'Fortgeschritten', 'lvl.b1.s': 'Ich verstehe das Meiste, mache aber Fehler',
+    'lvl.b2.t': 'Fast fließend', 'lvl.b2.s': 'Ich kann Diskussionen folgen und teilnehmen',
+    'mot.travel': 'Reisen', 'mot.work': 'Arbeit', 'mot.study': 'Studium',
+    'mot.exam': 'Prüfung', 'mot.family': 'Familie oder Freunde',
+    'mot.interest': 'Persönliches Interesse', 'mot.daily': 'Alltag',
+    'goal.conv': 'Gespräche führen', 'goal.intro': 'Mich vorstellen',
+    'goal.phone': 'Telefonieren', 'goal.email': 'E-Mails schreiben',
+    'goal.msg': 'Nachrichten schreiben', 'goal.read': 'Texte lesen',
+    'goal.pres': 'Präsentationen halten', 'goal.exam': 'Prüfungen bestehen',
+    'goal.acad': 'Wissenschaftliche Texte schreiben', 'goal.work': 'Beruflich kommunizieren',
+    'time.lt1': 'Weniger als 1 Stunde', 'time.1to3': '1–3 Stunden',
+    'time.3to5': '3–5 Stunden', 'time.5to10': '5–10 Stunden',
+    'time.10plus': 'Mehr als 10 Stunden',
+    'st.read': 'Lesen', 'st.listen': 'Hören', 'st.speak': 'Sprechen',
+    'st.write': 'Schreiben', 'st.mixed': 'Gemischt',
+    'res.done': 'Fertig,', 'res.sub': 'Hier ist dein persönlicher Lernplan.',
+    'res.goal': 'Dein Ziel', 'res.path': 'Dein Lernplan', 'res.recos': 'Wir empfehlen dir',
+    'placeholder.name': 'Dein Vorname',
+    'mot.travel.v': 'Reisen', 'mot.work.v': 'Arbeit', 'mot.study.v': 'Studium',
+    'mot.exam.v': 'eine Prüfung', 'mot.family.v': 'Familie', 'mot.interest.v': 'Interesse', 'mot.daily.v': 'den Alltag',
+    'summary.tpl': 'Du willst dein {target} für {motiv} verbessern. Dein wichtigstes Ziel: {goal}.',
+    'roadmap.A0': ['Erste Wörter und Klänge', 'Sich vorstellen', 'Einfache Fragen verstehen', 'Im Alltag bestellen', 'Kurze Sätze sprechen'],
+    'roadmap.A1': ['Wortschatz erweitern', 'Über sich erzählen', 'Einfache Gespräche führen', 'Wegbeschreibungen verstehen', 'Im Restaurant bestellen'],
+    'roadmap.A2': ['Komplexere Sätze bauen', 'Vergangenheit erzählen', 'Meinungen austauschen', 'Telefonate führen', 'Längere Texte verstehen'],
+    'roadmap.B1': ['Fließend kommunizieren', 'Argumentieren und diskutieren', 'Beruflich kommunizieren', 'Zeitungen verstehen', 'Eigene Texte schreiben'],
+    'roadmap.B2': ['Nuancen erkennen', 'Wissenschaftlich diskutieren', 'Idiomatische Wendungen', 'Schriftlich brillieren', 'Native-Niveau anstreben'],
+    'reco.beginnerBook': '📖 Anfänger-Buch', 'reco.advancedBook': '📖 Fortgeschrittenen-Buch',
+    'reco.chat': '💬 Gespräche mit Spikiu', 'reco.exam': '🎓 Prüfungs-Simulationen',
+    'reco.survive': '🎒 Survive-Sprachführer', 'reco.business': '💼 Business-Lektionen',
+    'reco.books': '📖 Spikiu-Bücher'
+  },
+  'Español': {
+    'btn.next': 'Siguiente', 'btn.done': 'Listo', 'btn.start': 'Empezar →',
+    'q.name': '¿Cómo te llamas?',
+    'q.nameSub': 'Te llamaremos por tu nombre.',
+    'q.target': '¿Qué idioma quieres <em>hablar</em>?',
+    'q.level': '¿Cuánto <em>ya sabes</em>?',
+    'q.why': '¿Por qué aprendes',
+    'q.goals': '¿Qué quieres <em>poder hacer</em>?',
+    'q.priority': '¿Qué es <em>lo más importante</em> para ti?',
+    'q.prioritySub': 'Elige tu objetivo principal',
+    'q.time': '¿Cuánto <em>tiempo</em> por semana?',
+    'q.style': '¿Cómo te gusta <em>aprender</em>?',
+    'q.multi': 'Varias respuestas posibles',
+    'lang.es': 'Español', 'lang.de': 'Alemán', 'lang.en': 'Inglés',
+    'lvl.a0.t': 'Nada', 'lvl.a0.s': 'Empiezo desde cero',
+    'lvl.a1.t': 'Unas palabras', 'lvl.a1.s': 'Hola, gracias, algunas frases',
+    'lvl.a2.t': 'Conversaciones simples', 'lvl.a2.s': 'Puedo presentarme, comprar, preguntar',
+    'lvl.b1.t': 'Intermedio', 'lvl.b1.s': 'Entiendo casi todo pero cometo errores',
+    'lvl.b2.t': 'Casi fluido', 'lvl.b2.s': 'Puedo seguir y participar en debates',
+    'mot.travel': 'Viajar', 'mot.work': 'Trabajo', 'mot.study': 'Estudios',
+    'mot.exam': 'Examen', 'mot.family': 'Familia o amigos',
+    'mot.interest': 'Interés personal', 'mot.daily': 'Día a día',
+    'goal.conv': 'Conversar', 'goal.intro': 'Presentarme',
+    'goal.phone': 'Hablar por teléfono', 'goal.email': 'Escribir correos',
+    'goal.msg': 'Escribir mensajes', 'goal.read': 'Leer textos',
+    'goal.pres': 'Hacer presentaciones', 'goal.exam': 'Aprobar exámenes',
+    'goal.acad': 'Escribir textos académicos', 'goal.work': 'Comunicarme en el trabajo',
+    'time.lt1': 'Menos de 1 hora', 'time.1to3': '1–3 horas',
+    'time.3to5': '3–5 horas', 'time.5to10': '5–10 horas',
+    'time.10plus': 'Más de 10 horas',
+    'st.read': 'Leer', 'st.listen': 'Escuchar', 'st.speak': 'Hablar',
+    'st.write': 'Escribir', 'st.mixed': 'Mixto',
+    'res.done': 'Listo,', 'res.sub': 'Aquí está tu ruta de aprendizaje personal.',
+    'res.goal': 'Tu objetivo', 'res.path': 'Tu ruta', 'res.recos': 'Te recomendamos',
+    'placeholder.name': 'Tu nombre',
+    'mot.travel.v': 'viajar', 'mot.work.v': 'el trabajo', 'mot.study.v': 'estudiar',
+    'mot.exam.v': 'un examen', 'mot.family.v': 'tu familia', 'mot.interest.v': 'interés personal', 'mot.daily.v': 'el día a día',
+    'summary.tpl': 'Quieres mejorar tu {target} para {motiv}. Tu objetivo principal: {goal}.',
+    'roadmap.A0': ['Primeras palabras y sonidos', 'Presentarte', 'Entender preguntas simples', 'Pedir en el día a día', 'Hablar frases cortas'],
+    'roadmap.A1': ['Ampliar vocabulario', 'Hablar de ti', 'Conversaciones simples', 'Entender direcciones', 'Pedir en el restaurante'],
+    'roadmap.A2': ['Construir frases más complejas', 'Contar en pasado', 'Intercambiar opiniones', 'Hablar por teléfono', 'Entender textos más largos'],
+    'roadmap.B1': ['Comunicar con fluidez', 'Argumentar y debatir', 'Comunicar en el trabajo', 'Entender periódicos', 'Escribir tus propios textos'],
+    'roadmap.B2': ['Captar matices', 'Debatir académicamente', 'Modismos y expresiones', 'Brillar por escrito', 'Acercarte al nivel nativo'],
+    'reco.beginnerBook': '📖 Libro para principiantes', 'reco.advancedBook': '📖 Libro avanzado',
+    'reco.chat': '💬 Conversaciones con Spikiu', 'reco.exam': '🎓 Simulaciones de examen',
+    'reco.survive': '🎒 Guía de supervivencia', 'reco.business': '💼 Lecciones de negocios',
+    'reco.books': '📖 Libros Spikiu'
+  },
+  English: {
+    'btn.next': 'Next', 'btn.done': 'Done', 'btn.start': 'Start →',
+    'q.name': "What's your name?",
+    'q.nameSub': "We'll call you by your first name.",
+    'q.target': 'Which language do you want to <em>speak</em>?',
+    'q.level': 'How much can you <em>already</em>?',
+    'q.why': 'Why are you learning',
+    'q.goals': 'What do you want to <em>be able to do</em>?',
+    'q.priority': "What's <em>most important</em> to you?",
+    'q.prioritySub': 'Pick your top goal',
+    'q.time': 'How much <em>time</em> per week?',
+    'q.style': 'How do you <em>like to learn</em>?',
+    'q.multi': 'Multiple answers possible',
+    'lang.es': 'Spanish', 'lang.de': 'German', 'lang.en': 'English',
+    'lvl.a0.t': 'Nothing', 'lvl.a0.s': 'I start from scratch',
+    'lvl.a1.t': 'A few words', 'lvl.a1.s': 'Hello, thanks, a few sentences',
+    'lvl.a2.t': 'Simple conversations', 'lvl.a2.s': 'I can introduce myself, shop, ask',
+    'lvl.b1.t': 'Intermediate', 'lvl.b1.s': 'I understand most, still make mistakes',
+    'lvl.b2.t': 'Almost fluent', 'lvl.b2.s': 'I can follow and join discussions',
+    'mot.travel': 'Travel', 'mot.work': 'Work', 'mot.study': 'Studies',
+    'mot.exam': 'Exam', 'mot.family': 'Family or friends',
+    'mot.interest': 'Personal interest', 'mot.daily': 'Daily life',
+    'goal.conv': 'Have conversations', 'goal.intro': 'Introduce myself',
+    'goal.phone': 'Make phone calls', 'goal.email': 'Write emails',
+    'goal.msg': 'Write messages', 'goal.read': 'Read texts',
+    'goal.pres': 'Give presentations', 'goal.exam': 'Pass exams',
+    'goal.acad': 'Write academic texts', 'goal.work': 'Communicate at work',
+    'time.lt1': 'Less than 1 hour', 'time.1to3': '1–3 hours',
+    'time.3to5': '3–5 hours', 'time.5to10': '5–10 hours',
+    'time.10plus': 'More than 10 hours',
+    'st.read': 'Reading', 'st.listen': 'Listening', 'st.speak': 'Speaking',
+    'st.write': 'Writing', 'st.mixed': 'Mixed',
+    'res.done': 'Done,', 'res.sub': 'Here is your personal learning path.',
+    'res.goal': 'Your goal', 'res.path': 'Your learning path', 'res.recos': 'We recommend',
+    'placeholder.name': 'Your first name',
+    'mot.travel.v': 'travel', 'mot.work.v': 'work', 'mot.study.v': 'studies',
+    'mot.exam.v': 'an exam', 'mot.family.v': 'family', 'mot.interest.v': 'personal interest', 'mot.daily.v': 'daily life',
+    'summary.tpl': 'You want to improve your {target} for {motiv}. Your top goal: {goal}.',
+    'roadmap.A0': ['First words and sounds', 'Introduce yourself', 'Understand simple questions', 'Order in daily life', 'Speak short sentences'],
+    'roadmap.A1': ['Expand vocabulary', 'Talk about yourself', 'Hold simple conversations', 'Understand directions', 'Order at a restaurant'],
+    'roadmap.A2': ['Build more complex sentences', 'Talk about the past', 'Exchange opinions', 'Make phone calls', 'Understand longer texts'],
+    'roadmap.B1': ['Communicate fluently', 'Argue and discuss', 'Communicate at work', 'Read newspapers', 'Write your own texts'],
+    'roadmap.B2': ['Pick up nuances', 'Discuss academically', 'Idiomatic expressions', 'Excel in writing', 'Aim for native level'],
+    'reco.beginnerBook': '📖 Beginner book', 'reco.advancedBook': '📖 Advanced book',
+    'reco.chat': '💬 Conversations with Spikiu', 'reco.exam': '🎓 Exam simulations',
+    'reco.survive': '🎒 Survive language guide', 'reco.business': '💼 Business lessons',
+    'reco.books': '📖 Spikiu books'
+  }
+};
+
+const TARGET_NAMES_BY_LOCALE = {
   Deutsch: { Spanish: 'Spanisch', German: 'Deutsch', English: 'Englisch' },
-  'Español': { Spanish: 'Español', German: 'Alemán', English: 'Inglés' },
+  'Español': { Spanish: 'español', German: 'alemán', English: 'inglés' },
   English: { Spanish: 'Spanish', German: 'German', English: 'English' }
 };
 
-const I18N = {
-  Deutsch: {
-    'btn.next': 'Weiter', 'btn.done': 'Fertig', 'opt': '(optional)',
-    'q.name': 'Wie heißt du?', 'q.nameSub': 'Wir nennen dich beim Vornamen.',
-    'q.target': 'Welche Sprache willst du <em>sprechen</em>?',
-    'q.level': 'Wo stehst du <em>gerade</em>?', 'q.levelSub': 'Ganz ehrlich — kein richtig oder falsch.',
-    'q.drive': 'Warum möchtest du', 'q.drive2': 'lernen?',
-    'q.driveSub': 'Such dir aus, schreib frei, oder beides. Alles freiwillig.',
-    'q.driveChips': 'Was passt?', 'q.driveText': 'Erzähl, was dich treibt.',
-    'q.drivePh': 'z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren"',
-    'q.time': 'Wie viel <em>Zeit</em> pro Woche?',
-    'q.deadline': 'Hast du ein <em>Datum</em> im Kopf?', 'q.deadlineSub': 'Damit dein Weg ein Ziel mit Horizont bekommt.',
-    'lang.es': 'Spanisch', 'lang.de': 'Deutsch', 'lang.en': 'Englisch',
-    'lvl.a0.t': 'Ganz von vorne', 'lvl.a0.s': 'Ich fange bei Null an',
-    'lvl.a1.t': 'Ein paar Wörter', 'lvl.a1.s': 'Hallo, Danke, ein paar Sätze',
-    'lvl.a2.t': 'Einfache Gespräche', 'lvl.a2.s': 'Vorstellen, einkaufen, fragen',
-    'lvl.b1.t': 'Ich komme durch', 'lvl.b1.s': 'Verstehe das Meiste, mache noch Fehler',
-    'lvl.b2.t': 'Ziemlich sicher', 'lvl.b2.s': 'Ich folge Diskussionen und mache mit',
-    'mot.travel': 'Reisen', 'mot.work': 'Arbeit', 'mot.exam': 'Prüfung', 'mot.family': 'Familie',
-    'mot.study': 'Studium', 'mot.interest': 'Interesse', 'mot.daily': 'Alltag',
-    'time.lt1': 'Weniger als 1 Stunde', 'time.1to3': '1–3 Stunden', 'time.3to5': '3–5 Stunden',
-    'time.5to10': '5–10 Stunden', 'time.10plus': 'Mehr als 10 Stunden',
-    'dl.3m': 'In 3 Monaten', 'dl.6m': 'In 6 Monaten', 'dl.1y': 'In einem Jahr', 'dl.none': 'Kein festes Datum',
-    'gen.loading': 'Spikiu baut deinen Weg…',
-    'gen.error': 'Da ging was schief. Probier es nochmal.',
-    'gen.retry': 'Nochmal versuchen',
-    'gen.toDashboard': 'Weiter zum Dashboard →'
-  },
-  'Español': {
-    'btn.next': 'Siguiente', 'btn.done': 'Listo', 'opt': '(opcional)',
-    'q.name': '¿Cómo te llamas?', 'q.nameSub': 'Te llamaremos por tu nombre.',
-    'q.target': '¿Qué idioma quieres <em>hablar</em>?',
-    'q.level': '¿Dónde estás <em>ahora</em>?', 'q.levelSub': 'Con sinceridad — no hay bien ni mal.',
-    'q.drive': '¿Por qué quieres aprender', 'q.drive2': '?',
-    'q.driveSub': 'Elige, escribe libre, o ambos. Todo es opcional.',
-    'q.driveChips': '¿Qué encaja?', 'q.driveText': 'Cuéntame qué te mueve.',
-    'q.drivePh': 'p. ej. „platicar con mi suegra sin hacer el ridículo"',
-    'q.time': '¿Cuánto <em>tiempo</em> por semana?',
-    'q.deadline': '¿Tienes una <em>fecha</em> en mente?', 'q.deadlineSub': 'Para que tu camino tenga un horizonte.',
-    'lang.es': 'Español', 'lang.de': 'Alemán', 'lang.en': 'Inglés',
-    'lvl.a0.t': 'Desde cero', 'lvl.a0.s': 'Empiezo de la nada',
-    'lvl.a1.t': 'Unas palabras', 'lvl.a1.s': 'Hola, gracias, algunas frases',
-    'lvl.a2.t': 'Conversaciones simples', 'lvl.a2.s': 'Presentarme, comprar, preguntar',
-    'lvl.b1.t': 'Me las arreglo', 'lvl.b1.s': 'Entiendo casi todo, aún cometo errores',
-    'lvl.b2.t': 'Bastante seguro', 'lvl.b2.s': 'Sigo debates y participo',
-    'mot.travel': 'Viajar', 'mot.work': 'Trabajo', 'mot.exam': 'Examen', 'mot.family': 'Familia',
-    'mot.study': 'Estudios', 'mot.interest': 'Interés', 'mot.daily': 'Día a día',
-    'time.lt1': 'Menos de 1 hora', 'time.1to3': '1–3 horas', 'time.3to5': '3–5 horas',
-    'time.5to10': '5–10 horas', 'time.10plus': 'Más de 10 horas',
-    'dl.3m': 'En 3 meses', 'dl.6m': 'En 6 meses', 'dl.1y': 'En un año', 'dl.none': 'Sin fecha fija',
-    'gen.loading': 'Spikiu construye tu camino…',
-    'gen.error': 'Algo salió mal. Inténtalo de nuevo.',
-    'gen.retry': 'Reintentar',
-    'gen.toDashboard': 'Ir al panel →'
-  },
-  English: {
-    'btn.next': 'Next', 'btn.done': 'Done', 'opt': '(optional)',
-    'q.name': "What's your name?", 'q.nameSub': "We'll call you by your first name.",
-    'q.target': 'Which language do you want to <em>speak</em>?',
-    'q.level': 'Where are you <em>right now</em>?', 'q.levelSub': "Be honest — there's no right or wrong.",
-    'q.drive': 'Why do you want to learn', 'q.drive2': '?',
-    'q.driveSub': 'Pick, write freely, or both. All optional.',
-    'q.driveChips': 'What fits?', 'q.driveText': 'Tell me what drives you.',
-    'q.drivePh': 'e.g. "chat with my mother-in-law without embarrassing myself"',
-    'q.time': 'How much <em>time</em> per week?',
-    'q.deadline': 'Do you have a <em>date</em> in mind?', 'q.deadlineSub': 'So your path gets a horizon.',
-    'lang.es': 'Spanish', 'lang.de': 'German', 'lang.en': 'English',
-    'lvl.a0.t': 'From scratch', 'lvl.a0.s': 'I start from zero',
-    'lvl.a1.t': 'A few words', 'lvl.a1.s': 'Hello, thanks, a few sentences',
-    'lvl.a2.t': 'Simple conversations', 'lvl.a2.s': 'Introduce myself, shop, ask',
-    'lvl.b1.t': 'I get by', 'lvl.b1.s': 'I understand most, still make mistakes',
-    'lvl.b2.t': 'Pretty confident', 'lvl.b2.s': 'I follow discussions and join in',
-    'mot.travel': 'Travel', 'mot.work': 'Work', 'mot.exam': 'Exam', 'mot.family': 'Family',
-    'mot.study': 'Studies', 'mot.interest': 'Interest', 'mot.daily': 'Daily life',
-    'time.lt1': 'Less than 1 hour', 'time.1to3': '1–3 hours', 'time.3to5': '3–5 hours',
-    'time.5to10': '5–10 hours', 'time.10plus': 'More than 10 hours',
-    'dl.3m': 'In 3 months', 'dl.6m': 'In 6 months', 'dl.1y': 'In a year', 'dl.none': 'No fixed date',
-    'gen.loading': 'Spikiu is building your path…',
-    'gen.error': 'Something went wrong. Please try again.',
-    'gen.retry': 'Try again',
-    'gen.toDashboard': 'Continue to dashboard →'
-  }
-};
-
 function t(key) {
-  const lang = data.nativeLang || 'Deutsch';
-  return (I18N[lang] && I18N[lang][key]) || I18N.Deutsch[key] || key;
-}
-function esc(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const lang = data.nativeLang || 'English';
+  return (I18N[lang] && I18N[lang][key]) || key;
 }
 
-function applyI18n() {
-  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.getAttribute('data-i18n')); });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.getAttribute('data-i18n-ph')); });
-  if (data.targetLang) {
-    document.getElementById('lang-name-5').textContent = TARGET_NAMES[data.nativeLang || 'Deutsch'][data.targetLang];
-  }
-  const btn = document.getElementById('btn-next');
-  btn.textContent = (current === TOTAL_DATA_CARDS) ? t('btn.done') : t('btn.next');
-  document.getElementById('gen-loading-text').textContent = t('gen.loading');
-  document.getElementById('gen-error-text').textContent = t('gen.error');
-  document.getElementById('gen-retry').textContent = t('gen.retry');
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.innerHTML = t(el.getAttribute('data-i18n'));
+  });
+  const nameInput = document.getElementById('name');
+  if (nameInput) nameInput.placeholder = t('placeholder.name');
 }
 
+// ═══ NAVIGATION ═══
 function showCard(n) {
   document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
   document.querySelector(`.card[data-card="${n}"]`).classList.add('active');
   current = n;
-  document.getElementById('progress').style.width = Math.min(100, ((n - 1) / TOTAL_DATA_CARDS) * 100) + '%';
-  document.getElementById('btn-back').classList.toggle('hidden', n === 1 || n === 8);
-  applyI18n();
-  refreshNext();
-  document.querySelector('.bottom').style.display = (n === 8) ? 'none' : 'block';
-  if (n === 2) setTimeout(() => document.getElementById('name').focus(), 100);
-}
 
-function isCardComplete(n) {
-  switch (n) {
-    case 1: return !!data.nativeLang;
-    case 2: return !!(data.name && data.name.trim());
-    case 3: return !!data.targetLang;
-    case 4: return !!data.level;
-    case 5: return true;
-    case 6: return !!data.weeklyTime;
-    case 7: return !!data.deadline;
-    default: return true;
+  const pct = ((Math.min(n, TOTAL_QUESTIONS) - 1) / TOTAL_QUESTIONS) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('btn-back').classList.toggle('hidden', n === 1);
+
+  const btnNext = document.getElementById('btn-next');
+  if (n === TOTAL_QUESTIONS) btnNext.textContent = t('btn.done');
+  else if (n === TOTAL_CARDS) btnNext.textContent = t('btn.start');
+  else btnNext.textContent = t('btn.next');
+
+  if (n === 2) {
+    setTimeout(() => document.getElementById('name').focus(), 400);
   }
+  validateCard();
 }
-function refreshNext() { document.getElementById('btn-next').disabled = !isCardComplete(current); }
-
-document.querySelectorAll('.options[data-field]').forEach(group => {
-  const field = group.getAttribute('data-field');
-  group.querySelectorAll('.option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-      data[field] = opt.getAttribute('data-value');
-      if (field === 'nativeLang' || field === 'targetLang') applyI18n();
-      refreshNext();
-    });
-  });
-});
-
-document.querySelectorAll('#drive-chips .chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    const v = chip.getAttribute('data-value');
-    chip.classList.toggle('selected');
-    if (chip.classList.contains('selected')) {
-      if (!data.motivation.includes(v)) data.motivation.push(v);
-    } else {
-      data.motivation = data.motivation.filter(x => x !== v);
-    }
-  });
-});
-
-document.getElementById('name').addEventListener('input', e => { data.name = e.target.value; refreshNext(); });
-document.getElementById('driveText').addEventListener('input', e => { data.driveText = e.target.value; });
 
 function next() {
-  if (!isCardComplete(current)) return;
-  if (current === TOTAL_DATA_CARDS) { showCard(8); generate(); }
-  else showCard(current + 1);
+  if (current === TOTAL_CARDS) { saveAndRedirect(); return; }
+
+  // Apply translations after Card 1 (nativeLang chosen)
+  if (current === 1) applyTranslations();
+
+  if (current === 3 && data.targetLang) {
+    const tn = TARGET_NAMES_BY_LOCALE[data.nativeLang || 'English'][data.targetLang];
+    document.getElementById('lang-name-5').textContent = tn;
+  }
+
+  if (current === 6) buildPriorityCard();
+  if (current === 9) buildResultCard();
+
+  showCard(current + 1);
 }
-function goBack() { if (current > 1 && current < 8) showCard(current - 1); }
 
-// ── Backend-Aufruf ──
-async function generate() {
-  document.getElementById('gen-loading').style.display = 'block';
-  document.getElementById('gen-error').style.display = 'none';
-  document.getElementById('gen-result').style.display = 'none';
-  applyI18n();
+function goBack() { if (current > 1) showCard(current - 1); }
 
-  const targetDisplay = TARGET_NAMES[data.nativeLang][data.targetLang];
+// ═══ INPUT HANDLERS ═══
+document.getElementById('name').addEventListener('input', e => {
+  data.name = e.target.value.trim();
+  validateCard();
+});
+document.getElementById('name').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && data.name && data.name.length >= 2) next();
+});
+
+document.querySelectorAll('.options').forEach(group => {
+  const field = group.dataset.field;
+  const multi = group.dataset.multi === 'true';
+
+  group.addEventListener('click', e => {
+    const opt = e.target.closest('.option');
+    if (!opt) return;
+    const value = opt.dataset.value;
+
+    if (multi) {
+      if (!Array.isArray(data[field])) data[field] = [];
+      const idx = data[field].indexOf(value);
+      if (idx >= 0) { data[field].splice(idx, 1); opt.classList.remove('selected'); }
+      else { data[field].push(value); opt.classList.add('selected'); }
+    } else {
+      data[field] = value;
+      group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    }
+    validateCard();
+  });
+});
+
+function validateCard() {
+  const btn = document.getElementById('btn-next');
+  let valid = false;
+  if (current === 1) valid = !!data.nativeLang;
+  else if (current === 2) valid = data.name && data.name.length >= 2;
+  else if (current === 3) valid = !!data.targetLang;
+  else if (current === 4) valid = !!data.level;
+  else if (current === 5) valid = data.motivation && data.motivation.length > 0;
+  else if (current === 6) valid = data.goals && data.goals.length > 0;
+  else if (current === 7) valid = !!data.topPriority;
+  else if (current === 8) valid = !!data.weeklyTime;
+  else if (current === 9) valid = data.learningStyle && data.learningStyle.length > 0;
+  else if (current === 10) valid = true;
+  btn.disabled = !valid;
+}
+
+// ═══ BUILD CARD 7 (Priority) ═══
+function buildPriorityCard() {
+  const container = document.getElementById('priority-options');
+  container.innerHTML = '';
+  (data.goals || []).forEach(g => {
+    const labelKey = {
+      conversations:'goal.conv', introduce:'goal.intro', phone:'goal.phone',
+      email:'goal.email', messages:'goal.msg', reading:'goal.read',
+      presentation:'goal.pres', exam:'goal.exam', academic:'goal.acad', 'work-comm':'goal.work'
+    }[g];
+    const btn = document.createElement('button');
+    btn.className = 'option star';
+    btn.dataset.value = g;
+    btn.innerHTML = `<div class="option-content">${t(labelKey)}</div>`;
+    btn.addEventListener('click', () => {
+      data.topPriority = g;
+      container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      btn.classList.add('selected');
+      validateCard();
+    });
+    container.appendChild(btn);
+  });
+}
+
+// ═══ RESULT CARD ═══
+function buildResultCard() {
+  document.getElementById('result-name').textContent = data.name || '';
+
+  const target = TARGET_NAMES_BY_LOCALE[data.nativeLang][data.targetLang];
+  const topKey = {
+    conversations:'goal.conv', introduce:'goal.intro', phone:'goal.phone',
+    email:'goal.email', messages:'goal.msg', reading:'goal.read',
+    presentation:'goal.pres', exam:'goal.exam', academic:'goal.acad', 'work-comm':'goal.work'
+  }[data.topPriority];
+  const topGoalLabel = t(topKey).toLowerCase();
+
+  const motiv = (data.motivation || []).slice(0, 2)
+    .map(m => t('mot.' + m + '.v')).join(' · ');
+
+  document.getElementById('result-summary').textContent =
+    t('summary.tpl').replace('{target}', target).replace('{motiv}', motiv).replace('{goal}', topGoalLabel);
+
+  const roadmap = t('roadmap.' + (data.level || 'A1'));
+  const rmList = document.getElementById('result-roadmap');
+  rmList.innerHTML = roadmap.map((step, i) => `<li><strong>${i+1}.</strong> ${step}</li>`).join('');
+
+  const recos = generateRecos();
+  document.getElementById('result-recos').innerHTML = recos.map(r => `<li>${r}</li>`).join('');
+}
+
+function generateRecos() {
+  const recos = [];
+  if (['A0','A1','A2'].includes(data.level)) recos.push(t('reco.beginnerBook'));
+  if (['B1','B2'].includes(data.level)) recos.push(t('reco.advancedBook'));
+  if ((data.goals || []).includes('conversations') || (data.goals || []).includes('phone')) recos.push(t('reco.chat'));
+  if ((data.motivation || []).includes('exam')) recos.push(t('reco.exam'));
+  if ((data.motivation || []).includes('travel')) recos.push(t('reco.survive'));
+  if ((data.goals || []).includes('work-comm')) recos.push(t('reco.business'));
+  if (recos.length === 0) recos.push(t('reco.chat'), t('reco.books'));
+  return recos;
+}
+
+// ═══ BUILD DETERMINISTIC ROADMAP ═══
+// Frontend-only roadmap (no backend call). Format matches what
+// dashboard.html / renderRoadmapPoster expects.
+function buildRoadmap() {
+  const lang = data.nativeLang || 'English';
+  const target = TARGET_NAMES_BY_LOCALE[lang][data.targetLang];
+  const roadmapStrings = R_STRINGS[lang];
+
+  // Dates — 6 months from today, split into 3 phases
+  const start = new Date();
+  const end = new Date(start.getTime() + 180 * 24 * 60 * 60 * 1000);
+  const fmt = d => d.toLocaleDateString(
+    lang === 'Deutsch' ? 'de-DE' : lang === 'Español' ? 'es-ES' : 'en-GB',
+    { day: '2-digit', month: 'long', year: 'numeric' }
+  );
+  const fmtShort = d => d.toLocaleDateString(
+    lang === 'Deutsch' ? 'de-DE' : lang === 'Español' ? 'es-ES' : 'en-GB',
+    { day: '2-digit', month: 'short' }
+  );
+
+  const p1End = new Date(start.getTime() + 60 * 24 * 60 * 60 * 1000);
+  const p2End = new Date(start.getTime() + 120 * 24 * 60 * 60 * 1000);
+
+  // Destination items derived from priority + goals
+  const goalLabelKey = {
+    conversations:'goal.conv', introduce:'goal.intro', phone:'goal.phone',
+    email:'goal.email', messages:'goal.msg', reading:'goal.read',
+    presentation:'goal.pres', exam:'goal.exam', academic:'goal.acad', 'work-comm':'goal.work'
+  };
+  const destination = (data.goals || []).slice(0, 4).map(g => t(goalLabelKey[g]));
+  if (destination.length === 0) destination.push(t('goal.conv'));
+
+  // Phases — split the roadmap steps into 3 chunks
+  const stepLines = t('roadmap.' + (data.level || 'A1'));
+  const chunk = Math.ceil(stepLines.length / 3);
+  const phases = [
+    {
+      icon: '🌱',
+      dates: `${fmtShort(start)} → ${fmtShort(p1End)}`,
+      duration: roadmapStrings.weeks2,
+      name: roadmapStrings.phase1Name,
+      focus: roadmapStrings.phase1Focus,
+      activities: stepLines.slice(0, chunk)
+    },
+    {
+      icon: '🌿',
+      dates: `${fmtShort(p1End)} → ${fmtShort(p2End)}`,
+      duration: roadmapStrings.weeks2,
+      name: roadmapStrings.phase2Name,
+      focus: roadmapStrings.phase2Focus,
+      activities: stepLines.slice(chunk, chunk * 2)
+    },
+    {
+      icon: '🌳',
+      dates: `${fmtShort(p2End)} → ${fmtShort(end)}`,
+      duration: roadmapStrings.weeks2,
+      name: roadmapStrings.phase3Name,
+      focus: roadmapStrings.phase3Focus,
+      activities: stepLines.slice(chunk * 2)
+    }
+  ];
+
+  return {
+    name: data.name,
+    targetLang: target,
+    subtitle: roadmapStrings.subtitle,
+    startDate: fmt(start),
+    endDate: fmt(end),
+    destinationLabel: roadmapStrings.destinationLabel,
+    destination: destination,
+    phasesLabel: roadmapStrings.phasesLabel,
+    phases: phases,
+    commitmentLabel: roadmapStrings.commitmentLabel,
+    commitment: roadmapStrings.commitment.replace('{time}', timeLabel()),
+    deadlineShort: fmt(end),
+    deadlineLabel: roadmapStrings.deadlineLabel,
+    footerLeft: roadmapStrings.footerLeft,
+    footerRight: roadmapStrings.footerRight
+  };
+}
+
+function timeLabel() {
+  const map = {
+    Deutsch: {
+      '<1': 'weniger als 1 Stunde pro Woche', '1-3': '1–3 Stunden pro Woche',
+      '3-5': '3–5 Stunden pro Woche', '5-10': '5–10 Stunden pro Woche',
+      '10+': 'mehr als 10 Stunden pro Woche'
+    },
+    'Español': {
+      '<1': 'menos de 1 hora por semana', '1-3': '1–3 horas por semana',
+      '3-5': '3–5 horas por semana', '5-10': '5–10 horas por semana',
+      '10+': 'más de 10 horas por semana'
+    },
+    English: {
+      '<1': 'less than 1 hour per week', '1-3': '1–3 hours per week',
+      '3-5': '3–5 hours per week', '5-10': '5–10 hours per week',
+      '10+': 'more than 10 hours per week'
+    }
+  };
+  return (map[data.nativeLang] || map.English)[data.weeklyTime] || '';
+}
+
+// ═══ ROADMAP STRING BUNDLE ═══
+const R_STRINGS = {
+  Deutsch: {
+    subtitle: 'Drei Etappen — ein konkreter Weg.',
+    destinationLabel: 'Was ich erreichen will',
+    phasesLabel: 'Dein Weg in drei Etappen',
+    phase1Name: 'Fundament',
+    phase1Focus: 'Grundlagen und Selbstvertrauen aufbauen',
+    phase2Name: 'Aufbau',
+    phase2Focus: 'Sicherheit gewinnen, Wortschatz erweitern',
+    phase3Name: 'Anwendung',
+    phase3Focus: 'Frei sprechen, eigene Themen meistern',
+    weeks2: '~2 Monate',
+    commitmentLabel: 'Mein Versprechen',
+    commitment: 'Ich investiere {time} in mein Ziel. Spikiu begleitet mich dabei.',
+    deadlineLabel: 'Ziel',
+    footerLeft: 'Mein persönlicher Plan',
+    footerRight: 'Mit Spikiu'
+  },
+  'Español': {
+    subtitle: 'Tres etapas — un camino concreto.',
+    destinationLabel: 'Lo que quiero lograr',
+    phasesLabel: 'Tu camino en tres etapas',
+    phase1Name: 'Fundamento',
+    phase1Focus: 'Construir bases y confianza',
+    phase2Name: 'Crecimiento',
+    phase2Focus: 'Ganar seguridad, ampliar vocabulario',
+    phase3Name: 'Aplicación',
+    phase3Focus: 'Hablar con libertad, dominar tus temas',
+    weeks2: '~2 meses',
+    commitmentLabel: 'Mi compromiso',
+    commitment: 'Dedico {time} a mi objetivo. Spikiu me acompaña.',
+    deadlineLabel: 'Meta',
+    footerLeft: 'Mi plan personal',
+    footerRight: 'Con Spikiu'
+  },
+  English: {
+    subtitle: 'Three phases — one concrete path.',
+    destinationLabel: 'What I want to achieve',
+    phasesLabel: 'Your path in three phases',
+    phase1Name: 'Foundation',
+    phase1Focus: 'Build the basics and confidence',
+    phase2Name: 'Growth',
+    phase2Focus: 'Gain security, expand vocabulary',
+    phase3Name: 'Application',
+    phase3Focus: 'Speak freely, master your own topics',
+    weeks2: '~2 months',
+    commitmentLabel: 'My promise',
+    commitment: 'I invest {time} in my goal. Spikiu walks with me.',
+    deadlineLabel: 'Goal',
+    footerLeft: 'My personal plan',
+    footerRight: 'With Spikiu'
+  }
+};
+
+// ═══ SAVE & REDIRECT ═══
+function saveAndRedirect() {
+  // Build a level-readable string consistent with what chat-*.js expects
+  const levelMap = { A0:'Absolute beginner', A1:'A1 (beginner)', A2:'A2', B1:'B1', B2:'B2 (almost fluent)' };
+
+  // Build a goal text from priority + motivations
+  const motivText = (data.motivation || []).slice(0, 3).join(', ');
+  const goalText = (data.goals || []).slice(0, 3).join(', ');
+
+  const targetDisplay = TARGET_NAMES_BY_LOCALE[data.nativeLang || 'English'][data.targetLang];
+
   const profile = {
+    name: data.name,
+    nativeLang: data.nativeLang,
     targetLang: data.targetLang,
     targetLangDisplay: targetDisplay,
-    level: data.level,
-    motivation: data.motivation,
-    driveText: data.driveText || '',
+    level: levelMap[data.level] || data.level,
+    levelCode: data.level,
+    motivation: motivText,
+    motivationList: data.motivation,
+    goal: goalText,
+    goalList: data.goals,
+    topPriority: data.topPriority,
     weeklyTime: data.weeklyTime,
-    deadline: data.deadline
+    learningStyle: data.learningStyle,
+    // Spikiu's chat-*.js also reads these fields — leave reasonable defaults
+    lifeContext: '',
+    personality: '',
+    register: 'informal',
+    ageStage: ''
   };
 
-  try {
-    const r = await fetch('/api/generate-learningpath', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: data.name, nativeLang: data.nativeLang, profile })
-    });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    if (!j || !j.roadmap) throw new Error('no roadmap');
+  // Build deterministic roadmap (frontend-only — no backend call)
+  const roadmap = buildRoadmap();
 
-    persist(j.roadmap, profile, targetDisplay);
-    renderPath(j.roadmap);
-
-    document.getElementById('gen-loading').style.display = 'none';
-    document.getElementById('gen-result').style.display = 'block';
-    window.scrollTo(0, 0);
-  } catch (e) {
-    console.error('generate failed', e);
-    document.getElementById('gen-loading').style.display = 'none';
-    document.getElementById('gen-error').style.display = 'block';
-  }
-}
-
-function persist(roadmap, profile, targetDisplay) {
+  // Persist to localStorage (Spikiu chat + dashboard read it on load)
   try {
     localStorage.setItem('spikiu_user', JSON.stringify({
       name: data.name,
@@ -661,78 +957,26 @@ function persist(roadmap, profile, targetDisplay) {
       createdAt: new Date().toISOString(),
       lastSeenAt: new Date().toISOString()
     }));
+    // Mirror the chosen native language to the global UI-language store
     const langMap = { Deutsch: 'de', 'Español': 'es', English: 'en' };
     localStorage.setItem('spikiu_lang', langMap[data.nativeLang] || 'en');
-  } catch (e) { console.error('Storage failed', e); }
+  } catch(e) { console.error('Storage failed', e); }
+
+  // Off to the dashboard so the user immediately sees their plan
+  window.location.href = 'dashboard.html';
 }
 
-// ── Lernweg-Dokument rendern (wird in Schritt 4 fürs Dashboard wiederverwendet) ──
-function renderPath(rm) {
-  const p1 = rm.page1 || {}, p2 = rm.page2 || {}, meta = rm.meta || {};
-  const portrait = p1.portrait || {}, ziel = p1.ziel || {}, zeit = p1.zeitplan || {}, versp = p1.versprechen || {};
-  const etappen = Array.isArray(p2.etappen) ? p2.etappen : [];
-
-  let html = '<div class="doc">';
-
-  // PAGE 1
-  html += `<div class="doc-pagelabel">${esc(meta.nativeLang === 'Español' ? 'Página 1' : meta.nativeLang === 'English' ? 'Page 1' : 'Seite 1')}</div>`;
-  html += `<div class="doc-title">${esc(meta.name)} — <em>${esc(meta.targetLang)}</em></div>`;
-  html += `<div class="doc-meta">${esc(meta.startDate)} → ${esc(meta.endDate)}</div>`;
-
-  if (portrait.body) {
-    html += `<div class="doc-box doc-portrait">`;
-    if (portrait.title) html += `<h3>${esc(portrait.title)}</h3>`;
-    html += `<p>${esc(portrait.body)}</p></div>`;
-  }
-
-  if (ziel.items && ziel.items.length) {
-    html += `<div class="doc-box doc-ziel"><h3>${esc(ziel.label)}</h3><ul>`;
-    ziel.items.forEach(i => { html += `<li>${esc(i)}</li>`; });
-    html += `</ul></div>`;
-  }
-
-  html += `<div class="doc-box doc-zeitplan"><h3>${esc(zeit.label)}</h3>`;
-  html += `<div class="timeline"><span class="tl-point">${esc(zeit.start)}</span><span class="tl-line"></span><span class="tl-point">${esc(zeit.end)}</span></div>`;
-  if (zeit.weeklyCommitment) html += `<p class="meta-line"><strong>${esc(zeit.weeklyCommitment)}</strong></p>`;
-  if (zeit.deadlineNote) html += `<p class="meta-line">${esc(zeit.deadlineNote)}</p>`;
-  html += `</div>`;
-
-  if (versp.text) {
-    html += `<div class="doc-box doc-versprechen"><h3>${esc(versp.label)}</h3><p>${esc(versp.text)}</p></div>`;
-  }
-
-  // PAGE 2
-  html += `<div class="doc-sep"></div>`;
-  html += `<div class="doc-pagelabel">${esc(meta.nativeLang === 'Español' ? 'Página 2' : meta.nativeLang === 'English' ? 'Page 2' : 'Seite 2')}</div>`;
-  if (p2.title) html += `<div class="doc-title">${esc(p2.title)}</div>`;
-  if (p2.subtitle) html += `<div class="doc-meta">${esc(p2.subtitle)}</div>`;
-
-  const L = {
-    Deutsch:  { ziel: 'Ziel', inhalt: 'Lerninhalt', spikiu: 'Mit Spikiu', ende: 'Am Ende' },
-    'Español':{ ziel: 'Meta', inhalt: 'Contenido', spikiu: 'Con Spikiu', ende: 'Al final' },
-    English:  { ziel: 'Goal', inhalt: 'Focus', spikiu: 'With Spikiu', ende: 'By the end' }
-  }[meta.nativeLang] || { ziel: 'Ziel', inhalt: 'Lerninhalt', spikiu: 'Mit Spikiu', ende: 'Am Ende' };
-
-  etappen.forEach(et => {
-    html += `<div class="etappa">`;
-    html += `<div class="etappa-head"><span class="etappa-icon">${esc(et.icon)}</span><span class="etappa-name">${esc(et.name)}</span></div>`;
-    html += `<div class="etappa-dates">${esc(et.dates)} · ${esc(et.duration)}</div>`;
-    if (et.ziel) html += `<div class="etappa-row"><span class="lbl">${L.ziel}</span><p>${esc(et.ziel)}</p></div>`;
-    if (et.lerninhalt && et.lerninhalt.length) {
-      html += `<div class="etappa-row"><span class="lbl">${L.inhalt}</span><ul>`;
-      et.lerninhalt.forEach(b => { html += `<li>${esc(b)}</li>`; });
-      html += `</ul></div>`;
+// ═══ INIT ═══
+// If user already finished Beratung, skip straight to chat.
+try {
+  const raw = localStorage.getItem('spikiu_user');
+  if (raw) {
+    const u = JSON.parse(raw);
+    if (u && u.profile && u.profile.targetLang) {
+      window.location.replace('chat.html');
     }
-    if (et.wieSpikiuHilft) html += `<div class="etappa-row"><span class="lbl">${L.spikiu}</span><p>${esc(et.wieSpikiuHilft)}</p></div>`;
-    if (et.endziel) html += `<div class="etappa-row endziel"><span class="lbl">${L.ende}</span><p>${esc(et.endziel)}</p></div>`;
-    html += `</div>`;
-  });
-
-  html += `<a href="dashboard.html" class="btn-go">${esc(t('gen.toDashboard'))}</a>`;
-  html += '</div>';
-
-  document.getElementById('gen-result').innerHTML = html;
-}
+  }
+} catch(e) {}
 
 showCard(1);
 </script>
