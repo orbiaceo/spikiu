@@ -104,6 +104,7 @@
   // ── Styles (spk-prefixed, selbst-injiziert) ────────────────────
   const CSS = `
   .spk-topbar{display:flex;align-items:center;gap:.8rem;padding:.85rem 1.1rem;background:#f6f3ec;border-bottom:1px solid #e8e0d0;position:sticky;top:0;z-index:80;font-family:'DM Sans',system-ui,sans-serif;}
+  .spk-topbar-inner{display:flex;align-items:center;gap:.7rem;}
   .spk-burger{background:none;border:none;color:#1a1816;cursor:pointer;padding:.2rem;display:flex;}
   .spk-burger svg{width:25px;height:25px;}
   .spk-brand{font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:#1a1816;display:flex;align-items:center;gap:.5rem;text-decoration:none;}
@@ -141,20 +142,32 @@
   }
 
   function buildShell() {
-    // Topbar ganz oben einfügen
-    const topbar = document.createElement('header');
-    topbar.className = 'spk-topbar';
-    topbar.innerHTML =
+    var inner = '<div class="spk-topbar-inner">' +
       '<button class="spk-burger" id="spk-burger" aria-label="Menu">' + HAMBURGER_SVG + '</button>' +
-      '<a href="dashboard.html" class="spk-brand">' + CAPY_SVG + '<span>Spi<em>k</em>iu</span></a>';
-    document.body.insertBefore(topbar, document.body.firstChild);
+      '<a href="dashboard.html" class="spk-brand">' + CAPY_SVG + '<span>Spi<em>k</em>iu</span></a>' +
+      '</div>';
 
-    const backdrop = document.createElement('div');
+    // Slot-Modus: wenn die Seite einen <… data-spk-nav> Platzhalter hat,
+    // setzen wir den Hamburger dort hinein (Layout der Seite bleibt heil).
+    // Sonst injizieren wir eine eigene sticky Topbar oben.
+    var host = document.querySelector('[data-spk-nav]');
+    if (host) {
+      host.classList.add('spk-topbar-host');
+      host.innerHTML = inner;
+    } else {
+      var topbar = document.createElement('header');
+      topbar.className = 'spk-topbar';
+      topbar.innerHTML = inner;
+      document.body.insertBefore(topbar, document.body.firstChild);
+    }
+
+    // Drawer + Backdrop sind fixed → kein Layout-Einfluss, immer injiziert.
+    var backdrop = document.createElement('div');
     backdrop.className = 'spk-backdrop';
     backdrop.id = 'spk-backdrop';
     document.body.appendChild(backdrop);
 
-    const sidebar = document.createElement('aside');
+    var sidebar = document.createElement('aside');
     sidebar.className = 'spk-sidebar';
     sidebar.id = 'spk-sidebar';
     document.body.appendChild(sidebar);
