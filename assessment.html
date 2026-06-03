@@ -411,20 +411,6 @@ input::placeholder, textarea::placeholder { color: #b8b0a4; }
     </div>
   </div>
 
-  <!-- CARD 8 — Generieren + Lernweg -->
-  <div class="card" data-card="8">
-    <div id="gen-loading" class="gen-center">
-      <div class="spinner"></div>
-      <p class="gen-text" id="gen-loading-text">Spikiu baut deinen Weg…</p>
-    </div>
-    <div id="gen-error" class="gen-center" style="display:none;">
-      <div class="gen-leaf">🥀</div>
-      <p class="gen-text" id="gen-error-text">Da ging was schief.</p>
-      <button class="btn-retry" id="gen-retry" onclick="generate()">Nochmal versuchen</button>
-    </div>
-    <div id="gen-result" style="display:none;"></div>
-  </div>
-
 </main>
 
 <div class="bottom">
@@ -543,9 +529,6 @@ function applyI18n() {
   }
   const btn = document.getElementById('btn-next');
   btn.textContent = (current === TOTAL_DATA_CARDS) ? t('btn.done') : t('btn.next');
-  document.getElementById('gen-loading-text').textContent = t('gen.loading');
-  document.getElementById('gen-error-text').textContent = t('gen.error');
-  document.getElementById('gen-retry').textContent = t('gen.retry');
 }
 
 function showCard(n) {
@@ -553,10 +536,9 @@ function showCard(n) {
   document.querySelector(`.card[data-card="${n}"]`).classList.add('active');
   current = n;
   document.getElementById('progress').style.width = Math.min(100, ((n - 1) / TOTAL_DATA_CARDS) * 100) + '%';
-  document.getElementById('btn-back').classList.toggle('hidden', n === 1 || n === 8);
+  document.getElementById('btn-back').classList.toggle('hidden', n === 1);
   applyI18n();
   refreshNext();
-  document.querySelector('.bottom').style.display = (n === 8) ? 'none' : 'block';
   if (n === 2) setTimeout(() => document.getElementById('name').focus(), 100);
 }
 
@@ -604,18 +586,14 @@ document.getElementById('driveText').addEventListener('input', e => { data.drive
 
 function next() {
   if (!isCardComplete(current)) return;
-  if (current === TOTAL_DATA_CARDS) { showCard(8); generate(); }
+  if (current === TOTAL_DATA_CARDS) finish();
   else showCard(current + 1);
 }
-function goBack() { if (current > 1 && current < 8) showCard(current - 1); }
+function goBack() { if (current > 1) showCard(current - 1); }
 
-// ── Backend-Aufruf ──
-async function generate() {
-  document.getElementById('gen-loading').style.display = 'block';
-  document.getElementById('gen-error').style.display = 'none';
-  document.getElementById('gen-result').style.display = 'none';
-  applyI18n();
-
+// ── Profil speichern und DIREKT ins Dashboard. Den Lernweg baut das
+//    Dashboard im Hintergrund — so wartet niemand vor einem leeren Screen. ──
+function finish() {
   const targetDisplay = TARGET_NAMES[data.nativeLang][data.targetLang];
   const profile = {
     targetLang: data.targetLang,
@@ -626,112 +604,20 @@ async function generate() {
     weeklyTime: data.weeklyTime,
     deadline: data.deadline
   };
-
-  try {
-    const r = await fetch('/api/generate-learningpath', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: data.name, nativeLang: data.nativeLang, profile })
-    });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    if (!j || !j.roadmap) throw new Error('no roadmap');
-
-    persist(j.roadmap, profile, targetDisplay);
-    renderPath(j.roadmap);
-
-    document.getElementById('gen-loading').style.display = 'none';
-    document.getElementById('gen-result').style.display = 'block';
-    window.scrollTo(0, 0);
-  } catch (e) {
-    console.error('generate failed', e);
-    document.getElementById('gen-loading').style.display = 'none';
-    document.getElementById('gen-error').style.display = 'block';
-  }
-}
-
-function persist(roadmap, profile, targetDisplay) {
   try {
     localStorage.setItem('spikiu_user', JSON.stringify({
       name: data.name,
       nativeLang: data.nativeLang,
       targetLangDisplay: targetDisplay,
       profile: profile,
-      roadmap: roadmap,
+      roadmapPending: true,
       createdAt: new Date().toISOString(),
       lastSeenAt: new Date().toISOString()
     }));
     const langMap = { Deutsch: 'de', 'Español': 'es', English: 'en' };
     localStorage.setItem('spikiu_lang', langMap[data.nativeLang] || 'en');
   } catch (e) { console.error('Storage failed', e); }
-}
-
-// ── Lernweg-Dokument rendern (wird in Schritt 4 fürs Dashboard wiederverwendet) ──
-function renderPath(rm) {
-  const p1 = rm.page1 || {}, p2 = rm.page2 || {}, meta = rm.meta || {};
-  const portrait = p1.portrait || {}, ziel = p1.ziel || {}, zeit = p1.zeitplan || {}, versp = p1.versprechen || {};
-  const etappen = Array.isArray(p2.etappen) ? p2.etappen : [];
-
-  let html = '<div class="doc">';
-
-  // PAGE 1
-  html += `<div class="doc-pagelabel">${esc(meta.nativeLang === 'Español' ? 'Página 1' : meta.nativeLang === 'English' ? 'Page 1' : 'Seite 1')}</div>`;
-  html += `<div class="doc-title">${esc(meta.name)} — <em>${esc(meta.targetLang)}</em></div>`;
-  html += `<div class="doc-meta">${esc(meta.startDate)} → ${esc(meta.endDate)}</div>`;
-
-  if (portrait.body) {
-    html += `<div class="doc-box doc-portrait">`;
-    if (portrait.title) html += `<h3>${esc(portrait.title)}</h3>`;
-    html += `<p>${esc(portrait.body)}</p></div>`;
-  }
-
-  if (ziel.items && ziel.items.length) {
-    html += `<div class="doc-box doc-ziel"><h3>${esc(ziel.label)}</h3><ul>`;
-    ziel.items.forEach(i => { html += `<li>${esc(i)}</li>`; });
-    html += `</ul></div>`;
-  }
-
-  html += `<div class="doc-box doc-zeitplan"><h3>${esc(zeit.label)}</h3>`;
-  html += `<div class="timeline"><span class="tl-point">${esc(zeit.start)}</span><span class="tl-line"></span><span class="tl-point">${esc(zeit.end)}</span></div>`;
-  if (zeit.weeklyCommitment) html += `<p class="meta-line"><strong>${esc(zeit.weeklyCommitment)}</strong></p>`;
-  if (zeit.deadlineNote) html += `<p class="meta-line">${esc(zeit.deadlineNote)}</p>`;
-  html += `</div>`;
-
-  if (versp.text) {
-    html += `<div class="doc-box doc-versprechen"><h3>${esc(versp.label)}</h3><p>${esc(versp.text)}</p></div>`;
-  }
-
-  // PAGE 2
-  html += `<div class="doc-sep"></div>`;
-  html += `<div class="doc-pagelabel">${esc(meta.nativeLang === 'Español' ? 'Página 2' : meta.nativeLang === 'English' ? 'Page 2' : 'Seite 2')}</div>`;
-  if (p2.title) html += `<div class="doc-title">${esc(p2.title)}</div>`;
-  if (p2.subtitle) html += `<div class="doc-meta">${esc(p2.subtitle)}</div>`;
-
-  const L = {
-    Deutsch:  { ziel: 'Ziel', inhalt: 'Lerninhalt', spikiu: 'Mit Spikiu', ende: 'Am Ende' },
-    'Español':{ ziel: 'Meta', inhalt: 'Contenido', spikiu: 'Con Spikiu', ende: 'Al final' },
-    English:  { ziel: 'Goal', inhalt: 'Focus', spikiu: 'With Spikiu', ende: 'By the end' }
-  }[meta.nativeLang] || { ziel: 'Ziel', inhalt: 'Lerninhalt', spikiu: 'Mit Spikiu', ende: 'Am Ende' };
-
-  etappen.forEach(et => {
-    html += `<div class="etappa">`;
-    html += `<div class="etappa-head"><span class="etappa-icon">${esc(et.icon)}</span><span class="etappa-name">${esc(et.name)}</span></div>`;
-    html += `<div class="etappa-dates">${esc(et.dates)} · ${esc(et.duration)}</div>`;
-    if (et.ziel) html += `<div class="etappa-row"><span class="lbl">${L.ziel}</span><p>${esc(et.ziel)}</p></div>`;
-    if (et.lerninhalt && et.lerninhalt.length) {
-      html += `<div class="etappa-row"><span class="lbl">${L.inhalt}</span><ul>`;
-      et.lerninhalt.forEach(b => { html += `<li>${esc(b)}</li>`; });
-      html += `</ul></div>`;
-    }
-    if (et.wieSpikiuHilft) html += `<div class="etappa-row"><span class="lbl">${L.spikiu}</span><p>${esc(et.wieSpikiuHilft)}</p></div>`;
-    if (et.endziel) html += `<div class="etappa-row endziel"><span class="lbl">${L.ende}</span><p>${esc(et.endziel)}</p></div>`;
-    html += `</div>`;
-  });
-
-  html += `<a href="dashboard.html" class="btn-go">${esc(t('gen.toDashboard'))}</a>`;
-  html += '</div>';
-
-  document.getElementById('gen-result').innerHTML = html;
+  window.location.href = 'dashboard.html';
 }
 
 showCard(1);

@@ -1276,6 +1276,90 @@ function updateBooksCard(user) {
   document.getElementById('db-book-glossary-desc').textContent = L.glossaryDesc;
 }
 
+// ── ROADMAP-KARTE: fertig anzeigen ─────────────────────
+function showRoadmapReady(user) {
+  document.getElementById('roadmap-card').style.display = 'block';
+  const r = user.roadmap;
+  const targetName = (r.meta && r.meta.targetLang) || user.targetLangDisplay || '';
+  const nl = user.nativeLang || 'Deutsch';
+
+  const cardTitles = { 'Deutsch':'Mein Weg', 'Español':'Mi camino', 'English':'My path' };
+  const cardBtns   = { 'Deutsch':'Ansehen →', 'Español':'Ver →', 'English':'View →' };
+  const backLabels = { 'Deutsch':'← Zurück', 'Español':'← Atrás', 'English':'← Back' };
+  const printTips  = {
+    'Deutsch':'💡 Cmd/Ctrl + P zum Drucken oder als PDF speichern',
+    'Español':'💡 Cmd/Ctrl + P para imprimir o guardar como PDF',
+    'English':'💡 Cmd/Ctrl + P to print or save as PDF'
+  };
+  const summaries = {
+    'Deutsch': `Dein Weg zu <strong>${targetName}</strong> ist bereit. Drei Etappen bis zu deinem Ziel.`,
+    'Español': `Tu camino hacia el <strong>${targetName}</strong> está listo. Tres etapas hasta tu meta.`,
+    'English': `Your path to <strong>${targetName}</strong> is ready. Three stages to your goal.`
+  };
+  const btn = document.getElementById('roadmap-card-btn');
+  btn.textContent = cardBtns[nl] || cardBtns['English'];
+  btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
+  btn.onclick = openRoadmap;
+  document.getElementById('roadmap-card-title').textContent = cardTitles[nl] || cardTitles['English'];
+  document.getElementById('roadmap-back-btn').textContent = backLabels[nl] || backLabels['English'];
+  document.getElementById('roadmap-print-tip').textContent = printTips[nl] || printTips['English'];
+  document.getElementById('roadmap-summary').innerHTML = summaries[nl] || summaries['English'];
+}
+
+// ── ROADMAP-KARTE: "wird gebaut" ───────────────────────
+function showRoadmapPending(user) {
+  document.getElementById('roadmap-card').style.display = 'block';
+  const nl = user.nativeLang || 'Deutsch';
+  const cardTitles = { 'Deutsch':'Mein Weg', 'Español':'Mi camino', 'English':'My path' };
+  const pendingMsg = {
+    'Deutsch':'Spikiu baut gerade deinen persönlichen Weg — in wenigen Sekunden ist er hier. 🐾',
+    'Español':'Spikiu está armando tu camino personal — en unos segundos estará aquí. 🐾',
+    'English':'Spikiu is building your personal path — it will be here in a few seconds. 🐾'
+  };
+  const pendingBtn = { 'Deutsch':'… wird gebaut', 'Español':'… generando', 'English':'… building' };
+  document.getElementById('roadmap-card-title').textContent = cardTitles[nl] || cardTitles['English'];
+  document.getElementById('roadmap-summary').innerHTML = pendingMsg[nl] || pendingMsg['English'];
+  const btn = document.getElementById('roadmap-card-btn');
+  btn.textContent = pendingBtn[nl] || pendingBtn['English'];
+  btn.disabled = true; btn.style.opacity = '0.6'; btn.style.cursor = 'default';
+  btn.onclick = null;
+}
+
+// ── ROADMAP im Hintergrund generieren (Option B) ───────
+async function generateRoadmapInBackground(user) {
+  try {
+    const res = await fetch('/api/generate-learningpath', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: user.name, nativeLang: user.nativeLang, profile: user.profile })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const j = await res.json();
+    if (!j || !j.roadmap || !j.roadmap.page2) throw new Error('no roadmap');
+
+    user.roadmap = j.roadmap;
+    delete user.roadmapPending;
+    user.lastSeenAt = new Date().toISOString();
+    localStorage.setItem('spikiu_user', JSON.stringify(user));
+
+    showRoadmapReady(user);
+  } catch (e) {
+    console.error('background roadmap generation failed', e);
+    const nl = user.nativeLang || 'Deutsch';
+    const errMsg = {
+      'Deutsch':'Spikiu konnte deinen Weg gerade nicht bauen. Tippe auf „Neu laden", dann versucht er es noch einmal.',
+      'Español':'Spikiu no pudo construir tu camino. Toca „Recargar" y lo vuelve a intentar.',
+      'English':'Spikiu could not build your path. Tap „Reload" to try again.'
+    };
+    const retry = { 'Deutsch':'Neu laden', 'Español':'Recargar', 'English':'Reload' };
+    document.getElementById('roadmap-summary').innerHTML = errMsg[nl] || errMsg['English'];
+    const btn = document.getElementById('roadmap-card-btn');
+    btn.textContent = retry[nl] || retry['English'];
+    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
+    btn.onclick = function () { location.reload(); };
+  }
+}
+
 // ── LOAD USER FROM LOCALSTORAGE ────────────────────────
 function loadUser() {
   const raw = localStorage.getItem('spikiu_user');
@@ -1303,31 +1387,12 @@ function loadUser() {
     document.getElementById('sidebar-avatar').textContent = firstName.charAt(0).toUpperCase();
     document.getElementById('sidebar-name').textContent = user.name;
 
-    // Show roadmap card if roadmap exists
-    if (user.roadmap) {
-      document.getElementById('roadmap-card').style.display = 'block';
-      const r = user.roadmap;
-      const targetName = (r.meta && r.meta.targetLang) || user.targetLangDisplay || '';
-      const nl = user.nativeLang || 'Deutsch';
-
-      const cardTitles = { 'Deutsch':'Mein Weg', 'Español':'Mi camino', 'English':'My path' };
-      const cardBtns   = { 'Deutsch':'Ansehen →', 'Español':'Ver →', 'English':'View →' };
-      const backLabels = { 'Deutsch':'← Zurück', 'Español':'← Atrás', 'English':'← Back' };
-      const printTips  = {
-        'Deutsch':'💡 Cmd/Ctrl + P zum Drucken oder als PDF speichern',
-        'Español':'💡 Cmd/Ctrl + P para imprimir o guardar como PDF',
-        'English':'💡 Cmd/Ctrl + P to print or save as PDF'
-      };
-      const summaries = {
-        'Deutsch': `Dein Weg zu <strong>${targetName}</strong> ist bereit. Drei Etappen bis zu deinem Ziel.`,
-        'Español': `Tu camino hacia el <strong>${targetName}</strong> está listo. Tres etapas hasta tu meta.`,
-        'English': `Your path to <strong>${targetName}</strong> is ready. Three stages to your goal.`
-      };
-      document.getElementById('roadmap-card-title').textContent = cardTitles[nl] || cardTitles['English'];
-      document.getElementById('roadmap-card-btn').textContent = cardBtns[nl] || cardBtns['English'];
-      document.getElementById('roadmap-back-btn').textContent = backLabels[nl] || backLabels['English'];
-      document.getElementById('roadmap-print-tip').textContent = printTips[nl] || printTips['English'];
-      document.getElementById('roadmap-summary').innerHTML = summaries[nl] || summaries['English'];
+    // Roadmap card: fertig anzeigen, oder im Hintergrund bauen (Option B)
+    if (user.roadmap && user.roadmap.page2) {
+      showRoadmapReady(user);
+    } else if (user.profile && user.profile.targetLang) {
+      showRoadmapPending(user);
+      generateRoadmapInBackground(user);
     }
 
     // Render lessons list
