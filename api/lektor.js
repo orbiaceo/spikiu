@@ -2,10 +2,9 @@
 // EIN Endpoint für ALLE Zielsprachen. Sprache ist ein FELD (`zielsprache`),
 // kein Datei-Schnitt. KEIN Sprach-Split.
 //
-// Stil bewusst wie api/chat.js: `export default` (Vercel transpiliert das nach
-// CommonJS). KEIN import.meta — das lässt sich nicht transpilieren und war die
-// Absturzursache. Pfade über process.cwd(). Quelle der Wahrheit:
-// spikiu-seele.md + lektor-modus.md, zur Laufzeit gelesen (faul, gecacht).
+// Stil wie api/chat.js: `export default`. KEIN import.meta. Pfade über
+// process.cwd(). Quelle der Wahrheit: spikiu-seele.md + lektor-modus.md,
+// zur Laufzeit gelesen (faul, gecacht).
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -70,7 +69,12 @@ Du antwortest AUSSCHLIESSLICH mit EINEM Block. Nichts davor, nichts danach.
 {"sinn":"...","zitat":"...","sache":"...","form":null,"lautschrift":null,"status":"lesen"}
 [/LEKTOR]
 
-Gültiges JSON, doppelte Anführungszeichen, KEINE Zeilenumbrüche innerhalb der Werte.
+Gültiges JSON. Das JSON-Gerüst nutzt gerade doppelte Anführungszeichen.
+KRITISCH — Anführungszeichen INNERHALB der Werte: Wenn du im Text ein Wort
+oder eine Wendung hervorheben oder zitieren willst, benutze NUR typografische
+Anführungszeichen „so“ oder ‚so‘. Benutze NIEMALS das gerade Zeichen " innerhalb
+eines Wertes — das gehört allein dem JSON-Gerüst und würde es zerbrechen.
+KEINE Zeilenumbrüche innerhalb der Werte.
 
 Felder:
 - "sinn": EINE kurze Leser-Zeile, Sinn zuerst, in der Muttersprache des Lerners.
@@ -178,23 +182,64 @@ export default async function handler(req, res) {
   }
 }
 
+// ── Parser: erst sauberes JSON, sonst toleranter Feld-für-Feld-Auszug ──
+// Robust gegen gerade Anführungszeichen MITTEN in Werten (der Klassiker, an dem
+// striktes JSON.parse zerbricht). Wir schneiden an den bekannten Feld-Markern,
+// nicht an Anführungszeichen — so überleben innere " als Text.
 function parseLektor(text) {
+  const m = text.match(/\[LEKTOR\]([\s\S]*?)\[\/LEKTOR\]/);
+  const block = m ? m[1] : text;
+  const start = block.indexOf('{');
+  const end = block.lastIndexOf('}');
+  if (start === -1 || end === -1) return null;
+  const raw = block.slice(start, end + 1);
+
+  // Schneller Weg: striktes JSON.
   try {
-    const m = text.match(/\[LEKTOR\]([\s\S]*?)\[\/LEKTOR\]/);
-    const raw = m ? m[1] : text;
-    const start = raw.indexOf('{');
-    const end = raw.lastIndexOf('}');
-    if (start === -1 || end === -1) return null;
-    const obj = JSON.parse(raw.slice(start, end + 1));
-    return {
-      sinn:       typeof obj.sinn === 'string' ? obj.sinn : '',
-      zitat:      typeof obj.zitat === 'string' ? obj.zitat : '',
-      sache:      typeof obj.sache === 'string' ? obj.sache : '',
-      form:       (obj.form === null || typeof obj.form === 'string') ? obj.form : null,
-      lautschrift:(obj.lautschrift === null || typeof obj.lautschrift === 'string') ? obj.lautschrift : null,
-      status:     ['lesen','beinah','treffer','stuck','ziellinie'].includes(obj.status) ? obj.status : 'lesen'
-    };
-  } catch (e) {
-    return null;
+    return normalize(JSON.parse(raw));
+  } catch (e) {}
+
+  // Netz drunter: toleranter Auszug.
+  const keys = ['sinn', 'zitat', 'sache', 'form', 'lautschrift', 'status'];
+  const out = {};
+  for (const k of keys) out[k] = extractField(raw, k, keys.filter(x => x !== k));
+  if (out.sinn === undefined && out.zitat === undefined && out.sache === undefined) return null;
+  return normalize(out);
+}
+
+function extractField(raw, key, otherKeys) {
+  const marker = '"' + key + '"';
+  let i = raw.indexOf(marker);
+  if (i === -1) return undefined;
+  i = raw.indexOf(':', i + marker.length);
+  if (i === -1) return undefined;
+  let start = i + 1;
+  let end = -1;
+  for (const nk of otherKeys) {
+    const j = raw.indexOf('"' + nk + '"', start);
+    if (j !== -1 && (end === -1 || j < end)) end = j;
   }
+  if (end === -1) end = raw.lastIndexOf('}');
+  if (end === -1) end = raw.length;
+  let val = raw.slice(start, end).trim().replace(/,\s*$/, '').trim();
+  if (val === 'null' || val === '') return val === 'null' ? null : '';
+  if (val.startsWith('"')) val = val.slice(1);
+  if (val.endsWith('"')) val = val.slice(0, -1);
+  return val
+    .replace(/\\n/g, ' ')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\')
+    .trim();
+}
+
+function normalize(obj) {
+  obj = obj || {};
+  return {
+    sinn:       typeof obj.sinn === 'string' ? obj.sinn : '',
+    zitat:      typeof obj.zitat === 'string' ? obj.zitat : '',
+    sache:      typeof obj.sache === 'string' ? obj.sache : '',
+    form:       (obj.form === null || typeof obj.form === 'string') ? obj.form : null,
+    lautschrift:(obj.lautschrift === null || typeof obj.lautschrift === 'string') ? obj.lautschrift : null,
+    status:     ['lesen','beinah','treffer','stuck','ziellinie'].includes(obj.status) ? obj.status : 'lesen'
+  };
 }
