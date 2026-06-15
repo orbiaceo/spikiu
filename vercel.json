@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/lektor.js": {
+      "includeFiles": "*.md"
+    }
+  }
+}

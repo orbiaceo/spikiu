@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Schreiben</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f1e7; --page:#fdfbf5; --ink:#2b2620; --ink-soft:#6e6256;
+    --green:#2d6a4f; --gold:#a87b2e; --gold-soft:#e9d9b6; --capy:#c9956a; --line:#e6dec9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
+
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.9rem 1.4rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:700}
+  .brand svg{display:block;animation:float 4s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .controls{display:flex;align-items:center;gap:.7rem;font-size:.78rem;color:var(--ink-soft);flex-wrap:wrap}
+  .controls label{display:flex;align-items:center;gap:.35rem}
+  select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:99px;padding:.3rem .7rem;cursor:pointer}
+  select:focus{outline:none;border-color:var(--gold)}
+
+  .bench{flex:1;width:100%;max-width:980px;margin:0 auto;padding:2.2rem 1.4rem 1.4rem;display:flex;flex-direction:column}
+  .aufgabe-label{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
+  .aufgabe-input{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:italic;
+    color:var(--ink-soft);line-height:1.3;background:transparent;border:0;border-bottom:1px dashed var(--line);
+    padding:0 0 .4rem;margin-bottom:1.8rem}
+  .aufgabe-input:focus{outline:none;border-bottom-color:var(--gold);color:var(--ink)}
+
+  .stage{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start}
+  @media(min-width:760px){.stage{grid-template-columns:1.35fr 1fr;gap:1.8rem}}
+
+  .werkstueck{background:var(--page);border:1px solid var(--line);border-radius:6px;
+    box-shadow:0 1px 0 #fff inset,0 10px 30px -18px rgba(60,45,20,.35);padding:1.7rem 1.8rem;min-height:170px;
+    font-family:'Cormorant Garamond',serif;font-size:1.62rem;line-height:1.62;color:var(--ink);
+    transition:box-shadow .4s;white-space:pre-wrap}
+  .werkstueck.empty{color:#bcae93;font-style:italic}
+  .werkstueck.fertig{box-shadow:0 1px 0 #fff inset,0 0 0 1px var(--green),0 10px 30px -18px rgba(45,106,79,.4)}
+  .spot{background:linear-gradient(var(--gold) 0 0) bottom left/0% 2px no-repeat;padding-bottom:2px;transition:background-size .5s ease}
+  .spot.lit{background-size:100% 2px}
+
+  .lektor{border-left:3px solid var(--gold);padding:.2rem 0 .2rem 1rem;
+    opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+  .lektor.show{opacity:1;transform:none}
+  .lektor.treffer{border-left-color:var(--green)}
+  .lek-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+  .lek-head svg{display:block}
+  .lek-name{font-size:.7rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
+  .lek-sinn{font-size:1.02rem;line-height:1.5;color:var(--ink);margin-bottom:.7rem}
+  .lek-sache{font-size:.96rem;line-height:1.55;color:var(--ink-soft)}
+  .lek-sache b{color:var(--ink);font-weight:700}
+  .lek-form{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--green);margin:.7rem 0 .1rem}
+  .lek-laut{font-size:.86rem;color:var(--ink-soft);font-style:italic;margin-bottom:.2rem}
+  .lek-status{font-weight:700}.lek-status.t{color:var(--green)}.lek-status.b{color:var(--gold)}
+  .uebernehmen{margin-top:.7rem;font-size:.82rem;font-weight:700;color:var(--green);background:transparent;
+    border:1px solid var(--green);border-radius:99px;padding:.4rem .9rem;cursor:pointer;transition:.18s}
+  .uebernehmen:hover{background:var(--green);color:#fff}
+  .lesson-btn{margin-top:.9rem;font-size:.9rem;font-weight:700;color:#fff;background:var(--green);
+    border:0;border-radius:99px;padding:.6rem 1.1rem;cursor:pointer}
+  .lek-error{font-size:.95rem;color:var(--gold);line-height:1.5}
+  .retry{margin-top:.6rem;font-size:.82rem;font-weight:700;color:var(--ink);background:transparent;
+    border:1px solid var(--line);border-radius:99px;padding:.35rem .8rem;cursor:pointer}
+
+  .hands{margin-top:1.6rem}
+  .hands-label{font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.5rem}
+  textarea{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.4rem;line-height:1.5;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;resize:vertical;min-height:80px}
+  textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .hands-row{display:flex;align-items:center;gap:.9rem;margin-top:.8rem;flex-wrap:wrap}
+  .primary{font-size:.95rem;font-weight:700;color:#fff;background:var(--ink);border:0;border-radius:99px;
+    padding:.65rem 1.4rem;cursor:pointer;transition:.18s}
+  .primary:hover{background:#000}.primary:disabled{opacity:.45;cursor:default}
+  .restart{font-size:.82rem;font-weight:600;color:var(--ink-soft);background:transparent;border:0;cursor:pointer;
+    text-decoration:underline;text-underline-offset:3px}
+  .hint{font-size:.78rem;color:var(--ink-soft);margin-top:.6rem;font-style:italic}
+
+  [hidden]{display:none !important}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="brand">
+    <svg width="26" height="26" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    Schreiben
+  </div>
+  <div class="controls">
+    <label>Sprache
+      <select id="selLang">
+        <option value="es">Spanisch</option>
+        <option value="de">Deutsch</option>
+        <option value="en">Englisch</option>
+        <option value="el">Griechisch</option>
+      </select>
+    </label>
+    <label>Können
+      <select id="selKoennen">
+        <option value="anfang">Anfang</option>
+        <option value="mittel">Mittel</option>
+        <option value="fortgeschritten">Fortgeschritten</option>
+      </select>
+    </label>
+  </div>
+</header>
+
+<main class="bench">
+  <p class="aufgabe-label">Deine Aufgabe</p>
+  <input class="aufgabe-input" id="aufgabe" value="Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.">
+
+  <div class="stage">
+    <article class="werkstueck empty" id="werk">Hier steht dein Text.</article>
+    <aside class="lektor" id="lektor" hidden>
+      <div class="lek-head">
+        <svg width="22" height="22" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        <span class="lek-name" id="lekName">Spikiu liest</span>
+      </div>
+      <div id="lekBody"></div>
+    </aside>
+  </div>
+
+  <div class="hands" id="hands">
+    <p class="hands-label">In deinen Händen</p>
+    <textarea id="ta" spellcheck="false" placeholder="Schreib hier…"></textarea>
+    <div class="hands-row">
+      <button class="primary" id="primary">Hinlegen</button>
+      <button class="restart" id="restart" hidden>Neu starten</button>
+    </div>
+    <p class="hint" id="hint">Schreib deinen ersten Versuch und leg ihn hin.</p>
+  </div>
+</main>
+
+<script>
+(function(){
+  var ENDPOINT = '/api/lektor';
+  var werk=document.getElementById('werk'), lektor=document.getElementById('lektor'),
+      lekBody=document.getElementById('lekBody'), ta=document.getElementById('ta'),
+      primary=document.getElementById('primary'), restart=document.getElementById('restart'),
+      hint=document.getElementById('hint'), aufgabeEl=document.getElementById('aufgabe'),
+      selLang=document.getElementById('selLang'), selKoennen=document.getElementById('selKoennen');
+
+  // ── Profil defensiv lesen (Assessment-Paket noch offen) ──────────
+  var stored = {};
+  try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+  function langCode(v){
+    if(!v) return null; v=(''+v).toLowerCase();
+    if(/^(de|es|en|el)$/.test(v)) return v;
+    if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+    if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+    if(v.indexOf('engl')>-1) return 'en';
+    if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+    return null;
+  }
+  function koennenFrom(v){
+    if(!v) return null; v=(''+v).toLowerCase();
+    if(['anfang','mittel','fortgeschritten'].indexOf(v)>-1) return v;
+    if(/a[12]/.test(v)) return 'anfang';
+    if(/b[12]/.test(v)) return 'mittel';
+    if(/c[12]/.test(v)) return 'fortgeschritten';
+    return null;
+  }
+  if(stored.aufgabe) aufgabeEl.value = stored.aufgabe;
+  selLang.value = stored.zielsprache || langCode(stored.targetLang) || 'es';
+  selKoennen.value = stored.koennen || koennenFrom(stored.level) || 'anfang';
+
+  function profile(){
+    return {
+      name: stored.name || '',
+      muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de',
+      zielsprache: selLang.value,
+      koennen: selKoennen.value,
+      fremde_schrift: selLang.value === 'el',
+      aufgabe: aufgabeEl.value.trim() || null
+    };
+  }
+
+  // ── Zustand ──────────────────────────────────────────────────────
+  var history=[], lastRaw='', currentText='', step='einstieg', busy=false;
+
+  function esc(s){return s.replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+
+  function standText(text, mark){
+    werk.classList.remove('empty');
+    if(mark && mark.zitat && ['lesen','beinah','stuck'].indexOf(mark.status)>-1){
+      var fe=esc(text), fz=esc(mark.zitat), i=fe.indexOf(fz);
+      if(i>-1){
+        werk.innerHTML = fe.slice(0,i)+'<span class="spot" id="spot">'+fz+'</span>'+fe.slice(i+fz.length);
+        requestAnimationFrame(function(){var s=document.getElementById('spot');if(s)s.classList.add('lit');});
+        return;
+      }
+    }
+    werk.textContent = text;
+  }
+
+  function showThinking(){
+    document.getElementById('lekName').textContent='Spikiu liest';
+    lekBody.innerHTML='<p class="lek-sinn" style="color:var(--ink-soft)">…</p>';
+    lektor.classList.remove('treffer'); lektor.hidden=false;
+    requestAnimationFrame(function(){lektor.classList.add('show');});
+  }
+
+  function renderLektor(l){
+    lektor.classList.toggle('treffer', l.status==='treffer'||l.status==='ziellinie');
+    var html='';
+    if(l.status==='treffer'){
+      html+='<p class="lek-status t">Treffer.</p>';
+      if(l.sinn) html+='<p class="lek-sinn" style="margin-top:.4rem">'+esc(l.sinn)+'</p>';
+    } else if(l.status==='ziellinie'){
+      html+='<p class="lek-status t">Geschafft.</p>';
+      html+='<p class="lek-sinn" style="margin-top:.4rem">'+esc(l.sinn||'Der Text tut, was er soll.')+'</p>';
+      html+='<button class="lesson-btn" id="mklesson">Lektion aus diesem Text machen</button>';
+    } else {
+      if(l.status==='beinah') html+='<p class="lek-status b" style="margin-bottom:.4rem">Fast.</p>';
+      if(l.sinn)  html+='<p class="lek-sinn">'+esc(l.sinn)+'</p>';
+      if(l.sache) html+='<p class="lek-sache">'+esc(l.sache)+'</p>';
+      if(l.form){
+        html+='<p class="lek-form">'+esc(l.form)+'</p>';
+        if(l.lautschrift) html+='<p class="lek-laut">['+esc(l.lautschrift)+']</p>';
+        html+='<button class="uebernehmen" id="take">In meine Hände legen</button>';
+      }
+    }
+    lekBody.innerHTML=html;
+
+    var take=document.getElementById('take');
+    if(take) take.onclick=function(){
+      var next = currentText.indexOf(l.zitat)>-1 ? currentText.replace(l.zitat, l.form) : (currentText+' '+l.form);
+      ta.value=next; ta.focus();
+    };
+    var ml=document.getElementById('mklesson');
+    if(ml) ml.onclick=function(){ this.textContent='✓ Lektion gespeichert'; this.disabled=true; this.style.opacity=.7; };
+  }
+
+  function renderError(){
+    document.getElementById('lekName').textContent='Spikiu';
+    lekBody.innerHTML='<p class="lek-error">Der Lektor ist gerade nicht erreichbar. Leg deinen Text gleich nochmal hin.</p>'+
+      '<button class="retry" id="retry">Nochmal</button>';
+    lektor.hidden=false; requestAnimationFrame(function(){lektor.classList.add('show');});
+    document.getElementById('retry').onclick=function(){ submit(true); };
+  }
+
+  async function callLektor(){
+    var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:history, profile:profile(), maxTokens:600})});
+    var d=await r.json();
+    if(!r.ok) throw new Error('http');
+    return d;
+  }
+
+  async function submit(isRetry){
+    if(busy) return;
+    var text = ta.value.trim();
+    if(!text && !isRetry){ ta.focus(); return; }
+
+    if(!isRetry){
+      currentText = text;
+      history.push({role:'user', content:text});
+    }
+    standText(currentText, null);   // Text steht, noch ohne Markierung
+    busy=true; primary.disabled=true; showThinking();
+
+    try{
+      var d=await callLektor();
+      var l=d.lektor || {sinn:(d.text||'').slice(0,200), zitat:'', sache:'', form:null, lautschrift:null, status:'lesen'};
+      lastRaw = d.text || JSON.stringify(l);
+      // letzten Lektor-Zug in den Verlauf, damit der nächste Aufruf Kontext hat
+      history.push({role:'assistant', content:lastRaw});
+
+      standText(currentText, l);
+      lektor.classList.remove('show');
+      requestAnimationFrame(function(){ renderLektor(l); lektor.hidden=false;
+        requestAnimationFrame(function(){lektor.classList.add('show');}); });
+
+      if(l.status==='ziellinie'){
+        werk.classList.add('fertig'); werk.textContent=currentText;
+        primary.hidden=true; ta.disabled=true; restart.hidden=false;
+        hint.textContent='Der Text ist fertig. Du kannst neu starten.';
+      } else {
+        step='arbeit'; primary.textContent='Weiter';
+        hint.textContent='Überarbeite die markierte Stelle und leg sie zurück.';
+      }
+    }catch(e){
+      // fehlgeschlagenen user-Push zurücknehmen, damit Retry sauber ist
+      if(!isRetry && history.length && history[history.length-1].role==='user') history.pop();
+      renderError();
+    }finally{
+      busy=false; if(!primary.hidden) primary.disabled=false;
+    }
+  }
+
+  primary.onclick=function(){ submit(false); };
+  restart.onclick=function(){
+    history=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false;
+    werk.className='werkstueck empty'; werk.textContent='Hier steht dein Text.';
+    lektor.hidden=true; lektor.classList.remove('show','treffer'); lekBody.innerHTML='';
+    ta.disabled=false; ta.value=''; primary.hidden=false; primary.disabled=false; primary.textContent='Hinlegen';
+    restart.hidden=true; hint.textContent='Schreib deinen ersten Versuch und leg ihn hin.';
+  };
+  ta.addEventListener('keydown',function(e){
+    if(e.key==='Enter' && (e.metaKey||e.ctrlKey)){ e.preventDefault(); if(!primary.hidden) submit(false); }
+  });
+})();
+</script>
+</body>
+</html>
