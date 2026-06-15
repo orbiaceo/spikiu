@@ -1,24 +1,54 @@
 // ── SPIKIU · RAUM: SCHREIBEN (LEKTOR) ──────────────────────────────
 // EIN Endpoint für ALLE Zielsprachen. Sprache ist ein FELD (`zielsprache`),
-// kein Datei-Schnitt. Dies ist KEIN Sprach-Split — die alten chat-*-Dateien
-// sind deprecated. Hier wird nur EIN Raum bedient: das Schreiben.
+// kein Datei-Schnitt. KEIN Sprach-Split.
 //
-// Quelle der Wahrheit: spikiu-seele.md + lektor-modus.md werden ZUR LAUFZEIT
-// gelesen (einmal pro Cold Start, im Modul-Scope gecacht). Keine zweite Kopie,
-// kein Build-Schritt. Verfeinerung geschieht nur in den .md-Dateien.
+// Stil bewusst wie api/chat.js: `export default` (Vercel transpiliert das nach
+// CommonJS). KEIN import.meta — das lässt sich nicht transpilieren und war die
+// Absturzursache. Pfade über process.cwd(). Quelle der Wahrheit:
+// spikiu-seele.md + lektor-modus.md, zur Laufzeit gelesen (faul, gecacht).
 
-import { readFileSync } from 'node:fs';
-
-// ── Seele + Raum-Schicht: einmal lesen, dann gecacht ───────────────
-const SEELE = readFileSync(new URL('../spikiu-seele.md', import.meta.url), 'utf8');
-const LEKTOR = readFileSync(new URL('../lektor-modus.md', import.meta.url), 'utf8');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const SPRACHE = { de: 'Deutsch', es: 'Spanisch', en: 'Englisch', el: 'Griechisch' };
 
-// ── Der Daten-Vertrag, den der Lektor IMMER spricht ────────────────
-// Die Oberfläche markiert `zitat` in Gold, setzt `sinn`+`sache` an den Rand,
-// zeigt `form` (+ optional `lautschrift`) mit Übernehmen-Griff, fährt den Loop
-// nach `status`. Form/Regler hängen an `koennen`; lautschrift nur bei fremder Schrift.
+let DOCS = null;
+
+function candidates(filename) {
+  return [
+    join(process.cwd(), filename),
+    join(process.cwd(), 'api', filename)
+  ];
+}
+
+function loadOne(filename) {
+  const tried = candidates(filename);
+  for (const p of tried) {
+    try { return { text: readFileSync(p, 'utf8'), path: p }; } catch (e) {}
+  }
+  return { text: null, tried };
+}
+
+function loadDocs() {
+  if (DOCS) return { ok: true, seele: DOCS.seele, lektor: DOCS.lektor };
+  const s = loadOne('spikiu-seele.md');
+  const l = loadOne('lektor-modus.md');
+  if (s.text && l.text) {
+    DOCS = { seele: s.text, lektor: l.text };
+    return { ok: true, seele: s.text, lektor: l.text };
+  }
+  return {
+    ok: false,
+    error: 'soul_not_found',
+    detail: {
+      seele_gefunden: !!s.text,
+      lektor_gefunden: !!l.text,
+      cwd: process.cwd(),
+      versucht: { seele: s.tried, lektor: l.tried }
+    }
+  };
+}
+
 function vertragsAnweisung(sprache, koennen, fremde_schrift) {
   const reglerRegel = {
     anfang:          'ZEIGEN: Bei "lesen" und "beinah" setzt du "form" auf die fertige Form. Frust schließt das Fenster — im Zweifel zeigen.',
@@ -87,12 +117,19 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return res.status(500).json({ error: 'no_api_key', detail: 'ANTHROPIC_API_KEY fehlt in den Vercel-Umgebungsvariablen.' });
+  }
+  const docs = loadDocs();
+  if (!docs.ok) {
+    return res.status(500).json(docs);
+  }
+
   const { messages, profile, maxTokens } = req.body || {};
   if (!Array.isArray(messages) || !profile) {
     return res.status(400).json({ error: 'Missing messages or profile' });
   }
 
-  // ── Defensive Defaults (Assessment-Paket noch offen — nicht angefasst) ──
   const p = {
     name:          profile.name || '',
     muttersprache: profile.muttersprache || 'de',
@@ -105,12 +142,11 @@ export default async function handler(req, res) {
   };
 
   const system =
-    SEELE + '\n\n' +
-    LEKTOR + '\n\n' +
+    docs.seele + '\n\n' +
+    docs.lektor + '\n\n' +
     laufzeitProfil(p) + '\n' +
     vertragsAnweisung(SPRACHE[p.zielsprache] || 'die Zielsprache', p.koennen, p.fremde_schrift);
 
-  // Leerer Verlauf → Einstieg anstoßen
   const chatMessages = messages.length === 0
     ? [{ role: 'user', content: '[EINSTIEG]' }]
     : messages;
@@ -136,14 +172,12 @@ export default async function handler(req, res) {
 
     const text = (data.content && data.content[0] && data.content[0].text) || '';
     const lektor = parseLektor(text);
-
     return res.status(200).json({ lektor, text });
   } catch (e) {
-    return res.status(502).json({ error: 'lektor_unreachable' });
+    return res.status(502).json({ error: 'anthropic_unreachable', detail: String((e && e.message) || e) });
   }
 }
 
-// Zieht den JSON-Block zwischen den Markern, parst defensiv.
 function parseLektor(text) {
   try {
     const m = text.match(/\[LEKTOR\]([\s\S]*?)\[\/LEKTOR\]/);
@@ -160,7 +194,7 @@ function parseLektor(text) {
       lautschrift:(obj.lautschrift === null || typeof obj.lautschrift === 'string') ? obj.lautschrift : null,
       status:     ['lesen','beinah','treffer','stuck','ziellinie'].includes(obj.status) ? obj.status : 'lesen'
     };
-  } catch {
+  } catch (e) {
     return null;
   }
 }
