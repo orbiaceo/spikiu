@@ -213,10 +213,19 @@ function showError(){
 
 // ── Backend ──────────────────────────────────────────────────────
 async function callGespraech(){
+  // Body bombensicher: messages IMMER Array, profile IMMER vollständig.
+  var safeProfile = {
+    name:          (PROFILE && PROFILE.name) || '',
+    muttersprache: (PROFILE && PROFILE.muttersprache) || 'de',
+    zielsprache:   (PROFILE && PROFILE.zielsprache) || 'es',
+    koennen:       (PROFILE && PROFILE.koennen) || 'anfang',
+    fremde_schrift: !!(PROFILE && PROFILE.fremde_schrift)
+  };
+  var safeMessages = Array.isArray(history) ? history : [];
   var r = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: history, profile: PROFILE, maxTokens: 600 })
+    body: JSON.stringify({ messages: safeMessages, profile: safeProfile, maxTokens: 600 })
   });
   var d = await r.json();
   if (!r.ok) throw new Error('http ' + r.status);
