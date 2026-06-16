@@ -198,12 +198,13 @@ function showTyping(){
 }
 function hideTyping(){ var t = document.getElementById('typing'); if (t) t.remove(); }
 
-function showError(){
+function showError(detail){
   var msg = document.createElement('div');
   msg.className = 'message spikiu'; msg.id = 'errmsg';
   msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
     + '<div style="flex:1;min-width:0;"><div class="bubble spikiu">Spikiu ist gerade nicht erreichbar.'
-    + '<button class="retry-btn" id="retryBtn">Nochmal</button></div></div>';
+    + (detail ? '<br><small style="color:#a87b2e">' + escPlain(detail) + '</small>' : '')
+    + '<br><button class="retry-btn" id="retryBtn">Nochmal</button></div></div>';
   chat.appendChild(msg); chat.scrollTop = chat.scrollHeight;
   document.getElementById('retryBtn').onclick = function(){
     var em = document.getElementById('errmsg'); if (em) em.remove();
@@ -246,19 +247,23 @@ async function callGespraech(){
 async function turn(){
   if (busy) return;
   busy = true; sendBtn.disabled = true; showTyping();
+  var reply;
   try {
-    var reply = await callGespraech();
-    hideTyping();
-    addMessage('spikiu', reply);
+    reply = await callGespraech();          // nur Netzwerk
+  } catch(e){
+    hideTyping(); showError('Netz: ' + ((e && e.message) || e));
+    busy = false; sendBtn.disabled = input.value.trim() === ''; return;
+  }
+  hideTyping();
+  try {
+    addMessage('spikiu', reply);            // nur Anzeige
     history.push({ role: 'assistant', content: reply });
   } catch(e){
-    hideTyping();
-    showError();
-  } finally {
-    busy = false;
-    sendBtn.disabled = input.value.trim() === '';
-    input.focus();
+    showError('Anzeige: ' + ((e && e.message) || e));
   }
+  busy = false;
+  sendBtn.disabled = input.value.trim() === '';
+  input.focus();
 }
 
 function sendMessage(){
