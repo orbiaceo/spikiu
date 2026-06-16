@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 16.06.2026 (Schreiben-Raum live geschaltet)
+Stand: 16.06.2026 (Gesprächs-Raum gebaut — Problem 2 gelöst)
 
 ---
 
@@ -110,7 +110,9 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `spikiu-seele.md` | Kanonische Seele, eingefroren 15.06. | Quelle der Wahrheit | ✅ in dev |
 | `lektor-modus.md` | Schreib-Werkstatt Raum-Prompt, erbt von Seele | koennen+fremde_schrift+aufgabe | ✅ in dev |
 | `api/lektor.js` | **LIVE** — Schreiben-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(), toleranter Parser | [LEKTOR]-Vertrag | ✅ live (commit 6da2832) |
-| `vercel.json` | NEU — `includeFiles: "*.md"` für `api/lektor.js` | — | ✅ live |
+| `vercel.json` | `includeFiles: "*.md"` für `api/lektor.js` UND `api/gespraech.js` | — | ✅ in dev |
+| `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
+| `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ⏳ in dev, nicht live-getestet (braucht Deploy+Key) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
 | `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler | liest spikiu_user.profile defensiv | ✅ live |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
@@ -118,7 +120,8 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `generate-learningpath.js` | Antrieb→Syllabus, page1/page2 | page1/page2 | ⚠️ live prüfen |
 | `dashboard.html` | page1/page2, DE/ES/EN | page1/page2 | ✅ deployed |
 | `nav.js` | Slot-Mode, self-mounting | — | ⏳ noch nicht integriert |
-| `chat.html` | ALT: eigenes Onboarding | — | 🔨 Problem 2 offen |
+| `chat.html` | **NEU GEBAUT (16.06.)** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße) | liest spikiu_user.profile defensiv | ⏳ in dev, Live-Pfad nicht getestet |
+| `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
 | `prototyp-schreibwerkstatt.html` | Attrappe (genehmigt), führte zur Oberfläche | — | Prototyp, optional behalten |
@@ -152,9 +155,11 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    (Rohwert, falscher Schlüssel, verletzt Niemals-Liste). Muss setzen: `koennen` =
    anfang|mittel|fortgeschritten, `fremde_schrift` = true|false (el→true). Plus
    Lifecycle: Versprechen erfassen, Baum-Reset bei neuem Ziel. NICHT mit Räumen mischen.
-3. **Problem 2 — Freies Gespräch:** `chat.html` so umbauen, dass es bei vorhandenem
-   `spikiu_user`-Profil das Onboarding ÜBERSPRINGT und direkt die Companion-Charla
-   öffnet. (Eigener Raum, eigener Endpoint, Sprache als Feld — wie Lektor.)
+3. ~~**Problem 2 — Freies Gespräch:** chat.html überspringt Onboarding bei Profil.~~
+   ✅ GELÖST 16.06. (Konzept→Prototyp→Code, Lektor-Muster). NOCH ZU TESTEN nach Deploy:
+   Opener ohne Frage, Spiegel-Regler nach `koennen`, `el`-Lautschrift, Redirect ohne
+   Profil, Verlauf über mehrere Runden. Deferred (bewusst, v1 schlank): Material-Marker
+   (PDF/Übung), Lektion-aus-Gespräch-Brücke.
 4. `nav.js` in alle App-Seiten (Slot-Mode), alte Navis raus.
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
@@ -170,6 +175,9 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 - Bei Kontext-Kompression: aus Transcript + outputs + dieser Liste rekonstruieren.
   NIE Leonardo nach Dateien fragen.
 - NIE Asterisks für Betonung in HTML — immer `<em>`.
+- **Spikiu (das Capy) IMMER komplett bauen** — nie ohne Ohren, nie ohne Füße, auch
+  nicht als Mini-Icon. Kanonisch ist der volle SVG aus `chat.html` (2 Ohren cy=17,
+  4 Füße cy=66/68). (Leonardo real moniert 16.06.)
 
 ---
 
@@ -213,11 +221,16 @@ das Ganze als `data:`-Modul — die Live-Datei bleibt byte-genau unverändert. D
 existiert ein Muster für künftige Endpoint-Tests, ohne den Stack zu verbiegen.
 NICHT getestet: der handler/Anthropic-Pfad (bräuchte fetch-Mock + Key).
 
-**Nächstes Arbeitspaket:** ein weiterer Raum (Vorschlag: Freies Gespräch / Problem 2,
-weil Endpoint + Oberfläche dort am dringendsten und am meisten genutzt). Reihenfolge
-wie immer: echten dev prüfen → Konzept → (bei Visuellem: Prototyp) → Code. Das
-Lektor-Muster kopieren: ein Endpoint, zielsprache als Feld, Seele via process.cwd(),
-export default, kein import.meta, tolerant parsen.
+**Diese Sitzung (16.06., Teil 2):** Gesprächs-Raum gebaut (Problem 2 gelöst). Voller
+Durchlauf der Reihenfolge: echten dev geprüft → Konzept → Prototyp (genehmigt) → Code.
+Drei neue/umgebaute Dateien (`gespraech-modus.md`, `api/gespraech.js`, neues `chat.html`)
++ `vercel.json`. Bewusste v1-Schlankheit: reine Charla, KEINE Material-Marker, KEINE
+Lektion-Brücke (deferred). Bestätigt: das Lektor-Muster trägt einen zweiten Raum sauber.
+
+**Nächstes Arbeitspaket (Vorschlag):** Gesprächs-Raum nach Deploy live querprüfen
+(Liste in Offene Punkte 3), DANN Assessment-Schuld — denn solange `assessment.html`
+`level:A1/B1` statt `koennen`/`fremde_schrift` schreibt, hängt JEDER Raum an der
+defensiven Brücke. Das ist jetzt der größte gemeinsame Hebel.
 
 **Separat, nicht mischen:** Assessment-Schuld (koennen/fremde_schrift ins Profil).
 

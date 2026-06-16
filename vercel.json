@@ -2,6 +2,9 @@
   "functions": {
     "api/lektor.js": {
       "includeFiles": "*.md"
+    },
+    "api/gespraech.js": {
+      "includeFiles": "*.md"
     }
   }
 }

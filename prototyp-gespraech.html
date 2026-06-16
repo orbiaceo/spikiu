@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Spikiu — Freies Gespräch</title>
+<title>Spikiu — Prototyp: Freies Gespräch (Attrappe)</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,6 +15,10 @@
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
 .app { display:flex; flex-direction:column; height:100dvh; max-width:680px; margin:0 auto; background:var(--white); }
 
+/* ── Attrappe-Banner (nur im Prototyp, fliegt im echten chat.html raus) ── */
+.mock-banner { background:#1c1917; color:#f3f1ee; font-size:0.72rem; text-align:center; padding:0.4rem 1rem; letter-spacing:0.02em; }
+.mock-banner b { color:#9ec9b4; }
+
 header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem 0.875rem; border-bottom:1px solid var(--faint); background:var(--white); flex-shrink:0; }
 .header-left { display:flex; align-items:center; gap:0.65rem; }
 .capy-icon { width:38px; height:38px; flex-shrink:0; }
@@ -23,7 +27,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .back-link { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:var(--mid); text-decoration:none; }
 .back-link:hover { color:var(--ink); }
 
-/* Profil-Chip: sichtbarer Beweis, dass das Profil gelesen & Onboarding übersprungen wurde */
+/* ── Profil-Chip: macht das „Onboarding übersprungen" SICHTBAR ── */
 .profile-bar { display:flex; align-items:center; gap:0.5rem; padding:0.55rem 1.25rem; background:var(--accent2); border-bottom:1px solid var(--faint); flex-shrink:0; font-size:0.8rem; color:var(--accent); }
 .profile-bar .who { font-weight:600; color:var(--ink); }
 .profile-bar .sep { color:var(--warm); }
@@ -51,58 +55,52 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 textarea { flex:1; background:var(--bg2); border:1.5px solid transparent; border-radius:1.2rem; padding:0.75rem 1.1rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); resize:none; outline:none; min-height:48px; max-height:130px; line-height:1.5; transition:border-color 0.2s,background 0.2s; }
 textarea:focus { border-color:var(--accent); background:var(--white); }
 textarea::placeholder { color:var(--mid); font-style:italic; }
-.send-btn { width:46px; height:46px; background:var(--accent); border:none; border-radius:50%; color:var(--white); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.2s; -webkit-tap-highlight-color:transparent; }
+.send-btn { width:46px; height:46px; background:var(--accent); border:none; border-radius:50%; color:var(--white); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
 .send-btn:hover { background:#1f5239; transform:scale(1.05); }
 .send-btn:active { transform:scale(0.95); }
 .send-btn:disabled { opacity:0.35; cursor:not-allowed; transform:none; }
 .send-btn svg { width:20px; height:20px; transform:translateX(1px); }
 
-@media (max-width:480px){ header{padding:0.875rem 1rem 0.75rem;} .chat{padding:1.25rem 1rem;gap:1rem;} .input-area{padding:0.75rem 1rem;padding-bottom:calc(0.75rem + env(safe-area-inset-bottom));} .bubble{max-width:88%;} }
+@media (max-width:480px){ header{padding:0.875rem 1rem 0.75rem;} .chat{padding:1.25rem 1rem;gap:1rem;} .input-area{padding:0.75rem 1rem;} .bubble{max-width:88%;} }
 @media (min-width:680px){ body{background:var(--bg2);} .app{margin:1.5rem auto;height:calc(100dvh - 3rem);border-radius:1.5rem;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.08);} }
 </style>
 </head>
 <body>
 <div class="app">
 
+  <div class="mock-banner">ATTRAPPE · kein API · <b>Onboarding übersprungen</b>, Profil aus <code>spikiu_user</code> gelesen · scripted Antworten</div>
+
   <header>
     <div class="header-left">
       <svg class="capy-icon" viewBox="0 0 80 80" fill="none">
-        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
-        <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
-        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
-        <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
-        <circle cx="38" cy="33" r="1" fill="#6b4226"/>
-        <circle cx="42" cy="33" r="1" fill="#6b4226"/>
-        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
-        <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
-        <circle cx="34" cy="23" r="1.2" fill="white"/>
-        <circle cx="48" cy="23" r="1.2" fill="white"/>
-        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
-        <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
-        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
-        <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
-        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
-        <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
         <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
       </svg>
       <span class="brand-name">Spi<span>k</span>iu</span>
     </div>
-    <a href="dashboard.html" class="back-link">← Dashboard</a>
+    <a href="index.html" class="back-link">← Home</a>
   </header>
 
-  <!-- Profil-Chip: aus spikiu_user gelesen, Onboarding übersprungen -->
+  <!-- Profil-Chip: sichtbarer Beweis, dass das Profil gelesen und Onboarding übersprungen wurde -->
   <div class="profile-bar" id="profileBar">
-    <span class="who" id="pName">…</span>
+    <span class="who" id="pName">Rolf</span>
     <span class="sep">·</span>
-    <span id="pLangs">…</span>
-    <span class="chip" id="pKoennen">…</span>
+    <span id="pLangs">Deutsch → Español</span>
+    <span class="chip" id="pKoennen">Anfänger</span>
   </div>
 
   <div class="chat" id="chat"></div>
 
   <div class="input-area">
     <div class="input-row">
-      <textarea id="userInput" placeholder="Schreib etwas…" rows="1"></textarea>
+      <textarea id="userInput" placeholder="Schreib etwas… (auf Spanisch oder Deutsch)" rows="1"></textarea>
       <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -114,9 +112,16 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 </div>
 
 <script>
-var ENDPOINT = '/api/gespraech';
+// ════════════════════════════════════════════════════════════════════
+//  ATTRAPPE — nur Gefühl, keine Wahrheit. Im echten chat.html ersetzt:
+//   - das Fake-Profil  →  Lesen aus spikiu_user + defensive Brücke (wie schreibwerkstatt)
+//   - SCRIPT[]          →  echte Antworten von /api/gespraech
+// ════════════════════════════════════════════════════════════════════
 
-// ── Spikiu IMMER komplett: Ohren + Füße. Nie ein halber Capy. ──
+// So SIEHT das gelesene Profil später aus (hier hartcodiert als Demo):
+var FAKE_PROFILE = { name:'Rolf', muttersprache:'de', zielsprache:'es', koennen:'anfang', fremde_schrift:false };
+
+// Spikiu IMMER komplett: Ohren + Füße. Nie einen halben Capy bauen.
 var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
   + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
   + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
@@ -128,65 +133,27 @@ var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
   + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
   + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
 
-// ── Profil defensiv lesen (Assessment-Paket noch offen, Brücke wie schreibwerkstatt) ──
-function langCode(v){
-  if(!v) return null; v=(''+v).toLowerCase();
-  if(/^(de|es|en|el)$/.test(v)) return v;
-  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
-  if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
-  if(v.indexOf('engl')>-1) return 'en';
-  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
-  return null;
-}
-function koennenFrom(v){
-  if(!v) return null; v=(''+v).toLowerCase();
-  if(['anfang','mittel','fortgeschritten'].indexOf(v)>-1) return v;
-  if(/a[12]/.test(v)) return 'anfang';
-  if(/b[12]/.test(v)) return 'mittel';
-  if(/c[12]/.test(v)) return 'fortgeschritten';
-  return null;
-}
+// Konserve: die Companion-Stimme, gespiegelt auf koennen=anfang (kurz, eine Frage).
+// KEIN Lob, eine Frage pro Antwort, Sinn zuerst — wie es der Raum-Prompt vorgibt.
+var SCRIPT = [
+  "¡Hola, Rolf! Qué bueno tenerte aquí otra vez. 🐾",
+  "¿Cómo estás hoy?",
+  "Café, claro. ☕ ¿Lo tomas solo o con leche?",
+  "Con leche, suave. ¿Y por la mañana o por la tarde?",
+  "Por la mañana es el mejor momento. ¿Qué haces mientras lo tomas?"
+];
+var step = 0;
 
-// Kein Profil → erst Profil bauen. Redirect auf das Assessment.
-var rawUser = null;
-try { rawUser = JSON.parse(localStorage.getItem('spikiu_user')||'null'); } catch(e){}
-if (!rawUser || !rawUser.profile) {
-  window.location.href = 'assessment.html';
-}
-var stored = (rawUser && rawUser.profile) || {};
-
-var PROFILE = {
-  name:          rawUser && rawUser.name || stored.name || '',
-  muttersprache: stored.muttersprache || langCode(rawUser && rawUser.nativeLang) || 'de',
-  zielsprache:   stored.zielsprache || langCode(stored.targetLang) || 'es',
-  koennen:       stored.koennen || koennenFrom(stored.level) || 'anfang',
-  fremde_schrift: (stored.zielsprache || langCode(stored.targetLang)) === 'el'
-};
-
-function fillProfileBar(p){
-  var L = { de:'Deutsch', es:'Español', en:'English', el:'Ελληνικά' };
-  var K = { anfang:'Anfänger', mittel:'Mittel', fortgeschritten:'Fortgeschritten' };
-  document.getElementById('pName').textContent = (p.name||'').split(' ')[0] || 'Freund';
-  document.getElementById('pLangs').textContent = (L[p.muttersprache]||p.muttersprache) + ' → ' + (L[p.zielsprache]||p.zielsprache);
-  document.getElementById('pKoennen').textContent = K[p.koennen] || p.koennen;
-}
-
-// ── Zustand ──
-var history = [];
-var busy = false;
 var chat = document.getElementById('chat');
 var input = document.getElementById('userInput');
 var sendBtn = document.getElementById('sendBtn');
 
-function esc(s){ return (''+s).replace(/[&<>]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]; }); }
-
-// Leichtes Rendern: erst escapen, dann **fett**/*kursiv* zu Tags (nie rohe Asterisks),
-// Zeilenumbrüche zu <br> (trägt die drei Spuren bei fremder Schrift).
-function render(text){
-  return esc(text)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/\n/g, '<br>');
+function fillProfileBar(p){
+  var L = { de:'Deutsch', es:'Español', en:'English', el:'Ελληνικά' };
+  var K = { anfang:'Anfänger', mittel:'Mittel', fortgeschritten:'Fortgeschritten' };
+  document.getElementById('pName').textContent = p.name || 'Gast';
+  document.getElementById('pLangs').textContent = (L[p.muttersprache]||p.muttersprache) + ' → ' + (L[p.zielsprache]||p.zielsprache);
+  document.getElementById('pKoennen').textContent = K[p.koennen] || p.koennen;
 }
 
 function addMessage(role, text){
@@ -194,9 +161,9 @@ function addMessage(role, text){
   msg.className = 'message ' + role;
   if (role === 'spikiu') {
     msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
-      + '<div style="flex:1;min-width:0;"><div class="bubble spikiu">' + render(text) + '</div></div>';
+      + '<div style="flex:1;min-width:0;"><div class="bubble spikiu">' + text + '</div></div>';
   } else {
-    msg.innerHTML = '<div class="bubble user">' + esc(text).replace(/\n/g,'<br>') + '</div>';
+    msg.innerHTML = '<div class="bubble user">' + text.replace(/</g,'&lt;') + '</div>';
   }
   chat.appendChild(msg);
   chat.scrollTop = chat.scrollHeight;
@@ -211,73 +178,37 @@ function showTyping(){
 }
 function hideTyping(){ var t = document.getElementById('typing'); if (t) t.remove(); }
 
-function maxTokensFor(text){
-  var w = (text||'').trim().split(/\s+/).length;
-  if (w <= 2)  return 150;
-  if (w <= 8)  return 300;
-  if (w <= 25) return 500;
-  return 700;
+function companionReply(){
+  showTyping();
+  setTimeout(function(){
+    hideTyping();
+    addMessage('spikiu', SCRIPT[Math.min(step, SCRIPT.length - 1)]);
+    step++;
+    sendBtn.disabled = input.value.trim() === '';
+    input.focus();
+  }, 850);
 }
 
-async function callAPI(maxTokens){
-  var r = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: history, profile: PROFILE, maxTokens: maxTokens })
-  });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  var d = await r.json();
-  return d.text || '';
-}
-
-async function sendMessage(){
-  if (busy) return;
+function sendMessage(){
   var text = input.value.trim();
   if (!text) return;
-
-  input.value = ''; input.style.height = 'auto'; sendBtn.disabled = true; busy = true;
   addMessage('user', text);
-  history.push({ role: 'user', content: text });
-
-  showTyping();
-  try {
-    var reply = await callAPI(maxTokensFor(text));
-    hideTyping();
-    addMessage('spikiu', reply);
-    history.push({ role: 'assistant', content: reply });
-  } catch(e) {
-    hideTyping();
-    addMessage('spikiu', 'Einen Moment ist etwas dazwischengekommen — schreib es gleich nochmal.');
-  }
-  busy = false;
-  input.focus();
+  input.value = ''; input.style.height = 'auto'; sendBtn.disabled = true;
+  companionReply();
 }
 
 input.addEventListener('input', function(){
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 130) + 'px';
-  sendBtn.disabled = this.value.trim() === '' || busy;
+  sendBtn.disabled = this.value.trim() === '';
 });
 input.addEventListener('keydown', function(e){
-  if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if (this.value.trim() && !busy) sendMessage(); }
+  if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if (this.value.trim()) sendMessage(); }
 });
 
 // ── Einstieg: KEIN Welcome-Screen, KEIN Onboarding. Direkt rein. ──
-async function start(){
-  fillProfileBar(PROFILE);
-  showTyping();
-  try {
-    var opener = await callAPI(400);   // leere history → [EINSTIEG] → Begrüßung ohne Frage
-    hideTyping();
-    addMessage('spikiu', opener);
-    history.push({ role: 'assistant', content: opener });
-  } catch(e) {
-    hideTyping();
-    addMessage('spikiu', 'Schön, dass du da bist. 🐾');
-  }
-  input.focus();
-}
-start();
+fillProfileBar(FAKE_PROFILE);
+companionReply();   // im echten Raum: erster Call mit leeren messages → [EINSTIEG]
 </script>
 </body>
 </html>
