@@ -103,9 +103,14 @@ export default async function handler(req, res) {
     laufzeitProfil(p);
 
   // Leere History → Opener. Das Modell begrüßt warm OHNE Frage (siehe Raum-Prompt).
-  const chatMessages = messages.length === 0
+  let chatMessages = messages.length === 0
     ? [{ role: 'user', content: '[EINSTIEG]' }]
     : messages;
+  // Anthropic verlangt: erste Nachricht hat Rolle 'user'. Beginnt die History
+  // mit der Assistant-Begrüßung (alte Oberfläche im Cache), [EINSTIEG] davor.
+  if (chatMessages[0] && chatMessages[0].role !== 'user') {
+    chatMessages = [{ role: 'user', content: '[EINSTIEG]' }].concat(chatMessages);
+  }
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {

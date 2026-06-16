@@ -270,6 +270,10 @@ async function start(){
     var opener = await callAPI(400);   // leere history → [EINSTIEG] → Begrüßung ohne Frage
     hideTyping();
     addMessage('spikiu', opener);
+    // History MUSS mit einer User-Rolle beginnen (Anthropic-Regel). Den
+    // unsichtbaren [EINSTIEG]-Marker mitspeichern, sonst startet die Folge-
+    // anfrage mit der Assistant-Begrüßung → 400, keine Antwort.
+    history.push({ role: 'user', content: '[EINSTIEG]' });
     history.push({ role: 'assistant', content: opener });
   } catch(e) {
     hideTyping();
