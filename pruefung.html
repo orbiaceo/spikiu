@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu · Profil-Prüfung</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#faf9f7;--white:#fff;--ink:#1c1917;--mid:#78716c;--faint:#e7e5e4;--ok:#2d6a4f;--okbg:#e8f5ee;--bad:#b91c1c;--badbg:#fdeaea;}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;padding:1.5rem 1rem 3rem;}
+.wrap{max-width:560px;margin:0 auto;}
+.head{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.4rem;}
+.capy{width:44px;height:44px;flex-shrink:0;}
+h1{font-family:'Lora',serif;font-size:1.35rem;font-weight:500;}
+.sub{color:var(--mid);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.5;}
+.verdict{border-radius:1rem;padding:1.1rem 1.25rem;margin-bottom:1.5rem;font-size:1.05rem;font-weight:600;line-height:1.5;}
+.verdict.ok{background:var(--okbg);color:var(--ok);}
+.verdict.bad{background:var(--badbg);color:var(--bad);}
+.card{background:var(--white);border:1px solid var(--faint);border-radius:0.8rem;overflow:hidden;margin-bottom:1.5rem;}
+.section-title{font-size:0.78rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--mid);padding:0.9rem 1.1rem 0.4rem;}
+.row{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 1.1rem;border-top:1px solid var(--faint);}
+.row .mark{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:var(--white);}
+.row .mark.ok{background:var(--ok);}
+.row .mark.bad{background:var(--bad);}
+.row .label{flex:1;min-width:0;}
+.row .label .name{font-weight:500;font-size:0.95rem;}
+.row .label .note{font-size:0.8rem;color:var(--mid);}
+.row .val{font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;background:var(--bg);border:1px solid var(--faint);border-radius:100px;padding:0.2rem 0.7rem;white-space:nowrap;}
+.btn{display:inline-block;text-decoration:none;text-align:center;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;padding:0.8rem 1.2rem;border-radius:100px;cursor:pointer;border:none;}
+.btn.primary{background:var(--ok);color:var(--white);}
+.btn.ghost{background:var(--white);color:var(--ink);border:1px solid var(--faint);}
+.actions{display:flex;gap:0.7rem;flex-wrap:wrap;}
+.empty{text-align:center;color:var(--mid);padding:2rem 1rem;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <svg class="capy" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h1>Profil-Prüfung</h1>
+  </div>
+  <p class="sub">Diese Seite liest dein gespeichertes Profil und zeigt, ob das Assessment alle fünf Raum-Felder sauber geschrieben hat. Lauf vorher einmal das Assessment durch — dann öffne diese Seite.</p>
+
+  <div id="out"></div>
+</div>
+
+<script>
+// Werte, die in jedem Feld erlaubt sind. Stimmt der Wert → grün, sonst rot.
+var EXPECT = {
+  muttersprache:  { ok: ['de','es','en','el'],                          note: 'Sprach-Code des Lerners' },
+  zielsprache:    { ok: ['de','es','en','el'],                          note: 'Sprach-Code des Ziels' },
+  koennen:        { ok: ['anfang','mittel','fortgeschritten'],          note: 'interner Regler (nie sichtbar)' },
+  fremde_schrift: { ok: [true,false],                                   note: 'echtes true/false (kein Text)' },
+  etappe:         { ok: ['samen','stamm','krone'],                      note: 'sichtbare Baum-Etappe' }
+};
+// Lernweg-Felder, die NICHT verschwinden dürfen (generate-learningpath liest sie).
+var LERNWEG = ['targetLang','targetLangDisplay','level','motivation','weeklyTime','deadline'];
+
+var out = document.getElementById('out');
+var raw = null;
+try { raw = JSON.parse(localStorage.getItem('spikiu_user') || 'null'); } catch(e){}
+
+function row(name, value, isOk, note){
+  var shown = (value === undefined) ? '— fehlt —'
+            : (typeof value === 'boolean') ? (value ? 'true' : 'false')
+            : (value === '' ? '(leer)' : String(value));
+  return '<div class="row">'
+    + '<div class="mark ' + (isOk?'ok':'bad') + '">' + (isOk?'✓':'✗') + '</div>'
+    + '<div class="label"><div class="name">' + name + '</div>'
+    + (note ? '<div class="note">' + note + '</div>' : '') + '</div>'
+    + '<div class="val">' + shown + '</div></div>';
+}
+
+if (!raw || !raw.profile) {
+  out.innerHTML = '<div class="empty">Noch kein Profil gefunden.<br>Lauf zuerst das Assessment durch.</div>'
+    + '<div class="actions"><a class="btn primary" href="assessment.html">Assessment starten</a></div>';
+} else {
+  var p = raw.profile;
+  var allOk = true;
+  var html = '<div class="card"><div class="section-title">Raum-Vertrag (die 5 neuen Felder)</div>';
+  Object.keys(EXPECT).forEach(function(k){
+    var v = p[k];
+    var ok = EXPECT[k].ok.some(function(a){ return a === v; });
+    if (!ok) allOk = false;
+    html += row(k, v, ok, EXPECT[k].note);
+  });
+  html += '</div>';
+
+  // Lernweg-Felder dürfen nicht verloren gegangen sein.
+  var lernwegOk = true;
+  html += '<div class="card"><div class="section-title">Lernweg-Vertrag (muss erhalten bleiben)</div>';
+  LERNWEG.forEach(function(k){
+    var present = p[k] !== undefined && p[k] !== null && p[k] !== '';
+    // driveText darf leer sein — hier nicht geprüft. level/targetLang etc. müssen da sein.
+    if (!present) lernwegOk = false;
+    html += row(k, p[k], present, '');
+  });
+  html += '</div>';
+
+  var verdict = (allOk && lernwegOk)
+    ? '<div class="verdict ok">✓ Alles sauber. Das Assessment schreibt das Profil kanonisch — die Räume lesen die echten Felder, keine Brücke nötig.</div>'
+    : (allOk
+        ? '<div class="verdict bad">⚠ Raum-Felder ok, aber ein Lernweg-Feld fehlt. Bitte Leonardo zeigen.</div>'
+        : '<div class="verdict bad">✗ Mindestens ein Raum-Feld stimmt nicht. Bitte Leonardo zeigen.</div>');
+
+  out.innerHTML = verdict + html
+    + '<div class="actions">'
+    + '<a class="btn ghost" href="assessment.html">Nochmal durchlaufen</a>'
+    + '<a class="btn ghost" href="chat.html">In den Gesprächs-Raum</a>'
+    + '</div>';
+}
+</script>
+</body>
+</html>
