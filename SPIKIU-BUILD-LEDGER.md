@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 16.06.2026 (Gesprächs-Raum gebaut — Problem 2 gelöst)
+Stand: 17.06.2026 (Gesprächs-Raum LIVE bestätigt — Problem 2 vollständig geschlossen)
 
 ---
 
@@ -112,7 +112,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `api/lektor.js` | **LIVE** — Schreiben-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(), toleranter Parser | [LEKTOR]-Vertrag | ✅ live (commit 6da2832) |
 | `vercel.json` | `includeFiles: "*.md"` für `api/lektor.js` UND `api/gespraech.js` | — | ✅ in dev |
 | `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
-| `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ⏳ in dev, nicht live-getestet (braucht Deploy+Key) |
+| `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ✅ **LIVE bestätigt 17.06.** (spricht perfekt, Opener + Folgeantwort) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
 | `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler | liest spikiu_user.profile defensiv | ✅ live |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
@@ -120,7 +120,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `generate-learningpath.js` | Antrieb→Syllabus, page1/page2 | page1/page2 | ⚠️ live prüfen |
 | `dashboard.html` | page1/page2, DE/ES/EN | page1/page2 | ✅ deployed |
 | `nav.js` | Slot-Mode, self-mounting | — | ⏳ noch nicht integriert |
-| `chat.html` | **NEU GEBAUT (16.06.)** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße) | liest spikiu_user.profile defensiv | ⏳ in dev, Live-Pfad nicht getestet |
+| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst: Verlauf glätten + Backend-Guard (History muss mit User beginnen) | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, mehrere Runden** |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
@@ -160,10 +160,11 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    lesen die neuen Felder automatisch, Brücke ist nur noch Alt-Fallback. NOCH ZU TESTEN:
    neues Assessment durchlaufen → spikiu_user.profile auf die 5 Felder prüfen.
 3. ~~**Problem 2 — Freies Gespräch:** chat.html überspringt Onboarding bei Profil.~~
-   ✅ GELÖST 16.06. (Konzept→Prototyp→Code, Lektor-Muster). NOCH ZU TESTEN nach Deploy:
-   Opener ohne Frage, Spiegel-Regler nach `koennen`, `el`-Lautschrift, Redirect ohne
-   Profil, Verlauf über mehrere Runden. Deferred (bewusst, v1 schlank): Material-Marker
-   (PDF/Übung), Lektion-aus-Gespräch-Brücke.
+   ✅ GELÖST 16.06. + **LIVE BESTÄTIGT 17.06.** (Spikiu grüßt + antwortet, mehrere Runden,
+   spricht perfekt). Bug „antwortet nicht" war: History begann mit Assistant-Gruß → Anthropic
+   lehnt ab. Fix: Verlauf glätten (alternate) + Backend setzt [EINSTIEG] vor, wenn erste
+   Rolle ≠ user. Deferred (bewusst, v1 schlank): Material-Marker (PDF/Übung),
+   Lektion-aus-Gespräch-Brücke. NOCH OFFEN (kein Blocker): el-Lautschrift live querprüfen.
 4. `nav.js` in alle App-Seiten (Slot-Mode), alte Navis raus.
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
@@ -236,9 +237,15 @@ das Profil jetzt kanonisch (koennen/zielsprache/muttersprache/fremde_schrift/eta
 rein additiv, Lernweg-Vertrag unangetastet. Damit lesen ALLE Räume die echten Felder;
 die defensive Brücke ist nur noch Fallback. Kein Prototyp nötig (nicht visuell).
 
-**Nächstes Arbeitspaket (Vorschlag):** Deploy live querprüfen — beide offenen Tests
-(Gesprächs-Raum: Offene Punkte 3; Assessment: neues Profil auf die 5 Felder prüfen).
-DANN nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster,
+**Diese Sitzung (17.06.):** Gesprächs-Raum LIVE bestätigt — Spikiu grüßt und antwortet
+perfekt über mehrere Runden. Damit ist Problem 2 vollständig geschlossen (gebaut +
+deployt + am echten spikiu.com verifiziert). Kein neuer Code nötig: die fünf chat.html-
+Commits (abf41d2…370ba9e) der Vorsitzung hatten den „antwortet nicht"-Bug bereits
+behoben (Verlauf glätten + Backend-[EINSTIEG]-Guard). Nur Ledger nachgezogen.
+
+**Nächstes Arbeitspaket (Vorschlag):** Letzter offener Live-Test — Assessment durchlaufen
+und `spikiu_user.profile` auf die 5 kanonischen Felder prüfen (Offene Punkte 2). DANN
+nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster,
 oder `nav.js` integrieren (Offene Punkte 4).
 
 ### EISERNE REGEL
