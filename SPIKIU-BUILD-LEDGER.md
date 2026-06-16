@@ -116,7 +116,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
 | `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler | liest spikiu_user.profile defensiv | ✅ live |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
-| `assessment.html` | 7 Karten → Profil → Dashboard | profile/roadmapPending | ⚠️ schreibt noch `level:A1/B1` statt `koennen`/`fremde_schrift` |
+| `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ Schuld getilgt, in dev |
 | `generate-learningpath.js` | Antrieb→Syllabus, page1/page2 | page1/page2 | ⚠️ live prüfen |
 | `dashboard.html` | page1/page2, DE/ES/EN | page1/page2 | ✅ deployed |
 | `nav.js` | Slot-Mode, self-mounting | — | ⏳ noch nicht integriert |
@@ -141,7 +141,8 @@ Die alte Form `phases` ist TOT. Niemals zurück.
   EIN Versprechen. CEFR nur intern als Lineal, nie im Frontend. (Details s. unten.)
 - **Zwei Profil-Felder, getrennt:** `etappe` (samen|stamm|krone, sichtbar) vs.
   `koennen` (anfang|mittel|fortgeschritten, intern, steuert Lektor-Regler +
-  Schrift-Brücke + Messlatte). `koennen`/`fremde_schrift` existieren im Profil noch NICHT.
+  Schrift-Brücke + Messlatte). `koennen`/`fremde_schrift`/`zielsprache`/`muttersprache`/
+  `etappe` schreibt `assessment.html` seit 16.06. kanonisch ins Profil.
 
 ---
 
@@ -151,10 +152,13 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    NOCH ZU TESTEN: de/en/el als Feld (ein Endpoint!), el mit Lautschrift-Zeile,
    Können „fortgeschritten" (Form verschwindet), Treffer/Beinah/Stuck-Schleife,
    Ziellinie → Lektion-Angebot.
-2. **Assessment-Schuld (eigenes Paket!):** `assessment.html` schreibt `level:A1/B1`
-   (Rohwert, falscher Schlüssel, verletzt Niemals-Liste). Muss setzen: `koennen` =
-   anfang|mittel|fortgeschritten, `fremde_schrift` = true|false (el→true). Plus
-   Lifecycle: Versprechen erfassen, Baum-Reset bei neuem Ziel. NICHT mit Räumen mischen.
+2. ~~**Assessment-Schuld:** schreibt level:A1/B1 statt koennen/fremde_schrift.~~
+   ✅ GETILGT 16.06. (rein additiv in finish()): koennen (Mappe A0/A1→anfang,
+   A2/B1→mittel, B2→fortgeschritten), zielsprache/muttersprache (Codes), fremde_schrift,
+   etappe:'samen' (Baum-Reset via Voll-Überschreib). Versprechen wird weiter vom Lernweg
+   aus driveText+motivation komponiert (kein neues Feld). Räume NICHT angefasst — sie
+   lesen die neuen Felder automatisch, Brücke ist nur noch Alt-Fallback. NOCH ZU TESTEN:
+   neues Assessment durchlaufen → spikiu_user.profile auf die 5 Felder prüfen.
 3. ~~**Problem 2 — Freies Gespräch:** chat.html überspringt Onboarding bei Profil.~~
    ✅ GELÖST 16.06. (Konzept→Prototyp→Code, Lektor-Muster). NOCH ZU TESTEN nach Deploy:
    Opener ohne Frage, Spiegel-Regler nach `koennen`, `el`-Lautschrift, Redirect ohne
@@ -227,12 +231,15 @@ Drei neue/umgebaute Dateien (`gespraech-modus.md`, `api/gespraech.js`, neues `ch
 + `vercel.json`. Bewusste v1-Schlankheit: reine Charla, KEINE Material-Marker, KEINE
 Lektion-Brücke (deferred). Bestätigt: das Lektor-Muster trägt einen zweiten Raum sauber.
 
-**Nächstes Arbeitspaket (Vorschlag):** Gesprächs-Raum nach Deploy live querprüfen
-(Liste in Offene Punkte 3), DANN Assessment-Schuld — denn solange `assessment.html`
-`level:A1/B1` statt `koennen`/`fremde_schrift` schreibt, hängt JEDER Raum an der
-defensiven Brücke. Das ist jetzt der größte gemeinsame Hebel.
+**Diese Sitzung (16.06., Teil 3):** Assessment-Schuld getilgt — `finish()` schreibt
+das Profil jetzt kanonisch (koennen/zielsprache/muttersprache/fremde_schrift/etappe),
+rein additiv, Lernweg-Vertrag unangetastet. Damit lesen ALLE Räume die echten Felder;
+die defensive Brücke ist nur noch Fallback. Kein Prototyp nötig (nicht visuell).
 
-**Separat, nicht mischen:** Assessment-Schuld (koennen/fremde_schrift ins Profil).
+**Nächstes Arbeitspaket (Vorschlag):** Deploy live querprüfen — beide offenen Tests
+(Gesprächs-Raum: Offene Punkte 3; Assessment: neues Profil auf die 5 Felder prüfen).
+DANN nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster,
+oder `nav.js` integrieren (Offene Punkte 4).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese

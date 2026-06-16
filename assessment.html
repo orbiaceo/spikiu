@@ -595,16 +595,37 @@ function goBack() { if (current > 1) showCard(current - 1); }
 //    Dashboard im Hintergrund — so wartet niemand vor einem leeren Screen. ──
 function finish() {
   const targetDisplay = TARGET_NAMES[data.nativeLang][data.targetLang];
+
+  // ── Kanonische Sprach-Codes (Raum-Vertrag: de|es|en|el) ──
+  const NATIVE_CODE = { Deutsch: 'de', 'Español': 'es', English: 'en' };
+  const TARGET_CODE = { Spanish: 'es', German: 'de', English: 'en', Greek: 'el' };
+  const muttersprache = NATIVE_CODE[data.nativeLang] || 'de';
+  const zielsprache   = TARGET_CODE[data.targetLang] || 'es';
+
+  // ── level → koennen (interner Regler, NIE sichtbar). Mappe deliberat
+  //    nach der Regler-Semantik der Räume; B2 = ringen lassen. ──
+  const KOENNEN = { A0: 'anfang', A1: 'anfang', A2: 'mittel', B1: 'mittel', B2: 'fortgeschritten' };
+  const koennen = KOENNEN[data.level] || 'anfang';
+
   const profile = {
+    // Lernweg-Vertrag (generate-learningpath liest diese — nicht anfassen):
     targetLang: data.targetLang,
     targetLangDisplay: targetDisplay,
     level: data.level,
     motivation: data.motivation,
     driveText: data.driveText || '',
     weeklyTime: data.weeklyTime,
-    deadline: data.deadline
+    deadline: data.deadline,
+    // Kanonischer Raum-Vertrag (Lektor/Gespräch lesen diese direkt, keine Brücke nötig):
+    muttersprache: muttersprache,
+    zielsprache: zielsprache,
+    koennen: koennen,                       // intern, steuert den Regler
+    fremde_schrift: zielsprache === 'el',   // heute immer false, zukunftssicher (el → true)
+    etappe: 'samen'                         // sichtbarer Baum, bei neuem Ziel auf Samen zurück
   };
   try {
+    // Voller Überschreib = Baum-Reset bei neuem Ziel: altes roadmap fällt weg,
+    // roadmapPending erzwingt Neubau, etappe startet bei 'samen'.
     localStorage.setItem('spikiu_user', JSON.stringify({
       name: data.name,
       nativeLang: data.nativeLang,
@@ -614,8 +635,7 @@ function finish() {
       createdAt: new Date().toISOString(),
       lastSeenAt: new Date().toISOString()
     }));
-    const langMap = { Deutsch: 'de', 'Español': 'es', English: 'en' };
-    localStorage.setItem('spikiu_lang', langMap[data.nativeLang] || 'en');
+    localStorage.setItem('spikiu_lang', muttersprache);
   } catch (e) { console.error('Storage failed', e); }
   window.location.href = 'dashboard.html';
 }
