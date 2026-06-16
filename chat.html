@@ -158,7 +158,7 @@ function fillProfileBar(){
 }
 
 // ── Zustand ──────────────────────────────────────────────────────
-var history = [];
+var verlauf = [];
 var busy = false;
 var chat = document.getElementById('chat');
 var input = document.getElementById('userInput');
@@ -231,7 +231,7 @@ async function callGespraech(){
     koennen:       (PROFILE && PROFILE.koennen) || 'anfang',
     fremde_schrift: !!(PROFILE && PROFILE.fremde_schrift)
   };
-  var safeMessages = alternate(Array.isArray(history) ? history : []);
+  var safeMessages = alternate(Array.isArray(verlauf) ? verlauf : []);
   var r = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -243,7 +243,7 @@ async function callGespraech(){
 }
 
 // EINE Runde abrufen: leere History → Opener, sonst Antwort auf den letzten User-Zug.
-// (Bei Retry unverändert wiederholbar, weil der User-Zug schon in history steht.)
+// (Bei Retry unverändert wiederholbar, weil der User-Zug schon in verlauf steht.)
 async function turn(){
   if (busy) return;
   busy = true; sendBtn.disabled = true; showTyping();
@@ -257,7 +257,7 @@ async function turn(){
   hideTyping();
   try {
     addMessage('spikiu', reply);            // nur Anzeige
-    history.push({ role: 'assistant', content: reply });
+    verlauf.push({ role: 'assistant', content: reply });
   } catch(e){
     showError('Anzeige: ' + ((e && e.message) || e));
   }
@@ -272,7 +272,7 @@ function sendMessage(){
   if (!text) return;
   input.value = ''; input.style.height = 'auto'; sendBtn.disabled = true;
   addMessage('user', text);
-  history.push({ role: 'user', content: text });
+  verlauf.push({ role: 'user', content: text });
   turn();
 }
 
@@ -288,7 +288,7 @@ input.addEventListener('keydown', function(e){
 
 // ── Einstieg: kein Welcome-Screen, kein Onboarding. Direkt rein. ──
 fillProfileBar();
-turn();   // history leer → Backend setzt [EINSTIEG] → Opener
+turn();   // verlauf leer → Backend setzt [EINSTIEG] → Opener
 </script>
 </body>
 </html>
