@@ -111,6 +111,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `lektor-modus.md` | Schreib-Werkstatt Raum-Prompt, erbt von Seele | koennen+fremde_schrift+aufgabe | ✅ in dev |
 | `api/lektor.js` | **LIVE** — Schreiben-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(), toleranter Parser | [LEKTOR]-Vertrag | ✅ live (commit 6da2832) |
 | `vercel.json` | NEU — `includeFiles: "*.md"` für `api/lektor.js` | — | ✅ live |
+| `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
 | `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler | liest spikiu_user.profile defensiv | ✅ live |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
 | `assessment.html` | 7 Karten → Profil → Dashboard | profile/roadmapPending | ⚠️ schreibt noch `level:A1/B1` statt `koennen`/`fremde_schrift` |
@@ -203,6 +204,14 @@ package.json + ein laufendes File), DANN Konzept, DANN Code. Snapshot ≠ Wahrhe
 Schreiben-Raum steht und atmet (es/anfang live bestätigt). Die Architektur ist
 gesetzt: ein Endpoint pro Raum, Sprache als Feld, Seele zur Laufzeit, [LEKTOR]-artiger
 Vertrag, toleranter Parser. Dieses Muster ist die Blaupause für jeden weiteren Raum.
+
+**Diese Sitzung (16.06.):** Erster Test im Repo — `api/lektor.parser.test.mjs`
+sichert den toleranten Parser ab, inkl. des gerade-`"`-Klassikers (Post-Mortem 6).
+Lauf: `node --test api/`. Trick gegen die Kein-package.json-Falle: der Test liest
+lektor.js, entfernt die fs/path-Imports, legt parseLektor/normalize frei und lädt
+das Ganze als `data:`-Modul — die Live-Datei bleibt byte-genau unverändert. Damit
+existiert ein Muster für künftige Endpoint-Tests, ohne den Stack zu verbiegen.
+NICHT getestet: der handler/Anthropic-Pfad (bräuchte fetch-Mock + Key).
 
 **Nächstes Arbeitspaket:** ein weiterer Raum (Vorschlag: Freies Gespräch / Problem 2,
 weil Endpoint + Oberfläche dort am dringendsten und am meisten genutzt). Reihenfolge
