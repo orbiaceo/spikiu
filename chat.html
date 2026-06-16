@@ -213,6 +213,15 @@ function showError(){
 
 // ── Backend ──────────────────────────────────────────────────────
 async function callGespraech(){
+  // Verlauf glätten: nie zwei gleiche Rollen hintereinander (sonst lehnt Anthropic ab).
+  function alternate(msgs){
+    var out = [];
+    for (var i=0;i<msgs.length;i++){
+      if (out.length && out[out.length-1].role === msgs[i].role) out[out.length-1] = msgs[i];
+      else out.push(msgs[i]);
+    }
+    return out;
+  }
   // Body bombensicher: messages IMMER Array, profile IMMER vollständig.
   var safeProfile = {
     name:          (PROFILE && PROFILE.name) || '',
@@ -221,7 +230,7 @@ async function callGespraech(){
     koennen:       (PROFILE && PROFILE.koennen) || 'anfang',
     fremde_schrift: !!(PROFILE && PROFILE.fremde_schrift)
   };
-  var safeMessages = Array.isArray(history) ? history : [];
+  var safeMessages = alternate(Array.isArray(history) ? history : []);
   var r = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
