@@ -7,70 +7,67 @@ diese Datei auf „erledigt" setzen._
 ---
 
 ## TITEL
-`_kursiv_`-Brücke in `chat.html` sichtbar als Kursiv rendern.
+Navigation: `nav.js` auf die 4 scrollbaren App-Seiten bringen + „Gym"-Eintrag ins Menü.
 
 ## WARUM
-Im Freien Gespräch (`/api/gespraech`) liefert Spikiu die Muttersprach-Brücke kursiv
-gemeint, aber mit Unterstrichen drumherum, z. B.:
-```
-¡Hola! Qué bueno verte.
-_Hallo! Schön, dich zu sehen._
-```
-Die Render-Funktion `fmt()` in `chat.html` wandelt nur `*so*` in `<em>`, nicht `_so_`.
-Folge: die Unterstriche stehen als Zeichen sichtbar im Text. Soll als echtes Kursiv
-erscheinen, ohne Unterstriche.
+`nav.js` ist die eine Navi-Wahrheit (selbst-montierend, eigene `spk-`-Styles, erkennt
+aktive Seite automatisch, liest Profil). Sie ist noch in keine Seite eingebunden. Dieses
+Paket bringt sie sauber in die 4 scrollbaren Seiten. Die 2 Vollhöhen-Seiten (chat,
+schreibwerkstatt) kommen als EIGENES Paket später — NICHT hier anfassen.
 
-## SCOPE (NUR das)
-- Datei: `chat.html`, Funktion `fmt()`.
-- `_text_` → `<em>text</em>` rendern, analog zur bestehenden `*text*`-Regel.
-- Sonst nichts ändern. Kein anderer Code, keine andere Datei.
+---
 
-## ABNAHME-KRITERIEN (so ist „fertig" definiert)
-1. Eine Spikiu-Zeile wie `_Hallo!_` erscheint im Chat als Hallo! (kursiv), OHNE
-   sichtbare Unterstriche.
-2. Bestehendes `*so*`-Kursiv und `**so**`-Fett funktionieren weiter.
-3. Unterstriche MITTEN in einem Wort (z. B. `el_perro`, Datei-/Variablennamen) werden
-   NICHT zu Kursiv zerschnitten — nur paarweise umschlossene Phrasen.
-4. Kein Unterstrich bleibt als rohes Zeichen sichtbar, wenn er als Paar gemeint war.
-5. Node-Syntaxcheck des Inline-Scripts läuft sauber.
+## TEIL A — nav.js in 4 Seiten einbinden
+Seiten: `dashboard.html`, `books.html`, `sessions.html`, `learnraum.html`.
+
+Pro Seite, chirurgisch (jede Datei ZUERST lesen, dann minimal eingreifen):
+1. Bestehende eigene Kopfzeile/Navigation der Seite ENTFERNEN (oder, wenn sie strukturell
+   gebraucht wird, in einen Slot verwandeln: dem vorhandenen Header `data-spk-nav` geben —
+   dann setzt nav.js Hamburger+Logo dort hinein, statt eine zweite Leiste zu injizieren).
+   Ziel: GENAU EINE Leiste oben, nie zwei.
+2. Vor `</body>` einbinden: `<script src="nav.js" defer></script>`.
+3. Kein Sprachschalter in der App — falls eine dieser Seiten einen hat, raus (Sprache steht fest).
+
+## TEIL B — „Gym"-Eintrag in nav.js
+In `nav.js` (eine Datei, drei kleine Stellen):
+1. **I18N** — Label `gym` in alle drei Sprachen, Wert vorerst überall `"Gym"`
+   (Feature-Name nach Lina; später lokalisierbar).
+2. **ICON** — Eintrag `gym` (Hantel, gleiche Linien-Stil wie die anderen Icons):
+   ```
+   gym: '<rect x="2.5" y="9" width="3" height="6" rx="1"/><rect x="18.5" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="10.5" width="2" height="3" rx="0.5"/><rect x="16.5" y="10.5" width="2" height="3" rx="0.5"/><line x1="7.5" y1="12" x2="16.5" y2="12"/>'
+   ```
+3. **STRUCT** — in der Sektion `main` DIREKT NACH `lessons` einfügen:
+   `{ id: 'gym', disabled: true }`
+   (Vorerst deaktiviert mit „bald"-Badge — kein toter Link, keine 404. Wird später ein
+   echter Link auf den Gym-Raum, wenn wir ihn bauen.)
+
+---
+
+## ABNAHME-KRITERIEN („fertig" ist messbar)
+1. Auf JEDER der 4 Seiten: genau EINE Topbar (Hamburger + Logo), keine Doppelleiste.
+2. Hamburger öffnet den Drawer; Backdrop-Klick und Escape schließen ihn.
+3. Aktive Seite ist markiert: dashboard→Dashboard, books→Bücher, sessions→Live-Begegnungen.
+   (learnraum hat keinen Menüpunkt → keine Markierung, das ist ok.)
+4. Profil-Avatar unten zeigt Initiale + „Gratis".
+5. Der Drawer zeigt unter „Lektionen" einen neuen Punkt **Gym** mit Hantel-Icon und
+   „bald"-Badge; er ist NICHT klickbar.
+6. Das eigene Layout jeder Seite bleibt heil — kein Überlappen, kein doppelter Scrollbalken,
+   Inhalt nicht verdeckt.
+7. UNANGETASTET: `index.html`, `chat.html`, `schreibwerkstatt.html`, alle `cap*-v2.html`.
+8. Node-Syntaxcheck auf `nav.js` läuft sauber; die 4 Seiten laden ohne Konsolenfehler.
+
+## HINWEISE
+- nav.js ist selbst-montierend: Skript-Tag + alte Navi raus genügt.
+- Vollhöhe meiden: sollte eine der 4 Seiten ein `100dvh`-Flex-Layout haben, NICHT die eigene
+  Leiste injizieren lassen (das sprengt das Layout) → Slot-Modus via `data-spk-nav`.
+- VERBOTENE Variablennamen + Naming-Regeln: siehe CLAUDE.md.
+- Nach Lieferung: Leonardo lädt herunter → `cp` → `grep -c` verifizieren → commit → push
+  origin dev → jede Seite cache-frei testen mit `?v=N`.
 
 ## ABNAHME-TEST (kurz)
-Auf der dev-URL `chat.html?v=N` öffnen, „Hola" tippen. Spikius Antwort enthält die
-deutsche Brücke kursiv, ohne Unterstriche.
+dashboard.html?v=N öffnen → Hamburger → Drawer mit Dashboard aktiv und „Gym (bald)" unter
+Lektionen. Dann books / sessions / learnraum durchklicken: je eine Leiste, Drawer geht.
 
 ---
 
-## ✅ STATUS: ERLEDIGT am 17.06.2026
-
-Umgesetzt in `chat.html` → `fmt()`, eine Zeile nach der `*kursiv*`-Regel:
-```js
-s = s.replace(/(^|[^\w])_(?=\S)([^_\n]*?\S)_(?!\w)/g,'$1<em>$2</em>');
-```
-Die Regel greift nur paarweise an Wortgrenzen: das öffnende `_` muss am Zeilen-/
-Stringanfang oder hinter einem Nicht-Wort-Zeichen stehen, das schließende `_` darf
-kein Wort-Zeichen direkt folgen. Damit bleibt `el_perro` / `datei_name` unberührt
-(Kriterium 3), mehrzeilige Brücken funktionieren (das `\n` vor `_` zählt als Grenze,
-weil die Regel VOR `\n`→`<br>` läuft).
-
-Verifiziert: alle 5 Kriterien per Node-Funktionstest grün, Inline-Script syntaxgeprüft.
-**LIVE BESTÄTIGT 17.06.** auf dem dev-Deploy — Brücke erscheint kursiv (Spikiu setzt sie
-in Klammern), keine sichtbaren Unterstriche. Endpoint-Gegenprobe (koennen=anfang) zeigte
-die Brücke als `_…_`, fmt() rendert sie zu `<em>`. Committet + nach `origin/dev` gepusht.
-
-_Kein offener Auftrag mehr._
-
----
-
-## NACHTRAG 17.06. — Schreiben-Raum-Cross-Check (selbst gewählt, kein Design-Auftrag)
-
-Nach Abschluss oben: Schreiben-Raum querprüft (Offene Punkte 1, Backend-Teil).
-- **Regler** am dev-Endpoint bestätigt: `anfang`→`form` gesetzt, `fortgeschritten`→`form:null`.
-- **Fremde Schrift (el)** bestätigt: `lautschrift` gesetzt, drei Spuren.
-- **Handwerks-Fix:** verbotene Variable `history` → `verlauf` in `schreibwerkstatt.html`
-  (window.history-Falle vom 16.06.). node --check grün, gepusht.
-- **FRAGE AN DESIGN:** sichtbarer `koennen`-Wähler in der Oberfläche vs. Vertrag
-  „koennen INTERN, nie sichtbar" — nicht angefasst, Entscheidung liegt bei Design.
-- **Noch offen (kein Auftrag):** Schreiben-Raum in der ECHTEN Oberfläche durchklicken
-  (Treffer/Beinah/Stuck/Ziellinie, de/en).
-
-_Kein offener Design-Auftrag. Nächstes Paket wählt Leonardo._
+_Status: OFFEN_

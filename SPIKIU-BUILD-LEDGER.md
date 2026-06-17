@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 17.06.2026 (Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt)
+Stand: 17.06.2026 (Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -272,13 +272,28 @@ zwar geshadowt, aber Eiserne-Regel-Verstoß + Landmine). node --check grün, gep
 `_kursiv_`-Befund (Raum rendert Felder via esc(), kein Markdown). Offen gelassen (Design):
 sichtbarer `koennen`-Wähler vs. „intern, nie sichtbar" → FRAGE AN DESIGN im Offene-Punkte-1.
 
-**Nächstes Arbeitspaket (Vorschlag):** Reiner Tisch — alle Schulden getilgt, Schreiben-Raum
-Backend-querprüft. Wahl:
-(a) nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster —
-braucht zuerst die `*-modus.md` aus dem Design-Gespräch (WAS entscheidet Design),
-(b) `nav.js` integrieren (Offene Punkte 4),
-(c) Schreiben-Raum in der ECHTEN Oberfläche durchspielen (Treffer/Beinah/Stuck/Ziellinie,
-de/en) — der Cross-Check deckte nur den Backend-Vertrag ab, nicht die Klick-Schleife.
+**Diese Sitzung (17.06., Teil 5 — DESIGN, claude.ai):** Design-Gespräch, kein Code.
+Entschieden + entworfen: das nav-Paket. `nav.js` (selbst-montierend, spk-Styles, aktive Seite
+auto) kommt auf die 4 SCROLLBAREN Seiten (dashboard, books, sessions, learnraum) — alte Navis
+raus, genau eine Leiste; Prototyp `prototyp-nav.html` genehmigt. Vollhöhen-Seiten (chat,
+schreibwerkstatt) bewusst als FOLGE-Paket (100dvh heikel, eigener Prototyp). Reader-Kapitel
+bleiben immersiv (KISS, kein Drawer). Auftrag geschrieben (`AKTUELLER-AUFTRAG.md`).
+
+**NEUE VISION — Gym (geplanter dritter Raum, Idee von Testerin Lina, 16, München, lernt Spanisch):**
+Der STILLE Zwilling zum Sprechen — Wortschatz-/Gedächtnis-Training für unterwegs (U-Bahn),
+wenn man nicht reden kann/will. Gespeist NUR aus dem Companion: Wörter, bei denen der Lerner im
+Gespräch wackelte oder die er für eine Prüfung bestellt hat. NICHT generischer Vokabeltrainer
+(sonst Duolingo); „gewollt trainiert", kein Streak-Zwang. Verschiedene Übungsformate, Spaced
+Repetition (Phase 2). HEUTE im Auftrag: nur der Nav-Knopf („Gym", Hantel-Icon, unter Lektionen,
+„bald"-Badge). Inhalt als eigener Raum später designen (Lektor-Muster).
+
+**Aktuelles Arbeitspaket (in `AKTUELLER-AUFTRAG.md`):** nav.js auf die 4 scrollbaren Seiten
++ Gym-Knopf ins Menü. DANACH, je eigenes Paket:
+(a) nav auf Vollhöhen-Seiten `chat.html` + `schreibwerkstatt.html` (Slot-Modus, eigener Prototyp),
+(b) Schreiben-Raum in der ECHTEN Oberfläche durchklicken (Treffer/Beinah/Stuck/Ziellinie, de/en —
+der Cross-Check deckte nur den Backend-Vertrag ab, nicht die Klick-Schleife),
+(c) nächster Raum (Mündlich / Hörverständnis / Lesen) nach Lektor-Muster — braucht zuerst die
+`*-modus.md` aus dem Design-Gespräch (WAS entscheidet Design).
 DEV bleibt die einzige Live-Umgebung
 (spikiu.com ist NICHT der Deploy — alles läuft auf spikiu-git-dev-orbiaceos-projects.vercel.app).
 
