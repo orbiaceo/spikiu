@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 17.06.2026 (Gesprächs-Raum LIVE bestätigt — Problem 2 vollständig geschlossen)
+Stand: 17.06.2026 (Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt)
 
 ---
 
@@ -116,7 +116,8 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
 | `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler | liest spikiu_user.profile defensiv | ✅ live |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
-| `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ Schuld getilgt, in dev |
+| `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ **LIVE bestätigt 17.06.** (alle 5 Felder + Lernweg-Felder grün in pruefung.html) |
+| `pruefung.html` | NEU (17.06.) — sichtbare Profil-Verifikation ohne Konsole. Liest spikiu_user.profile, grün/rot je Feld (5 Raum-Felder + Lernweg-Felder). Diagnose-Werkzeug, kein Produkt. Capy komplett | liest spikiu_user.profile | ✅ in dev, Diagnose behalten |
 | `generate-learningpath.js` | Antrieb→Syllabus, page1/page2 | page1/page2 | ⚠️ live prüfen |
 | `dashboard.html` | page1/page2, DE/ES/EN | page1/page2 | ✅ deployed |
 | `nav.js` | Slot-Mode, self-mounting | — | ⏳ noch nicht integriert |
@@ -153,12 +154,12 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    Können „fortgeschritten" (Form verschwindet), Treffer/Beinah/Stuck-Schleife,
    Ziellinie → Lektion-Angebot.
 2. ~~**Assessment-Schuld:** schreibt level:A1/B1 statt koennen/fremde_schrift.~~
-   ✅ GETILGT 16.06. (rein additiv in finish()): koennen (Mappe A0/A1→anfang,
-   A2/B1→mittel, B2→fortgeschritten), zielsprache/muttersprache (Codes), fremde_schrift,
-   etappe:'samen' (Baum-Reset via Voll-Überschreib). Versprechen wird weiter vom Lernweg
-   aus driveText+motivation komponiert (kein neues Feld). Räume NICHT angefasst — sie
-   lesen die neuen Felder automatisch, Brücke ist nur noch Alt-Fallback. NOCH ZU TESTEN:
-   neues Assessment durchlaufen → spikiu_user.profile auf die 5 Felder prüfen.
+   ✅ GETILGT 16.06. + **LIVE BESTÄTIGT 17.06.** — Assessment durchlaufen, pruefung.html
+   zeigt alle 5 Raum-Felder UND die Lernweg-Felder grün. finish() (rein additiv): koennen
+   (Mappe A0/A1→anfang, A2/B1→mittel, B2→fortgeschritten), zielsprache/muttersprache (Codes),
+   fremde_schrift, etappe:'samen' (Baum-Reset via Voll-Überschreib). Versprechen wird weiter
+   vom Lernweg aus driveText+motivation komponiert. Räume NICHT angefasst — lesen die echten
+   Felder, Brücke ist nur noch Alt-Fallback.
 3. ~~**Problem 2 — Freies Gespräch:** chat.html überspringt Onboarding bei Profil.~~
    ✅ GELÖST 16.06. + **LIVE BESTÄTIGT 17.06.** (Spikiu grüßt + antwortet, mehrere Runden,
    spricht perfekt). Bug „antwortet nicht" war: History begann mit Assistant-Gruß → Anthropic
@@ -243,10 +244,16 @@ deployt + am echten spikiu.com verifiziert). Kein neuer Code nötig: die fünf c
 Commits (abf41d2…370ba9e) der Vorsitzung hatten den „antwortet nicht"-Bug bereits
 behoben (Verlauf glätten + Backend-[EINSTIEG]-Guard). Nur Ledger nachgezogen.
 
-**Nächstes Arbeitspaket (Vorschlag):** Letzter offener Live-Test — Assessment durchlaufen
-und `spikiu_user.profile` auf die 5 kanonischen Felder prüfen (Offene Punkte 2). DANN
-nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster,
-oder `nav.js` integrieren (Offene Punkte 4).
+**Diese Sitzung (17.06., Teil 2):** Assessment-Schuld LIVE bestätigt. Neues Werkzeug
+`pruefung.html` (sichtbare Profil-Verifikation, keine Konsole — Leonardo kämpft mit
+DevTools) zeigt alle 5 Raum-Felder + Lernweg-Felder grün. Damit sind ALLE Live-Tests
+der 16.06.-Bauten abgehakt: Gesprächs-Raum ✅, Assessment ✅, Schreiben-Raum (es/anfang) ✅.
+
+**Nächstes Arbeitspaket (Vorschlag):** Reiner Tisch — alle Schulden getilgt. Wahl:
+(a) nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster,
+(b) `nav.js` integrieren (Offene Punkte 4), oder (c) Schreiben-Raum-Querprüfung
+de/en/el + Können-Regler (Offene Punkte 1). DEV bleibt die einzige Live-Umgebung
+(spikiu.com ist NICHT der Deploy — alles läuft auf spikiu-git-dev-orbiaceos-projects.vercel.app).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
