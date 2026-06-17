@@ -53,6 +53,8 @@ kein Wort-Zeichen direkt folgen. Damit bleibt `el_perro` / `datei_name` unberüh
 weil die Regel VOR `\n`→`<br>` läuft).
 
 Verifiziert: alle 5 Kriterien per Node-Funktionstest grün, Inline-Script syntaxgeprüft.
-Committet + nach `origin/dev` gepusht. Live testbar: `…vercel.app/chat.html?v=N`.
+**LIVE BESTÄTIGT 17.06.** auf dem dev-Deploy — Brücke erscheint kursiv (Spikiu setzt sie
+in Klammern), keine sichtbaren Unterstriche. Endpoint-Gegenprobe (koennen=anfang) zeigte
+die Brücke als `_…_`, fmt() rendert sie zu `<em>`. Committet + nach `origin/dev` gepusht.
 
 _Kein offener Auftrag mehr._
