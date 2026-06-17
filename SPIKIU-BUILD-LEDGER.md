@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 18.06.2026 (nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
+Stand: 18.06.2026 (nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -224,6 +224,17 @@ Damit sich keiner davon wiederholt. Reihenfolge wie sie passierten:
 
 **Die eine Meta-Lehre über allen:** ERST den echten `dev` anschauen (ls-tree +
 package.json + ein laufendes File), DANN Konzept, DANN Code. Snapshot ≠ Wahrheit.
+
+---
+
+**Diese Sitzung (18.06., Teil 2 — DESIGN, claude.ai):** Design-Gespräch, kein Code.
+Leonardo sah: alle 4 scrollbaren Seiten haben den Hamburger, nur `chat.html` nicht (war
+bewusst Paket B). Entschieden: chat.html bekommt nav per SLOT-MODUS (Vollhöhe/100dvh →
+`data-spk-nav` an die vorhandene Kopfzeile, KEINE zweite Leiste; „← Dashboard" → Drawer).
+`schreibwerkstatt.html` bleibt vorerst außen vor (Test-Wähler Sprache/Können im Header →
+eigene Entscheidung später). Auftrag geschrieben (`AKTUELLER-AUFTRAG.md`). ZUSÄTZLICH:
+`CLAUDE.md` um den Start-Auslöser ergänzt — „Beginnen wir!" (o. ä.) = sofort Ledger+Auftrag
+lesen und erledigen, nicht nachfragen.
 
 ---
 

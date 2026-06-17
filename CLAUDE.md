@@ -6,6 +6,14 @@ Aufgabe in **AKTUELLER-AUFTRAG.md**._
 
 ---
 
+## START-AUSLÖSER
+Wenn Leonardo „Beginnen wir!" (oder „Los geht's", „leg los", „mach den Auftrag") sagt,
+ist das das Signal: führe sofort die Liste unter „BEVOR DU IRGENDETWAS TUST" aus
+(Ledger + Auftrag lesen, echten dev prüfen) und erledige den `AKTUELLER-AUFTRAG.md`
+vollständig nach den Regeln. Nicht nachfragen, nicht raten.
+
+---
+
 ## WER DU BIST
 Du bist der **Implementierer** von Spikiu am Terminal. Du schreibst Code.
 Du erfindest NICHTS über Design, Ton oder Architektur — das steht in den Docs,
