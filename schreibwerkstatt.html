@@ -183,7 +183,7 @@
   }
 
   // ── Zustand ──────────────────────────────────────────────────────
-  var history=[], lastRaw='', currentText='', step='einstieg', busy=false;
+  var verlauf=[], lastRaw='', currentText='', step='einstieg', busy=false;
 
   function esc(s){return s.replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
 
@@ -248,7 +248,7 @@
 
   async function callLektor(){
     var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:history, profile:profile(), maxTokens:600})});
+      body:JSON.stringify({messages:verlauf, profile:profile(), maxTokens:600})});
     var d=await r.json();
     if(!r.ok) throw new Error('http');
     return d;
@@ -261,7 +261,7 @@
 
     if(!isRetry){
       currentText = text;
-      history.push({role:'user', content:text});
+      verlauf.push({role:'user', content:text});
     }
     standText(currentText, null);   // Text steht, noch ohne Markierung
     busy=true; primary.disabled=true; showThinking();
@@ -271,7 +271,7 @@
       var l=d.lektor || {sinn:(d.text||'').slice(0,200), zitat:'', sache:'', form:null, lautschrift:null, status:'lesen'};
       lastRaw = d.text || JSON.stringify(l);
       // letzten Lektor-Zug in den Verlauf, damit der nächste Aufruf Kontext hat
-      history.push({role:'assistant', content:lastRaw});
+      verlauf.push({role:'assistant', content:lastRaw});
 
       standText(currentText, l);
       lektor.classList.remove('show');
@@ -288,7 +288,7 @@
       }
     }catch(e){
       // fehlgeschlagenen user-Push zurücknehmen, damit Retry sauber ist
-      if(!isRetry && history.length && history[history.length-1].role==='user') history.pop();
+      if(!isRetry && verlauf.length && verlauf[verlauf.length-1].role==='user') verlauf.pop();
       renderError();
     }finally{
       busy=false; if(!primary.hidden) primary.disabled=false;
@@ -297,7 +297,7 @@
 
   primary.onclick=function(){ submit(false); };
   restart.onclick=function(){
-    history=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false;
+    verlauf=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false;
     werk.className='werkstueck empty'; werk.textContent='Hier steht dein Text.';
     lektor.hidden=true; lektor.classList.remove('show','treffer'); lekBody.innerHTML='';
     ta.disabled=false; ta.value=''; primary.hidden=false; primary.disabled=false; primary.textContent='Hinlegen';
