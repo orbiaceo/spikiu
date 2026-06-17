@@ -70,4 +70,11 @@ Lektionen. Dann books / sessions / learnraum durchklicken: je eine Leiste, Drawe
 
 ---
 
-_Status: OFFEN_
+_Status: ERLEDIGT am 18.06.2026 — kein offener Auftrag._
+
+Geliefert: nav.js mit Gym-Eintrag (I18N/ICON/STRUCT, „bald"-Badge) + auf die 4 scrollbaren Seiten
+(`dashboard.html`, `books.html`, `sessions.html`, `learnraum.html`) gebracht, seiteneigene Navis raus,
+genau eine Leiste. Inject-Modus (keine 100dvh-Seite dabei → kein Slot nötig). UNANGETASTET: `index.html`,
+`chat.html`, `schreibwerkstatt.html`, alle `cap*-v2.html`. Node-Syntax + Inline-Scripts + Struktur grün.
+OFFEN (nicht Teil dieses Auftrags, eigenes Paket): Live-Klick-Test auf dev; nav auf die 2 Vollhöhen-Seiten.
+Details im SPIKIU-BUILD-LEDGER.md.

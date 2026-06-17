@@ -58,13 +58,13 @@
   const I18N = {
     Deutsch: { main: 'HAUPT', progress: 'FORTSCHRITT', account: 'KONTO',
       dashboard: 'Dashboard', talk: 'Jetzt sprechen', books: 'Bücher', sessions: 'Live-Begegnungen',
-      lessons: 'Lektionen', path: 'Lernweg', verlauf: 'Verlauf', settings: 'Einstellungen', soon: 'bald', free: 'Gratis', menu: 'Menü' },
+      lessons: 'Lektionen', gym: 'Gym', path: 'Lernweg', verlauf: 'Verlauf', settings: 'Einstellungen', soon: 'bald', free: 'Gratis', menu: 'Menü' },
     'Español': { main: 'PRINCIPAL', progress: 'PROGRESO', account: 'CUENTA',
       dashboard: 'Dashboard', talk: 'Hablar ahora', books: 'Libros', sessions: 'Sesiones en vivo',
-      lessons: 'Lecciones', path: 'Ruta', verlauf: 'Progreso', settings: 'Ajustes', soon: 'pronto', free: 'Gratis', menu: 'Menú' },
+      lessons: 'Lecciones', gym: 'Gym', path: 'Ruta', verlauf: 'Progreso', settings: 'Ajustes', soon: 'pronto', free: 'Gratis', menu: 'Menú' },
     English: { main: 'MAIN', progress: 'PROGRESS', account: 'ACCOUNT',
       dashboard: 'Dashboard', talk: 'Talk now', books: 'Books', sessions: 'Live Sessions',
-      lessons: 'Lessons', path: 'Path', verlauf: 'Progress', settings: 'Settings', soon: 'soon', free: 'Free', menu: 'Menu' }
+      lessons: 'Lessons', gym: 'Gym', path: 'Path', verlauf: 'Progress', settings: 'Settings', soon: 'soon', free: 'Free', menu: 'Menu' }
   };
 
   // ── Icons (schlichte Linien-SVGs) ──────────────────────────────
@@ -74,6 +74,7 @@
     books: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 1 2-2h13"/>',
     sessions: '<rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/>',
     lessons: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+    gym: '<rect x="2.5" y="9" width="3" height="6" rx="1"/><rect x="18.5" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="10.5" width="2" height="3" rx="0.5"/><rect x="16.5" y="10.5" width="2" height="3" rx="0.5"/><line x1="7.5" y1="12" x2="16.5" y2="12"/>',
     path: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6"/>',
     verlauf: '<path d="M12 2v8"/><path d="M12 10c-3 0-5-2-5-5"/><path d="M12 10c3 0 5-2 5-5"/><path d="M9 22h6l-1-8h-4z"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H4.5a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 6 9.4l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 11 4.6V4.5a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 2.82 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 11H21a2 2 0 0 1 0 4h-.09z"/>'
@@ -90,7 +91,8 @@
       { id: 'talk', href: 'chat.html' },
       { id: 'books', href: 'books.html' },
       { id: 'sessions', href: 'sessions.html', hideIfTargetEN: true },
-      { id: 'lessons', href: 'dashboard.html#lektionen' }
+      { id: 'lessons', href: 'dashboard.html#lektionen' },
+      { id: 'gym', disabled: true }
     ]},
     { sec: 'progress', items: [
       { id: 'path', href: 'dashboard.html#lernweg' },

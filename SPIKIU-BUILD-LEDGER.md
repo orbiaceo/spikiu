@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 17.06.2026 (Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
+Stand: 18.06.2026 (nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -119,8 +119,11 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ **LIVE bestätigt 17.06.** (alle 5 Felder + Lernweg-Felder grün in pruefung.html) |
 | `pruefung.html` | NEU (17.06.) — sichtbare Profil-Verifikation ohne Konsole. Liest spikiu_user.profile, grün/rot je Feld (5 Raum-Felder + Lernweg-Felder). Diagnose-Werkzeug, kein Produkt. Capy komplett | liest spikiu_user.profile | ✅ in dev, Diagnose behalten |
 | `generate-learningpath.js` | Antrieb→Syllabus, page1/page2 | page1/page2 | ⚠️ live prüfen |
-| `dashboard.html` | page1/page2, DE/ES/EN | page1/page2 | ✅ deployed |
-| `nav.js` | Slot-Mode, self-mounting | — | ⏳ noch nicht integriert |
+| `dashboard.html` | page1/page2, DE/ES/EN. **18.06.: eigene Desktop-Sidebar + Mobile-Header + Drawer-JS ENTFERNT, `.app`-Grid → einspaltig, `.main` zentriert; nav.js eingebunden.** Tote sidebar-avatar/-name-JS raus | page1/page2 | ✅ in dev |
+| `books.html` | Kapitel-Liste DE/ES, liest Profil. **18.06.: UI-Sprachschalter (`lang-bar`) + eigene `<nav>` ENTFERNT; nav.js eingebunden. `setLang()` bleibt (setzt Sprache aus Profil, leerer lang-btn-Loop harmlos)** | — | ✅ in dev |
+| `sessions.html` | Buchungs-Seite. **18.06.: eigene Desktop-Sidebar + Mobile-Header + Drawer-JS ENTFERNT, `.app`-Grid → einspaltig, `.main` zentriert; nav.js eingebunden** | — | ✅ in dev |
+| `learnraum.html` | Lernraum aus `spikiu_learnpath` (Empty-State → chat.html). **18.06.: nav.js eingebunden (hatte keine eigene Navi)** | — | ✅ in dev |
+| `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>` | — | ✅ in dev (Inject-Modus, kein data-spk-nav nötig) |
 | `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
@@ -173,7 +176,11 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    lehnt ab. Fix: Verlauf glätten (alternate) + Backend setzt [EINSTIEG] vor, wenn erste
    Rolle ≠ user. Deferred (bewusst, v1 schlank): Material-Marker (PDF/Übung),
    Lektion-aus-Gespräch-Brücke. NOCH OFFEN (kein Blocker): el-Lautschrift live querprüfen.
-4. `nav.js` in alle App-Seiten (Slot-Mode), alte Navis raus.
+4. ~~`nav.js` in alle App-Seiten, alte Navis raus.~~ ✅ TEIL ERLEDIGT 18.06.: die 4 SCROLLBAREN
+   Seiten (dashboard, books, sessions, learnraum) tragen jetzt nav.js, alte Navis raus, genau eine
+   Leiste. Gym-Knopf live (disabled, „bald"). NOCH OFFEN als eigenes Paket: die 2 VOLLHÖHEN-Seiten
+   `chat.html` + `schreibwerkstatt.html` (Slot-Modus via `data-spk-nav`, eigener Prototyp — 100dvh heikel).
+   NOCH NICHT live geklickt: Drawer/aktive Seite/Gym-Badge in der echten Oberfläche (nur Node-Syntax + Struktur grün).
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
 
@@ -296,6 +303,23 @@ der Cross-Check deckte nur den Backend-Vertrag ab, nicht die Klick-Schleife),
 `*-modus.md` aus dem Design-Gespräch (WAS entscheidet Design).
 DEV bleibt die einzige Live-Umgebung
 (spikiu.com ist NICHT der Deploy — alles läuft auf spikiu-git-dev-orbiaceos-projects.vercel.app).
+
+**Diese Sitzung (18.06.):** nav-Paket Teil A+B erledigt (Auftrag aus `AKTUELLER-AUFTRAG.md`).
+nav.js bekam den Gym-Eintrag (I18N de/es/en = „Gym", Hantel-ICON, STRUCT `{id:'gym',disabled:true}`
+direkt nach `lessons` → „bald"-Badge, nicht klickbar). nav.js auf die 4 scrollbaren Seiten gebracht,
+jeweils die SEITENEIGENE Navi entfernt → genau eine Leiste:
+- `dashboard.html` + `sessions.html`: hatten ein Grid-Layout (Desktop-Sidebar 240px + Mobile-Header +
+  Drawer-JS). Beides raus, `.app`-Grid → `min-height:100vh` einspaltig, `.main` mit `margin:0 auto`
+  zentriert. In dashboard zusätzlich die toten `sidebar-avatar/-name`-JS-Zeilen entfernt (sonst
+  null.textContent → Konsolenfehler). nav.js liefert Avatar/Name/„Gratis" jetzt aus dem Profil.
+- `books.html`: UI-Sprachschalter (`lang-bar`) + eigene `<nav>` raus (Sprache steht fest). `setLang()`
+  bleibt (setzt Sprache aus Profil; der `.lang-btn`-Loop läuft jetzt leer, harmlos).
+- `learnraum.html`: hatte keine eigene Navi → nur `<script src="nav.js" defer>` ergänzt.
+Inject-Modus reicht überall (keine der 4 ist ein 100dvh-Flex-Layout → kein `data-spk-nav`-Slot nötig).
+Abnahme: `node --check nav.js` grün; alle 4 Inline-Scripts via `vm.Script` grün; Tag-Balance/Struktur
+geprüft (0 aside, main paarig, kein mobile-header-MARKUP mehr — nur tote CSS-Regeln, harmlos).
+NICHT live geklickt (Vercel) — nächster Schritt: dashboard.html?v=N → Hamburger → Drawer, dann books/
+sessions/learnraum durch. Vollhöhen-Seiten (chat, schreibwerkstatt) bewusst NICHT angefasst (eigenes Paket).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
