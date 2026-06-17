@@ -114,7 +114,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
 | `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ✅ **LIVE bestätigt 17.06.** (spricht perfekt, Opener + Folgeantwort) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
-| `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler | liest spikiu_user.profile defensiv | ✅ live |
+| `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler. **17.06.: verbotene Variable `history` → `verlauf` (window.history-Falle vom 16.06., im IIFE latent). Cross-Check grün.** | liest spikiu_user.profile defensiv | ✅ live (Fix gepusht origin/dev) |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
 | `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ **LIVE bestätigt 17.06.** (alle 5 Felder + Lernweg-Felder grün in pruefung.html) |
 | `pruefung.html` | NEU (17.06.) — sichtbare Profil-Verifikation ohne Konsole. Liest spikiu_user.profile, grün/rot je Feld (5 Raum-Felder + Lernweg-Felder). Diagnose-Werkzeug, kein Produkt. Capy komplett | liest spikiu_user.profile | ✅ in dev, Diagnose behalten |
@@ -149,10 +149,17 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 
 ## OFFENE PUNKTE
 
-1. **Schreiben-Raum querprüfen:** es/anfang ist in der Oberfläche bestätigt live.
-   NOCH ZU TESTEN: de/en/el als Feld (ein Endpoint!), el mit Lautschrift-Zeile,
-   Können „fortgeschritten" (Form verschwindet), Treffer/Beinah/Stuck-Schleife,
-   Ziellinie → Lektion-Angebot.
+1. **Schreiben-Raum querprüfen:** ✅ BACKEND-CROSS-CHECK 17.06. am dev-Endpoint:
+   Regler greift hart (`anfang`→`form` gesetzt „Yo fui…"; `fortgeschritten`→`form:null`,
+   ringen lassen) und el/`fremde_schrift`→`lautschrift` gesetzt (drei Spuren: form/
+   lautschrift/sinn, „Egó íme kalá, efcharistó."). Render-Parität geprüft: Oberfläche
+   zeigt strukturierte Felder via `esc()`, kein Markdown — KEIN `_kursiv_`-Befund hier
+   (anders als chat.html; Lektor-Vertrag steuert von Markdown weg). NOCH ZU TESTEN (in
+   der ECHTEN Oberfläche, nicht nur Endpoint): Treffer/Beinah/Stuck-Schleife, Ziellinie
+   → Lektion-Angebot, de/en als Feld.
+   FRAGE AN DESIGN: Die Oberfläche zeigt `koennen` als sichtbaren Wähler („Können:
+   Anfang/Mittel/Fortgeschritten"), der Vertrag sagt aber „koennen INTERN, nie sichtbar".
+   Werkbank-Affordanz für Beta — oder soll der Wähler raus? (Nicht angefasst.)
 2. ~~**Assessment-Schuld:** schreibt level:A1/B1 statt koennen/fremde_schrift.~~
    ✅ GETILGT 16.06. + **LIVE BESTÄTIGT 17.06.** — Assessment durchlaufen, pruefung.html
    zeigt alle 5 Raum-Felder UND die Lernweg-Felder grün. finish() (rein additiv): koennen
@@ -256,10 +263,23 @@ bisher NUR in den Claude.ai-Project-Files → driften). Jetzt im Repo = Quelle d
 DevTools) zeigt alle 5 Raum-Felder + Lernweg-Felder grün. Damit sind ALLE Live-Tests
 der 16.06.-Bauten abgehakt: Gesprächs-Raum ✅, Assessment ✅, Schreiben-Raum (es/anfang) ✅.
 
-**Nächstes Arbeitspaket (Vorschlag):** Reiner Tisch — alle Schulden getilgt. Wahl:
-(a) nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster,
-(b) `nav.js` integrieren (Offene Punkte 4), oder (c) Schreiben-Raum-Querprüfung
-de/en/el + Können-Regler (Offene Punkte 1). DEV bleibt die einzige Live-Umgebung
+**Diese Sitzung (17.06., Teil 4):** Schreiben-Raum-Cross-Check (Offene Punkte 1, Backend-
+Teil). Drei Dateien gelesen (`schreibwerkstatt.html`, `api/lektor.js`, `lektor-modus.md`),
+am dev-Endpoint gegengeprobt: Regler hart bestätigt (anfang→form, fortgeschritten→form:null),
+el-Lautschrift bestätigt (drei Spuren). EIN Handwerks-Fund + gefixt: verbotene Variable
+`history` → `verlauf` in schreibwerkstatt.html (window.history-Falle vom 16.06., im IIFE
+zwar geshadowt, aber Eiserne-Regel-Verstoß + Landmine). node --check grün, gepusht. KEIN
+`_kursiv_`-Befund (Raum rendert Felder via esc(), kein Markdown). Offen gelassen (Design):
+sichtbarer `koennen`-Wähler vs. „intern, nie sichtbar" → FRAGE AN DESIGN im Offene-Punkte-1.
+
+**Nächstes Arbeitspaket (Vorschlag):** Reiner Tisch — alle Schulden getilgt, Schreiben-Raum
+Backend-querprüft. Wahl:
+(a) nächster Raum (Mündlicher Ausdruck / Hörverständnis / Lesen) nach Lektor-Muster —
+braucht zuerst die `*-modus.md` aus dem Design-Gespräch (WAS entscheidet Design),
+(b) `nav.js` integrieren (Offene Punkte 4),
+(c) Schreiben-Raum in der ECHTEN Oberfläche durchspielen (Treffer/Beinah/Stuck/Ziellinie,
+de/en) — der Cross-Check deckte nur den Backend-Vertrag ab, nicht die Klick-Schleife.
+DEV bleibt die einzige Live-Umgebung
 (spikiu.com ist NICHT der Deploy — alles läuft auf spikiu-git-dev-orbiaceos-projects.vercel.app).
 
 ### EISERNE REGEL

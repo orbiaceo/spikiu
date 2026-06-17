@@ -58,3 +58,19 @@ in Klammern), keine sichtbaren Unterstriche. Endpoint-Gegenprobe (koennen=anfang
 die Brücke als `_…_`, fmt() rendert sie zu `<em>`. Committet + nach `origin/dev` gepusht.
 
 _Kein offener Auftrag mehr._
+
+---
+
+## NACHTRAG 17.06. — Schreiben-Raum-Cross-Check (selbst gewählt, kein Design-Auftrag)
+
+Nach Abschluss oben: Schreiben-Raum querprüft (Offene Punkte 1, Backend-Teil).
+- **Regler** am dev-Endpoint bestätigt: `anfang`→`form` gesetzt, `fortgeschritten`→`form:null`.
+- **Fremde Schrift (el)** bestätigt: `lautschrift` gesetzt, drei Spuren.
+- **Handwerks-Fix:** verbotene Variable `history` → `verlauf` in `schreibwerkstatt.html`
+  (window.history-Falle vom 16.06.). node --check grün, gepusht.
+- **FRAGE AN DESIGN:** sichtbarer `koennen`-Wähler in der Oberfläche vs. Vertrag
+  „koennen INTERN, nie sichtbar" — nicht angefasst, Entscheidung liegt bei Design.
+- **Noch offen (kein Auftrag):** Schreiben-Raum in der ECHTEN Oberfläche durchklicken
+  (Treffer/Beinah/Stuck/Ziellinie, de/en).
+
+_Kein offener Design-Auftrag. Nächstes Paket wählt Leonardo._
