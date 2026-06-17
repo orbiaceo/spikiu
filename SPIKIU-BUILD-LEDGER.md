@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 18.06.2026 (nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
+Stand: 18.06.2026 (chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -124,7 +124,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `sessions.html` | Buchungs-Seite. **18.06.: eigene Desktop-Sidebar + Mobile-Header + Drawer-JS ENTFERNT, `.app`-Grid → einspaltig, `.main` zentriert; nav.js eingebunden** | — | ✅ in dev |
 | `learnraum.html` | Lernraum aus `spikiu_learnpath` (Empty-State → chat.html). **18.06.: nav.js eingebunden (hatte keine eigene Navi)** | — | ✅ in dev |
 | `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>` | — | ✅ in dev (Inject-Modus, kein data-spk-nav nötig) |
-| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** |
+| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** · **18.06.: nav.js im SLOT-MODUS — `<header>` → `<header data-spk-nav>` (Logo+„← Dashboard"-Inhalt raus, nav.js füllt den Slot mit Hamburger+Logo, keine zweite Leiste); `<script src="nav.js" defer>` ergänzt. Charla-Script + Profil-Chip unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** (nav: in dev, noch nicht live geklickt) |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
@@ -178,9 +178,12 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    Lektion-aus-Gespräch-Brücke. NOCH OFFEN (kein Blocker): el-Lautschrift live querprüfen.
 4. ~~`nav.js` in alle App-Seiten, alte Navis raus.~~ ✅ TEIL ERLEDIGT 18.06.: die 4 SCROLLBAREN
    Seiten (dashboard, books, sessions, learnraum) tragen jetzt nav.js, alte Navis raus, genau eine
-   Leiste. Gym-Knopf live (disabled, „bald"). NOCH OFFEN als eigenes Paket: die 2 VOLLHÖHEN-Seiten
-   `chat.html` + `schreibwerkstatt.html` (Slot-Modus via `data-spk-nav`, eigener Prototyp — 100dvh heikel).
-   NOCH NICHT live geklickt: Drawer/aktive Seite/Gym-Badge in der echten Oberfläche (nur Node-Syntax + Struktur grün).
+   Leiste. Gym-Knopf live (disabled, „bald"). **18.06. Teil 2: `chat.html` per SLOT-MODUS erledigt**
+   (`<header data-spk-nav>` → nav.js füllt Hamburger+Logo in die vorhandene Kopfzeile, keine zweite
+   Leiste; „← Dashboard" wandert in den Drawer; Charla + Profil-Chip + 100dvh-Layout unberührt).
+   NOCH OFFEN als eigenes Paket: nur noch `schreibwerkstatt.html` (hat Test-Wähler Sprache/Können im
+   Header → eigene Design-Entscheidung). NOCH NICHT live geklickt: Drawer/aktive Seite/Gym-Badge in der
+   echten Oberfläche (nur Node-Syntax + Struktur grün) — gilt für alle 5 nav-Seiten inkl. chat.
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
 
@@ -331,6 +334,19 @@ Abnahme: `node --check nav.js` grün; alle 4 Inline-Scripts via `vm.Script` grü
 geprüft (0 aside, main paarig, kein mobile-header-MARKUP mehr — nur tote CSS-Regeln, harmlos).
 NICHT live geklickt (Vercel) — nächster Schritt: dashboard.html?v=N → Hamburger → Drawer, dann books/
 sessions/learnraum durch. Vollhöhen-Seiten (chat, schreibwerkstatt) bewusst NICHT angefasst (eigenes Paket).
+
+**Diese Sitzung (18.06., Teil 3):** nav-Paket abgeschlossen für `chat.html` (Auftrag aus
+`AKTUELLER-AUFTRAG.md`, Slot-Modus). Genau zwei chirurgische Eingriffe: (1) der vorhandene
+`<header>` bekam `data-spk-nav` und sein alter Inhalt (eigenes Logo + „← Dashboard"-Link) wurde
+entfernt — nav.js erkennt den Slot (`document.querySelector('[data-spk-nav]')`), setzt
+Hamburger+Logo HINEIN statt eine zweite sticky Leiste zu bauen; die Seiten-eigenen header-Styles
+(flex/padding/border-bottom/flex-shrink) bleiben, also EINE Leiste, 100dvh-Layout heil. (2)
+`<script src="nav.js" defer>` vor `</body>`. Profil-Chip und das komplette Gesprächs-Script
+UNANGETASTET (`verlauf` bleibt `verlauf`). Abnahme: `node --check nav.js` grün, Inline-Script via
+`vm.Script` grün, genau ein `<header>`-Paar, `back-link`-ELEMENT raus (nur totes CSS Z.21–22 bleibt,
+harmlos), `getActive()` mappt chat→`talk` (Drawer markiert „Jetzt sprechen"). NICHT live geklickt
+(Vercel) — Rest-Test gilt jetzt für ALLE 5 nav-Seiten: `?v=N` → Hamburger → Drawer/aktive Seite/
+Gym-Badge. Vollhöhen-Rest: nur noch `schreibwerkstatt.html` (Test-Wähler im Header → eigenes Paket).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese

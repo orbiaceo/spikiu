@@ -53,4 +53,13 @@ mit „Jetzt sprechen" aktiv → schließen → „Hola" tippen → Spikiu antwo
 
 ---
 
-_Status: OFFEN_
+_Status: ERLEDIGT am 18.06.2026 · kein offener Auftrag._
+
+Umsetzung: `<header>` → `<header data-spk-nav></header>` (alter Logo+„← Dashboard"-
+Inhalt entfernt, nav.js füllt den Slot mit Hamburger+Logo — keine zweite Leiste, die
+Seiten-eigenen header-Styles flex/padding/border-bottom bleiben). `<script src="nav.js"
+defer></script>` vor `</body>`. Profil-Chip + gesamtes Charla-Script unangetastet
+(`verlauf` bleibt `verlauf`). Abnahme: nav.js + Inline-Script (vm.Script) syntaktisch
+grün; genau ein `<header>`-Paar; `back-link`-Element raus (nur totes CSS bleibt);
+`getActive()` erkennt chat→`talk` (Drawer markiert „Jetzt sprechen" aktiv).
+NICHT live geklickt (Vercel) — nächster Schritt: `chat.html?v=N` → Hamburger → Drawer.
