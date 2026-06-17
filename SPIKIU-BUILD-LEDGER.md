@@ -121,7 +121,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `generate-learningpath.js` | Antrieb→Syllabus, page1/page2 | page1/page2 | ⚠️ live prüfen |
 | `dashboard.html` | page1/page2, DE/ES/EN | page1/page2 | ✅ deployed |
 | `nav.js` | Slot-Mode, self-mounting | — | ⏳ noch nicht integriert |
-| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst: Verlauf glätten + Backend-Guard (History muss mit User beginnen) | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, mehrere Runden** |
+| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
@@ -243,6 +243,13 @@ perfekt über mehrere Runden. Damit ist Problem 2 vollständig geschlossen (geba
 deployt + am echten spikiu.com verifiziert). Kein neuer Code nötig: die fünf chat.html-
 Commits (abf41d2…370ba9e) der Vorsitzung hatten den „antwortet nicht"-Bug bereits
 behoben (Verlauf glätten + Backend-[EINSTIEG]-Guard). Nur Ledger nachgezogen.
+
+**Diese Sitzung (17.06., Teil 3):** Echter Auftrag aus `AKTUELLER-AUFTRAG.md` erledigt
+(lag nur in den Project-Files, nicht im Repo — Snapshot-Drift, klassisch). `chat.html` →
+`fmt()` rendert jetzt `_kursiv_` → `<em>` für Spikius Muttersprach-Brücke. Regel greift
+nur paarweise an Wortgrenzen (`el_perro` bleibt heil). Alle 5 Abnahme-Kriterien per
+Node-Test grün. ZUSÄTZLICH ins Repo geholt: `CLAUDE.md` + `AKTUELLER-AUFTRAG.md` (lagen
+bisher NUR in den Claude.ai-Project-Files → driften). Jetzt im Repo = Quelle der Wahrheit.
 
 **Diese Sitzung (17.06., Teil 2):** Assessment-Schuld LIVE bestätigt. Neues Werkzeug
 `pruefung.html` (sichtbare Profil-Verifikation, keine Konsole — Leonardo kämpft mit

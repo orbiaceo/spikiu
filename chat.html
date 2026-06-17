@@ -169,6 +169,10 @@ function fmt(t){
   var s = (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
   s = s.replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
+  // _kursiv_ → <em>: Spikius Muttersprach-Brücke kommt mit Unterstrichen.
+  // Nur paarweise an Wortgrenzen — Unterstrich MITTEN im Wort (el_perro,
+  // datei_name) bleibt unberührt, wird nicht zu Kursiv zerschnitten.
+  s = s.replace(/(^|[^\w])_(?=\S)([^_\n]*?\S)_(?!\w)/g,'$1<em>$2</em>');
   s = s.replace(/\n/g,'<br>');
   return s;
 }
