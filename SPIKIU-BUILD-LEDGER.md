@@ -114,7 +114,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
 | `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ✅ **LIVE bestätigt 17.06.** (spricht perfekt, Opener + Folgeantwort) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
-| `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler. **17.06.: verbotene Variable `history` → `verlauf` (window.history-Falle vom 16.06., im IIFE latent). Cross-Check grün.** **18.06. Teil 5: nav-Paket DESIGNT (Auftrag steht aus) — Test-Wähler raus, liest profile.zielsprache/koennen, Navi-Slot `data-spk-nav` in die `.bar`, `?dev=1`-Schloss, Lora-Font, stilles „Schreiben"-Label.** | liest spikiu_user.profile defensiv (künftig zielsprache/koennen statt Wähler) | ✅ live · ⏳ nav-Schnitt beauftragt |
+| `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor. **17.06.: verbotene Variable `history` → `verlauf`.** **18.06. Teil 6 GEBAUT (Auftrag Teil 5): nav-Paket im SLOT-MODUS.** `.bar` blieb EINE Leiste: `brand`→`<div class="nav-slot" data-spk-nav>` (nav.js füllt Hamburger+Logo HINEIN — eigenes Element, nicht die ganze `.bar`, sonst würden die Wähler überschrieben), `controls`→`.room` (stilles kursives „Schreiben" + `#devControls hidden`). Test-Wähler `#selLang`/`#selKoennen` bleiben im DOM (jetzt in `#devControls`) → Lektor-Script unangetastet, liest weiter dieselben IDs (vorbelegt aus profile.zielsprache/koennen). `?dev=1`-Schloss blendet sie + goldenen „dev"-Tag ein. Lora-Font für die Wortmarke ergänzt. `<script src="nav.js" defer>`. | liest spikiu_user.profile defensiv (zielsprache/koennen) | ✅ live · nav GEBAUT (noch nicht live geklickt) |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
 | `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ **LIVE bestätigt 17.06.** (alle 5 Felder + Lernweg-Felder grün in pruefung.html) |
 | `pruefung.html` | NEU (17.06.) — sichtbare Profil-Verifikation ohne Konsole. Liest spikiu_user.profile, grün/rot je Feld (5 Raum-Felder + Lernweg-Felder). Diagnose-Werkzeug, kein Produkt. Capy komplett | liest spikiu_user.profile | ✅ in dev, Diagnose behalten |
@@ -203,6 +203,12 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    zwei Test-Wähler wieder ein (vorbelegt aus dem Profil) — Produkt sauber, Testen bequem. Slot-Modus in
    die vorhandene `.bar` (links Navi, rechts stilles kursives „Schreiben"-Label). Prototyp
    `prototyp-schreibwerkstatt-nav.html` GENEHMIGT. Auftrag in `AKTUELLER-AUFTRAG.md` geschrieben.
+   ✅ **GEBAUT 18.06. Teil 6** — fünf chirurgische Eingriffe in `schreibwerkstatt.html` exakt nach
+   Auftrag: Lora-Font, `.room`/`.room-name`/`.dev-tag`-CSS, `.bar` umgebaut (`nav-slot[data-spk-nav]`
+   links + `.room` mit `#devControls hidden` rechts), `<script src="nav.js" defer>`, Dev-Schloss-Script.
+   Abnahme grün: `data-spk-nav`/`#selLang`/`#selKoennen`/`#devControls` je 1×, alter `brand`-Div 0×, genau
+   ein `<header>`, beide Inline-Scripts + nav.js syntaktisch grün, nav.js unangetastet. Damit ist das
+   nav-Paket über ALLE App-Seiten komplett (nur noch live klicken). NOCH OFFEN: Punkt 7 (Menü-Lücke).
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
 7. **Menü-Lücke (NEU 18.06., eigener Mini-Schritt):** `nav.js` STRUCT hat KEINEN „Schreiben"-Eintrag →
@@ -392,6 +398,15 @@ In-App-Sprachschalter (nav.js sagt es selbst). NEUER Mini-Schritt notiert (Offen
 fehlt im nav.js-Menü. LEHRE (Prototyp-Inlining): ein `</script>` im Inhalt eines INLINE-Scripts schließt
 das Tag vorzeitig (HTML-Parser) → „Invalid or unexpected token". Fix nur im Inline-Fall: `<\/script>`.
 Nie ein Problem bei externem `<script src>` — die echte `nav.js` blieb unangetastet.
+
+**Diese Sitzung (18.06., Teil 6):** Auftrag Teil 5 GEBAUT — nav.js in `schreibwerkstatt.html`
+(Slot-Modus, Variante b + Dev-Schloss). Protokoll gefahren: `git pull` (bereits aktuell), echten Stand
+geprüft, genehmigten Prototyp `prototyp-schreibwerkstatt-nav.html` + Zieldatei gelesen, DANN die fünf
+Eingriffe exakt nach Auftrag übertragen. Genau ein Element angefasst (`schreibwerkstatt.html`), nav.js
+byte-gleich zu origin/dev. Abnahme-Kriterien 1–3,5–7 strukturell + syntaktisch grün; 4 (Lektor-Flow live)
++ der Live-Klick-Test (Drawer/Layout/`?dev=1`) bleiben Leonardo (Vercel). Damit trägt das nav-Paket jetzt
+ALLE App-Seiten (dashboard, books, sessions, learnraum, chat, schreibwerkstatt). Einzig OFFEN am nav:
+Punkt 7 — der Drawer hat noch keinen „Schreiben"-Eintrag (nav.js-STRUCT, eigener Mini-Schritt, alle Seiten).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese

@@ -6,7 +6,7 @@
 <title>Spikiu — Schreiben</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#f5f1e7; --page:#fdfbf5; --ink:#2b2620; --ink-soft:#6e6256;
@@ -27,6 +27,9 @@
   select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);
     background:var(--page);border:1px solid var(--line);border-radius:99px;padding:.3rem .7rem;cursor:pointer}
   select:focus{outline:none;border-color:var(--gold)}
+  .room{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+  .room-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--ink-soft);letter-spacing:.01em}
+  .dev-tag{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--gold);border-radius:99px;padding:.12rem .5rem}
 
   .bench{flex:1;width:100%;max-width:980px;margin:0 auto;padding:2.2rem 1.4rem 1.4rem;display:flex;flex-direction:column}
   .aufgabe-label{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
@@ -89,26 +92,28 @@
 <body>
 
 <header class="bar">
-  <div class="brand">
-    <svg width="26" height="26" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-    Schreiben
-  </div>
-  <div class="controls">
-    <label>Sprache
-      <select id="selLang">
-        <option value="es">Spanisch</option>
-        <option value="de">Deutsch</option>
-        <option value="en">Englisch</option>
-        <option value="el">Griechisch</option>
-      </select>
-    </label>
-    <label>Können
-      <select id="selKoennen">
-        <option value="anfang">Anfang</option>
-        <option value="mittel">Mittel</option>
-        <option value="fortgeschritten">Fortgeschritten</option>
-      </select>
-    </label>
+  <div class="nav-slot" data-spk-nav></div>
+  <div class="room">
+    <span class="room-name">Schreiben</span>
+    <!-- Dev-Schloss: nur mit ?dev=1 sichtbar. Im Produkt kommt die Sprache aus profile.zielsprache, Können aus profile.koennen. -->
+    <div class="controls" id="devControls" hidden>
+      <span class="dev-tag">dev</span>
+      <label>Sprache
+        <select id="selLang">
+          <option value="es">Spanisch</option>
+          <option value="de">Deutsch</option>
+          <option value="en">Englisch</option>
+          <option value="el">Griechisch</option>
+        </select>
+      </label>
+      <label>Können
+        <select id="selKoennen">
+          <option value="anfang">Anfang</option>
+          <option value="mittel">Mittel</option>
+          <option value="fortgeschritten">Fortgeschritten</option>
+        </select>
+      </label>
+    </div>
   </div>
 </header>
 
@@ -308,5 +313,16 @@
   });
 })();
 </script>
+
+<!-- Dev-Schloss: ?dev=1 blendet die zwei Test-Wähler ein. Im Produkt unsichtbar.
+     Vorbelegung erledigt bereits das Lektor-Script oben (selLang/selKoennen aus dem Profil). -->
+<script>
+  (function(){
+    if(!/[?&]dev=1\b/.test(location.search)) return;   // Produkt: Wähler bleiben weg
+    var box=document.getElementById('devControls'); if(box) box.hidden=false;
+  })();
+</script>
+
+<script src="nav.js" defer></script>
 </body>
 </html>

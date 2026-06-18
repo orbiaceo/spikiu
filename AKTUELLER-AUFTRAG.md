@@ -91,4 +91,19 @@ mit „dev"-Tag erscheinen, es/anfang vorbelegt. Layout scrollt sauber.
 
 ---
 
-_Status: OFFEN — bereit zum Bau._
+_Status: ERLEDIGT am 18.06.2026 (Teil 6) · kein offener Auftrag._
+
+Umsetzung (NUR `schreibwerkstatt.html`, fünf Eingriffe exakt nach Scope): (1) Lora vor
+Cormorant+Garamond im Font-Link. (2) `.bar` umgebaut — `<div class="brand">…SVG…Schreiben</div>` →
+`<div class="nav-slot" data-spk-nav></div>` (eigenes Slot-Element, NICHT die ganze `.bar`), `controls`
+→ `<div class="room"><span class="room-name">Schreiben</span> + <div class="controls" id="devControls"
+hidden> mit dev-Tag + den ZWEI unveränderten `<select id="selLang">/<select id="selKoennen">`. (3) CSS
+`.room`/`.room-name`/`.dev-tag` nach `select:focus`. (4) `<script src="nav.js" defer>` vor `</body>`.
+(5) Dev-Schloss-Script (nach Lektor-Script, vor nav.js): `?dev=1` → `devControls.hidden=false`;
+Vorbelegung erledigt das bestehende Lektor-Script (selLang/selKoennen aus dem Profil) — nicht gedoppelt.
+Abnahme: `data-spk-nav`=1, `id="selLang"`=1, `id="selKoennen"`=1, `id="devControls"`=1, alter `brand`-Div
+=0, genau ein `<header>`, beide Inline-Scripts (`vm.Script`) + `node --check nav.js` grün, nav.js
+byte-gleich origin/dev, keine verbotenen Variablennamen. NICHT live geklickt (Vercel) — Rest-Test für
+Leonardo: `schreibwerkstatt.html?v=N` → eine Leiste (Hamburger+Logo links, „Schreiben" rechts), keine
+Wähler → Hamburger/Drawer → Text hinlegen, Spikiu antwortet → dann `?v=N&dev=1` → zwei Wähler mit
+„dev"-Tag, es/anfang vorbelegt.
