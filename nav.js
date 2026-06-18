@@ -50,6 +50,7 @@
     if (f.indexOf('dashboard') === 0) return 'dashboard';
     if (f.indexOf('chat') === 0) return 'talk';
     if (f.indexOf('schreibwerkstatt') === 0) return 'write';
+    if (f.indexOf('taller') === 0) return 'read';
     if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'books';
     if (f.indexOf('sessions') === 0) return 'sessions';
     return '';
@@ -58,13 +59,13 @@
   // ── i18n (Labels „ohne Begleiter") ─────────────────────────────
   const I18N = {
     Deutsch: { main: 'HAUPT', progress: 'FORTSCHRITT', account: 'KONTO',
-      dashboard: 'Dashboard', talk: 'Jetzt sprechen', write: 'Schreibwerkstatt', books: 'Bücher', sessions: 'Live-Begegnungen',
+      dashboard: 'Dashboard', talk: 'Jetzt sprechen', write: 'Schreibwerkstatt', read: 'Leseraum', books: 'Bücher', sessions: 'Live-Begegnungen',
       lessons: 'Lektionen', gym: 'Gym', path: 'Lernweg', verlauf: 'Verlauf', settings: 'Einstellungen', soon: 'bald', free: 'Gratis', menu: 'Menü' },
     'Español': { main: 'PRINCIPAL', progress: 'PROGRESO', account: 'CUENTA',
-      dashboard: 'Dashboard', talk: 'Hablar ahora', write: 'Taller de escritura', books: 'Libros', sessions: 'Sesiones en vivo',
+      dashboard: 'Dashboard', talk: 'Hablar ahora', write: 'Taller de escritura', read: 'Taller de lectura', books: 'Libros', sessions: 'Sesiones en vivo',
       lessons: 'Lecciones', gym: 'Gym', path: 'Ruta', verlauf: 'Progreso', settings: 'Ajustes', soon: 'pronto', free: 'Gratis', menu: 'Menú' },
     English: { main: 'MAIN', progress: 'PROGRESS', account: 'ACCOUNT',
-      dashboard: 'Dashboard', talk: 'Talk now', write: 'Writing Workshop', books: 'Books', sessions: 'Live Sessions',
+      dashboard: 'Dashboard', talk: 'Talk now', write: 'Writing Workshop', read: 'Reading Room', books: 'Books', sessions: 'Live Sessions',
       lessons: 'Lessons', gym: 'Gym', path: 'Path', verlauf: 'Progress', settings: 'Settings', soon: 'soon', free: 'Free', menu: 'Menu' }
   };
 
@@ -73,6 +74,7 @@
     dashboard: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
     talk: '<path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/>',
     write: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    read: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
     books: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 1 2-2h13"/>',
     sessions: '<rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/>',
     lessons: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
@@ -92,6 +94,7 @@
       { id: 'dashboard', href: 'dashboard.html' },
       { id: 'talk', href: 'chat.html' },
       { id: 'write', href: 'schreibwerkstatt.html' },
+      { id: 'read', href: 'taller.html' },
       { id: 'books', href: 'books.html' },
       { id: 'sessions', href: 'sessions.html', hideIfTargetEN: true },
       { id: 'lessons', href: 'dashboard.html#lektionen' },

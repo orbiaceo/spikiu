@@ -541,6 +541,17 @@ optional), nach ~900 ms `window.location.href='dashboard.html'` (kein Variablenn
 verbotener Variablenname. NOCH ZU KLICKEN (Leonardo): mc/orden/frei-Durchlauf, el-3-Spuren, `?dev=1`,
 Abschied→Dashboard. NÄCHSTES: nav.js-Eintrag „Lesen" (eigener Mini-Schritt), dann Testphase/Dashboard 3→4.
 
+**Diese Sitzung (19.06., Teil 13):** Menü-Eintrag „Lesen" in `nav.js` GEBAUT (der letzte offene
+nav-Mini-Schritt, Zwilling zum `write`-Eintrag). Design hier entschieden (Leonardo am Terminal): Labels
+DE „Leseraum" / ES „Taller de lectura" / EN „Reading Room", Position direkt UNTER „Schreibwerkstatt"
+(talk → write → read → books), Icon aufgeschlagenes Buch (deutlich anders als das geschlossene „Bücher"-
+Icon). Vier chirurgische nav.js-Edits exakt nach Muster: I18N `read` in alle drei Sprachblöcke, ICON `read`
+(book-open, `M2 3h6…`), STRUCT `{ id: 'read', href: 'taller.html' }` zwischen write+books, getActive
+`taller`→`read`. Abnahme: alle sechs Verifikations-greps == 1, Reihenfolge talk→write→read→books bestätigt,
+`node --check nav.js` grün, nur nav.js angefasst. Damit führt der Drawer jetzt in ALLE Räume inkl. Lesen.
+NICHT live geklickt (Vercel; nav.js cacht → hart neu laden). Damit ist das nav-Paket endgültig komplett.
+NÄCHSTES: Testphase (Klick-Durchläufe) + Dashboard 3→4.
+
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
 Übergabe aktualisieren. Ein Chat = ein Arbeitspaket, bewusst beendet.
