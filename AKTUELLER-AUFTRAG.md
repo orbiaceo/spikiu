@@ -75,4 +75,16 @@ node --check nav.js && echo OK
 
 ---
 
-_Status: OFFEN — bereit zum Bau._
+_Status: ERLEDIGT am 18.06.2026 (Teil 8) · kein offener Auftrag._
+
+Umsetzung (NUR `nav.js`, vier Eingriffe exakt nach Scope): (1) I18N — `write` in alle drei Sprachblöcke
+nach `talk`: DE „Schreibwerkstatt", ES „Taller de escritura", EN „Writing Workshop". (2) ICON — `write`
+(Stift, `<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>`) nach `talk`.
+(3) STRUCT — `{ id: 'write', href: 'schreibwerkstatt.html' }` zwischen `talk` und `books` in der
+`main`-Sektion. (4) `getActive()` — `if (f.indexOf('schreibwerkstatt') === 0) return 'write';` direkt
+nach der `chat`→`talk`-Zeile. Verifikation: `Taller de escritura`=1, `Writing Workshop`=1, `id: 'write'`=1,
+ICON-Eintrag=1, getActive-Zeile=1, Reihenfolge talk→write→books, `node --check nav.js` grün, nur nav.js
+geändert. NICHT live geklickt (Vercel; nav.js wird ohne Versions-Query geladen → HART neu laden /
+Inkognito). Rest-Test für Leonardo: `schreibwerkstatt.html?v=N` hart neu laden → Hamburger → „Schreibwerkstatt"
+unter „Jetzt sprechen", aktiv markiert → auf `dashboard.html` derselbe Eintrag (nicht aktiv) → Sprache
+umstellen → Label wechselt.

@@ -123,7 +123,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `books.html` | Kapitel-Liste DE/ES, liest Profil. **18.06.: UI-Sprachschalter (`lang-bar`) + eigene `<nav>` ENTFERNT; nav.js eingebunden. `setLang()` bleibt (setzt Sprache aus Profil, leerer lang-btn-Loop harmlos)** | — | ✅ in dev |
 | `sessions.html` | Buchungs-Seite. **18.06.: eigene Desktop-Sidebar + Mobile-Header + Drawer-JS ENTFERNT, `.app`-Grid → einspaltig, `.main` zentriert; nav.js eingebunden** | — | ✅ in dev |
 | `learnraum.html` | Lernraum aus `spikiu_learnpath` (Empty-State → chat.html). **18.06.: nav.js eingebunden (hatte keine eigene Navi)** | — | ✅ in dev |
-| `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>` | — | ✅ in dev (Inject-Modus, kein data-spk-nav nötig) · ⏳ `write`-Eintrag (Schreibwerkstatt) beauftragt (Teil 7) |
+| `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>`. **18.06. Teil 8: `write`-Eintrag (Schreibwerkstatt) ergänzt — I18N de/es/en, Stift-ICON, STRUCT zwischen talk+books, getActive schreibwerkstatt→write.** Auf ALLEN App-Seiten eingebunden (4 scrollbare + chat-Slot + schreibwerkstatt-Slot). | — | ✅ in dev · `write`-Eintrag GEBAUT (nav.js cacht → hart neu laden zum Testen) |
 | `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** · **18.06.: nav.js im SLOT-MODUS — `<header>` → `<header data-spk-nav>` (Logo+„← Dashboard"-Inhalt raus, nav.js füllt den Slot mit Hamburger+Logo, keine zweite Leiste); `<script src="nav.js" defer>` ergänzt. Charla-Script + Profil-Chip unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** (nav: in dev, noch nicht live geklickt) |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
@@ -222,7 +222,13 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    ✅ **ENTSCHIEDEN 18.06. Teil 7 (Design):** Eintrag `write` direkt UNTER „Jetzt sprechen" (stiller
    Zwilling zum Sprechen), Stift-Icon. Labels (Leonardo bestätigt): DE „Schreibwerkstatt", ES „Taller
    de escritura", EN „Writing Workshop". `getActive()` erkennt `schreibwerkstatt`→`write`. Auftrag in
-   `AKTUELLER-AUFTRAG.md` geschrieben (vier chirurgische nav.js-Änderungen). ⏳ Bau steht aus.
+   `AKTUELLER-AUFTRAG.md` geschrieben (vier chirurgische nav.js-Änderungen).
+   ✅ **GEBAUT 18.06. Teil 8** — vier Eingriffe nur in `nav.js`: I18N `write` in alle drei Sprachblöcke
+   (Schreibwerkstatt / Taller de escritura / Writing Workshop), ICON `write` (Stift), STRUCT `{id:'write',
+   href:'schreibwerkstatt.html'}` zwischen `talk` und `books`, `getActive()` `schreibwerkstatt`→`write`.
+   Abnahme grün: alle vier Verifikations-greps == 1, Reihenfolge talk→write→books, `node --check nav.js` OK,
+   nur nav.js angefasst. Damit ist die Menü-Lücke geschlossen — der Drawer führt jetzt in die Werkstatt.
+   NICHT live geklickt (Vercel, nav.js cacht → hart neu laden): Eintrag/aktiv/Label-Sprachwechsel.
 
 ---
 
@@ -425,6 +431,14 @@ die Menü-Lücke (Offene-Punkte 7) ein sauberer nächster Auftrag. Entschieden: 
 „Taller de escritura" / EN „Writing Workshop" (Leonardo bestätigt), `getActive()` schreibwerkstatt→write.
 Auftrag geschrieben (vier chirurgische nav.js-Edits: I18N, ICON, STRUCT, getActive). Hinweis im Auftrag:
 nav.js wird ohne Versions-Query geladen → zum Testen hart neu laden. ⏳ Bau steht aus (Terminal).
+
+**Diese Sitzung (18.06., Teil 8):** Auftrag Teil 7 GEBAUT — `write`-Eintrag „Schreibwerkstatt" ins
+Hamburger-Menü. Protokoll: `git pull` (bereits aktuell), echten nav.js-Stand gelesen, dann vier
+chirurgische Änderungen exakt nach Scope (I18N×3, ICON, STRUCT-Insert, getActive). Nur `nav.js` angefasst.
+Abnahme-greps aus dem Auftrag alle == 1, Reihenfolge talk→write→books bestätigt, `node --check nav.js` grün.
+Damit ist Offene-Punkte 7 geschlossen und das nav-Paket vollständig: alle App-Seiten tragen den Drawer UND
+der Drawer führt in jeden Raum inkl. Werkstatt. OFFEN bleibt nur der durchgängige LIVE-Klick-Test aller
+nav-Seiten (Drawer/aktiv/Gym-Badge/Sprachwechsel) — Vercel, Leonardo; nav.js cacht → hart neu laden (Strg+Shift+R).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
