@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 18.06.2026 (Design 18.06. Teil 7: Menü-Eintrag „Schreibwerkstatt" für nav.js ENTSCHIEDEN — unter „Jetzt sprechen", Labels DE/ES/EN Schreibwerkstatt/Taller de escritura/Writing Workshop, Auftrag geschrieben · schreibwerkstatt-nav-Schnitt (Teil 6) GEBAUT · Design 18.06. Teil 5: schreibwerkstatt-nav ENTSCHIEDEN — Test-Wähler raus aus dem Produkt, Sprache aus profile.zielsprache + Können aus profile.koennen, `?dev=1`-Schloss blendet sie zum Testen wieder ein, stilles „Schreiben"-Label rechts; Prototyp `prototyp-schreibwerkstatt-nav.html` genehmigt; schließt zugleich Offene-Punkte-1 (koennen-Wähler raus) · chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
+Stand: 18.06.2026 (Design 18.06. Teil 9: RAUM LESEN entworfen — „Taller de lectura" (Leseverstehen-Seminar, NICHT der Reader), Misch-Form (Seminar-Stimme außen, Aufgaben-Block innen), text-only + Spikiu-generiert; v1-Aufgaben MC+Reihenfolge+Freitext (Zuordnen=v2 Brücke zum Prüfungssimulator, Lückentext später); [TALLER]-Vertrag definiert; Prototyp `prototyp-taller-lectura.html` genehmigt · LEGAL ans Ende nach der Testphase (NDA-Beta) · Design 18.06. Teil 7: Menü-Eintrag „Schreibwerkstatt" für nav.js ENTSCHIEDEN — unter „Jetzt sprechen", Labels DE/ES/EN Schreibwerkstatt/Taller de escritura/Writing Workshop, Auftrag geschrieben · schreibwerkstatt-nav-Schnitt (Teil 6) GEBAUT · Design 18.06. Teil 5: schreibwerkstatt-nav ENTSCHIEDEN — Test-Wähler raus aus dem Produkt, Sprache aus profile.zielsprache + Können aus profile.koennen, `?dev=1`-Schloss blendet sie zum Testen wieder ein, stilles „Schreiben"-Label rechts; Prototyp `prototyp-schreibwerkstatt-nav.html` genehmigt; schließt zugleich Offene-Punkte-1 (koennen-Wähler raus) · chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -103,6 +103,37 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 
 ---
 
+## DER TALLER-VERTRAG (Raum Lesen — Taller de lectura)
+
+`api/taller.js` gibt zurück: `{ taller, text }` (wie Lektor: geparstes Objekt + Rohtext-Fallback).
+Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
+
+```
+[TALLER]
+{"rahmen":"…","texto":"…","bruecke":"…"|null,"lautschrift":null,
+ "aufgaben":[
+   {"typ":"mc","frage":"…","optionen":["…"],"loesung":0,"erklaerung":"…"},
+   {"typ":"orden","frage":"…","teile":["…"],"loesung":[2,0,1]},
+   {"typ":"frei","frage":"…","hinweis":"…"}],
+ "schluss":"…"}
+[/TALLER]
+```
+
+- `rahmen` = Spikius Eröffnung (Seminar-Stimme, Muttersprache). `texto` = Lesetext (zielsprache).
+  `bruecke` = Wörter-Brücke, nur anfang/mittel, sonst null (koennen-Regler). `lautschrift` = nur
+  fremde Schrift (el): Transliteration des texto (drei Spuren). `schluss` = Manöverkritik, KEIN Score.
+- `aufgaben` = getypter Array. v1-Typen: `mc` (Lösung+Erklärung im Block → Oberfläche prüft selbst,
+  Charta-Muster grün/rot/disabled), `orden` (teile + loesung=Index-Reihenfolge → Oberfläche prüft
+  selbst), `frei` (keine Lösung → Spikiu bewertet wie der Lektor).
+- **Zwei-Phasen NUR für `frei`:** mc/orden prüft der Client (Lösung steckt im Block); der
+  Freitext-Satz geht in einem zweiten Aufruf zurück, Spikiu reagiert.
+- Erbt vom Lektor: toleranter Parser (erst JSON.parse, sonst Feld-für-Feld an Markern), Prompt
+  verbietet gerade Anführungszeichen in Werten (nur typografische), Seele zur Laufzeit, EIN Endpoint alle Sprachen.
+- v2-Zuwachs: `zuordnen` (Überschrift↔Absatz — DELE/Goethe-Format, Brücke zum Prüfungssimulator),
+  später `luecke` (kippt Richtung Grammatik → überlappt Schreiben, daher hinten).
+
+---
+
 ## DATEI-STATUS
 
 | Datei | Letzte Claude-Version | Vertrag | Deploy |
@@ -130,6 +161,10 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
 | `prototyp-schreibwerkstatt.html` | Attrappe (genehmigt), führte zur Oberfläche | — | Prototyp, optional behalten |
 | `prototyp-schreibwerkstatt-nav.html` | NEU (18.06.) — genehmigte Attrappe für den nav-Schnitt: echte `nav.js` inline (byte-genau), eine Leiste (Slot links + stilles „Schreiben" rechts), `?dev=1` blendet Test-Wähler ein. Lehre: ein `</script>` im Inhalt eines INLINE-Scripts schließt das Tag vorzeitig → im Prototyp zu `<\/script>` neutralisiert (nur Inline-Falle, nie bei externem `src`) | — | Prototyp, behalten |
+| `prototyp-taller-lectura.html` | NEU (18.06.) — genehmigte Attrappe Raum Lesen: Seminar-Stimme + Text-als-Dokument + Aufgaben-Block (MC grün/rot, Reihenfolge ▲▼, Freitext), Manöverkritik kein Score. Scripted, kein API. anfang/es→de | — | Prototyp, behalten |
+| `api/taller.js` | GEPLANT — Raum Lesen, EIN Endpoint alle Sprachen, Lektor-Muster (`export default`, kein import.meta, Seele via process.cwd(), toleranter Parser). Gibt `{ taller, text }` | [TALLER]-Vertrag | ⏳ Bau steht aus (braucht zuerst `taller-modus.md`) |
+| `taller-modus.md` | GEPLANT — Raum-Prompt Lesen, erbt von Seele. koennen-Regler (bruecke), fremde_schrift→lautschrift, generiert texto+aufgaben passend zu zielsprache/koennen | erzeugt [TALLER] | ⏳ nächstes Design |
+| `taller.html` | GEPLANT — Werkstück-Oberfläche Raum Lesen, rendert die getypten Aufgaben, ruft /api/taller. Navi-Slot wie die anderen Räume | liest spikiu_user.profile | ⏳ nach Vertrag/Modus |
 
 ---
 
@@ -214,7 +249,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    Abnahme grün: `data-spk-nav`/`#selLang`/`#selKoennen`/`#devControls` je 1×, alter `brand`-Div 0×, genau
    ein `<header>`, beide Inline-Scripts + nav.js syntaktisch grün, nav.js unangetastet. Damit ist das
    nav-Paket über ALLE App-Seiten komplett (nur noch live klicken). NOCH OFFEN: Punkt 7 (Menü-Lücke).
-5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
+5. Dashboard „3 capítulos" → „4" (Einzeiler, an nächsten Bau anhängen). **Legal AGB/DSGVO/Impressum: ENTSCHIEDEN 18.06. — ans ENDE, nach der Testphase** (Beta läuft unter NDA, keine öffentlichen Einnahmen → Rechts-Gate beißt erst kurz vor Live/Kasse). Claude liefert dann DSGVO-konforme Entwürfe (localStorage/Supabase/Formspree/Anthropic als Verarbeiter), braucht Firmen-Fakten (UG-Name, Anschrift) + Anwalts-/Steuerberater-Blick.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
 7. **Menü-Lücke (NEU 18.06., eigener Mini-Schritt):** `nav.js` STRUCT hat KEINEN „Schreiben"-Eintrag →
    aus dem Drawer kommt man nicht zur Werkstatt. nav.js-Inhaltsänderung (betrifft alle Seiten), separat
@@ -357,7 +392,9 @@ Repetition (Phase 2). HEUTE im Auftrag: nur der Nav-Knopf („Gym", Hantel-Icon,
 (b) Schreiben-Raum in der ECHTEN Oberfläche durchklicken (Treffer/Beinah/Stuck/Ziellinie, de/en —
 der Cross-Check deckte nur den Backend-Vertrag ab, nicht die Klick-Schleife),
 (c) nächster Raum (Mündlich / Hörverständnis / Lesen) nach Lektor-Muster — braucht zuerst die
-`*-modus.md` aus dem Design-Gespräch (WAS entscheidet Design).
+`*-modus.md` aus dem Design-Gespräch (WAS entscheidet Design). ✅ **18.06. Teil 9: LESEN gewählt =
+„Taller de lectura", entworfen + [TALLER]-Vertrag + Prototyp genehmigt. NÄCHSTES DESIGN: `taller-modus.md`,
+dann Bau (api/taller.js + taller.html). Mündlich/Hören bleiben hinten (Audio Phase 2).**
 DEV bleibt die einzige Live-Umgebung
 (spikiu.com ist NICHT der Deploy — alles läuft auf spikiu-git-dev-orbiaceos-projects.vercel.app).
 
@@ -439,6 +476,24 @@ Abnahme-greps aus dem Auftrag alle == 1, Reihenfolge talk→write→books bestä
 Damit ist Offene-Punkte 7 geschlossen und das nav-Paket vollständig: alle App-Seiten tragen den Drawer UND
 der Drawer führt in jeden Raum inkl. Werkstatt. OFFEN bleibt nur der durchgängige LIVE-Klick-Test aller
 nav-Seiten (Drawer/aktiv/Gym-Badge/Sprachwechsel) — Vercel, Leonardo; nav.js cacht → hart neu laden (Strg+Shift+R).
+
+**Diese Sitzung (18.06., Teil 9 — DESIGN, claude.ai):** Raum LESEN entworfen — „Taller de lectura"
+(Leseverstehen-Seminar; löst die offene Ledger-Frage Lesen-vs-Reader: NICHT der Reader/Lukas-Marta,
+sondern kurze Gebrauchstexte + Verständnis-Aufgaben). Form: Misch (Seminar-Stimme außen, Aufgaben-Block
+innen) — entschieden, weil reines Arbeitsblatt Duolingo-Gefühl gäbe, reines Zug-um-Zug zäh + für
+Reihenfolge/Zuordnen unbeholfen. Text-only (heute baubar, kein Audio), Spikiu-generiert (Strand).
+v1-Aufgabensatz: MC + Reihenfolge(orden) + Freitext (lean, drei verschiedene Lesefähigkeiten ohne
+Überlappung; MC+Freitext quasi geschenkt, nur orden neu). Zuordnen = erster v2-Zuwachs, BEWUSST weil
+„Überschrift↔Absatz" = DELE/Goethe-Format → Brücke zum Prüfungssimulator. Lückentext später (Grammatik,
+überlappt Schreiben). [TALLER]-Vertrag definiert (rahmen/texto/bruecke/lautschrift/aufgaben[]/schluss),
+erbt Lektor-Muster; Zwei-Phasen NUR für `frei` (mc/orden prüft der Client). Prototyp
+`prototyp-taller-lectura.html` gebaut (scripted) und GENEHMIGT. Frontend-Design-Skill vorab gelesen.
+NÄCHSTER DESIGN-SCHRITT: `taller-modus.md` (Raum-Prompt) schreiben, dann Bau-Auftrag (api/taller.js +
+taller.html). Open-Points besprochen: Legal ans Ende nach der Testphase (NDA-Beta). Reihenfolge gesetzt:
+Taller fertig → bauen → Testphase (inkl. Live-Abnahme-Runde: nav-Drawer hart neu laden, Schreiben-Raum-
+Schleife Treffer/Beinah/Stuck/Ziellinie→Lektion de/en, el-Lautschrift im Chat · + Dashboard 3→4) →
+Audio/Gym/Simulator → Legal zuletzt.
+
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese

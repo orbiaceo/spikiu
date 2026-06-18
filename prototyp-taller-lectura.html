@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Taller de lectura (Prototyp)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f1e7; --page:#fdfbf5; --ink:#2b2620; --ink-soft:#6e6256;
+    --green:#2d6a4f; --gold:#a87b2e; --gold-soft:#e9d9b6; --capy:#c9956a; --line:#e6dec9;
+    --rojo:#b4452f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
+
+  /* ── Kopfzeile (Navi-Slot kommt später, eigenes Paket) ── */
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.9rem 1.4rem;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:700}
+  .brand svg{display:block;animation:float 4s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .room-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--ink-soft)}
+
+  .seminar{flex:1;width:100%;max-width:760px;margin:0 auto;padding:2.2rem 1.4rem 3rem}
+
+  /* ── Spikius Stimme ── */
+  .spikiu-line{display:flex;gap:.85rem;align-items:flex-start;margin-bottom:1.6rem}
+  .spikiu-line svg{flex-shrink:0;margin-top:.1rem}
+  .spikiu-line .say{font-size:1.05rem;line-height:1.6;color:var(--ink)}
+  .spikiu-line .say em{font-style:italic;color:var(--ink-soft)}
+
+  /* ── Der Text als Dokument auf dem Tisch ── */
+  .documento{background:var(--page);border:1px solid var(--line);border-radius:6px;
+    box-shadow:0 1px 0 #fff inset,0 14px 34px -20px rgba(60,45,20,.4);
+    padding:1.8rem 1.9rem;margin-bottom:.7rem;position:relative}
+  .documento::before{content:"";position:absolute;left:0;top:1.4rem;bottom:1.4rem;width:3px;
+    background:var(--gold-soft);border-radius:3px}
+  .doc-kind{font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:.7rem}
+  .doc-text{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.6;color:var(--ink)}
+  .bridge{font-size:.84rem;color:var(--ink-soft);margin:.9rem 0 2.2rem;line-height:1.7}
+  .bridge b{color:var(--ink);font-weight:600}
+
+  /* ── Aufgaben-Block ── */
+  .aufgabe{margin-bottom:1.9rem}
+  .a-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:.2rem}
+  .a-frage{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ink);margin-bottom:.9rem;line-height:1.35}
+
+  /* MC */
+  .opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:1rem;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:8px;padding:.8rem 1rem;
+    margin-bottom:.55rem;cursor:pointer;transition:.15s}
+  .opt:hover:not(:disabled){border-color:var(--gold);background:#fff}
+  .opt:disabled{cursor:default}
+  .opt.right{border-color:var(--green);background:rgba(45,106,79,.1);color:var(--green);font-weight:600}
+  .opt.wrong{border-color:var(--rojo);background:rgba(180,69,47,.08);color:var(--rojo)}
+  .feedback{font-size:.95rem;line-height:1.55;color:var(--ink-soft);margin-top:.5rem;
+    opacity:0;transform:translateY(4px);transition:.3s}
+  .feedback.show{opacity:1;transform:none}
+  .feedback b{color:var(--green)}
+
+  /* Ordenar */
+  .orden{list-style:none}
+  .orden li{display:flex;align-items:center;gap:.7rem;background:var(--page);border:1px solid var(--line);
+    border-radius:8px;padding:.7rem .8rem .7rem 1rem;margin-bottom:.5rem;transition:.18s}
+  .orden li.ok{border-color:var(--green);background:rgba(45,106,79,.08)}
+  .orden .num{width:1.5rem;height:1.5rem;flex-shrink:0;border-radius:50%;background:var(--gold-soft);
+    color:var(--gold);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .orden .txt{flex:1;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ink)}
+  .orden .moves{display:flex;flex-direction:column;gap:.15rem}
+  .orden .moves button{border:1px solid var(--line);background:#fff;border-radius:5px;width:1.7rem;height:1.25rem;
+    cursor:pointer;color:var(--ink-soft);font-size:.7rem;line-height:1;display:flex;align-items:center;justify-content:center}
+  .orden .moves button:hover{border-color:var(--gold);color:var(--gold)}
+  .orden .moves button:disabled{opacity:.3;cursor:default}
+
+  /* Freitext */
+  textarea{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.3rem;line-height:1.5;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;resize:vertical;min-height:80px}
+  textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+
+  .btn{font-family:inherit;font-size:.92rem;font-weight:700;border-radius:99px;cursor:pointer;
+    padding:.55rem 1.2rem;transition:.18s;border:1px solid transparent}
+  .btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:#000}
+  .btn-line{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-line:hover{border-color:var(--gold)}
+  .btn-green{background:var(--green);color:#fff}.btn-green:hover{filter:brightness(1.08)}
+  .row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;align-items:center}
+
+  /* Schluss (Manöverkritik) */
+  .schluss{border-top:1px dashed var(--line);margin-top:2.2rem;padding-top:1.8rem;
+    opacity:0;max-height:0;overflow:hidden;transition:opacity .5s}
+  .schluss.show{opacity:1;max-height:600px}
+
+  [hidden]{display:none !important}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<!-- Navi kommt später als eigenes Paket (Slot-Modus wie die anderen Räume) -->
+<header class="bar">
+  <div class="brand">
+    <svg width="26" height="26" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <span class="room-name">Taller de lectura</span>
+  </div>
+</header>
+
+<main class="seminar">
+
+  <!-- Spikiu eröffnet das Seminar -->
+  <div class="spikiu-line">
+    <svg width="34" height="34" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <p class="say">Schau, ein kleiner Text aus dem Alltag. Lies ihn in Ruhe — dann holen wir zusammen das Wichtige heraus. <em>Kein Test, nur wir zwei und der Text.</em></p>
+  </div>
+
+  <!-- Der Text liegt auf dem Tisch -->
+  <article class="documento">
+    <p class="doc-kind">Texto · Español</p>
+    <p class="doc-text">Ayer Marta fue al mercado del barrio. Compró tomates, pan y un poco de queso. Cuando volvió a casa, preparó una ensalada para la cena.</p>
+  </article>
+  <p class="bridge">Wörter-Brücke: <b>ayer</b> = gestern · <b>barrio</b> = Viertel · <b>compró</b> = sie kaufte · <b>volvió</b> = sie kam zurück</p>
+
+  <!-- Aufgabe 1 — Multiple Choice -->
+  <section class="aufgabe" id="a1">
+    <p class="a-eyebrow">Verstehen</p>
+    <p class="a-frage">Was hat Marta zum Abendessen gemacht?</p>
+    <button class="opt" data-correct="1">Una ensalada</button>
+    <button class="opt">Una sopa</button>
+    <button class="opt">Una pizza</button>
+    <p class="feedback" id="fb1"></p>
+  </section>
+
+  <!-- Aufgabe 2 — Reihenfolge -->
+  <section class="aufgabe" id="a2">
+    <p class="a-eyebrow">Verbinden · Reihenfolge</p>
+    <p class="a-frage">Bring die drei Schritte in die Reihenfolge, in der sie passieren.</p>
+    <ul class="orden" id="orden"></ul>
+    <div class="row">
+      <button class="btn btn-ink" id="ordenCheck">Prüfen</button>
+      <span class="feedback" id="fb2"></span>
+    </div>
+  </section>
+
+  <!-- Aufgabe 3 — Freitext -->
+  <section class="aufgabe" id="a3">
+    <p class="a-eyebrow">Selbst sagen</p>
+    <p class="a-frage">Und du — was würdest du im <em>mercado</em> kaufen? Schreib einen kurzen Satz auf Spanisch.</p>
+    <textarea id="ta" spellcheck="false" placeholder="Compro…"></textarea>
+    <div class="row">
+      <button class="btn btn-ink" id="taSend">Hinlegen</button>
+    </div>
+    <div class="spikiu-line" id="taReply" hidden style="margin-top:1.2rem">
+      <svg width="28" height="28" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <p class="say" id="taReplyText"></p>
+    </div>
+  </section>
+
+  <!-- Schluss — Manöverkritik in Spikius Stimme, kein Punktestand -->
+  <div class="schluss" id="schluss">
+    <div class="spikiu-line">
+      <svg width="34" height="34" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <p class="say">Das war's für diesen Text. Du hast das Wichtigste herausgeholt — <em>was, wer, in welcher Reihenfolge</em>. Kein Punktestand, nur ein Schritt weiter.</p>
+    </div>
+    <div class="row">
+      <button class="btn btn-green">Noch ein Text</button>
+      <button class="btn btn-line">Genug für heute</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  // ── Aufgabe 1: Multiple Choice (Charta-Muster: grün/rot, korrekte markiert, Erklärung, disabled) ──
+  var fb1 = document.getElementById('fb1');
+  document.querySelectorAll('#a1 .opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var opts = document.querySelectorAll('#a1 .opt');
+      opts.forEach(function(o){ o.disabled = true; });
+      if (btn.dataset.correct){
+        btn.classList.add('right');
+        fb1.innerHTML = 'Genau — <b>»preparó una ensalada para la cena«</b>. Der Schluss des Textes verrät es.';
+      } else {
+        btn.classList.add('wrong');
+        opts.forEach(function(o){ if(o.dataset.correct) o.classList.add('right'); });
+        fb1.innerHTML = 'Fast. Schau den letzten Satz an: <b>»preparó una ensalada«</b> — eine Salat.';
+      }
+      fb1.classList.add('show');
+      maybeSchluss();
+    });
+  });
+
+  // ── Aufgabe 2: Reihenfolge ──
+  var pasos = [
+    { txt: 'Fue al mercado', pos: 1 },
+    { txt: 'Compró comida',  pos: 2 },
+    { txt: 'Preparó la cena', pos: 3 }
+  ];
+  // bewusst durcheinander starten
+  var orden = [ pasos[2], pasos[0], pasos[1] ];
+  var ordenSolved = false;
+  var ordenEl = document.getElementById('orden');
+  var fb2 = document.getElementById('fb2');
+
+  function renderOrden(){
+    ordenEl.innerHTML = '';
+    orden.forEach(function(item, i){
+      var li = document.createElement('li');
+      if (ordenSolved) li.classList.add('ok');
+      li.innerHTML =
+        '<span class="num">' + (i+1) + '</span>' +
+        '<span class="txt">' + item.txt + '</span>' +
+        '<span class="moves">' +
+          '<button data-dir="-1" ' + (i===0?'disabled':'') + (ordenSolved?'disabled':'') + '>▲</button>' +
+          '<button data-dir="1" '  + (i===orden.length-1?'disabled':'') + (ordenSolved?'disabled':'') + '>▼</button>' +
+        '</span>';
+      li.querySelectorAll('.moves button').forEach(function(b){
+        b.addEventListener('click', function(){
+          var dir = parseInt(b.dataset.dir,10);
+          var j = i + dir;
+          if (j<0 || j>=orden.length) return;
+          var tmp = orden[i]; orden[i] = orden[j]; orden[j] = tmp;
+          fb2.classList.remove('show');
+          renderOrden();
+        });
+      });
+      ordenEl.appendChild(li);
+    });
+  }
+  renderOrden();
+
+  document.getElementById('ordenCheck').addEventListener('click', function(){
+    var correct = orden.every(function(item, i){ return item.pos === i+1; });
+    if (correct){
+      ordenSolved = true;
+      renderOrden();
+      this.disabled = true;
+      fb2.innerHTML = '<b>Sitzt.</b> Genau die Reihenfolge im Text.';
+      fb2.style.color = 'var(--green)';
+    } else {
+      fb2.textContent = 'Noch nicht — was passiert zuerst? Verschieb mit ▲▼ und prüf nochmal.';
+      fb2.style.color = 'var(--rojo)';
+    }
+    fb2.classList.add('show');
+    maybeSchluss();
+  });
+
+  // ── Aufgabe 3: Freitext (scripted Reaktion, kein API) ──
+  var taDone = false;
+  document.getElementById('taSend').addEventListener('click', function(){
+    var val = document.getElementById('ta').value.trim();
+    if (!val) return;
+    taDone = true;
+    document.getElementById('taReplyText').innerHTML =
+      'Schön. Du baust schon ganze Sätze — genau so wächst Lesen: <em>erst verstehen, dann selbst sagen.</em>';
+    document.getElementById('taReply').hidden = false;
+    this.disabled = true;
+    document.getElementById('ta').disabled = true;
+    maybeSchluss();
+  });
+
+  // ── Schluss erscheint, wenn alle drei berührt sind ──
+  function maybeSchluss(){
+    if (document.getElementById('fb1').classList.contains('show') && ordenSolved && taDone){
+      document.getElementById('schluss').classList.add('show');
+      document.getElementById('schluss').scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  }
+})();
+</script>
+</body>
+</html>
