@@ -1,109 +1,78 @@
 # AKTUELLER AUFTRAG — für Claude Code
 
-_Geschrieben von Claude (claude.ai, Design) am 18.06.2026 (Teil 5).
+_Geschrieben von Claude (claude.ai, Design) am 18.06.2026 (Teil 7).
 Mach NUR diesen Auftrag. Wenn fertig: committen, pushen, Bericht ins Ledger,
 diese Datei auf „erledigt" setzen._
 
 ---
 
 ## TITEL
-nav.js in `schreibwerkstatt.html` bringen — SLOT-MODUS in die vorhandene `.bar`,
-Test-Wähler raus aus dem Produkt, hinter `?dev=1` gesperrt.
+„Schreibwerkstatt" als Eintrag ins Hamburger-Menü (`nav.js`) — schließt die Menü-Lücke
+(Ledger Offene-Punkte 7).
 
 ## WARUM
-Die Werkstatt ist die letzte App-Seite ohne den Hamburger. Sie soll dieselbe Navi tragen
-wie überall (Auto-Prinzip: identisches Armaturenbrett). Ihre eigene Kopfzeile `.bar` trägt
-aber die Test-Wähler `#selLang` + `#selKoennen`, an denen das Lektor-Script hängt
-(`profile()` liest sie). Würde nav.js im Slot-Modus den ganzen `.bar`-Inhalt überschreiben,
-verschwänden die Wähler → `getElementById('selLang')` null → Script bricht.
+Alle App-Seiten tragen den Drawer, aber `nav.js` STRUCT hat KEINEN Eintrag für die
+Schreibwerkstatt → aus dem Menü kommt man nicht zur Werkstatt. Das ist eine reine
+`nav.js`-Inhaltsänderung (wirkt auf ALLE Seiten — genau gewollt). Die Schreibwerkstatt ist
+der stille Zwilling zum Sprechen, also sitzt sie direkt unter „Jetzt sprechen".
 
-Design-Entscheidung (Ledger Offene-Punkte 4, zugleich 1): die Wähler waren **Altlast** aus
-der Zeit der offenen Assessment-Schuld. Jetzt schreibt das Assessment `zielsprache`/`koennen`
-kanonisch ins Profil. Also: Wähler **raus aus dem Produkt-Look**, Raum liest das Profil. Zum
-bequemen Testen blendet `?dev=1` die Wähler wieder ein. Prototyp `prototyp-schreibwerkstatt-nav.html`
-ist genehmigt — diese Datei ist die Vorlage, nur in die echte `schreibwerkstatt.html` übertragen.
+## SCOPE (NUR nav.js — VIER chirurgische Änderungen)
 
-## SCOPE (NUR schreibwerkstatt.html)
-1. **Font:** im `<link …css2?family=…>` `Lora:ital,wght@0,400;0,600;0,700;1,400&family=` VOR
-   `Cormorant+Garamond` ergänzen (damit die Navi-Wortmarke „Spikiu" wie auf den anderen Seiten aussieht).
-2. **Bar umbauen** — die `.bar` bleibt EINE Leiste, bekommt aber einen eigenen Navi-Slot links
-   und das stille Raum-Label rechts. Konkret:
-   - Den bisherigen `<div class="brand">…SVG…Schreiben</div>` ERSETZEN durch
-     `<div class="nav-slot" data-spk-nav></div>` (nav.js füllt hier Hamburger+Logo — der Slot ist
-     ein EIGENES Element, NICHT die ganze `.bar`, sonst werden die Wähler überschrieben).
-   - Den bisherigen `<div class="controls">…</div>` ERSETZEN durch:
-     ```
-     <div class="room">
-       <span class="room-name">Schreiben</span>
-       <div class="controls" id="devControls" hidden>
-         <span class="dev-tag">dev</span>
-         …die ZWEI bisherigen <label>+<select id="selLang">/<select id="selKoennen">…
-       </div>
-     </div>
-     ```
-   - **Wichtig:** Die `<select id="selLang">` und `<select id="selKoennen">` bleiben im DOM (nur jetzt
-     in `#devControls`, default `hidden`). Das Lektor-Script bleibt damit unangetastet —
-     `profile()`/Seeding/Handler greifen weiter auf dieselben IDs.
-3. **CSS ergänzen** (aus dem Prototyp, nach `select:focus`):
+1. **I18N — neuen Schlüssel `write` in alle drei Sprachblöcke** (zum bestehenden Objekt, in dem
+   `talk`/`books`/… stehen):
+   - Deutsch:  `write: 'Schreibwerkstatt'`
+   - Español:  `write: 'Taller de escritura'`
+   - English:  `write: 'Writing Workshop'`
+
+2. **ICON — Eintrag `write` ins `ICON`-Objekt** (Stift, im selben Linien-Stil wie die anderen,
+   `fill="none"`/`stroke=currentColor` kommt vom Wrapper):
    ```
-   .room{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-   .room-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--ink-soft);letter-spacing:.01em}
-   .dev-tag{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--gold);border-radius:99px;padding:.12rem .5rem}
+   write: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
    ```
-4. **`nav.js` einbinden:** `<script src="nav.js" defer></script>` vor `</body>`.
-5. **Dev-Schloss-Script** (eigener kleiner `<script>`, NACH dem Lektor-Script, vor nav.js):
+
+3. **STRUCT — Eintrag in der `main`-Sektion, DIREKT NACH `talk`, VOR `books`:**
    ```
-   (function(){
-     if(!/[?&]dev=1\b/.test(location.search)) return;   // Produkt: Wähler bleiben weg
-     var box=document.getElementById('devControls'); if(box) box.hidden=false;
-   })();
+   { id: 'talk',  href: 'chat.html' },
+   { id: 'write', href: 'schreibwerkstatt.html' },
+   { id: 'books', href: 'books.html' },
    ```
-   (Die Wähler werden vom bestehenden Script bereits aus dem Profil vorbelegt — nichts doppeln.)
-   Verbotene Variablennamen meiden (kein `history`/`location`/`name`/… als VARIABLE; `location.search`
-   nur LESEN ist erlaubt).
+
+4. **getActive() — Aktiv-Erkennung** für die Werkstatt-Seite. Direkt nach der `chat`→`talk`-Zeile:
+   ```
+   if (f.indexOf('chat') === 0) return 'talk';
+   if (f.indexOf('schreibwerkstatt') === 0) return 'write';
+   ```
 
 ## ABNAHME-KRITERIEN („fertig" ist messbar)
-1. Normal geöffnet zeigt `schreibwerkstatt.html` GENAU EINE Leiste: links Hamburger + Spikiu-Logo,
-   rechts stilles kursives „Schreiben". KEINE Sprach-/Können-Wähler sichtbar. Kein zweites Capy.
-2. Hamburger öffnet den Drawer (Haupt/Fortschritt/Konto, Gym „bald", Capy komplett); Backdrop-Klick
-   und Escape schließen. (Aktiv-Markierung: noch keine — „Schreiben" fehlt im Menü, eigener Schritt.)
-3. Mit `?dev=1` erscheinen die zwei Wähler mit goldenem „dev"-Tag, vorbelegt aus dem Profil.
-4. Der Lektor-Flow läuft unverändert: Text hinlegen → `/api/lektor` antwortet, Regler nach `koennen`,
-   Sprache nach Profil — auch OHNE sichtbare Wähler (Werte aus `#selLang`/`#selKoennen` im DOM).
-5. Layout heil: Seite scrollt natürlich (kein 100dvh-Lock), kein doppelter Scrollbalken.
-6. UNANGETASTET: alle anderen Seiten (index, dashboard, books, sessions, learnraum, chat, cap*) und nav.js.
-7. `node --check` auf das/die Inline-Script(s) von schreibwerkstatt.html läuft sauber.
+1. Drawer zeigt (auf jeder App-Seite) unter „Jetzt sprechen" einen neuen klickbaren Eintrag mit
+   Stift-Icon, der nach `schreibwerkstatt.html` führt.
+2. Das Label wechselt mit der Muttersprache: DE „Schreibwerkstatt", ES „Taller de escritura",
+   EN „Writing Workshop" (Test: `localStorage.spikiu_lang` bzw. `profile.nativeLang` umstellen).
+3. Auf `schreibwerkstatt.html` ist der Eintrag als **aktiv** markiert (`spk-active`).
+4. Alle anderen Menü-Einträge unverändert (dashboard, talk, books, sessions, lessons, gym, path,
+   verlauf, settings) — Reihenfolge + Labels gleich.
+5. UNANGETASTET: jede HTML-Seite, alle anderen Dateien. Nur `nav.js` wird angefasst.
+6. `node --check nav.js` läuft sauber.
 
 ## HINWEISE
-- nav.js sucht `document.querySelector('[data-spk-nav]')`. Der Slot MUSS ein eigenes Element sein
-  (`.nav-slot`), NICHT die ganze `.bar` — sonst überschreibt `host.innerHTML = inner` die Wähler.
-- `.bar` hat `justify-content:space-between` → Slot links, `.room` rechts. Passt ohne weitere Styles.
-- nav.js bringt seine eigenen `spk-`-Styles + Lora-Erwartung mit; Schritt 1 (Font) deckt das ab.
-- Nach Lieferung: Leonardo lädt herunter → `cp` → verifizieren VOR commit:
-  `grep -c "data-spk-nav" schreibwerkstatt.html` == 1 und
-  `grep -c 'id="selLang"' schreibwerkstatt.html` == 1 (Wähler nur einmal, in #devControls).
-  → commit → push origin dev → `schreibwerkstatt.html?v=N` cache-frei testen, dann `?v=N&dev=1`.
+- `nav.js` wird von den Seiten ohne Versions-Query geladen → Browser/Vercel cachen es.
+  Zum Testen **hart neu laden** (Strg+Shift+R) oder Inkognito, sonst siehst du die alte Navi.
+- KEIN neuer Sprachschalter, keine STRUCT-Umsortierung außer dem einen Insert.
+- Verbotene Variablennamen meiden (kein `history`/`location`/`name`/… als VARIABLE).
 
 ## ABNAHME-TEST (kurz)
-`schreibwerkstatt.html?v=N` → eine Leiste (Hamburger + Logo links, „Schreiben" rechts), keine Wähler →
-Hamburger → Drawer → schließen → Text hinlegen, Spikiu liest/antwortet. Dann `?v=N&dev=1` → zwei Wähler
-mit „dev"-Tag erscheinen, es/anfang vorbelegt. Layout scrollt sauber.
+`schreibwerkstatt.html?v=N` hart neu laden → Hamburger → im Drawer steht „Schreibwerkstatt"
+unter „Jetzt sprechen", als aktiv markiert → Klick führt zurück auf die Werkstatt. Dann auf
+`dashboard.html` denselben Eintrag sehen (dort NICHT aktiv). Sprache umstellen → Label wechselt.
+
+## VERIFIKATION VOR COMMIT (Leonardo)
+```
+grep -c "Taller de escritura" nav.js     # 1
+grep -c "Writing Workshop" nav.js        # 1
+grep -c "id: 'write'" nav.js             # 1
+node --check nav.js && echo OK
+```
 
 ---
 
-_Status: ERLEDIGT am 18.06.2026 (Teil 6) · kein offener Auftrag._
-
-Umsetzung (NUR `schreibwerkstatt.html`, fünf Eingriffe exakt nach Scope): (1) Lora vor
-Cormorant+Garamond im Font-Link. (2) `.bar` umgebaut — `<div class="brand">…SVG…Schreiben</div>` →
-`<div class="nav-slot" data-spk-nav></div>` (eigenes Slot-Element, NICHT die ganze `.bar`), `controls`
-→ `<div class="room"><span class="room-name">Schreiben</span> + <div class="controls" id="devControls"
-hidden> mit dev-Tag + den ZWEI unveränderten `<select id="selLang">/<select id="selKoennen">`. (3) CSS
-`.room`/`.room-name`/`.dev-tag` nach `select:focus`. (4) `<script src="nav.js" defer>` vor `</body>`.
-(5) Dev-Schloss-Script (nach Lektor-Script, vor nav.js): `?dev=1` → `devControls.hidden=false`;
-Vorbelegung erledigt das bestehende Lektor-Script (selLang/selKoennen aus dem Profil) — nicht gedoppelt.
-Abnahme: `data-spk-nav`=1, `id="selLang"`=1, `id="selKoennen"`=1, `id="devControls"`=1, alter `brand`-Div
-=0, genau ein `<header>`, beide Inline-Scripts (`vm.Script`) + `node --check nav.js` grün, nav.js
-byte-gleich origin/dev, keine verbotenen Variablennamen. NICHT live geklickt (Vercel) — Rest-Test für
-Leonardo: `schreibwerkstatt.html?v=N` → eine Leiste (Hamburger+Logo links, „Schreiben" rechts), keine
-Wähler → Hamburger/Drawer → Text hinlegen, Spikiu antwortet → dann `?v=N&dev=1` → zwei Wähler mit
-„dev"-Tag, es/anfang vorbelegt.
+_Status: OFFEN — bereit zum Bau._
