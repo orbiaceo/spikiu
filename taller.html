@@ -99,6 +99,7 @@
   .btn-line{background:transparent;color:var(--ink);border-color:var(--line)}
   .btn-line:hover{border-color:var(--gold)}
   .btn-green{background:var(--green);color:#fff}.btn-green:hover{filter:brightness(1.08)}
+  .btn:disabled{opacity:.55;cursor:default;pointer-events:none}
   .row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;align-items:center}
 
   /* Schluss (Manöverkritik) */
@@ -185,8 +186,10 @@
   }
 
   // ── Profil defensiv lesen (wie schreibwerkstatt) ─────────────────
-  var stored = {};
-  try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+  var userObj = {}, stored = {};
+  try { userObj = JSON.parse(localStorage.getItem('spikiu_user')||'{}'); } catch(e){}
+  stored = userObj.profile || {};
+  var userName = userObj.name || stored.name || '';
   function langCode(v){
     if(!v) return null; v=(''+v).toLowerCase();
     if(/^(de|es|en|el)$/.test(v)) return v;
@@ -241,6 +244,13 @@
         kind:{de:'Text · German',es:'Text · Spanish',en:'Text · English',el:'Text · Greek'}}
   }[M];
 
+  // Warme Abschiedszeile (Muttersprache), Name optional (Design 18.06.)
+  var BYE = {
+    de: function(n){ return 'Bis bald'+(n?', '+n:'')+'. Der Text bleibt, wenn du wiederkommst.'; },
+    es: function(n){ return 'Hasta pronto'+(n?', '+n:'')+'. El texto sigue aquí cuando vuelvas.'; },
+    en: function(n){ return 'See you soon'+(n?', '+n:'')+'. The text will be here when you return.'; }
+  }[M];
+
   // ── Elemente ─────────────────────────────────────────────────────
   var opener=document.getElementById('opener'), doc=document.getElementById('doc'),
       bridge=document.getElementById('bridge'), aufgabenEl=document.getElementById('aufgaben'),
@@ -267,9 +277,16 @@
       '<div class="row"><button class="btn btn-green" id="again">'+esc(TXT.again)+'</button>'+
       '<button class="btn btn-line" id="enough">'+esc(TXT.enough)+'</button></div>';
     schlussEl.classList.add('show');
-    document.getElementById('again').onclick = loadTaller;
-    document.getElementById('enough').onclick = function(){
-      var d=document.getElementById('enough'); d.disabled=true; d.style.opacity=.6;
+    var againBtn=document.getElementById('again'), enoughBtn=document.getElementById('enough');
+    againBtn.onclick = loadTaller;
+    enoughBtn.onclick = function(){
+      // Beide Knöpfe sperren (kein Doppel-Klick), warme Abschiedszeile, dann zum Dashboard.
+      againBtn.disabled=true; enoughBtn.disabled=true;
+      var bye=document.createElement('div'); bye.className='spikiu-line'; bye.style.marginTop='1.2rem';
+      bye.innerHTML=CAPY(34)+'<p class="say">'+esc(BYE(userName))+'</p>';
+      schlussEl.appendChild(bye);
+      bye.scrollIntoView({behavior:'smooth', block:'nearest'});
+      setTimeout(function(){ window.location.href='dashboard.html'; }, 900);
     };
     schlussEl.scrollIntoView({behavior:'smooth', block:'nearest'});
   }

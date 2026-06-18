@@ -164,7 +164,7 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 | `prototyp-taller-lectura.html` | NEU (18.06.) — genehmigte Attrappe Raum Lesen: Seminar-Stimme + Text-als-Dokument + Aufgaben-Block (MC grün/rot, Reihenfolge ▲▼, Freitext), Manöverkritik kein Score. Scripted, kein API. anfang/es→de | — | Prototyp, behalten |
 | `api/taller.js` | **GEBAUT 18.06. Teil 11** — Raum Lesen, EIN Endpoint alle Sprachen, Lektor-Muster (`export default`, kein import.meta, Seele+`taller-modus.md` via process.cwd(), gecacht). ZWEI Phasen nach `antwort`: null→Phase 1 `[TALLER]` (`{ taller, text }`), gesetzt→Phase 2 `[REACCION]` (`{ reaccion, text }`). Toleranter Parser: `JSON.parse`→sanfte Reinigung (Zeilenumbrüche/Trailing-Kommas)→null; `[REACCION]` zusätzlich feldweiser Auszug (gerade-`"`-Fallback). `normAufgabe` validiert mc/orden/frei (orden-loesung = Permutation, sonst identity). Prompt verbietet gerade `"` in Werten | [TALLER]/[REACCION]-Vertrag | ✅ in dev · node --check + Parser-Smoke-Test grün, NICHT live (Vercel) |
 | `taller-modus.md` | **GESCHRIEBEN 18.06. Teil 10** — Raum-Prompt Lesen, erbt von Seele per Grundsatz-Nummer (wie lektor-modus). Zwei Phasen (1: Taller komponieren, 2: frei-Satz bewerten), koennen-Regler, fremde_schrift→3 Spuren, Niemals-Liste (kein Score). Ausgabe-Format liegt im Backend, nicht hier | erzeugt [TALLER]/[REACCION] | ✅ bereit, Bau beauftragt |
-| `taller.html` | **GEBAUT 18.06. Teil 11** — Oberfläche Raum Lesen aus genehmigtem Prototyp. Nav-Slot (`data-spk-nav`) + `nav.js`, Dev-Schloss (`?dev=1` blendet Sprache/Können ein), Profil defensiv aus `spikiu_user.profile`. UI-Sprache=Muttersprache (de/es/en; el nur Zielsprache). Laden → Phase-1-Aufruf, rendert rahmen/texto(+lautschrift)/bruecke/aufgaben/schluss; mc+orden prüft die Oberfläche selbst, frei → Phase-2-Aufruf; „Noch ein Text" → neues Taller. Schluss erscheint, wenn alle Aufgaben berührt. Capy komplett (CAPY()-SVG, 2 Ohren+4 Füße) | liest spikiu_user.profile | ✅ in dev · Inline-Scripts grün, NICHT live geklickt (Vercel) |
+| `taller.html` | **GEBAUT 18.06. Teil 11** — Oberfläche Raum Lesen aus genehmigtem Prototyp. Nav-Slot (`data-spk-nav`) + `nav.js`, Dev-Schloss (`?dev=1` blendet Sprache/Können ein), Profil defensiv aus `spikiu_user.profile`. UI-Sprache=Muttersprache (de/es/en; el nur Zielsprache). Laden → Phase-1-Aufruf, rendert rahmen/texto(+lautschrift)/bruecke/aufgaben/schluss; mc+orden prüft die Oberfläche selbst, frei → Phase-2-Aufruf; „Noch ein Text" → neues Taller. Schluss erscheint, wenn alle Aufgaben berührt. **„Genug für heute" (Design 18.06.): beide Knöpfe sperren → warme Abschiedszeile (Muttersprache, Name aus spikiu_user.name optional) → nach ~900 ms `dashboard.html`.** Capy komplett (CAPY()-SVG, 2 Ohren+4 Füße) | liest spikiu_user.profile | ✅ **LIVE bestätigt 19.06.** (lädt, „Noch ein Text" funktioniert) · Abschied-Knopf nachgezogen |
 
 ---
 
@@ -530,6 +530,16 @@ Leonardo): der Phase-1/Phase-2-Endpoint am echten dev-Deploy + der Klick-Durchla
 `?dev=1`-Wähler). Menü-Eintrag „Lesen" in nav.js ist bewusst NICHT Teil dieses Pakets (eigener Mini-Schritt,
 wie der `write`-Eintrag) — der Drawer führt noch nicht in den Lese-Raum. NÄCHSTES: live abnehmen, dann
 nav.js-Eintrag „Lesen" (Mini-Schritt), danach Testphase/Dashboard 3→4.
+
+**Diese Sitzung (19.06., Teil 12):** Taller LIVE genommen (Vercel Hobby-Limit war die 404-Ursache,
+Leonardo auf Pro → Deploy von Commit c3f850d live; alle anderen Seiten gaben 200, nur taller.html 404 →
+war Plan-Limit, kein Build-Fehler). Live bestätigt: Seite lädt, „Noch ein Text" funktioniert. EIN
+Nachzug aus Design: „Genug für heute" hatte nur einen Platzhalter (Knopf grau) → jetzt: beide Knöpfe
+sperren, EINE warme Abschiedszeile in Spikius Stimme (Muttersprache de/es/en, Name aus `spikiu_user.name`
+optional), nach ~900 ms `window.location.href='dashboard.html'` (kein Variablenname `location`). Kein
+„Bist du sicher?", kein Score. Abnahme: beide Inline-Scripts via `vm.Script` grün, 3 BYE-Vorlagen, kein
+verbotener Variablenname. NOCH ZU KLICKEN (Leonardo): mc/orden/frei-Durchlauf, el-3-Spuren, `?dev=1`,
+Abschied→Dashboard. NÄCHSTES: nav.js-Eintrag „Lesen" (eigener Mini-Schritt), dann Testphase/Dashboard 3→4.
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
