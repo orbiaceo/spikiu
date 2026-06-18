@@ -181,9 +181,19 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    Leiste. Gym-Knopf live (disabled, „bald"). **18.06. Teil 2: `chat.html` per SLOT-MODUS erledigt**
    (`<header data-spk-nav>` → nav.js füllt Hamburger+Logo in die vorhandene Kopfzeile, keine zweite
    Leiste; „← Dashboard" wandert in den Drawer; Charla + Profil-Chip + 100dvh-Layout unberührt).
-   NOCH OFFEN als eigenes Paket: nur noch `schreibwerkstatt.html` (hat Test-Wähler Sprache/Können im
-   Header → eigene Design-Entscheidung). NOCH NICHT live geklickt: Drawer/aktive Seite/Gym-Badge in der
-   echten Oberfläche (nur Node-Syntax + Struktur grün) — gilt für alle 5 nav-Seiten inkl. chat.
+   NOCH OFFEN als eigenes Paket: nur noch `schreibwerkstatt.html`. **18.06. Teil 4 — BLOCKER vor dem Bau,
+   FRAGE AN DESIGN:** Ihr `<header class="bar">` trägt die Test-Wähler `#selLang` + `#selKoennen`, an
+   denen das Charla-Script hängt. nav.js überschreibt im Slot-Modus den Host komplett (`host.innerHTML =
+   inner`) → würde die Wähler LÖSCHEN → `getElementById('selLang')` null → Script bricht (anders als chat,
+   dort saß im Header nur Logo + toter Link). Also entscheiden, WOHIN mit Sprache+Können: (a) Steuerzeile
+   UNTER die nav-Leiste — Muster chat (nav + Profil-Chip darunter), Wähler bleiben Beta-tauglich; (b) ganz
+   RAUS, Sprache/Können nur aus dem Profil (Vertrag „koennen intern, nie sichtbar"); (c) INJECT-Modus, alte
+   `.bar` bleibt als zweite Leiste darunter. Hängt direkt an Offene-Punkte-1 (sichtbarer koennen-Wähler
+   ja/nein). Layout-Fakt: schreibwerkstatt ist KEIN 100dvh-Lock wie chat (`html,body{height:100%}`, body
+   flex-column `min-height:100%`, `.bench{flex:1}` → scrollt) → Inject-Modus technisch möglich. Leonardo
+   nimmt die Frage zu Design; danach Auftrag in `AKTUELLER-AUFTRAG.md`. NOCH NICHT live geklickt:
+   Drawer/aktive Seite/Gym-Badge in der echten Oberfläche (nur Node-Syntax + Struktur grün) — gilt für
+   alle 5 nav-Seiten inkl. chat.
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
 
@@ -347,6 +357,15 @@ UNANGETASTET (`verlauf` bleibt `verlauf`). Abnahme: `node --check nav.js` grün,
 harmlos), `getActive()` mappt chat→`talk` (Drawer markiert „Jetzt sprechen"). NICHT live geklickt
 (Vercel) — Rest-Test gilt jetzt für ALLE 5 nav-Seiten: `?v=N` → Hamburger → Drawer/aktive Seite/
 Gym-Badge. Vollhöhen-Rest: nur noch `schreibwerkstatt.html` (Test-Wähler im Header → eigenes Paket).
+
+**Diese Sitzung (18.06., Teil 4):** Kein Code. Start-Protokoll gefahren („Beginnen wir!"):
+Ledger + Auftrag gelesen, echten `origin/dev` geprüft. Befund 1 — der chat.html-nav-Auftrag
+(Slot-Modus) ist verifiziert VOLLSTÄNDIG erledigt am echten Code: `data-spk-nav` am `<header>`
+(Z. 64), `nav.js` eingebunden (Z. 284), „← Dashboard"-Markup raus (nur totes CSS Z. 21–22),
+genau ein `<header>`, `verlauf` 6×/`history` 0×, `node --check nav.js` + Inline-Script (`vm.Script`)
+grün. Lokal == origin/dev, sauber. Befund 2 — schreibwerkstatt-nav als nächstes Paket angestoßen,
+dabei BLOCKER gefunden → FRAGE AN DESIGN (s. Offene Punkte 4). Leonardo geht damit zu Design
+(claude.ai) und schreibt danach den Auftrag. NICHT live geklickt (gilt weiter für alle 5 nav-Seiten).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese

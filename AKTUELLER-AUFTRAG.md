@@ -55,6 +55,11 @@ mit „Jetzt sprechen" aktiv → schließen → „Hola" tippen → Spikiu antwo
 
 _Status: ERLEDIGT am 18.06.2026 · kein offener Auftrag._
 
+_18.06. Teil 4: Nächstes Paket „schreibwerkstatt-nav" steht an, ist aber NOCH KEIN Auftrag —
+es wartet auf eine Design-Entscheidung (BLOCKER: nav.js Slot-Modus überschreibt die Test-Wähler
+`#selLang`/`#selKoennen` → wohin mit Sprache+Können? a/b/c siehe Ledger Offene-Punkte 4). Leonardo
+klärt das mit Design (claude.ai) und schreibt diesen Abschnitt danach zum echten Auftrag um._
+
 Umsetzung: `<header>` → `<header data-spk-nav></header>` (alter Logo+„← Dashboard"-
 Inhalt entfernt, nav.js füllt den Slot mit Hamburger+Logo — keine zweite Leiste, die
 Seiten-eigenen header-Styles flex/padding/border-bottom bleiben). `<script src="nav.js"
