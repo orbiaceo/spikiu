@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 18.06.2026 (chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
+Stand: 18.06.2026 (Design 18.06. Teil 5: schreibwerkstatt-nav ENTSCHIEDEN — Test-Wähler raus aus dem Produkt, Sprache aus profile.zielsprache + Können aus profile.koennen, `?dev=1`-Schloss blendet sie zum Testen wieder ein, stilles „Schreiben"-Label rechts; Prototyp `prototyp-schreibwerkstatt-nav.html` genehmigt; schließt zugleich Offene-Punkte-1 (koennen-Wähler raus) · chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -114,7 +114,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
 | `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ✅ **LIVE bestätigt 17.06.** (spricht perfekt, Opener + Folgeantwort) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
-| `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler. **17.06.: verbotene Variable `history` → `verlauf` (window.history-Falle vom 16.06., im IIFE latent). Cross-Check grün.** | liest spikiu_user.profile defensiv | ✅ live (Fix gepusht origin/dev) |
+| `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor, Zielsprache+Können-Wähler. **17.06.: verbotene Variable `history` → `verlauf` (window.history-Falle vom 16.06., im IIFE latent). Cross-Check grün.** **18.06. Teil 5: nav-Paket DESIGNT (Auftrag steht aus) — Test-Wähler raus, liest profile.zielsprache/koennen, Navi-Slot `data-spk-nav` in die `.bar`, `?dev=1`-Schloss, Lora-Font, stilles „Schreiben"-Label.** | liest spikiu_user.profile defensiv (künftig zielsprache/koennen statt Wähler) | ✅ live · ⏳ nav-Schnitt beauftragt |
 | `index.html` | Landing, Sprach-Switcher | — | ✅ deployed |
 | `assessment.html` | 7 Karten → Profil → Dashboard. **finish() (16.06.) schreibt jetzt kanonisch:** koennen (aus level gemappt), zielsprache/muttersprache (Codes), fremde_schrift, etappe:'samen'. level/targetLang etc. bleiben (Lernweg-Vertrag) | profile/roadmapPending + Raum-Vertrag | ✅ **LIVE bestätigt 17.06.** (alle 5 Felder + Lernweg-Felder grün in pruefung.html) |
 | `pruefung.html` | NEU (17.06.) — sichtbare Profil-Verifikation ohne Konsole. Liest spikiu_user.profile, grün/rot je Feld (5 Raum-Felder + Lernweg-Felder). Diagnose-Werkzeug, kein Produkt. Capy komplett | liest spikiu_user.profile | ✅ in dev, Diagnose behalten |
@@ -129,6 +129,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
 | `prototyp-schreibwerkstatt.html` | Attrappe (genehmigt), führte zur Oberfläche | — | Prototyp, optional behalten |
+| `prototyp-schreibwerkstatt-nav.html` | NEU (18.06.) — genehmigte Attrappe für den nav-Schnitt: echte `nav.js` inline (byte-genau), eine Leiste (Slot links + stilles „Schreiben" rechts), `?dev=1` blendet Test-Wähler ein. Lehre: ein `</script>` im Inhalt eines INLINE-Scripts schließt das Tag vorzeitig → im Prototyp zu `<\/script>` neutralisiert (nur Inline-Falle, nie bei externem `src`) | — | Prototyp, behalten |
 
 ---
 
@@ -162,7 +163,10 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    → Lektion-Angebot, de/en als Feld.
    FRAGE AN DESIGN: Die Oberfläche zeigt `koennen` als sichtbaren Wähler („Können:
    Anfang/Mittel/Fortgeschritten"), der Vertrag sagt aber „koennen INTERN, nie sichtbar".
-   Werkbank-Affordanz für Beta — oder soll der Wähler raus? (Nicht angefasst.)
+   Werkbank-Affordanz für Beta — oder soll der Wähler raus? ✅ **ENTSCHIEDEN 18.06.: RAUS** aus
+   dem Produkt-Look (Vertrag gewinnt). Können kommt aus `profile.koennen`, Sprache aus
+   `profile.zielsprache`. Zum Testen blendet `?dev=1` beide Wähler wieder ein (Dev-Schloss).
+   Wird mit dem schreibwerkstatt-nav-Schnitt umgesetzt (Offene-Punkte 4).
 2. ~~**Assessment-Schuld:** schreibt level:A1/B1 statt koennen/fremde_schrift.~~
    ✅ GETILGT 16.06. + **LIVE BESTÄTIGT 17.06.** — Assessment durchlaufen, pruefung.html
    zeigt alle 5 Raum-Felder UND die Lernweg-Felder grün. finish() (rein additiv): koennen
@@ -194,8 +198,16 @@ Die alte Form `phases` ist TOT. Niemals zurück.
    nimmt die Frage zu Design; danach Auftrag in `AKTUELLER-AUFTRAG.md`. NOCH NICHT live geklickt:
    Drawer/aktive Seite/Gym-Badge in der echten Oberfläche (nur Node-Syntax + Struktur grün) — gilt für
    alle 5 nav-Seiten inkl. chat.
+   ✅ **ENTSCHIEDEN 18.06. Teil 5 (Design):** Variante **(b) + Dev-Schloss**. Beide Wähler raus aus dem
+   Produkt-Look; Sprache aus `profile.zielsprache`, Können aus `profile.koennen`. `?dev=1` blendet die
+   zwei Test-Wähler wieder ein (vorbelegt aus dem Profil) — Produkt sauber, Testen bequem. Slot-Modus in
+   die vorhandene `.bar` (links Navi, rechts stilles kursives „Schreiben"-Label). Prototyp
+   `prototyp-schreibwerkstatt-nav.html` GENEHMIGT. Auftrag in `AKTUELLER-AUFTRAG.md` geschrieben.
 5. Dashboard „3 capítulos" → „4". Legal AGB/DSGVO/Impressum vor Juli.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
+7. **Menü-Lücke (NEU 18.06., eigener Mini-Schritt):** `nav.js` STRUCT hat KEINEN „Schreiben"-Eintrag →
+   aus dem Drawer kommt man nicht zur Werkstatt. nav.js-Inhaltsänderung (betrifft alle Seiten), separat
+   vom schreibwerkstatt-Schnitt. Item + Icon + i18n (de/es/en) ergänzen; Position klären (unter „Bücher"?).
 
 ---
 
@@ -366,6 +378,20 @@ genau ein `<header>`, `verlauf` 6×/`history` 0×, `node --check nav.js` + Inlin
 grün. Lokal == origin/dev, sauber. Befund 2 — schreibwerkstatt-nav als nächstes Paket angestoßen,
 dabei BLOCKER gefunden → FRAGE AN DESIGN (s. Offene Punkte 4). Leonardo geht damit zu Design
 (claude.ai) und schreibt danach den Auftrag. NICHT live geklickt (gilt weiter für alle 5 nav-Seiten).
+
+**Diese Sitzung (18.06., Teil 5 — DESIGN, claude.ai):** Design-Gespräch, kein Produktivcode.
+Entschieden + entworfen: der **schreibwerkstatt-nav-Schnitt** (Offene-Punkte 4, zugleich 1).
+Variante (b)+Dev-Schloss: Test-Wähler raus aus dem Produkt, Sprache aus `profile.zielsprache`,
+Können aus `profile.koennen`; `?dev=1` blendet die Wähler zum Testen wieder ein. Slot-Modus in die
+vorhandene `.bar` (links Navi byte-genau, rechts stilles kursives „Schreiben"-Label) — eine Leiste,
+kein Doppel-Capy, schreibwerkstatt scrollt natürlich (kein 100dvh-Lock). Prototyp
+`prototyp-schreibwerkstatt-nav.html` gebaut (echte `nav.js` inline) und GENEHMIGT. Auftrag geschrieben.
+Begründung „Wähler raus": die Wähler waren Altlast aus der Zeit der offenen Assessment-Schuld — jetzt
+schreibt das Assessment `zielsprache`/`koennen` kanonisch, also liest der Raum das Profil. Kein
+In-App-Sprachschalter (nav.js sagt es selbst). NEUER Mini-Schritt notiert (Offene-Punkte 7): „Schreiben"
+fehlt im nav.js-Menü. LEHRE (Prototyp-Inlining): ein `</script>` im Inhalt eines INLINE-Scripts schließt
+das Tag vorzeitig (HTML-Parser) → „Invalid or unexpected token". Fix nur im Inline-Fall: `<\/script>`.
+Nie ein Problem bei externem `<script src>` — die echte `nav.js` blieb unangetastet.
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
