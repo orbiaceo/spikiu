@@ -1,122 +1,65 @@
 # AKTUELLER AUFTRAG — für Claude Code
 
-_Geschrieben von Claude (claude.ai, Design) am 18.06.2026 (Teil 10).
+_Geschrieben von Claude (claude.ai, Design) am 19.06.2026 (Teil 12).
 Mach NUR diesen Auftrag. Wenn fertig: committen, pushen, Bericht ins Ledger,
 diese Datei auf „erledigt" setzen._
 
 ---
 
 ## TITEL
-Raum LESEN bauen — „Taller de lectura": `api/taller.js` + `taller.html` (+ `vercel.json`).
-Blaupause: das Lektor-Muster. Vertrag: `[TALLER]` (siehe Ledger). Look: der genehmigte
-`prototyp-taller-lectura.html`.
+Menü-Labels entwirren: „Leseraum"→„Lesewerkstatt", „Bücher"→„Meine Bücher".
+Reine Label-Änderung in `nav.js` + `taller.html`. Kein neues Verhalten.
 
 ## WARUM
-Vierter Raum nach Gespräch + Schreiben. Leseverstehen-Seminar (Misch-Form). Text-only,
-Spikiu-generiert. Endpoint + Oberfläche fehlen — Vertrag, Modus und Prototyp liegen schon im Repo.
+Im Drawer stehen „Leseraum" und direkt darunter „Bücher" — beide lesen sich als „hier
+liest man", der User stockt: wo lese ich? Lösung: die geführten Räume tragen die
+Werkstatt-Familie (Schreibwerkstatt · Lesewerkstatt), „Bücher" wird zur klar besitzanzeigenden
+Bibliothek (Meine Bücher). Auto-Prinzip auf die Labels: gleiche Familie = gleicher Raum-Typ.
 
-## SCOPE
+## SCOPE (NUR Labels — zwei Dateien)
 
-### 1. `api/taller.js` — NEU, nach dem Muster von `api/lektor.js`
-- `export default async function handler(req,res)`, CORS-Header, `OPTIONS`-Kurzschluss,
-  `x-api-key` aus `process.env.ANTHROPIC_API_KEY`, Modell `claude-sonnet-4-5`.
-- KEIN `import.meta`. Pfade über `process.cwd()`. Dateiname `.js`.
-- Seele + Modus zur Laufzeit lesen: `readFileSync(join(process.cwd(), 'spikiu-seele.md'))`
-  und `'taller-modus.md'` (mehrere Kandidatenpfade probieren, wie lektor.js).
-- Prompt zusammenbauen: **Seele + taller-modus.md + OUTPUT-FORMAT (phasenabhängig) + Profil-Kontext**
-  (`profile.koennen/muttersprache/zielsprache/fremde_schrift`, `thema`, ggf. `antwort`).
-- **Zwei Phasen nach `antwort`:**
-  - `antwort == null` → **Phase 1**, Modell antwortet AUSSCHLIESSLICH mit EINEM Block:
-    ```
-    [TALLER]
-    {"rahmen":"…","texto":"…","bruecke":"… oder null","lautschrift":"… oder null",
-     "aufgaben":[
-       {"typ":"mc","frage":"…","optionen":["…","…","…"],"loesung":0,"erklaerung":"…"},
-       {"typ":"orden","frage":"…","teile":["…","…","…"],"loesung":[2,0,1]},
-       {"typ":"frei","frage":"…","hinweis":"…"}],
-     "schluss":"…"}
-    [/TALLER]
-    ```
-  - `antwort` gesetzt (`{frage, texto, satz}`) → **Phase 2**, Modell antwortet mit:
-    ```
-    [REACCION]
-    {"reaktion":"…","besser":"… oder null"}
-    [/REACCION]
-    ```
-- **Anführungszeichen-Regel (wie Lektor):** das JSON-Gerüst nutzt gerade `"`. Der Prompt
-  VERBIETET dem Modell gerade `"` INNERHALB von Werten — nur typografische („ "). Das ist
-  der Klassiker, an dem `JSON.parse` zerbricht.
-- **Toleranter Parser:** erst `JSON.parse`; scheitert er, eine sanfte Reinigung versuchen,
-  sonst `{ taller:null, text:roh }` (Oberfläche zeigt sanften Wiederholen-Knopf). Rückgabe:
-  Phase 1 `{ taller, text }`, Phase 2 `{ reaccion, text }`.
+### 1. `nav.js` — I18N-Labels (drei Sprachblöcke)
+- Eintrag `read`:
+  - de: `Leseraum` → `Lesewerkstatt`
+  - es: `Taller de lectura`  (bleibt unverändert)
+  - en: `Reading Room` → `Reading Workshop`
+- Eintrag `books`:
+  - de: `Bücher` → `Meine Bücher`
+  - es: `Libros` → `Mis libros`
+  - en: `Books` → `My Books`
+- NICHTS sonst anfassen: keine STRUCT-Reihenfolge, keine Icons, keine hrefs, keine getActive-Logik.
 
-### 2. `vercel.json`
-- `api/taller.js` in die `functions`-`includeFiles: "*.md"` aufnehmen (damit Seele + Modus
-  gebündelt werden) — analog zu `api/lektor.js` und `api/gespraech.js`. Pfad exakt prüfen.
-
-### 3. `taller.html` — NEU, Look aus `prototyp-taller-lectura.html`
-- Übernimm Stil/Struktur des Prototyps (Seminar-Stimme, Text-als-Dokument, Aufgaben-Block,
-  Manöverkritik). Spikiu-SVG komplett (Ohren + 4 Füße).
-- Profil DEFENSIV aus `spikiu_user.profile` lesen: `zielsprache`, `koennen`, `muttersprache`,
-  `fremde_schrift` (Fallbacks wie schreibwerkstatt). KEINE sichtbaren Wähler im Produkt.
-- **Dev-Schloss wie schreibwerkstatt:** `?dev=1` blendet Sprache+Können-Wähler ein (zum Testen
-  es/de/el × anfang/fortgeschritten), sonst weg.
-- **Navi-Slot:** `<…  data-spk-nav>` in die Kopfzeile + `<script src="nav.js" defer></script>`.
-  (Taller ist eine SCROLLENDE Seite wie schreibwerkstatt — Slot in die `.bar`, kein 100dvh-Lock.)
-- **Fluss:**
-  - Beim Laden → Phase-1-Aufruf an `/api/taller` (mit Profil) → rendere `rahmen`, `texto`
-    (+ `lautschrift` als zweite/dritte Spur bei el), `bruecke` (wenn gesetzt), die `aufgaben`, `schluss`.
-  - `mc` und `orden` prüft die OBERFLÄCHE selbst (Lösung steckt im Block): mc grün/rot/Erklärung/disabled
-    (Charta-Muster), orden mit ▲▼ + „Prüfen".
-  - `frei`: Textarea + „Hinlegen" → Phase-2-Aufruf (`antwort = {frage, texto, satz}`) → rendere
-    `reaktion` (+ `besser`, wenn gesetzt) in Spikius Stimme.
-  - „Noch ein Text" → neuer Phase-1-Aufruf.
-- Verbotene Variablennamen meiden (kein `history`/`location`/`name`/… als VARIABLE — `verlauf` statt `history`).
+### 2. `taller.html` — Raum-Label (TXT-Objekt, `room`)
+- `room`-Wert je Sprache setzen:
+  - de: `Lesen` → `Lesewerkstatt`
+  - es: `Lectura` → `Taller de lectura`
+  - en: (aktuell) → `Reading Workshop`
+- Der Rest des TXT-Objekts (mc/orden/frei/check/…) bleibt unverändert.
+  `roomName` wird bereits per Muttersprache gesetzt — nur die Werte ändern.
 
 ## ABNAHME-KRITERIEN
-1. `taller.html` lädt → Spikiu eröffnet (Muttersprache), ein Text (zielsprache) liegt da,
-   die Aufgaben erscheinen, unten die Manöverkritik. EINE Leiste oben (Navi-Slot), Seite scrollt.
-2. `mc` grün/rot + korrekte markiert + Erklärung + disabled. `orden` mit ▲▼, „Prüfen" → grün wenn korrekt.
-3. `frei` → „Hinlegen" → Spikiu reagiert (Phase-2-Aufruf liefert `reaktion`), kein Punktestand.
-4. Profil greift: `zielsprache` bestimmt die Textsprache, `koennen` den Regler (anfang→`bruecke` da;
-   fortgeschritten→`bruecke` null, alles zielsprache). `el` → `lautschrift` gesetzt (drei Spuren).
-5. `?dev=1` blendet die Test-Wähler ein; ohne `?dev=1` sind sie weg.
-6. UNANGETASTET: alle anderen Seiten/Endpoints. `node --check api/taller.js` + Inline-Script(s) grün.
+1. Drawer (DE) zeigt in HAUPT: Dashboard · Jetzt sprechen · Schreibwerkstatt · **Lesewerkstatt**
+   · **Meine Bücher** · Live-Begegnungen · Lektionen · Gym. Keine zwei „Lese…"-Einträge mehr verwechselbar.
+2. Sprachwechsel stimmt: ES „Taller de lectura" / „Mis libros", EN „Reading Workshop" / „My Books".
+3. `taller.html`-Kopfzeile zeigt „Lesewerkstatt" (DE), „Taller de lectura" (ES), „Reading Workshop" (EN).
+4. UNANGETASTET: alle anderen Labels/Seiten/Logik. `node --check nav.js` + taller.html-Inline-Script grün.
 
 ## HINWEISE
-- Vor der ersten Code-Zeile: `git ls-tree -r --name-only origin/dev`, `cat api/lektor.js`,
-  `cat vercel.json` — echten Stand sehen, dann bauen.
-- Deployment Protection für Previews aus (sonst HTML-Login statt JSON).
-- Nach `cp`: `grep -c` auf eine eindeutige neue Zeile, BEVOR commit (Download-Falle).
-- **Menü-Eintrag „Taller de lectura"/Lesen in `nav.js` ist NICHT Teil dieses Auftrags** —
-  eigener Mini-Schritt später (wie der `write`-Eintrag). Hier nur der Slot in `taller.html`.
+- `nav.js` ohne Versions-Query geladen → zum Testen hart neu laden (Strg+Shift+R).
+- Verbotene Variablennamen meiden (kein `history`/`location`/… als Variable).
 
 ## ABNAHME-TEST (kurz)
-`taller.html?v=N` → Spikiu eröffnet, Text + Aufgaben da → MC klicken (grün/rot), Reihenfolge
-ordnen + prüfen, Freitext hinlegen → Spikiu reagiert → „Noch ein Text" lädt neues Taller.
-Dann `?v=N&dev=1` → Wähler erscheinen → auf `el` + `anfang` stellen → Text dreispurig.
+Beliebige App-Seite hart neu laden → Hamburger → „Schreibwerkstatt / Lesewerkstatt / Meine Bücher"
+sauber getrennt. `taller.html?v=N` → Kopfzeile „Lesewerkstatt". Sprache umstellen → Labels wechseln.
 
 ## VERIFIKATION VOR COMMIT (Leonardo)
 ```
-node --check api/taller.js && echo OK
-grep -c "data-spk-nav" taller.html      # 1
-grep -c "/api/taller" taller.html       # >=1
-grep -c "api/taller.js" vercel.json     # >=1
+grep -c "Lesewerkstatt" nav.js taller.html
+grep -c "Meine Bücher" nav.js
+grep -c "Mis libros" nav.js
+node --check nav.js && echo OK
 ```
 
 ---
 
-_Status: ERLEDIGT am 18.06.2026 (Teil 11) · kein offener Auftrag._
-
-Umsetzung (drei Dateien): (1) `api/taller.js` NEU — lektor-Muster, zwei Phasen nach `antwort`
-(null→`[TALLER]`, gesetzt→`[REACCION]`), Seele+`taller-modus.md` via `process.cwd()` (gecacht),
-Regler nach `koennen`, fremde_schrift→lautschrift, toleranter Parser (JSON.parse→sanfte Reinigung→null;
-`[REACCION]` zusätzlich Feld-Auszug), `normAufgabe` validiert mc/orden/frei. (2) `vercel.json` —
-`api/taller.js` in `includeFiles:"*.md"`. (3) `taller.html` NEU — Look aus dem Prototyp, Nav-Slot
-(`data-spk-nav`)+`nav.js`, Dev-Schloss `?dev=1`, Profil defensiv aus `spikiu_user.profile`, UI in
-Muttersprache (de/es/en), Phase-1 beim Laden + dynamisches Rendering, mc/orden Client-geprüft, frei→Phase-2,
-„Noch ein Text" → neues Taller, Capy komplett (CAPY()). Abnahme: `node --check api/taller.js` grün,
-`vercel.json` valides JSON, beide Inline-Scripts grün, alle Auftrag-greps == erwartet, Parser-Smoke-Test
-(P1–P5) grün. NUR diese drei Dateien angefasst. NICHT live geprüft (Vercel; Leonardo): Endpoint Phase-1/2
-am dev-Deploy + Klick-Durchlauf (mc/orden/frei, el-3-Spuren, `?dev=1`). HINWEIS: Menü-Eintrag „Lesen" in
-nav.js ist NICHT Teil dieses Auftrags (eigener Mini-Schritt) — der Drawer führt noch nicht in den Lese-Raum.
+_Status: OFFEN — bereit zum Bau._
