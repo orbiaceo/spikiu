@@ -2,7 +2,7 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
-Stand: 18.06.2026 (Design 18.06. Teil 5: schreibwerkstatt-nav ENTSCHIEDEN — Test-Wähler raus aus dem Produkt, Sprache aus profile.zielsprache + Können aus profile.koennen, `?dev=1`-Schloss blendet sie zum Testen wieder ein, stilles „Schreiben"-Label rechts; Prototyp `prototyp-schreibwerkstatt-nav.html` genehmigt; schließt zugleich Offene-Punkte-1 (koennen-Wähler raus) · chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
+Stand: 18.06.2026 (Design 18.06. Teil 7: Menü-Eintrag „Schreibwerkstatt" für nav.js ENTSCHIEDEN — unter „Jetzt sprechen", Labels DE/ES/EN Schreibwerkstatt/Taller de escritura/Writing Workshop, Auftrag geschrieben · schreibwerkstatt-nav-Schnitt (Teil 6) GEBAUT · Design 18.06. Teil 5: schreibwerkstatt-nav ENTSCHIEDEN — Test-Wähler raus aus dem Produkt, Sprache aus profile.zielsprache + Können aus profile.koennen, `?dev=1`-Schloss blendet sie zum Testen wieder ein, stilles „Schreiben"-Label rechts; Prototyp `prototyp-schreibwerkstatt-nav.html` genehmigt; schließt zugleich Offene-Punkte-1 (koennen-Wähler raus) · chat.html trägt nav.js im SLOT-MODUS — Hamburger+Logo in der vorhandenen Kopfzeile, keine zweite Leiste · nav.js auf die 4 scrollbaren Seiten integriert + Gym-Knopf · Design 18.06.: chat.html-nav (Slot) beauftragt, 'Beginnen wir!'-Auslöser in CLAUDE.md · Vorstand 17.06.: Gesprächs-Raum + Assessment LIVE bestätigt — alle 16.06.-Schulden getilgt) · Design 17.06.: nav-Paket entworfen, Gym-Idee (Lina) aufgenommen
 
 ---
 
@@ -123,7 +123,7 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 | `books.html` | Kapitel-Liste DE/ES, liest Profil. **18.06.: UI-Sprachschalter (`lang-bar`) + eigene `<nav>` ENTFERNT; nav.js eingebunden. `setLang()` bleibt (setzt Sprache aus Profil, leerer lang-btn-Loop harmlos)** | — | ✅ in dev |
 | `sessions.html` | Buchungs-Seite. **18.06.: eigene Desktop-Sidebar + Mobile-Header + Drawer-JS ENTFERNT, `.app`-Grid → einspaltig, `.main` zentriert; nav.js eingebunden** | — | ✅ in dev |
 | `learnraum.html` | Lernraum aus `spikiu_learnpath` (Empty-State → chat.html). **18.06.: nav.js eingebunden (hatte keine eigene Navi)** | — | ✅ in dev |
-| `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>` | — | ✅ in dev (Inject-Modus, kein data-spk-nav nötig) |
+| `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>` | — | ✅ in dev (Inject-Modus, kein data-spk-nav nötig) · ⏳ `write`-Eintrag (Schreibwerkstatt) beauftragt (Teil 7) |
 | `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** · **18.06.: nav.js im SLOT-MODUS — `<header>` → `<header data-spk-nav>` (Logo+„← Dashboard"-Inhalt raus, nav.js füllt den Slot mit Hamburger+Logo, keine zweite Leiste); `<script src="nav.js" defer>` ergänzt. Charla-Script + Profil-Chip unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** (nav: in dev, noch nicht live geklickt) |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
@@ -139,6 +139,11 @@ Die alte Form `phases` ist TOT. Niemals zurück.
   Ausdruck, Hörverständnis, Lesen, Schreiben. JEDER Raum ist EIN Endpoint für ALLE
   Zielsprachen; `zielsprache` (de/es/en/el) kommt als Profil-FELD rein. Kein
   Datei-Schnitt pro Sprache. Die alten `chat-*` sind der aufgehobene Split.
+- **UI-Sprache ≠ Zielsprache (entschieden 18.06.).** Die Oberfläche/das Menü laufen in der
+  MUTTERSPRACHE des Users — unterstützt: **de/es/en** (nav.js-I18N, Reader-Eyebrows). **Griechisch
+  ist NUR Zielsprache** (`zielsprache: el`), nie UI-Sprache: ein Grieche-als-Muttersprachler ist
+  NICHT geplant. Heißt konkret: kein el-I18N-Block in nav.js/Seiten nötig; `el` lebt allein in den
+  Räumen (fremde_schrift → Lautschrift, drei Spuren). Falls je gewünscht → eigenes großes Paket.
 - **Eine Seele, eine Quelle.** `spikiu-seele.md` ist eingefroren. Jeder Raum-Prompt
   ERBT von ihr, indem der Endpoint sie zur Laufzeit liest — NIE kopieren, kein
   zweites handgepflegtes File (soul.js wurde verworfen: Duplikat-Falle).
@@ -214,6 +219,10 @@ Die alte Form `phases` ist TOT. Niemals zurück.
 7. **Menü-Lücke (NEU 18.06., eigener Mini-Schritt):** `nav.js` STRUCT hat KEINEN „Schreiben"-Eintrag →
    aus dem Drawer kommt man nicht zur Werkstatt. nav.js-Inhaltsänderung (betrifft alle Seiten), separat
    vom schreibwerkstatt-Schnitt. Item + Icon + i18n (de/es/en) ergänzen; Position klären (unter „Bücher"?).
+   ✅ **ENTSCHIEDEN 18.06. Teil 7 (Design):** Eintrag `write` direkt UNTER „Jetzt sprechen" (stiller
+   Zwilling zum Sprechen), Stift-Icon. Labels (Leonardo bestätigt): DE „Schreibwerkstatt", ES „Taller
+   de escritura", EN „Writing Workshop". `getActive()` erkennt `schreibwerkstatt`→`write`. Auftrag in
+   `AKTUELLER-AUFTRAG.md` geschrieben (vier chirurgische nav.js-Änderungen). ⏳ Bau steht aus.
 
 ---
 
@@ -407,6 +416,15 @@ byte-gleich zu origin/dev. Abnahme-Kriterien 1–3,5–7 strukturell + syntaktis
 + der Live-Klick-Test (Drawer/Layout/`?dev=1`) bleiben Leonardo (Vercel). Damit trägt das nav-Paket jetzt
 ALLE App-Seiten (dashboard, books, sessions, learnraum, chat, schreibwerkstatt). Einzig OFFEN am nav:
 Punkt 7 — der Drawer hat noch keinen „Schreiben"-Eintrag (nav.js-STRUCT, eigener Mini-Schritt, alle Seiten).
+
+**Diese Sitzung (18.06., Teil 7 — DESIGN, claude.ai):** Design-Gespräch, kein Produktivcode.
+Vorab am echten dev verifiziert: der schreibwerkstatt-nav-Schnitt (Auftrag Teil 6) ist GEBAUT
+(`data-spk-nav` + nav.js + „Schreiben"-Label + Dev-Schloss in `schreibwerkstatt.html`). Damit ist
+die Menü-Lücke (Offene-Punkte 7) ein sauberer nächster Auftrag. Entschieden: Eintrag `write` in
+`nav.js` direkt unter „Jetzt sprechen" (Zwilling), Stift-Icon, Labels DE „Schreibwerkstatt" / ES
+„Taller de escritura" / EN „Writing Workshop" (Leonardo bestätigt), `getActive()` schreibwerkstatt→write.
+Auftrag geschrieben (vier chirurgische nav.js-Edits: I18N, ICON, STRUCT, getActive). Hinweis im Auftrag:
+nav.js wird ohne Versions-Query geladen → zum Testen hart neu laden. ⏳ Bau steht aus (Terminal).
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
