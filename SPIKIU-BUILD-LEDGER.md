@@ -162,9 +162,9 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 | `prototyp-schreibwerkstatt.html` | Attrappe (genehmigt), führte zur Oberfläche | — | Prototyp, optional behalten |
 | `prototyp-schreibwerkstatt-nav.html` | NEU (18.06.) — genehmigte Attrappe für den nav-Schnitt: echte `nav.js` inline (byte-genau), eine Leiste (Slot links + stilles „Schreiben" rechts), `?dev=1` blendet Test-Wähler ein. Lehre: ein `</script>` im Inhalt eines INLINE-Scripts schließt das Tag vorzeitig → im Prototyp zu `<\/script>` neutralisiert (nur Inline-Falle, nie bei externem `src`) | — | Prototyp, behalten |
 | `prototyp-taller-lectura.html` | NEU (18.06.) — genehmigte Attrappe Raum Lesen: Seminar-Stimme + Text-als-Dokument + Aufgaben-Block (MC grün/rot, Reihenfolge ▲▼, Freitext), Manöverkritik kein Score. Scripted, kein API. anfang/es→de | — | Prototyp, behalten |
-| `api/taller.js` | GEPLANT — Raum Lesen, EIN Endpoint alle Sprachen, Lektor-Muster (`export default`, kein import.meta, Seele via process.cwd(), toleranter Parser). Gibt `{ taller, text }` | [TALLER]-Vertrag | ⏳ Bau steht aus (braucht zuerst `taller-modus.md`) |
-| `taller-modus.md` | GEPLANT — Raum-Prompt Lesen, erbt von Seele. koennen-Regler (bruecke), fremde_schrift→lautschrift, generiert texto+aufgaben passend zu zielsprache/koennen | erzeugt [TALLER] | ⏳ nächstes Design |
-| `taller.html` | GEPLANT — Werkstück-Oberfläche Raum Lesen, rendert die getypten Aufgaben, ruft /api/taller. Navi-Slot wie die anderen Räume | liest spikiu_user.profile | ⏳ nach Vertrag/Modus |
+| `api/taller.js` | **BEAUFTRAGT 18.06. Teil 10** — Raum Lesen, EIN Endpoint alle Sprachen, Lektor-Muster (`export default`, kein import.meta, Seele via process.cwd(), toleranter Parser). Gibt `{ taller, text }` | [TALLER]-Vertrag | ⏳ Bau steht aus (braucht zuerst `taller-modus.md`) |
+| `taller-modus.md` | **GESCHRIEBEN 18.06. Teil 10** — Raum-Prompt Lesen, erbt von Seele per Grundsatz-Nummer (wie lektor-modus). Zwei Phasen (1: Taller komponieren, 2: frei-Satz bewerten), koennen-Regler, fremde_schrift→3 Spuren, Niemals-Liste (kein Score). Ausgabe-Format liegt im Backend, nicht hier | erzeugt [TALLER]/[REACCION] | ✅ bereit, Bau beauftragt |
+| `taller.html` | **BEAUFTRAGT 18.06. Teil 10** — Werkstück-Oberfläche Raum Lesen, rendert die getypten Aufgaben, ruft /api/taller. Navi-Slot wie die anderen Räume | liest spikiu_user.profile | ⏳ nach Vertrag/Modus |
 
 ---
 
@@ -495,15 +495,17 @@ Schleife Treffer/Beinah/Stuck/Ziellinie→Lektion de/en, el-Lautschrift im Chat 
 Audio/Gym/Simulator → Legal zuletzt.
 
 
-**Diese Sitzung (18.06., Teil 10):** Kein Code. Start-Protokoll gefahren („Beginnen wir!"):
-Ledger + Auftrag gelesen, echten `origin/dev` per `git ls-tree` geprüft. Befund: KEIN offener
-Auftrag — `AKTUELLER-AUFTRAG.md` steht auf „erledigt (Teil 8)". Den letzten Bau (write-Eintrag
-„Schreibwerkstatt" in `nav.js`) am echten dev verifiziert, nicht aus Erinnerung: `Taller de
-escritura`/`Writing Workshop`/`id: 'write'`/Stift-ICON/`getActive`-Zeile je 1×, STRUCT-Reihenfolge
-talk(93)→write(94)→books(95), `node --check nav.js` grün, `git diff origin/dev` leer (lokal ==
-dev, Arbeitsbaum sauber). Nicht weitergebaut (kein Scope-Drift): der nächste Schritt ist DESIGN
-(`taller-modus.md` aus claude.ai), nicht Code. ÜBERGABE unverändert: sobald `taller-modus.md` +
-neuer Bau-Auftrag (api/taller.js + taller.html) in `~/spikiu_downloads` liegen → „Beginnen wir!".
+**Diese Sitzung (18.06., Teil 10 — DESIGN, claude.ai):** Auf Anfrage von Claude Code die zwei
+Bau-Vorlagen geliefert. `taller-modus.md` geschrieben (erbt von der Seele per Grundsatz-Nummer,
+Struktur wie lektor-modus: Input-Vertrag, Phase-1-Komposition, drei Aufgaben-Typen, koennen-Regler,
+Schrift-Brücke el, Phase-2-Bewertung des frei-Satzes, Niemals-Liste mit „kein Score"). Vorlagen
+gelesen: spikiu-seele.md (7 Grundsätze), lektor-modus.md (Struktur), api/lektor.js — Befund: das
+Ausgabe-Format ([LEKTOR]-Block) liegt im BACKEND, nicht im Modus; also gehört [TALLER]/[REACCION]
+in api/taller.js, der Modus bleibt reines Verhalten. `AKTUELLER-AUFTRAG.md` (Teil 10) geschrieben:
+Bau-Scope api/taller.js (Lektor-Muster, zwei Phasen, [TALLER]/[REACCION], toleranter Parser) +
+vercel.json (includeFiles) + taller.html (Look aus Prototyp, Profil statt Wähler, ?dev=1-Schloss,
+Navi-Slot; mc/orden prüft der Client, frei → Phase-2-Aufruf). Menü-Eintrag „Taller/Lesen" in nav.js
+bewusst NICHT im Auftrag — eigener Mini-Schritt wie der write-Eintrag.
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
