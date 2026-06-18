@@ -495,6 +495,16 @@ Schleife Treffer/Beinah/Stuck/Ziellinie→Lektion de/en, el-Lautschrift im Chat 
 Audio/Gym/Simulator → Legal zuletzt.
 
 
+**Diese Sitzung (18.06., Teil 10):** Kein Code. Start-Protokoll gefahren („Beginnen wir!"):
+Ledger + Auftrag gelesen, echten `origin/dev` per `git ls-tree` geprüft. Befund: KEIN offener
+Auftrag — `AKTUELLER-AUFTRAG.md` steht auf „erledigt (Teil 8)". Den letzten Bau (write-Eintrag
+„Schreibwerkstatt" in `nav.js`) am echten dev verifiziert, nicht aus Erinnerung: `Taller de
+escritura`/`Writing Workshop`/`id: 'write'`/Stift-ICON/`getActive`-Zeile je 1×, STRUCT-Reihenfolge
+talk(93)→write(94)→books(95), `node --check nav.js` grün, `git diff origin/dev` leer (lokal ==
+dev, Arbeitsbaum sauber). Nicht weitergebaut (kein Scope-Drift): der nächste Schritt ist DESIGN
+(`taller-modus.md` aus claude.ai), nicht Code. ÜBERGABE unverändert: sobald `taller-modus.md` +
+neuer Bau-Auftrag (api/taller.js + taller.html) in `~/spikiu_downloads` liegen → „Beginnen wir!".
+
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
 Übergabe aktualisieren. Ein Chat = ein Arbeitspaket, bewusst beendet.
