@@ -555,6 +555,16 @@ Icon). Vier chirurgische nav.js-Edits exakt nach Muster: I18N `read` in alle dre
 NICHT live geklickt (Vercel; nav.js cacht → hart neu laden). Damit ist das nav-Paket endgültig komplett.
 NÄCHSTES: Testphase (Klick-Durchläufe) + Dashboard 3→4.
 
+**Diese Sitzung (19.06., Teil 15):** Reader-Tab-Titel angeglichen. Befund (geprüft am echten Code): der
+`-de`/`-es`-Suffix = Muttersprache des Lerners → `capN-de` trägt die SPANISCHE Story (Ziel Spanisch,
+lang=es, „Capítulo"/„Lectura"), `capN-es` die DEUTSCHE (Ziel Deutsch, lang=de, „Kapitel"/„Lektüre") — also
+KEIN vertauschtes-Dateien-Chaos, die Dateien sind intern stimmig. Einzige Unstimmigkeit: der Story-Name im
+`<title>` stand in der Muttersprache statt der Zielsprache (z. B. „Capítulo 1 · Der Flughafen"), die beiden
+Story-Namen waren übers de/es-Paar getauscht. Fix: 8 `<title>`-Story-Namen auf die Zielsprache gezogen
+(Namen aus der `CHAPTERS`-Tabelle in books.html), anker-genau auf `· …</title>` — git diff zeigt genau 8×
+(+1/−1) nur die Titelzeile, Konsistenz-Check (Kapitelwort↔lang) 8× OK. Betraf nur den Browser-Tab; in der
+App zieht books.html den Titel ohnehin lokalisiert aus CHAPTERS. Reine Aufräum-Korrektur, kein Verhalten.
+
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese
 Übergabe aktualisieren. Ein Chat = ein Arbeitspaket, bewusst beendet.
