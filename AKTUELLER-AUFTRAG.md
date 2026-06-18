@@ -106,4 +106,17 @@ grep -c "api/taller.js" vercel.json     # >=1
 
 ---
 
-_Status: OFFEN — bereit zum Bau._
+_Status: ERLEDIGT am 18.06.2026 (Teil 11) · kein offener Auftrag._
+
+Umsetzung (drei Dateien): (1) `api/taller.js` NEU — lektor-Muster, zwei Phasen nach `antwort`
+(null→`[TALLER]`, gesetzt→`[REACCION]`), Seele+`taller-modus.md` via `process.cwd()` (gecacht),
+Regler nach `koennen`, fremde_schrift→lautschrift, toleranter Parser (JSON.parse→sanfte Reinigung→null;
+`[REACCION]` zusätzlich Feld-Auszug), `normAufgabe` validiert mc/orden/frei. (2) `vercel.json` —
+`api/taller.js` in `includeFiles:"*.md"`. (3) `taller.html` NEU — Look aus dem Prototyp, Nav-Slot
+(`data-spk-nav`)+`nav.js`, Dev-Schloss `?dev=1`, Profil defensiv aus `spikiu_user.profile`, UI in
+Muttersprache (de/es/en), Phase-1 beim Laden + dynamisches Rendering, mc/orden Client-geprüft, frei→Phase-2,
+„Noch ein Text" → neues Taller, Capy komplett (CAPY()). Abnahme: `node --check api/taller.js` grün,
+`vercel.json` valides JSON, beide Inline-Scripts grün, alle Auftrag-greps == erwartet, Parser-Smoke-Test
+(P1–P5) grün. NUR diese drei Dateien angefasst. NICHT live geprüft (Vercel; Leonardo): Endpoint Phase-1/2
+am dev-Deploy + Klick-Durchlauf (mc/orden/frei, el-3-Spuren, `?dev=1`). HINWEIS: Menü-Eintrag „Lesen" in
+nav.js ist NICHT Teil dieses Auftrags (eigener Mini-Schritt) — der Drawer führt noch nicht in den Lese-Raum.

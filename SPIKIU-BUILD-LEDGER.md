@@ -141,7 +141,7 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 | `spikiu-seele.md` | Kanonische Seele, eingefroren 15.06. | Quelle der Wahrheit | ✅ in dev |
 | `lektor-modus.md` | Schreib-Werkstatt Raum-Prompt, erbt von Seele | koennen+fremde_schrift+aufgabe | ✅ in dev |
 | `api/lektor.js` | **LIVE** — Schreiben-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(), toleranter Parser | [LEKTOR]-Vertrag | ✅ live (commit 6da2832) |
-| `vercel.json` | `includeFiles: "*.md"` für `api/lektor.js` UND `api/gespraech.js` | — | ✅ in dev |
+| `vercel.json` | `includeFiles: "*.md"` für `api/lektor.js`, `api/gespraech.js` UND `api/taller.js` (18.06. ergänzt) | — | ✅ in dev |
 | `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
 | `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ✅ **LIVE bestätigt 17.06.** (spricht perfekt, Opener + Folgeantwort) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
@@ -162,9 +162,9 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 | `prototyp-schreibwerkstatt.html` | Attrappe (genehmigt), führte zur Oberfläche | — | Prototyp, optional behalten |
 | `prototyp-schreibwerkstatt-nav.html` | NEU (18.06.) — genehmigte Attrappe für den nav-Schnitt: echte `nav.js` inline (byte-genau), eine Leiste (Slot links + stilles „Schreiben" rechts), `?dev=1` blendet Test-Wähler ein. Lehre: ein `</script>` im Inhalt eines INLINE-Scripts schließt das Tag vorzeitig → im Prototyp zu `<\/script>` neutralisiert (nur Inline-Falle, nie bei externem `src`) | — | Prototyp, behalten |
 | `prototyp-taller-lectura.html` | NEU (18.06.) — genehmigte Attrappe Raum Lesen: Seminar-Stimme + Text-als-Dokument + Aufgaben-Block (MC grün/rot, Reihenfolge ▲▼, Freitext), Manöverkritik kein Score. Scripted, kein API. anfang/es→de | — | Prototyp, behalten |
-| `api/taller.js` | **BEAUFTRAGT 18.06. Teil 10** — Raum Lesen, EIN Endpoint alle Sprachen, Lektor-Muster (`export default`, kein import.meta, Seele via process.cwd(), toleranter Parser). Gibt `{ taller, text }` | [TALLER]-Vertrag | ⏳ Bau steht aus (braucht zuerst `taller-modus.md`) |
+| `api/taller.js` | **GEBAUT 18.06. Teil 11** — Raum Lesen, EIN Endpoint alle Sprachen, Lektor-Muster (`export default`, kein import.meta, Seele+`taller-modus.md` via process.cwd(), gecacht). ZWEI Phasen nach `antwort`: null→Phase 1 `[TALLER]` (`{ taller, text }`), gesetzt→Phase 2 `[REACCION]` (`{ reaccion, text }`). Toleranter Parser: `JSON.parse`→sanfte Reinigung (Zeilenumbrüche/Trailing-Kommas)→null; `[REACCION]` zusätzlich feldweiser Auszug (gerade-`"`-Fallback). `normAufgabe` validiert mc/orden/frei (orden-loesung = Permutation, sonst identity). Prompt verbietet gerade `"` in Werten | [TALLER]/[REACCION]-Vertrag | ✅ in dev · node --check + Parser-Smoke-Test grün, NICHT live (Vercel) |
 | `taller-modus.md` | **GESCHRIEBEN 18.06. Teil 10** — Raum-Prompt Lesen, erbt von Seele per Grundsatz-Nummer (wie lektor-modus). Zwei Phasen (1: Taller komponieren, 2: frei-Satz bewerten), koennen-Regler, fremde_schrift→3 Spuren, Niemals-Liste (kein Score). Ausgabe-Format liegt im Backend, nicht hier | erzeugt [TALLER]/[REACCION] | ✅ bereit, Bau beauftragt |
-| `taller.html` | **BEAUFTRAGT 18.06. Teil 10** — Werkstück-Oberfläche Raum Lesen, rendert die getypten Aufgaben, ruft /api/taller. Navi-Slot wie die anderen Räume | liest spikiu_user.profile | ⏳ nach Vertrag/Modus |
+| `taller.html` | **GEBAUT 18.06. Teil 11** — Oberfläche Raum Lesen aus genehmigtem Prototyp. Nav-Slot (`data-spk-nav`) + `nav.js`, Dev-Schloss (`?dev=1` blendet Sprache/Können ein), Profil defensiv aus `spikiu_user.profile`. UI-Sprache=Muttersprache (de/es/en; el nur Zielsprache). Laden → Phase-1-Aufruf, rendert rahmen/texto(+lautschrift)/bruecke/aufgaben/schluss; mc+orden prüft die Oberfläche selbst, frei → Phase-2-Aufruf; „Noch ein Text" → neues Taller. Schluss erscheint, wenn alle Aufgaben berührt. Capy komplett (CAPY()-SVG, 2 Ohren+4 Füße) | liest spikiu_user.profile | ✅ in dev · Inline-Scripts grün, NICHT live geklickt (Vercel) |
 
 ---
 
@@ -506,6 +506,30 @@ Bau-Scope api/taller.js (Lektor-Muster, zwei Phasen, [TALLER]/[REACCION], tolera
 vercel.json (includeFiles) + taller.html (Look aus Prototyp, Profil statt Wähler, ?dev=1-Schloss,
 Navi-Slot; mc/orden prüft der Client, frei → Phase-2-Aufruf). Menü-Eintrag „Taller/Lesen" in nav.js
 bewusst NICHT im Auftrag — eigener Mini-Schritt wie der write-Eintrag.
+
+**Diese Sitzung (18.06., Teil 11):** Auftrag Teil 10 GEBAUT — Raum LESEN („Taller de lectura").
+Protokoll gefahren: `git pull` (aktuell), echten `origin/dev` geprüft, Design-Dateien (taller-modus.md,
+Prototyp, Auftrag, Ledger) lagen schon in dev (== Downloads, kein `cp` nötig). Erst alle Blaupausen
+gelesen (lektor.js, taller-modus.md, prototyp-taller-lectura.html, vercel.json, schreibwerkstatt.html),
+DANN drei Dateien gebaut:
+- `api/taller.js` (NEU): lektor-Muster (`export default`, kein import.meta, Seele+Modus via process.cwd(),
+  gecacht). Zwei Phasen nach `antwort`: null→Phase 1 `[TALLER]` (rahmen/texto/bruecke/lautschrift/aufgaben[]/
+  schluss), gesetzt→Phase 2 `[REACCION]` (reaktion/besser). Regler nach `koennen` (Textschwere, bruecke,
+  Fragesprache, Phase-2-Zeigen); fremde_schrift→lautschrift. Toleranter Parser (JSON.parse→sanfte Reinigung
+  →null; [REACCION] zusätzlich Feld-Auszug). `normAufgabe` validiert die drei Typen, repariert kaputte
+  orden-loesung zur identity. Prompt verbietet gerade `"` in Werten.
+- `vercel.json`: `api/taller.js` in `includeFiles:"*.md"` (Seele+Modus bündeln).
+- `taller.html` (NEU): Look aus dem Prototyp + Nav-Slot/Dev-Schloss/defensives Profil aus schreibwerkstatt.
+  Beim Laden Phase-1, dynamisches Rendering; mc/orden Client-geprüft (Charta-Muster, ▲▼), frei→Phase-2;
+  „Noch ein Text" lädt neu. UI in Muttersprache (de/es/en). Capy via CAPY() komplett.
+Abnahme: `node --check api/taller.js` grün, `vercel.json` valides JSON, beide Inline-Scripts via `vm.Script`
+grün; Auftrag-greps (data-spk-nav=1, /api/taller=1, api/taller.js in vercel=1, nav.js-src=1, Capy-Ohren cy=17 ×2);
+Parser-Smoke-Test (data:-Modul, Quelle unangetastet) deckt P1 verschachtelte aufgaben, P2 sanfte Reinigung,
+P3 orden-loesung-Reparatur, P4 reaccion, P5 gerade-`"`-Fallback — alle grün. NICHT live geprüft (Vercel,
+Leonardo): der Phase-1/Phase-2-Endpoint am echten dev-Deploy + der Klick-Durchlauf (mc/orden/frei, el-3-Spuren,
+`?dev=1`-Wähler). Menü-Eintrag „Lesen" in nav.js ist bewusst NICHT Teil dieses Pakets (eigener Mini-Schritt,
+wie der `write`-Eintrag) — der Drawer führt noch nicht in den Lese-Raum. NÄCHSTES: live abnehmen, dann
+nav.js-Eintrag „Lesen" (Mini-Schritt), danach Testphase/Dashboard 3→4.
 
 ### EISERNE REGEL
 Eine Sitzung endet NIE mit uncommittetem Code. Am Sitzungsende: Commits + diese

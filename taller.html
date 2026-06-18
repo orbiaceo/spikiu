@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Lesen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f1e7; --page:#fdfbf5; --ink:#2b2620; --ink-soft:#6e6256;
+    --green:#2d6a4f; --gold:#a87b2e; --gold-soft:#e9d9b6; --capy:#c9956a; --line:#e6dec9;
+    --rojo:#b4452f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
+
+  /* ── Kopfzeile: Navi-Slot links, stilles Raum-Label rechts (wie schreibwerkstatt) ── */
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.9rem 1.4rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .room{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+  .room-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--ink-soft);letter-spacing:.01em}
+  .controls{display:flex;align-items:center;gap:.7rem;font-size:.78rem;color:var(--ink-soft);flex-wrap:wrap}
+  .controls label{display:flex;align-items:center;gap:.35rem}
+  select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:99px;padding:.3rem .7rem;cursor:pointer}
+  select:focus{outline:none;border-color:var(--gold)}
+  .dev-tag{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--gold);border-radius:99px;padding:.12rem .5rem}
+
+  .seminar{flex:1;width:100%;max-width:760px;margin:0 auto;padding:2.2rem 1.4rem 3rem}
+
+  /* ── Spikius Stimme ── */
+  .spikiu-line{display:flex;gap:.85rem;align-items:flex-start;margin-bottom:1.6rem}
+  .spikiu-line svg{flex-shrink:0;margin-top:.1rem;animation:float 4s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .spikiu-line .say{font-size:1.05rem;line-height:1.6;color:var(--ink)}
+  .spikiu-line .say em{font-style:italic;color:var(--ink-soft)}
+
+  /* ── Der Text als Dokument auf dem Tisch ── */
+  .documento{background:var(--page);border:1px solid var(--line);border-radius:6px;
+    box-shadow:0 1px 0 #fff inset,0 14px 34px -20px rgba(60,45,20,.4);
+    padding:1.8rem 1.9rem;margin-bottom:.7rem;position:relative}
+  .documento::before{content:"";position:absolute;left:0;top:1.4rem;bottom:1.4rem;width:3px;
+    background:var(--gold-soft);border-radius:3px}
+  .doc-kind{font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:.7rem}
+  .doc-text{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.6;color:var(--ink);white-space:pre-wrap}
+  .doc-laut{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-style:italic;color:var(--ink-soft);margin-top:.8rem;line-height:1.5}
+  .bridge{font-size:.84rem;color:var(--ink-soft);margin:.9rem 0 2.2rem;line-height:1.7}
+  .bridge b{color:var(--ink);font-weight:600}
+
+  /* ── Aufgaben-Block ── */
+  .aufgabe{margin-bottom:1.9rem}
+  .a-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:.2rem}
+  .a-frage{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ink);margin-bottom:.9rem;line-height:1.35}
+  .hinweis{font-size:.84rem;color:var(--ink-soft);font-style:italic;margin:-.5rem 0 .8rem}
+
+  /* MC */
+  .opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:1rem;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:8px;padding:.8rem 1rem;
+    margin-bottom:.55rem;cursor:pointer;transition:.15s}
+  .opt:hover:not(:disabled){border-color:var(--gold);background:#fff}
+  .opt:disabled{cursor:default}
+  .opt.right{border-color:var(--green);background:rgba(45,106,79,.1);color:var(--green);font-weight:600}
+  .opt.wrong{border-color:var(--rojo);background:rgba(180,69,47,.08);color:var(--rojo)}
+  .feedback{font-size:.95rem;line-height:1.55;color:var(--ink-soft);margin-top:.5rem;
+    opacity:0;transform:translateY(4px);transition:.3s}
+  .feedback.show{opacity:1;transform:none}
+  .feedback b{color:var(--green)}
+
+  /* Ordenar */
+  .orden{list-style:none}
+  .orden li{display:flex;align-items:center;gap:.7rem;background:var(--page);border:1px solid var(--line);
+    border-radius:8px;padding:.7rem .8rem .7rem 1rem;margin-bottom:.5rem;transition:.18s}
+  .orden li.ok{border-color:var(--green);background:rgba(45,106,79,.08)}
+  .orden .num{width:1.5rem;height:1.5rem;flex-shrink:0;border-radius:50%;background:var(--gold-soft);
+    color:var(--gold);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .orden .txt{flex:1;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ink)}
+  .orden .moves{display:flex;flex-direction:column;gap:.15rem}
+  .orden .moves button{border:1px solid var(--line);background:#fff;border-radius:5px;width:1.7rem;height:1.25rem;
+    cursor:pointer;color:var(--ink-soft);font-size:.7rem;line-height:1;display:flex;align-items:center;justify-content:center}
+  .orden .moves button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
+  .orden .moves button:disabled{opacity:.3;cursor:default}
+
+  /* Freitext */
+  textarea{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.3rem;line-height:1.5;color:var(--ink);
+    background:var(--page);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;resize:vertical;min-height:80px}
+  textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .besser{display:block;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--green);margin-top:.6rem}
+
+  .btn{font-family:inherit;font-size:.92rem;font-weight:700;border-radius:99px;cursor:pointer;
+    padding:.55rem 1.2rem;transition:.18s;border:1px solid transparent}
+  .btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:#000}
+  .btn-ink:disabled{opacity:.5;cursor:default}
+  .btn-line{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-line:hover{border-color:var(--gold)}
+  .btn-green{background:var(--green);color:#fff}.btn-green:hover{filter:brightness(1.08)}
+  .row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;align-items:center}
+
+  /* Schluss (Manöverkritik) */
+  .schluss{border-top:1px dashed var(--line);margin-top:2.2rem;padding-top:1.8rem;
+    opacity:0;max-height:0;overflow:hidden;transition:opacity .5s}
+  .schluss.show{opacity:1;max-height:800px}
+
+  .retry{margin-top:.6rem;font-size:.82rem;font-weight:700;color:var(--ink);background:transparent;
+    border:1px solid var(--line);border-radius:99px;padding:.4rem .9rem;cursor:pointer}
+
+  [hidden]{display:none !important}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="nav-slot" data-spk-nav></div>
+  <div class="room">
+    <span class="room-name" id="roomName">Lesen</span>
+    <!-- Dev-Schloss: nur mit ?dev=1 sichtbar. Im Produkt kommt die Sprache aus profile.zielsprache, Können aus profile.koennen. -->
+    <div class="controls" id="devControls" hidden>
+      <span class="dev-tag">dev</span>
+      <label>Sprache
+        <select id="selLang">
+          <option value="es">Spanisch</option>
+          <option value="de">Deutsch</option>
+          <option value="en">Englisch</option>
+          <option value="el">Griechisch</option>
+        </select>
+      </label>
+      <label>Können
+        <select id="selKoennen">
+          <option value="anfang">Anfang</option>
+          <option value="mittel">Mittel</option>
+          <option value="fortgeschritten">Fortgeschritten</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</header>
+
+<main class="seminar">
+  <div id="opener"></div>
+  <article class="documento" id="doc" hidden></article>
+  <p class="bridge" id="bridge" hidden></p>
+  <div id="aufgaben"></div>
+  <div class="schluss" id="schluss"></div>
+
+  <!-- Lade-Zustand -->
+  <div class="spikiu-line" id="loading" hidden>
+    <span id="loadingCapy"></span>
+    <p class="say" style="color:var(--ink-soft)" id="loadingText">…</p>
+  </div>
+
+  <!-- Fehler-Zustand -->
+  <div class="spikiu-line" id="errorBox" hidden>
+    <span id="errorCapy"></span>
+    <div>
+      <p class="say" id="errorText"></p>
+      <button class="retry" id="retry">Nochmal</button>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  var ENDPOINT = '/api/taller';
+
+  // ── Spikiu, IMMER komplett (2 Ohren cy=17, 4 Füße cy=66/68) ──────
+  function CAPY(s){
+    return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 80 80" fill="none">'+
+      '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>'+
+      '<ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'+
+      '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>'+
+      '<ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'+
+      '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'+
+      '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'+
+      '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'+
+      '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'+
+      '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'+
+      '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'+
+      '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  }
+
+  // ── Profil defensiv lesen (wie schreibwerkstatt) ─────────────────
+  var stored = {};
+  try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+  function langCode(v){
+    if(!v) return null; v=(''+v).toLowerCase();
+    if(/^(de|es|en|el)$/.test(v)) return v;
+    if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+    if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+    if(v.indexOf('engl')>-1) return 'en';
+    if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+    return null;
+  }
+  function koennenFrom(v){
+    if(!v) return null; v=(''+v).toLowerCase();
+    if(['anfang','mittel','fortgeschritten'].indexOf(v)>-1) return v;
+    if(/a[12]/.test(v)) return 'anfang';
+    if(/b[12]/.test(v)) return 'mittel';
+    if(/c[12]/.test(v)) return 'fortgeschritten';
+    return null;
+  }
+  var selLang=document.getElementById('selLang'), selKoennen=document.getElementById('selKoennen');
+  selLang.value = stored.zielsprache || langCode(stored.targetLang) || 'es';
+  selKoennen.value = stored.koennen || koennenFrom(stored.level) || 'anfang';
+
+  function profile(){
+    return {
+      name: stored.name || '',
+      muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de',
+      zielsprache: selLang.value,
+      koennen: selKoennen.value,
+      fremde_schrift: selLang.value === 'el'
+    };
+  }
+
+  // ── UI-Sprache = Muttersprache (de/es/en; el ist nur Zielsprache) ─
+  var M = profile().muttersprache; if(['de','es','en'].indexOf(M)<0) M='de';
+  var TXT = {
+    de:{room:'Lesen', mc:'Verstehen', orden:'Reihenfolge', frei:'Selbst sagen',
+        check:'Prüfen', lay:'Hinlegen', again:'Noch ein Text', enough:'Genug für heute',
+        sits:'Sitzt.', notyet:'Noch nicht — verschieb mit ▲▼ und prüf nochmal.',
+        loading:'Einen Moment — ich such einen Text aus…',
+        err:'Spikiu ist gerade nicht erreichbar. Versuch es gleich nochmal.', retry:'Nochmal',
+        kind:{de:'Text · Deutsch',es:'Texto · Español',en:'Text · English',el:'Κείμενο · Ελληνικά'}},
+    es:{room:'Lectura', mc:'Comprender', orden:'Orden', frei:'Dilo tú',
+        check:'Comprobar', lay:'Enviar', again:'Otro texto', enough:'Basta por hoy',
+        sits:'Eso es.', notyet:'Todavía no — mueve con ▲▼ y comprueba otra vez.',
+        loading:'Un momento — busco un texto…',
+        err:'Spikiu no está disponible ahora mismo. Inténtalo de nuevo en un momento.', retry:'De nuevo',
+        kind:{de:'Texto · Alemán',es:'Texto · Español',en:'Texto · Inglés',el:'Texto · Griego'}},
+    en:{room:'Reading', mc:'Understand', orden:'Order', frei:'Say it yourself',
+        check:'Check', lay:'Send', again:'Another text', enough:'Enough for today',
+        sits:'That’s it.', notyet:'Not yet — move with ▲▼ and check again.',
+        loading:'One moment — picking a text…',
+        err:'Spikiu is unavailable right now. Try again in a moment.', retry:'Again',
+        kind:{de:'Text · German',es:'Text · Spanish',en:'Text · English',el:'Text · Greek'}}
+  }[M];
+
+  // ── Elemente ─────────────────────────────────────────────────────
+  var opener=document.getElementById('opener'), doc=document.getElementById('doc'),
+      bridge=document.getElementById('bridge'), aufgabenEl=document.getElementById('aufgaben'),
+      schlussEl=document.getElementById('schluss'),
+      loading=document.getElementById('loading'), errorBox=document.getElementById('errorBox');
+
+  document.getElementById('roomName').textContent = TXT.room;
+  document.getElementById('loadingCapy').innerHTML = CAPY(34);
+  document.getElementById('loadingText').textContent = TXT.loading;
+  document.getElementById('errorCapy').innerHTML = CAPY(34);
+  document.getElementById('errorText').textContent = TXT.err;
+  document.getElementById('retry').textContent = TXT.retry;
+  document.getElementById('retry').onclick = loadTaller;
+
+  function esc(s){return (''+s).replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+
+  var currentTexto='', touched=0, total=0, schlussText='';
+
+  function markTouched(){ touched++; if(total>0 && touched>=total) showSchluss(); }
+
+  function showSchluss(){
+    schlussEl.innerHTML =
+      '<div class="spikiu-line">'+CAPY(34)+'<p class="say">'+esc(schlussText)+'</p></div>'+
+      '<div class="row"><button class="btn btn-green" id="again">'+esc(TXT.again)+'</button>'+
+      '<button class="btn btn-line" id="enough">'+esc(TXT.enough)+'</button></div>';
+    schlussEl.classList.add('show');
+    document.getElementById('again').onclick = loadTaller;
+    document.getElementById('enough').onclick = function(){
+      var d=document.getElementById('enough'); d.disabled=true; d.style.opacity=.6;
+    };
+    schlussEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  function clearStage(){
+    opener.innerHTML=''; doc.hidden=true; doc.innerHTML='';
+    bridge.hidden=true; bridge.innerHTML='';
+    aufgabenEl.innerHTML='';
+    schlussEl.innerHTML=''; schlussEl.classList.remove('show');
+    errorBox.hidden=true;
+    touched=0; total=0; schlussText=''; currentTexto='';
+  }
+
+  // ── Aufgaben bauen ───────────────────────────────────────────────
+  function buildMC(a){
+    var sec=document.createElement('section'); sec.className='aufgabe';
+    var html='<p class="a-eyebrow">'+esc(TXT.mc)+'</p><p class="a-frage">'+esc(a.frage)+'</p>';
+    a.optionen.forEach(function(opt,i){ html+='<button class="opt" data-i="'+i+'">'+esc(opt)+'</button>'; });
+    html+='<p class="feedback fb"></p>';
+    sec.innerHTML=html;
+    var fb=sec.querySelector('.fb'), done=false;
+    sec.querySelectorAll('.opt').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        if(done) return; done=true;
+        var opts=sec.querySelectorAll('.opt');
+        opts.forEach(function(o){ o.disabled=true; });
+        var i=parseInt(btn.dataset.i,10);
+        if(i===a.loesung){ btn.classList.add('right'); }
+        else { btn.classList.add('wrong'); if(opts[a.loesung]) opts[a.loesung].classList.add('right'); }
+        if(a.erklaerung){ fb.innerHTML=esc(a.erklaerung); fb.classList.add('show'); }
+        markTouched();
+      });
+    });
+    return sec;
+  }
+
+  function buildOrden(a){
+    var sec=document.createElement('section'); sec.className='aufgabe';
+    sec.innerHTML='<p class="a-eyebrow">'+esc(TXT.orden)+'</p><p class="a-frage">'+esc(a.frage)+'</p>'+
+      '<ul class="orden"></ul><div class="row"><button class="btn btn-ink check">'+esc(TXT.check)+'</button>'+
+      '<span class="feedback fb"></span></div>';
+    var listEl=sec.querySelector('.orden'), fb=sec.querySelector('.fb'), checkBtn=sec.querySelector('.check');
+    // Anzeige-Reihenfolge = teile-Indizes; nicht schon gelöst starten
+    var order=a.teile.map(function(_,i){return i;});
+    if(order.join()===a.loesung.join() && order.length>1){ var t0=order[0]; order[0]=order[1]; order[1]=t0; }
+    var solved=false;
+    function render(){
+      listEl.innerHTML='';
+      order.forEach(function(origIdx,pos){
+        var li=document.createElement('li'); if(solved) li.classList.add('ok');
+        li.innerHTML='<span class="num">'+(pos+1)+'</span><span class="txt">'+esc(a.teile[origIdx])+'</span>'+
+          '<span class="moves"><button data-dir="-1"'+((pos===0||solved)?' disabled':'')+'>▲</button>'+
+          '<button data-dir="1"'+((pos===order.length-1||solved)?' disabled':'')+'>▼</button></span>';
+        li.querySelectorAll('.moves button').forEach(function(b){
+          b.addEventListener('click',function(){
+            var dir=parseInt(b.dataset.dir,10), j=pos+dir;
+            if(j<0||j>=order.length) return;
+            var tmp=order[pos]; order[pos]=order[j]; order[j]=tmp;
+            fb.classList.remove('show'); render();
+          });
+        });
+        listEl.appendChild(li);
+      });
+    }
+    render();
+    checkBtn.addEventListener('click',function(){
+      if(solved) return;
+      if(order.join()===a.loesung.join()){
+        solved=true; render(); checkBtn.disabled=true;
+        fb.innerHTML='<b>'+esc(TXT.sits)+'</b>'; fb.style.color='var(--green)'; fb.classList.add('show');
+        markTouched();
+      } else {
+        fb.textContent=TXT.notyet; fb.style.color='var(--rojo)'; fb.classList.add('show');
+      }
+    });
+    return sec;
+  }
+
+  function buildFrei(a){
+    var sec=document.createElement('section'); sec.className='aufgabe';
+    sec.innerHTML='<p class="a-eyebrow">'+esc(TXT.frei)+'</p><p class="a-frage">'+esc(a.frage)+'</p>'+
+      (a.hinweis?'<p class="hinweis">'+esc(a.hinweis)+'</p>':'')+
+      '<textarea spellcheck="false" placeholder="…"></textarea>'+
+      '<div class="row"><button class="btn btn-ink send">'+esc(TXT.lay)+'</button></div>'+
+      '<div class="spikiu-line reply" hidden style="margin-top:1.2rem">'+CAPY(28)+'<p class="say replytext"></p></div>';
+    var ta=sec.querySelector('textarea'), sendBtn=sec.querySelector('.send'),
+        reply=sec.querySelector('.reply'), replyText=sec.querySelector('.replytext');
+    var done=false;
+    sendBtn.addEventListener('click',async function(){
+      var val=ta.value.trim(); if(!val||done) return;
+      sendBtn.disabled=true; ta.disabled=true;
+      try{
+        var d=await call({ profile:profile(), antwort:{ frage:a.frage, texto:currentTexto, satz:val } });
+        var rc=d.reaccion || { reaktion:(d.text||'').slice(0,300), besser:null };
+        var html=esc(rc.reaktion||'');
+        if(rc.besser) html+='<span class="besser">'+esc(rc.besser)+'</span>';
+        replyText.innerHTML=html; reply.hidden=false;
+        done=true;
+        markTouched();
+      }catch(e){
+        sendBtn.disabled=false; ta.disabled=false;
+        replyText.textContent=TXT.err; reply.hidden=false;
+      }
+    });
+    return sec;
+  }
+
+  function buildAufgabe(a){
+    if(a.typ==='mc')    return buildMC(a);
+    if(a.typ==='orden') return buildOrden(a);
+    if(a.typ==='frei')  return buildFrei(a);
+    return null;
+  }
+
+  function renderTaller(t){
+    clearStage();
+    currentTexto=t.texto;
+    schlussText=t.schluss;
+
+    opener.innerHTML='<div class="spikiu-line">'+CAPY(34)+'<p class="say">'+esc(t.rahmen)+'</p></div>';
+
+    var inner='<p class="doc-kind">'+esc(TXT.kind[selLang.value]||'Texto')+'</p>'+
+              '<p class="doc-text">'+esc(t.texto)+'</p>';
+    if(t.lautschrift) inner+='<p class="doc-laut">['+esc(t.lautschrift)+']</p>';
+    doc.innerHTML=inner; doc.hidden=false;
+
+    if(t.bruecke){ bridge.innerHTML=esc(t.bruecke); bridge.hidden=false; }
+
+    total=t.aufgaben.length; touched=0;
+    t.aufgaben.forEach(function(a){
+      var sec=buildAufgabe(a); if(sec) aufgabenEl.appendChild(sec);
+    });
+    if(total===0) showSchluss();
+  }
+
+  // ── Netz ─────────────────────────────────────────────────────────
+  async function call(body){
+    var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)});
+    var d=await r.json();
+    if(!r.ok) throw new Error('http');
+    return d;
+  }
+
+  async function loadTaller(){
+    clearStage(); loading.hidden=false;
+    try{
+      var d=await call({ profile:profile(), thema:null, antwort:null, maxTokens:1200 });
+      if(!d.taller || !d.taller.texto) throw new Error('parse');
+      renderTaller(d.taller);
+    }catch(e){
+      clearStage(); errorBox.hidden=false;
+    }finally{
+      loading.hidden=true;
+    }
+  }
+
+  // Dev-Wähler: Sprache/Können ändern → neues Taller
+  selLang.addEventListener('change', loadTaller);
+  selKoennen.addEventListener('change', loadTaller);
+
+  loadTaller();
+})();
+</script>
+
+<!-- Dev-Schloss: ?dev=1 blendet die zwei Test-Wähler ein. Im Produkt unsichtbar. -->
+<script>
+  (function(){
+    if(!/[?&]dev=1\b/.test(location.search)) return;   // Produkt: Wähler bleiben weg
+    var box=document.getElementById('devControls'); if(box) box.hidden=false;
+  })();
+</script>
+
+<script src="nav.js" defer></script>
+</body>
+</html>
