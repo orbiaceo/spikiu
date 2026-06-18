@@ -249,7 +249,10 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
    Abnahme grün: `data-spk-nav`/`#selLang`/`#selKoennen`/`#devControls` je 1×, alter `brand`-Div 0×, genau
    ein `<header>`, beide Inline-Scripts + nav.js syntaktisch grün, nav.js unangetastet. Damit ist das
    nav-Paket über ALLE App-Seiten komplett (nur noch live klicken). NOCH OFFEN: Punkt 7 (Menü-Lücke).
-5. Dashboard „3 capítulos" → „4" (Einzeiler, an nächsten Bau anhängen). **Legal AGB/DSGVO/Impressum: ENTSCHIEDEN 18.06. — ans ENDE, nach der Testphase** (Beta läuft unter NDA, keine öffentlichen Einnahmen → Rechts-Gate beißt erst kurz vor Live/Kasse). Claude liefert dann DSGVO-konforme Entwürfe (localStorage/Supabase/Formspree/Anthropic als Verarbeiter), braucht Firmen-Fakten (UG-Name, Anschrift) + Anwalts-/Steuerberater-Blick.
+5. ~~Dashboard „3 capítulos" → „4" (Einzeiler).~~ ✅ ERLEDIGT 19.06. (Teil 14): vier Reader-Kapitel
+   existieren (cap1–cap4 je de/es; das vierte = „Un café en el barrio"/„In der Bäckerei"). `readerDesc`
+   in allen drei i18n-Blöcken (de/es/en) auf „4" + der statische Markup-Fallback (Z. 351) auf „4 free
+   chapters available". **Legal AGB/DSGVO/Impressum: ENTSCHIEDEN 18.06. — ans ENDE, nach der Testphase** (Beta läuft unter NDA, keine öffentlichen Einnahmen → Rechts-Gate beißt erst kurz vor Live/Kasse). Claude liefert dann DSGVO-konforme Entwürfe (localStorage/Supabase/Formspree/Anthropic als Verarbeiter), braucht Firmen-Fakten (UG-Name, Anschrift) + Anwalts-/Steuerberater-Blick.
 6. ElevenLabs-Audio (Starter 5 $/Mt., Cohort-Caching) — verschoben.
 7. **Menü-Lücke (NEU 18.06., eigener Mini-Schritt):** `nav.js` STRUCT hat KEINEN „Schreiben"-Eintrag →
    aus dem Drawer kommt man nicht zur Werkstatt. nav.js-Inhaltsänderung (betrifft alle Seiten), separat

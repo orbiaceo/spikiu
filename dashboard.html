@@ -348,7 +348,7 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
       <div class="books-grid">
         <a href="books.html" onclick="localStorage.setItem('spikiu_book_section','reader')" class="book-item">
           <div class="book-icon reader">📖</div>
-          <div><div class="book-name" id="db-book-reader">Reader</div><div class="book-desc" id="db-book-reader-desc">3 free chapters available</div></div>
+          <div><div class="book-name" id="db-book-reader">Reader</div><div class="book-desc" id="db-book-reader-desc">4 free chapters available</div></div>
           <span class="book-arrow">›</span>
         </a>
         <a href="books.html" onclick="localStorage.setItem('spikiu_book_section','grammar')" class="book-item">
@@ -1140,17 +1140,17 @@ function updateBooksCard(user) {
   // Labels per native language
   const labels = {
     'Deutsch': {
-      reader: 'Reader', readerDesc: '3 freie Kapitel verfügbar',
+      reader: 'Reader', readerDesc: '4 freie Kapitel verfügbar',
       grammar: 'Grammatik', grammarDesc: 'Interaktive Übungen',
       glossary: 'Glossar', glossaryDesc: 'Vokabeln im Kontext'
     },
     'Español': {
-      reader: 'Reader', readerDesc: '3 capítulos gratuitos',
+      reader: 'Reader', readerDesc: '4 capítulos gratuitos',
       grammar: 'Gramática', grammarDesc: 'Ejercicios interactivos',
       glossary: 'Glosario', glossaryDesc: 'Vocabulario en contexto'
     },
     'English': {
-      reader: 'Reader', readerDesc: '3 free chapters available',
+      reader: 'Reader', readerDesc: '4 free chapters available',
       grammar: 'Grammar', grammarDesc: 'Interactive exercises',
       glossary: 'Glossary', glossaryDesc: 'Vocabulary in context'
     }
