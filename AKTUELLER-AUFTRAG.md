@@ -62,7 +62,10 @@ node --check nav.js && echo OK
 
 ---
 
-_Status: ERLEDIGT am 19.06.2026 (Teil 12) · commit 2e7ccd4 · kein offener Auftrag._
-_nav.js read→Lesewerkstatt/Reading Workshop (es unverändert), books→Meine Bücher/Mis libros/My Books;
-taller.html room→Lesewerkstatt/Taller de lectura/Reading Workshop. Abnahme grün (jedes Label 1×/Datei,
-alte Labels 0×, node --check nav.js + beide Inline-Scripts OK). Nicht live geklickt (nav.js cacht → hart neu laden)._
+_Status: ERLEDIGT am 19.06.2026 · kein offener Auftrag._
+_Teil 12 (commit 2e7ccd4): nav.js read→Lesewerkstatt/Reading Workshop (es unverändert), books→Meine Bücher/Mis libros/My Books;
+taller.html room→Lesewerkstatt/Taller de lectura/Reading Workshop._
+_Folgearbeiten (auf Wunsch, Familie durchgezogen): Teil 13 (commit 63e39dc) schreibwerkstatt.html Bar-Label „Schreiben"→„Schreibwerkstatt";
+Teil 14 (commit e6de796) Tab-Titel „Spikiu — Schreiben"→„Schreibwerkstatt" + „Spikiu — Lesen"→„Lesewerkstatt"._
+_Abnahme überall grün (jedes Label 1×/Datei, alte 0×, node --check nav.js + Inline-Scripts via vm.Script OK).
+Nicht live geklickt (nav.js cacht → hart neu laden)._
