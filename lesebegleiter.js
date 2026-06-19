@@ -31,6 +31,27 @@
   };
   var t = T[MUT] || T.de;
 
+  // ── sicheres Mini-Markdown (erst escapen, dann nur **fett**, *kursiv*, - Listen, Umbrüche) ──
+  function escapeHtml(s) { return ('' + s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  function mdToHtml(s) {
+    var x = escapeHtml(s)
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+    var lines = x.split('\n'), out = [], inList = false;
+    for (var i = 0; i < lines.length; i++) {
+      var m = lines[i].match(/^\s*[-•]\s+(.*)$/);
+      if (m) {
+        if (!inList) { out.push('<ul class="spk-beg-ul">'); inList = true; }
+        out.push('<li>' + m[1] + '</li>');
+      } else {
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push(lines[i].trim() === '' ? '<br>' : (lines[i] + '<br>'));
+      }
+    }
+    if (inList) out.push('</ul>');
+    return out.join('').replace(/(<br>\s*)+$/, '');
+  }
+
   var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-label="Spikiu">'
     + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
     + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
@@ -66,7 +87,11 @@
     + '.spk-beg-comp{display:flex;gap:8px;padding:10px;border-top:1px solid #ece4d3}'
     + '.spk-beg-comp input{flex:1;border:1px solid #e8e4df;border-radius:10px;outline:0;padding:10px 12px;font:inherit;font-size:.9rem;background:#fdfaf3;color:#1a1612}'
     + '.spk-beg-comp input:focus{border-color:#2d6a4f}'
-    + '.spk-beg-comp button{background:#2d6a4f;color:#fff;border:0;border-radius:10px;padding:0 14px;font:inherit;font-weight:600;font-size:.85rem;cursor:pointer}';
+    + '.spk-beg-comp button{background:#2d6a4f;color:#fff;border:0;border-radius:10px;padding:0 14px;font:inherit;font-weight:600;font-size:.85rem;cursor:pointer}'
+    + '.spk-beg-m.sp strong{font-weight:700}'
+    + '.spk-beg-m.sp em{font-style:italic;color:#2d6a4f}'
+    + '.spk-beg-m .spk-beg-ul{margin:.35rem 0 .1rem;padding-left:1.15rem}'
+    + '.spk-beg-m .spk-beg-ul li{margin:.15rem 0}';
 
   function mount() {
     var style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
@@ -116,7 +141,7 @@
         body: JSON.stringify({ frage: v, muttersprache: MUT, zielsprache: ZIEL, kapitel: document.title, kontext: kontext })
       })
         .then(function (r) { return r.json(); })
-        .then(function (d) { bubble.textContent = (d && d.antwort) ? d.antwort : t.err; msgs.scrollTop = msgs.scrollHeight; })
+        .then(function (d) { if (d && d.antwort) { bubble.innerHTML = mdToHtml(d.antwort); } else { bubble.textContent = t.err; } msgs.scrollTop = msgs.scrollHeight; })
         .catch(function () { bubble.textContent = t.err; });
     }
 
