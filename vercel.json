@@ -8,6 +8,9 @@
     },
     "api/taller.js": {
       "includeFiles": "*.md"
+    },
+    "api/lesebegleiter.js": {
+      "includeFiles": "*.md"
     }
   }
 }
