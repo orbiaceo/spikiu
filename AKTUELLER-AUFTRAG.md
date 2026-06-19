@@ -62,4 +62,7 @@ node --check nav.js && echo OK
 
 ---
 
-_Status: OFFEN — bereit zum Bau._
+_Status: ERLEDIGT am 19.06.2026 (Teil 12) · commit 2e7ccd4 · kein offener Auftrag._
+_nav.js read→Lesewerkstatt/Reading Workshop (es unverändert), books→Meine Bücher/Mis libros/My Books;
+taller.html room→Lesewerkstatt/Taller de lectura/Reading Workshop. Abnahme grün (jedes Label 1×/Datei,
+alte Labels 0×, node --check nav.js + beide Inline-Scripts OK). Nicht live geklickt (nav.js cacht → hart neu laden)._
