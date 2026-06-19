@@ -37,6 +37,11 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .bubble.user { background:var(--accent); color:var(--white); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; font-size:0.975rem; }
 .bubble .retry-btn { margin-left:0.4rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:600; color:var(--accent); background:var(--white); border:1px solid #cfe6da; border-radius:100px; padding:0.2rem 0.7rem; cursor:pointer; }
 .bubble .retry-btn:hover { background:var(--accent); color:var(--white); }
+/* Tür-Knopf: Raumwechsel-Signal [WECHSEL:…] wird hier abgefangen → sanfter Knopf, kein Auto-Sprung */
+.door-row { display:flex; padding-left:2.75rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
+.door-btn { display:inline-flex; align-items:center; gap:0.4rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:500; color:var(--accent); background:var(--accent2); border:1px solid #cfe6da; border-radius:100px; padding:0.55rem 1.1rem; cursor:pointer; transition:all 0.2s; -webkit-tap-highlight-color:transparent; }
+.door-btn:hover { background:var(--accent); color:var(--white); border-color:var(--accent); }
+.door-btn:active { transform:scale(0.97); }
 .typing-bubble { background:var(--bg2); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; padding:0.9rem 1.1rem; display:flex; gap:5px; align-items:center; }
 .typing-bubble span { width:7px; height:7px; background:var(--warm); border-radius:50%; animation:bounce 1.3s infinite; }
 .typing-bubble span:nth-child(2){animation-delay:0.18s;} .typing-bubble span:nth-child(3){animation-delay:0.36s;}
@@ -167,6 +172,39 @@ function escPlain(t){
   return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
+// ── Raumwechsel-Signal (Paket B) ─────────────────────────────────
+// Spikiu öffnet die Tür, statt sie zu beschreiben: setzt am Antwort-Ende EIN
+// [WECHSEL:zielraum]. Wir fangen es hier ab — NIE als Text zeigen — und rendern
+// einen sanften Knopf. Kein Auto-Sprung: der Lerner drückt. Profil reist via
+// localStorage (spikiu_user) automatisch in den Zielraum mit.
+var WECHSEL_ZIELE = {
+  schreibwerkstatt: { href:'schreibwerkstatt.html',  label:{ de:'Zur Schreibwerkstatt', es:'Al taller de escritura', en:'To the Writing Workshop' } },
+  lesewerkstatt:    { href:'taller.html',             label:{ de:'Zur Lesewerkstatt',    es:'Al taller de lectura',   en:'To the Reading Workshop' } },
+  buecher:          { href:'books.html',              label:{ de:'Zu meinen Büchern',    es:'A mis libros',           en:'To my Books' } },
+  lektionen:        { href:'dashboard.html#lektionen', label:{ de:'Zu den Lektionen',    es:'A las lecciones',        en:'To the Lessons' } }
+};
+// Breit strippen, damit NIE ein Marker als Text leakt (auch ein vertippter Zielraum) —
+// Knopf aber nur bei gültigem Ziel rendern.
+var WECHSEL_RE = /\s*\[WECHSEL:\s*([a-zäöü]+)\s*\]\s*/i;
+function extractWechsel(t){
+  var m = (t||'').match(WECHSEL_RE);
+  if(!m) return { text:t, ziel:null };
+  var ziel = m[1].toLowerCase();
+  var clean = (t||'').replace(WECHSEL_RE, ' ').trim();
+  return { text:clean, ziel: WECHSEL_ZIELE[ziel] ? ziel : null };
+}
+function addDoorButton(ziel){
+  var z = WECHSEL_ZIELE[ziel]; if(!z) return;
+  var uiLang = (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de';
+  var label = z.label[uiLang] || z.label.de;
+  var row = document.createElement('div');
+  row.className = 'door-row';
+  row.innerHTML = '<button class="door-btn" type="button">→ ' + escPlain(label) + '</button>';
+  row.querySelector('.door-btn').onclick = function(){ window.location.href = z.href; };
+  chat.appendChild(row);
+  chat.scrollTop = chat.scrollHeight;
+}
+
 function addMessage(role, text){
   var msg = document.createElement('div');
   msg.className = 'message ' + role;
@@ -247,8 +285,11 @@ async function turn(){
   }
   hideTyping();
   try {
-    addMessage('spikiu', reply);            // nur Anzeige
-    verlauf.push({ role: 'assistant', content: reply });
+    var parsed = extractWechsel(reply);     // [WECHSEL:…] abfangen, nie als Text zeigen
+    var shown = parsed.text || reply;       // falls Antwort nur aus dem Marker bestünde: Rohtext
+    addMessage('spikiu', shown);            // nur Anzeige (ohne Marker)
+    verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf für die nächste Runde
+    if (parsed.ziel) addDoorButton(parsed.ziel);          // sanfter Knopf, kein Auto-Sprung
   } catch(e){
     showError('Anzeige: ' + ((e && e.message) || e));
   }

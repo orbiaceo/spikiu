@@ -6,6 +6,12 @@ bezeichneten Einfügepunkt, typografische Quotes, Grundsatz 2/3 unangetastet. Di
 nur die zwei Blöcke. Committet + auf `origin/dev` gepusht. Ledger gepflegt (DATEI-STATUS
 + Offene Punkte 8/9/10 für die Folge-Pakete B/A2/C). Doku unten bleibt als Referenz stehen.
 
+**ZUSÄTZLICH erledigt 19.06. (Teil 21) — Paket B (Raumwechsel-Signal):** auf Leonardos
+„Weiter zu Paket B". `gespraech-modus.md` (Sektion „DIE TÜR ÖFFNEN" + NIEMALS-Bullet) +
+`chat.html` (`extractWechsel()` → `.door-btn`, kein Auto-Sprung). `api/gespraech.js` bewusst
+NICHT angefasst (roh-Prosa-Identität). In dev. Nächster Schritt: B live klicken → schaltet
+Paket A2 frei (Spec unten unter FOLGE-PAKETE).
+
 Stand: 19.06.2026 · Design-Sitzung (claude.ai) · aus zwei echten Tests
 Branch: dev · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 

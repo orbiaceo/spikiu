@@ -10,7 +10,8 @@ Stand: 19.06.2026 (Design 19.06. Teil 20 (claude.ai): VERHALTENS-KORSETT — aus
 - ✅ **Reader-Lesebegleiter** — live in ALLEN 8 Kapiteln (cap1–4-es + cap1–4-de). api/lesebegleiter.js + lesebegleiter.js + vercel.json.
 - ✅ **Anti-Halluzination + Struktur-Wissen** — Seele kennt jetzt die echten Räume + die Reader-Wahrheit (wächst je Kapitel, feste Darstellung); keine erfundenen Features mehr. Widget: sicheres Mini-Markdown.
 - ✅ **Verhaltens-Korsett (Seele, Teil 20, Paket A)** — Anti-Spinn- + Smalltalk-Mauern ans Ende der Niemals-Liste. In dev.
-- ▶ **NÄCHSTES:** kein offener Bau-Auftrag. Nächste Folge-Pakete (Offene Punkte 8/9/10): **Paket B** Raumwechsel-Signal `[WECHSEL:raum]` (Bau) → danach **A2** Tür-öffnen-Regel in die Seele · **Paket C** UI-Sieb leere Sends. Backlog (je eigenes Design-Paket): Assessment-als-Gespräch · Legal-Sequenz (Datenschutz/Impressum/AI-Notice) · Gym.
+- ✅ **Raumwechsel-Signal (Teil 21, Paket B)** — `gespraech-modus.md` setzt `[WECHSEL:zielraum]`, `chat.html` fängt ihn ab → sanfter Tür-Knopf (kein Auto-Sprung). api/gespraech.js unangetastet. In dev, noch nicht live geklickt.
+- ▶ **NÄCHSTES:** Paket B auf dev live klicken (Marker greift? Knopf springt mit Profil?). Danach Offene Punkte 9/10: **A2** Tür-öffnen-Regel in die Seele (erst NACH B-live) · **Paket C** UI-Sieb leere Sends. Backlog (je eigenes Design-Paket): Assessment-als-Gespräch · Legal-Sequenz (Datenschutz/Impressum/AI-Notice) · Gym.
 - ℹ️ Hinweis: Teile 15–18 wurden ausnahmsweise direkt in claude.ai gebaut (Leo am Terminal), nicht von Claude Code — Code dennoch nach den Stack-Regeln (export default, process.cwd(), includeFiles, Naming Spikiu).
 
 ---
@@ -151,7 +152,7 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 | `lektor-modus.md` | Schreib-Werkstatt Raum-Prompt, erbt von Seele | koennen+fremde_schrift+aufgabe | ✅ in dev |
 | `api/lektor.js` | **LIVE** — Schreiben-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(), toleranter Parser | [LEKTOR]-Vertrag | ✅ live (commit 6da2832) |
 | `vercel.json` | `includeFiles: "*.md"` für `api/lektor.js`, `api/gespraech.js` UND `api/taller.js` (18.06. ergänzt) | — | ✅ in dev |
-| `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel | koennen+fremde_schrift, KEINE aufgabe | ✅ in dev |
+| `gespraech-modus.md` | NEU (16.06.) — Freies-Gespräch Raum-Prompt, erbt von Seele per Grundsatz-Nummer. Opener = Begrüßung OHNE Frage, Regler nach `koennen`, fremde_schrift-Brücke, Rollenspiel. **19.06. Teil 21 (Paket B): neue Sektion „DIE TÜR ÖFFNEN — Raumwechsel-Signal" + NIEMALS-Bullet. Bei KLAREM Raumwunsch hängt Spikiu genau EIN `[WECHSEL:zielraum]` ans Antwort-Ende (zielraum ∈ schreibwerkstatt|lesewerkstatt|buecher|lektionen), davor EIN warmer Übergabesatz, kein Menü/App-Verweis. Unklar → EINE Rückfrage, höchstens ein Signal/Antwort.** | koennen+fremde_schrift, KEINE aufgabe, erzeugt `[WECHSEL:…]` | ✅ in dev |
 | `api/gespraech.js` | NEU (16.06.) — Gesprächs-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(). KEIN Parser: gibt rohe Prosa `{ text }` zurück (freies Gespräch ist kein JSON-Vertrag) | Profil rein, Prosa raus | ✅ **LIVE bestätigt 17.06.** (spricht perfekt, Opener + Folgeantwort) |
 | `api/lektor.parser.test.mjs` | NEU (16.06.) — Test für toleranten Parser, `node:test`, 9 Fälle inkl. gerade-`"`-Klassiker. Lädt lektor.js als data:-Modul → Quelle bleibt unangetastet, kein package.json nötig | prüft [LEKTOR]-Vertrag | ✅ in dev (commit 7e96353), nicht deployt (Test) |
 | `schreibwerkstatt.html` | **LIVE** — Werkstück-Oberfläche, ruft /api/lektor. **17.06.: verbotene Variable `history` → `verlauf`.** **18.06. Teil 6 GEBAUT (Auftrag Teil 5): nav-Paket im SLOT-MODUS.** `.bar` blieb EINE Leiste: `brand`→`<div class="nav-slot" data-spk-nav>` (nav.js füllt Hamburger+Logo HINEIN — eigenes Element, nicht die ganze `.bar`, sonst würden die Wähler überschrieben), `controls`→`.room` (stilles kursives „Schreiben" + `#devControls hidden`). Test-Wähler `#selLang`/`#selKoennen` bleiben im DOM (jetzt in `#devControls`) → Lektor-Script unangetastet, liest weiter dieselben IDs (vorbelegt aus profile.zielsprache/koennen). `?dev=1`-Schloss blendet sie + goldenen „dev"-Tag ein. Lora-Font für die Wortmarke ergänzt. `<script src="nav.js" defer>`. **19.06. Teil 13: stilles Bar-Label `room-name` „Schreiben"→„Schreibwerkstatt" (Familie angeglichen, eine Zeile). Teil 14: `<title>` „Spikiu — Schreiben"→„Schreibwerkstatt".** | liest spikiu_user.profile defensiv (zielsprache/koennen) | ✅ live · nav GEBAUT (noch nicht live geklickt) · Bar-Label + Tab-Titel Teil 13/14 GEBAUT |
@@ -164,7 +165,7 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 | `sessions.html` | Buchungs-Seite. **18.06.: eigene Desktop-Sidebar + Mobile-Header + Drawer-JS ENTFERNT, `.app`-Grid → einspaltig, `.main` zentriert; nav.js eingebunden** | — | ✅ in dev |
 | `learnraum.html` | Lernraum aus `spikiu_learnpath` (Empty-State → chat.html). **18.06.: nav.js eingebunden (hatte keine eigene Navi)** | — | ✅ in dev |
 | `nav.js` | **INTEGRIERT (18.06.)** — self-mounting Topbar+Drawer, erkennt aktive Seite, liest Profil. Jetzt mit **Gym**-Eintrag (I18N de/es/en, Hantel-ICON, STRUCT `{id:'gym',disabled:true}` direkt nach `lessons`, „bald"-Badge). Auf den 4 scrollbaren Seiten via `<script src="nav.js" defer>`. **18.06. Teil 8: `write`-Eintrag (Schreibwerkstatt) ergänzt — I18N de/es/en, Stift-ICON, STRUCT zwischen talk+books, getActive schreibwerkstatt→write.** Auf ALLEN App-Seiten eingebunden (4 scrollbare + chat-Slot + schreibwerkstatt-Slot). **19.06. Teil 12 GEBAUT (commit 2e7ccd4): Labels read→Lesewerkstatt (de) / Reading Workshop (en), es „Taller de lectura" unverändert; books→Meine Bücher (de) / Mis libros (es) / My Books (en). Nur die I18N-Werte, keine STRUCT/Icons/hrefs/getActive berührt.** | — | ✅ in dev · Labels Teil 12 GEBAUT (nav.js cacht → hart neu laden, nicht live geklickt) |
-| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** · **18.06.: nav.js im SLOT-MODUS — `<header>` → `<header data-spk-nav>` (Logo+„← Dashboard"-Inhalt raus, nav.js füllt den Slot mit Hamburger+Logo, keine zweite Leiste); `<script src="nav.js" defer>` ergänzt. Charla-Script + Profil-Chip unberührt** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** (nav: in dev, noch nicht live geklickt) |
+| `chat.html` | **NEU GEBAUT (16.06.), live bestätigt 17.06.** — Gesprächs-Raum-Oberfläche. Liest `spikiu_user`+defensive Brücke, KEIN Profil → Redirect `assessment.html`. Direkt in die Charla, Profil-Chip, ruft `/api/gespraech`. 4-Phasen-Maschine + PDF-Flow GELÖSCHT. Capy komplett (Ohren+Füße). Bug „antwortet nicht" gelöst. **17.06.: `fmt()` rendert jetzt auch `_kursiv_` → `<em>` (Muttersprach-Brücke), nur paarweise an Wortgrenzen — `el_perro` unberührt** · **18.06.: nav.js im SLOT-MODUS — `<header>` → `<header data-spk-nav>` (Logo+„← Dashboard"-Inhalt raus, nav.js füllt den Slot mit Hamburger+Logo, keine zweite Leiste); `<script src="nav.js" defer>` ergänzt. Charla-Script + Profil-Chip unberührt** · **19.06. Teil 21 (Paket B): Raumwechsel-Signal abgefangen. `extractWechsel()` zieht `[WECHSEL:…]` aus der Antwort (breit gestrippt → kein Marker leakt je, auch vertippter Zielraum; Knopf NUR bei gültigem Ziel), zeigt sauberen Text + speichert ihn sauber in `verlauf`, rendert `.door-btn` (Label nach `profile.muttersprache` de/es/en) → Klick `window.location.href` (kein Auto-Sprung). Map: schreibwerkstatt→schreibwerkstatt.html · lesewerkstatt→taller.html · buecher→books.html · lektionen→dashboard.html#lektionen. Profil reist via localStorage mit. api/gespraech.js NICHT angefasst (bleibt roh-Prosa).** | liest spikiu_user.profile defensiv | ✅ **LIVE — spricht, antwortet, Brücke kursiv** (Paket B: in dev, Marker-Extraktion smoke-getestet, noch nicht live geklickt) |
 | `prototyp-gespraech.html` | NEU (16.06.) — genehmigte Attrappe, führte zur chat.html-Oberfläche. Scripted, kein API | — | Prototyp, behalten |
 | `api/chat-german.js`, `-spanish.js`, `-english.js` | **TOT — deprecated Sprach-Split** | — | ⛔ NICHT imitieren, nicht als „Raum" behandeln. Sprache = Feld. |
 | `api/chat.js` | Dumb-Proxy (system clientseitig) | — | Referenz-Muster für neue Endpoints |
@@ -276,19 +277,24 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
    Abnahme grün: alle vier Verifikations-greps == 1, Reihenfolge talk→write→books, `node --check nav.js` OK,
    nur nav.js angefasst. Damit ist die Menü-Lücke geschlossen — der Drawer führt jetzt in die Werkstatt.
    NICHT live geklickt (Vercel, nav.js cacht → hart neu laden): Eintrag/aktiv/Label-Sprachwechsel.
-8. **Paket B — Raumwechsel-Signal (Bau, eigenes Paket, NEU 19.06. Teil 20):** Klar geäußerter
-   Raumwechsel im Gespräch → Spikiu öffnet die Tür statt sie zu beschreiben (Muster wie
-   `[LESSON_FROM_CONVERSATION]`). `api/gespraech.js`/`gespraech-modus.md`: Spikiu setzt
-   `[WECHSEL:zielraum]` (Zielräume: `schreibwerkstatt`, `lesewerkstatt`, `buecher`, `lektionen`),
-   wenn der Lerner unmissverständlich woanders hin will. `chat.html`: Marker abfangen, NICHT als
-   Text zeigen → sanften Knopf rendern („→ Zur Lesewerkstatt"), auf Klick `window.location` (kein
-   Auto-Sprung, Lerner drückt). Profil reist via `localStorage` automatisch mit. Mehr-Frage-Disziplin:
-   höchstens EINE Rückfrage vor dem Handeln (Pedro wurde 3× gefragt). Löst Pedros Sackgasse.
-9. **Paket A2 — Tür-öffnen-Regel in die Seele (Prompt, ERST NACH B live, NEU 19.06. Teil 20):**
+8. ~~**Paket B — Raumwechsel-Signal (Bau, eigenes Paket):**~~ ✅ **GEBAUT 19.06. Teil 21.**
+   `gespraech-modus.md`: neue Sektion „DIE TÜR ÖFFNEN" + NIEMALS-Bullet — bei KLAREM Wunsch hängt Spikiu
+   genau EIN `[WECHSEL:zielraum]` ans Antwort-Ende (schreibwerkstatt|lesewerkstatt|buecher|lektionen),
+   davor EIN warmer Übergabesatz, kein Menü/App-Verweis; unklar → EINE Rückfrage. `chat.html`:
+   `extractWechsel()` fängt den Marker (breit gestrippt → leakt nie, auch vertippt; Knopf NUR bei
+   gültigem Ziel), zeigt sauberen Text + speichert ihn sauber in `verlauf`, rendert `.door-btn`
+   (Label nach `profile.muttersprache`) → Klick `window.location.href`, KEIN Auto-Sprung. Map:
+   schreibwerkstatt→schreibwerkstatt.html · lesewerkstatt→taller.html · buecher→books.html ·
+   lektionen→dashboard.html#lektionen. Profil reist via localStorage mit. **`api/gespraech.js` NICHT
+   angefasst** (bewahrt seine dokumentierte „roh-Prosa, kein Parser"-Identität). Inline-Script-Syntax
+   grün, Extraktion über 6 Fälle smoke-getestet. NOCH OFFEN: live auf dev klicken (Marker im echten
+   Gesprächsfluss + Knopf-Sprung mit Profil) — schaltet danach Paket A2 frei.
+9. **Paket A2 — Tür-öffnen-Regel in die Seele (Prompt, ERST NACH B LIVE bestätigt, NEU 19.06. Teil 20):**
    Sperrgrund: Bevor das Signal existiert, wäre eine „du öffnest die Tür"-Regel eine erfundene
-   Funktion → Seelen-Verstoß. Erst wenn B deployt + bestätigt ist, Mauer rein: „Will der Lerner klar
-   in einen anderen Raum, öffnest du die Tür (Signal), du beschreibst sie nicht und schickst ihn nie
-   durch Menüs oder auf die App/Webseite."
+   Funktion → Seelen-Verstoß. **B ist jetzt GEBAUT, aber noch nicht live geklickt** — A2 erst, wenn
+   das Signal auf dev nachweislich greift. Dann Mauer rein: „Will der Lerner klar in einen anderen Raum,
+   öffnest du die Tür (Signal), du beschreibst sie nicht und schickst ihn nie durch Menüs oder auf die
+   App/Webseite."
 10. **Paket C — UI-Sieb (klein, kann mit B laufen, NEU 19.06. Teil 20):** Eingabefeld in `chat.html`
    (perspektivisch andere Räume): leere/triviale Sends (0–1 sichtbares Zeichen / nur Whitespace) gar
    nicht erst abschicken. Robustes Sieb für den Vertipper-plus-Enter-Fall. KEINE Bestätigungsdialoge
