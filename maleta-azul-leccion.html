@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El misterio de la maleta azul · Expediente B1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1018;
+    --bg-2:#11151f;
+    --surface:#171c29;
+    --surface-2:#1e2535;
+    --line:#2a3346;
+    --ink:#f3ece0;
+    --ink-soft:#aab2c3;
+    --ink-faint:#717b90;
+    --coral:#f4796b;
+    --coral-deep:#d85c4e;
+    --teal:#3fd0bb;
+    --teal-deep:#1f9d8c;
+    --amber:#f5b945;
+    --navy:#384a6b;
+    --red:#e2574c;
+    --serif:'Fraunces',Georgia,'Times New Roman',serif;
+    --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'DM Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:17px;line-height:1.6;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(244,121,107,.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(63,208,187,.05), transparent 55%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px}
+
+  /* ---------- HEADER / CASE FILE ---------- */
+  header.case{
+    position:relative;margin:0 -18px 30px;padding:46px 24px 34px;
+    background:linear-gradient(180deg,#10141e,#0d1018);
+    border-bottom:1px solid var(--line);overflow:hidden;
+  }
+  header.case::before{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,255,255,.012) 38px 39px);
+    pointer-events:none;
+  }
+  .filerow{display:flex;align-items:center;gap:10px;font-family:var(--mono);
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .filerow .dot{width:7px;height:7px;border-radius:50%;background:var(--coral);box-shadow:0 0 10px var(--coral)}
+  .case h1{
+    font-family:var(--serif);font-weight:900;font-size:clamp(34px,8vw,56px);
+    line-height:.98;margin:16px 0 6px;letter-spacing:-.015em;
+  }
+  .case h1 em{font-style:italic;color:var(--coral);font-weight:500}
+  .case .sub{color:var(--ink-soft);max-width:46ch;margin:0 0 20px;font-size:15.5px}
+  .stamp{
+    position:absolute;top:30px;right:18px;transform:rotate(9deg);
+    border:2.5px solid var(--coral);color:var(--coral);border-radius:7px;
+    font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;
+    padding:7px 11px;text-transform:uppercase;opacity:.92;
+    box-shadow:inset 0 0 0 1px rgba(244,121,107,.25)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+    background:var(--surface);border:1px solid var(--line);color:var(--ink-soft);
+    padding:5px 10px;border-radius:999px}
+  .tag b{color:var(--teal);font-weight:500}
+
+  /* ---------- NAV ---------- */
+  nav.toc{position:sticky;top:0;z-index:40;margin:0 -18px 26px;
+    background:rgba(13,16,24,.86);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);}
+  nav.toc .inner{max-width:760px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;
+    padding:10px 18px;scrollbar-width:none}
+  nav.toc .inner::-webkit-scrollbar{display:none}
+  nav.toc a{flex:0 0 auto;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
+    color:var(--ink-soft);text-decoration:none;padding:7px 12px;border-radius:8px;
+    border:1px solid transparent;white-space:nowrap}
+  nav.toc a:hover,nav.toc a:focus-visible{color:var(--ink);background:var(--surface);border-color:var(--line);outline:none}
+
+  /* ---------- SECTIONS ---------- */
+  section{margin:0 0 40px;scroll-margin-top:64px}
+  .eyebrow{display:flex;align-items:center;gap:12px;margin:0 0 18px}
+  .eyebrow .num{font-family:var(--mono);font-size:13px;color:var(--coral);
+    border:1px solid var(--coral);border-radius:6px;padding:2px 8px;letter-spacing:.05em}
+  .eyebrow h2{font-family:var(--serif);font-weight:600;font-size:clamp(22px,5vw,30px);
+    margin:0;letter-spacing:-.01em}
+  .eyebrow .line{flex:1;height:1px;background:var(--line)}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:22px;margin:0 0 14px}
+
+  /* ---------- AUDIO CONSOLE ---------- */
+  .console{background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;margin-bottom:14px}
+  .console .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .console .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .wave{display:flex;align-items:flex-end;gap:3px;height:22px;margin-left:auto}
+  .wave span{width:3px;height:5px;background:var(--ink-faint);border-radius:2px;transition:background .2s}
+  .wave.on span{background:var(--teal);animation:bounce .9s ease-in-out infinite}
+  .wave.on span:nth-child(2){animation-delay:.1s}.wave.on span:nth-child(3){animation-delay:.2s}
+  .wave.on span:nth-child(4){animation-delay:.3s}.wave.on span:nth-child(5){animation-delay:.15s}
+  .wave.on span:nth-child(6){animation-delay:.25s}.wave.on span:nth-child(7){animation-delay:.05s}
+  @keyframes bounce{0%,100%{height:5px}50%{height:22px}}
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  select.voice{background:var(--bg-2);color:var(--ink);border:1px solid var(--line);
+    border-radius:9px;padding:9px 11px;font-family:var(--sans);font-size:13.5px;max-width:200px}
+  .toggle{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-soft);cursor:pointer;user-select:none}
+  .toggle input{appearance:none;width:38px;height:22px;background:var(--line);border-radius:999px;position:relative;cursor:pointer;transition:background .2s}
+  .toggle input:checked{background:var(--teal-deep)}
+  .toggle input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
+  .toggle input:checked::after{left:18px}
+
+  /* ---------- STORY ---------- */
+  .parts{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .partbtn{flex:1 1 auto;min-width:120px;text-align:left;background:var(--surface);
+    border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;color:var(--ink);
+    font-family:var(--sans);transition:border-color .2s,background .2s}
+  .partbtn:hover{border-color:var(--navy)}
+  .partbtn.active{border-color:var(--coral);background:var(--surface-2)}
+  .partbtn .k{font-family:var(--mono);font-size:11px;color:var(--coral);letter-spacing:.08em}
+  .partbtn .t{display:block;font-size:14.5px;margin-top:3px;color:var(--ink)}
+  .story{font-family:var(--serif);font-size:18.5px;line-height:1.75;color:#ece4d6}
+  .story p{margin:0 0 15px}
+  .story p.d{color:var(--amber);padding-left:14px;border-left:2px solid rgba(245,185,69,.4);font-style:italic}
+  .story .playbar{display:flex;gap:10px;align-items:center;margin:4px 0 18px}
+  .gword{color:var(--teal);border-bottom:1px dashed rgba(63,208,187,.55);cursor:pointer;font-style:normal}
+  .gword:hover{color:#7ce3d4}
+  .ru-pop{position:fixed;z-index:60;background:var(--surface-2);border:1px solid var(--teal-deep);
+    color:var(--ink);font-family:var(--sans);font-size:14px;padding:8px 12px;border-radius:10px;
+    box-shadow:0 12px 30px rgba(0,0,0,.5);max-width:220px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+  .ru-pop.show{opacity:1;transform:translateY(0)}
+  .ru-pop b{color:var(--teal);font-weight:500;display:block;font-size:12px;margin-bottom:2px;font-family:var(--mono)}
+
+  /* ---------- BUTTONS ---------- */
+  .btn{font-family:var(--sans);font-weight:500;font-size:14px;border-radius:10px;
+    padding:9px 14px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
+    cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:transform .08s,border-color .2s,background .2s}
+  .btn:active{transform:translateY(1px)}
+  .btn:hover{border-color:var(--navy)}
+  .btn.coral{background:var(--coral);border-color:var(--coral);color:#2a0f0b;font-weight:700}
+  .btn.coral:hover{background:var(--coral-deep);border-color:var(--coral-deep)}
+  .btn.ghost{background:transparent}
+  .btn .ico{font-size:15px;line-height:1}
+  .btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+  /* ---------- EXERCISES ---------- */
+  .q{margin:0 0 18px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+  .q .qhead{display:flex;gap:10px;margin-bottom:10px}
+  .q .qn{font-family:var(--mono);color:var(--coral);font-size:14px;flex:0 0 auto}
+  .q .qt{font-weight:500}
+  textarea,input.fill{width:100%;background:var(--bg-2);border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:11px 13px;font-family:var(--sans);font-size:15px;resize:vertical}
+  textarea:focus,input.fill:focus{outline:none;border-color:var(--teal)}
+  input.fill{display:inline-block;width:auto;min-width:140px;padding:7px 11px}
+  .modelwrap{margin-top:10px}
+  .model{margin-top:10px;background:rgba(63,208,187,.07);border:1px solid var(--teal-deep);
+    border-radius:10px;padding:11px 14px;font-size:14.5px;color:#d7f5ef;display:none}
+  .model.show{display:block}
+  .model b{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:4px}
+
+  /* True/False */
+  .tf{display:flex;gap:8px}
+  .tf button{flex:0 0 auto;min-width:96px;font-family:var(--sans);font-weight:600;font-size:14px;
+    border-radius:10px;padding:9px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);cursor:pointer}
+  .tf button:hover{border-color:var(--navy);color:var(--ink)}
+  .tf button.sel{border-color:var(--ink);color:var(--ink)}
+  .tf.done button{cursor:default;opacity:.55}
+  .tf.done button.correct{background:rgba(63,208,187,.16);border-color:var(--teal);color:var(--teal);opacity:1}
+  .tf.done button.wrong{background:rgba(226,87,76,.16);border-color:var(--red);color:var(--red);opacity:1}
+
+  /* Word bank */
+  .bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .chip{font-family:var(--sans);font-size:14px;background:var(--surface-2);border:1px solid var(--line);
+    color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;transition:opacity .2s,border-color .2s}
+  .chip:hover{border-color:var(--coral)}
+  .chip.used{opacity:.32;text-decoration:line-through;cursor:default}
+  .slot{display:inline-block;min-width:130px;border-bottom:2px solid var(--coral);
+    text-align:center;color:var(--amber);font-weight:600;cursor:pointer;padding:0 4px;min-height:1.4em}
+  .slot.empty{color:var(--ink-faint);font-weight:400;font-style:italic}
+  .vline{margin:0 0 13px;line-height:2}
+  .vline.correct .slot{border-color:var(--teal);color:var(--teal)}
+  .vline.wrong .slot{border-color:var(--red);color:var(--red)}
+
+  .feedback{margin-top:12px;font-family:var(--mono);font-size:13px;letter-spacing:.03em;display:none}
+  .feedback.show{display:block}
+  .feedback.good{color:var(--teal)}.feedback.bad{color:var(--amber)}
+
+  .conj-tag{font-family:var(--mono);font-size:12px;color:var(--ink-faint);margin-left:6px}
+  .reveal{display:none;margin-top:8px;font-size:13.5px;color:var(--teal)}
+  .reveal.show{display:block}
+
+  /* Glossary */
+  .gloss-search{width:100%;margin-bottom:14px}
+  table.gloss{width:100%;border-collapse:collapse;font-size:15px}
+  table.gloss tr{border-bottom:1px solid var(--line)}
+  table.gloss tr:last-child{border-bottom:none}
+  table.gloss td{padding:11px 8px;vertical-align:middle}
+  table.gloss .es{font-weight:500;color:var(--ink)}
+  table.gloss .es .spk{cursor:pointer;color:var(--ink);border-bottom:1px dashed var(--coral)}
+  table.gloss .ru{color:var(--ink-soft);text-align:right;font-size:14.5px}
+  table.gloss tr.hidden{display:none}
+
+  /* Grammar */
+  .gram{margin:0 0 14px}
+  .gram h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:0 0 8px;color:var(--coral)}
+  .gram .ex{background:var(--bg-2);border-left:2px solid var(--teal-deep);border-radius:0 8px 8px 0;
+    padding:9px 13px;margin:7px 0;font-size:15px}
+  .gram .ex .es{color:var(--ink)}
+  .gram .ex .ru{color:var(--ink-faint);font-size:13.5px;font-family:var(--sans)}
+  .gram .note{color:var(--ink-soft);font-size:14.5px}
+
+  /* Scoreboard */
+  .score-fixed{position:fixed;right:14px;bottom:14px;z-index:50;
+    background:var(--surface-2);border:1px solid var(--line);border-radius:14px;
+    padding:10px 14px;box-shadow:0 12px 34px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px}
+  .score-fixed .ring{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--teal)}
+  .score-fixed .ring b{color:var(--ink)}
+  .score-fixed .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+
+  .checkbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+  footer{margin-top:50px;padding-top:22px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.04em}
+
+  @media (max-width:480px){
+    body{font-size:16px}
+    .story{font-size:17.5px}
+    .stamp{display:none}
+    .score-fixed{left:14px;right:14px;justify-content:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+    .wave.on span{height:14px!important}
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <div class="inner">
+    <a href="#historia">Historia</a>
+    <a href="#glosario">Glosario</a>
+    <a href="#lectura">Comprensión</a>
+    <a href="#vf">Verdadero / Falso</a>
+    <a href="#vocab">Vocabulario</a>
+    <a href="#tiempos">Pasado</a>
+    <a href="#debate">Debate</a>
+    <a href="#gramatica">Gramática</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="case">
+    <div class="filerow"><span class="dot"></span> Expediente · Policía Nacional · Palma de Mallorca</div>
+    <h1>El misterio de<br>la <em>maleta azul</em></h1>
+    <p class="sub">Una historia policial para practicar tu español. Lee, escucha, comprueba tus respuestas y repasa la gramática pensada para rusohablantes.</p>
+    <div class="tags">
+      <span class="tag">Nivel <b>B1 alto</b></span>
+      <span class="tag">Español → <b>Русский</b></span>
+      <span class="tag">Audio <b>incluido</b></span>
+    </div>
+    <div class="stamp">Caso&nbsp;Nº&nbsp;0723</div>
+  </header>
+
+  <!-- AUDIO CONSOLE -->
+  <div class="console" id="console">
+    <div class="top">
+      <span class="lbl">Consola de audio</span>
+      <div class="wave" id="wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="controls">
+      <select class="voice" id="voiceSel" aria-label="Elegir voz"></select>
+      <label class="toggle"><input type="checkbox" id="slow"> Modo lento</label>
+      <button class="btn ghost" id="stopBtn"><span class="ico">■</span> Parar</button>
+    </div>
+  </div>
+
+  <!-- HISTORIA -->
+  <section id="historia">
+    <div class="eyebrow"><span class="num">A</span><h2>La historia</h2><span class="line"></span></div>
+    <div class="parts" id="parts"></div>
+    <div class="card">
+      <div class="story" id="storyBody"></div>
+    </div>
+    <p style="color:var(--ink-faint);font-size:13.5px;font-family:var(--mono)">Toca las palabras <span style="color:var(--teal)">en verde</span> para ver su traducción al ruso.</p>
+  </section>
+
+  <!-- GLOSARIO -->
+  <section id="glosario">
+    <div class="eyebrow"><span class="num">B</span><h2>Glosario interactivo</h2><span class="line"></span></div>
+    <div class="card">
+      <input class="fill gloss-search" id="glossSearch" placeholder="Buscar palabra… / Поиск слова…" aria-label="Buscar en el glosario">
+      <table class="gloss"><tbody id="glossBody"></tbody></table>
+    </div>
+    <p style="color:var(--ink-faint);font-size:13.5px;font-family:var(--mono)">Toca una palabra española para escuchar su pronunciación.</p>
+  </section>
+
+  <!-- COMPRENSIÓN LECTORA -->
+  <section id="lectura">
+    <div class="eyebrow"><span class="num">1</span><h2>Comprensión lectora</h2><span class="line"></span></div>
+    <div class="card">
+      <p style="margin-top:0;color:var(--ink-soft)">Responde con frases completas. Cuando termines, compara con la respuesta modelo.</p>
+      <div id="lecturaBody"></div>
+      <div class="checkbar">
+        <button class="btn coral" id="revealAll"><span class="ico">✓</span> Mostrar todas las respuestas modelo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERDADERO / FALSO -->
+  <section id="vf">
+    <div class="eyebrow"><span class="num">2</span><h2>Verdadero o falso</h2><span class="line"></span></div>
+    <div class="card">
+      <div id="vfBody"></div>
+      <div class="checkbar">
+        <button class="btn coral" id="vfCheck"><span class="ico">✓</span> Comprobar</button>
+        <button class="btn ghost" id="vfReset">Reiniciar</button>
+      </div>
+      <div class="feedback" id="vfFeed"></div>
+    </div>
+  </section>
+
+  <!-- VOCABULARIO -->
+  <section id="vocab">
+    <div class="eyebrow"><span class="num">3</span><h2>Vocabulario en contexto</h2><span class="line"></span></div>
+    <div class="card">
+      <p style="margin-top:0;color:var(--ink-soft)">Toca una palabra del banco y luego el hueco donde encaja. Para quitarla, toca el hueco.</p>
+      <div class="bank" id="bank"></div>
+      <div id="vocabBody"></div>
+      <div class="checkbar">
+        <button class="btn coral" id="vocabCheck"><span class="ico">✓</span> Comprobar</button>
+        <button class="btn ghost" id="vocabReset">Reiniciar</button>
+      </div>
+      <div class="feedback" id="vocabFeed"></div>
+    </div>
+  </section>
+
+  <!-- TIEMPOS DEL PASADO -->
+  <section id="tiempos">
+    <div class="eyebrow"><span class="num">4</span><h2>Indefinido e imperfecto</h2><span class="line"></span></div>
+    <div class="card">
+      <p style="margin-top:0;color:var(--ink-soft)">Escribe la forma correcta del verbo entre paréntesis.</p>
+      <div id="conjBody"></div>
+      <div class="checkbar">
+        <button class="btn coral" id="conjCheck"><span class="ico">✓</span> Comprobar</button>
+        <button class="btn ghost" id="conjReset">Reiniciar</button>
+      </div>
+      <div class="feedback" id="conjFeed"></div>
+    </div>
+  </section>
+
+  <!-- DEBATE -->
+  <section id="debate">
+    <div class="eyebrow"><span class="num">5</span><h2>Debate y conversación</h2><span class="line"></span></div>
+    <div class="card">
+      <p style="margin-top:0;color:var(--ink-soft)">No hay respuestas correctas. Escribe tus ideas y úsalas para hablar en clase.</p>
+      <div id="debateBody"></div>
+    </div>
+  </section>
+
+  <!-- GRAMÁTICA -->
+  <section id="gramatica">
+    <div class="eyebrow"><span class="num">C</span><h2>Gramática para rusohablantes</h2><span class="line"></span></div>
+    <div class="card" id="gramBody"></div>
+  </section>
+
+  <footer>
+    El misterio de la maleta azul · Material de español B1 · Glosario ES–RU · Audio mediante síntesis de voz del navegador.
+  </footer>
+</div>
+
+<!-- Scoreboard -->
+<div class="score-fixed" id="scoreboard" style="display:none">
+  <div>
+    <div class="l">Aciertos</div>
+    <div class="ring"><b id="scoreNow">0</b> / <span id="scoreMax">0</span></div>
+  </div>
+</div>
+
+<div class="ru-pop" id="ruPop"></div>
+
+<script>
+"use strict";
+
+/* ============ DATA ============ */
+const GLOSS = [
+  ["la maleta","чемодан"],["la entrega","доставка"],["la amenaza","угроза"],
+  ["la embajada","посольство"],["el diplomático","дипломат"],["el antecedente penal","судимость"],
+  ["la organización criminal","преступная организация"],["el capo","наркобарон"],
+  ["la cocaína","кокаин"],["la investigación","расследование"],["el seguimiento","слежка"],
+  ["la comisaría","полицейский участок"],["la condena","приговор"],["la prisión","тюрьма"],
+  ["el socio","партнёр"],["el aparcamiento","парковка"],["detener","задерживать"],
+  ["escapar","убегать"],["sospechar","подозревать"],["trasladar","перевозить"],
+  ["proteger","защищать"],["colaborar","сотрудничать"],["descubrir","обнаруживать"],
+  ["parecer","казаться"],["esconder","скрывать"],["utilizar","использовать"]
+];
+// quick lookup for in-story popups (key -> russian)
+const RU = {
+  "maleta":"чемодан","entrega":"доставка","amenaza":"угроза","embajada":"посольство",
+  "diplomático":"дипломат","antecedentes":"судимость","cocaína":"кокаин",
+  "investigando":"расследовать","seguimiento":"слежка","comisaría":"полицейский участок",
+  "condenados":"приговорённые","prisión":"тюрьма","socios":"партнёры","aparcamiento":"парковка",
+  "detenidos":"задержаны","escapar":"убегать","trasladarla":"перевезти её",
+  "organización criminal":"преступная организация","puerto":"порт"
+};
+
+// story: p = narración, d = diálogo. [[term]] o [[term|display]] = palabra del glosario
+const STORY = [
+  { k:"Parte 1", t:"Llegada a Mallorca", id:"p1", lines:[
+    {y:"p",x:"Katrin tenía veintitrés años y venía de Estonia. Había terminado sus estudios universitarios y decidió pasar el verano en Mallorca para mejorar su español y trabajar en un hotel."},
+    {y:"p",x:"Durante las primeras semanas todo fue perfecto. Trabajaba por las mañanas, iba a la playa por las tardes y conoció a muchas personas de diferentes países."},
+    {y:"p",x:"Una noche, en una fiesta cerca del [[puerto]] de Palma, conoció a un hombre llamado Ricardo. Era simpático, elegante y parecía muy rico. Le contó que tenía una empresa de transporte marítimo."},
+    {y:"d",x:"—Si necesitas ayuda en Mallorca, puedes llamarme —le dijo entregándole una tarjeta."},
+    {y:"p",x:"Katrin guardó la tarjeta sin pensar demasiado en ello. Dos semanas después, recibió una llamada inesperada. Ricardo le ofreció un trabajo temporal."},
+    {y:"d",x:"—Solo necesito que entregues una [[maleta]] a unos [[socios]] míos. Te pagaré quinientos euros."},
+    {y:"p",x:"La propuesta le pareció extraña, pero el dinero era mucho más de lo que ganaba en una semana."},
+    {y:"d",x:"—¿Qué hay dentro de la maleta? —preguntó."},
+    {y:"d",x:"—Documentos importantes para una empresa —respondió Ricardo."},
+    {y:"p",x:"Katrin aceptó."}
+  ]},
+  { k:"Parte 2", t:"La entrega", id:"p2", lines:[
+    {y:"p",x:"Al día siguiente recibió una maleta azul en un [[aparcamiento]] subterráneo. Debía llevarla a un restaurante en la costa oeste de la isla."},
+    {y:"p",x:"Mientras conducía, observó algo extraño. Un coche negro parecía seguirla. Intentó cambiar de dirección varias veces, pero el coche continuaba detrás de ella. Empezó a ponerse nerviosa."},
+    {y:"p",x:"Cuando llegó al restaurante, dos hombres la esperaban."},
+    {y:"d",x:"—¿Traes la maleta? —preguntó uno de ellos."},
+    {y:"p",x:"En ese momento aparecieron varios policías armados."},
+    {y:"d",x:"—¡Policía! ¡Nadie se mueva!"},
+    {y:"p",x:"Los hombres intentaron [[escapar]], pero fueron [[detenidos|detenidos]]. Katrin quedó paralizada."},
+    {y:"p",x:"Un agente abrió la maleta. No había documentos. Había varios paquetes de [[cocaína]]."}
+  ]},
+  { k:"Parte 3", t:"Los capos", id:"p3", lines:[
+    {y:"p",x:"En la [[comisaría]], Katrin explicó toda la historia. Los investigadores descubrieron que Ricardo no era empresario."},
+    {y:"p",x:"Era miembro de una [[organización criminal|organización criminal]] mexicana que utilizaba Mallorca como punto de distribución para enviar droga a diferentes países europeos. La policía llevaba meses [[investigando]] a la banda."},
+    {y:"p",x:"Los agentes creían que Katrin había sido utilizada como mensajera porque era extranjera y no tenía [[antecedentes]] penales. Sin embargo, los criminales pensaban que ella podía colaborar con la policía."},
+    {y:"p",x:"Dos días después, Katrin recibió una [[amenaza]] anónima."},
+    {y:"d",x:"—Sabemos dónde estás."},
+    {y:"p",x:"La situación se volvió muy peligrosa. La policía decidió trasladarla a un lugar secreto."}
+  ]},
+  { k:"Parte 4", t:"El rescate", id:"p4", lines:[
+    {y:"p",x:"La [[embajada]] de Estonia fue informada inmediatamente. Un [[diplomático]] viajó desde Madrid para reunirse con ella."},
+    {y:"d",x:"—Su seguridad es nuestra prioridad —le aseguró."},
+    {y:"p",x:"La embajada organizó una operación discreta junto con la policía española. Una madrugada, Katrin fue [[trasladarla|trasladada]] al aeropuerto bajo protección policial. Los agentes utilizaron vehículos sin identificación para evitar cualquier [[seguimiento]]."},
+    {y:"p",x:"Horas después aterrizó en Tallin. Cuando salió del aeropuerto, respiró profundamente. Por primera vez en varias semanas se sintió segura."},
+    {y:"p",x:"Meses más tarde, varios miembros de la organización fueron [[condenados]] a largas penas de [[prisión]]."},
+    {y:"p",x:"Katrin comprendió una lección importante: a veces, una oferta que parece demasiado buena para ser verdad puede esconder un gran peligro."}
+  ]}
+];
+
+const LECTURA = [
+  ["¿Por qué viajó Katrin a Mallorca?","Viajó a Mallorca para mejorar su español y trabajar en un hotel durante el verano."],
+  ["¿Qué trabajo le ofreció Ricardo?","Le ofreció entregar una maleta a unos socios suyos a cambio de quinientos euros."],
+  ["¿Qué había dentro de la maleta?","Dentro de la maleta había varios paquetes de cocaína, no documentos."],
+  ["¿Quién era realmente Ricardo?","Ricardo era en realidad miembro de una organización criminal mexicana que distribuía droga en Europa."],
+  ["¿Por qué la organización eligió a Katrin?","La eligieron porque era extranjera y no tenía antecedentes penales."],
+  ["¿Qué hizo la embajada de Estonia?","La embajada organizó una operación discreta con la policía española para protegerla y sacarla del país."],
+  ["¿Cómo salió Katrin de España?","Fue trasladada al aeropuerto bajo protección policial y voló de regreso a Tallin."],
+  ["¿Qué ocurrió con los criminales?","Meses después, varios miembros de la organización fueron condenados a largas penas de prisión."]
+];
+
+const VF = [
+  ["Katrin era española.", false],
+  ["Ricardo trabajaba en un hotel.", false],
+  ["La maleta contenía documentos.", false],
+  ["La policía investigaba a la banda desde hacía meses.", true],
+  ["La embajada ignoró el problema.", false],
+  ["Katrin regresó a Estonia.", true],
+  ["Los criminales fueron condenados.", true]
+];
+
+const VOCAB_WORDS = ["amenaza","maleta","criminal","investigación","embajada"];
+const VOCAB = [
+  ["La ", " organizó el regreso de Katrin a Estonia.", "embajada"],
+  ["La policía abrió la ", " azul.", "maleta"],
+  ["Los criminales enviaron una ", ".", "amenaza"],
+  ["Ricardo pertenecía a una organización ", ".", "criminal"],
+  ["Los agentes realizaron una ", " durante varios meses.", "investigación"]
+];
+
+const CONJ = [
+  ["Katrin ", " en un hotel cuando Ricardo la llamó.", "trabajar", ["trabajaba"], "imperfecto · acción en desarrollo"],
+  ["La policía ", " a la banda durante meses.", "investigar", ["investigaba","investigó"], "imperfecto (o indefinido)"],
+  ["Ricardo le ", " quinientos euros.", "ofrecer", ["ofreció"], "indefinido · acción puntual"],
+  ["Los hombres la ", " en el restaurante.", "esperar", ["esperaban"], "imperfecto · situación de fondo"],
+  ["Katrin ", " segura cuando llegó a Tallin.", "sentirse", ["se sintió","se sintio"], "indefinido · momento concreto"]
+];
+
+const DEBATE = [
+  "¿Habrías aceptado transportar la maleta?",
+  "¿Qué señales de peligro observó Katrin?",
+  "¿Por qué los criminales utilizan a personas inocentes?",
+  "¿Cómo reaccionarías si recibieras una oferta parecida?",
+  "¿Crees que Katrin fue ingenua o simplemente tuvo mala suerte?"
+];
+
+const GRAMMAR = [
+  { h:"1 · Pretérito indefinido vs. imperfecto", note:"El <b>indefinido</b> expresa una acción terminada; el <b>imperfecto</b>, una situación o acción en desarrollo.",
+    ex:[["Ricardo <b>llamó</b>. / La policía <b>detuvo</b> a los hombres.","indefinido — acción terminada"],
+        ["Katrin <b>trabajaba</b> en un hotel. / Un coche la <b>seguía</b>.","imperfecto — en desarrollo"],
+        ["<b>Trabajaba</b> cuando Ricardo <b>llamó</b>.","Работала, когда Рикардо позвонил."]] },
+  { h:"2 · Se sintió / estaba", note:"Los rusohablantes suelen usar demasiado <b>estar</b>. Distingue el momento concreto del estado:",
+    ex:[["<b>Se sintió</b> segura.","момент — un momento concreto"],
+        ["<b>Estaba</b> segura.","состояние — un estado"]] },
+  { h:"3 · Parecer + infinitivo / adjetivo", note:"Sirve para expresar una impresión o apariencia.",
+    ex:[["<b>Parecía ser</b> un empresario. / <b>Parecía</b> muy rico.","казалось / по-видимому"]] },
+  { h:"4 · Hace + tiempo", note:"Indica cuándo ocurrió algo, contando hacia atrás desde ahora.",
+    ex:[["<b>Hace dos semanas</b> conoció a Ricardo.","две недели назад"],
+        ["<b>Hace meses</b> la policía investigaba la banda.","несколько месяцев назад"]] },
+  { h:"5 · Llevar + gerundio", note:"Estructura muy frecuente y difícil para rusohablantes: expresa una acción que continúa desde hace tiempo.",
+    ex:[["La policía <b>llevaba meses investigando</b> a la banda.","уже несколько месяцев расследовала"]] }
+];
+
+/* ============ AUDIO ============ */
+const synth = window.speechSynthesis;
+let voices = [], chosenVoice = null;
+const wave = document.getElementById('wave');
+const slowChk = document.getElementById('slow');
+
+function loadVoices(){
+  voices = synth.getVoices().filter(v => /^es/i.test(v.lang));
+  const sel = document.getElementById('voiceSel');
+  sel.innerHTML = '';
+  if(!voices.length){
+    const o=document.createElement('option');o.textContent='Voz española no disponible';sel.appendChild(o);
+    return;
+  }
+  voices.forEach((v,i)=>{
+    const o=document.createElement('option');o.value=i;
+    o.textContent=v.name.replace(/Microsoft|Google/gi,'').trim()+' · '+v.lang;
+    sel.appendChild(o);
+  });
+  // prefer es-ES
+  let pref = voices.findIndex(v=>/es-ES/i.test(v.lang));
+  if(pref<0) pref=0;
+  sel.value=pref; chosenVoice=voices[pref];
+  sel.onchange=()=>{chosenVoice=voices[sel.value]};
+}
+if(synth){ loadVoices(); synth.onvoiceschanged = loadVoices; }
+
+function speak(segments){
+  if(!synth) return;
+  synth.cancel();
+  const rate = slowChk.checked ? 0.62 : 0.92;
+  wave.classList.add('on');
+  let pending = segments.length;
+  segments.forEach(seg=>{
+    const u = new SpeechSynthesisUtterance(seg.text);
+    if(chosenVoice) u.voice = chosenVoice;
+    u.lang = chosenVoice ? chosenVoice.lang : 'es-ES';
+    u.rate = rate;
+    // dual-speaker: dialogue slightly higher & a touch faster
+    u.pitch = seg.dialogue ? 1.18 : 0.92;
+    u.onend = ()=>{ pending--; if(pending<=0) wave.classList.remove('on'); };
+    synth.speak(u);
+  });
+}
+function speakWord(w){
+  if(!synth) return;
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(w);
+  if(chosenVoice)u.voice=chosenVoice;
+  u.lang=chosenVoice?chosenVoice.lang:'es-ES';
+  u.rate=slowChk.checked?0.6:0.85;
+  wave.classList.add('on');
+  u.onend=()=>wave.classList.remove('on');
+  synth.speak(u);
+}
+document.getElementById('stopBtn').onclick=()=>{ if(synth)synth.cancel(); wave.classList.remove('on'); };
+
+/* ============ STORY RENDER ============ */
+const ruPop = document.getElementById('ruPop');
+let popTimer=null;
+function showPop(el, ru){
+  ruPop.innerHTML = '<b>Русский</b>'+ru;
+  const r = el.getBoundingClientRect();
+  ruPop.style.left = Math.min(Math.max(8,r.left), window.innerWidth-228)+'px';
+  ruPop.style.top = (r.bottom+8)+'px';
+  ruPop.classList.add('show');
+  clearTimeout(popTimer);
+  popTimer=setTimeout(()=>ruPop.classList.remove('show'),2600);
+}
+function parseLine(text){
+  // turn [[term]] / [[key|display]] into clickable gwords, escape rest
+  let out='', i=0;
+  const re=/\[\[(.+?)\]\]/g; let m, last=0;
+  while((m=re.exec(text))){
+    out += esc(text.slice(last,m.index));
+    const inner=m[1].split('|');
+    const key=inner[0], disp=inner[1]||inner[0];
+    const ru=RU[key]|| '';
+    out += `<span class="gword" data-ru="${esc(ru)}">${esc(disp)}</span>`;
+    last=re.lastIndex;
+  }
+  out += esc(text.slice(last));
+  return out;
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+const partsEl=document.getElementById('parts');
+const storyBody=document.getElementById('storyBody');
+let activePart=0;
+STORY.forEach((p,i)=>{
+  const b=document.createElement('button');
+  b.className='partbtn'+(i===0?' active':'');
+  b.innerHTML=`<span class="k">${p.k}</span><span class="t">${p.t}</span>`;
+  b.onclick=()=>{activePart=i;renderPart();[...partsEl.children].forEach((c,j)=>c.classList.toggle('active',j===i));};
+  partsEl.appendChild(b);
+});
+function renderPart(){
+  const p=STORY[activePart];
+  let html=`<div class="playbar"><button class="btn coral" id="playPart"><span class="ico">▶</span> Escuchar ${p.k}</button></div>`;
+  p.lines.forEach(l=> html+=`<p class="${l.y==='d'?'d':''}">${parseLine(l.x)}</p>`);
+  storyBody.innerHTML=html;
+  document.getElementById('playPart').onclick=()=>{
+    const segs=p.lines.map(l=>({text:l.x.replace(/\[\[(.+?)\]\]/g,(_,g)=>g.split('|').pop()), dialogue:l.y==='d'}));
+    speak(segs);
+  };
+  storyBody.querySelectorAll('.gword').forEach(g=>{
+    g.onclick=()=>{ const ru=g.getAttribute('data-ru'); if(ru) showPop(g,ru); };
+  });
+}
+renderPart();
+
+/* ============ GLOSSARY ============ */
+const glossBody=document.getElementById('glossBody');
+GLOSS.forEach(([es,ru])=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="es"><span class="spk">${es}</span></td><td class="ru">${ru}</td>`;
+  tr.querySelector('.spk').onclick=()=>speakWord(es.replace(/^(el|la|los|las)\s+/,''));
+  tr.dataset.search=(es+' '+ru).toLowerCase();
+  glossBody.appendChild(tr);
+});
+document.getElementById('glossSearch').oninput=e=>{
+  const q=e.target.value.toLowerCase().trim();
+  [...glossBody.children].forEach(tr=>tr.classList.toggle('hidden', q && !tr.dataset.search.includes(q)));
+};
+
+/* ============ SCORE ============ */
+const scoreboard=document.getElementById('scoreboard');
+const scoreNow=document.getElementById('scoreNow'), scoreMax=document.getElementById('scoreMax');
+const SECTION_SCORES={vf:0,vocab:0,conj:0};
+const SECTION_MAX={vf:VF.length,vocab:VOCAB.length,conj:CONJ.length};
+function updateScore(){
+  const now=Object.values(SECTION_SCORES).reduce((a,b)=>a+b,0);
+  const max=Object.values(SECTION_MAX).reduce((a,b)=>a+b,0);
+  scoreNow.textContent=now; scoreMax.textContent=max;
+  scoreboard.style.display='flex';
+}
+
+/* ============ COMPRENSIÓN LECTORA ============ */
+const lecturaBody=document.getElementById('lecturaBody');
+LECTURA.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='q';
+  div.innerHTML=`<div class="qhead"><span class="qn">${i+1}</span><span class="qt">${q[0]}</span></div>
+    <textarea rows="2" placeholder="Tu respuesta…"></textarea>
+    <div class="modelwrap"><button class="btn ghost btn-model"><span class="ico">↧</span> Respuesta modelo</button>
+    <div class="model"><b>Respuesta modelo</b>${q[1]}</div></div>`;
+  const mb=div.querySelector('.btn-model'), mo=div.querySelector('.model');
+  mb.onclick=()=>mo.classList.toggle('show');
+  lecturaBody.appendChild(div);
+});
+document.getElementById('revealAll').onclick=()=>{
+  document.querySelectorAll('#lecturaBody .model').forEach(m=>m.classList.add('show'));
+};
+
+/* ============ VERDADERO / FALSO ============ */
+const vfBody=document.getElementById('vfBody');
+const vfState=new Array(VF.length).fill(null);
+VF.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='q';
+  div.innerHTML=`<div class="qhead"><span class="qn">${i+1}</span><span class="qt">${q[0]}</span></div>
+    <div class="tf" data-i="${i}">
+      <button data-v="true">Verdadero</button>
+      <button data-v="false">Falso</button>
+    </div>`;
+  div.querySelectorAll('.tf button').forEach(b=>{
+    b.onclick=()=>{
+      const tf=b.parentElement; if(tf.classList.contains('done'))return;
+      tf.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel'); vfState[i]=(b.dataset.v==='true');
+    };
+  });
+  vfBody.appendChild(div);
+});
+document.getElementById('vfCheck').onclick=()=>{
+  let correct=0, answered=0;
+  document.querySelectorAll('#vfBody .tf').forEach((tf,i)=>{
+    if(vfState[i]===null) return;
+    answered++; tf.classList.add('done');
+    tf.querySelectorAll('button').forEach(b=>{
+      const v=(b.dataset.v==='true');
+      if(v===VF[i][1]) b.classList.add('correct');
+      else if(b.classList.contains('sel')) b.classList.add('wrong');
+    });
+    if(vfState[i]===VF[i][1]) correct++;
+  });
+  SECTION_SCORES.vf=correct;
+  const f=document.getElementById('vfFeed');
+  f.className='feedback show '+(correct===VF.length?'good':'bad');
+  f.textContent= answered<VF.length ? `Te faltan respuestas. Aciertos: ${correct} / ${VF.length}` : `Aciertos: ${correct} / ${VF.length}`;
+  updateScore();
+};
+document.getElementById('vfReset').onclick=()=>{
+  vfState.fill(null); SECTION_SCORES.vf=0;
+  document.querySelectorAll('#vfBody .tf').forEach(tf=>{tf.classList.remove('done');
+    tf.querySelectorAll('button').forEach(b=>b.classList.remove('sel','correct','wrong'));});
+  document.getElementById('vfFeed').classList.remove('show'); updateScore();
+};
+
+/* ============ VOCABULARIO (word bank) ============ */
+const bankEl=document.getElementById('bank');
+const vocabBody=document.getElementById('vocabBody');
+let selectedChip=null;
+const slotFill=new Array(VOCAB.length).fill(null);
+VOCAB_WORDS.forEach(w=>{
+  const c=document.createElement('span');c.className='chip';c.textContent=w;c.dataset.w=w;
+  c.onclick=()=>{ if(c.classList.contains('used'))return;
+    bankEl.querySelectorAll('.chip').forEach(x=>x.style.outline='');
+    selectedChip=c; c.style.outline='2px solid var(--coral)'; };
+  bankEl.appendChild(c);
+});
+VOCAB.forEach((v,i)=>{
+  const div=document.createElement('div');div.className='vline';div.dataset.i=i;
+  div.innerHTML=`<span class="qn" style="font-family:var(--mono);color:var(--coral);margin-right:8px">${i+1}</span>${esc(v[0])}<span class="slot empty" data-i="${i}">······</span>${esc(v[1])}`;
+  const slot=div.querySelector('.slot');
+  slot.onclick=()=>{
+    if(slotFill[i]){ // empty it
+      const w=slotFill[i]; slotFill[i]=null; slot.textContent='······'; slot.classList.add('empty');
+      const chip=[...bankEl.children].find(c=>c.dataset.w===w); if(chip)chip.classList.remove('used');
+      return;
+    }
+    if(selectedChip){
+      const w=selectedChip.dataset.w; slotFill[i]=w; slot.textContent=w; slot.classList.remove('empty');
+      selectedChip.classList.add('used'); selectedChip.style.outline=''; selectedChip=null;
+    }
+  };
+  vocabBody.appendChild(div);
+});
+document.getElementById('vocabCheck').onclick=()=>{
+  let correct=0;
+  VOCAB.forEach((v,i)=>{
+    const line=vocabBody.querySelector(`.vline[data-i="${i}"]`);
+    line.classList.remove('correct','wrong');
+    if(slotFill[i]===v[2]){line.classList.add('correct');correct++;}
+    else if(slotFill[i]) line.classList.add('wrong');
+  });
+  SECTION_SCORES.vocab=correct;
+  const f=document.getElementById('vocabFeed');
+  f.className='feedback show '+(correct===VOCAB.length?'good':'bad');
+  f.textContent=`Aciertos: ${correct} / ${VOCAB.length}`;
+  updateScore();
+};
+document.getElementById('vocabReset').onclick=()=>{
+  slotFill.fill(null); SECTION_SCORES.vocab=0; selectedChip=null;
+  bankEl.querySelectorAll('.chip').forEach(c=>{c.classList.remove('used');c.style.outline='';});
+  vocabBody.querySelectorAll('.vline').forEach(l=>{l.classList.remove('correct','wrong');
+    const s=l.querySelector('.slot');s.textContent='······';s.classList.add('empty');});
+  document.getElementById('vocabFeed').classList.remove('show'); updateScore();
+};
+
+/* ============ CONJUGACIÓN ============ */
+const conjBody=document.getElementById('conjBody');
+function norm(s){return s.toLowerCase().trim().replace(/\s+/g,' ');}
+CONJ.forEach((c,i)=>{
+  const div=document.createElement('div');div.className='q';
+  div.innerHTML=`<div class="qhead"><span class="qn">${i+1}</span><span class="qt">${esc(c[0])}<input class="fill" data-i="${i}" placeholder="…" autocomplete="off">${esc(c[1])}<span class="conj-tag">(${c[2]})</span></span></div>
+    <div class="reveal" data-i="${i}">✓ ${c[3][0]} — <span style="color:var(--ink-faint)">${c[4]}</span></div>`;
+  conjBody.appendChild(div);
+});
+document.getElementById('conjCheck').onclick=()=>{
+  let correct=0;
+  CONJ.forEach((c,i)=>{
+    const inp=conjBody.querySelector(`input[data-i="${i}"]`);
+    const rev=conjBody.querySelector(`.reveal[data-i="${i}"]`);
+    const ok=c[3].some(a=>norm(a)===norm(inp.value));
+    inp.style.borderColor= ok?'var(--teal)':(inp.value?'var(--red)':'var(--line)');
+    inp.style.color= ok?'var(--teal)':(inp.value?'var(--red)':'var(--ink)');
+    rev.classList.toggle('show', !ok);
+    if(ok)correct++;
+  });
+  SECTION_SCORES.conj=correct;
+  const f=document.getElementById('conjFeed');
+  f.className='feedback show '+(correct===CONJ.length?'good':'bad');
+  f.textContent=`Aciertos: ${correct} / ${CONJ.length}`;
+  updateScore();
+};
+document.getElementById('conjReset').onclick=()=>{
+  SECTION_SCORES.conj=0;
+  conjBody.querySelectorAll('input').forEach(i=>{i.value='';i.style.borderColor='var(--line)';i.style.color='var(--ink)';});
+  conjBody.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));
+  document.getElementById('conjFeed').classList.remove('show'); updateScore();
+};
+
+/* ============ DEBATE ============ */
+const debateBody=document.getElementById('debateBody');
+DEBATE.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='q';
+  div.innerHTML=`<div class="qhead"><span class="qn">${i+1}</span><span class="qt">${q}</span></div>
+    <textarea rows="2" placeholder="Tus ideas…"></textarea>`;
+  debateBody.appendChild(div);
+});
+
+/* ============ GRAMMAR ============ */
+const gramBody=document.getElementById('gramBody');
+GRAMMAR.forEach(g=>{
+  const div=document.createElement('div');div.className='gram';
+  let ex=g.ex.map(e=>`<div class="ex"><div class="es">${e[0]}</div><div class="ru">${e[1]}</div></div>`).join('');
+  div.innerHTML=`<h3>${g.h}</h3><div class="note">${g.note}</div>${ex}`;
+  gramBody.appendChild(div);
+});
+
+/* smooth nav + close popup */
+document.querySelectorAll('nav.toc a').forEach(a=>{
+  a.onclick=e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});};
+});
+document.addEventListener('scroll',()=>ruPop.classList.remove('show'),{passive:true});
+</script>
+</body>
+</html>
