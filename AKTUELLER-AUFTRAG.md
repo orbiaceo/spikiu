@@ -1,71 +1,47 @@
-# AKTUELLER AUFTRAG — für Claude Code
+# AKTUELLER AUFTRAG — Lesebegleiter ausrollen
 
-_Geschrieben von Claude (claude.ai, Design) am 19.06.2026 (Teil 12).
-Mach NUR diesen Auftrag. Wenn fertig: committen, pushen, Bericht ins Ledger,
-diese Datei auf „erledigt" setzen._
+_Geschrieben von Claude (claude.ai, Design) 19.06.2026 (Teil 18)._
+_Mach NUR diesen Auftrag. Wenn fertig: committen, pushen, Bericht ins Ledger, diese Datei auf „erledigt" setzen._
 
 ---
 
-## TITEL
-Menü-Labels entwirren: „Leseraum"→„Lesewerkstatt", „Bücher"→„Meine Bücher".
-Reine Label-Änderung in `nav.js` + `taller.html`. Kein neues Verhalten.
+## KONTEXT
+Der Reader-Lesebegleiter ist gebaut und **live auf `cap1-es-v2.html`** (Teil 17):
+`api/lesebegleiter.js` (Endpoint) + `lesebegleiter.js` (Widget) + `vercel.json`.
+Jetzt nur noch auf die übrigen Reader-Kapitel ausrollen.
 
-## WARUM
-Im Drawer stehen „Leseraum" und direkt darunter „Bücher" — beide lesen sich als „hier
-liest man", der User stockt: wo lese ich? Lösung: die geführten Räume tragen die
-Werkstatt-Familie (Schreibwerkstatt · Lesewerkstatt), „Bücher" wird zur klar besitzanzeigenden
-Bibliothek (Meine Bücher). Auto-Prinzip auf die Labels: gleiche Familie = gleicher Raum-Typ.
+## SCOPE (NUR Einbinden — nichts am Endpoint/Widget ändern)
+In jede Reader-Kapitelseite **genau eine Zeile** direkt vor `</body>` einfügen:
 
-## SCOPE (NUR Labels — zwei Dateien)
+```html
+<script src="lesebegleiter.js" defer></script>
+```
 
-### 1. `nav.js` — I18N-Labels (drei Sprachblöcke)
-- Eintrag `read`:
-  - de: `Leseraum` → `Lesewerkstatt`
-  - es: `Taller de lectura`  (bleibt unverändert)
-  - en: `Reading Room` → `Reading Workshop`
-- Eintrag `books`:
-  - de: `Bücher` → `Meine Bücher`
-  - es: `Libros` → `Mis libros`
-  - en: `Books` → `My Books`
-- NICHTS sonst anfassen: keine STRUCT-Reihenfolge, keine Icons, keine hrefs, keine getActive-Logik.
+Dateien:
+- Spanisch (Lukas/Madrid): `cap2-es-v2.html`, `cap3-es-v2.html`, `cap4-es-v2.html`
+- Deutsch (Marta/Berlin): `cap1-de-v2.html`, `cap2-de-v2.html`, `cap3-de-v2.html`, `cap4-de-v2.html`
 
-### 2. `taller.html` — Raum-Label (TXT-Objekt, `room`)
-- `room`-Wert je Sprache setzen:
-  - de: `Lesen` → `Lesewerkstatt`
-  - es: `Lectura` → `Taller de lectura`
-  - en: (aktuell) → `Reading Workshop`
-- Der Rest des TXT-Objekts (mc/orden/frei/check/…) bleibt unverändert.
-  `roomName` wird bereits per Muttersprache gesetzt — nur die Werte ändern.
+Sonst NICHTS ändern (kein CSS, kein Reader-Text, keine Struktur).
 
 ## ABNAHME-KRITERIEN
-1. Drawer (DE) zeigt in HAUPT: Dashboard · Jetzt sprechen · Schreibwerkstatt · **Lesewerkstatt**
-   · **Meine Bücher** · Live-Begegnungen · Lektionen · Gym. Keine zwei „Lese…"-Einträge mehr verwechselbar.
-2. Sprachwechsel stimmt: ES „Taller de lectura" / „Mis libros", EN „Reading Workshop" / „My Books".
-3. `taller.html`-Kopfzeile zeigt „Lesewerkstatt" (DE), „Taller de lectura" (ES), „Reading Workshop" (EN).
-4. UNANGETASTET: alle anderen Labels/Seiten/Logik. `node --check nav.js` + taller.html-Inline-Script grün.
+1. Jede Reader-Kapitelseite zeigt unten rechts das schwebende, atmende Spikiu — kein Auto-Popup.
+2. Tipp öffnet das schlanke Fenster; eine Frage zum Text bekommt eine kurze Antwort vom Endpoint.
+3. Lesefluss unberührt (Widget liegt als Overlay obenauf).
+4. Die Widget-UI erscheint in der Muttersprache des Users (DE/ES/EN aus `spikiu_user`).
 
-## HINWEISE
-- `nav.js` ohne Versions-Query geladen → zum Testen hart neu laden (Strg+Shift+R).
-- Verbotene Variablennamen meiden (kein `history`/`location`/… als Variable).
-
-## ABNAHME-TEST (kurz)
-Beliebige App-Seite hart neu laden → Hamburger → „Schreibwerkstatt / Lesewerkstatt / Meine Bücher"
-sauber getrennt. `taller.html?v=N` → Kopfzeile „Lesewerkstatt". Sprache umstellen → Labels wechseln.
-
-## VERIFIKATION VOR COMMIT (Leonardo)
+## VERIFIKATION VOR COMMIT
 ```
-grep -c "Lesewerkstatt" nav.js taller.html
-grep -c "Meine Bücher" nav.js
-grep -c "Mis libros" nav.js
-node --check nav.js && echo OK
+grep -c "lesebegleiter.js" cap2-es-v2.html cap3-es-v2.html cap4-es-v2.html cap1-de-v2.html cap2-de-v2.html cap3-de-v2.html cap4-de-v2.html
 ```
+(jede Datei muss genau `1` zeigen)
+
+## HINWEIS
+Endpoint + Widget existieren bereits (Teil 17). NICHTS an `api/lesebegleiter.js` oder
+`lesebegleiter.js` anfassen — reines Einbinden. Naming überall **Spikiu**.
 
 ---
 
-_Status: ERLEDIGT am 19.06.2026 · kein offener Auftrag._
-_Teil 12 (commit 2e7ccd4): nav.js read→Lesewerkstatt/Reading Workshop (es unverändert), books→Meine Bücher/Mis libros/My Books;
-taller.html room→Lesewerkstatt/Taller de lectura/Reading Workshop._
-_Folgearbeiten (auf Wunsch, Familie durchgezogen): Teil 13 (commit 63e39dc) schreibwerkstatt.html Bar-Label „Schreiben"→„Schreibwerkstatt";
-Teil 14 (commit e6de796) Tab-Titel „Spikiu — Schreiben"→„Schreibwerkstatt" + „Spikiu — Lesen"→„Lesewerkstatt"._
-_Abnahme überall grün (jedes Label 1×/Datei, alte 0×, node --check nav.js + Inline-Scripts via vm.Script OK).
-Nicht live geklickt (nav.js cacht → hart neu laden)._
+## ✅ ZULETZT ERLEDIGT (Teile 15–17, 19.06., direkt in claude.ai gebaut)
+- **Teil 15:** Neue Landing (index.html) — Manifest EN/DE/ES, CTAs verdrahtet — LIVE.
+- **Teil 16:** Dashboard-i18n (dashboard.html) — ganz Muttersprache, Begrüßung Zielsprache — LIVE.
+- **Teil 17:** Reader-Lesebegleiter — api/lesebegleiter.js + lesebegleiter.js + vercel.json + cap1-es-v2.html — LIVE.
