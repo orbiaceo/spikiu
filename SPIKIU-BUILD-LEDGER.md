@@ -9,7 +9,8 @@ Stand: 19.06.2026 (Design 19.06. Teil 20 (claude.ai): VERHALTENS-KORSETT — aus
 - ✅ **Dashboard-i18n** (dashboard.html) — live. Ganz Muttersprache, Begrüßung Zielsprache.
 - ✅ **Reader-Lesebegleiter** — live in ALLEN 8 Kapiteln (cap1–4-es + cap1–4-de). api/lesebegleiter.js + lesebegleiter.js + vercel.json.
 - ✅ **Anti-Halluzination + Struktur-Wissen** — Seele kennt jetzt die echten Räume + die Reader-Wahrheit (wächst je Kapitel, feste Darstellung); keine erfundenen Features mehr. Widget: sicheres Mini-Markdown.
-- ▶ **NÄCHSTES:** kein offener Bau-Auftrag. Backlog (je eigenes Design-Paket): Assessment-als-Gespräch · Legal-Sequenz (Datenschutz/Impressum/AI-Notice) · Gym.
+- ✅ **Verhaltens-Korsett (Seele, Teil 20, Paket A)** — Anti-Spinn- + Smalltalk-Mauern ans Ende der Niemals-Liste. In dev.
+- ▶ **NÄCHSTES:** kein offener Bau-Auftrag. Nächste Folge-Pakete (Offene Punkte 8/9/10): **Paket B** Raumwechsel-Signal `[WECHSEL:raum]` (Bau) → danach **A2** Tür-öffnen-Regel in die Seele · **Paket C** UI-Sieb leere Sends. Backlog (je eigenes Design-Paket): Assessment-als-Gespräch · Legal-Sequenz (Datenschutz/Impressum/AI-Notice) · Gym.
 - ℹ️ Hinweis: Teile 15–18 wurden ausnahmsweise direkt in claude.ai gebaut (Leo am Terminal), nicht von Claude Code — Code dennoch nach den Stack-Regeln (export default, process.cwd(), includeFiles, Naming Spikiu).
 
 ---
@@ -146,7 +147,7 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
 
 | Datei | Letzte Claude-Version | Vertrag | Deploy |
 |---|---|---|---|
-| `spikiu-seele.md` | Kanonische Seele; 18./19.06. (Teil 18/19) um Niemals-Bullets + Fakten-Block „SO IST SPIKIU WIRKLICH GEBAUT" erweitert. **Auftrag 19.06. (Teil 20, Paket A) OFFEN: Anti-Spinn- + Smalltalk-Mauern ans Ende der Niemals-Liste — Wortlaut in AKTUELLER-AUFTRAG.md.** | Quelle der Wahrheit | ✅ in dev |
+| `spikiu-seele.md` | Kanonische Seele; 18./19.06. (Teil 18/19) um Niemals-Bullets + Fakten-Block „SO IST SPIKIU WIRKLICH GEBAUT" erweitert. **19.06. Teil 20 (Paket A) GEBAUT: zwei neue Mauern + Anti-Spinn- & Smalltalk-Mauern, 19.06. ans Ende der Niemals-Liste — Anti-Spinn (nie Lücke mit Erfindung füllen / nicht raten / Bezug nicht wechseln / nicht ins Blaue erklären / ehrlich rückfragen / verunglückten Input abfangen) + Smalltalk-Mauer (kein menschelnder Smalltalk als Selbstzweck). Diff = nur die zwei Blöcke, 0 gerade Quotes, Grundsatz 2/3 unangetastet.** | Quelle der Wahrheit | ✅ in dev |
 | `lektor-modus.md` | Schreib-Werkstatt Raum-Prompt, erbt von Seele | koennen+fremde_schrift+aufgabe | ✅ in dev |
 | `api/lektor.js` | **LIVE** — Schreiben-Raum, EIN Endpoint alle Sprachen, `export default`, kein import.meta, Seele via process.cwd(), toleranter Parser | [LEKTOR]-Vertrag | ✅ live (commit 6da2832) |
 | `vercel.json` | `includeFiles: "*.md"` für `api/lektor.js`, `api/gespraech.js` UND `api/taller.js` (18.06. ergänzt) | — | ✅ in dev |
@@ -275,6 +276,24 @@ Das Modell antwortet als EIN Block — die reichere Lektor-Blaupause:
    Abnahme grün: alle vier Verifikations-greps == 1, Reihenfolge talk→write→books, `node --check nav.js` OK,
    nur nav.js angefasst. Damit ist die Menü-Lücke geschlossen — der Drawer führt jetzt in die Werkstatt.
    NICHT live geklickt (Vercel, nav.js cacht → hart neu laden): Eintrag/aktiv/Label-Sprachwechsel.
+8. **Paket B — Raumwechsel-Signal (Bau, eigenes Paket, NEU 19.06. Teil 20):** Klar geäußerter
+   Raumwechsel im Gespräch → Spikiu öffnet die Tür statt sie zu beschreiben (Muster wie
+   `[LESSON_FROM_CONVERSATION]`). `api/gespraech.js`/`gespraech-modus.md`: Spikiu setzt
+   `[WECHSEL:zielraum]` (Zielräume: `schreibwerkstatt`, `lesewerkstatt`, `buecher`, `lektionen`),
+   wenn der Lerner unmissverständlich woanders hin will. `chat.html`: Marker abfangen, NICHT als
+   Text zeigen → sanften Knopf rendern („→ Zur Lesewerkstatt"), auf Klick `window.location` (kein
+   Auto-Sprung, Lerner drückt). Profil reist via `localStorage` automatisch mit. Mehr-Frage-Disziplin:
+   höchstens EINE Rückfrage vor dem Handeln (Pedro wurde 3× gefragt). Löst Pedros Sackgasse.
+9. **Paket A2 — Tür-öffnen-Regel in die Seele (Prompt, ERST NACH B live, NEU 19.06. Teil 20):**
+   Sperrgrund: Bevor das Signal existiert, wäre eine „du öffnest die Tür"-Regel eine erfundene
+   Funktion → Seelen-Verstoß. Erst wenn B deployt + bestätigt ist, Mauer rein: „Will der Lerner klar
+   in einen anderen Raum, öffnest du die Tür (Signal), du beschreibst sie nicht und schickst ihn nie
+   durch Menüs oder auf die App/Webseite."
+10. **Paket C — UI-Sieb (klein, kann mit B laufen, NEU 19.06. Teil 20):** Eingabefeld in `chat.html`
+   (perspektivisch andere Räume): leere/triviale Sends (0–1 sichtbares Zeichen / nur Whitespace) gar
+   nicht erst abschicken. Robustes Sieb für den Vertipper-plus-Enter-Fall. KEINE Bestätigungsdialoge
+   (Friktion vermeiden). Die Intelligenz trägt die Mauer (Seele Block 1, letztes Bullet); die UI nur
+   das gröbste Sieb.
 
 ---
 

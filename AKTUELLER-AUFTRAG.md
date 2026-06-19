@@ -1,5 +1,11 @@
 # AKTUELLER-AUFTRAG — Verhaltens-Korsett (Seele)
 
+**ERLEDIGT am 19.06.2026 · kein offener Auftrag.** Paket A gebaut: beide Mauern
+(Anti-Spinn + Smalltalk) ans Ende der Niemals-Liste in `spikiu-seele.md`, exakt am
+bezeichneten Einfügepunkt, typografische Quotes, Grundsatz 2/3 unangetastet. Diff zeigt
+nur die zwei Blöcke. Committet + auf `origin/dev` gepusht. Ledger gepflegt (DATEI-STATUS
++ Offene Punkte 8/9/10 für die Folge-Pakete B/A2/C). Doku unten bleibt als Referenz stehen.
+
 Stand: 19.06.2026 · Design-Sitzung (claude.ai) · aus zwei echten Tests
 Branch: dev · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 
