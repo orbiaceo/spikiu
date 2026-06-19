@@ -1,24 +1,22 @@
 # AKTUELLER AUFTRAG — (kein offener Bau-Auftrag)
 
-_Stand 19.06.2026 (Teil 18). Alle Pakete aus diesem Lauf sind gebaut + live._
-_Nächster Schritt kommt aus einer Design-Sitzung (claude.ai). Bis dahin: nichts zu bauen._
+_Stand 19.06.2026 (Teil 19, abgeschlossen). Alles aus diesem Lauf ist gebaut + live + auf dev verifiziert._
+_Der nächste Schritt kommt aus einer Design-Sitzung (claude.ai): erst Konzept, dann schreibe ich hier den konkreten Ein-Aufgaben-Auftrag, dann baut Claude Code._
 
 ---
 
-## ✅ ZULETZT ERLEDIGT (19.06., direkt in claude.ai gebaut, von Leo committet)
-- **Teil 15 — Neue Landing** (index.html): Manifest EN/DE/ES, CTAs verdrahtet (Hero/Final→chat, „Start free"→assessment), Teams-Link repariert. LIVE.
-- **Teil 16 — Dashboard-i18n** (dashboard.html): ganz Muttersprache, nur Begrüßung Zielsprache („Hola Pepe, bienvenido"), Zielsprachen-Name lokalisiert, Profil defensiv. LIVE.
-- **Teil 17 — Reader-Lesebegleiter**: api/lesebegleiter.js + lesebegleiter.js + vercel.json, eingebaut in cap1-es-v2. LIVE.
-- **Teil 18 — Ausrollen + Anti-Halluzination**:
-  - Lesebegleiter in ALLEN 8 Kapiteln (cap1–4-es + cap1–4-de).
-  - Widget: sicheres Mini-Markdown (**fett**/*kursiv*/Listen, alles escaped).
-  - Endpoint: harte Scope-Grenzen + Längen-Deckel.
-  - `spikiu-seele.md` (wirkt in allen Räumen): Niemals-Liste erweitert (nie Features erfinden, nie ganze Werke umschreiben) + Fakten-Block „SO IST SPIKIU WIRKLICH GEBAUT" (echte Räume + Reader-Wahrheit: wächst je Kapitel, feste Darstellung).
+## ✅ ZULETZT ERLEDIGT (19.06.)
+- **Teil 15 — Neue Landing** (index.html): Manifest EN/DE/ES, CTAs (Hero/Final→chat, „Start free"→assessment), Teams-Link repariert. LIVE.
+- **Teil 16 — Dashboard-i18n** (dashboard.html): ganz Muttersprache, nur Begrüßung Zielsprache, Zielsprachen-Name lokalisiert, Profil defensiv. LIVE.
+- **Teil 17 — Reader-Lesebegleiter**: api/lesebegleiter.js + lesebegleiter.js + vercel.json. LIVE.
+- **Teil 18 — Politur**: sicheres Mini-Markdown im Widget, harte Scope-Grenzen + Längen-Deckel im Endpoint.
+- **Teil 19 — Ausrollen + Struktur-Wissen**: Lesebegleiter in ALLEN 8 Kapiteln (cap1–4-es + cap1–4-de); Seele um Niemals-Bullets + Fakten-Block „SO IST SPIKIU WIRKLICH GEBAUT" erweitert → keine erfundenen Features mehr. Auf dev verifiziert.
 
 ## 📋 BACKLOG (je eigenes Design-Paket, noch nicht beauftragt)
-- **Assessment-als-Gespräch** — das erste Niveau-Erfassen als kurzes Gespräch statt Test (Landing schickt „Start free" → assessment.html).
+- **Assessment-als-Gespräch** — Niveau-Erfassen als kurzes Gespräch statt Test (Landing „Start free" → assessment.html).
 - **Legal-Sequenz** — Datenschutzerklärung → Impressum + EU-AI-Act-Hinweis + Beta-AGB → Footer → Google-Fonts selbst hosten.
-- **Gym** — stilles Vokabel-/Gedächtnistraining, gespeist aus dem Companion (heute nur Nav-Knopf „bald").
+- **Gym** — stilles Vokabel-/Gedächtnistraining aus dem Companion (heute nur Nav-Knopf „bald").
 
-## ⚙️ NÄCHSTE BAU-SITZUNG
-Wenn ein Backlog-Punkt entworfen ist, wird hier der konkrete Ein-Aufgaben-Auftrag stehen.
+## ⚙️ ARBEITSWEISE (Erinnerung)
+- Design hier (claude.ai) → ich schreibe Auftrag + Ledger → du committest → Claude Code baut.
+- Git-Reihenfolge beim Hochladen: **commit → pull --rebase → push**.
