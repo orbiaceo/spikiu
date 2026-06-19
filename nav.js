@@ -59,13 +59,13 @@
   // ── i18n (Labels „ohne Begleiter") ─────────────────────────────
   const I18N = {
     Deutsch: { main: 'HAUPT', progress: 'FORTSCHRITT', account: 'KONTO',
-      dashboard: 'Dashboard', talk: 'Jetzt sprechen', write: 'Schreibwerkstatt', read: 'Leseraum', books: 'Bücher', sessions: 'Live-Begegnungen',
+      dashboard: 'Dashboard', talk: 'Jetzt sprechen', write: 'Schreibwerkstatt', read: 'Lesewerkstatt', books: 'Meine Bücher', sessions: 'Live-Begegnungen',
       lessons: 'Lektionen', gym: 'Gym', path: 'Lernweg', verlauf: 'Verlauf', settings: 'Einstellungen', soon: 'bald', free: 'Gratis', menu: 'Menü' },
     'Español': { main: 'PRINCIPAL', progress: 'PROGRESO', account: 'CUENTA',
-      dashboard: 'Dashboard', talk: 'Hablar ahora', write: 'Taller de escritura', read: 'Taller de lectura', books: 'Libros', sessions: 'Sesiones en vivo',
+      dashboard: 'Dashboard', talk: 'Hablar ahora', write: 'Taller de escritura', read: 'Taller de lectura', books: 'Mis libros', sessions: 'Sesiones en vivo',
       lessons: 'Lecciones', gym: 'Gym', path: 'Ruta', verlauf: 'Progreso', settings: 'Ajustes', soon: 'pronto', free: 'Gratis', menu: 'Menú' },
     English: { main: 'MAIN', progress: 'PROGRESS', account: 'ACCOUNT',
-      dashboard: 'Dashboard', talk: 'Talk now', write: 'Writing Workshop', read: 'Reading Room', books: 'Books', sessions: 'Live Sessions',
+      dashboard: 'Dashboard', talk: 'Talk now', write: 'Writing Workshop', read: 'Reading Workshop', books: 'My Books', sessions: 'Live Sessions',
       lessons: 'Lessons', gym: 'Gym', path: 'Path', verlauf: 'Progress', settings: 'Settings', soon: 'soon', free: 'Free', menu: 'Menu' }
   };
 
