@@ -1,120 +1,134 @@
-# AUFTRAG — Audio Phase A (Fundament + Beweis)
+# AUFTRAG — Geführtes Gespräch · PAKET 1 „Der geführte Einstieg"
 
 Stand: 20.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Voll-Spec: `DESIGN-AUDIO-PIPER.md`
+Branch: dev · Genehmigter Prototyp: `prototyp-gespraech-gefuehrt.html`
 
-> ✅ **GEBAUT 20.06. (Claude Code), auf dev gepusht (commit d83c8ab) — kein offener Code-Auftrag.**
-> Geliefert: `audio.js` (Root, `speak`/`warm`) · self-gehostete Piper-Lib + onnxruntime-web + WASM
-> unter `audio/vendor/` · `audio-test.html` (Beweis-Knopf) · `.gitignore` (voice-test/ + *.onnx) ·
-> KEIN Raum/Seele/`vercel.json` berührt. Details im Ledger (Stand-Zeile + Datei-Status + Merkregeln).
->
-> **ABNAHME-REST — nur browser-/geräteseitig prüfbar (Leo am Handy + iPhone, headless nicht möglich):**
-> 1. Alle VIER Sprachen sprechen über `audio.speak()` (de/es/en/el) auf `…/audio-test.html` (dev).
-> 2. Zweiter Klick derselben Sprache → KEIN erneuter Download (Network-Tab: OPFS greift).
-> 3. iPhone/Safari: spricht ODER fällt sauber auf die Browser-Stimme zurück (nie stumm).
-> Headless schon grün: `node --check` (audio.js + vendored Lib + Inline-Script), vier HF-Modellpfade
-> (rhasspy) lösen auf (302/307), kein COOP/COEP-Header, kein voiceId-Leak, nur neue Dateien angefasst.
->
-> **NÄCHSTES:** Kleinkram-Paket — `AUFTRAG-KLEINKRAM.md`.
->
-> ───────────────────────────────────────────────────────────────────────────────
-> Originaltext des Auftrags bleibt unten zur Nachvollziehbarkeit stehen.
+> Dies ist **Paket 1 von 3** des geführten Gesprächs. Es baut NUR den Einstieg
+> (Opener-Gabelung + thematische Entrada) + tilgt den Name-Leak. **Noch KEINE
+> Häppchen, KEIN Hörverständnis, KEINE Lektion-Verdrahtung** — die kommen in
+> Paket 2 und 3 als eigene Aufträge. Strikt in dieser Reihenfolge bleiben.
+
+---
+
+## WARUM SO GESCHNITTEN (Lehre aus dem eigenen Ledger)
+
+Wie beim Audio (Phase A/B/C/D) und bei den Räumen: ein kleiner, testbarer Schnitt
+pro Sitzung. Und genau wie die A2-Regel ERST NACH Paket B geschrieben wurde
+(sonst wäre sie eine erfundene Funktion): **`gespraech-modus.md` darf in Paket 1
+NICHT von Häppchen/Hörverständnis sprechen — die gibt es noch nicht. Sie zu
+versprechen wäre ein Seelen-Verstoß (Niemals: Funktionen erfinden, die es nicht
+gibt).** Der Prompt führt hier nur in ein themen-fokussiertes Gespräch/Rollenspiel.
+
+---
+
+## INPUT-VERTRAG (unverändert, der Raum kennt ihn schon)
+
+```
+profile.name           Klarname oder leer/fehlend (Gast!)
+profile.koennen        anfang | mittel | fortgeschritten   (INTERN, nie sichtbar)
+profile.muttersprache  de | es | en
+profile.zielsprache    de | es | en | el
+profile.fremde_schrift true | false
+```
 
 ---
 
 ## ZIEL
 
-Das **Fundament** der Audio-Ausgabe legen und mit EINEM Beweis-Knopf zeigen, dass es trägt.
-Noch KEIN Einbau in Räume (das ist Phase B). Heute nur: provider-agnostischer Helfer
-`audio.js` + self-gehostete Piper-WASM-Assets + ein „🔊"-Knopf auf einer Test-Route, der mit
-den vier echten Modellen spricht.
-
-Nordstern: Browser-WASM = kein Server, keine Rechnung pro Satz, skaliert von selbst. Strand-ward.
-
----
-
-## DIE VIER STIMMEN (final, fest verdrahtet)
-
-| zielsprache | voiceId | HF-Pfad (Repo `rhasspy/piper-voices`, MIT) |
-|---|---|---|
-| `de` | `de_DE-thorsten-high`   | `de/de_DE/thorsten/high/de_DE-thorsten-high.onnx` |
-| `es` | `es_ES-sharvard-medium` | `es/es_ES/sharvard/medium/es_ES-sharvard-medium.onnx` |
-| `en` | `en_US-lessac-high`     | `en/en_US/lessac/high/en_US-lessac-high.onnx` |
-| `el` | `el_GR-rapunzelina-low` | `el/el_GR/rapunzelina/low/el_GR-rapunzelina-low.onnx` |
-
-Jede Stimme braucht zur Laufzeit `.onnx` UND `.onnx.json` (gleicher Pfad, Endung `.onnx.json`).
-Alle vier am 20.06. lokal erzeugt → existieren gesichert.
+Der Lerner kommt in den Gesprächs-Raum und bekommt zuerst eine **Gabelung**:
+„einfach plaudern" ODER „ein Thema üben". Wählt er Plaudern → exakt das heutige
+freie Gespräch (der Flur), nichts ändert sich. Wählt er ein Thema (oder beschreibt
+eins selbst) → Spikiu steigt warm in ein **themen-fokussiertes Gespräch / leichtes
+Rollenspiel** zu genau diesem Thema ein, in der richtigen Sprache nach `koennen`.
 
 ---
 
-## SCHRITT 1 — Library + WASM self-hosten (CDN ist bestätigt kaputt)
+## DREI EDITS
 
-Der ESM-CDN-Weg (esm.sh/jsDelivr) lädt die WASM-Worker nicht zuverlässig. Daher self-hosten:
+### EDIT 1 — Name-Leak tilgen · `api/gespraech.js` (Z. 62)
 
-- Library-Distribution (Empfehlung: `@mintplex-labs/piper-tts-web` — explizit für Browser
-  gebaut, robuster self-gehostet; Alternative `@diffusionstudio/vits-web`). Self-host-Anleitung
-  der jeweiligen README folgen.
-- `onnxruntime-web`-WASM-Dateien, espeak/Phonemizer-WASM + Daten, der Worker.
-- Alle statischen Assets nach `public/` (bzw. dorthin, wo Vercel sie als statische Dateien
-  ausliefert). Zusammen ~20–30 MB — OK fürs Repo.
-- **NICHT ins Repo:** die vier `.onnx`-Modelle (je ~60–115 MB). Werden zur Laufzeit von
-  HuggingFace geladen und im Browser (OPFS) gecacht.
+Heute: `p.name || 'der Lerner'` schiebt die Platzhalter-Floskel „der Lerner" als
+echten Namen ins Modell → Gast wird mit „¡Hola, der Lerner!" begrüßt + Backend-Meta
+leckt. Fix: Wenn KEIN echter Name da ist, KEINEN Fake-Namen injizieren. Stattdessen
+das Namensfeld leer lassen / weglassen, sodass der Prompt namenlos und natürlich
+grüßt („¡Hola!" / „Schön, dass du da bist."). Nur diese eine Stelle. Sonst nichts
+an `gespraech.js` anfassen. (Absorbiert den Name-Leak-Teil des alten Kleinkram-Pakets.)
 
-`vercel.json` nur so weit anfassen, dass die statischen Audio-Assets erreichbar sind. KEINE
-COOP/COEP-Header (bewusst aufgeschoben — single-threaded läuft überall).
+### EDIT 2 — Opener-Gabelung · `chat.html`
 
----
+Heute feuert `chat.html` beim Laden sofort `[EINSTIEG]` in einen leeren Verlauf →
+Spikiu grüßt direkt. NEU: Beim Laden zeigt der Raum zuerst eine **Wahl** (wie im
+Prototyp `prototyp-gespraech-gefuehrt.html`, Opener-Teil):
 
-## SCHRITT 2 — `audio.js` bauen (DER Schlüsselstein)
+- Eine warme Spikiu-Begrüßung (kommt weiterhin vom Backend via `[EINSTIEG]` —
+  KEINE Frage im selben Atemzug, wie die Seele will).
+- Darunter eine vom Frontend gerenderte Auswahl:
+  - **„Einfach plaudern"** → genau der heutige Flur. Der `[EINSTIEG]`-Opener bleibt
+    stehen, der Lerner tippt frei weiter. Kein neues Verhalten.
+  - **Themen-Chips** (Beschriftung in der **Muttersprache** des Lerners, i18n de/es/en):
+    Hotel · Taxi · Restaurant · Im Café · „Etwas anderes…".
+  - **„Etwas anderes…"** öffnet ein Textfeld („Beschreibe, was du üben willst").
+- Klick auf ein Thema (oder Absenden des Freitexts) → `chat.html` schickt EINEN
+  Seed-User-Zug an `gespraech.js` (z. B. den Thementext als normale User-Nachricht,
+  oder ein klar lesbares `Ich möchte das Thema „<Thema>" üben.`) und rendert ihn
+  als User-Bubble. Ab da läuft der normale `turn()`-Zyklus weiter.
 
-Ein einziges Frontend-Modul mit EINER öffentlichen Funktion:
+Stil EXAKT aus dem Prototyp übernehmen (Farben/Tokens, Lora+DM Sans, kanonischer
+Capy, Chip-Stil). KEIN Fortschrittsbalken in Paket 1 (Thema·Wörter·Hören·Sprechen·
+Lektion) — der kommt mit Paket 2, wenn es die Stufen wirklich gibt. KEINE Häppchen-
+oder Hörverständnis-Widgets in Paket 1.
 
-```
-audio.speak(text, zielsprache)   // zielsprache ∈ 'de' | 'es' | 'en' | 'el'
-```
+`chat.html`-Regeln beachten: Variable `verlauf` (nie `history`), Raumwechsel-Signal
+`[WECHSEL:…]` bleibt unangetastet funktionsfähig, keine vom Browser belegten
+Variablennamen, Emphasis nur via `<em>`.
 
-Innen:
-1. `zielsprache` → fester `voiceId` (Tabelle oben). Kein anderer Aufrufer kennt je einen voiceId.
-2. **Lazy, pro Sprache, einmalig:** erst beim ersten `speak()` in dieser Sprache das EINE Modell
-   laden. Nicht beim Seiten-Start.
-3. **OPFS-Cache:** liegt das Modell schon in OPFS → kein erneuter Download (offline-fähig).
-4. **Warme Session:** Session/Worker einmal aufbauen, wiederverwenden — nicht pro Klick.
-5. **Satzweise:** lange Texte häppchenweise; ersten Ton sofort spielen.
-6. **Fallback (Pflicht):** lädt/läuft Piper nicht (v. a. iOS-Safari), automatisch auf
-   `speechSynthesis` (Browser-Stimme) mit passender `lang` zurückfallen. NIE ein stummer Knopf.
-7. Optional sinnvoll: `audio.warm(zielsprache)` zum stillen Vorwärmen (für Phase B), und ein
-   Status-Callback („Stimme wird vorbereitet…"). Kein Muss für Phase A.
+### EDIT 3 — Themen-Entrada im Prompt · `gespraech-modus.md`
 
-Stack-Regeln: kein `import.meta`; Naming „Spikiu"; `audio.js` ist die EINZIGE öffentliche
-Audio-Schnittstelle (heute Piper, Phase 2 ElevenLabs hinter derselben `speak()`-API — Aufrufer
-ändern sich NIE).
+Den Abschnitt **EINSTIEG** so erweitern, dass Spikiu, wenn der erste echte User-Zug
+ein Thema ist („Ich möchte das Thema … üben"), warm bestätigt und direkt in ein
+themen-fokussiertes Gespräch / leichtes Rollenspiel zu dem Thema einsteigt — in der
+richtigen Sprache nach `koennen`, mit dem bestehenden Regler/Schrift-Brücke. Alle
+Flur-Regeln bleiben (eine Frage pro Antwort, Sinn zuerst, kein Lob-Applaus, nie
+länger als ein Blick).
 
----
-
-## SCHRITT 3 — Beweis-Knopf
-
-EINE Test-/Wegwerf-Route (oder schlichte `audio-test.html`) mit:
-- vier Knöpfen (de/es/en/el) ODER einem Knopf + Sprachwähler,
-- die je einen kurzen Satz in der jeweiligen Sprache durch `audio.speak()` schicken.
-
-Kein Einbau in echte Räume. Nur Beweis, dass das Fundament trägt.
+**HART:** In Paket 1 KEIN Wort über Häppchen, Wortschatz-Karten, Hörübungen oder
+Lektionen im Prompt — die existieren noch nicht. Spikiu redet sich nicht in eine
+Funktion hinein, die der Lerner nicht klicken kann (Niemals-Liste der Seele).
 
 ---
 
 ## ABNAHME (alles grün, sonst nicht fertig)
 
-- [ ] Alle VIER Sprachen sprechen über `audio.speak(text, zielsprache)`.
-- [ ] Zweiter Aufruf derselben Sprache → KEIN erneuter Download (OPFS greift; im Network-Tab sichtbar).
-- [ ] iPhone/Safari: spricht ODER fällt sauber auf die Browser-Stimme zurück (nie stumm).
-- [ ] Kein COOP/COEP-Header gesetzt; läuft single-threaded überall.
-- [ ] `audio.js` exportiert NUR `speak` (+ optional `warm`); kein voiceId/Piper-Detail leckt nach außen.
-- [ ] Nur neue Dateien + minimaler `vercel.json`-Eintrag angefasst. KEIN Raum, KEINE Seele berührt.
-- [ ] `node --check audio.js` grün; Modell-Pfade exakt wie in der Tabelle.
+- [ ] **Plaudern unverändert:** „Einfach plaudern" → heutiges freies Gespräch, kein
+      neues Verhalten, `[WECHSEL:…]` funktioniert weiter.
+- [ ] **Thema-Chip** (z. B. Restaurant) → Spikiu steigt themen-fokussiert ein, in der
+      Zielsprache nach `koennen`, Chips in Muttersprache lokalisiert (de/es/en geprüft).
+- [ ] **„Etwas anderes…"** → Textfeld, Freitext startet ein themen-fokussiertes Gespräch.
+- [ ] **Gast ohne Profil:** KEIN „der Lerner"-Leak, kein Backend-Meta — namenlose,
+      natürliche Begrüßung.
+- [ ] Prompt erwähnt NIRGENDS Häppchen/Hörverständnis/Lektion (gibt es noch nicht).
+- [ ] `gespraech.js`: NUR die Z.-62-Stelle geändert. `node --check api/gespraech.js` grün.
+- [ ] `vercel.json` unangetastet (gespraech-Eintrag + includeFiles `*.md` decken modus.md).
+- [ ] Kein vom Browser belegter Variablenname in `chat.html`; Emphasis nur `<em>`.
 
 ---
 
-## AUSDRÜCKLICH NICHT in Phase A
-- Kein Einbau ins Gym / in die Lektions-Anzeige (= Phase B).
-- Kein Lektions-Vorrender (= Phase C).
-- Kein ElevenLabs (= Phase D / Phase 2).
-- Keine Modelle ins Repo.
+## AUSDRÜCKLICH NICHT in Paket 1
+- KEINE Wortschatz-Häppchen, KEIN Hörverständnis-Widget (= Paket 2).
+- KEIN `audio.js`-Einbau (= Paket 2).
+- KEINE Lektion-Verdrahtung, kein `lastConversation` (= Paket 3).
+- KEIN Fortschrittsbalken (= Paket 2, sobald die Stufen existieren).
+- KEIN neuer Endpoint. `gespraech.js` nur die eine Zeile.
+- Lesebegleiter-`intro`-Kürzung (Rest des alten Kleinkram-Pakets) NICHT hier —
+  eigene Mini-Aufgabe, andere Sala (`lesebegleiter.js`).
+
+---
+
+## DANACH (eigene Aufträge, der Reihe nach)
+- **Paket 2 „Die Häppchen":** Wortschatz + Hörverständnis. Vor Bau Design-Entscheid:
+  Inhalts-Vertrag **A** (Inline-Marker `[HAEPPCHEN]{json}[/HAEPPCHEN]`) vs **B**
+  (eigener Endpoint `api/haeppchen.js`, Muster `lektor.js`). claude.ai-Empfehlung: B.
+  Dann Widgets in `chat.html` + `audio.speak(text, zielsprache)` + Fortschrittsbalken.
+- **Paket 3 „Die Lektion":** Gentle Close nach dem Rollenspiel + `chat.html` schreibt
+  `verlauf` → `lastConversation` + „als Lektion" ruft real `/api/generate-lesson` →
+  erscheint im Dashboard. (Tilgt den dokumentierten Lektion-Disconnect.)

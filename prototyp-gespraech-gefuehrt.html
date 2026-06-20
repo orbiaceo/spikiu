@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Geführtes Gespräch (Prototyp)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root{
+  --white:#ffffff; --off:#faf9f7; --ink:#1a1816; --mid:#6b6560;
+  --faint:#e8e4df; --warm:#d4cdc6; --accent:#2d6a4f; --accent2:#e8f2ed;
+  --accent3:#1a4a38; --gold:#a07830; --capy:#c9956a;
+  --wrong:#c0392b; --wrong-bg:#fdebe9;
+}
+
+body{
+  background:#efece6;
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
+  padding:46px 0 0;
+}
+
+.proto-banner{
+  position:fixed; top:0; left:0; right:0; z-index:9999;
+  background:#1a4a38; color:#fff;
+  padding:.5rem 1rem; text-align:center; font-size:.72rem; line-height:1.4;
+  border-bottom:2px solid #2d6a4f;
+}
+.proto-banner strong{ color:#a8d5be; }
+.proto-banner em{ color:#c9956a; font-style:normal; font-weight:600; }
+
+/* ── PHONE FRAME ── */
+.phone{
+  width:100%; max-width:400px;
+  height:calc(100vh - 70px);
+  max-height:820px;
+  margin:14px auto;
+  background:var(--off);
+  border-radius:30px;
+  box-shadow:0 24px 60px rgba(0,0,0,.22), 0 0 0 1px rgba(0,0,0,.05);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+
+/* ── HEADER ── */
+.bar{
+  display:flex; align-items:center; gap:.6rem;
+  padding:.85rem 1rem .7rem;
+  border-bottom:1px solid var(--faint);
+  background:var(--white);
+}
+.bar-capy{ width:34px; height:34px; flex-shrink:0; animation:float 4s ease-in-out infinite; }
+@keyframes float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+.bar-name{ font-family:'Lora',serif; font-weight:700; font-size:1.02rem; letter-spacing:-.01em; }
+.bar-name em{ color:var(--accent); font-style:italic; }
+.bar-spacer{ flex:1; }
+.bar-reset{
+  background:none; border:1px solid var(--faint); color:var(--mid);
+  font-family:inherit; font-size:.7rem; font-weight:600;
+  padding:.35rem .7rem; border-radius:100px; cursor:pointer; transition:.18s;
+}
+.bar-reset:hover{ border-color:var(--accent); color:var(--accent); }
+
+/* ── PROGRESS RAIL ── */
+.rail{
+  display:flex; gap:.3rem; padding:.6rem 1rem; background:var(--white);
+  border-bottom:1px solid var(--faint);
+}
+.rail-step{ flex:1; text-align:center; font-size:.56rem; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--warm); transition:.3s; }
+.rail-step .dot{
+  display:block; height:3px; border-radius:100px; background:var(--faint);
+  margin-bottom:.3rem; transition:.4s;
+}
+.rail-step.active{ color:var(--accent); }
+.rail-step.active .dot{ background:var(--accent); }
+.rail-step.done{ color:var(--gold); }
+.rail-step.done .dot{ background:var(--gold); }
+
+/* ── CHAT AREA ── */
+.chat{
+  flex:1; overflow-y:auto; padding:1rem .9rem 1.2rem;
+  display:flex; flex-direction:column; gap:.6rem;
+  scroll-behavior:smooth;
+}
+.chat::-webkit-scrollbar{ width:0; }
+
+.msg{ max-width:88%; opacity:0; animation:rise .45s ease forwards; }
+@keyframes rise{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
+.msg.spikiu{ align-self:flex-start; }
+.msg.user{ align-self:flex-end; }
+.bubble{
+  padding:.6rem .85rem; font-size:.86rem; line-height:1.45; border-radius:15px;
+}
+.spikiu .bubble{
+  background:var(--white); border:1px solid var(--faint);
+  border-radius:15px 15px 15px 4px;
+}
+.spikiu .bubble em{ color:var(--accent); font-style:italic; }
+.user .bubble{
+  background:var(--accent); color:#fff; border-radius:15px 15px 4px 15px;
+}
+.bubble.soft{ background:var(--accent2); border:1px solid var(--accent); color:var(--accent3); font-weight:500; }
+.scene-note{
+  align-self:center; text-align:center; font-family:'Lora',serif; font-style:italic;
+  font-size:.78rem; color:var(--mid); background:rgba(0,0,0,.02);
+  padding:.45rem .8rem; border-radius:10px; max-width:90%;
+  opacity:0; animation:rise .45s ease forwards;
+}
+
+/* ── WIDGET: HÄPPCHEN ── */
+.widget{
+  align-self:stretch; background:var(--white); border:1px solid var(--faint);
+  border-radius:16px; padding:.85rem .8rem; opacity:0; animation:rise .5s ease forwards;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+.w-eyebrow{
+  font-size:.6rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:.65rem; display:flex; align-items:center; gap:.35rem;
+}
+.hap-card{
+  display:flex; align-items:center; gap:.65rem;
+  border:1.5px solid var(--faint); border-radius:12px;
+  padding:.55rem .7rem; margin-bottom:.4rem; transition:.2s;
+}
+.hap-card:last-child{ margin-bottom:0; }
+.hap-play{
+  width:30px; height:30px; flex-shrink:0; border:none; cursor:pointer;
+  background:var(--accent); color:#fff; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; transition:.18s;
+}
+.hap-play:hover{ background:var(--accent3); transform:scale(1.06); }
+.hap-play.playing{ animation:pulse 1s ease infinite; }
+@keyframes pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(45,106,79,.4);} 50%{ box-shadow:0 0 0 7px rgba(45,106,79,0);} }
+.hap-play svg{ width:13px; height:13px; }
+.hap-text{ flex:1; text-align:left; }
+.hap-de{ font-family:'Lora',serif; font-weight:700; font-size:.9rem; line-height:1.1; }
+.hap-phon{ font-size:.66rem; color:var(--gold); font-weight:500; margin-top:.08rem; }
+.hap-trans{ font-size:.72rem; color:var(--mid); font-style:italic; margin-top:.08rem; }
+
+/* ── WIDGET: HÖRVERSTÄNDNIS ── */
+.hv-speaker{
+  align-self:center; margin:.2rem auto .7rem; width:56px; height:56px;
+  background:var(--accent); border:none; border-radius:50%; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; color:#fff;
+  box-shadow:0 6px 18px rgba(45,106,79,.3); transition:.18s;
+}
+.hv-speaker:hover{ transform:scale(1.05); }
+.hv-speaker.playing{ animation:pulse 1.1s ease infinite; }
+.hv-speaker svg{ width:24px; height:24px; }
+.hv-q{ text-align:center; font-family:'Lora',serif; font-style:italic; font-size:.9rem; margin-bottom:.65rem; }
+.hv-opt{
+  display:flex; align-items:center; gap:.55rem; width:100%;
+  background:var(--white); border:1.5px solid var(--faint); cursor:pointer;
+  padding:.6rem .7rem; border-radius:12px; margin-bottom:.4rem; transition:.3s;
+  font-family:inherit; font-size:.84rem; text-align:left; color:var(--ink);
+}
+.hv-opt:last-of-type{ margin-bottom:0; }
+.hv-opt:hover:not(:disabled){ border-color:var(--accent); }
+.hv-opt:disabled{ cursor:default; }
+.hv-key{
+  width:22px; height:22px; flex-shrink:0; border-radius:50%; background:var(--off);
+  color:var(--mid); font-weight:700; font-size:.7rem;
+  display:flex; align-items:center; justify-content:center;
+}
+.hv-opt-text{ flex:1; }
+.hv-mark{ font-weight:700; font-size:1rem; opacity:0; transition:.3s; }
+.hv-opt.correct{ background:var(--accent2); border-color:var(--accent); color:var(--accent3); font-weight:600; }
+.hv-opt.correct .hv-key{ background:var(--accent); color:#fff; }
+.hv-opt.correct .hv-mark{ opacity:1; color:var(--accent); }
+.hv-opt.wrong{ background:var(--wrong-bg); border-color:var(--wrong); color:var(--wrong); }
+.hv-opt.wrong .hv-key{ background:var(--wrong); color:#fff; }
+.hv-opt.wrong .hv-mark{ opacity:1; color:var(--wrong); }
+.hv-feedback{ text-align:center; font-size:.74rem; margin-top:.55rem; min-height:1em; font-weight:600; }
+
+/* ── WIDGET: LEKTION ── */
+.lesson{
+  align-self:stretch; background:linear-gradient(135deg,var(--accent2),#fff);
+  border:2px solid var(--accent); border-radius:14px; padding:.9rem 1rem;
+  display:flex; align-items:center; gap:.7rem; opacity:0; animation:rise .5s ease forwards;
+  box-shadow:0 8px 24px rgba(45,106,79,.16);
+}
+.lesson-icon{ font-size:1.6rem; }
+.lesson-title{ font-family:'Lora',serif; font-weight:700; font-size:.92rem; }
+.lesson-sub{ font-size:.72rem; color:var(--accent); font-weight:600; margin-top:.12rem; }
+
+/* ── COMPOSER ── */
+.composer{
+  border-top:1px solid var(--faint); background:var(--white);
+  padding:.7rem .8rem; display:flex; flex-direction:column; gap:.45rem;
+}
+.comp-label{ font-size:.66rem; color:var(--mid); font-weight:600; text-align:center; }
+.chips{ display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center; }
+.chip{
+  background:var(--white); border:1.5px solid var(--accent); color:var(--accent);
+  padding:.45rem .75rem; border-radius:100px; font-size:.78rem; font-weight:600;
+  cursor:pointer; font-family:inherit; transition:.18s;
+}
+.chip:hover{ background:var(--accent); color:#fff; }
+.chip.ghost{ border-style:dashed; border-color:var(--gold); color:var(--gold); }
+.chip.ghost:hover{ background:var(--gold); color:#fff; }
+.chip.full{ background:var(--accent); color:#fff; flex-basis:100%; padding:.6rem; }
+.chip.full:hover{ background:var(--accent3); }
+.btn-weiter{
+  background:var(--accent); color:#fff; border:none; cursor:pointer;
+  padding:.7rem; border-radius:100px; font-family:inherit; font-size:.88rem; font-weight:600;
+  transition:.18s;
+}
+.btn-weiter:hover{ background:var(--accent3); }
+.comp-input{ display:flex; gap:.4rem; }
+.comp-input input{
+  flex:1; border:1.5px solid var(--faint); border-radius:100px;
+  padding:.6rem .9rem; font-family:inherit; font-size:.85rem; outline:none;
+}
+.comp-input input:focus{ border-color:var(--accent); }
+.comp-send{
+  width:42px; flex-shrink:0; border:none; background:var(--accent); color:#fff;
+  border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.comp-send svg{ width:17px; height:17px; }
+.comp-row2{ display:flex; gap:.4rem; }
+.comp-row2 .chip{ flex:1; text-align:center; }
+.hidden{ display:none !important; }
+
+@media(max-width:430px){
+  body{ padding-top:52px; }
+  .phone{ max-width:100%; height:calc(100vh - 64px); border-radius:0; margin:0; box-shadow:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="proto-banner">
+  <strong>🐾 PROTOTYP — Geführtes Gespräch (Freies Gespräch / der Flur).</strong>
+  Klickbar &amp; interaktiv. <em>Spikius Rollenspiel-Antworten sind im Prototyp fest verdrahtet</em> (echt: Anthropic Claude).
+  Audio = Browser-Stimme als Platzhalter (echt: <em>audio.speak()</em> / Piper).
+</div>
+
+<div class="phone">
+
+  <div class="bar">
+    <svg class="bar-capy" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/>
+      <circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="bar-name">Spi<em>k</em>iu</div>
+    <div class="bar-spacer"></div>
+    <button class="bar-reset" onclick="resetFlow()">Von vorne</button>
+  </div>
+
+  <div class="rail" id="rail">
+    <div class="rail-step" data-stage="thema"><span class="dot"></span>Thema</div>
+    <div class="rail-step" data-stage="wortschatz"><span class="dot"></span>Wörter</div>
+    <div class="rail-step" data-stage="hoeren"><span class="dot"></span>Hören</div>
+    <div class="rail-step" data-stage="sprechen"><span class="dot"></span>Sprechen</div>
+    <div class="rail-step" data-stage="lektion"><span class="dot"></span>Lektion</div>
+  </div>
+
+  <div class="chat" id="chat"></div>
+
+  <div class="composer" id="composer"></div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  PROTOTYP — geführtes Gespräch.  Lerner: Pepe (DE → ES).
+//  Beispiel-Thema: Restaurant.  Inhalte fest (echt: generiert).
+// ════════════════════════════════════════════════════════
+
+var SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+var PLAY_SVG    = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>';
+var SEND_SVG    = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+
+var chat = document.getElementById('chat');
+var composer = document.getElementById('composer');
+
+// ── Audio (Platzhalter: Browser-Stimme; echt → audio.speak(text,'es')) ──
+function speak(text, btn){
+  try{
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'es-ES'; u.rate = 0.95;
+    var vs = window.speechSynthesis.getVoices();
+    var es = vs.find(function(v){ return v.lang && v.lang.indexOf('es')===0; });
+    if(es) u.voice = es;
+    if(btn){ btn.classList.add('playing'); u.onend = function(){ btn.classList.remove('playing'); }; }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// ── Helpers ──
+function scrollDown(){ requestAnimationFrame(function(){ chat.scrollTop = chat.scrollHeight; }); }
+function addSpikiu(html, soft){
+  var d = document.createElement('div'); d.className = 'msg spikiu';
+  d.innerHTML = '<div class="bubble'+(soft?' soft':'')+'">'+html+'</div>';
+  chat.appendChild(d); scrollDown();
+}
+function addUser(text){
+  var d = document.createElement('div'); d.className = 'msg user';
+  d.innerHTML = '<div class="bubble"></div>';
+  d.querySelector('.bubble').textContent = text;
+  chat.appendChild(d); scrollDown();
+}
+function addNote(text){
+  var d = document.createElement('div'); d.className = 'scene-note';
+  d.textContent = text; chat.appendChild(d); scrollDown();
+}
+function setComposer(html){ composer.innerHTML = html; }
+function clearComposer(){ composer.innerHTML = ''; }
+
+// ── Progress rail ──
+function setStage(stage){
+  var order = ['thema','wortschatz','hoeren','sprechen','lektion'];
+  var idx = order.indexOf(stage);
+  document.querySelectorAll('.rail-step').forEach(function(el){
+    var i = order.indexOf(el.dataset.stage);
+    el.classList.remove('active','done');
+    if(i < idx) el.classList.add('done');
+    else if(i === idx) el.classList.add('active');
+  });
+}
+
+// ════════════════════════════════════════════════════════
+//  STEP 1 — OPENER (Begrüßung + Gabelung: plaudern / Thema)
+// ════════════════════════════════════════════════════════
+function resetFlow(){
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  chat.innerHTML = '';
+  start();
+}
+function start(){
+  setStage('thema');
+  addSpikiu('¡Hola, <em>Pepe</em>! Schön, dass du da bist.');
+  setTimeout(function(){
+    addSpikiu('Worauf hast du Lust — einfach plaudern, oder ein Thema aus deinem Lernweg üben?');
+    openerComposer();
+  }, 550);
+}
+function openerComposer(){
+  setComposer(
+    '<button class="chip full" onclick="goFree()">💬 Einfach plaudern</button>'+
+    '<div class="comp-label">…oder ein Thema üben</div>'+
+    '<div class="chips">'+
+      '<button class="chip" onclick="pickTopic(\'Hotel\')">🏨 Hotel</button>'+
+      '<button class="chip" onclick="pickTopic(\'Taxi\')">🚕 Taxi</button>'+
+      '<button class="chip" onclick="pickTopic(\'Restaurant\')">🍽️ Restaurant</button>'+
+      '<button class="chip" onclick="pickTopic(\'Im Café\')">☕ Im Café</button>'+
+      '<button class="chip ghost" onclick="customTopic()">✍️ Etwas anderes…</button>'+
+    '</div>'
+  );
+}
+function goFree(){
+  addUser('Einfach plaudern');
+  addSpikiu('Dann reden wir frei. 🐾');
+  addNote('Das ist der freie Flur — den gibt es schon (api/gespraech.js). Im Prototyp liegt der Fokus auf dem geführten Weg.');
+  setComposer('<button class="btn-weiter" onclick="resetFlow()">↺ Zurück zum Anfang</button>');
+}
+function customTopic(){
+  setComposer(
+    '<div class="comp-label">Beschreibe, was du üben willst</div>'+
+    '<div class="comp-input">'+
+      '<input id="customField" placeholder="z. B. ein Zimmer reservieren…" onkeydown="if(event.key===\'Enter\')submitCustom()">'+
+      '<button class="comp-send" onclick="submitCustom()">'+SEND_SVG+'</button>'+
+    '</div>'
+  );
+  setTimeout(function(){ var f=document.getElementById('customField'); if(f) f.focus(); }, 50);
+}
+function submitCustom(){
+  var f = document.getElementById('customField');
+  var t = (f && f.value.trim()) || '';
+  if(!t) return;
+  pickTopic(t, true);
+}
+
+// ════════════════════════════════════════════════════════
+//  STEP 2 — confirm → HÄPPCHEN (Wortschatz mit Audio)
+// ════════════════════════════════════════════════════════
+function pickTopic(topic, typed){
+  addUser(typed ? topic : topic);
+  setStage('wortschatz');
+  addSpikiu('¡Vamos! Für „<em>'+escapeHtml(topic)+'</em>" kommen hier die <em>Häppchen</em>.', true);
+  if(typed) addNote('(Prototyp: die Häppchen-Inhalte sind fest = Restaurant. Echt: aus dem Thema generiert.)');
+  setTimeout(renderHaeppchen, 500);
+}
+var HAEPPCHEN = [
+  { es:'la carta',        phon:'la KAR-ta',   de:'die Speisekarte' },
+  { es:'Para mí…',        phon:'PA-ra MI',    de:'Für mich…' },
+  { es:'una paella',      phon:'una pa-E-ya', de:'eine Paella' },
+  { es:'la cuenta',       phon:'la KWEN-ta',  de:'die Rechnung' }
+];
+function renderHaeppchen(){
+  var rows = HAEPPCHEN.map(function(h){
+    return '<div class="hap-card">'+
+      '<button class="hap-play" onclick="speak('+JSON.stringify(h.es).replace(/"/g,'&quot;')+',this)">'+PLAY_SVG+'</button>'+
+      '<div class="hap-text">'+
+        '<div class="hap-de">'+h.es+'</div>'+
+        '<div class="hap-phon">'+h.phon+'</div>'+
+        '<div class="hap-trans">'+h.de+'</div>'+
+      '</div></div>';
+  }).join('');
+  var w = document.createElement('div'); w.className = 'widget';
+  w.innerHTML = '<div class="w-eyebrow">🎧 Wortschatz mit Audio</div>'+rows;
+  chat.appendChild(w); scrollDown();
+  setComposer('<div class="comp-label">Tippe 🔊 zum Hören. Wenn du magst, weiter.</div>'+
+    '<button class="btn-weiter" onclick="startHoeren()">Verstanden — weiter</button>');
+}
+
+// ════════════════════════════════════════════════════════
+//  STEP 3 — HÖRVERSTÄNDNIS (A/B, grün/rot)
+// ════════════════════════════════════════════════════════
+var HV = [
+  { audio:'Para mí, una paella.', q:'Was hörst du?',
+    opts:[ {k:'A', t:'Para mí, una paella.', ok:true}, {k:'B', t:'Para ti, una paella.', ok:false} ] },
+  { audio:'La cuenta, por favor.', q:'Was hörst du?',
+    opts:[ {k:'A', t:'La carta, por favor.', ok:false}, {k:'B', t:'La cuenta, por favor.', ok:true} ] }
+];
+var hvIndex = 0;
+function startHoeren(){ clearComposer(); setStage('hoeren'); hvIndex = 0; renderHV(); }
+function renderHV(){
+  var item = HV[hvIndex];
+  var opts = item.opts.map(function(o,i){
+    return '<button class="hv-opt" id="hv-'+hvIndex+'-'+i+'" onclick="answerHV('+hvIndex+','+i+')">'+
+      '<span class="hv-key">'+o.k+'</span>'+
+      '<span class="hv-opt-text">'+o.t+'</span>'+
+      '<span class="hv-mark">'+(o.ok?'✓':'✗')+'</span></button>';
+  }).join('');
+  var w = document.createElement('div'); w.className = 'widget'; w.id = 'hv-widget-'+hvIndex;
+  w.innerHTML =
+    '<div class="w-eyebrow">🎧 Hörverständnis · '+(hvIndex+1)+' / '+HV.length+'</div>'+
+    '<button class="hv-speaker" onclick="speak('+JSON.stringify(item.audio).replace(/"/g,'&quot;')+',this)">'+SPEAKER_SVG+'</button>'+
+    '<div class="hv-q">'+item.q+'</div>'+opts+
+    '<div class="hv-feedback" id="hv-fb-'+hvIndex+'"></div>';
+  chat.appendChild(w); scrollDown();
+  // Audio gleich einmal anspielen
+  setTimeout(function(){ speak(item.audio, w.querySelector('.hv-speaker')); }, 400);
+}
+function answerHV(qi, oi){
+  var item = HV[qi];
+  var picked = item.opts[oi];
+  var widget = document.getElementById('hv-widget-'+qi);
+  widget.querySelectorAll('.hv-opt').forEach(function(b,i){
+    b.disabled = true;
+    if(item.opts[i].ok) b.classList.add('correct');
+  });
+  var fb = document.getElementById('hv-fb-'+qi);
+  if(picked.ok){ fb.textContent = '¡Muy bien!'; fb.style.color = 'var(--accent)'; }
+  else{
+    document.getElementById('hv-'+qi+'-'+oi).classList.add('wrong');
+    fb.textContent = 'Fast — hör nochmal. Die grüne war es.'; fb.style.color = 'var(--wrong)';
+  }
+  setComposer('<button class="btn-weiter" onclick="nextHV()">Weiter</button>');
+}
+function nextHV(){
+  clearComposer();
+  hvIndex++;
+  if(hvIndex < HV.length){ renderHV(); }
+  else{ inviteRoleplay(); }
+}
+
+// ════════════════════════════════════════════════════════
+//  STEP 4 — ROLLENSPIEL (Spikiu als Kellner)
+// ════════════════════════════════════════════════════════
+function inviteRoleplay(){
+  setStage('sprechen');
+  addSpikiu('Stark. Jetzt spielen wir die Szene zusammen — ich bin der Kellner, du bestellst. Bereit?');
+  setComposer('<button class="btn-weiter" onclick="startRoleplay()">Los geht\'s →</button>');
+}
+// Skript: jede Stufe = Kellner-Zeile + 2 Vorschläge. Freitext geht auch.
+var RP = [
+  { waiter:'¡Buenas! ¿Mesa para cuántos?', tips:['Una mesa para dos, por favor.','Para mí, una mesa.'] },
+  { waiter:'Perfecto. Aquí tiene la carta. ¿Algo para beber?', tips:['Agua, por favor.','Una caña, por favor.'] },
+  { waiter:'Muy bien. ¿Y para comer?', tips:['Para mí, una paella.','¿Qué me recomienda?'] },
+  { waiter:'¡Marchando una paella! ¿Algo más?', tips:['No, gracias. La cuenta, por favor.','¿Tiene postre?'] }
+];
+var rpIndex = 0;
+function startRoleplay(){
+  clearComposer();
+  addNote('🍽️  Ein kleines Restaurant in Madrid. Der Kellner kommt an deinen Tisch.');
+  rpIndex = 0;
+  setTimeout(roleplayTurn, 500);
+}
+function roleplayTurn(){
+  var turn = RP[rpIndex];
+  addSpikiu('— '+turn.waiter);
+  speak(turn.waiter);
+  var tips = turn.tips.map(function(t){
+    return '<button class="chip" onclick="rpReply('+JSON.stringify(t).replace(/"/g,'&quot;')+')">'+t+'</button>';
+  }).join('');
+  setComposer(
+    '<div class="comp-label">Antworte — oder tippe selbst</div>'+
+    '<div class="comp-row2">'+tips+'</div>'+
+    '<div class="comp-input">'+
+      '<input id="rpField" placeholder="…" onkeydown="if(event.key===\'Enter\')rpSubmit()">'+
+      '<button class="comp-send" onclick="rpSubmit()">'+SEND_SVG+'</button>'+
+    '</div>'
+  );
+}
+function rpSubmit(){
+  var f = document.getElementById('rpField');
+  var t = (f && f.value.trim()) || '';
+  if(!t) return;
+  rpReply(t);
+}
+function rpReply(text){
+  addUser(text);
+  clearComposer();
+  rpIndex++;
+  if(rpIndex < RP.length){ setTimeout(roleplayTurn, 600); }
+  else{ setTimeout(endRoleplay, 700); }
+}
+function endRoleplay(){
+  addSpikiu('— ¡Que aproveche! 🐾');
+  setTimeout(function(){
+    addSpikiu('(ich trete aus der Rolle) Das lief richtig gut, <em>Pepe</em>. Du hast frei bestellt.', true);
+    setTimeout(askLektion, 600);
+  }, 700);
+}
+
+// ════════════════════════════════════════════════════════
+//  STEP 5 — GENTLE CLOSE → LEKTION
+// ════════════════════════════════════════════════════════
+function askLektion(){
+  setStage('lektion');
+  addSpikiu('Möchtest du diese Sitzung als <em>Lektion</em> behalten? Sie wartet dann in deinem Dashboard.');
+  setComposer(
+    '<div class="comp-row2">'+
+      '<button class="chip" style="background:var(--accent);color:#fff" onclick="lektionJa()">Ja, speichern</button>'+
+      '<button class="chip" onclick="lektionNein()">Nein, danke</button>'+
+    '</div>'
+  );
+}
+function lektionJa(){
+  addUser('Ja, speichern');
+  var l = document.createElement('div'); l.className = 'lesson';
+  l.innerHTML =
+    '<div class="lesson-icon">📖</div>'+
+    '<div><div class="lesson-title">Im Restaurant bestellen</div>'+
+    '<div class="lesson-sub">✓ Lektion gespeichert</div></div>';
+  chat.appendChild(l); scrollDown();
+  setTimeout(function(){
+    addSpikiu('Fertig. Du findest sie im Dashboard unter <em>Lektionen</em>. Bis bald, Pepe.');
+    setComposer(
+      '<button class="btn-weiter" onclick="alert(\'🐾 Echt: → dashboard.html#lektionen\')">Zum Dashboard →</button>'+
+      '<button class="bar-reset" style="align-self:center;margin-top:.2rem" onclick="resetFlow()">↺ Von vorne</button>'
+    );
+  }, 700);
+}
+function lektionNein(){
+  addUser('Nein, danke');
+  addSpikiu('Alles gut. War schön mit dir. Bis bald, Pepe. 🐾');
+  setComposer('<button class="bar-reset" style="align-self:center" onclick="resetFlow()">↺ Von vorne</button>');
+}
+
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Stimmen vorladen (manche Browser brauchen das Event)
+if(window.speechSynthesis){ window.speechSynthesis.onvoiceschanged = function(){}; }
+
+start();
+</script>
+</body>
+</html>
