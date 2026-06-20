@@ -139,6 +139,25 @@ Innereien von `audio.js` auf ElevenLabs umstellen, `speak()`-API unverändert.
 
 ---
 
+## NUTZER-HINWEIS BEIM ERST-DOWNLOAD (Phase B, UX — von Leo gewünscht 20.06.)
+
+Die Stimme lädt beim ERSTEN Mal pro Sprache ein paar Sekunden, danach nie wieder (OPFS-Cache,
+offline). Der Nutzer MUSS das wissen, sonst wirkt die Wartezeit wie ein Fehler. So bequem +
+allgemein wie möglich umsetzen (kein Copy-Paste pro Raum):
+
+1. **Mechanismus in `audio.js` (alle Räume erben ihn gratis):** `audio.js` meldet einen
+   Lade-Status; die UI zeigt beim ersten Stimm-Build dezent „Spikiu bereitet seine Stimme vor…
+   (einmalig, ein paar Sekunden)" + kleinen Spinner. Sobald die Stimme in OPFS liegt, erscheint
+   der Hinweis nie wieder (pro Sprache, pro Gerät).
+2. **Einmaliger Erst-Hinweis nach dem ersten Login:** eine freundliche, wegklickbare Zeile in der
+   MUTTERSPRACHE (de/es/en) — sinngemäß „Spikiu lädt seine Stimme einmalig herunter — ein paar
+   Sekunden, dann nie wieder, auch offline." Mit localStorage-Flag (z. B. `spikiu_audio_intro_seen`),
+   damit sie GENAU EINMAL erscheint.
+3. Ehrlich bleiben: „ein paar Sekunden" gilt PRO SPRACHE (jede Stimme lädt beim ersten Gebrauch
+   dieser Sprache) und PRO GERÄT. Danach offline. Den Erst-Hinweis NICHT bei jedem Login wiederholen.
+
+---
+
 ## OFFENE TECHNISCHE FRAGEN (vor Phase-A-Bau klären)
 - Welche Lib konkret: `@diffusionstudio/vits-web@1.0.3` vs `@mintplex-labs/piper-tts-web@1.0.4`?
   (Beide haben `predict({text, voiceId})`; mintplex ist explizit für Browser/AnythingLLM
