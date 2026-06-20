@@ -11,6 +11,8 @@
   --white:#ffffff; --bg:#faf9f7; --bg2:#f3f1ee; --ink:#1c1917; --mid:#78716c;
   --faint:#e7e5e4; --warm:#d6cfc8; --accent:#2d6a4f; --accent2:#e8f5ee; --capy:#a97c50;
   --accent3:#1f5239; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
+  /* Übersetzungs-Kästchen (Feinschliff): gedämpfte Muleta, sekundär (Stil = Prototyp) */
+  --trans-bg:#f1eee8; --trans-ink:#8a847d; --trans-border:#e2ddd4;
 }
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
 .app { display:flex; flex-direction:column; height:100dvh; max-width:680px; margin:0 auto; background:var(--white); }
@@ -34,8 +36,15 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes fadeUp { from { opacity:0; transform:translateY(6px);} to { opacity:1; transform:translateY(0);} }
 .avatar-spikiu { background:var(--accent2); border-radius:50%; display:flex; align-items:center; justify-content:center; width:32px; height:32px; flex-shrink:0; margin-top:2px; }
 .bubble { max-width:82%; padding:0.85rem 1.1rem; border-radius:1.2rem; font-size:1rem; line-height:1.65; }
-.bubble.spikiu { background:var(--bg2); color:var(--ink); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; font-family:'Lora',serif; font-size:1.025rem; }
+.bubble.spikiu { background:var(--bg2); color:var(--ink); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; font-family:'Lora',serif; font-size:1.025rem; position:relative; padding-right:2.7rem; }
 .bubble.user { background:var(--accent); color:var(--white); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; font-size:0.975rem; }
+/* 🔊 dezent in der Spikiu-Blase, nur auf dem Zielsprachen-Teil (Feinschliff). Fallback in audio.js. */
+.speak-btn { position:absolute; top:0.6rem; right:0.55rem; width:28px; height:28px; border:none; cursor:pointer; background:var(--accent2); color:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:0.16s; -webkit-tap-highlight-color:transparent; }
+.speak-btn:hover { background:var(--accent); color:var(--white); }
+.speak-btn.playing { animation:pulse 1s ease infinite; }
+.speak-btn svg { width:14px; height:14px; }
+/* Gedämpftes Übersetzungs-Kästchen unter der Blase (Muttersprache, KEIN Audio) */
+.trans { margin-top:0.4rem; align-self:flex-start; background:var(--trans-bg); border:1px solid var(--trans-border); border-radius:8px; padding:0.4rem 0.7rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; line-height:1.45; color:var(--trans-ink); max-width:82%; }
 .bubble .retry-btn { margin-left:0.4rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:600; color:var(--accent); background:var(--white); border:1px solid #cfe6da; border-radius:100px; padding:0.2rem 0.7rem; cursor:pointer; }
 .bubble .retry-btn:hover { background:var(--accent); color:var(--white); }
 /* Tür-Knopf: Raumwechsel-Signal [WECHSEL:…] wird hier abgefangen → sanfter Knopf, kein Auto-Sprung */
@@ -287,6 +296,26 @@ function escPlain(t){
   return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
+// ── Übersetzungs-Brücke [[…]] (Feinschliff) ───────────────────────
+// Spikiu schreibt zuerst die Zielsprache, dann EIN [[ Muttersprache ]] auf eigener
+// Zeile (Struktur-Signal wie [WECHSEL]). Die Oberfläche splittet: Zielsprache → Blase
+// (mit 🔊), [[…]] → gedämpftes Kästchen darunter (kein Audio). [[…]] NIE als Rohtext.
+function splitBridge(text){
+  var m = (text||'').match(/\[\[\s*([\s\S]*?)\s*\]\]/);
+  var trans = m ? m[1].trim() : null;
+  var ziel = (text||'').replace(/\[\[[\s\S]*?\]\]/g, ' ').replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  if (!ziel && trans){ ziel = trans; trans = null; }   // nie eine leere Blase
+  return { ziel: ziel, trans: trans };
+}
+// Klartext für die Stimme: Emphasis-Marker raus (🔊 spricht keine Unterstriche/Sterne)
+function plainForSpeech(s){
+  s = (s||'');
+  s = s.replace(/\*\*([^*]+)\*\*/g,'$1');
+  s = s.replace(/\*([^*\n]+)\*/g,'$1');
+  s = s.replace(/(^|[^\w])_(?=\S)([^_\n]*?\S)_(?!\w)/g,'$1$2');
+  return s.trim();
+}
+
 // ── Raumwechsel-Signal (Paket B) ─────────────────────────────────
 // Spikiu öffnet die Tür, statt sie zu beschreiben: setzt am Antwort-Ende EIN
 // [WECHSEL:zielraum]. Wir fangen es hier ab — NIE als Text zeigen — und rendern
@@ -320,12 +349,22 @@ function addDoorButton(ziel){
   chat.scrollTop = chat.scrollHeight;
 }
 
+// SPK_ICON: dezentes Lautsprecher-Glyph für die Spikiu-Blase (gleich wie im Prototyp).
+var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+
 function addMessage(role, text){
   var msg = document.createElement('div');
   msg.className = 'message ' + role;
   if (role === 'spikiu') {
+    // Zielsprache → Blase mit 🔊 (nur Zieltext); [[…]] → gedämpftes Kästchen darunter.
+    var parts = splitBridge(text);
+    var bubble = '<div class="bubble spikiu">' + fmt(parts.ziel)
+      + '<button class="speak-btn" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button></div>';
+    var box = parts.trans ? '<div class="trans">' + fmt(parts.trans) + '</div>' : '';
     msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
-      + '<div style="flex:1;min-width:0;"><div class="bubble spikiu">' + fmt(text) + '</div></div>';
+      + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;">' + bubble + box + '</div>';
+    var sb = msg.querySelector('.speak-btn');
+    if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(parts.ziel), 'playing'); };
   } else {
     msg.innerHTML = '<div class="bubble user">' + escPlain(text) + '</div>';
   }
