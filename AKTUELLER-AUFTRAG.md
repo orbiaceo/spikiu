@@ -1,151 +1,158 @@
-# AUFTRAG — Geführtes Gespräch · PAKET 1 „Der geführte Einstieg"
+# AUFTRAG — Geführtes Gespräch · PAKET 2 „Die Häppchen"
 
 Stand: 20.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Genehmigter Prototyp: `prototyp-gespraech-gefuehrt.html`
+Branch: dev · Genehmigter Prototyp: `prototyp-gespraech-gefuehrt.html` · Baut auf P1 (live, getestet)
 
-> ✅ **GEBAUT 20.06. (Claude Code), auf dev — kein offener Code-Auftrag.** Drei Edits geliefert:
-> (1) `chat.html` Opener-Gabelung (💬 plaudern = heutiger Flur · 4 Thema-Chips i18n de/es/en ·
-> ✍️ Freitext) → Seed-User-Zug → `turn()`; kein Fortschrittsbalken; `[WECHSEL]`/Profil-Chip/Charla
-> unberührt. (2) `gespraech-modus.md` EINSTIEG: Themen-Entrada + Namens-Bedingung (Gast → namenlos);
-> kein Wort über Häppchen/Lektion. (3) `api/gespraech.js` Z.62 Name-Leak getilgt (nur die eine Zeile).
-> `node --check` grün; nur 3 Dateien; `vercel.json` unangetastet. Headless verifiziert (Backend gestubbt,
-> es-Profil): Gabelung + i18n + Seed «Restaurante» + turn-Verdrahtung grün.
->
-> **ABNAHME-REST — Modell-Verhalten auf dev, von Leo als echter Lerner zu prüfen:** Thema-Klick führt
-> in ein themen-fokussiertes Gespräch (Zielsprache nach `koennen`) · Gast ohne Profil grüßt namenlos
-> (kein „der Lerner"-Leak) · `[WECHSEL:…]` weiter intakt · Chips in der jeweiligen Muttersprache.
->
-> **NÄCHSTES:** P2 „Die Häppchen" (Design-Entscheid Inhalts-Vertrag A/B VOR Bau).
->
-> ───────────────────────────────────────────────────────────────────────────────
-> Originaltext des Auftrags bleibt unten stehen.
->
-> Dies ist **Paket 1 von 3** des geführten Gesprächs. Es baut NUR den Einstieg
-> (Opener-Gabelung + thematische Entrada) + tilgt den Name-Leak. **Noch KEINE
-> Häppchen, KEIN Hörverständnis, KEINE Lektion-Verdrahtung** — die kommen in
-> Paket 2 und 3 als eigene Aufträge. Strikt in dieser Reihenfolge bleiben.
+> **Paket 2 von 3** des geführten Gesprächs. P1 (Einstieg) ist live + von Leo am Gerät
+> abgenommen. P2 schiebt die **Vorbereitung** zwischen Themenwahl und Rollenspiel:
+> Wortschatz-Häppchen + Hörverständnis-Häppchen. **KEINE Lektion-Verdrahtung, KEIN
+> gentle close** — das ist P3.
 
 ---
 
-## WARUM SO GESCHNITTEN (Lehre aus dem eigenen Ledger)
+## ENTSCHEIDUNG VOR BAU (getroffen, gilt): VERTRAG B
 
-Wie beim Audio (Phase A/B/C/D) und bei den Räumen: ein kleiner, testbarer Schnitt
-pro Sitzung. Und genau wie die A2-Regel ERST NACH Paket B geschrieben wurde
-(sonst wäre sie eine erfundene Funktion): **`gespraech-modus.md` darf in Paket 1
-NICHT von Häppchen/Hörverständnis sprechen — die gibt es noch nicht. Sie zu
-versprechen wäre ein Seelen-Verstoß (Niemals: Funktionen erfinden, die es nicht
-gibt).** Der Prompt führt hier nur in ein themen-fokussiertes Gespräch/Rollenspiel.
+Der Inhalt (Wortschatz + Hörverständnis) wird von einem **eigenen Endpoint
+`api/haeppchen.js`** erzeugt (Muster `lektor.js`), NICHT als Inline-Marker aus dem
+Gesprächs-Prompt. Grund: sauberes, robust parsebares JSON; getrennt testbar; das
+Häppchen-Generieren ist Vorbereitung, nicht Charla. `gespraech.js`/Rollenspiel bleiben
+unberührt — die Häppchen sind ein Frontend-orchestrierter Schritt davor.
 
 ---
 
-## INPUT-VERTRAG (unverändert, der Raum kennt ihn schon)
+## DER FLUSS (was P2 einbaut)
+
+Heute (P1): Thema-Klick → Seed-Zug → Rollenspiel sofort.
+NEU (P2): Thema-Klick → **Häppchen laden + üben** → DANN Seed-Zug → Rollenspiel (P1-Pfad).
 
 ```
-profile.name           Klarname oder leer/fehlend (Gast!)
-profile.koennen        anfang | mittel | fortgeschritten   (INTERN, nie sichtbar)
-profile.muttersprache  de | es | en
-profile.zielsprache    de | es | en | el
-profile.fremde_schrift true | false
+Thema gewählt (Chip/Freitext)
+   → audio.warm(zielsprache)          // Stimme im Hintergrund vorwärmen
+   → POST /api/haeppchen {thema, zielsprache, muttersprache, koennen, fremde_schrift}
+   → Wortschatz-Widget (Karten, je 🔊 = audio.speak)        [Stufe: Wörter]
+   → „Weiter"
+   → Hörverständnis-Widget(s) (🔊 Satz, A/B, grün/rot)      [Stufe: Hören]
+   → nach letztem Item: kurze Übergabe
+   → DANN der bestehende P1-Seed-Zug → Rollenspiel           [Stufe: Sprechen]
 ```
 
 ---
 
-## ZIEL
+## SCHRITT 1 — `api/haeppchen.js` (neu, Muster `lektor.js`)
 
-Der Lerner kommt in den Gesprächs-Raum und bekommt zuerst eine **Gabelung**:
-„einfach plaudern" ODER „ein Thema üben". Wählt er Plaudern → exakt das heutige
-freie Gespräch (der Flur), nichts ändert sich. Wählt er ein Thema (oder beschreibt
-eins selbst) → Spikiu steigt warm in ein **themen-fokussiertes Gespräch / leichtes
-Rollenspiel** zu genau diesem Thema ein, in der richtigen Sprache nach `koennen`.
+- `export default async function handler(req,res)`, CORS, `OPTIONS`-Kurzschluss,
+  `x-api-key` aus `process.env.ANTHROPIC_API_KEY`, Modell `claude-sonnet-4-5`.
+- Liest zur Laufzeit `spikiu-seele.md` + neue `haeppchen-modus.md` via
+  `readFileSync(join(process.cwd(), …))` (mehrere Kandidatenpfade, Fehler→Klartext).
+  KEIN `import.meta`. `.js`, `export default`.
+- **Input (POST-Body):** `{ thema, zielsprache (de|es|en|el), muttersprache (de|es|en),
+  koennen (anfang|mittel|fortgeschritten), fremde_schrift (bool) }`.
+- **Output: NUR striktes JSON** (kein Vorwort, keine ```-Zäune). Im Endpoint defensiv
+  parsen (try/catch, ```json-Zäune strippen), bei Fehler sauberes 200 mit Mini-Fallback
+  ODER klarer Fehlercode — nie HTML/Prosa an die Oberfläche.
 
----
+**JSON-Vertrag:**
+```json
+{
+  "thema": "Hotel",
+  "wortschatz": [
+    { "ziel": "la recepción", "lautschrift": "re-zep-SION", "uebersetzung": "die Rezeption" }
+  ],
+  "hoerverstehen": [
+    {
+      "audio": "Tengo una reserva.",
+      "frage": "Was hörst du?",
+      "optionen": [
+        { "text": "Tengo una reserva.",  "richtig": true  },
+        { "text": "Tengo una pregunta.", "richtig": false }
+      ]
+    }
+  ]
+}
+```
 
-## DREI EDITS
+Regeln für den Inhalt (in `haeppchen-modus.md`, erbt von der Seele):
+- `wortschatz`: **4–6** Einträge, zum Thema, alltagsnah, español **neutro** (nie voseo).
+- `hoerverstehen`: **2–3** Items. `audio` = kurzer Satz aus dem Themen-Wortschatz; genau
+  **eine** richtige Option, die falsche ist ein naher Minimalpaar-Kontrast (carta/cuenta,
+  reserva/pregunta). `frage` in der **Muttersprache**.
+- `lautschrift`:
+  - `fremde_schrift = true` (Griechisch): **Pflicht** = Umschrift, EIN konsistentes System
+    (Seele-Regel, gleiche Mechanik wie der Reader). Bei `anfang` Drei-Spur-Logik bedienen.
+  - `fremde_schrift = false` (de/es/en): **optional**, leichte Betonungs-/Aussprachehilfe;
+    darf fehlen. Das echte Vorbild ist das Audio, nicht die Schrift. Keine erfundene
+    Phonetik (alte Lehre „apetése", nicht „apetenze") — im Zweifel weglassen.
+- `koennen` steuert Länge/Schwere: `anfang` kurz + einfach, mehr Muttersprach-Brücke;
+  `fortgeschritten` knapper, anspruchsvoller. NIE CEFR im Output zeigen.
+- Plain language, keine Mnemonics, keine Grammatik-Fachwörter (Seele).
 
-### EDIT 1 — Name-Leak tilgen · `api/gespraech.js` (Z. 62)
+## SCHRITT 2 — `haeppchen-modus.md` (neu)
 
-Heute: `p.name || 'der Lerner'` schiebt die Platzhalter-Floskel „der Lerner" als
-echten Namen ins Modell → Gast wird mit „¡Hola, der Lerner!" begrüßt + Backend-Meta
-leckt. Fix: Wenn KEIN echter Name da ist, KEINEN Fake-Namen injizieren. Stattdessen
-das Namensfeld leer lassen / weglassen, sodass der Prompt namenlos und natürlich
-grüßt („¡Hola!" / „Schön, dass du da bist."). Nur diese eine Stelle. Sonst nichts
-an `gespraech.js` anfassen. (Absorbiert den Name-Leak-Teil des alten Kleinkram-Pakets.)
+Schlanke Raum-Schicht wie `lektor-modus.md`: verweist per Nummer auf die Seele,
+definiert NUR die Häppchen-Erzeugung + den JSON-Vertrag oben. Kein Code, reine Anleitung.
 
-### EDIT 2 — Opener-Gabelung · `chat.html`
+## SCHRITT 3 — `vercel.json`
 
-Heute feuert `chat.html` beim Laden sofort `[EINSTIEG]` in einen leeren Verlauf →
-Spikiu grüßt direkt. NEU: Beim Laden zeigt der Raum zuerst eine **Wahl** (wie im
-Prototyp `prototyp-gespraech-gefuehrt.html`, Opener-Teil):
+`api/haeppchen.js` als Function eintragen, `includeFiles` deckt `*.md`
+(damit `spikiu-seele.md` + `haeppchen-modus.md` zur Laufzeit geladen werden).
+Pfad in `vercel.json` == realer Dateiname. KEINE COOP/COEP-Header.
 
-- Eine warme Spikiu-Begrüßung (kommt weiterhin vom Backend via `[EINSTIEG]` —
-  KEINE Frage im selben Atemzug, wie die Seele will).
-- Darunter eine vom Frontend gerenderte Auswahl:
-  - **„Einfach plaudern"** → genau der heutige Flur. Der `[EINSTIEG]`-Opener bleibt
-    stehen, der Lerner tippt frei weiter. Kein neues Verhalten.
-  - **Themen-Chips** (Beschriftung in der **Muttersprache** des Lerners, i18n de/es/en):
-    Hotel · Taxi · Restaurant · Im Café · „Etwas anderes…".
-  - **„Etwas anderes…"** öffnet ein Textfeld („Beschreibe, was du üben willst").
-- Klick auf ein Thema (oder Absenden des Freitexts) → `chat.html` schickt EINEN
-  Seed-User-Zug an `gespraech.js` (z. B. den Thementext als normale User-Nachricht,
-  oder ein klar lesbares `Ich möchte das Thema „<Thema>" üben.`) und rendert ihn
-  als User-Bubble. Ab da läuft der normale `turn()`-Zyklus weiter.
+## SCHRITT 4 — `chat.html` (Widgets + Orchestrierung + Audio)
 
-Stil EXAKT aus dem Prototyp übernehmen (Farben/Tokens, Lora+DM Sans, kanonischer
-Capy, Chip-Stil). KEIN Fortschrittsbalken in Paket 1 (Thema·Wörter·Hören·Sprechen·
-Lektion) — der kommt mit Paket 2, wenn es die Stufen wirklich gibt. KEINE Häppchen-
-oder Hörverständnis-Widgets in Paket 1.
-
-`chat.html`-Regeln beachten: Variable `verlauf` (nie `history`), Raumwechsel-Signal
-`[WECHSEL:…]` bleibt unangetastet funktionsfähig, keine vom Browser belegten
-Variablennamen, Emphasis nur via `<em>`.
-
-### EDIT 3 — Themen-Entrada im Prompt · `gespraech-modus.md`
-
-Den Abschnitt **EINSTIEG** so erweitern, dass Spikiu, wenn der erste echte User-Zug
-ein Thema ist („Ich möchte das Thema … üben"), warm bestätigt und direkt in ein
-themen-fokussiertes Gespräch / leichtes Rollenspiel zu dem Thema einsteigt — in der
-richtigen Sprache nach `koennen`, mit dem bestehenden Regler/Schrift-Brücke. Alle
-Flur-Regeln bleiben (eine Frage pro Antwort, Sinn zuerst, kein Lob-Applaus, nie
-länger als ein Blick).
-
-**HART:** In Paket 1 KEIN Wort über Häppchen, Wortschatz-Karten, Hörübungen oder
-Lektionen im Prompt — die existieren noch nicht. Spikiu redet sich nicht in eine
-Funktion hinein, die der Lerner nicht klicken kann (Niemals-Liste der Seele).
+- Beim Thema-Klick/Freitext (die P1-Stelle): VOR dem Seed-Zug erst den Häppchen-Schritt.
+- **`audio.js` einbinden** (liegt am Root, `import { speak, warm } from '/audio.js'` —
+  self-gehostet, keine Import-Map nötig). Beim Thema sofort `warm(zielsprache)` (still
+  vorwärmen). Jede 🔊-Taste ruft `speak(text, zielsprache)`. Fallback steckt schon in
+  `audio.js` (nie stummer Knopf) — nicht selbst nachbauen.
+- **Lade-Spinner** während des `haeppchen`-Calls: animiert + lokalisiert DE/ES/EN
+  (alte Lehre: nie „⏳ Generating…" hart englisch).
+- **Wortschatz-Widget** + **Hörverständnis-Widget** exakt im Stil des Prototyps
+  (`prototyp-gespraech-gefuehrt.html`): Karten mit 🔊, A/B mit grün (richtig) / rot
+  (falsch) + Enthüllung der richtigen, „Weiter"-Fluss. Inline im Chat (Muster
+  [WECHSEL]/Lesebegleiter), KEINE Vollbild-Slides.
+- **Fortschrittsbalken** jetzt einbauen (in P1 bewusst ausgelassen): Thema · Wörter ·
+  Hören · Sprechen · Lektion. In P2 füllen bis **Sprechen** (Lektion bleibt blass = P3).
+- Nach dem letzten Hörverständnis-Item: kurze Übergabe, dann der **bestehende
+  P1-Seed-Zug** ans Rollenspiel — P1-Pfad NICHT umschreiben, nur davor einhängen.
+- `chat.html`-Regeln: `verlauf` (nie `history`), keine vom Browser belegten Namen,
+  Emphasis nur `<em>`, `[WECHSEL:…]` + Profil-Chip unberührt.
 
 ---
 
 ## ABNAHME (alles grün, sonst nicht fertig)
 
-- [ ] **Plaudern unverändert:** „Einfach plaudern" → heutiges freies Gespräch, kein
-      neues Verhalten, `[WECHSEL:…]` funktioniert weiter.
-- [ ] **Thema-Chip** (z. B. Restaurant) → Spikiu steigt themen-fokussiert ein, in der
-      Zielsprache nach `koennen`, Chips in Muttersprache lokalisiert (de/es/en geprüft).
-- [ ] **„Etwas anderes…"** → Textfeld, Freitext startet ein themen-fokussiertes Gespräch.
-- [ ] **Gast ohne Profil:** KEIN „der Lerner"-Leak, kein Backend-Meta — namenlose,
-      natürliche Begrüßung.
-- [ ] Prompt erwähnt NIRGENDS Häppchen/Hörverständnis/Lektion (gibt es noch nicht).
-- [ ] `gespraech.js`: NUR die Z.-62-Stelle geändert. `node --check api/gespraech.js` grün.
-- [ ] `vercel.json` unangetastet (gespraech-Eintrag + includeFiles `*.md` decken modus.md).
-- [ ] Kein vom Browser belegter Variablenname in `chat.html`; Emphasis nur `<em>`.
+- [ ] Thema-Klick → `/api/haeppchen` liefert gültiges JSON nach Vertrag; Wortschatz +
+      Hörverständnis rendern inline.
+- [ ] 🔊 in Wortschatz UND Hörverständnis spricht über `audio.speak()` (Piper oder
+      Fallback) — nie stumm.
+- [ ] Hörverständnis A/B: richtig → grün, falsch → rot + richtige enthüllt (wie Prototyp).
+- [ ] Nach den Häppchen startet das Rollenspiel über den **P1-Pfad** — kein Regress am
+      freien Flur, `[WECHSEL:…]` intakt.
+- [ ] español **neutro** (kein voseo), plain language, keine Mnemonics (Seele eingehalten).
+- [ ] Griechisch (`fremde_schrift=true`): Umschrift vorhanden, ein konsistentes System.
+- [ ] Fortschrittsbalken füllt Thema→Wörter→Hören→Sprechen; Lektion bleibt blass.
+- [ ] Lade-Spinner lokalisiert DE/ES/EN.
+- [ ] `node --check api/haeppchen.js` grün; `vercel.json`-Pfad == Dateiname; `includeFiles`
+      deckt `*.md`; KEINE COOP/COEP-Header.
+- [ ] `chat.html`: keine vom Browser belegten Variablennamen; Emphasis nur `<em>`.
 
 ---
 
-## AUSDRÜCKLICH NICHT in Paket 1
-- KEINE Wortschatz-Häppchen, KEIN Hörverständnis-Widget (= Paket 2).
-- KEIN `audio.js`-Einbau (= Paket 2).
-- KEINE Lektion-Verdrahtung, kein `lastConversation` (= Paket 3).
-- KEIN Fortschrittsbalken (= Paket 2, sobald die Stufen existieren).
-- KEIN neuer Endpoint. `gespraech.js` nur die eine Zeile.
-- Lesebegleiter-`intro`-Kürzung (Rest des alten Kleinkram-Pakets) NICHT hier —
-  eigene Mini-Aufgabe, andere Sala (`lesebegleiter.js`).
+## AUSDRÜCKLICH NICHT in P2
+- KEINE Lektion-Verdrahtung, kein `lastConversation`, kein „als Lektion"-Knopf (= P3).
+- KEIN gentle close nach dem Rollenspiel (= P3).
+- `gespraech.js` + die P1-Rollenspiel-Logik NICHT umschreiben — nur den Häppchen-Schritt
+  davor einhängen.
+- KEINE Modelle ins Repo, kein Stripe/Supabase.
 
 ---
 
-## DANACH (eigene Aufträge, der Reihe nach)
-- **Paket 2 „Die Häppchen":** Wortschatz + Hörverständnis. Vor Bau Design-Entscheid:
-  Inhalts-Vertrag **A** (Inline-Marker `[HAEPPCHEN]{json}[/HAEPPCHEN]`) vs **B**
-  (eigener Endpoint `api/haeppchen.js`, Muster `lektor.js`). claude.ai-Empfehlung: B.
-  Dann Widgets in `chat.html` + `audio.speak(text, zielsprache)` + Fortschrittsbalken.
-- **Paket 3 „Die Lektion":** Gentle Close nach dem Rollenspiel + `chat.html` schreibt
-  `verlauf` → `lastConversation` + „als Lektion" ruft real `/api/generate-lesson` →
-  erscheint im Dashboard. (Tilgt den dokumentierten Lektion-Disconnect.)
+## DANACH (eigene Aufträge)
+- **P3 „Die Lektion":** gentle close + `chat.html` schreibt `verlauf`→`lastConversation`
+  + „als Lektion" real an `/api/generate-lesson` → Dashboard.
+- **Kleinkram-Paket 2 (Mini-Fixes, claude.ai):** (a) Genus-Begrüßung Dashboard — Spanisch
+  „bienvenido" → genus-neutral „Te damos la bienvenida" (invariables Substantiv);
+  Seele-Regel: in UI-Copy nie Genus-Kongruenz mit dem Nutzer (de/en schon neutral).
+  (b) Lesebegleiter-`intro`-Kürzung (`lesebegleiter.js`, de/es/en).
+- Optional: `gespraech-modus.md`/Seele eine Zeile — „tú/usted nach Kontext entscheiden"
+  (weitgehend schon von Grundsatz 7 gedeckt).
