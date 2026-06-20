@@ -1,0 +1,6 @@
+# Lokale Piper-Stimmtests (WAV/onnx, ~1.3 GB) — NIE committen
+voice-test/
+
+# Piper-Modelle laden zur Laufzeit von HuggingFace (OPFS-Cache), nie ins Repo
+*.onnx
+*.onnx.json

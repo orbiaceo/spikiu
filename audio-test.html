@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spikiu — Audio-Beweis (Phase A)</title>
+<!--
+  WEGWERF-/TEST-ROUTE — Audio Phase A (Fundament + Beweis).
+  Beweist nur, dass audio.speak(text, zielsprache) mit den vier echten Modellen
+  spricht. KEIN Einbau in echte Räume (das ist Phase B). Nicht im Menü verlinkt.
+-->
+<style>
+  :root { --ink:#2b2118; --warm:#c9956a; --bg:#faf6f0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 20px; gap:22px; text-align:center;
+  }
+  .capy { width:96px; height:96px; }
+  h1 { font-size:1.25rem; font-weight:600; margin:0; }
+  .sub { font-size:.9rem; color:#7a6a58; max-width:30rem; margin:0; line-height:1.5; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; width:100%; max-width:24rem; }
+  button {
+    appearance:none; border:none; cursor:pointer; border-radius:16px;
+    padding:18px 14px; font-size:1.05rem; font-weight:600; color:#fff;
+    background:var(--warm); box-shadow:0 4px 14px rgba(201,149,106,.35);
+    transition:transform .08s ease, opacity .2s ease;
+  }
+  button:active { transform:translateY(1px) scale(.99); }
+  button:disabled { opacity:.5; cursor:wait; }
+  button .lng { display:block; font-size:.72rem; font-weight:500; opacity:.85; margin-top:2px; }
+  .status { min-height:1.4em; font-size:.85rem; color:#7a6a58; }
+  .warm-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .warm-row button { background:#efe6da; color:#6b5942; box-shadow:none; font-size:.8rem; padding:8px 14px; border-radius:12px; }
+</style>
+</head>
+<body>
+  <svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+    <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+    <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+    <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+    <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+    <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+    <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+    <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+    <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+    <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <h1>Audio-Beweis (Phase A)</h1>
+  <p class="sub">Erster Klick lädt das Modell der Sprache von HuggingFace (einmalig, dann
+  im Browser zwischengespeichert). Der zweite Klick spricht sofort — kein erneuter Download.</p>
+
+  <div class="grid">
+    <button data-lang="de">🔊 Deutsch<span class="lng">de_DE-thorsten-high</span></button>
+    <button data-lang="es">🔊 Español<span class="lng">es_ES-sharvard-medium</span></button>
+    <button data-lang="en">🔊 English<span class="lng">en_US-lessac-high</span></button>
+    <button data-lang="el">🔊 Ελληνικά<span class="lng">el_GR-rapunzelina-low</span></button>
+  </div>
+
+  <p class="status" id="status">Bereit.</p>
+
+  <div class="warm-row">
+    <button data-warm="de">vorwärmen de</button>
+    <button data-warm="es">vorwärmen es</button>
+    <button data-warm="en">vorwärmen en</button>
+    <button data-warm="el">vorwärmen el</button>
+  </div>
+
+<script type="module">
+  import audio, { speak, warm } from '/audio.js';
+
+  const statusEl = document.getElementById('status');
+  const SAMPLE = {
+    de: 'Hallo! Schön, dass du da bist. Lass uns Deutsch sprechen.',
+    es: '¡Hola! Qué bueno tenerte aquí. Vamos a hablar español.',
+    en: 'Hello! It is great to have you here. Let us speak English.',
+    el: 'Γεια σου! Χαίρομαι που είσαι εδώ. Ας μιλήσουμε ελληνικά.',
+  };
+  const LABEL = { de:'Deutsch', es:'Español', en:'English', el:'Ελληνικά' };
+
+  audio.onstatus = (info) => {
+    const lng = LABEL[info.zielsprache] || info.zielsprache;
+    if (info.phase === 'download' && info.total) {
+      const pct = Math.round((info.loaded / info.total) * 100);
+      statusEl.textContent = `${lng}: Stimme wird geladen… ${pct}%`;
+    } else if (info.phase === 'prepare') {
+      statusEl.textContent = `${lng}: Stimme wird vorbereitet…`;
+    } else if (info.phase === 'speak') {
+      statusEl.textContent = `${lng}: spricht…`;
+    } else if (info.phase === 'fallback') {
+      statusEl.textContent = `${lng}: Browser-Stimme (Piper nicht verfügbar).`;
+    }
+  };
+
+  document.querySelectorAll('button[data-lang]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const lang = btn.dataset.lang;
+      document.querySelectorAll('button').forEach((b) => b.disabled = true);
+      try {
+        await speak(SAMPLE[lang], lang);
+        statusEl.textContent = `${LABEL[lang]}: fertig.`;
+      } catch (e) {
+        statusEl.textContent = `${LABEL[lang]}: Fehler — ${e.message}`;
+      } finally {
+        document.querySelectorAll('button').forEach((b) => b.disabled = false);
+      }
+    });
+  });
+
+  document.querySelectorAll('button[data-warm]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const lang = btn.dataset.warm;
+      statusEl.textContent = `${LABEL[lang]}: vorwärmen…`;
+      const ok = await warm(lang);
+      statusEl.textContent = `${LABEL[lang]}: ${ok ? 'warm — jetzt spricht der Klick sofort.' : 'Vorwärmen fehlgeschlagen.'}`;
+    });
+  });
+</script>
+</body>
+</html>
