@@ -59,7 +59,7 @@ function laufzeitProfil(p) {
 ═══════════════════════════════════════════════════════════
 DIESE SITZUNG (Laufzeit)
 ═══════════════════════════════════════════════════════════
-- Lerner: ${p.name || 'der Lerner'}
+- Lerner: ${p.name ? p.name : '(Name noch unbekannt — du kennst ihn nicht; sprich ihn NICHT mit Namen an, grüße einfach warm und namenlos, erfinde keinen Namen)'}
 - Muttersprache: ${mutter}
 - Zielsprache, in der geredet wird: ${sprache}
 - Internes Können-Band (NIE aussprechen, steuert nur deinen Regler): ${p.koennen}

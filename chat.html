@@ -42,6 +42,23 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .door-btn { display:inline-flex; align-items:center; gap:0.4rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:500; color:var(--accent); background:var(--accent2); border:1px solid #cfe6da; border-radius:100px; padding:0.55rem 1.1rem; cursor:pointer; transition:all 0.2s; -webkit-tap-highlight-color:transparent; }
 .door-btn:hover { background:var(--accent); color:var(--white); border-color:var(--accent); }
 .door-btn:active { transform:scale(0.97); }
+/* Opener-Gabelung (Paket 1): nach dem [EINSTIEG]-Gruß — plaudern oder ein Thema.
+   Chip-Stil aus prototyp-gespraech-gefuehrt.html. KEIN Fortschrittsbalken in P1. */
+.gabelung { align-self:stretch; display:flex; flex-direction:column; gap:0.6rem; padding-left:2.75rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
+.gab-label { font-size:0.78rem; color:var(--mid); font-weight:500; }
+.gab-chips { display:flex; flex-wrap:wrap; gap:0.45rem; }
+.chip { background:var(--white); border:1.5px solid var(--accent); color:var(--accent); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500; cursor:pointer; transition:all 0.18s; -webkit-tap-highlight-color:transparent; }
+.chip:hover { background:var(--accent); color:var(--white); }
+.chip:active { transform:scale(0.97); }
+.chip.full { background:var(--accent); color:var(--white); width:100%; padding:0.65rem; font-weight:600; }
+.chip.full:hover { background:#1f5239; }
+.chip.ghost { border-style:dashed; border-color:var(--capy); color:var(--capy); }
+.chip.ghost:hover { background:var(--capy); color:var(--white); }
+.gab-input { display:flex; gap:0.45rem; }
+.gab-input input { flex:1; background:var(--bg2); border:1.5px solid transparent; border-radius:100px; padding:0.55rem 0.95rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; }
+.gab-input input:focus { border-color:var(--accent); background:var(--white); }
+.gab-send { width:40px; flex-shrink:0; border:none; background:var(--accent); color:var(--white); border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.gab-send svg { width:16px; height:16px; }
 .typing-bubble { background:var(--bg2); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; padding:0.9rem 1.1rem; display:flex; gap:5px; align-items:center; }
 .typing-bubble span { width:7px; height:7px; background:var(--warm); border-radius:50%; animation:bounce 1.3s infinite; }
 .typing-bubble span:nth-child(2){animation-delay:0.18s;} .typing-bubble span:nth-child(3){animation-delay:0.36s;}
@@ -152,6 +169,7 @@ function fillProfileBar(){
 // ── Zustand ──────────────────────────────────────────────────────
 var verlauf = [];
 var busy = false;
+var lastTurnOk = false;   // hat die letzte Runde sauber gerendert? (steuert die Opener-Gabelung)
 var chat = document.getElementById('chat');
 var input = document.getElementById('userInput');
 var sendBtn = document.getElementById('sendBtn');
@@ -275,7 +293,7 @@ async function callGespraech(){
 // (Bei Retry unverändert wiederholbar, weil der User-Zug schon in verlauf steht.)
 async function turn(){
   if (busy) return;
-  busy = true; sendBtn.disabled = true; showTyping();
+  busy = true; sendBtn.disabled = true; lastTurnOk = false; showTyping();
   var reply;
   try {
     reply = await callGespraech();          // nur Netzwerk
@@ -289,6 +307,7 @@ async function turn(){
     var shown = parsed.text || reply;       // falls Antwort nur aus dem Marker bestünde: Rohtext
     addMessage('spikiu', shown);            // nur Anzeige (ohne Marker)
     verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf für die nächste Runde
+    lastTurnOk = true;                                    // Runde sauber → Opener darf die Gabelung zeigen
     if (parsed.ziel) addDoorButton(parsed.ziel);          // sanfter Knopf, kein Auto-Sprung
   } catch(e){
     showError('Anzeige: ' + ((e && e.message) || e));
@@ -302,10 +321,93 @@ function sendMessage(){
   if (busy) return;
   var text = input.value.trim();
   if (!text) return;
+  removeGabelung();                 // wer frei tippt, hat die Wahl getroffen
   input.value = ''; input.style.height = 'auto'; sendBtn.disabled = true;
   addMessage('user', text);
   verlauf.push({ role: 'user', content: text });
   turn();
+}
+
+// ── Opener-Gabelung (Paket 1) ─────────────────────────────────────
+// Nach dem [EINSTIEG]-Gruß bietet die Oberfläche die Wahl: einfach plaudern
+// (= der heutige Flur, kein neues Verhalten) ODER ein Thema üben. Ein Thema
+// schickt EINEN Seed-User-Zug („Ich möchte das Thema … üben") an /api/gespraech;
+// ab da läuft der normale turn()-Zyklus. KEINE Häppchen/Hörverständnis/Lektion
+// in Paket 1 — die gibt es noch nicht.
+var GAB = {
+  de:{ free:'Einfach plaudern', orTopic:'…oder ein Thema üben', other:'Etwas anderes…', describe:'Beschreibe, was du üben willst', placeholder:'z. B. ein Zimmer reservieren…', seed:function(t){ return 'Ich möchte das Thema „'+t+'" üben.'; } },
+  es:{ free:'Charlar sin más', orTopic:'…o practicar un tema', other:'Otra cosa…', describe:'Describe lo que quieres practicar', placeholder:'p. ej. reservar una habitación…', seed:function(t){ return 'Quiero practicar el tema «'+t+'».'; } },
+  en:{ free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
+};
+var TOPICS = [
+  { emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel' },
+  { emoji:'🚕', de:'Taxi',       es:'Taxi',        en:'Taxi' },
+  { emoji:'🍽️', de:'Restaurant', es:'Restaurante', en:'Restaurant' },
+  { emoji:'☕', de:'Im Café',    es:'En el café',  en:'At the café' }
+];
+function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+function removeGabelung(){ var g = document.getElementById('gabelung'); if (g) g.remove(); }
+
+function showGabelung(){
+  if (document.getElementById('gabelung')) return;
+  var ui = uiLang(), t = GAB[ui];
+  var chips = TOPICS.map(function(topic, i){
+    return '<button class="chip" type="button" data-i="' + i + '">' + topic.emoji + ' ' + escPlain(topic[ui]) + '</button>';
+  }).join('');
+  var wrap = document.createElement('div');
+  wrap.className = 'gabelung'; wrap.id = 'gabelung';
+  wrap.innerHTML =
+    '<button class="chip full" type="button" id="gabFree">💬 ' + escPlain(t.free) + '</button>'
+    + '<div class="gab-label">' + escPlain(t.orTopic) + '</div>'
+    + '<div class="gab-chips" id="gabChips">' + chips
+      + '<button class="chip ghost" type="button" id="gabOther">✍️ ' + escPlain(t.other) + '</button>'
+    + '</div>';
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+  document.getElementById('gabFree').onclick = goFree;
+  document.getElementById('gabOther').onclick = customTopic;
+  wrap.querySelectorAll('.gab-chips .chip[data-i]').forEach(function(b){
+    b.onclick = function(){ pickTopic(TOPICS[+b.getAttribute('data-i')][uiLang()]); };
+  });
+}
+
+function goFree(){ removeGabelung(); input.focus(); }   // genau der heutige Flur — kein neues Verhalten
+
+function pickTopic(label){
+  if (busy) return;
+  removeGabelung();
+  var seed = GAB[uiLang()].seed(label);
+  addMessage('user', seed);
+  verlauf.push({ role: 'user', content: seed });
+  turn();
+}
+
+function customTopic(){
+  var t = GAB[uiLang()];
+  var chips = document.getElementById('gabChips');
+  if (!chips) return;
+  chips.innerHTML =
+    '<div class="gab-label">' + escPlain(t.describe) + '</div>'
+    + '<div class="gab-input">'
+      + '<input id="gabField" type="text" placeholder="' + escPlain(t.placeholder) + '">'
+      + '<button class="gab-send" type="button" id="gabSubmit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>'
+    + '</div>';
+  var f = document.getElementById('gabField');
+  document.getElementById('gabSubmit').onclick = submitCustom;
+  f.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); submitCustom(); } });
+  setTimeout(function(){ f.focus(); }, 30);
+}
+function submitCustom(){
+  var f = document.getElementById('gabField');
+  var v = (f && f.value.trim()) || '';
+  if (!v) return;
+  pickTopic(v);
+}
+
+// Opener: warmer [EINSTIEG]-Gruß vom Backend, danach die Gabelung darunter.
+async function startOpener(){
+  await turn();                 // verlauf leer → Backend setzt [EINSTIEG] → Opener-Gruß
+  if (lastTurnOk) showGabelung();
 }
 
 // ── Eingabe ──────────────────────────────────────────────────────
@@ -320,7 +422,7 @@ input.addEventListener('keydown', function(e){
 
 // ── Einstieg: kein Welcome-Screen, kein Onboarding. Direkt rein. ──
 fillProfileBar();
-turn();   // verlauf leer → Backend setzt [EINSTIEG] → Opener
+startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach die Gabelung
 </script>
 <script src="nav.js" defer></script>
 </body>

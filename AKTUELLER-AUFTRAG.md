@@ -3,6 +3,23 @@
 Stand: 20.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigter Prototyp: `prototyp-gespraech-gefuehrt.html`
 
+> ✅ **GEBAUT 20.06. (Claude Code), auf dev — kein offener Code-Auftrag.** Drei Edits geliefert:
+> (1) `chat.html` Opener-Gabelung (💬 plaudern = heutiger Flur · 4 Thema-Chips i18n de/es/en ·
+> ✍️ Freitext) → Seed-User-Zug → `turn()`; kein Fortschrittsbalken; `[WECHSEL]`/Profil-Chip/Charla
+> unberührt. (2) `gespraech-modus.md` EINSTIEG: Themen-Entrada + Namens-Bedingung (Gast → namenlos);
+> kein Wort über Häppchen/Lektion. (3) `api/gespraech.js` Z.62 Name-Leak getilgt (nur die eine Zeile).
+> `node --check` grün; nur 3 Dateien; `vercel.json` unangetastet. Headless verifiziert (Backend gestubbt,
+> es-Profil): Gabelung + i18n + Seed «Restaurante» + turn-Verdrahtung grün.
+>
+> **ABNAHME-REST — Modell-Verhalten auf dev, von Leo als echter Lerner zu prüfen:** Thema-Klick führt
+> in ein themen-fokussiertes Gespräch (Zielsprache nach `koennen`) · Gast ohne Profil grüßt namenlos
+> (kein „der Lerner"-Leak) · `[WECHSEL:…]` weiter intakt · Chips in der jeweiligen Muttersprache.
+>
+> **NÄCHSTES:** P2 „Die Häppchen" (Design-Entscheid Inhalts-Vertrag A/B VOR Bau).
+>
+> ───────────────────────────────────────────────────────────────────────────────
+> Originaltext des Auftrags bleibt unten stehen.
+>
 > Dies ist **Paket 1 von 3** des geführten Gesprächs. Es baut NUR den Einstieg
 > (Opener-Gabelung + thematische Entrada) + tilgt den Name-Leak. **Noch KEINE
 > Häppchen, KEIN Hörverständnis, KEINE Lektion-Verdrahtung** — die kommen in
