@@ -3,9 +3,22 @@
 Stand: 20.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Voll-Spec: `DESIGN-AUDIO-PIPER.md`
 
-> ✅ AKTIVER AUFTRAG. Auf Leos Wunsch (20.06.) springt **Audio VOR das Kleinkram-Paket**.
-> Das Kleinkram-Paket ist geparkt in `AUFTRAG-KLEINKRAM.md` und kommt DIREKT NACH dieser Phase A.
-> Diese Datei IST der aktive Bau-Auftrag.
+> ✅ **GEBAUT 20.06. (Claude Code), auf dev gepusht (commit d83c8ab) — kein offener Code-Auftrag.**
+> Geliefert: `audio.js` (Root, `speak`/`warm`) · self-gehostete Piper-Lib + onnxruntime-web + WASM
+> unter `audio/vendor/` · `audio-test.html` (Beweis-Knopf) · `.gitignore` (voice-test/ + *.onnx) ·
+> KEIN Raum/Seele/`vercel.json` berührt. Details im Ledger (Stand-Zeile + Datei-Status + Merkregeln).
+>
+> **ABNAHME-REST — nur browser-/geräteseitig prüfbar (Leo am Handy + iPhone, headless nicht möglich):**
+> 1. Alle VIER Sprachen sprechen über `audio.speak()` (de/es/en/el) auf `…/audio-test.html` (dev).
+> 2. Zweiter Klick derselben Sprache → KEIN erneuter Download (Network-Tab: OPFS greift).
+> 3. iPhone/Safari: spricht ODER fällt sauber auf die Browser-Stimme zurück (nie stumm).
+> Headless schon grün: `node --check` (audio.js + vendored Lib + Inline-Script), vier HF-Modellpfade
+> (rhasspy) lösen auf (302/307), kein COOP/COEP-Header, kein voiceId-Leak, nur neue Dateien angefasst.
+>
+> **NÄCHSTES:** Kleinkram-Paket — `AUFTRAG-KLEINKRAM.md`.
+>
+> ───────────────────────────────────────────────────────────────────────────────
+> Originaltext des Auftrags bleibt unten zur Nachvollziehbarkeit stehen.
 
 ---
 
