@@ -10,6 +10,7 @@
 :root {
   --white:#ffffff; --bg:#faf9f7; --bg2:#f3f1ee; --ink:#1c1917; --mid:#78716c;
   --faint:#e7e5e4; --warm:#d6cfc8; --accent:#2d6a4f; --accent2:#e8f5ee; --capy:#a97c50;
+  --accent3:#1f5239; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
 }
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
 .app { display:flex; flex-direction:column; height:100dvh; max-width:680px; margin:0 auto; background:var(--white); }
@@ -75,6 +76,62 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .send-btn svg { width:20px; height:20px; transform:translateX(1px); }
 @media (max-width:480px){ header{padding:0.875rem 1rem 0.75rem;} .chat{padding:1.25rem 1rem;gap:1rem;} .input-area{padding:0.75rem 1rem;padding-bottom:calc(0.75rem + env(safe-area-inset-bottom));} .bubble{max-width:88%;} }
 @media (min-width:680px){ body{background:var(--bg2);} .app{margin:1.5rem auto;height:calc(100dvh - 3rem);border-radius:1.5rem;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.08);} }
+
+/* ── Geführtes Gespräch · Fortschrittsbalken (Paket 2) ──
+   Thema · Wörter · Hören · Sprechen · Lektion. Füllt bis Sprechen; Lektion bleibt
+   blass (= Paket 3). Versteckt, bis ein Thema gewählt ist (der freie Flur bleibt rein). */
+.rail { display:flex; gap:0.3rem; padding:0.6rem 1.25rem; background:var(--white); border-bottom:1px solid var(--faint); flex-shrink:0; }
+.rail.hidden { display:none; }
+.rail-step { flex:1; text-align:center; font-size:0.56rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--warm); transition:0.3s; }
+.rail-step .dot { display:block; height:3px; border-radius:100px; background:var(--faint); margin-bottom:0.3rem; transition:0.4s; }
+.rail-step.active { color:var(--accent); }
+.rail-step.active .dot { background:var(--accent); }
+.rail-step.done { color:var(--gold); }
+.rail-step.done .dot { background:var(--gold); }
+
+/* ── Häppchen-Widgets (inline im Chat, Stil aus prototyp-gespraech-gefuehrt.html) ── */
+.widget { align-self:stretch; background:var(--white); border:1px solid var(--faint); border-radius:16px; padding:0.85rem 0.8rem; margin-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; box-shadow:0 6px 18px rgba(0,0,0,0.05); }
+.w-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold); margin-bottom:0.65rem; display:flex; align-items:center; gap:0.35rem; }
+.hap-card { display:flex; align-items:center; gap:0.65rem; border:1.5px solid var(--faint); border-radius:12px; padding:0.55rem 0.7rem; margin-bottom:0.4rem; }
+.hap-card:last-child { margin-bottom:0; }
+.hap-play { width:30px; height:30px; flex-shrink:0; border:none; cursor:pointer; background:var(--accent); color:var(--white); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:0.18s; -webkit-tap-highlight-color:transparent; }
+.hap-play:hover { background:var(--accent3); transform:scale(1.06); }
+.hap-play.playing { animation:pulse 1s ease infinite; }
+@keyframes pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(45,106,79,0.4);} 50%{ box-shadow:0 0 0 7px rgba(45,106,79,0);} }
+.hap-play svg { width:13px; height:13px; }
+.hap-text { flex:1; text-align:left; min-width:0; }
+.hap-ziel { font-family:'Lora',serif; font-weight:500; font-size:0.9rem; line-height:1.15; }
+.hap-phon { font-size:0.66rem; color:var(--gold); font-weight:500; margin-top:0.08rem; }
+.hap-trans { font-size:0.72rem; color:var(--mid); font-style:italic; margin-top:0.08rem; }
+.hv-speaker { display:flex; margin:0.2rem auto 0.7rem; width:56px; height:56px; background:var(--accent); border:none; border-radius:50%; cursor:pointer; align-items:center; justify-content:center; color:var(--white); box-shadow:0 6px 18px rgba(45,106,79,0.3); transition:0.18s; -webkit-tap-highlight-color:transparent; }
+.hv-speaker:hover { transform:scale(1.05); }
+.hv-speaker.playing { animation:pulse 1.1s ease infinite; }
+.hv-speaker svg { width:24px; height:24px; }
+.hv-q { text-align:center; font-family:'Lora',serif; font-style:italic; font-size:0.9rem; margin-bottom:0.65rem; }
+.hv-opt { display:flex; align-items:center; gap:0.55rem; width:100%; background:var(--white); border:1.5px solid var(--faint); cursor:pointer; padding:0.6rem 0.7rem; border-radius:12px; margin-bottom:0.4rem; transition:0.3s; font-family:inherit; font-size:0.84rem; text-align:left; color:var(--ink); -webkit-tap-highlight-color:transparent; }
+.hv-opt:last-of-type { margin-bottom:0; }
+.hv-opt:hover:not(:disabled) { border-color:var(--accent); }
+.hv-opt:disabled { cursor:default; }
+.hv-key { width:22px; height:22px; flex-shrink:0; border-radius:50%; background:var(--bg2); color:var(--mid); font-weight:700; font-size:0.7rem; display:flex; align-items:center; justify-content:center; }
+.hv-opt-text { flex:1; }
+.hv-mark { font-weight:700; font-size:1rem; opacity:0; transition:0.3s; }
+.hv-opt.correct { background:var(--accent2); border-color:var(--accent); color:var(--accent3); font-weight:600; }
+.hv-opt.correct .hv-key { background:var(--accent); color:var(--white); }
+.hv-opt.correct .hv-mark { opacity:1; color:var(--accent); }
+.hv-opt.wrong { background:var(--wrong-bg); border-color:var(--wrong); color:var(--wrong); }
+.hv-opt.wrong .hv-key { background:var(--wrong); color:var(--white); }
+.hv-opt.wrong .hv-mark { opacity:1; color:var(--wrong); }
+.hv-feedback { text-align:center; font-size:0.74rem; margin-top:0.55rem; min-height:1em; font-weight:600; }
+/* Inline-Steuerknopf (Weiter) im Chat-Strom */
+.flow-row { display:flex; padding-left:2.75rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
+.flow-btn { background:var(--accent); color:var(--white); border:none; cursor:pointer; padding:0.6rem 1.2rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:600; transition:0.18s; -webkit-tap-highlight-color:transparent; }
+.flow-btn:hover { background:var(--accent3); }
+.flow-btn:active { transform:scale(0.97); }
+/* Lade-Spinner (lokalisiert) */
+.hap-spin { width:16px; height:16px; flex-shrink:0; border:2.5px solid var(--faint); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+/* Übergabe-Notiz (Szene/Brücke) */
+.scene-note { align-self:center; text-align:center; font-family:'Lora',serif; font-style:italic; font-size:0.82rem; color:var(--mid); background:rgba(0,0,0,0.02); padding:0.45rem 0.85rem; border-radius:10px; max-width:90%; opacity:0; animation:fadeUp 0.45s ease forwards; }
 </style>
 </head>
 <body>
@@ -91,6 +148,16 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
     <span class="sep">·</span>
     <span id="pLangs">Deutsch → Español</span>
     <span class="chip" id="pKoennen">Anfänger</span>
+  </div>
+
+  <!-- Fortschrittsbalken (Paket 2): nur im geführten Pfad sichtbar (per JS enthüllt).
+       Füllt Thema→Wörter→Hören→Sprechen; „Lektion" bleibt blass (= Paket 3). -->
+  <div class="rail hidden" id="rail" aria-hidden="true">
+    <div class="rail-step" data-stage="thema"><span class="dot"></span><span class="rail-lbl"></span></div>
+    <div class="rail-step" data-stage="wortschatz"><span class="dot"></span><span class="rail-lbl"></span></div>
+    <div class="rail-step" data-stage="hoeren"><span class="dot"></span><span class="rail-lbl"></span></div>
+    <div class="rail-step" data-stage="sprechen"><span class="dot"></span><span class="rail-lbl"></span></div>
+    <div class="rail-step" data-stage="lektion"><span class="dot"></span><span class="rail-lbl"></span></div>
   </div>
 
   <div class="chat" id="chat"></div>
@@ -170,9 +237,39 @@ function fillProfileBar(){
 var verlauf = [];
 var busy = false;
 var lastTurnOk = false;   // hat die letzte Runde sauber gerendert? (steuert die Opener-Gabelung)
+var guiding = false;      // geführter Häppchen-Schritt läuft → Eingabe gesperrt (Paket 2)
+var TOPIC_LABEL = null;   // gewähltes Thema, wartet auf den P1-Seed-Zug nach den Häppchen
+var hvIndex = 0;          // aktuelles Hörverständnis-Item
 var chat = document.getElementById('chat');
 var input = document.getElementById('userInput');
 var sendBtn = document.getElementById('sendBtn');
+var INPUT_PH = input.getAttribute('placeholder') || '';
+
+// ── Audio (Paket 2): audio.js liegt am Root als ES-Modul. Ein separates
+// type=module-Script unten reicht speak/warm via window durch (das Haupt-Script
+// ist klassisch wegen onclick="sendMessage()"). Der Browser-Fallback steckt schon
+// in audio.js; greift der Import gar nicht, hält diese Mini-Notbremse den Knopf
+// trotzdem hörbar (nie stummer Knopf). ──
+function speakText(text, zielsprache){
+  if (window.spkSpeak) { try { return window.spkSpeak(text, zielsprache); } catch(e){} }
+  try {
+    var synth = window.speechSynthesis;
+    if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[zielsprache] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp;
+      synth.cancel(); synth.speak(u);
+    }
+  } catch(e){}
+}
+function warmVoice(zielsprache){ if (window.spkWarm){ try { window.spkWarm(zielsprache); } catch(e){} } }
+// 🔊-Knopf-Handler: spielt + zeigt den Puls am gedrückten Knopf
+function playFrom(btn, text, cls){
+  if (btn){ btn.classList.add(cls); }
+  var done = function(){ if (btn) btn.classList.remove(cls); };
+  var p = speakText(text, PROFILE.zielsprache);
+  if (p && typeof p.then === 'function'){ p.then(done, done); }
+  else { setTimeout(done, 1400); }
+}
 
 // ── leichte, sichere Darstellung (keine Asterisks im HTML stehen lassen) ──
 function fmt(t){
@@ -318,7 +415,7 @@ async function turn(){
 }
 
 function sendMessage(){
-  if (busy) return;
+  if (busy || guiding) return;
   var text = input.value.trim();
   if (!text) return;
   removeGabelung();                 // wer frei tippt, hat die Wahl getroffen
@@ -373,13 +470,15 @@ function showGabelung(){
 
 function goFree(){ removeGabelung(); input.focus(); }   // genau der heutige Flur — kein neues Verhalten
 
+// Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
+// Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
 function pickTopic(label){
-  if (busy) return;
+  if (busy || guiding) return;
   removeGabelung();
-  var seed = GAB[uiLang()].seed(label);
-  addMessage('user', seed);
-  verlauf.push({ role: 'user', content: seed });
-  turn();
+  TOPIC_LABEL = label;
+  addMessage('user', label);             // die Wahl als User-Bubble (wie P1, nur ohne Seed-Floskel)
+  showRail(); setStage('wortschatz');
+  loadHaeppchen();
 }
 
 function customTopic(){
@@ -404,6 +503,184 @@ function submitCustom(){
   pickTopic(v);
 }
 
+// ── Häppchen (Paket 2) — Vorbereitung VOR dem Rollenspiel ─────────
+// Thema gewählt → Stimme vorwärmen → /api/haeppchen → Wortschatz-Widget →
+// Hörverständnis-Widget(s) → kurze Übergabe → bestehender P1-Seed-Zug → Rollenspiel.
+// Inline im Chat (Muster [WECHSEL]/Lesebegleiter), KEINE Vollbild-Slides.
+var HAP = null;
+var SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+var PLAY_SVG    = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>';
+var HAP_UI = {
+  de:{ loading:'Spikiu bereitet die Häppchen vor…', vocab:'Wortschatz mit Audio', listen:'Hörverständnis', weiterVocab:'Verstanden — weiter', weiter:'Weiter', correct:'Richtig!', wrong:'Knapp — die grüne war es.', handover:'Stark. Jetzt üben wir das im Gespräch.', skip:'Wir steigen direkt ins Gespräch ein.', locked:'Erst die Häppchen…', listenHint:'Was hörst du?' },
+  es:{ loading:'Spikiu prepara los bocados…', vocab:'Vocabulario con audio', listen:'Comprensión auditiva', weiterVocab:'Entendido — seguir', weiter:'Seguir', correct:'¡Correcto!', wrong:'Casi — era la verde.', handover:'¡Genial! Ahora lo practicamos hablando.', skip:'Entramos directo en la conversación.', locked:'Primero los bocados…', listenHint:'¿Qué oyes?' },
+  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?' }
+};
+var RAIL_LBL = {
+  de:['Thema','Wörter','Hören','Sprechen','Lektion'],
+  es:['Tema','Palabras','Escucha','Hablar','Lección'],
+  en:['Topic','Words','Listening','Speaking','Lesson']
+};
+
+function fillRail(){
+  var lbls = RAIL_LBL[uiLang()] || RAIL_LBL.de;
+  document.querySelectorAll('#rail .rail-step').forEach(function(el, i){
+    var s = el.querySelector('.rail-lbl'); if (s) s.textContent = lbls[i] || '';
+  });
+}
+function showRail(){ var r = document.getElementById('rail'); if (r){ fillRail(); r.classList.remove('hidden'); } }
+function setStage(stage){
+  var order = ['thema','wortschatz','hoeren','sprechen','lektion'];
+  var idx = order.indexOf(stage);
+  document.querySelectorAll('#rail .rail-step').forEach(function(el){
+    var i = order.indexOf(el.getAttribute('data-stage'));
+    el.classList.remove('active','done');
+    if (i >= 0 && i < idx) el.classList.add('done');     // erledigt (gold)
+    else if (i === idx) el.classList.add('active');       // aktiv (grün)
+    // 'lektion' wird nie erreicht → bleibt blass (= Paket 3)
+  });
+}
+
+function addNote(text){
+  var d = document.createElement('div'); d.className = 'scene-note';
+  d.textContent = text; chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+function lockComposer(lock){
+  guiding = lock;
+  if (lock){ input.disabled = true; sendBtn.disabled = true; input.placeholder = HAP_UI[uiLang()].locked; }
+  else { input.disabled = false; input.placeholder = INPUT_PH; sendBtn.disabled = input.value.trim() === ''; }
+}
+function addFlowButton(label, fn){
+  var row = document.createElement('div'); row.className = 'flow-row';
+  row.innerHTML = '<button class="flow-btn" type="button"></button>';
+  var b = row.querySelector('.flow-btn');
+  b.textContent = label;
+  b.onclick = function(){ row.remove(); fn(); };
+  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+}
+
+function showHapSpinner(){
+  var d = document.createElement('div'); d.className = 'message spikiu'; d.id = 'hapSpin';
+  d.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
+    + '<div style="flex:1;min-width:0;"><div class="bubble spikiu" style="display:inline-flex;align-items:center;gap:0.55rem;">'
+    + '<span class="hap-spin"></span>' + escPlain(HAP_UI[uiLang()].loading) + '</div></div>';
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+function hideHapSpinner(){ var s = document.getElementById('hapSpin'); if (s) s.remove(); }
+
+async function loadHaeppchen(){
+  lockComposer(true);
+  warmVoice(PROFILE.zielsprache);     // Stimme still im Hintergrund vorwärmen
+  showHapSpinner();
+  var data = null;
+  try {
+    var r = await fetch('/api/haeppchen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        thema:          TOPIC_LABEL,
+        zielsprache:    PROFILE.zielsprache,
+        muttersprache:  PROFILE.muttersprache,
+        koennen:        PROFILE.koennen,
+        fremde_schrift: !!PROFILE.fremde_schrift
+      })
+    });
+    data = await r.json();
+  } catch(e){ data = null; }
+  hideHapSpinner();
+  // Robust: ohne brauchbaren Wortschatz NICHT hängen bleiben — direkt ins Rollenspiel
+  // (der P1-Pfad funktioniert allein; die Häppchen sind ein Plus, kein Muss).
+  if (!data || !Array.isArray(data.wortschatz) || !data.wortschatz.length){
+    addNote(HAP_UI[uiLang()].skip);
+    startSeedTurn();
+    return;
+  }
+  HAP = data;
+  renderWortschatz();
+}
+
+function renderWortschatz(){
+  var ui = uiLang();
+  var w = document.createElement('div'); w.className = 'widget';
+  var html = '<div class="w-eyebrow">🎧 ' + escPlain(HAP_UI[ui].vocab) + '</div>';
+  HAP.wortschatz.forEach(function(h){
+    var phon  = h.lautschrift  ? '<div class="hap-phon">' + escPlain(h.lautschrift) + '</div>' : '';
+    var trans = h.uebersetzung ? '<div class="hap-trans">' + escPlain(h.uebersetzung) + '</div>' : '';
+    html += '<div class="hap-card">'
+      + '<button class="hap-play" type="button">' + PLAY_SVG + '</button>'
+      + '<div class="hap-text"><div class="hap-ziel">' + escPlain(h.ziel) + '</div>' + phon + trans + '</div></div>';
+  });
+  w.innerHTML = html;
+  chat.appendChild(w);
+  w.querySelectorAll('.hap-card').forEach(function(card, i){
+    var btn = card.querySelector('.hap-play');
+    btn.onclick = function(){ playFrom(btn, HAP.wortschatz[i].ziel, 'playing'); };
+  });
+  chat.scrollTop = chat.scrollHeight;
+  addFlowButton(HAP_UI[ui].weiterVocab, startHoeren);
+}
+
+function startHoeren(){ setStage('hoeren'); hvIndex = 0; renderHV(); }
+function renderHV(){
+  var ui = uiLang(); var item = HAP.hoerverstehen[hvIndex];
+  var w = document.createElement('div'); w.className = 'widget';   // KEINE id (mehrere Items im DOM)
+  var html = '<div class="w-eyebrow">🎧 ' + escPlain(HAP_UI[ui].listen) + ' · ' + (hvIndex+1) + ' / ' + HAP.hoerverstehen.length + '</div>'
+    + '<button class="hv-speaker" type="button">' + SPEAKER_SVG + '</button>'
+    + '<div class="hv-q">' + escPlain(item.frage || HAP_UI[ui].listenHint) + '</div>';
+  item.optionen.forEach(function(o, i){
+    var key = String.fromCharCode(65 + i);   // A, B
+    html += '<button class="hv-opt" data-i="' + i + '" type="button">'
+      + '<span class="hv-key">' + key + '</span>'
+      + '<span class="hv-opt-text">' + escPlain(o.text) + '</span>'
+      + '<span class="hv-mark">' + (o.richtig ? '✓' : '✗') + '</span></button>';
+  });
+  html += '<div class="hv-feedback"></div>';
+  w.innerHTML = html;
+  chat.appendChild(w);
+  var spk = w.querySelector('.hv-speaker');
+  spk.onclick = function(){ playFrom(spk, item.audio, 'playing'); };
+  // Referenzen über die Closure (w, item) — NIE über getElementById, sonst trifft
+  // das zweite Item die Optionen des ersten (gleiche Klassen mehrfach im DOM).
+  w.querySelectorAll('.hv-opt').forEach(function(b){
+    b.onclick = function(){ answerHV(w, item, +b.getAttribute('data-i')); };
+  });
+  chat.scrollTop = chat.scrollHeight;
+  setTimeout(function(){ playFrom(spk, item.audio, 'playing'); }, 450);   // einmal anspielen
+}
+function answerHV(w, item, oi){
+  var ui = uiLang();
+  var picked = item.optionen[oi];
+  w.querySelectorAll('.hv-opt').forEach(function(b, i){
+    b.disabled = true;
+    if (item.optionen[i].richtig) b.classList.add('correct');   // richtige immer grün enthüllen
+  });
+  var fb = w.querySelector('.hv-feedback');
+  if (picked && picked.richtig){ fb.textContent = HAP_UI[ui].correct; fb.style.color = 'var(--accent)'; }
+  else {
+    var wb = w.querySelector('.hv-opt[data-i="' + oi + '"]'); if (wb) wb.classList.add('wrong');
+    fb.textContent = HAP_UI[ui].wrong; fb.style.color = 'var(--wrong)';
+  }
+  addFlowButton(HAP_UI[ui].weiter, nextHV);
+}
+function nextHV(){
+  hvIndex++;
+  if (hvIndex < HAP.hoerverstehen.length){ renderHV(); }
+  else { handover(); }
+}
+function handover(){
+  setStage('sprechen');
+  addNote(HAP_UI[uiLang()].handover);
+  startSeedTurn();
+}
+// Der BESTEHENDE P1-Seed-Zug: schickt „Ich möchte das Thema … üben" an /api/gespraech
+// → Themen-Entrada → Rollenspiel. Unverändert, nur jetzt NACH den Häppchen. Das Thema
+// ist oben schon als User-Bubble zu sehen, darum hier kein zweites sichtbares Echo.
+function startSeedTurn(){
+  lockComposer(false);
+  var seed = GAB[uiLang()].seed(TOPIC_LABEL);
+  verlauf.push({ role: 'user', content: seed });
+  turn();
+}
+
 // Opener: warmer [EINSTIEG]-Gruß vom Backend, danach die Gabelung darunter.
 async function startOpener(){
   await turn();                 // verlauf leer → Backend setzt [EINSTIEG] → Opener-Gruß
@@ -414,7 +691,7 @@ async function startOpener(){
 input.addEventListener('input', function(){
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 130) + 'px';
-  sendBtn.disabled = busy || this.value.trim() === '';
+  sendBtn.disabled = busy || guiding || this.value.trim() === '';
 });
 input.addEventListener('keydown', function(e){
   if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if (this.value.trim()) sendMessage(); }
@@ -423,6 +700,14 @@ input.addEventListener('keydown', function(e){
 // ── Einstieg: kein Welcome-Screen, kein Onboarding. Direkt rein. ──
 fillProfileBar();
 startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach die Gabelung
+</script>
+<!-- Audio (Paket 2): audio.js ist ein ES-Modul am Root. Hier importiert, via window
+     an das klassische Haupt-Script durchgereicht (das bleibt klassisch wegen
+     onclick="sendMessage()"). Browser-Fallback steckt schon in audio.js. -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
 </script>
 <script src="nav.js" defer></script>
 </body>

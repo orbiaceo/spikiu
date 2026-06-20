@@ -6,6 +6,9 @@
     "api/gespraech.js": {
       "includeFiles": "*.md"
     },
+    "api/haeppchen.js": {
+      "includeFiles": "*.md"
+    },
     "api/taller.js": {
       "includeFiles": "*.md"
     },
