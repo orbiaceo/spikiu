@@ -52,6 +52,10 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .speak-btn:hover { background:var(--accent); color:var(--white); }
 .speak-btn.playing { animation:pulse 1s ease infinite; }
 .speak-btn svg { width:14px; height:14px; }
+/* Kalter 🔊-Klick (Stimme lädt noch): Spinner statt Lautsprecher, bis DIESER Text spielt (Teil B). */
+.speak-btn.loading { background:var(--accent2); cursor:default; }
+.speak-btn.loading svg { display:none; }
+.speak-btn.loading::after { content:''; width:13px; height:13px; border:2px solid var(--warm); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; }
 /* Gedämpftes Übersetzungs-Kästchen unter der Blase (Muttersprache, KEIN Audio) */
 .trans { margin-top:0.4rem; align-self:flex-start; background:var(--trans-bg); border:1px solid var(--trans-border); border-radius:8px; padding:0.4rem 0.7rem; font-family:'DM Sans',sans-serif; font-style:italic; font-size:0.82rem; line-height:1.45; color:var(--trans-ink); max-width:82%; }
 .bubble .retry-btn { margin-left:0.4rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:600; color:var(--accent); background:var(--white); border:1px solid #cfe6da; border-radius:100px; padding:0.2rem 0.7rem; cursor:pointer; }
@@ -176,6 +180,9 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* Abschluss-Menü (Paket 3): drei Knöpfe inline im Chat-Strom, kein Auto-Sprung */
 .endmenu { align-self:stretch; display:flex; flex-direction:column; gap:0.5rem; margin-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; }
 .endmenu .chip { width:100%; text-align:center; }
+/* ── Antwort-Paletten (Teil A): 2–3 klickbare Lerner-Antworten im geführten Thema-
+   Rollenspiel. Chips primär, Textfeld bleibt sekundär. NIE im freien Gespräch. ── */
+.antwort-palette { align-self:stretch; display:flex; flex-direction:column; gap:0.5rem; padding-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; }
 </style>
 </head>
 <body>
@@ -282,6 +289,8 @@ var verlauf = [];
 var busy = false;
 var lastTurnOk = false;   // hat die letzte Runde sauber gerendert? (steuert die Opener-Gabelung)
 var guiding = false;      // geführter Häppchen-Schritt läuft → Eingabe gesperrt (Paket 2)
+var gefuehrt = false;     // geführtes Thema-Rollenspiel? (Thema gewählt) → Antwort-Chips erlaubt. „Einfach plaudern"/frei → nie.
+var voiceReady = false;   // Stimme vorgewärmt (Teil B)? steuert Spinner vs. Puls am 🔊
 var TOPIC_LABEL = null;   // gewähltes Thema, wartet auf den P1-Seed-Zug nach den Häppchen
 var hvIndex = 0;          // aktuelles Hörverständnis-Item
 var chat = document.getElementById('chat');
@@ -305,11 +314,23 @@ function speakText(text, zielsprache){
     }
   } catch(e){}
 }
-function warmVoice(zielsprache){ if (window.spkWarm){ try { window.spkWarm(zielsprache); } catch(e){} } }
-// 🔊-Knopf-Handler: spielt + zeigt den Puls am gedrückten Knopf
+// Stimme still vorwärmen; sobald bereit, ist der nächste 🔊-Klick sofort hörbar (Teil B).
+function warmVoice(zielsprache){
+  if (!window.spkWarm) return;
+  try {
+    var p = window.spkWarm(zielsprache);
+    if (p && typeof p.then === 'function') p.then(function(){ voiceReady = true; }, function(){});
+  } catch(e){}
+}
+// 🔊-Knopf-Handler: ist die Stimme bereit → Puls; ist sie kalt → Spinner, bis DIESER
+// Text spielt (nie ein alter — der Generations-Guard in audio.js verwirft Überholtes).
 function playFrom(btn, text, cls){
-  if (btn){ btn.classList.add(cls); }
-  var done = function(){ if (btn) btn.classList.remove(cls); };
+  var loading = !voiceReady;
+  if (btn){ btn.classList.add(loading ? 'loading' : cls); }
+  var done = function(){
+    voiceReady = true;                                   // ab jetzt ist die Stimme warm
+    if (btn){ btn.classList.remove('loading'); btn.classList.remove(cls); }
+  };
   var p = speakText(text, PROFILE.zielsprache);
   if (p && typeof p.then === 'function'){ p.then(done, done); }
   else { setTimeout(done, 1400); }
@@ -442,6 +463,20 @@ function extractSceneEnd(t){
   if(!SZENE_RE.test(t||'')) return { text:t, ended:false };
   return { text:(t||'').replace(SZENE_RE,' ').trim(), ended:true };
 }
+// [OPTIONEN]…[/OPTIONEN] → 2–3 Lerner-Antworten (Zielsprache). Signal NIE roh zeigen;
+// auch verirrte/halbe Tags werden gestrippt. Nur im geführten Modus gerendert.
+function extractOptionen(t){
+  t = t || '';
+  var m = t.match(/\[OPTIONEN\]([\s\S]*?)\[\/OPTIONEN\]/i);
+  var optionen = m ? m[1].split('\n')
+    .map(function(l){ return l.replace(/\[\[[\s\S]*?\]\]/g,'').trim(); })   // ein evtl. [[…]] je Zeile raus
+    .filter(function(l){ return l.length; })
+    .slice(0, 3) : [];
+  var clean = t.replace(/\[OPTIONEN\][\s\S]*?\[\/OPTIONEN\]/ig, ' ')
+    .replace(/\[\/?OPTIONEN\]/ig, ' ')   // halbe/verirrte Tags nie roh zeigen
+    .replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  return { text: clean, optionen: optionen };
+}
 
 function renderKorrekturCard(pairs){
   var ui = p3();
@@ -520,6 +555,38 @@ function terminar(){
   row.innerHTML = '<button class="door-btn" type="button">' + escPlain(ui.toLesson) + '</button>';
   row.querySelector('.door-btn').onclick = function(){ window.location.href = 'dashboard.html#lektionen'; };
   chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+}
+
+// ── Antwort-Paletten (Teil A): 2–3 klickbare Lerner-Antworten, NUR im geführten Modus ──
+var PALETTE_LABEL = {
+  de:'Antworte mit dem gelernten Wortschatz',
+  es:'Responde con el vocabulario aprendido',
+  en:'Answer with the vocabulary you learned'
+};
+function removeOptionen(){ var p = document.getElementById('antwortPalette'); if (p) p.remove(); }
+function renderOptionen(optionen){
+  removeOptionen();
+  if (!gefuehrt || !optionen || !optionen.length) return;   // NIE im freien Gespräch
+  var ui = uiLang();
+  var wrap = document.createElement('div'); wrap.className = 'antwort-palette'; wrap.id = 'antwortPalette';
+  var chips = '';
+  optionen.forEach(function(o, i){ chips += '<button class="chip" type="button" data-i="' + i + '">' + escPlain(o) + '</button>'; });
+  wrap.innerHTML = '<div class="gab-label">' + escPlain(PALETTE_LABEL[ui] || PALETTE_LABEL.de) + '</div>'
+    + '<div class="gab-chips">' + chips + '</div>';
+  chat.appendChild(wrap);
+  wrap.querySelectorAll('.chip[data-i]').forEach(function(b){
+    b.onclick = function(){ sendUserTurn(optionen[+b.getAttribute('data-i')]); };
+  });
+  chat.scrollTop = chat.scrollHeight;
+}
+// Einen Lerner-Zug senden — getippt ODER per Antwort-Chip, identischer Pfad.
+function sendUserTurn(text){
+  if (busy || guiding) return;
+  text = (text || '').trim(); if (!text) return;
+  removeGabelung(); removeOptionen();          // alte Wahl-Elemente weg
+  addMessage('user', text);
+  verlauf.push({ role: 'user', content: text });
+  turn();
 }
 
 function addMessage(role, text){
@@ -622,8 +689,9 @@ async function turn(){
     var w = extractWechsel(reply);
     var k = extractKorrektur(w.text);
     var s = extractSceneEnd(k.text);
-    var shown = s.text;
-    if (!shown && !k.pairs.length && !s.ended && !w.ziel) shown = reply;  // malformed → roh statt leer
+    var o = extractOptionen(s.text);                        // [OPTIONEN] → Antwort-Chips
+    var shown = o.text;
+    if (!shown && !k.pairs.length && !s.ended && !w.ziel && !o.optionen.length) shown = reply;  // malformed → roh statt leer
     if (shown){
       addMessage('spikiu', shown);                          // nur Anzeige (ohne Marker)
       verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf (Marker raus, [[…]] bleibt)
@@ -632,6 +700,7 @@ async function turn(){
     if (k.pairs.length){ korrekturen = korrekturen.concat(k.pairs); renderKorrekturCard(k.pairs); }
     if (w.ziel) addDoorButton(w.ziel);                      // sanfter Knopf, kein Auto-Sprung
     if (s.ended) renderEndMenu();                           // drei Knöpfe nach der Karte
+    else if (o.optionen.length) renderOptionen(o.optionen); // sonst: Antwort-Chips (nur geführt, in renderOptionen geprüft)
   } catch(e){
     showError('Anzeige: ' + ((e && e.message) || e));
   }
@@ -644,11 +713,8 @@ function sendMessage(){
   if (busy || guiding) return;
   var text = input.value.trim();
   if (!text) return;
-  removeGabelung();                 // wer frei tippt, hat die Wahl getroffen
   input.value = ''; input.style.height = 'auto'; sendBtn.disabled = true;
-  addMessage('user', text);
-  verlauf.push({ role: 'user', content: text });
-  turn();
+  sendUserTurn(text);               // wer frei tippt, hat die Wahl getroffen (schließt Gabelung/Palette)
 }
 
 // ── Opener-Gabelung (Paket 1) ─────────────────────────────────────
@@ -694,7 +760,7 @@ function showGabelung(){
   });
 }
 
-function goFree(){ removeGabelung(); input.focus(); }   // genau der heutige Flur — kein neues Verhalten
+function goFree(){ gefuehrt = false; removeGabelung(); input.focus(); }   // freier Flur — kein neues Verhalten, NIE Antwort-Chips
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
@@ -702,7 +768,9 @@ function pickTopic(label){
   if (busy || guiding) return;
   removeGabelung();
   removeEndMenu();                       // falls ein altes Menü noch offen war
+  removeOptionen();
   korrekturen = [];                      // neue Szene → frische Korrektur-Sammlung
+  gefuehrt = true;                       // geführtes Thema-Rollenspiel → Antwort-Chips erlaubt
   TOPIC_LABEL = label;
   addMessage('user', label);             // die Wahl als User-Bubble (wie P1, nur ohne Seed-Floskel)
   showRail(); setStage('wortschatz');
@@ -988,6 +1056,11 @@ input.addEventListener('keydown', function(e){
   if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if (this.value.trim()) sendMessage(); }
 });
 
+// Teil B: Stimme schon beim RAUM-EINTRITT vorwärmen (nicht erst bei der Themenwahl).
+// Das Modul-Script unten setzt window.spkWarm erst NACH diesem klassischen Script —
+// darum als Hook, den das Modul aufruft, sobald die Audio-API da ist (idempotent).
+window.__spkBoot = function(){ warmVoice(PROFILE.zielsprache); };
+
 // ── Einstieg: kein Welcome-Screen, kein Onboarding. Direkt rein. ──
 fillProfileBar();
 startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach die Gabelung
@@ -999,6 +1072,7 @@ startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach
   import { speak, warm } from '/audio.js';
   window.spkSpeak = speak;
   window.spkWarm  = warm;
+  if (window.__spkBoot) window.__spkBoot();   // Teil B: früh vorwärmen, sobald die Audio-API bereit ist
 </script>
 <script src="nav.js" defer></script>
 </body>

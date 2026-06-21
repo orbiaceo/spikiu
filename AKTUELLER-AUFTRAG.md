@@ -1,5 +1,13 @@
 # AUFTRAG — Geführtes Gespräch · „Antwort-Paletten + Audio-Vorwärmen"
 
+> ✅ **ERLEDIGT am 21.06.2026 (Claude Code) · auf dev · kein offener Auftrag.**
+> 3 Dateien (`gespraech-modus.md` + `chat.html` + `audio.js`). Teil A: `[OPTIONEN]` →
+> 2–3 Antwort-Chips nur im geführten Rollenspiel (`gefuehrt`-Flag), nie frei, nie roh;
+> Chip = getippter Zug (`sendUserTurn`). Teil B: Früh-Warm beim Raum-Eintritt
+> (`__spkBoot`) + `voiceReady`-Spinner bei kaltem 🔊 + Anti-Desync-Generations-Guard in
+> `audio.js`. Headless `ok:true`, `node --check` + 2 Smokes grün; `api/*`/`vercel.json`
+> unberührt. NÄCHSTES = P3-Szenenende am echten Modell verifizieren, dann Kleinkram-Paket 2.
+
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigt: Antwort-Paletten = Prototyp III (`prototyp-feinschliff-iii.html`)
 

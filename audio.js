@@ -100,9 +100,16 @@ function playBlob(blob) {
   });
 }
 
+// ── Anti-Desync (Phase B): Generations-Zähler. Jeder speak() erhöht ihn und merkt
+// sich seinen Wert; die Wiedergabe-Schleife bricht ab, sobald ein neuerer speak()
+// gestartet wurde — so ertönt nie eine veraltete Phrase verspätet über einem
+// späteren 🔊-Klick (z. B. der kalt geladene Gruß über einem Wort-Klick). ────────
+let speakGen = 0;
+
 // ── Piper-Weg ──────────────────────────────────────────────────────────────────
-async function speakWithPiper(text, zielsprache) {
-  const session = await getSession(zielsprache);
+async function speakWithPiper(text, zielsprache, gen) {
+  const session = await getSession(zielsprache);   // kann beim Kaltstart Sekunden dauern
+  if (gen !== speakGen) return;                     // überholt, während das Modell lud
   const chunks = splitSentences(text);
   if (!chunks.length) return;
   emit({ phase: 'speak', zielsprache });
@@ -110,6 +117,7 @@ async function speakWithPiper(text, zielsprache) {
   let nextSynth = session.predict(chunks[0]);
   for (let i = 0; i < chunks.length; i++) {
     const blob = await nextSynth;
+    if (gen !== speakGen) return;                   // ein neuerer Klick hat übernommen
     if (i + 1 < chunks.length) nextSynth = session.predict(chunks[i + 1]);
     await playBlob(blob);
   }
@@ -138,11 +146,13 @@ function speakWithBrowser(text, zielsprache) {
 // ── Öffentlich: speak(text, zielsprache) ───────────────────────────────────────
 async function speak(text, zielsprache) {
   if (!text || !String(text).trim()) return;
+  const gen = ++speakGen;          // dieser Aufruf ist ab jetzt der aktuelle
   try {
-    await speakWithPiper(text, zielsprache);
+    await speakWithPiper(text, zielsprache, gen);
   } catch (e) {
+    if (gen !== speakGen) return;  // schon überholt → nicht verspätet nachfallbacken
     console.warn('audio: Piper nicht verfügbar → Browser-Stimme.', e);
-    await speakWithBrowser(text, zielsprache);
+    await speakWithBrowser(text, zielsprache);   // macht intern synth.cancel()
   }
 }
 
