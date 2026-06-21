@@ -1,5 +1,11 @@
 # AUFTRAG — Geführtes Gespräch · PAKET FEINSCHLIFF II „Sauberer Rhythmus"
 
+> ✅ **ERLEDIGT am 21.06.2026 (Claude Code) · auf dev · kein offener Auftrag.**
+> 3 Edits in 2 Dateien (`chat.html` + `gespraech-modus.md`): `---`-Trenner → getrennte
+> Sprechblasen (`splitThoughts`), Zielsprache aufrecht / `.trans` kursiv, kurzer
+> Szenen-Schluss. Headless verifiziert (`ok:true`), `node --check` + Smoke grün, nur 2
+> Dateien. ABNAHME-REST = Leo auf dev/Gerät (siehe Ledger). NÄCHSTES = P3 „Die Lektion".
+
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigter Prototyp: `prototyp-rhythmus-korrekturkarte.html`
 

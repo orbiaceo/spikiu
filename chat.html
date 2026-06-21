@@ -38,13 +38,20 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .bubble { max-width:82%; padding:0.85rem 1.1rem; border-radius:1.2rem; font-size:1rem; line-height:1.65; }
 .bubble.spikiu { background:var(--bg2); color:var(--ink); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; font-family:'Lora',serif; font-size:1.025rem; position:relative; padding-right:2.7rem; }
 .bubble.user { background:var(--accent); color:var(--white); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; font-size:0.975rem; }
+/* Feinschliff II: Zielsprache IMMER aufrecht — auch wenn das Modell die fremde
+   Wendung in _…_/*…* setzt, kippt die Blase nie ins Kursive. Kursiv bleibt allein
+   dem Übersetzungs-Kästchen (.trans). Betonung trägt <strong>. */
+.bubble.spikiu, .bubble.spikiu em { font-style:normal; }
+/* Mehrere Gedanken (an --- gesplittet) = mehrere gestapelte Blasen: Luft zwischen den
+   Gedanken, das Übersetzungs-Kästchen bleibt tight unter SEINER Blase (margin-top 0.4rem). */
+.message.spikiu .bubble.spikiu:not(:first-child) { margin-top:0.7rem; }
 /* 🔊 dezent in der Spikiu-Blase, nur auf dem Zielsprachen-Teil (Feinschliff). Fallback in audio.js. */
 .speak-btn { position:absolute; top:0.6rem; right:0.55rem; width:28px; height:28px; border:none; cursor:pointer; background:var(--accent2); color:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:0.16s; -webkit-tap-highlight-color:transparent; }
 .speak-btn:hover { background:var(--accent); color:var(--white); }
 .speak-btn.playing { animation:pulse 1s ease infinite; }
 .speak-btn svg { width:14px; height:14px; }
 /* Gedämpftes Übersetzungs-Kästchen unter der Blase (Muttersprache, KEIN Audio) */
-.trans { margin-top:0.4rem; align-self:flex-start; background:var(--trans-bg); border:1px solid var(--trans-border); border-radius:8px; padding:0.4rem 0.7rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; line-height:1.45; color:var(--trans-ink); max-width:82%; }
+.trans { margin-top:0.4rem; align-self:flex-start; background:var(--trans-bg); border:1px solid var(--trans-border); border-radius:8px; padding:0.4rem 0.7rem; font-family:'DM Sans',sans-serif; font-style:italic; font-size:0.82rem; line-height:1.45; color:var(--trans-ink); max-width:82%; }
 .bubble .retry-btn { margin-left:0.4rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:600; color:var(--accent); background:var(--white); border:1px solid #cfe6da; border-radius:100px; padding:0.2rem 0.7rem; cursor:pointer; }
 .bubble .retry-btn:hover { background:var(--accent); color:var(--white); }
 /* Tür-Knopf: Raumwechsel-Signal [WECHSEL:…] wird hier abgefangen → sanfter Knopf, kein Auto-Sprung */
@@ -307,6 +314,22 @@ function splitBridge(text){
   if (!ziel && trans){ ziel = trans; trans = null; }   // nie eine leere Blase
   return { ziel: ziel, trans: trans };
 }
+// ── EIN Gedanke pro Blase (Feinschliff II) ───────────────────────
+// Spikiu trennt verschiedene Gedanken/Repliken mit einer Zeile, die NUR --- (oder —)
+// enthält. Wir splitten daran in Segmente → jedes wird eine eigene Sprechblase (mit
+// eigenem splitBridge/🔊/Übersetzungs-Kästchen). Das rohe --- wird NIE gezeigt.
+// Reihenfolge: [WECHSEL] ist in turn() schon raus → hier ----Split → pro Segment [[…]].
+function splitThoughts(text){
+  var lines = (text||'').split('\n');
+  var dashOnly = /^[ \t]*(?:-{3,}|—)[ \t]*$/;   // ganze Zeile nur Striche
+  var segs = [], cur = [];
+  for (var i=0;i<lines.length;i++){
+    if (dashOnly.test(lines[i])){ segs.push(cur.join('\n')); cur = []; }
+    else cur.push(lines[i]);
+  }
+  segs.push(cur.join('\n'));
+  return segs.map(function(s){ return s.trim(); }).filter(function(s){ return s.length; });
+}
 // Klartext für die Stimme: Emphasis-Marker raus (🔊 spricht keine Unterstriche/Sterne)
 function plainForSpeech(s){
   s = (s||'');
@@ -356,15 +379,23 @@ function addMessage(role, text){
   var msg = document.createElement('div');
   msg.className = 'message ' + role;
   if (role === 'spikiu') {
-    // Zielsprache → Blase mit 🔊 (nur Zieltext); [[…]] → gedämpftes Kästchen darunter.
-    var parts = splitBridge(text);
-    var bubble = '<div class="bubble spikiu">' + fmt(parts.ziel)
-      + '<button class="speak-btn" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button></div>';
-    var box = parts.trans ? '<div class="trans">' + fmt(parts.trans) + '</div>' : '';
+    // EIN Gedanke pro Blase: erst an --- splitten, dann pro Segment [[…]] trennen.
+    // Jedes Segment → eigene Blase mit 🔊 (nur Zieltext) + ggf. eigenes Übersetzungs-Kästchen.
+    var segments = splitThoughts(text);
+    if (!segments.length) segments = [text || ''];
+    var zielTexts = [], inner = '';
+    segments.forEach(function(seg){
+      var parts = splitBridge(seg);
+      zielTexts.push(parts.ziel);
+      inner += '<div class="bubble spikiu">' + fmt(parts.ziel)
+        + '<button class="speak-btn" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button></div>';
+      if (parts.trans) inner += '<div class="trans">' + fmt(parts.trans) + '</div>';
+    });
     msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
-      + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;">' + bubble + box + '</div>';
-    var sb = msg.querySelector('.speak-btn');
-    if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(parts.ziel), 'playing'); };
+      + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;">' + inner + '</div>';
+    msg.querySelectorAll('.speak-btn').forEach(function(sb, i){
+      sb.onclick = function(){ playFrom(sb, plainForSpeech(zielTexts[i]), 'playing'); };
+    });
   } else {
     msg.innerHTML = '<div class="bubble user">' + escPlain(text) + '</div>';
   }
