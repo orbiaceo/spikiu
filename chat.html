@@ -183,6 +183,16 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Antwort-Paletten (Teil A): 2–3 klickbare Lerner-Antworten im geführten Thema-
    Rollenspiel. Chips primär, Textfeld bleibt sekundär. NIE im freien Gespräch. ── */
 .antwort-palette { align-self:stretch; display:flex; flex-direction:column; gap:0.5rem; padding-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; }
+/* ── Ausstiegs-Leiste (Teil 31 #1): dauerhaft erreichbar im geführten Rollenspiel,
+   über dem Eingabefeld. ⋯ öffnet dieselben Optionen wie das End-Menü (Anderes Thema /
+   Beenden → Lektion). Nur geführt; im freien Flur ausgeblendet. ── */
+.exit-bar { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:0.5rem; }
+.exit-bar[hidden] { display:none; }
+.exit-toggle { align-self:flex-end; background:none; border:1px solid var(--faint); color:var(--mid); border-radius:100px; padding:0.2rem 0.75rem; font-family:'DM Sans',sans-serif; font-size:0.8rem; cursor:pointer; transition:0.15s; -webkit-tap-highlight-color:transparent; }
+.exit-toggle:hover { border-color:var(--accent); color:var(--accent); }
+.exit-menu { display:flex; flex-direction:column; gap:0.4rem; }
+.exit-menu[hidden] { display:none; }
+.exit-menu .chip { width:100%; text-align:center; }
 </style>
 </head>
 <body>
@@ -214,6 +224,14 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
   <div class="chat" id="chat"></div>
 
   <div class="input-area">
+    <!-- Dauerhafter Ausstieg im geführten Rollenspiel (Teil 31 #1); per JS ein-/ausgeblendet. -->
+    <div class="exit-bar" id="exitBar" hidden>
+      <div class="exit-menu" id="exitMenu" hidden>
+        <button class="chip" type="button" id="exitOtro"></button>
+        <button class="chip full" type="button" id="exitTerminar"></button>
+      </div>
+      <button class="exit-toggle" type="button" id="exitToggle"></button>
+    </div>
     <div class="input-row">
       <textarea id="userInput" placeholder="Schreib etwas…" rows="1"></textarea>
       <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">
@@ -500,6 +518,7 @@ function renderKorrekturCard(pairs){
 // Drei Knöpfe: gleiches Thema / anderes Thema / beenden→Lektion. Kein Auto-Sprung.
 function renderEndMenu(){
   if (document.getElementById('endmenu')) return;
+  setExitVisible(false);                // Szenenende-Menü zeigt die Optionen schon → Leiste weg
   setStage('sprechen');                 // Szenenende; „Lektion" erst bei „Terminar"
   var ui = p3();
   var wrap = document.createElement('div'); wrap.className = 'endmenu'; wrap.id = 'endmenu';
@@ -519,6 +538,7 @@ function removeEndMenu(){ var m = document.getElementById('endmenu'); if (m) m.r
 
 function mismoTema(){                     // neue Runde, gleiches Thema/Wortschatz
   removeEndMenu();
+  setExitVisible(true);                  // Rollenspiel läuft weiter → Ausstieg wieder erreichbar
   var seed = p3().mismoSeed;
   addMessage('user', seed);
   verlauf.push({ role:'user', content: seed });
@@ -526,6 +546,7 @@ function mismoTema(){                     // neue Runde, gleiches Thema/Wortscha
 }
 function otroTema(){                      // zurück zur Themen-Gabelung → regeneriert Häppchen
   removeEndMenu();
+  setExitVisible(false);                 // raus aus dem Rollenspiel → keine Ausstiegs-Leiste
   TOPIC_LABEL = null;
   setStage('thema');
   showGabelung();
@@ -739,6 +760,7 @@ function removeGabelung(){ var g = document.getElementById('gabelung'); if (g) g
 
 function showGabelung(){
   if (document.getElementById('gabelung')) return;
+  setExitVisible(false);              // an der Themen-Gabelung läuft kein Rollenspiel
   var ui = uiLang(), t = GAB[ui];
   var chips = TOPICS.map(function(topic, i){
     return '<button class="chip" type="button" data-i="' + i + '">' + topic.emoji + ' ' + escPlain(topic[ui]) + '</button>';
@@ -760,7 +782,7 @@ function showGabelung(){
   });
 }
 
-function goFree(){ gefuehrt = false; removeGabelung(); input.focus(); }   // freier Flur — kein neues Verhalten, NIE Antwort-Chips
+function goFree(){ gefuehrt = false; setExitVisible(false); removeGabelung(); input.focus(); }   // freier Flur — kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
@@ -1035,6 +1057,7 @@ function handover(){
 // ist oben schon als User-Bubble zu sehen, darum hier kein zweites sichtbares Echo.
 function startSeedTurn(){
   lockComposer(false);
+  setExitVisible(true);              // Rollenspiel beginnt → Ausstieg dauerhaft erreichbar
   var seed = GAB[uiLang()].seed(TOPIC_LABEL);
   verlauf.push({ role: 'user', content: seed });
   turn();
@@ -1055,6 +1078,29 @@ input.addEventListener('input', function(){
 input.addEventListener('keydown', function(e){
   if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if (this.value.trim()) sendMessage(); }
 });
+
+// ── Ausstiegs-Leiste (Teil 31 #1): dauerhaft erreichbar im geführten Rollenspiel ──
+// ⋯ über dem Eingabefeld öffnet dieselben Optionen wie das End-Menü (Anderes Thema /
+// Beenden → Lektion) — kein neues System, dieselben Handler otroTema/terminar.
+var EXIT_UI = { de:'⋯ Optionen', es:'⋯ Opciones', en:'⋯ Options' };
+var exitBar = document.getElementById('exitBar');
+var exitMenu = document.getElementById('exitMenu');
+var exitToggle = document.getElementById('exitToggle');
+function setExitVisible(show){
+  if (show){
+    var ui = uiLang();
+    exitToggle.textContent = EXIT_UI[ui] || EXIT_UI.de;
+    document.getElementById('exitOtro').textContent = p3().otro;
+    document.getElementById('exitTerminar').textContent = p3().terminar;
+    exitBar.hidden = false;
+  } else {
+    exitMenu.hidden = true;
+    exitBar.hidden = true;
+  }
+}
+exitToggle.onclick = function(){ exitMenu.hidden = !exitMenu.hidden; };
+document.getElementById('exitOtro').onclick = function(){ exitMenu.hidden = true; otroTema(); };       // otroTema blendet die Leiste selbst aus
+document.getElementById('exitTerminar').onclick = function(){ exitMenu.hidden = true; terminar(); };   // navigiert ins Dashboard
 
 // Teil B: Stimme schon beim RAUM-EINTRITT vorwärmen (nicht erst bei der Themenwahl).
 // Das Modul-Script unten setzt window.spkWarm erst NACH diesem klassischen Script —

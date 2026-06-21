@@ -1,5 +1,13 @@
 # AUFTRAG — Geführtes Gespräch · „Roleplay-Feinschliff" (Ausstieg · Abschluss · Blasen · Intonation)
 
+> ✅ **ERLEDIGT am 21.06.2026 (Claude Code) · auf dev · kein offener Auftrag.**
+> 2 Dateien (`chat.html` + `gespraech-modus.md`); `audio.js` unberührt. (1) Ausstiegs-Leiste
+> `⋯` im geführten Rollenspiel (Anderes Thema / Beenden → Lektion, Optik = End-Menü). (2a)
+> Szenenende ohne Lob-/„was-willst-du"-Blase (Figur-Schluss + `[SZENENENDE]`). (2b) `---` nur
+> für echte Gedankenwechsel, sonst EINE Blase. (3) Intonation untersucht: `¿…?` läuft
+> unversehrt zu Piper → **Beta-Grenze** des `es_ES-sharvard-medium`-Modells (ElevenLabs Phase 2),
+> `audio.js` nicht angefasst. Headless `ok:true`, `node --check` + Smokes grün. NÄCHSTES = Kleinkram-Paket 2.
+
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Baut auf „Antwort-Paletten + Audio-Vorwärmen" (Teil 30, live)
 
