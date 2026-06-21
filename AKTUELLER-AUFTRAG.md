@@ -1,99 +1,102 @@
-# AUFTRAG — Geführtes Gespräch · PAKET FEINSCHLIFF II „Sauberer Rhythmus"
-
-> ✅ **ERLEDIGT am 21.06.2026 (Claude Code) · auf dev · kein offener Auftrag.**
-> 3 Edits in 2 Dateien (`chat.html` + `gespraech-modus.md`): `---`-Trenner → getrennte
-> Sprechblasen (`splitThoughts`), Zielsprache aufrecht / `.trans` kursiv, kurzer
-> Szenen-Schluss. Headless verifiziert (`ok:true`), `node --check` + Smoke grün, nur 2
-> Dateien. ABNAHME-REST = Leo auf dev/Gerät (siehe Ledger). NÄCHSTES = P3 „Die Lektion".
+# AUFTRAG — Geführtes Gespräch · PAKET P3 „Die Lektion + Roleplay-Feinschliff"
 
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Genehmigter Prototyp: `prototyp-rhythmus-korrekturkarte.html`
+Branch: dev · Genehmigte Prototypen: `prototyp-rhythmus-korrekturkarte.html` + `prototyp-feinschliff-iii.html`
 
-> Direkt nach Feinschliff I (Teil 27, live). Leos Geräte-Test zeigte: die Roleplay-Wand
-> HÄLT (kein Lehrer-Austritt mehr in der Szene) ✅ — aber drei Darstellungs-Sachen
-> stören noch. Drei chirurgische Edits, ZWEI Dateien. KEIN Endpoint, KEIN P3.
-
----
-
-## DIE DREI BEFUNDE (aus Leos Test, Café DE→ES anfang)
-
-1. **Rohes `---` sichtbar.** Spikiu trennt Gedanken mit `---`; das Frontend zeigt den
-   Strich roh in der Blase. Soll nie als Text erscheinen.
-2. **Mehrere Infos in einer Blase.** Szenen-Rahmung + Eröffnungsreplik kleben in einer
-   Blase. Leo will: EIN Gedanke pro Blase — „nicht mehr als eine Information für Auge
-   und Hirn" (gerade bei heutiger Konzentrationsschwäche).
-3. **Zielsprache kursiv.** Die Sprechblase rendert die Zielsprache kursiv; kursiv soll
-   NUR das Übersetzungs-Kästchen sein.
-
-Plus: der **Szenen-Schluss wurde zum Vortrag** (Tilde-Korrektur „cuánto", Trinkgeld-
-Erklärung). Soll kurz sein. (Die strukturierte Korrektur-Karte kommt in P3 — hier NICHT.)
+> Baut auf Feinschliff II (live, getestet). P3 macht das Szenenende fertig + tilgt den
+> dokumentierten Lektion-Disconnect. Bündelt vier genehmigte Punkte aus Leos Test
+> (Prototyp III) — aber NUR die roleplay-/szenenende-Seite. Punkt ① (Hörverständnis-
+> Varianten) ist ein EIGENES Folge-Paket („Übungs-Varianten"), NICHT hier.
 
 ---
 
-## EDIT 1 — Eine Blase = ein Gedanke · `chat.html` + `gespraech-modus.md`
+## FÜNF EDITS · Dateien: `gespraech-modus.md` + `chat.html` (+ `generate-lesson.js`/`dashboard.html` NUR lesen/anschließen)
 
-**Prompt (`gespraech-modus.md`):** Neuer/erweiterter Hinweis — Spikiu trennt verschiedene
-Gedanken/Repliken mit einer eigenen Zeile, die NUR `---` enthält; die Oberfläche macht
-daraus GETRENNTE Sprechblasen. Nie mehr als ein Gedanke pro Blase. Konkret: die
-Szenen-Rahmung („Üben wir im Café. Ich bin der Kellner, du der Gast.") ist EINE Blase,
-die Eröffnungsreplik der Figur („Buenos días, ¿qué le pongo?") eine SEPARATE Blase. Das
-`---` ist Struktur-Signal (wie `[WECHSEL]`/`[[…]]`) — nie erklären, nie als Inhalt.
+### A — Rollenspiel am gelernten Wortschatz verankern (Punkt ②) · `gespraech-modus.md`
+Bei `koennen=anfang` (und großteils `mittel`, bis ~A2): das Rollenspiel bleibt ENG am
+Häppchen-Wortschatz des gewählten Themas. Spikiu improvisiert höchstens 1–2 Sätze, fragt
+NICHT nach entferntem Stoff oder Vergangenheit, und führt den Lerner sanft dazu, die
+gerade gelernten Wörter zu benutzen. Das Register darf zur Figur passen (ein Taxifahrer
+klingt wie ein Taxifahrer), aber der lexikalisch-grammatische RAHMEN bleibt eng am
+Gelernten. Die `[[…]]`-Brücke hilft, aber der Anker ist der Wortschatz, nicht freie Fantasie.
 
-**Frontend (`chat.html`):** Jede Spikiu-Nachricht VOR dem `[[…]]`-Split zuerst an Zeilen,
-die nur `---` (oder `—`) sind, in Segmente teilen → JEDES Segment wird eine eigene
-Sprechblase (mit eigenem `splitBridge`/🔊/Übersetzungs-Kästchen, bestehende Logik
-wiederverwenden). Rohes `---` wird NIE gezeigt. Reihenfolge der Extraktion: `[WECHSEL]`
-zuerst (wie bisher) → dann an `---` splitten → pro Segment `[[…]]` trennen.
+### B — Höchstens 2 Blasen, fast immer 1 (Punkt ④) · `gespraech-modus.md`
+Pro Spikiu-Ausgabe HÖCHSTENS zwei Sprechblasen, im Normalfall EINE. Default = eine Blase
+(Ziel + 🔊 + `[[…]]`-Brücke). Zwei nur wenn wirklich nötig (z. B. Szenen-Rahmung + erste
+Replik der Figur). NIE drei oder mehr. (Verschärft den `---`-Trenner aus Feinschliff II:
+trennen ja, aber sparsam — ein Gedanke, eine Blase, dann stoppen.)
 
-## EDIT 2 — Kursiv nur für die Übersetzung · `chat.html`
+### C — Abschluss = Menü, KEIN Lob-Gerede (Punkt ③) · `gespraech-modus.md` + `chat.html`
+Am Szenenende KEIN überschwängliches Lob („super gemacht", „du hast das toll…"). Nur eine
+knappe, sachliche Frage + ein Menü mit DREI Optionen (chat.html rendert die Knöpfe,
+Labels i18n nach `profile.muttersprache` de/es/en):
+1. **Mismo tema** — weiter üben (neue Runde, gleicher Wortschatz/Thema).
+2. **Otro tema** — zurück zur Themen-Gabelung (die bestehende P1-Gabelung erneut aufrufen
+   → bei Wahl wird der ganze Prozess neu erzeugt: neue Häppchen usw.).
+3. **Terminar** → Lektion (siehe E).
+Das Prompt (`gespraech-modus.md`) sagt nur: Szenenende ist knapp + sachlich, kein Lob,
+Übergabe ans Menü. Die Knöpfe macht das Frontend.
 
-Die Sprechblase (Zielsprache) IMMER **aufrecht** (`font-style: normal`), nie kursiv.
-Nur das Übersetzungs-Kästchen `.trans` bleibt kursiv + gedämpft. Aktuell rendert die Blase
-kursiv — Ursache finden und beheben (CSS der Blase ODER `_…_`-Emphasis, die als kursiv
-durchschlägt). Stil-Referenz: `prototyp-rhythmus-korrekturkarte.html` (Blase = Lora
-aufrecht, Kästchen = kursiv).
+### D — Korrektur-Karte am Szenenende (genehmigt) · `gespraech-modus.md` (Vertrag) + `chat.html` (Widget)
+VOR dem Menü, NUR wenn es kommunikativ unpassende Wendungen gab: Spikiu hängt ein
+strukturiertes Signal an, z. B.:
+```
+[KORREKTUR]
+Pagar, por favor. -> La cuenta, por favor.
+Quiero un taxi grande. -> Un taxi, por favor.
+[/KORREKTUR]
+```
+- NUR **kommunikativ unpassend** (so sagt es ein Muttersprachler nicht), NICHT Grammatik/
+  Orthografie/Akzente. Max **1–3** Paare. KEINE Erklärung im Signal.
+- `chat.html` parst `[KORREKTUR]…[/KORREKTUR]` → rendert die Zwei-Spalten-Karte
+  „Du hast gesagt → Besser" (Stil EXAKT aus `prototyp-feinschliff-iii.html`/
+  `prototyp-rhythmus-korrekturkarte.html`: links gedämpft/gold `--said-*`, rechts grün
+  `--accent2` mit 🔊 auf der „Besser"-Spalte). Signal NIE roh zeigen. Gab es nichts → keine
+  Karte, direkt Menü.
+- Das **WARUM** steht NICHT auf der Karte — es kommt in der Lektion (E).
 
-## EDIT 3 — Kurzer Szenen-Schluss · `gespraech-modus.md`
-
-Den Abschnitt „IN DER SZENE BLEIBEN" / Szenenende präzisieren: Am Szenenende hält Spikiu
-sich KURZ — ein warmer, knapper Gruß + die bestehende Frage (weitermachen / anderes /
-weiter plaudern). KEINE Grammatik-/Orthografie-Belehrung, KEINE langen Erklärungen, KEINE
-Tilde-/Akzent-Korrekturen im Fließtext. (Die strukturierte Korrektur kommt später —
-NICHT erwähnen, A2-Lehre.)
+### E — Lektion-Anschluss: den kaputten Link tilgen · `chat.html` (+ `generate-lesson.js`/`dashboard.html` lesen)
+ZUERST `generate-lesson.js` UND die Lektionen-Sektion in `dashboard.html` LESEN, um den
+bestehenden Vertrag zu verstehen (welcher localStorage-Key, welches Format erwartet der
+Generator/der Dashboard-Knopf). DANN passend anschließen:
+- Bei **„Terminar"**: `chat.html` schreibt den `verlauf` (inkl. der Korrektur-Wendungen)
+  in `lastConversation` (localStorage, im erwarteten Format) und navigiert zu
+  `dashboard.html#lektionen`. Heute ist der Link tot, WEIL chat.html `lastConversation`
+  NIE schreibt — genau das hier beheben.
+- Der bestehende Dashboard-Knopf/Generator (`/api/generate-lesson`, laut Ledger gesund)
+  greift dann auf `lastConversation` zu und erzeugt die Lektion. In der Lektion erklärt
+  Spikiu das WARUM der Korrekturen (z. B. warum nicht „pagar, por favor") — das, was die
+  Karte bewusst weglässt.
+- Falls `generate-lesson.js` dafür nachjustiert werden muss (Verlauf/Korrekturen als Input,
+  WARUM-Erklärung im Output): NUR minimal + sauber; sonst NICHT umschreiben. Wenn es größer
+  würde → STOP + im Bericht melden (dann eigenes Folge-Paket P3-B).
 
 ---
 
 ## ABNAHME (alles grün, sonst nicht fertig)
-
-- [ ] **Zwei Blasen beim Einstieg:** Szenen-Rahmung und Eröffnungsreplik sind GETRENNTE
-      Sprechblasen; kein rohes `---` mehr irgendwo.
-- [ ] **Ein Gedanke pro Blase** durchgängig (auch mittendrin, wenn das Modell `---` setzt).
-- [ ] **Zielsprache aufrecht**, nur das Übersetzungs-Kästchen kursiv.
-- [ ] **Szenen-Schluss kurz** — kein Vortrag, keine Grammatik-/Tilde-Belehrung.
-- [ ] 🔊 weiter pro Ziel-Blase (nur Zieltext); `[[…]]`/`[WECHSEL:…]` lecken nie; freier
-      Flur + Häppchen-Flow (P2) + Roleplay-Wand (Feinschliff I) unberührt.
-- [ ] `node --check` grün; nur **2 Dateien** (`gespraech-modus.md` + `chat.html`);
-      `gespraech.js`/`haeppchen.js`/`vercel.json` unangetastet.
-- [ ] keine vom Browser belegten Variablennamen; Emphasis nur `<em>`.
-
----
+- [ ] **Anker:** Rollenspiel bei `anfang` bleibt am Häppchen-Wortschatz, keine entfernten
+      Themen/Vergangenheit, kein Abdriften.
+- [ ] **Blasen:** höchstens 2, fast immer 1 pro Spikiu-Ausgabe; nie 3+.
+- [ ] **Abschluss:** kein Lob-Gerede; knappe Frage + 3-Knopf-Menü (i18n). „Otro tema" →
+      Themen-Gabelung + Neu-Generierung; „Mismo tema" → neue Runde; „Terminar" → Lektion.
+- [ ] **Korrektur-Karte:** zwei Spalten „Du hast gesagt → Besser", nur kommunikativ,
+      ohne Erklärung, 🔊 auf „Besser"; `[KORREKTUR]` nie roh; nichts → keine Karte.
+- [ ] **Lektion-Link lebt:** „Terminar" schreibt `lastConversation` → Dashboard erzeugt
+      die Lektion (vorher fand der Knopf nichts). Die Lektion erklärt das WARUM.
+- [ ] `[WECHSEL:…]`/`[[…]]`/Häppchen-Flow/freier Flur unberührt; `node --check` grün;
+      keine vom Browser belegten Variablennamen; Emphasis nur `<em>`.
 
 ## AUSDRÜCKLICH NICHT
-- KEINE Korrektur-Karte hier (= P3, Design schon genehmigt im Prototyp).
-- KEINE Lektion-Verdrahtung / kein „als Lektion"-Knopf (= P3).
-- `api/*` nicht anfassen. Kein Stripe/Supabase.
+- KEINE Hörverständnis-Varianten (Punkt ① Position-Zufall + Wörter-Tippen) — eigenes
+  Folge-Paket „Übungs-Varianten" (Design im Prototyp `prototyp-feinschliff-iii.html` fixiert).
+- `api/haeppchen.js`/`api/gespraech.js` NICHT umschreiben.
+- Kein Stripe/Supabase, keine Modelle ins Repo.
 
----
-
-## DANACH — P3 „Die Lektion" (Design fixiert, Karte genehmigt)
-- **Korrektur-Karte am Szenenende** (genehmigt in `prototyp-rhythmus-korrekturkarte.html`):
-  zwei Spalten **„Du hast gesagt → Besser"**, farbcodiert (links gedämpft/gold, rechts
-  grün mit 🔊), je ein Paar pro Zeile, **NUR kommunikativ unpassend** (nicht Grammatik/
-  Orthografie), **OHNE Erklärung**. Beispiel: „Pagar, por favor." → „La cuenta, por favor."
-- **Gentle close + drei Türen:** weiter üben / weiter plaudern / **als Lektion speichern**.
-- **`chat.html` schreibt `verlauf`→`lastConversation`** + „als Lektion" real an
-  `/api/generate-lesson` → Dashboard (tilgt den Lektion-Disconnect).
-- In der **Lektion** erklärt Spikiu das WARUM (z. B. warum nicht „pagar, por favor").
-- Dann: Kleinkram-Paket 2 (Genus-Begrüßung + Lesebegleiter-intro) · „Audio überall I —
-  Lesebegleiter" (Sermon kürzen + 🔊 + Mini-Phonetik) · „Audio überall II — Reader"
-  (🔊 an jeder Zielsprachen-Wendung; vorher `cap*-v2.html`-Struktur prüfen).
+## DANACH (Reihenfolge)
+1. **„Übungs-Varianten" (Punkt ①):** Hörverständnis — richtige Option ZUFÄLLIG platziert +
+   neuer Übungstyp „Wörter tippen" (Audio → markiere die gehörten Wörter, Distraktoren als
+   Minimalpaar). Toucht `api/haeppchen.js` (JSON-Vertrag um Typ + Position erweitern),
+   `haeppchen-modus.md` (Regeln + Distraktor-Logik), `chat.html` (Word-Spotting-Widget).
+   Design genehmigt in `prototyp-feinschliff-iii.html`.
+2. Kleinkram-Paket 2 (Genus-Begrüßung + Lesebegleiter-intro) · Audio überall I/II ·
+   Werkstatt-Variante B · Paket B live · A2 · Paket C.
