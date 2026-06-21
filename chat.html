@@ -193,6 +193,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .exit-menu { display:flex; flex-direction:column; gap:0.4rem; }
 .exit-menu[hidden] { display:none; }
 .exit-menu .chip { width:100%; text-align:center; }
+/* ── Freies-Gespräch-Ausstieg (Teil 32 #1): dezenter „Gespräch beenden", dauerhaft
+   sichtbar im freien Flur (ab ≥2 Verlauf-Einträgen). Optik wie die Ausstiegs-Leiste. ── */
+.free-exit { display:flex; margin-bottom:0.5rem; }
+.free-exit[hidden] { display:none; }
+.free-exit .exit-toggle { align-self:flex-end; margin-left:auto; }
+/* ── Lektion-Angebot (Teil 32 #2): Ja/Nein-Karte am Gesprächsende, Stil wie End-Menü. ── */
+.app.dissolving { transition:opacity 0.6s ease, filter 0.6s ease; opacity:0; filter:blur(6px); pointer-events:none; }
 </style>
 </head>
 <body>
@@ -231,6 +238,10 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
         <button class="chip full" type="button" id="exitTerminar"></button>
       </div>
       <button class="exit-toggle" type="button" id="exitToggle"></button>
+    </div>
+    <!-- Freies Gespräch: dezenter „Gespräch beenden" (Teil 32 #1); per JS ein-/ausgeblendet. -->
+    <div class="free-exit" id="freeExitBar" hidden>
+      <button class="exit-toggle" type="button" id="freeExitBtn"></button>
     </div>
     <div class="input-row">
       <textarea id="userInput" placeholder="Schreib etwas…" rows="1"></textarea>
@@ -551,13 +562,48 @@ function otroTema(){                      // zurück zur Themen-Gabelung → reg
   setStage('thema');
   showGabelung();
 }
-// „Terminar" → Lektion-Anschluss: verlauf (+ Korrekturen) als lastConversation in
-// spikiu_user schreiben (Format wie /api/generate-lesson erwartet) und ins Dashboard
-// übergeben. Der bestehende Dashboard-Generator greift lastConversation ab — wir
-// schreiben den heute toten Schlüssel, mehr nicht (kein Endpoint-Umbau).
+// „Beenden" (geführtes Rollenspiel ODER freier Flur) → Lektion-Angebot (Teil 32).
+// Kein Dashboard-Sprung mehr, kein lastConversation-Schreib in terminar — die
+// Entscheidung passiert jetzt hier am Gesprächsende (offerLesson → makeLessonAndLeave).
 function terminar(){
   removeEndMenu();
   setStage('lektion');
+  offerLesson();
+}
+
+// ── Lektion-Angebot am Gesprächsende (Teil 32 #2 + #3) ────────────
+var END_UI = {
+  de:{ endConvo:'Gespräch beenden', offer:'Möchtest du eine Lektion aus diesem Gespräch?',
+       yes:'Ja, gern', no:'Nein, danke', byeNo:'Alles klar. Bis bald! 🐾',
+       making:'Spikiu bastelt deine Lektion …',
+       byeMade:'Du findest sie im Dashboard unter Meine Lektionen. Bis bald! 🐾',
+       err:'Das hat gerade nicht geklappt — versuch es gleich nochmal.' },
+  es:{ endConvo:'Terminar conversación', offer:'¿Quieres una lección de esta conversación?',
+       yes:'Sí, claro', no:'No, gracias', byeNo:'De acuerdo. ¡Hasta pronto! 🐾',
+       making:'Spikiu está preparando tu lección …',
+       byeMade:'La encontrarás en el panel, en Mis lecciones. ¡Hasta pronto! 🐾',
+       err:'No ha funcionado — inténtalo de nuevo en un momento.' },
+  en:{ endConvo:'End conversation', offer:'Would you like a lesson from this conversation?',
+       yes:'Yes, please', no:'No, thanks', byeNo:'All right. See you soon! 🐾',
+       making:'Spikiu is making your lesson …',
+       byeMade:'You’ll find it in the dashboard under My Lessons. See you soon! 🐾',
+       err:'That didn’t work just now — try again in a moment.' }
+};
+function endUI(){ return END_UI[uiLang()] || END_UI.de; }
+
+// Eine schlichte Spikiu-Blase OHNE 🔊 (Text ist Muttersprache, nicht Zielsprache).
+function addPlainSpikiu(text){
+  var msg = document.createElement('div'); msg.className = 'message spikiu';
+  msg.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
+    + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;">'
+    + '<div class="bubble spikiu" style="padding-right:1.1rem;">' + escPlain(text) + '</div></div>';
+  chat.appendChild(msg); chat.scrollTop = chat.scrollHeight;
+  return msg;
+}
+
+// conversationHistory wie der bewährte Dashboard-Generator sie erwartet: verlauf +
+// gesammelte Korrektur-Paare als Schluss-Eintrag (genau wie terminar es früher baute).
+function buildConvoForLesson(){
   var convo = (Array.isArray(verlauf) ? verlauf : []).map(function(m){
     return { role: m.role, content: m.content };
   });
@@ -565,17 +611,104 @@ function terminar(){
     var lines = korrekturen.map(function(p){ return '"' + p.said + '" -> "' + p.better + '"'; }).join('\n');
     convo.push({ role:'assistant', content:'[Correcciones de la escena]\n' + lines });
   }
+  return convo;
+}
+
+// Ja/Nein-Karte: Spikiu-Blase + zwei Knöpfe (Stil End-Menü). Aus geführtem Rollenspiel
+// (terminar) UND freiem Gespräch (Beenden-Knopf) erreichbar.
+function offerLesson(){
+  if (document.getElementById('lessonOffer')) return;
+  setExitVisible(false);
+  freeExitBar.hidden = true;
+  removeEndMenu(); removeOptionen();
+  var ui = endUI();
+  addPlainSpikiu(ui.offer);
+  var wrap = document.createElement('div'); wrap.className = 'endmenu'; wrap.id = 'lessonOffer';
+  wrap.innerHTML = '<button class="chip full" type="button" id="loYes"></button>'
+    + '<button class="chip" type="button" id="loNo"></button>';
+  wrap.querySelector('#loYes').textContent = ui.yes;
+  wrap.querySelector('#loNo').textContent = ui.no;
+  chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+  wrap.querySelector('#loYes').onclick = makeLessonAndLeave;
+  wrap.querySelector('#loNo').onclick = function(){
+    wrap.remove();
+    addPlainSpikiu(endUI().byeNo);          // warmer Abschied; Chat bleibt (nicht auflösen)
+    updateFreeExit();
+  };
+}
+
+function showLessonSpinner(){
+  if (document.getElementById('lessonSpin')) return;
+  var d = document.createElement('div'); d.className = 'message spikiu'; d.id = 'lessonSpin';
+  d.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
+    + '<div style="flex:1;min-width:0;"><div class="bubble spikiu" style="display:inline-flex;align-items:center;gap:0.55rem;padding-right:1.1rem;">'
+    + '<span class="hap-spin"></span>' + escPlain(endUI().making) + '</div></div>';
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+function hideLessonSpinner(){ var s = document.getElementById('lessonSpin'); if (s) s.remove(); }
+
+// Ja → Lektion DIREKT erzeugen (Generator + Schema unberührt), rolling-3 speichern,
+// dann sanfte Auflösung → Dashboard. Speichern MUSS vor der Navigation passieren.
+async function makeLessonAndLeave(){
+  var offer = document.getElementById('lessonOffer'); if (offer) offer.remove();
+  setExitVisible(false); freeExitBar.hidden = true;
+  showLessonSpinner();
+  var ui = endUI();
+  var u = {};
+  try { u = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch(e){ u = {}; }
+  var d = null;
   try {
-    var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
-    u.lastConversation = convo;
-    localStorage.setItem('spikiu_user', JSON.stringify(u));
-  } catch(e){}
-  var ui = p3();
-  addNote(ui.lessonNote);
-  var row = document.createElement('div'); row.className = 'door-row';
-  row.innerHTML = '<button class="door-btn" type="button">' + escPlain(ui.toLesson) + '</button>';
-  row.querySelector('.door-btn').onclick = function(){ window.location.href = 'dashboard.html#lektionen'; };
-  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+    var r = await fetch('/api/generate-lesson', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:                u.name,
+        nativeLang:          u.nativeLang,
+        profile:             u.profile,
+        conversationHistory: buildConvoForLesson()
+      })
+    });
+    d = await r.json();
+  } catch(e){ d = null; }
+  hideLessonSpinner();
+  if (!d || !d.lesson){
+    addPlainSpikiu(ui.err);                 // ehrlich, keine Navigation, Beenden bleibt erreichbar
+    updateFreeExit();
+    return;
+  }
+  // Ergebnis-Lektion: id + createdAt + zielsprache (Letzteres fürs 🔊 im Poster).
+  var entry = {
+    id:              'lesson_' + Date.now(),
+    topic:           (d.lesson.title) || 'Lektion',
+    fromConversation: true,
+    lesson:          d.lesson,
+    createdAt:       new Date().toISOString(),
+    zielsprache:     PROFILE.zielsprache
+  };
+  // Rolling-3: anhängen, nach createdAt absteigend behalten, max 3 (älteste fällt raus).
+  var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
+  arr.push(entry);
+  arr.sort(function(a, b){ return (b.createdAt || '').localeCompare(a.createdAt || ''); });
+  arr = arr.slice(0, 3);
+  u.lessons = arr;
+  try { localStorage.setItem('spikiu_user', JSON.stringify(u)); } catch(e){}   // VOR der Navigation
+  addPlainSpikiu(ui.byeMade);
+  // Sanfte Auflösung (fade + leichtes blur) → Dashboard.
+  var app = document.querySelector('.app');
+  setTimeout(function(){ if (app) app.classList.add('dissolving'); }, 350);
+  setTimeout(function(){ window.location.href = 'dashboard.html#lektionen'; }, 1050);
+}
+
+// Sichtbarkeit des freien „Gespräch beenden" (Teil 32 #1): nur im freien Flur, ab
+// ≥2 Verlauf-Einträgen, nicht beim leeren Opener / nicht an der Themen-Gabelung /
+// nicht während eines geführten Schritts oder offenen Angebots.
+function updateFreeExit(){
+  var show = !gefuehrt && !guiding
+    && Array.isArray(verlauf) && verlauf.length >= 2
+    && !document.getElementById('lessonOffer')
+    && !document.getElementById('gabelung');
+  freeExitBar.hidden = !show;
+  if (show) freeExitBtn.textContent = endUI().endConvo;
 }
 
 // ── Antwort-Paletten (Teil A): 2–3 klickbare Lerner-Antworten, NUR im geführten Modus ──
@@ -727,6 +860,7 @@ async function turn(){
   }
   busy = false;
   sendBtn.disabled = input.value.trim() === '';
+  updateFreeExit();                 // freier „Gespräch beenden" ein-/ausblenden (Teil 32 #1)
   input.focus();
 }
 
@@ -782,7 +916,7 @@ function showGabelung(){
   });
 }
 
-function goFree(){ gefuehrt = false; setExitVisible(false); removeGabelung(); input.focus(); }   // freier Flur — kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
+function goFree(){ gefuehrt = false; setExitVisible(false); removeGabelung(); updateFreeExit(); input.focus(); }   // freier Flur — kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
@@ -1100,7 +1234,12 @@ function setExitVisible(show){
 }
 exitToggle.onclick = function(){ exitMenu.hidden = !exitMenu.hidden; };
 document.getElementById('exitOtro').onclick = function(){ exitMenu.hidden = true; otroTema(); };       // otroTema blendet die Leiste selbst aus
-document.getElementById('exitTerminar').onclick = function(){ exitMenu.hidden = true; terminar(); };   // navigiert ins Dashboard
+document.getElementById('exitTerminar').onclick = function(){ exitMenu.hidden = true; terminar(); };   // → Lektion-Angebot (Teil 32)
+
+// Freier-Flur-Ausstieg (Teil 32 #1): „Gespräch beenden" → Lektion-Angebot.
+var freeExitBar = document.getElementById('freeExitBar');
+var freeExitBtn = document.getElementById('freeExitBtn');
+freeExitBtn.onclick = offerLesson;
 
 // Teil B: Stimme schon beim RAUM-EINTRITT vorwärmen (nicht erst bei der Themenwahl).
 // Das Modul-Script unten setzt window.spkWarm erst NACH diesem klassischen Script —

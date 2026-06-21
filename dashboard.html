@@ -305,9 +305,6 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
         <span class="card-tag" id="lessons-count">0 / 3</span>
       </div>
       <div id="lessons-list" style="display:flex;flex-direction:column;gap:0.6rem;"></div>
-      <button id="lesson-from-convo-btn-2" onclick="generateLessonFromLastConvo()" style="display:none;margin-top:0.85rem;background:var(--off);color:var(--accent);border:1px solid var(--accent);padding:0.55rem 1rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;width:100%;">
-        📝 <span id="lesson-from-convo-label-2">Make lesson from last chat</span>
-      </button>
     </div>
 
     <!-- PLACEHOLDER when no lessons yet -->
@@ -319,9 +316,6 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
       <div style="padding:0.5rem 0;color:var(--mid);font-size:0.88rem;line-height:1.55;">
         Ask Spikiu in the chat for a lesson on any topic — it will appear here.
       </div>
-      <button id="lesson-from-convo-btn" onclick="generateLessonFromLastConvo()" style="display:none;margin-top:0.85rem;background:var(--accent);color:white;border:none;padding:0.6rem 1rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;width:100%;">
-        📝 <span id="lesson-from-convo-label">Make lesson from last chat</span>
-      </button>
     </div>
 
   </div>
@@ -491,6 +485,12 @@ const ROADMAP_POSTER_CSS = `
 .lp-dialogue-speaker { font-weight:700; font-size:0.82rem; color:#2d6a4f; min-width:50px; flex-shrink:0; }
 .lp-dialogue-text { font-size:0.92rem; line-height:1.55; }
 .lp-dialogue-text .lp-trans { display:block; font-size:0.78rem; color:#6b6560; font-style:italic; margin-top:2px; }
+/* 🔊 im Poster (Teil 32): nur auf Zielsprache — Wortschatz-Wort + Dialog-Zeile. Spricht über audio.js. */
+.lp-speak { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; margin-left:0.4rem; vertical-align:-0.28rem; border:none; cursor:pointer; background:#e8f2ed; color:#2d6a4f; border-radius:50%; transition:background 0.16s, color 0.16s; -webkit-tap-highlight-color:transparent; }
+.lp-speak:hover { background:#2d6a4f; color:#fff; }
+.lp-speak svg { width:12px; height:12px; }
+.lp-speak.playing { animation:lpSpkPulse 1s ease infinite; }
+@keyframes lpSpkPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(45,106,79,0.4);} 50%{ box-shadow:0 0 0 6px rgba(45,106,79,0);} }
 .lp-quiz-item { background:white; border:1px solid #e8e4df; border-radius:10px; padding:14px 16px; margin-bottom:10px; }
 .lp-quiz-question { font-weight:600; font-size:0.92rem; margin-bottom:0.7rem; }
 .lp-quiz-question .lp-num { color:#2d6a4f; font-weight:700; margin-right:0.4rem; }
@@ -702,6 +702,42 @@ const CAPY_LOGO = `<svg width="32" height="32" viewBox="0 0 80 80" fill="none">
   <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
 </svg>`;
 
+// ── AUDIO IM POSTER (Teil 32) ──────────────────────────
+// audio.js liegt am Root als ES-Modul (unten importiert → window.spkSpeak/spkWarm).
+// Nur auf der ZIELSPRACHE: Wortschatz-Wörter (Teil 2) + Dialog-Zeilen (Teil 3).
+// Browser-Fallback steckt schon in audio.js; diese Mini-Notbremse hält den Knopf
+// hörbar, falls der Import gar nicht greift (nie stummer Knopf).
+const LP_SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+function lpPlain(s){ return String(s==null?'':s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim(); }
+function lpAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function lpSpeakBtn(zieltext){
+  var t = lpPlain(zieltext);
+  if (!t) return '';
+  return '<button type="button" class="lp-speak" data-speak="' + lpAttr(t) + '" aria-label="Vorlesen">' + LP_SPK_ICON + '</button>';
+}
+// Zielsprache → Audio-Code (de/es/en/el), defensiv (Muster chat.html langCode).
+function dashLangCode(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v)) return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1||v.indexOf('alem')>-1) return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1||v.indexOf('espanol')>-1) return 'es';
+  if(v.indexOf('engl')>-1||v.indexOf('ingl')>-1) return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  return null;
+}
+function dashSpeak(text, ziel){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, ziel); } catch(e){} }
+  try {
+    var synth = window.speechSynthesis;
+    if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[ziel] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp;
+      synth.cancel(); synth.speak(u);
+    }
+  } catch(e){}
+}
+function dashWarm(ziel){ if (window.spkWarm){ try { window.spkWarm(ziel); } catch(e){} } }
+
 // ── RENDER ROADMAP POSTER FROM JSON ────────────────────
 function renderRoadmapPoster(r, nativeLang) {
   if (!r || !r.page2) {
@@ -822,7 +858,7 @@ function renderLessonPoster(l) {
 
   const vocabHtml = (l.vocab || []).map(v => `
     <li class="lp-vocab-item">
-      <span class="lp-vocab-word">${v.word || ''}</span>
+      <span class="lp-vocab-word">${v.word || ''}${lpSpeakBtn(v.word)}</span>
       <span class="lp-vocab-trans">${v.translation || ''}</span>
       ${v.example ? `<div class="lp-vocab-example">"${v.example}"</div>` : ''}
     </li>
@@ -836,7 +872,7 @@ function renderLessonPoster(l) {
     <div class="lp-dialogue-line">
       <span class="lp-dialogue-speaker">${d.speaker || ''}</span>
       <div class="lp-dialogue-text">
-        ${d.text || ''}
+        ${d.text || ''}${lpSpeakBtn(d.text)}
         ${d.translation ? `<span class="lp-trans">${d.translation}</span>` : ''}
       </div>
     </div>
@@ -975,7 +1011,16 @@ function openLesson(lessonId) {
     const user = JSON.parse(raw);
     const lessonEntry = (user.lessons || []).find(l => l.id === lessonId);
     if (!lessonEntry) return;
-    document.getElementById('lesson-viewer').innerHTML = renderLessonPoster(lessonEntry.lesson);
+    // Zielsprache fürs 🔊: bevorzugt am Lektion-Eintrag, sonst defensiv aus dem Profil.
+    const ziel = lessonEntry.zielsprache
+      || (user.profile && (user.profile.zielsprache || dashLangCode(user.profile.targetLang)))
+      || 'es';
+    const viewer = document.getElementById('lesson-viewer');
+    viewer.innerHTML = renderLessonPoster(lessonEntry.lesson);
+    viewer.querySelectorAll('.lp-speak').forEach(function(btn){
+      btn.onclick = function(){ dashSpeak(btn.dataset.speak, ziel); };
+    });
+    dashWarm(ziel);   // Stimme still vorwärmen (wie beim Raum-Eintritt im Chat)
     document.getElementById('lesson-modal').style.display = 'block';
     document.body.style.overflow = 'hidden';
   } catch(e) { console.error(e); }
@@ -991,27 +1036,10 @@ function renderLessonsList(user) {
   const lessons = user.lessons || [];
   const card = document.getElementById('lessons-card');
   const noCard = document.getElementById('no-lessons-card');
-  const hasLastConvo = Array.isArray(user.lastConversation) && user.lastConversation.length >= 2;
-  const underLimit = lessons.length < 3;
-
-  // i18n labels for the button
-  const btnLabels = {
-    'Deutsch': 'Lektion aus letztem Gespräch',
-    'Español': 'Lección de la última conversación',
-    'English': 'Make lesson from last chat'
-  };
-  const label = btnLabels[user.nativeLang] || btnLabels['English'];
-  const lab1 = document.getElementById('lesson-from-convo-label');
-  const lab2 = document.getElementById('lesson-from-convo-label-2');
-  if (lab1) lab1.textContent = label;
-  if (lab2) lab2.textContent = label;
 
   if (lessons.length === 0) {
     if (card) card.style.display = 'none';
     if (noCard) noCard.style.display = 'block';
-    // Show button if conversation exists and under limit
-    const btn = document.getElementById('lesson-from-convo-btn');
-    if (btn) btn.style.display = (hasLastConvo && underLimit) ? 'block' : 'none';
     return;
   }
 
@@ -1020,8 +1048,18 @@ function renderLessonsList(user) {
 
   document.getElementById('lessons-count').textContent = `${lessons.length} / 3`;
 
+  // Chronologisch: neueste zuerst (nach createdAt absteigend). Alt-Lektionen ohne
+  // createdAt stabil ans Ende.
+  const sorted = lessons.slice().sort((a, b) => {
+    const ca = a.createdAt || '', cb = b.createdAt || '';
+    if (ca && cb) return cb.localeCompare(ca);
+    if (cb && !ca) return 1;
+    if (ca && !cb) return -1;
+    return 0;
+  });
+
   const list = document.getElementById('lessons-list');
-  list.innerHTML = lessons.map((l, i) => {
+  list.innerHTML = sorted.map((l, i) => {
     const title = (l.lesson && l.lesson.title) || l.topic || 'Lesson';
     const subtitle = (l.lesson && l.lesson.subtitle) || '';
     return `
@@ -1036,99 +1074,6 @@ function renderLessonsList(user) {
       </div>
     `;
   }).join('');
-
-  // Show the secondary button in lessons-card if convo exists and under limit
-  const btn2 = document.getElementById('lesson-from-convo-btn-2');
-  if (btn2) btn2.style.display = (hasLastConvo && underLimit) ? 'block' : 'none';
-}
-
-// ── GENERATE LESSON FROM LAST CONVERSATION (dashboard button) ──
-// Loading-state helper for BOTH buttons (main + secondary).
-// Disables them, swaps the inner content for an animated spinner + localized
-// "Lektion wird erstellt..." text, and restores them on error.
-const LESSON_LOADING_LABELS = {
-  'Deutsch': 'Lektion wird erstellt…',
-  'Español': 'Creando lección…',
-  'English': 'Creating lesson…'
-};
-const LESSON_DEFAULT_LABELS = {
-  'Deutsch': 'Lektion aus letztem Gespräch',
-  'Español': 'Lección de la última conversación',
-  'English': 'Make lesson from last chat'
-};
-
-function setLessonBtnsLoading(loading, nativeLang) {
-  const lang = nativeLang || 'English';
-  const loadingText = LESSON_LOADING_LABELS[lang] || LESSON_LOADING_LABELS.English;
-  const defaultText = LESSON_DEFAULT_LABELS[lang] || LESSON_DEFAULT_LABELS.English;
-
-  ['lesson-from-convo-btn', 'lesson-from-convo-btn-2'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    if (loading) {
-      btn.disabled = true;
-      btn.classList.add('btn-loading');
-      btn.innerHTML = `<span class="btn-spinner"></span><span>${loadingText}</span>`;
-    } else {
-      btn.disabled = false;
-      btn.classList.remove('btn-loading');
-      // Restore original markup: emoji + labeled span (label id matches the renderLessonsList target)
-      const labelId = id === 'lesson-from-convo-btn' ? 'lesson-from-convo-label' : 'lesson-from-convo-label-2';
-      btn.innerHTML = `📝 <span id="${labelId}">${defaultText}</span>`;
-    }
-  });
-}
-
-async function generateLessonFromLastConvo() {
-  const raw = localStorage.getItem('spikiu_user');
-  if (!raw) return;
-  const user = JSON.parse(raw);
-  const convo = user.lastConversation;
-  if (!Array.isArray(convo) || convo.length < 2) {
-    alert('No recent conversation found. Start talking with Spikiu first!');
-    return;
-  }
-
-  setLessonBtnsLoading(true, user.nativeLang);
-
-  try {
-    const r = await fetch('/api/generate-lesson', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: user.name,
-        nativeLang: user.nativeLang,
-        profile: user.profile,
-        conversationHistory: convo
-      })
-    });
-    const d = await r.json();
-    if (!d.lesson) {
-      alert('Could not generate lesson. Try again.');
-      setLessonBtnsLoading(false, user.nativeLang);
-      return;
-    }
-
-    const newLesson = {
-      id: 'lesson_' + Date.now(),
-      topic: d.lesson.title || 'Lesson from our conversation',
-      fromConversation: true,
-      lesson: d.lesson,
-      createdAt: new Date().toISOString()
-    };
-    user.lessons = [...(user.lessons || []), newLesson];
-    localStorage.setItem('spikiu_user', JSON.stringify(user));
-
-    // Re-render lessons list — this restores the buttons to their default state
-    // through renderLessonsList, so no manual setLessonBtnsLoading(false) needed.
-    renderLessonsList(user);
-    // Open the new lesson immediately
-    openLesson(newLesson.id);
-  } catch(e) {
-    console.error(e);
-    alert('Something went wrong. Try again.');
-    setLessonBtnsLoading(false, user.nativeLang);
-  }
 }
 
 // ── UPDATE BOOKS CARD (target language aware) ──────────
@@ -1297,6 +1242,14 @@ window.addEventListener('load', () => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeRoadmap();
 });
+</script>
+<!-- Audio (Teil 32): audio.js ist ein ES-Modul am Root. Hier importiert, via window
+     an das klassische Haupt-Script durchgereicht (dashSpeak/dashWarm). Nur fürs 🔊 im
+     Lektion-Poster — Browser-Fallback steckt schon in audio.js. -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
 </script>
 <script src="nav.js" defer></script>
 </body>
