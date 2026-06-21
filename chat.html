@@ -140,6 +140,15 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hv-opt.wrong .hv-key { background:var(--wrong); color:var(--white); }
 .hv-opt.wrong .hv-mark { opacity:1; color:var(--wrong); }
 .hv-feedback { text-align:center; font-size:0.74rem; margin-top:0.55rem; min-height:1em; font-weight:600; }
+/* ── Word-Spotting (Übungs-Varianten): gehörte Wörter antippen, Distraktoren als
+   Minimalpaar. Stil aus prototyp-feinschliff-iii.html. ── */
+.ws-words { display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; }
+.ws-word { background:var(--white); border:1.5px solid var(--faint); border-radius:100px; padding:0.45rem 0.85rem; font-family:'Lora',serif; font-size:0.85rem; font-weight:600; color:var(--ink); cursor:pointer; transition:0.14s; -webkit-tap-highlight-color:transparent; }
+.ws-word.sel { background:var(--accent); color:var(--white); border-color:var(--accent); }
+.ws-word.ok { background:var(--accent2); border-color:var(--accent); color:var(--accent3); }
+.ws-word.bad { background:var(--wrong-bg); border-color:var(--wrong); color:var(--wrong); text-decoration:line-through; }
+.ws-word.missed { border-color:var(--accent); border-style:dashed; color:var(--accent); }
+.ws-word.locked { cursor:default; }
 /* Inline-Steuerknopf (Weiter) im Chat-Strom */
 .flow-row { display:flex; padding-left:2.75rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
 .flow-btn { background:var(--accent); color:var(--white); border:none; cursor:pointer; padding:0.6rem 1.2rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:600; transition:0.18s; -webkit-tap-highlight-color:transparent; }
@@ -730,9 +739,9 @@ var HAP = null;
 var SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
 var PLAY_SVG    = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>';
 var HAP_UI = {
-  de:{ loading:'Spikiu bereitet die Häppchen vor…', vocab:'Wortschatz mit Audio', listen:'Hörverständnis', weiterVocab:'Verstanden — weiter', weiter:'Weiter', correct:'Richtig!', wrong:'Knapp — die grüne war es.', handover:'Stark. Jetzt üben wir das im Gespräch.', skip:'Wir steigen direkt ins Gespräch ein.', locked:'Erst die Häppchen…', listenHint:'Was hörst du?' },
-  es:{ loading:'Spikiu prepara los bocados…', vocab:'Vocabulario con audio', listen:'Comprensión auditiva', weiterVocab:'Entendido — seguir', weiter:'Seguir', correct:'¡Correcto!', wrong:'Casi — era la verde.', handover:'¡Genial! Ahora lo practicamos hablando.', skip:'Entramos directo en la conversación.', locked:'Primero los bocados…', listenHint:'¿Qué oyes?' },
-  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?' }
+  de:{ loading:'Spikiu bereitet die Häppchen vor…', vocab:'Wortschatz mit Audio', listen:'Hörverständnis', weiterVocab:'Verstanden — weiter', weiter:'Weiter', correct:'Richtig!', wrong:'Knapp — die grüne war es.', handover:'Stark. Jetzt üben wir das im Gespräch.', skip:'Wir steigen direkt ins Gespräch ein.', locked:'Erst die Häppchen…', listenHint:'Was hörst du?', wordspot:'Wörter tippen', wordHint:'Welche Wörter hörst du? Tippe sie an.', check:'Prüfen', wordPerfect:'Perfekt — gutes Ohr!', wordClose:'Fast — grün = richtig, gestrichelt = verpasst.' },
+  es:{ loading:'Spikiu prepara los bocados…', vocab:'Vocabulario con audio', listen:'Comprensión auditiva', weiterVocab:'Entendido — seguir', weiter:'Seguir', correct:'¡Correcto!', wrong:'Casi — era la verde.', handover:'¡Genial! Ahora lo practicamos hablando.', skip:'Entramos directo en la conversación.', locked:'Primero los bocados…', listenHint:'¿Qué oyes?', wordspot:'Toca las palabras', wordHint:'¿Qué palabras oyes? Tócalas.', check:'Comprobar', wordPerfect:'¡Perfecto, buen oído!', wordClose:'Casi — verde = correcto, punteado = te faltó.' },
+  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?', wordspot:'Tap the words', wordHint:'Which words do you hear? Tap them.', check:'Check', wordPerfect:'Perfect — good ear!', wordClose:'Close — green = right, dashed = missed.' }
 };
 var RAIL_LBL = {
   de:['Thema','Wörter','Hören','Sprechen','Lektion'],
@@ -838,14 +847,38 @@ function renderWortschatz(){
   addFlowButton(HAP_UI[ui].weiterVocab, startHoeren);
 }
 
+// Fisher-Yates — mischt eine Kopie (für die Antwort-Position + Wort-Chips).
+function shuffle(a){
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
 function startHoeren(){ setStage('hoeren'); hvIndex = 0; renderHV(); }
+// Dispatcher: zwei Übungstypen. typ „woerter" → Wörter-Tippen, sonst Minimalpaar A/B.
 function renderHV(){
-  var ui = uiLang(); var item = HAP.hoerverstehen[hvIndex];
+  var item = HAP.hoerverstehen[hvIndex];
+  if (item && item.typ === 'woerter' && Array.isArray(item.woerter) && item.woerter.length){
+    renderWortsuche(item);
+  } else {
+    renderMinimalpaar(item);
+  }
+}
+function hvHead(ui, suffix){
+  return '<div class="w-eyebrow">🎧 ' + escPlain(HAP_UI[ui].listen) + ' · ' + (hvIndex+1)
+    + ' / ' + HAP.hoerverstehen.length + (suffix ? ' · ' + escPlain(suffix) : '') + '</div>';
+}
+
+// ── Typ A: Minimalpaar A/B — richtige Option ZUFÄLLIG platziert (Übungs-Varianten ①) ──
+function renderMinimalpaar(item){
+  var ui = uiLang();
+  var opts = shuffle((item.optionen || []).slice());   // nicht mehr immer die erste
   var w = document.createElement('div'); w.className = 'widget';   // KEINE id (mehrere Items im DOM)
-  var html = '<div class="w-eyebrow">🎧 ' + escPlain(HAP_UI[ui].listen) + ' · ' + (hvIndex+1) + ' / ' + HAP.hoerverstehen.length + '</div>'
+  var html = hvHead(ui)
     + '<button class="hv-speaker" type="button">' + SPEAKER_SVG + '</button>'
     + '<div class="hv-q">' + escPlain(item.frage || HAP_UI[ui].listenHint) + '</div>';
-  item.optionen.forEach(function(o, i){
+  opts.forEach(function(o, i){
     var key = String.fromCharCode(65 + i);   // A, B
     html += '<button class="hv-opt" data-i="' + i + '" type="button">'
       + '<span class="hv-key">' + key + '</span>'
@@ -857,20 +890,19 @@ function renderHV(){
   chat.appendChild(w);
   var spk = w.querySelector('.hv-speaker');
   spk.onclick = function(){ playFrom(spk, item.audio, 'playing'); };
-  // Referenzen über die Closure (w, item) — NIE über getElementById, sonst trifft
-  // das zweite Item die Optionen des ersten (gleiche Klassen mehrfach im DOM).
+  // Referenzen über die Closure (w, opts) — NIE über getElementById (gleiche Klassen mehrfach im DOM).
   w.querySelectorAll('.hv-opt').forEach(function(b){
-    b.onclick = function(){ answerHV(w, item, +b.getAttribute('data-i')); };
+    b.onclick = function(){ answerMinimalpaar(w, opts, +b.getAttribute('data-i')); };
   });
   chat.scrollTop = chat.scrollHeight;
   setTimeout(function(){ playFrom(spk, item.audio, 'playing'); }, 450);   // einmal anspielen
 }
-function answerHV(w, item, oi){
+function answerMinimalpaar(w, opts, oi){
   var ui = uiLang();
-  var picked = item.optionen[oi];
+  var picked = opts[oi];
   w.querySelectorAll('.hv-opt').forEach(function(b, i){
     b.disabled = true;
-    if (item.optionen[i].richtig) b.classList.add('correct');   // richtige immer grün enthüllen
+    if (opts[i].richtig) b.classList.add('correct');   // richtige immer grün enthüllen
   });
   var fb = w.querySelector('.hv-feedback');
   if (picked && picked.richtig){ fb.textContent = HAP_UI[ui].correct; fb.style.color = 'var(--accent)'; }
@@ -878,6 +910,46 @@ function answerHV(w, item, oi){
     var wb = w.querySelector('.hv-opt[data-i="' + oi + '"]'); if (wb) wb.classList.add('wrong');
     fb.textContent = HAP_UI[ui].wrong; fb.style.color = 'var(--wrong)';
   }
+  addFlowButton(HAP_UI[ui].weiter, nextHV);
+}
+
+// ── Typ B: Wörter-Tippen — markiere die gehörten Wörter (Übungs-Varianten ①) ──
+function renderWortsuche(item){
+  var ui = uiLang();
+  var words = shuffle((item.woerter || []).slice());
+  var w = document.createElement('div'); w.className = 'widget';
+  w.innerHTML = hvHead(ui, HAP_UI[ui].wordspot)
+    + '<button class="hv-speaker" type="button">' + SPEAKER_SVG + '</button>'
+    + '<div class="hv-q">' + escPlain(item.frage || HAP_UI[ui].wordHint) + '</div>'
+    + '<div class="ws-words"></div><div class="hv-feedback"></div>';
+  chat.appendChild(w);
+  var box = w.querySelector('.ws-words');
+  words.forEach(function(o){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'ws-word';
+    b.textContent = o.text;
+    b._gehoert = !!o.gehoert;   // Wahrheit über die Closure, nie im DOM
+    b.onclick = function(){ if (!b.classList.contains('locked')) b.classList.toggle('sel'); };
+    box.appendChild(b);
+  });
+  var spk = w.querySelector('.hv-speaker');
+  spk.onclick = function(){ playFrom(spk, item.audio, 'playing'); };
+  chat.scrollTop = chat.scrollHeight;
+  setTimeout(function(){ playFrom(spk, item.audio, 'playing'); }, 450);
+  addFlowButton(HAP_UI[ui].check, function(){ checkWortsuche(w); });
+}
+function checkWortsuche(w){
+  var ui = uiLang();
+  var allOk = true;
+  w.querySelectorAll('.ws-word').forEach(function(b){
+    var ok = b._gehoert, sel = b.classList.contains('sel');
+    b.classList.remove('sel'); b.classList.add('locked');
+    if (ok && sel) b.classList.add('ok');
+    else if (!ok && sel){ b.classList.add('bad'); allOk = false; }     // Distraktor gewählt
+    else if (ok && !sel){ b.classList.add('missed'); allOk = false; }  // gehörtes Wort verpasst
+  });
+  var fb = w.querySelector('.hv-feedback');
+  fb.textContent = allOk ? HAP_UI[ui].wordPerfect : HAP_UI[ui].wordClose;
+  fb.style.color = allOk ? 'var(--accent)' : 'var(--gold)';
   addFlowButton(HAP_UI[ui].weiter, nextHV);
 }
 function nextHV(){

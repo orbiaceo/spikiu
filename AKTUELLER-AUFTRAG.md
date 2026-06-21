@@ -6,7 +6,13 @@
 > B max 2 Blasen · C Abschluss-Menü ohne Lob (`[SZENENENDE]`→3 Knöpfe) · D Korrektur-Karte
 > (`[KORREKTUR]`→zwei Spalten, 🔊 auf „Besser") · E „Terminar" schreibt `verlauf`+Korrekturen
 > →`lastConversation` + Tür zu `dashboard.html#lektionen` (tilgt den Lektion-Disconnect).
-> Headless `ok:true`, `node --check` + Parser-Smoke grün. NÄCHSTES = „Übungs-Varianten" (Punkt ①).
+> Headless `ok:true`, `node --check` + Parser-Smoke grün.
+>
+> ✅ **DANACH auch „Übungs-Varianten" (Punkt ①) GEBAUT am 21.06.2026 (Claude Code) · auf dev** (auf „weiter",
+> Design genehmigt in `prototyp-feinschliff-iii.html`). 3 Dateien: `api/haeppchen.js` (Hör-Item-`typ`
+> `minimalpaar`/`woerter`, `normHV` filtert beide) + `haeppchen-modus.md` (Regeln + Distraktor-Logik) +
+> `chat.html` (MC-Position gemischt + Word-Spotting-Widget). Headless `ok:true`, `node --check` + Parser-Smoke
+> (9 Fälle) grün. NÄCHSTES = Kleinkram-Paket 2.
 
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigte Prototypen: `prototyp-rhythmus-korrekturkarte.html` + `prototyp-feinschliff-iii.html`

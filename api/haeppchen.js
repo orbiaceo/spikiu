@@ -75,11 +75,23 @@ nichts danach. KEINE Markdown-Zäune (\`\`\`), KEIN Vorwort, KEINE Erklärung.
   ],
   "hoerverstehen": [
     {
+      "typ": "minimalpaar",
       "audio": "…",
       "frage": "…",
       "optionen": [
         { "text": "…", "richtig": true },
         { "text": "…", "richtig": false }
+      ]
+    },
+    {
+      "typ": "woerter",
+      "audio": "…",
+      "frage": "…",
+      "woerter": [
+        { "text": "…", "gehoert": true },
+        { "text": "…", "gehoert": true },
+        { "text": "…", "gehoert": false },
+        { "text": "…", "gehoert": false }
       ]
     }
   ]
@@ -90,10 +102,17 @@ Felder:
 - "wortschatz": 4–6 Einträge zum Thema, alltagsnah. "ziel" = Wort/Wendung in der
   Zielsprache (${sprache}), español NEUTRO (nie voseo, keine Río-de-la-Plata-Form).
   "uebersetzung" = Bedeutung in der Muttersprache (${mutter}). "lautschrift": ${schriftRegel}
-- "hoerverstehen": 2–3 Items. "audio" = EIN kurzer Satz aus dem Themen-Wortschatz
-  (Zielsprache). "frage" = in der Muttersprache (${mutter}), z. B. „Was hörst du?".
-  "optionen" = genau ZWEI: genau EINE mit "richtig": true (= der "audio"-Satz wörtlich),
-  die andere ein NAHER Minimalpaar-Kontrast (carta/cuenta, reserva/pregunta, para mí/para ti).
+- "hoerverstehen": 2–3 Items, GEMISCHT. Jedes hat ein "typ"-Feld. "audio" = EIN kurzer Satz
+  aus dem Themen-Wortschatz (Zielsprache). "frage" = in der Muttersprache (${mutter}).
+  Mindestens EIN "minimalpaar"; nimm EIN "woerter"-Item dazu, wenn es zum Thema passt.
+  • typ "minimalpaar": "optionen" = genau ZWEI: genau EINE mit "richtig": true (= der
+    "audio"-Satz wörtlich), die andere ein NAHER Minimalpaar-Kontrast (carta/cuenta,
+    reserva/pregunta, para mí/para ti). Die Position der richtigen ist EGAL — die Oberfläche
+    mischt sie ohnehin; stell sie nicht absichtlich immer an dieselbe Stelle.
+  • typ "woerter" (Wörter heraushören): "woerter" = 4–6 kleine Wörter/Wendungen; einige
+    stehen WIRKLICH im "audio"-Satz ("gehoert": true), einige NICHT ("gehoert": false) und
+    sind NAHE Distraktoren (Minimalpaar oder thematisch nah: al aeropuerto/a la estación,
+    la maleta/la mochila). Mindestens je EINES mit true und mit false.
 - ${reglerRegel}
 
 Plain language. KEINE Eselsbrücken, KEINE Grammatik-Fachwörter, KEIN CEFR (A1/B2) im Output.
@@ -151,7 +170,7 @@ DIESE HÄPPCHEN (Laufzeit)
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: 1200,
+        max_tokens: 1500,
         system,
         messages: [{ role: 'user', content: `[HÄPPCHEN] Thema: ${thema}` }]
       })
@@ -203,17 +222,42 @@ function normalizeHaeppchen(obj, thema) {
     .filter(e => e.ziel)
     .slice(0, 6);
 
-  const h = hoerverstehen
-    .map(e => {
-      const optionen = (Array.isArray(e && e.optionen) ? e.optionen : [])
-        .map(o => ({ text: str(o && o.text), richtig: !!(o && o.richtig) }))
-        .filter(o => o.text)
-        .slice(0, 2);
-      return { audio: str(e && e.audio), frage: str(e && e.frage), optionen };
-    })
-    // Brauchbar = Satz + genau eine richtige + zwei Optionen.
-    .filter(e => e.audio && e.optionen.length === 2 && e.optionen.filter(o => o.richtig).length === 1)
-    .slice(0, 3);
+  const h = hoerverstehen.map(normHV).filter(Boolean).slice(0, 3);
 
   return { thema: str(obj.thema) || thema, wortschatz: w, hoerverstehen: h };
+}
+
+// Ein Hör-Item normalisieren — zwei Typen. typ wird, wenn es fehlt/falsch ist, aus
+// der Form abgeleitet (woerter-Array → woerter, sonst minimalpaar). Kaputte Items → null.
+function normHV(e) {
+  const audio = str(e && e.audio);
+  const frage = str(e && e.frage);
+  let typ = str(e && e.typ).toLowerCase();
+  if (typ !== 'woerter' && typ !== 'minimalpaar') {
+    typ = Array.isArray(e && e.woerter) ? 'woerter' : 'minimalpaar';
+  }
+
+  if (typ === 'woerter') {
+    const woerter = (Array.isArray(e && e.woerter) ? e.woerter : [])
+      .map(o => ({ text: str(o && o.text), gehoert: !!(o && o.gehoert) }))
+      .filter(o => o.text)
+      .slice(0, 6);
+    const heard = woerter.filter(o => o.gehoert).length;
+    const distr = woerter.filter(o => !o.gehoert).length;
+    // Brauchbar = Satz + ≥3 Wörter + mind. je ein gehörtes und ein Distraktor.
+    if (audio && woerter.length >= 3 && heard >= 1 && distr >= 1) {
+      return { typ: 'woerter', audio, frage, woerter };
+    }
+    return null;
+  }
+
+  const optionen = (Array.isArray(e && e.optionen) ? e.optionen : [])
+    .map(o => ({ text: str(o && o.text), richtig: !!(o && o.richtig) }))
+    .filter(o => o.text)
+    .slice(0, 2);
+  // Brauchbar = Satz + genau zwei Optionen + genau eine richtige.
+  if (audio && optionen.length === 2 && optionen.filter(o => o.richtig).length === 1) {
+    return { typ: 'minimalpaar', audio, frage, optionen };
+  }
+  return null;
 }

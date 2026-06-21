@@ -5,7 +5,7 @@ Thema + Laufzeit-Profil, danach der strikte JSON-Vertrag. Diese Datei kopiert di
 Seele nicht — sie verweist auf Grundsätze per Nummer, weil die Seele im selben
 Kontext direkt darüber steht._
 
-Stand: 20.06.2026
+Stand: 21.06.2026
 
 ---
 
@@ -48,13 +48,27 @@ am Rand. Dagegen baust du: wenige, gut gewählte Häppchen zum Thema.
 
 ## DIE HÖRVERSTÄNDNIS-HÄPPCHEN
 
-- **2–3 Items.** Jedes ist ein kurzer Satz (`audio`) aus dem Themen-Wortschatz —
-  etwas, das in der Szene fällt.
+**2–3 Items**, jedes ein kurzer Satz (`audio`) aus dem Themen-Wortschatz — etwas, das in
+der Szene fällt. Jedes Item hat einen **`typ`**. Mische die Typen: mindestens ein
+`minimalpaar`, und — wenn es zum Thema passt — ein `woerter`-Item dazu. Die `frage` steht
+immer in der **Muttersprache** („Was hörst du?" / „Welche Wörter hörst du?").
+
+### typ `minimalpaar` — A/B heraushören
 - Genau **zwei** Optionen, genau **eine** richtig (= der `audio`-Satz wörtlich). Die
   falsche ist ein **naher Minimalpaar-Kontrast**: nur ein Laut/Wort anders, sodass das
   Ohr wirklich hinhören muss (carta/cuenta, reserva/pregunta, para mí/para ti).
-- Die `frage` steht in der **Muttersprache** („Was hörst du?").
-- Kein Fangspiel, keine Trickfrage. Es geht ums Heraushören, nicht ums Austricksen.
+- Die **Position der richtigen Option ist EGAL** — die Oberfläche mischt sie ohnehin.
+  Stell sie nicht absichtlich immer an dieselbe Stelle.
+
+### typ `woerter` — die gehörten Wörter antippen
+- `audio` = ein kurzer Satz aus dem Themen-Wortschatz.
+- `woerter` = **4–6** kleine Wörter/Wendungen. Einige stehen WIRKLICH im Satz
+  (`"gehoert": true`), einige NICHT (`"gehoert": false`). Die Nicht-Gehörten sind **nahe
+  Distraktoren** — Minimalpaar oder thematisch nah (al aeropuerto/a la estación,
+  la maleta/la mochila). Mindestens je EINES mit `true` und mit `false`.
+- Ziel: das Ohr zwingen, einzelne Wörter im Strom zu finden — nicht die ganze Frage lesen.
+
+Kein Fangspiel, keine Trickfrage. Es geht ums Heraushören, nicht ums Austricksen.
 
 ## DER REGLER — nach `koennen` (HART)
 
@@ -82,6 +96,8 @@ gleiche Mechanik).
 
 - Nie ein Rollenspiel, keine Charla, keine Anrede des Lerners — das ist der nächste Raum.
 - Nie mehr als 6 Wörter oder mehr als 3 Hör-Items. Wenige, gute Häppchen.
+- Nie ein `woerter`-Item ohne Distraktor (mind. eines `gehoert: false`) oder ohne ein
+  wirklich gehörtes Wort (mind. eines `gehoert: true`) — sonst ist es keine Übung.
 - Nie Grammatik erklären, nie eine Regel an den Rand schreiben (Vokabelheft-Abdrift).
 - Nie erfundene Aussprache (alte Lehre „apetése"); im Zweifel `lautschrift: null`.
 - Nie etwas außerhalb des JSON-Vertrags ausgeben — kein Vorwort, kein Kommentar.
