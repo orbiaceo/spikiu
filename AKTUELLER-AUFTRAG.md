@@ -1,49 +1,93 @@
-# AUFTRAG — erledigt am 21.06.2026 · kein offener Auftrag
+# AUFTRAG — Geführtes Gespräch · PAKET FEINSCHLIFF II „Sauberer Rhythmus"
 
-Geführtes Gespräch **PAKET FEINSCHLIFF** (Teil 27) ist gebaut, headless verifiziert
-und auf `dev` gepusht. Der nächste Auftrag kommt aus der Design-Sitzung (claude.ai) —
-voraussichtlich **P3 „Die Lektion"**. Stand & Details im `SPIKIU-BUILD-LEDGER.md`.
+Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
+Branch: dev · Genehmigter Prototyp: `prototyp-rhythmus-korrekturkarte.html`
+
+> Direkt nach Feinschliff I (Teil 27, live). Leos Geräte-Test zeigte: die Roleplay-Wand
+> HÄLT (kein Lehrer-Austritt mehr in der Szene) ✅ — aber drei Darstellungs-Sachen
+> stören noch. Drei chirurgische Edits, ZWEI Dateien. KEIN Endpoint, KEIN P3.
 
 ---
 
-## Was gebaut wurde (21.06., Claude Code) — zwei chirurgische Edits, zwei Dateien
+## DIE DREI BEFUNDE (aus Leos Test, Café DE→ES anfang)
 
-**Arreglo A — Roleplay-Wand (`gespraech-modus.md`):**
-- Neuer Abschnitt „IN DER SZENE BLEIBEN (Rollenspiel — die harte Wand)": Spikiu bleibt
-  GANZ die Figur; kein „kleiner Tipp"/keine Grammatik-Anmerkung/kein Meta-Kommentar
-  mitten in der Szene; Fehler werden STILL in der Figur reformuliert (das richtige
-  Modell steckt unauffällig in der Antwort); Verbesserungen erst am Szenenende / in der
-  Lektion. Plus passender Niemals-Bullet (wörtlich aus dem Auftrag).
+1. **Rohes `---` sichtbar.** Spikiu trennt Gedanken mit `---`; das Frontend zeigt den
+   Strich roh in der Blase. Soll nie als Text erscheinen.
+2. **Mehrere Infos in einer Blase.** Szenen-Rahmung + Eröffnungsreplik kleben in einer
+   Blase. Leo will: EIN Gedanke pro Blase — „nicht mehr als eine Information für Auge
+   und Hirn" (gerade bei heutiger Konzentrationsschwäche).
+3. **Zielsprache kursiv.** Die Sprechblase rendert die Zielsprache kursiv; kursiv soll
+   NUR das Übersetzungs-Kästchen sein.
 
-**Arreglo B1 — `[[…]]`-Brücken-Vertrag (`gespraech-modus.md`):**
-- Neuer Abschnitt „DIE ÜBERSETZUNGS-BRÜCKE PRO ZUG — Format `[[…]]`": Zielsprache zuerst,
-  dann EIN `[[ Muttersprache ]]` auf eigener Zeile (Struktur-Signal wie `[WECHSEL]`, nie
-  erklärt, nie im Fließtext). REGLER-Abschnitt daran gekoppelt (anfang fast immer, mittel
-  bei Bedarf, fortgeschritten KEIN `[[…]]`). Fremde Schrift: Umschrift + Übersetzung im
-  selben `[[…]]`. Niemals-Bullet gegen rohes `[[…]]` ergänzt.
+Plus: der **Szenen-Schluss wurde zum Vortrag** (Tilde-Korrektur „cuánto", Trinkgeld-
+Erklärung). Soll kurz sein. (Die strukturierte Korrektur-Karte kommt in P3 — hier NICHT.)
 
-**Arreglo B2 — Sprechblase + Kästchen + 🔊 (`chat.html`):**
-- Tokens `--trans-bg/--trans-ink/--trans-border` + `.speak-btn` + `.trans` (Stil aus
-  `prototyp-sprechblase-uebersetzung.html`). `addMessage('spikiu', …)` splittet jetzt:
-  `splitBridge()` zieht das `[[…]]` heraus → Zielsprache in die Blase (mit dezentem 🔊
-  oben rechts), Übersetzung in ein gedämpftes Kästchen darunter (kein Audio). Kein
-  `[[…]]` → nur die Blase. 🔊 ruft `playFrom` → `speakText`/`window.spkSpeak` mit dem
-  **Zieltext** (Emphasis-Marker via `plainForSpeech` entfernt), nie der Übersetzung.
-  User-Bubbles unverändert (grün, kein 🔊, kein Kästchen). `verlauf` speichert weiter den
-  rohen Text **mit** `[[…]]` (nur `[WECHSEL]` wird wie bisher zuerst extrahiert) — beide
-  Signale koexistieren. Gilt für ALLE Spikiu-Züge (Opener/Rollenspiel/Übergabe).
+---
 
-## Verifiziert (headless, Chrome via CDP, Backend+Audio gestubbt, de→es-Profil)
-- Opener: `[[…]]` nie als Rohtext im DOM; Blase = Zielsatz, Kästchen = Übersetzung; 🔊
-  spricht NUR den Zieltext (ohne `[[…]]`/Marker), lang=es.
-- Zug mit `[[…]]` **und** `[WECHSEL:schreibwerkstatt]`: Tür-Knopf erscheint, weder `[[`
-  noch `WECHSEL` lecken als Text; User-Bubble ohne 🔊/Kästchen.
-- Zug ohne `[[…]]` (fortgeschritten-Fall): nur Blase, kein Kästchen.
-- `node --check` grün (beide chat.html-Inline-Scripts); `gespraech.js`/`haeppchen.js`
-  unangetastet; nur 2 Dateien geändert; `vercel.json` unberührt.
+## EDIT 1 — Eine Blase = ein Gedanke · `chat.html` + `gespraech-modus.md`
 
-## ABNAHME-REST (Leo auf dev / am Gerät — NICHT headless fakebar)
-- Roleplay-Wand am echten Modell: in der Szene wirklich KEIN Lehrer-Austritt mehr, Fehler
-  still reformuliert.
-- Hörbares 🔊 (Piper/Fallback) + Lesefluss Blase/Kästchen auf dem Gerät; `fortgeschritten`
-  ohne Brücke; Greek-Kästchen Umschrift+Übersetzung.
+**Prompt (`gespraech-modus.md`):** Neuer/erweiterter Hinweis — Spikiu trennt verschiedene
+Gedanken/Repliken mit einer eigenen Zeile, die NUR `---` enthält; die Oberfläche macht
+daraus GETRENNTE Sprechblasen. Nie mehr als ein Gedanke pro Blase. Konkret: die
+Szenen-Rahmung („Üben wir im Café. Ich bin der Kellner, du der Gast.") ist EINE Blase,
+die Eröffnungsreplik der Figur („Buenos días, ¿qué le pongo?") eine SEPARATE Blase. Das
+`---` ist Struktur-Signal (wie `[WECHSEL]`/`[[…]]`) — nie erklären, nie als Inhalt.
+
+**Frontend (`chat.html`):** Jede Spikiu-Nachricht VOR dem `[[…]]`-Split zuerst an Zeilen,
+die nur `---` (oder `—`) sind, in Segmente teilen → JEDES Segment wird eine eigene
+Sprechblase (mit eigenem `splitBridge`/🔊/Übersetzungs-Kästchen, bestehende Logik
+wiederverwenden). Rohes `---` wird NIE gezeigt. Reihenfolge der Extraktion: `[WECHSEL]`
+zuerst (wie bisher) → dann an `---` splitten → pro Segment `[[…]]` trennen.
+
+## EDIT 2 — Kursiv nur für die Übersetzung · `chat.html`
+
+Die Sprechblase (Zielsprache) IMMER **aufrecht** (`font-style: normal`), nie kursiv.
+Nur das Übersetzungs-Kästchen `.trans` bleibt kursiv + gedämpft. Aktuell rendert die Blase
+kursiv — Ursache finden und beheben (CSS der Blase ODER `_…_`-Emphasis, die als kursiv
+durchschlägt). Stil-Referenz: `prototyp-rhythmus-korrekturkarte.html` (Blase = Lora
+aufrecht, Kästchen = kursiv).
+
+## EDIT 3 — Kurzer Szenen-Schluss · `gespraech-modus.md`
+
+Den Abschnitt „IN DER SZENE BLEIBEN" / Szenenende präzisieren: Am Szenenende hält Spikiu
+sich KURZ — ein warmer, knapper Gruß + die bestehende Frage (weitermachen / anderes /
+weiter plaudern). KEINE Grammatik-/Orthografie-Belehrung, KEINE langen Erklärungen, KEINE
+Tilde-/Akzent-Korrekturen im Fließtext. (Die strukturierte Korrektur kommt später —
+NICHT erwähnen, A2-Lehre.)
+
+---
+
+## ABNAHME (alles grün, sonst nicht fertig)
+
+- [ ] **Zwei Blasen beim Einstieg:** Szenen-Rahmung und Eröffnungsreplik sind GETRENNTE
+      Sprechblasen; kein rohes `---` mehr irgendwo.
+- [ ] **Ein Gedanke pro Blase** durchgängig (auch mittendrin, wenn das Modell `---` setzt).
+- [ ] **Zielsprache aufrecht**, nur das Übersetzungs-Kästchen kursiv.
+- [ ] **Szenen-Schluss kurz** — kein Vortrag, keine Grammatik-/Tilde-Belehrung.
+- [ ] 🔊 weiter pro Ziel-Blase (nur Zieltext); `[[…]]`/`[WECHSEL:…]` lecken nie; freier
+      Flur + Häppchen-Flow (P2) + Roleplay-Wand (Feinschliff I) unberührt.
+- [ ] `node --check` grün; nur **2 Dateien** (`gespraech-modus.md` + `chat.html`);
+      `gespraech.js`/`haeppchen.js`/`vercel.json` unangetastet.
+- [ ] keine vom Browser belegten Variablennamen; Emphasis nur `<em>`.
+
+---
+
+## AUSDRÜCKLICH NICHT
+- KEINE Korrektur-Karte hier (= P3, Design schon genehmigt im Prototyp).
+- KEINE Lektion-Verdrahtung / kein „als Lektion"-Knopf (= P3).
+- `api/*` nicht anfassen. Kein Stripe/Supabase.
+
+---
+
+## DANACH — P3 „Die Lektion" (Design fixiert, Karte genehmigt)
+- **Korrektur-Karte am Szenenende** (genehmigt in `prototyp-rhythmus-korrekturkarte.html`):
+  zwei Spalten **„Du hast gesagt → Besser"**, farbcodiert (links gedämpft/gold, rechts
+  grün mit 🔊), je ein Paar pro Zeile, **NUR kommunikativ unpassend** (nicht Grammatik/
+  Orthografie), **OHNE Erklärung**. Beispiel: „Pagar, por favor." → „La cuenta, por favor."
+- **Gentle close + drei Türen:** weiter üben / weiter plaudern / **als Lektion speichern**.
+- **`chat.html` schreibt `verlauf`→`lastConversation`** + „als Lektion" real an
+  `/api/generate-lesson` → Dashboard (tilgt den Lektion-Disconnect).
+- In der **Lektion** erklärt Spikiu das WARUM (z. B. warum nicht „pagar, por favor").
+- Dann: Kleinkram-Paket 2 (Genus-Begrüßung + Lesebegleiter-intro) · „Audio überall I —
+  Lesebegleiter" (Sermon kürzen + 🔊 + Mini-Phonetik) · „Audio überall II — Reader"
+  (🔊 an jeder Zielsprachen-Wendung; vorher `cap*-v2.html`-Struktur prüfen).
