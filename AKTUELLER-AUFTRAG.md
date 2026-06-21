@@ -1,124 +1,77 @@
-# AUFTRAG — Geführtes Gespräch · „Antwort-Paletten + Audio-Vorwärmen"
-
-> ✅ **ERLEDIGT am 21.06.2026 (Claude Code) · auf dev · kein offener Auftrag.**
-> 3 Dateien (`gespraech-modus.md` + `chat.html` + `audio.js`). Teil A: `[OPTIONEN]` →
-> 2–3 Antwort-Chips nur im geführten Rollenspiel (`gefuehrt`-Flag), nie frei, nie roh;
-> Chip = getippter Zug (`sendUserTurn`). Teil B: Früh-Warm beim Raum-Eintritt
-> (`__spkBoot`) + `voiceReady`-Spinner bei kaltem 🔊 + Anti-Desync-Generations-Guard in
-> `audio.js`. Headless `ok:true`, `node --check` + 2 Smokes grün; `api/*`/`vercel.json`
-> unberührt. NÄCHSTES = P3-Szenenende am echten Modell verifizieren, dann Kleinkram-Paket 2.
+# AUFTRAG — Geführtes Gespräch · „Roleplay-Feinschliff" (Ausstieg · Abschluss · Blasen · Intonation)
 
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Genehmigt: Antwort-Paletten = Prototyp III (`prototyp-feinschliff-iii.html`)
+Branch: dev · Baut auf „Antwort-Paletten + Audio-Vorwärmen" (Teil 30, live)
 
-> Zwei unabhängige, klein geschnittene Verbesserungen aus Leos Tests. TEIL A + TEIL B
-> getrennt baubar/testbar. Kein neuer Endpoint.
-
----
-
-## TEIL A — Antwort-Paletten (klickbare Reaktionen im geführten Rollenspiel)
-
-**Befund:** Im Thema-Rollenspiel (Café/Hotel/Taxi…) lässt Spikiu nur das offene Textfeld
-stehen. Für Anfänger ist das falsch — ein A1 produziert noch keine freien Sätze, erkennt
-und WÄHLT aber. Im Prototyp III gab es 2–3 klickbare Antwort-Chips („Sí, una maleta." /
-„No, gracias.") — das wurde nie in einen Auftrag gegossen. Jetzt nachholen.
-
-**Die Modus-Regel (wichtig):**
-- **Geführtes Thema-Rollenspiel** (Lerner hat ein Thema gewählt — Seed „Ich möchte das
-  Thema … üben") → **immer 2–3 Antwort-Chips.** Chips sind primär, das Textfeld bleibt
-  als Option darunter.
-- **Freies Sprechen** (Lerner hat „Einfach plaudern" gewählt) → **NIE Chips**, nur offener
-  Dialog im Textfeld. Aktion/Reaktion frei.
-
-### A1 — `gespraech-modus.md`
-Im geführten Thema-Rollenspiel hängt Spikiu nach seiner Replik ein Struktur-Signal an,
-auf eigenen Zeilen (wie `[WECHSEL:…]`/`[[…]]`/`[KORREKTUR]` — nie erklären, nie als Text):
-```
-[OPTIONEN]
-Sí, una maleta.
-No, gracias.
-[/OPTIONEN]
-```
-- 2–3 sinnvolle Lerner-Antworten, in der **Zielsprache**, aus dem **gelernten Häppchen-
-  Wortschatz** (passt zu Punkt ② „am Wortschatz verankert").
-- NUR im geführten Thema-Rollenspiel. Im **freien Gespräch** (Flur, „Einfach plaudern")
-  emittierst du NIE `[OPTIONEN]`.
-- Höchstens EIN `[OPTIONEN]`-Block pro Antwort.
-
-### A2 — `chat.html`
-- `[OPTIONEN]…[/OPTIONEN]` parsen (Muster wie `extractKorrektur`/`splitBridge`), Signal
-  NIE roh zeigen. Reihenfolge der Extraktion beachten: `[WECHSEL]` → `[SZENENENDE]`/
-  `[KORREKTUR]` → `[OPTIONEN]` → `---`-Split → `[[…]]`.
-- Die 2–3 Optionen als **klickbare Chips** über dem Eingabefeld rendern (Stil = die
-  Antwort-Chips aus `prototyp-feinschliff-iii.html`, Label „Antworte mit dem gelernten
-  Wortschatz"). Klick auf einen Chip = sendet diesen Text als Lerner-Zug (genau wie ein
-  getippter Satz) → Dialog läuft weiter; Chips der Runde verschwinden danach.
-- Das Textfeld bleibt im geführten Modus verfügbar (sekundär).
-- Im **freien Modus** (Lerner wählte „Einfach plaudern"): keine Chips, nur Textfeld — der
-  Prompt liefert dort eh keine `[OPTIONEN]`; zur Sicherheit auch frontendseitig nur im
-  geführten Modus rendern (der Modus ist beim Gabelungs-Klick bekannt: Thema vs. plaudern).
+> Vier kleine Befunde aus Leos Geräte-Test (Café DE→ES anfang). Gute Nachricht vorab:
+> das P3-Szenenende FEUERT jetzt (3-Knopf-Menü erscheint) ✅. Alle vier sind Feinschliff.
+> Dateien: `gespraech-modus.md` + `chat.html` + `audio.js`.
 
 ---
 
-## TEIL B — Audio-Vorwärmen (kein Retard, keine Desync)
+## 1 — Dauerhafter Ausstieg WÄHREND des Rollenspiels · `chat.html`
+**Befund:** Mitten im geführten Rollenspiel hat der Lerner nur die Antwort-Chips + das
+Textfeld — er sitzt im Dialog fest, ohne sichtbaren Ausweg. Er soll JEDERZEIT
+entscheiden können.
+- Eine **dezente, dauerhaft sichtbare Option** während des geführten Rollenspiels (z. B.
+  eine schmale Leiste / ein kleiner „⋯"-Knopf über dem Eingabefeld), die dasselbe
+  bietet wie das Abschluss-Menü: **Anderes Thema** (→ zurück zur Themen-Gabelung,
+  regeneriert Häppchen) und **Beenden → Lektion**. „Weitermachen" = einfach weiter
+  antworten (Default), also reicht ein „Schließen/Weiter" um die Leiste wegzutippen.
+- Wiederverwende die vorhandene `renderEndMenu`-Logik/-Optik (`emOtro`, `emTerminar`) —
+  kein neues System. Nur eben ERREICHBAR während des Spiels, nicht erst am Ende.
+- Nur im **geführten** Rollenspiel zeigen; im freien Flur nicht nötig (dort ist man eh frei).
 
-**Befund:** `warm(zielsprache)` läuft heute erst bei der **Themenwahl** (chat.html ~Z. 800).
-Der Eröffnungsgruß „¡Hola! Qué bien verte" + sein 🔊 erscheinen aber schon beim Betreten
-des Raums — also VOR jedem Vorwärmen. Erster 🔊-Klick = kalter Start: Piper lädt erst das
-~60MB-Modell → mehrere Sekunden Verzögerung; der kalte Klick „hängt" und spielt später
-verspätet über einem anderen Element (Desync: Klick auf ein Wort → der alte Gruß ertönt).
+## 2a — Abschluss ohne redundante Lob-Blase · `gespraech-modus.md`
+**Befund:** Am Szenenende kommt noch eine Blase „Bien hecho. ¿Qué te gustaría hacer ahora?"
+— doppelt falsch: „Bien hecho" ist das verbotene Lob, und „¿qué quieres?" sagen die drei
+Knöpfe darunter schon.
+- Am Szenenende ist die LETZTE Spikiu-Blase die **natürliche Schluss-Replik der Figur**
+  („¡Muchas gracias! ¡Que tenga un buen día!") — danach NUR das Signal `[SZENENENDE]`.
+- KEINE zusätzliche Blase mit „aus der Rolle treten" + Lob + „was willst du jetzt?". Das
+  Menü (Frontend) IST die Frage. Kein Lob, keine Wiederholung.
 
-### B1 — Früh vorwärmen · `chat.html`
-- `warmVoice(PROFILE.zielsprache)` schon **beim Betreten des Raums** aufrufen (sobald
-  `PROFILE` gelesen ist / beim Init, rund um den `[EINSTIEG]`-Opener) — NICHT erst bei der
-  Themenwahl. Der Themenwahl-Warm darf bleiben (idempotent; `warm` gibt die gecachte
-  Session zurück). So lädt das Modell still im Hintergrund, während der Lerner liest/wählt.
+## 2b — Eine Sprechblase pro Absatz · `gespraech-modus.md`
+**Befund:** Sätze, die zu EINEM Absatz/Gedanken gehören, werden unnötig in zwei Blasen
+zerlegt — wirkt zerhackt.
+- Schärfe die `---`-Regel: `---` trennt NUR wirklich verschiedene Gedanken (z. B.
+  Szenen-Rahmung vs. erste Replik). Mehrere Sätze, die zu EINEM Gedanken/Absatz gehören,
+  bleiben in EINER Blase zusammen. Im Zweifel: eine Blase. (Ästhetik + UX — der Lerner
+  bekommt einen sauberen Block, nicht Fragmente.) Das ergänzt die „max 2 Blasen, meist 1"-
+  Regel: lieber ein vollständiger Absatz als zwei zerrissene Sätze.
 
-### B2 — Pro-Knopf-Ladezustand + Anti-Desync · `chat.html` + `audio.js`
-- Klick auf 🔊: ist die Stimme bereit → sofort spielen. Ist sie noch kalt → der Knopf
-  zeigt einen kleinen Lade-/Spinner-Zustand und spielt **genau diesen Text**, sobald
-  bereit. Nie einen alten Text.
-- **Anti-Desync in `audio.js`:** ein neuer `speak()`-Aufruf macht jeden noch laufenden/
-  ausstehenden Sprech-Vorgang ungültig (Generations-Zähler: `speak` erhöht ihn + merkt
-  sich seinen Wert; die Wiedergabe-Schleife in `speakWithPiper` bricht ab, wenn ihr Wert
-  nicht mehr aktuell ist; Browser-Fallback macht weiter `synth.cancel()`). So ertönt nie
-  eine veraltete Phrase verspätet über einem späteren Klick. Minimal halten — `audio.js`
-  ist das getestete Audio-Fundament (Phase A), nur der Generations-Guard dazu.
-- Optional (nett, nicht Pflicht): ein dezenter „Stimme wird vorbereitet"-Hinweis während
-  des Erst-Warmens.
-
-**Der Gruß:** bleibt mit 🔊 (dank Früh-Vorwärmen meist sofort hörbar; sonst Spinner →
-spielt diesen Text). Leos Vorgabe: wer auf 🔊 tippt, hört die Phrase SOFORT, ohne Retard.
+## 3 — Piper liest Fragen als Aussagen · `audio.js` (untersuchen, ehrlich melden)
+**Befund:** Beim 🔊 einer Frage („¿Qué le pongo?", „¿Está libre?") klingt die Intonation
+wie eine Aussage — das Fragezeichen wird nicht als Frage realisiert.
+- WICHTIG: Der Text erreicht Piper bereits MIT `¿…?` (in `audio.js` `splitSentences`
+  Z.79 bleibt das öffnende `¿` erhalten). Es wird also NICHT weggeschnitten.
+- Zu prüfen: (a) ob in der Pipeline doch irgendwo `¿`/`?` verloren geht oder ein Satz so
+  zerteilt wird, dass die Frage-Kontur bricht; (b) ob espeak-ng/das Voice-Modell
+  `es_ES-sharvard-medium` die interrogative Prosodie überhaupt umsetzt.
+- EHRLICH BLEIBEN: Wahrscheinlich eine **Prosodie-Grenze des Piper-Spanisch-Modells**
+  (medium-Qualität), kein simpler Code-Bug. Wenn sich mit vertretbarem Aufwand nichts
+  verbessern lässt → als **bekannte Beta-Grenze** ins Ledger schreiben; die volle Lösung
+  ist ElevenLabs (Phase 2). NICHT lange darin versinken, nicht raten — kurz prüfen, melden.
 
 ---
 
-## ABNAHME (alles grün, sonst nicht fertig)
-**Teil A:**
-- [ ] Geführtes Thema-Rollenspiel: nach jeder Spikiu-Replik 2–3 klickbare Antwort-Chips
-      (Zielsprache, gelernter Wortschatz); Klick sendet den Zug, Dialog läuft weiter.
-- [ ] `[OPTIONEN]` nie roh sichtbar; koexistiert mit `[WECHSEL]`/`[[…]]`/`[KORREKTUR]`.
-- [ ] Freies Sprechen („Einfach plaudern"): KEINE Chips, nur Textfeld.
-- [ ] Textfeld im geführten Modus weiter nutzbar (sekundär).
-
-**Teil B:**
-- [ ] Stimme wird beim Betreten des Raums vorgewärmt (Netzwerk-Download startet vor der
-      Themenwahl).
-- [ ] 🔊 spielt ohne fühlbaren Retard; kalter Klick → Spinner → spielt DIESEN Text.
-- [ ] Kein Desync mehr: Klick auf ein 🔊 lässt nie eine ältere Phrase verspätet ertönen.
-- [ ] `audio.js`-Änderung minimal (nur Generations-Guard); `speak`/`warm`-API unverändert.
-
-**Beide:**
-- [ ] `node --check` grün; `[WECHSEL]`/Häppchen/Übungs-Varianten/freier Flur unberührt;
+## ABNAHME
+- [ ] **Ausstieg:** im geführten Rollenspiel jederzeit eine dezente Option erreichbar
+      (Anderes Thema / Beenden → Lektion), Optik = vorhandenes End-Menü; im freien Flur nicht.
+- [ ] **Abschluss:** keine „Bien hecho"/„was willst du jetzt?"-Blase mehr; letzte
+      Figur-Replik → direkt das 3-Knopf-Menü.
+- [ ] **Blasen:** zusammengehörige Sätze in EINER Blase; `---` nur für echte Gedanken-
+      wechsel; nie zerhackt.
+- [ ] **Intonation:** geprüft + Ergebnis im Bericht (Fix ODER als Beta-Grenze dokumentiert,
+      Verweis ElevenLabs Phase 2). Keine Verschlimmbesserung an `audio.js`.
+- [ ] `node --check` grün; Antwort-Paletten/Audio-Vorwärmen/Häppchen/freier Flur unberührt;
       keine vom Browser belegten Variablennamen; Emphasis nur `<em>`.
 
 ## AUSDRÜCKLICH NICHT
-- `api/gespraech.js`/`api/haeppchen.js` NICHT umschreiben.
-- Keine neue Audio-Architektur — nur Vorwärm-Zeitpunkt + Anti-Desync-Guard.
-- Kein Stripe/Supabase.
+- `api/*` nicht umschreiben. Keine neue Audio-Architektur. Kein Stripe/Supabase.
+- Keine Modellwechsel für Piper in diesem Paket (Stimmen-Frage = später / Phase 2).
 
 ## DANACH
-- P3-Szenenende **am echten Modell verifizieren** (Menü/Korrektur-Karte/`[SZENENENDE]`-
-  Trigger/Lektion-Anschluss) — jetzt, wo die Paletten den Dialog zum sauberen Abschluss
-  führen, sollte das Menü zuverlässiger feuern. Bei Bedarf P3-Schliff.
 - Kleinkram-Paket 2 (Genus-Begrüßung + Lesebegleiter-intro) · Audio überall I/II ·
-  Werkstatt-Variante B · Paket B live · A2 · Paket C.
+  Werkstatt-Variante B · Paket B live · A2 · Paket C. Backlog: Audio Phase B/C ·
+  Assessment-als-Gespräch · Legal-Sequenz · Gym-Raum · Supabase + ElevenLabs = Phase 2.
