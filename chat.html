@@ -13,6 +13,8 @@
   --accent3:#1f5239; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
   /* Übersetzungs-Kästchen (Feinschliff): gedämpfte Muleta, sekundär (Stil = Prototyp) */
   --trans-bg:#f1eee8; --trans-ink:#8a847d; --trans-border:#e2ddd4;
+  /* Korrektur-Karte „Du hast gesagt" (P3, Stil = prototyp-feinschliff-iii.html) */
+  --said-bg:#f6efe2; --said-ink:#8a6d2e; --said-border:#e6d8bb;
 }
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
 .app { display:flex; flex-direction:column; height:100dvh; max-width:680px; margin:0 auto; background:var(--white); }
@@ -148,6 +150,23 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 @keyframes spin { to { transform:rotate(360deg); } }
 /* Übergabe-Notiz (Szene/Brücke) */
 .scene-note { align-self:center; text-align:center; font-family:'Lora',serif; font-style:italic; font-size:0.82rem; color:var(--mid); background:rgba(0,0,0,0.02); padding:0.45rem 0.85rem; border-radius:10px; max-width:90%; opacity:0; animation:fadeUp 0.45s ease forwards; }
+
+/* ── Korrektur-Karte am Szenenende (Paket 3) — zwei Spalten „Du hast gesagt → Besser",
+   NUR kommunikativ unpassend, OHNE Erklärung; 🔊 auf „Besser". Stil = prototyp-feinschliff-iii.html. */
+.kk { align-self:stretch; background:var(--white); border:1px solid var(--faint); border-radius:16px; padding:0.85rem 0.8rem; margin-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; box-shadow:0 6px 18px rgba(0,0,0,0.05); }
+.kk-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold); margin-bottom:0.6rem; text-align:center; }
+.kk-row { display:grid; grid-template-columns:1fr 1fr; gap:0.45rem; margin-bottom:0.45rem; }
+.kk-row:last-child { margin-bottom:0; }
+.kk-head > div { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; text-align:center; }
+.kk-head .h-said { color:var(--said-ink); }
+.kk-head .h-better { color:var(--accent); }
+.kk-cell { border-radius:10px; padding:0.5rem 0.6rem; font-family:'Lora',serif; font-size:0.86rem; line-height:1.3; }
+.kk-said { background:var(--said-bg); border:1px solid var(--said-border); color:var(--said-ink); }
+.kk-better { background:var(--accent2); border:1px solid var(--accent); color:var(--accent3); font-weight:600; position:relative; padding-right:1.9rem; }
+.kk-better .speak-btn { top:50%; transform:translateY(-50%); right:0.4rem; width:24px; height:24px; background:var(--white); }
+/* Abschluss-Menü (Paket 3): drei Knöpfe inline im Chat-Strom, kein Auto-Sprung */
+.endmenu { align-self:stretch; display:flex; flex-direction:column; gap:0.5rem; margin-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; }
+.endmenu .chip { width:100%; text-align:center; }
 </style>
 </head>
 <body>
@@ -375,6 +394,125 @@ function addDoorButton(ziel){
 // SPK_ICON: dezentes Lautsprecher-Glyph für die Spikiu-Blase (gleich wie im Prototyp).
 var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
 
+// ── Szenenende: Korrektur-Karte + Menü (Paket 3) ──────────────────
+// Spikiu hängt am Szenenende EIN [SZENENENDE]-Signal an (→ Menü) und, falls es
+// kommunikativ unpassende Wendungen gab, davor einen [KORREKTUR]-Block. Beide werden
+// hier abgefangen, NIE als Rohtext gezeigt; das WARUM kommt erst in der Lektion.
+var korrekturen = [];   // gesammelte Paare der laufenden Szene (für die Lektion bei „Terminar")
+var P3_UI = {
+  de:{ kkEyebrow:'Für nächstes Mal', said:'Du hast gesagt', better:'Besser',
+       mismo:'🔁 Gleiches Thema — weiter üben', otro:'🔀 Anderes Thema', terminar:'✓ Beenden → Lektion',
+       mismoSeed:'Lass uns dasselbe Thema weiterüben.', toLesson:'→ Zur Lektion', lessonNote:'Deine Lektion wartet im Dashboard.' },
+  es:{ kkEyebrow:'Para la próxima', said:'Dijiste', better:'Mejor',
+       mismo:'🔁 Mismo tema — seguir', otro:'🔀 Otro tema', terminar:'✓ Terminar → Lección',
+       mismoSeed:'Sigamos practicando el mismo tema.', toLesson:'→ A la lección', lessonNote:'Tu lección te espera en el panel.' },
+  en:{ kkEyebrow:'For next time', said:'You said', better:'Better',
+       mismo:'🔁 Same topic — keep going', otro:'🔀 Another topic', terminar:'✓ Finish → Lesson',
+       mismoSeed:'Let’s keep practicing the same topic.', toLesson:'→ To the lesson', lessonNote:'Your lesson is waiting in the dashboard.' }
+};
+function p3(){ return P3_UI[uiLang()] || P3_UI.de; }
+
+// [KORREKTUR]…[/KORREKTUR] → Paare {said, better}. Zeilen der Form „so gesagt -> besser".
+function extractKorrektur(t){
+  var m = (t||'').match(/\[KORREKTUR\]([\s\S]*?)\[\/KORREKTUR\]/i);
+  if(!m) return { text:t, pairs:[] };
+  var pairs = [];
+  m[1].split('\n').forEach(function(line){
+    var halves = line.split(/\s*(?:->|→|=>)\s*/);
+    if(halves.length === 2 && halves[0].trim() && halves[1].trim()){
+      pairs.push({ said: halves[0].trim(), better: halves[1].trim() });
+    }
+  });
+  var clean = (t||'').replace(/\[KORREKTUR\][\s\S]*?\[\/KORREKTUR\]/i,' ')
+    .replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  return { text:clean, pairs:pairs.slice(0,3) };   // max 3 Paare
+}
+// [SZENENENDE] → Menü-Signal (breit strippen, nie als Text zeigen).
+var SZENE_RE = /\s*\[SZENENENDE\]\s*/i;
+function extractSceneEnd(t){
+  if(!SZENE_RE.test(t||'')) return { text:t, ended:false };
+  return { text:(t||'').replace(SZENE_RE,' ').trim(), ended:true };
+}
+
+function renderKorrekturCard(pairs){
+  var ui = p3();
+  var card = document.createElement('div'); card.className = 'kk';
+  card.innerHTML = '<div class="kk-eyebrow">' + escPlain(ui.kkEyebrow) + '</div>'
+    + '<div class="kk-row kk-head"><div class="h-said">' + escPlain(ui.said) + '</div>'
+    + '<div class="h-better">' + escPlain(ui.better) + '</div></div>';
+  pairs.forEach(function(p){
+    var row = document.createElement('div'); row.className = 'kk-row';
+    var said = document.createElement('div'); said.className = 'kk-cell kk-said'; said.textContent = p.said;
+    var bet = document.createElement('div'); bet.className = 'kk-cell kk-better'; bet.appendChild(document.createTextNode(p.better));
+    var btn = document.createElement('button'); btn.className = 'speak-btn'; btn.type = 'button';
+    btn.setAttribute('aria-label','Vorlesen'); btn.innerHTML = SPK_ICON;
+    btn.onclick = (function(txt){ return function(){ playFrom(btn, plainForSpeech(txt), 'playing'); }; })(p.better);
+    bet.appendChild(btn);
+    row.appendChild(said); row.appendChild(bet); card.appendChild(row);
+  });
+  chat.appendChild(card); chat.scrollTop = chat.scrollHeight;
+}
+
+// Drei Knöpfe: gleiches Thema / anderes Thema / beenden→Lektion. Kein Auto-Sprung.
+function renderEndMenu(){
+  if (document.getElementById('endmenu')) return;
+  setStage('sprechen');                 // Szenenende; „Lektion" erst bei „Terminar"
+  var ui = p3();
+  var wrap = document.createElement('div'); wrap.className = 'endmenu'; wrap.id = 'endmenu';
+  wrap.innerHTML =
+      '<button class="chip" type="button" id="emMismo"></button>'
+    + '<button class="chip" type="button" id="emOtro"></button>'
+    + '<button class="chip full" type="button" id="emTerminar"></button>';
+  wrap.querySelector('#emMismo').textContent = ui.mismo;
+  wrap.querySelector('#emOtro').textContent = ui.otro;
+  wrap.querySelector('#emTerminar').textContent = ui.terminar;
+  chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+  wrap.querySelector('#emMismo').onclick = mismoTema;
+  wrap.querySelector('#emOtro').onclick = otroTema;
+  wrap.querySelector('#emTerminar').onclick = terminar;
+}
+function removeEndMenu(){ var m = document.getElementById('endmenu'); if (m) m.remove(); }
+
+function mismoTema(){                     // neue Runde, gleiches Thema/Wortschatz
+  removeEndMenu();
+  var seed = p3().mismoSeed;
+  addMessage('user', seed);
+  verlauf.push({ role:'user', content: seed });
+  turn();
+}
+function otroTema(){                      // zurück zur Themen-Gabelung → regeneriert Häppchen
+  removeEndMenu();
+  TOPIC_LABEL = null;
+  setStage('thema');
+  showGabelung();
+}
+// „Terminar" → Lektion-Anschluss: verlauf (+ Korrekturen) als lastConversation in
+// spikiu_user schreiben (Format wie /api/generate-lesson erwartet) und ins Dashboard
+// übergeben. Der bestehende Dashboard-Generator greift lastConversation ab — wir
+// schreiben den heute toten Schlüssel, mehr nicht (kein Endpoint-Umbau).
+function terminar(){
+  removeEndMenu();
+  setStage('lektion');
+  var convo = (Array.isArray(verlauf) ? verlauf : []).map(function(m){
+    return { role: m.role, content: m.content };
+  });
+  if (korrekturen.length){
+    var lines = korrekturen.map(function(p){ return '"' + p.said + '" -> "' + p.better + '"'; }).join('\n');
+    convo.push({ role:'assistant', content:'[Correcciones de la escena]\n' + lines });
+  }
+  try {
+    var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
+    u.lastConversation = convo;
+    localStorage.setItem('spikiu_user', JSON.stringify(u));
+  } catch(e){}
+  var ui = p3();
+  addNote(ui.lessonNote);
+  var row = document.createElement('div'); row.className = 'door-row';
+  row.innerHTML = '<button class="door-btn" type="button">' + escPlain(ui.toLesson) + '</button>';
+  row.querySelector('.door-btn').onclick = function(){ window.location.href = 'dashboard.html#lektionen'; };
+  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+}
+
 function addMessage(role, text){
   var msg = document.createElement('div');
   msg.className = 'message ' + role;
@@ -470,12 +608,21 @@ async function turn(){
   }
   hideTyping();
   try {
-    var parsed = extractWechsel(reply);     // [WECHSEL:…] abfangen, nie als Text zeigen
-    var shown = parsed.text || reply;       // falls Antwort nur aus dem Marker bestünde: Rohtext
-    addMessage('spikiu', shown);            // nur Anzeige (ohne Marker)
-    verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf für die nächste Runde
-    lastTurnOk = true;                                    // Runde sauber → Opener darf die Gabelung zeigen
-    if (parsed.ziel) addDoorButton(parsed.ziel);          // sanfter Knopf, kein Auto-Sprung
+    // Signale in fester Reihenfolge abfangen, NIE als Rohtext zeigen:
+    // [WECHSEL] → Tür · [KORREKTUR] → Karte (vor dem Menü) · [SZENENENDE] → Menü.
+    var w = extractWechsel(reply);
+    var k = extractKorrektur(w.text);
+    var s = extractSceneEnd(k.text);
+    var shown = s.text;
+    if (!shown && !k.pairs.length && !s.ended && !w.ziel) shown = reply;  // malformed → roh statt leer
+    if (shown){
+      addMessage('spikiu', shown);                          // nur Anzeige (ohne Marker)
+      verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf (Marker raus, [[…]] bleibt)
+    }
+    lastTurnOk = true;                                      // Runde sauber → Opener darf die Gabelung zeigen
+    if (k.pairs.length){ korrekturen = korrekturen.concat(k.pairs); renderKorrekturCard(k.pairs); }
+    if (w.ziel) addDoorButton(w.ziel);                      // sanfter Knopf, kein Auto-Sprung
+    if (s.ended) renderEndMenu();                           // drei Knöpfe nach der Karte
   } catch(e){
     showError('Anzeige: ' + ((e && e.message) || e));
   }
@@ -545,6 +692,8 @@ function goFree(){ removeGabelung(); input.focus(); }   // genau der heutige Flu
 function pickTopic(label){
   if (busy || guiding) return;
   removeGabelung();
+  removeEndMenu();                       // falls ein altes Menü noch offen war
+  korrekturen = [];                      // neue Szene → frische Korrektur-Sammlung
   TOPIC_LABEL = label;
   addMessage('user', label);             // die Wahl als User-Bubble (wie P1, nur ohne Seed-Floskel)
   showRail(); setStage('wortschatz');

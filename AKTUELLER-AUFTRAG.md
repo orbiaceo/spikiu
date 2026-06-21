@@ -1,5 +1,13 @@
 # AUFTRAG — Geführtes Gespräch · PAKET P3 „Die Lektion + Roleplay-Feinschliff"
 
+> ✅ **ERLEDIGT am 21.06.2026 (Claude Code) · auf dev · kein offener Auftrag.**
+> Fünf Edits, 2 Dateien (`gespraech-modus.md` + `chat.html`); `generate-lesson.js`/
+> `dashboard.html` nur gelesen, nicht angefasst (Vertrag passte). A Wortschatz-Anker ·
+> B max 2 Blasen · C Abschluss-Menü ohne Lob (`[SZENENENDE]`→3 Knöpfe) · D Korrektur-Karte
+> (`[KORREKTUR]`→zwei Spalten, 🔊 auf „Besser") · E „Terminar" schreibt `verlauf`+Korrekturen
+> →`lastConversation` + Tür zu `dashboard.html#lektionen` (tilgt den Lektion-Disconnect).
+> Headless `ok:true`, `node --check` + Parser-Smoke grün. NÄCHSTES = „Übungs-Varianten" (Punkt ①).
+
 Stand: 21.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigte Prototypen: `prototyp-rhythmus-korrekturkarte.html` + `prototyp-feinschliff-iii.html`
 
