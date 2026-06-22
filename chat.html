@@ -202,6 +202,19 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .free-exit .exit-toggle { align-self:flex-end; margin-left:auto; }
 /* ── Lektion-Angebot (Teil 32 #2): Ja/Nein-Karte am Gesprächsende, Stil wie End-Menü. ── */
 .app.dissolving { transition:opacity 0.6s ease, filter 0.6s ease; opacity:0; filter:blur(6px); pointer-events:none; }
+/* ── Voz primero (Paket 5): Präsenz-Gruß beim Eintritt. Spikiu LÄDT EIN (sanfter Puls +
+   „tippen, um zu hören") — Autoplay braucht eine Geste; erst der Tipp spielt die Stimme.
+   Größerer, vollständiger Capy; Sprech-Zustand (Mund + Aura) liefert capy-vivo.js. ── */
+.voz-greet { align-self:stretch; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.5rem; padding:0.75rem 0 0.25rem; cursor:pointer; -webkit-tap-highlight-color:transparent; animation:fadeUp 0.4s ease forwards; opacity:0; }
+.voz-capy { width:64px; height:64px; overflow:visible; animation:vozBreathe 4.5s ease-in-out infinite; }
+.voz-greet-line { font-family:'Lora',serif; font-size:1.15rem; line-height:1.35; color:var(--ink); max-width:18rem; }
+.voz-hint { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--accent); font-weight:500; }
+.voz-hint::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:vozPulse 1.6s ease-in-out infinite; }
+.voz-greet.spoke { cursor:default; }
+.voz-greet.spoke .voz-hint { display:none; }
+@keyframes vozBreathe { 0%,100%{ transform:translateY(0) scale(1);} 50%{ transform:translateY(-3px) scale(1.02);} }
+@keyframes vozPulse { 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.5); opacity:0.4;} }
+@media (prefers-reduced-motion: reduce){ .voz-capy{ animation:none; } .voz-hint::before{ animation:none; } }
 </style>
 </head>
 <body>
@@ -278,6 +291,21 @@ var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
   + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
   + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
 
+// Voz primero (Paket 5): größerer, vollständiger Capy für den Präsenz-Gruß. Augen in
+// einer Gruppe (capy-vivo blinzelt/folgt) + Mund mit Kennung spk-capy-mouth (Sprech-Zustand).
+var CAPY_OPENER = '<svg class="voz-capy" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<g class="spk-capy-eyes">'
+  +   '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  +   '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '</g>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
 // ── Profil defensiv lesen (Assessment-Paket noch offen — 1:1 wie schreibwerkstatt) ──
 var stored = {};
 try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
@@ -323,6 +351,7 @@ var guiding = false;      // geführter Häppchen-Schritt läuft → Eingabe ges
 var gefuehrt = false;     // geführtes Thema-Rollenspiel? (Thema gewählt) → Antwort-Chips erlaubt. „Einfach plaudern"/frei → nie.
 var sessionGezaehlt = false;   // Teil 36: pro Gesprächsbogen wächst GENAU EIN Blatt (user.blaetter); neues Gespräch setzt zurück.
 var voiceReady = false;   // Stimme vorgewärmt (Teil B)? steuert Spinner vs. Puls am 🔊
+var vozHandle = null;     // Voz primero (Paket 5): Sprech-Handle des Präsenz-Gruß-Capy (capy-vivo)
 var TOPIC_LABEL = null;   // gewähltes Thema, wartet auf den P1-Seed-Zug nach den Häppchen
 var hvIndex = 0;          // aktuelles Hörverständnis-Item
 var chat = document.getElementById('chat');
@@ -930,7 +959,7 @@ function showGabelung(){
   });
 }
 
-function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(false); setExitVisible(false); removeGabelung(); updateFreeExit(); input.focus(); }   // freier Flur — Schreibfeld + Profil-Chip wieder ein; kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
+function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(false); setExitVisible(false); removeGabelung(); removeOpenerGreeting(); updateFreeExit(); input.focus(); }   // freier Flur — Schreibfeld + Profil-Chip wieder ein; kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
@@ -938,6 +967,7 @@ function pickTopic(label){
   if (busy || guiding) return;
   setOpenerChrome(false);                // Gespräch beginnt → Schreibfeld + Profil-Chip wieder ein (geführt: sichtbar, aber gesperrt)
   removeGabelung();
+  removeOpenerGreeting();                // Voz primero: Präsenz-Gruß weg, Gespräch beginnt
   removeEndMenu();                       // falls ein altes Menü noch offen war
   removeOptionen();
   korrekturen = [];                      // neue Szene → frische Korrektur-Sammlung
@@ -1222,9 +1252,60 @@ function setOpenerChrome(hidden){
   if (pb) pb.style.display = hidden ? 'none' : '';
   if (ia) ia.style.display = hidden ? 'none' : '';
 }
+// ── Voz primero (Paket 5): Präsenz-Gruß beim Eintritt ─────────────
+// Spikiu LÄDT EIN (sanfter Puls + Hinweis) — KEIN Auto-Play. Erst der Tipp (Geste)
+// spielt seine Stimme + schaltet den Capy in den Sprech-Zustand (Mund + Aura aus
+// capy-vivo.js), danach wieder Ruhe. Gruß in der Zielsprache (HÖREN = lebendig);
+// der Hinweis in der Muttersprache. Stimme ist beim Eintritt schon vorgewärmt (__spkBoot).
+var VOZ_GREET = {
+  es: function(n){ return '¡Hola' + (n ? ', ' + n : '') + '! Me alegro de verte.'; },
+  de: function(n){ return 'Hallo' + (n ? ', ' + n : '') + '! Schön, dich zu sehen.'; },
+  en: function(n){ return 'Hi' + (n ? ', ' + n : '') + '! Good to see you.'; },
+  el: function(n){ return 'Γεια σου' + (n ? ', ' + n : '') + '! Χαίρομαι που σε βλέπω.'; }
+};
+var VOZ_HINT = { de:'tippen, um Spikiu zu hören', es:'toca para oír a Spikiu', en:'tap to hear Spikiu' };
+
+function removeOpenerGreeting(){ var g = document.getElementById('vozGreet'); if (g) g.remove(); vozHandle = null; }
+
+// capy-vivo.js ist deferred → beim ERSTEN startOpener evtl. noch nicht da. Dann bindet
+// der DOMContentLoaded-Hook nach. Idempotent (spkCapyAlive ist je SVG einmalig).
+function bindVozCapy(){
+  var svg = document.querySelector('#vozGreet .voz-capy');
+  if (!svg || !window.spkCapyAlive) return;
+  vozHandle = window.spkCapyAlive(svg, { tapTarget: document.getElementById('vozGreet') });
+}
+
+function speakOpenerGreeting(box){
+  var lang = PROFILE.zielsprache;
+  var txt  = (VOZ_GREET[lang] || VOZ_GREET.es)(PROFILE.name || '');
+  box.classList.add('spoke');                   // Hinweis/Puls verschwindet, sobald gehört
+  if (vozHandle) vozHandle.speak(true);         // Mund + Aura für die Dauer
+  var done = function(){ if (vozHandle) vozHandle.speak(false); };   // danach wieder ruhig
+  var p = speakText(txt, lang);                 // window.spkSpeak/Fallback (beide async)
+  if (p && typeof p.then === 'function') p.then(done, done);
+  else setTimeout(done, 2200);                  // klassischer Fallback: feste Dauer
+}
+
+function renderOpenerGreeting(){
+  if (document.getElementById('vozGreet')) return;
+  var ui   = uiLang();
+  var lang = PROFILE.zielsprache;
+  var greet = (VOZ_GREET[lang] || VOZ_GREET.es)(PROFILE.name || '');
+  var box = document.createElement('div');
+  box.className = 'voz-greet'; box.id = 'vozGreet';
+  box.innerHTML = CAPY_OPENER
+    + '<div class="voz-greet-line">' + escPlain(greet) + '</div>'
+    + '<div class="voz-hint">' + escPlain(VOZ_HINT[ui] || VOZ_HINT.de) + '</div>';
+  chat.appendChild(box);
+  chat.scrollTop = chat.scrollHeight;
+  box.addEventListener('click', function(){ speakOpenerGreeting(box); });   // die GESTE
+  bindVozCapy();
+}
+
 function startOpener(){
   sessionGezaehlt = false;      // Teil 36: frischer Eintritt → Blatt-Zähler zurück
   setOpenerChrome(true);        // Profil-Chip + Schreibfeld aus, solange die Gabelung steht
+  renderOpenerGreeting();       // Voz primero: Präsenz-Gruß (lädt ein, KEIN Auto-Play)
   showGabelung();
 }
 
@@ -1274,6 +1355,9 @@ window.__spkBoot = function(){ warmVoice(PROFILE.zielsprache); };
 // ── Einstieg: kein Welcome-Screen, kein Onboarding. Direkt rein. ──
 fillProfileBar();
 startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach die Gabelung
+// capy-vivo.js ist deferred → beim startOpener oben evtl. noch nicht geladen.
+// Hier nachbinden, sobald die Helfer da sind (Sprech-/Blinzel-Zustand des Gruß-Capy).
+document.addEventListener('DOMContentLoaded', bindVozCapy);
 </script>
 <!-- Audio (Paket 2): audio.js ist ein ES-Modul am Root. Hier importiert, via window
      an das klassische Haupt-Script durchgereicht (das bleibt klassisch wegen
@@ -1284,6 +1368,9 @@ startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach
   window.spkWarm  = warm;
   if (window.__spkBoot) window.__spkBoot();   // Teil B: früh vorwärmen, sobald die Audio-API bereit ist
 </script>
+<!-- Voz primero (Paket 5): capy-vivo.js liefert den Sprech-Zustand (Mund + Aura) +
+     Blinzeln/Blick für den Präsenz-Gruß. Idempotent (IIFE-Guard), nav.js lädt es ohnehin. -->
+<script src="capy-vivo.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>
