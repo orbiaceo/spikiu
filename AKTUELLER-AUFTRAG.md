@@ -1,94 +1,74 @@
-# AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
-
-> **Paket 4 „Memoria que se siente" GEBAUT + auf dev (commit 8988ac2).** EINE Datei
-> (`dashboard.html`): `renderMemoria()` macht die Begrüßung lebendig aus NUR echten Daten
-> (`lessons`/`blaetter`) — Kontinuitäts-Untertitel mit jüngster Lektion + „Weiter plaudern →"-Link,
-> „Wir zwei"-Zeile (echte Zähler, Singular/Plural, i18n DE/ES/EN), optionaler „von letztem Mal"-Wort-Anker;
-> ohne Historie bleibt der Willkommens-Zustand sauber (nichts erfunden — Seele). Alle Abnahme-Punkte
-> headless verifiziert (4 Fälle: Historie DE · neuer Lerner · ES · EN). Vollständiger Bericht +
-> ABNAHME-REST (Gerät) im SPIKIU-BUILD-LEDGER.md (oberste „Stand:"-Zeile). Nächstes laut Auftrag:
-> Voz primero (`prototyp-voz.html`) · Reel táctil (`prototyp-reel-tactil.html`).
->
-> Der ursprüngliche Auftragstext steht unten unverändert als Referenz.
-
----
-
-# (Referenz) AUFTRAG — „Memoria que se siente" (Paket 4 der Design-Welle „Neuer Look")
+# AUFTRAG — „Voz primero" (Paket 5 der Design-Welle „Neuer Look")
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Genehmigter Prototyp (Geist + Stil): `prototyp-memoria.html`
+Branch: dev · Genehmigte Prototypen (Stil + Verhalten): `prototyp-voz.html` + `prototyp-capy-vivo.html` (Laune „habla")
 
-> Spikiu empfängt mit KONTINUITÄT statt mit einem leeren „Willkommen": er weiß, woran
-> wir zuletzt gearbeitet haben, und die Beziehung wächst sichtbar (ohne Streak-Druck).
-> Das ist Spikius Moat = Präsenz.
+> Spikiu BEGRÜSST DICH MIT STIMME, wenn du den Gesprächs-Raum betrittst — Präsenz durch
+> Klang. Den Begleiter HÖREN macht ihn lebendig.
 >
-> **HARTE REGEL (Seele, Anti-Halluzination): NUR ECHTE DATEN.** Der Prototyp zeigte
-> illustrative Zahlen („47 Wörter · 9 Tage · du hast 'la cuenta' endlich geschafft") —
-> die gibt es NICHT (kein Streak, kein „Tage dabei", kein Meisterungs-Register). Genau
-> solche erfundenen Stats hat Claude Code beim Baum (Teil 36) bewusst ENTFERNT. Memoria
-> baut ausschließlich auf dem, was wirklich in `spikiu_user` steht.
+> AUTOPLAY-WAHRHEIT (Browser): Ton darf NICHT ohne eine Nutzer-Geste starten. Darum wird
+> nicht blind beim Laden abgespielt, sondern Spikiu LÄDT EIN: ein sanfter Puls + „tipp,
+> um mich zu hören"; der erste Tipp ist die Geste → ab da spielt die Stimme (und der
+> bestehende 🔊 pro Blase sowieso). NIE ein stummer Knopf (Fallback steckt schon in audio.js).
 
-## WAS WIRKLICH DA IST (frisch aus dev geprüft)
-- `user.lessons` — Array (rolling-3), je `{ id, createdAt, zielsprache, title, vocab[], … }`.
-  chat.html schreibt sie am Gesprächsende (Teil 32). **`lastConversation` wird NICHT mehr
-  geschrieben** → Kontinuität kommt aus `lessons`, nicht aus `lastConversation`.
-- `user.blaetter` — echter Gesprächs-Zähler (Teil 36, +1 pro Gesprächsende) = die Blätter
-  am Baum.
-- `user.name`, `user.profile` (targetLang/nativeLang/etappe …).
-- **NICHT vorhanden:** Streak, „Tage dabei"/firstSeen, Meisterungs-Status einzelner Wörter.
-  → NICHTS davon erfinden oder anzeigen.
+## WAS WIEDERVERWENDET WIRD (frisch aus dev geprüft)
+- `audio.js` (ES-Modul am Root): `speak(text, zielsprache)` + `warm(zielsprache)`, Piper-WASM
+  mit automatischem `speechSynthesis`-Fallback. NICHT anfassen.
+- In `chat.html` schon da: `say(text, zielsprache)` (Z.339, nutzt `window.spkSpeak`/Fallback),
+  `warmVoice(zielsprache)` (Z.351), 🔊 pro Spikiu-Blase, `voiceReady`-Flag.
+- `capy-vivo.js` (Paket 1): atmet/blinzelt/Blick/Tipp. Bekommt jetzt einen **Sprech-Zustand**.
+- Der Opener (Teil 35): ruhige Gruß-Zeile beim Eintritt (leere History → `[EINSTIEG]`).
 
-## DIE DATEI (EINE)
-**`dashboard.html`** — Begrüßung lebendig machen. `api/*`, Seele, andere Seiten, `nav.js`,
-`baum.js`, `capy-vivo.js` UNBERÜHRT. Kein neuer Capy (der Baum ist der Held der tree-hero).
+## DATEIEN (ZWEI)
+1. **`capy-vivo.js`** — wiederverwendbaren **Sprech-Zustand** ergänzen.
+2. **`chat.html`** — gesprochener Gruß am Opener + Sprech-Animation.
 
-## WAS GEBAUT WIRD
-Im `load`-Handler, wo heute `greeting-sub` gesetzt wird (Z.1195
-`greeting-sub.textContent = subs[_native]…`), eine kleine `renderMemoria(user)`-Logik:
+`audio.js`, `api/*`, Seele, `*-modus.md`, `nav.js`, `baum.js`, `dashboard.html` UNBERÜHRT.
+Das Backend / der Opener-Inhalt wird NICHT geändert.
 
-1. **Kontinuitäts-Untertitel** (ersetzt das statische `subs[_native]` NUR wenn echte Historie da ist):
-   - `lessons` nach `createdAt` absteigend → jüngste Lektion. Wenn `lessons.length > 0` und die
-     jüngste hat einen `title`: Untertitel = Kontinuität, i18n in der **Muttersprache**:
-     - de „Letztes Mal: «{title}». Machen wir weiter?"
-     - es „La última vez: «{title}». ¿Seguimos?"
-     - en „Last time: «{title}». Shall we keep going?"
-     dahinter ein dezenter Link **„Weiter plaudern → / Seguir charlando → / Keep chatting →"**
-     auf `chat.html`.
-   - Wenn KEINE Lektion da ist (neuer Lerner): den heutigen Willkommens-Untertitel
-     (`subs[_native]`) UNVERÄNDERT lassen. Nichts erfinden.
-2. **„Wir zwei" — Beziehung (echte Zähler, KEIN Streak):** eine ruhige kleine Zeile/Chip
-   unter der Begrüßung (oder im tree-hero unter der Blatt-Zeile), NUR sichtbar wenn
-   `blaetter > 0` oder `lessons.length > 0`:
-   - Inhalt = echte Zahlen: **Gespräche = `user.blaetter`** · **Lektionen = `lessons.length`**.
-   - i18n Muttersprache, mit korrektem Singular/Plural (1 Gespräch / 2 Gespräche …):
-     de „Wir zwei: {g} Gespräch(e) · {l} Lektion(en)" · es „Nosotros dos: {g} charla(s) ·
-     {l} lección/lecciones" · en „Us two: {g} conversation(s) · {l} lesson(s)".
-   - Ruhiger Stil (gedämpft, klein), KEINE Pokale/Prozente/Balken. Kein Streak, keine „Tage".
-3. **Optional, nur wenn sauber & echt:** ein sanfter „von letztem Mal"-Anker — das ERSTE
-   Vokabel der jüngsten Lektion (`lessons[0].vocab[0].word` + `.translation`), als leise Zeile
-   „Von letztem Mal: {wort} ({übersetzung}) / De la última vez / From last time". KEIN „du hast
-   es gemeistert" (das wäre erfunden) — nur ein neutrales Erinnern. Fehlt das Feld → weglassen.
+## 1) `capy-vivo.js` — Sprech-Zustand (wiederverwendbar)
+- Eine Möglichkeit, einen belebten Capy in den Zustand **„spricht"** zu schalten und zurück
+  (z. B. `spkCapyAlive` gibt ein Handle mit `.speak(true/false)` zurück, oder global
+  `spkCapySpeak(svgEl, on)`). Idempotent, defensiv.
+- Animation = **Mund bewegt sich** (das Lächeln-`<path>` des kanonischen Capy bekommt eine
+  Kennung `spk-capy-mouth`; im Sprech-Zustand sanftes Auf/Zu, wie `talk` in den Prototypen)
+  **+ weiche Aura-Ringe** um den Capy (zwei pulsierende Ringe, wie `prototyp-voz.html`).
+- `prefers-reduced-motion`: nur Aura sehr dezent oder aus, kein hektischer Mund.
+- Kanonischen SVG NICHT umformen — nur die Mund-Pfad-Kennung ergänzen. Capy bleibt vollständig.
+
+## 2) `chat.html` — Spikiu spricht beim Eintritt
+- **Beim Betreten** des Raums die Stimme für die Nutzersprache vorwärmen (`warmVoice` —
+  falls noch nicht am Eintritt, hier sicherstellen), damit der erste Tipp sofort klingt.
+- **Opener-Gruß als Präsenz-Moment:** die Gruß-Zeile bekommt einen etwas **größeren Capy**
+  (Präsenz; z. B. die 38-px-`.capy-icon` statt 20-px-Avatar NUR für den Opener) + einen
+  **sanften Puls** und einen dezenten Hinweis **„tipp, um Spikiu zu hören"** (i18n DE/ES/EN),
+  weil Autoplay eine Geste braucht.
+- **Erster Tipp** auf den Opener-Capy/die Gruß-Zeile (= die Geste) →
+  `say(grußText, zielsprache)` UND den Capy in den **Sprech-Zustand** (Mund + Aura) für die
+  Dauer; am Ende zurück in Ruhe. Sprich den Text in SEINER Sprache (Muttersprach-Gruß →
+  Muttersprach-Stimme; eine Zielsprachen-Zeile → Zielsprachen-Stimme; `audio.js` kann
+  de/es/en/el).
+- Danach läuft der normale Opener-Flow weiter (Gabelung plaudern/Thema unverändert). Der
+  bestehende 🔊 pro Blase bleibt unverändert. KEIN Auto-Play ohne Geste.
 
 ## ABNAHME
-- [ ] Mit echter Historie (≥1 Lektion): Begrüßung zeigt die jüngste Lektion als Kontinuität
-      + „Weiter plaudern →"-Link auf `chat.html`; ohne Historie bleibt der heutige Willkommens-Text.
-- [ ] „Wir zwei"-Zeile zeigt **echte** `blaetter`/`lessons.length` (Singular/Plural korrekt),
-      nur bei echten Daten; KEIN Streak/Tage/Prozent/Meisterung.
-- [ ] Optionaler „von letztem Mal"-Wort-Anker nur wenn die Daten wirklich da sind.
-- [ ] NICHTS Erfundenes auf dem Schirm (Seele); neuer Lerner ohne Daten sieht keine
-      Platzhalter-Zahlen.
-- [ ] i18n DE/ES/EN; nur `dashboard.html` geändert; `node --check` grün; headless verifiziert
-      (Daten gesetzt → Kontinuität + Zähler; keine Daten → sauberer Willkommens-Zustand).
+- [ ] Beim Betreten des Gesprächs-Raums lädt Spikiu sichtbar ein (Puls + „zum Hören tippen");
+      ein Tipp → man HÖRT seinen Gruß (Piper oder Browser-Fallback), und der Capy bewegt
+      dabei den Mund + zeigt die Aura; danach wieder ruhig.
+- [ ] KEIN Tonversuch ohne Geste (kein stummer Fehlversuch / keine Konsolenfehler).
+- [ ] Opener-Gabelung + restlicher Chat-Flow unverändert; 🔊 pro Blase funktioniert weiter.
+- [ ] Capy VOLLSTÄNDIG (Ohren/4 Pfoten), nie trasquilado; Sprech-Zustand in `capy-vivo.js`
+      ist wiederverwendbar (später auch für den Mitte-Capy der Navigation).
+- [ ] `prefers-reduced-motion` ruhig; i18n DE/ES/EN für den Hinweis.
+- [ ] Nur die 2 Dateien geändert; `node --check` grün; headless verifiziert.
 
 ## AUSDRÜCKLICH NICHT
-- KEINE erfundenen Zahlen/Streak/„Tage dabei"/Wort-Meisterung (kein Tracking dafür da).
-- KEIN neuer Capy/Animation (Baum bleibt der Held). Kein `api/`, kein neuer Endpoint, kein
-  Schreiben neuer Felder. Nur LESEN von `lessons`/`blaetter`.
+- KEIN Auto-Play ohne Nutzer-Geste. KEIN Umbau von `audio.js` / kein neuer Endpoint /
+  kein Backend-/Opener-Inhalt-Eingriff. Mikrofon/Zurücksprechen = Phase 2 (Whisper), NICHT hier.
+- Capy NIE vereinfachen. Kein Stripe/Supabase.
 
-## NOTIZ / DANACH
-- Die „du hast ein Wort gemeistert"-Feier aus dem Prototyp braucht ein **Meisterungs-/Stats-
-  Register** (welche Wörter saßen, wann zuletzt) — das gibt es noch nicht. Eigenes späteres
-  Daten-Paket (zusammen mit „Tage dabei"/firstSeen + evtl. Etappen-Aufstieg-Auslöser, der
-  laut Teil-36-Frage auch noch fehlt). Hier NICHT mitbauen.
-- Danach in der Design-Welle: **Voz primero** (`prototyp-voz.html`) · **Reel táctil**
-  (`prototyp-reel-tactil.html`).
+## DANACH
+- **Paket 6 — Reel táctil** (`prototyp-reel-tactil.html`): schließt die visuelle Welle (Gym
+  Tinder-Wisch mit Vibration/Klang/Gleiten — wenn der Gym-Raum dran ist).
+- Dann das **„Paket Echte Daten"**: etappe-Aufstieg, firstSeen/Tage, Wort-Meisterung — die
+  Hollywood-Fassade Stück für Stück mit echter Nutzer-Interaktion füttern.
