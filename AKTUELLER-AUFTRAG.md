@@ -1,4 +1,15 @@
-# AUFTRAG — „Voz primero" (Paket 5 der Design-Welle „Neuer Look")
+# AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
+
+> **„Voz primero" (Paket 5) GEBAUT + auf dev (commit 7d0af09).** Headless verifiziert,
+> `node --check` grün, nur 2 Dateien (`capy-vivo.js` + `chat.html`). Bericht im
+> SPIKIU-BUILD-LEDGER.md. OFFEN = nur Geräte-Abnahme durch Leo (Ton hörbar/Piper+iOS-
+> Fallback, `prefers-reduced-motion` am Gerät) + **FRAGE AN DESIGN: Gruß-Sprache** —
+> gewählt Zielsprache; falls Muttersprach-Gruß gewünscht, Einzeiler (siehe Ledger).
+> NÄCHSTES laut Auftrag = Paket 6 „Reel táctil".
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigte Prototypen (Stil + Verhalten): `prototyp-voz.html` + `prototyp-capy-vivo.html` (Laune „habla")
