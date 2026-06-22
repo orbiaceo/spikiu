@@ -6,12 +6,21 @@
                              oder  window.SPIKIU_NAV_ACTIVE = 'talk';
    Sonst wird die aktive Seite automatisch aus dem Dateinamen erkannt.
 
-   nav.js montiert sich selbst: Topbar (Hamburger + Logo), Drawer,
-   Backdrop und eigene Styles werden injiziert. Klassen sind mit
-   "spk-" geprefixt, damit nichts mit Seiten-Styles kollidiert.
+   Neuer Look (Teil 34, Paket 2 „Untere Navigation"):
+   nav.js montiert eine FESTE UNTERE TAB-LEISTE mit fünf Tabs
+   (Start · Reader · GESPRÄCH(Mitte, erhöhter vollständiger Capy) ·
+   Werkstatt · Mein). „Werkstatt" und „Mein" öffnen je ein Bottom-Sheet,
+   in dem ALLE alten Drawer-Ziele weiterleben. KEIN Hamburger/Drawer mehr.
+   Oben steht nur noch das Marken-Logo (im [data-spk-nav]-Slot, sonst als
+   schlanke Topbar injiziert). Der Mitte-Capy wird via spkCapyAlive
+   (capy-vivo.js, Paket 1) belebt — atmet/blinzelt/Blick folgt/Tipp = Hüpfer.
 
-   Sprache kommt aus dem Profil (localStorage spikiu_user / spikiu_lang).
-   In der App gibt es KEINEN Sprachschalter — die Sprache steht fest.
+   Die Leistenhöhe steht als CSS-Variable --spk-navh am :root, damit die
+   Seiten unten Platz reservieren (Scroll-Seiten: padding-bottom;
+   Voll-Höhe-Seiten wie chat.html: height calc).
+
+   Klassen sind mit "spk-" geprefixt. Sprache kommt aus dem Profil
+   (localStorage spikiu_user / spikiu_lang). KEIN Sprachschalter.
    ════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -38,109 +47,172 @@
     const u = readUser();
     return (u && u.profile && u.profile.targetLang) || (u && u.targetLang) || 'Spanish';
   }
-  function getUserName() {
+  // „Ein Ziel existiert" = das Profil hat wirklich eine Zielsprache gesetzt
+  // (nicht bloß der Default). Steuert, ob „Einstellungen" im Mein-Sheet erscheint.
+  function hasGoal() {
     const u = readUser();
-    return (u && u.name) ? u.name : '';
+    return !!(u && ((u.profile && u.profile.targetLang) || u.targetLang));
+  }
+
+  // ── i18n ────────────────────────────────────────────────────────
+  const I18N = {
+    Deutsch: {
+      navStart: 'Start', navReader: 'Reader', navTalk: 'Gespräch', navWerkstatt: 'Werkstatt', navMein: 'Mein',
+      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Gym',
+      path: 'Lernweg', verlauf: 'Verlauf', lessons: 'Lektionen', settings: 'Einstellungen',
+      soon: 'bald' },
+    'Español': {
+      navStart: 'Inicio', navReader: 'Reader', navTalk: 'Conversa', navWerkstatt: 'Taller', navMein: 'Perfil',
+      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Gym',
+      path: 'Ruta', verlauf: 'Progreso', lessons: 'Lecciones', settings: 'Ajustes',
+      soon: 'pronto' },
+    English: {
+      navStart: 'Home', navReader: 'Reader', navTalk: 'Talk', navWerkstatt: 'Workshop', navMein: 'Profile',
+      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Gym',
+      path: 'Path', verlauf: 'Progress', lessons: 'Lessons', settings: 'Settings',
+      soon: 'soon' }
+  };
+
+  // ── Aktive Seite (Dateiname → Tab-Schlüssel) ────────────────────
+  function normalizeActive(v) {
+    // alte Drawer-Schlüssel sanft auf die fünf Tab-Schlüssel abbilden
+    if (v === 'write' || v === 'read') return 'werkstatt';
+    if (v === 'sessions' || v === 'verlauf') return 'mein';
+    return v;
   }
   function getActive() {
-    if (window.SPIKIU_NAV_ACTIVE) return window.SPIKIU_NAV_ACTIVE;
+    if (window.SPIKIU_NAV_ACTIVE) return normalizeActive(window.SPIKIU_NAV_ACTIVE);
     const attr = document.body && document.body.getAttribute('data-nav-active');
-    if (attr) return attr;
+    if (attr) return normalizeActive(attr);
     const f = (location.pathname.split('/').pop() || '').toLowerCase();
     if (f.indexOf('dashboard') === 0) return 'dashboard';
     if (f.indexOf('chat') === 0) return 'talk';
-    if (f.indexOf('schreibwerkstatt') === 0) return 'write';
-    if (f.indexOf('taller') === 0) return 'read';
+    if (f.indexOf('schreibwerkstatt') === 0) return 'werkstatt';
+    if (f.indexOf('taller') === 0) return 'werkstatt';
     if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'books';
-    if (f.indexOf('sessions') === 0) return 'sessions';
+    if (f.indexOf('sessions') === 0) return 'mein';
     return '';
   }
 
-  // ── i18n (Labels „ohne Begleiter") ─────────────────────────────
-  const I18N = {
-    Deutsch: { main: 'HAUPT', progress: 'FORTSCHRITT', account: 'KONTO',
-      dashboard: 'Dashboard', talk: 'Jetzt sprechen', write: 'Schreibwerkstatt', read: 'Lesewerkstatt', books: 'Meine Bücher', sessions: 'Live-Begegnungen',
-      lessons: 'Lektionen', gym: 'Gym', path: 'Lernweg', verlauf: 'Verlauf', settings: 'Einstellungen', soon: 'bald', free: 'Gratis', menu: 'Menü' },
-    'Español': { main: 'PRINCIPAL', progress: 'PROGRESO', account: 'CUENTA',
-      dashboard: 'Dashboard', talk: 'Hablar ahora', write: 'Taller de escritura', read: 'Taller de lectura', books: 'Mis libros', sessions: 'Sesiones en vivo',
-      lessons: 'Lecciones', gym: 'Gym', path: 'Ruta', verlauf: 'Progreso', settings: 'Ajustes', soon: 'pronto', free: 'Gratis', menu: 'Menú' },
-    English: { main: 'MAIN', progress: 'PROGRESS', account: 'ACCOUNT',
-      dashboard: 'Dashboard', talk: 'Talk now', write: 'Writing Workshop', read: 'Reading Workshop', books: 'My Books', sessions: 'Live Sessions',
-      lessons: 'Lessons', gym: 'Gym', path: 'Path', verlauf: 'Progress', settings: 'Settings', soon: 'soon', free: 'Free', menu: 'Menu' }
-  };
-
   // ── Icons (schlichte Linien-SVGs) ──────────────────────────────
+  // Tab-Icons (Stil aus prototyp-bottom-nav.html)
+  const TAB_ICON = {
+    dashboard: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+    books: '<path d="M3 5a2 2 0 012-2h6v18H5a2 2 0 01-2-2z"/><path d="M21 5a2 2 0 00-2-2h-6v18h6a2 2 0 002-2z"/>',
+    werkstatt: '<path d="M2 22l3-1 12-12-2-2L3 19z"/><path d="M15 7l2-2 2 2-2 2z"/>',
+    mein: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'
+  };
+  // Sheet-Item-Icons (aus der alten Drawer-Welt übernommen)
   const ICON = {
-    dashboard: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
-    talk: '<path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/>',
     write: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
     read: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
-    books: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 1 2-2h13"/>',
-    sessions: '<rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/>',
-    lessons: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
     gym: '<rect x="2.5" y="9" width="3" height="6" rx="1"/><rect x="18.5" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="10.5" width="2" height="3" rx="0.5"/><rect x="16.5" y="10.5" width="2" height="3" rx="0.5"/><line x1="7.5" y1="12" x2="16.5" y2="12"/>',
     path: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6"/>',
     verlauf: '<path d="M12 2v8"/><path d="M12 10c-3 0-5-2-5-5"/><path d="M12 10c3 0 5-2 5-5"/><path d="M9 22h6l-1-8h-4z"/>',
+    lessons: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H4.5a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 6 9.4l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 11 4.6V4.5a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 2.82 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 11H21a2 2 0 0 1 0 4h-.09z"/>'
   };
 
-  const HAMBURGER_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
-  const CAPY_SVG = '<svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  // VOLLSTÄNDIGER Capy (2 Ohren, Schnauze, Nase, 4 Pfoten, Lächeln) —
+  // NIE trasquilado. Die vier Augen-Kreise stecken in <g class="spk-capy-eyes">,
+  // damit spkCapyAlive (capy-vivo.js) Blinzeln/Blick darauf anwenden kann.
+  const CAPY_SVG =
+    '<svg viewBox="0 0 80 80" fill="none">' +
+    '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>' +
+    '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>' +
+    '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>' +
+    '<g class="spk-capy-eyes">' +
+    '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>' +
+    '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>' +
+    '</g>' +
+    '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>' +
+    '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>' +
+    '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>' +
+    '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
 
-  // ── Menü-Struktur ───────────────────────────────────────────────
-  // hideIfTargetEN: bei englischer Zielsprache versteckt.
-  const STRUCT = [
-    { sec: 'main', items: [
-      { id: 'dashboard', href: 'dashboard.html' },
-      { id: 'talk', href: 'chat.html' },
-      { id: 'write', href: 'schreibwerkstatt.html' },
-      { id: 'read', href: 'taller.html' },
-      { id: 'books', href: 'books.html' },
-      { id: 'sessions', href: 'sessions.html', hideIfTargetEN: true },
-      { id: 'lessons', href: 'dashboard.html#lektionen' },
-      { id: 'gym', disabled: true }
-    ]},
-    { sec: 'progress', items: [
-      { id: 'path', href: 'dashboard.html#lernweg' },
-      { id: 'verlauf', href: 'dashboard.html#verlauf' }
-    ]},
-    { sec: 'account', items: [
-      { id: 'settings', disabled: true }
-    ]}
+  function lineIcon(d) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (d || '') + '</svg>';
+  }
+
+  // ── Struktur: fünf Tabs + zwei Bottom-Sheets ────────────────────
+  const TABS = [
+    { id: 'dashboard', labelKey: 'navStart',     href: 'dashboard.html' },
+    { id: 'books',     labelKey: 'navReader',    href: 'books.html' },
+    { id: 'talk',      labelKey: 'navTalk',      href: 'chat.html', center: true },
+    { id: 'werkstatt', labelKey: 'navWerkstatt', sheet: 'werkstatt' },
+    { id: 'mein',      labelKey: 'navMein',      sheet: 'mein' }
   ];
+
+  function sheetItems(which, t) {
+    if (which === 'werkstatt') {
+      return [
+        { id: 'write', href: 'schreibwerkstatt.html' },
+        { id: 'read',  href: 'taller.html' },
+        { id: 'gym',   disabled: true }
+      ];
+    }
+    // 'mein'
+    const items = [
+      { id: 'path',    href: 'dashboard.html#lernweg' },
+      { id: 'verlauf', href: 'sessions.html' },
+      { id: 'lessons', href: 'dashboard.html#lektionen' }
+    ];
+    if (hasGoal()) items.push({ id: 'settings', disabled: true });  // nur mit gesetztem Ziel
+    return items;
+  }
 
   // ── Styles (spk-prefixed, selbst-injiziert) ────────────────────
   const CSS = `
+  :root{ --spk-navh: 74px; }
+  /* Schlanke Topbar — NUR Marken-Logo, kein Hamburger (für Seiten ohne eigenen Header) */
   .spk-topbar{display:flex;align-items:center;gap:.8rem;padding:.85rem 1.1rem;background:#f6f3ec;border-bottom:1px solid #e8e0d0;position:sticky;top:0;z-index:80;font-family:'DM Sans',system-ui,sans-serif;}
-  .spk-topbar-inner{display:flex;align-items:center;gap:.7rem;}
-  .spk-burger{background:none;border:none;color:#1a1816;cursor:pointer;padding:.2rem;display:flex;}
-  .spk-burger svg{width:25px;height:25px;}
   .spk-brand{font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:#1a1816;display:flex;align-items:center;gap:.5rem;text-decoration:none;}
   .spk-brand em{color:#2d6a4f;font-style:italic;}
-  .spk-brand svg{width:25px;height:25px;}
-  .spk-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:95;opacity:0;transition:opacity .22s ease;}
-  .spk-backdrop.spk-show{display:block;opacity:1;}
-  .spk-sidebar{position:fixed;top:0;left:0;height:100dvh;width:284px;background:#1a1816;padding:1.6rem 1.3rem;z-index:100;display:flex;flex-direction:column;overflow-y:auto;transform:translateX(-100%);transition:transform .26s cubic-bezier(.32,.72,0,1);box-shadow:4px 0 24px rgba(0,0,0,.25);font-family:'DM Sans',system-ui,sans-serif;}
-  .spk-sidebar.spk-open{transform:translateX(0);}
-  .spk-logo{font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:1.8rem;display:flex;align-items:center;gap:.6rem;text-decoration:none;}
-  .spk-logo em{color:#c9956a;font-style:italic;}
-  .spk-logo svg{width:24px;height:24px;}
-  .spk-section{font-size:.66rem;font-weight:700;letter-spacing:.12em;color:#5a554f;margin:1.2rem 0 .5rem .75rem;}
-  .spk-section:first-of-type{margin-top:0;}
-  .spk-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:8px;color:#8a847c;text-decoration:none;font-size:.9rem;font-weight:500;transition:all .15s;cursor:pointer;margin-bottom:.15rem;border:none;background:none;width:100%;text-align:left;font-family:inherit;}
-  .spk-item:hover{background:rgba(255,255,255,.06);color:#cdc6bd;}
-  .spk-item.spk-active{background:rgba(45,106,79,.22);color:#a8d5be;}
-  .spk-item svg{width:17px;height:17px;flex-shrink:0;opacity:.75;}
-  .spk-item.spk-disabled{opacity:.4;cursor:default;}
-  .spk-item.spk-disabled:hover{background:none;color:#8a847c;}
-  .spk-badge{margin-left:auto;font-size:.6rem;background:rgba(255,255,255,.1);color:#9a948c;padding:.1rem .45rem;border-radius:100px;}
-  .spk-bottom{margin-top:auto;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.7rem;}
-  .spk-avatar{width:36px;height:36px;border-radius:50%;background:#c9956a;color:#3d2b1f;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
-  .spk-uname{color:#e6e1d8;font-size:.88rem;font-weight:600;}
-  .spk-umeta{color:#6b655d;font-size:.72rem;}
+  .spk-brand svg{width:26px;height:26px;}
+
+  /* ── Untere Tab-Leiste ── */
+  .spk-bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#fff;border-top:1px solid #e8e4df;
+    box-shadow:0 -2px 14px rgba(0,0,0,.05);font-family:'DM Sans',system-ui,sans-serif;overflow:visible;
+    padding-bottom:env(safe-area-inset-bottom);}
+  .spk-bottomnav-inner{display:flex;align-items:flex-end;justify-content:space-around;
+    max-width:680px;margin:0 auto;padding:.4rem .3rem .5rem;overflow:visible;}
+  .spk-tab{flex:1;background:none;border:none;cursor:pointer;text-decoration:none;
+    display:flex;flex-direction:column;align-items:center;gap:.18rem;
+    color:#6b6560;font-family:inherit;font-size:.6rem;font-weight:600;padding:.25rem 0;transition:color .15s;-webkit-tap-highlight-color:transparent;}
+  .spk-tab .spk-tab-ic{width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+  .spk-tab .spk-tab-ic svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .spk-tab.spk-active{color:#2d6a4f;}
+  .spk-tab.spk-active .spk-tab-ic svg{stroke:#2d6a4f;}
+  /* zentraler erhöhter Spikiu (Gespräch) — VOLLSTÄNDIGER Capy */
+  .spk-tab.spk-center{flex:0 0 auto;margin:0 .15rem;}
+  .spk-tab.spk-center .spk-ball{width:60px;height:60px;border-radius:50%;background:#e8f2ed;border:4px solid #faf9f7;
+    box-shadow:0 6px 18px rgba(45,106,79,.28);display:flex;align-items:center;justify-content:center;
+    transform:translateY(-14px);transition:transform .16s;overflow:visible;animation:spk-capy-breathe 4.5s ease-in-out infinite;}
+  .spk-tab.spk-center.spk-active .spk-ball{background:#d8ecdf;}
+  .spk-tab.spk-center .spk-ball svg{width:48px;height:48px;overflow:visible;}
+  .spk-tab.spk-center .spk-lbl{transform:translateY(-11px);color:#2d6a4f;font-weight:700;}
+  @keyframes spk-capy-breathe{0%,100%{transform:translateY(-14px) scale(1)}50%{transform:translateY(-14px) scale(1.05)}}
+
+  /* ── Bottom-Sheets (Werkstatt / Mein) ── */
+  .spk-sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:95;opacity:0;pointer-events:none;transition:opacity .22s ease;}
+  .spk-sheet-backdrop.spk-show{opacity:1;pointer-events:auto;}
+  .spk-sheet{position:fixed;left:0;right:0;bottom:0;z-index:96;max-width:680px;margin:0 auto;
+    background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.18);
+    padding:.5rem 1rem calc(1.1rem + env(safe-area-inset-bottom));
+    transform:translateY(110%);transition:transform .26s cubic-bezier(.32,.72,0,1);
+    font-family:'DM Sans',system-ui,sans-serif;}
+  .spk-sheet.spk-open{transform:translateY(0);}
+  .spk-sheet-grip{width:38px;height:4px;border-radius:100px;background:#d4cdc6;margin:.35rem auto .7rem;}
+  .spk-sheet-title{font-family:'Lora',serif;font-weight:700;font-size:1.05rem;color:#1a1816;margin:0 .2rem .55rem;}
+  .spk-sheet-item{display:flex;align-items:center;gap:.85rem;padding:.85rem .7rem;border-radius:12px;
+    text-decoration:none;color:#1a1816;font-size:.95rem;font-weight:500;border:none;background:none;width:100%;text-align:left;font-family:inherit;cursor:pointer;}
+  .spk-sheet-item:hover{background:#f2efe9;}
+  .spk-sheet-item svg{width:20px;height:20px;flex-shrink:0;stroke:#2d6a4f;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.85;}
+  .spk-sheet-item.spk-disabled{opacity:.45;cursor:default;}
+  .spk-sheet-item.spk-disabled:hover{background:none;}
+  .spk-sheet-badge{margin-left:auto;font-size:.6rem;background:#f0ece4;color:#9a948c;padding:.12rem .5rem;border-radius:100px;font-weight:600;}
   `;
 
-  // ── DOM bauen ────────────────────────────────────────────────────
   function injectStyles() {
     if (document.getElementById('spk-nav-styles')) return;
     const s = document.createElement('style');
@@ -149,94 +221,154 @@
     document.head.appendChild(s);
   }
 
-  function buildShell() {
-    var inner = '<div class="spk-topbar-inner">' +
-      '<button class="spk-burger" id="spk-burger" aria-label="Menu">' + HAMBURGER_SVG + '</button>' +
-      '<a href="dashboard.html" class="spk-brand">' + CAPY_SVG + '<span>Spi<em>k</em>iu</span></a>' +
-      '</div>';
-
-    // Slot-Modus: wenn die Seite einen <… data-spk-nav> Platzhalter hat,
-    // setzen wir den Hamburger dort hinein (Layout der Seite bleibt heil).
-    // Sonst injizieren wir eine eigene sticky Topbar oben.
-    var host = document.querySelector('[data-spk-nav]');
+  // ── Topbar (nur Marken-Logo) ─────────────────────────────────────
+  function buildTopbar() {
+    const brand = '<a href="dashboard.html" class="spk-brand">' + CAPY_SVG + '<span>Spi<em>k</em>iu</span></a>';
+    const host = document.querySelector('[data-spk-nav]');
     if (host) {
+      // Slot-Modus: Seite hat eine eigene Kopfzeile → nur das Logo hinein, kein zweiter Balken.
       host.classList.add('spk-topbar-host');
-      host.innerHTML = inner;
+      host.innerHTML = brand;
     } else {
-      var topbar = document.createElement('header');
+      // Seite ohne eigenen Header → schlanke Topbar oben injizieren.
+      const topbar = document.createElement('header');
       topbar.className = 'spk-topbar';
-      topbar.innerHTML = inner;
+      topbar.innerHTML = brand;
       document.body.insertBefore(topbar, document.body.firstChild);
     }
-
-    // Drawer + Backdrop sind fixed → kein Layout-Einfluss, immer injiziert.
-    var backdrop = document.createElement('div');
-    backdrop.className = 'spk-backdrop';
-    backdrop.id = 'spk-backdrop';
-    document.body.appendChild(backdrop);
-
-    var sidebar = document.createElement('aside');
-    sidebar.className = 'spk-sidebar';
-    sidebar.id = 'spk-sidebar';
-    document.body.appendChild(sidebar);
-
-    document.getElementById('spk-burger').addEventListener('click', open);
-    backdrop.addEventListener('click', close);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   }
 
-  function renderSidebar() {
-    const lang = getLang();
-    const t = I18N[lang] || I18N.Deutsch;
-    const target = getTarget();
+  // ── Untere Tab-Leiste ────────────────────────────────────────────
+  function buildBottomNav() {
+    const t = I18N[getLang()] || I18N.Deutsch;
     const active = getActive();
 
-    let h = '<a href="dashboard.html" class="spk-logo">' + CAPY_SVG + '<span>Spi<em>k</em>iu</span></a>';
-
-    STRUCT.forEach(function (group) {
-      const visible = group.items.filter(function (it) { return !(it.hideIfTargetEN && target === 'English'); });
-      if (!visible.length) return;
-      h += '<div class="spk-section">' + t[group.sec] + '</div>';
-      visible.forEach(function (it) {
-        const label = t[it.id] || it.id;
-        const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (ICON[it.id] || '') + '</svg>';
-        if (it.disabled) {
-          h += '<div class="spk-item spk-disabled">' + icon + '<span>' + label + '</span><span class="spk-badge">' + t.soon + '</span></div>';
-        } else {
-          const cls = 'spk-item' + (it.id === active ? ' spk-active' : '');
-          h += '<a class="' + cls + '" href="' + it.href + '">' + icon + '<span>' + label + '</span></a>';
-        }
-      });
+    let inner = '';
+    TABS.forEach(function (tab) {
+      const label = t[tab.labelKey] || tab.id;
+      const cls = 'spk-tab' + (tab.center ? ' spk-center' : '') + (tab.id === active ? ' spk-active' : '');
+      if (tab.center) {
+        inner += '<a class="' + cls + '" href="' + tab.href + '" data-tab="' + tab.id + '">' +
+          '<span class="spk-ball">' + CAPY_SVG + '</span><span class="spk-lbl">' + label + '</span></a>';
+      } else if (tab.href) {
+        inner += '<a class="' + cls + '" href="' + tab.href + '" data-tab="' + tab.id + '">' +
+          '<span class="spk-tab-ic">' + lineIcon(TAB_ICON[tab.id]) + '</span><span>' + label + '</span></a>';
+      } else {
+        inner += '<button type="button" class="' + cls + '" data-sheet="' + tab.sheet + '" data-tab="' + tab.id + '">' +
+          '<span class="spk-tab-ic">' + lineIcon(TAB_ICON[tab.id]) + '</span><span>' + label + '</span></button>';
+      }
     });
 
-    const name = getUserName();
-    const initial = name ? name.charAt(0).toUpperCase() : '🐾';
-    h += '<div class="spk-bottom"><div class="spk-avatar">' + initial + '</div>' +
-         '<div><div class="spk-uname">' + (name || 'Spikiu') + '</div><div class="spk-umeta">' + t.free + '</div></div></div>';
+    const nav = document.createElement('nav');
+    nav.className = 'spk-bottomnav';
+    nav.id = 'spk-bottomnav';
+    nav.innerHTML = '<div class="spk-bottomnav-inner">' + inner + '</div>';
+    document.body.appendChild(nav);
 
-    document.getElementById('spk-sidebar').innerHTML = h;
+    // Sheet-Knöpfe verdrahten
+    nav.querySelectorAll('[data-sheet]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openSheet(btn.getAttribute('data-sheet')); });
+    });
+
+    measureNavH();
+    return nav;
   }
 
-  function open() {
-    renderSidebar();
-    document.getElementById('spk-sidebar').classList.add('spk-open');
-    document.getElementById('spk-backdrop').classList.add('spk-show');
-    document.body.style.overflow = 'hidden';
-  }
-  function close() {
-    document.getElementById('spk-sidebar').classList.remove('spk-open');
-    document.getElementById('spk-backdrop').classList.remove('spk-show');
-    document.body.style.overflow = '';
+  // ── Bottom-Sheets ────────────────────────────────────────────────
+  function buildSheets() {
+    const t = I18N[getLang()] || I18N.Deutsch;
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'spk-sheet-backdrop';
+    backdrop.id = 'spk-sheet-backdrop';
+    backdrop.addEventListener('click', closeSheet);
+    document.body.appendChild(backdrop);
+
+    [['werkstatt', t.navWerkstatt], ['mein', t.navMein]].forEach(function (pair) {
+      const which = pair[0], title = pair[1];
+      const sheet = document.createElement('div');
+      sheet.className = 'spk-sheet';
+      sheet.id = 'spk-sheet-' + which;
+      let h = '<div class="spk-sheet-grip"></div><div class="spk-sheet-title">' + title + '</div>';
+      sheetItems(which, t).forEach(function (it) {
+        const label = t[it.id] || it.id;
+        const icon = lineIcon(ICON[it.id]);
+        if (it.disabled) {
+          h += '<div class="spk-sheet-item spk-disabled">' + icon + '<span>' + label + '</span><span class="spk-sheet-badge">' + t.soon + '</span></div>';
+        } else {
+          h += '<a class="spk-sheet-item" href="' + it.href + '">' + icon + '<span>' + label + '</span></a>';
+        }
+      });
+      sheet.innerHTML = h;
+      // ein Tipp auf ein echtes Ziel schließt das Sheet (vor der Navigation)
+      sheet.querySelectorAll('a.spk-sheet-item').forEach(function (a) {
+        a.addEventListener('click', function () { closeSheet(); });
+      });
+      document.body.appendChild(sheet);
+    });
+
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
   }
 
+  let openSheetName = '';
+  function openSheet(which) {
+    if (openSheetName === which) { closeSheet(); return; }
+    closeSheet();
+    const sheet = document.getElementById('spk-sheet-' + which);
+    if (!sheet) return;
+    document.getElementById('spk-sheet-backdrop').classList.add('spk-show');
+    sheet.classList.add('spk-open');
+    openSheetName = which;
+  }
+  function closeSheet() {
+    const bd = document.getElementById('spk-sheet-backdrop');
+    if (bd) bd.classList.remove('spk-show');
+    const open = document.querySelector('.spk-sheet.spk-open');
+    if (open) open.classList.remove('spk-open');
+    openSheetName = '';
+  }
+
+  // ── Leistenhöhe messen → --spk-navh ──────────────────────────────
+  function measureNavH() {
+    const nav = document.getElementById('spk-bottomnav');
+    if (!nav) return;
+    const h = Math.round(nav.getBoundingClientRect().height);
+    if (h > 0) document.documentElement.style.setProperty('--spk-navh', h + 'px');
+  }
+
+  // ── Mitte-Capy beleben (capy-vivo.js, Paket 1) ───────────────────
+  function ensureVivo(cb) {
+    if (window.spkCapyAlive) return cb();
+    const ex = document.querySelector('script[data-spk-capy-vivo]');
+    if (ex) { ex.addEventListener('load', cb); return; }
+    const s = document.createElement('script');
+    s.src = '/capy-vivo.js'; s.defer = true; s.setAttribute('data-spk-capy-vivo', '1');
+    s.addEventListener('load', cb);
+    document.head.appendChild(s);
+  }
+  function animateCenterCapy() {
+    const center = document.querySelector('.spk-tab.spk-center');
+    if (!center) return;
+    const svg = center.querySelector('svg');
+    if (!svg) return;
+    ensureVivo(function () {
+      if (window.spkCapyAlive) window.spkCapyAlive(svg, { tapTarget: center });
+    });
+  }
+
+  // ── Montage ──────────────────────────────────────────────────────
   function mount() {
     injectStyles();
-    buildShell();
-    renderSidebar();
+    buildTopbar();
+    buildBottomNav();
+    buildSheets();
+    animateCenterCapy();
+    window.addEventListener('resize', measureNavH);
+    window.addEventListener('orientationchange', measureNavH);
   }
 
-  // Öffentliche API (falls eine Seite die Navi steuern will)
-  window.spikiuNav = { open: open, close: close, render: renderSidebar };
+  // Öffentliche API
+  window.spikiuNav = { openSheet: openSheet, closeSheet: closeSheet, measure: measureNavH };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', mount);
