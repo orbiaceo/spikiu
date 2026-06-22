@@ -43,6 +43,10 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 .tree-info { max-width:340px; }
 .tree-info h2 { font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:0.6rem; }
 .tree-leafline { font-size:0.85rem;color:var(--mid);margin:0.4rem 0 0; }
+.memoria-us { font-size:0.82rem;color:var(--mid);margin:0.35rem 0 0;opacity:0.9; }
+.memoria-last { font-size:0.8rem;color:var(--mid);margin:0.2rem 0 0;opacity:0.8; }
+.memoria-link { color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap; }
+.memoria-link:hover { text-decoration:underline; }
 .tree-stats { display:flex;gap:1.5rem;margin-bottom:1.2rem;flex-wrap:wrap; }
 .stat-num { font-family:'Lora',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1; }
 .stat-label { font-size:0.72rem;color:var(--mid);margin-top:0.2rem; }
@@ -196,6 +200,8 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
     <div class="greeting">
       <h1 id="greeting-title">Good morning, <em id="user-name-display">friend</em>.</h1>
       <p id="greeting-sub">Your tree is waiting. Last session: 2 days ago.</p>
+      <p id="memoria-us" class="memoria-us" hidden></p>
+      <p id="memoria-last" class="memoria-last" hidden></p>
     </div>
     <a href="chat.html" class="btn-speak" data-i18n="speak">Start talking →</a>
   </div>
@@ -1194,6 +1200,7 @@ function loadUser() {
     document.getElementById('greeting-title').innerHTML = greetings[_target] || greetings['English'];
     document.getElementById('greeting-sub').textContent = subs[_native] || subs['English'];
     applyDashI18n(_native, _target);
+    renderMemoria(user, _native);   // Paket 4: Kontinuität + „Wir zwei" aus ECHTEN Daten
 
     // Show roadmap card if roadmap exists
     if (user.roadmap) {
@@ -1229,6 +1236,75 @@ function loadUser() {
     updateBooksCard(user);
   } catch(e) {
     console.error('Error loading user', e);
+  }
+}
+
+// ── Memoria que se siente (Paket 4) ───────────────────
+// Spikiu empfängt mit KONTINUITÄT — NUR aus echten Daten in spikiu_user
+// (lessons rolling-3 + blaetter). Keine erfundenen Zahlen, kein Streak, keine „Tage".
+function memEsc(s){ return String(s == null ? '' : s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function memPlural(n, sing, plur){ return n === 1 ? sing : plur; }
+function renderMemoria(user, native){
+  native = native || 'Deutsch';
+  var lessons  = Array.isArray(user && user.lessons) ? user.lessons : [];
+  var blaetter = Math.max(0, (user && user.blaetter) || 0);
+
+  // jüngste Lektion (createdAt absteigend; Alt-Lektionen ohne createdAt ans Ende)
+  var sorted = lessons.slice().sort(function(a, b){
+    var ca = (a && a.createdAt) || '', cb = (b && b.createdAt) || '';
+    if (ca && cb) return cb.localeCompare(ca);
+    if (cb && !ca) return 1;
+    if (ca && !cb) return -1;
+    return 0;
+  });
+  var newest = sorted[0] || null;
+  var title  = newest ? ((newest.lesson && newest.lesson.title) || newest.topic || '') : '';
+
+  // 1) Kontinuitäts-Untertitel — nur wenn echte Historie da ist (sonst Willkommen lassen)
+  if (title) {
+    var cont = {
+      'Deutsch': { txt:'Letztes Mal: «' + memEsc(title) + '». Machen wir weiter?', link:'Weiter plaudern →' },
+      'Español': { txt:'La última vez: «' + memEsc(title) + '». ¿Seguimos?',       link:'Seguir charlando →' },
+      'English': { txt:'Last time: «' + memEsc(title) + '». Shall we keep going?',  link:'Keep chatting →' }
+    };
+    var c = cont[native] || cont['English'];
+    var sub = document.getElementById('greeting-sub');
+    // c.txt enthält den schon via memEsc() gesäuberten Titel; restliche Teile sind eigene Literale.
+    if (sub) sub.innerHTML = c.txt + ' <a href="chat.html" class="memoria-link">' + c.link + '</a>';
+  }
+
+  // 2) „Wir zwei" — echte Zähler (blaetter = Gespräche, lessons.length = Lektionen)
+  var usEl = document.getElementById('memoria-us');
+  if (usEl) {
+    if (blaetter > 0 || lessons.length > 0) {
+      var g = blaetter, l = lessons.length, line;
+      if (native === 'Español') {
+        line = 'Nosotros dos: ' + g + ' ' + memPlural(g,'charla','charlas') + ' · ' + l + ' ' + memPlural(l,'lección','lecciones');
+      } else if (native === 'English') {
+        line = 'Us two: ' + g + ' ' + memPlural(g,'conversation','conversations') + ' · ' + l + ' ' + memPlural(l,'lesson','lessons');
+      } else {
+        line = 'Wir zwei: ' + g + ' ' + memPlural(g,'Gespräch','Gespräche') + ' · ' + l + ' ' + memPlural(l,'Lektion','Lektionen');
+      }
+      usEl.textContent = line;
+      usEl.hidden = false;
+    } else {
+      usEl.hidden = true;
+    }
+  }
+
+  // 3) Optional: ruhiger „von letztem Mal"-Wort-Anker — nur wenn die Felder echt da sind
+  var lastEl = document.getElementById('memoria-last');
+  if (lastEl) {
+    var v0 = newest && newest.lesson && Array.isArray(newest.lesson.vocab) ? newest.lesson.vocab[0] : null;
+    if (v0 && v0.word) {
+      var pre = { 'Deutsch':'Von letztem Mal: ', 'Español':'De la última vez: ', 'English':'From last time: ' };
+      var w = v0.word + (v0.translation ? ' (' + v0.translation + ')' : '');
+      lastEl.textContent = (pre[native] || pre['English']) + w;
+      lastEl.hidden = false;
+    } else {
+      lastEl.hidden = true;
+    }
   }
 }
 
