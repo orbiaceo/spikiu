@@ -52,12 +52,14 @@
     return out.join('').replace(/(<br>\s*)+$/, '');
   }
 
-  var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-label="Spikiu">'
+  var CAPY = '<svg class="spk-capy-alive" viewBox="0 0 80 80" fill="none" aria-label="Spikiu">'
     + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
     + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
     + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+    + '<g class="spk-capy-eyes">'
     + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
     + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+    + '</g>'
     + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
     + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
     + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
@@ -150,6 +152,25 @@
     closeBt.addEventListener('click', close);
     sendBt.addEventListener('click', ask);
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter') ask(); });
+
+    // ── Capy lebendig machen (atmen bleibt CSS; blinzeln/Blick/Hüpfer via capy-vivo.js) ──
+    function ensureVivo(cb) {
+      if (window.spkCapyAlive) return cb();
+      var ex = document.querySelector('script[data-spk-capy-vivo]');
+      if (ex) { ex.addEventListener('load', cb); return; }
+      var s = document.createElement('script');
+      s.src = '/capy-vivo.js'; s.defer = true; s.setAttribute('data-spk-capy-vivo', '1');
+      s.addEventListener('load', cb);
+      document.head.appendChild(s);
+    }
+    ensureVivo(function () {
+      if (!window.spkCapyAlive) return;
+      var fabSvg = fab.querySelector('.spk-capy-alive');
+      if (fabSvg) window.spkCapyAlive(fabSvg, { tapTarget: fab });
+      var headEl  = panel.querySelector('.spk-beg-head');
+      var headSvg = headEl && headEl.querySelector('.spk-capy-alive');
+      if (headSvg) window.spkCapyAlive(headSvg, { tapTarget: headSvg });
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);

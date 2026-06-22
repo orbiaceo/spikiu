@@ -1,4 +1,14 @@
-# AUFTRAG — „Capy vivo" (Paket 1 der Design-Welle „Neuer Look")
+# AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
+
+> „Capy vivo" (Paket 1 der Design-Welle „Neuer Look") GEBAUT + auf dev verbucht.
+> `capy-vivo.js` (NEU, Root-Helfer `window.spkCapyAlive`) + `lesebegleiter.js` (Augen-Gruppe
+> eingewickelt, FAB markiert, Helfer geladen+aufgerufen). Headless verifiziert (ok:true),
+> `node --check` grün, nur die 2 Dateien. Details im SPIKIU-BUILD-LEDGER.md.
+> NÄCHSTES = Paket 2 (untere Navigation) — erst Routing klären; nutzt `spkCapyAlive`.
+
+---
+
+# AUFTRAG (Archiv) — „Capy vivo" (Paket 1 der Design-Welle „Neuer Look")
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigter Prototyp (Stil + Verhalten): `prototyp-capy-vivo.html`
