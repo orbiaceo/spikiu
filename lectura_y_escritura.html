@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lectura y escritura · 15 historias bajo el sol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cal:#FDFBF6;        /* whitewash wall */
+    --cal-2:#F6F0E4;      /* warm sand */
+    --mar:#0E5C7A;        /* deep azulejo blue */
+    --mar-2:#1B7FA8;      /* sea blue */
+    --mar-soft:#DCEBF0;   /* pale sea */
+    --terra:#D9663F;      /* terracotta */
+    --terra-soft:#F6DECF;
+    --sol:#F2B441;        /* sun yellow */
+    --sol-soft:#FBE9C2;
+    --oliva:#7C8C4E;      /* olive */
+    --tinta:#1A2B3A;      /* navy ink */
+    --tinta-60:#5A6B78;
+    --tinta-30:#9FAAB2;
+    --linea:#E7DECE;
+    --ok:#3F8F5B;
+    --no:#C0492F;
+    --sh:0 14px 40px -18px rgba(14,92,122,.35);
+    --sh-sm:0 6px 18px -10px rgba(14,92,122,.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"DM Sans",system-ui,-apple-system,sans-serif;
+    color:var(--tinta);
+    background:var(--cal);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* faint azulejo tile texture on the wall */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--mar) 0 2px, transparent 2px),
+      linear-gradient(45deg, transparent 46%, var(--mar) 46% 54%, transparent 54%),
+      linear-gradient(-45deg, transparent 46%, var(--mar) 46% 54%, transparent 54%);
+    background-size:44px 44px,44px 44px,44px 44px;
+    background-position:0 0,0 0,0 0;
+  }
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 20px}
+  ::selection{background:var(--sol);color:var(--tinta)}
+
+  /* ---------- top progress (sun arc) ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:30;
+    background:rgba(253,251,246,.86);backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid var(--linea);
+  }
+  .topbar .row{max-width:760px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
+  .brandmini{font-family:"Fraunces",serif;font-weight:600;font-size:.98rem;color:var(--mar);letter-spacing:-.01em;white-space:nowrap}
+  .progress-track{flex:1;height:8px;border-radius:99px;background:var(--cal-2);overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}
+  .progress-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--sol),var(--terra));transition:width .5s cubic-bezier(.3,.8,.3,1)}
+  .score-pill{font-size:.8rem;font-weight:600;color:var(--terra);white-space:nowrap}
+
+  /* ---------- hero ---------- */
+  .hero{padding:54px 0 30px;text-align:center;position:relative}
+  .sun{
+    width:108px;height:108px;border-radius:50%;margin:0 auto 26px;position:relative;
+    background:radial-gradient(circle at 38% 34%,#FFE9A8,var(--sol) 60%,#E89A2E);
+    box-shadow:0 0 0 0 rgba(242,180,65,.5),0 12px 30px -8px rgba(242,180,65,.7);
+    animation:bob 6s ease-in-out infinite;
+  }
+  .sun::after{ /* rays */
+    content:"";position:absolute;inset:-22px;border-radius:50%;
+    background:conic-gradient(from 0deg, transparent 0 8deg, rgba(242,180,65,.35) 8deg 10deg, transparent 10deg 30deg);
+    -webkit-mask:radial-gradient(circle, transparent 56px, #000 57px);
+            mask:radial-gradient(circle, transparent 56px, #000 57px);
+    animation:spin 40s linear infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:10px}
+  h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(2.5rem,9vw,3.9rem);line-height:1.02;letter-spacing:-.025em;color:var(--mar)}
+  h1 em{font-style:italic;color:var(--terra)}
+  .hero p.sub{max-width:30ch;margin:18px auto 0;color:var(--tinta-60);font-size:1.06rem}
+  .hero .start{
+    margin-top:30px;display:inline-flex;align-items:center;gap:10px;cursor:pointer;
+    font-family:"DM Sans";font-weight:600;font-size:1.02rem;color:var(--cal);
+    background:var(--mar);border:none;border-radius:99px;padding:15px 30px;box-shadow:var(--sh);
+    transition:transform .15s ease,background .2s;
+  }
+  .hero .start:hover{background:var(--mar-2);transform:translateY(-2px)}
+  .hero .start:active{transform:translateY(0)}
+  .voicehint{margin:34px auto 0;max-width:52ch;font-size:.82rem;color:var(--tinta-60);background:var(--mar-soft);border:1px solid #CBE0E8;border-radius:14px;padding:12px 16px;text-align:left;line-height:1.5}
+  .voicehint b{color:var(--mar)}
+
+  /* ---------- azulejo grid navigator ---------- */
+  .tiles-head{margin:46px 0 16px;display:flex;align-items:baseline;gap:12px}
+  .tiles-head h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.5rem;color:var(--mar)}
+  .tiles-head span{font-size:.82rem;color:var(--tinta-60)}
+  .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:8px}
+  @media(max-width:520px){.tiles{grid-template-columns:repeat(3,1fr)}}
+  .tile{
+    aspect-ratio:1;border-radius:14px;cursor:pointer;position:relative;
+    background:var(--cal);border:1.5px solid var(--linea);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    transition:transform .14s ease,box-shadow .2s,border-color .2s;
+    overflow:hidden;
+  }
+  .tile:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);border-color:var(--mar-2)}
+  .tile .t-emo{font-size:1.4rem;line-height:1}
+  .tile .t-num{font-family:"Fraunces",serif;font-weight:600;font-size:.78rem;color:var(--tinta-30)}
+  .tile.done{background:linear-gradient(160deg,var(--sol-soft),var(--cal));border-color:var(--sol)}
+  .tile.done::after{content:"✓";position:absolute;top:5px;right:7px;font-size:.7rem;font-weight:700;color:var(--oliva)}
+  .tile.current{border-color:var(--terra);box-shadow:0 0 0 3px var(--terra-soft)}
+
+  /* ---------- reader panel ---------- */
+  .reader{display:none;padding-bottom:60px}
+  .reader.active{display:block;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .navrow{display:flex;align-items:center;justify-content:space-between;margin:8px 0 22px}
+  .navbtn{
+    display:inline-flex;align-items:center;gap:7px;cursor:pointer;background:none;border:none;
+    font-family:"DM Sans";font-weight:600;font-size:.9rem;color:var(--mar);padding:8px 4px;border-radius:8px;
+  }
+  .navbtn:disabled{color:var(--tinta-30);cursor:default}
+  .navbtn.back{color:var(--tinta-60)}
+  .counter{font-size:.8rem;color:var(--tinta-60);letter-spacing:.04em}
+
+  .card{background:var(--cal);border:1px solid var(--linea);border-radius:22px;padding:26px 24px;box-shadow:var(--sh);position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(var(--sol),var(--terra))}
+  .story-emo{font-size:2.3rem;line-height:1}
+  .story-title{font-family:"Fraunces",serif;font-weight:600;font-size:1.7rem;color:var(--mar);letter-spacing:-.02em;margin:6px 0 2px}
+  .story-num{font-family:"Fraunces",serif;font-style:italic;font-size:.92rem;color:var(--terra)}
+
+  /* audio controls */
+  .audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 6px;padding:12px;background:var(--mar-soft);border-radius:16px;border:1px solid #CBE0E8}
+  .playbtn{
+    width:46px;height:46px;flex:none;border-radius:50%;border:none;cursor:pointer;background:var(--mar);color:#fff;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-sm);transition:background .2s,transform .1s;
+  }
+  .playbtn:hover{background:var(--mar-2)}
+  .playbtn:active{transform:scale(.94)}
+  .playbtn svg{width:20px;height:20px;fill:#fff}
+  .waves{flex:1;height:30px;display:flex;align-items:center;gap:3px;min-width:60px}
+  .waves i{flex:1;height:30%;background:var(--mar-2);border-radius:99px;opacity:.5;transition:height .15s}
+  .waves.playing i{animation:wave 1s ease-in-out infinite}
+  .waves.playing i:nth-child(2n){animation-delay:.15s}
+  .waves.playing i:nth-child(3n){animation-delay:.3s}
+  .waves.playing i:nth-child(4n){animation-delay:.45s}
+  @keyframes wave{0%,100%{height:25%}50%{height:90%}}
+  .slowtog{font-size:.78rem;font-weight:600;color:var(--mar);cursor:pointer;display:flex;align-items:center;gap:6px;user-select:none;white-space:nowrap}
+  .slowtog input{appearance:none;width:34px;height:20px;border-radius:99px;background:#BcCdd4;position:relative;cursor:pointer;transition:background .2s;flex:none}
+  .slowtog input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
+  .slowtog input:checked{background:var(--terra)}
+  .slowtog input:checked::after{transform:translateX(14px)}
+  .voicesel{font-family:"DM Sans";font-size:.78rem;color:var(--mar);border:1px solid #CBE0E8;background:var(--cal);border-radius:10px;padding:6px 8px;max-width:130px}
+
+  /* story text */
+  .prose{margin-top:18px;font-size:1.12rem;line-height:1.85;color:var(--tinta)}
+  .prose .ln{cursor:pointer;border-radius:6px;padding:1px 3px;margin:0 -3px;transition:background .25s}
+  .prose .ln:hover{background:var(--sol-soft)}
+  .prose .ln.speaking{background:var(--sol);box-shadow:0 0 0 2px var(--sol)}
+  .prose .quote{font-style:italic;color:var(--terra);font-family:"Fraunces",serif}
+  .prose p{margin-bottom:2px}
+  .dash{color:var(--mar-2);font-weight:700}
+
+  /* vocab */
+  .block-label{display:flex;align-items:center;gap:8px;font-family:"Fraunces",serif;font-weight:600;font-size:1.12rem;color:var(--mar);margin:30px 0 12px}
+  .block-label .ico{font-size:1.15rem}
+  .vocab{display:flex;flex-wrap:wrap;gap:8px}
+  .vchip{
+    display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    background:var(--cal-2);border:1px solid var(--linea);border-radius:99px;padding:7px 13px;
+    font-size:.92rem;color:var(--tinta);transition:background .15s,transform .1s,border-color .15s;
+  }
+  .vchip:hover{background:var(--sol-soft);border-color:var(--sol)}
+  .vchip:active{transform:scale(.96)}
+  .vchip .spk{width:15px;height:15px;fill:var(--mar-2);flex:none}
+  .vchip b{font-weight:600}
+  .vchip small{color:var(--tinta-60);font-size:.82rem}
+
+  /* comprehension */
+  .q{margin:16px 0;padding:16px 16px 14px;border:1px solid var(--linea);border-radius:16px;background:var(--cal)}
+  .q .qtxt{font-weight:600;font-size:1.02rem;margin-bottom:11px;display:flex;gap:8px}
+  .q .qtxt .qn{color:var(--terra);font-family:"Fraunces",serif;font-style:italic;flex:none}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{
+    text-align:left;cursor:pointer;border:1.5px solid var(--linea);background:var(--cal);
+    border-radius:12px;padding:11px 14px;font-family:"DM Sans";font-size:.98rem;color:var(--tinta);
+    transition:border-color .15s,background .15s;display:flex;align-items:center;gap:10px;
+  }
+  .opt:hover{border-color:var(--mar-2)}
+  .opt .mk{width:20px;height:20px;border-radius:50%;border:2px solid var(--tinta-30);flex:none;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;transition:all .15s}
+  .opt.correct{border-color:var(--ok);background:#EAF5EE}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok)}
+  .opt.wrong{border-color:var(--no);background:#FBEAE6}
+  .opt.wrong .mk{background:var(--no);border-color:var(--no)}
+  .opt.locked{cursor:default;opacity:.85}
+  .opt.locked.correct,.opt.locked.wrong{opacity:1}
+  .qfeedback{margin-top:11px;font-size:.9rem;padding:9px 13px;border-radius:10px;display:none}
+  .qfeedback.ok{display:block;background:#EAF5EE;color:#2C6B43}
+  .qfeedback.no{display:block;background:#FBEAE6;color:#9C3320}
+
+  /* writing */
+  .write-intro{font-size:.92rem;color:var(--tinta-60);margin-bottom:12px}
+  .wq{margin-bottom:16px}
+  .wq label{display:block;font-weight:600;font-size:1rem;margin-bottom:7px}
+  .wq label .qn{color:var(--terra);font-family:"Fraunces",serif;font-style:italic;margin-right:6px}
+  .wq textarea{
+    width:100%;min-height:74px;resize:vertical;font-family:"DM Sans";font-size:1rem;line-height:1.6;color:var(--tinta);
+    border:1.5px solid var(--linea);border-radius:14px;padding:12px 14px;background:var(--cal);transition:border-color .15s;
+  }
+  .wq textarea:focus{outline:none;border-color:var(--mar-2);box-shadow:0 0 0 3px var(--mar-soft)}
+  .wq .wc{font-size:.76rem;color:var(--tinta-30);text-align:right;margin-top:4px}
+
+  .done-row{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .donebtn{
+    flex:1;min-width:170px;cursor:pointer;border:none;border-radius:14px;padding:14px 20px;
+    font-family:"DM Sans";font-weight:600;font-size:1rem;color:#fff;background:var(--oliva);box-shadow:var(--sh-sm);
+    transition:transform .12s,background .2s;display:flex;align-items:center;justify-content:center;gap:9px;
+  }
+  .donebtn:hover{background:#6a793f;transform:translateY(-2px)}
+  .donebtn.is-done{background:var(--sol);color:var(--tinta)}
+  .nextbtn{
+    cursor:pointer;border:1.5px solid var(--mar);background:var(--cal);color:var(--mar);
+    border-radius:14px;padding:14px 22px;font-family:"DM Sans";font-weight:600;font-size:1rem;transition:background .15s;
+  }
+  .nextbtn:hover{background:var(--mar-soft)}
+
+  /* finish screen */
+  .finish{display:none;text-align:center;padding:50px 0 70px}
+  .finish.active{display:block;animation:fade .5s ease}
+  .finish .big-sun{width:130px;height:130px;border-radius:50%;margin:0 auto 24px;background:radial-gradient(circle at 38% 34%,#FFE9A8,var(--sol) 60%,#E89A2E);box-shadow:0 16px 40px -10px rgba(242,180,65,.8)}
+  .finish h2{font-family:"Fraunces",serif;font-weight:600;font-size:2.2rem;color:var(--mar);margin-bottom:8px}
+  .finish p{color:var(--tinta-60);max-width:36ch;margin:0 auto 22px}
+  .finish .stats{display:flex;justify-content:center;gap:28px;margin:26px 0}
+  .stat .n{font-family:"Fraunces",serif;font-weight:600;font-size:2.3rem;color:var(--terra);line-height:1}
+  .stat .l{font-size:.78rem;color:var(--tinta-60);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+  footer{text-align:center;padding:30px 0 46px;color:var(--tinta-30);font-size:.78rem}
+  footer .tile-deco{display:inline-flex;gap:4px;margin-bottom:10px}
+  footer .tile-deco i{width:10px;height:10px;border-radius:3px;display:block}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="row">
+    <span class="brandmini">☀︎ Bajo el sol</span>
+    <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+    <span class="score-pill" id="scorePill">0 ✓</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="sun"></div>
+    <div class="eyebrow">Lectura y escritura · A2</div>
+    <h1>Quince historias <em>bajo el sol</em></h1>
+    <p class="sub">Lee, escucha, responde y escribe. Un paseo por playas, plazas y mercadillos de España.</p>
+    <button class="start" id="startBtn">
+      Empezar a leer
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#FDFBF6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="voicehint">
+      <b>🔊 Para escuchar el audio en iPhone:</b> ve a <b>Ajustes › Accesibilidad › Contenido leído › Voces › Español</b> y descarga una voz (por ejemplo «Mónica» o «Paulina»). Luego vuelve aquí y pulsa ▶ en cada historia.
+    </div>
+
+    <div class="tiles-head">
+      <h2>Las baldosas</h2>
+      <span>toca una para empezar</span>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- READER -->
+  <section class="reader" id="reader">
+    <div class="navrow">
+      <button class="navbtn back" id="toHomeBtn">← Las baldosas</button>
+      <span class="counter" id="counter"></span>
+    </div>
+    <div class="card" id="card"><!-- filled by JS --></div>
+    <div class="navrow" style="margin-top:18px">
+      <button class="navbtn" id="prevBtn">← Anterior</button>
+      <button class="navbtn" id="nextBtn2" style="color:var(--mar)">Siguiente →</button>
+    </div>
+  </section>
+
+  <!-- FINISH -->
+  <section class="finish" id="finish">
+    <div class="big-sun"></div>
+    <h2>¡Has llegado al final!</h2>
+    <p>Has recorrido las quince historias. El sol ya está en lo alto.</p>
+    <div class="stats">
+      <div class="stat"><div class="n" id="fStories">0</div><div class="l">historias</div></div>
+      <div class="stat"><div class="n" id="fCorrect">0</div><div class="l">aciertos</div></div>
+      <div class="stat"><div class="n" id="fTotal">0</div><div class="l">preguntas</div></div>
+    </div>
+    <button class="start" id="restartBtn">Volver a las baldosas</button>
+  </section>
+
+  <footer>
+    <div class="tile-deco">
+      <i style="background:var(--mar)"></i><i style="background:var(--terra)"></i><i style="background:var(--sol)"></i><i style="background:var(--oliva)"></i><i style="background:var(--mar-2)"></i>
+    </div>
+    <div>Lectura y escritura · 15 historias · hecho con luz mediterránea</div>
+  </footer>
+
+</div>
+
+<script>
+/* ============ DATOS ============ */
+const STORIES = [
+  {emo:"🏖️",title:"El sábado diferente",
+   lines:[
+     "Álvaro quería pasar un sábado tranquilo en casa.",
+     "Pero su amiga Marta llamó por teléfono.",
+     "—¡Ven rápido! ¡He encontrado algo raro en la playa!",
+     "Cuando llegó, vio una botella con un mensaje dentro.",
+     "El papel estaba viejo y mojado.",
+     "Solo decía una frase:",
+     "«Busca junto al faro.»",
+     "Los dos fueron corriendo al faro.",
+     "Allí encontraron una pequeña caja con conchas y una foto antigua.",
+     "No era un tesoro, pero fue una mañana muy divertida."
+   ],
+   vocab:[["la playa","beach"],["una botella","a bottle"],["el mensaje","the message"],["el faro","lighthouse"],["la caja","box"],["las conchas","shells"]],
+   quiz:[
+     {q:"¿Qué encontró Marta en la playa?",o:["Una botella con un mensaje","Un teléfono móvil","Una foto rota"],a:0},
+     {q:"El mensaje decía: «Busca junto al faro.»",o:["Verdadero","Falso"],a:0,fb:"Sí, esa era la única frase del papel."}
+   ],
+   write:["¿Qué encontró Marta?","¿Qué hicieron los amigos?","¿Te gustaría encontrar un mensaje así?"]},
+
+  {emo:"✈️",title:"El viaje inesperado",
+   lines:[
+     "Sergio viajaba en tren de Madrid a Sevilla.",
+     "Durante el viaje conoció a un chico de su edad.",
+     "Hablaron de fútbol, música y videojuegos.",
+     "Al llegar a Sevilla descubrieron algo sorprendente.",
+     "Los dos iban al mismo campamento de verano.",
+     "Así empezó una gran amistad."
+   ],
+   vocab:[["el tren","train"],["el viaje","journey"],["conocer","to meet"],["sorprendente","surprising"],["el campamento","camp"],["la amistad","friendship"]],
+   quiz:[
+     {q:"¿A qué ciudad viajaba Sergio?",o:["A Barcelona","A Sevilla","A Valencia"],a:1},
+     {q:"Los dos chicos iban al mismo campamento de verano.",o:["Verdadero","Falso"],a:0,fb:"¡Exacto! Esa fue la sorpresa al llegar."}
+   ],
+   write:["¿Dónde conoció Sergio al otro chico?","¿De qué hablaron?","¿Has hecho amigos durante un viaje?"]},
+
+  {emo:"🏙️",title:"Un turista perdido",
+   lines:[
+     "Claudia paseaba por Toledo cuando vio a una pareja mirando un mapa.",
+     "No encontraban la catedral.",
+     "Claudia les explicó el camino.",
+     "Los turistas estaban tan agradecidos que le regalaron una postal de su país."
+   ],
+   vocab:[["pasear","to stroll"],["la pareja","couple"],["el mapa","map"],["la catedral","cathedral"],["agradecido","grateful"],["la postal","postcard"]],
+   quiz:[
+     {q:"¿Qué buscaban los turistas?",o:["La estación","La catedral","Un restaurante"],a:1},
+     {q:"Claudia regaló una postal a los turistas.",o:["Verdadero","Falso"],a:1,fb:"Al revés: fueron los turistas quienes le regalaron la postal a ella."}
+   ],
+   write:["¿Qué buscaban los turistas?","¿Cómo ayudó Claudia?","¿Te gusta ayudar a otras personas?"]},
+
+  {emo:"🍽️",title:"La tortilla especial",
+   lines:[
+     "En un restaurante de Granada, Pablo pidió una tortilla de patatas.",
+     "Cuando empezó a comer encontró una aceituna con forma de corazón.",
+     "Toda la mesa se echó a reír.",
+     "El camarero dijo que era una señal de buena suerte."
+   ],
+   vocab:[["el restaurante","restaurant"],["pedir","to order"],["la tortilla","omelette"],["la aceituna","olive"],["el camarero","waiter"],["la suerte","luck"]],
+   quiz:[
+     {q:"¿Qué pidió Pablo?",o:["Una paella","Una tortilla de patatas","Una ensalada"],a:1},
+     {q:"¿Qué forma tenía la aceituna?",o:["De estrella","De corazón","De luna"],a:1}
+   ],
+   write:["¿Qué pidió Pablo?","¿Qué encontró en el plato?","¿Crees en la suerte?"]},
+
+  {emo:"🛍️",title:"El mercadillo",
+   lines:[
+     "Lucía visitó un mercadillo en Málaga.",
+     "Compró una caja antigua por dos euros.",
+     "Dentro encontró una fotografía de una familia de hace cincuenta años.",
+     "Detrás había una dirección.",
+     "Lucía decidió enviar la foto a la familia."
+   ],
+   vocab:[["el mercadillo","flea market"],["comprar","to buy"],["antiguo","old / antique"],["la fotografía","photograph"],["la dirección","address"],["enviar","to send"]],
+   quiz:[
+     {q:"¿Cuánto costó la caja?",o:["Dos euros","Veinte euros","Cincuenta euros"],a:0},
+     {q:"Lucía decidió enviar la foto a la familia.",o:["Verdadero","Falso"],a:0,fb:"Sí, encontró la dirección detrás de la foto."}
+   ],
+   write:["¿Qué compró Lucía?","¿Qué encontró dentro?","¿Qué habrías hecho tú?"]},
+
+  {emo:"📱",title:"Sin batería",
+   lines:[
+     "Mario salió de casa con el móvil casi descargado.",
+     "Cuando llegó al centro de la ciudad, el teléfono se apagó.",
+     "No podía llamar a nadie.",
+     "Por suerte encontró una biblioteca y pidió ayuda.",
+     "Al final todo salió bien."
+   ],
+   vocab:[["el móvil","mobile phone"],["descargado","out of battery"],["apagarse","to switch off"],["la biblioteca","library"],["pedir ayuda","to ask for help"],["al final","in the end"]],
+   quiz:[
+     {q:"¿Qué le pasó al móvil de Mario?",o:["Se cayó al agua","Se apagó sin batería","Lo perdió"],a:1},
+     {q:"¿Dónde pidió ayuda?",o:["En una biblioteca","En una tienda","En la policía"],a:0}
+   ],
+   write:["¿Qué problema tuvo Mario?","¿Quién le ayudó?","¿Qué haces cuando tu móvil no funciona?"]},
+
+  {emo:"⚽",title:"El gol del último minuto",
+   lines:[
+     "Durante una fiesta del pueblo, Diego jugó un partido de fútbol.",
+     "Su equipo perdía por un gol.",
+     "En el último minuto recibió un pase y marcó.",
+     "Todos celebraron el empate como si fuera una victoria."
+   ],
+   vocab:[["la fiesta","festival"],["el partido","match"],["el equipo","team"],["marcar","to score"],["el empate","draw / tie"],["la victoria","victory"]],
+   quiz:[
+     {q:"¿Cómo terminó el partido?",o:["Ganó el equipo de Diego","En empate","Perdió por dos goles"],a:1,fb:"Diego marcó en el último minuto y el partido acabó en empate."},
+     {q:"Diego marcó en el último minuto.",o:["Verdadero","Falso"],a:0}
+   ],
+   write:["¿Qué ocurrió al final del partido?","¿Cómo reaccionó la gente?","¿Te gusta jugar al fútbol?"]},
+
+  {emo:"🎵",title:"El músico de la plaza",
+   lines:[
+     "Cada tarde un joven tocaba la guitarra en una plaza de Sevilla.",
+     "Un día dejó de aparecer.",
+     "Después de una semana regresó.",
+     "Había ganado un concurso de música en Madrid.",
+     "Todos lo felicitaron."
+   ],
+   vocab:[["el músico","musician"],["la guitarra","guitar"],["la plaza","square"],["regresar","to return"],["el concurso","contest"],["felicitar","to congratulate"]],
+   quiz:[
+     {q:"¿Qué instrumento tocaba el joven?",o:["El piano","La guitarra","El violín"],a:1},
+     {q:"¿Por qué desapareció una semana?",o:["Estaba enfermo","Ganó un concurso en Madrid","Se mudó de ciudad"],a:1}
+   ],
+   write:["¿Qué instrumento tocaba?","¿Dónde estuvo?","¿Qué instrumento te gustaría aprender?"]},
+
+  {emo:"👵",title:"El secreto de la abuela",
+   lines:[
+     "Nuria visitó a su abuela en un pueblo de Asturias.",
+     "Mientras limpiaban el desván encontraron una caja antigua.",
+     "Dentro había fotografías y cartas de cuando la abuela era joven.",
+     "Nuria pasó toda la tarde escuchando historias."
+   ],
+   vocab:[["la abuela","grandmother"],["el pueblo","village"],["limpiar","to clean"],["el desván","attic"],["las cartas","letters"],["la historia","story"]],
+   quiz:[
+     {q:"¿Dónde encontraron la caja?",o:["En el jardín","En el desván","En la cocina"],a:1},
+     {q:"Dentro había fotografías y cartas.",o:["Verdadero","Falso"],a:0}
+   ],
+   write:["¿Qué encontraron?","¿Qué hizo Nuria?","¿Te gusta escuchar historias familiares?"]},
+
+  {emo:"🤝",title:"El nuevo compañero",
+   lines:[
+     "Un nuevo alumno llegó a la clase de Javier.",
+     "Era argentino y no conocía a nadie.",
+     "Javier decidió sentarse a su lado.",
+     "Poco a poco se hicieron amigos."
+   ],
+   vocab:[["el alumno","pupil"],["la clase","class"],["argentino","Argentinian"],["sentarse","to sit"],["a su lado","beside him"],["poco a poco","little by little"]],
+   quiz:[
+     {q:"¿De dónde venía el nuevo alumno?",o:["De Argentina","De México","De Chile"],a:0},
+     {q:"Javier decidió sentarse a su lado.",o:["Verdadero","Falso"],a:0}
+   ],
+   write:["¿De dónde venía el nuevo alumno?","¿Cómo empezó la amistad?","¿Qué haces cuando llega alguien nuevo?"]},
+
+  {emo:"📚",title:"El examen perdido",
+   lines:[
+     "La profesora buscaba unos exámenes.",
+     "Habían desaparecido.",
+     "Toda la clase ayudó a buscarlos.",
+     "Finalmente estaban dentro de un libro muy grande.",
+     "La profesora se rió mucho."
+   ],
+   vocab:[["la profesora","teacher"],["el examen","exam"],["desaparecer","to disappear"],["buscar","to look for"],["el libro","book"],["reírse","to laugh"]],
+   quiz:[
+     {q:"¿Dónde estaban los exámenes?",o:["En el coche","Dentro de un libro","En el cajón"],a:1},
+     {q:"La profesora se enfadó mucho.",o:["Verdadero","Falso"],a:1,fb:"No se enfadó: ¡se rió mucho!"}
+   ],
+   write:["¿Qué buscaba la profesora?","¿Dónde estaban los exámenes?","¿Has perdido alguna vez algo importante?"]},
+
+  {emo:"🎉",title:"Una sorpresa en las fiestas",
+   lines:[
+     "Durante las fiestas del pueblo, Elena participó en un concurso.",
+     "No esperaba ganar.",
+     "Cuando anunciaron el resultado, escuchó su nombre.",
+     "Había ganado una bicicleta nueva."
+   ],
+   vocab:[["las fiestas","festivities"],["participar","to take part"],["esperar","to expect"],["anunciar","to announce"],["el resultado","result"],["la bicicleta","bicycle"]],
+   quiz:[
+     {q:"¿Qué ganó Elena?",o:["Una bicicleta","Un viaje","Dinero"],a:0},
+     {q:"Elena esperaba ganar el concurso.",o:["Verdadero","Falso"],a:1,fb:"No lo esperaba; por eso fue una sorpresa."}
+   ],
+   write:["¿Dónde estaba Elena?","¿Qué ganó?","¿Qué premio te gustaría recibir?"]},
+
+  {emo:"🍳",title:"El concurso de cocina",
+   lines:[
+     "En el colegio organizaron un concurso de cocina.",
+     "Carlos preparó una tortilla de patatas con su padre.",
+     "No ganó el primer premio.",
+     "Pero todos dijeron que era la más rica.",
+     "Carlos estaba muy orgulloso."
+   ],
+   vocab:[["el colegio","school"],["organizar","to organize"],["preparar","to prepare"],["el premio","prize"],["rico","tasty"],["orgulloso","proud"]],
+   quiz:[
+     {q:"¿Qué preparó Carlos?",o:["Una paella","Una tortilla de patatas","Un pastel"],a:1},
+     {q:"Carlos ganó el primer premio.",o:["Verdadero","Falso"],a:1,fb:"No ganó el premio, ¡pero todos dijeron que era la más rica!"}
+   ],
+   write:["¿Qué preparó Carlos?","¿Quién le ayudó?","¿Qué sabes cocinar?"]},
+
+  {emo:"🐶",title:"El perro aventurero",
+   lines:[
+     "Un perro apareció en la playa de Cádiz.",
+     "Llevaba un collar con un nombre: «Luna».",
+     "Sara llamó al número que estaba escrito.",
+     "Poco después llegó la dueña.",
+     "Estaba muy feliz."
+   ],
+   vocab:[["el perro","dog"],["aparecer","to appear"],["el collar","collar"],["el nombre","name"],["la dueña","owner (f.)"],["feliz","happy"]],
+   quiz:[
+     {q:"¿Cómo se llamaba el perro?",o:["Sol","Luna","Mar"],a:1},
+     {q:"Sara llamó al número del collar.",o:["Verdadero","Falso"],a:0}
+   ],
+   write:["¿Cómo se llamaba el perro?","¿Qué hizo Sara?","¿Te gustaría tener una mascota?"]},
+
+  {emo:"🌟",title:"Una carta para el futuro",
+   lines:[
+     "En clase, la profesora pidió a los alumnos escribir una carta para dentro de diez años.",
+     "Miguel escribió sobre sus sueños.",
+     "Quería viajar, aprender idiomas y conocer muchos países.",
+     "La profesora guardó todas las cartas."
+   ],
+   vocab:[["la carta","letter"],["el futuro","future"],["los sueños","dreams"],["viajar","to travel"],["los idiomas","languages"],["guardar","to keep"]],
+   quiz:[
+     {q:"¿Para cuándo era la carta?",o:["Para mañana","Para dentro de diez años","Para el próximo curso"],a:1},
+     {q:"Miguel escribió sobre sus sueños.",o:["Verdadero","Falso"],a:0}
+   ],
+   write:["¿Qué escribió Miguel?","¿Cuándo leerán la carta?","¿Qué escribirías tú sobre tu futuro?"]}
+];
+
+/* ============ ESTADO ============ */
+const state = {
+  idx:0,
+  doneStories:new Array(STORIES.length).fill(false),
+  answered:{},          // key "s-q" -> boolean correct
+  correctCount:0,
+  totalQuestions:STORIES.reduce((n,s)=>n+s.quiz.length,0)
+};
+
+/* ============ AUDIO (Web Speech API) ============ */
+let voices=[], chosenVoice=null, slow=false;
+function loadVoices(){
+  voices = (window.speechSynthesis ? speechSynthesis.getVoices() : []).filter(v=>v.lang && v.lang.toLowerCase().startsWith("es"));
+  const sels = document.querySelectorAll(".voicesel");
+  sels.forEach(sel=>{
+    const keep = sel.value;
+    sel.innerHTML="";
+    if(!voices.length){
+      const o=document.createElement("option");o.textContent="(sin voz española)";sel.appendChild(o);sel.disabled=true;return;
+    }
+    sel.disabled=false;
+    voices.forEach((v,i)=>{
+      const o=document.createElement("option");o.value=i;o.textContent=v.name.replace(/\(.*\)/,"").trim();sel.appendChild(o);
+    });
+    if(keep && voices[keep]) sel.value=keep;
+  });
+  if(!chosenVoice && voices.length) chosenVoice = voices[0];
+}
+if(window.speechSynthesis){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+function stopAudio(){ if(window.speechSynthesis) speechSynthesis.cancel();
+  document.querySelectorAll(".ln.speaking").forEach(e=>e.classList.remove("speaking"));
+  document.querySelectorAll(".waves.playing").forEach(w=>w.classList.remove("playing"));
+}
+function speakLine(text){
+  if(!window.speechSynthesis) return null;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="es-ES"; u.rate = slow?0.6:0.92;
+  if(chosenVoice) u.voice=chosenVoice;
+  return u;
+}
+function speakWord(text){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u=speakLine(text); if(u) speechSynthesis.speak(u);
+}
+
+/* read the whole story line by line, highlighting */
+function playStory(){
+  if(!window.speechSynthesis){ alert("Tu navegador no permite audio de voz."); return; }
+  const lineEls=[...document.querySelectorAll("#card .ln")];
+  const waves=document.querySelector("#card .waves");
+  stopAudio();
+  waves.classList.add("playing");
+  let i=0;
+  const next=()=>{
+    if(i>=lineEls.length){ waves.classList.remove("playing"); setPlayIcon(true); return; }
+    const el=lineEls[i];
+    lineEls.forEach(e=>e.classList.remove("speaking"));
+    el.classList.add("speaking");
+    el.scrollIntoView({block:"center",behavior:"smooth"});
+    const u=speakLine(el.dataset.text);
+    u.onend=()=>{ el.classList.remove("speaking"); i++; next(); };
+    u.onerror=()=>{ el.classList.remove("speaking"); i++; next(); };
+    speechSynthesis.speak(u);
+  };
+  setPlayIcon(false);
+  next();
+}
+let playing=false;
+function setPlayIcon(toPlay){
+  const btn=document.querySelector("#card .playbtn");
+  if(!btn) return;
+  playing=!toPlay;
+  btn.innerHTML = toPlay
+    ? '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+}
+
+/* ============ RENDER ============ */
+function buildTiles(){
+  const wrap=document.getElementById("tiles");
+  wrap.innerHTML="";
+  STORIES.forEach((s,i)=>{
+    const t=document.createElement("button");
+    t.className="tile"+(state.doneStories[i]?" done":"");
+    t.innerHTML=`<span class="t-emo">${s.emo}</span><span class="t-num">${i+1}</span>`;
+    t.onclick=()=>openStory(i);
+    wrap.appendChild(t);
+  });
+}
+
+function spk(){return '<svg class="spk" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>';}
+
+function renderStory(i){
+  const s=STORIES[i];
+  const card=document.getElementById("card");
+
+  const linesHtml = s.lines.map(l=>{
+    const cls = l.startsWith("«") ? "ln quote" : "ln";
+    const disp = l.replace(/^—/,'<span class="dash">—</span>');
+    return `<p><span class="${cls}" data-text="${l.replace(/"/g,'&quot;')}">${disp}</span></p>`;
+  }).join("");
+
+  const vocabHtml = s.vocab.map(([w,g])=>
+    `<button class="vchip" data-w="${w.replace(/"/g,'&quot;')}">${spk()}<b>${w}</b><small>${g}</small></button>`
+  ).join("");
+
+  const quizHtml = s.quiz.map((q,qi)=>{
+    const opts=q.o.map((o,oi)=>
+      `<button class="opt" data-s="${i}" data-q="${qi}" data-o="${oi}"><span class="mk"></span>${o}</button>`
+    ).join("");
+    return `<div class="q" id="q-${i}-${qi}">
+      <div class="qtxt"><span class="qn">${qi+1}.</span><span>${q.q}</span></div>
+      <div class="opts">${opts}</div>
+      <div class="qfeedback" id="fb-${i}-${qi}"></div>
+    </div>`;
+  }).join("");
+
+  const writeHtml = s.write.map((w,wi)=>
+    `<div class="wq">
+       <label><span class="qn">${wi+1}.</span>${w}</label>
+       <textarea data-s="${i}" data-w="${wi}" placeholder="Escribe tu respuesta…"></textarea>
+       <div class="wc" id="wc-${i}-${wi}">0 palabras</div>
+     </div>`
+  ).join("");
+
+  card.innerHTML=`
+    <span class="story-emo">${s.emo}</span>
+    <div class="story-num">Historia ${i+1} de ${STORIES.length}</div>
+    <h3 class="story-title">${s.title}</h3>
+
+    <div class="audio">
+      <button class="playbtn" id="playBtn" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+      <div class="waves">${'<i></i>'.repeat(11)}</div>
+      <label class="slowtog"><input type="checkbox" id="slowChk" ${slow?'checked':''}> lento</label>
+      <select class="voicesel" id="voiceSel" aria-label="Elegir voz"></select>
+    </div>
+
+    <div class="prose">${linesHtml}</div>
+
+    <div class="block-label"><span class="ico">📖</span> Vocabulario <span style="font-weight:400;font-size:.82rem;color:var(--tinta-60)">· toca para oír</span></div>
+    <div class="vocab">${vocabHtml}</div>
+
+    <div class="block-label"><span class="ico">✅</span> Comprensión</div>
+    ${quizHtml}
+
+    <div class="block-label"><span class="ico">✍️</span> Escribe</div>
+    <p class="write-intro">Responde con frases completas. Tus respuestas se guardan mientras la página esté abierta.</p>
+    ${writeHtml}
+
+    <div class="done-row">
+      <button class="donebtn ${state.doneStories[i]?'is-done':''}" id="doneBtn">
+        ${state.doneStories[i]?'✓ Historia completada':'Marcar como completada'}
+      </button>
+      <button class="nextbtn" id="nextInline">${i<STORIES.length-1?'Siguiente historia →':'Ver resultados →'}</button>
+    </div>
+  `;
+
+  // wire audio
+  document.getElementById("playBtn").onclick=()=>{
+    if(playing){ stopAudio(); setPlayIcon(true); } else { playStory(); }
+  };
+  document.getElementById("slowChk").onchange=e=>{ slow=e.target.checked; };
+  const vsel=document.getElementById("voiceSel");
+  loadVoices();
+  vsel.onchange=e=>{ chosenVoice=voices[e.target.value]||chosenVoice; };
+
+  // line tap = speak single line
+  card.querySelectorAll(".ln").forEach(ln=>{
+    ln.onclick=()=>{ stopAudio(); ln.classList.add("speaking");
+      const u=speakLine(ln.dataset.text);
+      if(u){ u.onend=()=>ln.classList.remove("speaking"); u.onerror=()=>ln.classList.remove("speaking"); speechSynthesis.speak(u);}
+      else ln.classList.remove("speaking");
+    };
+  });
+  // vocab tap
+  card.querySelectorAll(".vchip").forEach(c=>{ c.onclick=()=>speakWord(c.dataset.w); });
+
+  // quiz
+  card.querySelectorAll(".opt").forEach(opt=>{
+    opt.onclick=()=>handleAnswer(opt);
+  });
+  // restore answered state
+  s.quiz.forEach((q,qi)=>{
+    const key=`${i}-${qi}`;
+    if(key in state.answered){ lockQuestion(i,qi,state.answered[key]); }
+  });
+
+  // writing word count + restore
+  card.querySelectorAll("textarea").forEach(ta=>{
+    const si=ta.dataset.s, wi=ta.dataset.w, k=`w-${si}-${wi}`;
+    if(state[k]) ta.value=state[k];
+    const upd=()=>{
+      state[k]=ta.value;
+      const words=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
+      document.getElementById(`wc-${si}-${wi}`).textContent=words+(words===1?" palabra":" palabras");
+    };
+    ta.addEventListener("input",upd); upd();
+  });
+
+  document.getElementById("doneBtn").onclick=()=>markDone(i);
+  document.getElementById("nextInline").onclick=()=>{
+    if(i<STORIES.length-1) openStory(i+1); else showFinish();
+  };
+}
+
+function handleAnswer(opt){
+  const si=+opt.dataset.s, qi=+opt.dataset.q, oi=+opt.dataset.o;
+  const key=`${si}-${qi}`;
+  if(key in state.answered) return; // already answered, locked
+  const correctIdx=STORIES[si].quiz[qi].a;
+  const isCorrect = oi===correctIdx;
+  state.answered[key]=isCorrect;
+  if(isCorrect) state.correctCount++;
+  lockQuestion(si,qi,isCorrect);
+  if(!isCorrect){ opt.classList.add("wrong"); opt.querySelector(".mk").textContent="✕"; }
+  updateHUD();
+}
+
+function lockQuestion(si,qi,isCorrect){
+  const q=STORIES[si].quiz[qi];
+  const correctIdx=q.a;
+  const opts=document.querySelectorAll(`#q-${si}-${qi} .opt`);
+  opts.forEach(o=>{
+    o.classList.add("locked");
+    const oi=+o.dataset.o;
+    if(oi===correctIdx){ o.classList.add("correct"); o.querySelector(".mk").textContent="✓"; }
+  });
+  const fb=document.getElementById(`fb-${si}-${qi}`);
+  if(isCorrect){ fb.className="qfeedback ok"; fb.textContent="¡Correcto! "+(q.fb||""); }
+  else { fb.className="qfeedback no"; fb.textContent=(q.fb||"Mira la opción marcada en verde."); }
+}
+
+function markDone(i){
+  if(!state.doneStories[i]){
+    state.doneStories[i]=true;
+    const btn=document.getElementById("doneBtn");
+    btn.classList.add("is-done"); btn.textContent="✓ Historia completada";
+  }
+  updateHUD();
+  buildTiles();
+}
+
+function updateHUD(){
+  const done=state.doneStories.filter(Boolean).length;
+  document.getElementById("pfill").style.width=(done/STORIES.length*100)+"%";
+  document.getElementById("scorePill").textContent=state.correctCount+" ✓";
+}
+
+/* ============ NAVEGACIÓN ============ */
+function openStory(i){
+  stopAudio(); setPlayIcon(true); playing=false;
+  state.idx=i;
+  document.getElementById("hero").style.display="none";
+  document.getElementById("finish").classList.remove("active");
+  document.getElementById("reader").classList.add("active");
+  document.getElementById("counter").textContent=`${i+1} / ${STORIES.length}`;
+  document.getElementById("prevBtn").disabled = i===0;
+  document.getElementById("nextBtn2").textContent = i<STORIES.length-1 ? "Siguiente →" : "Resultados →";
+  renderStory(i);
+  // mark current tile
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function goHome(){
+  stopAudio(); setPlayIcon(true); playing=false;
+  document.getElementById("reader").classList.remove("active");
+  document.getElementById("finish").classList.remove("active");
+  document.getElementById("hero").style.display="block";
+  buildTiles();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function showFinish(){
+  stopAudio();
+  document.getElementById("reader").classList.remove("active");
+  document.getElementById("hero").style.display="none";
+  const f=document.getElementById("finish"); f.classList.add("active");
+  document.getElementById("fStories").textContent=state.doneStories.filter(Boolean).length;
+  document.getElementById("fCorrect").textContent=state.correctCount;
+  document.getElementById("fTotal").textContent=state.totalQuestions;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ============ INIT ============ */
+document.getElementById("startBtn").onclick=()=>openStory(0);
+document.getElementById("toHomeBtn").onclick=goHome;
+document.getElementById("restartBtn").onclick=goHome;
+document.getElementById("prevBtn").onclick=()=>{ if(state.idx>0) openStory(state.idx-1); };
+document.getElementById("nextBtn2").onclick=()=>{
+  if(state.idx<STORIES.length-1) openStory(state.idx+1); else showFinish();
+};
+buildTiles();
+updateHUD();
+</script>
+</body>
+</html>
