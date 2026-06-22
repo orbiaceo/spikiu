@@ -1,4 +1,19 @@
-# AUFTRAG — „Memoria que se siente" (Paket 4 der Design-Welle „Neuer Look")
+# AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
+
+> **Paket 4 „Memoria que se siente" GEBAUT + auf dev (commit 8988ac2).** EINE Datei
+> (`dashboard.html`): `renderMemoria()` macht die Begrüßung lebendig aus NUR echten Daten
+> (`lessons`/`blaetter`) — Kontinuitäts-Untertitel mit jüngster Lektion + „Weiter plaudern →"-Link,
+> „Wir zwei"-Zeile (echte Zähler, Singular/Plural, i18n DE/ES/EN), optionaler „von letztem Mal"-Wort-Anker;
+> ohne Historie bleibt der Willkommens-Zustand sauber (nichts erfunden — Seele). Alle Abnahme-Punkte
+> headless verifiziert (4 Fälle: Historie DE · neuer Lerner · ES · EN). Vollständiger Bericht +
+> ABNAHME-REST (Gerät) im SPIKIU-BUILD-LEDGER.md (oberste „Stand:"-Zeile). Nächstes laut Auftrag:
+> Voz primero (`prototyp-voz.html`) · Reel táctil (`prototyp-reel-tactil.html`).
+>
+> Der ursprüngliche Auftragstext steht unten unverändert als Referenz.
+
+---
+
+# (Referenz) AUFTRAG — „Memoria que se siente" (Paket 4 der Design-Welle „Neuer Look")
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Genehmigter Prototyp (Geist + Stil): `prototyp-memoria.html`
