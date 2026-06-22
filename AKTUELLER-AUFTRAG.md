@@ -1,94 +1,86 @@
-# AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
-
-> „Capy vivo" (Paket 1 der Design-Welle „Neuer Look") GEBAUT + auf dev verbucht.
-> `capy-vivo.js` (NEU, Root-Helfer `window.spkCapyAlive`) + `lesebegleiter.js` (Augen-Gruppe
-> eingewickelt, FAB markiert, Helfer geladen+aufgerufen). Headless verifiziert (ok:true),
-> `node --check` grün, nur die 2 Dateien. Details im SPIKIU-BUILD-LEDGER.md.
-> NÄCHSTES = Paket 2 (untere Navigation) — erst Routing klären; nutzt `spkCapyAlive`.
-
----
-
-# AUFTRAG (Archiv) — „Capy vivo" (Paket 1 der Design-Welle „Neuer Look")
+# AUFTRAG — „Untere Navigation" (Paket 2 der Design-Welle „Neuer Look")
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Genehmigter Prototyp (Stil + Verhalten): `prototyp-capy-vivo.html`
+Branch: dev · Genehmigter Prototyp (Stil): `prototyp-bottom-nav.html`
 
-> Erstes Paket der Code-Landung. Ziel: Spikiu LEBT — der Capy atmet (hat er schon),
-> **blinzelt von selbst, folgt dem Finger/Mauszeiger mit dem Blick, und macht beim
-> Antippen einen kleinen Freuden-Hüpfer.** Klein, autonom, kann die Navigation NICHT
-> brechen — der sichere, schnelle „wow"-Gewinn für die Tester.
->
-> WICHTIG: gebaut als WIEDERVERWENDBARER Helfer, denn derselbe lebende Capy soll später
-> auch der erhöhte Mitte-Capy der unteren Navigation (Paket 2) werden.
+> Der sichtbare neue Look. Der Hamburger + Drawer weicht einer **festen unteren Tab-Leiste**
+> (wie LinkedIn/Kleinanzeigen/Grok) — Daumen erreicht alles, kein verstecktes Menü.
+> Routing + Layout FRISCH aus dev geprüft (nav.js 246 Z.; chat.html `.input-area` ist
+> **kein** fixes Element, sondern Flex-Kind `flex-shrink:0` → nur Höhe reservieren).
 
-## DATEIEN (ZWEI)
-1. **NEU `capy-vivo.js`** (Repo-Root, statisch wie `nav.js`/`audio.js` — KEIN `vercel.json`-Eintrag, kein `api/`).
-2. **`lesebegleiter.js`** (der schwebende Reader-Begleiter, live in allen 8 Kapiteln cap1–4-es/de).
+## DATEIEN
+1. **`nav.js`** (Umbau: Bottom-Tab-Bar statt Hamburger/Drawer + zwei Bottom-Sheets).
+2. **Layout-Abgleich** auf den Seiten, die `nav.js` laden (dashboard.html, books.html,
+   chat.html, schreibwerkstatt.html, taller.html, sessions.html) — nur so viel, dass die
+   feste Leiste nichts verdeckt (siehe unten). **JEDE betroffene Seite einzeln headless prüfen.**
+3. **`capy-vivo.js`** (aus Paket 1, nicht neu bauen): den erhöhten Mitte-Capy beleben.
 
-`api/*`, Seele, `*-modus.md`, `vercel.json`, die 8 Reader-HTMLs und jede andere Datei
-bleiben UNBERÜHRT.
+`api/*`, Seele, `*-modus.md` und (außer dem nötigen Höhen-Abgleich) der Seiteninhalt
+bleiben unberührt. Kein `vercel.json` (statische Dateien).
 
-## 1) `capy-vivo.js` — der wiederverwendbare Helfer
-Schlank, ohne Abhängigkeiten. Exponiert `window.spkCapyAlive(svgEl, opts)`.
-Bekommt ein bereits gerendertes Capy-`<svg>` und macht es lebendig:
+## DIE LEISTE — `nav.js`
+Feste untere Tab-Leiste auf ALLEN `nav.js`-Seiten. Stil/Tokens/Capy aus
+`prototyp-bottom-nav.html`. **Fünf Tabs**, i18n DE/ES/EN:
 
-- **Blinzeln (auto):** die Augen kurz zu Schlitzen (≈120–150 ms), dann wieder auf;
-  Intervall zufällig ≈2,5–6 s. Umsetzung: die vier Augen-Kreise (zwei dunkle Augen
-  `cx33/47 cy24 r3.5` + zwei weiße Glanzpunkte `cx34/48 cy23 r1.2`) liegen in einer
-  Gruppe `<g class="spk-capy-eyes">` (wird in Schritt 2 in den SVG-String gesetzt);
-  Blinzeln = kurz `transform:scaleY(.1)` auf diese Gruppe (`transform-box:fill-box;
-  transform-origin:center`). Glanzpunkte dürfen beim Blinzeln verschwinden.
-- **Blick folgt dem Zeiger:** bei `mousemove`/`touchmove` die Augen-Gruppe leicht zum
-  Zeiger verschieben (translate, **geklemmt auf ±2–2,5 px** im 80er-viewBox, sanfte
-  Transition ~.15 s). Bezugspunkt = Mitte des SVG (`getBoundingClientRect`). Beim
-  Verlassen sanft zurück in die Mitte.
-- **Tipp = Freuden-Hüpfer:** auf `pointerdown`/Klick des SVG (bzw. seines Tipp-Ziels)
-  ein kurzer Hüpfer (≈.5 s, leichtes Hoch-Runter/Scale), Klasse wird nach der Animation
-  entfernt. **Darf den bestehenden Klick NICHT schlucken** (kein `preventDefault`/
-  `stopPropagation`) — der Lesebegleiter muss weiter aufgehen.
-- **`prefers-reduced-motion`:** dann KEIN Tracking/Hüpfer, Blinzeln sehr dezent oder aus;
-  Atmen (CSS) bleibt ohnehin der Seite überlassen.
-- Defensive: kein `.spk-capy-eyes` gefunden → ruhig no-op. Mehrfach-Aufruf idempotent
-  (nicht doppelt Intervalle/Listener setzen). Eigener CSS-Namensraum, stört nichts.
-- Der Helfer fügt seine paar Keyframes/Klassen selbst ein (eigener `<style>`), oder nutzt
-  inline-Transforms — keine Abhängigkeit von fremdem CSS.
+1. **Start** → `dashboard.html` (de Start · es Inicio · en Home)
+2. **Reader** → `books.html` (Reader · Reader · Reader)
+3. **Gespräch** — MITTE, erhöhter heller Sockel, **VOLLSTÄNDIGER Capy** (nie trasquilado) →
+   `chat.html` (de Gespräch · es Conversa · en Talk). Der Mitte-Capy wird via
+   `spkCapyAlive` (Paket 1) belebt: Augen-Gruppe `<g class="spk-capy-eyes">` in seinen
+   SVG, `capy-vivo.js` laden + aufrufen (atmet/blinzelt/Blick/Tipp).
+4. **Werkstatt** → öffnet ein **Bottom-Sheet** (de Werkstatt · es Taller · en Workshop):
+   Schreibwerkstatt → `schreibwerkstatt.html` · Lesewerkstatt → `taller.html` · Gym
+   (disabled, Badge „bald/pronto/soon" wie heute) — Gym lebt als drittes Atelier in der
+   Werkstatt (Design-Entscheid). Labels aus dem bestehenden i18n (`write`/`read`/`gym`).
+5. **Mein** → öffnet ein **Bottom-Sheet** (de Mein · es Perfil · en Profile): Lernweg →
+   `dashboard.html#lernweg` · Verlauf → `sessions.html` · Lektionen →
+   `dashboard.html#lektionen` · Einstellungen (nur wenn ein Ziel existiert, sonst weglassen).
+   Labels aus bestehendem i18n (`path`/`verlauf`/`lessons`/`settings`).
 
-## 2) `lesebegleiter.js` — den schwebenden Capy beleben
-- Im `CAPY`-SVG-String (Z. 55–64) die **vier Augen-Kreise** (zwei `#3d2b1f`-Augen +
-  zwei weiße Glanzpunkte) in `<g class="spk-capy-eyes">…</g>` einwickeln. **Sonst NICHTS
-  am SVG ändern** — Capy bleibt VOLLSTÄNDIG (2 Ohren, Schnauze, Nase, 4 Pfoten, Lächeln).
-- Dem FAB-Capy-`<svg>` eine Kennung geben (z. B. Klasse `spk-capy-alive`), damit der
-  Helfer es findet (Tipp-Ziel = der `.spk-beg-fab`-Button).
-- `capy-vivo.js` EINMAL laden (dynamisch ein `<script src="/capy-vivo.js">` injizieren,
-  falls noch nicht da) und nach dem Mounten `spkCapyAlive(fabSvg, {tapTarget: fabButton})`
-  aufrufen. KEINE Edits an den 8 Reader-HTMLs nötig.
-- Die bestehende Atem-Animation (`@keyframes spkbeg-float` auf `.spk-beg-fab svg`) BLEIBT.
-- Das kleine Panel-Kopf-Capy (`.spk-beg-head svg`, 28 px) optional ebenfalls beleben —
-  wenn sauber, gern; sonst nur das FAB. Kein Muss.
+> So wandern ALLE alten Drawer-Einträge vollständig in 5 Tabs + 2 Sheets — nichts geht verloren.
+
+**Aktiver Tab** nach Dateiname (`location.pathname.split('/').pop()`, Logik wie heute Z.49):
+dashboard→Start · books→Reader · chat→Gespräch · schreibwerkstatt/taller→Werkstatt ·
+sessions→Mein · unbekannt→keiner.
+
+**Hamburger + Drawer + Backdrop RAUS.** Wo eine Seite `[data-spk-nav]` hat (chat.html-Header,
+Z.211), nur das **Marken-Logo** (kein Hamburger) hineinsetzen, damit der Header nicht leer/
+kaputt wirkt. Kein zweiter Balken. Leiste fix unten, über dem Inhalt, mit
+`padding-bottom: env(safe-area-inset-bottom)` (iPhone-Leiste unten). `nav.js` exponiert die
+Leistenhöhe als CSS-Variable `--spk-navh` (am `:root`/`html`).
+
+## LAYOUT-ABGLEICH (damit nichts verdeckt wird)
+- **Normale Scroll-Seiten** (dashboard.html, books.html, sessions.html): unten
+  `padding-bottom: var(--spk-navh)` am Inhalt/Body, damit die letzte Zeile frei bleibt.
+- **Voll-Höhe-Flex-Seiten** (chat.html — `.app`/Haupt-Container ~100vh mit `.input-area`
+  `flex-shrink:0`; ggf. schreibwerkstatt.html/taller.html ähnlich): Container-Höhe auf
+  `calc(100vh - var(--spk-navh))` (bzw. `100dvh`), damit die Flex-Spalte ÜBER der Leiste
+  sitzt und **das Eingabefeld sichtbar + erreichbar** bleibt. KEIN „lift" nötig — `.input-area`
+  ist nicht fixed.
+- Claude Code prüft JEDE Seite einzeln headless: nichts verdeckt, auf chat.html Eingabefeld
+  voll nutzbar, untere iPhone-Safe-Area sauber.
 
 ## ABNAHME
-- [ ] Der schwebende Capy (alle 8 Reader-Kapitel) **blinzelt** von selbst, **folgt dem
-      Finger/Zeiger** mit dem Blick und macht beim **Antippen einen Freuden-Hüpfer** —
-      und das Panel geht beim Tippen weiterhin auf.
-- [ ] Atmen bleibt; Capy VOLLSTÄNDIG (Ohren/4 Pfoten), nie trasquilado; SVG-Form sonst
-      unverändert.
-- [ ] `prefers-reduced-motion`: ruhig (kein Tracking/Hüpfer).
-- [ ] `capy-vivo.js` ist ein eigenständiger, wiederverwendbarer Root-Helfer
-      (`window.spkCapyAlive`) — bereit für den Mitte-Capy der Navigation (Paket 2).
-- [ ] Nur die 2 Dateien; `api/*`/Seele/`*-modus.md`/`vercel.json`/Reader-HTMLs unberührt.
-- [ ] `node --check` grün (`capy-vivo.js` + `lesebegleiter.js`).
+- [ ] Feste 5-Tab-Leiste unten auf allen `nav.js`-Seiten; aktiver Tab je Seite korrekt
+      hervorgehoben; Mitte = erhöhter **vollständiger** Capy, belebt (atmet/blinzelt/Blick/
+      Tipp via `spkCapyAlive`).
+- [ ] Werkstatt-Tab → Sheet (Schreibwerkstatt/Lesewerkstatt/Gym-bald); Mein-Tab → Sheet
+      (Lernweg/Verlauf/Lektionen/Einstellungen). **Alle alten Drawer-Ziele erreichbar.**
+- [ ] Nichts verdeckt: Scroll-Seiten unten frei; chat.html-Eingabefeld sichtbar + nutzbar
+      über der Leiste; iPhone-untere-Safe-Area sauber.
+- [ ] Hamburger/Drawer/Backdrop weg; Header zeigt weiter das Spikiu-Logo.
+- [ ] i18n DE/ES/EN; Stil/Capy aus `prototyp-bottom-nav.html`; Capy vollständig.
+- [ ] JEDE betroffene Seite headless verifiziert; `node --check` grün (`nav.js` + geänderte
+      Inline-Scripts).
 
 ## AUSDRÜCKLICH NICHT
-- KEINE Launen/Moods in diesem Paket (kommen später, z. B. „spricht" mit Voz-Paket) —
-  nur atmen/blinzeln/Blick/Tipp.
-- KEINE Navigation, kein neuer großer Mitte-Capy (= Paket 2), keine anderen Flächen
-  (Dashboard/chat-Avatar) — nur der Lesebegleiter-FAB.
-- Kanonischen SVG NICHT umformen/vereinfachen. Kein `api/`, kein Stripe/Supabase.
+- KEINE neuen Vollseiten (`werkstatt.html`/`mein.html`) — Werkstatt/Mein sind Sheets.
+- KEIN neuer Capy-Helfer — `capy-vivo.js` aus Paket 1 nutzen. Capy NIE trasquilado.
+- Gym bleibt disabled (der Gym-Raum kommt später). Kein `api/`, kein Stripe/Supabase.
+- Inhalt der Seiten nicht umbauen, nur der nötige Höhen-/Padding-Abgleich.
 
-## DANACH (Design-Welle, je eigenes Paket, je nach Leo)
-- **Paket 2 — untere Navigation** statt Hamburger (`prototyp-bottom-nav.html`): global,
-  zuerst Routing klären (welche Seite = welcher Tab, Werkstatt-Hub mit Gym als drittem
-  Atelier, „Mein"-Ziel); der erhöhte Mitte-Capy nutzt `spkCapyAlive` aus Paket 1.
-- Dann **Baum** (`prototyp-baum-lebt.html`; das Dashboard hat schon einen statischen
-  Baum + Balken Z.233 → durch den wachsenden ersetzen), dann **Memoria** / **Voz** /
-  **Reel táctil** (reiten auf `lastConversation` + Audio).
+## DANACH (Design-Welle)
+- **Paket 3 — Baum** (`prototyp-baum-lebt.html`): den statischen Dashboard-Baum (Z.233,
+  `<svg viewBox="0 0 160 220">` + Fortschrittsbalken) durch den wachsenden ersetzen
+  (Samen→Stamm→Krone, je Sitzung ein Blatt, wiegt sich).
+- Dann **Memoria** / **Voz** / **Reel táctil** (reiten auf `lastConversation` + Audio).
