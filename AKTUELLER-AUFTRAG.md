@@ -1,4 +1,20 @@
-# AKTUELLER-AUFTRAG — Design-Welle Paket 3: Der lebende Baum (Teil 36)
+# AKTUELLER-AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
+
+> **Teil 36 „Der lebende Baum" GEBAUT + auf dev (commit 12ff5ad).** Alle drei Teile erfüllt:
+> A `baum.js` (lag committet/4fcec3d, verifiziert) · B `dashboard.html` (tree-hero = mobil
+> sichtbarer lebender Baum-Held, echte Etappen-Pille kanonisch, Balken + Platzhalter-Stats raus,
+> Blatt-Zeile) · C `chat.html` (ehrlicher Blatt-Zähler `user.blaetter` += 1 pro Gesprächsbogen,
+> Flag `sessionGezaehlt`). Alle Abnahme-A/B/C-Punkte headless verifiziert (spkBaum 3 Etappen +
+> genau-1-neues-Blatt · Dashboard mobil sichtbar/Pille/kein Balken · Zähler 0→1→1→2). Vollständiger
+> Bericht + ABNAHME-REST (Gerät) + EINE FRAGE AN DESIGN (Auslöser für Etappen-Aufstieg
+> `profile.etappe`/`user.blaetter` fehlt noch) im SPIKIU-BUILD-LEDGER.md (oberste „Stand:"-Zeile).
+> Nächstes laut Auftrag: Design-Welle Paket 4/5/6 (Memoria/Voz/Reel-táctil).
+>
+> Der ursprüngliche Auftragstext steht unten unverändert als Referenz.
+
+---
+
+# (Referenz) Design-Welle Paket 3: Der lebende Baum (Teil 36)
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Baut auf Teil 35 (Nav/Opener/Sprichwort, commit 5916ca6)
