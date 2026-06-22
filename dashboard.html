@@ -167,6 +167,16 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
   .grid-2 { grid-template-columns:1fr; }
 }
 </style>
+<style>
+  /* Teil 35: Dashboard trägt oben das Sprichwort des Tages statt der Marken-Topbar.
+     Die von nav.js injizierte .spk-topbar NUR hier ausblenden (nav.js bleibt unberührt;
+     books/sessions behalten ihre Topbar). */
+  .spk-topbar{ display:none !important; }
+  .sprichwort-head{ text-align:center; padding:.3rem 0 1.2rem; border-bottom:1px solid #ece6da; margin-bottom:1.3rem; }
+  .sprichwort-head .spr-text{ font-family:'Lora',serif; font-style:italic; font-size:1.15rem; color:#1a1816; line-height:1.5; }
+  .sprichwort-head .spr-trans{ font-family:'DM Sans',system-ui,sans-serif; font-size:.92rem; color:#6b6560; margin-top:.35rem; }
+  .sprichwort-head .spr-src{ font-family:'DM Sans',system-ui,sans-serif; font-size:.74rem; color:#9a948c; margin-top:.45rem; letter-spacing:.02em; }
+</style>
 </head>
 <body>
 
@@ -174,6 +184,13 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 
 <!-- MAIN -->
 <main class="main">
+
+  <!-- Sprichwort des Tages (Teil 35) — Zielsprache + Übersetzung in der Muttersprache + Quelle ohne Link -->
+  <div class="sprichwort-head" id="sprichwort-head" style="display:none;">
+    <div class="spr-text" id="spr-text"></div>
+    <div class="spr-trans" id="spr-trans"></div>
+    <div class="spr-src" id="spr-src"></div>
+  </div>
 
   <div class="topbar">
     <div class="greeting">
@@ -261,7 +278,7 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
   <div class="grid-2">
 
     <!-- LEARNING PATH -->
-    <div class="card">
+    <div class="card" id="lernweg" style="scroll-margin-top:80px;">
       <div class="card-header">
         <span class="card-title" data-i18n="cardRoadmap">Your Language Roadmap</span>
         <span class="card-tag" id="roadmap-target-tag">Spanish</span>
@@ -298,8 +315,12 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
       </div>
     </div>
 
+    <!-- Lektionen-Anker (Teil 35): stabiles Ziel für den Lektionen-Tab + den
+         #lektionen-Redirect aus chat.html. display:contents → stört das Grid nicht. -->
+    <div id="lektionen" style="display:contents;">
+
     <!-- MY LESSONS (dynamic) -->
-    <div class="card" id="lessons-card" style="display:none;">
+    <div class="card" id="lessons-card" style="display:none;scroll-margin-top:80px;">
       <div class="card-header">
         <span class="card-title" data-i18n="cardLessons">My Lessons</span>
         <span class="card-tag" id="lessons-count">0 / 3</span>
@@ -317,6 +338,7 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
         Ask Spikiu in the chat for a lesson on any topic — it will appear here.
       </div>
     </div>
+    </div><!-- /#lektionen -->
 
   </div>
 
@@ -1233,8 +1255,32 @@ function loadUser() {
   }
 }
 
+// ── Sprichwort des Tages (Teil 35) ────────────────────
+// Liest die Profil-Klarnamen, mappt sie via dashLangCode auf Codes (de/es/en/el)
+// und rendert das Sprichwort der Zielsprache + IMMER die Übersetzung in der
+// Muttersprache + Quelle ohne Link. sprichwort.js ist ein statischer Root-Helfer.
+function renderSprichwort() {
+  if (typeof window.spikiuSprichwort !== 'function') return;
+  let ziel = 'es', mutter = 'de';
+  try {
+    const u = JSON.parse(localStorage.getItem('spikiu_user') || 'null');
+    if (u) {
+      ziel   = dashLangCode((u.profile && u.profile.targetLang) || u.targetLang) || 'es';
+      mutter = dashLangCode(u.nativeLang) || 'de';
+    }
+  } catch (e) {}
+  const s = window.spikiuSprichwort(ziel, mutter);
+  if (!s || !s.text) return;
+  const head = document.getElementById('sprichwort-head');
+  document.getElementById('spr-text').textContent  = s.text;
+  document.getElementById('spr-trans').textContent = s.translation || '';
+  document.getElementById('spr-src').textContent   = s.src ? ('— ' + s.src) : '';
+  if (head) head.style.display = 'block';
+}
+
 window.addEventListener('load', () => {
   loadUser();
+  renderSprichwort();
   setTimeout(() => { document.getElementById('pf').style.width = '35%'; }, 300);
 });
 
@@ -1251,6 +1297,7 @@ document.addEventListener('keydown', (e) => {
   window.spkSpeak = speak;
   window.spkWarm  = warm;
 </script>
+<script src="sprichwort.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

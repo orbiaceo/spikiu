@@ -69,6 +69,8 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
    Chip-Stil aus prototyp-gespraech-gefuehrt.html. KEIN Fortschrittsbalken in P1. */
 .gabelung { align-self:stretch; display:flex; flex-direction:column; gap:0.6rem; padding-left:2.75rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
 .gab-label { font-size:0.78rem; color:var(--mid); font-weight:500; }
+/* Opener-Überschrift (Teil 35): ruhige einzelne Zeile statt Gruß-Bubble. */
+.gab-ask { font-family:'Lora',serif; font-size:1.05rem; font-weight:600; color:#1a1816; margin:0 0 0.25rem; }
 .gab-chips { display:flex; flex-wrap:wrap; gap:0.45rem; }
 .chip { background:var(--white); border:1.5px solid var(--accent); color:var(--accent); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500; cursor:pointer; transition:all 0.18s; -webkit-tap-highlight-color:transparent; }
 .chip:hover { background:var(--accent); color:var(--white); }
@@ -879,9 +881,9 @@ function sendMessage(){
 // ab da läuft der normale turn()-Zyklus. KEINE Häppchen/Hörverständnis/Lektion
 // in Paket 1 — die gibt es noch nicht.
 var GAB = {
-  de:{ free:'Einfach plaudern', orTopic:'…oder ein Thema üben', other:'Etwas anderes…', describe:'Beschreibe, was du üben willst', placeholder:'z. B. ein Zimmer reservieren…', seed:function(t){ return 'Ich möchte das Thema „'+t+'" üben.'; } },
-  es:{ free:'Charlar sin más', orTopic:'…o practicar un tema', other:'Otra cosa…', describe:'Describe lo que quieres practicar', placeholder:'p. ej. reservar una habitación…', seed:function(t){ return 'Quiero practicar el tema «'+t+'».'; } },
-  en:{ free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
+  de:{ chooseActivity:'Wähle eine Aktivität', free:'Einfach plaudern', orTopic:'…oder ein Thema üben', other:'Etwas anderes…', describe:'Beschreibe, was du üben willst', placeholder:'z. B. ein Zimmer reservieren…', seed:function(t){ return 'Ich möchte das Thema „'+t+'" üben.'; } },
+  es:{ chooseActivity:'Elige una actividad', free:'Charlar sin más', orTopic:'…o practicar un tema', other:'Otra cosa…', describe:'Describe lo que quieres practicar', placeholder:'p. ej. reservar una habitación…', seed:function(t){ return 'Quiero practicar el tema «'+t+'».'; } },
+  en:{ chooseActivity:'Choose an activity', free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
 };
 var TOPICS = [
   { emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel' },
@@ -902,7 +904,8 @@ function showGabelung(){
   var wrap = document.createElement('div');
   wrap.className = 'gabelung'; wrap.id = 'gabelung';
   wrap.innerHTML =
-    '<button class="chip full" type="button" id="gabFree">💬 ' + escPlain(t.free) + '</button>'
+    '<div class="gab-ask">' + escPlain(t.chooseActivity) + '</div>'
+    + '<button class="chip full" type="button" id="gabFree">💬 ' + escPlain(t.free) + '</button>'
     + '<div class="gab-label">' + escPlain(t.orTopic) + '</div>'
     + '<div class="gab-chips" id="gabChips">' + chips
       + '<button class="chip ghost" type="button" id="gabOther">✍️ ' + escPlain(t.other) + '</button>'
@@ -916,12 +919,13 @@ function showGabelung(){
   });
 }
 
-function goFree(){ gefuehrt = false; setExitVisible(false); removeGabelung(); updateFreeExit(); input.focus(); }   // freier Flur — kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
+function goFree(){ gefuehrt = false; setOpenerChrome(false); setExitVisible(false); removeGabelung(); updateFreeExit(); input.focus(); }   // freier Flur — Schreibfeld + Profil-Chip wieder ein; kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
 function pickTopic(label){
   if (busy || guiding) return;
+  setOpenerChrome(false);                // Gespräch beginnt → Schreibfeld + Profil-Chip wieder ein (geführt: sichtbar, aber gesperrt)
   removeGabelung();
   removeEndMenu();                       // falls ein altes Menü noch offen war
   removeOptionen();
@@ -1197,10 +1201,18 @@ function startSeedTurn(){
   turn();
 }
 
-// Opener: warmer [EINSTIEG]-Gruß vom Backend, danach die Gabelung darunter.
-async function startOpener(){
-  await turn();                 // verlauf leer → Backend setzt [EINSTIEG] → Opener-Gruß
-  if (lastTurnOk) showGabelung();
+// Opener (Teil 35): ruhige Wahl-Seite — NUR „Wähle eine Aktivität" + die Gabelung.
+// KEIN Begrüßungs-Bubble (kein Doppel-Gruß / zweiter Capy), kein Profil-Chip, kein
+// Schreibfeld. Das Gespräch (und damit der erste turn()) beginnt erst nach der Wahl.
+function setOpenerChrome(hidden){
+  var pb = document.getElementById('profileBar');
+  var ia = document.querySelector('.input-area');
+  if (pb) pb.style.display = hidden ? 'none' : '';
+  if (ia) ia.style.display = hidden ? 'none' : '';
+}
+function startOpener(){
+  setOpenerChrome(true);        // Profil-Chip + Schreibfeld aus, solange die Gabelung steht
+  showGabelung();
 }
 
 // ── Eingabe ──────────────────────────────────────────────────────

@@ -58,26 +58,33 @@
   const I18N = {
     Deutsch: {
       navStart: 'Start', navReader: 'Reader', navTalk: 'Gespräch', navWerkstatt: 'Werkstatt', navMein: 'Mein',
-      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Gym',
+      navLektionen: 'Lektionen',
+      reader: 'Reader · Meine Bücher',
+      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Wortschatz-Werkstatt',
       path: 'Lernweg', verlauf: 'Verlauf', lessons: 'Lektionen', settings: 'Einstellungen',
       soon: 'bald' },
     'Español': {
       navStart: 'Inicio', navReader: 'Reader', navTalk: 'Conversa', navWerkstatt: 'Taller', navMein: 'Perfil',
-      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Gym',
+      navLektionen: 'Lecciones',
+      reader: 'Reader · Mis libros',
+      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Taller de vocabulario',
       path: 'Ruta', verlauf: 'Progreso', lessons: 'Lecciones', settings: 'Ajustes',
       soon: 'pronto' },
     English: {
       navStart: 'Home', navReader: 'Reader', navTalk: 'Talk', navWerkstatt: 'Workshop', navMein: 'Profile',
-      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Gym',
+      navLektionen: 'Lessons',
+      reader: 'Reader · My Books',
+      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Vocabulary Workshop',
       path: 'Path', verlauf: 'Progress', lessons: 'Lessons', settings: 'Settings',
       soon: 'soon' }
   };
 
   // ── Aktive Seite (Dateiname → Tab-Schlüssel) ────────────────────
   function normalizeActive(v) {
-    // alte Drawer-Schlüssel sanft auf die fünf Tab-Schlüssel abbilden
-    if (v === 'write' || v === 'read') return 'werkstatt';
+    // alte Drawer-/Reader-Schlüssel sanft auf die fünf Tab-Schlüssel abbilden
+    if (v === 'write' || v === 'read' || v === 'books' || v === 'reader') return 'werkstatt';
     if (v === 'sessions' || v === 'verlauf') return 'mein';
+    if (v === 'lessons') return 'lektionen';
     return v;
   }
   function getActive() {
@@ -85,11 +92,15 @@
     const attr = document.body && document.body.getAttribute('data-nav-active');
     if (attr) return normalizeActive(attr);
     const f = (location.pathname.split('/').pop() || '').toLowerCase();
-    if (f.indexOf('dashboard') === 0) return 'dashboard';
+    if (f.indexOf('dashboard') === 0) {
+      // Start UND Lektionen zeigen auf dashboard.html — nur der Hash unterscheidet.
+      return (location.hash === '#lektionen') ? 'lektionen' : 'dashboard';
+    }
     if (f.indexOf('chat') === 0) return 'talk';
     if (f.indexOf('schreibwerkstatt') === 0) return 'werkstatt';
     if (f.indexOf('taller') === 0) return 'werkstatt';
-    if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'books';
+    // Reader (books.html + Kapitel cap*) liegt jetzt IN der Werkstatt
+    if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'werkstatt';
     if (f.indexOf('sessions') === 0) return 'mein';
     return '';
   }
@@ -100,10 +111,12 @@
     dashboard: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
     books: '<path d="M3 5a2 2 0 012-2h6v18H5a2 2 0 01-2-2z"/><path d="M21 5a2 2 0 00-2-2h-6v18h6a2 2 0 002-2z"/>',
     werkstatt: '<path d="M2 22l3-1 12-12-2-2L3 19z"/><path d="M15 7l2-2 2 2-2 2z"/>',
+    lektionen: '<rect x="4" y="5" width="13" height="15" rx="2"/><path d="M8 3h9a2 2 0 012 2v13"/><path d="M8 10h6M8 14h6"/>',
     mein: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'
   };
   // Sheet-Item-Icons (aus der alten Drawer-Welt übernommen)
   const ICON = {
+    reader: '<path d="M3 5a2 2 0 012-2h6v18H5a2 2 0 01-2-2z"/><path d="M21 5a2 2 0 00-2-2h-6v18h6a2 2 0 002-2z"/>',
     write: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
     read: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
     gym: '<rect x="2.5" y="9" width="3" height="6" rx="1"/><rect x="18.5" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="10.5" width="2" height="3" rx="0.5"/><rect x="16.5" y="10.5" width="2" height="3" rx="0.5"/><line x1="7.5" y1="12" x2="16.5" y2="12"/>',
@@ -137,25 +150,25 @@
   // ── Struktur: fünf Tabs + zwei Bottom-Sheets ────────────────────
   const TABS = [
     { id: 'dashboard', labelKey: 'navStart',     href: 'dashboard.html' },
-    { id: 'books',     labelKey: 'navReader',    href: 'books.html' },
-    { id: 'talk',      labelKey: 'navTalk',      href: 'chat.html', center: true },
     { id: 'werkstatt', labelKey: 'navWerkstatt', sheet: 'werkstatt' },
+    { id: 'talk',      labelKey: 'navTalk',      href: 'chat.html', center: true },
+    { id: 'lektionen', labelKey: 'navLektionen', href: 'dashboard.html#lektionen' },
     { id: 'mein',      labelKey: 'navMein',      sheet: 'mein' }
   ];
 
   function sheetItems(which, t) {
     if (which === 'werkstatt') {
       return [
-        { id: 'write', href: 'schreibwerkstatt.html' },
-        { id: 'read',  href: 'taller.html' },
-        { id: 'gym',   disabled: true }
+        { id: 'reader', href: 'books.html' },           // Reader · Meine Bücher (Bibliothek)
+        { id: 'read',   href: 'taller.html' },           // Lesewerkstatt (Leseverstehen) ≠ Reader
+        { id: 'write',  href: 'schreibwerkstatt.html' }, // Schreibwerkstatt
+        { id: 'gym',    disabled: true }                 // Wortschatz-Werkstatt (bald)
       ];
     }
-    // 'mein'
+    // 'mein' — Lektionen sind jetzt ein eigener Tab, daher hier raus
     const items = [
       { id: 'path',    href: 'dashboard.html#lernweg' },
-      { id: 'verlauf', href: 'sessions.html' },
-      { id: 'lessons', href: 'dashboard.html#lektionen' }
+      { id: 'verlauf', href: 'sessions.html' }
     ];
     if (hasGoal()) items.push({ id: 'settings', disabled: true });  // nur mit gesetztem Ziel
     return items;
@@ -328,6 +341,14 @@
     openSheetName = '';
   }
 
+  // ── Aktive Tab-Markierung neu setzen (z. B. bei hashchange) ──────
+  function updateActiveTab() {
+    const active = getActive();
+    document.querySelectorAll('.spk-tab').forEach(function (el) {
+      el.classList.toggle('spk-active', el.getAttribute('data-tab') === active);
+    });
+  }
+
   // ── Leistenhöhe messen → --spk-navh ──────────────────────────────
   function measureNavH() {
     const nav = document.getElementById('spk-bottomnav');
@@ -365,6 +386,7 @@
     animateCenterCapy();
     window.addEventListener('resize', measureNavH);
     window.addEventListener('orientationchange', measureNavH);
+    window.addEventListener('hashchange', updateActiveTab);
   }
 
   // Öffentliche API
