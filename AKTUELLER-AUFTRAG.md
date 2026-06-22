@@ -1,191 +1,113 @@
-# AKTUELLER-AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
-
-> **Teil 35 „Navigation umordnen + Gespräch-Opener + Sprichwort des Tages" GEBAUT + auf dev
-> (commit 5916ca6).** Alle drei Teile (A `nav.js` · B `chat.html` · C `dashboard.html`; `sprichwort.js`
-> lag schon bereit) erfüllt, alle Abnahme-A/B/C-Punkte headless verifiziert (6 nav.js-Seiten, hashchange,
-> Opener, Dashboard-Sprichwort). Vollständiger Bericht + ABNAHME-REST (Gerät) + EINE FRAGE AN DESIGN
-> (`#lektionen`-Anker als `display:contents`-Wrapper — Scroll-Verhalten am Gerät prüfen) im
-> SPIKIU-BUILD-LEDGER.md (oberste „Stand:"-Zeile). Nächstes laut Auftrag: Design-Welle Paket 3 „Baum".
->
-> Der ursprüngliche Auftragstext steht unten unverändert als Referenz.
-
----
-
-# (Referenz) Design-Welle: Navigation umordnen + Gespräch-Opener + Sprichwort des Tages (Teil 35)
+# AKTUELLER-AUFTRAG — Design-Welle Paket 3: Der lebende Baum (Teil 36)
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Baut auf Teil 34 „Untere Navigation" (live, commit e86eef5)
+Branch: dev · Baut auf Teil 35 (Nav/Opener/Sprichwort, commit 5916ca6)
 
-> Aus Leos Geräte-Screenshots. Die untere Navi EXISTIERT schon (Teil 34) — das hier ist
-> eine **Umordnung** drauf plus zwei ruhige Extras. Genehmigt im Prototyp
-> `prototyp-nav-ruhe.html`. **DREI unabhängig baubare + headless prüfbare Teile** — gern
-> einzeln committen.
+> Genehmigt im Prototyp `prototyp-baum-lebt.html`. Der statische, auf Mobile UNSICHTBARE Baum
+> (`.tree-svg-wrap{display:none}`) + der Fortschrittsbalken werden ersetzt durch EINEN lebenden
+> Baum, der mobil der Held der Startseite ist. **DREI Teile, DREI Dateien.**
 >
-> VIER Dateien: `nav.js` (A) · `chat.html` (B) · `dashboard.html` + **NEU** `sprichwort.js` (C).
-> `api/*` · Seele · `*-modus.md` · `vercel.json` · `capy-vivo.js` · `audio.js` · die 8 Reader-HTMLs
-> bleiben UNBERÜHRT. `sprichwort.js` ist ein statischer Root-Helfer wie `nav.js` (KEIN `vercel.json`-Eintrag).
-> Capy überall VOLLSTÄNDIG (2 Ohren / 4 Pfoten), nie trasquilado.
+> `baum.js` (A, NEU) · `dashboard.html` (B) · `chat.html` (C). `api/*` · Seele · `*-modus.md` ·
+> `vercel.json` · `nav.js` · `capy-vivo.js` · `audio.js` · `sprichwort.js` · Reader-HTMLs UNBERÜHRT.
+> `baum.js` ist ein statischer Root-Helfer wie `capy-vivo.js` (KEIN `vercel.json`-Eintrag).
+
+BEFUND (frisch aus dev): die `tree-hero` (dashboard.html ~Z.236-251) zeigt rechts ein STATISCHES
+SVG (auf Mobile `display:none`, Z.166), links eine Etappen-Pille „🌱 Spross — Stufe 2 von 4" (alter
+4-Stufen-Drift), 4 Stats (7/7/142/3h) und einen Fortschrittsbalken „Fortschritt zu 🌿 Ast 35%".
+Die Stats UND die 35% sind HARTKODIERTE PLATZHALTER — keine echten Daten. Darum darf die Blatt-Quelle
+NICHT auf ihnen aufbauen (Seele: nie erfinden). Kanonisch sind drei Etappen: Samen → Stamm → Krone.
 
 ---
 
-## TEIL A — Navigation umordnen · `nav.js`
+## TEIL A — NEU `baum.js` (liegt bereit — Inhalt wie geliefert übernehmen)
 
-Heute: Start · **Reader** · Gespräch · **Werkstatt** · Mein.
-Soll: **Start · Werkstatt · Gespräch · Lektionen · Mein.** Reader wandert IN die Werkstatt,
-Lektionen wird eigener Tab (raus aus „Mein"). Lese-Reihenfolge fürs Auge: stilles Arbeiten →
-Sprechen → Lektionen (die eigentliche Arbeit darf der Nutzer frei ordnen — die Leiste schlägt
-nur einen ruhigen Rhythmus vor).
+Statischer Root-Helfer wie `capy-vivo.js`/`sprichwort.js` (KEIN `vercel.json`-Eintrag), dependency-frei.
+- `window.spkBaum(container, { etappe:'samen|stamm|krone', blaetter:N })` rendert einen lebenden
+  SVG-Baum (viewBox 0 0 200 240) in DREI Etappen.
+- Die **Krone wiegt sich** sanft (CSS-Keyframe `spk-baum-sway`, 7 s, Wiege-Punkt am Stammfuß 100/212).
+- **Neue Blätter** (mehr als beim letzten Render derselben Etappe) **poppen rein** (`spk-baum-pop`),
+  gestaffelt; bei `prefers-reduced-motion` ist alles ruhig (kein Wiegen, kein Pop).
+- Blatt-Positionen via goldenem Winkel (gleichmäßig gestreut, stabil — kein Flackern), Obergrenze
+  je Etappe (samen 4 / stamm 10 / krone 20); Keimling trägt immer zwei Keimblätter.
+- CSS-Namensraum `spk-baum-*`, einmalig injiziert. `node --check baum.js` grün.
 
-**A1 · TABS-Array (Z.139-143) neu ordnen:**
-```
-{ id:'dashboard', labelKey:'navStart',     href:'dashboard.html' },
-{ id:'werkstatt', labelKey:'navWerkstatt', sheet:'werkstatt' },
-{ id:'talk',      labelKey:'navTalk',      href:'chat.html', center:true },
-{ id:'lektionen', labelKey:'navLektionen', href:'dashboard.html#lektionen' },
-{ id:'mein',      labelKey:'navMein',      sheet:'mein' }
-```
-- `books`-Tab RAUS (Reader wandert ins Werkstatt-Sheet, A2).
-- NEU `lektionen`-Tab → `dashboard.html#lektionen`.
-
-**A2 · Werkstatt-Sheet (`sheetItems`, Z.146-153):** Reader als ERSTEN Eintrag rein, Reihenfolge lesen→schreiben:
-```
-werkstatt: [
-  { id:'reader', href:'books.html' },           // NEU — Reader · Meine Bücher
-  { id:'read',   href:'taller.html' },           // Lesewerkstatt
-  { id:'write',  href:'schreibwerkstatt.html' }, // Schreibwerkstatt
-  { id:'gym',    disabled:true }                 // Wortschatz-Werkstatt (bald)
-]
-```
-WICHTIG: Reader (`books.html`) = „Meine Bücher" (Bibliothek) ≠ Lesewerkstatt (`taller.html`,
-Leseverstehen). Zwei getrennte Einträge.
-
-**A3 · Mein-Sheet (Z.155-160):** `lessons` RAUS (jetzt eigener Tab):
-```
-mein-items: [
-  { id:'path',    href:'dashboard.html#lernweg' },
-  { id:'verlauf', href:'sessions.html' }
-]
-if (hasGoal()) items.push({ id:'settings', disabled:true });   // wie heute
-```
-
-**A4 · Labels (Z.60-71, alle DREI Sprachblöcke):**
-- NEU `navLektionen`: de „Lektionen" · es „Lecciones" · en „Lessons".
-- NEU `reader` (Sheet-Item): de „Reader · Meine Bücher" · es „Reader · Mis libros" · en „Reader · My Books".
-- `gym` auf den kanonischen Namen umbenennen: de „Wortschatz-Werkstatt" · es „Taller de vocabulario" · en „Vocabulary Workshop". (id bleibt `gym`, disabled.)
-- `navReader` wird nicht mehr als Tab gebraucht — darf bleiben (schadet nicht).
-
-**A5 · Icons:**
-- NEU `TAB_ICON['lektionen']` (Karten/Lektion):
-  `<rect x="4" y="5" width="13" height="15" rx="2"/><path d="M8 3h9a2 2 0 012 2v13"/><path d="M8 10h6M8 14h6"/>`
-- NEU Sheet-Item-Icon `reader` = der Buch-Split (heutiger `TAB_ICON.books`-Pfad, Z.101):
-  `<path d="M3 5a2 2 0 012-2h6v18H5a2 2 0 01-2-2z"/><path d="M21 5a2 2 0 00-2-2h-6v18h6a2 2 0 002-2z"/>`
-
-**A6 · `getActive` (Z.83-95) + `mapAlias` (Z.79-80):**
-- `books`/`cap*` → jetzt **werkstatt** (Reader liegt in der Werkstatt), nicht mehr 'books'.
-- `dashboard` → wenn `location.hash === '#lektionen'` ⇒ **'lektionen'**, sonst 'dashboard'.
-  (Start UND Lektionen zeigen auf `dashboard.html`; nur der Hash unterscheidet den aktiven Tab.)
-- `schreibwerkstatt`/`taller` → werkstatt (unverändert) · `sessions` → mein (unverändert) · `chat` → talk.
-- Kleinkram: ein `hashchange`-Listener, der die aktive Tab-Markierung neu setzt (sonst springt die
-  Markierung nicht, wenn man auf `dashboard.html` bleibt und den Lektionen-Tab tippt). Leicht halten:
-  nur die `.active`-Klasse umhängen.
-
-**A7 · Anker in `dashboard.html`:** sicherstellen, dass `id="lektionen"` (und `id="lernweg"`)
-existiert/erreichbar ist, damit die Tabs/Sheet-Einträge dorthin scrollen. (Der Lektion-Redirect
-aus `chat.html` (Teil 32) nutzt `#lektionen` schon — Ziel muss real sein.)
-
-**ABNAHME A:**
-- [ ] 5 Tabs in neuer Reihenfolge (Start · Werkstatt · Gespräch · Lektionen · Mein) auf ALLEN 6 nav.js-Seiten.
-- [ ] Werkstatt-Sheet: Reader · Meine Bücher (->books.html, erster) · Lesewerkstatt (->taller.html) · Schreibwerkstatt · Wortschatz-Werkstatt (bald).
-- [ ] Lektionen-Tab → `dashboard.html#lektionen`; Tab aktiv bei `#lektionen`.
-- [ ] Mein-Sheet OHNE Lektionen (nur Lernweg · Verlauf · Einstellungen-bald-mit-Ziel).
-- [ ] `books.html`/`cap*` aktivieren den **Werkstatt**-Tab.
-- [ ] Mitte-Capy vollständig + belebt (`spkCapyAlive`), i18n DE/ES/EN korrekt.
-- [ ] `node --check nav.js` grün; jede der 6 Seiten einzeln headless geprüft (wie Teil 34).
+**ABNAHME A:** `node --check baum.js` grün; Helfer headless geladen → `window.spkBaum` definiert,
+rendert für samen/stamm/krone je ein `<svg class="spk-baum-svg">` mit `.spk-baum-crown`; mehr
+`blaetter` → mehr `.spk-baum-leaf`; zweiter Aufruf mit +1 Blatt → genau das neue trägt `.spk-new`.
 
 ---
 
-## TEIL B — Gespräch-Opener entrümpeln · `chat.html`
+## TEIL B — `dashboard.html` (tree-hero umbau)
 
-Befund (Leo): der Opener (Einstieg) ist überladen, ist aber NUR eine Wahl-Seite. Oben soll nur
-EINE Zeile „Wähle eine Aktivität" stehen, darunter die Wahl — KEIN Doppel-Gruß, KEINE Profil-Zeile,
-KEIN Schreibfeld, KEIN zweiter Capy. Schreibfeld + Chrome erscheinen erst, wenn das Gespräch beginnt.
+Die `tree-hero` wird zum ruhigen, mobil sichtbaren Baum-Helden: Etappen-Pille (echt) → Titel →
+LEBENDER BAUM → eine ruhige Zeile. **Kein Balken, keine Platzhalter-Stats.**
 
-**B1 · Opener-Zustand (solange die `gabelung` sichtbar ist, `showGabelung` Z.895):**
-- KEINE Begrüßungs-Blase rendern. Heute kommt der [EINSTIEG]-Gruß als Spikiu-Blase mit 🔊 +
-  Übersetzungs-Kästchen + Capy-Avatar (= der „Doppel-Gruß" + der kleine zweite Capy). Am Opener
-  stattdessen ganz oben EINE schlichte Zeile **„Wähle eine Aktivität"** (i18n de/es/en in der
-  Muttersprache; z. B. als `.gab-ask`-Überschrift im `gabelung`-Wrap, Z.903-907). [EINSTIEG]-Pfad
-  frisch ansehen — am saubersten den Gruß-Bubble am Opener gar nicht rendern.
-- Profil-Chip (`#pLangs`-Zeile, Z.213-217): ausgeblendet.
-- `.input-area` (Z.233): ausgeblendet.
+**B1 · Einbinden:** `<script src="baum.js" defer></script>` (neben `nav.js`/`sprichwort.js`).
 
-**B2 · Wahl getroffen → Chrome erscheint:**
-- `goFree()` (Z.919) und `pickTopic()`: `.input-area` wieder einblenden (frei = Eingabe; geführt =
-  sichtbar, aber wie heute via `lockComposer`/`guiding` gesperrt). Profil-Chip ab Gesprächsbeginn
-  wieder sichtbar (Default).
-- Ab dem ersten echten Zug läuft ALLES wie heute (Blasen, 🔊, Häppchen, Korrektur-Karte,
-  Antwort-Paletten, Lektion-Angebot Teil 32, Ausstiegs-Leiste). NICHTS davon ändern.
+**B2 · Container + Render:** das statische `<svg>` in `.tree-svg-wrap` durch einen leeren Container
+`<div id="baumWrap" class="tree-svg-wrap">` ersetzen; im vorhandenen `load`-Handler:
+- `user` aus `spikiu_user` defensiv lesen (wie heute).
+- `etappe = (user.profile && user.profile.etappe) || 'samen'`.
+- `blaetter = user.blaetter || 0`.
+- `window.spkBaum(document.getElementById('baumWrap'), { etappe:etappe, blaetter:blaetter })`.
 
-**B3 · Nicht anfassen:** der `turn()`-Zyklus und alle geführten/freien Mechaniken. Nur der
-OPENER-Zustand wird ruhiger.
+**B3 · Etappen-Pille (echt, kanonisch):** `.tree-level` (data-i18n `treeLevel` „Stufe 2 von 4") →
+Pille aus echtem `profile.etappe`, i18n nach Muttersprache:
+- de: 🌱 Samen · 🪵 Stamm · 🌳 Krone
+- es: 🌱 Semilla · 🪵 Tronco · 🌳 Copa
+- en: 🌱 Seed · 🪵 Trunk · 🌳 Crown
 
-**ABNAHME B:**
-- [ ] Opener zeigt nur „Wähle eine Aktivität" + 💬 plaudern + Themen + „Etwas anderes…".
-- [ ] Kein Gruß-Bubble, kein zweiter Capy, kein Profil-Chip, kein Schreibfeld am Opener.
-- [ ] Nach Wahl (plaudern/Thema) erscheint das Schreibfeld; laufendes Gespräch unverändert.
-- [ ] `node --check` grün; keine browser-belegten Variablennamen; Emphasis nur `<em>`.
+`#tree-title` („Dein Baum — <Sprache>", `DASH_TREEPREFIX`) BLEIBT. Darunter eine ruhige Zeile
+(i18n): de „Bei jeder Sitzung wächst ein Blatt." · es „Con cada sesión crece una hoja." ·
+en „Every session grows a new leaf."
+
+**B4 · Entfernen:**
+- Der Fortschrittsbalken (`.progress-label` + `.progress-bar`/`#pf`) — der Baum IST der Fortschritt.
+- Die Platzhalter-Stats (`.tree-stats` mit 7/7/142/3h) — erfundene Daten (Seele). Echte Stats =
+  eigenes späteres Daten-Paket; nicht hier mit Fake-Zahlen weiterführen.
+
+**B5 · Mobil sichtbar als Held:** `.tree-svg-wrap{display:none}` (Z.166) RAUS; `.tree-hero`-Grid
+(Z.41 `grid-template-columns:1fr 160px`) → eine zentrierte Spalte (Pille · Titel · Baum · Zeile),
+der Baum voll sichtbar auf ALLEN Viewports (er ist der Held). Baum-Breite angenehm groß, zentriert.
+
+**ABNAHME B:** Dashboard zeigt den lebenden Baum (Form nach echter `etappe`), Krone wiegt sich, auf
+Mobile SICHTBAR; kein Balken, keine Fake-Stats; Etappen-Pille = echte Etappe (kanonisch, i18n);
+„Bei jeder Sitzung wächst ein Blatt"; `node --check` grün.
 
 ---
 
-## TEIL C — Dashboard-Kopf = Sprichwort des Tages · `dashboard.html` + NEU `sprichwort.js`
+## TEIL C — `chat.html` (echter Sitzungs-Zähler `user.blaetter`)
 
-Befund (Leo): statt „🐻 Spikiu" oben (der Nutzer ist eh auf spikiu.com) eine Zeile, die TÄGLICH
-wechselt: ein Sprichwort in der ZIELSPRACHE, IMMER mit Übersetzung in der Muttersprache, Quelle
-OHNE Link (damit niemand auf die Idee kommt, Spikiu zu verlassen). Beta = nur kuratierte
-Sprichwörter (Option A); Live-Schlagzeilen (Option B) = Phase 2 (Supabase/Feed).
+Damit der Baum WIRKLICH wächst: ein Blatt pro beendetem Gespräch — ehrlich, kein Fake.
 
-**C1 · NEU `sprichwort.js`** (liegt bereit — Inhalt wie geliefert übernehmen; Leo kuratiert die
-Liste später): statischer Root-Helfer wie `nav.js` (KEIN `vercel.json`-Eintrag), exponiert
-`window.spikiuSprichwort(zielsprache, muttersprache)` → `{ text, translation, src }` (`text` =
-Zielsprache, `translation` = Muttersprache, IMMER gesetzt). Kuratierte Liste pro Zielsprache
-(es/de/en/el) mit Übersetzung nach de/es/en + Quelle; tägliche Rotation über Kalendertag; rein
-lokal. `node --check` grün.
+- In `offerLesson()` (Z.621 — das EINE Gesprächsende-Tor seit Teil 32, das sowohl `terminar()` als
+  auch der freie „Gespräch beenden"-Knopf erreichen): `user.blaetter = (user.blaetter||0) + 1`
+  EINMAL pro Gesprächsbogen. `spikiu_user` defensiv lesen/schreiben (Muster wie Z.283/696).
+- Doppel-Zählen verhindern: Modul-Flag `sessionGezaehlt` — in `offerLesson()` nur zählen, wenn
+  `!sessionGezaehlt`, dann `true`; bei NEUEM Gespräch zurück auf `false` (`goFree()` Z.922 /
+  `pickTopic()` / `startOpener()`).
+- Die Gesprächs-/`turn()`-Logik, das Lektion-Angebot (Teil 32), Häppchen, Korrektur, Paletten
+  NICHT anfassen — nur der eine Zähler kommt dazu. Keine browser-belegten Variablennamen.
 
-**C2 · `dashboard.html`:**
-- `<script src="sprichwort.js" defer></script>` einbinden (neben `nav.js`, Z.1254).
-- Ganz oben (VOR `.topbar`/`.greeting`, Z.178) eine schlanke Sprichwort-Kopfzeile rendern:
-  Sprichwort (Zielsprache, Serif kursiv) + Übersetzung (Muttersprache, gedämpft) + „— Quelle"
-  (ohne Link). Ruhig, Tokens der Seite.
-- Profil → Codes: das Dashboard liest heute `_target`/`_native` als Klarnamen (Z.1182-1196,
-  'Deutsch'/'Español'/'English'). In Codes mappen (de/es/en/el bzw. de/es/en) und
-  `spikiuSprichwort(ziel, mutter)` aufrufen; Übersetzung IMMER anzeigen.
-- Die von `nav.js` auf dem Dashboard injizierte Marken-Topbar (`.spk-topbar` mit „🐻 Spikiu")
-  ausblenden, damit nicht Logo + Sprichwort doppelt steht — am einfachsten in `dashboard.html`
-  per CSS `.spk-topbar{ display:none }` (NUR dashboard.html; books/sessions behalten ihre Topbar).
-  **`nav.js` dafür NICHT anfassen.**
-
-**ABNAHME C:**
-- [ ] Dashboard-Kopf zeigt das Sprichwort des Tages in der Zielsprache + Übersetzung in der
-      Muttersprache + Quelle ohne Link.
-- [ ] Kein „🐻 Spikiu"-Logo mehr oben auf dem Dashboard (andere Seiten unverändert).
-- [ ] Rotiert täglich (Kalendertag).
-- [ ] `node --check` grün (sprichwort.js + dashboard-Inline).
+**ABNAHME C:** nach „Gespräch beenden"/Szenenende wird `user.blaetter` GENAU um 1 erhöht (nicht
+mehrfach, auch wenn das Angebot mehrmals erscheint); neues Gespräch setzt den Flag zurück; auf dem
+Dashboard trägt der Baum danach ein Blatt mehr; `node --check` grün.
 
 ---
 
 ## AUSDRÜCKLICH NICHT
-- `api/*` · Seele · `*-modus.md` · `vercel.json` · `capy-vivo.js` · `audio.js` · Reader-HTMLs
-  nicht anfassen. Kein Stripe/Supabase.
-- Das laufende Gespräch + die Lektion-Mechanik (Teil 32) NICHT verändern (nur der Opener-Zustand).
-- `nav.js` für Teil C NICHT anfassen (Topbar-Ausblendung passiert in dashboard.html per CSS).
-- Capy bei jedem Tab/Capy VOLLSTÄNDIG (2 Ohren/4 Pfoten), nie trasquilado.
+- `api/*` · Seele · `*-modus.md` · `vercel.json` · `nav.js` · `capy-vivo.js` · `audio.js` ·
+  `sprichwort.js` · Reader-HTMLs nicht anfassen. Kein Stripe/Supabase.
+- Die Lektion-Mechanik (Teil 32) + den Gesprächs-/Opener-Fluss (Teil 35) NICHT verändern — Teil C
+  ist NUR der Zähler.
+- Capy (falls irgendwo) VOLLSTÄNDIG, nie trasquilado.
 
-## REIHENFOLGE / HINWEIS
-A/B/C sind unabhängig. Empfehlung: **A zuerst** (global, alle 6 Seiten einzeln headless prüfen wie
-Teil 34), dann B, dann C — gern getrennt committen.
+## REIHENFOLGE
+A (Helfer) zuerst, dann B (Dashboard-Held), dann C (Zähler). A+B sind der sichtbare Kern; C macht
+das Wachsen echt.
 
 ## DANACH
-Design-Welle Paket 3 „Baum" (`prototyp-baum-lebt.html`) · Memoria/Voz/Reel-tactil ·
-Kleinkram-Paket 2 (Genus-Begrüßung Dashboard + Lesebegleiter-intro). Offen aus Teil 34:
-`learnraum.html` (retten/retire?) · echte Einstellungen-Seite. Backlog: Audio Phase B/C ·
-Assessment-als-Gespräch · Legal-Sequenz · Supabase + ElevenLabs = Phase 2.
+Design-Welle Paket 4/5/6: Memoria que se siente · Voz primero · Reel táctil. Kleinkram-Paket 2
+(Genus-Begrüßung Dashboard + Lesebegleiter-intro). Offen: echte Stats fürs Dashboard (Daten-Paket) ·
+`learnraum.html` retten/retire · echte Einstellungen-Seite · `#lektionen`-Anker-Scroll am Gerät
+prüfen (Teil 35 FRAGE). Backlog: Audio Phase B/C · Legal-Sequenz · Supabase + ElevenLabs = Phase 2.
