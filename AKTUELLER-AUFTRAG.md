@@ -1,4 +1,17 @@
-# AKTUELLER-AUFTRAG — Design-Welle: Navigation umordnen + Gespräch-Opener + Sprichwort des Tages (Teil 35)
+# AKTUELLER-AUFTRAG — erledigt am 22.06.2026 · kein offener Auftrag
+
+> **Teil 35 „Navigation umordnen + Gespräch-Opener + Sprichwort des Tages" GEBAUT + auf dev
+> (commit 5916ca6).** Alle drei Teile (A `nav.js` · B `chat.html` · C `dashboard.html`; `sprichwort.js`
+> lag schon bereit) erfüllt, alle Abnahme-A/B/C-Punkte headless verifiziert (6 nav.js-Seiten, hashchange,
+> Opener, Dashboard-Sprichwort). Vollständiger Bericht + ABNAHME-REST (Gerät) + EINE FRAGE AN DESIGN
+> (`#lektionen`-Anker als `display:contents`-Wrapper — Scroll-Verhalten am Gerät prüfen) im
+> SPIKIU-BUILD-LEDGER.md (oberste „Stand:"-Zeile). Nächstes laut Auftrag: Design-Welle Paket 3 „Baum".
+>
+> Der ursprüngliche Auftragstext steht unten unverändert als Referenz.
+
+---
+
+# (Referenz) Design-Welle: Navigation umordnen + Gespräch-Opener + Sprichwort des Tages (Teil 35)
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Baut auf Teil 34 „Untere Navigation" (live, commit e86eef5)
