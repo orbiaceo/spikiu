@@ -38,16 +38,18 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 .notification-icon { font-size:1.1rem;flex-shrink:0;margin-top:0.1rem; }
 .notification-text { font-size:0.85rem;color:var(--accent3);line-height:1.5; }
 .notification-text strong { font-weight:600; }
-.tree-hero { background:var(--white);border:1.5px solid var(--faint);border-radius:20px;padding:2rem;margin-bottom:1.5rem;display:grid;grid-template-columns:1fr 160px;gap:2rem;align-items:center; }
+.tree-hero { background:var(--white);border:1.5px solid var(--faint);border-radius:20px;padding:2rem;margin-bottom:1.5rem;display:flex;justify-content:center;text-align:center; }
 .tree-level { display:inline-flex;align-items:center;gap:0.4rem;background:var(--accent2);color:var(--accent);font-size:0.78rem;font-weight:700;padding:0.25rem 0.8rem;border-radius:100px;margin-bottom:0.8rem; }
-.tree-info h2 { font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:0.8rem; }
+.tree-info { max-width:340px; }
+.tree-info h2 { font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:0.6rem; }
+.tree-leafline { font-size:0.85rem;color:var(--mid);margin:0.4rem 0 0; }
 .tree-stats { display:flex;gap:1.5rem;margin-bottom:1.2rem;flex-wrap:wrap; }
 .stat-num { font-family:'Lora',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1; }
 .stat-label { font-size:0.72rem;color:var(--mid);margin-top:0.2rem; }
 .progress-label { display:flex;justify-content:space-between;font-size:0.75rem;color:var(--mid);margin-bottom:0.4rem; }
 .progress-bar { height:6px;background:var(--faint);border-radius:100px;overflow:hidden; }
 .progress-fill { height:100%;background:linear-gradient(90deg,var(--accent),#5aa080);border-radius:100px;width:0;transition:width 1s ease; }
-.tree-svg-wrap { display:flex;justify-content:center; }
+.tree-svg-wrap { display:block;max-width:230px;margin:0.4rem auto 0.2rem; }
 .grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem; }
 .card { background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:1.5rem;transition:border-color 0.2s; }
 .card:hover { border-color:var(--warm); }
@@ -162,8 +164,6 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
   }
   .sidebar.open { transform: translateX(0); }
   .main { padding:1.5rem 1.1rem; }
-  .tree-hero { grid-template-columns:1fr; }
-  .tree-svg-wrap { display:none; }
   .grid-2 { grid-template-columns:1fr; }
 }
 </style>
@@ -235,33 +235,10 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
   <!-- TREE HERO -->
   <div class="tree-hero">
     <div class="tree-info">
-      <div class="tree-level" data-i18n="treeLevel">🌱 Sprout — Level 2 of 4</div>
+      <div class="tree-level" id="tree-stage">🌱 Seed</div>
       <h2 id="tree-title">Your Growth Tree — Spanish</h2>
-      <div class="tree-stats">
-        <div class="stat"><div class="stat-num">7</div><div class="stat-label" data-i18n="statConv">conversations</div></div>
-        <div class="stat"><div class="stat-num">7</div><div class="stat-label" data-i18n="statLess">lessons</div></div>
-        <div class="stat"><div class="stat-num">142</div><div class="stat-label" data-i18n="statWords">words learned</div></div>
-        <div class="stat"><div class="stat-num">3h</div><div class="stat-label" data-i18n="statTime">total time</div></div>
-      </div>
-      <div class="progress-label"><span data-i18n="progressTo">Progress to 🌿 Branch</span><span>35%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
-    </div>
-    <div class="tree-svg-wrap">
-      <svg viewBox="0 0 160 220" width="160" height="220">
-        <ellipse cx="80" cy="210" rx="45" ry="5" fill="#d4cdc6" opacity="0.5"/>
-        <path d="M72 205 q-8 3-14 10" stroke="#8b5e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M80 207 q0 5 0 12" stroke="#8b5e3c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M88 205 q8 3 14 10" stroke="#8b5e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M72 207 q-1-25 0-55 q2-22 8-42" stroke="#8b5e3c" stroke-width="8" fill="none" stroke-linecap="round"/>
-        <path d="M88 207 q1-25 0-55 q-2-22-8-42" stroke="#6b4226" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <ellipse cx="80" cy="120" rx="32" ry="26" fill="#3d8062"/>
-        <ellipse cx="62" cy="130" rx="22" ry="18" fill="#2d6a4f"/>
-        <ellipse cx="98" cy="130" rx="22" ry="18" fill="#2d6a4f"/>
-        <ellipse cx="80" cy="110" rx="26" ry="20" fill="#4a9070"/>
-        <path d="M74 150 q-14-10-26-16" stroke="#6b4226" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
-        <path d="M86 150 q14-10 26-16" stroke="#6b4226" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
-        <ellipse cx="80" cy="200" rx="7" ry="4" fill="#c9956a"/>
-      </svg>
+      <div id="baumWrap" class="tree-svg-wrap"></div>
+      <p class="tree-leafline" data-i18n="treeLeafLine">Every session grows a new leaf.</p>
     </div>
   </div>
 
@@ -1152,7 +1129,7 @@ var DASH_I18N = {
    cardRoadmap:'Dein Lernweg', cardLessons:'Meine Lektionen', cardBooks:'Meine Bücher', cardSessions:'Live-Begegnungen',
    seeAll:'Alle ansehen →', bookBtn:'Buchen →', confirmed:'Bestätigt', bookAnother:'+ Weitere Begegnung buchen',
    statConv:'Gespräche', statLess:'Lektionen', statWords:'Wörter gelernt', statTime:'Gesamtzeit',
-   progressTo:'Fortschritt zu 🌿 Ast', treeLevel:'🌱 Spross — Stufe 2 von 4',
+   progressTo:'Fortschritt zu 🌿 Ast', treeLevel:'🌱 Spross — Stufe 2 von 4', treeLeafLine:'Bei jeder Sitzung wächst ein Blatt.',
    step1Name:'Assessment & erste Wörter', step1Desc:'Abgeschlossen · Woche 1',
    step2Name:'Alltagsgespräche', step2Desc:'In Arbeit — Begrüßungen, Alltagssituationen',
    step3Name:'Arbeit & Beruf', step3Desc:'Meetings, E-Mails, Kundengespräche',
@@ -1164,7 +1141,7 @@ var DASH_I18N = {
    cardRoadmap:'Tu ruta de aprendizaje', cardLessons:'Mis lecciones', cardBooks:'Mis libros', cardSessions:'Sesiones en vivo',
    seeAll:'Ver todo →', bookBtn:'Reservar →', confirmed:'Confirmado', bookAnother:'+ Reservar otra sesión',
    statConv:'conversaciones', statLess:'lecciones', statWords:'palabras aprendidas', statTime:'tiempo total',
-   progressTo:'Progreso hacia 🌿 Rama', treeLevel:'🌱 Brote — Nivel 2 de 4',
+   progressTo:'Progreso hacia 🌿 Rama', treeLevel:'🌱 Brote — Nivel 2 de 4', treeLeafLine:'Con cada sesión crece una hoja.',
    step1Name:'Evaluación y primeras palabras', step1Desc:'Completado · Semana 1',
    step2Name:'Conversaciones cotidianas', step2Desc:'En curso — saludos, situaciones diarias',
    step3Name:'Trabajo y profesión', step3Desc:'Reuniones, correos, llamadas con clientes',
@@ -1176,7 +1153,7 @@ var DASH_I18N = {
    cardRoadmap:'Your Language Roadmap', cardLessons:'My Lessons', cardBooks:'My Books', cardSessions:'Live Sessions',
    seeAll:'See all →', bookBtn:'Book →', confirmed:'Confirmed', bookAnother:'+ Book another session',
    statConv:'conversations', statLess:'lessons', statWords:'words learned', statTime:'total time',
-   progressTo:'Progress to 🌿 Branch', treeLevel:'🌱 Sprout — Level 2 of 4',
+   progressTo:'Progress to 🌿 Branch', treeLevel:'🌱 Sprout — Level 2 of 4', treeLeafLine:'Every session grows a new leaf.',
    step1Name:'Assessment & First Words', step1Desc:'Completed · Week 1',
    step2Name:'Everyday Conversations', step2Desc:'In progress — greetings, daily situations',
    step3Name:'Work & Professional', step3Desc:'Meetings, emails, client calls',
@@ -1278,10 +1255,37 @@ function renderSprichwort() {
   if (head) head.style.display = 'block';
 }
 
+// ── Der lebende Baum (Teil 36) ────────────────────────
+// Etappen-Pille (kanonisch, i18n nach Muttersprache) + lebender Baum aus
+// echter profile.etappe + user.blaetter. baum.js ist ein statischer Root-Helfer.
+var DASH_STAGE = {
+  'Deutsch': { samen:'🌱 Samen',   stamm:'🪵 Stamm',  krone:'🌳 Krone' },
+  'Español': { samen:'🌱 Semilla', stamm:'🪵 Tronco', krone:'🌳 Copa'  },
+  'English': { samen:'🌱 Seed',    stamm:'🪵 Trunk',  krone:'🌳 Crown' }
+};
+function renderBaum() {
+  if (typeof window.spkBaum !== 'function') return;
+  var wrap = document.getElementById('baumWrap');
+  if (!wrap) return;
+  var etappe = 'samen', blaetter = 0, native = 'Deutsch';
+  try {
+    var u = JSON.parse(localStorage.getItem('spikiu_user') || 'null');
+    if (u) {
+      etappe   = (u.profile && u.profile.etappe) || 'samen';
+      blaetter = u.blaetter || 0;
+      native   = normLang(u.nativeLang) || 'Deutsch';
+    }
+  } catch (e) {}
+  if (!DASH_STAGE['Deutsch'][etappe]) etappe = 'samen';
+  window.spkBaum(wrap, { etappe: etappe, blaetter: blaetter });
+  var pill = document.getElementById('tree-stage');
+  if (pill) pill.textContent = (DASH_STAGE[native] || DASH_STAGE['English'])[etappe];
+}
+
 window.addEventListener('load', () => {
   loadUser();
+  renderBaum();
   renderSprichwort();
-  setTimeout(() => { document.getElementById('pf').style.width = '35%'; }, 300);
 });
 
 // Close modal on Escape
@@ -1297,6 +1301,7 @@ document.addEventListener('keydown', (e) => {
   window.spkSpeak = speak;
   window.spkWarm  = warm;
 </script>
+<script src="baum.js" defer></script>
 <script src="sprichwort.js" defer></script>
 <script src="nav.js" defer></script>
 </body>

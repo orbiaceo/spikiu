@@ -321,6 +321,7 @@ var busy = false;
 var lastTurnOk = false;   // hat die letzte Runde sauber gerendert? (steuert die Opener-Gabelung)
 var guiding = false;      // geführter Häppchen-Schritt läuft → Eingabe gesperrt (Paket 2)
 var gefuehrt = false;     // geführtes Thema-Rollenspiel? (Thema gewählt) → Antwort-Chips erlaubt. „Einfach plaudern"/frei → nie.
+var sessionGezaehlt = false;   // Teil 36: pro Gesprächsbogen wächst GENAU EIN Blatt (user.blaetter); neues Gespräch setzt zurück.
 var voiceReady = false;   // Stimme vorgewärmt (Teil B)? steuert Spinner vs. Puls am 🔊
 var TOPIC_LABEL = null;   // gewähltes Thema, wartet auf den P1-Seed-Zug nach den Häppchen
 var hvIndex = 0;          // aktuelles Hörverständnis-Item
@@ -620,6 +621,16 @@ function buildConvoForLesson(){
 // (terminar) UND freiem Gespräch (Beenden-Knopf) erreichbar.
 function offerLesson(){
   if (document.getElementById('lessonOffer')) return;
+  // Teil 36: ehrlicher Sitzungs-Zähler — genau EIN Blatt pro Gesprächsbogen,
+  // egal wie oft das Angebot erscheint (Ja/Nein/erneut beenden). spikiu_user defensiv.
+  if (!sessionGezaehlt) {
+    sessionGezaehlt = true;
+    try {
+      var _u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
+      _u.blaetter = (_u.blaetter || 0) + 1;
+      localStorage.setItem('spikiu_user', JSON.stringify(_u));
+    } catch(e){}
+  }
   setExitVisible(false);
   freeExitBar.hidden = true;
   removeEndMenu(); removeOptionen();
@@ -919,7 +930,7 @@ function showGabelung(){
   });
 }
 
-function goFree(){ gefuehrt = false; setOpenerChrome(false); setExitVisible(false); removeGabelung(); updateFreeExit(); input.focus(); }   // freier Flur — Schreibfeld + Profil-Chip wieder ein; kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
+function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(false); setExitVisible(false); removeGabelung(); updateFreeExit(); input.focus(); }   // freier Flur — Schreibfeld + Profil-Chip wieder ein; kein neues Verhalten, NIE Antwort-Chips/Ausstiegs-Leiste
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
@@ -930,6 +941,7 @@ function pickTopic(label){
   removeEndMenu();                       // falls ein altes Menü noch offen war
   removeOptionen();
   korrekturen = [];                      // neue Szene → frische Korrektur-Sammlung
+  sessionGezaehlt = false;               // Teil 36: neuer Gesprächsbogen → Blatt-Zähler zurück
   gefuehrt = true;                       // geführtes Thema-Rollenspiel → Antwort-Chips erlaubt
   TOPIC_LABEL = label;
   addMessage('user', label);             // die Wahl als User-Bubble (wie P1, nur ohne Seed-Floskel)
@@ -1211,6 +1223,7 @@ function setOpenerChrome(hidden){
   if (ia) ia.style.display = hidden ? 'none' : '';
 }
 function startOpener(){
+  sessionGezaehlt = false;      // Teil 36: frischer Eintritt → Blatt-Zähler zurück
   setOpenerChrome(true);        // Profil-Chip + Schreibfeld aus, solange die Gabelung steht
   showGabelung();
 }
