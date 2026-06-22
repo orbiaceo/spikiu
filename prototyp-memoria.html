@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Memoria que se siente (Prototyp)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;--faint:#e8e4df;--warm:#d4cdc6;--accent:#2d6a4f;--accent2:#e8f2ed;--accent3:#1a4a38;--gold:#a07830}
+body{background:#efece6;color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:44px 0 0}
+.proto-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#1a4a38;color:#fff;padding:.5rem 1rem;text-align:center;font-size:.72rem;line-height:1.4;border-bottom:2px solid #2d6a4f}
+.proto-banner strong{color:#a8d5be}.proto-banner em{color:#c9956a;font-style:normal;font-weight:600}
+.phone{position:relative;width:100%;max-width:400px;height:calc(100vh - 64px);max-height:840px;margin:12px auto;background:var(--off);border-radius:30px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column}
+.body{flex:1;overflow-y:auto;padding:1.4rem 1.1rem 1.2rem}.body::-webkit-scrollbar{width:0}
+.hello{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;margin-bottom:1.1rem}
+.cap{width:84px;height:84px}.cap #c{transform-box:fill-box;transform-origin:center;animation:br 4.6s ease-in-out infinite}
+@keyframes br{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.02)}}
+.eye{transform-box:fill-box;transform-origin:center}.blink .eye{transform:scaleY(.1)}
+.hello h1{font-family:'Lora',serif;font-size:1.4rem;font-weight:700}
+.hello p{color:var(--mid);font-size:.9rem;line-height:1.45;max-width:90%}
+.resume{background:var(--accent);color:#fff;border:none;border-radius:18px;padding:1rem;width:100%;text-align:left;cursor:pointer;margin-bottom:1.1rem;box-shadow:0 8px 20px rgba(45,106,79,.25)}
+.resume .k{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;opacity:.8;font-weight:700}
+.resume .v{font-family:'Lora',serif;font-size:1.05rem;margin-top:.15rem}
+.resume .go{font-size:.78rem;opacity:.85;margin-top:.3rem}
+.sectitle{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin:.2rem 0 .5rem}
+.mcard{background:#fff;border:1px solid var(--faint);border-radius:16px;padding:.85rem .95rem;margin-bottom:.6rem;display:flex;gap:.7rem;align-items:flex-start}
+.mcard .ic{font-size:1.3rem;flex-shrink:0}
+.mcard h3{font-family:'Lora',serif;font-size:.98rem;margin-bottom:.1rem}
+.mcard p{font-size:.8rem;color:var(--mid);line-height:1.4}
+.mcard.win{background:var(--accent2);border-color:#cfe6da}
+.mcard.win h3{color:var(--accent3)}
+.mcard.wobble{cursor:pointer}.mcard.wobble:hover{border-color:var(--gold)}
+.rel{display:flex;gap:.6rem;margin-top:.4rem}
+.relbox{flex:1;background:#fff;border:1px solid var(--faint);border-radius:14px;padding:.7rem;text-align:center}
+.relbox .n{font-family:'Lora',serif;font-size:1.4rem;font-weight:700;color:var(--accent)}
+.relbox .l{font-size:.66rem;color:var(--mid);margin-top:.1rem}
+.note{font-size:.68rem;color:var(--warm);text-align:center;margin-top:.9rem;font-style:italic;font-family:'Lora',serif}
+@media(max-width:430px){body{padding-top:50px}.phone{max-width:100%;height:calc(100vh - 58px);border-radius:0;margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="proto-banner"><strong>🧠 PROTOTYP — Memoria que se siente.</strong> Spikiu te recibe sabiendo dónde quedaron. <em>No un contador — un amigo que se acuerda.</em></div>
+<div class="phone"><div class="body">
+  <div class="hello">
+    <svg class="cap" id="cap" viewBox="0 0 80 80" fill="none"><g id="c">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <ellipse class="eye" cx="33" cy="24" rx="3.5" ry="3.5" fill="#3d2b1f"/><ellipse class="eye" cx="47" cy="24" rx="3.5" ry="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" fill="none"/></g></svg>
+    <h1>¡Hola, Leo! Qué bueno verte 🌱</h1>
+    <p>La última vez nos quedamos a medias en el café. ¿Lo cerramos?</p>
+  </div>
+
+  <button class="resume" onclick="this.querySelector('.go').textContent='🐾 (echt: zurück in die Café-Szene)'">
+    <div class="k">Weitermachen</div>
+    <div class="v">☕ Im Café — Bestellung aufgeben</div>
+    <div class="go">Da, wo wir aufgehört haben →</div>
+  </button>
+
+  <div class="sectitle">Seit dem letzten Mal</div>
+  <div class="mcard win"><span class="ic">🎉</span><div><h3>Das saß endlich!</h3><p>„La cuenta, por favor." — vor zwei Tagen noch „pagar". Jetzt sitzt es.</p></div></div>
+  <div class="mcard wobble" onclick="this.querySelector('p').innerHTML='Dann nehmen wir das heute kurz mit. 👍'"><span class="ic">🌀</span><div><h3>Wackelt noch ein bisschen</h3><p>„wegen" + Genitiv. Heute kurz auffrischen?</p></div></div>
+
+  <div class="sectitle">Wir zwei</div>
+  <div class="rel">
+    <div class="relbox"><div class="n">12</div><div class="l">Gespräche</div></div>
+    <div class="relbox"><div class="n">47</div><div class="l">deine Wörter</div></div>
+    <div class="relbox"><div class="n">9</div><div class="l">Tage dabei</div></div>
+  </div>
+  <div class="note">Kein Streak, kein Druck — nur, was wir zusammen schon geschafft haben.</div>
+</div></div>
+<script>
+var cap=document.getElementById('cap');
+function blink(){cap.classList.add('blink');setTimeout(function(){cap.classList.remove('blink')},150);setTimeout(blink,2400+Math.random()*3500)}
+setTimeout(blink,1600);
+</script>
+</body>
+</html>

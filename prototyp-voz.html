@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Voz primero (Prototyp)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;--faint:#e8e4df;--warm:#d4cdc6;--accent:#2d6a4f;--accent2:#e8f2ed;--accent3:#1a4a38;--gold:#a07830}
+body{background:#efece6;color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:44px 0 0}
+.proto-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#1a4a38;color:#fff;padding:.5rem 1rem;text-align:center;font-size:.72rem;line-height:1.4;border-bottom:2px solid #2d6a4f}
+.proto-banner strong{color:#a8d5be}.proto-banner em{color:#c9956a;font-style:normal;font-weight:600}
+.phone{position:relative;width:100%;max-width:400px;height:calc(100vh - 64px);max-height:840px;margin:12px auto;background:radial-gradient(120% 90% at 50% 18%,#eef5f0,var(--off));border-radius:30px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.3rem;padding:1.4rem}
+.aura{position:relative;width:180px;height:180px;display:flex;align-items:center;justify-content:center}
+.aura::before,.aura::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);opacity:0}
+.speaking .aura::before{animation:ring 1.6s ease-out infinite}
+.speaking .aura::after{animation:ring 1.6s ease-out .8s infinite}
+@keyframes ring{0%{transform:scale(.7);opacity:.5}100%{transform:scale(1.25);opacity:0}}
+.cap{width:150px;height:150px;z-index:2}
+.cap #c{transform-box:fill-box;transform-origin:center;animation:br 4.5s ease-in-out infinite}
+@keyframes br{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.015)}}
+.eye{transform-box:fill-box;transform-origin:center}.blink .eye{transform:scaleY(.1)}
+#mouth{transform-box:fill-box;transform-origin:center}.speaking #mouth{animation:talk .4s ease-in-out infinite}
+@keyframes talk{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2.1) scaleX(1.1)}}
+.line{font-family:'Lora',serif;font-size:1.35rem;text-align:center;line-height:1.35;min-height:2.4em}
+.sub{color:var(--mid);font-style:italic;font-size:.85rem;text-align:center;margin-top:-.6rem}
+.controls{display:flex;flex-direction:column;gap:.6rem;width:100%;max-width:280px}
+.big{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--accent);color:#fff;border:none;border-radius:100px;padding:.9rem;font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer}
+.big:hover{background:var(--accent3)}.big svg{width:20px;height:20px}
+.mic{display:flex;align-items:center;justify-content:center;gap:.5rem;background:#fff;color:var(--mid);border:1.5px dashed var(--warm);border-radius:100px;padding:.75rem;font-family:inherit;font-size:.84rem;font-weight:600;cursor:not-allowed}
+.mic small{font-size:.62rem;color:var(--gold);font-weight:700}
+@media(max-width:430px){body{padding-top:50px}.phone{max-width:100%;height:calc(100vh - 58px);border-radius:0;margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="proto-banner"><strong>🗣️ PROTOTYP — Voz primero.</strong> Spikiu te saluda hablando al entrar. <em>Oír al compañero = vivo.</em></div>
+<div class="phone" id="phone">
+  <div class="aura">
+    <svg class="cap" id="cap" viewBox="0 0 80 80" fill="none"><g id="c">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <ellipse class="eye" cx="33" cy="24" rx="3.5" ry="3.5" fill="#3d2b1f"/><ellipse class="eye" cx="47" cy="24" rx="3.5" ry="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path id="mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" fill="none"/></g></svg>
+  </div>
+  <div>
+    <div class="line" id="line">…</div>
+    <div class="sub" id="sub">Tippe, um Spikiu zu hören</div>
+  </div>
+  <div class="controls">
+    <button class="big" onclick="hola()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg> Spikiu begrüßt dich</button>
+    <button class="mic" title="Fase 2">🎙️ Háblale tú &nbsp;<small>FASE 2 · Whisper</small></button>
+  </div>
+</div>
+<script>
+var phone=document.getElementById('phone'), cap=document.getElementById('cap'), line=document.getElementById('line'), sub=document.getElementById('sub');
+var GREET="¡Hola, Leo! Qué bueno verte. ¿Seguimos con el café?";
+function blink(){cap.classList.add('blink');setTimeout(function(){cap.classList.remove('blink')},150);setTimeout(blink,2600+Math.random()*3200)}
+setTimeout(blink,1500);
+function hola(){
+  line.textContent=GREET; sub.textContent='spricht…';
+  try{ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(GREET); u.lang='es-ES'; u.rate=.97;
+    var v=(window.speechSynthesis.getVoices()||[]).find(function(x){return x.lang&&x.lang.indexOf('es')===0}); if(v)u.voice=v;
+    phone.classList.add('speaking');
+    u.onend=function(){ phone.classList.remove('speaking'); sub.textContent='(im echten Spikiu: seine eigene Piper-Stimme)'; };
+    window.speechSynthesis.speak(u);
+  }catch(e){ phone.classList.add('speaking'); setTimeout(function(){phone.classList.remove('speaking')},2200); }
+}
+if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=function(){}}
+</script>
+</body>
+</html>

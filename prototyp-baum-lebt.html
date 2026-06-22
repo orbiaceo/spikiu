@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Der lebende Baum (Prototyp)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;--faint:#e8e4df;--accent:#2d6a4f;--accent2:#e8f2ed;--accent3:#1a4a38;--gold:#a07830;--bark:#8b5e3c;--leaf:#4a9d6f;--leaf2:#6bbf8f}
+body{background:#efece6;color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:44px 0 0}
+.proto-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#1a4a38;color:#fff;padding:.5rem 1rem;text-align:center;font-size:.72rem;line-height:1.4;border-bottom:2px solid #2d6a4f}
+.proto-banner strong{color:#a8d5be}.proto-banner em{color:#c9956a;font-style:normal;font-weight:600}
+.phone{position:relative;width:100%;max-width:400px;height:calc(100vh - 64px);max-height:840px;margin:12px auto;background:linear-gradient(#f3f6f1,#faf9f7);border-radius:30px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column}
+.bar{padding:.85rem 1rem;border-bottom:1px solid var(--faint);background:#fff;display:flex;align-items:center;gap:.5rem}
+.bar .t{font-family:'Lora',serif;font-weight:700}.bar .t em{color:var(--accent);font-style:italic}
+.bar .stage-pill{margin-left:auto;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent2);border:1px solid #cfe6da;padding:.25rem .7rem;border-radius:100px}
+.scene{flex:1;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+svg.tree{width:100%;height:100%}
+.ground{position:absolute;bottom:0;left:0;right:0;height:34%;background:radial-gradient(120% 80% at 50% 100%,#e9efe5,transparent)}
+.leaf{transform-box:fill-box;transform-origin:center;opacity:0;transform:scale(0)}
+.leaf.show{animation:sprout .6s cubic-bezier(.34,1.5,.5,1) forwards}
+@keyframes sprout{to{opacity:1;transform:scale(1)}}
+#crown{transform-box:fill-box;transform-origin:bottom center;animation:sway 6s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}
+.trunk-grp{transition:transform 1s cubic-bezier(.34,1.2,.5,1)}
+.caption{position:absolute;top:1rem;left:0;right:0;text-align:center;pointer-events:none}
+.caption .big{font-family:'Lora',serif;font-size:1.5rem;font-weight:700}
+.caption .small{color:var(--mid);font-size:.82rem}
+.panel{background:#fff;border-top:1px solid var(--faint);padding:1rem;display:flex;flex-direction:column;gap:.7rem}
+.bardle{height:7px;background:var(--faint);border-radius:100px;overflow:hidden}
+.bardle > i{display:block;height:100%;width:8%;background:linear-gradient(90deg,var(--leaf),var(--accent));border-radius:100px;transition:width .8s cubic-bezier(.34,1.2,.5,1)}
+.row{display:flex;gap:.5rem}
+.btn{flex:1;background:var(--accent);color:#fff;border:none;border-radius:100px;padding:.75rem;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--accent3)}.btn.ghost{flex:0 0 auto;background:#fff;color:var(--accent);border:1.5px solid var(--accent);padding:.75rem 1rem}
+.count{text-align:center;font-size:.78rem;color:var(--mid)}
+@media(max-width:430px){body{padding-top:50px}.phone{max-width:100%;height:calc(100vh - 58px);border-radius:0;margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="proto-banner"><strong>🌱 PROTOTYP — dein Baum lebt.</strong> Keine Balken — er WÄCHST. <em>Tippe „Sesión terminada" und sieh ihn sprießen.</em></div>
+
+<div class="phone">
+  <div class="bar"><span class="t">Spi<em>k</em>iu</span><span class="stage-pill" id="stagePill">Samen</span></div>
+  <div class="scene">
+    <div class="caption"><div class="big" id="capBig">Dein Anfang</div><div class="small" id="capSmall">Jede Sitzung lässt etwas wachsen.</div></div>
+    <div class="ground"></div>
+    <svg class="tree" id="tree" viewBox="0 0 200 320" preserveAspectRatio="xMidYMax meet">
+      <g class="trunk-grp" id="trunkGrp">
+        <!-- Erde-Hügel -->
+        <ellipse cx="100" cy="300" rx="46" ry="10" fill="#dfe7d8"/>
+        <!-- Stamm wächst über scaleY -->
+        <path id="trunk" d="M94 300 Q96 230 98 180 L102 180 Q104 230 106 300 Z" fill="#8b5e3c"/>
+        <path id="branches" d="M99 210 Q70 195 60 170 M101 220 Q132 205 142 178 M100 195 Q88 168 92 150 M100 195 Q114 170 110 150" stroke="#8b5e3c" stroke-width="3" fill="none" stroke-linecap="round" opacity="0"/>
+        <g id="crown"></g>
+        <!-- Samen-Sprössling (Anfang) -->
+        <g id="sprout"><path d="M100 300 Q100 286 100 278" stroke="#4a9d6f" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="94" cy="280" rx="6" ry="3.5" fill="#6bbf8f" transform="rotate(-30 94 280)"/>
+          <ellipse cx="106" cy="278" rx="6" ry="3.5" fill="#6bbf8f" transform="rotate(30 106 278)"/></g>
+      </g>
+    </svg>
+  </div>
+  <div class="panel">
+    <div class="bardle"><i id="fill"></i></div>
+    <div class="count" id="count">Kapitel 0 von 12</div>
+    <div class="row">
+      <button class="btn" onclick="grow()">🌱 Sesión terminada (+1)</button>
+      <button class="btn ghost" onclick="reset()">↺</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var crown=document.getElementById('crown'), trunk=document.getElementById('trunk'), trunkGrp=document.getElementById('trunkGrp'),
+    branches=document.getElementById('branches'), sprout=document.getElementById('sprout'),
+    fill=document.getElementById('fill'), count=document.getElementById('count'),
+    stagePill=document.getElementById('stagePill'), capBig=document.getElementById('capBig'), capSmall=document.getElementById('capSmall');
+var n=0, MAX=12;
+// Blattpositionen in der Krone (x,y im viewBox), nach und nach
+var SPOTS=[[92,150],[110,150],[78,140],[124,140],[100,128],[66,156],[136,154],[88,118],[114,118],[100,108],[74,124],[128,126]];
+function stageOf(k){ if(k<=2)return['Samen','Dein Anfang','Ein Same in der Erde.']; if(k<=7)return['Stamm','Es wächst','Der Stamm wird kräftig.']; return['Krone','Voll im Saft','Die Krone breitet sich aus.']; }
+function grow(){
+  if(n>=MAX) return; n++;
+  // Stamm in die Höhe (scaleY ab Boden)
+  var s=0.35+0.65*(n/MAX); trunk.style.transition='transform 1s cubic-bezier(.34,1.2,.5,1)'; trunk.style.transformBox='fill-box'; trunk.style.transformOrigin='bottom center'; trunk.style.transform='scaleY('+s+')';
+  if(n>=1){ sprout.style.transition='opacity .6s'; sprout.style.opacity = n>=3?'0':'1'; }
+  if(n>=3){ branches.style.transition='opacity 1s'; branches.style.opacity='1'; }
+  // Blatt sprießen
+  var sp=SPOTS[n-1]; if(sp){ var c=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+    c.setAttribute('cx',sp[0]);c.setAttribute('cy',sp[1]);c.setAttribute('rx',13);c.setAttribute('ry',16);
+    c.setAttribute('fill', n%2? '#4a9d6f':'#6bbf8f'); c.setAttribute('class','leaf');
+    c.style.transformOrigin=sp[0]+'px '+sp[1]+'px'; crown.appendChild(c);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){c.classList.add('show')})}); }
+  fill.style.width=Math.max(8,(n/MAX*100))+'%';
+  count.textContent='Kapitel '+n+' von '+MAX;
+  var st=stageOf(n); stagePill.textContent=st[0]; capBig.textContent=st[1]; capSmall.textContent=st[2];
+}
+function reset(){ n=0; crown.innerHTML=''; branches.style.opacity='0'; sprout.style.opacity='1';
+  trunk.style.transform='scaleY(0.35)'; trunk.style.transformBox='fill-box'; trunk.style.transformOrigin='bottom center';
+  fill.style.width='8%'; count.textContent='Kapitel 0 von 12'; var st=stageOf(0); stagePill.textContent=st[0]; capBig.textContent='Dein Anfang'; capSmall.textContent='Jede Sitzung lässt etwas wachsen.'; }
+reset();
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Capy vivo (Prototyp)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;--faint:#e8e4df;--accent:#2d6a4f;--accent2:#e8f2ed;--accent3:#1a4a38;--gold:#a07830;--capy:#c9956a}
+body{background:#efece6;color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:44px 0 0}
+.proto-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#1a4a38;color:#fff;padding:.5rem 1rem;text-align:center;font-size:.72rem;line-height:1.4;border-bottom:2px solid #2d6a4f}
+.proto-banner strong{color:#a8d5be}.proto-banner em{color:#c9956a;font-style:normal;font-weight:600}
+.phone{position:relative;width:100%;max-width:400px;height:calc(100vh - 64px);max-height:840px;margin:12px auto;background:var(--off);border-radius:30px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column}
+.bar{padding:.9rem 1rem;border-bottom:1px solid var(--faint);background:#fff;text-align:center;font-family:'Lora',serif;font-weight:700}
+.bar em{color:var(--accent);font-style:italic}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;position:relative;cursor:pointer}
+.capy-wrap{width:230px;height:230px;position:relative}
+svg.capy{width:100%;height:100%;overflow:visible}
+#capy{transform-box:fill-box;transform-origin:center;animation:breathe 4.6s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.014)}}
+#head{transform-box:fill-box;transform-origin:center;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.eyes-grp{transform-box:fill-box;transform-origin:center;transition:transform .18s ease-out}
+.eye{transform-box:fill-box;transform-origin:center;transition:transform .14s}
+.hl{transition:opacity .1s}
+.blink .eye{transform:scaleY(.1)}
+.blink .hl{opacity:0}
+.ear{transform-box:fill-box;transform-origin:50% 90%;transition:transform .4s cubic-bezier(.34,1.5,.5,1)}
+#mouth{transform-box:fill-box;transform-origin:center;transition:transform .3s}
+
+/* MOODS */
+.mood-happy #capy{animation:bounce 0.7s cubic-bezier(.3,1.4,.5,1)}
+@keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-22px)}55%{transform:translateY(0)}70%{transform:translateY(-9px)}}
+.mood-happy .eye{transform:scaleY(.45)}
+.mood-happy #mouth{transform:scaleX(1.25) scaleY(1.3)}
+.mood-think #head{transform:rotate(-9deg)}
+.mood-think .eyes-grp{transform:translate(2px,-2.5px)}
+.mood-listen #earL{transform:rotate(-16deg) scale(1.12)}
+.mood-listen #earR{transform:rotate(16deg) scale(1.12)}
+.mood-listen #head{transform:rotate(4deg)}
+.mood-speak #mouth{animation:talk .42s ease-in-out infinite}
+@keyframes talk{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2) scaleX(1.08)}}
+
+.spark{position:absolute;font-size:1.3rem;opacity:0;pointer-events:none}
+.mood-happy .spark{animation:spark .8s ease-out}
+@keyframes spark{0%{opacity:0;transform:translateY(0) scale(.4)}40%{opacity:1}100%{opacity:0;transform:translateY(-46px) scale(1.1)}}
+.spark.s1{top:38%;left:24%}.spark.s2{top:30%;right:26%;animation-delay:.08s}.spark.s3{top:46%;left:52%;animation-delay:.16s}
+
+.think-dots{position:absolute;top:16%;right:18%;background:#fff;border:1px solid var(--faint);border-radius:14px 14px 14px 3px;padding:.3rem .6rem;font-size:1rem;letter-spacing:.12em;opacity:0;transform:translateY(6px);transition:.3s;color:var(--mid)}
+.mood-think .think-dots{opacity:1;transform:none}
+.waves{position:absolute;top:44%;right:8%;display:flex;gap:3px;align-items:center;opacity:0;transition:.3s}
+.mood-speak .waves{opacity:1}
+.waves i{width:4px;height:10px;background:var(--accent);border-radius:4px;animation:wv .5s ease-in-out infinite}
+.waves i:nth-child(2){height:18px;animation-delay:.1s}.waves i:nth-child(3){height:24px;animation-delay:.2s}.waves i:nth-child(4){height:14px;animation-delay:.3s}
+@keyframes wv{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+
+.label{font-family:'Lora',serif;font-style:italic;color:var(--mid);font-size:.95rem;min-height:1.3em}
+.hint{font-size:.7rem;color:var(--warm);margin-top:-.4rem}
+.controls{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;padding:1rem 1rem 1.4rem}
+.mbtn{background:#fff;border:1.5px solid var(--accent);color:var(--accent);border-radius:100px;padding:.5rem .9rem;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:.15s}
+.mbtn:hover,.mbtn.on{background:var(--accent);color:#fff}
+@media(max-width:430px){body{padding-top:50px}.phone{max-width:100%;height:calc(100vh - 58px);border-radius:0;margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="proto-banner"><strong>🐾 PROTOTYP — Spikiu lebt.</strong> Atmet · blinzelt · folgt dir mit dem Blick · hat Laune. <em>Beweg den Finger, tipp ihn an, wechsle die Stimmung.</em></div>
+
+<div class="phone">
+  <div class="bar">Spi<em>k</em>iu ist da</div>
+  <div class="stage" id="stage">
+    <div class="capy-wrap" id="wrap">
+      <span class="spark s1">✨</span><span class="spark s2">⭐</span><span class="spark s3">✨</span>
+      <div class="think-dots">• • •</div>
+      <div class="waves"><i></i><i></i><i></i><i></i></div>
+      <svg class="capy" id="spikiu" viewBox="0 0 80 80" fill="none">
+        <g id="capy">
+          <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
+          <ellipse class="foot" cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse class="foot" cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+          <ellipse class="foot" cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse class="foot" cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+          <g id="head">
+            <ellipse class="ear" id="earL" cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
+            <ellipse class="ear" id="earR" cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+            <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+            <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
+            <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+            <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+            <g class="eyes-grp" id="eyes">
+              <ellipse class="eye" cx="33" cy="24" rx="3.5" ry="3.5" fill="#3d2b1f"/>
+              <ellipse class="eye" cx="47" cy="24" rx="3.5" ry="3.5" fill="#3d2b1f"/>
+              <circle class="hl" cx="34" cy="23" r="1.2" fill="#fff"/><circle class="hl" cx="48" cy="23" r="1.2" fill="#fff"/>
+            </g>
+            <path id="mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="label" id="label">Hola… aquí estoy contigo.</div>
+    <div class="hint">👆 muévete cerca de él · tócalo</div>
+  </div>
+  <div class="controls">
+    <button class="mbtn on" data-m="idle">😌 Reposo</button>
+    <button class="mbtn" data-m="happy">😄 Contento</button>
+    <button class="mbtn" data-m="think">🤔 Pensativo</button>
+    <button class="mbtn" data-m="listen">👂 Escucha</button>
+    <button class="mbtn" data-m="speak">🗣️ Habla</button>
+  </div>
+</div>
+
+<script>
+var svg=document.getElementById('spikiu'), eyes=document.getElementById('eyes'), wrap=document.getElementById('wrap'),
+    stage=document.getElementById('stage'), label=document.getElementById('label');
+var LABELS={idle:'Hola… aquí estoy contigo.',happy:'¡Eso estuvo muy bien! 🎉',think:'Mmm… déjame pensar…',listen:'Te escucho. Dale.',speak:'Buenos días, ¿qué le pongo?'};
+var current='idle';
+
+// — Blinzeln (zufällig) —
+function blink(){ svg.classList.add('blink'); setTimeout(function(){svg.classList.remove('blink')},150);
+  setTimeout(blink, 2200 + Math.random()*3600); }
+setTimeout(blink, 1800);
+
+// — Blick folgt dem Finger/Maus —
+function track(px,py){
+  var r=wrap.getBoundingClientRect(); var cx=r.left+r.width/2, cy=r.top+r.height*0.34;
+  var dx=Math.max(-2.4,Math.min(2.4,(px-cx)/40)), dy=Math.max(-2,Math.min(2,(py-cy)/40));
+  if(current!=='think') eyes.style.transform='translate('+dx+'px,'+dy+'px)';
+}
+stage.addEventListener('mousemove',function(e){track(e.clientX,e.clientY)});
+stage.addEventListener('touchmove',function(e){var t=e.touches[0];if(t)track(t.clientX,t.clientY)},{passive:true});
+stage.addEventListener('mouseleave',function(){eyes.style.transform=''});
+
+// — Stimmung setzen —
+function setMood(m){
+  current=m;
+  svg.classList.remove('mood-happy','mood-think','mood-listen','mood-speak');
+  if(m!=='idle') svg.classList.add('mood-'+m);
+  if(m==='think') eyes.style.transform='';
+  label.textContent=LABELS[m]||LABELS.idle;
+  document.querySelectorAll('.mbtn').forEach(function(b){b.classList.toggle('on', b.dataset.m===m)});
+  if(m==='happy'){ // kurze Freude, dann zurück in Reposo
+    setTimeout(function(){ if(current==='happy') setMood('idle'); }, 1400);
+  }
+}
+document.querySelectorAll('.mbtn').forEach(function(b){b.onclick=function(){setMood(b.dataset.m)}});
+
+// — Antippen = kurze Freude —
+stage.addEventListener('click',function(e){ if(e.target.closest('.mbtn'))return; setMood('happy'); });
+</script>
+</body>
+</html>

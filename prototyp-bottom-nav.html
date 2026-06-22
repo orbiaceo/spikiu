@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Untere Navigation (Prototyp)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --white:#fff;--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;--faint:#e8e4df;--warm:#d4cdc6;
+  --accent:#2d6a4f;--accent2:#e8f2ed;--accent3:#1a4a38;--gold:#a07830;--capy:#c9956a;
+}
+body{background:#efece6;color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:44px 0 0}
+.proto-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#1a4a38;color:#fff;
+  padding:.5rem 1rem;text-align:center;font-size:.72rem;line-height:1.4;border-bottom:2px solid #2d6a4f}
+.proto-banner strong{color:#a8d5be}.proto-banner em{color:#c9956a;font-style:normal;font-weight:600}
+
+.phone{position:relative;width:100%;max-width:400px;height:calc(100vh - 64px);max-height:840px;margin:12px auto;
+  background:var(--off);border-radius:30px;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column}
+
+.top{display:flex;align-items:center;gap:.55rem;padding:.85rem 1rem .7rem;border-bottom:1px solid var(--faint);background:var(--white)}
+.top .capy{width:30px;height:30px}
+.top .brand{font-family:'Lora',serif;font-weight:700;font-size:1.05rem}.top .brand em{color:var(--accent);font-style:italic}
+.top .right{margin-left:auto;display:flex;gap:.5rem;align-items:center}
+.top .pill{font-size:.6rem;color:var(--mid);background:var(--off);border:1px solid var(--faint);padding:.18rem .5rem;border-radius:100px}
+.top .bell{width:30px;height:30px;border-radius:50%;background:var(--off);border:1px solid var(--faint);display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:.8rem}
+
+.body{flex:1;overflow-y:auto;padding:1rem .9rem 1.1rem}
+.body::-webkit-scrollbar{width:0}
+.screen{display:none}.screen.on{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.h1{font-family:'Lora',serif;font-size:1.35rem;font-weight:700;margin-bottom:.2rem}
+.sub{color:var(--mid);font-size:.85rem;margin-bottom:1rem}
+.card{background:var(--white);border:1px solid var(--faint);border-radius:16px;padding:.9rem 1rem;margin-bottom:.7rem}
+.card h3{font-family:'Lora',serif;font-size:1rem;margin-bottom:.2rem}
+.card p{font-size:.82rem;color:var(--mid);line-height:1.4}
+.card .badge{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
+.tree{display:flex;align-items:center;gap:.7rem;background:var(--accent2);border:1px solid #cfe6da;border-radius:16px;padding:.9rem 1rem;margin-bottom:.9rem}
+.tree .ico{font-size:1.6rem}.tree b{font-family:'Lora',serif}.tree small{color:var(--accent3);font-size:.74rem}
+
+.nav{display:flex;align-items:flex-end;justify-content:space-around;background:var(--white);
+  border-top:1px solid var(--faint);padding:.4rem .3rem .55rem;position:relative}
+.tab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.18rem;
+  color:var(--mid);font-family:inherit;font-size:.6rem;font-weight:600;padding:.25rem 0;transition:.15s;-webkit-tap-highlight-color:transparent}
+.tab .ic{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.tab .ic svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tab.active{color:var(--accent)}.tab.active .ic svg{stroke:var(--accent)}
+
+/* zentraler erhöhter Spikiu (Gespräch) — VOLLSTÄNDIGER Capy, nicht beschnitten */
+.tab.center{flex:0 0 auto;margin:0 .15rem}
+.tab.center .ball{width:60px;height:60px;border-radius:50%;background:var(--accent2);border:4px solid var(--off);
+  box-shadow:0 6px 18px rgba(45,106,79,.28);display:flex;align-items:center;justify-content:center;
+  transform:translateY(-14px);transition:.16s;overflow:visible}
+.tab.center.active .ball{background:#d8ecdf}
+.tab.center .ball svg{width:48px;height:48px;overflow:visible}
+.tab.center .lbl{transform:translateY(-11px);color:var(--accent);font-weight:700}
+
+@media(max-width:430px){body{padding-top:50px}.phone{max-width:100%;height:calc(100vh - 58px);border-radius:0;margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+
+<div class="proto-banner">
+  <strong>🐾 PROTOTYP — untere Navigation statt Hamburger.</strong>
+  Wie im ersten Proto · Capy KOMPLETT · das <em>Gym sitzt jetzt in der Werkstatt</em>. Tippe die Tabs.
+</div>
+
+<div class="phone">
+  <div class="top">
+    <svg class="capy" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="brand">Spi<em>k</em>iu</span>
+    <span class="right"><span class="pill">Deutsch → Español</span><span class="bell">🔔</span></span>
+  </div>
+
+  <div class="body" id="body">
+    <div class="screen on" data-s="start">
+      <div class="h1">Hallo, Leo 🌱</div><div class="sub">Schön, dass du da bist.</div>
+      <div class="tree"><span class="ico">🌳</span><div><b>Aufbau · Stamm</b><br><small>Kapitel 4 von 12 — weiter so</small></div></div>
+      <div class="card"><h3>Weitermachen</h3><p>Du warst im Café-Gespräch. Zurück in den Raum?</p></div>
+      <div class="card"><h3>Heute fällig</h3><p>3 Wörter aus deinem Gespräch warten im Gym.</p></div>
+    </div>
+    <div class="screen" data-s="reader">
+      <div class="h1">📚 Reader</div><div class="sub">Klassiker, sanft begleitet.</div>
+      <div class="card"><h3>Lukas in Madrid</h3><p>Kapitel 3 · español neutro · mit 🔊 an jeder Wendung</p></div>
+      <div class="card"><h3>Marta in Berlin</h3><p>Kapitel 1 · Hochdeutsch · Grammatik &amp; Glossar</p></div>
+    </div>
+    <div class="screen" data-s="gespraech">
+      <div class="h1">💬 Gespräch</div><div class="sub">Das Herzstück. Sprich mit Spikiu.</div>
+      <div class="card"><h3>Einfach plaudern</h3><p>Offen, frei, ohne Druck.</p></div>
+      <div class="card"><h3>Ein Thema üben</h3><p>Hotel · Taxi · Café · Restaurant — als Reel.</p></div>
+    </div>
+    <div class="screen" data-s="werkstatt">
+      <div class="h1">✍️ Werkstatt</div><div class="sub">Schreiben, Lesen &amp; Wortschatz — Schritt für Schritt.</div>
+      <div class="card"><h3>Schreibwerkstatt</h3><p>Dein Text oben, Spikius Fassung unten.</p></div>
+      <div class="card"><h3>Lesewerkstatt</h3><p>Wendungen, Grammatik, Hören — als Karten.</p></div>
+      <div class="card"><span class="badge">🧠 Gym</span><h3>Wortschatz-Werkstatt</h3><p>Vokabel-Karten zum Wischen — wie Tinder, Daumen entscheidet. Nur Wörter, bei denen du gewackelt hast. Kein Streak-Zwang.</p></div>
+    </div>
+    <div class="screen" data-s="mein">
+      <div class="h1">👤 Mein</div><div class="sub">Dein Weg, dein Versprechen.</div>
+      <div class="card"><h3>Mein Versprechen</h3><p>„In drei Monaten ein Hotel auf Spanisch buchen."</p></div>
+      <div class="card"><h3>Sprache &amp; Stufe</h3><p>Deutsch → Español · Anfänger</p></div>
+    </div>
+  </div>
+
+  <nav class="nav" id="nav">
+    <button class="tab active" data-go="start">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>Start</button>
+    <button class="tab" data-go="reader">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h6v18H5a2 2 0 01-2-2z"/><path d="M21 5a2 2 0 00-2-2h-6v18h6a2 2 0 002-2z"/></svg></span>Reader</button>
+    <button class="tab center" data-go="gespraech">
+      <span class="ball"><svg viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+        <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+        <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+        <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+        <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+        <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      </span><span class="lbl">Gespräch</span></button>
+    <button class="tab" data-go="werkstatt">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M2 22l3-1 12-12-2-2L3 19z"/><path d="M15 7l2-2 2 2-2 2z"/></svg></span>Werkstatt</button>
+    <button class="tab" data-go="mein">
+      <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>Mein</button>
+  </nav>
+</div>
+
+<script>
+var nav=document.getElementById('nav'), body=document.getElementById('body');
+function show(go){
+  nav.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active', t.dataset.go===go)});
+  body.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on', s.dataset.s===go)});
+  body.scrollTop=0;
+}
+nav.addEventListener('click',function(e){var b=e.target.closest('.tab');if(b)show(b.dataset.go)});
+</script>
+</body>
+</html>
