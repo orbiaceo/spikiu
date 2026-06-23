@@ -1,4 +1,17 @@
-# AUFTRAG — „Dashboard-Begrüßung: zentriert & betont" (Feinschliff)
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Dashboard-Begrüßung: zentriert & betont" (Feinschliff)
+> GEBAUT + auf dev. EINE Datei `dashboard.html`, reiner Layout-Feinschliff: `.topbar`/`.greeting-host`
+> row→zentrierte Spalte (Capy mittig oben 64px + weicher Halo via `::before` radial-gradient,
+> atmet/blinzelt weiter via `spkCapyAlive`), Titel betont (clamp 1.5–1.7rem) + Gold-Trenner
+> `.greet-divider` (46px) zwischen Titel und Memoria, `.host-text` zentriert, `.btn-speak` mittiges
+> Pill. `renderMemoria`-Logik/echte Daten/Baum/Lektionen unberührt, kein JS, genau 1 Capy. `node
+> --check` grün, headless verifiziert (Spalte zentriert, Capy lebt, Halo, Gold-Trenner, Memoria echt).
+> Details + Abnahme-Rest im SPIKIU-BUILD-LEDGER.md. NÄCHSTES = Paket „Gespräch-Reel" (unten).
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-dashboard-zentriert.html (von Leo abgenommen)
