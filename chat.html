@@ -67,11 +67,11 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .door-btn:active { transform:scale(0.97); }
 /* Opener-Gabelung (Paket 1): nach dem [EINSTIEG]-Gruß — plaudern oder ein Thema.
    Chip-Stil aus prototyp-gespraech-gefuehrt.html. KEIN Fortschrittsbalken in P1. */
-.gabelung { align-self:stretch; display:flex; flex-direction:column; gap:0.6rem; padding-left:2.75rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
+.gabelung { align-self:center; width:100%; max-width:30rem; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.6rem; padding:0.25rem 0.75rem 0.5rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
 .gab-label { font-size:0.78rem; color:var(--mid); font-weight:500; }
 /* Opener-Überschrift (Teil 35): ruhige einzelne Zeile statt Gruß-Bubble. */
 .gab-ask { font-family:'Lora',serif; font-size:1.05rem; font-weight:600; color:#1a1816; margin:0 0 0.25rem; }
-.gab-chips { display:flex; flex-wrap:wrap; gap:0.45rem; }
+.gab-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }
 .chip { background:var(--white); border:1.5px solid var(--accent); color:var(--accent); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500; cursor:pointer; transition:all 0.18s; -webkit-tap-highlight-color:transparent; }
 .chip:hover { background:var(--accent); color:var(--white); }
 .chip:active { transform:scale(0.97); }
@@ -205,10 +205,14 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Voz primero (Paket 5): Präsenz-Gruß beim Eintritt. Spikiu LÄDT EIN (sanfter Puls +
    „tippen, um zu hören") — Autoplay braucht eine Geste; erst der Tipp spielt die Stimme.
    Größerer, vollständiger Capy; Sprech-Zustand (Mund + Aura) liefert capy-vivo.js. ── */
-.voz-greet { align-self:stretch; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.5rem; padding:0.75rem 0 0.25rem; cursor:pointer; -webkit-tap-highlight-color:transparent; animation:fadeUp 0.4s ease forwards; opacity:0; }
-.voz-capy { width:64px; height:64px; overflow:visible; animation:vozBreathe 4.5s ease-in-out infinite; }
-.voz-greet-line { font-family:'Lora',serif; font-size:1.15rem; line-height:1.35; color:var(--ink); max-width:18rem; }
-.voz-hint { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--accent); font-weight:500; }
+/* Gespräch-Reel Phase 1 (Teil 43): immersiver Charakter-Eintritt — Spikiu groß/mittig,
+   Gruß + einladende Frage zentriert. Optik nach prototyp-final-spikiu-frei.html. */
+.voz-greet { align-self:stretch; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.45rem; padding:1.4rem 0 0.4rem; cursor:pointer; -webkit-tap-highlight-color:transparent; animation:fadeUp 0.4s ease forwards; opacity:0; }
+.voz-capy { width:90px; height:90px; overflow:visible; animation:vozBreathe 4.5s ease-in-out infinite; }
+.voz-greet-line { font-family:'Lora',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
+.voz-invite { font-family:'Lora',serif; font-size:1.02rem; line-height:1.3; color:var(--mid); max-width:20rem; margin-top:0.1rem; }
+.voz-invite-sub { color:var(--accent); font-weight:600; }
+.voz-hint { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--accent); font-weight:500; margin-top:0.15rem; }
 .voz-hint::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:vozPulse 1.6s ease-in-out infinite; }
 .voz-greet.spoke { cursor:default; }
 .voz-greet.spoke .voz-hint { display:none; }
@@ -1264,6 +1268,14 @@ var VOZ_GREET = {
   el: function(n){ return 'Γεια σου' + (n ? ', ' + n : '') + '! Χαίρομαι που σε βλέπω.'; }
 };
 var VOZ_HINT = { de:'tippen, um Spikiu zu hören', es:'toca para oír a Spikiu', en:'tap to hear Spikiu' };
+// Phase 1 (Teil 43): einladende Frage in der ZIELSPRACHE (wie der Gruß — „Man betritt sie").
+// Nur Präsentation; was Spikiu SPRICHT (VOZ_GREET) bleibt unverändert.
+var VOZ_INVITE = {
+  es: { q:'¿Qué te apetece hoy?',         sub:'¡Tú eliges!' },
+  de: { q:'Worauf hast du heute Lust?',   sub:'Du entscheidest!' },
+  en: { q:'What do you feel like today?', sub:'You choose!' },
+  el: { q:'Τι σου κάνει κέφι σήμερα;',     sub:'Εσύ διαλέγεις!' }
+};
 
 function removeOpenerGreeting(){ var g = document.getElementById('vozGreet'); if (g) g.remove(); vozHandle = null; }
 
@@ -1291,10 +1303,12 @@ function renderOpenerGreeting(){
   var ui   = uiLang();
   var lang = PROFILE.zielsprache;
   var greet = (VOZ_GREET[lang] || VOZ_GREET.es)(PROFILE.name || '');
+  var inv  = VOZ_INVITE[lang] || VOZ_INVITE.es;
   var box = document.createElement('div');
   box.className = 'voz-greet'; box.id = 'vozGreet';
   box.innerHTML = CAPY_OPENER
     + '<div class="voz-greet-line">' + escPlain(greet) + '</div>'
+    + '<div class="voz-invite">' + escPlain(inv.q) + ' <span class="voz-invite-sub">' + escPlain(inv.sub) + '</span></div>'
     + '<div class="voz-hint">' + escPlain(VOZ_HINT[ui] || VOZ_HINT.de) + '</div>';
   chat.appendChild(box);
   chat.scrollTop = chat.scrollHeight;
