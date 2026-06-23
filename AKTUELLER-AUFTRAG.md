@@ -1,4 +1,20 @@
-# AUFTRAG — „Gespräch-Reel (Phase 2): Freier Flur als Reel"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Gespräch-Reel Phase 2: Freier Flur als Reel" GEBAUT + auf dev.
+> EINE Datei `chat.html`. Freier Flur (`gefuehrt===false`) rendert als Vollbild-Slides: neuer Zustand
+> `reelActive`; `addMessage`/`showTyping`/`hideTyping`/`showError` bekommen je eine Guard-Zeile →
+> Reel-Renderer (gleiche `splitThoughts`/`splitBridge`/`fmt`/`playFrom`-Logik); `goFree` ruft `enterReel`.
+> Neues `#reel`-Surface mit Scroll-Snap (Wisch nach oben): Spikiu-Slide (vollständiger Capy + große
+> Zielsprachen-Zeile + 🔊 + Übersetzung + Hinweis), User-Slide, Lerner-Slide mit Textfeld → BESTEHENDER
+> `sendUserTurn`; „Beenden" → `exitReel` + `offerLesson` (unverändert). Motor (turn/sendUserTurn/api/
+> verlauf/Lektion) + geführtes Thema (Blasen/Rail/Häppchen/Paletten) UNBERÜHRT; genau 1 Capy je Slide,
+> Nav neutral. `node --check` grün, headless verifiziert (Reel-Flow komplett + geführtes Thema bleibt
+> Blasen). Details + Abnahme-Rest im SPIKIU-BUILD-LEDGER.md.
+> NÄCHSTES = Phase 3 „geführtes Thema als Reel" (Rail=Fortschritt, Häppchen-Slides, Paletten→Tinder-Karten).
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Reel-Teil) · von Leo abgenommen
