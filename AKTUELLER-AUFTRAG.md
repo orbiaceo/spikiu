@@ -1,4 +1,20 @@
-# AUFTRAG — „Proverbios neu: Tinder-Deck + wiederverwendbarer Übungs-Motor (uebung.js)"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Proverbios neu: Tinder-Deck + wiederverwendbarer Übungs-Motor
+> (uebung.js)" GEBAUT + auf dev. ZWEI Dateien: NEU `uebung.js` (`window.spikiuUebung(item,type)` → geprüfte
+> Übungskarte, eigener CSS-Namensraum, 4 Typen reorder/intruder/mc/gap, feuert `ueb-done`; inhaltsneutral
+> → für Gym u.a. nutzbar) + umgebaut `proverbios.html` (Tinder-Deck OHNE KI, feste DB aus `sprichwort.js`,
+> `mean` datengetrieben aus den Übersetzungen; Proverbio→Übung→Proverbio horizontal; echter Verlauf
+> Schritte+Zeiger; Daumen links=weiter/rechts=zurück + Knöpfe; lebendiger voller Capy via `spkCapyAlive` +
+> 🔊; ein Capy, kein Score/Streak). `api`/Reel/Dashboard/`nav.js` unberührt. `node --check` grün, headless
+> verifiziert (Deck + echter Verlauf + alle 4 Übungstypen prüfen). Details im LEDGER.
+> FRAGE AN DESIGN: `mean` ist aus den vorhandenen Übersetzungen abgeleitet (richtig + 2 fremde) statt
+> handgeschrieben — falls redaktionelle Bedeutungen gewünscht, eigenes kleines Paket.
+> NÄCHSTES = (optional) `uebung.js` in Gym einhängen · sonst Beta-Politur.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 Referenz: prototyp-proverbios-tinder2.html (von Leo abgenommen)
