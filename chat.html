@@ -264,6 +264,17 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-endmenu .reel-cards { gap:0.55rem; }
 .reel-endmenu .reel-card.full { background:var(--accent); color:var(--white); border-color:var(--accent); }
 .reel-endmenu .reel-card.full:hover { background:var(--accent3); }
+
+/* Phase 3b (Teil 48): geführter Prep (Wörter/Hören) + Übergabe als Reel-Karten —
+   gleiche Widgets/Logik, nur ins horizontale Deck gewickelt. */
+.reel-haeppchen { justify-content:flex-start; padding-top:2rem; gap:1rem; }
+.reel-haeppchen .widget { align-self:center; margin-left:0; width:100%; max-width:23rem; text-align:left; }
+.reel-haeppchen .flow-row { padding-left:0; justify-content:center; }
+.reel-note-card { justify-content:center; gap:1.3rem; }
+.reel-note-text { font-family:'Lora',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
+.reel-note { justify-content:center; }
+.reel-note .scene-note { align-self:center; }
+.reel-spikiu .hap-spin { margin-bottom:0.2rem; }
 </style>
 </head>
 <body>
@@ -759,13 +770,13 @@ function bindReelGestures(){
     var t = e.changedTouches[0]; var dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
     if (Math.abs(dx) < 45 || Math.abs(dy) > Math.abs(dx)) return;     // nur klar horizontale Wische
     var cur = reelSlides()[reelIndex];
-    if (dx < 0){ if (cur && (cur.classList.contains('reel-learner') || cur.classList.contains('reel-endmenu'))) return; reelAdvance(); }
+    if (dx < 0){ if (cur && (cur.classList.contains('reel-learner') || cur.classList.contains('reel-endmenu') || cur.classList.contains('reel-haeppchen'))) return; reelAdvance(); }
     else reelBack();                                                   // nach rechts = nur zurückblättern (lesen)
   }, { passive:true });
   reel.addEventListener('click', function(e){
     if (e.target.closest('button, textarea, input, a')) return;       // 🔊/Karten/Senden/Textfeld nicht stören
     var cur = reelSlides()[reelIndex]; if (!cur) return;
-    if (cur.classList.contains('reel-learner') || cur.classList.contains('reel-endmenu')) return;
+    if (cur.classList.contains('reel-learner') || cur.classList.contains('reel-endmenu') || cur.classList.contains('reel-haeppchen')) return;
     reelAdvance();                                                    // Tipp auf Spikiu-/Korrektur-Karte = weiter
   });
 }
@@ -1299,8 +1310,9 @@ function pickTopic(label){
   sessionGezaehlt = false;               // Teil 36: neuer Gesprächsbogen → Blatt-Zähler zurück
   gefuehrt = true;                       // geführtes Thema-Rollenspiel → Antwort-Chips erlaubt
   TOPIC_LABEL = label;
-  addMessage('user', label);             // die Wahl als User-Bubble (wie P1, nur ohne Seed-Floskel)
   showRail(); setStage('wortschatz');
+  enterReel();                           // Phase 3b: der GANZE geführte Pfad läuft im horizontalen Deck
+  addMessage('user', label);             // die Wahl als (erste) Karte im Deck
   loadHaeppchen();
 }
 
@@ -1364,8 +1376,27 @@ function setStage(stage){
 }
 
 function addNote(text){
+  if (reelActive){
+    var slide = document.createElement('div'); slide.className = 'reel-slide reel-note';
+    var n = document.createElement('div'); n.className = 'scene-note'; n.textContent = text;
+    slide.appendChild(n); reelEl().appendChild(slide); reelGoTo(reelSlides().length - 1);
+    return;
+  }
   var d = document.createElement('div'); d.className = 'scene-note';
   d.textContent = text; chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+// Phase 3b: ein Häppchen-Widget ins horizontale Deck wickeln (eine Karte). Sonst (Chat) wie bisher.
+function mountWidget(w, extra){
+  if (reelActive){
+    var slide = document.createElement('div');
+    slide.className = 'reel-slide reel-haeppchen' + (extra ? ' ' + extra : '');
+    slide.appendChild(w);
+    reelEl().appendChild(slide);
+    reelGoTo(reelSlides().length - 1);   // neue Häppchen-Karte zeigen
+    return slide;
+  }
+  chat.appendChild(w); chat.scrollTop = chat.scrollHeight;
+  return null;
 }
 function lockComposer(lock){
   guiding = lock;
@@ -1378,10 +1409,21 @@ function addFlowButton(label, fn){
   var b = row.querySelector('.flow-btn');
   b.textContent = label;
   b.onclick = function(){ row.remove(); fn(); };
+  if (reelActive){
+    var cur = reelSlides()[reelIndex];     // Knopf auf die AKTUELLE Häppchen-Karte (Widget davor gemountet)
+    if (cur){ cur.appendChild(row); return; }
+  }
   chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
 }
 
 function showHapSpinner(){
+  if (reelActive){
+    var slide = document.createElement('div'); slide.className = 'reel-slide reel-spikiu'; slide.id = 'hapSpin';
+    slide.innerHTML = '<div class="reel-capy" aria-hidden="true">' + CAPY_SMALL + '</div>'
+      + '<div class="reel-body"><span class="hap-spin"></span><div>' + escPlain(HAP_UI[uiLang()].loading) + '</div></div>';
+    reelEl().appendChild(slide); reelGoTo(reelSlides().length - 1);
+    return;
+  }
   var d = document.createElement('div'); d.className = 'message spikiu'; d.id = 'hapSpin';
   d.innerHTML = '<div class="avatar-spikiu">' + CAPY_SMALL + '</div>'
     + '<div style="flex:1;min-width:0;"><div class="bubble spikiu" style="display:inline-flex;align-items:center;gap:0.55rem;">'
@@ -1437,7 +1479,7 @@ function renderWortschatz(){
       + '<div class="hap-text"><div class="hap-ziel">' + escPlain(h.ziel) + '</div>' + phon + trans + '</div></div>';
   });
   w.innerHTML = html;
-  chat.appendChild(w);
+  mountWidget(w);                          // Phase 3b: Wörter-Karte im Deck (sonst Chat)
   w.querySelectorAll('.hap-card').forEach(function(card, i){
     var btn = card.querySelector('.hap-play');
     btn.onclick = function(){ playFrom(btn, HAP.wortschatz[i].ziel, 'playing'); };
@@ -1486,7 +1528,7 @@ function renderMinimalpaar(item){
   });
   html += '<div class="hv-feedback"></div>';
   w.innerHTML = html;
-  chat.appendChild(w);
+  mountWidget(w);                          // Phase 3b: Hören-Karte (Minimalpaar) im Deck
   var spk = w.querySelector('.hv-speaker');
   spk.onclick = function(){ playFrom(spk, item.audio, 'playing'); };
   // Referenzen über die Closure (w, opts) — NIE über getElementById (gleiche Klassen mehrfach im DOM).
@@ -1521,7 +1563,7 @@ function renderWortsuche(item){
     + '<button class="hv-speaker" type="button">' + SPEAKER_SVG + '</button>'
     + '<div class="hv-q">' + escPlain(item.frage || HAP_UI[ui].wordHint) + '</div>'
     + '<div class="ws-words"></div><div class="hv-feedback"></div>';
-  chat.appendChild(w);
+  mountWidget(w);                          // Phase 3b: Hören-Karte (Wörter-Tippen) im Deck
   var box = w.querySelector('.ws-words');
   words.forEach(function(o){
     var b = document.createElement('button'); b.type = 'button'; b.className = 'ws-word';
@@ -1558,9 +1600,17 @@ function nextHV(){
 }
 function handover(){
   setStage('sprechen');
-  addNote(HAP_UI[uiLang()].handover);   // Übergangs-Notiz (noch Chat-Ansicht, gleich Reel)
-  enterReel();                          // Phase 3a: ab „Sprechen" rendert das Roleplay als Reel-Slides
-  startSeedTurn();                      // Seed-Zug → turn() → Spikiu-Slides + Tinder-Karten
+  if (reelActive){
+    // Phase 3b: Übergabe als eigene Karte mit „Weiter" — der Lerner liest sie, dann startet
+    // per Tipp der Seed-Zug (sonst würde die Tipp-Karte sofort von der Typing-Karte überholt).
+    var w = document.createElement('div');
+    w.innerHTML = '<div class="reel-note-text">' + escPlain(HAP_UI[uiLang()].handover) + '</div>';
+    mountWidget(w, 'reel-note-card');
+    addFlowButton(HAP_UI[uiLang()].weiter, startSeedTurn);
+    return;
+  }
+  addNote(HAP_UI[uiLang()].handover);   // (Chat-Fallback; geführt läuft seit Phase 3b im Reel)
+  startSeedTurn();
 }
 // Der BESTEHENDE P1-Seed-Zug: schickt „Ich möchte das Thema … üben" an /api/gespraech
 // → Themen-Entrada → Rollenspiel. Unverändert, nur jetzt NACH den Häppchen. Das Thema
