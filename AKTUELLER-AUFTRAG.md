@@ -1,81 +1,55 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> **Teil 40 „Spikiu befreit: Navi neutral + Deko-Capys raus" GEBAUT + auf dev (commit 26e266b).**
-> 11 Dateien (`nav.js` + `books.html` + 8 Reader-Kapitel + `dashboard.html`); `lesebegleiter.js`/
-> `capy-vivo.js`/`chat.html`/`schreibwerkstatt.html`/`api`/Seele UNBERÜHRT. `node --check` grün,
-> headless verifiziert (Nav-Mitte neutral/kein Capy, Lesebegleiter lebt, Deko-Capys weg, Baum/Spruch
-> intakt). Bericht im SPIKIU-BUILD-LEDGER.md. OFFEN = nur Geräte-Abnahme durch Leo.
-> NÄCHSTES (Reihenfolge): 1. **Gespräch-Reel** (chat.html-Opener → Charakter-Begrüßung + Daumen-Reel),
-> 2. Spruch → Raum „Proverbios", 3. Lektions-Hintergrund-Bug.
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Dashboard: Spruch raus + Spikiu begrüßt (atmend)"
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Teil 40-Entscheidung)
+Branch: dev · Referenz: prototyp-dashboard-spikiu-gruss.html (von Leo abgenommen)
 
-> DER KNOTEN IST GELÖST. Spikiu wird NICHT mehr in einen Knopf gezwängt. Die Nav-Mitte
-> bekommt ein NEUTRALES Gespräch-Symbol (zwei Köpfchen). Dadurch ist der Capy FREI, in
-> jedem Raum als Charakter in seiner Rolle aufzutreten (Begrüßer im Gespräch, Lesebegleiter
-> im Reader, künftig weitere Rollen). Regel ab jetzt: **pro Bildschirm höchstens EIN Capy —
-> und nur als Charakter, nie als Deko/Logo.**
+> GOLDENE REGEL (ab jetzt fest): **Jede Aktivität/Seite mit Spikiu verlangt die Maskottchen-
+> Präsenz LEBENDIG (atmend) in ihrer Rolle.** Ein Gruß ohne Spikiu ist ein Text ohne Autor.
+> Auf dem Dashboard ist Spikiu der GASTGEBER — er sagt „Hola Lola, bienvenido", atmend daneben.
 >
-> DIESES Paket = die Befreiung + das Wegräumen der Deko-Capys/Logos. Der Gespräch-REEL
-> (prototyp-final / Teil 39) ist das NÄCHSTE, eigene Paket (großer chat.html-Umbau) — hier NICHT.
+> Dieses Paket: (1) den „Spruch des Tages" vom Dashboard ENTFERNEN, (2) Spikiu als atmenden
+> Begrüßer NEBEN den Gruß setzen. EINE Datei: `dashboard.html`.
 
-## KERN — `nav.js`
-1. **Mitte-Knopf (Gespräch/`talk`, center) → NEUTRALES Symbol „zwei Köpfchen".** Den
-   `CAPY_SVG` aus dem Mitte-Knopf entfernen und durch dieses Icon ersetzen (weiße Linien
-   auf grünem erhöhtem Kreis):
-   `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="2.7"/><path d="M3.3 16.2c0-2.6 2.1-4.2 4.7-4.2s4.7 1.6 4.7 4.2"/><circle cx="16.6" cy="9.6" r="2.5"/><path d="M12.8 16.6c.3-2.1 2.1-3.3 4.2-3.3 2.4 0 4.1 1.6 4.1 4.1"/></svg>`
-   - Den `spkCapyAlive`-Aufruf auf den Mitte-Capy ENTFERNEN (kein Capy mehr in der Nav).
-   - Mitte bleibt erhöht; Sockel jetzt grün gefüllt (`#2d6a4f`), Icon weiß; Label unverändert.
-     Aktiv-Zustand weiterhin erkennbar.
-2. **Topbar-Logo: den Capy aus `.spk-brand` ENTFERNEN.** Das injizierte „🐻 Spikiu" oben ist
-   ein Deko-Klon → die Capy-Grafik raus. Eine schlichte Wortmarke „Spikiu" (nur Text) darf
-   bleiben; wenn die Topbar sonst nichts trägt, ist auch ganz weg sauber — KEIN Capy oben.
+## 1) Spruch raus
+- Den „Sprichwort des Tages"-Kopf vom Dashboard entfernen: das HTML `<div class="sprichwort-head"
+  id="sprichwort-head" …>` (~Z.193) raus, und die Befüll-/Render-Logik, die ihn sichtbar macht,
+  nicht mehr aufrufen. Die zugehörigen CSS-Regeln `.sprichwort-head …` dürfen weg.
+- **`sprichwort.js` NICHT löschen** — der Spruch zieht später in den eigenen Raum „Proverbios"
+  um (nächstes Paket). Hier nur vom Dashboard nehmen.
 
-## DEKO-CAPYS RAUS (pro Seite, nur Deko — Charakter bleibt)
-Regel: **Deko-Capys raus** (Kopf-/Hero-Logos auf Hub-Seiten). **Charakter-Capys bleiben:**
-der Begrüßungs-Capy im Gespräch (chat.html) UND der Lesebegleiter im Reader.
-- **books.html (Reader-Übersicht):** den großen Hero-Capy über „Spikiu Reader · Beta"
-  ENTFERNEN. Text/Layout bleibt.
-- **Reader-Kapitel (`cap1-de-v2.html` … `cap4-es-v2.html`):** im Kopf nur den dekorativen
-  „🐻 Spikiu Reader"-Capy ENTFERNEN (Text „Spikiu Reader" bleibt). **DEN LESEBEGLEITER NICHT
-  ANFASSEN** — `lesebegleiter.js`, der schwebende Begleiter, seine Logik/Animation bleiben zu
-  100% unberührt (Leo: „no quiero que dañes nada del Lesebegleiter"). Nur das Header-Logo.
-- **chat.html (Gespräch-Opener):** NICHTS am Capy entfernen — der große Begrüßungs-Capy ist
-  Spikiu als CHARAKTER und der EINZIGE Capy dort (Topbar-Logo fällt schon via nav.js weg).
-- **schreibwerkstatt.html / dashboard.html:** falls ein eigener Deko-Capy im Kopf steckt
-  (nicht der nav.js-Topbar), ebenfalls raus. Der Dashboard-Baum bleibt; der „Spruch des
-  Tages" ist SEPARATES Feedback (NICHT hier anfassen).
+## 2) Spikiu begrüßt — atmend, NEBEN dem Gruß
+Den bestehenden Gruß-Block (`#greeting-title` Z.201 + `#greeting-sub` Z.202 + `#memoria-us`
+Z.203 + ggf. der „Weiter plaudern →"-Link aus `renderMemoria`) in eine **Flex-Zeile** fassen:
+- LINKS: ein **vollständiger kanonischer Capy** (~72px, 2 Ohren / Schnauze / Nase / 4 Pfoten /
+  Lächeln — NIE trasquilado). Die Augen-Kreise in `<g class="spk-capy-eyes">`, damit
+  `spkCapyAlive` (aus `capy-vivo.js`, Paket 1) greift.
+- RECHTS: der Gruß-Text (Titel + Memoria-Untertitel + „Weiter plaudern →" + „Wir zwei"-Zeile +
+  „Von letztem Mal"-Zeile) — UNVERÄNDERT in Inhalt/Logik, nur ins rechte Feld der Zeile.
+- Den Capy via `spkCapyAlive(svgEl)` beleben (atmet, blinzelt, Blick folgt) — dieselbe Funktion,
+  die schon woanders genutzt wird. Layout/Größe/Abstände nach `prototyp-dashboard-spikiu-gruss.html`
+  (Capy links, Text rechts, oben ausgerichtet).
+- Optional, NUR wenn `say()`/audio.js auf dem Dashboard sauber verfügbar ist: Tipp auf den Capy →
+  spricht den Gruß. Wenn nicht trivial, weglassen (atmen/blinzeln ist Pflicht, Sprechen Kür).
 
 ## NICHT ANFASSEN
-- `lesebegleiter.js` + der schwebende Reader-Begleiter (heilig, funktioniert).
-- `capy-vivo.js` (wird weiter vom Begrüßungs-Capy/Lesebegleiter genutzt) — nicht löschen,
-  nur den Aufruf auf den NAV-Mitte-Capy entfernen.
-- `api/*`, Seele, `*-modus.md`. Kein Stripe/Supabase.
-- KEIN Gespräch-Reel-Umbau hier (eigenes nächstes Paket). KEIN Spruch/Proverbios/Lektions-Bug.
+- `renderMemoria`-LOGIK (nur die Elemente umhängen, nicht die Berechnung ändern), der lebende
+  Baum, Lektionen-Liste, `capy-vivo.js` (nur aufrufen), `sprichwort.js` (behalten), `api/*`, Seele.
+- Keine erfundenen Daten (Memoria bleibt echt: `blaetter`/`lessons`).
 
 ## ABNAHME
-- [ ] Nav-Mitte zeigt das neutrale „zwei Köpfchen"-Symbol (grün, erhöht), KEIN Capy mehr;
-      `spkCapyAlive` greift nicht mehr auf die Mitte.
-- [ ] Oben kein „🐻 Spikiu"-Deko-Capy mehr (Topbar-Capy weg).
-- [ ] books.html: Hero-Capy weg. Reader-Kapitel: Header-Capy weg, **Lesebegleiter unverändert
-      + voll funktionsfähig** (schwebt, reagiert, spricht wie vorher).
-- [ ] chat.html: Begrüßungs-Capy bleibt (= der eine Charakter-Capy dort).
-- [ ] Pro Bildschirm höchstens EIN Capy, nur als Charakter. Capy überall VOLLSTÄNDIG (nie
-      trasquilado).
-- [ ] `node --check` grün; jede berührte Seite headless verifiziert (Nav rendert, Lesebegleiter
-      lebt, nichts kaputt).
+- [ ] Kein „Spruch des Tages" mehr auf dem Dashboard; der Gruß steht wieder oben.
+- [ ] Spikiu (vollständig) steht NEBEN „Hola Lola, bienvenido" und ist LEBENDIG (atmet + blinzelt
+      via `spkCapyAlive`).
+- [ ] Memoria unverändert: Kontinuitäts-Untertitel + „Weiter plaudern →" + „Wir zwei: X Gespräche ·
+      Y Lektionen" + „Von letztem Mal" — alles aus ECHTEN Daten, korrekt neben dem Capy.
+- [ ] Genau EIN Capy auf dem Dashboard, als Charakter (Gastgeber). Baum/Lektionen unberührt.
+- [ ] Nur `dashboard.html` geändert; `node --check` grün; headless verifiziert (Capy lebt, Gruß +
+      Memoria rendern, kein Spruch).
 
-## DANACH (Reihenfolge)
-1. **Gespräch-Reel** (prototyp-final-spikiu-frei.html / Teil 39+40): chat.html-Opener →
-   Spikiu-als-Charakter-Begrüßung + Reel im Daumen-Prinzip (eine Sache pro Screen, Wisch,
-   Tinder-Antwortkarten, 🔊). Großes eigenes Paket.
-2. Dashboard „Spruch des Tages" raus → eigener Raum **„Proverbios"** (verkleideter Capy, tippt
-   man → Spruch/Witz/Zitat + Sprechblase + Audio; Lerner kann schreiben, Spikiu antwortet in Text).
-3. **Lektions-Hintergrund-Bug**: nach „Ja" → „Die findest du später in deinen Lektionen.
-   Tschüss!"; Generierung im Hintergrund, überlebt Seitenwechsel; beim Zurückkommen ist sie da.
-   (Leo getestet: aktuell wird KEINE Lektion erzeugt.)
+## DANACH (Reihenfolge unverändert)
+1. **Gespräch-Reel** (prototyp-final-spikiu-frei.html): chat.html-Opener → Spikiu-Charakter-Gruß
+   (atmend, gleiche Regel) + Daumen-Reel (eine Sache pro Screen, Wisch, Tinder-Karten, 🔊).
+2. **Raum „Proverbios"**: der Spruch zieht hierher — verkleideter Capy (lebendig), Tipp → Spruch/
+   Witz/Zitat + Sprechblase + Audio; Lerner schreibt → Spikiu antwortet in Text. (`sprichwort.js` wird hier wiederverwendet.)
+3. **Lektions-Hintergrund-Bug**: nach „Ja" → „Die findest du später in deinen Lektionen. Tschüss!" +
+   Generierung im Hintergrund, überlebt Seitenwechsel (Leo getestet: aktuell KEINE Lektion erzeugt).
