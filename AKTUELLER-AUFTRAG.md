@@ -1,4 +1,17 @@
-# AUFTRAG — „Lektionen-Tab: echte Verbindung (Scroll zu den Lektionen)"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Lektionen-Tab: echte Verbindung (Scroll zu den Lektionen)"
+> GEBAUT + auf dev. EINE Datei `dashboard.html`. Ursache: der `#lektionen`-Anker ist `display:contents`
+> (keine Box) → kein Scroll-Ziel. Fix: NEU `scrollToLektionen()` scrollt bei `location.hash === '#lektionen'`
+> zur echten Karte (`lessons-card` sichtbar, sonst `no-lessons-card`) via `scrollIntoView`, im `load`-Handler
+> nach `loadUser`/`renderLessonsList`; + `hashchange`-Listener (schon auf dem Dashboard). `no-lessons-card`
+> bekam `scroll-margin-top:80px`. nav.js/Render-Logik/Modal/Daten UNBERÜHRT. `node --check` grün, headless
+> verifiziert (Direktaufruf + hashchange + Platzhalter scrollen alle korrekt). Details im LEDGER.
+> NÄCHSTES = Raum „Proverbios" · (danach Projekt-Politur Richtung Beta).
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 
