@@ -1,4 +1,19 @@
-# AUFTRAG — „Raum ‚Proverbios‘: interaktiver Sprichwort-Raum"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Raum ‚Proverbios': interaktiver Sprichwort-Raum" GEBAUT + auf dev.
+> ZWEI Dateien: NEU `proverbios.html` + `nav.js` (Werkstatt-Sheet-Eintrag). `proverbios.html`: lebendiger
+> vollständiger Capy (`spkCapyAlive`) + 📜-Requisit; Spruch via `spikiuSprichwort` (Zielsprache groß + 🔊 +
+> Übersetzung + Quelle); Gespräch über `/api/gespraech` (erste User-Nachricht trägt den Spruch-Kontext,
+> Antwort = Zielsprache + `[[Übersetzung]]` + 🔊, mehrere Runden); „Nächstes Sprichwort" blättert durch
+> `sprichwort.js`-Daten. Anti-Gamification (kein Streak/Score). `nav.js`: Werkstatt-Sheet + Label (de/es/en)
+> + Icon + `getActive` proverbios→werkstatt. `sprichwort.js`-Daten/`api`/Reel/Dashboard UNBERÜHRT. `node
+> --check` grün, headless verifiziert (Spruch/Capy/Gespräch/„nächster"/nav-Link). Details im LEDGER.
+> HINWEIS: bei nav.js-Headless-Tests frisches Chrome-Profil nötig (persistentes Profil cacht nav.js).
+> NÄCHSTES = Projekt-Politur Richtung Beta.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 
