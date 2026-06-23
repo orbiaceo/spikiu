@@ -1,4 +1,20 @@
-# AUFTRAG — „Diagnose: echten 400-Grund sichtbar machen"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026) — RE-SYNC: Der Diagnose-Code lag bereits seit Commit `4ac46a9`
+> auf dev; Leos Doc-Sync-Commit `2f24e2e` (Re-Upload der Project-Files) hatte NUR Auftrag + Ledger
+> zurückgesetzt, `chat.html` UNBERÜHRT. Diese Sitzung: Integrität geprüft (byte-identisch), `node --check`
+> grün, headless RE-VERIFIZIERT (400 → Karte zeigt „Netz: http 400 · messages: text content blocks must be
+> non-empty"; `console.error gespraech/haeppchen 400` mit Body; „Nochmal" da), Docs re-synchronisiert.
+> KEIN Code-Eingriff (Auftrag war code-seitig schon erfüllt). Inhalt: `errDetail(d,raw)` + robuster
+> Body-Read in `callGespraech` (`throw` mit echtem Grund) + `console.error/warn` in `loadHaeppchen`.
+> **FRAGE AN DESIGN:** Bitte beim Erstellen eines NEUEN Auftrags den vorigen Abschluss nicht aus einem
+> alten Project-Snapshot zurücksetzen (sonst wird ein bereits gebauter/gepushter Stand als „offen"
+> markiert). NÄCHSTES: Leos echten Gerät-Fehlertext (Restaurant/Wörter) → gezielter Fix als eigenes Paket.
+> Offen in der Schlange: Phase 3b · Raum „Proverbios" · Lektions-Hintergrund-Bug.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev
