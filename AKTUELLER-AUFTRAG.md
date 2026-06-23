@@ -1,42 +1,40 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Lektionen-Tab: echte Verbindung (Scroll zu den Lektionen)"
-> GEBAUT + auf dev. EINE Datei `dashboard.html`. Ursache: der `#lektionen`-Anker ist `display:contents`
-> (keine Box) → kein Scroll-Ziel. Fix: NEU `scrollToLektionen()` scrollt bei `location.hash === '#lektionen'`
-> zur echten Karte (`lessons-card` sichtbar, sonst `no-lessons-card`) via `scrollIntoView`, im `load`-Handler
-> nach `loadUser`/`renderLessonsList`; + `hashchange`-Listener (schon auf dem Dashboard). `no-lessons-card`
-> bekam `scroll-margin-top:80px`. nav.js/Render-Logik/Modal/Daten UNBERÜHRT. `node --check` grün, headless
-> verifiziert (Direktaufruf + hashchange + Platzhalter scrollen alle korrekt). Details im LEDGER.
-> NÄCHSTES = Raum „Proverbios" · (danach Projekt-Politur Richtung Beta).
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Raum ‚Proverbios‘: interaktiver Sprichwort-Raum"
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 
-> BUG (Leo): der „Lektionen"-Tab fühlt sich wie ein Platzhalter („…#") an. Ursache (geprüft):
-> `nav.js` zeigt korrekt auf `dashboard.html#lektionen` (Z.149), ABER der Anker `<div id="lektionen"
-> style="display:contents">` (dashboard.html Z.329) ist KEIN Scroll-Ziel (display:contents hat keine
-> Box) → die Seite springt nicht zu den Lektionen, bleibt oben. Lektion wird korrekt erzeugt + im
-> Dashboard gerendert (renderLessonsList) — es fehlt nur das Anspringen.
+> Letztes Feature der Wave: ein ruhiger, optionaler Sprichwort-Raum (anti-Gamification —
+> KEINE Streaks/Punkte/Sucht). Spikiu zeigt einen Spruch, der Nutzer schreibt, Spikiu antwortet.
+> Reuse: `sprichwort.js`, `audio.js`, `capy-vivo.js`, `nav.js`, `/api/gespraech`.
 
-## WAS GEBAUT WIRD (nur dashboard.html)
-- Beim Laden UND bei `hashchange`: wenn `location.hash === '#lektionen'`, das echte Lektions-
-  Element in den Blick scrollen — `lessons-card` (wenn sichtbar) bzw. sonst `no-lessons-card`
-  (`scrollIntoView({ behavior:'smooth', block:'start' })`). `scroll-margin-top` ist schon gesetzt.
-- Erst NACH `renderLessonsList(user)` scrollen (damit die Karte schon im DOM/sichtbar ist).
-- Nichts an `nav.js`, an der Lektions-Render-Logik, am Modal oder an den Daten ändern.
+## 1) Neue Seite `proverbios.html`
+- Lädt `nav.js` (Tab „Werkstatt" aktiv), `audio.js`, `capy-vivo.js`, `sprichwort.js`.
+- **Lebendiger Capy** (kanonisches VOLLSTÄNDIGES SVG, `spk-capy-eyes`+`spk-capy-mouth`, belebt
+  via `spkCapyAlive`). „Verkleidung" NUR als kleines Requisit NEBEN dem Capy (z. B. 📜) —
+  das Capy-SVG selbst NIE verändern (nie trasquilado).
+- **Spruch zeigen:** `spikiuSprichwort(PROFILE.zielsprache, PROFILE.muttersprache)` →
+  Zielsprache groß (Lora) + 🔊 (`audio.js` speak) + Übersetzung gedämpft + Quelle (`src`, ohne Link).
+- **Textfeld + Senden:** der Nutzer reagiert/fragt → an `/api/gespraech` (wie freier Flur):
+  eigenes `verlauf`, als ERSTE User-Nachricht den Spruch-Kontext mitgeben (z. B.
+  `'Wir plaudern über das Sprichwort: „' + text + '". ' + userText`), `profile` = PROFILE.
+  Spikius Antwort als Blase: Zielsprache + `[[Übersetzung]]` (gedämpft) + 🔊 — gleiche Darstellung
+  wie im Gespräch. Mehrere Runden möglich.
+- **„Nächstes Sprichwort"**-Knopf → neuer zufälliger Spruch, Verlauf zurück.
+- Stil/Token wie Dashboard-Begrüßer (warm, ruhig). EIN Capy. Keine Punkte/Streak/Score.
+
+## 2) `nav.js` — Eintritt im Werkstatt-Sheet
+- In `sheetItems('werkstatt', …)` einen Eintrag ergänzen:
+  `{ id: 'proverbios', href: 'proverbios.html' }` (nach reader/read/write, vor/nach gym).
+- Label-i18n ergänzen: de „Sprichwörter", es „Proverbios", en „Proverbs"; ein schlichtes Icon
+  (z. B. Buch/Anführungszeichen) im Icon-Set.
 
 ## NICHT ANFASSEN
-- nav.js (Link ist korrekt), renderLessonsList, openLesson/Modal, Memoria, Baum, Begrüßer,
-  api/*, der Upgrade-Knopf (separat).
+- `sprichwort.js`-Daten (nur lesen), `api/gespraech.js`, das Gespräch-Reel (chat.html), Dashboard,
+  Lesebegleiter, andere Räume. Keine Streak-/Gamification-Mechanik.
 
 ## ABNAHME
-- [ ] Tab „Lektionen" tippen → Dashboard öffnet und scrollt sichtbar zu „Meine Lektionen"
-      (bzw. zur Platzhalter-Karte, wenn noch keine da sind).
-- [ ] Funktioniert auch, wenn man schon auf dem Dashboard ist (hashchange).
-- [ ] Nur dashboard.html; `node --check`/Render grün; sonst unverändert.
-
-## DANACH
-- Raum „Proverbios" · (danach Projekt-Politur Richtung Beta).
+- [ ] Werkstatt-Sheet zeigt „Proverbios/Sprichwörter/Proverbs" → öffnet `proverbios.html`.
+- [ ] Lebendiger vollständiger Capy + Spruch (Zielsprache groß + 🔊 + Übersetzung + Quelle).
+- [ ] Nutzer schreibt → echte Spikiu-Antwort von `/api/gespraech` (Zielsprache + Übersetzung + 🔊);
+      mehrere Runden gehen. „Nächstes Sprichwort" lädt einen neuen.
+- [ ] Genau EIN Capy, vollständig; Nav neutral. Kein Score/Streak.
+- [ ] `node --check` grün (extrahiertes Script), Render headless geprüft.
