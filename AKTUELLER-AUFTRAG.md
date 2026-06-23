@@ -1,4 +1,18 @@
-# AUFTRAG — „Gespräch-Reel (Phase 3b): Häppchen als Karten + End-Karte ‚Lektion?‘"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Gespräch-Reel Phase 3b: Häppchen als Karten + End-Karte ‚Lektion?'"
+> GEBAUT + auf dev. EINE Datei `chat.html`, reine Darstellung: der geführte Pfad läuft jetzt durchgehend
+> als horizontales Ein-Karten-Deck (Teil-46-Mechanik). `pickTopic` ruft `enterReel()` schon vor den
+> Häppchen; NEU `mountWidget()` wickelt Wörter-/Hören-Widgets in `reel-haeppchen`-Karten; `addFlowButton`/
+> `addNote`/`showHapSpinner` reel-bewusst; `handover` als `reel-note-card` mit „Weiter"-Knopf (kein erneutes
+> enterReel); `reel-haeppchen`-Karten per Knopf statt Wisch; End-Karte = bestehendes `renderReelEndMenu`.
+> Motor/Daten/Prüf-Logik/Audio/freier Flur/Sprechen-Reel UNBERÜHRT. `node --check` grün, headless verifiziert
+> (ganzer Pfad als Deck: Wörter→Hören→Übergabe→Sprechen+Tinder→End-Karte; freier Flur unverändert). Details
+> im LEDGER. NÄCHSTES = Raum „Proverbios" · Lektions-Hintergrund-Bug.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 Referenz: prototyp-reel-horizontal.html
