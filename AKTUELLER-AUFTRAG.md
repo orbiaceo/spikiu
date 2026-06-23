@@ -1,55 +1,50 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Raum ‚Proverbios': interaktiver Sprichwort-Raum" GEBAUT + auf dev.
-> ZWEI Dateien: NEU `proverbios.html` + `nav.js` (Werkstatt-Sheet-Eintrag). `proverbios.html`: lebendiger
-> vollständiger Capy (`spkCapyAlive`) + 📜-Requisit; Spruch via `spikiuSprichwort` (Zielsprache groß + 🔊 +
-> Übersetzung + Quelle); Gespräch über `/api/gespraech` (erste User-Nachricht trägt den Spruch-Kontext,
-> Antwort = Zielsprache + `[[Übersetzung]]` + 🔊, mehrere Runden); „Nächstes Sprichwort" blättert durch
-> `sprichwort.js`-Daten. Anti-Gamification (kein Streak/Score). `nav.js`: Werkstatt-Sheet + Label (de/es/en)
-> + Icon + `getActive` proverbios→werkstatt. `sprichwort.js`-Daten/`api`/Reel/Dashboard UNBERÜHRT. `node
-> --check` grün, headless verifiziert (Spruch/Capy/Gespräch/„nächster"/nav-Link). Details im LEDGER.
-> HINWEIS: bei nav.js-Headless-Tests frisches Chrome-Profil nötig (persistentes Profil cacht nav.js).
-> NÄCHSTES = Projekt-Politur Richtung Beta.
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Proverbios neu: Tinder-Deck + wiederverwendbarer Übungs-Motor (uebung.js)"
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
+Referenz: prototyp-proverbios-tinder2.html (von Leo abgenommen)
 
-> Letztes Feature der Wave: ein ruhiger, optionaler Sprichwort-Raum (anti-Gamification —
-> KEINE Streaks/Punkte/Sucht). Spikiu zeigt einen Spruch, der Nutzer schreibt, Spikiu antwortet.
-> Reuse: `sprichwort.js`, `audio.js`, `capy-vivo.js`, `nav.js`, `/api/gespraech`.
+> Redesign: Proverbios OHNE KI. Feste DB. Tinder-Deck (eine Karte pro Screen, horizontal):
+> Proverbio → Übung → neues Proverbio → … Daumen LINKS = weiter, RECHTS = zurück (Wiederholung
+> mit echtem Verlauf). Der Übungs-Motor wird als EIGENE wiederverwendbare Datei gebaut (auch für
+> Gym u. a. Räume nutzbar).
 
-## 1) Neue Seite `proverbios.html`
-- Lädt `nav.js` (Tab „Werkstatt" aktiv), `audio.js`, `capy-vivo.js`, `sprichwort.js`.
-- **Lebendiger Capy** (kanonisches VOLLSTÄNDIGES SVG, `spk-capy-eyes`+`spk-capy-mouth`, belebt
-  via `spkCapyAlive`). „Verkleidung" NUR als kleines Requisit NEBEN dem Capy (z. B. 📜) —
-  das Capy-SVG selbst NIE verändern (nie trasquilado).
-- **Spruch zeigen:** `spikiuSprichwort(PROFILE.zielsprache, PROFILE.muttersprache)` →
-  Zielsprache groß (Lora) + 🔊 (`audio.js` speak) + Übersetzung gedämpft + Quelle (`src`, ohne Link).
-- **Textfeld + Senden:** der Nutzer reagiert/fragt → an `/api/gespraech` (wie freier Flur):
-  eigenes `verlauf`, als ERSTE User-Nachricht den Spruch-Kontext mitgeben (z. B.
-  `'Wir plaudern über das Sprichwort: „' + text + '". ' + userText`), `profile` = PROFILE.
-  Spikius Antwort als Blase: Zielsprache + `[[Übersetzung]]` (gedämpft) + 🔊 — gleiche Darstellung
-  wie im Gespräch. Mehrere Runden möglich.
-- **„Nächstes Sprichwort"**-Knopf → neuer zufälliger Spruch, Verlauf zurück.
-- Stil/Token wie Dashboard-Begrüßer (warm, ruhig). EIN Capy. Keine Punkte/Streak/Score.
+## 1) NEU: `uebung.js` — wiederverwendbarer Übungs-Motor
+- Reines JS, KEIN KI/Netz. `window.spikiuUebung(item, type)` → liefert ein DOM-Element (Karte),
+  das die Übung rendert + selbst prüft (richtig=grün, falsch=rot + Lösung zeigen).
+- `item = { text, tr, mean:[richtig, falsch1, falsch2] }` (inhaltsneutral → für andere Räume
+  später mit Vokabeln/Sätzen nutzbar).
+- Typen (wie im Prototyp): `'reorder'` (Wörter ordnen), `'intruder'` (Eindringling finden),
+  `'mc'` (Bedeutung A/B/C), `'gap'` (Lücke füllen). Erweiterbar.
+- Hilfen `shuffle`/`words` enthalten. Eindringlings-/Distraktor-Wortliste intern.
+- Logik/Optik exakt aus prototyp-proverbios-tinder2.html übernehmen.
 
-## 2) `nav.js` — Eintritt im Werkstatt-Sheet
-- In `sheetItems('werkstatt', …)` einen Eintrag ergänzen:
-  `{ id: 'proverbios', href: 'proverbios.html' }` (nach reader/read/write, vor/nach gym).
-- Label-i18n ergänzen: de „Sprichwörter", es „Proverbios", en „Proverbs"; ein schlichtes Icon
-  (z. B. Buch/Anführungszeichen) im Icon-Set.
+## 2) NEU/UMBAU: `proverbios.html` — Tinder-Deck mit Verlauf
+- Lädt `nav.js`, `audio.js`, `capy-vivo.js`, `uebung.js`, `sprichwort.js`.
+- **Feste DB:** Sprüche aus `sprichwort.js` (Zielsprache des Profils + Übersetzung + Quelle).
+  KEIN `/api/gespraech` mehr in diesem Raum (kein KI). Falls `sprichwort.js` keine `mean`-Felder
+  hat: in `proverbios.html` (oder einer kleinen lokalen Liste) je Spruch die 3 Bedeutungen
+  (richtig + 2 Distraktoren) ergänzen — fest, redaktionell.
+- **Proverbio-Karte:** lebendiger VOLLSTÄNDIGER Capy (`spkCapyAlive`), Spruch groß (Zielsprache)
+  + 🔊 (`audio.js`) + Übersetzung + Quelle. Requisit 📜 nur daneben, SVG nie ändern.
+- **Sequenz:** Proverbio → Übung (`window.spikiuUebung`) → neues Proverbio → … horizontal.
+- **Daumen:** links = weiter, rechts = zurück. ECHTER VERLAUF (Schritte-Liste + Zeiger) → beim
+  Zurückgehen erscheint die Karte wie gehabt (gleiche Wörter/Reihenfolge), wie im Prototyp.
+- EIN Capy. Kein Score/Streak/Gamification (anti-Sucht).
+
+## 3) `nav.js`
+- Werkstatt-Sheet-Eintrag `{id:'proverbios', href:'proverbios.html'}` bleibt (schon gebaut).
 
 ## NICHT ANFASSEN
-- `sprichwort.js`-Daten (nur lesen), `api/gespraech.js`, das Gespräch-Reel (chat.html), Dashboard,
-  Lesebegleiter, andere Räume. Keine Streak-/Gamification-Mechanik.
+- `api/gespraech.js`, das Gespräch-Reel (chat.html), Dashboard, Lesebegleiter, andere Räume,
+  `audio.js`/`capy-vivo.js` (nur nutzen). Keine Gamification-Mechanik.
 
 ## ABNAHME
-- [ ] Werkstatt-Sheet zeigt „Proverbios/Sprichwörter/Proverbs" → öffnet `proverbios.html`.
-- [ ] Lebendiger vollständiger Capy + Spruch (Zielsprache groß + 🔊 + Übersetzung + Quelle).
-- [ ] Nutzer schreibt → echte Spikiu-Antwort von `/api/gespraech` (Zielsprache + Übersetzung + 🔊);
-      mehrere Runden gehen. „Nächstes Sprichwort" lädt einen neuen.
-- [ ] Genau EIN Capy, vollständig; Nav neutral. Kein Score/Streak.
-- [ ] `node --check` grün (extrahiertes Script), Render headless geprüft.
+- [ ] `uebung.js` existiert, `window.spikiuUebung(item,type)` liefert geprüfte Übungskarten für
+      alle 4 Typen (eigenständig, ohne Proverbios nutzbar).
+- [ ] `proverbios.html`: Tinder-Deck Proverbio → Übung → Proverbio …; DB fix, KEIN KI-Call.
+- [ ] Daumen links = weiter, rechts = zurück; Zurückgehen zeigt die gleiche Karte (Verlauf).
+- [ ] Lebendiger vollständiger Capy + Spruch + 🔊 + Übersetzung. EIN Capy. Kein Score/Streak.
+- [ ] `node --check` grün (uebung.js + extrahiertes proverbios-Script); headless gerendert.
+
+## DANACH
+- (Optional) Übungs-Motor `uebung.js` in Gym/andere Räume einhängen. Sonst: Beta-Politur.
