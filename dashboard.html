@@ -172,14 +172,20 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 }
 </style>
 <style>
-  /* Teil 35: Dashboard trägt oben das Sprichwort des Tages statt der Marken-Topbar.
-     Die von nav.js injizierte .spk-topbar NUR hier ausblenden (nav.js bleibt unberührt;
-     books/sessions behalten ihre Topbar). */
+  /* Teil 35/41: Die von nav.js injizierte .spk-topbar NUR hier ausblenden — das Dashboard
+     trägt oben seinen eigenen Gruß (Teil 41: Spikiu als atmender Gastgeber). nav.js bleibt
+     unberührt; books/sessions behalten ihre Topbar. */
   .spk-topbar{ display:none !important; }
-  .sprichwort-head{ text-align:center; padding:.3rem 0 1.2rem; border-bottom:1px solid #ece6da; margin-bottom:1.3rem; }
-  .sprichwort-head .spr-text{ font-family:'Lora',serif; font-style:italic; font-size:1.15rem; color:#1a1816; line-height:1.5; }
-  .sprichwort-head .spr-trans{ font-family:'DM Sans',system-ui,sans-serif; font-size:.92rem; color:#6b6560; margin-top:.35rem; }
-  .sprichwort-head .spr-src{ font-family:'DM Sans',system-ui,sans-serif; font-size:.74rem; color:#9a948c; margin-top:.45rem; letter-spacing:.02em; }
+
+  /* Teil 41 — Spikiu begrüßt: vollständiger Capy LINKS (atmend/lebendig via capy-vivo.js),
+     Gruß + Memoria RECHTS. Ein Gruß ohne Spikiu wäre ein Text ohne Autor. */
+  .greeting-host{ display:flex; align-items:flex-start; gap:0.9rem; }
+  .host-capy{ flex:0 0 auto; width:72px; height:72px; transform-origin:center bottom;
+              animation:dash-capy-breathe 4s ease-in-out infinite; }
+  .host-capy svg{ width:100%; height:100%; display:block; overflow:visible; }
+  .host-text{ min-width:0; }
+  @keyframes dash-capy-breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+  @media (prefers-reduced-motion: reduce){ .host-capy{ animation:none; } }
 </style>
 </head>
 <body>
@@ -189,19 +195,32 @@ body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-
 <!-- MAIN -->
 <main class="main">
 
-  <!-- Sprichwort des Tages (Teil 35) — Zielsprache + Übersetzung in der Muttersprache + Quelle ohne Link -->
-  <div class="sprichwort-head" id="sprichwort-head" style="display:none;">
-    <div class="spr-text" id="spr-text"></div>
-    <div class="spr-trans" id="spr-trans"></div>
-    <div class="spr-src" id="spr-src"></div>
-  </div>
-
   <div class="topbar">
-    <div class="greeting">
-      <h1 id="greeting-title">Good morning, <em id="user-name-display">friend</em>.</h1>
-      <p id="greeting-sub">Your tree is waiting. Last session: 2 days ago.</p>
-      <p id="memoria-us" class="memoria-us" hidden></p>
-      <p id="memoria-last" class="memoria-last" hidden></p>
+    <div class="greeting greeting-host">
+      <!-- Teil 41: Spikiu, der Gastgeber — vollständiger kanonischer Capy (2 Ohren / Schnauze /
+           Nase / 4 Pfoten / Lächeln, NIE trasquilado). Augen in der Gruppe spk-capy-eyes →
+           von capy-vivo.js belebt (atmet via CSS dieser Seite, blinzelt, Blick folgt). -->
+      <div class="host-capy" aria-hidden="true">
+        <svg id="dashHostCapy" viewBox="0 0 80 80" fill="none">
+          <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+          <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+          <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+          <g class="spk-capy-eyes">
+            <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+          </g>
+          <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+          <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+          <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+          <path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="host-text">
+        <h1 id="greeting-title">Good morning, <em id="user-name-display">friend</em>.</h1>
+        <p id="greeting-sub">Your tree is waiting. Last session: 2 days ago.</p>
+        <p id="memoria-us" class="memoria-us" hidden></p>
+        <p id="memoria-last" class="memoria-last" hidden></p>
+      </div>
     </div>
     <a href="chat.html" class="btn-speak" data-i18n="speak">Start talking →</a>
   </div>
@@ -1291,27 +1310,15 @@ function renderMemoria(user, native){
   }
 }
 
-// ── Sprichwort des Tages (Teil 35) ────────────────────
-// Liest die Profil-Klarnamen, mappt sie via dashLangCode auf Codes (de/es/en/el)
-// und rendert das Sprichwort der Zielsprache + IMMER die Übersetzung in der
-// Muttersprache + Quelle ohne Link. sprichwort.js ist ein statischer Root-Helfer.
-function renderSprichwort() {
-  if (typeof window.spikiuSprichwort !== 'function') return;
-  let ziel = 'es', mutter = 'de';
-  try {
-    const u = JSON.parse(localStorage.getItem('spikiu_user') || 'null');
-    if (u) {
-      ziel   = dashLangCode((u.profile && u.profile.targetLang) || u.targetLang) || 'es';
-      mutter = dashLangCode(u.nativeLang) || 'de';
-    }
-  } catch (e) {}
-  const s = window.spikiuSprichwort(ziel, mutter);
-  if (!s || !s.text) return;
-  const head = document.getElementById('sprichwort-head');
-  document.getElementById('spr-text').textContent  = s.text;
-  document.getElementById('spr-trans').textContent = s.translation || '';
-  document.getElementById('spr-src').textContent   = s.src ? ('— ' + s.src) : '';
-  if (head) head.style.display = 'block';
+// ── Spikiu, der Gastgeber (Teil 41) ───────────────────
+// Belebt den vollständigen Capy NEBEN dem Gruß: atmet (CSS dieser Seite, .host-capy),
+// blinzelt + Blick folgt via capy-vivo.js (spkCapyAlive). Genau EIN Capy auf dem
+// Dashboard, als Charakter (Gastgeber). Der „Spruch des Tages" zog mit Teil 41 raus
+// (sprichwort.js bleibt im Repo — zieht später in den Raum „Proverbios" um).
+function belebeGastgeber() {
+  if (typeof window.spkCapyAlive !== 'function') return;
+  var svg = document.getElementById('dashHostCapy');
+  if (svg) window.spkCapyAlive(svg);
 }
 
 // ── Der lebende Baum (Teil 36) ────────────────────────
@@ -1344,7 +1351,7 @@ function renderBaum() {
 window.addEventListener('load', () => {
   loadUser();
   renderBaum();
-  renderSprichwort();
+  belebeGastgeber();   // Teil 41: Spikiu atmet/blinzelt als Gastgeber neben dem Gruß
 });
 
 // Close modal on Escape
@@ -1361,7 +1368,7 @@ document.addEventListener('keydown', (e) => {
   window.spkWarm  = warm;
 </script>
 <script src="baum.js" defer></script>
-<script src="sprichwort.js" defer></script>
+<script src="capy-vivo.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>
