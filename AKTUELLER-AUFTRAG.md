@@ -1,4 +1,20 @@
-# AUFTRAG — „Reel-Mechanik: vertikal → HORIZONTAL (Buchseiten / Tinder)"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Reel-Mechanik: vertikal → HORIZONTAL (Buchseiten/Tinder)"
+> GEBAUT + auf dev. EINE Datei `chat.html`, reine Mechanik-Umstellung des Reel-Layers (freier Flur +
+> geführtes Sprechen). CSS: `.reel` von vertikalem `scroll-snap-type:y` → `overflow:hidden`; `.reel-slide`
+> `min-height:100%` → `position:absolute; inset:0` (Karten übereinander, nur die aktuelle sichtbar) +
+> `.reel-current/-next/-past` (links raus / rechts rein, leichter Tinder-Dreh). JS: `reelIndex` +
+> `reelLayout/reelGoTo/reelAdvance/reelBack`; `bindReelGestures` (← wischen / Tipp auf Spikiu-Karte =
+> weiter, Lerner-/Endmenü-Karte per Tipp; → wischen = zurückblättern); `addReelMessage` zeigt zuerst die
+> erste neue Spikiu-Karte; `renderReelCards/-Korrektur/-EndMenu` → `reelLayout`. Hinweis „← nach links
+> wischen". Motor + Karten-Inhalt UNBERÜHRT. `node --check` grün, headless verifiziert (geführt + frei =
+> horizontales Deck, immer EINE Karte, kein Chorizo, Tinder-Karten/Senden/Korrektur/Endmenü/Rail). Details
+> im LEDGER. NÄCHSTES = Phase 3b (Häppchen Wörter/Hören als Karten im Deck + End-Karte „Lektion daraus?").
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-reel-horizontal.html (von Leo abgenommen)
