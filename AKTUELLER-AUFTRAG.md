@@ -1,78 +1,46 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Reel-Mechanik: vertikal → HORIZONTAL (Buchseiten/Tinder)"
-> GEBAUT + auf dev. EINE Datei `chat.html`, reine Mechanik-Umstellung des Reel-Layers (freier Flur +
-> geführtes Sprechen). CSS: `.reel` von vertikalem `scroll-snap-type:y` → `overflow:hidden`; `.reel-slide`
-> `min-height:100%` → `position:absolute; inset:0` (Karten übereinander, nur die aktuelle sichtbar) +
-> `.reel-current/-next/-past` (links raus / rechts rein, leichter Tinder-Dreh). JS: `reelIndex` +
-> `reelLayout/reelGoTo/reelAdvance/reelBack`; `bindReelGestures` (← wischen / Tipp auf Spikiu-Karte =
-> weiter, Lerner-/Endmenü-Karte per Tipp; → wischen = zurückblättern); `addReelMessage` zeigt zuerst die
-> erste neue Spikiu-Karte; `renderReelCards/-Korrektur/-EndMenu` → `reelLayout`. Hinweis „← nach links
-> wischen". Motor + Karten-Inhalt UNBERÜHRT. `node --check` grün, headless verifiziert (geführt + frei =
-> horizontales Deck, immer EINE Karte, kein Chorizo, Tinder-Karten/Senden/Korrektur/Endmenü/Rail). Details
-> im LEDGER. NÄCHSTES = Phase 3b (Häppchen Wörter/Hören als Karten im Deck + End-Karte „Lektion daraus?").
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Diagnose: echten 400-Grund sichtbar machen"
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Referenz: prototyp-reel-horizontal.html (von Leo abgenommen)
+Branch: dev
 
-> PROBLEM (Leo am Gerät): das Reel scrollt VERTIKAL (`scroll-snap-type:y`) → es bildet sich ein
-> „Riesen-Chorizo" von oben nach unten, der Nutzer verliert sich, die Oberfläche springt.
-> NEU = **HORIZONTALES Karten-Deck wie Buchseiten / Tinder: EINE Karte pro Screen.** Der Daumen
-> wischt nach LINKS. Spikiu fragt → ← wischen → Antwort-Karte → wählen → Karte läuft links weg →
-> Spikiu kommt mit der nächsten. **Prinzip: eine Information & Interaktion pro Karte.**
-> Das betrifft den GANZEN Reel-Layer = freier Flur (Phase 2) UND geführtes Sprechen (Phase 3a).
-> Reine MECHANIK-Umstellung; der MOTOR bleibt unberührt.
+> BUG (Leo am Gerät): im geführten Thema (Restaurant, Stufe Wörter) → nach „Wir steigen direkt
+> ins Gespräch ein." zeigt Spikiu: „Spikiu ist gerade nicht erreichbar. Netz: http 400" + Nochmal.
+> WICHTIG (Charta-Regel): „den echten Fehler sichtbar machen, nicht raten." Heute zeigt das
+> Frontend NUR den Status („http 400"), obwohl der GRUND schon im Antwort-Body steckt und
+> verworfen wird. Dieses Paket macht den echten Grund sichtbar — KEIN Blind-Fix.
+>
+> Analyse (frisch geprüft): `callGespraech` (chat.html ~Z.1116) schickt `safeProfile`
+> (immer vollständig) + `safeMessages` (immer Array) → der 400 ist NICHT die Backend-Validierung
+> (gespraech.js Z.86 „Missing messages or profile"), sondern **Anthropic** (gespraech.js Z.132
+> propagiert dessen Status+Body). Der Body sagt warum (z. B. leerer content, Modell, Rollenfolge).
+> Modell `claude-sonnet-4-5` lief DIESE Sitzung noch (Phase-3a-Test antwortete) → eher NICHT die Ursache.
 
-## WAS HEUTE DA IST (wird umgebaut, nicht ersetzt)
-- `.reel` (Z.226) = `overflow-y:auto; scroll-snap-type:y mandatory` (VERTIKAL — das wird ersetzt).
-- `.reel-slide` (228) = `min-height:100%` gestapelt. `.reel-capy/-line/-speak/-trans/-hint` (229-237).
-- `.reel-hint` (237) = „↑ nach oben wischen". `.reel-learner-field`+`.reel-send`+`.reel-end` (241-246).
-- `.reel-cards`/`.reel-card` (251-252) = Tinder-Antwortkarten (Phase 3a).
-- JS: `enterReel/exitReel`, `addReelMessage()`, Lerner-Slide `#reelLearner`+`reelSend`,
-  `scrollReelToEnd`, `reelTypingOn/Off`, `renderOptionen`→Reel-Karten.
+## WAS GEBAUT WIRD (nur chat.html — Diagnose sichtbar machen)
+1. **`callGespraech`:** der Body ist schon geparst (`var d = await r.json()`). Beim `!r.ok` den
+   ECHTEN Grund mitgeben statt nur den Status:
+   - `console.error('gespraech 400', r.status, d)` (volle Server-Antwort in die Konsole).
+   - Den Wurf erweitern, z. B. `throw new Error('http ' + r.status + ' · ' + detail(d))`, wobei
+     `detail(d)` = `d.error?.message || d.error?.type || d.error || d.detail || JSON.stringify(d)`.
+   - So zeigt die bestehende `showError`-Karte den echten Text (z. B. „messages: text content
+     blocks must be non-empty" oder „model: …" oder „Missing messages or profile").
+2. **`loadHaeppchen` (`/api/haeppchen`, ~Z.1331):** ebenso — bei Fehler `console.error('haeppchen',
+   r.status, body)` und den Grund im Skip-/Fehlertext sichtbar/inspizierbar machen (damit klar
+   wird, ob auch die Häppchen-Generierung 400't und DESHALB übersprungen wird).
+3. Sonst NICHTS ändern. Kein Modellwechsel, kein Umbau der Verlauf-Logik, kein Reel-Eingriff —
+   erst sehen wir den echten Grund, dann kommt der gezielte Fix als eigenes Paket.
 
-## WAS GEBAUT WIRD (nur chat.html, nur die Reel-MECHANIK)
-1. **`.reel` von vertikalem Scroll-Snap auf HORIZONTALES Ein-Karten-Deck umstellen:** kein
-   `scroll-snap-type:y`, kein vertikales Scrollen, KEIN Stapel. Es ist IMMER nur EINE Karte
-   sichtbar (die anderen sind nicht im Sichtfeld). Optik/Animation aus prototyp-reel-horizontal.html.
-2. **Vorrücken = Karte läuft nach LINKS raus, nächste kommt von RECHTS:** beim Weiter die aktuelle
-   Karte `translateX(-114%)`+fade, die neue von `translateX(114%)`→0 (sanfte Transition, leichter
-   Tinder-Dreh erlaubt). Genau EINE Karte pro Screen.
-3. **Spikiu-Karte:** Capy + große Zielsprachen-Zeile + 🔊 + `[[…]]`-Übersetzung + Hinweis
-   **„← nach links wischen"** (statt „↑ nach oben"). Wisch nach LINKS (Touch deltaX < ~−45) ODER
-   Tipp → nächste Karte. (`reel-hint`-Text + Pfeil entsprechend ändern.)
-4. **Lerner-Karte:**
-   - Geführt: die Tinder-Karten (`.reel-cards`/`.reel-card`) auf der Lerner-Karte. Tipp auf eine
-     → bestehender `sendUserTurn(option)` → Karte läuft nach links → Spikius nächste Karte.
-   - Frei: das Textfeld (`.reel-learner-field`) + Senden → `sendUserTurn` → links weg → nächste.
-   - Während des Backend-Aufrufs eine kurze „Spikiu denkt…"-Karte (aus `reelTypingOn`), dann
-     Spikius Antwort-Karte.
-5. **Wischen nach links nur auf Spikiu-/End-Karten;** auf der Lerner-Karte wird per Tipp gewählt
-   (bzw. getippt/gesendet) — danach automatisch weiter. Optional (wenn einfach): nach RECHTS
-   wischen = vorige Karte ansehen (nur lesen, kein Re-Senden). Wenn fummelig → weglassen.
-
-## MOTOR — NICHT ANFASSEN
-- `addReelMessage`-PARSING (Ziel/`[[…]]`-Trennung), `sendUserTurn`, `turn`/Fetch, `/api/gespraech`,
-  `extractOptionen`, `renderOptionen`-DATEN, `speakText`/🔊, Lektions-Logik, `setStage`/Rail,
-  Häppchen-Prep, Profil/Voz, der immersive Charakter-Opener (Phase 1).
-- Es ändert sich NUR, WIE die Slides angeordnet/gewechselt werden (vertikal→horizontal), nicht WAS
-  sie enthalten. `capy-vivo.js` nur Aufruf; Nav neutral, kein Klon; Capy nie trasquilado.
+## NICHT ANFASSEN
+- Reel-Mechanik (Teil 46), Opener, `sendUserTurn`/`turn`-Logik, `api/gespraech.js`,
+  `api/haeppchen.js`, das Modell, Profil/Voz. NUR die Fehler-Sichtbarkeit im Frontend.
 
 ## ABNAHME
-- [ ] Im Reel (freier Flur UND geführtes Sprechen) ist IMMER nur EINE Karte sichtbar — kein
-      vertikaler „Chorizo", kein Scrollen.
-- [ ] Spikiu-Karte: ← nach links wischen (oder Tipp) → nächste Karte (Karte fliegt links raus,
-      neue kommt von rechts). Hinweis liest „← nach links wischen".
-- [ ] Lerner-Karte: Tinder-Karten (geführt) bzw. Textfeld (frei) → Wahl/Senden → Karte läuft links
-      weg → Spikius nächste Karte. Echtes /api/gespraech, echte Antworten, 🔊 spielt.
-- [ ] Rail-Fortschritt, Korrektur, Lektions-Angebot, Häppchen-Prep alle unverändert funktionsfähig.
-- [ ] Nur `chat.html`; `node --check` grün; headless verifiziert (freier Flur = horizontales Deck;
-      geführtes Sprechen = horizontales Deck mit Karten; kein vertikales Stapeln mehr).
+- [ ] Tritt der Fehler wieder auf, zeigt die Karte (und die Browser-Konsole) den ECHTEN Grund,
+      nicht nur „http 400" — d. h. den Body-Text von Anthropic bzw. dem Backend.
+- [ ] Häppchen-Fehler werden ebenfalls in der Konsole sichtbar (Status + Body).
+- [ ] Sonst unverändert; Nochmal funktioniert weiter. Nur `chat.html`; `node --check` grün.
 
 ## DANACH
-- Phase 3b: Häppchen (Wörter/Hören) als Karten im selben horizontalen Deck + End-Karte „Lektion daraus?".
-- Danach: Raum „Proverbios" · Lektions-Hintergrund-Bug.
+- Leo reproduziert auf dem Gerät → schickt den ECHTEN Fehlertext (Screenshot/Konsole) → dann
+  schreiben wir den gezielten Fix (z. B. leerer content / Rollenfolge / Häppchen) als eigenes Paket.
+- Offen in der Schlange: Phase 3b (Häppchen als Karten + End-Karte „Lektion?") · Raum „Proverbios"
+  · Lektions-Hintergrund-Bug.
