@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Proverbios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff; --bg:#faf9f7; --bg2:#f3f1ee; --ink:#1c1917; --mid:#78716c;
+    --faint:#e7e5e4; --warm:#d6cfc8; --accent:#2d6a4f; --accent2:#e8f5ee; --accent3:#1f5239;
+    --capy:#a97c50; --gold:#a07830;
+    --trans-bg:#f1eee8; --trans-ink:#8a847d; --trans-border:#e2ddd4;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'DM Sans',system-ui,sans-serif;
+    padding-bottom:calc(var(--spk-navh,74px) + env(safe-area-inset-bottom)); -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:680px; margin:0 auto; padding:1.6rem 1.25rem 2rem; }
+
+  /* Gastgeber: lebendiger vollständiger Capy + 📜-Requisit daneben (Capy-SVG NIE verändern). */
+  .prov-host{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.5rem; }
+  .prov-capy-row{ display:flex; align-items:flex-end; gap:0.2rem; }
+  .prov-capy{ width:72px; height:72px; transform-origin:center bottom; animation:provBreathe 4.2s ease-in-out infinite; }
+  .prov-capy svg{ width:100%; height:100%; display:block; overflow:visible; }
+  .prov-prop{ font-size:1.5rem; transform:translateY(-6px) rotate(-8deg); }
+  @keyframes provBreathe{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.045);} }
+  .prov-eyebrow{ font-size:0.7rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold); }
+
+  /* Spruch-Karte */
+  .prov-card{ background:var(--white); border:1px solid var(--faint); border-radius:18px; padding:1.6rem 1.4rem;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05); text-align:center; margin:1rem 0 1.4rem; }
+  .prov-text{ font-family:'Lora',serif; font-size:clamp(1.4rem,4.5vw,1.85rem); line-height:1.4; color:var(--ink); }
+  .prov-speak{ margin:0.9rem auto 0; width:42px; height:42px; border:none; border-radius:50%; cursor:pointer;
+    background:var(--accent2); color:var(--accent); display:flex; align-items:center; justify-content:center; transition:0.16s;
+    -webkit-tap-highlight-color:transparent; }
+  .prov-speak:hover{ background:var(--accent); color:var(--white); }
+  .prov-speak svg{ width:20px; height:20px; }
+  .prov-speak.playing{ animation:provPulse 1s ease infinite; }
+  .prov-speak.loading{ cursor:default; }
+  .prov-speak.loading svg{ display:none; }
+  .prov-speak.loading::after{ content:''; width:16px; height:16px; border:2.5px solid var(--warm); border-top-color:var(--accent); border-radius:50%; animation:provSpin 0.7s linear infinite; }
+  @keyframes provPulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.12);} }
+  @keyframes provSpin{ to{ transform:rotate(360deg);} }
+  .prov-trans{ font-family:'DM Sans',sans-serif; font-style:italic; font-size:0.95rem; color:var(--mid); margin-top:0.85rem; }
+  .prov-src{ font-size:0.74rem; color:#9a948c; letter-spacing:0.02em; margin-top:0.55rem; }
+
+  /* Gespräch */
+  .convo{ display:flex; flex-direction:column; gap:0.9rem; margin-bottom:1.2rem; }
+  .msg{ display:flex; gap:0.6rem; }
+  .msg.user{ flex-direction:row-reverse; }
+  .avatar{ width:30px; height:30px; flex-shrink:0; background:var(--accent2); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-top:2px; }
+  .avatar svg{ width:20px; height:20px; }
+  .bubble-col{ display:flex; flex-direction:column; align-items:flex-start; min-width:0; max-width:84%; }
+  .bubble{ padding:0.8rem 1.05rem; border-radius:1.1rem; font-size:1rem; line-height:1.6; position:relative; }
+  .bubble.spikiu{ background:var(--bg2); color:var(--ink); border-radius:0.3rem 1.1rem 1.1rem 1.1rem; font-family:'Lora',serif; font-style:normal; padding-right:2.6rem; }
+  .bubble.spikiu em, .bubble.spikiu strong{ font-style:normal; }
+  .bubble.user{ background:var(--accent); color:var(--white); border-radius:1.1rem 0.3rem 1.1rem 1.1rem; font-size:0.97rem; align-self:flex-end; }
+  .msg.user .bubble-col{ align-items:flex-end; }
+  .b-speak{ position:absolute; top:0.5rem; right:0.5rem; width:26px; height:26px; border:none; cursor:pointer; background:var(--accent2); color:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:0.16s; -webkit-tap-highlight-color:transparent; }
+  .b-speak:hover{ background:var(--accent); color:var(--white); }
+  .b-speak svg{ width:13px; height:13px; }
+  .b-speak.playing{ animation:provPulse 1s ease infinite; }
+  .b-speak.loading svg{ display:none; }
+  .b-speak.loading::after{ content:''; width:12px; height:12px; border:2px solid var(--warm); border-top-color:var(--accent); border-radius:50%; animation:provSpin 0.7s linear infinite; }
+  .b-trans{ margin-top:0.4rem; background:var(--trans-bg); border:1px solid var(--trans-border); border-radius:8px; padding:0.4rem 0.7rem; font-style:italic; font-size:0.82rem; line-height:1.45; color:var(--trans-ink); }
+  .typing{ background:var(--bg2); border-radius:0.3rem 1.1rem 1.1rem 1.1rem; padding:0.85rem 1.1rem; display:inline-flex; gap:5px; align-items:center; }
+  .typing span{ width:7px; height:7px; background:var(--warm); border-radius:50%; animation:provBounce 1.3s infinite; }
+  .typing span:nth-child(2){ animation-delay:0.18s; } .typing span:nth-child(3){ animation-delay:0.36s; }
+  @keyframes provBounce{ 0%,80%,100%{ transform:translateY(0); background:var(--warm);} 40%{ transform:translateY(-5px); background:var(--capy);} }
+
+  /* Eingabe + nächster Spruch */
+  .prov-input{ display:flex; gap:0.55rem; align-items:flex-end; }
+  .prov-input textarea{ flex:1; background:var(--white); border:1.5px solid var(--faint); border-radius:1.1rem; padding:0.75rem 1.05rem;
+    font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); resize:none; outline:none; min-height:46px; max-height:130px; line-height:1.5; transition:border-color 0.2s; }
+  .prov-input textarea:focus{ border-color:var(--accent); }
+  .prov-send{ width:46px; height:46px; flex-shrink:0; border:none; background:var(--accent); color:var(--white); border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:0.18s; -webkit-tap-highlight-color:transparent; }
+  .prov-send:hover{ background:var(--accent3); } .prov-send:disabled{ opacity:0.5; cursor:default; }
+  .prov-send svg{ width:18px; height:18px; }
+  .prov-next{ display:block; margin:1.4rem auto 0; background:none; border:1.5px solid var(--accent); color:var(--accent); border-radius:100px;
+    padding:0.6rem 1.4rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; transition:0.18s; -webkit-tap-highlight-color:transparent; }
+  .prov-next:hover{ background:var(--accent); color:var(--white); }
+  .prov-err{ color:#b4541f; font-size:0.85rem; text-align:center; margin-top:0.6rem; }
+  @media (prefers-reduced-motion: reduce){ .prov-capy{ animation:none; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="prov-host">
+    <div class="prov-capy-row">
+      <!-- Lebendiger Gastgeber: vollständiger kanonischer Capy (2 Ohren / 4 Pfoten / Augen-Gruppe /
+           Mund), belebt via capy-vivo.js. Das 📜 ist NUR ein Requisit NEBEN dem Capy. -->
+      <div class="prov-capy" aria-hidden="true">
+        <svg id="provCapy" viewBox="0 0 80 80" fill="none">
+          <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+          <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+          <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+          <g class="spk-capy-eyes">
+            <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+            <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+          </g>
+          <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+          <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+          <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+          <path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="prov-prop" aria-hidden="true">📜</span>
+    </div>
+    <div class="prov-eyebrow" id="provEyebrow">Proverbios</div>
+  </div>
+
+  <div class="prov-card">
+    <div class="prov-text" id="provText">…</div>
+    <button class="prov-speak" type="button" id="provSpeak" aria-label="Vorlesen"></button>
+    <div class="prov-trans" id="provTrans"></div>
+    <div class="prov-src" id="provSrc"></div>
+  </div>
+
+  <div class="convo" id="convo"></div>
+
+  <div class="prov-input">
+    <textarea id="provField" rows="1" placeholder="Schreib etwas…"></textarea>
+    <button class="prov-send" type="button" id="provSendBtn" disabled aria-label="Senden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="prov-err" id="provErr" hidden></div>
+
+  <button class="prov-next" type="button" id="provNext">Nächstes Sprichwort</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  SPIKIU · RAUM „PROVERBIOS" (Teil 50) — interaktiver Sprichwort-Raum.
+//  Spikiu zeigt einen Spruch, der Nutzer reagiert, Spikiu antwortet (/api/gespraech).
+//  Reuse: sprichwort.js (Daten), audio.js (🔊), capy-vivo.js (lebendig), nav.js (Werkstatt).
+//  Bewusst ANTI-Gamification: kein Streak, keine Punkte, kein Score.
+// ════════════════════════════════════════════════════════════════════
+var ENDPOINT = '/api/gespraech';
+
+// ── Profil defensiv lesen (Codes de/es/en/el — 1:1 wie chat.html) ──
+var stored = {};
+try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+function langCode(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v)) return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+  if(v.indexOf('engl')>-1) return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  return null;
+}
+var zielC = stored.zielsprache || langCode(stored.targetLang) || 'es';
+var PROFILE = {
+  name:          stored.name || '',
+  muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de',
+  zielsprache:   zielC,
+  koennen:       stored.koennen || 'anfang',
+  fremde_schrift: zielC === 'el'
+};
+function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+
+// ── i18n der Raum-UI (Muttersprache) ──
+var UI = {
+  de:{ eyebrow:'Sprichwörter', placeholder:'Reagiere oder frag Spikiu…', next:'Nächstes Sprichwort', err:'Spikiu ist gerade nicht erreichbar.', ctx:function(s){ return 'Wir plaudern über das Sprichwort: „' + s + '". '; } },
+  es:{ eyebrow:'Proverbios', placeholder:'Reacciona o pregunta a Spikiu…', next:'Otro proverbio', err:'Spikiu no está disponible ahora mismo.', ctx:function(s){ return 'Charlamos sobre el refrán: «' + s + '». '; } },
+  en:{ eyebrow:'Proverbs', placeholder:'React or ask Spikiu…', next:'Next proverb', err:'Spikiu is unavailable right now.', ctx:function(s){ return 'We are chatting about the proverb: "' + s + '". '; } }
+};
+function ui(){ return UI[uiLang()] || UI.de; }
+
+// ── Kleiner vollständiger Capy für die Spikiu-Blasen ──
+var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+
+// ── Darstellungs-Helfer (wie chat.html) ──
+function escPlain(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function fmt(t){
+  var s = (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s = s.replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
+  s = s.replace(/(^|[^\w])_(?=\S)([^_\n]*?\S)_(?!\w)/g,'$1<em>$2</em>');
+  s = s.replace(/\n/g,'<br>');
+  return s;
+}
+function plainForSpeech(s){
+  s = (s||'');
+  s = s.replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*\n]+)\*/g,'$1');
+  s = s.replace(/(^|[^\w])_(?=\S)([^_\n]*?\S)_(?!\w)/g,'$1$2');
+  return s.trim();
+}
+// Zielsprache + EIN [[ Muttersprache ]] trennen (Übersetzungs-Brücke).
+function splitBridge(text){
+  var m = (text||'').match(/\[\[\s*([\s\S]*?)\s*\]\]/);
+  var trans = m ? m[1].trim() : null;
+  var ziel = (text||'').replace(/\[\[[\s\S]*?\]\]/g, ' ').replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  if (!ziel && trans){ ziel = trans; trans = null; }
+  return { ziel: ziel, trans: trans };
+}
+
+// ── Audio (🔊) ──
+var voiceReady = false;
+function warmVoice(){
+  if (!window.spkWarm) return;
+  try { var p = window.spkWarm(PROFILE.zielsprache); if (p && p.then) p.then(function(){ voiceReady = true; }, function(){}); } catch(e){}
+}
+function speakText(text){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, PROFILE.zielsprache); } catch(e){} }
+  try {
+    var synth = window.speechSynthesis;
+    if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[PROFILE.zielsprache] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp; synth.cancel(); synth.speak(u);
+    }
+  } catch(e){}
+}
+function playFrom(btn, text){
+  var loading = !voiceReady;
+  if (btn){ btn.classList.add(loading ? 'loading' : 'playing'); }
+  var done = function(){ voiceReady = true; if (btn){ btn.classList.remove('loading'); btn.classList.remove('playing'); } };
+  var p = speakText(text);
+  if (p && p.then){ p.then(done, done); } else { setTimeout(done, 1400); }
+}
+
+// ── Sprichwort-Logik: Tages-Spruch zuerst, „Nächstes" blättert durch sprichwort.js-Daten ──
+var PLIST = [], provIdx = 0;
+function currentProverb(){
+  var p = PLIST[provIdx] || { text:'', src:'', t:{} };
+  var tr = (p.t && (p.t[PROFILE.muttersprache] || p.t.de || p.t.en || p.t.es)) || '';
+  return { text: p.text, translation: tr, src: p.src };
+}
+function renderProverb(){
+  var s = currentProverb();
+  document.getElementById('provText').textContent  = s.text || '';
+  document.getElementById('provTrans').textContent = s.translation || '';
+  document.getElementById('provSrc').textContent   = s.src ? ('— ' + s.src) : '';
+}
+function nextProverb(){
+  if (!PLIST.length) return;
+  provIdx = (provIdx + 1) % PLIST.length;
+  verlauf = [];
+  document.getElementById('convo').innerHTML = '';
+  renderProverb();
+  field.focus();
+}
+
+// ── Gespräch über den Spruch (eigenes verlauf, /api/gespraech wie freier Flur) ──
+var verlauf = [];
+var busy = false;
+var convo = document.getElementById('convo');
+var field = document.getElementById('provField');
+var sendBtn = document.getElementById('provSendBtn');
+
+function addUser(text){
+  var m = document.createElement('div'); m.className = 'msg user';
+  m.innerHTML = '<div class="bubble-col"><div class="bubble user">' + escPlain(text) + '</div></div>';
+  convo.appendChild(m);
+}
+function addSpikiu(text){
+  var parts = splitBridge(text);
+  var m = document.createElement('div'); m.className = 'msg spikiu';
+  var inner = '<div class="bubble spikiu">' + fmt(parts.ziel)
+    + '<button class="b-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button></div>';
+  if (parts.trans) inner += '<div class="b-trans">' + fmt(parts.trans) + '</div>';
+  m.innerHTML = '<div class="avatar">' + CAPY_SMALL + '</div><div class="bubble-col">' + inner + '</div>';
+  convo.appendChild(m);
+  var sb = m.querySelector('.b-speak');
+  if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(parts.ziel)); };
+}
+function showTyping(){
+  var m = document.createElement('div'); m.className = 'msg spikiu'; m.id = 'provTyping';
+  m.innerHTML = '<div class="avatar">' + CAPY_SMALL + '</div><div class="bubble-col"><div class="typing"><span></span><span></span><span></span></div></div>';
+  convo.appendChild(m);
+}
+function hideTyping(){ var t = document.getElementById('provTyping'); if (t) t.remove(); }
+function showErr(detail){
+  var e = document.getElementById('provErr');
+  e.textContent = ui().err + (detail ? ' (' + detail + ')' : '');
+  e.hidden = false;
+}
+
+function alternate(msgs){
+  var out = [];
+  for (var i=0;i<msgs.length;i++){
+    if (out.length && out[out.length-1].role === msgs[i].role) out[out.length-1] = msgs[i];
+    else out.push(msgs[i]);
+  }
+  return out;
+}
+async function turn(){
+  if (busy) return;
+  busy = true; sendBtn.disabled = true; showTyping();
+  var safeProfile = {
+    name: PROFILE.name||'', muttersprache: PROFILE.muttersprache||'de', zielsprache: PROFILE.zielsprache||'es',
+    koennen: PROFILE.koennen||'anfang', fremde_schrift: !!PROFILE.fremde_schrift
+  };
+  var reply = '', d = null, raw = '';
+  try {
+    var r = await fetch(ENDPOINT, {
+      method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ messages: alternate(verlauf), profile: safeProfile, maxTokens: 600 })
+    });
+    try { raw = await r.text(); } catch(e){ raw = ''; }
+    try { d = raw ? JSON.parse(raw) : null; } catch(e){ d = null; }
+    if (!r.ok){ console.error('proverbios gespraech ' + r.status, d || raw); throw new Error('http ' + r.status); }
+    reply = (d && d.text) || '';
+  } catch(e){
+    hideTyping(); showErr((e && e.message) || ''); busy = false; sendBtn.disabled = field.value.trim()===''; return;
+  }
+  hideTyping();
+  if (reply){ addSpikiu(reply); verlauf.push({ role:'assistant', content: reply }); }
+  busy = false; sendBtn.disabled = field.value.trim()===''; field.focus();
+}
+
+function sendProv(){
+  if (busy) return;
+  var txt = field.value.trim(); if (!txt) return;
+  document.getElementById('provErr').hidden = true;
+  field.value=''; field.style.height='auto'; sendBtn.disabled = true;
+  addUser(txt);
+  // Beim ERSTEN Zug den Spruch-Kontext mitgeben; danach nur den Text.
+  var payload = (verlauf.length === 0) ? (ui().ctx(currentProverb().text) + txt) : txt;
+  verlauf.push({ role:'user', content: payload });
+  turn();
+}
+
+// ── Eingabe-Verdrahtung ──
+field.addEventListener('input', function(){
+  this.style.height='auto'; this.style.height = Math.min(this.scrollHeight,130) + 'px';
+  sendBtn.disabled = busy || this.value.trim()==='';
+});
+field.addEventListener('keydown', function(e){ if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); if (this.value.trim()) sendProv(); } });
+sendBtn.onclick = sendProv;
+document.getElementById('provNext').onclick = nextProverb;
+
+// ── Start (nach den defer-Scripts + Audio-Modul) ──
+window.addEventListener('load', function(){
+  document.getElementById('provEyebrow').textContent = ui().eyebrow;
+  document.getElementById('provNext').textContent = ui().next;
+  field.setAttribute('placeholder', ui().placeholder);
+
+  // Spruch-Daten aus sprichwort.js — Tages-Spruch zuerst, dann durchblättern.
+  if (typeof window.spikiuSprichwort === 'function' && window.spikiuSprichwort.daten){
+    PLIST = window.spikiuSprichwort.daten[PROFILE.zielsprache] || window.spikiuSprichwort.daten.es || [];
+    var daily = window.spikiuSprichwort(PROFILE.zielsprache, PROFILE.muttersprache);
+    for (var i=0;i<PLIST.length;i++){ if (PLIST[i].text === daily.text){ provIdx = i; break; } }
+  }
+  renderProverb();
+
+  // 🔊 am Spruch + Stimme vorwärmen
+  document.getElementById('provSpeak').innerHTML = SPK_ICON;
+  document.getElementById('provSpeak').onclick = function(){ playFrom(this, currentProverb().text); };
+  warmVoice();
+
+  // Lebendiger Gastgeber (capy-vivo): atmet (CSS) + blinzelt + Blick folgt.
+  if (typeof window.spkCapyAlive === 'function'){
+    var svg = document.getElementById('provCapy');
+    if (svg) window.spkCapyAlive(svg);
+  }
+});
+</script>
+<!-- Audio (ES-Modul am Root) → window.spkSpeak/spkWarm fürs 🔊. Fallback steckt in audio.js. -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
+</script>
+<script src="sprichwort.js" defer></script>
+<script src="capy-vivo.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

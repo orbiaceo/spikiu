@@ -63,21 +63,21 @@
       navStart: 'Start', navReader: 'Reader', navTalk: 'Gespräch', navWerkstatt: 'Werkstatt', navMein: 'Mein',
       navLektionen: 'Lektionen',
       reader: 'Reader · Meine Bücher',
-      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Wortschatz-Werkstatt',
+      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Wortschatz-Werkstatt', proverbios: 'Sprichwörter',
       path: 'Lernweg', verlauf: 'Verlauf', lessons: 'Lektionen', settings: 'Einstellungen',
       soon: 'bald' },
     'Español': {
       navStart: 'Inicio', navReader: 'Reader', navTalk: 'Conversa', navWerkstatt: 'Taller', navMein: 'Perfil',
       navLektionen: 'Lecciones',
       reader: 'Reader · Mis libros',
-      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Taller de vocabulario',
+      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Taller de vocabulario', proverbios: 'Proverbios',
       path: 'Ruta', verlauf: 'Progreso', lessons: 'Lecciones', settings: 'Ajustes',
       soon: 'pronto' },
     English: {
       navStart: 'Home', navReader: 'Reader', navTalk: 'Talk', navWerkstatt: 'Workshop', navMein: 'Profile',
       navLektionen: 'Lessons',
       reader: 'Reader · My Books',
-      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Vocabulary Workshop',
+      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Vocabulary Workshop', proverbios: 'Proverbs',
       path: 'Path', verlauf: 'Progress', lessons: 'Lessons', settings: 'Settings',
       soon: 'soon' }
   };
@@ -102,6 +102,7 @@
     if (f.indexOf('chat') === 0) return 'talk';
     if (f.indexOf('schreibwerkstatt') === 0) return 'werkstatt';
     if (f.indexOf('taller') === 0) return 'werkstatt';
+    if (f.indexOf('proverbios') === 0) return 'werkstatt';
     // Reader (books.html + Kapitel cap*) liegt jetzt IN der Werkstatt
     if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'werkstatt';
     if (f.indexOf('sessions') === 0) return 'mein';
@@ -123,6 +124,7 @@
     write: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
     read: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
     gym: '<rect x="2.5" y="9" width="3" height="6" rx="1"/><rect x="18.5" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="10.5" width="2" height="3" rx="0.5"/><rect x="16.5" y="10.5" width="2" height="3" rx="0.5"/><line x1="7.5" y1="12" x2="16.5" y2="12"/>',
+    proverbios: '<path d="M10 8H6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2v2a2 2 0 0 1-2 2"/><path d="M20 8h-4a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2v2a2 2 0 0 1-2 2"/>',
     path: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6"/>',
     verlauf: '<path d="M12 2v8"/><path d="M12 10c-3 0-5-2-5-5"/><path d="M12 10c3 0 5-2 5-5"/><path d="M9 22h6l-1-8h-4z"/>',
     lessons: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
@@ -153,10 +155,11 @@
   function sheetItems(which, t) {
     if (which === 'werkstatt') {
       return [
-        { id: 'reader', href: 'books.html' },           // Reader · Meine Bücher (Bibliothek)
-        { id: 'read',   href: 'taller.html' },           // Lesewerkstatt (Leseverstehen) ≠ Reader
-        { id: 'write',  href: 'schreibwerkstatt.html' }, // Schreibwerkstatt
-        { id: 'gym',    disabled: true }                 // Wortschatz-Werkstatt (bald)
+        { id: 'reader',     href: 'books.html' },           // Reader · Meine Bücher (Bibliothek)
+        { id: 'read',       href: 'taller.html' },           // Lesewerkstatt (Leseverstehen) ≠ Reader
+        { id: 'write',      href: 'schreibwerkstatt.html' }, // Schreibwerkstatt
+        { id: 'proverbios', href: 'proverbios.html' },       // Sprichwort-Raum (Teil 50)
+        { id: 'gym',        disabled: true }                 // Wortschatz-Werkstatt (bald)
       ];
     }
     // 'mein' — Lektionen sind jetzt ein eigener Tab, daher hier raus
