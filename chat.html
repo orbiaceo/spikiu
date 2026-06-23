@@ -245,6 +245,20 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-send:hover { background:var(--accent3); }
 .reel-end { margin-top:0.5rem; background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:0.82rem; text-decoration:underline; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 @media (prefers-reduced-motion: reduce){ .reel-capy{ animation:none; } .reel-hint{ animation:none; } }
+
+/* ── Phase 3a (Teil 45): geführtes SPRECHEN im Reel — Antwort-Paletten als Tinder-Karten,
+   Korrektur-/Endmenü-Slides. Freier Flur (Phase 2) unverändert; Häppchen-Prep bleibt Chat. */
+.reel-cards { display:flex; flex-direction:column; gap:0.6rem; width:100%; max-width:22rem; }
+.reel-card { background:var(--white); border:2px solid var(--accent); color:var(--accent); border-radius:1rem; padding:0.95rem 1.15rem; font-family:'Lora',serif; font-size:1.12rem; font-weight:500; line-height:1.35; cursor:pointer; transition:0.16s; -webkit-tap-highlight-color:transparent; }
+.reel-card:hover { background:var(--accent); color:var(--white); }
+.reel-card:active { transform:scale(0.98); }
+/* Tinder-Karten primär → Textfeld sekundär (gedämpft, kleiner Abstand). */
+.reel-learner .reel-cards ~ .reel-learner-field { margin-top:0.9rem; opacity:0.92; }
+.reel-learner .reel-cards ~ .reel-learner-field textarea { font-size:0.92rem; }
+.reel-korrektur .kk { align-self:center; margin-left:0; max-width:24rem; width:100%; }
+.reel-endmenu .reel-cards { gap:0.55rem; }
+.reel-endmenu .reel-card.full { background:var(--accent); color:var(--white); border-color:var(--accent); }
+.reel-endmenu .reel-card.full:hover { background:var(--accent3); }
 </style>
 </head>
 <body>
@@ -574,6 +588,7 @@ function extractOptionen(t){
 }
 
 function renderKorrekturCard(pairs){
+  if (reelActive){ renderReelKorrektur(pairs); return; }   // Phase 3a: Korrektur als Reel-Slide
   var ui = p3();
   var card = document.createElement('div'); card.className = 'kk';
   card.innerHTML = '<div class="kk-eyebrow">' + escPlain(ui.kkEyebrow) + '</div>'
@@ -597,6 +612,7 @@ function renderEndMenu(){
   if (document.getElementById('endmenu')) return;
   setExitVisible(false);                // Szenenende-Menü zeigt die Optionen schon → Leiste weg
   setStage('sprechen');                 // Szenenende; „Lektion" erst bei „Terminar"
+  if (reelActive){ renderReelEndMenu(); return; }   // Phase 3a: Szenenende-Menü als Reel-Slide
   var ui = p3();
   var wrap = document.createElement('div'); wrap.className = 'endmenu'; wrap.id = 'endmenu';
   wrap.innerHTML =
@@ -611,7 +627,7 @@ function renderEndMenu(){
   wrap.querySelector('#emOtro').onclick = otroTema;
   wrap.querySelector('#emTerminar').onclick = terminar;
 }
-function removeEndMenu(){ var m = document.getElementById('endmenu'); if (m) m.remove(); }
+function removeEndMenu(){ ['endmenu','reelEndMenu'].forEach(function(id){ var m = document.getElementById(id); if (m) m.remove(); }); }
 
 function mismoTema(){                     // neue Runde, gleiches Thema/Wortschatz
   removeEndMenu();
@@ -625,6 +641,7 @@ function otroTema(){                      // zurück zur Themen-Gabelung → reg
   removeEndMenu();
   setExitVisible(false);                 // raus aus dem Rollenspiel → keine Ausstiegs-Leiste
   TOPIC_LABEL = null;
+  if (reelActive) exitReel();            // Phase 3a: Reel verlassen → Gabelung wieder in der Chat-Ansicht
   setStage('thema');
   showGabelung();
 }
@@ -634,6 +651,7 @@ function otroTema(){                      // zurück zur Themen-Gabelung → reg
 function terminar(){
   removeEndMenu();
   setStage('lektion');
+  if (reelActive) exitReel();            // Phase 3a: Reel verlassen → Lektions-Angebot in der Chat-Ansicht
   offerLesson();
 }
 
@@ -691,7 +709,9 @@ function enterReel(){
   chat.style.display = 'none';
   var ia = document.querySelector('.input-area'); if (ia) ia.style.display = 'none';
   reel.hidden = false; reel.innerHTML = '';
-  renderLearnerSlide(true);          // erste Einladung: „Worüber möchtest du plaudern?"
+  // Freier Flur: erste Einladung als Lerner-Slide. Geführtes Sprechen (Phase 3a): der
+  // Seed-Zug spricht zuerst → kein leerer Start-Slide, der erste turn() füllt das Reel.
+  if (!gefuehrt) renderLearnerSlide(true);
 }
 function exitReel(){
   reelActive = false;
@@ -757,8 +777,70 @@ function reelSend(){
   sendUserTurn(text);          // MOTOR unverändert (addMessage('user') routet hierher)
 }
 function reelEnd(){
-  exitReel();                  // zurück zur normalen Ansicht …
+  if (gefuehrt){ terminar(); return; }   // geführtes Sprechen: regulärer Abschluss (setStage Lektion + exitReel + Angebot)
+  exitReel();                  // freier Flur: zurück zur normalen Ansicht …
   offerLesson();               // … bestehende Lektions-Angebot-Logik UNVERÄNDERT
+}
+
+// ── Phase 3a (Teil 45): geführte Sprechen-Elemente als Reel-Slides ──────────
+// Antwort-Paletten → Tinder-Karten auf dem Lerner-Slide (Tipp = bestehender
+// sendUserTurn). Korrektur + Szenenende-Menü als eigene Slides. Inhalt/Logik
+// unverändert — nur Platzierung im Reel statt als Chat-Blasen.
+function renderReelCards(optionen){
+  var learner = document.getElementById('reelLearner'); if (!learner) return;
+  var head = learner.querySelector('.reel-learner-head');
+  if (head) head.textContent = PALETTE_LABEL[uiLang()] || PALETTE_LABEL.de;   // Karten primär
+  var old = learner.querySelector('.reel-cards'); if (old) old.remove();
+  var cards = document.createElement('div'); cards.className = 'reel-cards';
+  optionen.forEach(function(o){
+    var c = document.createElement('button'); c.className = 'reel-card'; c.type = 'button';
+    c.textContent = o;
+    c.onclick = function(){ sendUserTurn(o); };     // identischer Motorpfad wie die alten Chips
+    cards.appendChild(c);
+  });
+  var field = learner.querySelector('.reel-learner-field');
+  learner.insertBefore(cards, field);               // Karten über dem (sekundären) Textfeld
+  scrollReelToEnd();
+}
+function renderReelKorrektur(pairs){
+  var reel = reelEl(); if (!reel) return;
+  var ui = p3();
+  var card = document.createElement('div'); card.className = 'kk';
+  card.innerHTML = '<div class="kk-eyebrow">' + escPlain(ui.kkEyebrow) + '</div>'
+    + '<div class="kk-row kk-head"><div class="h-said">' + escPlain(ui.said) + '</div>'
+    + '<div class="h-better">' + escPlain(ui.better) + '</div></div>';
+  pairs.forEach(function(p){
+    var row = document.createElement('div'); row.className = 'kk-row';
+    var said = document.createElement('div'); said.className = 'kk-cell kk-said'; said.textContent = p.said;
+    var bet = document.createElement('div'); bet.className = 'kk-cell kk-better'; bet.appendChild(document.createTextNode(p.better));
+    var btn = document.createElement('button'); btn.className = 'speak-btn'; btn.type = 'button';
+    btn.setAttribute('aria-label','Vorlesen'); btn.innerHTML = SPK_ICON;
+    btn.onclick = (function(txt){ return function(){ playFrom(btn, plainForSpeech(txt), 'playing'); }; })(p.better);
+    bet.appendChild(btn); row.appendChild(said); row.appendChild(bet); card.appendChild(row);
+  });
+  var slide = document.createElement('div'); slide.className = 'reel-slide reel-korrektur';
+  slide.appendChild(card);
+  var learner = document.getElementById('reelLearner');
+  if (learner) reel.insertBefore(slide, learner); else reel.appendChild(slide);
+  slide.scrollIntoView({ block:'start' });          // Korrektur sichtbar machen (pädagogisch wichtig)
+}
+function renderReelEndMenu(){
+  var reel = reelEl(); if (!reel || document.getElementById('reelEndMenu')) return;
+  removeLearnerSlide();                              // Szene zu Ende → kein „du bist dran"
+  var ui = p3();
+  var slide = document.createElement('div'); slide.className = 'reel-slide reel-endmenu'; slide.id = 'reelEndMenu';
+  var cards = document.createElement('div'); cards.className = 'reel-cards';
+  function card(txt, fn, full){
+    var b = document.createElement('button'); b.type = 'button';
+    b.className = 'reel-card' + (full ? ' full' : ''); b.textContent = txt; b.onclick = fn;
+    return b;
+  }
+  cards.appendChild(card(ui.mismo, mismoTema, false));
+  cards.appendChild(card(ui.otro, otroTema, false));
+  cards.appendChild(card(ui.terminar, terminar, true));
+  slide.appendChild(cards);
+  reel.appendChild(slide);
+  scrollReelToEnd();
 }
 
 // Routing aus den Anzeige-Funktionen (nur bei reelActive). Parsing/Logik unverändert:
@@ -934,6 +1016,7 @@ function removeOptionen(){ var p = document.getElementById('antwortPalette'); if
 function renderOptionen(optionen){
   removeOptionen();
   if (!gefuehrt || !optionen || !optionen.length) return;   // NIE im freien Gespräch
+  if (reelActive){ renderReelCards(optionen); return; }      // Phase 3a: Tinder-Karten auf dem Lerner-Slide
   var ui = uiLang();
   var wrap = document.createElement('div'); wrap.className = 'antwort-palette'; wrap.id = 'antwortPalette';
   var chips = '';
@@ -1403,8 +1486,9 @@ function nextHV(){
 }
 function handover(){
   setStage('sprechen');
-  addNote(HAP_UI[uiLang()].handover);
-  startSeedTurn();
+  addNote(HAP_UI[uiLang()].handover);   // Übergangs-Notiz (noch Chat-Ansicht, gleich Reel)
+  enterReel();                          // Phase 3a: ab „Sprechen" rendert das Roleplay als Reel-Slides
+  startSeedTurn();                      // Seed-Zug → turn() → Spikiu-Slides + Tinder-Karten
 }
 // Der BESTEHENDE P1-Seed-Zug: schickt „Ich möchte das Thema … üben" an /api/gespraech
 // → Themen-Entrada → Rollenspiel. Unverändert, nur jetzt NACH den Häppchen. Das Thema
