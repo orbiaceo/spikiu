@@ -1,67 +1,57 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Dashboard-Begrüßung: zentriert & betont" (Feinschliff)
-> GEBAUT + auf dev. EINE Datei `dashboard.html`, reiner Layout-Feinschliff: `.topbar`/`.greeting-host`
-> row→zentrierte Spalte (Capy mittig oben 64px + weicher Halo via `::before` radial-gradient,
-> atmet/blinzelt weiter via `spkCapyAlive`), Titel betont (clamp 1.5–1.7rem) + Gold-Trenner
-> `.greet-divider` (46px) zwischen Titel und Memoria, `.host-text` zentriert, `.btn-speak` mittiges
-> Pill. `renderMemoria`-Logik/echte Daten/Baum/Lektionen unberührt, kein JS, genau 1 Capy. `node
-> --check` grün, headless verifiziert (Spalte zentriert, Capy lebt, Halo, Gold-Trenner, Memoria echt).
-> Details + Abnahme-Rest im SPIKIU-BUILD-LEDGER.md. NÄCHSTES = Paket „Gespräch-Reel" (unten).
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Gespräch-Reel (Phase 1): Charakter-Opener + Aktivitätswahl"
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Referenz: prototyp-dashboard-zentriert.html (von Leo abgenommen)
+Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Begrüßungs-Screen) · von Leo abgenommen
 
-> Reiner Layout-Feinschliff der schon gebauten Dashboard-Begrüßung (Teil 41). EINE Datei:
-> `dashboard.html`. Inhalt/Memoria-Logik/Baum NICHT ändern — nur Anordnung & Betonung.
+> Der Gespräch-Reel ist der größte Umbau im Projekt. Wir machen ihn in SICHEREN PHASEN, damit
+> das funktionierende Gespräch (chat.html, 1376 Z., echte API + Häppchen + Audio + Lektion) NIE
+> bricht. **PHASE 1 = nur der EINTRITT** (Opener + Aktivitätswahl) als immersiver Charakter-Screen.
+> Der MOTOR bleibt zu 100% unberührt — Aktivität wählen feuert weiter `goFree()`/`pickTopic()`,
+> das Gespräch danach läuft vorerst wie heute. Der Austausch-als-Reel ist PHASE 2.
 
-## WAS GEÄNDERT WIRD (CSS/Layout in dashboard.html)
-Heute steht die Begrüßung als Zeile: `.host-capy` (Capy `#dashHostCapy`) LINKS, `.host-text`
-RECHTS, darunter `.btn-speak`. Neu = **zentrierte Spalte**:
+## WAS HEUTE SCHON DA IST (frisch geprüft, wird WIEDERVERWENDET)
+- `startOpener()` (Z.1357) → `setOpenerChrome(true)` + `renderOpenerGreeting()` + `showGabelung()`.
+- `renderOpenerGreeting()` (Z.1292): `.voz-greet#vozGreet` mit `CAPY_OPENER` (Voz-Capy) +
+  `.voz-greet-line` (Gruß, Zielsprache) + `.voz-hint` („tippen, um Spikiu zu hören"). Voz primero
+  (Paket 5) lebt hier: Tipp → spricht, `spkCapyAlive` belebt den Capy (Mund/Aura).
+- `showGabelung()` (Z.937): „Wähle eine Aktivität" + „Einfach plaudern" + Themen-Chips +
+  „Etwas anderes…". Handler: `goFree()` (962, freier Flur) / `pickTopic(label)` (966, geführtes Thema).
 
-1. **Capy mittig OBEN, ein Tick kleiner + weiche Form (Halo).**
-   - Den Eltern-Container von `.host-capy` + `.host-text` von Zeile (row) auf **zentrierte
-     Spalte** (column, `align-items:center`, `text-align:center`).
-   - `#dashHostCapy` etwas kleiner: ~**64px** (statt ~72).
-   - Hinter dem Capy eine zarte **Halo-Form**: ein radialer `--accent2`-Schein
-     (`radial-gradient`, weich auslaufend), als ruhige visuelle Betonung. Capy bleibt
-     VOLLSTÄNDIG und LEBENDIG — `spkCapyAlive(#dashHostCapy)` weiter aktiv (atmet/blinzelt;
-     `spk-capy-eyes` + `spk-capy-mouth` bleiben).
+## PHASE 1 — was gebaut wird (nur Präsentation, in chat.html)
+Den Opener-Block (`#vozGreet` + Gabelung) zu EINEM immersiven Charakter-Eintritt machen, Optik
+nach `prototyp-final-spikiu-frei.html`:
+1. **Spikiu als Charakter, groß + mittig + lebendig:** der Voz-Capy (`CAPY_OPENER`) etwas größer
+   (~88–92px), zentriert oben, atmet/blinzelt via `spkCapyAlive` (schon gebunden). VOLLSTÄNDIG,
+   nie trasquilado. Tipp-zum-Hören (Voz) BLEIBT unverändert.
+2. **Gruß + Frage zentriert:** die Gruß-Zeile (Zielsprache, aus `VOZ_GREET`) + eine einladende
+   Frage „¿Qué te apetece? / Was möchtest du?" + „¡Tú eliges! …" — in der Optik des Prototyps
+   (Lora, zentriert). `VOZ_HINT` (Muttersprache) bleibt als Hörhinweis.
+3. **Aktivitätswahl als Karten (zentriert):** „💬 Einfach plaudern" als großer Button +
+   Themen als Karten/Chips (Hotel/Café/Taxi/Restaurant/… + „Etwas anderes…"), Stil aus dem
+   Prototyp. Texte/i18n aus `showGabelung` (`chooseActivity`/`free`/`orTopic`/`other`)
+   WIEDERVERWENDEN. Klicks rufen WEITERHIN `goFree()` / `pickTopic()` (Motor unverändert).
 
-2. **Begrüßung + Memoria zentriert & betont.**
-   - `.host-text` zentriert: `#greeting-title`, `#greeting-sub`, der „Weiter plaudern →"-Link,
-     `#memoria-us`, `#memoria-last` — alle mittig.
-   - Titel betont: etwas größere Lora (~1.65–1.7rem), Name weiter im Akzent (`<em>`).
-   - Darunter ein **zarter Trenner** als Betonung: ein dünner kurzer Gold-Strich
-     (`--gold`, ~46px breit, leicht transparent), mittig zwischen Titel und Memoria-Text.
-   - Memoria-Texte zentriert, gleiche echte Inhalte/Logik wie bisher.
-
-3. **Button „Jetzt sprechen →" zentriert.**
-   - `.btn-speak` als mittiges Pill (kein linksbündiges Vollbreit-Element): horizontal
-     zentriert, angenehme Eigenbreite (`inline-flex`, `margin: … auto`).
-
-## NICHT ANFASSEN
-- `renderMemoria`-Logik + echte Daten (`blaetter`/`lessons`) — nur die Elemente zentrieren.
-- `spkCapyAlive`-Aufruf / `capy-vivo.js` (Capy muss weiter atmen + blinzeln).
-- Lebender Baum, Lektionen-Liste, Gratis-Plan-Hinweis (Reihenfolge bleibt), `api/*`, Seele.
-- Kein zweiter Capy. Capy nie trasquilado.
+## MOTOR — NICHT ANFASSEN (heilig, funktioniert)
+- `goFree()`, `pickTopic()`, `startSeedTurn()`, `sendMessage()`, `/api/gespraech`, der ganze
+  Gesprächs-Loop + Blasen-Rendering (= Phase 2), der Fortschrittsbalken/Rail, die Häppchen-Widgets,
+  die Antwort-Paletten, `speakText`/`warmVoice`/🔊, die Lektions-Logik, `spikiu_user`/Profil.
+- Voz-Gesten-Regel (kein Auto-Play) bleibt. `capy-vivo.js` nur aufrufen (nicht ändern).
+- Die Navigation bleibt neutral (Teil 40); KEIN zweiter Capy — der Opener-Capy ist der eine Charakter.
 
 ## ABNAHME
-- [ ] Capy mittig oben, ~64px, mit weichem Halo; atmet + blinzelt weiter (spkCapyAlive intakt).
-- [ ] „Hola Lola, bienvenido" + ganze Memoria (Untertitel · „Weiter plaudern →" · „Wir zwei …" ·
-      „Von letztem Mal …") zentriert; Titel etwas größer + Gold-Trenner darunter.
-- [ ] „Jetzt sprechen →"-Button horizontal zentriert.
-- [ ] Memoria-Inhalte unverändert (echte Daten). Baum/Lektionen unberührt. Genau EIN Capy.
-- [ ] Nur `dashboard.html`; `node --check` grün; headless verifiziert (Capy lebt, alles
-      zentriert rendert).
+- [ ] Beim Betreten des Gesprächs: großer, mittiger, ATMENDER Spikiu begrüßt + „¿Qué te apetece?"
+      + Aktivitäts-Karten (Einfach plaudern + Themen) im Prototyp-Look.
+- [ ] Tipp auf Spikiu → Voz spricht den Gruß (unverändert, kein Auto-Play).
+- [ ] „Einfach plaudern" → freier Flur wie bisher; ein Thema wählen → geführtes Thema wie bisher
+      (Rail/Häppchen/Antwort-Paletten/Audio/Lektion alle unverändert funktionsfähig).
+- [ ] Genau EIN Capy (der Opener-Charakter); vollständig. Nav neutral, kein Klon.
+- [ ] Nur `chat.html` geändert (Präsentation des Openers/Gabelung); Motor unberührt;
+      `node --check` grün; headless verifiziert (Opener rendert, Voz spielt auf Geste, goFree +
+      pickTopic feuern, Gespräch läuft).
 
-## DANACH — bestätigtes nächstes Paket
-**Gespräch-Reel** (Leo + Claude Code einig): chat.html-Opener → Spikiu-als-Charakter-Begrüßung
-(lebendig/atmend, gleiche goldene Regel) + Daumen-REEL (eine Sache pro Screen, Wisch nach oben,
-Tinder-Antwortkarten, 🔊, Fortschrittsbalken, End-Slide „Lektion daraus?"). Nav bleibt stabil
-(neutrales Zwei-Köpfchen-Symbol), KEIN Capy-Klon im Reel. Referenz: prototyp-final-spikiu-frei.html.
-Danach: Raum „Proverbios" · Lektions-Hintergrund-Bug.
+## DANACH (Phasen)
+- **Phase 2 — Austausch als Reel:** den Gesprächs-Loop von Scroll-Blasen auf Vollbild-SLIDES
+  umstellen (eine Sache pro Screen, Wisch nach oben; Spikiu-Slide = große Zeile + 🔊 + Übersetzung;
+  Antwort-Paletten → Tinder-Karten; Fortschrittsbalken = der Rail). Großes eigenes Paket.
+- **Phase 3 — geführte Schritte als Slides** (Häppchen Wörter/Hören) + End-Slide „Lektion daraus?".
+- Danach: Raum „Proverbios" · Lektions-Hintergrund-Bug.
