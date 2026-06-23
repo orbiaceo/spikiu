@@ -11,9 +11,12 @@
    (Start · Reader · GESPRÄCH(Mitte, erhöhter vollständiger Capy) ·
    Werkstatt · Mein). „Werkstatt" und „Mein" öffnen je ein Bottom-Sheet,
    in dem ALLE alten Drawer-Ziele weiterleben. KEIN Hamburger/Drawer mehr.
-   Oben steht nur noch das Marken-Logo (im [data-spk-nav]-Slot, sonst als
-   schlanke Topbar injiziert). Der Mitte-Capy wird via spkCapyAlive
-   (capy-vivo.js, Paket 1) belebt — atmet/blinzelt/Blick folgt/Tipp = Hüpfer.
+   Oben steht nur noch die Wortmarke „Spikiu" (Teil 40: kein Deko-Capy).
+
+   Teil 40 „Spikiu befreit": die Mitte (Gespräch) ist ein NEUTRALES Symbol
+   (zwei Köpfchen, weiß auf grünem erhöhtem Sockel) — KEIN Capy, kein
+   spkCapyAlive in der Navi. So tritt Spikiu nur noch als Charakter in den
+   Räumen auf (Begrüßer im Gespräch, Lesebegleiter im Reader).
 
    Die Leistenhöhe steht als CSS-Variable --spk-navh am :root, damit die
    Seiten unten Platz reservieren (Scroll-Seiten: padding-bottom;
@@ -126,22 +129,13 @@
     settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H4.5a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 6 9.4l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 11 4.6V4.5a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 2.82 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 11H21a2 2 0 0 1 0 4h-.09z"/>'
   };
 
-  // VOLLSTÄNDIGER Capy (2 Ohren, Schnauze, Nase, 4 Pfoten, Lächeln) —
-  // NIE trasquilado. Die vier Augen-Kreise stecken in <g class="spk-capy-eyes">,
-  // damit spkCapyAlive (capy-vivo.js) Blinzeln/Blick darauf anwenden kann.
-  const CAPY_SVG =
-    '<svg viewBox="0 0 80 80" fill="none">' +
-    '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>' +
-    '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>' +
-    '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>' +
-    '<g class="spk-capy-eyes">' +
-    '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>' +
-    '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>' +
-    '</g>' +
-    '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>' +
-    '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>' +
-    '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>' +
-    '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  // Teil 40 „Spikiu befreit": die Nav-Mitte ist NEUTRAL (Gespräch = zwei Köpfchen),
+  // damit Spikiu FREI ist, nur als Charakter in den Räumen aufzutreten (nie als Nav-Deko).
+  // Weiße Linien auf grünem erhöhtem Sockel; kein Capy, kein spkCapyAlive in der Navi.
+  const TALK_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    '<circle cx="8" cy="8" r="2.7"/><path d="M3.3 16.2c0-2.6 2.1-4.2 4.7-4.2s4.7 1.6 4.7 4.2"/>' +
+    '<circle cx="16.6" cy="9.6" r="2.5"/><path d="M12.8 16.6c.3-2.1 2.1-3.3 4.2-3.3 2.4 0 4.1 1.6 4.1 4.1"/></svg>';
 
   function lineIcon(d) {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (d || '') + '</svg>';
@@ -196,15 +190,14 @@
   .spk-tab .spk-tab-ic svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
   .spk-tab.spk-active{color:#2d6a4f;}
   .spk-tab.spk-active .spk-tab-ic svg{stroke:#2d6a4f;}
-  /* zentraler erhöhter Spikiu (Gespräch) — VOLLSTÄNDIGER Capy */
+  /* zentraler erhöhter Gespräch-Knopf — NEUTRAL (zwei Köpfchen, weiß auf grün), kein Capy */
   .spk-tab.spk-center{flex:0 0 auto;margin:0 .15rem;}
-  .spk-tab.spk-center .spk-ball{width:60px;height:60px;border-radius:50%;background:#e8f2ed;border:4px solid #faf9f7;
+  .spk-tab.spk-center .spk-ball{width:60px;height:60px;border-radius:50%;background:#2d6a4f;border:4px solid #faf9f7;
     box-shadow:0 6px 18px rgba(45,106,79,.28);display:flex;align-items:center;justify-content:center;
-    transform:translateY(-14px);transition:transform .16s;overflow:visible;animation:spk-capy-breathe 4.5s ease-in-out infinite;}
-  .spk-tab.spk-center.spk-active .spk-ball{background:#d8ecdf;}
-  .spk-tab.spk-center .spk-ball svg{width:48px;height:48px;overflow:visible;}
+    transform:translateY(-14px);transition:transform .16s,background .16s;}
+  .spk-tab.spk-center.spk-active .spk-ball{background:#1f5239;}
+  .spk-tab.spk-center .spk-ball svg{width:28px;height:28px;}
   .spk-tab.spk-center .spk-lbl{transform:translateY(-11px);color:#2d6a4f;font-weight:700;}
-  @keyframes spk-capy-breathe{0%,100%{transform:translateY(-14px) scale(1)}50%{transform:translateY(-14px) scale(1.05)}}
 
   /* ── Bottom-Sheets (Werkstatt / Mein) ── */
   .spk-sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:95;opacity:0;pointer-events:none;transition:opacity .22s ease;}
@@ -236,7 +229,8 @@
 
   // ── Topbar (nur Marken-Logo) ─────────────────────────────────────
   function buildTopbar() {
-    const brand = '<a href="dashboard.html" class="spk-brand">' + CAPY_SVG + '<span>Spi<em>k</em>iu</span></a>';
+    // Teil 40: kein Deko-Capy oben mehr — schlichte Wortmarke „Spikiu" (nur Text).
+    const brand = '<a href="dashboard.html" class="spk-brand"><span>Spi<em>k</em>iu</span></a>';
     const host = document.querySelector('[data-spk-nav]');
     if (host) {
       // Slot-Modus: Seite hat eine eigene Kopfzeile → nur das Logo hinein, kein zweiter Balken.
@@ -262,7 +256,7 @@
       const cls = 'spk-tab' + (tab.center ? ' spk-center' : '') + (tab.id === active ? ' spk-active' : '');
       if (tab.center) {
         inner += '<a class="' + cls + '" href="' + tab.href + '" data-tab="' + tab.id + '">' +
-          '<span class="spk-ball">' + CAPY_SVG + '</span><span class="spk-lbl">' + label + '</span></a>';
+          '<span class="spk-ball">' + TALK_ICON + '</span><span class="spk-lbl">' + label + '</span></a>';
       } else if (tab.href) {
         inner += '<a class="' + cls + '" href="' + tab.href + '" data-tab="' + tab.id + '">' +
           '<span class="spk-tab-ic">' + lineIcon(TAB_ICON[tab.id]) + '</span><span>' + label + '</span></a>';
@@ -357,25 +351,9 @@
     if (h > 0) document.documentElement.style.setProperty('--spk-navh', h + 'px');
   }
 
-  // ── Mitte-Capy beleben (capy-vivo.js, Paket 1) ───────────────────
-  function ensureVivo(cb) {
-    if (window.spkCapyAlive) return cb();
-    const ex = document.querySelector('script[data-spk-capy-vivo]');
-    if (ex) { ex.addEventListener('load', cb); return; }
-    const s = document.createElement('script');
-    s.src = '/capy-vivo.js'; s.defer = true; s.setAttribute('data-spk-capy-vivo', '1');
-    s.addEventListener('load', cb);
-    document.head.appendChild(s);
-  }
-  function animateCenterCapy() {
-    const center = document.querySelector('.spk-tab.spk-center');
-    if (!center) return;
-    const svg = center.querySelector('svg');
-    if (!svg) return;
-    ensureVivo(function () {
-      if (window.spkCapyAlive) window.spkCapyAlive(svg, { tapTarget: center });
-    });
-  }
+  // Teil 40: kein Mitte-Capy mehr → kein spkCapyAlive/capy-vivo-Laden in der Navi.
+  // capy-vivo.js bleibt unberührt und wird weiter von chat.html (Begrüßer) und
+  // lesebegleiter.js (Reader) genutzt.
 
   // ── Montage ──────────────────────────────────────────────────────
   function mount() {
@@ -383,7 +361,6 @@
     buildTopbar();
     buildBottomNav();
     buildSheets();
-    animateCenterCapy();
     window.addEventListener('resize', measureNavH);
     window.addEventListener('orientationchange', measureNavH);
     window.addEventListener('hashchange', updateActiveTab);
