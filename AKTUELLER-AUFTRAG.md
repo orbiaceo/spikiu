@@ -1,4 +1,17 @@
-# AUFTRAG — „Dashboard: Spruch raus + Spikiu begrüßt (atmend)"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Dashboard: Spruch raus + Spikiu begrüßt (atmend)" GEBAUT
+> + auf dev. EINE Datei `dashboard.html`: (1) Sprichwort-Kopf + `renderSprichwort` + CSS + sprichwort.js-
+> Einbindung raus (Datei bleibt im Repo); (2) Gruß-Block in Flex-Zeile `.greeting-host` — vollständiger
+> kanonischer Capy (72px, 10 Ellipsen, `spk-capy-eyes`/`spk-capy-mouth`) LINKS, via `spkCapyAlive`
+> belebt (atmet via CSS, blinzelt, Blick folgt), Gruß + Memoria UNVERÄNDERT rechts. capy-vivo.js
+> eingebunden. `node --check` grün, headless verifiziert (kein Spruch, Capy lebt, Memoria echt, genau
+> 1 Capy, Baum unberührt). Details + Abnahme-Rest im SPIKIU-BUILD-LEDGER.md. NÄCHSTES laut Reihenfolge
+> unten = Paket 1 „Gespräch-Reel" (chat.html-Opener, gleiche Lebendig-Regel).
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-dashboard-spikiu-gruss.html (von Leo abgenommen)
