@@ -1,54 +1,29 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Gespräch-Reel Phase 3b: Häppchen als Karten + End-Karte ‚Lektion?'"
-> GEBAUT + auf dev. EINE Datei `chat.html`, reine Darstellung: der geführte Pfad läuft jetzt durchgehend
-> als horizontales Ein-Karten-Deck (Teil-46-Mechanik). `pickTopic` ruft `enterReel()` schon vor den
-> Häppchen; NEU `mountWidget()` wickelt Wörter-/Hören-Widgets in `reel-haeppchen`-Karten; `addFlowButton`/
-> `addNote`/`showHapSpinner` reel-bewusst; `handover` als `reel-note-card` mit „Weiter"-Knopf (kein erneutes
-> enterReel); `reel-haeppchen`-Karten per Knopf statt Wisch; End-Karte = bestehendes `renderReelEndMenu`.
-> Motor/Daten/Prüf-Logik/Audio/freier Flur/Sprechen-Reel UNBERÜHRT. `node --check` grün, headless verifiziert
-> (ganzer Pfad als Deck: Wörter→Hören→Übergabe→Sprechen+Tinder→End-Karte; freier Flur unverändert). Details
-> im LEDGER. NÄCHSTES = Raum „Proverbios" · Lektions-Hintergrund-Bug.
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Lektionen-Tab: echte Verbindung (Scroll zu den Lektionen)"
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
-Referenz: prototyp-reel-horizontal.html
 
-> Ziel: das geführte Thema durchgehend EINE-KARTE-PRO-SCREEN. Heute laufen die Häppchen
-> (Wörter/Hören) noch inline im Chat (Blasen); ab „Sprechen" ist schon Reel (Phase 3a).
-> 3b hebt auch den PREP + das Ende auf das horizontale Karten-Deck. MOTOR/Logik unverändert —
-> nur die DARSTELLUNG wandert in Reel-Karten.
+> BUG (Leo): der „Lektionen"-Tab fühlt sich wie ein Platzhalter („…#") an. Ursache (geprüft):
+> `nav.js` zeigt korrekt auf `dashboard.html#lektionen` (Z.149), ABER der Anker `<div id="lektionen"
+> style="display:contents">` (dashboard.html Z.329) ist KEIN Scroll-Ziel (display:contents hat keine
+> Box) → die Seite springt nicht zu den Lektionen, bleibt oben. Lektion wird korrekt erzeugt + im
+> Dashboard gerendert (renderLessonsList) — es fehlt nur das Anspringen.
 
-## WAS GEBAUT WIRD (nur chat.html)
-1. **Reel ab Themenstart aktiv:** bei Themenwahl `enterReel()` schon vor den Häppchen
-   (statt erst bei `setStage('sprechen')`), damit der ganze geführte Pfad im Deck läuft.
-2. **Wörter als Karte(n):** das Vokabel-Widget (`ws-words`, Audio pro Wort) als Reel-Karte
-   darstellen — gleiche Daten (`HAP`), gleiche Interaktion (antippen/anhören), 🔊 bleibt.
-   „Verstanden — weiter" → nach links / nächste Karte.
-3. **Hören als Karte(n):** das Wortspot-Hörverständnis (`ws-word` Tippen, Prüfen) als Reel-Karte;
-   gleiche Prüf-Logik (richtig=grün, verpasst=gestrichelt). Ergebnis → weiter.
-4. **Übergabe:** der Handover-Satz („Jetzt üben wir das im Gespräch") als kurze Karte → dann
-   bestehender Seed-Zug → Sprechen-Reel (Phase 3a, unverändert).
-5. **End-Karte „Lektion daraus?":** das Endmenü/Lektion-Angebot (gleiches/anderes Thema /
-   Beenden→Lektion) als Reel-End-Karte (`reel-endmenu`/`reel-card.full` existiert schon).
-   Knöpfe rufen die bestehenden Handler (`mismoTema`/`otroTema`/Lektion).
-6. **Rail** zeigt den Fortschritt durchgehend (Thema→Wörter→Hören→Sprechen→Lektion).
+## WAS GEBAUT WIRD (nur dashboard.html)
+- Beim Laden UND bei `hashchange`: wenn `location.hash === '#lektionen'`, das echte Lektions-
+  Element in den Blick scrollen — `lessons-card` (wenn sichtbar) bzw. sonst `no-lessons-card`
+  (`scrollIntoView({ behavior:'smooth', block:'start' })`). `scroll-margin-top` ist schon gesetzt.
+- Erst NACH `renderLessonsList(user)` scrollen (damit die Karte schon im DOM/sichtbar ist).
+- Nichts an `nav.js`, an der Lektions-Render-Logik, am Modal oder an den Daten ändern.
 
 ## NICHT ANFASSEN
-- `loadHaeppchen`-DATEN/`/api/haeppchen`, die Vokabel-/Wortspot-PRÜF-Logik, `sendUserTurn`,
-  `turn`/api, `extractOptionen`, `renderOptionen`-Daten, Audio, die Lektions-Generierung,
-  Phase-3a-Sprechen-Reel, freier Flur (Phase 2), Opener (Phase 1), Profil/Voz.
-- Horizontale Karten-Mechanik (Teil 46) nur wiederverwenden. Capy vollständig, EIN Capy, Nav neutral.
+- nav.js (Link ist korrekt), renderLessonsList, openLesson/Modal, Memoria, Baum, Begrüßer,
+  api/*, der Upgrade-Knopf (separat).
 
 ## ABNAHME
-- [ ] Thema wählen → der ganze Pfad läuft als horizontales Deck: Wörter-Karte → Hören-Karte →
-      Übergabe → Sprechen (Karten + Tinder) → End-Karte „Lektion?". Eine Karte pro Screen.
-- [ ] Vokabel-Audio + Wortspot-Prüfung funktionieren wie bisher (nur jetzt als Karten).
-- [ ] End-Karte: gleiches/anderes Thema / Beenden→Lektion → bestehende Handler; Lektion entsteht.
-- [ ] Freier Flur + Sprechen-Reel unverändert. Nur chat.html; `node --check` grün; headless geprüft.
+- [ ] Tab „Lektionen" tippen → Dashboard öffnet und scrollt sichtbar zu „Meine Lektionen"
+      (bzw. zur Platzhalter-Karte, wenn noch keine da sind).
+- [ ] Funktioniert auch, wenn man schon auf dem Dashboard ist (hashchange).
+- [ ] Nur dashboard.html; `node --check`/Render grün; sonst unverändert.
 
 ## DANACH
-- Raum „Proverbios" · Lektions-Hintergrund-Bug.
+- Raum „Proverbios" · (danach Projekt-Politur Richtung Beta).
