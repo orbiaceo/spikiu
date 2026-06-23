@@ -1,4 +1,18 @@
-# AUFTRAG — „Gespräch-Reel (Phase 1): Charakter-Opener + Aktivitätswahl"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Gespräch-Reel Phase 1: Charakter-Opener + Aktivitätswahl"
+> GEBAUT + auf dev. EINE Datei `chat.html`, reine Präsentation: Voz-Capy 64→90px (groß/mittig,
+> atmet/blinzelt via `spkCapyAlive`), Gruß größer (Lora), NEU einladende Frage `VOZ_INVITE` in der
+> Zielsprache („¿Qué te apetece hoy? ¡Tú eliges!"), Gabelung von links-eingerückt → zentrierte Spalte
+> mit zentrierten Themen-Chips. Motor (`goFree`/`pickTopic`/Loop/Rail/Häppchen/Paletten/Audio/Lektion)
+> + alle IDs/Handler UNBERÜHRT; was Spikiu spricht (`VOZ_GREET`) unverändert, kein Auto-Play; genau 1
+> Capy, Nav neutral. `node --check` grün, headless verifiziert (Opener rendert, Voz spielt auf Geste,
+> goFree feuert, Capy lebt). Details + Abnahme-Rest im SPIKIU-BUILD-LEDGER.md.
+> NÄCHSTES = Phase 2 „Austausch als Reel" (Gesprächs-Loop → Vollbild-Slides).
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Begrüßungs-Screen) · von Leo abgenommen
