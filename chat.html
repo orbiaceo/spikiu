@@ -1140,6 +1140,20 @@ function showError(detail){
 }
 
 // ── Backend ──────────────────────────────────────────────────────
+// Den ECHTEN Fehlergrund aus einer Server-Antwort ziehen (Anthropic/Backend), nicht nur den Status.
+// d = geparster Body (oder null), raw = roher Text (Fallback, falls kein JSON).
+function errDetail(d, raw){
+  if (d){
+    if (d.error && d.error.message) return d.error.message;
+    if (d.error && d.error.type) return d.error.type;
+    if (typeof d.error === 'string') return d.error;
+    if (d.detail) return d.detail;
+    if (d.message) return d.message;
+    try { return JSON.stringify(d); } catch(e){}
+  }
+  return (raw || '').replace(/\s+/g,' ').trim().slice(0, 300) || 'kein Body';
+}
+
 async function callGespraech(){
   // Verlauf glätten: nie zwei gleiche Rollen hintereinander (sonst lehnt Anthropic ab).
   function alternate(msgs){
@@ -1164,9 +1178,17 @@ async function callGespraech(){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages: safeMessages, profile: safeProfile, maxTokens: 600 })
   });
-  var d = await r.json();
-  if (!r.ok) throw new Error('http ' + r.status);
-  return d.text || '';
+  // Diagnose (Charta: den echten Fehler SEHEN, nicht raten): Body robust lesen (Text→JSON),
+  // bei !ok die volle Server-Antwort loggen und den ECHTEN Grund in den Fehler geben.
+  var raw = '';
+  try { raw = await r.text(); } catch(e){ raw = ''; }
+  var d = null;
+  try { d = raw ? JSON.parse(raw) : null; } catch(e){ d = null; }
+  if (!r.ok){
+    console.error('gespraech ' + r.status, d || raw);
+    throw new Error('http ' + r.status + ' · ' + errDetail(d, raw));
+  }
+  return (d && d.text) || '';
 }
 
 // EINE Runde abrufen: leere History → Opener, sonst Antwort auf den letzten User-Zug.
@@ -1372,9 +1394,9 @@ async function loadHaeppchen(){
   lockComposer(true);
   warmVoice(PROFILE.zielsprache);     // Stimme still im Hintergrund vorwärmen
   showHapSpinner();
-  var data = null;
+  var data = null, r = null, raw = '';
   try {
-    var r = await fetch('/api/haeppchen', {
+    r = await fetch('/api/haeppchen', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1385,12 +1407,16 @@ async function loadHaeppchen(){
         fremde_schrift: !!PROFILE.fremde_schrift
       })
     });
-    data = await r.json();
-  } catch(e){ data = null; }
+    try { raw = await r.text(); } catch(e){ raw = ''; }
+    try { data = raw ? JSON.parse(raw) : null; } catch(e){ data = null; }
+    // Diagnose: 400 hier 't würde sonst still als „skip" durchrutschen → Status + Body sichtbar.
+    if (!r.ok) console.error('haeppchen ' + r.status, data || raw);
+  } catch(e){ data = null; console.error('haeppchen fetch fehlgeschlagen', e); }
   hideHapSpinner();
   // Robust: ohne brauchbaren Wortschatz NICHT hängen bleiben — direkt ins Rollenspiel
   // (der P1-Pfad funktioniert allein; die Häppchen sind ein Plus, kein Muss).
   if (!data || !Array.isArray(data.wortschatz) || !data.wortschatz.length){
+    console.warn('haeppchen übersprungen', r ? ('status ' + r.status + ' · ' + errDetail(data, raw)) : 'kein Response', data);
     addNote(HAP_UI[uiLang()].skip);
     startSeedTurn();
     return;
