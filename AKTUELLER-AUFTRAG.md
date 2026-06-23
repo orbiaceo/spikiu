@@ -1,4 +1,19 @@
-# AUFTRAG — „Gespräch-Reel (Phase 3a): Sprechen-Roleplay als Reel + Tinder-Karten"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Gespräch-Reel Phase 3a: Sprechen-Roleplay als Reel + Tinder-Karten"
+> GEBAUT + auf dev. EINE Datei `chat.html`. Hebt nur den geführten SPRECHEN-Teil auf die Phase-2-Reel-
+> Schienen: `handover()` ruft bei „Sprechen" `enterReel()`; `renderOptionen`-Guard → `renderReelCards`
+> (Antwort-Paletten als große Tinder-Karten auf dem Lerner-Slide, Tipp = bestehender `sendUserTurn`,
+> Textfeld sekundär); `renderKorrekturCard`/`renderEndMenu`-Guards → Korrektur- bzw. Endmenü-Slide;
+> `otroTema`/`terminar` rufen `exitReel`; `reelEnd`→`terminar` im geführten Modus; `enterReel` rendert
+> Frei-Start-Slide nur wenn `!gefuehrt`. Rail bleibt oben als Fortschritt. Motor + freier Flur (Phase 2)
+> + Häppchen-Prep UNBERÜHRT. `node --check` grün, headless verifiziert (geführtes Sprechen = Reel + Karten,
+> frei = Reel ohne Karten, Korrektur/Endmenü/terminar/otroTema, Lektion-Angebot da). Details im LEDGER.
+> NÄCHSTES = Phase 3b (Häppchen Wörter/Hören als Slides + End-Slide „Lektion daraus?").
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Tinder-Karten) · von Leo abgenommen
