@@ -223,9 +223,14 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Gespräch-Reel Phase 2 (Teil 44): der FREIE FLUR als Vollbild-Slides. ──
    Nur sichtbar, wenn reelActive (gefuehrt===false). Scroll-Snap = Wisch nach
    oben blättert nativ; eine Sache pro Screen. Geführtes Thema bleibt Blasen. */
-.reel { flex:1; overflow-y:auto; overflow-x:hidden; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; scroll-behavior:smooth; background:var(--white); }
+/* Teil 46: horizontales Ein-Karten-Deck (Buchseiten/Tinder) statt vertikalem Scroll-Snap.
+   Slides liegen ABSOLUT übereinander; nur die aktuelle ist sichtbar. Vorrücken = nach links. */
+.reel { flex:1; position:relative; overflow:hidden; background:var(--white); }
 .reel[hidden]{ display:none; }
-.reel-slide { scroll-snap-align:start; scroll-snap-stop:always; box-sizing:border-box; min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:1.1rem; padding:2.5rem 1.5rem 3.6rem; position:relative; }
+.reel-slide { position:absolute; inset:0; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:1.1rem; padding:2.5rem 1.5rem 3.6rem; overflow-y:auto; transform:translateX(114%); opacity:0; pointer-events:none; transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease; will-change:transform,opacity; }
+.reel-slide.reel-current { transform:translateX(0) rotate(0); opacity:1; pointer-events:auto; z-index:2; }
+.reel-slide.reel-next { transform:translateX(114%) rotate(1.5deg); opacity:0; pointer-events:none; z-index:1; }
+.reel-slide.reel-past { transform:translateX(-114%) rotate(-1.5deg); opacity:0; pointer-events:none; z-index:1; }
 .reel-capy { width:52px; height:52px; animation:vozBreathe 4.5s ease-in-out infinite; }
 .reel-capy svg { width:52px; height:52px; display:block; }
 .reel-body { display:flex; flex-direction:column; align-items:center; gap:0.6rem; max-width:22rem; }
@@ -235,7 +240,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-speak svg { width:18px; height:18px; }
 .reel-trans { font-family:'DM Sans',sans-serif; font-style:italic; font-size:0.95rem; line-height:1.5; color:var(--mid); max-width:20rem; }
 .reel-hint { position:absolute; left:0; right:0; bottom:1.4rem; font-size:0.8rem; color:var(--warm); font-weight:500; animation:reelBob 1.8s ease-in-out infinite; }
-@keyframes reelBob { 0%,100%{ transform:translateY(0); opacity:0.7; } 50%{ transform:translateY(-4px); opacity:1; } }
+@keyframes reelBob { 0%,100%{ transform:translateX(0); opacity:0.7; } 50%{ transform:translateX(-5px); opacity:1; } }
 .reel-userbubble { background:var(--accent); color:var(--white); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; padding:0.85rem 1.2rem; font-size:1.05rem; max-width:80%; }
 .reel-learner-head { font-family:'Lora',serif; font-size:1.4rem; line-height:1.3; color:var(--ink); max-width:20rem; }
 .reel-learner-field { display:flex; flex-direction:column; gap:0.7rem; width:100%; max-width:22rem; }
@@ -244,7 +249,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-send { background:var(--accent); color:var(--white); border:none; border-radius:100px; padding:0.7rem 1.6rem; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; align-self:center; -webkit-tap-highlight-color:transparent; }
 .reel-send:hover { background:var(--accent3); }
 .reel-end { margin-top:0.5rem; background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:0.82rem; text-decoration:underline; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-@media (prefers-reduced-motion: reduce){ .reel-capy{ animation:none; } .reel-hint{ animation:none; } }
+@media (prefers-reduced-motion: reduce){ .reel-capy{ animation:none; } .reel-hint{ animation:none; } .reel-slide{ transition:none; } }
 
 /* ── Phase 3a (Teil 45): geführtes SPRECHEN im Reel — Antwort-Paletten als Tinder-Karten,
    Korrektur-/Endmenü-Slides. Freier Flur (Phase 2) unverändert; Häppchen-Prep bleibt Chat. */
@@ -696,9 +701,9 @@ function addPlainSpikiu(text){
 // ════════════════════════════════════════════════════════════════
 var reelActive = false;
 var REEL_UI = {
-  de:{ yourTurn:'Du bist dran', start:'Worüber möchtest du plaudern?', write:'Schreib etwas…', send:'Senden', swipe:'↑ nach oben wischen', end:'Gespräch beenden', error:'Spikiu ist gerade nicht erreichbar.', retry:'Nochmal' },
-  es:{ yourTurn:'Te toca', start:'¿De qué quieres charlar?', write:'Escribe algo…', send:'Enviar', swipe:'↑ desliza hacia arriba', end:'Terminar conversación', error:'Spikiu no está disponible ahora mismo.', retry:'Otra vez' },
-  en:{ yourTurn:'Your turn', start:'What would you like to chat about?', write:'Write something…', send:'Send', swipe:'↑ swipe up', end:'End conversation', error:'Spikiu is unavailable right now.', retry:'Again' }
+  de:{ yourTurn:'Du bist dran', start:'Worüber möchtest du plaudern?', write:'Schreib etwas…', send:'Senden', swipe:'← nach links wischen', end:'Gespräch beenden', error:'Spikiu ist gerade nicht erreichbar.', retry:'Nochmal' },
+  es:{ yourTurn:'Te toca', start:'¿De qué quieres charlar?', write:'Escribe algo…', send:'Enviar', swipe:'← desliza a la izquierda', end:'Terminar conversación', error:'Spikiu no está disponible ahora mismo.', retry:'Otra vez' },
+  en:{ yourTurn:'Your turn', start:'What would you like to chat about?', write:'Write something…', send:'Send', swipe:'← swipe left', end:'End conversation', error:'Spikiu is unavailable right now.', retry:'Again' }
 };
 function reelUI(){ return REEL_UI[uiLang()] || REEL_UI.de; }
 function reelEl(){ return document.getElementById('reel'); }
@@ -708,22 +713,61 @@ function enterReel(){
   var reel = reelEl(); if (!reel) return;
   chat.style.display = 'none';
   var ia = document.querySelector('.input-area'); if (ia) ia.style.display = 'none';
-  reel.hidden = false; reel.innerHTML = '';
+  reel.hidden = false; reel.innerHTML = ''; reelIndex = 0;
+  bindReelGestures();
   // Freier Flur: erste Einladung als Lerner-Slide. Geführtes Sprechen (Phase 3a): der
   // Seed-Zug spricht zuerst → kein leerer Start-Slide, der erste turn() füllt das Reel.
   if (!gefuehrt) renderLearnerSlide(true);
+  reelLayout();
 }
 function exitReel(){
   reelActive = false;
   var reel = reelEl(); if (reel){ reel.hidden = true; reel.innerHTML = ''; }
+  reelIndex = 0;
   chat.style.display = '';
   var ia = document.querySelector('.input-area'); if (ia) ia.style.display = '';
 }
-function scrollReelToEnd(){
-  var reel = reelEl(); if (!reel) return;
-  var slides = reel.querySelectorAll('.reel-slide');
-  var last = slides[slides.length - 1];
-  if (last) last.scrollIntoView({ behavior:'smooth', block:'start' });
+// ── Horizontales Karten-Deck (Teil 46): EINE Karte pro Screen ──────────────
+// Die Slides liegen absolut übereinander; reelIndex zeigt die aktuelle Karte.
+// Vorrücken (← wischen / Tipp auf Spikiu-Karte) schiebt sie nach links, die
+// nächste kommt von rechts. Kein vertikaler Stapel mehr.
+var reelIndex = 0;
+function reelSlides(){ var r = reelEl(); return r ? r.querySelectorAll('.reel-slide') : []; }
+function reelLayout(){
+  var slides = reelSlides(); if (!slides.length) return;
+  if (reelIndex > slides.length - 1) reelIndex = slides.length - 1;
+  if (reelIndex < 0) reelIndex = 0;
+  for (var i = 0; i < slides.length; i++){
+    var s = slides[i];
+    s.classList.remove('reel-current','reel-past','reel-next');
+    s.classList.add(i < reelIndex ? 'reel-past' : (i === reelIndex ? 'reel-current' : 'reel-next'));
+  }
+}
+function reelGoTo(i){ reelIndex = i; reelLayout(); }
+function reelAdvance(){ if (reelIndex < reelSlides().length - 1){ reelIndex++; reelLayout(); } }
+function reelBack(){ if (reelIndex > 0){ reelIndex--; reelLayout(); } }
+function scrollReelToEnd(){ reelGoTo(reelSlides().length - 1); }   // „letzte Karte zeigen" (Typing/Fehler)
+// Wischen (←/→) + Tipp auf Spikiu-/Korrektur-Karten = weiter. Lerner-/Endmenü-Karten:
+// per Tipp wählen/senden (kein Wisch-Weiter). Einmalig an das statische #reel gebunden.
+function bindReelGestures(){
+  var reel = reelEl(); if (!reel || reel.__spkReelBound) return;
+  reel.__spkReelBound = true;
+  var x0 = null, y0 = null;
+  reel.addEventListener('touchstart', function(e){ var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive:true });
+  reel.addEventListener('touchend', function(e){
+    if (x0 == null) return;
+    var t = e.changedTouches[0]; var dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+    if (Math.abs(dx) < 45 || Math.abs(dy) > Math.abs(dx)) return;     // nur klar horizontale Wische
+    var cur = reelSlides()[reelIndex];
+    if (dx < 0){ if (cur && (cur.classList.contains('reel-learner') || cur.classList.contains('reel-endmenu'))) return; reelAdvance(); }
+    else reelBack();                                                   // nach rechts = nur zurückblättern (lesen)
+  }, { passive:true });
+  reel.addEventListener('click', function(e){
+    if (e.target.closest('button, textarea, input, a')) return;       // 🔊/Karten/Senden/Textfeld nicht stören
+    var cur = reelSlides()[reelIndex]; if (!cur) return;
+    if (cur.classList.contains('reel-learner') || cur.classList.contains('reel-endmenu')) return;
+    reelAdvance();                                                    // Tipp auf Spikiu-/Korrektur-Karte = weiter
+  });
 }
 function removeLearnerSlide(){ var s = document.getElementById('reelLearner'); if (s) s.remove(); }
 
@@ -800,7 +844,7 @@ function renderReelCards(optionen){
   });
   var field = learner.querySelector('.reel-learner-field');
   learner.insertBefore(cards, field);               // Karten über dem (sekundären) Textfeld
-  scrollReelToEnd();
+  reelLayout();                                     // Lerner-Karte unverändert in der Reihe (← wischen dorthin)
 }
 function renderReelKorrektur(pairs){
   var reel = reelEl(); if (!reel) return;
@@ -822,7 +866,7 @@ function renderReelKorrektur(pairs){
   slide.appendChild(card);
   var learner = document.getElementById('reelLearner');
   if (learner) reel.insertBefore(slide, learner); else reel.appendChild(slide);
-  slide.scrollIntoView({ block:'start' });          // Korrektur sichtbar machen (pädagogisch wichtig)
+  reelLayout();                                     // Korrektur-Karte zwischen Spikiu und Lerner (← wischen dorthin)
 }
 function renderReelEndMenu(){
   var reel = reelEl(); if (!reel || document.getElementById('reelEndMenu')) return;
@@ -840,7 +884,7 @@ function renderReelEndMenu(){
   cards.appendChild(card(ui.terminar, terminar, true));
   slide.appendChild(cards);
   reel.appendChild(slide);
-  scrollReelToEnd();
+  reelLayout();                                     // Endmenü ist die letzte Karte (← wischen dorthin)
 }
 
 // Routing aus den Anzeige-Funktionen (nur bei reelActive). Parsing/Logik unverändert:
@@ -848,17 +892,19 @@ function renderReelEndMenu(){
 function addReelMessage(role, text){
   removeLearnerSlide();
   if (role === 'spikiu'){
+    var firstNew = reelSlides().length;     // Index der ERSTEN neuen Spikiu-Karte
     var segments = splitThoughts(text);
     if (!segments.length) segments = [text || ''];
     segments.forEach(function(seg){
       var parts = splitBridge(seg);
       appendSpikiuSlide(parts.ziel, parts.trans);
     });
-    renderLearnerSlide(false);      // nach Spikius Slides: du bist dran
+    renderLearnerSlide(false);      // nach Spikius Karten: du bist dran (← wischen)
+    reelGoTo(firstNew);             // zuerst Spikius neue Karte zeigen
   } else {
     appendUserSlide(text);
+    reelGoTo(reelSlides().length - 1);   // die Wahl/der Tipp des Lerners kurz sichtbar
   }
-  scrollReelToEnd();
 }
 function reelTypingOn(){
   var reel = reelEl(); if (!reel) return;
