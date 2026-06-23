@@ -1,4 +1,19 @@
-# AUFTRAG — „Diagnose: echten 400-Grund sichtbar machen"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 23.06.2026): „Diagnose: echten 400-Grund sichtbar machen" GEBAUT + auf dev.
+> EINE Datei `chat.html`, reine Fehler-Sichtbarkeit (kein Blind-Fix). NEU `errDetail(d,raw)` zieht den
+> echten Grund aus der Server-Antwort. `callGespraech`: Body robust lesen (text→JSON), bei `!r.ok`
+> `console.error(status, body)` + `throw` mit echtem Grund → `showError`/`reelError` zeigt z.B.
+> „messages: text content blocks must be non-empty" statt nur „http 400"; Erfolgspfad unverändert.
+> `loadHaeppchen`: prüfte `r.ok` nicht (400 rutschte still als skip durch) → jetzt `console.error(status,
+> body)` + Skip-Warnung; Verhalten unverändert. Backend/Modell/Logik UNBERÜHRT. `node --check` grün,
+> headless verifiziert (400 zeigt echten Grund auf Karte + Konsole; 200-Happy-Path unverändert).
+> NÄCHSTES: Leo reproduziert auf dem Gerät → schickt den ECHTEN Fehlertext → dann gezielter Fix als
+> eigenes Paket. Offen in der Schlange: Phase 3b · Raum „Proverbios" · Lektions-Hintergrund-Bug.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev
