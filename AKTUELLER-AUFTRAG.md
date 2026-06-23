@@ -1,71 +1,53 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Gespräch-Reel Phase 1: Charakter-Opener + Aktivitätswahl"
-> GEBAUT + auf dev. EINE Datei `chat.html`, reine Präsentation: Voz-Capy 64→90px (groß/mittig,
-> atmet/blinzelt via `spkCapyAlive`), Gruß größer (Lora), NEU einladende Frage `VOZ_INVITE` in der
-> Zielsprache („¿Qué te apetece hoy? ¡Tú eliges!"), Gabelung von links-eingerückt → zentrierte Spalte
-> mit zentrierten Themen-Chips. Motor (`goFree`/`pickTopic`/Loop/Rail/Häppchen/Paletten/Audio/Lektion)
-> + alle IDs/Handler UNBERÜHRT; was Spikiu spricht (`VOZ_GREET`) unverändert, kein Auto-Play; genau 1
-> Capy, Nav neutral. `node --check` grün, headless verifiziert (Opener rendert, Voz spielt auf Geste,
-> goFree feuert, Capy lebt). Details + Abnahme-Rest im SPIKIU-BUILD-LEDGER.md.
-> NÄCHSTES = Phase 2 „Austausch als Reel" (Gesprächs-Loop → Vollbild-Slides).
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Gespräch-Reel (Phase 2): Freier Flur als Reel"
 
 Stand: 23.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
-Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Begrüßungs-Screen) · von Leo abgenommen
+Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Reel-Teil) · von Leo abgenommen
 
-> Der Gespräch-Reel ist der größte Umbau im Projekt. Wir machen ihn in SICHEREN PHASEN, damit
-> das funktionierende Gespräch (chat.html, 1376 Z., echte API + Häppchen + Audio + Lektion) NIE
-> bricht. **PHASE 1 = nur der EINTRITT** (Opener + Aktivitätswahl) als immersiver Charakter-Screen.
-> Der MOTOR bleibt zu 100% unberührt — Aktivität wählen feuert weiter `goFree()`/`pickTopic()`,
-> das Gespräch danach läuft vorerst wie heute. Der Austausch-als-Reel ist PHASE 2.
+> Phase 2 = den Reel-Mechanismus an der EINFACHSTEN Stelle aufbauen: dem **freien Flur**
+> („Einfach plaudern"). Der freie Chat hat KEIN Rail, KEINE Häppchen, KEINE Antwort-Paletten —
+> nur Spikiu ↔ Lerner. Perfekt, um die Reel-Schienen (Slide + Wisch + 🔊) sicher zu legen.
+> Das geführte Thema (Rail/Häppchen/Tinder-Karten/Lektion) bleibt VORERST wie heute (Blasen)
+> und wird in Phase 3 auf dieselben Schienen gehoben. MOTOR bleibt unberührt.
 
-## WAS HEUTE SCHON DA IST (frisch geprüft, wird WIEDERVERWENDET)
-- `startOpener()` (Z.1357) → `setOpenerChrome(true)` + `renderOpenerGreeting()` + `showGabelung()`.
-- `renderOpenerGreeting()` (Z.1292): `.voz-greet#vozGreet` mit `CAPY_OPENER` (Voz-Capy) +
-  `.voz-greet-line` (Gruß, Zielsprache) + `.voz-hint` („tippen, um Spikiu zu hören"). Voz primero
-  (Paket 5) lebt hier: Tipp → spricht, `spkCapyAlive` belebt den Capy (Mund/Aura).
-- `showGabelung()` (Z.937): „Wähle eine Aktivität" + „Einfach plaudern" + Themen-Chips +
-  „Etwas anderes…". Handler: `goFree()` (962, freier Flur) / `pickTopic(label)` (966, geführtes Thema).
+## NUR DER FREIE FLUR (gefuehrt = false)
+Wenn `gefuehrt === false` (nach `goFree()` / „Einfach plaudern"), rendert das Gespräch als
+**Reel** statt als Scroll-Blasen:
 
-## PHASE 1 — was gebaut wird (nur Präsentation, in chat.html)
-Den Opener-Block (`#vozGreet` + Gabelung) zu EINEM immersiven Charakter-Eintritt machen, Optik
-nach `prototyp-final-spikiu-frei.html`:
-1. **Spikiu als Charakter, groß + mittig + lebendig:** der Voz-Capy (`CAPY_OPENER`) etwas größer
-   (~88–92px), zentriert oben, atmet/blinzelt via `spkCapyAlive` (schon gebunden). VOLLSTÄNDIG,
-   nie trasquilado. Tipp-zum-Hören (Voz) BLEIBT unverändert.
-2. **Gruß + Frage zentriert:** die Gruß-Zeile (Zielsprache, aus `VOZ_GREET`) + eine einladende
-   Frage „¿Qué te apetece? / Was möchtest du?" + „¡Tú eliges! …" — in der Optik des Prototyps
-   (Lora, zentriert). `VOZ_HINT` (Muttersprache) bleibt als Hörhinweis.
-3. **Aktivitätswahl als Karten (zentriert):** „💬 Einfach plaudern" als großer Button +
-   Themen als Karten/Chips (Hotel/Café/Taxi/Restaurant/… + „Etwas anderes…"), Stil aus dem
-   Prototyp. Texte/i18n aus `showGabelung` (`chooseActivity`/`free`/`orTopic`/`other`)
-   WIEDERVERWENDEN. Klicks rufen WEITERHIN `goFree()` / `pickTopic()` (Motor unverändert).
+1. **Spikiu-Slide:** Spikius Antwort wird wie heute an `---` in Segmente geteilt (EIN Gedanke
+   pro Slide). Je Segment ein **Vollbild-Slide**: kleiner **vollständiger Capy** (Charakter,
+   ~52px, optional belebt via `spkCapyAlive`) oben + große **Lora-Zeile (Zielsprache)** mittig
+   + **🔊** (bestehender `speakText`/Spinner-Logik) + die `[[…]]`-Übersetzung als gedämpfte Zeile
+   darunter (kein Audio) + Hinweis „↑ nach oben wischen". Optik aus prototyp-final-spikiu-frei.html.
+2. **Daumen:** Wisch nach oben → nächstes Segment / nächster Slide. Zurückwischen = frühere
+   Slides ansehen. (Freier Flur = KEIN Fortschrittsbalken.)
+3. **Lerner-Slide (du bist dran):** ein Slide mit **Textfeld** („Schreib etwas…") → Senden ruft
+   den BESTEHENDEN `sendUserTurn(text)` (identischer Motorpfad). Danach erscheinen Spikius neue
+   Slides. (Im freien Flur keine Antwort-Karten — nur Text; Karten kommen mit den Themen in Phase 3.)
+4. **Beenden:** der „Gespräch beenden"-Weg (`freeExitBar`) bleibt erreichbar (z. B. als Knopf am
+   Lerner-Slide oder dezent oben) → die bestehende Lektions-Angebot-Logik UNVERÄNDERT.
 
-## MOTOR — NICHT ANFASSEN (heilig, funktioniert)
-- `goFree()`, `pickTopic()`, `startSeedTurn()`, `sendMessage()`, `/api/gespraech`, der ganze
-  Gesprächs-Loop + Blasen-Rendering (= Phase 2), der Fortschrittsbalken/Rail, die Häppchen-Widgets,
-  die Antwort-Paletten, `speakText`/`warmVoice`/🔊, die Lektions-Logik, `spikiu_user`/Profil.
-- Voz-Gesten-Regel (kein Auto-Play) bleibt. `capy-vivo.js` nur aufrufen (nicht ändern).
-- Die Navigation bleibt neutral (Teil 40); KEIN zweiter Capy — der Opener-Capy ist der eine Charakter.
+## MOTOR — NICHT ANFASSEN
+- `sendUserTurn()`, `sendMessage()`, der Fetch-Loop, `/api/gespraech`, `extractOptionen`,
+  die `[[…]]`-Logik (`addMessage`-Parsing/`fmt`), `speakText`/`warmVoice`/🔊-Handler,
+  die Lektions-Angebot-Logik, `spikiu_user`/Profil, Voz/Opener (Phase 1).
+- **Das geführte Thema (`gefuehrt === true`) bleibt 100% wie heute** (Blasen, Rail, Häppchen,
+  Antwort-Paletten) — NICHT auf Reel umstellen (= Phase 3).
+- `capy-vivo.js` nur aufrufen. Nav bleibt neutral; im Reel KEIN Capy-Klon (der kleine
+  Slide-Capy ist der eine Charakter; auf Lerner-Slides kein Capy).
 
 ## ABNAHME
-- [ ] Beim Betreten des Gesprächs: großer, mittiger, ATMENDER Spikiu begrüßt + „¿Qué te apetece?"
-      + Aktivitäts-Karten (Einfach plaudern + Themen) im Prototyp-Look.
-- [ ] Tipp auf Spikiu → Voz spricht den Gruß (unverändert, kein Auto-Play).
-- [ ] „Einfach plaudern" → freier Flur wie bisher; ein Thema wählen → geführtes Thema wie bisher
-      (Rail/Häppchen/Antwort-Paletten/Audio/Lektion alle unverändert funktionsfähig).
-- [ ] Genau EIN Capy (der Opener-Charakter); vollständig. Nav neutral, kein Klon.
-- [ ] Nur `chat.html` geändert (Präsentation des Openers/Gabelung); Motor unberührt;
-      `node --check` grün; headless verifiziert (Opener rendert, Voz spielt auf Geste, goFree +
-      pickTopic feuern, Gespräch läuft).
+- [ ] „Einfach plaudern" → das Gespräch läuft als REEL: Spikius Antworten als Vollbild-Slides
+      (Capy + große Zielsprachen-Zeile + 🔊 + Übersetzung), eine Sache pro Screen.
+- [ ] Wisch nach oben blättert weiter; zurück geht auch. 🔊 spielt (Piper/Fallback) je Slide.
+- [ ] Lerner-Slide mit Textfeld → Senden → `sendUserTurn` feuert → Spikius nächste Slides kommen.
+      Echtes /api/gespraech, echte Antworten.
+- [ ] „Gespräch beenden" erreichbar → Lektions-Angebot wie bisher.
+- [ ] **Ein Thema wählen → läuft UNVERÄNDERT wie heute** (Blasen/Rail/Häppchen/Paletten) — nicht kaputt.
+- [ ] Genau EIN Capy (kleiner Slide-Capy), vollständig; Nav neutral. Nur `chat.html` geändert;
+      `node --check` grün; headless verifiziert (freier Flur = Reel; geführtes Thema = wie gehabt).
 
-## DANACH (Phasen)
-- **Phase 2 — Austausch als Reel:** den Gesprächs-Loop von Scroll-Blasen auf Vollbild-SLIDES
-  umstellen (eine Sache pro Screen, Wisch nach oben; Spikiu-Slide = große Zeile + 🔊 + Übersetzung;
-  Antwort-Paletten → Tinder-Karten; Fortschrittsbalken = der Rail). Großes eigenes Paket.
-- **Phase 3 — geführte Schritte als Slides** (Häppchen Wörter/Hören) + End-Slide „Lektion daraus?".
+## DANACH
+- **Phase 3 — geführtes Thema als Reel:** Rail = Fortschrittsbalken; Häppchen (Wörter/Hören) als
+  Slides; **Antwort-Paletten → Tinder-Karten** auf dem Lerner-Slide; Korrektur-Slide; End-Slide
+  „Lektion daraus?". Nutzt die in Phase 2 gelegten Reel-Schienen.
 - Danach: Raum „Proverbios" · Lektions-Hintergrund-Bug.
