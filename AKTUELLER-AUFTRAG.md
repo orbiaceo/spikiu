@@ -1,4 +1,16 @@
-# AUFTRAG — „Spikiu befreit: Navi neutral + Deko-Capys raus"
+# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
+
+> **Teil 40 „Spikiu befreit: Navi neutral + Deko-Capys raus" GEBAUT + auf dev (commit 26e266b).**
+> 11 Dateien (`nav.js` + `books.html` + 8 Reader-Kapitel + `dashboard.html`); `lesebegleiter.js`/
+> `capy-vivo.js`/`chat.html`/`schreibwerkstatt.html`/`api`/Seele UNBERÜHRT. `node --check` grün,
+> headless verifiziert (Nav-Mitte neutral/kein Capy, Lesebegleiter lebt, Deko-Capys weg, Baum/Spruch
+> intakt). Bericht im SPIKIU-BUILD-LEDGER.md. OFFEN = nur Geräte-Abnahme durch Leo.
+> NÄCHSTES (Reihenfolge): 1. **Gespräch-Reel** (chat.html-Opener → Charakter-Begrüßung + Daumen-Reel),
+> 2. Spruch → Raum „Proverbios", 3. Lektions-Hintergrund-Bug.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 22.06.2026 · Design-Sitzung (claude.ai) · Quelle der Wahrheit vor Bau: SPIKIU-BUILD-LEDGER.md
 Branch: dev · Referenz: prototyp-final-spikiu-frei.html (Teil 40-Entscheidung)
