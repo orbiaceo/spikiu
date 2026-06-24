@@ -60,6 +60,13 @@ komplett (Ohren + 4 Beine), heißt nach außen IMMER „Spikiu", nie „Capy".
 - **NIE Asterisks** für Betonung in HTML — immer `<em>`.
 - **Naming nach außen:** nie „Kurs" (→ Lernabenteuer), „Level" (→ Etappe), „KI" (→ Spikiu),
   „Atelier". Reifegrad nur als Baum (Samen/Stamm/Krone), nie CEFR (A1/B2). Details: Seele.
+- **SITZUNGS-PERSISTENZ (Pflicht für jeden Raum):** Keine Arbeit darf durch einen Fehl-Tipp
+  verloren gehen. Jeder Raum sichert seinen Zustand laufend über `sitzung.js`
+  (`window.spikiuSitzung`, Schlüssel `spikiu_sitzung:<raum>`) — entprellt vom Raum (~350 ms) —
+  und bietet beim Eintritt bei unfertiger Sitzung die Wiederkommen-Karte an
+  (`frageWiederkommen`, Spikiu lebendig, kein Streak/Score). Abschluss/Neustart/„Genug für heute"
+  räumt den Schlüssel. `nav.js` bleibt unangetastet; reines Wiederherstellen ist das
+  Sicherheitsnetz, kein Warn-Popup. localStorage jetzt, Supabase = Phase 2.
 
 ## DIAGNOSE-DISZIPLIN (wenn etwas bricht)
 - **Sehen, nicht raten.** Generische Fehlermeldungen verschlucken die Ursache. Mach den

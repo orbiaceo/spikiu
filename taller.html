@@ -268,10 +268,26 @@
   function esc(s){return (''+s).replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
 
   var currentTexto='', touched=0, total=0, schlussText='';
+  var currentTaller=null, progress=[], saveTimer=null;
 
   function markTouched(){ touched++; if(total>0 && touched>=total) showSchluss(); }
 
+  // ── Sitzungs-Persistenz (sitzung.js) — entprellt vom Raum (~350 ms) ──
+  function scheduleSave(){
+    if(!window.spikiuSitzung || !currentTaller) return;
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(doSave, 350);
+  }
+  function doSave(){
+    if(!window.spikiuSitzung || !currentTaller) return;
+    try{ window.spikiuSitzung.speichere('taller',
+      { taller:currentTaller, progress:progress, touched:touched, total:total }); }catch(e){}
+  }
+
   function showSchluss(){
+    // Sitzung abgeschlossen → Schlüssel räumen, kein Zombie-Resume.
+    if(window.spikiuSitzung){ try{ window.spikiuSitzung.raeume('taller'); }catch(e){} }
+    clearTimeout(saveTimer); saveTimer=null;
     schlussEl.innerHTML =
       '<div class="spikiu-line">'+CAPY(34)+'<p class="say">'+esc(schlussText)+'</p></div>'+
       '<div class="row"><button class="btn btn-green" id="again">'+esc(TXT.again)+'</button>'+
@@ -292,47 +308,57 @@
   }
 
   function clearStage(){
+    clearTimeout(saveTimer); saveTimer=null;
     opener.innerHTML=''; doc.hidden=true; doc.innerHTML='';
     bridge.hidden=true; bridge.innerHTML='';
     aufgabenEl.innerHTML='';
     schlussEl.innerHTML=''; schlussEl.classList.remove('show');
     errorBox.hidden=true;
     touched=0; total=0; schlussText=''; currentTexto='';
+    currentTaller=null; progress=[];
   }
 
   // ── Aufgaben bauen ───────────────────────────────────────────────
-  function buildMC(a){
+  function buildMC(a, idx, saved){
     var sec=document.createElement('section'); sec.className='aufgabe';
     var html='<p class="a-eyebrow">'+esc(TXT.mc)+'</p><p class="a-frage">'+esc(a.frage)+'</p>';
     a.optionen.forEach(function(opt,i){ html+='<button class="opt" data-i="'+i+'">'+esc(opt)+'</button>'; });
     html+='<p class="feedback fb"></p>';
     sec.innerHTML=html;
     var fb=sec.querySelector('.fb'), done=false;
-    sec.querySelectorAll('.opt').forEach(function(btn){
-      btn.addEventListener('click',function(){
-        if(done) return; done=true;
-        var opts=sec.querySelectorAll('.opt');
-        opts.forEach(function(o){ o.disabled=true; });
-        var i=parseInt(btn.dataset.i,10);
-        if(i===a.loesung){ btn.classList.add('right'); }
-        else { btn.classList.add('wrong'); if(opts[a.loesung]) opts[a.loesung].classList.add('right'); }
-        if(a.erklaerung){ fb.innerHTML=esc(a.erklaerung); fb.classList.add('show'); }
-        markTouched();
-      });
+    var opts=sec.querySelectorAll('.opt');
+    function apply(i, restore){
+      if(done) return; done=true;
+      opts.forEach(function(o){ o.disabled=true; });
+      if(i===a.loesung){ if(opts[i]) opts[i].classList.add('right'); }
+      else { if(opts[i]) opts[i].classList.add('wrong'); if(opts[a.loesung]) opts[a.loesung].classList.add('right'); }
+      if(a.erklaerung){ fb.innerHTML=esc(a.erklaerung); fb.classList.add('show'); }
+      progress[idx]={typ:'mc', done:true, chosen:i};
+      if(!restore){ scheduleSave(); markTouched(); }   // erst sichern planen, dann markTouched (kann showSchluss→raeume auslösen)
+    }
+    opts.forEach(function(btn){
+      btn.addEventListener('click',function(){ apply(parseInt(btn.dataset.i,10), false); });
     });
+    if(saved && saved.done && saved.chosen!=null){ apply(saved.chosen, true); }
+    else { progress[idx]={typ:'mc', done:false, chosen:null}; }
     return sec;
   }
 
-  function buildOrden(a){
+  function buildOrden(a, idx, saved){
     var sec=document.createElement('section'); sec.className='aufgabe';
     sec.innerHTML='<p class="a-eyebrow">'+esc(TXT.orden)+'</p><p class="a-frage">'+esc(a.frage)+'</p>'+
       '<ul class="orden"></ul><div class="row"><button class="btn btn-ink check">'+esc(TXT.check)+'</button>'+
       '<span class="feedback fb"></span></div>';
     var listEl=sec.querySelector('.orden'), fb=sec.querySelector('.fb'), checkBtn=sec.querySelector('.check');
-    // Anzeige-Reihenfolge = teile-Indizes; nicht schon gelöst starten
-    var order=a.teile.map(function(_,i){return i;});
-    if(order.join()===a.loesung.join() && order.length>1){ var t0=order[0]; order[0]=order[1]; order[1]=t0; }
-    var solved=false;
+    // Anzeige-Reihenfolge: gespeicherte Reihenfolge falls vorhanden, sonst nicht schon gelöst starten
+    var order;
+    if(saved && saved.order && saved.order.length===a.teile.length){ order=saved.order.slice(); }
+    else {
+      order=a.teile.map(function(_,i){return i;});
+      if(order.join()===a.loesung.join() && order.length>1){ var t0=order[0]; order[0]=order[1]; order[1]=t0; }
+    }
+    var solved = !!(saved && saved.solved);
+    function persist(){ progress[idx]={typ:'orden', order:order.slice(), solved:solved}; }
     function render(){
       listEl.innerHTML='';
       order.forEach(function(origIdx,pos){
@@ -345,19 +371,21 @@
             var dir=parseInt(b.dataset.dir,10), j=pos+dir;
             if(j<0||j>=order.length) return;
             var tmp=order[pos]; order[pos]=order[j]; order[j]=tmp;
-            fb.classList.remove('show'); render();
+            fb.classList.remove('show'); render(); persist(); scheduleSave();
           });
         });
         listEl.appendChild(li);
       });
     }
     render();
+    persist();
+    if(solved){ checkBtn.disabled=true; fb.innerHTML='<b>'+esc(TXT.sits)+'</b>'; fb.style.color='var(--green)'; fb.classList.add('show'); }
     checkBtn.addEventListener('click',function(){
       if(solved) return;
       if(order.join()===a.loesung.join()){
         solved=true; render(); checkBtn.disabled=true;
         fb.innerHTML='<b>'+esc(TXT.sits)+'</b>'; fb.style.color='var(--green)'; fb.classList.add('show');
-        markTouched();
+        persist(); scheduleSave(); markTouched();
       } else {
         fb.textContent=TXT.notyet; fb.style.color='var(--rojo)'; fb.classList.add('show');
       }
@@ -365,7 +393,7 @@
     return sec;
   }
 
-  function buildFrei(a){
+  function buildFrei(a, idx, saved){
     var sec=document.createElement('section'); sec.className='aufgabe';
     sec.innerHTML='<p class="a-eyebrow">'+esc(TXT.frei)+'</p><p class="a-frage">'+esc(a.frage)+'</p>'+
       (a.hinweis?'<p class="hinweis">'+esc(a.hinweis)+'</p>':'')+
@@ -375,17 +403,39 @@
     var ta=sec.querySelector('textarea'), sendBtn=sec.querySelector('.send'),
         reply=sec.querySelector('.reply'), replyText=sec.querySelector('.replytext');
     var done=false;
+    function showReply(reaktion, besser){
+      var html=esc(reaktion||'');
+      if(besser) html+='<span class="besser">'+esc(besser)+'</span>';
+      replyText.innerHTML=html; reply.hidden=false;
+    }
+    // Wiederherstellen: Entwurf + ggf. schon erhaltene Reaktion
+    if(saved){
+      if(saved.draft) ta.value=saved.draft;
+      if(saved.answered){
+        done=true; sendBtn.disabled=true; ta.disabled=true;
+        showReply(saved.reaktion, saved.besser);
+        progress[idx]={typ:'frei', draft:ta.value, answered:true, reaktion:saved.reaktion||'', besser:saved.besser||null};
+      } else {
+        progress[idx]={typ:'frei', draft:ta.value, answered:false, reaktion:'', besser:null};
+      }
+    } else {
+      progress[idx]={typ:'frei', draft:'', answered:false, reaktion:'', besser:null};
+    }
+    ta.addEventListener('input',function(){
+      if(done) return;
+      progress[idx]={typ:'frei', draft:ta.value, answered:false, reaktion:'', besser:null};
+      scheduleSave();
+    });
     sendBtn.addEventListener('click',async function(){
       var val=ta.value.trim(); if(!val||done) return;
       sendBtn.disabled=true; ta.disabled=true;
       try{
         var d=await call({ profile:profile(), antwort:{ frage:a.frage, texto:currentTexto, satz:val } });
         var rc=d.reaccion || { reaktion:(d.text||'').slice(0,300), besser:null };
-        var html=esc(rc.reaktion||'');
-        if(rc.besser) html+='<span class="besser">'+esc(rc.besser)+'</span>';
-        replyText.innerHTML=html; reply.hidden=false;
+        showReply(rc.reaktion||'', rc.besser);
         done=true;
-        markTouched();
+        progress[idx]={typ:'frei', draft:ta.value, answered:true, reaktion:rc.reaktion||'', besser:rc.besser||null};
+        scheduleSave(); markTouched();
       }catch(e){
         sendBtn.disabled=false; ta.disabled=false;
         replyText.textContent=TXT.err; reply.hidden=false;
@@ -394,15 +444,16 @@
     return sec;
   }
 
-  function buildAufgabe(a){
-    if(a.typ==='mc')    return buildMC(a);
-    if(a.typ==='orden') return buildOrden(a);
-    if(a.typ==='frei')  return buildFrei(a);
+  function buildAufgabe(a, idx, saved){
+    if(a.typ==='mc')    return buildMC(a, idx, saved);
+    if(a.typ==='orden') return buildOrden(a, idx, saved);
+    if(a.typ==='frei')  return buildFrei(a, idx, saved);
     return null;
   }
 
-  function renderTaller(t){
+  function renderTaller(t, saved){
     clearStage();
+    currentTaller=t;
     currentTexto=t.texto;
     schlussText=t.schluss;
 
@@ -416,10 +467,18 @@
     if(t.bruecke){ bridge.innerHTML=esc(t.bruecke); bridge.hidden=false; }
 
     total=t.aufgaben.length; touched=0;
-    t.aufgaben.forEach(function(a){
-      var sec=buildAufgabe(a); if(sec) aufgabenEl.appendChild(sec);
+    progress=new Array(total);
+    t.aufgaben.forEach(function(a,idx){
+      var savedP=(saved && saved.progress && saved.progress[idx]) ? saved.progress[idx] : null;
+      var sec=buildAufgabe(a, idx, savedP); if(sec) aufgabenEl.appendChild(sec);
     });
-    if(total===0) showSchluss();
+    if(saved){
+      // Fortschritt war beim Bauen visuell wiederhergestellt (ohne markTouched) → touched direkt setzen.
+      touched = (typeof saved.touched==='number') ? saved.touched : 0;
+      if(total>0 && touched>=total) showSchluss();
+    } else {
+      if(total===0) showSchluss();
+    }
   }
 
   // ── Netz ─────────────────────────────────────────────────────────
@@ -432,6 +491,8 @@
   }
 
   async function loadTaller(){
+    // Frischer Text = neue Sitzung → alten Stand räumen (deckt „Noch ein Text", Dev-Wechsel, „Nochmal").
+    if(window.spikiuSitzung){ try{ window.spikiuSitzung.raeume('taller'); }catch(e){} }
     clearStage(); loading.hidden=false;
     try{
       var d=await call({ profile:profile(), thema:null, antwort:null, maxTokens:1200 });
@@ -448,7 +509,43 @@
   selLang.addEventListener('change', loadTaller);
   selKoennen.addEventListener('change', loadTaller);
 
-  loadTaller();
+  // ── Sitzungs-Persistenz: nur bei wirklich angefangener, unfertiger Sitzung wiederkommen ──
+  function resumable(s){
+    if(!s || !s.taller || !s.taller.texto || !Array.isArray(s.taller.aufgaben)) return false;
+    var tot=(typeof s.total==='number' && s.total>0) ? s.total : s.taller.aufgaben.length;
+    if(tot<=0) return false;
+    if((s.touched||0) >= tot) return false;            // fertig → kein Resume
+    if((s.touched||0) > 0) return true;                // angefangen
+    if(Array.isArray(s.progress)){                     // Entwurf zählt als angefangen
+      for(var i=0;i<s.progress.length;i++){
+        var p=s.progress[i]; if(!p) continue;
+        if(p.done || p.solved || p.answered) return true;
+        if(p.chosen!=null) return true;
+        if(p.draft && (''+p.draft).trim()) return true;
+      }
+    }
+    return false;
+  }
+  function stelleLabel(s){
+    var tot=(typeof s.total==='number' && s.total>0) ? s.total : (s.taller.aufgaben?s.taller.aufgaben.length:0);
+    var n=Math.min((s.touched||0)+1, Math.max(tot,1));
+    return ({de:'Aufgabe '+n+' von '+tot, es:'Tarea '+n+' de '+tot, en:'Task '+n+' of '+tot}[M]) || ('Aufgabe '+n+' von '+tot);
+  }
+
+  function start(){
+    var saved = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('taller') : null;
+    if(resumable(saved)){
+      window.spikiuSitzung.frageWiederkommen({
+        raum:'taller', ts:saved.ts, wo: TXT.room+' · '+stelleLabel(saved),
+        beimWeiter:function(){ renderTaller(saved.taller, saved); },
+        beimNeu:function(){ try{ window.spikiuSitzung.raeume('taller'); }catch(e){} loadTaller(); }
+      });
+    } else {
+      loadTaller();   // loadTaller räumt selbst alte/fertige Reste
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();
 </script>
 
@@ -460,6 +557,8 @@
   })();
 </script>
 
+<script src="capy-vivo.js" defer></script>
+<script src="sitzung.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

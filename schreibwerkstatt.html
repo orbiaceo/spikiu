@@ -189,8 +189,26 @@
 
   // ── Zustand ──────────────────────────────────────────────────────
   var verlauf=[], lastRaw='', currentText='', step='einstieg', busy=false;
+  var lastLektor=null, saveTimer=null;
 
   function esc(s){return s.replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+
+  // ── Sitzungs-Persistenz (sitzung.js) — entprellt vom Raum (~350 ms) ──
+  function scheduleSave(){
+    if(!window.spikiuSitzung) return;
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(doSave, 350);
+  }
+  function doSave(){
+    if(!window.spikiuSitzung) return;
+    if(!currentText && !(ta.value && ta.value.trim()) && verlauf.length===0) return; // nichts angefangen
+    try{ window.spikiuSitzung.speichere('schreibwerkstatt',
+      { verlauf:verlauf, currentText:currentText, lastRaw:lastRaw, step:step, draft:ta.value, lastLektor:lastLektor }); }catch(e){}
+  }
+  function raeumeSitzung(){
+    clearTimeout(saveTimer); saveTimer=null;
+    if(window.spikiuSitzung){ try{ window.spikiuSitzung.raeume('schreibwerkstatt'); }catch(e){} }
+  }
 
   function standText(text, mark){
     werk.classList.remove('empty');
@@ -275,6 +293,7 @@
       var d=await callLektor();
       var l=d.lektor || {sinn:(d.text||'').slice(0,200), zitat:'', sache:'', form:null, lautschrift:null, status:'lesen'};
       lastRaw = d.text || JSON.stringify(l);
+      lastLektor = l;
       // letzten Lektor-Zug in den Verlauf, damit der nächste Aufruf Kontext hat
       verlauf.push({role:'assistant', content:lastRaw});
 
@@ -287,9 +306,11 @@
         werk.classList.add('fertig'); werk.textContent=currentText;
         primary.hidden=true; ta.disabled=true; restart.hidden=false;
         hint.textContent='Der Text ist fertig. Du kannst neu starten.';
+        raeumeSitzung();   // Ziellinie erreicht → kein Zombie-Resume
       } else {
         step='arbeit'; primary.textContent='Weiter';
         hint.textContent='Überarbeite die markierte Stelle und leg sie zurück.';
+        scheduleSave();    // kohärenter Stand nach abgeschlossenem Lektor-Zug
       }
     }catch(e){
       // fehlgeschlagenen user-Push zurücknehmen, damit Retry sauber ist
@@ -301,16 +322,59 @@
   }
 
   primary.onclick=function(){ submit(false); };
-  restart.onclick=function(){
-    verlauf=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false;
+  function doRestart(){
+    verlauf=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false; lastLektor=null;
     werk.className='werkstueck empty'; werk.textContent='Hier steht dein Text.';
     lektor.hidden=true; lektor.classList.remove('show','treffer'); lekBody.innerHTML='';
     ta.disabled=false; ta.value=''; primary.hidden=false; primary.disabled=false; primary.textContent='Hinlegen';
     restart.hidden=true; hint.textContent='Schreib deinen ersten Versuch und leg ihn hin.';
-  };
+  }
+  restart.onclick=function(){ raeumeSitzung(); doRestart(); };
   ta.addEventListener('keydown',function(e){
     if(e.key==='Enter' && (e.metaKey||e.ctrlKey)){ e.preventDefault(); if(!primary.hidden) submit(false); }
   });
+  ta.addEventListener('input', function(){ scheduleSave(); });   // Entwurf laufend sichern (entprellt)
+
+  // ── Sitzungs-Persistenz: Stand wiederherstellen ────────────────────
+  function restoreState(s){
+    verlauf = Array.isArray(s.verlauf) ? s.verlauf : [];
+    currentText = s.currentText || '';
+    lastRaw = s.lastRaw || '';
+    step = s.step || 'einstieg';
+    lastLektor = s.lastLektor || null;
+    ta.value = s.draft || '';
+    if(currentText){
+      standText(currentText, lastLektor);
+      if(lastLektor){
+        renderLektor(lastLektor);
+        lektor.hidden=false; lektor.classList.add('show');
+        step='arbeit'; primary.textContent='Weiter';
+        hint.textContent='Überarbeite die markierte Stelle und leg sie zurück.';
+      }
+    }
+  }
+  function resumable(s){
+    if(!s) return false;
+    var hatText   = s.currentText && (''+s.currentText).trim();
+    var hatDraft  = s.draft && (''+s.draft).trim();
+    var hatLektor = !!s.lastLektor;
+    var hatVerlauf= Array.isArray(s.verlauf) && s.verlauf.length>0;
+    return !!(hatText || hatDraft || hatLektor || hatVerlauf);
+  }
+  function start(){
+    var saved=(window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('schreibwerkstatt') : null;
+    if(resumable(saved)){
+      window.spikiuSitzung.frageWiederkommen({
+        raum:'schreibwerkstatt', ts:saved.ts, wo:'Schreibwerkstatt',
+        beimWeiter:function(){ restoreState(saved); },
+        beimNeu:function(){ raeumeSitzung(); doRestart(); }
+      });
+    } else if(saved){
+      raeumeSitzung();   // stale/leerer Rest → wegräumen
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();
 </script>
 
@@ -323,6 +387,8 @@
   })();
 </script>
 
+<script src="capy-vivo.js" defer></script>
+<script src="sitzung.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>
