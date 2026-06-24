@@ -170,37 +170,12 @@ function render(){
   });
 }
 
-// ── Detail-Modal ──
+// ── Lektion öffnen: VOLLSTÄNDIG im Dashboard (eine Quelle, mit Quiz) ──
+// Teil 55-Fix: nicht mehr eine reduzierte Archiv-Kopie zeigen, sondern dieselbe
+// brauchbare Lektion wie das Dashboard (renderLessonPoster) öffnen.
 function openLesson(id){
-  var list = lessons(), l = null;
-  for (var i=0;i<list.length;i++){ if (list[i].id === id){ l = list[i]; break; } }
-  if (!l) return;
-  var les = l.lesson || {};
-  var note = les.subtitle || les.goal || (les.grammar && les.grammar.explanation) || '';
-  var vocab = vocabOf(l);
-  var meta = [];
-  var th = themaOf(l); if (th) meta.push(esc(th));
-  var dt = fmtDate(l.createdAt); if (dt) meta.push(esc(dt));
-
-  var html = '<button class="lk-close" type="button" id="lkClose" aria-label="Schließen">×</button>'
-    + '<div class="lk-m-eyebrow">' + esc(t().title) + '</div>'
-    + '<div class="lk-m-title">' + esc(titleOf(l)) + '</div>'
-    + '<div class="lk-m-meta">' + meta.join(' · ') + '</div>'
-    + (note ? '<div class="lk-m-note">' + esc(note) + '</div>' : '');
-  if (vocab.length){
-    html += '<div class="lk-m-section-label">' + esc(t().vocab) + '</div><div class="lk-vocab">';
-    vocab.forEach(function(v){
-      html += '<div class="lk-vrow"><span class="lk-vword">' + esc(v.word || '') + '</span>'
-        + '<span class="lk-vtrans">' + esc(v.translation || '') + '</span>'
-        + (v.word ? '<button class="lk-vspeak" type="button" data-w="' + esc(v.word) + '" aria-label="Vorlesen">' + SPK_ICON + '</button>' : '')
-        + '</div>';
-    });
-    html += '</div>';
-  }
-  var sheet = document.getElementById('lkSheet'); sheet.innerHTML = html;
-  sheet.querySelector('#lkClose').onclick = closeModal;
-  sheet.querySelectorAll('.lk-vspeak').forEach(function(b){ b.onclick = function(){ playFrom(b, b.getAttribute('data-w')); }; });
-  document.getElementById('lkModal').hidden = false;
+  if (!id) return;
+  location.href = 'dashboard.html#lesson=' + encodeURIComponent(id);
 }
 function closeModal(){ document.getElementById('lkModal').hidden = true; }
 document.getElementById('lkModal').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
@@ -218,17 +193,18 @@ document.getElementById('tgDatum').onclick = function(){ setMode('datum'); };
 
 // ── Start ──
 window.addEventListener('load', function(){
+  // Teil 55: „Deine letzte Lektion" (#last) → direkt die neueste Lektion VOLLSTÄNDIG
+  // im Dashboard öffnen (mit Quiz), ohne das Archiv kurz aufblitzen zu lassen.
+  if (location.hash === '#last'){
+    var ll = lessons();
+    if (ll.length){ location.replace('dashboard.html#lesson=' + encodeURIComponent(ll[0].id)); return; }
+  }
   var ui = t();
   document.getElementById('lkTitle').textContent = ui.title;
   document.getElementById('tgThema').textContent = ui.byTopic;
   document.getElementById('tgDatum').textContent = ui.byDate;
   document.title = 'Spikiu · ' + ui.title;
   render();
-  // #last → neueste Lektion direkt im Modal öffnen
-  if (location.hash === '#last'){
-    var list = lessons();
-    if (list.length) openLesson(list[0].id);
-  }
 });
 </script>
 <script type="module">

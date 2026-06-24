@@ -1045,6 +1045,21 @@ function closeLesson() {
   document.body.style.overflow = '';
 }
 
+// Teil 55: kommt der Nutzer aus dem Archiv (lektionen.html) mit #lesson=<id> bzw.
+// #lesson=last, hier die VOLLSTÄNDIGE Lektion (mit Quiz) öffnen — eine Quelle für alle.
+function openLessonFromHash() {
+  var m = (location.hash || '').match(/^#lesson=(.+)$/);
+  if (!m) return;
+  var id = decodeURIComponent(m[1]);
+  try {
+    var raw = localStorage.getItem('spikiu_user');
+    var user = raw ? JSON.parse(raw) : {};
+    var ls = (user.lessons || []).slice().sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+    if (id === 'last') { if (!ls.length) return; id = ls[0].id; }
+    openLesson(id);
+  } catch(e){}
+}
+
 // ── RENDER LESSONS LIST IN DASHBOARD ───────────────────
 function renderLessonsList(user) {
   const lessons = user.lessons || [];
@@ -1060,7 +1075,7 @@ function renderLessonsList(user) {
   if (card) card.style.display = 'block';
   if (noCard) noCard.style.display = 'none';
 
-  document.getElementById('lessons-count').textContent = `${lessons.length} / 3`;
+  document.getElementById('lessons-count').textContent = `${lessons.length} / 14`;
 
   // Chronologisch: neueste zuerst (nach createdAt absteigend). Alt-Lektionen ohne
   // createdAt stabil ans Ende.
@@ -1374,9 +1389,11 @@ window.addEventListener('load', () => {
   renderBaum();
   belebeGastgeber();   // Teil 41: Spikiu atmet/blinzelt als Gastgeber neben dem Gruß
   scrollToLektionen();  // Teil 49: bei #lektionen zur Lektions-Karte scrollen (nach renderLessonsList)
+  openLessonFromHash();  // Teil 55: bei #lesson=<id> die volle Lektion oeffnen
 });
 // Schon auf dem Dashboard + „Lektionen" getippt → Hash wechselt → ebenfalls hinscrollen.
 window.addEventListener('hashchange', scrollToLektionen);
+window.addEventListener('hashchange', openLessonFromHash);  // Teil 55
 
 // Close modal on Escape
 document.addEventListener('keydown', (e) => {
