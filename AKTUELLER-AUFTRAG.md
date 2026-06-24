@@ -1,4 +1,18 @@
-# AUFTRAG — „Gym-Raum komplett: Wortschatz-Werkstatt (Tinder-Deck + uebung.js)"
+# AUFTRAG — erledigt am 24.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 24.06.2026): „Gym-Raum komplett: Wortschatz-Werkstatt (Tinder-Deck + uebung.js)"
+> GEBAUT + auf dev. DREI Dateien: NEU `wortschatz.js` (feste Starter-Wörter A1–A2 je Zielsprache,
+> `spikiuWortschatz(ziel,mutter)` → {wort,text,tr}) + NEU `gym.html` (Tinder-Deck wie Proverbios, Quelle =
+> Starter + eigene Wörter aus localStorage `spikiu_wortschatz`, Wort→Übung(`spikiuUebung`)→Wort, echter
+> Verlauf, „➕ Wort hinzufügen", lebendiger voller Capy + 🔊, `mean` datengetrieben, kein KI/Score) +
+> `nav.js` (Gym von `disabled` → `href:'gym.html'` + `getActive` gym→werkstatt). `uebung.js`/`api`/Reel/
+> Dashboard unberührt. Anti-Gamification, keine erfundenen Companion-Daten (per-Wort-Tracking = Phase 2).
+> `node --check` grün, headless verifiziert (Deck+Verlauf, „Wort hinzufügen" → localStorage+Deck, nav-Link
+> aktiv). Details im LEDGER. NÄCHSTES = Phase 2 (Companion-Feed/Spaced-Repetition) · sonst Beta-Politur.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 Referenz: prototyp-proverbios-tinder2.html (gleiche Deck-Mechanik) · uebung.js (Motor)
