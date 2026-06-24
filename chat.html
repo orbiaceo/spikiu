@@ -352,6 +352,9 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 <!-- Teil 62: Sitzungs-Persistenz-Helfer SYNCHRON (vor dem Haupt-Script), damit
      window.spikiuSitzung beim Eintritt (startGespraech) schon verfügbar ist. -->
 <script src="sitzung.js"></script>
+<!-- Teil 64: feste Häppchen-DB (4 Themen × es/de/en/el) SYNCHRON vor dem Haupt-Script,
+     damit loadHaeppchen sie ohne API-Call nutzen kann (Fallback bleibt /api/haeppchen). -->
+<script src="haeppchen-db.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════════
 //  SPIKIU · RAUM: FREIES GESPRÄCH (der Flur)
@@ -435,6 +438,7 @@ var sessionGezaehlt = false;   // Teil 36: pro Gesprächsbogen wächst GENAU EIN
 var voiceReady = false;   // Stimme vorgewärmt (Teil B)? steuert Spinner vs. Puls am 🔊
 var vozHandle = null;     // Voz primero (Paket 5): Sprech-Handle des Präsenz-Gruß-Capy (capy-vivo)
 var TOPIC_LABEL = null;   // gewähltes Thema, wartet auf den P1-Seed-Zug nach den Häppchen
+var TOPIC_ID = null;      // Teil 64: sprachneutraler Themen-Schlüssel (hotel/taxi/restaurant/cafe) für die feste Häppchen-DB
 var hvIndex = 0;          // aktuelles Hörverständnis-Item
 var chat = document.getElementById('chat');
 var input = document.getElementById('userInput');
@@ -676,6 +680,7 @@ function otroTema(){                      // zurück zur Themen-Gabelung → reg
   removeEndMenu();
   setExitVisible(false);                 // raus aus dem Rollenspiel → keine Ausstiegs-Leiste
   TOPIC_LABEL = null;
+  TOPIC_ID = null;                       // Teil 64: Themen-ID mit zurücksetzen
   if (reelActive) exitReel();            // Phase 3a: Reel verlassen → Gabelung wieder in der Chat-Ansicht
   setStage('thema');
   showGabelung();
@@ -1166,7 +1171,7 @@ function sitzungSpeichern(){
   _gespSaveTimer = setTimeout(function(){
     try {
       window.spikiuSitzung.speichere('gespraech', {
-        verlauf: verlauf, gefuehrt: gefuehrt, topicLabel: TOPIC_LABEL, zielsprache: PROFILE.zielsprache
+        verlauf: verlauf, gefuehrt: gefuehrt, topicLabel: TOPIC_LABEL, topicId: TOPIC_ID, zielsprache: PROFILE.zielsprache
       });
     } catch(e){}
   }, 350);
@@ -1354,10 +1359,10 @@ var GAB = {
   en:{ chooseActivity:'Choose an activity', free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
 };
 var TOPICS = [
-  { emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel' },
-  { emoji:'🚕', de:'Taxi',       es:'Taxi',        en:'Taxi' },
-  { emoji:'🍽️', de:'Restaurant', es:'Restaurante', en:'Restaurant' },
-  { emoji:'☕', de:'Im Café',    es:'En el café',  en:'At the café' }
+  { id:'hotel',      emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel' },
+  { id:'taxi',       emoji:'🚕', de:'Taxi',       es:'Taxi',        en:'Taxi' },
+  { id:'restaurant', emoji:'🍽️', de:'Restaurant', es:'Restaurante', en:'Restaurant' },
+  { id:'cafe',       emoji:'☕', de:'Im Café',    es:'En el café',  en:'At the café' }
 ];
 function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 function removeGabelung(){ var g = document.getElementById('gabelung'); if (g) g.remove(); }
@@ -1383,7 +1388,7 @@ function showGabelung(){
   document.getElementById('gabFree').onclick = goFree;
   document.getElementById('gabOther').onclick = customTopic;
   wrap.querySelectorAll('.gab-chips .chip[data-i]').forEach(function(b){
-    b.onclick = function(){ pickTopic(TOPICS[+b.getAttribute('data-i')][uiLang()]); };
+    b.onclick = function(){ var topic = TOPICS[+b.getAttribute('data-i')]; pickTopic(topic[uiLang()], topic.id); };
   });
 }
 
@@ -1391,7 +1396,7 @@ function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(fa
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
-function pickTopic(label){
+function pickTopic(label, id){
   if (busy || guiding) return;
   setOpenerChrome(false);                // Gespräch beginnt → Schreibfeld + Profil-Chip wieder ein (geführt: sichtbar, aber gesperrt)
   removeGabelung();
@@ -1402,6 +1407,7 @@ function pickTopic(label){
   sessionGezaehlt = false;               // Teil 36: neuer Gesprächsbogen → Blatt-Zähler zurück
   gefuehrt = true;                       // geführtes Thema-Rollenspiel → Antwort-Chips erlaubt
   TOPIC_LABEL = label;
+  TOPIC_ID = id || null;                 // Teil 64: feste Themen treffen die DB; Frei-Themen (kein id) → API-Fallback
   showRail(); setStage('wortschatz');
   enterReel();                           // Phase 3b: der GANZE geführte Pfad läuft im horizontalen Deck
   addMessage('user', label);             // die Wahl als (erste) Karte im Deck
@@ -1526,7 +1532,17 @@ function hideHapSpinner(){ var s = document.getElementById('hapSpin'); if (s) s.
 
 async function loadHaeppchen(){
   lockComposer(true);
-  warmVoice(PROFILE.zielsprache);     // Stimme still im Hintergrund vorwärmen
+  warmVoice(PROFILE.zielsprache);     // Stimme still im Hintergrund vorwärmen (gilt für beide Wege)
+  // Teil 64: feste DB ZUERST (kein API-Call, kein Spinner) — Wörter/Hören sind fester Inhalt.
+  // Nur Frei-Themen ohne DB-Eintrag (kein TOPIC_ID / Thema fehlt) fallen auf /api/haeppchen zurück.
+  var local = (window.spikiuHaeppchen && TOPIC_ID)
+    ? window.spikiuHaeppchen(TOPIC_ID, PROFILE.zielsprache, PROFILE.muttersprache)
+    : null;
+  if (local && Array.isArray(local.wortschatz) && local.wortschatz.length){
+    HAP = local;
+    renderWortschatz();
+    return;                           // KEIN API-Call
+  }
   showHapSpinner();
   var data = null, r = null, raw = '';
   try {
@@ -1834,6 +1850,7 @@ function sitzungWiederherstellen(s){
   verlauf = Array.isArray(s.verlauf) ? s.verlauf.slice() : [];
   gefuehrt = !!s.gefuehrt;
   TOPIC_LABEL = s.topicLabel || null;
+  TOPIC_ID = s.topicId || null;       // Teil 64: wiederhergestellte geführte Sitzung trifft die DB
   sessionGezaehlt = false;
   setOpenerChrome(false);            // Profil-Chip + Eingabe wieder einblenden
   removeOpenerGreeting();            // falls ein Präsenz-Gruß stand
