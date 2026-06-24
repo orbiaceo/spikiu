@@ -1,4 +1,18 @@
-# AUFTRAG — „Lektionen-Archiv: Sheet + Seite (bis 14, nach Thema & Datum)"
+# AUFTRAG — erledigt am 24.06.2026 · kein offener Auftrag
+
+> ERLEDIGT (Claude Code, 24.06.2026): „Lektionen-Archiv: Sheet + Seite (bis 14, nach Thema & Datum)"
+> GEBAUT + auf dev. DREI Dateien: `chat.html` (Lektions-Speicher 3→14 + `thema`-Feld: geführt=`TOPIC_LABEL`,
+> frei=„Freies Gespräch") + `nav.js` (Lektionen-Tab → Sheet „letzte Lektion #last / vergangene" + Labels/
+> Icons i18n + `getActive` lektionen→lektionen) + NEU `lektionen.html` (Archiv aus `spikiu_user.lessons` bis
+> 14, Umschalter Nach Thema/Nach Datum, Gruppen [alte ohne thema → „Sonstige"], Lektions-Karte → Detail-Modal
+> [Vokabel-Paare + 🔊 + Notiz], Zähler X/14, `#last` öffnet die neueste). Kein erfundener Inhalt. Lektions-
+> Erzeugung/`api`/Reel/Dashboard unberührt. `node --check` grün, headless verifiziert. Details im LEDGER.
+> NOTIZ: Wortzahl-Label ohne Singular/Plural („1 Wörter") — kosmetisch, später.
+> NÄCHSTES = „3→4 capítulos"-Fix · (optional) `uebung.js` in weitere Räume · zuletzt Legal-Sequenz.
+
+---
+
+_Archiv des erledigten Auftrags:_
 
 Stand: 24.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
 Referenz: prototyp-lektionen-archiv.html (von Leo abgenommen)
