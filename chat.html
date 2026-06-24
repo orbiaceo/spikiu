@@ -131,6 +131,17 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-swipe-hint { text-align:center; color:#b0a89f; font-size:0.8rem; font-weight:600; margin-top:0.9rem; }
 .hap-phon { font-size:0.66rem; color:var(--gold); font-weight:500; margin-top:0.08rem; }
 .hap-trans { font-size:0.72rem; color:var(--mid); font-style:italic; margin-top:0.08rem; }
+/* ── Teil 60: Wort-Häppchen als Flip-Karte (Vorderseite Ziel+🔊 · Rückseite Übersetzung) ── */
+.hap-flip { perspective:1200px; cursor:pointer; width:100%; height:14rem; -webkit-tap-highlight-color:transparent; }
+.hap-flip-inner { position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.4,0,.2,1); transform-style:preserve-3d; }
+.hap-flip.flipped .hap-flip-inner { transform:rotateY(180deg); }
+.hap-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; border:1.5px solid var(--faint); border-radius:16px; background:var(--white); padding:1.2rem; }
+.hap-face.back { transform:rotateY(180deg); background:var(--accent2); border-color:#cfe5da; }
+.hap-flip .hap-ziel { font-family:'Lora',serif; font-weight:500; font-size:1.4rem; line-height:1.3; text-align:center; }
+.hap-flip .hap-phon { font-size:0.8rem; margin-top:0; }
+.hap-tlabel { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--accent3); }
+.hap-back-trans { font-family:'Lora',serif; font-size:1.3rem; line-height:1.3; text-align:center; color:var(--ink); }
+.hap-fliphint { font-size:0.72rem; color:var(--gold); font-weight:600; }
 .hv-speaker { display:flex; margin:0.2rem auto 0.7rem; width:56px; height:56px; background:var(--accent); border:none; border-radius:50%; cursor:pointer; align-items:center; justify-content:center; color:var(--white); box-shadow:0 6px 18px rgba(45,106,79,0.3); transition:0.18s; -webkit-tap-highlight-color:transparent; }
 .hv-speaker:hover { transform:scale(1.05); }
 .hv-speaker.playing { animation:pulse 1.1s ease infinite; }
@@ -756,6 +767,7 @@ function reelLayout(){
     var s = slides[i];
     s.classList.remove('reel-current','reel-past','reel-next');
     s.classList.add(i < reelIndex ? 'reel-past' : (i === reelIndex ? 'reel-current' : 'reel-next'));
+    if (i !== reelIndex){ var hf = s.querySelector('.hap-flip'); if (hf) hf.classList.remove('flipped'); }  // Teil 60: neu erreichte Karte zeigt die Vorderseite
   }
 }
 function reelGoTo(i){ reelIndex = i; reelLayout(); }
@@ -1352,9 +1364,9 @@ var HAP = null;
 var SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
 var PLAY_SVG    = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>';
 var HAP_UI = {
-  de:{ loading:'Spikiu bereitet die Häppchen vor…', vocab:'Wortschatz mit Audio', listen:'Hörverständnis', weiterVocab:'Verstanden — weiter', weiter:'Weiter', correct:'Richtig!', wrong:'Knapp — die grüne war es.', handover:'Stark. Jetzt üben wir das im Gespräch.', skip:'Wir steigen direkt ins Gespräch ein.', locked:'Erst die Häppchen…', listenHint:'Was hörst du?', wordspot:'Wörter tippen', wordHint:'Welche Wörter hörst du? Tippe sie an.', check:'Prüfen', wordPerfect:'Perfekt — gutes Ohr!', wordClose:'Fast — grün = richtig, gestrichelt = verpasst.' },
-  es:{ loading:'Spikiu prepara los bocados…', vocab:'Vocabulario con audio', listen:'Comprensión auditiva', weiterVocab:'Entendido — seguir', weiter:'Seguir', correct:'¡Correcto!', wrong:'Casi — era la verde.', handover:'¡Genial! Ahora lo practicamos hablando.', skip:'Entramos directo en la conversación.', locked:'Primero los bocados…', listenHint:'¿Qué oyes?', wordspot:'Toca las palabras', wordHint:'¿Qué palabras oyes? Tócalas.', check:'Comprobar', wordPerfect:'¡Perfecto, buen oído!', wordClose:'Casi — verde = correcto, punteado = te faltó.' },
-  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?', wordspot:'Tap the words', wordHint:'Which words do you hear? Tap them.', check:'Check', wordPerfect:'Perfect — good ear!', wordClose:'Close — green = right, dashed = missed.' }
+  de:{ loading:'Spikiu bereitet die Häppchen vor…', vocab:'Wortschatz mit Audio', listen:'Hörverständnis', weiterVocab:'Verstanden — weiter', weiter:'Weiter', correct:'Richtig!', wrong:'Knapp — die grüne war es.', handover:'Stark. Jetzt üben wir das im Gespräch.', skip:'Wir steigen direkt ins Gespräch ein.', locked:'Erst die Häppchen…', listenHint:'Was hörst du?', wordspot:'Wörter tippen', wordHint:'Welche Wörter hörst du? Tippe sie an.', check:'Prüfen', wordPerfect:'Perfekt — gutes Ohr!', wordClose:'Fast — grün = richtig, gestrichelt = verpasst.', flip:'tippen zum Umdrehen', transLabel:'Übersetzung' },
+  es:{ loading:'Spikiu prepara los bocados…', vocab:'Vocabulario con audio', listen:'Comprensión auditiva', weiterVocab:'Entendido — seguir', weiter:'Seguir', correct:'¡Correcto!', wrong:'Casi — era la verde.', handover:'¡Genial! Ahora lo practicamos hablando.', skip:'Entramos directo en la conversación.', locked:'Primero los bocados…', listenHint:'¿Qué oyes?', wordspot:'Toca las palabras', wordHint:'¿Qué palabras oyes? Tócalas.', check:'Comprobar', wordPerfect:'¡Perfecto, buen oído!', wordClose:'Casi — verde = correcto, punteado = te faltó.', flip:'toca para girar', transLabel:'Traducción' },
+  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?', wordspot:'Tap the words', wordHint:'Which words do you hear? Tap them.', check:'Check', wordPerfect:'Perfect — good ear!', wordClose:'Close — green = right, dashed = missed.', flip:'tap to flip', transLabel:'Translation' }
 };
 var RAIL_LBL = {
   de:['Thema','Wörter','Hören','Sprechen','Lektion'],
@@ -1500,16 +1512,29 @@ function renderWortschatz(){
   var startLen = reelSlides().length;      // erste neue Wort-Karte merken
   HAP.wortschatz.forEach(function(h, i){
     var phon  = h.lautschrift  ? '<div class="hap-phon">' + escPlain(h.lautschrift) + '</div>' : '';
-    var trans = h.uebersetzung ? '<div class="hap-trans">' + escPlain(h.uebersetzung) + '</div>' : '';
     var w = document.createElement('div'); w.className = 'widget';
+    // Teil 60: Flip-Karte — vorne Zielsprache + 🔊 (+ Lautschrift), hinten Übersetzung. Tipp dreht, 🔊 nicht.
     w.innerHTML = '<div class="w-eyebrow">🎧 ' + escPlain(HAP_UI[ui].vocab) + ' · ' + (i+1) + ' / ' + n + '</div>'
-      + '<div class="hap-card hap-card-solo">'
-      + '<button class="hap-play" type="button">' + PLAY_SVG + '</button>'
-      + '<div class="hap-text"><div class="hap-ziel">' + escPlain(h.ziel) + '</div>' + phon + trans + '</div></div>'
+      + '<div class="hap-flip"><div class="hap-flip-inner">'
+      +   '<div class="hap-face front">'
+      +     '<button class="hap-play" type="button">' + PLAY_SVG + '</button>'
+      +     '<div class="hap-ziel">' + escPlain(h.ziel) + '</div>' + phon
+      +     '<div class="hap-fliphint">' + escPlain(HAP_UI[ui].flip) + '</div>'
+      +   '</div>'
+      +   '<div class="hap-face back">'
+      +     '<div class="hap-tlabel">' + escPlain(HAP_UI[ui].transLabel) + '</div>'
+      +     '<div class="hap-back-trans">' + escPlain(h.uebersetzung || '') + '</div>'
+      +     '<button class="hap-play" type="button">' + PLAY_SVG + '</button>'
+      +   '</div>'
+      + '</div></div>'
       + '<div class="hap-swipe-hint">' + escPlain(reelUI().swipe) + '</div>';
-    mountWidget(w);                        // eine Karte pro Wort
-    var btn = w.querySelector('.hap-play');
-    btn.onclick = function(){ playFrom(btn, h.ziel, 'playing'); };
+    mountWidget(w);                        // eine Flip-Karte pro Wort
+    var flip = w.querySelector('.hap-flip');
+    flip.addEventListener('click', function(e){
+      var pb = e.target.closest('.hap-play');
+      if (pb){ playFrom(pb, h.ziel, 'playing'); return; }   // 🔊 spielt, dreht NICHT
+      flip.classList.toggle('flipped');                     // Tipp auf die Karte dreht sie
+    });
     if (i === n - 1){ addFlowButton(HAP_UI[ui].weiterVocab, startHoeren); }   // „Verstanden — weiter" auf der letzten Wort-Karte
   });
   reelGoTo(startLen);                      // bei der ERSTEN Wort-Karte starten → vorwärts wischen
