@@ -349,6 +349,9 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 
 </div>
 
+<!-- Teil 62: Sitzungs-Persistenz-Helfer SYNCHRON (vor dem Haupt-Script), damit
+     window.spikiuSitzung beim Eintritt (startGespraech) schon verfügbar ist. -->
+<script src="sitzung.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════════
 //  SPIKIU · RAUM: FREIES GESPRÄCH (der Flur)
@@ -666,6 +669,7 @@ function mismoTema(){                     // neue Runde, gleiches Thema/Wortscha
   var seed = p3().mismoSeed;
   addMessage('user', seed);
   verlauf.push({ role:'user', content: seed });
+  sitzungSpeichern();                          // Teil 62: nach dem „gleiches Thema"-Seed sichern
   turn();
 }
 function otroTema(){                      // zurück zur Themen-Gabelung → regeneriert Häppchen
@@ -1058,6 +1062,9 @@ async function makeLessonAndLeave(){
     };
     try { localStorage.setItem('spikiu_pending_lesson', JSON.stringify(pending)); } catch(e){}
   }
+  // Teil 62: Der Transcript ist jetzt im pending gesichert (Teil 61) → die Live-Sitzung
+  // ist nicht mehr nötig; gespraech-Schlüssel räumen, kein Zombie-Resume des fertigen Gesprächs.
+  gespraechRaeumen();
 
   // (2) Netz: Body robust lesen, ECHTEN Fehlergrund SEHEN (Charta), nie bloß „hat nicht geklappt".
   var r = null, raw = '', d = null;
@@ -1150,6 +1157,25 @@ function renderOptionen(optionen){
   });
   chat.scrollTop = chat.scrollHeight;
 }
+// ── Teil 62: Sitzungs-Persistenz (sitzung.js) — Gespräch geht nie verloren ──
+// Laufend (entprellt ~350 ms) den Dialog sichern; raeume bei echtem Ende.
+var _gespSaveTimer = null;
+function sitzungSpeichern(){
+  if (!window.spikiuSitzung || !Array.isArray(verlauf) || verlauf.length === 0) return;
+  clearTimeout(_gespSaveTimer);
+  _gespSaveTimer = setTimeout(function(){
+    try {
+      window.spikiuSitzung.speichere('gespraech', {
+        verlauf: verlauf, gefuehrt: gefuehrt, topicLabel: TOPIC_LABEL, zielsprache: PROFILE.zielsprache
+      });
+    } catch(e){}
+  }, 350);
+}
+function gespraechRaeumen(){
+  clearTimeout(_gespSaveTimer); _gespSaveTimer = null;
+  if (window.spikiuSitzung){ try { window.spikiuSitzung.raeume('gespraech'); } catch(e){} }
+}
+
 // Einen Lerner-Zug senden — getippt ODER per Antwort-Chip, identischer Pfad.
 function sendUserTurn(text){
   if (busy || guiding) return;
@@ -1157,6 +1183,7 @@ function sendUserTurn(text){
   removeGabelung(); removeOptionen();          // alte Wahl-Elemente weg
   addMessage('user', text);
   verlauf.push({ role: 'user', content: text });
+  sitzungSpeichern();                          // Teil 62: nach dem User-Zug sichern
   turn();
 }
 
@@ -1291,6 +1318,7 @@ async function turn(){
     if (shown){
       addMessage('spikiu', shown);                          // nur Anzeige (ohne Marker)
       verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf (Marker raus, [[…]] bleibt)
+      sitzungSpeichern();                                   // Teil 62: nach dem Assistant-Zug sichern
     }
     lastTurnOk = true;                                      // Runde sauber → Opener darf die Gabelung zeigen
     if (k.pairs.length){ korrekturen = korrekturen.concat(k.pairs); renderKorrekturCard(k.pairs); }
@@ -1719,6 +1747,7 @@ function startSeedTurn(){
   setExitVisible(true);              // Rollenspiel beginnt → Ausstieg dauerhaft erreichbar
   var seed = GAB[uiLang()].seed(TOPIC_LABEL);
   verlauf.push({ role: 'user', content: seed });
+  sitzungSpeichern();                          // Teil 62: nach dem Thema-Seed sichern
   turn();
 }
 
@@ -1798,6 +1827,50 @@ function startOpener(){
   showGabelung();
 }
 
+// ── Teil 62: Dialog aus einer gesicherten Sitzung ins Reel zurückholen ──
+// Anzeige-only: KEIN neuer API-Call, KEIN erneutes verlauf.push. Die schon vorhandenen
+// Render-Pfade (appendSpikiuSlide/appendUserSlide/renderLearnerSlide) — nichts neu erfunden.
+function sitzungWiederherstellen(s){
+  verlauf = Array.isArray(s.verlauf) ? s.verlauf.slice() : [];
+  gefuehrt = !!s.gefuehrt;
+  TOPIC_LABEL = s.topicLabel || null;
+  sessionGezaehlt = false;
+  setOpenerChrome(false);            // Profil-Chip + Eingabe wieder einblenden
+  removeOpenerGreeting();            // falls ein Präsenz-Gruß stand
+  enterReel();                       // freier Flur UND geführt laufen beide im Reel
+  removeLearnerSlide();              // enterReel kann (freier Flur) einen Start-Slide setzen → weg, wir bauen neu
+  verlauf.forEach(function(m){
+    if (m.role === 'assistant'){
+      var segments = splitThoughts(m.content);
+      if (!segments.length) segments = [m.content || ''];
+      segments.forEach(function(seg){ var parts = splitBridge(seg); appendSpikiuSlide(parts.ziel, parts.trans); });
+    } else if (m.role === 'user'){
+      appendUserSlide(m.content);
+    }
+  });
+  renderLearnerSlide(false);         // frische Eingabe-Folie ans Ende → nahtlos weiterschreiben
+  reelGoTo(reelSlides().length - 1); // ans Ende gehen
+  updateFreeExit();
+}
+
+// Eintritt: gibt es eine wirklich angefangene, unfertige Sitzung → „Weiter, wo du warst?".
+// Sonst der normale Opener (unverändert).
+function startGespraech(){
+  var s = null;
+  try { s = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('gespraech') : null; } catch(e){ s = null; }
+  if (window.spikiuSitzung && s && Array.isArray(s.verlauf) && s.verlauf.length >= 2){
+    var FREI = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
+    window.spikiuSitzung.frageWiederkommen({
+      raum: 'gespraech', ts: s.ts,
+      wo: (s.topicLabel || FREI[uiLang()] || FREI.de),
+      beimWeiter: function(){ sitzungWiederherstellen(s); },
+      beimNeu: function(){ gespraechRaeumen(); startOpener(); }
+    });
+  } else {
+    startOpener();
+  }
+}
+
 // ── Eingabe ──────────────────────────────────────────────────────
 input.addEventListener('input', function(){
   this.style.height = 'auto';
@@ -1843,10 +1916,17 @@ window.__spkBoot = function(){ warmVoice(PROFILE.zielsprache); };
 
 // ── Einstieg: kein Welcome-Screen, kein Onboarding. Direkt rein. ──
 fillProfileBar();
-startOpener();   // verlauf leer → Backend [EINSTIEG] → Opener-Gruß, danach die Gabelung
-// capy-vivo.js ist deferred → beim startOpener oben evtl. noch nicht geladen.
-// Hier nachbinden, sobald die Helfer da sind (Sprech-/Blinzel-Zustand des Gruß-Capy).
-document.addEventListener('DOMContentLoaded', bindVozCapy);
+startGespraech();   // Teil 62: unfertige Sitzung → „Weiter, wo du warst?"; sonst normaler Opener
+// capy-vivo.js ist deferred → beim startGespraech oben evtl. noch nicht geladen.
+// Hier nachbinden, sobald die Helfer da sind (Sprech-/Blinzel-Zustand des Gruß-Capy
+// bzw. der lebendige Capy auf der Wiederkommen-Karte).
+document.addEventListener('DOMContentLoaded', function(){
+  bindVozCapy();
+  if (window.spkCapyAlive){
+    var c = document.querySelector('.spk-sitz-veil .spk-sitz-capy svg');
+    if (c){ try { window.spkCapyAlive(c); } catch(e){} }
+  }
+});
 </script>
 <!-- Audio (Paket 2): audio.js ist ein ES-Modul am Root. Hier importiert, via window
      an das klassische Haupt-Script durchgereicht (das bleibt klassisch wegen
