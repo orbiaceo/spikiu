@@ -692,17 +692,23 @@ var END_UI = {
        yes:'Ja, gern', no:'Nein, danke', byeNo:'Alles klar. Bis bald! 🐾',
        making:'Spikiu bastelt deine Lektion …',
        byeMade:'Du findest sie im Dashboard unter Meine Lektionen. Bis bald! 🐾',
-       err:'Das hat gerade nicht geklappt — versuch es gleich nochmal.' },
+       err:'Das hat gerade nicht geklappt — versuch es gleich nochmal.',
+       bgSafe:'Spikiu baut deine Lektion im Hintergrund fertig — sie geht nicht verloren. Du findest sie gleich in deinen Lektionen.',
+       retry:'Nochmal versuchen' },
   es:{ endConvo:'Terminar conversación', offer:'¿Quieres una lección de esta conversación?',
        yes:'Sí, claro', no:'No, gracias', byeNo:'De acuerdo. ¡Hasta pronto! 🐾',
        making:'Spikiu está preparando tu lección …',
        byeMade:'La encontrarás en el panel, en Mis lecciones. ¡Hasta pronto! 🐾',
-       err:'No ha funcionado — inténtalo de nuevo en un momento.' },
+       err:'No ha funcionado — inténtalo de nuevo en un momento.',
+       bgSafe:'Spikiu terminará tu lección en segundo plano — no se perderá. La encontrarás enseguida en tus lecciones.',
+       retry:'Intentar de nuevo' },
   en:{ endConvo:'End conversation', offer:'Would you like a lesson from this conversation?',
        yes:'Yes, please', no:'No, thanks', byeNo:'All right. See you soon! 🐾',
        making:'Spikiu is making your lesson …',
        byeMade:'You’ll find it in the dashboard under My Lessons. See you soon! 🐾',
-       err:'That didn’t work just now — try again in a moment.' }
+       err:'That didn’t work just now — try again in a moment.',
+       bgSafe:'Spikiu will finish your lesson in the background — it won’t be lost. You’ll find it in your lessons shortly.',
+       retry:'Try again' }
 };
 function endUI(){ return END_UI[uiLang()] || END_UI.de; }
 
@@ -1017,56 +1023,96 @@ function hideLessonSpinner(){ var s = document.getElementById('lessonSpin'); if 
 
 // Ja → Lektion DIREKT erzeugen (Generator + Schema unberührt), rolling-3 speichern,
 // dann sanfte Auflösung → Dashboard. Speichern MUSS vor der Navigation passieren.
+// Teil 61: Der Transcript wird beim Klick SOFORT persistiert (spikiu_pending_lesson),
+// BEVOR das Netz läuft → ein Fehlschlag verliert NICHTS. Erfolg = Lektion speichern +
+// pending löschen. Fehler = pending BLEIBT (der nav.js-Finalizer macht sie auf der
+// nächsten Seite fertig), ehrliche beruhigende Nachricht + „Nochmal versuchen".
+var FREI_LESSON = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
+
 async function makeLessonAndLeave(){
   var offer = document.getElementById('lessonOffer'); if (offer) offer.remove();
+  var oldRetry = document.getElementById('lessonRetry'); if (oldRetry) oldRetry.remove();
   setExitVisible(false); freeExitBar.hidden = true;
   showLessonSpinner();
   var ui = endUI();
   var u = {};
   try { u = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch(e){ u = {}; }
-  var d = null;
-  try {
-    var r = await fetch('/api/generate-lesson', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+
+  // (1) SOFORT sichern — bestehenden pending-Eintrag wiederverwenden („Nochmal versuchen"
+  //     nutzt denselben), sonst neu anlegen und schreiben.
+  var pending = null;
+  try { pending = JSON.parse(localStorage.getItem('spikiu_pending_lesson') || 'null'); } catch(e){ pending = null; }
+  if (!pending || pending.status !== 'pending' || !pending.body){
+    pending = {
+      id: 'lesson_' + Date.now(),
+      body: {
         name:                u.name,
         nativeLang:          u.nativeLang,
         profile:             u.profile,
         conversationHistory: buildConvoForLesson()
-      })
+      },
+      thema:       TOPIC_LABEL || (FREI_LESSON[uiLang()] || FREI_LESSON.de),   // Teil 53: Thema fürs Archiv
+      zielsprache: PROFILE.zielsprache,
+      createdAt:   new Date().toISOString(),
+      status:      'pending'
+    };
+    try { localStorage.setItem('spikiu_pending_lesson', JSON.stringify(pending)); } catch(e){}
+  }
+
+  // (2) Netz: Body robust lesen, ECHTEN Fehlergrund SEHEN (Charta), nie bloß „hat nicht geklappt".
+  var r = null, raw = '', d = null;
+  try {
+    r = await fetch('/api/generate-lesson', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pending.body)
     });
-    d = await r.json();
-  } catch(e){ d = null; }
+    try { raw = await r.text(); } catch(e){ raw = ''; }
+    try { d = raw ? JSON.parse(raw) : null; } catch(e){ d = null; }
+  } catch(e){ r = null; d = null; raw = String((e && e.message) || e); }
   hideLessonSpinner();
-  if (!d || !d.lesson){
-    addPlainSpikiu(ui.err);                 // ehrlich, keine Navigation, Beenden bleibt erreichbar
+
+  if (!r || !r.ok || !d || !d.lesson){
+    console.error('generate-lesson ' + (r ? r.status : 'netz'), errDetail(d, raw));
+    // pending BLEIBT → der nav.js-Finalizer macht die Lektion auf der nächsten Seite fertig.
+    showLessonBgSafe(ui);                   // beruhigend, KEINE Navigation, Beenden bleibt erreichbar
     updateFreeExit();
     return;
   }
-  // Ergebnis-Lektion: id + createdAt + zielsprache (Letzteres fürs 🔊 im Poster).
-  var FREI = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
+
+  // (3) ERFOLG: Eintrag aus pending (id/createdAt/thema → identisch zum Finalizer), pending löschen.
   var entry = {
-    id:              'lesson_' + Date.now(),
-    topic:           (d.lesson.title) || 'Lektion',
-    thema:           TOPIC_LABEL || (FREI[uiLang()] || FREI.de),   // Teil 53: Thema fürs Archiv (geführt=Thema, frei=Freies Gespräch)
+    id:               pending.id,
+    topic:            (d.lesson.title) || 'Lektion',
+    thema:            pending.thema,
     fromConversation: true,
-    lesson:          d.lesson,
-    createdAt:       new Date().toISOString(),
-    zielsprache:     PROFILE.zielsprache
+    lesson:           d.lesson,
+    createdAt:        pending.createdAt,
+    zielsprache:      pending.zielsprache
   };
-  // Rolling-Archiv: anhängen, nach createdAt absteigend behalten, max 14 (Teil 53: 2-Wochen-Start).
+  // Rolling-Archiv: anhängen (per id entdoppelt), nach createdAt absteigend, max 14 (Teil 53).
   var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
-  arr.push(entry);
+  if (!arr.some(function(l){ return l && l.id === pending.id; })) arr.push(entry);
   arr.sort(function(a, b){ return (b.createdAt || '').localeCompare(a.createdAt || ''); });
-  arr = arr.slice(0, 14);
-  u.lessons = arr;
-  try { localStorage.setItem('spikiu_user', JSON.stringify(u)); } catch(e){}   // VOR der Navigation
+  u.lessons = arr.slice(0, 14);
+  try { localStorage.setItem('spikiu_user', JSON.stringify(u)); } catch(e){}        // VOR der Navigation
+  try { localStorage.removeItem('spikiu_pending_lesson'); } catch(e){}              // erledigt → kein Finalizer-Lauf
   addPlainSpikiu(ui.byeMade);
   // Sanfte Auflösung (fade + leichtes blur) → Dashboard.
   var app = document.querySelector('.app');
   setTimeout(function(){ if (app) app.classList.add('dissolving'); }, 350);
   setTimeout(function(){ window.location.href = 'dashboard.html#lektionen'; }, 1050);
+}
+
+// Beruhigende Fehlnachricht + „Nochmal versuchen" (pending bleibt; Finalizer übernimmt sonst).
+function showLessonBgSafe(ui){
+  addPlainSpikiu(ui.bgSafe);
+  if (document.getElementById('lessonRetry')) return;
+  var wrap = document.createElement('div'); wrap.className = 'endmenu'; wrap.id = 'lessonRetry';
+  wrap.innerHTML = '<button class="chip full" type="button" id="lrBtn"></button>';
+  wrap.querySelector('#lrBtn').textContent = ui.retry;
+  chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+  wrap.querySelector('#lrBtn').onclick = function(){ wrap.remove(); makeLessonAndLeave(); };
 }
 
 // Sichtbarkeit des freien „Gespräch beenden" (Teil 32 #1): nur im freien Flur, ab

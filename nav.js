@@ -371,6 +371,77 @@
   // capy-vivo.js bleibt unberührt und wird weiter von chat.html (Begrüßer) und
   // lesebegleiter.js (Reader) genutzt.
 
+  // ── Lektions-Finalizer (Teil 61) ─────────────────────────────────
+  // Läuft auf JEDER Seite mit Nav: gibt es einen pending Transcript
+  // (chat.html sichert ihn beim „Lektion erzeugen" SOFORT), wird die Lektion
+  // hier im Hintergrund fertiggestellt — egal wohin der Nutzer gewechselt ist.
+  // Niemals werfen; Fehlschlag behält pending → nächster Seitenaufruf versucht erneut.
+  function readPending() {
+    try { return JSON.parse(localStorage.getItem('spikiu_pending_lesson') || 'null'); }
+    catch (e) { return null; }
+  }
+  function releasePending(id) {
+    // inProgressTs lösen (pending BEHALTEN) → nächster Seitenaufruf darf erneut.
+    try {
+      const p = readPending();
+      if (p && p.id === id) { delete p.inProgressTs; localStorage.setItem('spikiu_pending_lesson', JSON.stringify(p)); }
+    } catch (e) {}
+  }
+  function insertFinalizedLesson(pend, lesson) {
+    try {
+      const u = readUser() || {};
+      const arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
+      if (arr.some(function (l) { return l && l.id === pend.id; })) {
+        // schon eingetragen (z. B. chat.html war doch erfolgreich) → nur pending löschen, keine Doppel.
+        localStorage.removeItem('spikiu_pending_lesson');
+        return;
+      }
+      arr.push({
+        id: pend.id,
+        topic: (lesson && lesson.title) || 'Lektion',
+        thema: pend.thema,
+        fromConversation: true,
+        lesson: lesson,
+        createdAt: pend.createdAt,
+        zielsprache: pend.zielsprache
+      });
+      arr.sort(function (a, b) { return (b.createdAt || '').localeCompare(a.createdAt || ''); });
+      u.lessons = arr.slice(0, 14);
+      localStorage.setItem('spikiu_user', JSON.stringify(u));
+      localStorage.removeItem('spikiu_pending_lesson');
+      // Wenn die aktuelle Seite Lektionen listet (Dashboard) → sanft neu rendern, damit sie auftaucht.
+      if (typeof window.loadUser === 'function') { try { window.loadUser(); } catch (e) {} }
+    } catch (e) { console.error('finalizer insert', e); releasePending(pend.id); }
+  }
+  function finalizePendingLesson() {
+    const pending = readPending();
+    if (!pending || pending.status !== 'pending' || !pending.body) return;
+    // Schutz gegen Parallel-Läufe (zweiter Tab / sofortiger Re-Entry): ~60 s Sperre.
+    const now = Date.now();
+    if (pending.inProgressTs && (now - pending.inProgressTs) < 60000) return;
+    pending.inProgressTs = now;
+    try { localStorage.setItem('spikiu_pending_lesson', JSON.stringify(pending)); } catch (e) {}
+
+    fetch('/api/generate-lesson', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pending.body)
+    }).then(function (r) {
+      return r.text().then(function (raw) {
+        let d = null; try { d = raw ? JSON.parse(raw) : null; } catch (e) { d = null; }
+        if (!r.ok || !d || !d.lesson) {
+          console.error('generate-lesson finalizer ' + r.status, (d && (d.error || d.detail || d.message)) || (raw || '').slice(0, 300));
+          releasePending(pending.id);   // pending BLEIBT → nächster Seitenaufruf versucht erneut
+          return;
+        }
+        insertFinalizedLesson(pending, d.lesson);
+      });
+    }).catch(function (e) {
+      console.error('generate-lesson finalizer netz', e);
+      releasePending(pending.id);
+    });
+  }
+
   // ── Montage ──────────────────────────────────────────────────────
   function mount() {
     injectStyles();
@@ -380,6 +451,7 @@
     window.addEventListener('resize', measureNavH);
     window.addEventListener('orientationchange', measureNavH);
     window.addEventListener('hashchange', updateActiveTab);
+    finalizePendingLesson();   // Teil 61: pending Transcript im Hintergrund fertigstellen
   }
 
   // Öffentliche API
