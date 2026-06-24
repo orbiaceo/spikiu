@@ -53,6 +53,139 @@
   .lk-vspeak svg{ width:14px; height:14px; }
   .lk-vspeak.playing{ animation:lkPulse 1s ease infinite; }
   @keyframes lkPulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.12);} }
+
+  /* ── Lektion-Overlay IN-PLACE über dem Archiv (Teil 57) ── */
+  .lk-veil{ position:fixed; left:0; right:0; top:0; bottom:var(--spk-navh,74px); background:rgba(250,249,247,.55); backdrop-filter:blur(2px); z-index:84; opacity:0; pointer-events:none; transition:opacity .3s; }
+  .lk-veil.open{ opacity:1; pointer-events:auto; }
+  .lk-lesson{ position:fixed; left:0; right:0; top:0; bottom:var(--spk-navh,74px); z-index:85; overflow-y:auto; padding:1rem 1rem 2rem; transform:translateY(100%); transition:transform .34s cubic-bezier(.4,0,.2,1); -webkit-overflow-scrolling:touch; }
+  .lk-lesson.open{ transform:translateY(0); }
+  .lk-lesson[hidden]{ display:none; }
+  .lk-bar{ display:flex; justify-content:space-between; align-items:center; gap:.5rem; max-width:720px; margin:0 auto .8rem; }
+  .lk-back{ background:var(--white); border:1px solid var(--faint); color:var(--ink); border-radius:100px; padding:.55rem 1.1rem; font-family:'DM Sans',sans-serif; font-weight:700; font-size:.86rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .lk-pdf{ background:var(--accent); border:none; color:#fff; border-radius:100px; padding:.55rem 1.1rem; font-family:'DM Sans',sans-serif; font-weight:700; font-size:.86rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+
+.lp-lesson { max-width:720px; margin:0 auto; background:#faf9f7; border-radius:12px; padding:40px 48px; box-shadow:0 8px 40px rgba(0,0,0,0.12); font-family:'DM Sans',sans-serif; color:#1a1816; }
+.lp-header { display:flex; align-items:flex-start; justify-content:space-between; padding-bottom:18px; border-bottom:2px solid #1a1816; margin-bottom:26px; }
+.lp-brand { display:flex; align-items:center; gap:0.5rem; }
+.lp-brand-name { font-family:'Lora',serif; font-size:1.3rem; font-weight:700; letter-spacing:-0.02em; }
+.lp-brand-name em { color:#2d6a4f; font-style:italic; }
+.lp-meta { text-align:right; font-size:0.72rem; color:#6b6560; line-height:1.5; }
+.lp-meta strong { color:#1a1816; }
+.lp-level { display:inline-block; background:#e8f2ed; color:#2d6a4f; padding:0.2rem 0.6rem; border-radius:100px; font-size:0.7rem; font-weight:700; letter-spacing:0.06em; margin-top:0.4rem; }
+.lp-title-block { margin-bottom:28px; }
+.lp-eyebrow { font-size:0.66rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#a07830; margin-bottom:0.5rem; }
+.lp-title { font-family:'Lora',serif; font-size:2rem; font-weight:700; letter-spacing:-0.02em; line-height:1.15; margin-bottom:0.5rem; }
+.lp-title em { color:#2d6a4f; font-style:italic; }
+.lp-subtitle { font-family:'Lora',serif; font-style:italic; font-size:1rem; color:#6b6560; }
+.lp-goal { background:#e8f2ed; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:28px; }
+.lp-goal-label { font-size:0.65rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#2d6a4f; margin-bottom:0.5rem; }
+.lp-goal-text { font-size:0.92rem; line-height:1.55; }
+.lp-section { margin-bottom:28px; }
+.lp-section-label { font-size:0.65rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#a07830; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.5rem; }
+.lp-section-label::after { content:""; flex:1; height:1px; background:#e8e4df; }
+.lp-vocab-list { list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; }
+.lp-vocab-item { background:white; border:1px solid #e8e4df; border-radius:10px; padding:12px 16px; display:grid; grid-template-columns:1fr 1fr; gap:8px 16px; }
+.lp-vocab-word { font-family:'Lora',serif; font-weight:700; font-size:1.02rem; }
+.lp-vocab-trans { font-size:0.88rem; color:#6b6560; }
+.lp-vocab-example { grid-column:1 / -1; font-size:0.84rem; font-style:italic; padding-top:4px; border-top:1px dashed #e8e4df; }
+.lp-vocab-example em { font-style:normal; color:#2d6a4f; font-weight:600; }
+.lp-grammar-card { background:white; border:1px solid #e8e4df; border-radius:10px; padding:16px 18px; }
+.lp-grammar-card h4 { font-family:'Lora',serif; font-size:1rem; font-weight:700; margin-bottom:0.5rem; }
+.lp-grammar-card p { font-size:0.88rem; line-height:1.65; margin-bottom:0.6rem; }
+.lp-grammar-card .lp-example { background:#faf9f7; padding:0.6rem 0.9rem; border-radius:6px; font-size:0.86rem; font-style:italic; color:#2d6a4f; border-left:2px solid #2d6a4f; margin-top:0.6rem; }
+.lp-dialogue { background:white; border:1px solid #e8e4df; border-radius:10px; padding:16px 18px; }
+.lp-dialogue-line { display:flex; gap:0.7rem; margin-bottom:0.7rem; }
+.lp-dialogue-line:last-child { margin-bottom:0; }
+.lp-dialogue-speaker { font-weight:700; font-size:0.82rem; color:#2d6a4f; min-width:50px; flex-shrink:0; }
+.lp-dialogue-text { font-size:0.92rem; line-height:1.55; }
+.lp-dialogue-text .lp-trans { display:block; font-size:0.78rem; color:#6b6560; font-style:italic; margin-top:2px; }
+/* 🔊 im Poster (Teil 32): nur auf Zielsprache — Wortschatz-Wort + Dialog-Zeile. Spricht über audio.js. */
+.lp-speak { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; margin-left:0.4rem; vertical-align:-0.28rem; border:none; cursor:pointer; background:#e8f2ed; color:#2d6a4f; border-radius:50%; transition:background 0.16s, color 0.16s; -webkit-tap-highlight-color:transparent; }
+.lp-speak:hover { background:#2d6a4f; color:#fff; }
+.lp-speak svg { width:12px; height:12px; }
+.lp-speak.playing { animation:lpSpkPulse 1s ease infinite; }
+@keyframes lpSpkPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(45,106,79,0.4);} 50%{ box-shadow:0 0 0 6px rgba(45,106,79,0);} }
+.lp-quiz-item { background:white; border:1px solid #e8e4df; border-radius:10px; padding:14px 16px; margin-bottom:10px; }
+.lp-quiz-question { font-weight:600; font-size:0.92rem; margin-bottom:0.7rem; }
+.lp-quiz-question .lp-num { color:#2d6a4f; font-weight:700; margin-right:0.4rem; }
+.lp-quiz-options { list-style:none; display:flex; flex-direction:column; gap:6px; padding:0; margin:0; }
+.lp-quiz-opt {
+  display:flex; align-items:center; gap:0.5rem;
+  padding:9px 12px; background:#faf9f7;
+  border:1.5px solid transparent; border-radius:8px;
+  font-size:0.88rem; cursor:pointer;
+  font-family:inherit; text-align:left; width:100%;
+  color:#1a1816; transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.lp-quiz-opt:hover:not(:disabled) { background:#f0ede5; border-color:#d6d0c4; }
+.lp-quiz-opt:disabled { cursor:default; }
+.lp-quiz-opt .lp-quiz-mark {
+  margin-left:auto; font-weight:700; font-size:1rem; opacity:0;
+  transition: opacity 0.2s;
+}
+.lp-quiz-opt.correct {
+  background:#e8f5ee; border-color:#2d6a4f; color:#1a4a38; font-weight:600;
+}
+.lp-quiz-opt.correct .lp-quiz-mark { color:#2d6a4f; opacity:1; }
+.lp-quiz-opt.wrong {
+  background:#fdebe9; border-color:#c0392b; color:#a02e22;
+}
+.lp-quiz-opt.wrong .lp-quiz-mark { color:#c0392b; opacity:1; }
+.lp-quiz-answer {
+  margin-top:12px; padding:10px 12px;
+  background:#faf9f7; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0;
+  font-size:0.85rem; color:#1a1816; line-height:1.5;
+  display:none; animation: lpFadeIn 0.25s ease;
+}
+.lp-quiz-answer.visible { display:block; }
+.lp-quiz-answer strong { color:#2d6a4f; }
+@keyframes lpFadeIn {
+  from { opacity:0; transform: translateY(-4px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ── LESSON GENERATION BUTTON STATES ───────────────── */
+.btn-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  vertical-align: -2px;
+  margin-right: 0.45rem;
+  animation: btnSpin 0.8s linear infinite;
+}
+@keyframes btnSpin {
+  to { transform: rotate(360deg); }
+}
+.btn-loading {
+  opacity: 0.7;
+  cursor: wait !important;
+  pointer-events: none;
+}
+.lp-footer { margin-top:32px; padding-top:16px; border-top:1px solid #e8e4df; display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#6b6560; }
+.lp-footer-cap { font-family:'Lora',serif; font-style:italic; color:#2d6a4f; }
+@media (max-width:600px) {
+  .lp-lesson { padding:24px 22px; }
+  .lp-title { font-size:1.5rem; }
+  .lp-vocab-item { grid-template-columns:1fr; }
+}
+
+  /* ── PDF/Druck: nur die Lektion (Teil 57) ── */
+  @media print {
+    @page { size:A4 portrait; margin:12mm; }
+    body.printing-lesson { background:#fff !important; padding:0 !important; }
+    body.printing-lesson .wrap,
+    body.printing-lesson .lk-veil,
+    body.printing-lesson .lk-bar,
+    body.printing-lesson .spk-bottomnav,
+    body.printing-lesson .spk-topbar { display:none !important; }
+    body.printing-lesson .lk-lesson{ position:static !important; inset:auto !important; transform:none !important; overflow:visible !important; padding:0 !important; height:auto !important; }
+    body.printing-lesson .lp-lesson{ box-shadow:none !important; max-width:100% !important; padding:0 !important; border-radius:0 !important; }
+    body.printing-lesson .lp-speak{ display:none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -68,8 +201,13 @@
   <div class="lk-list" id="lkList"></div>
 </div>
 
-<div class="lk-modal" id="lkModal" hidden>
-  <div class="lk-sheet" id="lkSheet"></div>
+<div class="lk-veil" id="lkVeil"></div>
+<div class="lk-lesson" id="lkLesson" hidden>
+  <div class="lk-bar">
+    <button type="button" class="lk-back" id="lkBack">← Zurück</button>
+    <button type="button" class="lk-pdf" id="lkPdf">📄 Als PDF herunterladen</button>
+  </div>
+  <div id="lkPoster"></div>
 </div>
 
 <script>
@@ -95,9 +233,9 @@ var MUTTER = stored.muttersprache || langCode(USER.nativeLang) || langCode(store
 function uiLang(){ return (['de','es','en'].indexOf(MUTTER) > -1) ? MUTTER : 'de'; }
 
 var T = {
-  de:{ title:'Lektionen', byTopic:'Nach Thema', byDate:'Nach Datum', other:'Sonstige', empty:'Noch keine Lektionen.', words:'Wörter', vocab:'Wortschatz', note:'Notiz' },
-  es:{ title:'Lecciones', byTopic:'Por tema', byDate:'Por fecha', other:'Otros', empty:'Aún no hay lecciones.', words:'palabras', vocab:'Vocabulario', note:'Nota' },
-  en:{ title:'Lessons', byTopic:'By topic', byDate:'By date', other:'Other', empty:'No lessons yet.', words:'words', vocab:'Vocabulary', note:'Note' }
+  de:{ title:'Lektionen', byTopic:'Nach Thema', byDate:'Nach Datum', other:'Sonstige', empty:'Noch keine Lektionen.', words:'Wörter', vocab:'Wortschatz', note:'Notiz', back:'← Zurück', pdf:'📄 Als PDF herunterladen' },
+  es:{ title:'Lecciones', byTopic:'Por tema', byDate:'Por fecha', other:'Otros', empty:'Aún no hay lecciones.', words:'palabras', vocab:'Vocabulario', note:'Nota', back:'← Volver', pdf:'📄 Descargar como PDF' },
+  en:{ title:'Lessons', byTopic:'By topic', byDate:'By date', other:'Other', empty:'No lessons yet.', words:'words', vocab:'Vocabulary', note:'Note', back:'← Back', pdf:'📄 Download as PDF' }
 };
 function t(){ return T[uiLang()] || T.de; }
 var LOCALE = { de:'de-DE', es:'es-ES', en:'en-US' }[uiLang()] || 'de-DE';
@@ -123,6 +261,181 @@ function playFrom(btn, text){
 }
 
 // ── Daten ──
+
+// ── Voller Lektions-Poster IN-PLACE (portiert aus dashboard.html, Teil 57) ──
+var CAPY_LOGO = "";
+const LP_SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+function lpPlain(s){ return String(s==null?'':s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim(); }
+function lpAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function lpSpeakBtn(zieltext){
+  var t = lpPlain(zieltext);
+  if (!t) return '';
+  return '<button type="button" class="lp-speak" data-speak="' + lpAttr(t) + '" aria-label="Vorlesen">' + LP_SPK_ICON + '</button>';
+}
+function dashSpeak(text, ziel){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, ziel); } catch(e){} }
+  try {
+    var synth = window.speechSynthesis;
+    if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[ziel] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp;
+      synth.cancel(); synth.speak(u);
+    }
+  } catch(e){}
+}
+function dashWarm(ziel){ if (window.spkWarm){ try { window.spkWarm(ziel); } catch(e){} } }
+function renderLessonPoster(l) {
+  if (!l) return '<p style="color:white;text-align:center;padding:2rem;">Lesson not found.</p>';
+
+  const vocabHtml = (l.vocab || []).map(v => `
+    <li class="lp-vocab-item">
+      <span class="lp-vocab-word">${v.word || ''}${lpSpeakBtn(v.word)}</span>
+      <span class="lp-vocab-trans">${v.translation || ''}</span>
+      ${v.example ? `<div class="lp-vocab-example">"${v.example}"</div>` : ''}
+    </li>
+  `).join('');
+
+  const grammarExamples = (l.grammar && l.grammar.examples || []).map(ex =>
+    `<div class="lp-example">${ex}</div>`
+  ).join('');
+
+  const dialogueHtml = (l.dialogue || []).map(d => `
+    <div class="lp-dialogue-line">
+      <span class="lp-dialogue-speaker">${d.speaker || ''}</span>
+      <div class="lp-dialogue-text">
+        ${d.text || ''}${lpSpeakBtn(d.text)}
+        ${d.translation ? `<span class="lp-trans">${d.translation}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  // ── INTERACTIVE QUIZ ──────────────────────────────────
+  // Parse the "answer" field to detect which option is correct.
+  // Expected formats from generate-lesson.js (all supported):
+  //   "b) ..."     → letter b is correct
+  //   "b"          → letter b is correct
+  //   "Option B — ..."  → letter B is correct
+  // Then each option (a, b, c, ...) becomes a clickable button.
+  // On click: wrong → red, correct option auto-highlighted green,
+  // explanation revealed, all buttons disabled.
+  function correctLetterFromAnswer(answerText, optionsLen) {
+    if (!answerText) return null;
+    const m = String(answerText).trim().match(/^[^a-z]*([a-z])\b/i);
+    if (!m) return null;
+    const letter = m[1].toLowerCase();
+    const idx = letter.charCodeAt(0) - 97; // a=0, b=1, c=2
+    return (idx >= 0 && idx < optionsLen) ? letter : null;
+  }
+  const quizHtml = (l.quiz || []).map((q, qIdx) => {
+    const opts = q.options || [];
+    const correct = correctLetterFromAnswer(q.answer, opts.length);
+    const optionsButtons = opts.map((o, oIdx) => {
+      const letter = String.fromCharCode(97 + oIdx); // a, b, c
+      const isCorrect = (letter === correct);
+      const safeText = String(o).replace(/"/g, '&quot;');
+      return `<li><button type="button" class="lp-quiz-opt"
+        data-correct="${isCorrect ? '1' : '0'}"
+        data-q="${qIdx}"
+        onclick="lpQuizClick(this, ${qIdx})">
+        <span class="lp-quiz-label">${safeText}</span>
+        <span class="lp-quiz-mark"></span>
+      </button></li>`;
+    }).join('');
+    return `
+    <div class="lp-quiz-item" data-quiz-idx="${qIdx}">
+      <div class="lp-quiz-question"><span class="lp-num">${qIdx+1}.</span>${q.question || ''}</div>
+      <ul class="lp-quiz-options">${optionsButtons}</ul>
+      <div class="lp-quiz-answer" id="lp-answer-${qIdx}"><strong>Answer:</strong> ${q.answer || ''}</div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="lp-lesson">
+      <div class="lp-header">
+        <div class="lp-brand">
+          ${CAPY_LOGO}
+          <span class="lp-brand-name">Spi<em>k</em>iu</span>
+        </div>
+        <div class="lp-meta">
+          <strong>Lesson ${l.lessonNumber || 1} of ${l.lessonOf || 3}</strong><br>
+          ${l.date || ''}
+          <div class="lp-level">${l.level || ''}</div>
+        </div>
+      </div>
+      <div class="lp-title-block">
+        <div class="lp-eyebrow">${l.eyebrow || ''}</div>
+        <h1 class="lp-title">${l.title || ''}</h1>
+        <p class="lp-subtitle">${l.subtitle || ''}</p>
+      </div>
+      <div class="lp-goal">
+        <div class="lp-goal-label">🎯 ${l.goalLabel || 'Goal'}</div>
+        <p class="lp-goal-text">${l.goal || ''}</p>
+      </div>
+      ${l.vocab && l.vocab.length ? `
+        <div class="lp-section">
+          <div class="lp-section-label">📖 ${l.vocabLabel || 'Vocabulary'}</div>
+          <ul class="lp-vocab-list">${vocabHtml}</ul>
+        </div>` : ''}
+      ${l.grammar ? `
+        <div class="lp-section">
+          <div class="lp-section-label">⚙ ${l.grammarLabel || 'Grammar'}</div>
+          <div class="lp-grammar-card">
+            <h4>${l.grammar.title || ''}</h4>
+            <p>${l.grammar.explanation || ''}</p>
+            ${grammarExamples}
+          </div>
+        </div>` : ''}
+      ${l.dialogue && l.dialogue.length ? `
+        <div class="lp-section">
+          <div class="lp-section-label">💬 ${l.dialogueLabel || 'Dialogue'}</div>
+          <div class="lp-dialogue">${dialogueHtml}</div>
+        </div>` : ''}
+      ${l.quiz && l.quiz.length ? `
+        <div class="lp-section">
+          <div class="lp-section-label">✓ ${l.quizLabel || 'Quiz'}</div>
+          ${quizHtml}
+        </div>` : ''}
+      <div class="lp-footer">
+        <span>spikiu.com · ${l.footerLeft || ''}</span>
+        <span class="lp-footer-cap">🐾 ${l.footerRight || ''}</span>
+      </div>
+    </div>
+  `;
+}
+window.lpQuizClick = function(btn, qIdx) {
+  const item = btn.closest('.lp-quiz-item');
+  if (!item || item.dataset.answered === '1') return;
+  item.dataset.answered = '1';
+
+  const isCorrect = btn.dataset.correct === '1';
+  const allBtns = item.querySelectorAll('.lp-quiz-opt');
+
+  // Mark the clicked one + always highlight the correct one
+  allBtns.forEach(b => {
+    b.disabled = true;
+    const mark = b.querySelector('.lp-quiz-mark');
+    if (b.dataset.correct === '1') {
+      b.classList.add('correct');
+      if (mark) mark.textContent = '✓';
+    }
+    if (b === btn && !isCorrect) {
+      b.classList.add('wrong');
+      if (mark) mark.textContent = '✗';
+    }
+  });
+
+  // Reveal the explanation
+  const ans = item.querySelector('.lp-quiz-answer');
+  if (ans) ans.classList.add('visible');
+};
+function lessonToPdf(){
+  document.body.classList.add('printing-lesson');
+  var done = function(){ document.body.classList.remove('printing-lesson'); window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  setTimeout(done, 2000);
+  try { window.print(); } catch(e){ done(); }
+}
+
 function lessons(){
   var a = Array.isArray(USER.lessons) ? USER.lessons.slice() : [];
   a.sort(function(x,y){ return (y.createdAt||'').localeCompare(x.createdAt||''); });
@@ -175,11 +488,31 @@ function render(){
 // brauchbare Lektion wie das Dashboard (renderLessonPoster) öffnen.
 function openLesson(id){
   if (!id) return;
-  location.href = 'dashboard.html#lesson=' + encodeURIComponent(id);
+  var list = lessons(), entry = null;
+  for (var i=0;i<list.length;i++){ if (list[i].id === id){ entry = list[i]; break; } }
+  if (!entry) return;
+  var ziel = entry.zielsprache || ZIEL || 'es';
+  var poster = document.getElementById('lkPoster');
+  poster.innerHTML = renderLessonPoster(entry.lesson);
+  poster.querySelectorAll('.lp-speak').forEach(function(btn){ btn.onclick = function(){ dashSpeak(btn.dataset.speak, ziel); }; });
+  dashWarm(ziel);
+  var box = document.getElementById('lkLesson');
+  box.hidden = false; box.scrollTop = 0;
+  document.getElementById('lkVeil').classList.add('open');
+  requestAnimationFrame(function(){ box.classList.add('open'); });
+  document.body.style.overflow = 'hidden';
 }
-function closeModal(){ document.getElementById('lkModal').hidden = true; }
-document.getElementById('lkModal').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
-document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+function closeLesson(){
+  var box = document.getElementById('lkLesson');
+  box.classList.remove('open');
+  document.getElementById('lkVeil').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(function(){ box.hidden = true; }, 340);
+}
+document.getElementById('lkBack').onclick = closeLesson;
+document.getElementById('lkVeil').onclick = closeLesson;
+document.getElementById('lkPdf').onclick = lessonToPdf;
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLesson(); });
 
 // ── Umschalter ──
 function setMode(m){
@@ -195,16 +528,15 @@ document.getElementById('tgDatum').onclick = function(){ setMode('datum'); };
 window.addEventListener('load', function(){
   // Teil 55: „Deine letzte Lektion" (#last) → direkt die neueste Lektion VOLLSTÄNDIG
   // im Dashboard öffnen (mit Quiz), ohne das Archiv kurz aufblitzen zu lassen.
-  if (location.hash === '#last'){
-    var ll = lessons();
-    if (ll.length){ location.replace('dashboard.html#lesson=' + encodeURIComponent(ll[0].id)); return; }
-  }
   var ui = t();
   document.getElementById('lkTitle').textContent = ui.title;
   document.getElementById('tgThema').textContent = ui.byTopic;
   document.getElementById('tgDatum').textContent = ui.byDate;
   document.title = 'Spikiu · ' + ui.title;
+  document.getElementById('lkBack').textContent = ui.back;
+  document.getElementById('lkPdf').textContent = ui.pdf;
   render();
+  if (location.hash === '#last'){ var ll = lessons(); if (ll.length) openLesson(ll[0].id); }
 });
 </script>
 <script type="module">
