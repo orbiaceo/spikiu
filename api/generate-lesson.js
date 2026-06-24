@@ -143,14 +143,18 @@ Return ONLY the JSON object.`;
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: 3500,
+        max_tokens: 8000,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }]
       })
     });
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: 'API request failed' });
+      let detail = '';
+      try { const eb = await response.json(); detail = (eb && eb.error && eb.error.message) || JSON.stringify(eb); }
+      catch (e) { try { detail = await response.text(); } catch (e2) {} }
+      console.error('generate-lesson API ' + response.status, detail);
+      return res.status(response.status).json({ error: 'API request failed', status: response.status, detail: (detail || '').slice(0, 300) });
     }
 
     const data = await response.json();
