@@ -187,6 +187,7 @@
   }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -428,11 +429,130 @@ window.lpQuizClick = function(btn, qIdx) {
   const ans = item.querySelector('.lp-quiz-answer');
   if (ans) ans.classList.add('visible');
 };
+// ── Echter Lektions-PDF (jsPDF) — baut das ganze Dokument aus den Daten, Teil 58 ──
+// buildLessonPdf(L, fileName, JsPDF) — erzeugt einen sauberen, mehrseitigen Lektions-PDF
+// aus den Lektionsdaten (nicht aus dem Screen). JsPDF = Konstruktor (window.jspdf.jsPDF).
+function buildLessonPdf(L, fileName, JsPDF){
+  var doc = new JsPDF({ unit:'pt', format:'a4' });
+  var M = 48, W = 595.28, Hh = 841.89, maxW = W - 2*M, y = M;
+  var INK=[26,24,22], MID=[107,101,96], GREEN=[45,106,79], GOLD=[160,120,48];
+
+  function strip(s){
+    return String(s==null?'':s)
+      .replace(/<[^>]*>/g,'')
+      .replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#0?39;/g,"'")
+      .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ')
+      .replace(/\s+/g,' ').trim();
+  }
+  function ensure(h){ if (y + h > Hh - M){ doc.addPage(); y = M; } }
+  function setColor(c){ doc.setTextColor(c[0],c[1],c[2]); }
+  function para(text, size, opt){
+    opt = opt || {};
+    var t = strip(text); if (!t) return;
+    doc.setFont(opt.font||'helvetica', opt.style||'normal');
+    doc.setFontSize(size); setColor(opt.color||INK);
+    var x = opt.x||M, w = opt.w||maxW;
+    var lines = doc.splitTextToSize(t, w);
+    for (var i=0;i<lines.length;i++){ ensure(size*1.4); doc.text(lines[i], x, y); y += size*1.4; }
+  }
+  function gap(h){ y += h; }
+  function label(txt){
+    ensure(20); doc.setFont('helvetica','bold'); doc.setFontSize(8); setColor(GOLD);
+    doc.text(strip(txt).toUpperCase(), M, y); y += 15;
+  }
+
+  // ── Kopf ──
+  doc.setFont('times','bold'); doc.setFontSize(20); setColor(INK);
+  doc.text('Spikiu', M, y);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); setColor(MID);
+  doc.text('Lektion ' + (L.lessonNumber||1) + ' von ' + (L.lessonOf||1), W-M, y-9, { align:'right' });
+  var sub = strip(L.date||''); var lvl = strip(L.level||''); if (lvl) sub += (sub?'   ':'') + lvl;
+  if (sub) doc.text(sub, W-M, y+3, { align:'right' });
+  y += 12; doc.setDrawColor(INK[0],INK[1],INK[2]); doc.setLineWidth(1.2); doc.line(M, y, W-M, y); y += 24;
+
+  // ── Titelblock ──
+  if (L.eyebrow){ para(L.eyebrow, 8.5, { color:GOLD, style:'bold' }); gap(2); }
+  para(L.title||'Lektion', 19, { font:'times', style:'bold' }); gap(3);
+  if (L.subtitle) para(L.subtitle, 11, { font:'times', style:'italic', color:MID });
+  gap(16);
+
+  // ── Ziel ──
+  if (L.goal){
+    if (L.goalLabel) para(L.goalLabel, 9, { color:GREEN, style:'bold' });
+    para(L.goal, 10.5); gap(14);
+  }
+
+  // ── Wortschatz ──
+  if (L.vocab && L.vocab.length){
+    label(L.vocabLabel || 'Wortschatz');
+    L.vocab.forEach(function(v){
+      ensure(20);
+      doc.setFont('times','bold'); doc.setFontSize(11.5); setColor(INK);
+      doc.text(strip(v.word||''), M, y);
+      doc.setFont('helvetica','normal'); doc.setFontSize(10); setColor(MID);
+      var tr = strip(v.translation||'');
+      var trLines = doc.splitTextToSize(tr, maxW - 215);
+      doc.text(trLines, M + 215, y);
+      y += Math.max(15, trLines.length * 13);
+      if (v.example) para('\u201E' + strip(v.example) + '\u201C', 9.5, { style:'italic', color:GREEN });
+      gap(7);
+    });
+    gap(8);
+  }
+
+  // ── Grammatik ──
+  if (L.grammar && (L.grammar.title || L.grammar.explanation)){
+    label(L.grammarLabel || 'Grammatik');
+    if (L.grammar.title) para(L.grammar.title, 11, { style:'bold' });
+    if (L.grammar.explanation) para(L.grammar.explanation, 10.5);
+    (L.grammar.examples || []).forEach(function(ex){ para('\u2022 ' + strip(ex), 9.5, { style:'italic', color:GREEN }); });
+    gap(12);
+  }
+
+  // ── Dialog ──
+  if (L.dialogue && L.dialogue.length){
+    label(L.dialogueLabel || 'Dialog');
+    L.dialogue.forEach(function(d){
+      para((d.speaker?strip(d.speaker)+': ':'') + strip(d.text||''), 10.5);
+      if (d.translation) para('   ' + strip(d.translation), 9, { style:'italic', color:MID });
+      gap(4);
+    });
+    gap(12);
+  }
+
+  // ── Quiz ──
+  if (L.quiz && L.quiz.length){
+    label(L.quizLabel || 'Quiz');
+    L.quiz.forEach(function(q, i){
+      para((i+1) + '. ' + strip(q.question||''), 10.5, { style:'bold' });
+      (q.options || []).forEach(function(o, oi){ para('   ' + String.fromCharCode(97+oi) + ') ' + strip(o), 9.5); });
+      if (q.answer) para('   \u2192 ' + strip(q.answer), 9.5, { color:GREEN, style:'bold' });
+      gap(8);
+    });
+  }
+
+  // ── Fuß ──
+  ensure(24); gap(6);
+  doc.setDrawColor(225,225,221); doc.setLineWidth(0.6); doc.line(M, y, W-M, y); y += 13;
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); setColor(MID);
+  doc.text('spikiu.com', M, y);
+
+  doc.save(fileName);
+  return doc;
+}
+
+var CURRENT_LESSON = null;
 function lessonToPdf(){
+  var L = CURRENT_LESSON && CURRENT_LESSON.lesson;
+  if (!L) return;
+  var nm = 'Spikiu-Lektion-' + String(L.title||'lektion').replace(/<[^>]*>/g,'').replace(/[^\w\u00C0-\u024F -]+/g,'').replace(/\s+/g,'-').slice(0,50) + '.pdf';
+  if (window.jspdf && window.jspdf.jsPDF){
+    try { buildLessonPdf(L, nm, window.jspdf.jsPDF); return; } catch(e){ /* Fallback unten */ }
+  }
+  // Fallback: Druckdialog, falls jsPDF nicht geladen
   document.body.classList.add('printing-lesson');
   var done = function(){ document.body.classList.remove('printing-lesson'); window.removeEventListener('afterprint', done); };
-  window.addEventListener('afterprint', done);
-  setTimeout(done, 2000);
+  window.addEventListener('afterprint', done); setTimeout(done, 2000);
   try { window.print(); } catch(e){ done(); }
 }
 
@@ -491,6 +611,7 @@ function openLesson(id){
   var list = lessons(), entry = null;
   for (var i=0;i<list.length;i++){ if (list[i].id === id){ entry = list[i]; break; } }
   if (!entry) return;
+  CURRENT_LESSON = entry;
   var ziel = entry.zielsprache || ZIEL || 'es';
   var poster = document.getElementById('lkPoster');
   poster.innerHTML = renderLessonPoster(entry.lesson);
