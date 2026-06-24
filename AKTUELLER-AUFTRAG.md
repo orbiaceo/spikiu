@@ -1,66 +1,50 @@
-# AUFTRAG — erledigt am 23.06.2026 · kein offener Auftrag
-
-> ERLEDIGT (Claude Code, 23.06.2026): „Proverbios neu: Tinder-Deck + wiederverwendbarer Übungs-Motor
-> (uebung.js)" GEBAUT + auf dev. ZWEI Dateien: NEU `uebung.js` (`window.spikiuUebung(item,type)` → geprüfte
-> Übungskarte, eigener CSS-Namensraum, 4 Typen reorder/intruder/mc/gap, feuert `ueb-done`; inhaltsneutral
-> → für Gym u.a. nutzbar) + umgebaut `proverbios.html` (Tinder-Deck OHNE KI, feste DB aus `sprichwort.js`,
-> `mean` datengetrieben aus den Übersetzungen; Proverbio→Übung→Proverbio horizontal; echter Verlauf
-> Schritte+Zeiger; Daumen links=weiter/rechts=zurück + Knöpfe; lebendiger voller Capy via `spkCapyAlive` +
-> 🔊; ein Capy, kein Score/Streak). `api`/Reel/Dashboard/`nav.js` unberührt. `node --check` grün, headless
-> verifiziert (Deck + echter Verlauf + alle 4 Übungstypen prüfen). Details im LEDGER.
-> FRAGE AN DESIGN: `mean` ist aus den vorhandenen Übersetzungen abgeleitet (richtig + 2 fremde) statt
-> handgeschrieben — falls redaktionelle Bedeutungen gewünscht, eigenes kleines Paket.
-> NÄCHSTES = (optional) `uebung.js` in Gym einhängen · sonst Beta-Politur.
-
----
-
-_Archiv des erledigten Auftrags:_
+# AUFTRAG — „Gym-Raum komplett: Wortschatz-Werkstatt (Tinder-Deck + uebung.js)"
 
 Stand: 23.06.2026 · claude.ai · Quelle vor Bau: SPIKIU-BUILD-LEDGER.md · Branch: dev
-Referenz: prototyp-proverbios-tinder2.html (von Leo abgenommen)
+Referenz: prototyp-proverbios-tinder2.html (gleiche Deck-Mechanik) · uebung.js (Motor)
 
-> Redesign: Proverbios OHNE KI. Feste DB. Tinder-Deck (eine Karte pro Screen, horizontal):
-> Proverbio → Übung → neues Proverbio → … Daumen LINKS = weiter, RECHTS = zurück (Wiederholung
-> mit echtem Verlauf). Der Übungs-Motor wird als EIGENE wiederverwendbare Datei gebaut (auch für
-> Gym u. a. Räume nutzbar).
+> Gym = der STILLE Zwilling zum Sprechen: Wortschatz-/Gedächtnis-Training, Tinder-Deck mit
+> uebung.js. ANTI-Gamification (kein Streak/Score/Zwang). „Gewollt trainiert."
+>
+> EHRLICH (Anti-Halluzination): die „gewackelten Wörter aus dem Companion" existieren als DATEN
+> noch nicht (per-Wort-Tracking = Phase 2). Gym v1 speist sich daher aus ECHTEN Quellen:
+> (a) festem Starter-Wortschatz + (b) selbst hinzugefügten Wörtern. KEINE erfundenen
+> Wackel-Daten. Companion-Feed kommt, wenn das Tracking existiert.
 
-## 1) NEU: `uebung.js` — wiederverwendbarer Übungs-Motor
-- Reines JS, KEIN KI/Netz. `window.spikiuUebung(item, type)` → liefert ein DOM-Element (Karte),
-  das die Übung rendert + selbst prüft (richtig=grün, falsch=rot + Lösung zeigen).
-- `item = { text, tr, mean:[richtig, falsch1, falsch2] }` (inhaltsneutral → für andere Räume
-  später mit Vokabeln/Sätzen nutzbar).
-- Typen (wie im Prototyp): `'reorder'` (Wörter ordnen), `'intruder'` (Eindringling finden),
-  `'mc'` (Bedeutung A/B/C), `'gap'` (Lücke füllen). Erweiterbar.
-- Hilfen `shuffle`/`words` enthalten. Eindringlings-/Distraktor-Wortliste intern.
-- Logik/Optik exakt aus prototyp-proverbios-tinder2.html übernehmen.
+## 1) NEU: `wortschatz.js` — feste Starter-Wörter (redaktionell, kein KI)
+- `window.spikiuWortschatz(zielsprache)` → Array von Items im uebung.js-Format:
+  `{ wort, text, tr, mean:[richtig, falsch1, falsch2] }` — `text` = kurzer Beispielsatz (damit
+  reorder/gap/intruder greifen), `mean` = 3 Bedeutungen für 'mc'. Pro Zielsprache (es/de/en/el)
+  ein moderates Starter-Set (~20–30 gängige Wörter, A1–A2). Redaktionell, fest.
 
-## 2) NEU/UMBAU: `proverbios.html` — Tinder-Deck mit Verlauf
-- Lädt `nav.js`, `audio.js`, `capy-vivo.js`, `uebung.js`, `sprichwort.js`.
-- **Feste DB:** Sprüche aus `sprichwort.js` (Zielsprache des Profils + Übersetzung + Quelle).
-  KEIN `/api/gespraech` mehr in diesem Raum (kein KI). Falls `sprichwort.js` keine `mean`-Felder
-  hat: in `proverbios.html` (oder einer kleinen lokalen Liste) je Spruch die 3 Bedeutungen
-  (richtig + 2 Distraktoren) ergänzen — fest, redaktionell.
-- **Proverbio-Karte:** lebendiger VOLLSTÄNDIGER Capy (`spkCapyAlive`), Spruch groß (Zielsprache)
-  + 🔊 (`audio.js`) + Übersetzung + Quelle. Requisit 📜 nur daneben, SVG nie ändern.
-- **Sequenz:** Proverbio → Übung (`window.spikiuUebung`) → neues Proverbio → … horizontal.
-- **Daumen:** links = weiter, rechts = zurück. ECHTER VERLAUF (Schritte-Liste + Zeiger) → beim
-  Zurückgehen erscheint die Karte wie gehabt (gleiche Wörter/Reihenfolge), wie im Prototyp.
-- EIN Capy. Kein Score/Streak/Gamification (anti-Sucht).
+## 2) NEU: `gym.html` — Wortschatz-Werkstatt (Tinder-Deck)
+- Lädt `nav.js`, `audio.js`, `capy-vivo.js`, `uebung.js`, `wortschatz.js`.
+- **Quelle = Starter-Wortschatz + eigene Wörter** aus localStorage (`spikiu_wortschatz`, Liste von
+  Items). Ein schlichtes „➕ Wort hinzufügen" (Wort + Übersetzung) → speichert + kommt ins Deck.
+- **Deck wie Proverbios:** Wort-Karte → Übungs-Karte → nächstes Wort → … horizontal.
+  Daumen LINKS = weiter, RECHTS = zurück, ECHTER VERLAUF (Schritte-Liste + Zeiger) — Mechanik aus
+  prototyp-proverbios-tinder2.html übernehmen.
+- **Wort-Karte:** lebendiger VOLLSTÄNDIGER Capy (`spkCapyAlive`), Wort groß (Zielsprache) + 🔊
+  (`audio.js`) + Übersetzung + (falls vorhanden) Beispielsatz. EIN Capy, nie trasquilado.
+- **Übungs-Karte:** `window.spikiuUebung(item, type)` (Typen rotieren: reorder/intruder/mc/gap).
+- KEIN Score/Streak/Fortschrittsdruck. Kein KI-Call. (Spaced Repetition = Phase 2.)
 
 ## 3) `nav.js`
-- Werkstatt-Sheet-Eintrag `{id:'proverbios', href:'proverbios.html'}` bleibt (schon gebaut).
+- Gym-Eintrag aktivieren: `{ id:'gym', href:'gym.html' }` (statt `disabled:true`). Label/Icon
+  existieren schon (Wortschatz-Werkstatt / Taller de vocabulario / Vocabulary Workshop).
 
 ## NICHT ANFASSEN
-- `api/gespraech.js`, das Gespräch-Reel (chat.html), Dashboard, Lesebegleiter, andere Räume,
-  `audio.js`/`capy-vivo.js` (nur nutzen). Keine Gamification-Mechanik.
+- `uebung.js` (nur nutzen), `api/*`, chat-Reel, Dashboard, Lesebegleiter, Proverbios, andere Räume.
+  Keine Gamification. Keine erfundenen Companion-/Wackel-Daten.
 
 ## ABNAHME
-- [ ] `uebung.js` existiert, `window.spikiuUebung(item,type)` liefert geprüfte Übungskarten für
-      alle 4 Typen (eigenständig, ohne Proverbios nutzbar).
-- [ ] `proverbios.html`: Tinder-Deck Proverbio → Übung → Proverbio …; DB fix, KEIN KI-Call.
-- [ ] Daumen links = weiter, rechts = zurück; Zurückgehen zeigt die gleiche Karte (Verlauf).
-- [ ] Lebendiger vollständiger Capy + Spruch + 🔊 + Übersetzung. EIN Capy. Kein Score/Streak.
-- [ ] `node --check` grün (uebung.js + extrahiertes proverbios-Script); headless gerendert.
+- [ ] Nav „Wortschatz-Werkstatt" ist aktiv → öffnet `gym.html`.
+- [ ] Deck: Wort-Karte → Übung (uebung.js) → nächstes Wort … Daumen links=weiter, rechts=zurück
+      (Verlauf zeigt gleiche Karte). Quelle = Starter + eigene Wörter.
+- [ ] „Wort hinzufügen" speichert in localStorage und erscheint im Deck.
+- [ ] Lebendiger vollständiger Capy + Wort + 🔊 + Übersetzung. EIN Capy. Kein Score/Streak.
+- [ ] `node --check` grün (wortschatz.js + gym-Script); headless gerendert.
 
-## DANACH
-- (Optional) Übungs-Motor `uebung.js` in Gym/andere Räume einhängen. Sonst: Beta-Politur.
+## DANACH (Phase 2)
+- Companion-Feed: gewackelte/bestellte Wörter, sobald per-Wort-Tracking existiert. Spaced Repetition.
+- Sonst: Beta-Politur.
