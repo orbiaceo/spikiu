@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Lektionen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff; --bg:#faf9f7; --bg2:#f3f1ee; --ink:#1c1917; --mid:#78716c;
+    --faint:#e7e5e4; --warm:#d6cfc8; --accent:#2d6a4f; --accent2:#e8f5ee; --accent3:#1f5239; --gold:#a07830;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'DM Sans',system-ui,sans-serif;
+    padding-bottom:calc(var(--spk-navh,74px) + env(safe-area-inset-bottom)); -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:680px; margin:0 auto; padding:1.4rem 1.25rem 2rem; }
+
+  .lk-head{ display:flex; flex-direction:column; gap:0.9rem; margin-bottom:1.2rem; }
+  .lk-title{ font-family:'Lora',serif; font-size:1.5rem; font-weight:700; display:flex; align-items:baseline; gap:0.7rem; }
+  .lk-count{ font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:600; color:var(--accent); background:var(--accent2); padding:0.15rem 0.6rem; border-radius:100px; }
+  .lk-toggle{ display:inline-flex; background:var(--bg2); border-radius:100px; padding:0.25rem; align-self:flex-start; }
+  .lk-toggle button{ border:none; background:none; padding:0.45rem 1rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.86rem; font-weight:600; color:var(--mid); cursor:pointer; transition:0.16s; -webkit-tap-highlight-color:transparent; }
+  .lk-toggle button.active{ background:var(--white); color:var(--accent); box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+
+  .lk-group-title{ font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin:1.2rem 0 0.6rem; }
+  .lk-list{ display:flex; flex-direction:column; gap:0.6rem; }
+  .lk-card{ background:var(--white); border:1px solid var(--faint); border-radius:12px; padding:0.9rem 1.05rem; cursor:pointer; transition:0.16s; -webkit-tap-highlight-color:transparent; }
+  .lk-card:hover{ border-color:var(--accent); background:var(--accent2); }
+  .lk-card-title{ font-family:'Lora',serif; font-weight:600; font-size:1.05rem; line-height:1.3; color:var(--ink); }
+  .lk-card-meta{ font-size:0.8rem; color:var(--mid); margin-top:0.3rem; display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; }
+  .lk-chip{ background:var(--bg2); border-radius:100px; padding:0.1rem 0.55rem; font-size:0.74rem; color:var(--accent3); }
+  .lk-dot{ color:var(--warm); }
+  .lk-empty{ text-align:center; color:var(--mid); font-style:italic; padding:2.5rem 1rem; }
+
+  /* Detail-Modal */
+  .lk-modal{ position:fixed; inset:0; z-index:200; background:rgba(28,25,23,0.45); display:flex; align-items:flex-end; justify-content:center; padding:0; }
+  .lk-modal[hidden]{ display:none; }
+  .lk-sheet{ background:var(--white); width:100%; max-width:680px; max-height:88vh; overflow-y:auto; border-radius:18px 18px 0 0; padding:1.4rem 1.4rem calc(1.6rem + env(safe-area-inset-bottom)); animation:lkUp .28s ease; }
+  @keyframes lkUp{ from{ transform:translateY(30px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  .lk-close{ float:right; border:none; background:var(--bg2); color:var(--mid); width:34px; height:34px; border-radius:50%; font-size:1.1rem; cursor:pointer; line-height:1; }
+  .lk-m-eyebrow{ font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
+  .lk-m-title{ font-family:'Lora',serif; font-size:1.35rem; font-weight:700; line-height:1.3; margin:0.2rem 0 0.3rem; }
+  .lk-m-meta{ font-size:0.82rem; color:var(--mid); margin-bottom:1rem; }
+  .lk-m-note{ background:var(--accent2); border-radius:10px; padding:0.7rem 0.9rem; font-size:0.9rem; line-height:1.5; color:var(--accent3); margin-bottom:1rem; }
+  .lk-m-section-label{ font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--mid); margin:1rem 0 0.5rem; }
+  .lk-vocab{ display:flex; flex-direction:column; gap:0.4rem; }
+  .lk-vrow{ display:flex; align-items:center; gap:0.55rem; border:1px solid var(--faint); border-radius:10px; padding:0.55rem 0.7rem; }
+  .lk-vword{ font-family:'Lora',serif; font-weight:600; color:var(--ink); flex:0 0 auto; }
+  .lk-vtrans{ color:var(--mid); font-size:0.9rem; flex:1; }
+  .lk-vspeak{ flex:0 0 auto; width:28px; height:28px; border:none; border-radius:50%; background:var(--accent2); color:var(--accent); cursor:pointer; display:flex; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent; }
+  .lk-vspeak svg{ width:14px; height:14px; }
+  .lk-vspeak.playing{ animation:lkPulse 1s ease infinite; }
+  @keyframes lkPulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.12);} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="lk-head">
+    <div class="lk-title"><span id="lkTitle">Lektionen</span> <span class="lk-count" id="lkCount">0 / 14</span></div>
+    <div class="lk-toggle">
+      <button type="button" data-mode="thema" id="tgThema" class="active">Nach Thema</button>
+      <button type="button" data-mode="datum" id="tgDatum">Nach Datum</button>
+    </div>
+  </div>
+  <div class="lk-list" id="lkList"></div>
+</div>
+
+<div class="lk-modal" id="lkModal" hidden>
+  <div class="lk-sheet" id="lkSheet"></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  SPIKIU · LEKTIONEN-ARCHIV (Teil 53) — liest spikiu_user.lessons (bis 14).
+//  Umschalter Nach Thema / Nach Datum · Detail-Modal · X / 14. KEIN erfundener Inhalt.
+// ════════════════════════════════════════════════════════════════════
+var MAX = 14;
+var stored = {}, USER = {};
+try { USER = JSON.parse(localStorage.getItem('spikiu_user')||'{}') || {}; } catch(e){ USER = {}; }
+try { stored = USER.profile || {}; } catch(e){}
+function langCode(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v)) return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+  if(v.indexOf('engl')>-1) return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  return null;
+}
+var ZIEL = stored.zielsprache || langCode(stored.targetLang) || 'es';
+var MUTTER = stored.muttersprache || langCode(USER.nativeLang) || langCode(stored.nativeLang) || 'de';
+function uiLang(){ return (['de','es','en'].indexOf(MUTTER) > -1) ? MUTTER : 'de'; }
+
+var T = {
+  de:{ title:'Lektionen', byTopic:'Nach Thema', byDate:'Nach Datum', other:'Sonstige', empty:'Noch keine Lektionen.', words:'Wörter', vocab:'Wortschatz', note:'Notiz' },
+  es:{ title:'Lecciones', byTopic:'Por tema', byDate:'Por fecha', other:'Otros', empty:'Aún no hay lecciones.', words:'palabras', vocab:'Vocabulario', note:'Nota' },
+  en:{ title:'Lessons', byTopic:'By topic', byDate:'By date', other:'Other', empty:'No lessons yet.', words:'words', vocab:'Vocabulary', note:'Note' }
+};
+function t(){ return T[uiLang()] || T.de; }
+var LOCALE = { de:'de-DE', es:'es-ES', en:'en-US' }[uiLang()] || 'de-DE';
+
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(iso){ try { var d = new Date(iso); if (isNaN(d.getTime())) return ''; return d.toLocaleDateString(LOCALE, { day:'numeric', month:'short', year:'numeric' }); } catch(e){ return ''; } }
+var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+
+// ── Audio (🔊) ──
+var voiceReady = false;
+function speakText(text){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, ZIEL); } catch(e){} }
+  try { var s = window.speechSynthesis;
+    if (s && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[ZIEL] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp; s.cancel(); s.speak(u);
+    } } catch(e){}
+}
+function playFrom(btn, text){
+  if (btn) btn.classList.add('playing');
+  var fin = function(){ if (btn) btn.classList.remove('playing'); };
+  var p = speakText(text); if (p && p.then){ p.then(fin, fin); } else { setTimeout(fin, 1400); }
+}
+
+// ── Daten ──
+function lessons(){
+  var a = Array.isArray(USER.lessons) ? USER.lessons.slice() : [];
+  a.sort(function(x,y){ return (y.createdAt||'').localeCompare(x.createdAt||''); });
+  return a.slice(0, MAX);
+}
+function titleOf(l){ return (l.lesson && l.lesson.title) || l.topic || 'Lektion'; }
+function vocabOf(l){ return (l.lesson && Array.isArray(l.lesson.vocab)) ? l.lesson.vocab : []; }
+function themaOf(l){ return (l.thema && String(l.thema).trim()) || ''; }
+
+function cardHtml(l){
+  var vc = vocabOf(l).length;
+  var meta = [];
+  var th = themaOf(l); if (th) meta.push('<span class="lk-chip">' + esc(th) + '</span>');
+  var dt = fmtDate(l.createdAt); if (dt) meta.push('<span>' + esc(dt) + '</span>');
+  if (vc) meta.push('<span>' + vc + ' ' + esc(t().words) + '</span>');
+  return '<div class="lk-card" data-id="' + esc(l.id) + '">'
+    + '<div class="lk-card-title">' + esc(titleOf(l)) + '</div>'
+    + '<div class="lk-card-meta">' + meta.join('<span class="lk-dot">·</span>') + '</div></div>';
+}
+
+function renderDatum(list){
+  if (!list.length) return '<div class="lk-empty">' + esc(t().empty) + '</div>';
+  return list.map(cardHtml).join('');
+}
+function renderThema(list){
+  if (!list.length) return '<div class="lk-empty">' + esc(t().empty) + '</div>';
+  var groups = {}, order = [];
+  list.forEach(function(l){
+    var key = themaOf(l) || t().other;
+    if (!groups[key]){ groups[key] = []; order.push(key); }   // Reihenfolge = erstes (jüngstes) Auftreten
+    groups[key].push(l);
+  });
+  return order.map(function(key){
+    return '<div class="lk-group-title">' + esc(key) + '</div>' + groups[key].map(cardHtml).join('');
+  }).join('');
+}
+
+var MODE = 'thema';
+function render(){
+  var list = lessons();
+  document.getElementById('lkCount').textContent = list.length + ' / ' + MAX;
+  document.getElementById('lkList').innerHTML = (MODE === 'datum') ? renderDatum(list) : renderThema(list);
+  document.querySelectorAll('#lkList .lk-card').forEach(function(c){
+    c.onclick = function(){ openLesson(c.getAttribute('data-id')); };
+  });
+}
+
+// ── Detail-Modal ──
+function openLesson(id){
+  var list = lessons(), l = null;
+  for (var i=0;i<list.length;i++){ if (list[i].id === id){ l = list[i]; break; } }
+  if (!l) return;
+  var les = l.lesson || {};
+  var note = les.subtitle || les.goal || (les.grammar && les.grammar.explanation) || '';
+  var vocab = vocabOf(l);
+  var meta = [];
+  var th = themaOf(l); if (th) meta.push(esc(th));
+  var dt = fmtDate(l.createdAt); if (dt) meta.push(esc(dt));
+
+  var html = '<button class="lk-close" type="button" id="lkClose" aria-label="Schließen">×</button>'
+    + '<div class="lk-m-eyebrow">' + esc(t().title) + '</div>'
+    + '<div class="lk-m-title">' + esc(titleOf(l)) + '</div>'
+    + '<div class="lk-m-meta">' + meta.join(' · ') + '</div>'
+    + (note ? '<div class="lk-m-note">' + esc(note) + '</div>' : '');
+  if (vocab.length){
+    html += '<div class="lk-m-section-label">' + esc(t().vocab) + '</div><div class="lk-vocab">';
+    vocab.forEach(function(v){
+      html += '<div class="lk-vrow"><span class="lk-vword">' + esc(v.word || '') + '</span>'
+        + '<span class="lk-vtrans">' + esc(v.translation || '') + '</span>'
+        + (v.word ? '<button class="lk-vspeak" type="button" data-w="' + esc(v.word) + '" aria-label="Vorlesen">' + SPK_ICON + '</button>' : '')
+        + '</div>';
+    });
+    html += '</div>';
+  }
+  var sheet = document.getElementById('lkSheet'); sheet.innerHTML = html;
+  sheet.querySelector('#lkClose').onclick = closeModal;
+  sheet.querySelectorAll('.lk-vspeak').forEach(function(b){ b.onclick = function(){ playFrom(b, b.getAttribute('data-w')); }; });
+  document.getElementById('lkModal').hidden = false;
+}
+function closeModal(){ document.getElementById('lkModal').hidden = true; }
+document.getElementById('lkModal').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+
+// ── Umschalter ──
+function setMode(m){
+  MODE = m;
+  document.getElementById('tgThema').classList.toggle('active', m==='thema');
+  document.getElementById('tgDatum').classList.toggle('active', m==='datum');
+  render();
+}
+document.getElementById('tgThema').onclick = function(){ setMode('thema'); };
+document.getElementById('tgDatum').onclick = function(){ setMode('datum'); };
+
+// ── Start ──
+window.addEventListener('load', function(){
+  var ui = t();
+  document.getElementById('lkTitle').textContent = ui.title;
+  document.getElementById('tgThema').textContent = ui.byTopic;
+  document.getElementById('tgDatum').textContent = ui.byDate;
+  document.title = 'Spikiu · ' + ui.title;
+  render();
+  // #last → neueste Lektion direkt im Modal öffnen
+  if (location.hash === '#last'){
+    var list = lessons();
+    if (list.length) openLesson(list[0].id);
+  }
+});
+</script>
+<script type="module">
+  import { speak } from '/audio.js';
+  window.spkSpeak = speak;
+</script>
+<script src="nav.js" defer></script>
+</body>
+</html>

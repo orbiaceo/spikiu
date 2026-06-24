@@ -65,6 +65,7 @@
       reader: 'Reader · Meine Bücher',
       write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Wortschatz-Werkstatt', proverbios: 'Sprichwörter',
       path: 'Lernweg', verlauf: 'Verlauf', lessons: 'Lektionen', settings: 'Einstellungen',
+      lastLesson: 'Deine letzte Lektion', pastLessons: 'Vergangene Lektionen',
       soon: 'bald' },
     'Español': {
       navStart: 'Inicio', navReader: 'Reader', navTalk: 'Conversa', navWerkstatt: 'Taller', navMein: 'Perfil',
@@ -72,6 +73,7 @@
       reader: 'Reader · Mis libros',
       write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Taller de vocabulario', proverbios: 'Proverbios',
       path: 'Ruta', verlauf: 'Progreso', lessons: 'Lecciones', settings: 'Ajustes',
+      lastLesson: 'Tu última lección', pastLessons: 'Lecciones pasadas',
       soon: 'pronto' },
     English: {
       navStart: 'Home', navReader: 'Reader', navTalk: 'Talk', navWerkstatt: 'Workshop', navMein: 'Profile',
@@ -79,6 +81,7 @@
       reader: 'Reader · My Books',
       write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Vocabulary Workshop', proverbios: 'Proverbs',
       path: 'Path', verlauf: 'Progress', lessons: 'Lessons', settings: 'Settings',
+      lastLesson: 'Your last lesson', pastLessons: 'Past lessons',
       soon: 'soon' }
   };
 
@@ -104,6 +107,7 @@
     if (f.indexOf('taller') === 0) return 'werkstatt';
     if (f.indexOf('proverbios') === 0) return 'werkstatt';
     if (f.indexOf('gym') === 0) return 'werkstatt';
+    if (f.indexOf('lektionen') === 0) return 'lektionen';
     // Reader (books.html + Kapitel cap*) liegt jetzt IN der Werkstatt
     if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'werkstatt';
     if (f.indexOf('sessions') === 0) return 'mein';
@@ -129,6 +133,8 @@
     path: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6"/>',
     verlauf: '<path d="M12 2v8"/><path d="M12 10c-3 0-5-2-5-5"/><path d="M12 10c3 0 5-2 5-5"/><path d="M9 22h6l-1-8h-4z"/>',
     lessons: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+    lastLesson: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+    pastLessons: '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8"/><line x1="10" y1="12" x2="14" y2="12"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H4.5a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 6 9.4l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 11 4.6V4.5a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 2.82 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 11H21a2 2 0 0 1 0 4h-.09z"/>'
   };
 
@@ -149,11 +155,17 @@
     { id: 'dashboard', labelKey: 'navStart',     href: 'dashboard.html' },
     { id: 'werkstatt', labelKey: 'navWerkstatt', sheet: 'werkstatt' },
     { id: 'talk',      labelKey: 'navTalk',      href: 'chat.html', center: true },
-    { id: 'lektionen', labelKey: 'navLektionen', href: 'dashboard.html#lektionen' },
+    { id: 'lektionen', labelKey: 'navLektionen', sheet: 'lektionen' },
     { id: 'mein',      labelKey: 'navMein',      sheet: 'mein' }
   ];
 
   function sheetItems(which, t) {
+    if (which === 'lektionen') {
+      return [
+        { id: 'lastLesson',  href: 'lektionen.html#last' },   // Deine letzte Lektion (öffnet die neueste direkt)
+        { id: 'pastLessons', href: 'lektionen.html' }         // Vergangene Lektionen (Archiv)
+      ];
+    }
     if (which === 'werkstatt') {
       return [
         { id: 'reader',     href: 'books.html' },           // Reader · Meine Bücher (Bibliothek)
@@ -295,7 +307,7 @@
     backdrop.addEventListener('click', closeSheet);
     document.body.appendChild(backdrop);
 
-    [['werkstatt', t.navWerkstatt], ['mein', t.navMein]].forEach(function (pair) {
+    [['werkstatt', t.navWerkstatt], ['lektionen', t.navLektionen], ['mein', t.navMein]].forEach(function (pair) {
       const which = pair[0], title = pair[1];
       const sheet = document.createElement('div');
       sheet.className = 'spk-sheet';

@@ -1029,19 +1029,21 @@ async function makeLessonAndLeave(){
     return;
   }
   // Ergebnis-Lektion: id + createdAt + zielsprache (Letzteres fürs 🔊 im Poster).
+  var FREI = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
   var entry = {
     id:              'lesson_' + Date.now(),
     topic:           (d.lesson.title) || 'Lektion',
+    thema:           TOPIC_LABEL || (FREI[uiLang()] || FREI.de),   // Teil 53: Thema fürs Archiv (geführt=Thema, frei=Freies Gespräch)
     fromConversation: true,
     lesson:          d.lesson,
     createdAt:       new Date().toISOString(),
     zielsprache:     PROFILE.zielsprache
   };
-  // Rolling-3: anhängen, nach createdAt absteigend behalten, max 3 (älteste fällt raus).
+  // Rolling-Archiv: anhängen, nach createdAt absteigend behalten, max 14 (Teil 53: 2-Wochen-Start).
   var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
   arr.push(entry);
   arr.sort(function(a, b){ return (b.createdAt || '').localeCompare(a.createdAt || ''); });
-  arr = arr.slice(0, 3);
+  arr = arr.slice(0, 14);
   u.lessons = arr;
   try { localStorage.setItem('spikiu_user', JSON.stringify(u)); } catch(e){}   // VOR der Navigation
   addPlainSpikiu(ui.byeMade);
