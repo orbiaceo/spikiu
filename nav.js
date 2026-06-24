@@ -103,6 +103,7 @@
     if (f.indexOf('schreibwerkstatt') === 0) return 'werkstatt';
     if (f.indexOf('taller') === 0) return 'werkstatt';
     if (f.indexOf('proverbios') === 0) return 'werkstatt';
+    if (f.indexOf('gym') === 0) return 'werkstatt';
     // Reader (books.html + Kapitel cap*) liegt jetzt IN der Werkstatt
     if (f.indexOf('books') === 0 || f.indexOf('cap') === 0) return 'werkstatt';
     if (f.indexOf('sessions') === 0) return 'mein';
@@ -159,7 +160,7 @@
         { id: 'read',       href: 'taller.html' },           // Lesewerkstatt (Leseverstehen) ≠ Reader
         { id: 'write',      href: 'schreibwerkstatt.html' }, // Schreibwerkstatt
         { id: 'proverbios', href: 'proverbios.html' },       // Sprichwort-Raum (Teil 50)
-        { id: 'gym',        disabled: true }                 // Wortschatz-Werkstatt (bald)
+        { id: 'gym',        href: 'gym.html' }                // Wortschatz-Werkstatt (Teil 52)
       ];
     }
     // 'mein' — Lektionen sind jetzt ein eigener Tab, daher hier raus
