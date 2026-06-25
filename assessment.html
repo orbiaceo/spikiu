@@ -3,629 +3,293 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spikiu — Beratung</title>
+<title>Spikiu — Los geht's</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #f6f3ec;
-  --white: #ffffff;
-  --ink: #1a1816;
-  --mid: #6b6560;
-  --faint: #e8e0d0;
-  --accent: #2d6a4f;
-  --accent2: #e8f2ed;
-  --accent3: #1a4a38;
-}
-html, body { height: 100%; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--bg);
-}
-.logo {
-  font-family: 'Lora', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-.logo em { color: var(--accent); font-style: italic; }
-.logo svg { width: 28px; height: 28px; }
-.progress {
-  flex: 1;
-  height: 6px;
-  background: rgba(0,0,0,0.06);
-  border-radius: 100px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 100px;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 0%;
-}
-.btn-back {
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  color: var(--mid);
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  border-radius: 100px;
-  flex-shrink: 0;
-}
-.btn-back:hover { color: var(--ink); }
-.btn-back.hidden { visibility: hidden; }
+  :root{
+    --paper:#faf9f7; --white:#fff; --ink:#1a1816; --mid:#6b6560; --faint:#e8e4df;
+    --warm:#d4cdc6; --accent:#2d6a4f; --accent2:#e8f2ed; --accent3:#1a4a38; --gold:#a07830;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; }
 
-main {
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 2rem 1.5rem 1rem;
-}
-.card {
-  max-width: 540px;
-  width: 100%;
-  display: none;
-  animation: slideIn 0.35s ease forwards;
-}
-.card.active { display: block; }
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-.card h1 {
-  font-family: 'Lora', serif;
-  font-size: clamp(1.6rem, 5vw, 2rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  text-align: center;
-  margin-bottom: 0.6rem;
-}
-.card h1 em { color: var(--accent); font-style: italic; }
-.card-sub {
-  text-align: center;
-  font-size: 0.92rem;
-  color: var(--mid);
-  margin-bottom: 1.8rem;
-  line-height: 1.5;
-}
-.field-label {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 1.6rem 0 0.7rem;
-}
-.field-label .opt { font-weight: 400; color: var(--mid); }
+  header{ display:flex; align-items:center; gap:.8rem; padding:1rem 1.2rem; }
+  .btn-back{ background:none; border:none; font-size:1.4rem; color:var(--mid); cursor:pointer; padding:.2rem .5rem; }
+  .btn-back.hidden{ visibility:hidden; }
+  .progress{ flex:1; height:4px; background:var(--faint); border-radius:100px; overflow:hidden; }
+  .progress-fill{ height:100%; width:12%; background:var(--accent); border-radius:100px; transition:width .35s ease; }
+  .logo{ font-family:'Lora',serif; font-size:1.2rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .logo em{ color:var(--accent); font-style:italic; }
 
-input[type="text"], textarea {
-  width: 100%;
-  background: var(--white);
-  border: 2px solid var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1.05rem;
-  color: var(--ink);
-  outline: none;
-}
-input[type="text"] { border-radius: 100px; padding: 1.1rem 1.5rem; }
-textarea {
-  border-radius: 18px;
-  padding: 1rem 1.25rem;
-  border: 2px solid var(--faint);
-  min-height: 110px;
-  resize: vertical;
-  line-height: 1.5;
-  font-size: 1rem;
-}
-textarea:focus { border-color: var(--accent); }
-input::placeholder, textarea::placeholder { color: #b8b0a4; }
+  main{ flex:1; display:flex; flex-direction:column; align-items:center; padding:.5rem 1.2rem 2rem; }
+  .wrap{ width:100%; max-width:440px; display:flex; flex-direction:column; align-items:center; }
 
-.options { display: flex; flex-direction: column; gap: 0.7rem; }
-.option {
-  background: var(--white);
-  border: 1.5px solid var(--faint);
-  border-radius: 14px;
-  padding: 1rem 1.2rem;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--ink);
-  cursor: pointer;
-  transition: all 0.18s;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  width: 100%;
-}
-.option:hover { border-color: var(--accent); transform: translateY(-1px); }
-.option.selected { border-color: var(--accent); background: var(--accent2); }
-.option-flag { font-size: 1.4rem; flex-shrink: 0; }
-.option-content { flex: 1; }
-.option-sub { font-size: 0.82rem; color: var(--mid); font-weight: 400; margin-top: 0.2rem; }
+  /* Spikiu bleibt stehen, atmet — der Gastgeber des ganzen Flows */
+  .spikiu-stage{ margin:.4rem 0 .2rem; }
+  .spikiu-stage svg{ width:96px; height:96px; display:block; }
+  .spikiu-breathe{ transform-origin:50% 80%; animation:breathe 3.6s ease-in-out infinite; }
+  @keyframes breathe{ 0%,100%{ transform:translateY(0) scale(1);} 50%{ transform:translateY(-3px) scale(1.03);} }
+  .spk-capy-eyes{ animation:blink 5.5s infinite; transform-origin:center; }
+  @keyframes blink{ 0%,95%,100%{ transform:scaleY(1);} 97.5%{ transform:scaleY(.1);} }
 
-.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.chip {
-  background: var(--white);
-  border: 1.5px solid var(--faint);
-  border-radius: 100px;
-  padding: 0.6rem 1.1rem;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--ink);
-  cursor: pointer;
-  transition: all 0.16s;
-}
-.chip:hover { border-color: var(--accent); }
-.chip.selected { border-color: var(--accent); background: var(--accent2); color: var(--accent3); }
+  /* Sprechblase = Spikius Frage (Du-Form, kein Audio) */
+  .bubble{ position:relative; background:var(--white); border:1.5px solid var(--faint); border-radius:18px;
+    padding:1.1rem 1.3rem; margin:.4rem auto 1.3rem; width:100%; box-shadow:0 6px 22px rgba(26,24,22,.05); }
+  .bubble::after{ content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(45deg);
+    width:16px; height:16px; background:var(--white); border-left:1.5px solid var(--faint); border-top:1.5px solid var(--faint); }
+  .bubble p{ font-family:'Lora',serif; font-size:1.18rem; line-height:1.55; color:var(--ink); text-align:center; }
+  .bubble strong{ color:var(--accent); font-weight:700; }
+  .bubble .okayq{ display:block; margin-top:.6rem; font-style:italic; color:var(--mid); font-size:1rem; }
+  .fade{ animation:fade .3s ease both; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none; } }
 
-.bottom {
-  position: sticky;
-  bottom: 0;
-  background: linear-gradient(to top, var(--bg) 70%, transparent);
-  padding: 1.5rem;
-}
-.btn-next {
-  width: 100%;
-  max-width: 540px;
-  margin: 0 auto;
-  display: block;
-  background: var(--ink);
-  color: var(--white);
-  border: none;
-  border-radius: 100px;
-  padding: 1.1rem;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-next:hover:not(:disabled) { background: var(--accent3); transform: translateY(-1px); }
-.btn-next:disabled { background: #d4cdc6; color: #8a8580; cursor: not-allowed; }
+  #content{ width:100%; }
+  .options{ display:flex; flex-direction:column; gap:.6rem; }
+  .option{ background:var(--white); border:1.5px solid var(--faint); border-radius:14px; padding:1rem 1.2rem;
+    font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:500; color:var(--ink); cursor:pointer;
+    transition:all .18s; text-align:left; display:flex; align-items:center; gap:.8rem; width:100%; }
+  .option:hover{ border-color:var(--accent); background:var(--accent2); }
+  .option.sel{ border-color:var(--accent); background:var(--accent2); }
+  .option-flag{ font-size:1.4rem; line-height:1; }
+  .option-sub{ font-size:.82rem; color:var(--mid); margin-top:.15rem; }
 
-/* ── Generieren: Spinner / Fehler ── */
-.gen-center { text-align: center; padding: 3rem 0; }
-.spinner {
-  width: 48px; height: 48px; margin: 0 auto 1.4rem;
-  border: 4px solid var(--faint);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.gen-text { font-size: 1.05rem; color: var(--mid); }
-.gen-leaf { font-size: 2rem; animation: pop 0.5s ease; }
+  input,textarea{ width:100%; background:var(--white); border:1.5px solid var(--faint); border-radius:14px;
+    padding:1rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); }
+  input:focus,textarea:focus{ outline:none; border-color:var(--accent); }
+  textarea{ min-height:84px; resize:vertical; margin-top:.5rem; }
+  .field-label{ font-size:.9rem; font-weight:600; margin:1rem 0 .5rem; }
+  .field-label .opt{ font-weight:400; color:var(--mid); }
+  .chips{ display:flex; flex-wrap:wrap; gap:.5rem; }
+  .chip{ background:var(--white); border:1.5px solid var(--faint); border-radius:100px; padding:.5rem 1rem;
+    font-family:'DM Sans',sans-serif; font-size:.92rem; color:var(--ink); cursor:pointer; transition:all .15s; }
+  .chip:hover{ border-color:var(--accent); }
+  .chip.sel{ background:var(--accent); border-color:var(--accent); color:#fff; }
 
-/* ── Lernweg-Dokument (page1/page2) ── */
-.doc { padding-bottom: 2rem; }
-.doc-pagelabel {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--accent);
-  text-align: center; margin: 0.5rem 0 1.2rem;
-}
-.doc-title {
-  font-family: 'Lora', serif; font-size: clamp(1.5rem, 5vw, 1.9rem);
-  font-weight: 700; text-align: center; line-height: 1.2; margin-bottom: 0.3rem;
-}
-.doc-title em { color: var(--accent); font-style: italic; }
-.doc-meta { text-align: center; font-size: 0.85rem; color: var(--mid); margin-bottom: 1.6rem; }
-
-.doc-box {
-  background: var(--white); border: 1.5px solid var(--faint);
-  border-radius: 16px; padding: 1.4rem; margin-bottom: 1rem; text-align: left;
-}
-.doc-box h3 {
-  font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 700;
-  color: var(--accent); margin-bottom: 0.7rem;
-}
-.doc-portrait p { font-style: italic; line-height: 1.65; color: var(--ink); font-size: 0.98rem; }
-.doc-ziel ul { list-style: none; }
-.doc-ziel li { padding: 0.4rem 0 0.4rem 1.7rem; position: relative; font-size: 0.96rem; line-height: 1.5; }
-.doc-ziel li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-
-.doc-zeitplan .timeline {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 0.5rem; margin-bottom: 0.8rem; font-size: 0.9rem;
-}
-.doc-zeitplan .tl-point { font-weight: 600; color: var(--ink); }
-.doc-zeitplan .tl-line { flex: 1; height: 2px; background: var(--accent); border-radius: 2px; opacity: 0.4; }
-.doc-zeitplan .meta-line { font-size: 0.9rem; color: var(--mid); line-height: 1.5; }
-.doc-zeitplan .meta-line strong { color: var(--ink); font-weight: 600; }
-
-.doc-versprechen { background: var(--accent2); border-color: var(--accent); }
-.doc-versprechen p { line-height: 1.6; color: var(--accent3); font-size: 0.98rem; }
-
-.doc-sep { height: 1px; background: var(--faint); margin: 2rem 0 1.6rem; }
-
-.etappa {
-  background: var(--white); border: 1.5px solid var(--faint);
-  border-radius: 16px; padding: 1.4rem; margin-bottom: 1rem; text-align: left;
-}
-.etappa-head { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.2rem; }
-.etappa-icon { font-size: 1.4rem; }
-.etappa-name { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-.etappa-dates { font-size: 0.82rem; color: var(--mid); margin-bottom: 0.9rem; }
-.etappa-row { margin-bottom: 0.8rem; }
-.etappa-row:last-child { margin-bottom: 0; }
-.etappa-row .lbl {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--accent); display: block; margin-bottom: 0.25rem;
-}
-.etappa-row p { font-size: 0.94rem; line-height: 1.5; color: var(--ink); }
-.etappa-row ul { list-style: none; }
-.etappa-row li { padding: 0.2rem 0 0.2rem 1rem; position: relative; font-size: 0.94rem; line-height: 1.45; color: var(--ink); }
-.etappa-row li::before { content: "·"; position: absolute; left: 0.2rem; color: var(--accent); font-weight: 700; }
-.etappa-row.endziel p { font-style: italic; color: var(--accent3); }
-
-.btn-go {
-  width: 100%; display: block; margin-top: 1.4rem;
-  background: var(--ink); color: var(--white); border: none; border-radius: 100px;
-  padding: 1.1rem; font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 600; cursor: pointer;
-  transition: all 0.2s; text-decoration: none; text-align: center;
-}
-.btn-go:hover { background: var(--accent3); transform: translateY(-1px); }
-.btn-retry {
-  background: var(--accent); color: #fff; border: none; border-radius: 100px;
-  padding: 0.9rem 1.8rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
-  cursor: pointer; margin-top: 1.2rem;
-}
-
-@media (min-width: 720px) { main { padding: 4rem 1.5rem 1rem; } }
+  .actions{ display:flex; flex-direction:column; gap:.6rem; margin-top:1.2rem; align-items:center; }
+  .btn-next{ background:var(--accent); color:#fff; border:none; border-radius:100px; padding:.9rem 2.4rem;
+    font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; transition:all .18s; }
+  .btn-next:hover:not(:disabled){ background:var(--accent3); transform:translateY(-1px); }
+  .btn-next:disabled{ background:var(--warm); color:#8a8580; cursor:not-allowed; }
+  .btn-ghost{ background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:.92rem;
+    cursor:pointer; padding:.5rem; text-decoration:underline; }
+  .btn-ghost:hover{ color:var(--ink); }
 </style>
 </head>
 <body>
 
 <header>
-  <a href="index.html" class="logo">
-    <svg viewBox="0 0 80 80" fill="none">
-      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
-      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
-      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
-      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
-      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
-      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
-      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
-      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
-      <circle cx="34" cy="23" r="1.2" fill="white"/>
-      <circle cx="48" cy="23" r="1.2" fill="white"/>
-      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
-      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
-      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
-      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-    </svg>
-    <span>Spi<em>k</em>iu</span>
-  </a>
   <button class="btn-back hidden" id="btn-back" onclick="goBack()">←</button>
   <div class="progress"><div class="progress-fill" id="progress"></div></div>
+  <a class="logo" href="index.html">Spi<em>k</em>iu</a>
 </header>
 
 <main>
-
-  <!-- CARD 1 — Muttersprache -->
-  <div class="card active" data-card="1">
-    <h1>Deine <em>Muttersprache</em>?</h1>
-    <p class="card-sub">In dieser Sprache reden wir miteinander.</p>
-    <div class="options" data-field="nativeLang">
-      <button class="option" data-value="Deutsch"><span class="option-flag">🇩🇪</span><span class="option-content">Deutsch</span></button>
-      <button class="option" data-value="Español"><span class="option-flag">🇪🇸</span><span class="option-content">Español</span></button>
-      <button class="option" data-value="English"><span class="option-flag">🇬🇧</span><span class="option-content">English</span></button>
-    </div>
+<div class="wrap">
+  <div class="spikiu-stage">
+    <svg class="spikiu-breathe" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <g class="spk-capy-eyes">
+        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+        <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      </g>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
   </div>
 
-  <!-- CARD 2 — Name -->
-  <div class="card" data-card="2">
-    <h1 data-i18n="q.name">Wie heißt du?</h1>
-    <p class="card-sub" data-i18n="q.nameSub">Wir nennen dich beim Vornamen.</p>
-    <input type="text" id="name" placeholder="" autocomplete="given-name">
-  </div>
-
-  <!-- CARD 3 — Zielsprache -->
-  <div class="card" data-card="3">
-    <h1 data-i18n="q.target">Welche Sprache willst du <em>sprechen</em>?</h1>
-    <div class="options" data-field="targetLang">
-      <button class="option" data-value="Spanish"><span class="option-flag">🇪🇸</span><span class="option-content" data-i18n="lang.es">Spanisch</span></button>
-      <button class="option" data-value="German"><span class="option-flag">🇩🇪</span><span class="option-content" data-i18n="lang.de">Deutsch</span></button>
-      <button class="option" data-value="English"><span class="option-flag">🇬🇧</span><span class="option-content" data-i18n="lang.en">Englisch</span></button>
-    </div>
-  </div>
-
-  <!-- CARD 4 — Level -->
-  <div class="card" data-card="4">
-    <h1 data-i18n="q.level">Wo stehst du <em>gerade</em>?</h1>
-    <p class="card-sub" data-i18n="q.levelSub">Ganz ehrlich — kein richtig oder falsch.</p>
-    <div class="options" data-field="level">
-      <button class="option" data-value="A0"><div class="option-content"><div data-i18n="lvl.a0.t">Ganz von vorne</div><div class="option-sub" data-i18n="lvl.a0.s">Ich fange bei Null an</div></div></button>
-      <button class="option" data-value="A1"><div class="option-content"><div data-i18n="lvl.a1.t">Ein paar Wörter</div><div class="option-sub" data-i18n="lvl.a1.s">Hallo, Danke, ein paar Sätze</div></div></button>
-      <button class="option" data-value="A2"><div class="option-content"><div data-i18n="lvl.a2.t">Einfache Gespräche</div><div class="option-sub" data-i18n="lvl.a2.s">Vorstellen, einkaufen, fragen</div></div></button>
-      <button class="option" data-value="B1"><div class="option-content"><div data-i18n="lvl.b1.t">Ich komme durch</div><div class="option-sub" data-i18n="lvl.b1.s">Verstehe das Meiste, mache noch Fehler</div></div></button>
-      <button class="option" data-value="B2"><div class="option-content"><div data-i18n="lvl.b2.t">Ziemlich sicher</div><div class="option-sub" data-i18n="lvl.b2.s">Ich folge Diskussionen und mache mit</div></div></button>
-    </div>
-  </div>
-
-  <!-- CARD 5 — Antrieb -->
-  <div class="card" data-card="5">
-    <h1><span data-i18n="q.drive">Warum möchtest du</span> <em id="lang-name-5"></em> <span data-i18n="q.drive2">lernen?</span></h1>
-    <p class="card-sub" data-i18n="q.driveSub">Such dir aus, schreib frei, oder beides. Alles freiwillig.</p>
-
-    <div class="field-label" data-i18n="q.driveChips">Was passt? <span class="opt" data-i18n="opt">(optional)</span></div>
-    <div class="chips" data-field="motivation" id="drive-chips">
-      <button class="chip" data-value="travel" data-i18n="mot.travel">Reisen</button>
-      <button class="chip" data-value="work" data-i18n="mot.work">Arbeit</button>
-      <button class="chip" data-value="exam" data-i18n="mot.exam">Prüfung</button>
-      <button class="chip" data-value="family" data-i18n="mot.family">Familie</button>
-      <button class="chip" data-value="study" data-i18n="mot.study">Studium</button>
-      <button class="chip" data-value="interest" data-i18n="mot.interest">Interesse</button>
-      <button class="chip" data-value="daily" data-i18n="mot.daily">Alltag</button>
-    </div>
-
-    <div class="field-label" data-i18n="q.driveText">Erzähl, was dich treibt. <span class="opt" data-i18n="opt">(optional)</span></div>
-    <textarea id="driveText" data-i18n-ph="q.drivePh" placeholder="z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren"></textarea>
-  </div>
-
-  <!-- CARD 6 — Zeit pro Woche -->
-  <div class="card" data-card="6">
-    <h1 data-i18n="q.time">Wie viel <em>Zeit</em> pro Woche?</h1>
-    <div class="options" data-field="weeklyTime">
-      <button class="option" data-value="<1"><div class="option-content" data-i18n="time.lt1">Weniger als 1 Stunde</div></button>
-      <button class="option" data-value="1-3"><div class="option-content" data-i18n="time.1to3">1–3 Stunden</div></button>
-      <button class="option" data-value="3-5"><div class="option-content" data-i18n="time.3to5">3–5 Stunden</div></button>
-      <button class="option" data-value="5-10"><div class="option-content" data-i18n="time.5to10">5–10 Stunden</div></button>
-      <button class="option" data-value="10+"><div class="option-content" data-i18n="time.10plus">Mehr als 10 Stunden</div></button>
-    </div>
-  </div>
-
-  <!-- CARD 7 — Deadline -->
-  <div class="card" data-card="7">
-    <h1 data-i18n="q.deadline">Hast du ein <em>Datum</em> im Kopf?</h1>
-    <p class="card-sub" data-i18n="q.deadlineSub">Damit dein Weg ein Ziel mit Horizont bekommt.</p>
-    <div class="options" data-field="deadline">
-      <button class="option" data-value="3m"><div class="option-content" data-i18n="dl.3m">In 3 Monaten</div></button>
-      <button class="option" data-value="6m"><div class="option-content" data-i18n="dl.6m">In 6 Monaten</div></button>
-      <button class="option" data-value="1y"><div class="option-content" data-i18n="dl.1y">In einem Jahr</div></button>
-      <button class="option" data-value="none"><div class="option-content" data-i18n="dl.none">Kein festes Datum</div></button>
-    </div>
-  </div>
-
+  <div class="bubble"><p id="bubble">…</p><span class="okayq" id="okayq" style="display:none"></span></div>
+  <div id="content"></div>
+</div>
 </main>
 
-<div class="bottom">
-  <button class="btn-next" id="btn-next" disabled onclick="next()">Weiter</button>
-</div>
-
 <script>
-const TOTAL_DATA_CARDS = 7;
-const data = { motivation: [] };
-let current = 1;
+/* ── Spikiu-geführtes Assessment (Du-Form). Reihenfolge: Name → Zielsprache →
+   Motivation → Muttersprache → Level → Zeit → Deadline → Resümee. Einzelwahl
+   springt selbst weiter; Name + Motivation haben einen Weiter-Knopf. Beta-UI:
+   Deutsch (Spikiu spricht Deutsch). Voll-i18n der Blasen = spätere Etappe. ── */
 
-const TARGET_NAMES = {
-  Deutsch: { Spanish: 'Spanisch', German: 'Deutsch', English: 'Englisch' },
-  'Español': { Spanish: 'Español', German: 'Alemán', English: 'Inglés' },
-  English: { Spanish: 'Spanish', German: 'German', English: 'English' }
+var TGT = { Spanish:'Spanisch', German:'Deutsch', English:'Englisch', Greek:'Griechisch' };
+var MOT = { travel:'Reisen', work:'Arbeit', exam:'Prüfung', family:'Familie', study:'Studium', interest:'Interesse', daily:'Alltag' };
+
+// Anzeige-Namen der Zielsprache je Muttersprache (inkl. Griechisch).
+var TARGET_NAMES = {
+  'Deutsch': { Spanish:'Spanisch', German:'Deutsch', English:'Englisch', Greek:'Griechisch' },
+  'Español': { Spanish:'Español',  German:'Alemán',  English:'Inglés',   Greek:'Griego' },
+  'English': { Spanish:'Spanish',  German:'German',  English:'English',  Greek:'Greek' }
 };
 
-const I18N = {
-  Deutsch: {
-    'btn.next': 'Weiter', 'btn.done': 'Fertig', 'opt': '(optional)',
-    'q.name': 'Wie heißt du?', 'q.nameSub': 'Wir nennen dich beim Vornamen.',
-    'q.target': 'Welche Sprache willst du <em>sprechen</em>?',
-    'q.level': 'Wo stehst du <em>gerade</em>?', 'q.levelSub': 'Ganz ehrlich — kein richtig oder falsch.',
-    'q.drive': 'Warum möchtest du', 'q.drive2': 'lernen?',
-    'q.driveSub': 'Such dir aus, schreib frei, oder beides. Alles freiwillig.',
-    'q.driveChips': 'Was passt?', 'q.driveText': 'Erzähl, was dich treibt.',
-    'q.drivePh': 'z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren"',
-    'q.time': 'Wie viel <em>Zeit</em> pro Woche?',
-    'q.deadline': 'Hast du ein <em>Datum</em> im Kopf?', 'q.deadlineSub': 'Damit dein Weg ein Ziel mit Horizont bekommt.',
-    'lang.es': 'Spanisch', 'lang.de': 'Deutsch', 'lang.en': 'Englisch',
-    'lvl.a0.t': 'Ganz von vorne', 'lvl.a0.s': 'Ich fange bei Null an',
-    'lvl.a1.t': 'Ein paar Wörter', 'lvl.a1.s': 'Hallo, Danke, ein paar Sätze',
-    'lvl.a2.t': 'Einfache Gespräche', 'lvl.a2.s': 'Vorstellen, einkaufen, fragen',
-    'lvl.b1.t': 'Ich komme durch', 'lvl.b1.s': 'Verstehe das Meiste, mache noch Fehler',
-    'lvl.b2.t': 'Ziemlich sicher', 'lvl.b2.s': 'Ich folge Diskussionen und mache mit',
-    'mot.travel': 'Reisen', 'mot.work': 'Arbeit', 'mot.exam': 'Prüfung', 'mot.family': 'Familie',
-    'mot.study': 'Studium', 'mot.interest': 'Interesse', 'mot.daily': 'Alltag',
-    'time.lt1': 'Weniger als 1 Stunde', 'time.1to3': '1–3 Stunden', 'time.3to5': '3–5 Stunden',
-    'time.5to10': '5–10 Stunden', 'time.10plus': 'Mehr als 10 Stunden',
-    'dl.3m': 'In 3 Monaten', 'dl.6m': 'In 6 Monaten', 'dl.1y': 'In einem Jahr', 'dl.none': 'Kein festes Datum',
-    'gen.loading': 'Spikiu baut deinen Weg…',
-    'gen.error': 'Da ging was schief. Probier es nochmal.',
-    'gen.retry': 'Nochmal versuchen',
-    'gen.toDashboard': 'Weiter zum Dashboard →'
-  },
-  'Español': {
-    'btn.next': 'Siguiente', 'btn.done': 'Listo', 'opt': '(opcional)',
-    'q.name': '¿Cómo te llamas?', 'q.nameSub': 'Te llamaremos por tu nombre.',
-    'q.target': '¿Qué idioma quieres <em>hablar</em>?',
-    'q.level': '¿Dónde estás <em>ahora</em>?', 'q.levelSub': 'Con sinceridad — no hay bien ni mal.',
-    'q.drive': '¿Por qué quieres aprender', 'q.drive2': '?',
-    'q.driveSub': 'Elige, escribe libre, o ambos. Todo es opcional.',
-    'q.driveChips': '¿Qué encaja?', 'q.driveText': 'Cuéntame qué te mueve.',
-    'q.drivePh': 'p. ej. „platicar con mi suegra sin hacer el ridículo"',
-    'q.time': '¿Cuánto <em>tiempo</em> por semana?',
-    'q.deadline': '¿Tienes una <em>fecha</em> en mente?', 'q.deadlineSub': 'Para que tu camino tenga un horizonte.',
-    'lang.es': 'Español', 'lang.de': 'Alemán', 'lang.en': 'Inglés',
-    'lvl.a0.t': 'Desde cero', 'lvl.a0.s': 'Empiezo de la nada',
-    'lvl.a1.t': 'Unas palabras', 'lvl.a1.s': 'Hola, gracias, algunas frases',
-    'lvl.a2.t': 'Conversaciones simples', 'lvl.a2.s': 'Presentarme, comprar, preguntar',
-    'lvl.b1.t': 'Me las arreglo', 'lvl.b1.s': 'Entiendo casi todo, aún cometo errores',
-    'lvl.b2.t': 'Bastante seguro', 'lvl.b2.s': 'Sigo debates y participo',
-    'mot.travel': 'Viajar', 'mot.work': 'Trabajo', 'mot.exam': 'Examen', 'mot.family': 'Familia',
-    'mot.study': 'Estudios', 'mot.interest': 'Interés', 'mot.daily': 'Día a día',
-    'time.lt1': 'Menos de 1 hora', 'time.1to3': '1–3 horas', 'time.3to5': '3–5 horas',
-    'time.5to10': '5–10 horas', 'time.10plus': 'Más de 10 horas',
-    'dl.3m': 'En 3 meses', 'dl.6m': 'En 6 meses', 'dl.1y': 'En un año', 'dl.none': 'Sin fecha fija',
-    'gen.loading': 'Spikiu construye tu camino…',
-    'gen.error': 'Algo salió mal. Inténtalo de nuevo.',
-    'gen.retry': 'Reintentar',
-    'gen.toDashboard': 'Ir al panel →'
-  },
-  English: {
-    'btn.next': 'Next', 'btn.done': 'Done', 'opt': '(optional)',
-    'q.name': "What's your name?", 'q.nameSub': "We'll call you by your first name.",
-    'q.target': 'Which language do you want to <em>speak</em>?',
-    'q.level': 'Where are you <em>right now</em>?', 'q.levelSub': "Be honest — there's no right or wrong.",
-    'q.drive': 'Why do you want to learn', 'q.drive2': '?',
-    'q.driveSub': 'Pick, write freely, or both. All optional.',
-    'q.driveChips': 'What fits?', 'q.driveText': 'Tell me what drives you.',
-    'q.drivePh': 'e.g. "chat with my mother-in-law without embarrassing myself"',
-    'q.time': 'How much <em>time</em> per week?',
-    'q.deadline': 'Do you have a <em>date</em> in mind?', 'q.deadlineSub': 'So your path gets a horizon.',
-    'lang.es': 'Spanish', 'lang.de': 'German', 'lang.en': 'English',
-    'lvl.a0.t': 'From scratch', 'lvl.a0.s': 'I start from zero',
-    'lvl.a1.t': 'A few words', 'lvl.a1.s': 'Hello, thanks, a few sentences',
-    'lvl.a2.t': 'Simple conversations', 'lvl.a2.s': 'Introduce myself, shop, ask',
-    'lvl.b1.t': 'I get by', 'lvl.b1.s': 'I understand most, still make mistakes',
-    'lvl.b2.t': 'Pretty confident', 'lvl.b2.s': 'I follow discussions and join in',
-    'mot.travel': 'Travel', 'mot.work': 'Work', 'mot.exam': 'Exam', 'mot.family': 'Family',
-    'mot.study': 'Studies', 'mot.interest': 'Interest', 'mot.daily': 'Daily life',
-    'time.lt1': 'Less than 1 hour', 'time.1to3': '1–3 hours', 'time.3to5': '3–5 hours',
-    'time.5to10': '5–10 hours', 'time.10plus': 'More than 10 hours',
-    'dl.3m': 'In 3 months', 'dl.6m': 'In 6 months', 'dl.1y': 'In a year', 'dl.none': 'No fixed date',
-    'gen.loading': 'Spikiu is building your path…',
-    'gen.error': 'Something went wrong. Please try again.',
-    'gen.retry': 'Try again',
-    'gen.toDashboard': 'Continue to dashboard →'
+// Griechisch ist FEST eine der vier Zielsprachen (im Repo verankert).
+var TARGETS = [
+  { v:'Spanish', f:'🇪🇸', t:'Spanisch' },
+  { v:'German',  f:'🇩🇪', t:'Deutsch' },
+  { v:'English', f:'🇬🇧', t:'Englisch' },
+  { v:'Greek',   f:'🇬🇷', t:'Griechisch' }
+];
+var NATIVES = [
+  { v:'Deutsch', f:'🇩🇪', t:'Deutsch' },
+  { v:'Español', f:'🇪🇸', t:'Español' },
+  { v:'English', f:'🇬🇧', t:'English' }
+];
+var LEVELS = [
+  { v:'A0', t:'Ganz von vorne', s:'Ich fange bei Null an' },
+  { v:'A1', t:'Ein paar Wörter', s:'Hallo, Danke, ein paar Sätze' },
+  { v:'A2', t:'Einfache Gespräche', s:'Vorstellen, einkaufen, fragen' },
+  { v:'B1', t:'Ich komme durch', s:'Verstehe das Meiste, mache noch Fehler' },
+  { v:'B2', t:'Ziemlich sicher', s:'Ich folge Diskussionen und mache mit' }
+];
+var TIMES = [
+  { v:'<1', t:'Weniger als 1 Stunde' }, { v:'1-3', t:'1–3 Stunden' },
+  { v:'3-5', t:'3–5 Stunden' }, { v:'5-10', t:'5–10 Stunden' }, { v:'10+', t:'Mehr als 10 Stunden' }
+];
+var DEADLINES = [
+  { v:'3m', t:'In 3 Monaten' }, { v:'6m', t:'In 6 Monaten' },
+  { v:'1y', t:'In einem Jahr' }, { v:'none', t:'Kein festes Datum' }
+];
+var CHIPS = [
+  { v:'travel', t:'Reisen' }, { v:'work', t:'Arbeit' }, { v:'exam', t:'Prüfung' },
+  { v:'family', t:'Familie' }, { v:'study', t:'Studium' }, { v:'interest', t:'Interesse' }, { v:'daily', t:'Alltag' }
+];
+
+var STEPS = [
+  { id:'name', type:'name',
+    bubble:function(d){ return 'Hallo, ich bin Spikiu, dein Sprachpartner in deinem Lernabenteuer. Wie heißt du?'; } },
+  { id:'targetLang', type:'select', field:'targetLang', options:TARGETS, flags:true, auto:true,
+    bubble:function(d){ return (d.name? 'Schön, '+esc(d.name)+'! ':'') + 'Welche Sprache möchtest du lernen?'; } },
+  { id:'motivation', type:'chips',
+    bubble:function(d){ return 'Was motiviert dich, <strong>'+ (TGT[d.targetLang]||'die Sprache') +'</strong> zu lernen?'; } },
+  { id:'nativeLang', type:'select', field:'nativeLang', options:NATIVES, flags:true, auto:true,
+    bubble:function(d){ return 'In welcher Sprache reden wir am besten miteinander?'; } },
+  { id:'level', type:'select', field:'level', options:LEVELS, sub:true, auto:true,
+    bubble:function(d){ return 'Wo stehst du gerade? Ganz ehrlich — kein richtig oder falsch.'; } },
+  { id:'weeklyTime', type:'select', field:'weeklyTime', options:TIMES, auto:true,
+    bubble:function(d){ return 'Wie viel Zeit hast du pro Woche?'; } },
+  { id:'deadline', type:'select', field:'deadline', options:DEADLINES, auto:true,
+    bubble:function(d){ return 'Hast du ein Datum im Kopf?'; } },
+  { id:'summary', type:'summary',
+    bubble:function(d){ return summaryText(d); } }
+];
+
+var step = 0;
+var data = { motivation: [] };
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];}); }
+
+function render(){
+  var S = STEPS[step];
+  document.getElementById('progress').style.width = Math.round(((step+1)/STEPS.length)*100) + '%';
+  document.getElementById('btn-back').classList.toggle('hidden', step===0);
+
+  var bubble = document.getElementById('bubble');
+  bubble.innerHTML = S.bubble(data);
+  var bp = bubble.parentNode; bp.classList.remove('fade'); void bp.offsetWidth; bp.classList.add('fade');
+
+  var okayq = document.getElementById('okayq');
+  okayq.style.display = (S.type==='summary') ? 'block' : 'none';
+  okayq.textContent = (S.type==='summary') ? 'Passt das so? Dann zeichne ich deinen Lernpfad.' : '';
+
+  var c = document.getElementById('content');
+  c.innerHTML = '';
+  c.classList.remove('fade'); void c.offsetWidth; c.classList.add('fade');
+
+  if (S.type==='name'){
+    var inp = el('input'); inp.type='text'; inp.id='nameInput'; inp.placeholder='Vorname'; inp.value=data.name||''; inp.autocomplete='given-name';
+    inp.oninput = function(){ document.getElementById('nx').disabled = !inp.value.trim(); };
+    inp.onkeydown = function(e){ if (e.key==='Enter' && inp.value.trim()){ data.name=inp.value.trim(); go(1); } };
+    c.appendChild(inp);
+    var act = el('div','actions');
+    var nx = btn('Weiter', function(){ if(!inp.value.trim()) return; data.name = inp.value.trim(); go(1); }, 'btn-next'); nx.id='nx'; nx.disabled = !inp.value.trim();
+    act.appendChild(nx); c.appendChild(act);
+    setTimeout(function(){ inp.focus(); }, 60);
   }
-};
-
-function t(key) {
-  const lang = data.nativeLang || 'Deutsch';
-  return (I18N[lang] && I18N[lang][key]) || I18N.Deutsch[key] || key;
-}
-function esc(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-function applyI18n() {
-  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.getAttribute('data-i18n')); });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.getAttribute('data-i18n-ph')); });
-  if (data.targetLang) {
-    document.getElementById('lang-name-5').textContent = TARGET_NAMES[data.nativeLang || 'Deutsch'][data.targetLang];
-  }
-  const btn = document.getElementById('btn-next');
-  btn.textContent = (current === TOTAL_DATA_CARDS) ? t('btn.done') : t('btn.next');
-}
-
-function showCard(n) {
-  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-  document.querySelector(`.card[data-card="${n}"]`).classList.add('active');
-  current = n;
-  document.getElementById('progress').style.width = Math.min(100, ((n - 1) / TOTAL_DATA_CARDS) * 100) + '%';
-  document.getElementById('btn-back').classList.toggle('hidden', n === 1);
-  applyI18n();
-  refreshNext();
-  if (n === 2) setTimeout(() => document.getElementById('name').focus(), 100);
-}
-
-function isCardComplete(n) {
-  switch (n) {
-    case 1: return !!data.nativeLang;
-    case 2: return !!(data.name && data.name.trim());
-    case 3: return !!data.targetLang;
-    case 4: return !!data.level;
-    case 5: return true;
-    case 6: return !!data.weeklyTime;
-    case 7: return !!data.deadline;
-    default: return true;
-  }
-}
-function refreshNext() { document.getElementById('btn-next').disabled = !isCardComplete(current); }
-
-document.querySelectorAll('.options[data-field]').forEach(group => {
-  const field = group.getAttribute('data-field');
-  group.querySelectorAll('.option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-      data[field] = opt.getAttribute('data-value');
-      if (field === 'nativeLang' || field === 'targetLang') applyI18n();
-      refreshNext();
+  else if (S.type==='select'){
+    var box = el('div','options');
+    S.options.forEach(function(o){
+      var b = el('button','option'); if (data[S.field]===o.v) b.className+=' sel';
+      if (S.flags){ var fl=el('span','option-flag'); fl.textContent=o.f; b.appendChild(fl); }
+      if (S.sub){ var w=el('span'); var t1=el('div'); t1.textContent=o.t; var t2=el('div','option-sub'); t2.textContent=o.s; w.appendChild(t1); w.appendChild(t2); b.appendChild(w); }
+      else { var s=el('span'); s.textContent=o.t; b.appendChild(s); }
+      b.onclick = function(){
+        data[S.field]=o.v;
+        box.querySelectorAll('.option').forEach(function(x){ x.classList.remove('sel'); });
+        b.classList.add('sel');
+        if (S.auto) setTimeout(function(){ go(1); }, 300);   // Ruhe-Atemzug, dann selbst weiter
+      };
+      box.appendChild(b);
     });
-  });
-});
-
-document.querySelectorAll('#drive-chips .chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    const v = chip.getAttribute('data-value');
-    chip.classList.toggle('selected');
-    if (chip.classList.contains('selected')) {
-      if (!data.motivation.includes(v)) data.motivation.push(v);
-    } else {
-      data.motivation = data.motivation.filter(x => x !== v);
-    }
-  });
-});
-
-document.getElementById('name').addEventListener('input', e => { data.name = e.target.value; refreshNext(); });
-document.getElementById('driveText').addEventListener('input', e => { data.driveText = e.target.value; });
-
-function next() {
-  if (!isCardComplete(current)) return;
-  if (current === TOTAL_DATA_CARDS) finish();
-  else showCard(current + 1);
+    c.appendChild(box);
+  }
+  else if (S.type==='chips'){
+    var lbl = el('div','field-label'); lbl.innerHTML='Was passt? <span class="opt">(optional)</span>'; c.appendChild(lbl);
+    var ch = el('div','chips');
+    CHIPS.forEach(function(o){
+      var b=el('button','chip'); b.textContent=o.t; if (data.motivation.indexOf(o.v)>-1) b.className+=' sel';
+      b.onclick=function(){
+        var i=data.motivation.indexOf(o.v);
+        if (i>-1){ data.motivation.splice(i,1); b.classList.remove('sel'); } else { data.motivation.push(o.v); b.classList.add('sel'); }
+      };
+      ch.appendChild(b);
+    });
+    c.appendChild(ch);
+    var lbl2=el('div','field-label'); lbl2.innerHTML='Erzähl ruhig mehr. <span class="opt">(optional)</span>'; c.appendChild(lbl2);
+    var ta=el('textarea'); ta.id='driveText'; ta.placeholder='z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren“'; ta.value=data.driveText||''; c.appendChild(ta);
+    var act=el('div','actions');
+    act.appendChild(btn('Weiter', function(){ data.driveText=ta.value.trim(); go(1); }, 'btn-next'));
+    c.appendChild(act);
+  }
+  else if (S.type==='summary'){
+    var act=el('div','actions');
+    act.appendChild(btn('Okay — los geht’s →', function(){ finish(); }, 'btn-next'));
+    act.appendChild(btn('Zurück — ich ergänze noch etwas', function(){ step=0; render(); }, 'btn-ghost'));
+    c.appendChild(act);
+  }
 }
-function goBack() { if (current > 1) showCard(current - 1); }
 
-// ── Profil speichern und DIREKT ins Dashboard. Den Lernweg baut das
-//    Dashboard im Hintergrund — so wartet niemand vor einem leeren Screen. ──
-function finish() {
-  const targetDisplay = TARGET_NAMES[data.nativeLang][data.targetLang];
+function summaryText(d){
+  var ziele = (d.motivation||[]).map(function(m){ return MOT[m]||m; });
+  var zielText = ziele.length ? ziele.join(', ') : (d.driveText ? d.driveText : 'noch offen');
+  return 'Du heißt <strong>'+esc(d.name||'Freund')+'</strong>, sprichst <strong>'+esc(d.nativeLang||'—')+'</strong> '
+       + 'und möchtest <strong>'+esc(TGT[d.targetLang]||'—')+'</strong> lernen — für <strong>'+esc(zielText)+'</strong>.';
+}
 
-  // ── Kanonische Sprach-Codes (Raum-Vertrag: de|es|en|el) ──
-  const NATIVE_CODE = { Deutsch: 'de', 'Español': 'es', English: 'en' };
-  const TARGET_CODE = { Spanish: 'es', German: 'de', English: 'en', Greek: 'el' };
-  const muttersprache = NATIVE_CODE[data.nativeLang] || 'de';
-  const zielsprache   = TARGET_CODE[data.targetLang] || 'es';
+function go(dir){ step += dir; if (step<0) step=0; if (step>STEPS.length-1) step=STEPS.length-1; render(); }
+function goBack(){ go(-1); }
 
-  // ── level → koennen (interner Regler, NIE sichtbar). Mappe deliberat
-  //    nach der Regler-Semantik der Räume; B2 = ringen lassen. ──
-  const KOENNEN = { A0: 'anfang', A1: 'anfang', A2: 'mittel', B1: 'mittel', B2: 'fortgeschritten' };
-  const koennen = KOENNEN[data.level] || 'anfang';
+function el(tag,cls){ var e=document.createElement(tag); if (cls) e.className=cls; return e; }
+function btn(label,fn,cls){ var b=el('button',cls); b.textContent=label; b.onclick=fn; return b; }
 
-  const profile = {
-    // Lernweg-Vertrag (generate-learningpath liest diese — nicht anfassen):
+/* ── Profil speichern und DIREKT ins Dashboard. Den Lernweg baut das Dashboard
+   im Hintergrund (roadmapPending). Vertrag 1:1 wie zuvor — NICHT anfassen. ── */
+function finish(){
+  var names = TARGET_NAMES[data.nativeLang] || TARGET_NAMES['Deutsch'];
+  var targetDisplay = names[data.targetLang] || data.targetLang;
+
+  var NATIVE_CODE = { 'Deutsch':'de', 'Español':'es', 'English':'en' };
+  var TARGET_CODE = { Spanish:'es', German:'de', English:'en', Greek:'el' };
+  var muttersprache = NATIVE_CODE[data.nativeLang] || 'de';
+  var zielsprache   = TARGET_CODE[data.targetLang] || 'es';
+
+  var KOENNEN = { A0:'anfang', A1:'anfang', A2:'mittel', B1:'mittel', B2:'fortgeschritten' };
+  var koennen = KOENNEN[data.level] || 'anfang';
+
+  var profile = {
     targetLang: data.targetLang,
     targetLangDisplay: targetDisplay,
-    level: data.level,
+    level: data.level || 'A0',
     motivation: data.motivation,
     driveText: data.driveText || '',
-    weeklyTime: data.weeklyTime,
-    deadline: data.deadline,
-    // Kanonischer Raum-Vertrag (Lektor/Gespräch lesen diese direkt, keine Brücke nötig):
+    weeklyTime: data.weeklyTime || '',
+    deadline: data.deadline || 'none',
     muttersprache: muttersprache,
     zielsprache: zielsprache,
-    koennen: koennen,                       // intern, steuert den Regler
-    fremde_schrift: zielsprache === 'el',   // heute immer false, zukunftssicher (el → true)
-    etappe: 'samen'                         // sichtbarer Baum, bei neuem Ziel auf Samen zurück
+    koennen: koennen,
+    fremde_schrift: zielsprache === 'el',
+    etappe: 'samen'
   };
   try {
-    // Voller Überschreib = Baum-Reset bei neuem Ziel: altes roadmap fällt weg,
-    // roadmapPending erzwingt Neubau, etappe startet bei 'samen'.
     localStorage.setItem('spikiu_user', JSON.stringify({
       name: data.name,
       nativeLang: data.nativeLang,
@@ -640,7 +304,7 @@ function finish() {
   window.location.href = 'dashboard.html';
 }
 
-showCard(1);
+render();
 </script>
 </body>
 </html>
