@@ -25,6 +25,12 @@ const VOICE_MAP = {
 // BCP-47 für den Browser-Stimmen-Fallback.
 const FALLBACK_LANG = { de: 'de-DE', es: 'es-ES', en: 'en-US', el: 'el-GR' };
 
+// „Por ahora": Sprachen, die DIREKT über die Geräte-Stimme (speechSynthesis) laufen,
+// ohne Piper. Griechisch ist drin, weil die Piper-Stimme el_GR-rapunzelina-low ein
+// gravierendes Problem hat. Wieder rausnehmen, sobald eine gute Piper-Stimme da ist.
+// (Alle vier auf Geräte-Stimme? Einfach 'de','es','en' ergänzen.)
+const DEVICE_VOICE_LANGS = new Set(['el']);
+
 // Self-gehostete WASM-Assets (statisch unter public/audio/vendor/ → ausgeliefert als /audio/vendor/…).
 // onnxWasm ist ein VERZEICHNIS-Präfix (onnxruntime-web hängt den Dateinamen an).
 const WASM_PATHS = {
@@ -147,6 +153,11 @@ function speakWithBrowser(text, zielsprache) {
 async function speak(text, zielsprache) {
   if (!text || !String(text).trim()) return;
   const gen = ++speakGen;          // dieser Aufruf ist ab jetzt der aktuelle
+  // Geräte-Stimme direkt (z. B. Griechisch): kein kaputtes/fehlendes Piper-Modell.
+  if (DEVICE_VOICE_LANGS.has(zielsprache)) {
+    await speakWithBrowser(text, zielsprache);
+    return;
+  }
   try {
     await speakWithPiper(text, zielsprache, gen);
   } catch (e) {
@@ -158,6 +169,7 @@ async function speak(text, zielsprache) {
 
 // ── Öffentlich: warm(zielsprache) — stilles Vorwärmen (für Phase B) ────────────
 async function warm(zielsprache) {
+  if (DEVICE_VOICE_LANGS.has(zielsprache)) return true;   // Geräte-Stimme: nichts vorzuwärmen
   try { await getSession(zielsprache); return true; }
   catch (e) { console.warn('audio: Vorwärmen fehlgeschlagen.', e); return false; }
 }
