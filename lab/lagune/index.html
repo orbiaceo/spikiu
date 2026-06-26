@@ -1,1 +1,75 @@
-
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Lagune</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--cream:#eefaf6;
+  --terra:#ff6b5a;--teal:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--plum:#9b7bff;--rust:#2bb3d4;
+  --disp:"Archivo Black",system-ui,sans-serif;--mono:"DM Mono",monospace;--body:"DM Sans",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:var(--body);color:var(--ink);overflow:hidden;background:#0e9d8e}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:50%}
+.halftone{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.1;background-image:radial-gradient(circle,#ffffff 1px,transparent 1.3px);background-size:15px 15px}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:multiply;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:2;height:100dvh;display:flex;flex-direction:column;padding:calc(.8rem + env(safe-area-inset-top)) .9rem calc(1rem + env(safe-area-inset-bottom))}
+.tag{align-self:flex-start;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--cream);background:var(--ink);padding:.22rem .6rem;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--terra)}
+.head{flex:0 0 auto;display:flex;align-items:center;gap:.9rem;margin:.7rem 0 1.1rem}
+.mas{width:96px;height:96px;flex:0 0 auto;animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.head .say{position:relative;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:.7rem .95rem;box-shadow:4px 4px 0 var(--ink)}
+.head .say b{font-family:var(--disp);font-size:1.15rem;display:block;letter-spacing:-.01em}
+.head .say span{font-family:var(--mono);font-size:.74rem;color:#5b6b66}
+.head .say::after{content:"";position:absolute;left:-12px;top:26px;border:7px solid transparent;border-right-color:var(--ink)}
+.board{flex:1;display:grid;gap:10px;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);min-height:0;place-items:center}
+.bubble{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.circle{position:relative;width:min(30vw,122px);aspect-ratio:1;border-radius:50%;border:3.5px solid var(--ink);box-shadow:5px 5px 0 var(--ink);background:var(--bg);display:grid;place-items:center;transition:filter .12s,box-shadow .12s}
+.bubble:active .circle{box-shadow:2px 2px 0 var(--ink);filter:brightness(.95)}
+.circle svg{width:42%;height:42%;color:var(--ink)}
+.lb{font-family:var(--disp);font-size:.84rem;color:#fbf3ea;text-align:center;letter-spacing:-.01em;line-height:1}
+@media (prefers-reduced-motion:reduce){.mas{animation:none}}
+</style>
+</head>
+<body>
+<div class="halftone"></div><div class="grain"></div>
+<div class="wrap">
+  <div class="tag">SPIKIU · LAGUNE</div>
+  <header class="head">
+    <svg class="mas" viewBox="0 0 120 120" fill="none" aria-hidden="true"><defs><filter id="spk" x="-16%" y="-16%" width="132%" height="132%"><feMorphology in="SourceAlpha" operator="dilate" radius="2" result="d"/><feFlood flood-color="#15163a"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g filter="url(#spk)"><ellipse cx="38" cy="22" rx="10" ry="12" fill="#835636"/><ellipse cx="82" cy="22" rx="10" ry="12" fill="#835636"/><ellipse cx="60" cy="80" rx="42" ry="32" fill="#b87f52"/><ellipse cx="60" cy="46" rx="36" ry="34" fill="#b87f52"/><ellipse cx="42" cy="106" rx="11" ry="8" fill="#835636"/><ellipse cx="78" cy="106" rx="11" ry="8" fill="#835636"/><ellipse cx="37" cy="84" rx="8" ry="10" fill="#835636"/><ellipse cx="83" cy="84" rx="8" ry="10" fill="#835636"/><ellipse cx="60" cy="54" rx="26" ry="22" fill="#d9b489"/><ellipse cx="60" cy="46" rx="12" ry="9" fill="#6a4a30"/><circle cx="56" cy="46" r="1.6" fill="#3a2718"/><circle cx="64" cy="46" r="1.6" fill="#3a2718"/><circle cx="46" cy="29" r="5" fill="#3d2b1f"/><circle cx="74" cy="29" r="5" fill="#3d2b1f"/><circle cx="48" cy="27" r="1.9" fill="#fff"/><circle cx="76" cy="27" r="1.9" fill="#fff"/><path d="M50 61 Q60 67 70 61" stroke="#5e4031" stroke-width="2.6" fill="none" stroke-linecap="round"/></g></svg>
+    <div class="say"><b>Such dir was aus!</b><span>tipp auf ein Bonbon</span></div>
+  </header>
+  <main class="board" id="board"></main>
+</div>
+<script>
+var I={
+  sprechen:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg>',
+  buecher:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h13a1 1 0 0 1 1 1v15H6a2 2 0 0 0-2 2V5a2 2 0 0 1 1-2Z"/></svg>',
+  lesen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5C9 3 5 3 3 4v14c2-1 6-1 9 1 3-2 7-2 9-1V4c-2-1-6-1-9 1Z"/><path d="M12 6v13"/></svg>',
+  schreiben:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3 21 8 9 20l-6 1 1-6Z"/></svg>',
+  woerter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg>',
+  sprueche:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h5v6c0 3-2 4.5-5 5l-.7-2.5C7 14 8 13 8 12H6Zm8 0h5v6c0 3-2 4.5-5 5l-.7-2.5C15 14 16 13 16 12h-2Z"/></svg>'
+};
+var ROOMS=[
+  {id:"sprechen", name:"SPRECHEN",     bg:"var(--terra)",   link:"/chat.html"},
+  {id:"buecher",  name:"DEIN BUCH",    bg:"var(--teal)",    link:"/books.html"},
+  {id:"lesen",    name:"LESE-GYM",     bg:"var(--sage)",    link:"/taller.html"},
+  {id:"schreiben",name:"SCHREIB-GYM",  bg:"var(--mustard)", link:"/schreibwerkstatt.html"},
+  {id:"woerter",  name:"VOKABEL-GYM",  bg:"var(--plum)",    link:"/gym.html"},
+  {id:"sprueche", name:"PUNCHLINE",    bg:"var(--rust)",    link:"/proverbios.html"}
+];
+var board=document.getElementById("board");
+ROOMS.forEach(function(r){
+  var el=document.createElement("button");
+  el.className="bubble"; el.setAttribute("aria-label", r.name);
+  el.innerHTML='<span class="circle">'+I[r.id]+'</span><span class="lb">'+r.name+'</span>';
+  el.querySelector(".circle").style.setProperty("--bg", r.bg);
+  el.addEventListener("click", function(){ window.location.href = r.link; });
+  board.appendChild(el);
+});
+</script>
+</body>
+</html>
