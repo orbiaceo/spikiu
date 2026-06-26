@@ -31,6 +31,36 @@ const FALLBACK_LANG = { de: 'de-DE', es: 'es-ES', en: 'en-US', el: 'el-GR' };
 // (Alle vier auf Geräte-Stimme? Einfach 'de','es','en' ergänzen.)
 const DEVICE_VOICE_LANGS = new Set(['el']);
 
+// iOS/Safari: Piper-WASM + AudioContext sind dort unzuverlässig — oft STUMM ohne Fehler
+// (der AudioContext startet suspendiert), fällt also nicht von selbst auf die Stimme zurück.
+// Darum auf iOS ALLE Sprachen über die Geräte-Stimme (speechSynthesis), die im Tap funktioniert.
+const IS_IOS = (typeof navigator !== 'undefined') && (
+  /iP(hone|ad|od)/.test(navigator.userAgent || '') ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)   // iPadOS meldet sich als Mac
+);
+function useDeviceVoice(zielsprache) { return IS_IOS || DEVICE_VOICE_LANGS.has(zielsprache); }
+
+// iOS verlangt eine Nutzer-Geste, um Sprachausgabe „freizuschalten". Beim ersten Tap
+// einmal still anstoßen (Stimmen laden + Engine wecken), sonst bleibt der erste 🔊 stumm.
+let ttsUnlocked = false;
+function unlockTts() {
+  if (ttsUnlocked) return;
+  ttsUnlocked = true;
+  try {
+    const s = window.speechSynthesis;
+    if (s) {
+      if (s.getVoices) s.getVoices();
+      const u = new SpeechSynthesisUtterance(' ');
+      u.volume = 0;
+      s.speak(u);
+    }
+  } catch (e) { /* egal — angestoßen ist angestoßen */ }
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('touchend', unlockTts, { once: true, passive: true });
+  window.addEventListener('click', unlockTts, { once: true });
+}
+
 // Self-gehostete WASM-Assets (statisch unter public/audio/vendor/ → ausgeliefert als /audio/vendor/…).
 // onnxWasm ist ein VERZEICHNIS-Präfix (onnxruntime-web hängt den Dateinamen an).
 const WASM_PATHS = {
@@ -153,8 +183,8 @@ function speakWithBrowser(text, zielsprache) {
 async function speak(text, zielsprache) {
   if (!text || !String(text).trim()) return;
   const gen = ++speakGen;          // dieser Aufruf ist ab jetzt der aktuelle
-  // Geräte-Stimme direkt (z. B. Griechisch): kein kaputtes/fehlendes Piper-Modell.
-  if (DEVICE_VOICE_LANGS.has(zielsprache)) {
+  // Geräte-Stimme direkt (Griechisch immer; auf iOS ALLE Sprachen): kein stummes Piper.
+  if (useDeviceVoice(zielsprache)) {
     await speakWithBrowser(text, zielsprache);
     return;
   }
@@ -169,7 +199,7 @@ async function speak(text, zielsprache) {
 
 // ── Öffentlich: warm(zielsprache) — stilles Vorwärmen (für Phase B) ────────────
 async function warm(zielsprache) {
-  if (DEVICE_VOICE_LANGS.has(zielsprache)) return true;   // Geräte-Stimme: nichts vorzuwärmen
+  if (useDeviceVoice(zielsprache)) return true;   // Geräte-Stimme: nichts vorzuwärmen
   try { await getSession(zielsprache); return true; }
   catch (e) { console.warn('audio: Vorwärmen fehlgeschlagen.', e); return false; }
 }
