@@ -1,23 +1,22 @@
-# AKTUELLER-AUFTRAG — gentle close VERSCHÄRFEN (Teil 67, 1 Zeile in chat.html)
+# AUFTRAG — erledigt am 27.06.2026 · kein offener Auftrag
 
-KONTEXT: Teil 66 (Weg a) ist live. Der Cap feuert ab 6 Spikiu-Zügen (gefuehrt) und
-hängt CLOSE_HINT an die ausgehende User-Nachricht. ABER: der Hinweis ist zu weich
-("beim nächsten passenden Moment") → das Modell schiebt den Abschluss auf, fühlt sich
-für den Tester wie "passiert nichts" an.
+Letzter Auftrag: **„gentle close VERSCHÄRFEN"** (Teil 67).
+Vollständig erledigt + auf `origin/dev` gepusht. EINE Datei (`chat.html`), EINE Konstante.
+Backend, Cap-Logik, Gleit-Fenster, `gefuehrt`-Branch UNBERÜHRT.
 
-ZIEL: Den Hinweis härter formulieren, damit die Szene verlässlich schließt. KEINE
-Logik-Änderung — NUR der String CLOSE_HINT (chat.html, ~Zeile 377). Backend, Cap-Logik,
-Fenster, gefuehrt-Branch UNBERÜHRT.
+Geliefert:
+- `CLOSE_HINT` (chat.html ~Z377) härter neu formuliert: „Schließe die Szene JETZT ab —
+  höchstens noch eine kurze Schluss-Replik der Figur, dann unmittelbar reguläres
+  [SZENENENDE]. Nicht weiter ausbauen, keine neue Frage stellen. Stille Regie-Anweisung,
+  NIE aussprechen." Ersetzt das zu weiche „beim nächsten passenden Moment".
 
-## ÄNDERUNG (nur chat.html, eine Konstante)
-CLOSE_HINT ersetzen durch:
+Abnahme: `node --check` aller chat.html-Script-Blöcke grün (2/2). Logik unverändert
+(Cap zählt weiter `assistant>=6` nur bei `gefuehrt`, Hinweis nur an letzter ausgehender
+User-Msg als NEUES Objekt Z1315, nie in `verlauf`). Tree sauber: nur chat.html.
 
-[HINWEIS: Schließe die Szene JETZT ab — gib höchstens noch eine kurze Schluss-Replik der Figur, dann setze unmittelbar dein reguläres [SZENENENDE]. Nicht weiter ausbauen, keine neue Frage stellen. Dies ist eine stille Regie-Anweisung, sprich sie NIE aus.]
+ABNAHME-REST (Leo am Gerät): geführtes Thema ~6–7 Züge → Szene schließt jetzt spürbar
+(Schluss-Replik + [SZENENENDE] → 3-Knopf-Menü). Freier Flur weiter offen.
 
-## ABNAHME
-- node --check grün.
-- Logik unverändert (Cap zählt weiter assistant>=6, Hinweis nur an letzter ausgehender
-  User-Msg, nie in verlauf, nur gefuehrt).
-- Tree sauber: nur chat.html.
-- ABNAHME-REST (Leo am Gerät): geführtes Thema ~6–7 Züge → Szene schließt jetzt
-  spürbar (Schluss-Replik + [SZENENENDE] → 3-Knopf-Menü). Freier Flur weiter offen.
+DANACH (NICHT in diesem Auftrag):
+- (fix) Dashboard „3 → 4 capítulos".
+- (anderes Chat, NUR Notiz) Reader auf Englisch + Griechisch.
