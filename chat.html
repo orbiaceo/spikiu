@@ -364,6 +364,18 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 // ════════════════════════════════════════════════════════════════════
 var ENDPOINT = '/api/gespraech';
 
+// ── Token-Paket A (Teil 66) ───────────────────────────────────────
+// Token-Last je Zug deckeln, ohne das Erlebnis zu ändern.
+// (1) Gleit-Fenster: ausgehend nur Seed + die letzten WINDOW Nachrichten (verlauf
+//     selbst bleibt voll → Anzeige + sitzung.js-Persistenz unberührt).
+// (2) Sprechen-Cap: das GEFÜHRTE Rollenspiel kommt ab CAP Spikiu-Zügen sanft zum
+//     Abschluss — versteckter Steuer-Hinweis NUR an der ausgehenden letzten
+//     User-Nachricht (nie in verlauf), worauf das Modell sein reguläres
+//     [SZENENENDE] setzt. Freies Plaudern/„Schreib etwas…" bleibt unberührt.
+var GESP_WINDOW = 12;   // Nachrichten im Gleit-Fenster (zzgl. Seed)
+var GESP_CAP    = 6;    // ab so vielen Spikiu-Zügen wird zum Abschluss gesteuert (~6–8)
+var CLOSE_HINT  = '[HINWEIS: Die Szene hatte genug Zeit — bring sie beim nächsten passenden Moment sanft zu ihrem Abschluss (knapper Abschied, dann dein reguläres [SZENENENDE]). Dies ist eine stille Regie-Anweisung, sprich sie NIE aus.]';
+
 // ── Spikiu IMMER komplett: Ohren + 4 Füße. Nie einen halben Capy. ──
 var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
   + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
@@ -1279,7 +1291,34 @@ async function callGespraech(){
     koennen:       (PROFILE && PROFILE.koennen) || 'anfang',
     fremde_schrift: !!(PROFILE && PROFILE.fremde_schrift)
   };
-  var safeMessages = alternate(Array.isArray(verlauf) ? verlauf : []);
+  // (1) Gleit-Fenster: nur Seed + die letzten GESP_WINDOW Nachrichten ausgehend.
+  // verlauf bleibt unangetastet (Referenzen → unten beim Cap NIE in-place mutieren).
+  function fenster(msgs){
+    if (msgs.length <= GESP_WINDOW) return msgs.slice();
+    var tail = msgs.slice(msgs.length - GESP_WINDOW);
+    var seed = msgs[0];                                   // geführtes Thema = Seed-User-Zug
+    if (gefuehrt && seed && seed.role === 'user' && tail.indexOf(seed) === -1) tail = [seed].concat(tail);
+    while (tail.length && tail[0].role !== 'user') tail.shift();   // Backend verlangt user-first (kein [EINSTIEG]-Zweit-Gruß)
+    return tail;
+  }
+  var safeMessages = alternate(fenster(Array.isArray(verlauf) ? verlauf : []));
+
+  // (2) Sprechen-Cap: nur im geführten Rollenspiel. Ab GESP_CAP Spikiu-Zügen den
+  // stillen Abschluss-Hinweis an die AUSGEHENDE letzte User-Nachricht hängen — als
+  // NEUES Objekt (safeMessages trägt verlauf-Referenzen; in-place würde verlauf/Persistenz vergiften).
+  if (gefuehrt){
+    var spikiuZuege = 0;
+    for (var si=0; si<verlauf.length; si++) if (verlauf[si] && verlauf[si].role === 'assistant') spikiuZuege++;
+    if (spikiuZuege >= GESP_CAP){
+      for (var ui=safeMessages.length-1; ui>=0; ui--){
+        if (safeMessages[ui].role === 'user'){
+          safeMessages[ui] = { role: 'user', content: safeMessages[ui].content + '\n\n' + CLOSE_HINT };
+          break;
+        }
+      }
+    }
+  }
+
   var r = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
