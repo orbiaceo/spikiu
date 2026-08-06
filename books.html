@@ -105,6 +105,21 @@ nav:not(.spk-bottomnav) {
 .lang-title { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
 .lang-subtitle { font-size: 0.84rem; color: var(--mid); line-height: 1.4; }
 
+/* ── EINTRITT LEARNROMAN — der Immersions-Leseraum (eigene Seite learnroman.html).
+      Bewusst im Ton dieser Bibliothek gehalten; der Neo-Brutal-Look gehört in den
+      Raum selbst. ── */
+.lr-card { display: block; text-decoration: none; color: inherit; background: var(--paper);
+  border: 2px solid var(--accent); border-radius: 16px; padding: 1.4rem 1.5rem; margin-bottom: 2.2rem;
+  transition: all 0.25s; }
+.lr-card:hover { background: var(--white); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.12); }
+.lr-eyebrow { display: inline-block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent); background: var(--accent2);
+  padding: 0.18rem 0.55rem; border-radius: 100px; margin-bottom: 0.6rem; }
+.lr-title { font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+.lr-title em { color: var(--accent); font-style: italic; }
+.lr-sub { font-size: 0.88rem; color: var(--mid); line-height: 1.6; }
+.lr-go { display: inline-block; margin-top: 0.7rem; font-size: 0.84rem; font-weight: 600; color: var(--accent); }
+
 .book-section { background: var(--paper); border-radius: 16px; padding: 2rem 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04); display: none; }
 .book-section.active { display: block; }
 .book-header { text-align: center; margin-bottom: 1.8rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--faint); }
@@ -208,6 +223,33 @@ footer { background: var(--ink); padding: 2rem 5vw; text-align: center; margin-t
       <p>Historias adaptadas para adultos. Lectura, gramática viva y vocabulario en contexto — sin tareas, sin notas, sin presión.</p>
     </div>
   </section>
+
+  <!-- EINTRITT IN DEN LEARNROMAN — der neue Immersions-Leseraum.
+       Kleinstmöglicher Eingriff (Auftrag §10.3): EINE Karte hier, nav.js bleibt
+       unangetastet (learnroman.html hält den Werkstatt-Tab per data-nav-active
+       selbst aktiv). Die alten Reader-Kapitel bleiben unverändert darunter
+       stehen — ob books.html künftig ganz auf den Learnroman zeigt, entscheidet
+       Leo nach der Abnahme (Auftrag §9). -->
+  <a class="lr-card" href="learnroman.html">
+    <div data-lang="en" class="active">
+      <span class="lr-eyebrow">New</span>
+      <div class="lr-title">The <em>Learnroman</em></div>
+      <div class="lr-sub">A book that pulls you into the language instead of explaining it — with every chapter, more of your target language and less of your mother tongue.</div>
+      <span class="lr-go">Enter →</span>
+    </div>
+    <div data-lang="de">
+      <span class="lr-eyebrow">Neu</span>
+      <div class="lr-title">Der <em>Learnroman</em></div>
+      <div class="lr-sub">Ein Buch, das dich in die Sprache hineinzieht, statt sie zu erklären — Kapitel für Kapitel mehr Zielsprache und weniger Muttersprache.</div>
+      <span class="lr-go">Eintreten →</span>
+    </div>
+    <div data-lang="es">
+      <span class="lr-eyebrow">Nuevo</span>
+      <div class="lr-title">El <em>Learnroman</em></div>
+      <div class="lr-sub">Un libro que te mete dentro del idioma en vez de explicártelo — capítulo a capítulo, más lengua meta y menos lengua materna.</div>
+      <span class="lr-go">Entrar →</span>
+    </div>
+  </a>
 
   <!-- LANGUAGE SELECTOR — ONLY FOR NEW VISITORS -->
   <section class="lang-section" id="lang-section">
