@@ -1,0 +1,345 @@
+<!doctype html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Learnroman — Marta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#15163a;--terra:#ff6b5a;--pink:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--gold:#a87b2e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{--bg:#f5f1e7;--ink:#15163a;--acc:#2d6a4f;--muted:#6b6154;--de:#fbf8f0;--ow:2.5px;
+ background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;
+ display:flex;align-items:center;justify-content:center;min-height:100dvh}
+.badge{position:fixed;top:calc(.5rem + env(safe-area-inset-top));right:.7rem;z-index:120;font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.06em;background:rgba(255,255,255,.92);border:2px solid var(--ink);padding:.3rem .55rem;border-radius:999px;box-shadow:2px 2px 0 var(--ink)}
+.app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px}
+ body{background:var(--navy);background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
+ .badge{top:calc(1rem + env(safe-area-inset-top));right:1.1rem}
+}
+button{font-family:inherit}
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.65rem + env(safe-area-inset-top)) .9rem .7rem}
+.top .k{font:500 .6rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase;text-align:center}
+.top h1{font-family:'Archivo Black',sans-serif;font-size:1.25rem;margin:.15rem 0 .6rem;text-align:center}
+/* Etappen-Schalter */
+.etnote{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.08em;color:var(--muted);text-align:center;margin-bottom:.4rem}
+.etrow{display:flex;gap:.4rem}
+.et{flex:1;font:800 .74rem/1.1 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:.5rem .3rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.et.on{background:var(--acc);color:#fff}
+.et:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.list{flex:1;min-height:0;overflow:auto;padding:1rem .9rem 2rem}
+.band{margin-bottom:1.3rem}
+.bandhead{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.bandhead .nm{font-family:'Archivo Black',sans-serif;font-size:.95rem}
+.bandhead .st{font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .45rem;border-radius:999px;border:2px solid var(--ink)}
+.st.open{background:var(--sage)}.st.closed{background:#e7dfcf;color:var(--muted)}
+.ch{display:block;width:100%;text-align:left;background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:.75rem .85rem;margin-bottom:.6rem;cursor:pointer}
+.ch:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.ch .kap{font:700 .6rem/1 'DM Mono',monospace;letter-spacing:.12em;color:var(--acc);text-transform:uppercase}
+.ch .tt{font-family:'Archivo Black',sans-serif;font-size:1.08rem;margin:.15rem 0 .2rem}
+.ch .te{font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--muted)}
+.ch.locked{background:#efe8d8;box-shadow:none;border-style:dashed;cursor:default;color:var(--muted)}
+.ch.locked .tt{color:var(--muted)}
+.ch.locked .lockline{margin-top:.35rem;font:600 .72rem/1 'DM Sans';color:var(--gold)}
+/* Lese-Overlay */
+.reader{position:absolute;inset:0;z-index:80;display:none;flex-direction:column;background:var(--bg)}
+.reader.open{display:flex}
+.rhead{flex:0 0 auto;display:flex;align-items:center;gap:.6rem;padding:calc(.7rem + env(safe-area-inset-top)) .9rem .6rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.85)}
+.rback{width:38px;height:38px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.3rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);flex:0 0 auto}
+.rhead .rt{font-family:'Archivo Black',sans-serif;font-size:1.05rem;line-height:1.1}
+.rhead .rk{font:600 .58rem/1 'DM Mono',monospace;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.rbody{flex:1;min-height:0;overflow:auto;padding:1.3rem 1.15rem 2.5rem}
+.narr{font-family:'DM Sans',sans-serif;font-size:1.02rem;line-height:1.55;margin:0 0 .85rem}
+.line{margin:0 0 .95rem;padding-left:.7rem;border-left:3px solid var(--sage)}
+.line .es{display:inline-flex;align-items:center;gap:.5rem;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.4rem}
+.line .gloss{display:block;font-size:.86rem;color:var(--muted);margin-top:.1rem}
+.line .gloss.hid{display:none}
+.line.tap{cursor:pointer}
+.line.tap .es{border-bottom:1px dotted rgba(21,22,58,.28)}
+.line.tap.shown .es{border-bottom:0}
+.rhint{font:600 .68rem/1.3 'DM Sans';color:var(--muted);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:.4rem .6rem;margin:0 0 1.1rem;box-shadow:2px 2px 0 var(--ink)}
+.prose{font-family:'Cormorant Garamond',serif;font-size:1.4rem;line-height:1.6;margin:0 0 1.05rem}
+.spk{flex:0 0 30px;width:30px;height:30px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.82rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
+.spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.prose .spk{margin-right:.4rem}
+.rfoot{text-align:center;color:var(--muted);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;margin-top:.6rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div class="badge">PROTOTIPO · Marta completa</div>
+<div class="app">
+  <div class="top">
+    <div class="k">Biblioteca · Learnroman</div>
+    <h1>Marta en Berlín</h1>
+    <div class="etnote">Tu etapa · conmutable para probar</div>
+    <div class="etrow" id="etrow"></div>
+  </div>
+  <div class="list" id="list"></div>
+  <div class="reader" id="reader">
+    <div class="rhead"><button class="rback" id="rback" aria-label="zurück">‹</button><div><div class="rk" id="rk"></div><div class="rt" id="rt"></div></div></div>
+    <div class="rbody" id="rbody"></div>
+  </div>
+</div>
+<script>
+var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
+
+var ET=[{id:'fundament',nm:'Fundamentos'},{id:'aufbau',nm:'Ampliación'},{id:'anwendung',nm:'En práctica'}];
+var CH=[
+ {level:'fundament',n:1,title:'Der Flughafen',teaser:'Marta aterriza en Berlín y nadie aplaude.',body:[
+   {na:'Martes, las tres y veinte. El avión toca tierra en el aeropuerto BER. Cielo gris, hierba muy verde, edificios cuadrados y bajos.'},
+   {na:'Y algo no pasa: nadie aplaude. En España aplaude medio pasaje. Aquí, silencio.'},
+   {na:'Vale. Bienvenida a Alemania.'},
+   {na:'Por los altavoces, una voz dice algo. Marta entiende dos palabras:'},
+   {z:'Gepäckausgabe. Ausgang.',tr:'Recogida de equipajes. Salida.'},
+   {na:'Seis meses de apps, doscientas palabras. Pero el alemán a velocidad real es otra cosa.'},
+   {na:'Cinta número 7. Una maleta. No es la suya. Otra. Tampoco. Por fin, la maleta amarilla con su pegatina.'},
+   {na:'Fuera, una ráfaga de aire frío. Septiembre en Berlín ya es otoño.'},
+   {na:'En la cola de taxis, un hombre le hace una seña. Su taxi es un Mercedes. Por supuesto.'},
+   {z:'Guten Tag. Wohin?',tr:'Buenas tardes. ¿A dónde?'},
+   {z:'Oranienstraße 47. Kreuzberg, bitte.'},
+   {z:'Kreuzberg. Alles klar. Ist das Ihr erstes Mal in Berlin?',tr:'Todo claro. ¿Es su primera vez en Berlín?'},
+   {z:'Ja. Mein erstes Mal.'},
+   {z:'Dann willkommen. Berlin ist groß, aber freundlich.',tr:'Pues bienvenida. Berlín es grande, pero amable.'},
+   {z:'Breite Straßen, Straßenbahnen, überall Fahrräder. Viele Leute in Schwarz. Viel roter Backstein.',tr:'Calles anchas, tranvías, bicis por todas partes. Mucha gente de negro. Mucho ladrillo rojo.'},
+   {z:'Woher kommen Sie?',tr:'¿De dónde viene usted?'},
+   {z:'Ich komme aus Spanien. Aus Madrid.'},
+   {z:'Ah, Madrid! Real Madrid. Sehr gut.'},
+   {na:'Por supuesto. El fútbol. Es lo mismo en todas partes. Marta no lo sigue, pero asiente.'},
+   {z:'Ja, ja. Real Madrid.'},
+   {z:'Berlin ist schön. Aber kalt. Im Winter sehr kalt.',tr:'Berlín es bonito. Pero frío. En invierno, muy frío.'},
+   {na:'Marta capta tres palabras y sonríe. El truco universal del extranjero: asentir y sonreír.'},
+   {z:'Vierzig Minuten später hält das Taxi in Kreuzberg. Bäume, Balkone mit Pflanzen, große bunte Graffiti.',tr:'Cuarenta minutos después, el taxi para en Kreuzberg. Árboles, balcones con plantas, grafitis grandes y de colores.'},
+   {na:'No es el Berlín de las postales. Le gusta más así.'},
+   {z:'Achtundvierzig Euro fünfzig.',tr:'Cuarenta y ocho con cincuenta.'},
+   {na:'Marta no entiende el número rápido. Mira la pantalla: 48,50 €. Da un billete de cincuenta y unas monedas.'},
+   {z:'Willkommen in Berlin.',tr:'Bienvenida a Berlín.'},
+   {z:'Danke schön. Und schönen Abend noch.',tr:'Muchas gracias. Y que tenga buena tarde.'},
+   {na:'El taxi se va. Marta se queda sola en la acera con la maleta amarilla.'},
+   {z:'Ein dunkles Holzportal, Nummer 47. Daneben viele Klingeln. Sie sucht den Namen: Becker, 3. Stock.',tr:'Un portal de madera oscura, número 47. Al lado, muchos timbres. Busca el nombre: Becker, 3er piso.'},
+   {na:'Aprieta el timbre. Ahora empieza todo.'},
+   {z:'Ja?'},
+   {z:'Hallo... ich bin Marta.'},
+   {z:'Marta! Endlich! Komm rauf, dritter Stock!',tr:'¡Marta! ¡Por fin! ¡Sube, tercer piso!'},
+   {z:'Die Tür links. Ich mache schon auf.',tr:'La puerta de la izquierda. Ya te abro.'},
+   {na:'El portal zumba. Dentro: olor a madera vieja, luces amarillas, escaleras grandes y elegantes.'},
+   {na:'Los edificios de Berlín huelen distinto a los de Madrid. Ni mejor ni peor. Otro.'},
+   {na:'Tres pisos. Con maleta. Marta sube despacio.'}]},
+
+ {level:'fundament',n:2,title:'Meine neue WG',teaser:'Pan negro, tres quesos y un bávaro que dice Servus.',body:[
+   {z:'Drinnen riecht es nach starkem Kaffee. Hohe Decken, ein Holzboden, der knarrt, ein Fahrrad an der Wand.',tr:'Dentro huele a café fuerte. Techos altos, un suelo de madera que cruje, una bici en la pared.'},
+   {z:'Das ist der Flur. Hier links die Küche. Geradeaus das Wohnzimmer. Und hinten die Zimmer.',tr:'Este es el pasillo. A la izquierda la cocina. Recto el salón. Y al fondo las habitaciones.'},
+   {na:'Marta capta tres palabras: Küche, Wohnzimmer, Zimmer. Lo demás se escapa. Sonríe y asiente. El truco universal, otra vez.'},
+   {z:'In der Küche ist jemand.',tr:'En la cocina hay alguien.'},
+   {z:'Ein Mann um die dreißig, blondes Haar, alte Jeans. Er schneidet ein dunkles, schweres Brot.',tr:'Un hombre de unos treinta, pelo rubio, vaqueros viejos. Corta un pan oscuro y pesado.'},
+   {na:'Como un ladrillo.'},
+   {z:'Servusss! Du musst die Marta sein! I bin der Felix!',tr:'¡Holaaa! ¡Tú debes de ser Marta! ¡Yo soy Felix!'},
+   {na:'Servus? I bin? Marta ha estudiado Hallo, no Servus. Y ich bin, no i bin. Aquí pasa algo raro.'},
+   {z:'Er kommt aus Bayern. Aus München. Er spricht ein bisschen anders.',tr:'Viene de Baviera. De Múnich. Habla un poco diferente.'},
+   {z:'Hallo, Felix. Ich bin Marta. Ich bin aus Madrid.'},
+   {z:'Madrid! Olé! Ich liebe Madrid. Sangría, paella, Fiesta!'},
+   {na:'El mismo cliché en todas partes. Pero lo dice con tanto entusiasmo que es difícil enfadarse.'},
+   {z:'Jetzt kommt noch jemand ins Zimmer.',tr:'Ahora entra alguien más en la habitación.'},
+   {z:'Eine Frau, Ende dreißig, kurzes braunes Haar, runde Brille. Sie geht sehr ruhig.',tr:'Una mujer de casi cuarenta, pelo castaño corto, gafas redondas. Camina muy tranquila.'},
+   {z:'Hallo. Ich bin Anna. Willkommen.'},
+   {na:'Tres palabras. Voz baja. Una sonrisa pequeña pero verdadera.'},
+   {na:'Anna es lo opuesto a Felix. Y los dos son alemanes.'},
+   {z:'Anna kommt aus Hamburg. Sie ist Ingenieurin. Felix ist Musiker.',tr:'Anna viene de Hamburgo. Es ingeniera. Felix es músico.'},
+   {na:'Norte y sur. Silencio y ruido. Y aquí viven juntos, aparentemente sin matarse.'},
+   {z:'Komm, wir essen jetzt was. Du hast bestimmt Hunger nach dem Flug.',tr:'Ven, vamos a comer algo. Seguro que tienes hambre después del vuelo.'},
+   {z:'Auf dem Tisch stehen Brot, Käse, Butter, Wurst, Gurken und vier Flaschen Bier.',tr:'Sobre la mesa hay pan, queso, mantequilla, embutido, pepinillos y cuatro botellas de cerveza.'},
+   {na:'¿Esto es la cena? ¿No hay nada caliente?'},
+   {z:'In Deutschland heißt das Abendbrot. Kein warmes Essen. Nur Brot, Käse, ein bisschen Fleisch. Und Bier, natürlich.',tr:'En Alemania se llama Abendbrot. Sin comida caliente. Solo pan, queso, un poco de carne. Y cerveza, claro.'},
+   {na:'Abendbrot. Pan-de-la-tarde. Cena fría. Vale. Mente abierta.'},
+   {z:'Magst du Bier?',tr:'¿Te gusta la cerveza?'},
+   {z:'Ja. Danke.'},
+   {z:'Prost! Auf Marta!',tr:'¡Salud! ¡Por Marta!'},
+   {z:'Marta schaut jedem in die Augen, während die Flaschen sich treffen.',tr:'Marta mira a los ojos de cada uno mientras chocan las botellas.'},
+   {na:'Lo leyó en un blog: si no miras a los ojos al brindar, son siete años de mala suerte en la cama. Marta no se arriesga.'},
+   {z:'Sehr gut! Du schaust in die Augen. Du bist keine Touristin.',tr:'¡Muy bien! Miras a los ojos. No eres una turista.'},
+   {na:'Cinco minutos en Berlín y ya he hecho algo bien.'},
+   {z:'Das Brot ist dunkel und schwer. Es schmeckt nach Körnern und Kruste.',tr:'El pan es oscuro y pesado. Sabe a semillas y a corteza.'},
+   {na:'No es el pan blanco español. Es un alimento de verdad, no un acompañamiento.'},
+   {z:'Ein Käse ist sehr stark, fast scharf. Der zweite ist weich. Der dritte hat kleine Löcher.',tr:'Un queso es muy fuerte, casi pica. El segundo es suave. El tercero tiene agujeros pequeños.'},
+   {na:'Nosotros tenemos manchego. Ellos, veintisiete quesos en una sola cena.'},
+   {z:'Wo wohnst du in Madrid?',tr:'¿Dónde vives en Madrid?'},
+   {z:'Ich wohne in Madrid. In... eh... cerca del centro.'},
+   {z:'In der Nähe vom Zentrum.',tr:'Cerca del centro.'},
+   {z:'In der Nähe vom Zentrum. Danke.'},
+   {na:'Anna asiente y no dice nada más. Felix le enseñará las palabras divertidas, Jonas las prácticas. Anna, la lengua exacta.'},
+   {z:'Du bist müde. Komm, ich zeige dir dein Zimmer.',tr:'Estás cansada. Ven, te enseño tu habitación.'},
+   {z:'Gute Nacht. Danke für alles.'},
+   {z:'Das Zimmer ist klein: ein Bett, ein Schreibtisch unter dem Fenster, ein Schrank von IKEA.',tr:'La habitación es pequeña: una cama, un escritorio bajo la ventana, un armario de IKEA.'},
+   {na:'En Alemania también hay IKEA, por lo visto. Pero la ventana da a un patio con árboles de verdad. En Madrid veía un muro.'},
+   {z:'Marta legt sich auf die Decke, ohne sich auszuziehen. Nur fünf Minuten, denkt sie.',tr:'Marta se tumba sobre la colcha sin desvestirse. Solo cinco minutos, piensa.'},
+   {na:'Se duerme en treinta segundos.'},
+   {z:'In der Küche macht Felix noch eine Flasche auf.',tr:'En la cocina, Felix abre otra botella.'},
+   {z:'Sie ist nett, oder?',tr:'Es maja, ¿verdad?'},
+   {z:'Ja. Sehr.'},
+   {z:'Sie wird Berlin mögen.',tr:'A Marta le va a gustar Berlín.'},
+   {na:'Y por alguna razón, los tres saben que Anna tiene razón.'}]},
+
+ {level:'aufbau',n:3,title:'Der Stammtisch',teaser:'Cincuenta segundos de silencio — y nadie se muere.',body:[
+   {na:'Jueves. Una semana en Berlín.'},
+   {z:'Marta kannte jetzt die Straßen von Kreuzberg: die Bäckerei an der Ecke, den Supermarkt, den Kiosk mit der spanischen Wochenzeitung, die außer ihr niemand las.',tr:'Marta conocía ya las calles de Kreuzberg: la panadería de la esquina, el supermercado, el quiosco con el semanario español que no leía nadie excepto ella.'},
+   {na:'Pequeños anclajes en una ciudad que todavía no se ha vuelto suya.'},
+   {z:'Marta, kommst du mit? Wir gehen zum Stammtisch.',tr:'Marta, ¿vienes? Vamos al Stammtisch.'},
+   {z:'Stammtisch: Stamm ist der Stamm eines Baumes, auch eine Gruppe. Tisch ist der Tisch. Der Tisch der Gruppe.',tr:'Stammtisch: Stamm es el tronco de un árbol, también un grupo. Tisch es la mesa. La mesa del grupo.'},
+   {z:'Es ist immer derselbe Tisch, immer derselbe Tag, immer dieselben Leute. Niemand sonst darf sich an diesen Tisch setzen.',tr:'Es siempre la misma mesa, siempre el mismo día, siempre la misma gente. Nadie más puede sentarse a esa mesa.'},
+   {na:'Como la tertulia española. Pero al revés.'},
+   {z:'Anna kommt nicht mit?',tr:'¿Anna no viene?'},
+   {z:'Nein, heute nicht. Viel Spaß.',tr:'No, hoy no. Que os divirtáis.'},
+   {na:'Anna no va a los Stammtische. Marta lo entiende sin explicación. Anna escoge.'},
+   {z:'Sie gingen zehn Minuten zu Fuß. Es war schon fast dunkel, obwohl es erst sieben war.',tr:'Anduvieron diez minutos. Ya era casi de noche, aunque solo eran las siete.'},
+   {z:'Die Kneipe hieß Zum Goldenen Anker. Dunkles Holz, gelbes Licht, der Geruch von Bier und altem Holz.',tr:'La taberna se llamaba Al Ancla Dorada. Madera oscura, luz amarilla, olor a cerveza y madera vieja.'},
+   {z:'Jonas grüßte den Kellner mit einem Nicken. Der Kellner nickte zurück. Kein Wort.',tr:'Jonas saludó al camarero con un gesto de cabeza. El camarero se lo devolvió. Ni una palabra.'},
+   {na:'En España serían diez segundos de besos y ¿qué tal, Pepe? Aquí, un cabeceo. Y ya.'},
+   {z:'Auf dem runden Tisch war ein Metallschild festgeschraubt: Stammtisch Die Donnerstagsfreunde, seit 1987.',tr:'En la mesa redonda había una placa metálica atornillada: Stammtisch Los Amigos del Jueves, desde 1987.'},
+   {na:'Treinta y nueve años. Yo todavía no había nacido.'},
+   {z:'Marta, das ist Herr Weber, er ist Lehrer. Frau Schmidt ist Journalistin. Und das ist Tom, er studiert Geschichte.',tr:'Marta, este es el señor Weber, es profesor. La señora Schmidt es periodista. Y este es Tom, estudia historia.'},
+   {z:'Hallo. Ich bin Marta. Ich komme aus Madrid.'},
+   {z:'Drei Nicken. Drei kleine Lächeln. Und dann keine einzige Nachfrage.',tr:'Tres asentimientos. Tres sonrisas pequeñas. Y después ni una sola pregunta.'},
+   {na:'Nadie dice ¡ah, Madrid, qué bien! Nadie pregunta ¿y por qué viniste? Solo silencio.'},
+   {z:'Fünf Bier. Fünf leise Danke. Marta schaute jedem in die Augen und sagte Prost.',tr:'Cinco cervezas. Cinco gracias en voz baja. Marta miró a los ojos de cada uno y dijo Prost.'},
+   {z:'Und dann passierte nichts. Dreißig Sekunden. Vierzig. Fünfzig Sekunden Stille.',tr:'Y entonces no pasó nada. Treinta segundos. Cuarenta. Cincuenta segundos de silencio.'},
+   {z:'Herr Weber blätterte um. Frau Schmidt schrieb etwas. Tom drehte einen Bierdeckel. Felix schaute zufrieden an die Decke.',tr:'El señor Weber pasó una página. La señora Schmidt escribió algo. Tom daba vueltas a un posavasos. Felix miraba al techo, satisfecho.'},
+   {na:'¿He hecho algo mal? ¿Los estoy aburriendo? En España alguien ya estaría preguntando por mi familia, por mi novio, por todo.'},
+   {z:'Magst du Berlin bisher?',tr:'¿Te gusta Berlín hasta ahora?'},
+   {z:'Ja. Es ist anders als Madrid. Aber ich mag es.'},
+   {z:'Frau Schmidt nickte, lächelte kurz und schrieb weiter. Sie brauchte nicht mehr.',tr:'La señora Schmidt asintió, sonrió brevemente y siguió escribiendo. No necesitaba más.'},
+   {na:'Su pregunta era real, no rellena-silencio. Aquí no se habla para llenar el aire. Se habla cuando se tiene algo que decir.'},
+   {z:'Noch eine Stille. Aber diesmal schwitzte Marta nicht.',tr:'Otro silencio. Pero esta vez Marta no sudó.'},
+   {z:'Tom fragte Jonas etwas über einen Film. Felix unterbrach mit einer sehr starken Meinung. Drei Minuten Gespräch. Dann wieder Stille. Bequeme Stille.',tr:'Tom preguntó a Jonas algo sobre una película. Felix interrumpió con una opinión muy fuerte. Tres minutos de conversación. Después, otra vez silencio. Silencio cómodo.'},
+   {na:'Como una respiración. Inhalar, exhalar. Hablar, callar.'},
+   {z:'Ich muss gehen. Meine Frau wartet.',tr:'Tengo que irme. Mi mujer está esperando.'},
+   {z:'Um zehn stand auch Frau Schmidt auf und sagte Auf Wiedersehen.',tr:'A las diez, la señora Schmidt se levantó también y dijo Auf Wiedersehen.'},
+   {z:'Ohne die Älteren am Tisch wurde das Gespräch schneller, lauter, lustiger.',tr:'Sin los mayores en la mesa, la conversación se volvió más rápida, más alta, más divertida.'},
+   {z:'Stimmt es, dass in Spanien die Siesta Pflicht ist? Esst ihr jeden Tag Paella?',tr:'¿Es verdad que en España la siesta es obligatoria? ¿Coméis paella todos los días?'},
+   {z:'Wenn Marta ein Wort suchte, wartete Tom. Er füllte die Lücke nicht. Und wenn sie es fand, nickte er.',tr:'Cuando Marta buscaba una palabra, Tom esperaba. No rellenaba el hueco. Y cuando la encontraba, asentía.'},
+   {na:'Tom escucha como Anna. Pero más cálido. Más curioso.'},
+   {z:'Ich kann nicht mehr. Ich muss schlafen.',tr:'No puedo más. Tengo que dormir.'},
+   {z:'Jeder zahlte genau das Seine.',tr:'Cada uno pagó exactamente lo suyo.'},
+   {na:'En España pagaríamos a turnos, nos invitaríamos. Aquí, cada uno lo suyo. Y nadie lo vive como falta de generosidad.'},
+   {z:'An einer Ecke blieb Tom stehen und schaute Marta direkt an.',tr:'En una esquina, Tom se detuvo y miró a Marta directamente.'},
+   {z:'Marta, möchtest du nächste Woche einen Kaffee trinken? Mit mir?',tr:'Marta, ¿quieres tomar un café la próxima semana? ¿Conmigo?'},
+   {na:'Una invitación. Directa. Sin rodeos. Muy alemana. Pero muy clara.'},
+   {z:'Ja. Gerne.'},
+   {z:'Bis dann.'},
+   {z:'Felix gab ihr einen kleinen Stoß an die Schulter. Jonas lächelte, ohne sie anzusehen.',tr:'Felix le dio un golpecito en el hombro. Jonas sonrió sin mirarla.'},
+   {na:'Hoy he aprendido algo: el silencio alemán no está vacío. Es un espacio. Y dentro caben muchas cosas, incluso una invitación a un café.'},
+   {z:'Tom hat sehr dunkle Augen. Sehr ernst. Aber wenn er lächelt, lächelt er ganz.'},
+   {na:'Su primera observación afectiva en su nueva vida.'}]},
+
+ {level:'anwendung',n:4,title:'In der Bäckerei',teaser:'Dreißig Sorten Brötchen — und eine Frau, die sich Gesichter merkt.',body:[
+   {p:'Sonntagmorgen, halb neun. Die Wohnung war still. Felix schlief, Jonas war bei Freunden in Prenzlauer Berg, und Anna war laufen gegangen, wie jeden Morgen um halb acht, auch im Winter.'},
+   {p:'Marta hatte Hunger und einen Plan: allein in die Bäckerei gehen. Ohne Jonas als Übersetzer, ohne Felix als Anfeuerer. Nur sie, ihre zehn angesammelten Tage Deutsch und ein Berliner Bäcker, der vermutlich keine Zeit für Gestotter hatte.'},
+   {p:'Ich gehe in die Bäckerei. Ich bestelle etwas. Ich bezahle. Ich gehe wieder raus. Vier Handlungen. Das schaffe ich.'},
+   {p:'Draußen war Berlin am Sonntag eine andere Stadt: leiser, fast ohne Autos, Paare mit Hunden, langsame Radfahrer. In Madrid wären die Terrassen um diese Zeit schon voll. Hier atmete die Stadt.'},
+   {p:'Drei Straßen weiter, an der Ecke zur Skalitzer Straße, lag die Bäckerei, an der sie jeden Tag vorbeiging und die sie noch nie betreten hatte. Eine schmale, dunkelgrün gestrichene Fassade, ein handgemaltes Schild: BÄCKEREI SCHULTZ — seit 1962. Im Schaufenster Körbe voller Brot, ein angeschnittener Apfelkuchen, kleine Pappschilder mit handgeschriebenen Preisen.'},
+   {p:'Marta drückte die Tür auf. Eine Glocke klingelte. Drinnen der sofortige, mächtige Geruch von frisch gebackenem Brot — der Geruch, der einen Hunger weckt, von dem man nichts gewusst hatte.'},
+   {p:'Der Laden war klein: Glasvitrinen rechts, eine alte Registrierkasse links, Regale mit Kaffee und Marmelade im Hintergrund. Vor ihr standen schon drei Leute. Marta stellte sich hinten an und beobachtete. Erst schauen, dann sprechen — Regel Nummer eins für Ausländer.'},
+   {p:'Hinter dem Tresen stand eine Frau von etwa fünfundsechzig Jahren. Kurzes Haar, weiß mit einem blonden Rest, eine kleine Brille auf der Nasenspitze, eine weiße Schürze mit grün gesticktem Logo. Schnelle Hände. Für jeden Kunden ein kurzes, aber echtes Lächeln.'},
+   {p:'Die erste Kundin bestellte etwas sehr Schnelles. Marta verstand nur drei Brötchen und ein Vollkornbrot. Bezahlen, Wechselgeld, schönen Sonntag, weg. Der zweite Kunde war noch schneller. Die dritte, eine Frau in Martas Alter, nahm einen Kaffee zum Mitnehmen und ein Croissant. Croissant verstand sie — Croissant ist international, Gott sei Dank.'},
+   {p:'Und plötzlich war sie dran. Die Frau hob den Blick über die kleine Brille hinweg.'},
+   {p:'—Was darf es sein?'},
+   {p:'Marta verstand den Satz nicht genau, aber sie verstand die Frage. Sie schaute in die Vitrine und erstarrte. So viele Brote. So viele Brötchen. Runde, längliche, mit Körnern, mit Mehl bestäubt, manche fast schwarz, manche fast weiß. Ich kenne die Namen nicht. Ich weiß nicht, was ich will.'},
+   {p:'Sie zeigte mit dem Finger auf ein rundes Brötchen mit Sesam. —Äh... das, bitte. Und das. Und das.'},
+   {p:'Frau Schultz nahm die drei mit der Zange und legte sie in eine braune Papiertüte. —Sonst noch was?'},
+   {p:'Und hier tat Marta etwas, das sie nicht geplant hatte. Etwas Mutiges. Etwas, das sie in Madrid ohne Nachdenken täte, das aber auf Deutsch Kraft kostete. Sie stellte eine Frage.'},
+   {p:'—Entschuldigung... was ist das?'},
+   {p:'Frau Schultz schaute hin. Eine Pause. Und dann ihr erstes vollständiges Lächeln. —Das ist ein Sesambrötchen. Mit Sesam. Sehr lecker mit Käse.'},
+   {p:'—Sesambrötchen, wiederholte Marta langsam. —Genau.'},
+   {p:'Und dann, weil Berliner Bäckerinnen manchmal Zeit haben, wenn eine Kundin es verdient, zeigte Frau Schultz auf die anderen beiden. —Das ist ein Mohnbrötchen. Und das hier ist ein Roggenbrötchen. Aus Roggen. Etwas dunkler. Sehr deutsch.'},
+   {p:'Marta wiederholte jedes Wort, und ihr Gehirn legte sie ab wie ein Kind, das zum ersten Mal die Namen der Dinge bekommt.'},
+   {p:'—Bist du neu hier? —Ja. Ich komme aus Spanien. Aus Madrid. Ich bin hier neun Monate.'},
+   {p:'—Madrid. Schön. Ich war einmal in Madrid, vor vielen Jahren. Sehr heiß.'},
+   {p:'Eine Berlinerin, die vor Jahrzehnten in Madrid war und sich an die Hitze erinnert. Hinter Marta räusperte sich jemand leise — kleiner Berliner Druck. Frau Schultz kehrte zur normalen Geschwindigkeit zurück. —Drei Brötchen. Zwei Euro zehn.'},
+   {p:'Marta zahlte mit einem Fünfer. Und dann nahm Frau Schultz ein viertes Brötchen aus der Vitrine und legte es dazu.'},
+   {p:'—Das ist ein Käsebrötchen. Mit Käse oben. Probier mal. Geschenk.'},
+   {p:'Geschenk. Marta wusste nicht, was sie sagen sollte. Frau Schultz hatte ihr, ohne es zu wissen, gerade einen Anker im Viertel gegeben.'},
+   {p:'—Vielen Dank. Vielen, vielen Dank. Frau Schultz machte eine kleine Handbewegung, die nichts zu danken hieß. —Komm wieder.'},
+   {p:'Draußen klingelte die Glocke noch einmal. Die Papiertüte war warm in ihren Händen, weil die Brötchen frisch aus dem Ofen kamen. Marta ging langsam nach Hause — langsam, weil gerade etwas Gutes passiert war und sie nicht wollte, dass es endete.'},
+   {p:'Im Hausflur, bevor sie hochging, öffnete sie die Tüte, nahm das Käsebrötchen heraus und biss hinein, ohne auf die Wohnung zu warten. Es war gut. Wirklich gut. Kein Käse und Brot, sondern kräftiger Käse, außen knusprig, innen weich. Eine einfache Sache, sehr gut gemacht.'},
+   {p:'In der Küche legte sie die Brötchen in einen Korb, machte Kaffee, holte Butter und Marmelade und frühstückte allein am Fenster.'},
+   {p:'Anna kam vom Laufen zurück, als Marta beim zweiten Kaffee war. Sie sah den Korb und lächelte. —Du warst bei Frau Schultz. —Ja. Allein. Mein erstes Mal.'},
+   {p:'Anna goss sich Kaffee ein, nahm ein Brötchen und strich Butter darauf. —Sie ist eine gute Frau. Sie merkt sich Gesichter.'},
+   {p:'Und Marta verstand, dass dieser Satz ein Segen war. Eine Frau, die sich mein Gesicht merkt, in einer Stadt, die mich noch nicht kennt.'},
+   {p:'An diesem Abend schrieb Marta vier Wörter in das Heft, in dem sie ihr neues Deutsch sammelte: Sesambrötchen, Mohnbrötchen, Roggenbrötchen, Käsebrötchen — Geschenk. Und darunter, auf Spanisch, eine persönliche Notiz: Frau Schultz se acuerda de mi cara.'}]}
+];
+
+var cur='fundament';
+var etIdx=function(id){return ET.map(function(e){return e.id;}).indexOf(id);};
+var listEl=document.getElementById('list'),reader=document.getElementById('reader');
+
+function renderEt(){
+ var r=document.getElementById('etrow');r.innerHTML='';
+ ET.forEach(function(e){
+  var b=document.createElement('button');b.className='et'+(e.id===cur?' on':'');b.textContent=e.nm;
+  b.onclick=function(){cur=e.id;renderEt();renderList();};
+  r.appendChild(b);
+ });
+}
+function renderList(){
+ var ci=etIdx(cur),h='';
+ ET.forEach(function(e){
+  var open=etIdx(e.id)<=ci;
+  h+='<div class="band"><div class="bandhead"><span class="nm">'+e.nm+'</span>'+
+     '<span class="st '+(open?'open':'closed')+'">'+(open?'abierto':'cerrado por ahora')+'</span></div>';
+  CH.filter(function(c){return c.level===e.id;}).forEach(function(c){
+   var idx=CH.indexOf(c);
+   if(open){
+    h+='<button class="ch" data-i="'+idx+'"><div class="kap">Capítulo '+c.n+'</div><div class="tt">'+esc(c.title)+'</div><div class="te">'+esc(c.teaser)+'</div></button>';
+   }else{
+    h+='<div class="ch locked"><div class="kap">Capítulo '+c.n+'</div><div class="tt">'+esc(c.title)+'</div><div class="lockline">✦ se abre en la etapa '+e.nm+'</div></div>';
+   }
+  });
+  h+='</div>';
+ });
+ listEl.innerHTML=h;
+ [].forEach.call(listEl.querySelectorAll('.ch[data-i]'),function(b){b.onclick=function(){openChapter(+b.dataset.i);};});
+}
+function blockHTML(bl,hide){
+ if(bl.na)return '<p class="narr">'+esc(bl.na)+'</p>';
+ if(bl.z){
+  var tap = bl.tr ? ' tap'+(hide?'':' shown') : '';
+  var gl  = bl.tr ? '<span class="gloss'+(hide?' hid':'')+'">'+esc(bl.tr)+'</span>' : '';
+  return '<div class="line'+tap+'"><span class="es">'+esc(bl.z)+' <button class="spk" data-es="'+esc(bl.z)+'" aria-label="Vorlesen">🔊</button></span>'+gl+'</div>';
+ }
+ if(bl.p)return '<p class="prose"><button class="spk" data-es="'+esc(bl.p)+'" aria-label="Vorlesen">🔊</button>'+esc(bl.p)+'</p>';
+ return '';
+}
+function openChapter(i){
+ var c=CH[i];
+ document.getElementById('rk').textContent='Capítulo '+c.n+' · '+ET[etIdx(c.level)].nm;
+ document.getElementById('rt').textContent=c.title;
+ var hide = c.level!=='fundament';
+ var h = hide ? '<p class="rhint">Toca una línea para ver la traducción.</p>' : '';
+ c.body.forEach(function(bl){h+=blockHTML(bl,hide);});
+ h+='<div class="rfoot">— Fin del capítulo —</div>';
+ var rb=document.getElementById('rbody');rb.innerHTML=h;rb.scrollTop=0;
+ [].forEach.call(rb.querySelectorAll('.spk'),function(b){b.onclick=function(ev){ev.stopPropagation();say(b.dataset.es);};});
+ [].forEach.call(rb.querySelectorAll('.line.tap'),function(el){
+  el.onclick=function(ev){
+   if(ev.target.closest && ev.target.closest('.spk'))return;
+   var g=el.querySelector('.gloss'); if(!g)return;
+   g.classList.toggle('hid'); el.classList.toggle('shown');
+  };
+ });
+ reader.classList.add('open');
+}
+document.getElementById('rback').onclick=function(){reader.classList.remove('open');};
+
+renderEt();renderList();
+</script>
+</body></html>
