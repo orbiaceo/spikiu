@@ -152,7 +152,7 @@
 
   // ── Struktur: fünf Tabs + zwei Bottom-Sheets ────────────────────
   const TABS = [
-    { id: 'dashboard', labelKey: 'navStart',     href: 'dashboard.html' },
+    { id: 'dashboard', labelKey: 'navStart',     href: 'haus.html' },
     { id: 'werkstatt', labelKey: 'navWerkstatt', sheet: 'werkstatt' },
     { id: 'talk',      labelKey: 'navTalk',      href: 'chat.html', center: true },
     { id: 'lektionen', labelKey: 'navLektionen', sheet: 'lektionen' },
@@ -246,7 +246,7 @@
   // ── Topbar (nur Marken-Logo) ─────────────────────────────────────
   function buildTopbar() {
     // Teil 40: kein Deko-Capy oben mehr — schlichte Wortmarke „Spikiu" (nur Text).
-    const brand = '<a href="dashboard.html" class="spk-brand"><span>Spi<em>k</em>iu</span></a>';
+    const brand = '<a href="haus.html" class="spk-brand"><span>Spi<em>k</em>iu</span></a>';
     const host = document.querySelector('[data-spk-nav]');
     if (host) {
       // Slot-Modus: Seite hat eine eigene Kopfzeile → nur das Logo hinein, kein zweiter Balken.
