@@ -7,8 +7,8 @@
 <meta name="description" content="Der Learnroman — ein Buch, das dich in die Sprache hineinzieht.">
 
 <!-- Schriften SELBST GEHOSTET (kein Google-Fonts-CDN → keine Fremd-Verbindung).
-     Cormorant Garamond = Zielsprache · DM Sans = Muttersprache · Archivo Black =
-     Titel · DM Mono = Labels · Lora = Wortmarke/Sheets von nav.js. -->
+     Lora = Zielsprache (Leseschrift) · DM Sans = Muttersprache · Archivo Black =
+     Titel · DM Mono = Labels · Lora = Wortmarke + Sheets von nav.js. -->
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 
 <style>
@@ -23,7 +23,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none !important}
 html,body{margin:0;height:100%}
-body{--bg:#f5f1e7;--ink:#15163a;--acc:#2d6a4f;--muted:#6b6154;--de:#fbf8f0;--ow:2.5px;
+body{--bg:#f5f1e7;--ink:#15163a;--acc:#2d6a4f;--muted:#6b6154;--de:#fbf8f0;--read:#2b2621;--ow:2.5px;
  background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;
  /* am Telefon oben ansetzen: .app ist um die Navi-Leiste kürzer als der Schirm,
     zentriert bliebe sonst ein toter Streifen über dem Kopf. Erst im Rahmen-Look
@@ -67,7 +67,7 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 .ch:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
 .ch .kap{font:700 .6rem/1 'DM Mono',monospace;letter-spacing:.12em;color:var(--acc);text-transform:uppercase}
 .ch .tt{font-family:'Archivo Black',sans-serif;font-size:1.08rem;margin:.15rem 0 .2rem}
-.ch .te{font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--muted)}
+.ch .te{font-family:'Lora',serif;font-size:1.02rem;line-height:1.45;color:var(--muted)}
 .ch.locked{background:#efe8d8;box-shadow:none;border-style:dashed;cursor:default;color:var(--muted)}
 .ch.locked .tt{color:var(--muted)}
 .ch.locked .lockline{margin-top:.35rem;font:600 .72rem/1 'DM Sans';color:var(--gold)}
@@ -89,18 +89,18 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 .rhead .rk{font:600 .58rem/1 'DM Mono',monospace;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 .rbody{flex:1;min-height:0;overflow:auto;padding:1.3rem 1.15rem 2.5rem}
 
-/* Schrift = Sprache: DM Sans trägt die Muttersprache, Cormorant die Zielsprache.
+/* Schrift = Sprache: DM Sans trägt die Muttersprache, Lora die Zielsprache.
    Das ist kein Dekor — der Lerner sieht das Verhältnis, bevor er ein Wort liest. */
-.narr{font-family:'DM Sans',sans-serif;font-size:1.02rem;line-height:1.55;margin:0 0 .85rem}
+.narr{font-family:'DM Sans',sans-serif;font-size:1.01rem;line-height:1.68;color:var(--read);margin:0 0 .95rem}
 .line{margin:0 0 .95rem;padding-left:.7rem;border-left:3px solid var(--sage)}
-.line .zeile{display:inline-flex;align-items:center;gap:.5rem;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.4rem}
+.line .zeile{display:inline-flex;align-items:center;gap:.5rem;font-family:'Lora',serif;font-weight:500;font-size:1.2rem;line-height:1.55;color:var(--read)}
 .line .gloss{display:block;font-size:.86rem;color:var(--muted);margin-top:.1rem}
 .line .gloss.hid{display:none}
 .line.tap{cursor:pointer}
 .line.tap .zeile .zt{border-bottom:1px dotted rgba(21,22,58,.28)}
 .line.tap.shown .zeile .zt{border-bottom:0}
 .rhint{font:600 .68rem/1.3 'DM Sans';color:var(--muted);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:.4rem .6rem;margin:0 0 1.1rem;box-shadow:2px 2px 0 var(--ink)}
-.prose{font-family:'Cormorant Garamond',serif;font-size:1.4rem;line-height:1.6;margin:0 0 1.05rem}
+.prose{font-family:'Lora',serif;font-weight:400;font-size:1.18rem;line-height:1.78;letter-spacing:.006em;color:var(--read);margin:0 0 1.15rem}
 .spk{flex:0 0 30px;width:30px;height:30px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.82rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .prose .spk{margin-right:.4rem}
@@ -108,7 +108,7 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
    Sekunden brauchen; ohne Zeichen wirkt der Knopf tot. */
 .spk.busy{animation:spkPuls 1s ease-in-out infinite}
 @keyframes spkPuls{0%,100%{opacity:1}50%{opacity:.45}}
-.rfoot{text-align:center;color:var(--muted);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;margin-top:.6rem}
+.rfoot{text-align:center;color:var(--muted);font-family:'Lora',serif;font-style:italic;font-size:1rem;margin-top:1rem}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -325,8 +325,8 @@ function renderLeer(){
 
 // ── Ein Block wird HTML ────────────────────────────────────────────────
 //  na = Muttersprache (DM Sans, kein Audio)
-//  z  = Zielsprache + optionale Brücke (Cormorant, 🔊)
-//  p  = Zielsprach-Prosa, nur Anwendung (Cormorant, 🔊)
+//  z  = Zielsprache + optionale Brücke (Lora, 🔊)
+//  p  = Zielsprach-Prosa, nur Anwendung (Lora, 🔊)
 //
 //  WORTJAG-VORBEREITUNG (Auftrag §8): der Zielsprach-Text steht in einem
 //  EIGENEN Container (.zt) OHNE verschachtelte Inline-Elemente — der 🔊-Knopf
