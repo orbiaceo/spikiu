@@ -179,9 +179,12 @@ button{font-family:inherit}
 .turn .av{animation:popav .5s cubic-bezier(.3,1.5,.5,1) both}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:8px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.meta{flex:0 0 auto;display:flex;justify-content:center;gap:1.3rem;padding:.55rem 0 calc(.7rem + env(safe-area-inset-bottom));border-top:2px solid var(--ink);background:rgba(255,255,255,.55)}
+.meta a{font:600 .72rem/1 'DM Sans',sans-serif;color:var(--muted);text-decoration:none;cursor:pointer}
+.meta a:active{color:var(--ink)}
 </style></head>
 <body>
-<div class="badge">Haus · Schale (echt)</div>
+<div class="badge">Haus · alle Räume</div>
 
 <section class="view welcome active" id="welcome">
   <div class="big" id="wbig"></div>
@@ -197,6 +200,7 @@ button{font-family:inherit}
     <div class="subbar" id="subbar"></div>
   </header>
   <main class="stage" id="stage"></main>
+  <footer class="meta" id="meta"></footer>
   <div class="bookov" id="bookov"></div>
 </section>
 
@@ -415,7 +419,7 @@ function buildNav(){var d=document.getElementById('doors');d.innerHTML='';
  DOORS.forEach(function(D){var b=document.createElement('button');b.className='door';b.id='door-'+D.id;
   b.innerHTML='<span class="ic">'+D.ic()+'</span><span class="lb">'+D.lb+'</span>';
   b.onclick=function(){loadRoom(D.id);};d.appendChild(b);});}
-function loadRoom(id){if(id==='eintauchen'){location.href='chat.html';return;}if(id==='uebung'){location.href='gym.html';return;}CUR=id;S=document.getElementById('stage');S.innerHTML='';
+function loadRoom(id){CUR=id;S=document.getElementById('stage');S.innerHTML='';
  DOORS.forEach(function(D){document.getElementById('door-'+D.id).classList.toggle('on',D.id===id);});
  document.getElementById('subbar').textContent=DOORS.filter(function(D){return D.id===id;})[0].sub;
  document.getElementById('stage').scrollTop=0;
@@ -458,7 +462,12 @@ var THEMES={
      body:function(){return NAME+' stand am Bahnhof von Sevilla, fragte nach dem Zug — und verstand die Antwort. Acht Uhr, Gleis zwei. Kein Wörterbuch nötig.';}}}
 };
 /* 0 · Begrüßung */
-function roomEintauchen(){advBegruessung();}
+function roomEintauchen(){
+ spikiu('Womit möchtest du dich ausdrücken?',function(){
+  bigcards([
+   {em:'💬',tt:'Freies Gespräch',ss:'Sprich mit mir — frei, in deinem Tempo',go:function(){location.href='chat.html';}},
+   {em:'✍️',tt:'Schreibwerkstatt',ss:'Schreib etwas, ich lese mit',go:function(){location.href='schreibwerkstatt.html';}}
+  ]);});}
 function advBegruessung(){newStep(0);
  spikiu('Hallo '+NAME+'! Schön, dass du da bist. Heute ein kleines Sprachabenteuer — wohin soll es gehen?',function(){
   bigcards([
@@ -541,6 +550,7 @@ function roomBibliothek(){
  spikiu('Hola '+(NAME||'')+' 👋 — was möchtest du?',function(){
   bigcards([
    {em:'📖',tt:'Learnroman',ss:'Immersiv lesen — dein Text wächst mit dir',go:function(){location.href='learnroman.html';}},
+   {em:'📚',tt:'Reader · Meine Bücher',ss:'Lukas, Marta & die Café-Geschichten',go:function(){location.href='books.html';}},
    {em:'🌱',tt:'Mein Buch',ss:(pages.length+keptWords.length)+' Eintr. — deine eigene Geschichte',go:renderBook}
   ]);});}
 function readRoman(){
@@ -616,7 +626,12 @@ window.addEventListener('keydown',function(e){var ov=document.getElementById('bo
 /* ===== RAUM: ÜBUNG ===== */
 var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
 function roomUebung(){
- spikiu('Ein paar Wörter, ganz ruhig. Kein Druck, kein Streak.',function(){uebKarte(0);});}
+ spikiu('Ganz ruhig. Kein Druck, kein Streak. Was übst du?',function(){
+  bigcards([
+   {em:'🃏',tt:'Wortschatz',ss:'Deine Wörter, im ruhigen Deck',go:function(){location.href='gym.html';}},
+   {em:'💬',tt:'Sprichwörter',ss:'Redewendungen zum Mitnehmen',go:function(){location.href='proverbios.html';}},
+   {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen üben',go:function(){location.href='taller.html';}}
+  ]);});}
 function uebKarte(i){
  if(i>=UWORDS.length){
   UWORDS.forEach(function(u){if(keptWords.indexOf(u.w)<0)keptWords.push(u.w);});
@@ -645,7 +660,7 @@ function submitName(){var v=(document.getElementById('nameIn').value||'').trim()
  [['Español',true],['Deutsch',false]].forEach(function(p){var b=document.createElement('button');b.textContent=p[0];
   b.onclick=function(){enterHouse();};lr.appendChild(b);});}
 function enterHouse(){document.getElementById('welcome').classList.remove('active');
- document.getElementById('house').classList.add('active');buildNav();loadRoom('bibliothek');}
+ document.getElementById('house').classList.add('active');buildNav();document.getElementById('meta').innerHTML='<a href="lektionen.html">Lektionen</a><a href="dashboard.html#lernweg">Lernweg</a><a href="sessions.html">Verlauf</a>';loadRoom('bibliothek');}
 
 document.getElementById('wbig').innerHTML=capyBig();var _wc=document.querySelector('#wbig svg');if(_wc&&window.spkCapyAlive){window.spkCapyAlive(_wc,{tapTarget:document.getElementById('wbig')});}
 document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')submitName();});
