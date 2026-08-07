@@ -1,564 +1,190 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spikiu — Lesewerkstatt</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Lesewerkstatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#f5f1e7; --page:#fdfbf5; --ink:#2b2620; --ink-soft:#6e6256;
-    --green:#2d6a4f; --gold:#a87b2e; --gold-soft:#e9d9b6; --capy:#c9956a; --line:#e6dec9;
-    --rojo:#b4452f;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{background:var(--paper);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;
-    -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%;padding-bottom:var(--spk-navh, 0px)}
-
-  /* ── Kopfzeile: Navi-Slot links, stilles Raum-Label rechts (wie schreibwerkstatt) ── */
-  .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
-    padding:.9rem 1.4rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
-  .room{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-  .room-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--ink-soft);letter-spacing:.01em}
-  .controls{display:flex;align-items:center;gap:.7rem;font-size:.78rem;color:var(--ink-soft);flex-wrap:wrap}
-  .controls label{display:flex;align-items:center;gap:.35rem}
-  select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);
-    background:var(--page);border:1px solid var(--line);border-radius:99px;padding:.3rem .7rem;cursor:pointer}
-  select:focus{outline:none;border-color:var(--gold)}
-  .dev-tag{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--gold);border-radius:99px;padding:.12rem .5rem}
-
-  .seminar{flex:1;width:100%;max-width:760px;margin:0 auto;padding:2.2rem 1.4rem 3rem}
-
-  /* ── Spikius Stimme ── */
-  .spikiu-line{display:flex;gap:.85rem;align-items:flex-start;margin-bottom:1.6rem}
-  .spikiu-line svg{flex-shrink:0;margin-top:.1rem;animation:float 4s ease-in-out infinite}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-  .spikiu-line .say{font-size:1.05rem;line-height:1.6;color:var(--ink)}
-  .spikiu-line .say em{font-style:italic;color:var(--ink-soft)}
-
-  /* ── Der Text als Dokument auf dem Tisch ── */
-  .documento{background:var(--page);border:1px solid var(--line);border-radius:6px;
-    box-shadow:0 1px 0 #fff inset,0 14px 34px -20px rgba(60,45,20,.4);
-    padding:1.8rem 1.9rem;margin-bottom:.7rem;position:relative}
-  .documento::before{content:"";position:absolute;left:0;top:1.4rem;bottom:1.4rem;width:3px;
-    background:var(--gold-soft);border-radius:3px}
-  .doc-kind{font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--gold);margin-bottom:.7rem}
-  .doc-text{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.6;color:var(--ink);white-space:pre-wrap}
-  .doc-laut{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-style:italic;color:var(--ink-soft);margin-top:.8rem;line-height:1.5}
-  .bridge{font-size:.84rem;color:var(--ink-soft);margin:.9rem 0 2.2rem;line-height:1.7}
-  .bridge b{color:var(--ink);font-weight:600}
-
-  /* ── Aufgaben-Block ── */
-  .aufgabe{margin-bottom:1.9rem}
-  .a-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--ink-soft);margin-bottom:.2rem}
-  .a-frage{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ink);margin-bottom:.9rem;line-height:1.35}
-  .hinweis{font-size:.84rem;color:var(--ink-soft);font-style:italic;margin:-.5rem 0 .8rem}
-
-  /* MC */
-  .opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:1rem;color:var(--ink);
-    background:var(--page);border:1px solid var(--line);border-radius:8px;padding:.8rem 1rem;
-    margin-bottom:.55rem;cursor:pointer;transition:.15s}
-  .opt:hover:not(:disabled){border-color:var(--gold);background:#fff}
-  .opt:disabled{cursor:default}
-  .opt.right{border-color:var(--green);background:rgba(45,106,79,.1);color:var(--green);font-weight:600}
-  .opt.wrong{border-color:var(--rojo);background:rgba(180,69,47,.08);color:var(--rojo)}
-  .feedback{font-size:.95rem;line-height:1.55;color:var(--ink-soft);margin-top:.5rem;
-    opacity:0;transform:translateY(4px);transition:.3s}
-  .feedback.show{opacity:1;transform:none}
-  .feedback b{color:var(--green)}
-
-  /* Ordenar */
-  .orden{list-style:none}
-  .orden li{display:flex;align-items:center;gap:.7rem;background:var(--page);border:1px solid var(--line);
-    border-radius:8px;padding:.7rem .8rem .7rem 1rem;margin-bottom:.5rem;transition:.18s}
-  .orden li.ok{border-color:var(--green);background:rgba(45,106,79,.08)}
-  .orden .num{width:1.5rem;height:1.5rem;flex-shrink:0;border-radius:50%;background:var(--gold-soft);
-    color:var(--gold);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
-  .orden .txt{flex:1;font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ink)}
-  .orden .moves{display:flex;flex-direction:column;gap:.15rem}
-  .orden .moves button{border:1px solid var(--line);background:#fff;border-radius:5px;width:1.7rem;height:1.25rem;
-    cursor:pointer;color:var(--ink-soft);font-size:.7rem;line-height:1;display:flex;align-items:center;justify-content:center}
-  .orden .moves button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
-  .orden .moves button:disabled{opacity:.3;cursor:default}
-
-  /* Freitext */
-  textarea{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.3rem;line-height:1.5;color:var(--ink);
-    background:var(--page);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;resize:vertical;min-height:80px}
-  textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
-  .besser{display:block;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--green);margin-top:.6rem}
-
-  .btn{font-family:inherit;font-size:.92rem;font-weight:700;border-radius:99px;cursor:pointer;
-    padding:.55rem 1.2rem;transition:.18s;border:1px solid transparent}
-  .btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:#000}
-  .btn-ink:disabled{opacity:.5;cursor:default}
-  .btn-line{background:transparent;color:var(--ink);border-color:var(--line)}
-  .btn-line:hover{border-color:var(--gold)}
-  .btn-green{background:var(--green);color:#fff}.btn-green:hover{filter:brightness(1.08)}
-  .btn:disabled{opacity:.55;cursor:default;pointer-events:none}
-  .row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;align-items:center}
-
-  /* Schluss (Manöverkritik) */
-  .schluss{border-top:1px dashed var(--line);margin-top:2.2rem;padding-top:1.8rem;
-    opacity:0;max-height:0;overflow:hidden;transition:opacity .5s}
-  .schluss.show{opacity:1;max-height:800px}
-
-  .retry{margin-top:.6rem;font-size:.82rem;font-weight:700;color:var(--ink);background:transparent;
-    border:1px solid var(--line);border-radius:99px;padding:.4rem .9rem;cursor:pointer}
-
-  [hidden]{display:none !important}
-  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
-</style>
-</head>
+:root{--pink:#ff4f9a;--sage:#9bd14a;--gold:#a87b2e;--red:#e05252;--green:#2d6a4f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{--bg:#f5f1e7;--ink:#15163a;--acc:#2d6a4f;--muted:#6b6154;--read:#2b2621;--de:#fbf8f0;--ow:2.5px;
+ background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;
+ display:flex;align-items:center;justify-content:center;min-height:100dvh}
+.app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px}
+ body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
+}
+button{font-family:inherit}
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .65rem;display:flex;align-items:center;gap:.6rem}
+.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.tt-wrap{flex:1;text-align:center}
+.tt-wrap .k{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase}
+.tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0}
+.dev{flex:0 0 auto;display:none;flex-direction:column;gap:.3rem}
+.dev.on{display:flex}
+.dev select{font:600 .7rem/1 'DM Sans';border:2px solid var(--ink);border-radius:8px;padding:.2rem .3rem;background:#fff}
+.body{flex:1;min-height:0;overflow:auto;padding:1.2rem 1.05rem 1rem}
+.rahmen{font-family:'Lora',serif;font-style:italic;color:var(--muted);font-size:1.05rem;margin-bottom:.6rem}
+.texto{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:1rem 1.05rem;position:relative}
+.texto .t{font-family:'Lora',serif;font-size:1.32rem;line-height:1.6;color:var(--read)}
+.texto .lau{margin-top:.5rem;font-family:'DM Mono',monospace;font-size:.86rem;color:var(--muted)}
+.texto .say{position:absolute;top:.7rem;right:.7rem;width:32px;height:32px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.9rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.bruecke{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.4rem}
+.bruecke .bw{font:600 .82rem/1 'DM Sans';background:var(--de);border:2px dashed var(--muted);border-radius:999px;padding:.3rem .55rem;color:var(--muted)}
+.bruecke .bw b{color:var(--ink);font-family:'Lora',serif;font-size:1rem}
+.task{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:.9rem 1rem;margin-top:1rem}
+.task .q{font-weight:700;font-size:1.02rem;margin-bottom:.6rem}
+.opt{display:block;width:100%;text-align:left;font-family:'Lora',serif;font-size:1.15rem;background:#fff;border:2.5px solid var(--ink);border-radius:12px;padding:.55rem .75rem;margin:.4rem 0;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.opt:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.opt.right{background:var(--sage);border-color:var(--green)}
+.opt.wrong{background:#f7d5d5;border-color:var(--red)}
+.opt:disabled{cursor:default}
+.expl{margin-top:.5rem;font-size:.9rem;color:var(--muted);font-style:italic}
+.orden .pool,.orden .ans{display:flex;flex-wrap:wrap;gap:.45rem;margin:.5rem 0;min-height:2.4rem}
+.orden .ans{background:var(--de);border:2px dashed var(--muted);border-radius:12px;padding:.4rem;align-content:flex-start}
+.part{font-family:'Lora',serif;font-size:1.1rem;background:#fff;border:2.5px solid var(--ink);border-radius:10px;padding:.35rem .6rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.part:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.orden .done{margin-top:.5rem;font-family:'Lora',serif;font-size:1.15rem;padding:.5rem .7rem;border-radius:10px}
+.orden .done.right{background:var(--sage)}
+.orden .done.wrong{background:#f7d5d5}
+.orden .done .corr{display:block;margin-top:.3rem;color:var(--green);font-weight:600}
+.prem{background:var(--de);border:2.5px dashed var(--gold);border-radius:16px;padding:.9rem 1rem;margin-top:1rem;text-align:center}
+.prem .lock{font-size:1.3rem}
+.prem .pt{font-family:'Lora',serif;font-size:1.15rem;color:var(--ink);margin:.3rem 0}
+.prem .pq{color:var(--muted);font-size:.9rem}
+.prem .tag{display:inline-block;margin-top:.5rem;font:800 .72rem/1 'DM Sans';color:#fff;background:var(--gold);border:2px solid var(--ink);border-radius:999px;padding:.35rem .7rem;box-shadow:2px 2px 0 var(--ink)}
+.schluss{margin-top:1.3rem;font-family:'Lora',serif;font-style:italic;color:var(--muted);text-align:center;font-size:1.1rem}
+.empty{margin:3rem auto;text-align:center;color:var(--muted);font-family:'Lora',serif;font-size:1.2rem;max-width:24ch}
+.foot{flex:0 0 auto;display:flex;gap:.6rem;padding:.7rem .9rem calc(.9rem + env(safe-area-inset-bottom));border-top:var(--ow) solid var(--ink);background:rgba(255,255,255,.7)}
+.foot button{flex:1;font:800 .9rem/1 'DM Sans';border:var(--ow) solid var(--ink);border-radius:12px;padding:.7rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink);background:#fff}
+.foot .prim{background:var(--acc);color:#fff}
+.foot button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
 <body>
-
-<header class="bar">
-  <div class="nav-slot" data-spk-nav></div>
-  <div class="room">
-    <span class="room-name" id="roomName">Lesen</span>
-    <!-- Dev-Schloss: nur mit ?dev=1 sichtbar. Im Produkt kommt die Sprache aus profile.zielsprache, Können aus profile.koennen. -->
-    <div class="controls" id="devControls" hidden>
-      <span class="dev-tag">dev</span>
-      <label>Sprache
-        <select id="selLang">
-          <option value="es">Spanisch</option>
-          <option value="de">Deutsch</option>
-          <option value="en">Englisch</option>
-          <option value="el">Griechisch</option>
-        </select>
-      </label>
-      <label>Können
-        <select id="selKoennen">
-          <option value="anfang">Anfang</option>
-          <option value="mittel">Mittel</option>
-          <option value="fortgeschritten">Fortgeschritten</option>
-        </select>
-      </label>
+<div class="app">
+  <div class="top">
+    <button class="back" id="back" aria-label="zurück">‹</button>
+    <div class="tt-wrap"><div class="k" id="kK">Übung</div><h1 id="kRoom">Lesewerkstatt</h1></div>
+    <div class="dev" id="dev">
+      <select id="selLang"><option value="es">es</option><option value="de">de</option><option value="en">en</option><option value="el">el</option></select>
+      <select id="selKoennen"><option value="anfang">anfang</option><option value="mittel">mittel</option><option value="fortgeschritten">fortgeschritten</option></select>
     </div>
   </div>
-</header>
-
-<main class="seminar">
-  <div id="opener"></div>
-  <article class="documento" id="doc" hidden></article>
-  <p class="bridge" id="bridge" hidden></p>
-  <div id="aufgaben"></div>
-  <div class="schluss" id="schluss"></div>
-
-  <!-- Lade-Zustand -->
-  <div class="spikiu-line" id="loading" hidden>
-    <span id="loadingCapy"></span>
-    <p class="say" style="color:var(--ink-soft)" id="loadingText">…</p>
-  </div>
-
-  <!-- Fehler-Zustand -->
-  <div class="spikiu-line" id="errorBox" hidden>
-    <span id="errorCapy"></span>
-    <div>
-      <p class="say" id="errorText"></p>
-      <button class="retry" id="retry">Nochmal</button>
-    </div>
-  </div>
-</main>
-
+  <div class="body" id="body"></div>
+  <div class="foot" id="foot"></div>
+</div>
+<script src="taller-daten.js"></script>
 <script>
 (function(){
-  var ENDPOINT = '/api/taller';
+ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+ function say(t,lang){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=({es:'es-ES',de:'de-DE',en:'en-US',el:'el-GR'})[lang]||'es-ES';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
 
-  // ── Spikiu, IMMER komplett (2 Ohren cy=17, 4 Füße cy=66/68) ──────
-  function CAPY(s){
-    return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 80 80" fill="none">'+
-      '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>'+
-      '<ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'+
-      '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>'+
-      '<ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'+
-      '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'+
-      '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'+
-      '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'+
-      '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'+
-      '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'+
-      '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'+
-      '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
-  }
+ // ── Profil defensiv (1:1 wie echte taller.html) ──
+ var userObj={},stored={};
+ try{userObj=JSON.parse(localStorage.getItem('spikiu_user')||'{}');}catch(e){}
+ stored=userObj.profile||{};
+ function langCode(v){if(!v)return null;v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v))return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1)return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1)return 'es';
+  if(v.indexOf('engl')>-1)return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1)return 'el';return null;}
+ function koennenFrom(v){if(!v)return null;v=(''+v).toLowerCase();
+  if(['anfang','mittel','fortgeschritten'].indexOf(v)>-1)return v;
+  if(/a[12]/.test(v))return 'anfang';if(/b[12]/.test(v))return 'mittel';if(/c[12]/.test(v))return 'fortgeschritten';return null;}
 
-  // ── Profil defensiv lesen (wie schreibwerkstatt) ─────────────────
-  var userObj = {}, stored = {};
-  try { userObj = JSON.parse(localStorage.getItem('spikiu_user')||'{}'); } catch(e){}
-  stored = userObj.profile || {};
-  var userName = userObj.name || stored.name || '';
-  function langCode(v){
-    if(!v) return null; v=(''+v).toLowerCase();
-    if(/^(de|es|en|el)$/.test(v)) return v;
-    if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
-    if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
-    if(v.indexOf('engl')>-1) return 'en';
-    if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
-    return null;
-  }
-  function koennenFrom(v){
-    if(!v) return null; v=(''+v).toLowerCase();
-    if(['anfang','mittel','fortgeschritten'].indexOf(v)>-1) return v;
-    if(/a[12]/.test(v)) return 'anfang';
-    if(/b[12]/.test(v)) return 'mittel';
-    if(/c[12]/.test(v)) return 'fortgeschritten';
-    return null;
-  }
-  var selLang=document.getElementById('selLang'), selKoennen=document.getElementById('selKoennen');
-  selLang.value = stored.zielsprache || langCode(stored.targetLang) || 'es';
-  selKoennen.value = stored.koennen || koennenFrom(stored.level) || 'anfang';
+ var DEV=/[?&]dev=1/.test(location.search);
+ var selLang=document.getElementById('selLang'),selKoennen=document.getElementById('selKoennen');
+ selLang.value=stored.zielsprache||langCode(stored.targetLang)||'es';
+ selKoennen.value=stored.koennen||koennenFrom(stored.level)||'anfang';
+ if(DEV)document.getElementById('dev').classList.add('on');
 
-  function profile(){
-    return {
-      name: stored.name || '',
-      muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de',
-      zielsprache: selLang.value,
-      koennen: selKoennen.value,
-      fremde_schrift: selLang.value === 'el'
-    };
-  }
+ function zielsprache(){return DEV?selLang.value:(stored.zielsprache||langCode(stored.targetLang)||'es');}
+ function koennen(){return DEV?selKoennen.value:(stored.koennen||koennenFrom(stored.level)||'anfang');}
+ function muttersprache(){var m=stored.muttersprache||langCode(stored.nativeLang)||'de';return ['de','es','en'].indexOf(m)>-1?m:'de';}
 
-  // ── UI-Sprache = Muttersprache (de/es/en; el ist nur Zielsprache) ─
-  var M = profile().muttersprache; if(['de','es','en'].indexOf(M)<0) M='de';
-  var TXT = {
-    de:{room:'Lesewerkstatt', mc:'Verstehen', orden:'Reihenfolge', frei:'Selbst sagen',
-        check:'Prüfen', lay:'Hinlegen', again:'Noch ein Text', enough:'Genug für heute',
-        sits:'Sitzt.', notyet:'Noch nicht — verschieb mit ▲▼ und prüf nochmal.',
-        loading:'Einen Moment — ich such einen Text aus…',
-        err:'Spikiu ist gerade nicht erreichbar. Versuch es gleich nochmal.', retry:'Nochmal',
-        kind:{de:'Text · Deutsch',es:'Texto · Español',en:'Text · English',el:'Κείμενο · Ελληνικά'}},
-    es:{room:'Taller de lectura', mc:'Comprender', orden:'Orden', frei:'Dilo tú',
-        check:'Comprobar', lay:'Enviar', again:'Otro texto', enough:'Basta por hoy',
-        sits:'Eso es.', notyet:'Todavía no — mueve con ▲▼ y comprueba otra vez.',
-        loading:'Un momento — busco un texto…',
-        err:'Spikiu no está disponible ahora mismo. Inténtalo de nuevo en un momento.', retry:'De nuevo',
-        kind:{de:'Texto · Alemán',es:'Texto · Español',en:'Texto · Inglés',el:'Texto · Griego'}},
-    en:{room:'Reading Workshop', mc:'Understand', orden:'Order', frei:'Say it yourself',
-        check:'Check', lay:'Send', again:'Another text', enough:'Enough for today',
-        sits:'That’s it.', notyet:'Not yet — move with ▲▼ and check again.',
-        loading:'One moment — picking a text…',
-        err:'Spikiu is unavailable right now. Try again in a moment.', retry:'Again',
-        kind:{de:'Text · German',es:'Text · Spanish',en:'Text · English',el:'Text · Greek'}}
-  }[M];
+ // ── i18n Chrome (UI = Muttersprache; el nie UI) ──
+ var TXT={
+  de:{k:'Übung',room:'Lesewerkstatt',again:'Noch ein Text',enough:'Genug für heute',prem:'Premium',premHint:'Schreib frei — Spikiu liest deinen Satz.',corr:'Richtig: ',empty:'Bald mehr Texte hier.'},
+  es:{k:'Práctica',room:'Taller de lectura',again:'Otro texto',enough:'Basta por hoy',prem:'Premium',premHint:'Escribe libremente — Spikiu lee tu frase.',corr:'Correcto: ',empty:'Pronto más textos aquí.'},
+  en:{k:'Practice',room:'Reading workshop',again:'Another text',enough:'Enough for today',prem:'Premium',premHint:'Write freely — Spikiu reads your sentence.',corr:'Correct: ',empty:'More texts here soon.'}
+ };
+ var T=TXT[muttersprache()];
+ document.getElementById('kK').textContent=T.k;
+ document.getElementById('kRoom').textContent=T.room;
+ document.getElementById('back').onclick=function(){location.href='haus.html';};
 
-  // Warme Abschiedszeile (Muttersprache), Name optional (Design 18.06.)
-  var BYE = {
-    de: function(n){ return 'Bis bald'+(n?', '+n:'')+'. Der Text bleibt, wenn du wiederkommst.'; },
-    es: function(n){ return 'Hasta pronto'+(n?', '+n:'')+'. El texto sigue aquí cuando vuelvas.'; },
-    en: function(n){ return 'See you soon'+(n?', '+n:'')+'. The text will be here when you return.'; }
-  }[M];
+ // ── gesehene Texte (Rotation) ──
+ function seen(){try{return JSON.parse(localStorage.getItem('spikiu_taller_seen')||'[]');}catch(e){return [];}}
+ function markSeen(id){try{var a=seen();if(a.indexOf(id)<0){a.push(id);if(a.length>40)a=a.slice(-40);localStorage.setItem('spikiu_taller_seen',JSON.stringify(a));}}catch(e){}}
 
-  // ── Elemente ─────────────────────────────────────────────────────
-  var opener=document.getElementById('opener'), doc=document.getElementById('doc'),
-      bridge=document.getElementById('bridge'), aufgabenEl=document.getElementById('aufgaben'),
-      schlussEl=document.getElementById('schluss'),
-      loading=document.getElementById('loading'), errorBox=document.getElementById('errorBox');
+ var B=document.getElementById('body'),F=document.getElementById('foot');
 
-  document.getElementById('roomName').textContent = TXT.room;
-  document.getElementById('loadingCapy').innerHTML = CAPY(34);
-  document.getElementById('loadingText').textContent = TXT.loading;
-  document.getElementById('errorCapy').innerHTML = CAPY(34);
-  document.getElementById('errorText').textContent = TXT.err;
-  document.getElementById('retry').textContent = TXT.retry;
-  document.getElementById('retry').onclick = loadTaller;
+ function mcHTML(a,i){var h='<div class="task mc" data-i="'+i+'"><div class="q">'+esc(a.frage)+'</div>';
+  a.optionen.forEach(function(o,k){h+='<button class="opt" data-k="'+k+'">'+esc(o)+'</button>';});
+  return h+'<div class="expl" style="display:none"></div></div>';}
+ function ordenHTML(a,i){var h='<div class="task orden" data-i="'+i+'"><div class="q">'+esc(a.frage)+'</div>';
+  h+='<div class="ans" data-ans></div><div class="pool" data-pool>';
+  a.teile.forEach(function(p,k){h+='<button class="part" data-k="'+k+'">'+esc(p)+'</button>';});
+  return h+'</div><div class="done" style="display:none"></div></div>';}
+ function freiHTML(a){return '<div class="prem"><div class="lock">🔒</div><div class="pt">'+esc(a.frage)+'</div>'+
+  '<div class="pq">'+esc(T.premHint)+'</div><div class="tag">✨ '+esc(T.prem)+'</div></div>';}
 
-  function esc(s){return (''+s).replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+ var CUR=null;
+ function render(entry){
+  CUR=entry;var ziel=zielsprache();
+  var h='<div class="rahmen">'+esc(entry.rahmen)+'</div>';
+  h+='<div class="texto"><button class="say" id="sayT" aria-label="Vorlesen">🔊</button><div class="t">'+esc(entry.texto)+'</div>';
+  if(entry.lautschrift)h+='<div class="lau">'+esc(entry.lautschrift)+'</div>';
+  if(entry.bruecke){h+='<div class="bruecke">';entry.bruecke.forEach(function(x){h+='<span class="bw"><b>'+esc(x.w)+'</b> · '+esc(x.t)+'</span>';});h+='</div>';}
+  h+='</div>';
+  entry.aufgaben.forEach(function(a,i){if(a.typ==='mc')h+=mcHTML(a,i);else if(a.typ==='orden')h+=ordenHTML(a,i);else if(a.typ==='frei')h+=freiHTML(a);});
+  h+='<div class="schluss">'+esc(entry.schluss)+'</div>';
+  B.innerHTML=h;B.scrollTop=0;
+  document.getElementById('sayT').onclick=function(){say(entry.texto,ziel);};
+  wireMC();wireOrden();
+  F.innerHTML='<button class="prim" id="again">'+esc(T.again)+'</button><button id="enough">'+esc(T.enough)+'</button>';
+  document.getElementById('again').onclick=load;
+  document.getElementById('enough').onclick=function(){location.href='haus.html';};
+ }
+ function renderEmpty(){B.innerHTML='<div class="empty">'+esc(T.empty)+'</div>';
+  F.innerHTML='<button id="enough">'+esc(T.enough)+'</button>';
+  document.getElementById('enough').onclick=function(){location.href='haus.html';};}
 
-  var currentTexto='', touched=0, total=0, schlussText='';
-  var currentTaller=null, progress=[], saveTimer=null;
+ function wireMC(){[].forEach.call(B.querySelectorAll('.task.mc'),function(t){
+  var a=CUR.aufgaben[+t.dataset.i];var opts=t.querySelectorAll('.opt');
+  [].forEach.call(opts,function(o){o.onclick=function(){
+   if(t.dataset.done)return;t.dataset.done=1;var k=+o.dataset.k;
+   if(k===a.loesung){o.classList.add('right');}else{o.classList.add('wrong');opts[a.loesung].classList.add('right');}
+   [].forEach.call(opts,function(x){x.disabled=true;});
+   var e=t.querySelector('.expl');e.textContent=a.erklaerung||'';e.style.display='block';
+  };});});}
+ function wireOrden(){[].forEach.call(B.querySelectorAll('.task.orden'),function(t){
+  var a=CUR.aufgaben[+t.dataset.i];var ans=t.querySelector('[data-ans]');var pool=t.querySelector('[data-pool]');var built=[];
+  [].forEach.call(pool.querySelectorAll('.part'),function(p){p.onclick=function(){
+   if(t.dataset.done)return;built.push(+p.dataset.k);p.remove();
+   var c=p.cloneNode(true);c.onclick=null;ans.appendChild(c);
+   if(built.length===a.teile.length){t.dataset.done=1;
+    var ok=built.every(function(v,idx){return v===a.loesung[idx];});
+    var done=t.querySelector('.done');done.style.display='block';done.className='done '+(ok?'right':'wrong');
+    done.textContent=built.map(function(v){return a.teile[v];}).join(' ');
+    if(!ok){var corr=document.createElement('span');corr.className='corr';corr.textContent=T.corr+a.loesung.map(function(v){return a.teile[v];}).join(' ');done.appendChild(corr);}
+   }
+  };});});}
 
-  function markTouched(){ touched++; if(total>0 && touched>=total) showSchluss(); }
-
-  // ── Sitzungs-Persistenz (sitzung.js) — entprellt vom Raum (~350 ms) ──
-  function scheduleSave(){
-    if(!window.spikiuSitzung || !currentTaller) return;
-    clearTimeout(saveTimer);
-    saveTimer=setTimeout(doSave, 350);
-  }
-  function doSave(){
-    if(!window.spikiuSitzung || !currentTaller) return;
-    try{ window.spikiuSitzung.speichere('taller',
-      { taller:currentTaller, progress:progress, touched:touched, total:total }); }catch(e){}
-  }
-
-  function showSchluss(){
-    // Sitzung abgeschlossen → Schlüssel räumen, kein Zombie-Resume.
-    if(window.spikiuSitzung){ try{ window.spikiuSitzung.raeume('taller'); }catch(e){} }
-    clearTimeout(saveTimer); saveTimer=null;
-    schlussEl.innerHTML =
-      '<div class="spikiu-line">'+CAPY(34)+'<p class="say">'+esc(schlussText)+'</p></div>'+
-      '<div class="row"><button class="btn btn-green" id="again">'+esc(TXT.again)+'</button>'+
-      '<button class="btn btn-line" id="enough">'+esc(TXT.enough)+'</button></div>';
-    schlussEl.classList.add('show');
-    var againBtn=document.getElementById('again'), enoughBtn=document.getElementById('enough');
-    againBtn.onclick = loadTaller;
-    enoughBtn.onclick = function(){
-      // Beide Knöpfe sperren (kein Doppel-Klick), warme Abschiedszeile, dann zum Dashboard.
-      againBtn.disabled=true; enoughBtn.disabled=true;
-      var bye=document.createElement('div'); bye.className='spikiu-line'; bye.style.marginTop='1.2rem';
-      bye.innerHTML=CAPY(34)+'<p class="say">'+esc(BYE(userName))+'</p>';
-      schlussEl.appendChild(bye);
-      bye.scrollIntoView({behavior:'smooth', block:'nearest'});
-      setTimeout(function(){ window.location.href='dashboard.html'; }, 2400);
-    };
-    schlussEl.scrollIntoView({behavior:'smooth', block:'nearest'});
-  }
-
-  function clearStage(){
-    clearTimeout(saveTimer); saveTimer=null;
-    opener.innerHTML=''; doc.hidden=true; doc.innerHTML='';
-    bridge.hidden=true; bridge.innerHTML='';
-    aufgabenEl.innerHTML='';
-    schlussEl.innerHTML=''; schlussEl.classList.remove('show');
-    errorBox.hidden=true;
-    touched=0; total=0; schlussText=''; currentTexto='';
-    currentTaller=null; progress=[];
-  }
-
-  // ── Aufgaben bauen ───────────────────────────────────────────────
-  function buildMC(a, idx, saved){
-    var sec=document.createElement('section'); sec.className='aufgabe';
-    var html='<p class="a-eyebrow">'+esc(TXT.mc)+'</p><p class="a-frage">'+esc(a.frage)+'</p>';
-    a.optionen.forEach(function(opt,i){ html+='<button class="opt" data-i="'+i+'">'+esc(opt)+'</button>'; });
-    html+='<p class="feedback fb"></p>';
-    sec.innerHTML=html;
-    var fb=sec.querySelector('.fb'), done=false;
-    var opts=sec.querySelectorAll('.opt');
-    function apply(i, restore){
-      if(done) return; done=true;
-      opts.forEach(function(o){ o.disabled=true; });
-      if(i===a.loesung){ if(opts[i]) opts[i].classList.add('right'); }
-      else { if(opts[i]) opts[i].classList.add('wrong'); if(opts[a.loesung]) opts[a.loesung].classList.add('right'); }
-      if(a.erklaerung){ fb.innerHTML=esc(a.erklaerung); fb.classList.add('show'); }
-      progress[idx]={typ:'mc', done:true, chosen:i};
-      if(!restore){ scheduleSave(); markTouched(); }   // erst sichern planen, dann markTouched (kann showSchluss→raeume auslösen)
-    }
-    opts.forEach(function(btn){
-      btn.addEventListener('click',function(){ apply(parseInt(btn.dataset.i,10), false); });
-    });
-    if(saved && saved.done && saved.chosen!=null){ apply(saved.chosen, true); }
-    else { progress[idx]={typ:'mc', done:false, chosen:null}; }
-    return sec;
-  }
-
-  function buildOrden(a, idx, saved){
-    var sec=document.createElement('section'); sec.className='aufgabe';
-    sec.innerHTML='<p class="a-eyebrow">'+esc(TXT.orden)+'</p><p class="a-frage">'+esc(a.frage)+'</p>'+
-      '<ul class="orden"></ul><div class="row"><button class="btn btn-ink check">'+esc(TXT.check)+'</button>'+
-      '<span class="feedback fb"></span></div>';
-    var listEl=sec.querySelector('.orden'), fb=sec.querySelector('.fb'), checkBtn=sec.querySelector('.check');
-    // Anzeige-Reihenfolge: gespeicherte Reihenfolge falls vorhanden, sonst nicht schon gelöst starten
-    var order;
-    if(saved && saved.order && saved.order.length===a.teile.length){ order=saved.order.slice(); }
-    else {
-      order=a.teile.map(function(_,i){return i;});
-      if(order.join()===a.loesung.join() && order.length>1){ var t0=order[0]; order[0]=order[1]; order[1]=t0; }
-    }
-    var solved = !!(saved && saved.solved);
-    function persist(){ progress[idx]={typ:'orden', order:order.slice(), solved:solved}; }
-    function render(){
-      listEl.innerHTML='';
-      order.forEach(function(origIdx,pos){
-        var li=document.createElement('li'); if(solved) li.classList.add('ok');
-        li.innerHTML='<span class="num">'+(pos+1)+'</span><span class="txt">'+esc(a.teile[origIdx])+'</span>'+
-          '<span class="moves"><button data-dir="-1"'+((pos===0||solved)?' disabled':'')+'>▲</button>'+
-          '<button data-dir="1"'+((pos===order.length-1||solved)?' disabled':'')+'>▼</button></span>';
-        li.querySelectorAll('.moves button').forEach(function(b){
-          b.addEventListener('click',function(){
-            var dir=parseInt(b.dataset.dir,10), j=pos+dir;
-            if(j<0||j>=order.length) return;
-            var tmp=order[pos]; order[pos]=order[j]; order[j]=tmp;
-            fb.classList.remove('show'); render(); persist(); scheduleSave();
-          });
-        });
-        listEl.appendChild(li);
-      });
-    }
-    render();
-    persist();
-    if(solved){ checkBtn.disabled=true; fb.innerHTML='<b>'+esc(TXT.sits)+'</b>'; fb.style.color='var(--green)'; fb.classList.add('show'); }
-    checkBtn.addEventListener('click',function(){
-      if(solved) return;
-      if(order.join()===a.loesung.join()){
-        solved=true; render(); checkBtn.disabled=true;
-        fb.innerHTML='<b>'+esc(TXT.sits)+'</b>'; fb.style.color='var(--green)'; fb.classList.add('show');
-        persist(); scheduleSave(); markTouched();
-      } else {
-        fb.textContent=TXT.notyet; fb.style.color='var(--rojo)'; fb.classList.add('show');
-      }
-    });
-    return sec;
-  }
-
-  function buildFrei(a, idx, saved){
-    var sec=document.createElement('section'); sec.className='aufgabe';
-    sec.innerHTML='<p class="a-eyebrow">'+esc(TXT.frei)+'</p><p class="a-frage">'+esc(a.frage)+'</p>'+
-      (a.hinweis?'<p class="hinweis">'+esc(a.hinweis)+'</p>':'')+
-      '<textarea spellcheck="false" placeholder="…"></textarea>'+
-      '<div class="row"><button class="btn btn-ink send">'+esc(TXT.lay)+'</button></div>'+
-      '<div class="spikiu-line reply" hidden style="margin-top:1.2rem">'+CAPY(28)+'<p class="say replytext"></p></div>';
-    var ta=sec.querySelector('textarea'), sendBtn=sec.querySelector('.send'),
-        reply=sec.querySelector('.reply'), replyText=sec.querySelector('.replytext');
-    var done=false;
-    function showReply(reaktion, besser){
-      var html=esc(reaktion||'');
-      if(besser) html+='<span class="besser">'+esc(besser)+'</span>';
-      replyText.innerHTML=html; reply.hidden=false;
-    }
-    // Wiederherstellen: Entwurf + ggf. schon erhaltene Reaktion
-    if(saved){
-      if(saved.draft) ta.value=saved.draft;
-      if(saved.answered){
-        done=true; sendBtn.disabled=true; ta.disabled=true;
-        showReply(saved.reaktion, saved.besser);
-        progress[idx]={typ:'frei', draft:ta.value, answered:true, reaktion:saved.reaktion||'', besser:saved.besser||null};
-      } else {
-        progress[idx]={typ:'frei', draft:ta.value, answered:false, reaktion:'', besser:null};
-      }
-    } else {
-      progress[idx]={typ:'frei', draft:'', answered:false, reaktion:'', besser:null};
-    }
-    ta.addEventListener('input',function(){
-      if(done) return;
-      progress[idx]={typ:'frei', draft:ta.value, answered:false, reaktion:'', besser:null};
-      scheduleSave();
-    });
-    sendBtn.addEventListener('click',async function(){
-      var val=ta.value.trim(); if(!val||done) return;
-      sendBtn.disabled=true; ta.disabled=true;
-      try{
-        var d=await call({ profile:profile(), antwort:{ frage:a.frage, texto:currentTexto, satz:val } });
-        var rc=d.reaccion || { reaktion:(d.text||'').slice(0,300), besser:null };
-        showReply(rc.reaktion||'', rc.besser);
-        done=true;
-        progress[idx]={typ:'frei', draft:ta.value, answered:true, reaktion:rc.reaktion||'', besser:rc.besser||null};
-        scheduleSave(); markTouched();
-      }catch(e){
-        sendBtn.disabled=false; ta.disabled=false;
-        replyText.textContent=TXT.err; reply.hidden=false;
-      }
-    });
-    return sec;
-  }
-
-  function buildAufgabe(a, idx, saved){
-    if(a.typ==='mc')    return buildMC(a, idx, saved);
-    if(a.typ==='orden') return buildOrden(a, idx, saved);
-    if(a.typ==='frei')  return buildFrei(a, idx, saved);
-    return null;
-  }
-
-  function renderTaller(t, saved){
-    clearStage();
-    currentTaller=t;
-    currentTexto=t.texto;
-    schlussText=t.schluss;
-
-    opener.innerHTML='<div class="spikiu-line">'+CAPY(34)+'<p class="say">'+esc(t.rahmen)+'</p></div>';
-
-    var inner='<p class="doc-kind">'+esc(TXT.kind[selLang.value]||'Texto')+'</p>'+
-              '<p class="doc-text">'+esc(t.texto)+'</p>';
-    if(t.lautschrift) inner+='<p class="doc-laut">['+esc(t.lautschrift)+']</p>';
-    doc.innerHTML=inner; doc.hidden=false;
-
-    if(t.bruecke){ bridge.innerHTML=esc(t.bruecke); bridge.hidden=false; }
-
-    total=t.aufgaben.length; touched=0;
-    progress=new Array(total);
-    t.aufgaben.forEach(function(a,idx){
-      var savedP=(saved && saved.progress && saved.progress[idx]) ? saved.progress[idx] : null;
-      var sec=buildAufgabe(a, idx, savedP); if(sec) aufgabenEl.appendChild(sec);
-    });
-    if(saved){
-      // Fortschritt war beim Bauen visuell wiederhergestellt (ohne markTouched) → touched direkt setzen.
-      touched = (typeof saved.touched==='number') ? saved.touched : 0;
-      if(total>0 && touched>=total) showSchluss();
-    } else {
-      if(total===0) showSchluss();
-    }
-  }
-
-  // ── Netz ─────────────────────────────────────────────────────────
-  async function call(body){
-    var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(body)});
-    var d=await r.json();
-    if(!r.ok) throw new Error('http');
-    return d;
-  }
-
-  async function loadTaller(){
-    // Frischer Text = neue Sitzung → alten Stand räumen (deckt „Noch ein Text", Dev-Wechsel, „Nochmal").
-    if(window.spikiuSitzung){ try{ window.spikiuSitzung.raeume('taller'); }catch(e){} }
-    clearStage(); loading.hidden=false;
-    try{
-      var d=await call({ profile:profile(), thema:null, antwort:null, maxTokens:1200 });
-      if(!d.taller || !d.taller.texto) throw new Error('parse');
-      renderTaller(d.taller);
-    }catch(e){
-      clearStage(); errorBox.hidden=false;
-    }finally{
-      loading.hidden=true;
-    }
-  }
-
-  // Dev-Wähler: Sprache/Können ändern → neues Taller
-  selLang.addEventListener('change', loadTaller);
-  selKoennen.addEventListener('change', loadTaller);
-
-  // ── Sitzungs-Persistenz: nur bei wirklich angefangener, unfertiger Sitzung wiederkommen ──
-  function resumable(s){
-    if(!s || !s.taller || !s.taller.texto || !Array.isArray(s.taller.aufgaben)) return false;
-    var tot=(typeof s.total==='number' && s.total>0) ? s.total : s.taller.aufgaben.length;
-    if(tot<=0) return false;
-    if((s.touched||0) >= tot) return false;            // fertig → kein Resume
-    if((s.touched||0) > 0) return true;                // angefangen
-    if(Array.isArray(s.progress)){                     // Entwurf zählt als angefangen
-      for(var i=0;i<s.progress.length;i++){
-        var p=s.progress[i]; if(!p) continue;
-        if(p.done || p.solved || p.answered) return true;
-        if(p.chosen!=null) return true;
-        if(p.draft && (''+p.draft).trim()) return true;
-      }
-    }
-    return false;
-  }
-  function stelleLabel(s){
-    var tot=(typeof s.total==='number' && s.total>0) ? s.total : (s.taller.aufgaben?s.taller.aufgaben.length:0);
-    var n=Math.min((s.touched||0)+1, Math.max(tot,1));
-    return ({de:'Aufgabe '+n+' von '+tot, es:'Tarea '+n+' de '+tot, en:'Task '+n+' of '+tot}[M]) || ('Aufgabe '+n+' von '+tot);
-  }
-
-  function start(){
-    var saved = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('taller') : null;
-    if(resumable(saved)){
-      window.spikiuSitzung.frageWiederkommen({
-        raum:'taller', ts:saved.ts, wo: TXT.room+' · '+stelleLabel(saved),
-        beimWeiter:function(){ renderTaller(saved.taller, saved); },
-        beimNeu:function(){ try{ window.spikiuSitzung.raeume('taller'); }catch(e){} loadTaller(); }
-      });
-    } else {
-      loadTaller();   // loadTaller räumt selbst alte/fertige Reste
-    }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start);
-  else start();
+ function load(){
+  var TAL=window.spikiuTaller;
+  if(!TAL){renderEmpty();return;}
+  var entry=TAL.pick(zielsprache(),koennen(),seen());
+  if(!entry){renderEmpty();return;}
+  markSeen(entry.id);render(entry);
+ }
+ if(DEV){selLang.onchange=load;selKoennen.onchange=load;}
+ load();
 })();
 </script>
-
-<!-- Dev-Schloss: ?dev=1 blendet die zwei Test-Wähler ein. Im Produkt unsichtbar. -->
-<script>
-  (function(){
-    if(!/[?&]dev=1\b/.test(location.search)) return;   // Produkt: Wähler bleiben weg
-    var box=document.getElementById('devControls'); if(box) box.hidden=false;
-  })();
-</script>
-
-<script src="capy-vivo.js" defer></script>
-<script src="sitzung.js" defer></script>
-<script src="nav.js" defer></script>
-</body>
-</html>
+</body></html>
