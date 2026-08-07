@@ -550,7 +550,6 @@ function roomBibliothek(){
  spikiu('Hola '+(NAME||'')+' 👋 — was möchtest du?',function(){
   bigcards([
    {em:'📖',tt:'Learnroman',ss:'Immersiv lesen — dein Text wächst mit dir',go:function(){location.href='learnroman.html';}},
-   {em:'📚',tt:'Reader · Meine Bücher',ss:'Lukas, Marta & die Café-Geschichten',go:function(){location.href='books.html';}},
    {em:'🌱',tt:'Mein Buch',ss:(pages.length+keptWords.length)+' Eintr. — deine eigene Geschichte',go:renderBook}
   ]);});}
 function readRoman(){
