@@ -551,7 +551,7 @@ function roomBibliothek(){
   bigcards([
    {em:'📖',tt:'Learnroman',ss:'Immersiv lesen — dein Text wächst mit dir',go:function(){location.href='learnroman.html';}},
    {em:'📜',tt:'Sprichwörter',ss:'Redewendungen — Sprache & Kultur',go:function(){location.href='proverbios.html';}},
-   {em:'🌱',tt:'Mein Buch',ss:(pages.length+keptWords.length)+' Eintr. — deine eigene Geschichte',go:renderBook}
+   {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter — was du eingesammelt hast',go:renderBook}
   ]);});}
 function readRoman(){
  var c=document.createElement('div');c.className='tool read';
@@ -567,11 +567,10 @@ function readRoman(){
   ends([{t:'Weiter lesen',primary:true,go:function(){spikiu('Im echten Spikiu geht die Geschichte hier weiter — Kapitel für Kapitel.',function(){ends([{t:'Zurück',go:function(){S.innerHTML='';roomBibliothek();}}]);});}},
         {t:'Genug für jetzt',go:function(){S.innerHTML='';roomBibliothek();}}]);});}
 var bookIdx=0;
+function readBuch(){try{return JSON.parse(localStorage.getItem('spikiu_buch')||'[]');}catch(e){return [];}}
 function bookPages(){
- var P=[{k:'cover'}];
- pages.forEach(function(p,i){P.push({k:'chap',p:p,n:i+1,neu:(i===pages.length-1)});});
- if(keptWords.length)P.push({k:'words'});
- if(!pages.length&&!keptWords.length)P.push({k:'empty'});
+ var w=readBuch();var P=[{k:'cover'}];
+ if(w.length)P.push({k:'words'});else P.push({k:'empty'});
  P.push({k:'hook'});return P;}
 function bkPhrases(keep){if(!keep||!keep.length)return '';
  var h='<div class="bsaid"><div class="blbl">Das hast du gesagt</div>';
@@ -585,9 +584,9 @@ function bkChap(p,n,neu){var h='';if(neu)h+='<span class="bneu">✷ neu</span><b
 function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div><h2>'+NAME+'s Buch</h2>'+
  '<div class="bsub">Was du betreten hast — Seite für Seite.</div>'+
  '<div class="bby"><span class="bcap">'+capy()+'</span>geschrieben von Spikiu</div>'+
- '<div class="bspine">'+pages.length+' Kapitel · '+keptWords.length+' Wörter</div></div>';}
-function bkWords(){var h='<div class="beyebrow">Mitgenommen</div><div class="bptitle">Deine Wörter</div><div class="bwords">';
- keptWords.forEach(function(w){h+='<div class="bleaf"><span class="blf">🍃</span>'+w+'</div>';});return h+'</div>';}
+ '<div class="bspine">'+readBuch().length+' Wörter</div></div>';}
+function bkWords(){var W=readBuch();var h='<div class="beyebrow">Mitgenommen</div><div class="bptitle">Deine Wörter</div><div class="bwords">';
+ W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="blf">🍃</span>'+d+(e.tr?' · '+e.tr:'')+'<button class="spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button></div>';});return h+'</div>';}
 function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">Noch leer</h2>'+
  '<div class="bsub">Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.</div></div>';}
 function bkHook(){return '<div class="bhook"><div class="bbig">Kein Zertifikat.<br>Dein Buch.</div>'+
