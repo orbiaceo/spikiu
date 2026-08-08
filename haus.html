@@ -419,7 +419,7 @@ function buildNav(){var d=document.getElementById('doors');d.innerHTML='';
  DOORS.forEach(function(D){var b=document.createElement('button');b.className='door';b.id='door-'+D.id;
   b.innerHTML='<span class="ic">'+D.ic()+'</span><span class="lb">'+D.lb+'</span>';
   b.onclick=function(){loadRoom(D.id);};d.appendChild(b);});}
-function loadRoom(id){CUR=id;S=document.getElementById('stage');S.innerHTML='';
+function loadRoom(id){CUR=id;try{sessionStorage.setItem('spk_haus_tuer',id);}catch(e){}S=document.getElementById('stage');S.innerHTML='';
  DOORS.forEach(function(D){document.getElementById('door-'+D.id).classList.toggle('on',D.id===id);});
  document.getElementById('subbar').textContent=DOORS.filter(function(D){return D.id===id;})[0].sub;
  document.getElementById('stage').scrollTop=0;
@@ -658,8 +658,9 @@ function submitName(){var v=(document.getElementById('nameIn').value||'').trim()
  var lr=document.getElementById('langrow');lr.style.display='flex';lr.innerHTML='';
  [['Español',true],['Deutsch',false]].forEach(function(p){var b=document.createElement('button');b.textContent=p[0];
   b.onclick=function(){enterHouse();};lr.appendChild(b);});}
+function startTuer(){try{var t=sessionStorage.getItem('spk_haus_tuer');if(t&&['eintauchen','bibliothek','uebung'].indexOf(t)>-1)return t;}catch(e){}return 'bibliothek';}
 function enterHouse(){document.getElementById('welcome').classList.remove('active');
- document.getElementById('house').classList.add('active');buildNav();document.getElementById('meta').innerHTML='<a href="lektionen.html">Lektionen</a><a href="dashboard.html#lernweg">Lernweg</a><a href="sessions.html">Verlauf</a>';loadRoom('bibliothek');}
+ document.getElementById('house').classList.add('active');buildNav();document.getElementById('meta').innerHTML='<a href="lektionen.html">Lektionen</a><a href="dashboard.html#lernweg">Lernweg</a><a href="sessions.html">Verlauf</a>';loadRoom(startTuer());}
 
 document.getElementById('wbig').innerHTML=capyBig();var _wc=document.querySelector('#wbig svg');if(_wc&&window.spkCapyAlive){window.spkCapyAlive(_wc,{tapTarget:document.getElementById('wbig')});}
 document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')submitName();});
