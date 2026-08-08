@@ -88,12 +88,20 @@
     ]
   };
 
+  // Icon-Map: Konzept (t.en) → Emoji. NUR sichtbare Dinge; abstrakte bleiben leer.
+  // (Demo: System-Emoji. Produktion später: self-hosted OpenMoji über denselben Schlüssel.)
+  var ICONMAP = {
+    'the house':'🏠','the water':'💧','the food':'🍽️','the street':'🛣️','the night':'🌙',
+    'the hand':'✋','the book':'📖','the door':'🚪','the car':'🚗','the sun':'☀️',
+    'the city':'🏙️','the money':'💶','the family':'👪'
+  };
+
   w.spikiuWortschatz = function (zielsprache, muttersprache) {
     var list = WS[zielsprache] || WS.es || [];
     var mutter = muttersprache || 'de';
     return list.map(function (it) {
       var tr = (it.t && (it.t[mutter] || it.t.de || it.t.en || it.t.es)) || '';
-      return { wort: it.wort, text: it.text, tr: tr };
+      return { wort: it.wort, text: it.text, tr: tr, icon: (it.t && ICONMAP[it.t.en]) || '' };
     });
   };
   w.spikiuWortschatz.daten = WS;
