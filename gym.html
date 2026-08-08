@@ -158,14 +158,21 @@ function playFrom(btn, text){
 // ── Quelle: Starter-Wortschatz + eigene Wörter (localStorage) ──
 var WORDS = [];   // [{ wort, tr, text, own? }]
 function loadOwn(){ try { var a = JSON.parse(localStorage.getItem(STORE_KEY)||'[]'); return Array.isArray(a)?a:[]; } catch(e){ return []; } }
+function loadBuch(){ try { var a = JSON.parse(localStorage.getItem('spikiu_buch')||'[]'); return Array.isArray(a)?a:[]; } catch(e){ return []; } }
 function saveOwn(list){ try { localStorage.setItem(STORE_KEY, JSON.stringify(list)); } catch(e){} }
 function buildWords(){
   var out = [];
   if (typeof window.spikiuWortschatz === 'function'){
     var starter = window.spikiuWortschatz(PROFILE.zielsprache, PROFILE.muttersprache) || [];
-    starter.forEach(function(it){ out.push({ wort:it.wort, tr:it.tr, text:it.text || '', own:false }); });
+    starter.forEach(function(it){ out.push({ wort:it.wort, tr:it.tr, text:it.text || '', own:false, icon:it.icon||'' }); });
   }
   loadOwn().forEach(function(it){ if (it && it.wort) out.push({ wort:it.wort, tr:it.tr||'', text:it.text||'', own:true }); });
+  var seen = {}; out.forEach(function(w){ seen[String(w.wort).trim().toLowerCase()] = 1; });
+  loadBuch().forEach(function(e){
+    if (!e || !e.wort) return;
+    var key = String(e.roh||e.wort).trim().toLowerCase(); if (seen[key]) return; seen[key]=1;
+    out.push({ wort:(e.roh||e.wort), tr:e.tr||'', text:'', own:false, buch:true, icon:'' });
+  });
   return out;
 }
 
@@ -194,7 +201,7 @@ function makeWordCard(wi){
     + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="gym-tr">' + escPlain(wd.tr) + '</div>'
     + (wd.text ? '<div class="gym-ex">' + escPlain(wd.text) + '</div>' : '')
-    + (wd.own ? '<div class="gym-src">+</div>' : '')
+    + (wd.buch ? '<div class="gym-src">🍃</div>' : wd.own ? '<div class="gym-src">+</div>' : '')
     + '<div class="card-hint">' + escPlain(ui().hintFwd) + '</div>';
   var sb = card.querySelector('.gym-speak');
   if (sb) sb.onclick = function(){ playFrom(sb, wd.wort); };
