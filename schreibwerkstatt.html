@@ -24,7 +24,7 @@
   .bench{flex:1;width:100%;max-width:980px;margin:0 auto;padding:1.8rem 1.2rem 1.6rem;display:flex;flex-direction:column;background:var(--paper)}
   @media (min-width:700px){.bench{margin:1.2rem auto;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:7px 8px 0 rgba(0,0,0,.25);max-width:940px}}
   .aufgabe-label{font:700 .66rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
-  .aufgabe-input{width:100%;font-family:'Lora',serif;font-size:1.4rem;font-style:italic;color:var(--muted);line-height:1.35;background:transparent;border:0;border-bottom:2px dashed var(--muted);padding:0 0 .5rem;margin-bottom:1.6rem}
+  .aufgabe-input{display:block;width:100%;font-family:'Lora',serif;font-size:1.08rem;font-style:italic;color:var(--muted);line-height:1.4;background:transparent;border:0;border-bottom:2px dashed var(--muted);border-radius:0;box-shadow:none;padding:0 0 .5rem;margin-bottom:1.6rem;resize:none;overflow:hidden;min-height:0}
   .aufgabe-input:focus{outline:none;border-bottom-color:var(--green);color:var(--ink)}
   .stage{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start}
   @media(min-width:760px){.stage{grid-template-columns:1.35fr 1fr;gap:1.5rem}}
@@ -95,7 +95,7 @@
 
 <main class="bench">
   <p class="aufgabe-label">Deine Aufgabe</p>
-  <input class="aufgabe-input" id="aufgabe" value="Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.">
+  <textarea class="aufgabe-input" id="aufgabe" rows="1" spellcheck="false">Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.</textarea>
 
   <div class="stage">
     <article class="werkstueck empty" id="werk">Hier steht dein Text.</article>
@@ -149,6 +149,8 @@
     return null;
   }
   if(stored.aufgabe) aufgabeEl.value = stored.aufgabe;
+  function agrow(){ aufgabeEl.style.height='auto'; aufgabeEl.style.height=(aufgabeEl.scrollHeight)+'px'; }
+  aufgabeEl.addEventListener('input', agrow); agrow(); window.addEventListener('load', agrow);
   selLang.value = stored.zielsprache || langCode(stored.targetLang) || 'es';
   selKoennen.value = stored.koennen || koennenFrom(stored.level) || 'anfang';
 
