@@ -466,8 +466,7 @@ function roomEintauchen(){
  spikiu('Womit möchtest du dich ausdrücken?',function(){
   bigcards([
    {em:'🎭',tt:'Geführtes Gespräch',ss:'Szenen üben — Schritt für Schritt · gratis',go:function(){location.href='gefuehrt.html';}},
-   {em:'💬',tt:'Freies Gespräch',ss:'Frei reden, in deinem Tempo · ✨ Premium',go:function(){location.href='chat.html';}},
-   {em:'✍️',tt:'Schreibwerkstatt',ss:'Schreib etwas, ich lese mit',go:function(){location.href='schreibwerkstatt.html';}}
+   {em:'💬',tt:'Freies Gespräch',ss:'Frei reden, in deinem Tempo · ✨ Premium',go:function(){location.href='chat.html';}}
   ]);});}
 function advBegruessung(){newStep(0);
  spikiu('Hallo '+NAME+'! Schön, dass du da bist. Heute ein kleines Sprachabenteuer — wohin soll es gehen?',function(){
@@ -551,6 +550,7 @@ function roomBibliothek(){
  spikiu('Hola '+(NAME||'')+' 👋 — was möchtest du?',function(){
   bigcards([
    {em:'📖',tt:'Learnroman',ss:'Immersiv lesen — dein Text wächst mit dir',go:function(){location.href='learnroman.html';}},
+   {em:'📜',tt:'Sprichwörter',ss:'Redewendungen — Sprache & Kultur',go:function(){location.href='proverbios.html';}},
    {em:'🌱',tt:'Mein Buch',ss:(pages.length+keptWords.length)+' Eintr. — deine eigene Geschichte',go:renderBook}
   ]);});}
 function readRoman(){
@@ -629,8 +629,8 @@ function roomUebung(){
  spikiu('Ganz ruhig. Kein Druck, kein Streak. Was übst du?',function(){
   bigcards([
    {em:'🃏',tt:'Wortschatz',ss:'Deine Wörter, im ruhigen Deck',go:function(){location.href='gym.html';}},
-   {em:'💬',tt:'Sprichwörter',ss:'Redewendungen zum Mitnehmen',go:function(){location.href='proverbios.html';}},
-   {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen üben',go:function(){location.href='taller.html';}}
+   {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen üben',go:function(){location.href='taller.html';}},
+   {em:'✍️',tt:'Schreibwerkstatt',ss:'Schreiben & Feedback',go:function(){location.href='schreibwerkstatt.html';}}
   ]);});}
 function uebKarte(i){
  if(i>=UWORDS.length){
