@@ -161,7 +161,7 @@ button{font-family:inherit}
 .bby{margin-top:1rem;display:inline-flex;align-items:center;gap:.5rem;font-family:'Lora',serif;font-style:italic;font-size:1.1rem;color:var(--muted)}
 .bby .bcap{width:32px;height:32px;flex:0 0 32px}
 .bspine{margin-top:1rem;font:700 .7rem/1 'DM Mono',monospace;color:var(--muted)}
-.bwords .bleaf{display:flex;align-items:center;gap:.5rem;font-family:'Lora',serif;font-size:1.32rem;margin:.45rem 0}
+.bwords .bleaf{display:grid;grid-template-columns:1fr 1fr 30px;align-items:center;column-gap:.7rem;row-gap:.12rem;padding:.5rem .1rem;border-bottom:1px solid #e6dec9;font-family:'Lora',serif;margin:0}.bl-z{font-weight:600;font-size:1.14rem;color:var(--ink);word-break:break-word}.bl-m{font-size:1rem;color:var(--muted);word-break:break-word}.bleaf .spk.bl-spk{width:28px;height:28px;font-size:.76rem;box-shadow:1px 1px 0 var(--ink);justify-self:end}.bl-lau{grid-column:1 / -1;font-family:'DM Mono',monospace;font-size:.76rem;color:var(--muted);font-style:italic;margin-top:.05rem}
 .blf{color:var(--sage)}
 .bhook{text-align:center;padding-top:.4rem}
 .bbig{font-family:'Archivo Black',sans-serif;font-size:1.45rem;line-height:1.2;margin:.3rem 0}
@@ -586,7 +586,7 @@ function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div
  '<div class="bby"><span class="bcap">'+capy()+'</span>geschrieben von Spikiu</div>'+
  '<div class="bspine">'+readBuch().length+' Wörter</div></div>';}
 function bkWords(){var W=readBuch();var h='<div class="beyebrow">Mitgenommen</div><div class="bptitle">Deine Wörter</div><div class="bwords">';
- W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="blf">🍃</span>'+d+(e.tr?' · '+e.tr:'')+'<button class="spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button></div>';});return h+'</div>';}
+ W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(e.tr||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
 function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">Noch leer</h2>'+
  '<div class="bsub">Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.</div></div>';}
 function bkHook(){return '<div class="bhook"><div class="bbig">Kein Zertifikat.<br>Dein Buch.</div>'+

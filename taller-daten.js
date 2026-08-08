@@ -21,6 +21,7 @@
             {typ:'orden',frage:'Bring die Teile in die richtige Reihenfolge.',teile:['de agosto','Volvemos','el 3'],loesung:[1,2,0]},
             {typ:'frei',frage:'Wann warst du zuletzt im Urlaub? Schreib einen Satz auf Spanisch.'}
           ],
+          glossar:{cerrado:'geschlossen',por:'wegen',vacaciones:'Urlaub',volvemos:'wir kommen zurück',el:'der',de:'von',agosto:'August'},
           schluss:'Ein Schild verstehen — schon eine kleine Eroberung.' }
       ],
       mittel: [

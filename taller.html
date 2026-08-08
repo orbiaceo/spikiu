@@ -148,7 +148,7 @@ button{font-family:inherit}
   B.innerHTML=h;B.scrollTop=0;
   document.getElementById('sayT').onclick=function(){say(entry.texto,ziel);};
   var textoEl=B.querySelector('.texto .t');
-  if(textoEl && window.spikiuWortjag){var dict={};if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=x.t;});window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict});}
+  if(textoEl && window.spikiuWortjag){var dict={};if(entry.glossar)Object.keys(entry.glossar).forEach(function(k){dict[k.toLowerCase()]=entry.glossar[k];});if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=x.t;});window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict});}
   wireMC();wireOrden();
   F.innerHTML='<button class="prim" id="again">'+esc(T.again)+'</button><button id="enough">'+esc(T.enough)+'</button>';
   document.getElementById('again').onclick=load;
