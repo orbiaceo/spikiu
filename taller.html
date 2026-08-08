@@ -78,6 +78,7 @@ button{font-family:inherit}
   <div class="foot" id="foot"></div>
 </div>
 <script src="taller-daten.js"></script>
+<script src="wortjag.js"></script>
 <script>
 (function(){
  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -146,6 +147,8 @@ button{font-family:inherit}
   h+='<div class="schluss">'+esc(entry.schluss)+'</div>';
   B.innerHTML=h;B.scrollTop=0;
   document.getElementById('sayT').onclick=function(){say(entry.texto,ziel);};
+  var textoEl=B.querySelector('.texto .t');
+  if(textoEl && window.spikiuWortjag){var dict={};if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=x.t;});window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict});}
   wireMC();wireOrden();
   F.innerHTML='<button class="prim" id="again">'+esc(T.again)+'</button><button id="enough">'+esc(T.enough)+'</button>';
   document.getElementById('again').onclick=load;
