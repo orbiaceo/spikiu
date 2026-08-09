@@ -34,6 +34,7 @@
             {typ:'orden',frage:'Ordne die Antwort.',teile:['para un café','mañana','Nos vemos'],loesung:[2,1,0]},
             {typ:'frei',frage:'Antworte ihr: Kannst du morgen? Schreib deine Antwort.'}
           ],
+          glossar:{hola:'Hallo',esta:'diese',tarde:'Nachmittag',no:'nicht',puedo:'ich kann',quedar:'sich treffen',tengo:'ich habe',médico:'Arzt',nos:'uns',vemos:'wir sehen',mañana:'morgen',para:'für',un:'ein',café:'Kaffee'},
           schluss:'Du hast eine echte Nachricht verstanden — genau darum geht es.' }
       ],
       fortgeschritten: [
@@ -46,6 +47,7 @@
             {typ:'orden',frage:'Ordena la frase.',teile:['a final de mes','El mercado','cerrará'],loesung:[1,2,0]},
             {typ:'frei',frage:'¿Qué opinas de que cierren los comercios de barrio? Escribe un par de frases.'}
           ],
+          glossar:{el:'der',pequeño:'klein',mercado:'Markt',del:'vom',barrio:'Viertel',que:'der/die/das',llevaba:'war (seit)',más:'mehr',de:'von',cincuenta:'fünfzig',años:'Jahre',abierto:'geöffnet',cerrará:'wird schließen',sus:'seine',puertas:'Türen',a:'am',final:'Ende',mes:'Monat',los:'die',vecinos:'Nachbarn',sorprendidos:'überrascht',han:'haben',organizado:'organisiert',una:'eine',recogida:'Sammlung',firmas:'Unterschriften',para:'um zu',intentar:'versuchen',salvarlo:'es zu retten'},
           schluss:'Leer un artículo entero, sin puente. Eso ya es otro nivel.' }
       ]
     },
