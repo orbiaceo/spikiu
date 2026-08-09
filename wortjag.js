@@ -35,9 +35,9 @@
   function ensureStyle(){
     if(document.getElementById(STYLE_ID)) return;
     var css=''
-      +'.wj-wort{cursor:pointer;border-bottom:2px dotted rgba(63,155,70,.4);border-radius:4px;padding:0 1px;transition:background .15s,color .15s;}'
-      +'.wj-wort:active{background:#9bd14a;color:#fff;}'
-      +'.wj-got{background:rgba(63,155,70,.16);border-bottom:2px solid #3f9b46;color:#1f5a26;}'
+      +'.wj-wort{cursor:pointer;border-radius:5px;padding:0 1px;transition:background .12s;}'
+      +'.wj-wort:active{background:rgba(155,209,74,.5);}'
+      +'.wj-got{background:rgba(155,209,74,.12);}'+'.wj-flash{animation:wjflash .5s ease;}'+'@keyframes wjflash{0%{background:rgba(155,209,74,.55)}100%{background:rgba(155,209,74,.12)}}'
       +'.wj-toast{position:fixed;left:50%;bottom:calc(1.4rem + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:9999;'
         +'background:#15163a;color:#fff;font:700 .85rem/1 "DM Sans",system-ui,sans-serif;padding:.5rem .85rem;border-radius:999px;'
         +'box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transition:opacity .2s;pointer-events:none;}'
@@ -76,6 +76,7 @@
   }
 
   var Wortjag = {
+    gestartet: function(){ return Buch.count()>0; },
     aktivieren: function(el, opts){
       if(!el) return; opts=opts||{}; ensureStyle();
       walk(el);
@@ -89,8 +90,8 @@
         var tr = opts.dict ? (opts.dict[String(wort).toLowerCase()]||'') : '';
         if(Buch.has(wort)){ toast('schon in deinem Buch'); return; }
         Buch.add(wort,{tr:tr, quelle:opts.quelle||''});
-        sp.classList.add('wj-got');
-        toast('🍃 «'+wort+'» gesammelt');
+        sp.classList.add('wj-got');sp.classList.add('wj-flash');setTimeout(function(){sp.classList.remove('wj-flash');},520);
+        toast('🍃 «'+wort+'»'+(tr?' · '+tr:''));
         if(typeof opts.onCollect==='function') try{ opts.onCollect(wort); }catch(e){}
       });
     }
