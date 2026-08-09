@@ -171,7 +171,7 @@ function buildWords(){
   loadBuch().forEach(function(e){
     if (!e || !e.wort) return;
     var key = String(e.roh||e.wort).trim().toLowerCase(); if (seen[key]) return; seen[key]=1;
-    out.push({ wort:(e.roh||e.wort), tr:e.tr||'', text:'', own:false, buch:true, icon:'' });
+    out.push({ wort:(e.roh||e.wort), tr:(e.tr || (window.spikiuWoerterbuch && window.spikiuWoerterbuch.tr(e.roh||e.wort, PROFILE.zielsprache, PROFILE.muttersprache)) || ''), text:'', own:false, buch:true, icon:'' });
   });
   return out;
 }
@@ -324,6 +324,7 @@ window.addEventListener('load', function(){
   window.spkSpeak = speak;
   window.spkWarm  = warm;
 </script>
+<script src="woerterbuch.js" defer></script>
 <script src="wortschatz.js" defer></script>
 <script src="uebung.js" defer></script>
 </body>
