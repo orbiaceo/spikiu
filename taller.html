@@ -31,7 +31,14 @@ button{font-family:inherit}
 .texto{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:1rem 1.05rem;position:relative}
 .texto .t{font-family:'Lora',serif;font-size:1.32rem;line-height:1.6;color:var(--read)}
 .texto .lau{margin-top:.5rem;font-family:'DM Mono',monospace;font-size:.86rem;color:var(--muted)}
-.texto .say{position:absolute;top:.7rem;right:.7rem;width:32px;height:32px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.9rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.read-row{display:flex;justify-content:flex-end;margin-top:.7rem;padding-top:.55rem;border-top:2px dashed #e6dec9}
+.say{display:inline-flex;align-items:center;gap:.35rem;font:700 .8rem 'DM Sans',sans-serif;color:#fff;background:var(--pink);border:2px solid var(--ink);border-radius:999px;padding:.35rem .75rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.say:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.wjhint{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin-bottom:.85rem}
+.wjhint[hidden]{display:none}
+.wjh-cap{flex:0 0 32px;width:32px;height:32px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
+.wjh-cap svg{width:24px;height:24px}
+.wjh-tx{font-size:.88rem;line-height:1.35;color:var(--ink)}
 .bruecke{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.4rem}
 .bruecke .bw{font:600 .82rem/1 'DM Sans';background:var(--de);border:2px dashed var(--muted);border-radius:999px;padding:.3rem .55rem;color:var(--muted)}
 .bruecke .bw b{color:var(--ink);font-family:'Lora',serif;font-size:1rem}
@@ -135,20 +142,34 @@ button{font-family:inherit}
  function freiHTML(a){return '<div class="prem"><div class="lock">🔒</div><div class="pt">'+esc(a.frage)+'</div>'+
   '<div class="pq">'+esc(T.premHint)+'</div><div class="tag">✨ '+esc(T.prem)+'</div></div>';}
 
+ var CAPY_SMALL='<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+ var JAGD={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.'};
+ var VORLESEN={de:'Vorlesen',es:'Escuchar',en:'Read aloud'};
  var CUR=null;
  function render(entry){
   CUR=entry;var ziel=zielsprache();
   var h='<div class="rahmen">'+esc(entry.rahmen)+'</div>';
-  h+='<div class="texto"><button class="say" id="sayT" aria-label="Vorlesen">🔊</button><div class="t">'+esc(entry.texto)+'</div>';
+  h+='<div class="wjhint" id="wjhint" hidden><div class="wjh-cap">'+CAPY_SMALL+'</div><div class="wjh-tx">'+(JAGD[muttersprache()]||JAGD.de)+'</div></div>';
+  h+='<div class="texto"><div class="t">'+esc(entry.texto)+'</div>';
   if(entry.lautschrift)h+='<div class="lau">'+esc(entry.lautschrift)+'</div>';
   if(entry.bruecke){h+='<div class="bruecke">';entry.bruecke.forEach(function(x){h+='<span class="bw"><b>'+esc(x.w)+'</b> · '+esc(x.t)+'</span>';});h+='</div>';}
+  h+='<div class="read-row"><button class="say" id="sayT" aria-label="Vorlesen">🔊 '+(VORLESEN[muttersprache()]||VORLESEN.de)+'</button></div>';
   h+='</div>';
   entry.aufgaben.forEach(function(a,i){if(a.typ==='mc')h+=mcHTML(a,i);else if(a.typ==='orden')h+=ordenHTML(a,i);else if(a.typ==='frei')h+=freiHTML(a);});
   h+='<div class="schluss">'+esc(entry.schluss)+'</div>';
   B.innerHTML=h;B.scrollTop=0;
   document.getElementById('sayT').onclick=function(){say(entry.texto,ziel);};
   var textoEl=B.querySelector('.texto .t');
-  if(textoEl && window.spikiuWortjag){var dict={};if(entry.glossar)Object.keys(entry.glossar).forEach(function(k){dict[k.toLowerCase()]=entry.glossar[k];});if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=x.t;});window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict});}
+  if(textoEl && window.spikiuWortjag){var dict={};if(entry.glossar)Object.keys(entry.glossar).forEach(function(k){dict[k.toLowerCase()]=entry.glossar[k];});if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=x.t;});if(!window.spikiuWortjag.gestartet()){var hh=document.getElementById('wjhint');if(hh)hh.hidden=false;}window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict,onCollect:function(){var hh=document.getElementById('wjhint');if(hh)hh.hidden=true;}});}
   wireMC();wireOrden();
   F.innerHTML='<button class="prim" id="again">'+esc(T.again)+'</button><button id="enough">'+esc(T.enough)+'</button>';
   document.getElementById('again').onclick=load;
