@@ -104,6 +104,10 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 .spk{flex:0 0 30px;width:30px;height:30px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.82rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .prose .spk{margin-right:.4rem}
+.wjhint{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin:0 0 1rem}
+.wjhint .wjh-cap{flex:0 0 32px;width:32px;height:32px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.wjhint .wjh-cap svg{width:24px;height:24px;animation:none}
+.wjhint .wjh-tx{font-size:.9rem;line-height:1.35;color:var(--ink)}
 /* Rückmeldung, solange die Stimme lädt/spricht — Piper kann beim ersten Mal
    Sekunden brauchen; ohne Zeichen wirkt der Knopf tot. */
 .spk.busy{animation:spkPuls 1s ease-in-out infinite}
@@ -142,6 +146,8 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 
 <!-- Fester Inhalt: Root-Helfer, SYNCHRON vor dem Haupt-Script. KEIN API-Call. -->
 <script src="learnroman-daten.js"></script>
+<script src="woerterbuch.js"></script>
+<script src="wortjag.js"></script>
 
 <script>
 // ════════════════════════════════════════════════════════════════════
@@ -211,6 +217,7 @@ var UI = {
 };
 function uiLang(){ return UI[PROFILE.muttersprache] ? PROFILE.muttersprache : 'de'; }
 var T = UI[uiLang()];
+var JAGD_TX={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.'};
 
 // Spikiu IMMER komplett: Ohren + 4 Füße. Nie einen halben Capy.
 // Augen in einer Gruppe + Mund gekennzeichnet → capy-vivo.js macht ihn lebendig.
@@ -391,6 +398,22 @@ function oeffneKapitel(i){
       el.classList.toggle('shown');
     };
   });
+
+  // Wortjag: nur die reine Prosa (Anwendung) — kein Konflikt mit der Tipp-Brücke.
+  if (window.spikiuWortjag) {
+    var proseZts = [].slice.call(rb.querySelectorAll('.prose .zt'));
+    if (proseZts.length) {
+      var wjHint = null;
+      if (!window.spikiuWortjag.gestartet()) {
+        wjHint = document.createElement('div'); wjHint.className = 'wjhint';
+        wjHint.innerHTML = '<div class="wjh-cap">' + CAPY_SVG + '</div><div class="wjh-tx">' + (JAGD_TX[uiLang()] || JAGD_TX.de) + '</div>';
+        rb.insertBefore(wjHint, rb.firstChild);
+      }
+      proseZts.forEach(function (zt) {
+        window.spikiuWortjag.aktivieren(zt, { quelle:'learnroman', onCollect:function(){ if (wjHint) { wjHint.remove(); wjHint = null; } } });
+      });
+    }
+  }
 
   readerEl.classList.add('open');
   readerEl.setAttribute('aria-hidden', 'false');
