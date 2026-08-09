@@ -206,6 +206,7 @@ button{font-family:inherit}
 
 <div class="pop" id="pop"></div>
 
+<script src="woerterbuch.js"></script>
 <script>
 /* ── SPIKIU · CAPY VIVO (wiederverwendbarer Helfer) ──────────────────
    Macht ein bereits gerendertes Capy-<svg> lebendig — ohne Abhängigkeiten,
@@ -568,6 +569,9 @@ function readRoman(){
         {t:'Genug für jetzt',go:function(){S.innerHTML='';roomBibliothek();}}]);});}
 var bookIdx=0;
 function readBuch(){try{return JSON.parse(localStorage.getItem('spikiu_buch')||'[]');}catch(e){return [];}}
+function bkZiel(){try{return (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).zielsprache||'es';}catch(e){return 'es';}}
+function bkMutter(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache||'de';return ['de','es','en'].indexOf(m)>-1?m:'de';}catch(e){return 'de';}}
+function bkTr(e){if(e.tr)return e.tr;var w=(e.roh||e.wort);return (window.spikiuWoerterbuch&&window.spikiuWoerterbuch.tr(w,bkZiel(),bkMutter()))||'';}
 function bookPages(){
  var w=readBuch();var P=[{k:'cover'}];
  if(w.length)P.push({k:'words'});else P.push({k:'empty'});
@@ -586,7 +590,7 @@ function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div
  '<div class="bby"><span class="bcap">'+capy()+'</span>geschrieben von Spikiu</div>'+
  '<div class="bspine">'+readBuch().length+' Wörter</div></div>';}
 function bkWords(){var W=readBuch();var h='<div class="beyebrow">Mitgenommen</div><div class="bptitle">Deine Wörter</div><div class="bwords">';
- W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(e.tr||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
+ W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(bkTr(e)||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
 function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">Noch leer</h2>'+
  '<div class="bsub">Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.</div></div>';}
 function bkHook(){return '<div class="bhook"><div class="bbig">Kein Zertifikat.<br>Dein Buch.</div>'+
