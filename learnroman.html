@@ -104,10 +104,13 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 .spk{flex:0 0 30px;width:30px;height:30px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.82rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .prose .spk{margin-right:.4rem}
-.wjhint{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin:0 0 1rem}
-.wjhint .wjh-cap{flex:0 0 32px;width:32px;height:32px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
-.wjhint .wjh-cap svg{width:24px;height:24px;animation:none}
-.wjhint .wjh-tx{font-size:.9rem;line-height:1.35;color:var(--ink)}
+.hoerbar{cursor:pointer;border-radius:6px;transition:background .15s}
+.hoerbar:active{background:rgba(45,106,79,.10)}
+.hoerbar.busy{background:rgba(45,106,79,.12)}
+.rhint-cap{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin:0 0 1.2rem}
+.rhint-cap .rhc-cap{flex:0 0 34px;width:34px;height:34px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.rhint-cap .rhc-cap svg{width:26px;height:26px;animation:none}
+.rhint-cap .rhc-tx{font-size:.92rem;line-height:1.35;color:var(--ink)}
 /* Rückmeldung, solange die Stimme lädt/spricht — Piper kann beim ersten Mal
    Sekunden brauchen; ohne Zeichen wirkt der Knopf tot. */
 .spk.busy{animation:spkPuls 1s ease-in-out infinite}
@@ -146,8 +149,6 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 
 <!-- Fester Inhalt: Root-Helfer, SYNCHRON vor dem Haupt-Script. KEIN API-Call. -->
 <script src="learnroman-daten.js"></script>
-<script src="woerterbuch.js"></script>
-<script src="wortjag.js"></script>
 
 <script>
 // ════════════════════════════════════════════════════════════════════
@@ -217,7 +218,7 @@ var UI = {
 };
 function uiLang(){ return UI[PROFILE.muttersprache] ? PROFILE.muttersprache : 'de'; }
 var T = UI[uiLang()];
-var JAGD_TX={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.'};
+var HOER_HINT={de:'Tipp einen Satz an, um ihn zu hören.',es:'Toca una frase para escucharla.',en:'Tap a sentence to hear it.'};
 
 // Spikiu IMMER komplett: Ohren + 4 Füße. Nie einen halben Capy.
 // Augen in einer Gruppe + Mund gekennzeichnet → capy-vivo.js macht ihn lebendig.
@@ -351,9 +352,9 @@ function blockHTML(bl, zu){
   if (bl.z){
     var tipp  = bl.tr ? (' tap' + (zu ? '' : ' shown')) : '';
     var gloss = bl.tr ? '<span class="gloss' + (zu ? ' hid' : '') + '">' + esc(bl.tr) + '</span>' : '';
-    return '<div class="line' + tipp + '"><span class="zeile">' + zielSpan(bl.z) + spkKnopf() + '</span>' + gloss + '</div>';
+    return '<div class="line' + tipp + '"><span class="zeile">' + zielSpan(bl.z) + '</span>' + gloss + '</div>';
   }
-  if (bl.p) return '<p class="prose">' + spkKnopf() + zielSpan(bl.p) + '</p>';
+  if (bl.p) return '<p class="prose">' + zielSpan(bl.p) + '</p>';
   return '';
 }
 
@@ -370,7 +371,7 @@ function oeffneKapitel(i){
   // ohne dass ein Anfänger im Regen steht.
   var zu = (c.level !== 'fundament');
   var hatBruecke = c.body.some(function(bl){ return !!bl.tr; });
-  var h = (zu && hatBruecke) ? '<p class="rhint">' + esc(T.hint) + '</p>' : '';
+  var h = '<div class="rhint-cap"><div class="rhc-cap">' + CAPY_SVG + '</div><div class="rhc-tx">' + esc(HOER_HINT[uiLang()] || HOER_HINT.de) + '</div></div>';
   c.body.forEach(function(bl){ h += blockHTML(bl, zu); });
   h += '<div class="rfoot">' + esc(T.ende) + '</div>';
 
@@ -378,42 +379,16 @@ function oeffneKapitel(i){
   rb.innerHTML = h;
   rb.scrollTop = 0;
 
-  // 🔊 — spricht über audio.js in der Zielsprache des Buches.
-  [].forEach.call(rb.querySelectorAll('.spk'), function(b){
-    b.onclick = function(ev){
-      ev.stopPropagation();                       // nie die Tipp-Brücke mitauslösen
-      var wrap = b.parentNode;
-      var zt = wrap && wrap.querySelector('.zt');
-      if (zt) sprichAus(b, zt.textContent);
-    };
-  });
-  // Tipp-Brücke: Tipp auf die Zeile blendet die Übersetzung ein/aus.
-  // Zeilen ohne tr sind nicht tippbar (bekommen die Klasse .tap gar nicht erst).
-  [].forEach.call(rb.querySelectorAll('.line.tap'), function(el){
-    el.onclick = function(ev){
-      if (ev.target && ev.target.closest && ev.target.closest('.spk')) return;
+  // Satz antippen → in der Zielsprache hören (+ bei Aufbau-Zeilen die Brücke ein/aus).
+  [].forEach.call(rb.querySelectorAll('.line, .prose'), function(el){
+    el.classList.add('hoerbar');
+    el.onclick = function(){
+      var zt = el.querySelector('.zt');
+      if (zt) sprichAus(el, zt.textContent);
       var g = el.querySelector('.gloss');
-      if (!g) return;
-      g.classList.toggle('hid');
-      el.classList.toggle('shown');
+      if (g) { g.classList.toggle('hid'); el.classList.toggle('shown'); }
     };
   });
-
-  // Wortjag: nur die reine Prosa (Anwendung) — kein Konflikt mit der Tipp-Brücke.
-  if (window.spikiuWortjag) {
-    var proseZts = [].slice.call(rb.querySelectorAll('.prose .zt'));
-    if (proseZts.length) {
-      var wjHint = null;
-      if (!window.spikiuWortjag.gestartet()) {
-        wjHint = document.createElement('div'); wjHint.className = 'wjhint';
-        wjHint.innerHTML = '<div class="wjh-cap">' + CAPY_SVG + '</div><div class="wjh-tx">' + (JAGD_TX[uiLang()] || JAGD_TX.de) + '</div>';
-        rb.insertBefore(wjHint, rb.firstChild);
-      }
-      proseZts.forEach(function (zt) {
-        window.spikiuWortjag.aktivieren(zt, { quelle:'learnroman', onCollect:function(){ if (wjHint) { wjHint.remove(); wjHint = null; } } });
-      });
-    }
-  }
 
   readerEl.classList.add('open');
   readerEl.setAttribute('aria-hidden', 'false');
