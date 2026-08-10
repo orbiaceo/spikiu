@@ -104,13 +104,15 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 .spk{flex:0 0 30px;width:30px;height:30px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.82rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .prose .spk{margin-right:.4rem}
-.hoerbar{cursor:pointer;border-radius:6px;transition:background .15s}
-.hoerbar:active{background:rgba(45,106,79,.10)}
-.hoerbar.busy{background:rgba(45,106,79,.12)}
-.rhint-cap{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin:0 0 1.2rem}
-.rhint-cap .rhc-cap{flex:0 0 34px;width:34px;height:34px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
-.rhint-cap .rhc-cap svg{width:26px;height:26px;animation:none}
-.rhint-cap .rhc-tx{font-size:.92rem;line-height:1.35;color:var(--ink)}
+.read-row{display:flex;justify-content:flex-end;margin-top:.4rem}
+.hoer-btn{display:inline-flex;align-items:center;gap:.35rem;font:700 .74rem 'DM Sans',sans-serif;color:var(--acc);background:transparent;border:1.5px solid var(--acc);border-radius:999px;padding:.25rem .6rem;cursor:pointer;opacity:.82}
+.hoer-btn:active{opacity:1;transform:translate(1px,1px)}
+.hoer-btn.busy{opacity:1;background:var(--acc);color:#fff}
+.gloss{display:block;font-size:.9rem;color:var(--muted);margin-top:.25rem;font-style:italic}
+.wjhint{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin:0 0 1.2rem}
+.wjhint .wjh-cap{flex:0 0 34px;width:34px;height:34px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.wjhint .wjh-cap svg{width:26px;height:26px;animation:none}
+.wjhint .wjh-tx{font-size:.9rem;line-height:1.35;color:var(--ink)}
 /* Rückmeldung, solange die Stimme lädt/spricht — Piper kann beim ersten Mal
    Sekunden brauchen; ohne Zeichen wirkt der Knopf tot. */
 .spk.busy{animation:spkPuls 1s ease-in-out infinite}
@@ -149,6 +151,8 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
 
 <!-- Fester Inhalt: Root-Helfer, SYNCHRON vor dem Haupt-Script. KEIN API-Call. -->
 <script src="learnroman-daten.js"></script>
+<script src="woerterbuch.js"></script>
+<script src="wortjag.js"></script>
 
 <script>
 // ════════════════════════════════════════════════════════════════════
@@ -218,7 +222,9 @@ var UI = {
 };
 function uiLang(){ return UI[PROFILE.muttersprache] ? PROFILE.muttersprache : 'de'; }
 var T = UI[uiLang()];
-var HOER_HINT={de:'Tipp einen Satz an, um ihn zu hören.',es:'Toca una frase para escucharla.',en:'Tap a sentence to hear it.'};
+var VORLESEN={de:'Vorlesen',es:'Escuchar',en:'Read aloud'};
+var JAGD_TX={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.'};
+function hoerRow(){ return '<div class="read-row"><button class="hoer-btn" type="button">\uD83D\uDD0A ' + (VORLESEN[uiLang()]||VORLESEN.de) + '</button></div>'; }
 
 // Spikiu IMMER komplett: Ohren + 4 Füße. Nie einen halben Capy.
 // Augen in einer Gruppe + Mund gekennzeichnet → capy-vivo.js macht ihn lebendig.
@@ -350,11 +356,10 @@ function zielSpan(text){
 function blockHTML(bl, zu){
   if (bl.na) return '<p class="narr">' + esc(bl.na) + '</p>';
   if (bl.z){
-    var tipp  = bl.tr ? (' tap' + (zu ? '' : ' shown')) : '';
-    var gloss = bl.tr ? '<span class="gloss' + (zu ? ' hid' : '') + '">' + esc(bl.tr) + '</span>' : '';
-    return '<div class="line' + tipp + '"><span class="zeile">' + zielSpan(bl.z) + '</span>' + gloss + '</div>';
+    var gloss = bl.tr ? '<span class="gloss">' + esc(bl.tr) + '</span>' : '';
+    return '<div class="line"><span class="zeile">' + zielSpan(bl.z) + '</span>' + gloss + hoerRow() + '</div>';
   }
-  if (bl.p) return '<p class="prose">' + zielSpan(bl.p) + '</p>';
+  if (bl.p) return '<div class="prose">' + zielSpan(bl.p) + hoerRow() + '</div>';
   return '';
 }
 
@@ -371,7 +376,7 @@ function oeffneKapitel(i){
   // ohne dass ein Anfänger im Regen steht.
   var zu = (c.level !== 'fundament');
   var hatBruecke = c.body.some(function(bl){ return !!bl.tr; });
-  var h = '<div class="rhint-cap"><div class="rhc-cap">' + CAPY_SVG + '</div><div class="rhc-tx">' + esc(HOER_HINT[uiLang()] || HOER_HINT.de) + '</div></div>';
+  var h = '';
   c.body.forEach(function(bl){ h += blockHTML(bl, zu); });
   h += '<div class="rfoot">' + esc(T.ende) + '</div>';
 
@@ -379,16 +384,27 @@ function oeffneKapitel(i){
   rb.innerHTML = h;
   rb.scrollTop = 0;
 
-  // Satz antippen → in der Zielsprache hören (+ bei Aufbau-Zeilen die Brücke ein/aus).
-  [].forEach.call(rb.querySelectorAll('.line, .prose'), function(el){
-    el.classList.add('hoerbar');
-    el.onclick = function(){
-      var zt = el.querySelector('.zt');
-      if (zt) sprichAus(el, zt.textContent);
-      var g = el.querySelector('.gloss');
-      if (g) { g.classList.toggle('hid'); el.classList.toggle('shown'); }
+  // 🔊 Vorlesen — spielt den Satz/Absatz in der Zielsprache.
+  [].forEach.call(rb.querySelectorAll('.hoer-btn'), function(btn){
+    btn.onclick = function(){
+      var host = btn.closest('.line, .prose');
+      var zt = host && host.querySelector('.zt');
+      if (zt) sprichAus(btn, zt.textContent);
     };
   });
+  // Wortjagd: jedes Zielsprachen-Wort antippbar → sammeln (+ Übersetzung aus dem Wörterbuch).
+  if (window.spikiuWortjag) {
+    var zts = [].slice.call(rb.querySelectorAll('.zt'));
+    var wjHint = null;
+    if (zts.length && !window.spikiuWortjag.gestartet()) {
+      wjHint = document.createElement('div'); wjHint.className = 'wjhint';
+      wjHint.innerHTML = '<div class="wjh-cap">' + CAPY_SVG + '</div><div class="wjh-tx">' + (JAGD_TX[uiLang()] || JAGD_TX.de) + '</div>';
+      rb.insertBefore(wjHint, rb.firstChild);
+    }
+    zts.forEach(function (zt) {
+      window.spikiuWortjag.aktivieren(zt, { quelle:'learnroman', onCollect:function(){ if (wjHint) { wjHint.remove(); wjHint = null; } } });
+    });
+  }
 
   readerEl.classList.add('open');
   readerEl.setAttribute('aria-hidden', 'false');
