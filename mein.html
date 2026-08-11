@@ -1,0 +1,87 @@
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Mein</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+<style>
+:root{--pink:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--cyan:#2bb3d4;--terra:#ff6b5a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%}
+body{--bg:#eef7f1;--ink:#15163a;--acc:#2d6a4f;--muted:#5f7068;--de:#f1faf5;--ow:2.5px;
+ background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;display:flex;flex-direction:column;min-height:100%}
+@media (min-width:700px) and (min-height:560px){html{font-size:17px}
+ body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px;height:100%}
+ .frame{width:min(460px,94vw);height:min(880px,90vh);margin:auto;border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink);overflow:hidden;display:flex;flex-direction:column;background:var(--bg)}}
+.frame{flex:1;display:flex;flex-direction:column;min-height:0}
+.head{flex:0 0 auto;padding:calc(.9rem + env(safe-area-inset-top)) 1.1rem .7rem;display:flex;align-items:center;gap:.6rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.72)}
+.logo{width:34px;height:34px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
+.logo svg{width:26px;height:26px}
+.head h1{font-family:'Archivo Black',sans-serif;font-size:1.15rem}
+.body{flex:1;min-height:0;overflow:auto;padding:1.1rem 1.05rem 1.4rem;max-width:560px;width:100%;margin:0 auto}
+.card{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:1rem;margin-bottom:1rem}
+.me-top{display:flex;align-items:center;gap:.8rem}
+.me-av{flex:0 0 54px;width:54px;height:54px;border-radius:999px;background:var(--de);border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
+.me-av svg{width:40px;height:40px}
+.me-name{font-family:'Archivo Black',sans-serif;font-size:1.1rem}
+.me-etappe{font:600 .74rem 'DM Sans';color:var(--acc);margin-top:.15rem}
+.me-etappe .dot{display:inline-block;width:8px;height:8px;border-radius:999px;background:var(--sage);border:1.5px solid var(--ink);margin-right:.35rem;vertical-align:middle}
+.sec-lbl{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin:.2rem .2rem .5rem}
+.rowcard{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:.2rem .7rem;margin-bottom:1rem}
+.row{display:flex;align-items:center;gap:.8rem;padding:.85rem .3rem;border-bottom:1.5px solid #e6efe8;cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left;font-family:inherit;color:inherit}
+.row:last-child{border-bottom:0}.row:active{background:#f4f9f5;border-radius:10px}
+.row .ic{flex:0 0 34px;width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.row .rl{flex:1}.row .rt{font-weight:700;font-size:.98rem}.row .rs{font-size:.76rem;color:var(--muted);margin-top:.05rem}
+.row .chev{color:var(--muted);font-size:1.1rem}
+.row .tag{font:800 .6rem 'DM Sans';padding:.2rem .5rem;border-radius:999px;border:2px solid var(--ink);background:var(--mustard);color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:6rem;transform:translateX(-50%);z-index:400;background:var(--ink);color:#fff;font-weight:700;font-size:.82rem;padding:.5rem .85rem;border-radius:999px;box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+</style></head>
+<body data-nav="mein">
+<div class="frame">
+  <div class="head"><span class="logo" id="logo"></span><h1>Mein</h1></div>
+  <div class="body">
+    <div class="card"><div class="me-top">
+      <span class="me-av" id="av"></span>
+      <div><div class="me-name" id="uname">—</div><div class="me-etappe"><span class="dot"></span><span id="etappe">Etappe · Sprache</span></div></div>
+    </div></div>
+
+    <div class="sec-lbl">Lernen</div>
+    <div class="rowcard">
+      <button class="row" data-go="dashboard.html#lernweg"><span class="ic" style="background:var(--sage)">🌱</span><span class="rl"><span class="rt">Lernweg</span><span class="rs">Dein Weg — was als Nächstes wächst</span></span><span class="chev">›</span></button>
+      <button class="row" data-go="sessions.html"><span class="ic" style="background:var(--cyan)">🕑</span><span class="rl"><span class="rt">Verlauf</span><span class="rs">Was du zuletzt gemacht hast</span></span><span class="chev">›</span></button>
+    </div>
+
+    <div class="sec-lbl">Konto</div>
+    <div class="rowcard">
+      <button class="row" data-go="spikiu-products.html"><span class="ic" style="background:var(--mustard)">✦</span><span class="rl"><span class="rt">Abonnement</span><span class="rs">Dein Spikiu-Abo verwalten</span></span><span class="tag">Aktiv</span></button>
+      <button class="row" data-soon="Einstellungen kommen bald"><span class="ic" style="background:#fff">⚙️</span><span class="rl"><span class="rt">Einstellungen</span><span class="rs">Sprache, Muttersprache, Ton, Datenschutz</span></span><span class="chev">›</span></button>
+    </div>
+
+    <div class="sec-lbl">Mehr</div>
+    <div class="rowcard">
+      <button class="row" data-soon="Über Spikiu & Hilfe kommen bald"><span class="ic" style="background:#fff">🐾</span><span class="rl"><span class="rt">Über Spikiu & Hilfe</span></span><span class="chev">›</span></button>
+      <button class="row" id="logout"><span class="ic" style="background:#fff">↩︎</span><span class="rl"><span class="rt" style="color:var(--terra)">Abmelden</span></span></button>
+    </div>
+  </div>
+  <div id="spk-bnav-slot"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var CAPY='<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="46" rx="24" ry="20" fill="#c9956a"/><ellipse cx="40" cy="30" rx="17" ry="15" fill="#c9956a"/><ellipse cx="28" cy="17" rx="5" ry="5" fill="#b8845a"/><ellipse cx="52" cy="17" rx="5" ry="5" fill="#b8845a"/><ellipse cx="40" cy="36" rx="9" ry="7" fill="#b8845a"/><ellipse cx="40" cy="34" rx="3.4" ry="2.4" fill="#8b5e3c"/><circle cx="36.3" cy="34.2" r="1.1" fill="#6b4226"/><circle cx="43.7" cy="34.2" r="1.1" fill="#6b4226"/><circle cx="32" cy="27" r="2.7" fill="#3d2b1f"/><circle cx="48" cy="27" r="2.7" fill="#3d2b1f"/><circle cx="33" cy="26.2" r=".9" fill="#fff"/><circle cx="49" cy="26.2" r=".9" fill="#fff"/><path d="M35 40 Q40 43 45 40" stroke="#8b5e3c" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="64" rx="4.5" ry="3" fill="#b8845a"/><ellipse cx="38" cy="66" rx="4.5" ry="3" fill="#b8845a"/><ellipse cx="50" cy="64" rx="4.5" ry="3" fill="#b8845a"/></svg>';
+document.getElementById('logo').innerHTML=CAPY;
+document.getElementById('av').innerHTML=CAPY;
+function toast(t){var el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('on');},1600);}
+(function(){
+  var name='', etappe='Etappe · Spanisch';
+  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');name=u.name||'';var p=u.profile||{};
+    var etxt={samen:'Samen',stamm:'Stamm',krone:'Krone'}[p.etappe]||'Stamm';
+    var langtxt={es:'Spanisch',de:'Deutsch',en:'Englisch',el:'Griechisch'}[p.zielsprache]||'Spanisch';
+    etappe='Etappe: '+etxt+' · '+langtxt;}catch(e){}
+  document.getElementById('uname').textContent=name||'Du';
+  document.getElementById('etappe').textContent=etappe;
+})();
+document.querySelectorAll('.row[data-go]').forEach(function(b){ b.onclick=function(){ location.href=b.getAttribute('data-go'); }; });
+document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=function(){ toast(b.getAttribute('data-soon')); }; });
+document.getElementById('logout').onclick=function(){ toast('Abmelden — bald verfügbar'); };
+</script>
+<script src="bottomnav.js" defer></script>
+</body></html>

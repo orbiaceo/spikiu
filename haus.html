@@ -183,7 +183,7 @@ button{font-family:inherit}
 .meta a{font:600 .72rem/1 'DM Sans',sans-serif;color:var(--muted);text-decoration:none;cursor:pointer}
 .meta a:active{color:var(--ink)}
 </style></head>
-<body>
+<body data-nav="haus">
 <div class="badge">Haus · alle Räume</div>
 
 <section class="view welcome active" id="welcome">
@@ -200,7 +200,7 @@ button{font-family:inherit}
     <div class="subbar" id="subbar"></div>
   </header>
   <main class="stage" id="stage"></main>
-  <footer class="meta" id="meta"></footer>
+  <div id="spk-bnav-slot"></div>
   <div class="bookov" id="bookov"></div>
 </section>
 
@@ -552,6 +552,7 @@ function roomBibliothek(){
   bigcards([
    {em:'📖',tt:'Learnroman',ss:'Immersiv lesen — dein Text wächst mit dir',go:function(){location.href='learnroman.html';}},
    {em:'📜',tt:'Sprichwörter',ss:'Redewendungen — Sprache & Kultur',go:function(){location.href='proverbios.html';}},
+   {em:'📓',tt:'Lektionen',ss:'Aus deinen Gesprächen — deine Lektionen',go:function(){location.href='lektionen.html';}},
    {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter — was du eingesammelt hast',go:renderBook}
   ]);});}
 function readRoman(){
@@ -664,7 +665,7 @@ function submitName(){var v=(document.getElementById('nameIn').value||'').trim()
   b.onclick=function(){enterHouse();};lr.appendChild(b);});}
 function startTuer(){try{var t=sessionStorage.getItem('spk_haus_tuer');if(t&&['eintauchen','bibliothek','uebung'].indexOf(t)>-1)return t;}catch(e){}return 'bibliothek';}
 function enterHouse(){document.getElementById('welcome').classList.remove('active');
- document.getElementById('house').classList.add('active');buildNav();document.getElementById('meta').innerHTML='<a href="lektionen.html">Lektionen</a><a href="dashboard.html#lernweg">Lernweg</a><a href="sessions.html">Verlauf</a>';loadRoom(startTuer());}
+ document.getElementById('house').classList.add('active');buildNav();loadRoom(startTuer());}
 
 document.getElementById('wbig').innerHTML=capyBig();var _wc=document.querySelector('#wbig svg');if(_wc&&window.spkCapyAlive){window.spkCapyAlive(_wc,{tapTarget:document.getElementById('wbig')});}
 document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')submitName();});
@@ -681,4 +682,5 @@ document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.ke
  var lr=document.getElementById('langrow');if(lr)lr.style.display='none';
 })();
 </script>
+<script src="bottomnav.js" defer></script>
 </body></html>
