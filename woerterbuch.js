@@ -126,7 +126,19 @@
       dentro:{de:'drinnen',en:'inside'}, fuera:{de:'draußen',en:'outside'}, arriba:{de:'oben',en:'up'}, abajo:{de:'unten',en:'down'}, allí:{de:'dort',en:'there'},
       cuatro:{de:'vier',en:'four'}, cinco:{de:'fünf',en:'five'}, seis:{de:'sechs',en:'six'}, siete:{de:'sieben',en:'seven'}, ocho:{de:'acht',en:'eight'},
       nueve:{de:'neun',en:'nine'}, diez:{de:'zehn',en:'ten'}, cien:{de:'hundert',en:'hundred'}, mil:{de:'tausend',en:'thousand'}, primero:{de:'erste',en:'first'}, último:{de:'letzte',en:'last'},
-      rojo:{de:'rot',en:'red'}, azul:{de:'blau',en:'blue'}, verde:{de:'grün',en:'green'}, amarillo:{de:'gelb',en:'yellow'}, negro:{de:'schwarz',en:'black'}, blanco:{de:'weiß',en:'white'}
+      rojo:{de:'rot',en:'red'}, azul:{de:'blau',en:'blue'}, verde:{de:'grün',en:'green'}, amarillo:{de:'gelb',en:'yellow'}, negro:{de:'schwarz',en:'black'}, blanco:{de:'weiß',en:'white'},
+      // ── aus dem Learnroman (häufige Formen & Wörter) ──
+      es:{de:'ist',en:'is'}, era:{de:'war',en:'was'}, había:{de:'es gab',en:'there was'}, soy:{de:'ich bin',en:'I am'}, estoy:{de:'ich bin',en:'I am'}, eres:{de:'du bist',en:'you are'}, son:{de:'sind',en:'are'},
+      tenía:{de:'hatte',en:'had'}, conocía:{de:'kannte',en:'knew'}, entendía:{de:'verstand',en:'understood'}, dijo:{de:'sagte',en:'said'}, miró:{de:'schaute',en:'looked'}, sonrió:{de:'lächelte',en:'smiled'},
+      has:{de:'du hast',en:'you have'}, tienes:{de:'du hast',en:'you have'}, sube:{de:'geh hoch',en:'go up'}, pasa:{de:'komm rein',en:'come in'},
+      vez:{de:'Mal',en:'time'}, veces:{de:'Mal',en:'times'}, así:{de:'so',en:'like this'}, algo:{de:'etwas',en:'something'}, nada:{de:'nichts',en:'nothing'}, otra:{de:'andere',en:'other'}, entonces:{de:'dann',en:'then'},
+      todavía:{de:'noch',en:'still'}, delante:{de:'vorne',en:'in front'}, detrás:{de:'hinten',en:'behind'}, derecha:{de:'rechts',en:'right'}, izquierda:{de:'links',en:'left'},
+      bienvenido:{de:'willkommen',en:'welcome'}, bienvenida:{de:'willkommen',en:'welcome'}, favor:{de:'Gefallen',en:'favor'}, verdad:{de:'Wahrheit',en:'truth'}, buenas:{de:'guten',en:'good'}, vale:{de:'okay',en:'okay'},
+      hambre:{de:'Hunger',en:'hunger'}, primera:{de:'erste',en:'first'}, mucha:{de:'viel',en:'much'}, vieja:{de:'alt',en:'old'}, roja:{de:'rot',en:'red'}, estrecho:{de:'eng',en:'narrow'}, tal:{de:'solch',en:'such'}, gusto:{de:'Freude',en:'pleasure'},
+      ruido:{de:'Lärm',en:'noise'}, marca:{de:'Marke',en:'brand'}, aceite:{de:'Öl',en:'oil'}, cambio:{de:'Wechselgeld',en:'change'}, fin:{de:'Ende',en:'end'}, piso:{de:'Wohnung',en:'flat'}, cena:{de:'Abendessen',en:'dinner'},
+      cortado:{de:'Cortado',en:'cortado'}, tomate:{de:'Tomate',en:'tomato'}, bar:{de:'Bar',en:'bar'}, barra:{de:'Theke',en:'counter'}, tortilla:{de:'Tortilla',en:'omelette'}, maleta:{de:'Koffer',en:'suitcase'},
+      salón:{de:'Wohnzimmer',en:'living room'}, vaso:{de:'Glas',en:'glass'}, vasos:{de:'Gläser',en:'glasses'}, arquitectura:{de:'Architektur',en:'architecture'}, cebolla:{de:'Zwiebel',en:'onion'}, libros:{de:'Bücher',en:'books'},
+      fútbol:{de:'Fußball',en:'football'}, euros:{de:'Euro',en:'euros'}, alemán:{de:'Deutsch',en:'German'}, español:{de:'Spanisch',en:'Spanish'}, alemania:{de:'Deutschland',en:'Germany'}, españa:{de:'Spanien',en:'Spain'}, ah:{de:'ah',en:'ah'}
     },
     de: {}, en: {}, el: {}
   };
