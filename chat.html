@@ -137,10 +137,10 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-phon { font-size:0.66rem; color:var(--gold); font-weight:500; margin-top:0.08rem; }
 .hap-trans { font-size:0.72rem; color:var(--mid); font-style:italic; margin-top:0.08rem; }
 /* ── Teil 60: Wort-Häppchen als Flip-Karte (Vorderseite Ziel+🔊 · Rückseite Übersetzung) ── */
-.hap-flip { perspective:1200px; cursor:pointer; width:100%; height:14rem; -webkit-tap-highlight-color:transparent; }
+.hap-flip { perspective:1200px; cursor:pointer; width:100%; height:17rem; -webkit-tap-highlight-color:transparent; }
 .hap-flip-inner { position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.4,0,.2,1); transform-style:preserve-3d; }
 .hap-flip.flipped .hap-flip-inner { transform:rotateY(180deg); }
-.hap-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; border:var(--ow) solid var(--ink); border-radius:18px; box-shadow:4px 5px 0 var(--ink); background:var(--white); padding:1.2rem; }
+.hap-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.9rem; border:var(--ow) solid var(--ink); border-radius:22px; box-shadow:5px 6px 0 var(--ink); background:var(--bubS); padding:1.4rem; }
 .hap-face.back { transform:rotateY(180deg); background:var(--accent2); border-color:#cfe5da; }
 .hap-flip .hap-ziel { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:1.4rem; line-height:1.3; text-align:center; }
 .hap-flip .hap-phon { font-size:0.8rem; margin-top:0; }
@@ -245,28 +245,28 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
    oben blättert nativ; eine Sache pro Screen. Geführtes Thema bleibt Blasen. */
 /* Teil 46: horizontales Ein-Karten-Deck (Buchseiten/Tinder) statt vertikalem Scroll-Snap.
    Slides liegen ABSOLUT übereinander; nur die aktuelle ist sichtbar. Vorrücken = nach links. */
-.reel { flex:1; position:relative; overflow:hidden; background:var(--white); }
+.reel { flex:1; position:relative; overflow:hidden; background:var(--bg); }
 .reel[hidden]{ display:none; }
-.reel-slide { position:absolute; inset:0; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:1.1rem; padding:2.5rem 1.5rem 3.6rem; overflow-y:auto; transform:translateX(114%); opacity:0; pointer-events:none; transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease; will-change:transform,opacity; }
+.reel-slide { position:absolute; inset:1rem .9rem; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:1.1rem; padding:1.9rem 1.4rem 2.6rem; overflow-y:auto; background:var(--bubS); border:var(--ow) solid var(--ink); border-radius:22px; box-shadow:5px 6px 0 var(--ink); transform:translateX(118%); opacity:0; pointer-events:none; transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease; will-change:transform,opacity; }
 .reel-slide.reel-current { transform:translateX(0) rotate(0); opacity:1; pointer-events:auto; z-index:2; }
 .reel-slide.reel-next { transform:translateX(114%) rotate(1.5deg); opacity:0; pointer-events:none; z-index:1; }
 .reel-slide.reel-past { transform:translateX(-114%) rotate(-1.5deg); opacity:0; pointer-events:none; z-index:1; }
 .reel-capy { width:52px; height:52px; animation:vozBreathe 4.5s ease-in-out infinite; }
 .reel-capy svg { width:52px; height:52px; display:block; }
 .reel-body { display:flex; flex-direction:column; align-items:center; gap:0.6rem; max-width:22rem; }
-.reel-line { font-family:'Cormorant Garamond',serif; font-size:clamp(1.55rem,5.2vw,2.15rem); line-height:1.32; color:var(--ink); font-style:normal; padding:0 0.2rem; }
+.reel-line { font-family:'Cormorant Garamond',serif; font-size:clamp(1.75rem,6.2vw,2.5rem); line-height:1.28; color:var(--ink); font-style:normal; padding:0 0.2rem; }
 .reel-line em, .reel-line strong { font-style:normal; }
 .reel-speak { position:static; width:38px; height:38px; margin:0.6rem auto 0; }
 .reel-speak svg { width:18px; height:18px; }
 .reel-trans { font-family:'DM Sans',sans-serif; font-style:italic; font-size:0.95rem; line-height:1.5; color:var(--mid); max-width:20rem; }
 .reel-hint { position:absolute; left:0; right:0; bottom:1.4rem; font-size:0.8rem; color:var(--warm); font-weight:500; animation:reelBob 1.8s ease-in-out infinite; }
 @keyframes reelBob { 0%,100%{ transform:translateX(0); opacity:0.7; } 50%{ transform:translateX(-5px); opacity:1; } }
-.reel-userbubble { background:var(--accent); color:var(--white); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; padding:0.85rem 1.2rem; font-size:1.05rem; max-width:80%; }
+.reel-userbubble { background:var(--you); color:var(--youtx); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; padding:0.7rem 1rem; font:800 1.05rem/1.3 'DM Sans',sans-serif; max-width:82%; }
 .reel-learner-head { font-family:'Cormorant Garamond',serif; font-size:1.4rem; line-height:1.3; color:var(--ink); max-width:20rem; }
 .reel-learner-field { display:flex; flex-direction:column; gap:0.7rem; width:100%; max-width:22rem; }
 .reel-learner-field textarea { background:var(--bg2); border:1.5px solid transparent; border-radius:1.1rem; padding:0.85rem 1.1rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); resize:none; outline:none; line-height:1.5; }
 .reel-learner-field textarea:focus { border-color:var(--accent); background:var(--white); }
-.reel-send { background:var(--accent); color:var(--white); border:none; border-radius:100px; padding:0.7rem 1.6rem; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; align-self:center; -webkit-tap-highlight-color:transparent; }
+.reel-send { background:var(--accent); color:#fff; border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.7rem 1.6rem; font-family:'DM Sans',sans-serif; font-size:0.98rem; font-weight:800; cursor:pointer; align-self:center; -webkit-tap-highlight-color:transparent; }
 .reel-send:hover { background:var(--accent3); }
 .reel-end { margin-top:0.5rem; background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:0.82rem; text-decoration:underline; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 @media (prefers-reduced-motion: reduce){ .reel-capy{ animation:none; } .reel-hint{ animation:none; } .reel-slide{ transition:none; } }
