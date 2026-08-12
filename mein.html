@@ -18,12 +18,11 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#2d6a4f;--muted:#5f7068;--de:#f1faf5;--ow:
 .head h1{font-family:'Archivo Black',sans-serif;font-size:1.15rem}
 .body{flex:1;min-height:0;overflow:auto;padding:1.1rem 1.05rem 1.4rem;max-width:560px;width:100%;margin:0 auto}
 .card{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:1rem;margin-bottom:1rem}
-.me-top{display:flex;align-items:center;gap:.8rem}
-.me-av{flex:0 0 54px;width:54px;height:54px;border-radius:999px;background:var(--de);border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
-.me-av svg{width:40px;height:40px}
-.me-name{font-family:'Archivo Black',sans-serif;font-size:1.1rem}
-.me-etappe{font:600 .74rem 'DM Sans';color:var(--acc);margin-top:.15rem}
-.me-etappe .dot{display:inline-block;width:8px;height:8px;border-radius:999px;background:var(--sage);border:1.5px solid var(--ink);margin-right:.35rem;vertical-align:middle}
+.usercard .me-name{font-family:'Archivo Black',sans-serif;font-size:1.3rem}
+.me-abo{margin-top:.5rem}
+.abo-badge{display:inline-block;font:800 .72rem 'DM Sans',sans-serif;border:2px solid var(--ink);border-radius:999px;padding:.22rem .65rem;box-shadow:2px 2px 0 var(--ink)}
+.abo-badge.is-free{background:#eef7f1;color:var(--ink)}
+.abo-badge.is-premium{background:var(--mustard);color:var(--ink)}
 .sec-lbl{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin:.2rem .2rem .5rem}
 .rowcard{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 var(--ink);padding:.2rem .7rem;margin-bottom:1rem}
 .row{display:flex;align-items:center;gap:.8rem;padding:.85rem .3rem;border-bottom:1.5px solid #e6efe8;cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left;font-family:inherit;color:inherit}
@@ -37,12 +36,12 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#2d6a4f;--muted:#5f7068;--de:#f1faf5;--ow:
 </style></head>
 <body data-nav="mein">
 <div class="frame">
-  <div class="head"><span class="logo" id="logo"></span><h1>Mein</h1></div>
+  <div class="head"><h1>Mein</h1></div>
   <div class="body">
-    <div class="card"><div class="me-top">
-      <span class="me-av" id="av"></span>
-      <div><div class="me-name" id="uname">—</div><div class="me-etappe"><span class="dot"></span><span id="etappe">Etappe · Sprache</span></div></div>
-    </div></div>
+    <div class="card usercard">
+      <div class="me-name" id="uname">—</div>
+      <div class="me-abo"><span class="abo-badge" id="aboBadge">Free</span></div>
+    </div>
 
     <div class="sec-lbl">Lernen</div>
     <div class="rowcard">
@@ -67,17 +66,17 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#2d6a4f;--muted:#5f7068;--de:#f1faf5;--ow:
 <div class="toast" id="toast"></div>
 <script>
 var CAPY='<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="46" rx="24" ry="20" fill="#c9956a"/><ellipse cx="40" cy="30" rx="17" ry="15" fill="#c9956a"/><ellipse cx="28" cy="17" rx="5" ry="5" fill="#b8845a"/><ellipse cx="52" cy="17" rx="5" ry="5" fill="#b8845a"/><ellipse cx="40" cy="36" rx="9" ry="7" fill="#b8845a"/><ellipse cx="40" cy="34" rx="3.4" ry="2.4" fill="#8b5e3c"/><circle cx="36.3" cy="34.2" r="1.1" fill="#6b4226"/><circle cx="43.7" cy="34.2" r="1.1" fill="#6b4226"/><circle cx="32" cy="27" r="2.7" fill="#3d2b1f"/><circle cx="48" cy="27" r="2.7" fill="#3d2b1f"/><circle cx="33" cy="26.2" r=".9" fill="#fff"/><circle cx="49" cy="26.2" r=".9" fill="#fff"/><path d="M35 40 Q40 43 45 40" stroke="#8b5e3c" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="64" rx="4.5" ry="3" fill="#b8845a"/><ellipse cx="38" cy="66" rx="4.5" ry="3" fill="#b8845a"/><ellipse cx="50" cy="64" rx="4.5" ry="3" fill="#b8845a"/></svg>';
-document.getElementById('logo').innerHTML=CAPY;
-document.getElementById('av').innerHTML=CAPY;
 function toast(t){var el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('on');},1600);}
 (function(){
-  var name='', etappe='Etappe · Spanisch';
-  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');name=u.name||'';var p=u.profile||{};
-    var etxt={samen:'Samen',stamm:'Stamm',krone:'Krone'}[p.etappe]||'Stamm';
-    var langtxt={es:'Spanisch',de:'Deutsch',en:'Englisch',el:'Griechisch'}[p.zielsprache]||'Spanisch';
-    etappe='Etappe: '+etxt+' · '+langtxt;}catch(e){}
+  var name='', premium=false;
+  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');name=u.name||'';
+    var p=u.profile||{};
+    premium=(u.plan==='premium')||(u.abo==='premium')||(u.premium===true)||(p.plan==='premium');
+  }catch(e){}
   document.getElementById('uname').textContent=name||'Du';
-  document.getElementById('etappe').textContent=etappe;
+  var b=document.getElementById('aboBadge');
+  b.textContent=premium?'Premium':'Free';
+  b.classList.add(premium?'is-premium':'is-free');
 })();
 document.querySelectorAll('.row[data-go]').forEach(function(b){ b.onclick=function(){ location.href=b.getAttribute('data-go'); }; });
 document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=function(){ toast(b.getAttribute('data-soon')); }; });
