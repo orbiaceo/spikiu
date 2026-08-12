@@ -52,7 +52,7 @@ button{font-family:inherit}
 .door.on:after{content:'';position:absolute;left:16%;right:16%;bottom:-2.5px;height:4px;border-radius:3px;background:var(--acc)}
 .door:active .ic{transform:scale(.94)}
 .subbar{max-width:560px;margin:.15rem auto 0;text-align:center;font-size:.8rem;line-height:1.3;color:var(--muted);padding:.4rem 1.1rem .6rem;font-weight:600}
-.stage{flex:1;min-height:0;overflow:auto;max-width:560px;width:100%;margin:0 auto;padding:1.1rem 1.15rem calc(2.2rem + env(safe-area-inset-bottom))}
+.stage{flex:1;min-height:0;overflow:auto;max-width:560px;width:100%;margin:0 auto;padding:1.1rem 1.15rem calc(2.2rem + env(safe-area-inset-bottom));display:flex;flex-direction:column}
 .turn{display:flex;gap:.6rem;margin:1.15rem 0;align-items:flex-start;opacity:0;transform:translateY(9px);animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes rise{to{opacity:1;transform:none}}
 .av{flex:0 0 40px;height:40px;margin-top:.15rem}.av svg{width:100%;height:100%}
@@ -74,6 +74,20 @@ button{font-family:inherit}
 .bigcard .tt{font:800 1.1rem/1.25 'DM Sans';color:var(--ink)}
 .bigcard .ss{font-size:.85rem;line-height:1.35;color:var(--muted)}
 .bigcard .bc-chev{flex:0 0 auto;color:var(--ink);font-size:1.5rem;line-height:1}
+.k-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem;min-height:0}
+.k-greet{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.3rem;padding:.2rem 0 .4rem}
+.k-greet .cap{width:66px;height:66px;border-radius:999px;background:#fff;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink)}
+.k-greet .cap svg{width:50px;height:50px}
+.k-greet h2{font:800 1.3rem/1.15 'DM Sans',sans-serif;color:var(--ink)}
+.k-greet .kr{color:var(--muted);font-weight:600;font-size:.88rem;line-height:1.3;max-width:26ch}
+.k-two,.k-four,.k-tri{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;width:100%;max-width:340px;margin:0 auto}
+.k-tri .k-top{grid-column:1 / -1;max-width:55%;justify-self:center;width:100%}
+.tile{height:118px;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.6rem;gap:.12rem;background:#fff;font-family:inherit}
+.tile:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink)}
+.tile .em{font-size:1.85rem;line-height:1}
+.tile .tt{font:800 .92rem/1.05 'DM Sans',sans-serif;color:var(--ink)}
+.tile .ss{font-size:.72rem;color:rgba(21,22,58,.7);line-height:1.15;font-weight:600}
+.tile .pill{font:800 .56rem 'DM Sans',sans-serif;border:2px solid var(--ink);border-radius:999px;padding:.08rem .4rem;margin-top:.1rem;color:var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:.55rem;margin:.4rem 0 .3rem 46px}
 .chip{font:800 1.02rem/1.15 'DM Sans';color:var(--ink);background:var(--bubS);border:var(--ow) solid var(--ink);padding:.7rem 1rem;border-radius:14px;cursor:pointer;box-shadow:var(--shs) 0 var(--ink);transition:transform .1s,box-shadow .1s}
 .chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
@@ -400,6 +414,27 @@ function bigcards(items){var w=document.createElement('div');w.className='bigcar
  items.forEach(function(it){var b=document.createElement('button');b.className='bigcard';
   b.innerHTML='<span class="em">'+it.em+'</span><span class="bc-txt"><span class="tt">'+it.tt+'</span><span class="ss">'+(it.ss||'')+'</span></span><span class="bc-chev">›</span>';
   b.onclick=function(){w.remove();it.go();};w.appendChild(b);});S.appendChild(w);scrollEnd();}
+function kEsc(x){return String(x).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function vorname(){try{var n=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').name)||NAME||'';return (String(n).trim().split(/\s+/)[0])||'';}catch(e){return NAME||'';}}
+function letzteAktivitaet(){
+ try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');
+  var L=(u.lessons||[]).slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
+  if(L.length){var t=(L[0].lesson&&L[0].lesson.title)||L[0].topic||L[0].thema;if(t)return 'Zuletzt: «'+kEsc(t)+'» — weiter?';}
+ }catch(e){}
+ try{var b=JSON.parse(localStorage.getItem('spikiu_buch')||'[]');if(b.length)return 'Du hast schon '+b.length+' '+(b.length===1?'Wort':'Wörter')+' gesammelt. 🍃';}catch(e){}
+ return '';
+}
+function tileEl(it){var b=document.createElement('button');b.className='tile'+(it.cls?' '+it.cls:'');
+ if(it.bg)b.style.background=it.bg;
+ b.innerHTML='<span class="em">'+it.em+'</span><span class="tt">'+it.tt+'</span>'+(it.ss?'<span class="ss">'+it.ss+'</span>':'')+(it.pill?'<span class="pill" style="background:'+(it.pillBg||'#fff')+'">'+it.pill+'</span>':'');
+ b.onclick=function(){it.go();};return b;}
+function kacheln(opts){var wrap=document.createElement('div');wrap.className='k-wrap';
+ if(opts.greet){var g=document.createElement('div');g.className='k-greet';
+  g.innerHTML='<span class="cap">'+capy()+'</span><h2>'+opts.greet.title+'</h2>'+(opts.greet.kr?'<p class="kr">'+opts.greet.kr+'</p>':'');
+  wrap.appendChild(g);}
+ var grid=document.createElement('div');grid.className='k-'+opts.layout;
+ opts.items.forEach(function(it,i){var t=tileEl(it);if(opts.layout==='tri'&&i===0)t.classList.add('k-top');grid.appendChild(t);});
+ wrap.appendChild(grid);S.appendChild(wrap);}
 function chips(items,cb){var c=document.createElement('div');c.className='chips';
  items.forEach(function(it){var b=document.createElement('button');b.className='chip';b.textContent=it.es;
   b.onclick=function(){c.remove();youSaid(it.es);cb(it);};c.appendChild(b);});S.appendChild(c);scrollEnd();}
@@ -464,6 +499,12 @@ var THEMES={
 };
 /* 0 · Begrüßung */
 function roomEintauchen(){
+ kacheln({greet:{title:'¡Hola'+(vorname()?', '+vorname():'')+'! 👋',kr:letzteAktivitaet()},layout:'two',items:[
+  {em:'🎭',tt:'Geführtes<br>Gespräch',ss:'Szenen üben',pill:'gratis',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='chat.html';}},
+  {em:'💬',tt:'Freies<br>Gespräch',ss:'Frei reden',pill:'✨ Premium',bg:'#ffb3d6',go:function(){location.href='chat.html';}}
+ ]});
+}
+function roomEintauchenOld(){
  spikiu('Womit möchtest du dich ausdrücken?',function(){
   bigcards([
    {em:'🎭',tt:'Geführtes Gespräch',ss:'Szenen üben — Schritt für Schritt · gratis',go:function(){location.href='gefuehrt.html';}},
@@ -548,13 +589,12 @@ function addPage(key){var p=THEMES[key].page;pages.push({ch:p.ch,title:p.title,b
 
 /* ===== RAUM: BIBLIOTHEK ===== */
 function roomBibliothek(){
- spikiu('Hola '+(NAME||'')+' 👋 — was möchtest du?',function(){
-  bigcards([
-   {em:'📖',tt:'Learnroman',ss:'Immersiv lesen — dein Text wächst mit dir',go:function(){location.href='learnroman.html';}},
-   {em:'📜',tt:'Sprichwörter',ss:'Redewendungen — Sprache & Kultur',go:function(){location.href='proverbios.html';}},
-   {em:'📓',tt:'Lektionen',ss:'Aus deinen Gesprächen — deine Lektionen',go:function(){location.href='lektionen.html';}},
-   {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter — was du eingesammelt hast',go:renderBook}
-  ]);});}
+ kacheln({layout:'four',items:[
+  {em:'📖',tt:'Learnroman',ss:'Immersiv lesen',bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
+  {em:'📜',tt:'Sprichwörter',ss:'Sprache & Kultur',bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
+  {em:'📓',tt:'Lektionen',ss:'Aus Gesprächen',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
+  {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter',bg:'#c7e89a',go:renderBook}
+ ]});}
 function readRoman(){
  var c=document.createElement('div');c.className='tool read';
  c.innerHTML='<div class="eyebrow">Lernroman · Kapitel 1</div>'+
@@ -630,12 +670,11 @@ window.addEventListener('keydown',function(e){var ov=document.getElementById('bo
 /* ===== RAUM: ÜBUNG ===== */
 var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
 function roomUebung(){
- spikiu('Ganz ruhig. Kein Druck, kein Streak. Was übst du?',function(){
-  bigcards([
-   {em:'🃏',tt:'Wortschatz',ss:'Deine Wörter, im ruhigen Deck',go:function(){location.href='gym.html';}},
-   {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen üben',go:function(){location.href='taller.html';}},
-   {em:'✍️',tt:'Schreibwerkstatt',ss:'Schreiben & Feedback',go:function(){location.href='schreibwerkstatt.html';}}
-  ]);});}
+ kacheln({layout:'tri',items:[
+  {em:'🃏',tt:'Wortschatz',ss:'Dein Deck',bg:'#ffd0b0',go:function(){location.href='gym.html';}},
+  {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
+  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}}
+ ]});}
 function uebKarte(i){
  if(i>=UWORDS.length){
   UWORDS.forEach(function(u){if(keptWords.indexOf(u.w)<0)keptWords.push(u.w);});
@@ -663,7 +702,7 @@ function submitName(){var v=(document.getElementById('nameIn').value||'').trim()
  var lr=document.getElementById('langrow');lr.style.display='flex';lr.innerHTML='';
  [['Español',true],['Deutsch',false]].forEach(function(p){var b=document.createElement('button');b.textContent=p[0];
   b.onclick=function(){enterHouse();};lr.appendChild(b);});}
-function startTuer(){try{var t=sessionStorage.getItem('spk_haus_tuer');if(t&&['eintauchen','bibliothek','uebung'].indexOf(t)>-1)return t;}catch(e){}return 'bibliothek';}
+function startTuer(){try{var t=sessionStorage.getItem('spk_haus_tuer');if(t&&['eintauchen','bibliothek','uebung'].indexOf(t)>-1)return t;}catch(e){}return 'eintauchen';}
 function enterHouse(){document.getElementById('welcome').classList.remove('active');
  document.getElementById('house').classList.add('active');buildNav();loadRoom(startTuer());}
 
