@@ -1,0 +1,725 @@
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Das Haus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+:root{--navy:#15163a;--terra:#ff6b5a;--pink:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--plum:#9b7bff;--cyan:#2bb3d4;--sky:#d3eef6}
+/* ===== MUTATIONS-VARIABLEN (Default = M1 Pop) ===== */
+body{
+ --bg:#eef7f1;--ink:#15163a;--bubS:#fff;--bubT:#fff;--you:#ffd24a;--youtx:#15163a;
+ --acc:#ff6b5a;--acctx:#fff;--spk:#ff4f9a;--de:#f1faf5;--back:#15163a;
+ --ow:2.5px;--shb:3px 4px;--shs:3px 3px;--muted:#5f7068;--eb:#ff6b5a;
+ background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;
+ display:flex;align-items:center;justify-content:center;min-height:100dvh}
+body.m1{--bg:#eef7f1;--bubS:#fff;--bubT:#fff;--you:#ffd24a;--youtx:#15163a;--acc:#ff6b5a;--acctx:#fff;--spk:#ff4f9a;--eb:#ff6b5a;--ow:2.5px;--shb:3px 4px;--shs:3px 3px}
+body.m2{--bg:#cdeee2;--bubS:#fff;--bubT:#fff;--you:#ffd24a;--youtx:#15163a;--acc:#ff4f9a;--acctx:#fff;--spk:#ff4f9a;--eb:#ff4f9a;--ow:2.5px;--shb:3px 4px;--shs:3px 3px}
+body.m3{--bg:#eef7f1;--bubS:#d3eef6;--bubT:#fff;--you:#ffd24a;--youtx:#15163a;--acc:#ff6b5a;--acctx:#fff;--spk:#ff4f9a;--eb:#1f93b0;--ow:2.5px;--shb:3px 4px;--shs:3px 3px}
+body.m4{--bg:#cdeee2;--bubS:#fff;--bubT:#fff;--you:#ffd24a;--youtx:#15163a;--acc:#ff6b5a;--acctx:#fff;--spk:#ff4f9a;--eb:#ff6b5a;--ow:3.5px;--shb:5px 6px;--shs:4px 4px}
+body.m5{--bg:#cfeee2;--bubS:#fff;--bubT:#fff;--you:#15163a;--youtx:#eef7f1;--acc:#15163a;--acctx:#eef7f1;--spk:#ff4f9a;--eb:#15163a;--ow:2.5px;--shb:3px 4px;--shs:3px 3px}
+.badge{position:fixed;top:calc(.5rem + env(safe-area-inset-top));right:.7rem;z-index:80;font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.08em;color:var(--ink);background:rgba(255,255,255,.92);border:2px solid var(--ink);padding:.3rem .55rem;border-radius:999px;box-shadow:2px 2px 0 var(--ink)}
+.view{display:none;background-color:var(--bg)}
+.view.active{display:flex;flex-direction:column;height:100dvh;width:100%;position:relative}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px}
+ body{background:var(--back);background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px}
+ .view.active{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;overflow:hidden;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
+ .badge{top:calc(1rem + env(safe-area-inset-top));right:1.1rem}
+}
+@media (min-width:1200px){.badge{right:calc(50vw - 250px)}}
+button{font-family:inherit}
+.welcome{align-items:center;justify-content:center;text-align:center;padding:1.5rem;gap:.2rem;overflow:auto}
+.welcome .big{width:148px;height:148px;margin-bottom:.4rem}
+.welcome h1{font-family:'Archivo Black',sans-serif;font-size:1.95rem;margin:.25rem 0;letter-spacing:-.01em;color:var(--ink)}
+.welcome p{color:var(--muted);font-size:1.05rem;margin:.1rem 0 1.3rem;font-weight:600}
+.namebox{display:flex;gap:.6rem;width:100%;max-width:360px}
+.namebox input{flex:1;min-width:0;border:none;border-bottom:2.5px solid var(--ink);background:transparent;outline:none;font-family:'Archivo Black',sans-serif;font-size:1.3rem;color:var(--ink);padding:.3rem .1rem;text-align:center}
+.namebox input::placeholder{font-family:'DM Sans';font-weight:600;color:var(--muted)}
+.namebox .go{flex:0 0 56px;height:56px;border-radius:16px;border:2.5px solid var(--ink);background:var(--acc);color:var(--acctx);font-size:1.4rem;cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.namebox .go:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.langrow{display:flex;gap:.7rem;margin-top:1rem;width:100%;max-width:360px}
+.langrow button{flex:1;padding:1rem;border-radius:16px;border:2.5px solid var(--ink);background:var(--bubS);font-family:'Archivo Black',sans-serif;font-size:1.2rem;color:var(--ink);cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.langrow button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.nav{flex:0 0 auto;background:rgba(255,255,255,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:2.5px solid var(--ink);padding:calc(.5rem + env(safe-area-inset-top)) .5rem 0;z-index:10}
+.doors{display:flex;gap:.4rem;max-width:560px;margin:0 auto}
+.door{flex:1;background:transparent;border:none;cursor:pointer;padding:.5rem .2rem .6rem;border-radius:14px 14px 0 0;display:flex;flex-direction:column;align-items:center;gap:.25rem;position:relative;min-height:72px}
+.door .ic{width:42px;height:42px;transition:transform .2s}
+.door .lb{font:800 .82rem/1 'DM Sans';color:var(--muted);letter-spacing:.01em}
+.door.on .lb{color:var(--ink)}
+.door.on .ic{transform:translateY(-1px) scale(1.04)}
+.door.on:after{content:'';position:absolute;left:16%;right:16%;bottom:-2.5px;height:4px;border-radius:3px;background:var(--acc)}
+.door:active .ic{transform:scale(.94)}
+.subbar{max-width:560px;margin:.15rem auto 0;text-align:center;font-size:.8rem;line-height:1.3;color:var(--muted);padding:.4rem 1.1rem .6rem;font-weight:600}
+.stage{flex:1;min-height:0;overflow:auto;max-width:560px;width:100%;margin:0 auto;padding:1.1rem 1.15rem calc(2.2rem + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+.turn{display:flex;gap:.6rem;margin:1.15rem 0;align-items:flex-start;opacity:0;transform:translateY(9px);animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.av{flex:0 0 40px;height:40px;margin-top:.15rem}.av svg{width:100%;height:100%}
+.says{flex:1;min-width:0;font-size:1.05rem;color:var(--ink);background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:.75rem .9rem}
+.says.target{background:var(--bubT)}
+.you{margin:.7rem 0 1rem;display:flex;justify-content:flex-end;opacity:0;animation:rise .4s forwards}
+.you span{display:inline-block;max-width:82%;background:var(--you);color:var(--youtx);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:.6rem .9rem;font:800 1.08rem/1.2 'DM Sans'}
+.es-row{display:flex;align-items:flex-start;gap:.5rem}
+.es-row .es{flex:1}
+.says .es{font-family:'Archivo Black',sans-serif;font-size:1.4rem;line-height:1.16;color:var(--ink);display:block}
+.de-box{margin-top:.6rem;border:1.5px dashed rgba(21,22,58,.4);border-radius:12px;padding:.45rem .65rem;font-style:italic;color:var(--muted);font-size:.9rem;background:var(--de)}
+.spk{flex:0 0 36px;height:36px;border-radius:999px;border:2px solid var(--ink);background:var(--spk);color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
+.spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.bigcards{display:flex;flex-direction:column;gap:.65rem;margin:.7rem 0 .4rem 46px}
+.bigcard{display:flex;align-items:center;gap:.9rem;text-align:left;background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:18px;padding:1.05rem 1.1rem;cursor:pointer;box-shadow:var(--shb) 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.bigcard:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.bigcard .em{font-size:1.75rem;flex:0 0 auto;width:42px;text-align:center;line-height:1}
+.bigcard .bc-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:.18rem}
+.bigcard .tt{font:800 1.1rem/1.25 'DM Sans';color:var(--ink)}
+.bigcard .ss{font-size:.85rem;line-height:1.35;color:var(--muted)}
+.bigcard .bc-chev{flex:0 0 auto;color:var(--ink);font-size:1.5rem;line-height:1}
+.k-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem;min-height:0}
+.k-greet{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.3rem;padding:.2rem 0 .4rem}
+.k-greet .cap{width:66px;height:66px;border-radius:999px;background:#fff;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink)}
+.k-greet .cap svg{width:50px;height:50px}
+.k-greet h2{font:800 1.3rem/1.15 'DM Sans',sans-serif;color:var(--ink)}
+.k-greet .kr{color:var(--muted);font-weight:600;font-size:.88rem;line-height:1.3;max-width:26ch}
+.k-two,.k-four,.k-tri{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;width:100%;max-width:340px;margin:0 auto}
+.k-tri .k-top{grid-column:1 / -1;max-width:55%;justify-self:center;width:100%}
+.tile{height:118px;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.6rem;gap:.12rem;background:#fff;font-family:inherit}
+.tile:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink)}
+.tile .em{font-size:1.85rem;line-height:1}
+.tile .tt{font:800 .92rem/1.05 'DM Sans',sans-serif;color:var(--ink)}
+.tile .ss{font-size:.72rem;color:rgba(21,22,58,.7);line-height:1.15;font-weight:600}
+.tile .pill{font:800 .56rem 'DM Sans',sans-serif;border:2px solid var(--ink);border-radius:999px;padding:.08rem .4rem;margin-top:.1rem;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:.55rem;margin:.4rem 0 .3rem 46px}
+.chip{font:800 1.02rem/1.15 'DM Sans';color:var(--ink);background:var(--bubS);border:var(--ow) solid var(--ink);padding:.7rem 1rem;border-radius:14px;cursor:pointer;box-shadow:var(--shs) 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.ends{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .3rem 46px}
+.end{font:800 .96rem/1 'DM Sans';padding:.7rem 1.1rem;border-radius:999px;cursor:pointer;border:var(--ow) solid var(--ink);background:var(--bubS);color:var(--ink);box-shadow:var(--shs) 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.end:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.end.primary{background:var(--acc);color:var(--acctx)}
+.tool{margin:1.1rem 0 1.1rem 46px;background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:var(--shb) 0 var(--ink);padding:1rem 1.1rem 1.1rem}
+.eyebrow{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--eb);text-transform:uppercase;margin-bottom:.5rem}
+.read .es{font-family:'Lora',serif;font-size:1.5rem;line-height:1.32;margin:.12rem 0}
+.read .fr{border-bottom:1.5px dotted var(--acc);cursor:pointer}
+.flip{perspective:900px;margin:.4rem 0 .2rem 46px}
+.flip .card{background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:18px;min-height:130px;box-shadow:var(--shb) 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;padding:1.2rem;cursor:pointer;text-align:center}
+.flip .w{font-family:'Archivo Black',sans-serif;font-size:1.8rem;color:var(--ink)}
+.flip .m{font-size:1.05rem;color:var(--acc);font-weight:700}
+.flip .hint{font:600 .8rem/1 'DM Sans';color:var(--muted)}
+.steps{display:flex;flex-direction:column;gap:.45rem;align-items:center;margin:.2rem 0 .8rem;padding-bottom:.7rem;border-bottom:2px solid var(--ink)}
+.emojirow{display:flex;gap:.28rem;justify-content:center;align-items:center}
+.emojirow .e{width:1.9rem;height:1.9rem;display:inline-flex;align-items:center;justify-content:center;opacity:.3;transition:.25s}
+.emojirow .e svg{width:100%;height:100%}
+.emojirow .e.done{opacity:.82}
+.emojirow .e.on{opacity:1;transform:scale(1.22)}
+.steplabel{font:800 .98rem/1 'DM Sans';color:var(--ink);display:flex;align-items:center;gap:.4rem}
+.steplabel .ic{width:1.3rem;height:1.3rem;display:inline-flex}
+.steplabel .ic svg{width:100%;height:100%}
+.steplabel small{color:var(--muted);font-weight:700}
+.deck{margin:.5rem 0 .3rem 46px}
+.deckrow{display:flex;align-items:center;gap:.5rem}
+.dcard{flex:1;background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:20px;min-height:128px;box-shadow:var(--shb) 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;padding:1.1rem;text-align:center;touch-action:pan-y;user-select:none}
+.dcard .es{font-family:'Archivo Black',sans-serif;font-size:1.6rem;color:var(--ink);line-height:1.1}
+.dcard .de{font-size:.95rem;color:var(--muted)}
+.navc{flex:0 0 46px;height:46px;border-radius:999px;border:var(--ow) solid var(--ink);background:var(--bubS);color:var(--ink);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shs) 0 var(--ink)}
+.navc:disabled{opacity:.3;box-shadow:none;cursor:default}
+.navc:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.dots{display:flex;gap:.42rem;justify-content:center;margin:.7rem 0 .1rem}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--ink);opacity:.25;transition:.2s}
+.dot.on{opacity:1;background:var(--acc);transform:scale(1.3)}
+.pop{position:fixed;left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;font-size:.92rem;padding:.5rem .8rem;border-radius:12px;box-shadow:3px 3px 0 rgba(0,0,0,.3);display:none;max-width:80%}
+.pop b{color:var(--mustard)}
+.cover{text-align:center;max-width:520px;margin:.6rem auto 1.6rem}
+.cover .ol{width:116px;height:140px;margin:0 auto}
+.cover h2{font-family:'Archivo Black',sans-serif;font-size:1.7rem;margin:.5rem 0 .15rem;color:var(--ink)}
+.cover p{color:var(--muted);font-size:.92rem;margin:0}
+.bp{max-width:520px;margin:0 auto 1.5rem;border-top:2px solid var(--ink);padding-top:1.2rem}
+.bp .ch{font:700 .64rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--eb);text-transform:uppercase;margin-bottom:.45rem}
+.bp h3{font-family:'Archivo Black',sans-serif;font-size:1.3rem;margin:.1rem 0 .5rem;color:var(--ink)}
+.bp .body{font-size:1.02rem;line-height:1.62}
+.bp .keep{margin-top:.8rem;display:flex;align-items:center;gap:.5rem}
+.bp .keep .w{font-family:'Archivo Black',sans-serif;font-size:1.15rem;color:var(--acc)}
+.bp .note{margin-top:.8rem;font-style:italic;color:var(--muted);font-size:1.05rem}
+.bp .lf{color:var(--acc)}
+.empty{max-width:520px;margin:1rem auto;color:var(--muted);font-size:1.05rem;text-align:center;line-height:1.6}
+/* ===== MEIN BUCH · Blättern (immersives Overlay) ===== */
+.bookov{position:absolute;inset:0;z-index:60;display:none;flex-direction:column;background:var(--bg)}
+.bookov.open{display:flex}
+.bkhead{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:calc(.7rem + env(safe-area-inset-top)) .9rem .6rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.9)}
+.bktitle{font-family:'Archivo Black',sans-serif;font-size:1.1rem}
+.bkx{width:38px;height:38px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.bkx:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.bkview{flex:1;min-height:0;overflow:auto;padding:1.1rem 1rem}
+.bpage{background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:var(--shb) 0 var(--ink);padding:1.2rem 1.1rem;min-height:100%}
+.bpage.inR{animation:binR .3s cubic-bezier(.2,.7,.2,1)}
+.bpage.inL{animation:binL .3s cubic-bezier(.2,.7,.2,1)}
+@keyframes binR{from{opacity:0;transform:translateX(26px) rotate(1deg)}to{opacity:1;transform:none}}
+@keyframes binL{from{opacity:0;transform:translateX(-26px) rotate(-1deg)}to{opacity:1;transform:none}}
+.bkflip{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:1rem;padding:.55rem 0 calc(.85rem + env(safe-area-inset-bottom))}
+.bkcnt{font:800 .88rem/1 'DM Sans';min-width:3.4rem;text-align:center;color:var(--ink)}
+.beyebrow{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--eb);text-transform:uppercase;margin-bottom:.5rem}
+.bptitle{font-family:'Archivo Black',sans-serif;font-size:1.45rem;margin:.1rem 0 .7rem;line-height:1.14}
+.bpbody{font-family:'Lora',serif;font-size:1.28rem;line-height:1.5}
+.bsaid{margin-top:1rem}
+.blbl{font:700 .64rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.bphrase{display:flex;align-items:center;gap:.55rem;margin:.35rem 0}
+.bes{flex:1;font-family:'Lora',serif;font-weight:600;font-size:1.3rem}
+.bnote{margin-top:1rem;display:flex;gap:.55rem;align-items:flex-start;background:var(--de);border:2px dashed var(--muted);border-radius:14px;padding:.7rem .8rem}
+.bcap{flex:0 0 30px;height:30px}.bcap svg{width:100%;height:100%}
+.bt{font-family:'Lora',serif;font-style:italic;font-size:1.14rem}
+.bpnum{margin-top:1.1rem;font:700 .68rem/1 'DM Mono',monospace;color:var(--muted);text-align:right}
+.bneu{display:inline-block;font:800 .6rem/1 'DM Sans';color:#fff;background:var(--terra);border:2px solid var(--ink);border-radius:999px;padding:.24rem .5rem;box-shadow:2px 2px 0 var(--ink);transform:rotate(-4deg);margin-bottom:.5rem}
+.bcover{text-align:center}
+.bol{width:120px;height:144px;margin:.2rem auto 0;animation:bfloat 4s ease-in-out infinite}
+@keyframes bfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.bcover h2{font-family:'Archivo Black',sans-serif;font-size:1.9rem;margin:.5rem 0 .1rem}
+.bsub{color:var(--muted);font-size:.96rem;font-weight:600}
+.bby{margin-top:1rem;display:inline-flex;align-items:center;gap:.5rem;font-family:'Lora',serif;font-style:italic;font-size:1.1rem;color:var(--muted)}
+.bby .bcap{width:32px;height:32px;flex:0 0 32px}
+.bspine{margin-top:1rem;font:700 .7rem/1 'DM Mono',monospace;color:var(--muted)}
+.bwords .bleaf{display:grid;grid-template-columns:1fr 1fr 30px;align-items:center;column-gap:.7rem;row-gap:.12rem;padding:.5rem .1rem;border-bottom:1px solid #e6dec9;font-family:'Lora',serif;margin:0}.bl-z{font-weight:600;font-size:1.14rem;color:var(--ink);word-break:break-word}.bl-m{font-size:1rem;color:var(--muted);word-break:break-word}.bleaf .spk.bl-spk{width:28px;height:28px;font-size:.76rem;box-shadow:1px 1px 0 var(--ink);justify-self:end}.bl-lau{grid-column:1 / -1;font-family:'DM Mono',monospace;font-size:.76rem;color:var(--muted);font-style:italic;margin-top:.05rem}
+.blf{color:var(--sage)}
+.bhook{text-align:center;padding-top:.4rem}
+.bbig{font-family:'Archivo Black',sans-serif;font-size:1.45rem;line-height:1.2;margin:.3rem 0}
+.bhsub{color:var(--muted);font-size:.98rem;margin-top:.5rem;line-height:1.5}
+.bprint{margin-top:1.1rem;display:inline-block;font:800 .78rem/1 'DM Sans';color:var(--ink);background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:999px;padding:.55rem 1rem;box-shadow:3px 3px 0 var(--ink)}
+.bgswitch{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(.7rem + env(safe-area-inset-bottom));z-index:100;display:flex;align-items:center;gap:.3rem;background:#fff;border:2.5px solid var(--ink);border-radius:999px;box-shadow:3px 3px 0 var(--ink);padding:.32rem .4rem}
+.bgswitch .mu{font:800 .72rem/1 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.4rem .6rem;cursor:pointer}
+.bgswitch .mu.on{background:var(--acc);color:var(--acctx)}
+.bgswitch .mu:active{transform:scale(.95)}
+/* ===== Lebendiges Spikiu ===== */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popav{0%{transform:scale(.4) rotate(-8deg)}68%{transform:scale(1.09) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+.welcome .big{animation:float 4s ease-in-out infinite}
+.welcome .big svg{width:100%;height:100%;display:block}
+.turn .av{animation:popav .5s cubic-bezier(.3,1.5,.5,1) both}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.meta{flex:0 0 auto;display:flex;justify-content:center;gap:1.3rem;padding:.55rem 0 calc(.7rem + env(safe-area-inset-bottom));border-top:2px solid var(--ink);background:rgba(255,255,255,.55)}
+.meta a{font:600 .72rem/1 'DM Sans',sans-serif;color:var(--muted);text-decoration:none;cursor:pointer}
+.meta a:active{color:var(--ink)}
+</style></head>
+<body data-nav="haus">
+<div class="badge">Haus · alle Räume</div>
+
+<section class="view welcome active" id="welcome">
+  <div class="big" id="wbig"></div>
+  <h1>¡Hola! Yo soy Spikiu.</h1>
+  <p id="wsub">Wie heißt du?</p>
+  <div class="namebox" id="namebox"><input id="nameIn" placeholder="dein Name…" autocomplete="off"><button class="go" onclick="submitName()">→</button></div>
+  <div class="langrow" id="langrow" style="display:none"></div>
+</section>
+
+<section class="view" id="house">
+  <header class="nav">
+    <div class="doors" id="doors"></div>
+    <div class="subbar" id="subbar"></div>
+  </header>
+  <main class="stage" id="stage"></main>
+  <div id="spk-bnav-slot"></div>
+  <div class="bookov" id="bookov"></div>
+</section>
+
+<div class="pop" id="pop"></div>
+
+<script src="woerterbuch.js"></script>
+<script>
+/* ── SPIKIU · CAPY VIVO (wiederverwendbarer Helfer) ──────────────────
+   Macht ein bereits gerendertes Capy-<svg> lebendig — ohne Abhängigkeiten,
+   eigener CSS-Namensraum (spk-capy-*), stört nichts.
+
+     window.spkCapyAlive(svgEl, { tapTarget, clamp, eyeY });
+
+   Das SVG braucht eine Augen-Gruppe <g class="spk-capy-eyes">…</g>
+   (zwei dunkle Augen + zwei Glanzpunkte). Der Helfer:
+     • blinzelt automatisch (Augen-Gruppe kurz zu Schlitzen),
+     • lässt den Blick dem Zeiger folgen (geklemmt, sanft),
+     • macht beim Antippen einen kurzen Freuden-Hüpfer (ohne den Klick
+       zu schlucken — Panel/Handler feuern weiter).
+   Atmen bleibt der Seite (CSS) überlassen. Mehrfach-Aufruf je SVG = no-op.
+   prefers-reduced-motion → ruhig (kein Tracking/Hüpfer/Blinzeln).        */
+(function () {
+  if (window.spkCapyAlive) return;
+
+  var STYLE_ID = 'spk-capy-vivo-style';
+  function injectStyle() {
+    if (document.getElementById(STYLE_ID)) return;
+    var css = ''
+      + '.spk-capy-eyes{transform-box:fill-box;transform-origin:center;transition:transform .14s ease-out}'
+      + '@keyframes spk-capy-hop{0%,100%{transform:translateY(0)}30%{transform:translateY(-9px)}55%{transform:translateY(0)}74%{transform:translateY(-4px)}}'
+      + '.spk-capy-hop{animation:spk-capy-hop .5s cubic-bezier(.3,1.4,.5,1) !important}'
+      // — Sprech-Zustand: Mund auf/zu + zwei weiche Aura-Ringe (wie prototyp-voz.html) —
+      + '.spk-capy-mouth{transform-box:fill-box;transform-origin:center}'
+      + '@keyframes spk-capy-talk{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2.1) scaleX(1.1)}}'
+      + '.spk-capy-speaking .spk-capy-mouth{animation:spk-capy-talk .4s ease-in-out infinite}'
+      + '.spk-capy-aura{transform-box:fill-box;transform-origin:center;opacity:0;pointer-events:none}'
+      + '@keyframes spk-capy-ring{0%{transform:scale(.55);opacity:.45}100%{transform:scale(1.25);opacity:0}}'
+      + '.spk-capy-speaking .spk-capy-aura{animation:spk-capy-ring 1.6s ease-out infinite}'
+      + '.spk-capy-speaking .spk-capy-aura2{animation-delay:.8s}';
+    var st = document.createElement('style');
+    st.id = STYLE_ID; st.textContent = css;
+    (document.head || document.documentElement).appendChild(st);
+  }
+
+  function reducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  // Aura-Ringe einmalig in den SVG hängen (hinter den Capy). Idempotent.
+  function ensureAura(svg) {
+    if (svg.__spkAura) return;
+    svg.__spkAura = true;
+    svg.style.overflow = 'visible';                // Ringe dürfen über die viewBox hinaus
+    var NS = 'http://www.w3.org/2000/svg';
+    for (var i = 0; i < 2; i++) {
+      var c = document.createElementNS(NS, 'circle');
+      c.setAttribute('class', 'spk-capy-aura' + (i ? ' spk-capy-aura2' : ''));
+      c.setAttribute('cx', '40'); c.setAttribute('cy', '42'); c.setAttribute('r', '28');
+      c.setAttribute('fill', 'none'); c.setAttribute('stroke', '#2d6a4f'); c.setAttribute('stroke-width', '2');
+      svg.insertBefore(c, svg.firstChild);         // hinter den Capy einsortieren
+    }
+  }
+
+  // Sprech-Zustand schalten (wiederverwendbar): Mund auf/zu + Aura-Ringe.
+  // Braucht im SVG den Mund-Pfad <… class="spk-capy-mouth">. reduced-motion → ruhig
+  // (kein hektischer Mund, keine Ringe). Defensiv/idempotent.
+  window.spkCapySpeak = function (svg, on) {
+    if (!svg) return;
+    injectStyle();
+    if (reducedMotion()) return;                   // ruhig: kein Mund/keine Ringe
+    if (on) ensureAura(svg);
+    svg.classList.toggle('spk-capy-speaking', !!on);
+  };
+
+  window.spkCapyAlive = function (svg, opts) {
+    // Handle mit .speak(on) — auch dann nutzbar, wenn unten früh zurückgekehrt wird.
+    var handle = { speak: function (on) { window.spkCapySpeak(svg, on); } };
+    if (!svg) return handle;
+    if (svg.__spkAlive) return handle;             // idempotent je SVG
+    var eyes = svg.querySelector('.spk-capy-eyes');
+    if (!eyes) return handle;                      // ohne Augen-Gruppe: blinzeln no-op, Sprech-Handle bleibt
+    svg.__spkAlive = true;
+    opts = opts || {};
+    injectStyle();
+
+    if (reducedMotion()) return handle;            // ruhig: nur Atmen (CSS der Seite)
+
+    var CLAMP = (typeof opts.clamp === 'number') ? opts.clamp : 2.4;  // viewBox-Einheiten
+    var EYEY  = (typeof opts.eyeY  === 'number') ? opts.eyeY  : 0.34; // Augenhöhe im SVG
+    var tx = 0, ty = 0, blinking = false;
+
+    function apply() {
+      eyes.style.transform = 'translate(' + tx + 'px,' + ty + 'px)' + (blinking ? ' scaleY(.1)' : '');
+    }
+
+    // — Blinzeln (zufälliges Intervall) —
+    function scheduleBlink() {
+      setTimeout(function () {
+        blinking = true; apply();
+        setTimeout(function () { blinking = false; apply(); }, 130);
+        scheduleBlink();
+      }, 2500 + Math.random() * 3500);
+    }
+    setTimeout(scheduleBlink, 1400 + Math.random() * 1200);
+
+    // — Blick folgt dem Zeiger (geklemmt, Bezug = SVG-Mitte) —
+    function track(px, py) {
+      var r = svg.getBoundingClientRect();
+      if (!r.width) return;
+      var cx = r.left + r.width / 2, cy = r.top + r.height * EYEY;
+      var dx = (px - cx) / 40, dy = (py - cy) / 40;
+      tx = Math.max(-CLAMP, Math.min(CLAMP, dx));
+      ty = Math.max(-CLAMP, Math.min(CLAMP, dy));
+      apply();
+    }
+    function recenter() { tx = 0; ty = 0; apply(); }
+    document.addEventListener('mousemove', function (e) { track(e.clientX, e.clientY); }, { passive: true });
+    document.addEventListener('touchmove', function (e) { var p = e.touches && e.touches[0]; if (p) track(p.clientX, p.clientY); }, { passive: true });
+    document.addEventListener('mouseleave', recenter);
+    window.addEventListener('blur', recenter);
+
+    // — Tipp = Freuden-Hüpfer (schluckt den Klick NICHT) —
+    var tapTarget = opts.tapTarget || svg;
+    tapTarget.addEventListener('pointerdown', function () {
+      svg.classList.remove('spk-capy-hop');
+      void svg.getBoundingClientRect().width;      // Reflow → Animation neu starten
+      svg.classList.add('spk-capy-hop');
+    });
+    svg.addEventListener('animationend', function (e) {
+      if (e.animationName === 'spk-capy-hop') svg.classList.remove('spk-capy-hop');
+    });
+
+    return handle;
+  };
+})();
+
+</script>
+<script>
+/* ===== kanonischer Spikiu + Olivo (nie neu erfinden) ===== */
+var CAPY_SMALL = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var CAPY_OPENER = '<svg class="voz-capy" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<g class="spk-capy-eyes">'
+  +   '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  +   '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '</g>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+function capy(){return CAPY_SMALL;}
+function capyBig(){return CAPY_OPENER;}
+function olivo(){return '<svg viewBox="0 0 200 240" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M82 216 Q90 200 88 176 Q86 152 96 138 Q92 124 100 112 Q108 124 104 138 Q114 152 112 176 Q110 200 118 216 Z" fill="#7a5a3c"/><path d="M97 140 q-16 -6 -24 -18" fill="none"/><path d="M103 140 q16 -6 24 -18" fill="none"/><g style="transform-origin:100px 132px"><animateTransform attributeName="transform" type="rotate" values="-2.2 100 132;2.2 100 132;-2.2 100 132" dur="7s" repeatCount="indefinite"/><path d="M58 122 Q38 120 37 101 Q25 92 34 77 Q30 60 49 59 Q55 42 75 49 Q90 34 108 47 Q128 39 136 58 Q158 59 157 80 Q169 94 156 108 Q155 124 135 123 Q118 134 99 125 Q79 134 58 122 Z" fill="#9cae6a"/><ellipse cx="66" cy="84" rx="3.4" ry="4.4" fill="#57632f"/><ellipse cx="92" cy="70" rx="3.4" ry="4.4" fill="#3f4a6b"/><ellipse cx="120" cy="86" rx="3.4" ry="4.4" fill="#57632f"/><ellipse cx="138" cy="98" rx="3.4" ry="4.4" fill="#3f4a6b"/><ellipse cx="82" cy="104" rx="3.4" ry="4.4" fill="#57632f"/><path d="M50 96 q9 -4 15 2" fill="none" stroke-width="3"/><path d="M104 60 q9 -3 14 4" fill="none" stroke-width="3"/></g></g></svg>';}
+/* Tür-Icons (flach, ein Strich, getönt) */
+function icoTalk(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M23 11 h13 a4 4 0 0 1 4 4 v7 a4 4 0 0 1 -4 4 h-2 l1 5 -6 -5 h-6 a4 4 0 0 1 -4 -4 v-7 a4 4 0 0 1 4 -4 z" fill="#cfe3d8"/><path d="M11 18 h12 a4 4 0 0 1 4 4 v7 a4 4 0 0 1 -4 4 h-8 l-6 5 1 -5 a4 4 0 0 1 -4 -4 v-7 a4 4 0 0 1 4 -4 z" fill="#2d6a4f"/></g></svg>';}
+function icoBook(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round"><path d="M24 14 C20 11 13 11 9 13 L9 36 C13 34 20 34 24 37 C28 34 35 34 39 36 L39 13 C35 11 28 11 24 14 Z" fill="#e9cf93"/><path d="M24 14 L24 37" fill="none"/></g></svg>';}
+function icoCard(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><rect x="9" y="14" width="30" height="21" rx="4" fill="#cdddb3"/><line x1="15" y1="23" x2="33" y2="23"/><line x1="15" y1="29" x2="27" y2="29"/></g></svg>';}
+function icoCompass(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><circle cx="24" cy="24" r="15" fill="#fbf8f0" stroke="#20271f" stroke-width="2.6"/><path d="M24 12 L27 24 L21 24 Z" fill="#2d6a4f" stroke="#20271f" stroke-width="1.6" stroke-linejoin="round"/><path d="M24 36 L27 24 L21 24 Z" fill="#cfe3d8" stroke="#20271f" stroke-width="1.6" stroke-linejoin="round"/><circle cx="24" cy="24" r="2.4" fill="#20271f"/></svg>';}
+function icoGreet(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><circle cx="16" cy="16" r="11" fill="#ffe1a8" stroke="#20271f" stroke-width="2.4"/><circle cx="12" cy="14.5" r="1.5" fill="#20271f"/><circle cx="20" cy="14.5" r="1.5" fill="#20271f"/><path d="M11 19 Q16 23 21 19" fill="none" stroke="#20271f" stroke-width="2.2" stroke-linecap="round"/></svg>';}
+function icoWords(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.4" stroke-linejoin="round"><path d="M16 9 C13 7 8 7 5 8 L5 24 C8 23 13 23 16 25 C19 23 24 23 27 24 L27 8 C24 7 19 7 16 9 Z" fill="#cfe3d8"/><path d="M16 9 L16 25" fill="none"/></g></svg>';}
+function icoPron(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><ellipse cx="12" cy="16" rx="6" ry="4.6" fill="#ffd2c2" stroke="#20271f" stroke-width="2.4"/><path d="M21 11 q4.5 5 0 10" fill="none" stroke="#20271f" stroke-width="2.2" stroke-linecap="round"/><path d="M25 8.5 q6.5 7.5 0 15" fill="none" stroke="#20271f" stroke-width="2.2" stroke-linecap="round"/></svg>';}
+function icoSatz(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><path d="M6 8 h20 a3 3 0 0 1 3 3 v8 a3 3 0 0 1 -3 3 h-12 l-5 4 .8 -4 a3 3 0 0 1 -3.8 -3 v-8 a3 3 0 0 1 3 -3 z" fill="#e7dcff" stroke="#20271f" stroke-width="2.4" stroke-linejoin="round"/><line x1="10" y1="13.5" x2="22" y2="13.5" stroke="#20271f" stroke-width="2" stroke-linecap="round"/><line x1="10" y1="17.5" x2="18" y2="17.5" stroke="#20271f" stroke-width="2" stroke-linecap="round"/></svg>';}
+function icoHoer(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><path d="M7 19 V16 a9 9 0 0 1 18 0 v3" fill="none" stroke="#20271f" stroke-width="2.4" stroke-linecap="round"/><rect x="4.5" y="18" width="5.2" height="8.5" rx="2.4" fill="#cdddb3" stroke="#20271f" stroke-width="2.2"/><rect x="22.3" y="18" width="5.2" height="8.5" rx="2.4" fill="#cdddb3" stroke="#20271f" stroke-width="2.2"/></svg>';}
+function icoRolle(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><path d="M9 8 h14 v7 a7 9 0 0 1 -14 0 z" fill="#ffd2c2" stroke="#20271f" stroke-width="2.4" stroke-linejoin="round"/><circle cx="13" cy="13" r="1.4" fill="#20271f"/><circle cx="19" cy="13" r="1.4" fill="#20271f"/><path d="M12.5 17.5 q3.5 2.5 7 0" fill="none" stroke="#20271f" stroke-width="2" stroke-linecap="round"/></svg>';}
+function icoStar(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><path d="M16 5 l3.1 6.4 7 .9 -5.1 4.9 1.3 7 -6.3 -3.5 -6.3 3.5 1.3 -7 -5.1 -4.9 7 -.9 z" fill="#ffd24a" stroke="#20271f" stroke-width="2.2" stroke-linejoin="round"/></svg>';}
+
+/* ===== Zustand ===== */
+var NAME='',RED=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var keptWords=[],pages=[],CUR='eintauchen';
+var S; // aktuelle Bühne
+function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
+function scrollEnd(){var st=document.getElementById('stage');requestAnimationFrame(function(){if(st)st.scrollTo({top:st.scrollHeight,behavior:RED?'auto':'smooth'});});}
+
+/* ===== Bühnen-Bausteine ===== */
+function spikiu(text,cb){var t=document.createElement('div');t.className='turn';
+ t.innerHTML='<div class="av">'+capy()+'</div><div class="says"></div>';S.appendChild(t);
+ var s=t.querySelector('.says');scrollEnd();
+ if(RED){s.textContent=text;if(cb)cb();return;}
+ var i=0;var iv=setInterval(function(){i++;s.textContent=text.slice(0,i);
+  if(i%4===0)scrollEnd();if(i>=text.length){clearInterval(iv);if(cb)setTimeout(cb,240);}},20);}
+function youSaid(t){var d=document.createElement('div');d.className='you';d.innerHTML='<span>'+t+'</span>';S.appendChild(d);scrollEnd();}
+function esLine(es,de){var t=document.createElement('div');t.className='turn';
+ t.innerHTML='<div class="av">'+capy()+'</div><div class="says target"><div class="es-row"><span class="es">'+es+'</span><button class="spk" aria-label="Vorlesen">🔊</button></div><div class="de-box">'+de+'</div></div>';
+ t.querySelector('.spk').onclick=function(){say(es);};S.appendChild(t);scrollEnd();}
+function bigcards(items){var w=document.createElement('div');w.className='bigcards';
+ items.forEach(function(it){var b=document.createElement('button');b.className='bigcard';
+  b.innerHTML='<span class="em">'+it.em+'</span><span class="bc-txt"><span class="tt">'+it.tt+'</span><span class="ss">'+(it.ss||'')+'</span></span><span class="bc-chev">›</span>';
+  b.onclick=function(){w.remove();it.go();};w.appendChild(b);});S.appendChild(w);scrollEnd();}
+function kEsc(x){return String(x).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function vorname(){try{var n=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').name)||NAME||'';return (String(n).trim().split(/\s+/)[0])||'';}catch(e){return NAME||'';}}
+function letzteAktivitaet(){
+ try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');
+  var L=(u.lessons||[]).slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
+  if(L.length){var t=(L[0].lesson&&L[0].lesson.title)||L[0].topic||L[0].thema;if(t)return 'Zuletzt: «'+kEsc(t)+'» — weiter?';}
+ }catch(e){}
+ try{var b=JSON.parse(localStorage.getItem('spikiu_buch')||'[]');if(b.length)return 'Du hast schon '+b.length+' '+(b.length===1?'Wort':'Wörter')+' gesammelt. 🍃';}catch(e){}
+ return '';
+}
+function tileEl(it){var b=document.createElement('button');b.className='tile'+(it.cls?' '+it.cls:'');
+ if(it.bg)b.style.background=it.bg;
+ b.innerHTML='<span class="em">'+it.em+'</span><span class="tt">'+it.tt+'</span>'+(it.ss?'<span class="ss">'+it.ss+'</span>':'')+(it.pill?'<span class="pill" style="background:'+(it.pillBg||'#fff')+'">'+it.pill+'</span>':'');
+ b.onclick=function(){it.go();};return b;}
+function kacheln(opts){var wrap=document.createElement('div');wrap.className='k-wrap';
+ if(opts.greet){var g=document.createElement('div');g.className='k-greet';
+  g.innerHTML='<span class="cap">'+capy()+'</span><h2>'+opts.greet.title+'</h2>'+(opts.greet.kr?'<p class="kr">'+opts.greet.kr+'</p>':'');
+  wrap.appendChild(g);}
+ var grid=document.createElement('div');grid.className='k-'+opts.layout;
+ opts.items.forEach(function(it,i){var t=tileEl(it);if(opts.layout==='tri'&&i===0)t.classList.add('k-top');grid.appendChild(t);});
+ wrap.appendChild(grid);S.appendChild(wrap);}
+function chips(items,cb){var c=document.createElement('div');c.className='chips';
+ items.forEach(function(it){var b=document.createElement('button');b.className='chip';b.textContent=it.es;
+  b.onclick=function(){c.remove();youSaid(it.es);cb(it);};c.appendChild(b);});S.appendChild(c);scrollEnd();}
+function ends(items){var e=document.createElement('div');e.className='ends';
+ items.forEach(function(it){var b=document.createElement('button');b.className='end'+(it.primary?' primary':'');
+  b.textContent=it.t;b.onclick=function(){e.remove();it.go();};e.appendChild(b);});S.appendChild(e);scrollEnd();}
+function showPop(el,txt){var p=document.getElementById('pop');p.innerHTML='<b>'+el.textContent+'</b> — '+txt;
+ var r=el.getBoundingClientRect();p.style.display='block';p.style.top=(r.top-46)+'px';
+ setTimeout(function(){p.style.display='none';},1900);}
+
+/* ===== Navigation / Türen ===== */
+var DOORS=[
+ {id:'eintauchen',ic:icoCompass,lb:'Abenteuer',sub:'Dein Sprachabenteuer mit Spikiu — Schritt für Schritt.'},
+ {id:'bibliothek',ic:icoBook,lb:'Bibliothek',sub:'Lies mit mir. Und dein Buch wächst hier.'},
+ {id:'uebung',ic:icoCard,lb:'Übung',sub:'Ein paar Wörter, ganz ruhig.'}
+];
+function buildNav(){var d=document.getElementById('doors');d.innerHTML='';
+ DOORS.forEach(function(D){var b=document.createElement('button');b.className='door';b.id='door-'+D.id;
+  b.innerHTML='<span class="ic">'+D.ic()+'</span><span class="lb">'+D.lb+'</span>';
+  b.onclick=function(){loadRoom(D.id);};d.appendChild(b);});}
+function loadRoom(id){CUR=id;try{sessionStorage.setItem('spk_haus_tuer',id);}catch(e){}S=document.getElementById('stage');S.innerHTML='';
+ DOORS.forEach(function(D){document.getElementById('door-'+D.id).classList.toggle('on',D.id===id);});
+ document.getElementById('subbar').textContent=DOORS.filter(function(D){return D.id===id;})[0].sub;
+ document.getElementById('stage').scrollTop=0;
+ if(id==='eintauchen')roomEintauchen();
+ if(id==='bibliothek')roomBibliothek();
+ if(id==='uebung')roomUebung();}
+
+/* ===== RAUM: ABENTEUER — 7 Schritte (Begrüßung→Wörter→Aussprache→Sätze→Hören→Rollenspiel→Abschluss) ===== */
+var STEPS=[{ic:icoGreet,l:'Begrüßung'},{ic:icoWords,l:'Neue Wörter'},{ic:icoPron,l:'Aussprache'},{ic:icoSatz,l:'Sätze'},{ic:icoHoer,l:'Hörverständnis'},{ic:icoRolle,l:'Rollenspiel'},{ic:icoStar,l:'Abschluss'}];
+function stepsBar(idx){var w=document.createElement('div');w.className='steps';
+ var row='<div class="emojirow">';STEPS.forEach(function(st,i){row+='<span class="e'+(i<idx?' done':'')+(i===idx?' on':'')+'">'+st.ic()+'</span>';});row+='</div>';
+ w.innerHTML=row+'<div class="steplabel"><span class="ic">'+STEPS[idx].ic()+'</span> '+STEPS[idx].l+' <small>· '+(idx+1)+'/'+STEPS.length+'</small></div>';S.appendChild(w);}
+function newStep(idx){S.innerHTML='';document.getElementById('stage').scrollTop=0;stepsBar(idx);}
+var THEMES={
+ cafe:{em:'☕',tt:'Ein Café in Madrid',ss:'Etwas zu trinken bestellen',
+   words:[{es:'el café',de:'der Kaffee'},{es:'por favor',de:'bitte'},{es:'¿algo más?',de:'noch etwas?'},{es:'la cuenta',de:'die Rechnung'}],
+   pron:{es:'por favor',de:'bitte'},
+   saetze:[{es:'Quería un café, por favor.',de:'Ich hätte gern einen Kaffee, bitte.'},{es:'¿Me trae la cuenta?',de:'Bringen Sie mir die Rechnung?'}],
+   hoer:{play:'Un café, por favor.',q:'Was habe ich bestellt?',opts:[{t:'einen Kaffee',ok:true},{t:'einen Tee',ok:false}]},
+   scene:{intro:'Ein Café in Madrid. Ich bin der Kellner, du der Gast.',
+     a:{es:'Buenas. ¿Qué le pongo?',de:'Hallo. Was darf ich Ihnen bringen?'},
+     r1:[{es:'Un café, por favor.'},{es:'Un té, por favor.'}],
+     b:{es:'Marchando. ¿Algo más?',de:'Kommt sofort. Sonst noch etwas?'},
+     r2:[{es:'Nada más, gracias.'}], praise:'Du hast „por favor" überlebt. Respekt.'},
+   page:{ch:'Madrid · ein Café',title:'Der erste Kaffee',keep:[{es:'Un café, por favor.'}],
+     note:'Du brauchst keine perfekten Sätze. Du brauchst echte.',
+     body:function(){return NAME+' betrat ein Café, als die Stadt noch wach wurde. Bestellte einen Kaffee, sagte „por favor" — und die Welt antwortete auf Spanisch. Der erste Satz, der wirklich gemeint war.';}}},
+ bahnhof:{em:'🚉',tt:'Am Bahnhof',ss:'Nach dem Zug fragen',
+   words:[{es:'el tren',de:'der Zug'},{es:'el andén',de:'das Gleis'},{es:'¿a qué hora?',de:'um wie viel Uhr?'},{es:'el billete',de:'die Fahrkarte'}],
+   pron:{es:'el andén',de:'das Gleis'},
+   saetze:[{es:'¿A qué hora sale el tren?',de:'Wann fährt der Zug?'},{es:'Un billete, por favor.',de:'Eine Fahrkarte, bitte.'}],
+   hoer:{play:'A las ocho. Andén dos.',q:'Auf welchem Gleis fährt der Zug?',opts:[{t:'Gleis zwei',ok:true},{t:'Gleis drei',ok:false}]},
+   scene:{intro:'Bahnhof in Sevilla. Ich steh am Schalter. Frag mich.',
+     a:{es:'¿A qué hora sale el tren?',de:'Wann fährt der Zug?'},
+     r1:[{es:'¿A qué hora sale?'},{es:'¿Cuánto cuesta?'}],
+     b:{es:'A las ocho. Andén dos.',de:'Um acht. Gleis zwei.'},
+     r2:[{es:'Gracias, muy amable.'}], praise:'Sauber. Du hast gefragt und die Antwort verstanden.'},
+   page:{ch:'Sevilla · der Bahnhof',title:'Der Zug um acht',keep:[{es:'¿A qué hora sale el tren?'}],
+     note:'Eine Frage stellen und die Antwort verstehen — das ist schon eine ganze Reise.',
+     body:function(){return NAME+' stand am Bahnhof von Sevilla, fragte nach dem Zug — und verstand die Antwort. Acht Uhr, Gleis zwei. Kein Wörterbuch nötig.';}}}
+};
+/* 0 · Begrüßung */
+function roomEintauchen(){
+ kacheln({greet:{title:'¡Hola'+(vorname()?', '+vorname():'')+'! 👋',kr:letzteAktivitaet()},layout:'two',items:[
+  {em:'🎭',tt:'Geführtes<br>Gespräch',ss:'Szenen üben',pill:'gratis',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='chat.html';}},
+  {em:'💬',tt:'Freies<br>Gespräch',ss:'Frei reden',pill:'✨ Premium',bg:'#ffb3d6',go:function(){location.href='chat.html';}}
+ ]});
+}
+function roomEintauchenOld(){
+ spikiu('Womit möchtest du dich ausdrücken?',function(){
+  bigcards([
+   {em:'🎭',tt:'Geführtes Gespräch',ss:'Szenen üben — Schritt für Schritt · gratis',go:function(){location.href='gefuehrt.html';}},
+   {em:'💬',tt:'Freies Gespräch',ss:'Frei reden, in deinem Tempo · ✨ Premium',go:function(){location.href='chat.html';}}
+  ]);});}
+function advBegruessung(){newStep(0);
+ spikiu('Hallo '+NAME+'! Schön, dass du da bist. Heute ein kleines Sprachabenteuer — wohin soll es gehen?',function(){
+  bigcards([
+   {em:THEMES.cafe.em,tt:THEMES.cafe.tt,ss:THEMES.cafe.ss,go:function(){advWords('cafe');}},
+   {em:THEMES.bahnhof.em,tt:THEMES.bahnhof.tt,ss:THEMES.bahnhof.ss,go:function(){advWords('bahnhof');}}
+  ]);});}
+/* 1 · Neue Wörter (Wisch-/Tipp-Karten, große ‹ ›) */
+function advWords(key){newStep(1);
+ spikiu('Erst die Wörter, die du gleich brauchst. Wisch oder tipp dich durch — in deinem Tempo.',function(){renderDeck(key);});}
+function renderDeck(key){var words=THEMES[key].words;var idx=0,last=words.length-1;
+ var wrap=document.createElement('div');wrap.className='deck';
+ wrap.innerHTML='<div class="eyebrow">'+words.length+' Wörter</div>'+
+  '<div class="deckrow"><button class="navc prev" aria-label="zurück">‹</button>'+
+  '<div class="dcard"></div><button class="navc next" aria-label="weiter">›</button></div><div class="dots"></div>';
+ S.appendChild(wrap);
+ var card=wrap.querySelector('.dcard'),prev=wrap.querySelector('.prev'),next=wrap.querySelector('.next'),dots=wrap.querySelector('.dots');
+ words.forEach(function(){var dt=document.createElement('span');dt.className='dot';dots.appendChild(dt);});
+ function show(){var wd=words[idx];
+  card.innerHTML='<div class="es">'+wd.es+'</div><div class="de">'+wd.de+'</div><button class="spk" aria-label="Vorlesen">🔊</button>';
+  card.querySelector('.spk').onclick=function(e){e.stopPropagation();say(wd.es);};
+  prev.disabled=idx===0;next.disabled=idx===last;
+  [].forEach.call(dots.children,function(d,i){d.classList.toggle('on',i===idx);});}
+ function move(d){idx=Math.max(0,Math.min(last,idx+d));show();}
+ prev.onclick=function(){move(-1);};next.onclick=function(){move(1);};
+ var x0=null;card.addEventListener('pointerdown',function(e){x0=e.clientX;});
+ card.addEventListener('pointerup',function(e){if(x0==null)return;var dx=e.clientX-x0;if(dx<-40)move(1);else if(dx>40)move(-1);x0=null;});
+ var keyh=function(e){if(!document.body.contains(wrap)){window.removeEventListener('keydown',keyh);return;}
+  if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1);};
+ window.addEventListener('keydown',keyh);show();
+ ends([{t:'Weiter ✓',primary:true,go:function(){window.removeEventListener('keydown',keyh);advAussprache(key);}}]);}
+/* 2 · Aussprache (spiegeln, nicht benoten) */
+function advAussprache(key){newStep(2);var p=THEMES[key].pron;
+ spikiu('Ein Wort sprichst du mir nach. Ich bewerte nichts — ich hör nur gern zu.',function(){
+  var c=document.createElement('div');c.className='tool';
+  c.innerHTML='<div class="eyebrow">Aussprache</div><div style="display:flex;align-items:center;gap:.7rem"><div style="flex:1;font-family:Lora,serif;font-size:1.9rem">'+p.es+'</div><button class="spk">🔊</button></div><div style="font-size:.86rem;color:var(--soft);margin-top:.3rem">'+p.de+'</div>';
+  c.querySelector('.spk').onclick=function(){say(p.es);};S.appendChild(c);say(p.es);scrollEnd();
+  ends([{t:'🔊 Nochmal hören',go:function(){say(p.es);advAussprache(key);}},
+        {t:'Ich hab’s gesagt ✓',primary:true,go:function(){spikiu('Schön. Klingt schon spanisch.',function(){advSaetze(key);});}}]);});}
+/* 3 · Sätze */
+function advSaetze(key){newStep(3);var ss=THEMES[key].saetze;
+ spikiu('Jetzt die Wörter zu ganzen Sätzen. Hör rein — antippen zum Vorlesen.',function(){
+  ss.forEach(function(x){esLine(x.es,x.de);});
+  ends([{t:'Weiter ✓',primary:true,go:function(){advHoeren(key);}}]);});}
+/* 4 · Hörverständnis */
+function advHoeren(key){newStep(4);var h=THEMES[key].hoer;
+ spikiu('Jetzt nur hören. Ich sage etwas — du sagst mir, was du verstanden hast.',function(){
+  var c=document.createElement('div');c.className='tool';
+  c.innerHTML='<div class="eyebrow">Hörverständnis</div><button class="end primary" style="margin:0 0 .3rem">🔊 Abspielen</button><div style="margin-top:.6rem;font-weight:600">'+h.q+'</div>';
+  c.querySelector('.end').onclick=function(){say(h.play);};S.appendChild(c);say(h.play);scrollEnd();
+  var e=document.createElement('div');e.className='ends';
+  h.opts.forEach(function(o){var b=document.createElement('button');b.className='end';b.textContent=o.t;
+   b.onclick=function(){e.remove();
+    if(o.ok){spikiu('Gutes Ohr! Genau das war es.',function(){advRollenspiel(key);});}
+    else{spikiu('Fast. Hör nochmal — kein Stress, das Ohr lernt langsam.',function(){say(h.play);
+     ends([{t:'Nochmal versuchen',primary:true,go:function(){advHoeren(key);}}]);});}};
+   e.appendChild(b);});
+  S.appendChild(e);scrollEnd();});}
+/* 5 · Rollenspiel */
+function advRollenspiel(key){newStep(5);var sc=THEMES[key].scene;
+ spikiu('Jetzt das Rollenspiel — du benutzt die Wörter. '+sc.intro,function(){
+  esLine(sc.a.es,sc.a.de);
+  chips(sc.r1,function(){setTimeout(function(){esLine(sc.b.es,sc.b.de);
+   chips(sc.r2,function(){advAbschluss(key);});},300);});});}
+/* 6 · Abschluss */
+function advAbschluss(key){newStep(6);var sc=THEMES[key].scene;
+ spikiu(sc.praise,function(){
+  spikiu('Das war dein Abenteuer, '+NAME+'. Soll ich daraus eine Seite in deinem Buch machen?',function(){
+   ends([
+    {t:'📖 Ja, ins Buch',primary:true,go:function(){addPage(key);
+      spikiu('Geschrieben. Es liegt jetzt in deinem Buch — schau in der Bibliothek nach.',function(){
+       ends([{t:'Zur Bibliothek',primary:true,go:function(){loadRoom('bibliothek');}},
+             {t:'Neues Abenteuer',go:advBegruessung}]);});}},
+    {t:'↻ Nochmal',go:function(){loadRoom('eintauchen');}},
+    {t:'Anderes Abenteuer',go:advBegruessung}
+   ]);});});}
+function addPage(key){var p=THEMES[key].page;pages.push({ch:p.ch,title:p.title,body:p.body(),keep:p.keep,note:p.note});}
+
+/* ===== RAUM: BIBLIOTHEK ===== */
+function roomBibliothek(){
+ kacheln({layout:'four',items:[
+  {em:'📖',tt:'Lernroman',ss:'Immersiv lesen',bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
+  {em:'📜',tt:'Sprichwörter',ss:'Sprache & Kultur',bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
+  {em:'📓',tt:'Lektionen',ss:'Aus Gesprächen',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
+  {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter',bg:'#c7e89a',go:renderBook}
+ ]});}
+function readRoman(){
+ var c=document.createElement('div');c.className='tool read';
+ c.innerHTML='<div class="eyebrow">Lernroman · Kapitel 1</div>'+
+  '<div class="es">Era la <span class="fr" data-de="der frühe Morgen, vor Sonnenaufgang">madrugada</span>.</div>'+
+  '<div class="es">La ciudad aún <span class="fr" data-de="schlief">dormía</span>.</div>'+
+  '<div class="es">Solo el café estaba <span class="fr" data-de="wach">despierto</span>.</div>'+
+  '<button class="end" style="margin-top:.9rem">🔊 Vorlesen</button>';
+ c.querySelectorAll('.fr').forEach(function(fr){fr.onclick=function(e){showPop(e.target,fr.dataset.de);};});
+ c.querySelector('.end').onclick=function(){say('Era la madrugada. La ciudad aún dormía. Solo el café estaba despierto.');};
+ S.appendChild(c);scrollEnd();
+ spikiu('Tipp ein unterstrichenes Wort an, wenn du’s nicht kennst. Kein Stress.',function(){
+  ends([{t:'Weiter lesen',primary:true,go:function(){spikiu('Im echten Spikiu geht die Geschichte hier weiter — Kapitel für Kapitel.',function(){ends([{t:'Zurück',go:function(){S.innerHTML='';roomBibliothek();}}]);});}},
+        {t:'Genug für jetzt',go:function(){S.innerHTML='';roomBibliothek();}}]);});}
+var bookIdx=0;
+function readBuch(){try{return JSON.parse(localStorage.getItem('spikiu_buch')||'[]');}catch(e){return [];}}
+function bkZiel(){try{return (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).zielsprache||'es';}catch(e){return 'es';}}
+function bkMutter(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache||'de';return ['de','es','en'].indexOf(m)>-1?m:'de';}catch(e){return 'de';}}
+function bkTr(e){if(e.tr)return e.tr;var w=(e.roh||e.wort);return (window.spikiuWoerterbuch&&window.spikiuWoerterbuch.tr(w,bkZiel(),bkMutter()))||'';}
+function bookPages(){
+ var w=readBuch();var P=[{k:'cover'}];
+ if(w.length)P.push({k:'words'});else P.push({k:'empty'});
+ P.push({k:'hook'});return P;}
+function bkPhrases(keep){if(!keep||!keep.length)return '';
+ var h='<div class="bsaid"><div class="blbl">Das hast du gesagt</div>';
+ keep.forEach(function(p){h+='<div class="bphrase"><span class="bes">'+p.es+'</span><button class="spk" data-es="'+p.es+'" aria-label="Vorlesen">🔊</button></div>';});
+ return h+'</div>';}
+function bkNote(t){return '<div class="bnote"><span class="bcap">'+capy()+'</span><span class="bt">„'+t+'"</span></div>';}
+function bkChap(p,n,neu){var h='';if(neu)h+='<span class="bneu">✷ neu</span><br>';
+ h+='<div class="beyebrow">'+p.ch+'</div><div class="bptitle">'+p.title+'</div>';
+ h+='<div class="bpbody">'+p.body+'</div>'+bkPhrases(p.keep)+bkNote(p.note);
+ h+='<div class="bpnum">Seite '+n+' · '+pages.length+'</div>';return h;}
+function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div><h2>'+NAME+'s Buch</h2>'+
+ '<div class="bsub">Was du betreten hast — Seite für Seite.</div>'+
+ '<div class="bby"><span class="bcap">'+capy()+'</span>geschrieben von Spikiu</div>'+
+ '<div class="bspine">'+readBuch().length+' Wörter</div></div>';}
+function bkWords(){var W=readBuch().slice().reverse();var h='<div class="beyebrow">Mitgenommen</div><div class="bptitle">Deine Wörter</div><div class="bwords">';
+ W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(bkTr(e)||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
+function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">Noch leer</h2>'+
+ '<div class="bsub">Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.</div></div>';}
+function bkHook(){return '<div class="bhook"><div class="bbig">Kein Zertifikat.<br>Dein Buch.</div>'+
+ '<div class="bhsub">Andere sammeln Streaks. Bei Spikiu wächst ein Buch, das nur dir gehört — Seite für Seite, in deinem Tempo.</div>'+
+ '<div class="bprint">Gedruckte Edition · bald</div></div>';}
+function bkInner(pg){if(pg.k==='cover')return bkCover();if(pg.k==='chap')return bkChap(pg.p,pg.n,pg.neu);
+ if(pg.k==='words')return bkWords();if(pg.k==='empty')return bkEmpty();if(pg.k==='hook')return bkHook();return '';}
+function bookPage(dir){var P=bookPages();bookIdx=Math.max(0,Math.min(P.length-1,bookIdx));
+ var pg=document.getElementById('bpage');pg.className='bpage'+(dir>0?' inR':dir<0?' inL':'');
+ pg.innerHTML=bkInner(P[bookIdx]);
+ document.getElementById('bcnt').textContent=(bookIdx+1)+' / '+P.length;
+ document.getElementById('bprev').disabled=bookIdx===0;
+ document.getElementById('bnext').disabled=bookIdx===P.length-1;
+ pg.querySelectorAll('.spk').forEach(function(sp){sp.onclick=function(){say(sp.dataset.es);};});}
+function renderBook(){bookIdx=0;var ov=document.getElementById('bookov');
+ ov.innerHTML='<div class="bkhead"><span class="bktitle">Mein Buch</span><button class="bkx" id="bkx" aria-label="Buch schließen">✕</button></div>'+
+  '<div class="bkview"><div class="bpage" id="bpage"></div></div>'+
+  '<div class="bkflip"><button class="navc" id="bprev" aria-label="zurück">‹</button>'+
+  '<span class="bkcnt" id="bcnt"></span>'+
+  '<button class="navc" id="bnext" aria-label="weiter">›</button></div>';
+ ov.classList.add('open');bookPage(0);
+ document.getElementById('bkx').onclick=closeBook;
+ document.getElementById('bprev').onclick=function(){if(bookIdx>0){bookIdx--;bookPage(-1);}};
+ document.getElementById('bnext').onclick=function(){var P=bookPages();if(bookIdx<P.length-1){bookIdx++;bookPage(1);}};
+ var view=ov.querySelector('.bkview'),x0=null;
+ view.addEventListener('pointerdown',function(e){x0=e.clientX;});
+ view.addEventListener('pointerup',function(e){if(x0==null)return;var dx=e.clientX-x0;x0=null;var P=bookPages();
+  if(dx<-45&&bookIdx<P.length-1){bookIdx++;bookPage(1);}else if(dx>45&&bookIdx>0){bookIdx--;bookPage(-1);}});}
+function closeBook(){var ov=document.getElementById('bookov');ov.classList.remove('open');ov.innerHTML='';}
+window.addEventListener('keydown',function(e){var ov=document.getElementById('bookov');
+ if(!ov||!ov.classList.contains('open'))return;var P=bookPages();
+ if(e.key==='ArrowRight'&&bookIdx<P.length-1){bookIdx++;bookPage(1);}
+ if(e.key==='ArrowLeft'&&bookIdx>0){bookIdx--;bookPage(-1);}
+ if(e.key==='Escape')closeBook();});
+
+/* ===== RAUM: ÜBUNG ===== */
+var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
+function roomUebung(){
+ kacheln({layout:'tri',items:[
+  {em:'🃏',tt:'Wortschatz',ss:'Dein Deck',bg:'#ffd0b0',go:function(){location.href='gym.html';}},
+  {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
+  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}}
+ ]});}
+function uebKarte(i){
+ if(i>=UWORDS.length){
+  UWORDS.forEach(function(u){if(keptWords.indexOf(u.w)<0)keptWords.push(u.w);});
+  spikiu('Das reicht für jetzt. Die Wörter liegen in deinem Buch — du holst sie dir, wenn du sie brauchst.',function(){
+   ends([{t:'Zum Buch',primary:true,go:function(){loadRoom('bibliothek');setTimeout(renderBook,RED?0:20);}},
+         {t:'Nochmal üben',go:function(){loadRoom('uebung');}}]);});return;}
+ var u=UWORDS[i];var f=document.createElement('div');f.className='flip';
+ f.innerHTML='<div class="card"><div class="w">'+u.w+'</div><button class="spk" aria-label="Vorlesen">🔊</button><div class="hint">tippen zum Umdrehen</div></div>';
+ var card=f.querySelector('.card');var flipped=false;
+ f.querySelector('.spk').onclick=function(ev){ev.stopPropagation();say(u.w);};
+ card.onclick=function(){if(flipped)return;flipped=true;
+  card.innerHTML='<div class="w">'+u.w+'</div><div class="m">'+u.m+'</div>';
+  var e=document.createElement('div');e.className='ends';e.style.margin='.8rem 0 0';
+  S.appendChild(e);
+  [{t:'Kann ich ✓',primary:true},{t:'Nochmal zeigen'}].forEach(function(o){
+   var b=document.createElement('button');b.className='end'+(o.primary?' primary':'');b.textContent=o.t;
+   b.onclick=function(){e.remove();f.remove();uebKarte(o.primary?i+1:i);};e.appendChild(b);});
+  scrollEnd();};
+ S.appendChild(f);scrollEnd();}
+
+/* ===== Onboarding ===== */
+function submitName(){var v=(document.getElementById('nameIn').value||'').trim();NAME=v||'Pepe';
+ document.getElementById('wsub').textContent='Schön, '+NAME+'. Welche Sprache möchtest du lernen?';
+ document.getElementById('namebox').style.display='none';
+ var lr=document.getElementById('langrow');lr.style.display='flex';lr.innerHTML='';
+ [['Español',true],['Deutsch',false]].forEach(function(p){var b=document.createElement('button');b.textContent=p[0];
+  b.onclick=function(){enterHouse();};lr.appendChild(b);});}
+function startTuer(){try{var t=sessionStorage.getItem('spk_haus_tuer');if(t&&['eintauchen','bibliothek','uebung'].indexOf(t)>-1)return t;}catch(e){}return 'eintauchen';}
+function enterHouse(){document.getElementById('welcome').classList.remove('active');
+ document.getElementById('house').classList.add('active');buildNav();loadRoom(startTuer());}
+
+document.getElementById('wbig').innerHTML=capyBig();var _wc=document.querySelector('#wbig svg');if(_wc&&window.spkCapyAlive){window.spkCapyAlive(_wc,{tapTarget:document.getElementById('wbig')});}
+document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')submitName();});
+(function boot(){
+ try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'null');
+  if(u&&u.name){NAME=u.name;enterHouse();return;}}catch(e){}
+ var nb=document.getElementById('namebox');
+ if(nb){nb.innerHTML='';
+  var b=document.createElement('button');b.className='go';
+  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;padding:.9rem 1rem';
+  b.textContent="Los geht's →";
+  b.onclick=function(){location.href='assessment.html';};
+  nb.appendChild(b);}
+ var lr=document.getElementById('langrow');if(lr)lr.style.display='none';
+})();
+</script>
+<script src="bottomnav.js" defer></script>
+</body></html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Lernroman</title>
+<meta name="description" content="Der Lernroman — ein Buch, das dich in die Sprache hineinzieht.">
+
+<!-- Schriften SELBST GEHOSTET (kein Google-Fonts-CDN → keine Fremd-Verbindung).
+     Lora = Zielsprache (Leseschrift) · DM Sans = Muttersprache · Archivo Black =
+     Titel · DM Mono = Labels · Lora = Wortmarke + Sheets von nav.js. -->
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   Layout + Farben 1:1 aus den abgenommenen Prototypen
+   (proto-learnroman-lukas.html / proto-learnroman-marta.html).
+   Geändert nur, was Produktion braucht: Prototyp-Badge raus, nav.js-Kopfslot
+   und untere Leiste (--spk-navh) rein, Klasse .es → .zeile (Sprache ist ein
+   FELD — „es" als Klassenname wäre falsch, sobald die Zielsprache Deutsch ist).
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{--navy:#15163a;--terra:#ff6b5a;--pink:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--gold:#a87b2e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
+html,body{margin:0;height:100%}
+body{--bg:#f5f1e7;--ink:#15163a;--acc:#2d6a4f;--muted:#6b6154;--de:#fbf8f0;--read:#2b2621;--ow:2.5px;
+ background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;
+ /* am Telefon oben ansetzen: .app ist um die Navi-Leiste kürzer als der Schirm,
+    zentriert bliebe sonst ein toter Streifen über dem Kopf. Erst im Rahmen-Look
+    (Desktop) wird wieder mittig gesetzt. */
+ display:flex;align-items:flex-start;justify-content:center;min-height:100dvh}
+.app{position:relative;display:flex;flex-direction:column;width:100%;background:var(--bg);overflow:hidden;
+ height:calc(100dvh - var(--spk-navh, 0px))}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px}
+ body{background:var(--navy);background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;
+  align-items:center;padding:24px;padding-bottom:calc(24px + var(--spk-navh, 0px))}
+ .app{width:min(460px,94vw);height:min(880px,calc(90vh - var(--spk-navh, 0px)));border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
+}
+button{font-family:inherit}
+
+/* nav.js-Kopfslot (Slot-Modus wie chat.html: nur die Wortmarke, keine zweite Leiste) */
+header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
+ padding:calc(.5rem + env(safe-area-inset-top)) .9rem .45rem;
+ background:rgba(255,255,255,.72);border-bottom:2px solid var(--ink)}
+
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:.65rem .9rem .7rem}
+.top .k{font:500 .6rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase;text-align:center}
+.top h1{font-family:'Archivo Black',sans-serif;font-size:1.25rem;margin:.15rem 0 .6rem;text-align:center}
+.top h1.solo{margin-bottom:.15rem}
+
+/* Etappen-Schalter — DEV-SCHLOSS: im Prototyp die Test-Attrappe, in Produktion
+   nur mit ?dev=1 sichtbar. Ohne ihn entscheidet allein profile.koennen. */
+.etnote{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.08em;color:var(--muted);text-align:center;margin-bottom:.4rem}
+.etrow{display:flex;gap:.4rem}
+.et{flex:1;font:800 .74rem/1.1 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:.5rem .3rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.et.on{background:var(--acc);color:#fff}
+.et:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+
+.list{flex:1;min-height:0;overflow:auto;padding:1rem .9rem 2rem}
+.band{margin-bottom:1.3rem}
+.bandhead{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.bandhead .nm{font-family:'Archivo Black',sans-serif;font-size:.95rem}
+.bandhead .st{font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .45rem;border-radius:999px;border:2px solid var(--ink)}
+.st.open{background:var(--sage)}.st.closed{background:#e7dfcf;color:var(--muted)}
+.ch{display:block;width:100%;text-align:left;background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:.75rem .85rem;margin-bottom:.6rem;cursor:pointer}
+.ch:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.ch .kap{font:700 .6rem/1 'DM Mono',monospace;letter-spacing:.12em;color:var(--acc);text-transform:uppercase}
+.ch .tt{font-family:'Archivo Black',sans-serif;font-size:1.08rem;margin:.15rem 0 .2rem}
+.ch .te{font-family:'Lora',serif;font-size:1.02rem;line-height:1.45;color:var(--muted)}
+.ch.locked{background:#efe8d8;box-shadow:none;border-style:dashed;cursor:default;color:var(--muted)}
+.ch.locked .tt{color:var(--muted)}
+.ch.locked .lockline{margin-top:.35rem;font:600 .72rem/1 'DM Sans';color:var(--gold)}
+
+/* Leerer Zustand (Sprachpaar ohne Buch — en/el): ehrlich, kein Fehler, kein Versprechen. */
+.leer{text-align:center;padding:2.2rem 1rem}
+.leer .capy{width:104px;height:104px;margin:0 auto .9rem;display:block;animation:leerAtmen 4s ease-in-out infinite}
+@keyframes leerAtmen{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.02)}}
+.leer h2{font-family:'Archivo Black',sans-serif;font-size:1.1rem;margin:0 0 .5rem}
+.leer p{font-size:.95rem;color:var(--muted);max-width:24rem;margin:0 auto .9rem;line-height:1.6}
+.leer .zurueck{display:inline-block;font:700 .8rem/1 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:.6rem .9rem;box-shadow:2px 2px 0 var(--ink);text-decoration:none}
+
+/* ── Lese-Overlay ── */
+.reader{position:absolute;inset:0;z-index:80;display:none;flex-direction:column;background:var(--bg)}
+.reader.open{display:flex}
+.rhead{flex:0 0 auto;display:flex;align-items:center;gap:.6rem;padding:calc(.7rem + env(safe-area-inset-top)) .9rem .6rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.85)}
+.rback{width:38px;height:38px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.3rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);flex:0 0 auto}
+.rhead .rt{font-family:'Archivo Black',sans-serif;font-size:1.05rem;line-height:1.1}
+.rhead .rk{font:600 .58rem/1 'DM Mono',monospace;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.rbody{flex:1;min-height:0;overflow:auto;padding:1.3rem 1.15rem 2.5rem}
+
+/* Schrift = Sprache: DM Sans trägt die Muttersprache, Lora die Zielsprache.
+   Das ist kein Dekor — der Lerner sieht das Verhältnis, bevor er ein Wort liest. */
+.narr{font-family:'DM Sans',sans-serif;font-size:1.01rem;line-height:1.68;color:var(--read);margin:0 0 .95rem}
+.line{margin:0 0 .95rem;padding-left:.7rem;border-left:3px solid var(--sage)}
+.line .zeile{display:inline-flex;align-items:center;gap:.5rem;font-family:'Lora',serif;font-weight:500;font-size:1.2rem;line-height:1.55;color:var(--read)}
+.line .gloss{display:block;font-size:.86rem;color:var(--muted);margin-top:.1rem}
+.line .gloss.hid{display:none}
+.line.tap{cursor:pointer}
+.line.tap .zeile .zt{border-bottom:1px dotted rgba(21,22,58,.28)}
+.line.tap.shown .zeile .zt{border-bottom:0}
+.rhint{font:600 .68rem/1.3 'DM Sans';color:var(--muted);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:.4rem .6rem;margin:0 0 1.1rem;box-shadow:2px 2px 0 var(--ink)}
+.prose{font-family:'Lora',serif;font-weight:400;font-size:1.18rem;line-height:1.78;letter-spacing:.006em;color:var(--read);margin:0 0 1.15rem}
+.spk{flex:0 0 30px;width:30px;height:30px;border-radius:999px;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:.82rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
+.spk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.prose .spk{margin-right:.4rem}
+.read-row{display:flex;justify-content:flex-end;margin-top:.4rem}
+.hoer-btn{display:inline-flex;align-items:center;gap:.35rem;font:700 .74rem 'DM Sans',sans-serif;color:var(--acc);background:transparent;border:1.5px solid var(--acc);border-radius:999px;padding:.25rem .6rem;cursor:pointer;opacity:.82}
+.hoer-btn:active{opacity:1;transform:translate(1px,1px)}
+.hoer-btn.busy{opacity:1;background:var(--acc);color:#fff}
+.gloss{display:block;font-size:.9rem;color:var(--muted);margin-top:.25rem;font-style:italic}
+.wjhint{display:flex;gap:.55rem;align-items:center;background:var(--de);border:2px dashed var(--acc);border-radius:14px;padding:.55rem .7rem;margin:0 0 1.2rem}
+.wjhint .wjh-cap{flex:0 0 34px;width:34px;height:34px;border-radius:999px;background:#fff;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.wjhint .wjh-cap svg{width:26px;height:26px;animation:none}
+.wjhint .wjh-tx{font-size:.9rem;line-height:1.35;color:var(--ink)}
+/* Rückmeldung, solange die Stimme lädt/spricht — Piper kann beim ersten Mal
+   Sekunden brauchen; ohne Zeichen wirkt der Knopf tot. */
+.spk.busy{animation:spkPuls 1s ease-in-out infinite}
+@keyframes spkPuls{0%,100%{opacity:1}50%{opacity:.45}}
+.rfoot{text-align:center;color:var(--muted);font-family:'Lora',serif;font-style:italic;font-size:1rem;margin-top:1rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body data-nav-active="werkstatt">
+
+<div class="app">
+
+  <!-- Slot-Modus (wie chat.html): nav.js füllt diese Kopfzeile mit der Wortmarke.
+       Die untere Tab-Leiste montiert nav.js selbst; data-nav-active hält den
+       Tab „Werkstatt" aktiv, ohne nav.js anzufassen. -->
+  <header data-spk-nav></header>
+
+  <div class="top">
+    <div class="k" id="eyebrow">Bibliothek · Lernroman</div>
+    <h1 id="buchTitel">Lernroman</h1>
+    <div class="etnote" id="etnote" hidden></div>
+    <div class="etrow" id="etrow" hidden></div>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="reader" id="reader" aria-hidden="true">
+    <div class="rhead">
+      <button class="rback" id="rback" type="button" aria-label="zurück">‹</button>
+      <div><div class="rk" id="rk"></div><div class="rt" id="rt"></div></div>
+    </div>
+    <div class="rbody" id="rbody"></div>
+  </div>
+
+</div>
+
+<!-- Fester Inhalt: Root-Helfer, SYNCHRON vor dem Haupt-Script. KEIN API-Call. -->
+<script src="learnroman-daten.js"></script>
+<script src="woerterbuch.js"></script>
+<script src="wortjag.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  SPIKIU · RAUM: LEARNROMAN (der Immersions-Leseraum in der Bibliothek)
+//
+//  Statisch: der Text steht in learnroman-daten.js → 0 Netzwerk-Call,
+//  0 Tokens beim Lesen (bake-once).
+//  Anti-Gamification: kein Score, kein Streak, kein Prozent, keine Zählung
+//  gelesener Kapitel. Fortschritt wird gefühlt, nie gezählt.
+//  Reuse: nav.js (Navi), audio.js (🔊 Piper), capy-vivo.js (leerer Zustand),
+//  learnroman-daten.js (Inhalt).
+// ════════════════════════════════════════════════════════════════════
+
+// ── Profil defensiv lesen (Codes de/es/en/el — 1:1 wie chat.html/gym.html) ──
+var stored = {};
+try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+function langCode(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v)) return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+  if(v.indexOf('engl')>-1) return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  return null;
+}
+function koennenFrom(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(['anfang','mittel','fortgeschritten'].indexOf(v)>-1) return v;
+  if(/a[12]/.test(v)) return 'anfang';
+  if(/b[12]/.test(v)) return 'mittel';
+  if(/c[12]/.test(v)) return 'fortgeschritten';
+  return null;
+}
+var PROFILE = {
+  zielsprache:   stored.zielsprache   || langCode(stored.targetLang) || 'es',
+  muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de',
+  koennen:       stored.koennen       || koennenFrom(stored.level)   || 'anfang'
+};
+
+// ── Dev-Schloss: ?dev=1 öffnet alle Etappen und zeigt den Etappen-Schalter.
+//    Im Produkt entscheidet allein profile.koennen. ──
+var DEV = /[?&]dev=1\b/.test(window.location.search);
+
+// ── UI-Texte in der MUTTERSPRACHE des Lerners ──
+var UI = {
+  de:{ eyebrow:'Bibliothek · Lernroman', kap:'Kapitel', offen:'offen', zu:'öffnet sich später',
+       lock:function(nm){ return '✦ öffnet sich in der Etappe ' + nm; },
+       hint:'Tipp auf eine Zeile zeigt die Übersetzung.', ende:'— Ende des Kapitels —',
+       back:'zurück', hoeren:'Vorlesen', devnote:'Deine Etappe · zum Testen umschaltbar',
+       leerH:'Dieses Buch entsteht noch.',
+       leerP:'Der Lernroman für diese Sprache ist noch nicht geschrieben. Spikiu schreibt ihn lieber gut als schnell.',
+       leerZ:'Zurück in die Bibliothek' },
+  es:{ eyebrow:'Biblioteca · Lernroman', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
+       lock:function(nm){ return '✦ se abre en la etapa ' + nm; },
+       hint:'Toca una línea para ver la traducción.', ende:'— Fin del capítulo —',
+       back:'atrás', hoeren:'Escuchar', devnote:'Tu etapa · conmutable para probar',
+       leerH:'Este libro todavía se está escribiendo.',
+       leerP:'El Lernroman de este idioma aún no existe. Spikiu prefiere escribirlo bien antes que rápido.',
+       leerZ:'Volver a la biblioteca' },
+  en:{ eyebrow:'Library · Lernroman', kap:'Chapter', offen:'open', zu:'opens later',
+       lock:function(nm){ return '✦ opens in the ' + nm + ' stage'; },
+       hint:'Tap a line to see the translation.', ende:'— End of the chapter —',
+       back:'back', hoeren:'Read aloud', devnote:'Your stage · switchable for testing',
+       leerH:'This book is still being written.',
+       leerP:'The Lernroman for this language does not exist yet. Spikiu would rather write it well than fast.',
+       leerZ:'Back to the library' }
+};
+function uiLang(){ return UI[PROFILE.muttersprache] ? PROFILE.muttersprache : 'de'; }
+var T = UI[uiLang()];
+var VORLESEN={de:'Vorlesen',es:'Escuchar',en:'Read aloud'};
+var JAGD_TX={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.'};
+function hoerRow(){ return '<div class="read-row"><button class="hoer-btn" type="button">\uD83D\uDD0A ' + (VORLESEN[uiLang()]||VORLESEN.de) + '</button></div>'; }
+
+// Spikiu IMMER komplett: Ohren + 4 Füße. Nie einen halben Capy.
+// Augen in einer Gruppe + Mund gekennzeichnet → capy-vivo.js macht ihn lebendig.
+var CAPY_SVG = '<svg class="capy" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<g class="spk-capy-eyes"><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/></g>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+// ── Das Buch zum Sprachpaar (oder keins) ──
+var BUCH = (typeof window.spikiuLearnroman === 'function')
+  ? window.spikiuLearnroman(PROFILE.zielsprache, PROFILE.muttersprache) : null;
+var ETAPPEN = BUCH ? BUCH.etappen : [];
+function etIdx(id){
+  for (var i=0;i<ETAPPEN.length;i++){ if (ETAPPEN[i].id === id) return i; }
+  return -1;
+}
+
+// ── Freischaltung: eigene Etappe UND alles darunter. Kein Schloss, kein Grind. ──
+var KOENNEN_ETAPPE = { anfang:'fundament', mittel:'aufbau', fortgeschritten:'anwendung' };
+var offenBis = Math.max(0, etIdx(KOENNEN_ETAPPE[PROFILE.koennen] || 'fundament'));
+if (DEV) offenBis = ETAPPEN.length - 1;
+
+// ── Audio (🔊): audio.js ist die EINZIGE Schnittstelle. Der Browser-Fallback
+//    steckt schon drin; diese Mini-Notbremse greift nur, wenn der Modul-Import
+//    gar nicht kommt (alte Browser). ──
+var stimmeWarm = false;
+function warmVoice(){
+  if (!BUCH || !window.spkWarm) return;
+  try { var p = window.spkWarm(BUCH.zielsprache); if (p && p.then) p.then(function(){ stimmeWarm = true; }, function(){}); } catch(e){}
+}
+function sprich(text){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, BUCH.zielsprache); } catch(e){} }
+  try {
+    var s = window.speechSynthesis;
+    if (s && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[BUCH.zielsprache] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp; s.cancel(); s.speak(u);
+    }
+  } catch(e){}
+}
+function sprichAus(btn, text){
+  if (btn) btn.classList.add('busy');
+  var fertig = function(){ stimmeWarm = true; if (btn) btn.classList.remove('busy'); };
+  var p = sprich(text);
+  if (p && p.then) { p.then(fertig, fertig); } else { setTimeout(fertig, 1200); }
+}
+
+// ── Kapitelliste ──────────────────────────────────────────────────────
+var listEl   = document.getElementById('list');
+var readerEl = document.getElementById('reader');
+
+function renderEtSchalter(){
+  if (!DEV || !BUCH) return;
+  var note = document.getElementById('etnote'), row = document.getElementById('etrow');
+  note.textContent = T.devnote; note.hidden = false; row.hidden = false;
+  row.innerHTML = '';
+  ETAPPEN.forEach(function(e, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'et' + (i === offenBis ? ' on' : '');
+    b.textContent = e.nm;
+    b.onclick = function(){ offenBis = i; renderEtSchalter(); renderList(); };
+    row.appendChild(b);
+  });
+}
+
+function renderList(){
+  if (!BUCH){ renderLeer(); return; }
+  var h = '';
+  ETAPPEN.forEach(function(e, i){
+    var offen = i <= offenBis;
+    h += '<div class="band"><div class="bandhead"><span class="nm">' + esc(e.nm) + '</span>' +
+         '<span class="st ' + (offen ? 'open' : 'closed') + '">' + esc(offen ? T.offen : T.zu) + '</span></div>';
+    BUCH.kapitel.forEach(function(c, idx){
+      if (c.level !== e.id) return;
+      var kopf = '<div class="kap">' + esc(T.kap) + ' ' + c.n + '</div>' +
+                 '<div class="tt">' + esc(c.title) + '</div>';
+      if (offen){
+        h += '<button type="button" class="ch" data-i="' + idx + '">' + kopf +
+             '<div class="te">' + esc(c.teaser) + '</div></button>';
+      } else {
+        h += '<div class="ch locked">' + kopf +
+             '<div class="lockline">' + esc(T.lock(e.nm)) + '</div></div>';
+      }
+    });
+    h += '</div>';
+  });
+  listEl.innerHTML = h;
+  [].forEach.call(listEl.querySelectorAll('.ch[data-i]'), function(b){
+    b.onclick = function(){ oeffneKapitel(+b.getAttribute('data-i')); };
+  });
+}
+
+// Leerer Zustand: es gibt (noch) kein Buch für dieses Sprachpaar (en/el).
+// Ehrlich statt Fehler — und statt erfundenem Platzhalter-Inhalt.
+function renderLeer(){
+  document.getElementById('buchTitel').className = 'solo';
+  listEl.innerHTML = '<div class="leer">' + CAPY_SVG +
+    '<h2>' + esc(T.leerH) + '</h2><p>' + esc(T.leerP) + '</p>' +
+    '<a class="zurueck" href="books.html">' + esc(T.leerZ) + '</a></div>';
+  var svg = listEl.querySelector('svg.capy');
+  if (svg && typeof window.spkCapyAlive === 'function') window.spkCapyAlive(svg);
+}
+
+// ── Ein Block wird HTML ────────────────────────────────────────────────
+//  na = Muttersprache (DM Sans, kein Audio)
+//  z  = Zielsprache + optionale Brücke (Lora, 🔊)
+//  p  = Zielsprach-Prosa, nur Anwendung (Lora, 🔊)
+//
+//  WORTJAG-VORBEREITUNG (Auftrag §8): der Zielsprach-Text steht in einem
+//  EIGENEN Container (.zt) OHNE verschachtelte Inline-Elemente — der 🔊-Knopf
+//  ist sein Geschwister, nicht sein Kind. So lässt sich der Textknoten später
+//  wortweise umhüllen. Bewusst KEINE Tap-Handler auf Wortebene (kollidierte
+//  mit der Tipp-Brücke, die auf Zeilenebene arbeitet) — das kommt mit Wortjag.
+function spkKnopf(){
+  return '<button type="button" class="spk" aria-label="' + esc(T.hoeren) + '">🔊</button>';
+}
+function zielSpan(text){
+  return '<span class="zt" lang="' + esc(BUCH.zielsprache) + '">' + esc(text) + '</span>';
+}
+function blockHTML(bl, zu){
+  if (bl.na) return '<p class="narr">' + esc(bl.na) + '</p>';
+  if (bl.z){
+    var gloss = bl.tr ? '<span class="gloss">' + esc(bl.tr) + '</span>' : '';
+    return '<div class="line"><span class="zeile">' + zielSpan(bl.z) + '</span>' + gloss + hoerRow() + '</div>';
+  }
+  if (bl.p) return '<div class="prose">' + zielSpan(bl.p) + hoerRow() + '</div>';
+  return '';
+}
+
+// ── Lese-Overlay ───────────────────────────────────────────────────────
+function oeffneKapitel(i){
+  var c = BUCH.kapitel[i];
+  if (!c) return;
+  var e = ETAPPEN[etIdx(c.level)] || { nm:'' };
+  document.getElementById('rk').textContent = T.kap + ' ' + c.n + ' · ' + e.nm;
+  document.getElementById('rt').textContent = c.title;
+
+  // Tipp-Brücke: im Fundament steht die Brücke offen, ab Aufbau ist sie
+  // eingeklappt (ein Tipp holt sie) → der sichtbare Ziel-Anteil springt hoch,
+  // ohne dass ein Anfänger im Regen steht.
+  var zu = (c.level !== 'fundament');
+  var hatBruecke = c.body.some(function(bl){ return !!bl.tr; });
+  var h = '';
+  c.body.forEach(function(bl){ h += blockHTML(bl, zu); });
+  h += '<div class="rfoot">' + esc(T.ende) + '</div>';
+
+  var rb = document.getElementById('rbody');
+  rb.innerHTML = h;
+  rb.scrollTop = 0;
+
+  // 🔊 Vorlesen — spielt den Satz/Absatz in der Zielsprache.
+  [].forEach.call(rb.querySelectorAll('.hoer-btn'), function(btn){
+    btn.onclick = function(){
+      var host = btn.closest('.line, .prose');
+      var zt = host && host.querySelector('.zt');
+      if (zt) sprichAus(btn, zt.textContent);
+    };
+  });
+  // Wortjagd: jedes Zielsprachen-Wort antippbar → sammeln (+ Übersetzung aus dem Wörterbuch).
+  if (window.spikiuWortjag) {
+    var zts = [].slice.call(rb.querySelectorAll('.zt'));
+    var wjHint = null;
+    if (zts.length && !window.spikiuWortjag.gestartet()) {
+      wjHint = document.createElement('div'); wjHint.className = 'wjhint';
+      wjHint.innerHTML = '<div class="wjh-cap">' + CAPY_SVG + '</div><div class="wjh-tx">' + (JAGD_TX[uiLang()] || JAGD_TX.de) + '</div>';
+      rb.insertBefore(wjHint, rb.firstChild);
+    }
+    zts.forEach(function (zt) {
+      window.spikiuWortjag.aktivieren(zt, { quelle:'learnroman', onCollect:function(){ if (wjHint) { wjHint.remove(); wjHint = null; } } });
+    });
+  }
+
+  readerEl.classList.add('open');
+  readerEl.setAttribute('aria-hidden', 'false');
+}
+function schliesseKapitel(){
+  readerEl.classList.remove('open');
+  readerEl.setAttribute('aria-hidden', 'true');
+}
+
+// ── Start ──────────────────────────────────────────────────────────────
+// Erst bei DOMContentLoaded: die defer-Skripte (capy-vivo.js, nav.js) und das
+// Audio-Modul laufen VOR diesem Ereignis — so ist spkCapyAlive im leeren
+// Zustand wirklich da und der Capy lebt.
+function start(){
+  document.documentElement.lang = uiLang();
+  document.getElementById('eyebrow').textContent = T.eyebrow;
+  document.getElementById('buchTitel').textContent = BUCH ? BUCH.titel : 'Lernroman';
+  var zurueck = document.getElementById('rback');
+  zurueck.setAttribute('aria-label', T.back);
+  zurueck.onclick = schliesseKapitel;
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && readerEl.classList.contains('open')) schliesseKapitel();
+  });
+  renderEtSchalter();
+  renderList();
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', start);
+} else {
+  start();
+}
+</script>
+
+<!-- Audio: audio.js ist ein ES-Modul am Root. Hier importiert und über window
+     gebrückt, weil das Haupt-Script klassisch ist. Vorwärmen beim Betreten des
+     Raums (Auftrag §6) — der Browser-Fallback steckt schon in audio.js. -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
+  if (typeof window.warmVoice === 'function') window.warmVoice();
+</script>
+
+<script src="capy-vivo.js" defer></script>
+<script src="nav.js" defer></script>
+
+</body>
+</html>
