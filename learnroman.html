@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Spikiu · Learnroman</title>
-<meta name="description" content="Der Learnroman — ein Buch, das dich in die Sprache hineinzieht.">
+<title>Spikiu · Lernroman</title>
+<meta name="description" content="Der Lernroman — ein Buch, das dich in die Sprache hineinzieht.">
 
 <!-- Schriften SELBST GEHOSTET (kein Google-Fonts-CDN → keine Fremd-Verbindung).
      Lora = Zielsprache (Leseschrift) · DM Sans = Muttersprache · Archivo Black =
@@ -131,8 +131,8 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
   <header data-spk-nav></header>
 
   <div class="top">
-    <div class="k" id="eyebrow">Bibliothek · Learnroman</div>
-    <h1 id="buchTitel">Learnroman</h1>
+    <div class="k" id="eyebrow">Bibliothek · Lernroman</div>
+    <h1 id="buchTitel">Lernroman</h1>
     <div class="etnote" id="etnote" hidden></div>
     <div class="etrow" id="etrow" hidden></div>
   </div>
@@ -198,26 +198,26 @@ var DEV = /[?&]dev=1\b/.test(window.location.search);
 
 // ── UI-Texte in der MUTTERSPRACHE des Lerners ──
 var UI = {
-  de:{ eyebrow:'Bibliothek · Learnroman', kap:'Kapitel', offen:'offen', zu:'öffnet sich später',
+  de:{ eyebrow:'Bibliothek · Lernroman', kap:'Kapitel', offen:'offen', zu:'öffnet sich später',
        lock:function(nm){ return '✦ öffnet sich in der Etappe ' + nm; },
        hint:'Tipp auf eine Zeile zeigt die Übersetzung.', ende:'— Ende des Kapitels —',
        back:'zurück', hoeren:'Vorlesen', devnote:'Deine Etappe · zum Testen umschaltbar',
        leerH:'Dieses Buch entsteht noch.',
-       leerP:'Der Learnroman für diese Sprache ist noch nicht geschrieben. Spikiu schreibt ihn lieber gut als schnell.',
+       leerP:'Der Lernroman für diese Sprache ist noch nicht geschrieben. Spikiu schreibt ihn lieber gut als schnell.',
        leerZ:'Zurück in die Bibliothek' },
-  es:{ eyebrow:'Biblioteca · Learnroman', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
+  es:{ eyebrow:'Biblioteca · Lernroman', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
        lock:function(nm){ return '✦ se abre en la etapa ' + nm; },
        hint:'Toca una línea para ver la traducción.', ende:'— Fin del capítulo —',
        back:'atrás', hoeren:'Escuchar', devnote:'Tu etapa · conmutable para probar',
        leerH:'Este libro todavía se está escribiendo.',
-       leerP:'El Learnroman de este idioma aún no existe. Spikiu prefiere escribirlo bien antes que rápido.',
+       leerP:'El Lernroman de este idioma aún no existe. Spikiu prefiere escribirlo bien antes que rápido.',
        leerZ:'Volver a la biblioteca' },
-  en:{ eyebrow:'Library · Learnroman', kap:'Chapter', offen:'open', zu:'opens later',
+  en:{ eyebrow:'Library · Lernroman', kap:'Chapter', offen:'open', zu:'opens later',
        lock:function(nm){ return '✦ opens in the ' + nm + ' stage'; },
        hint:'Tap a line to see the translation.', ende:'— End of the chapter —',
        back:'back', hoeren:'Read aloud', devnote:'Your stage · switchable for testing',
        leerH:'This book is still being written.',
-       leerP:'The Learnroman for this language does not exist yet. Spikiu would rather write it well than fast.',
+       leerP:'The Lernroman for this language does not exist yet. Spikiu would rather write it well than fast.',
        leerZ:'Back to the library' }
 };
 function uiLang(){ return UI[PROFILE.muttersprache] ? PROFILE.muttersprache : 'de'; }
@@ -421,7 +421,7 @@ function schliesseKapitel(){
 function start(){
   document.documentElement.lang = uiLang();
   document.getElementById('eyebrow').textContent = T.eyebrow;
-  document.getElementById('buchTitel').textContent = BUCH ? BUCH.titel : 'Learnroman';
+  document.getElementById('buchTitel').textContent = BUCH ? BUCH.titel : 'Lernroman';
   var zurueck = document.getElementById('rback');
   zurueck.setAttribute('aria-label', T.back);
   zurueck.onclick = schliesseKapitel;
