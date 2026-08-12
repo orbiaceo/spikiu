@@ -18,7 +18,7 @@
   --said-bg:#f6efe2; --said-ink:#8a6d2e; --said-border:#e6d8bb;
 }
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
-.app { display:flex; flex-direction:column; height:calc(100dvh - var(--spk-navh, 0px)); max-width:680px; margin:0 auto; background:var(--white); }
+.app { display:flex; flex-direction:column; height:calc(100dvh - var(--spk-navh, 0px)); max-width:680px; margin:0 auto; background:var(--bg); }
 header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem 0.875rem; border-bottom:var(--ow) solid var(--ink); background:var(--white); flex-shrink:0; }
   .rnav{ justify-content:flex-start; gap:.6rem; background:var(--bg); }
   .rnav .back{ width:36px; height:36px; border-radius:999px; border:2.5px solid var(--ink); background:#fff; font-size:1.2rem; line-height:1; box-shadow:2px 2px 0 var(--ink); cursor:pointer; flex:0 0 auto; }
@@ -74,7 +74,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .gabelung { align-self:center; width:100%; max-width:30rem; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.6rem; padding:0.25rem 0.75rem 0.5rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
 .gab-label { font-size:0.78rem; color:var(--mid); font-weight:500; }
 /* Opener-Überschrift (Teil 35): ruhige einzelne Zeile statt Gruß-Bubble. */
-.gab-ask { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin:0 0 0.25rem; }
+.gab-ask { font-family:'DM Sans',sans-serif; font-size:1.12rem; font-weight:800; color:var(--ink); margin:0 0 0.35rem; }
 .gab-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }
 .chip { background:var(--white); border:2px solid var(--ink); color:var(--ink); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:transform .1s,box-shadow .1s; -webkit-tap-highlight-color:transparent; }
 .chip:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
@@ -249,8 +249,8 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
    Gruß + einladende Frage zentriert. Optik nach prototyp-final-spikiu-frei.html. */
 .voz-greet { align-self:stretch; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.45rem; padding:1.4rem 0 0.4rem; cursor:pointer; -webkit-tap-highlight-color:transparent; animation:fadeUp 0.4s ease forwards; opacity:0; }
 .voz-capy { width:90px; height:90px; overflow:visible; animation:vozBreathe 4.5s ease-in-out infinite; }
-.voz-greet-line { font-family:'Cormorant Garamond',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
-.voz-invite { font-family:'Cormorant Garamond',serif; font-size:1.02rem; line-height:1.3; color:var(--mid); max-width:20rem; margin-top:0.1rem; }
+.voz-greet-line { font-family:'DM Sans',sans-serif; font-weight:800; font-size:1.5rem; line-height:1.2; color:var(--ink); max-width:22rem; }
+.voz-invite { font-family:'DM Sans',sans-serif; font-weight:600; font-size:1rem; line-height:1.35; color:var(--mid); max-width:22rem; margin-top:0.25rem; }
 .voz-invite-sub { color:var(--accent); font-weight:600; }
 .voz-hint { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--accent); font-weight:500; margin-top:0.15rem; }
 .voz-hint::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:vozPulse 1.6s ease-in-out infinite; }
@@ -817,14 +817,18 @@ function reelSlides(){ var r = reelEl(); return r ? r.querySelectorAll('.reel-sl
 function fitSlide(slide){
   if (!slide) return;
   var mains = slide.querySelectorAll('.reel-line, .hap-flip .hap-ziel, .hap-back-trans, .hv-q, .reel-learner-head');
-  if (!mains.length) return;
+  var opts  = slide.querySelectorAll('.hv-opt');   // Antwort-Chips folgen jetzt auch der Regel
+  if (!mains.length && !opts.length) return;
   var start = Math.min(60, Math.max(32, Math.round((slide.clientWidth||360) * 0.15)));
-  var min = 27, px = start, guard = 0, i;
-  for (i = 0; i < mains.length; i++) mains[i].style.setProperty('font-size', px + 'px', 'important');
+  var min = 27, px = start, guard = 0;
+  function apply(v){
+    var j, ov = Math.max(23, Math.round(v * 0.78));   // Chips ~78% der Hauptgroesse, nie unter 23px
+    for (j = 0; j < mains.length; j++) mains[j].style.setProperty('font-size', v + 'px', 'important');
+    for (j = 0; j < opts.length; j++)  opts[j].style.setProperty('font-size', ov + 'px', 'important');
+  }
+  apply(px);
   while (slide.scrollHeight > slide.clientHeight - 4 && px > min && guard < 70){
-    px -= 1.5;
-    for (i = 0; i < mains.length; i++) mains[i].style.setProperty('font-size', px + 'px', 'important');
-    guard++;
+    px -= 1.5; apply(px); guard++;
   }
 }
 function reelLayout(){
