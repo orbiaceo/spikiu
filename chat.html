@@ -9,7 +9,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --white:#ffffff; --bg:#eef7f1; --bg2:#ffffff; --ink:#15163a; --mid:#5f7068; --ow:2.5px;
-  --bubS:#fff; --you:#ffd24a; --youtx:#15163a; --spk:#ff4f9a; --shb:3px 4px; --shs:3px 3px; --de:#f1faf5;
+  --bubS:#fff; --you:#ffd24a; --youtx:#15163a; --spk:#ff4f9a; --shb:3px 4px; --shs:3px 3px; --de:#f1faf5; --sky:#d3eef6;
   --faint:#dfe6e0; --warm:#cddcd3; --accent:#ff6b5a; --accent2:#ffe4de; --capy:#a97c50;
   --accent3:#d84a3a; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
   /* Übersetzungs-Kästchen (Feinschliff): gedämpfte Muleta, sekundär (Stil = Prototyp) */
@@ -20,7 +20,7 @@
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
 .app { display:flex; flex-direction:column; height:calc(100dvh - var(--spk-navh, 0px)); max-width:680px; margin:0 auto; background:var(--white); }
 header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem 0.875rem; border-bottom:var(--ow) solid var(--ink); background:var(--white); flex-shrink:0; }
-  .rnav{ justify-content:flex-start; gap:.6rem; }
+  .rnav{ justify-content:flex-start; gap:.6rem; background:var(--bg); }
   .rnav .back{ width:36px; height:36px; border-radius:999px; border:2.5px solid var(--ink); background:#fff; font-size:1.2rem; line-height:1; box-shadow:2px 2px 0 var(--ink); cursor:pointer; flex:0 0 auto; }
   .rnav .back:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 var(--ink); }
 .header-left { display:flex; align-items:center; gap:0.65rem; }
@@ -30,7 +30,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .back-link { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:var(--mid); text-decoration:none; }
 .back-link:hover { color:var(--ink); }
 /* Profil-Chip: sichtbarer Beweis, dass das Profil gelesen und Onboarding übersprungen wurde */
-.profile-bar { display:flex; align-items:center; gap:0.5rem; padding:0.55rem 1.25rem; background:var(--accent2); border-bottom:1px solid var(--faint); flex-shrink:0; font-size:0.8rem; color:var(--accent); }
+.profile-bar { display:none !important; }
 .profile-bar .who { font-weight:600; color:var(--ink); }
 .profile-bar .sep { color:var(--warm); }
 .profile-bar .chip { background:var(--white); border:1px solid #cfe6da; border-radius:100px; padding:0.1rem 0.6rem; font-size:0.72rem; }
@@ -109,13 +109,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Geführtes Gespräch · Fortschrittsbalken (Paket 2) ──
    Thema · Wörter · Hören · Sprechen · Lektion. Füllt bis Sprechen; Lektion bleibt
    blass (= Paket 3). Versteckt, bis ein Thema gewählt ist (der freie Flur bleibt rein). */
-.rail { display:flex; gap:0.3rem; padding:0.6rem 1.25rem; background:var(--white); border-bottom:2px solid var(--ink); flex-shrink:0; }
+.rail { display:flex; gap:0.3rem; padding:0.6rem 1.25rem; background:var(--white); border-bottom:var(--ow) solid var(--ink); flex-shrink:0; }
 .rail.hidden { display:none; }
-.rail-step { flex:1; text-align:center; font-size:0.56rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--warm); transition:0.3s; }
+.rail-step { flex:1; text-align:center; font-size:0.62rem; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink); opacity:.55; transition:0.3s; }
 .rail-step .dot { display:block; height:3px; border-radius:100px; background:var(--faint); margin-bottom:0.3rem; transition:0.4s; }
-.rail-step.active { color:var(--accent); }
+.rail-step.active { color:var(--accent); opacity:1; }
 .rail-step.active .dot { background:var(--accent); }
-.rail-step.done { color:var(--gold); }
+.rail-step.done { color:var(--gold); opacity:1; }
 .rail-step.done .dot { background:var(--gold); }
 
 /* ── Häppchen-Widgets (inline im Chat, Stil aus prototyp-gespraech-gefuehrt.html) ── */
@@ -137,10 +137,10 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-phon { font-size:0.66rem; color:var(--gold); font-weight:500; margin-top:0.08rem; }
 .hap-trans { font-size:0.72rem; color:var(--mid); font-style:italic; margin-top:0.08rem; }
 /* ── Teil 60: Wort-Häppchen als Flip-Karte (Vorderseite Ziel+🔊 · Rückseite Übersetzung) ── */
-.hap-flip { perspective:1200px; cursor:pointer; width:100%; height:17rem; -webkit-tap-highlight-color:transparent; }
+.hap-flip { perspective:1200px; cursor:pointer; width:100%; flex:1 1 auto; min-height:14rem; -webkit-tap-highlight-color:transparent; }
 .hap-flip-inner { position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.4,0,.2,1); transform-style:preserve-3d; }
 .hap-flip.flipped .hap-flip-inner { transform:rotateY(180deg); }
-.hap-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.9rem; border:var(--ow) solid var(--ink); border-radius:22px; box-shadow:5px 6px 0 var(--ink); background:var(--bubS); padding:1.4rem; }
+.hap-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; border:none; box-shadow:none; background:transparent; padding:0.5rem; }
 .hap-face.back { transform:rotateY(180deg); background:var(--accent2); border-color:#cfe5da; }
 .hap-flip .hap-ziel { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:1.4rem; line-height:1.3; text-align:center; }
 .hap-flip .hap-phon { font-size:0.8rem; margin-top:0; }
@@ -247,7 +247,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
    Slides liegen ABSOLUT übereinander; nur die aktuelle ist sichtbar. Vorrücken = nach links. */
 .reel { flex:1; position:relative; overflow:hidden; background:var(--bg); }
 .reel[hidden]{ display:none; }
-.reel-slide { position:absolute; inset:1rem .9rem; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:1.1rem; padding:1.9rem 1.4rem 2.6rem; overflow-y:auto; background:var(--bubS); border:var(--ow) solid var(--ink); border-radius:22px; box-shadow:5px 6px 0 var(--ink); transform:translateX(118%); opacity:0; pointer-events:none; transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease; will-change:transform,opacity; }
+.reel-slide { position:absolute; inset:1rem .9rem; box-sizing:border-box; display:flex; flex-direction:column; align-items:stretch; justify-content:center; text-align:center; gap:.8rem; padding:1.4rem 1.3rem 2rem; overflow-y:auto; background:var(--bubS); border:var(--ow) solid var(--ink); border-radius:22px; box-shadow:5px 6px 0 var(--ink); transform:translateX(118%); opacity:0; pointer-events:none; transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s ease; will-change:transform,opacity; }
 .reel-slide.reel-current { transform:translateX(0) rotate(0); opacity:1; pointer-events:auto; z-index:2; }
 .reel-slide.reel-next { transform:translateX(114%) rotate(1.5deg); opacity:0; pointer-events:none; z-index:1; }
 .reel-slide.reel-past { transform:translateX(-114%) rotate(-1.5deg); opacity:0; pointer-events:none; z-index:1; }
