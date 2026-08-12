@@ -40,9 +40,11 @@ body{--bg:#f5f1e7;--ink:#15163a;--acc:#2d6a4f;--muted:#6b6154;--de:#fbf8f0;--rea
 button{font-family:inherit}
 
 /* nav.js-Kopfslot (Slot-Modus wie chat.html: nur die Wortmarke, keine zweite Leiste) */
-header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
- padding:calc(.5rem + env(safe-area-inset-top)) .9rem .45rem;
+.rnav{flex:0 0 auto;display:flex;align-items:center;
+ padding:calc(.5rem + env(safe-area-inset-top)) .8rem .4rem;
  background:rgba(255,255,255,.72);border-bottom:2px solid var(--ink)}
+.rnav .back{width:36px;height:36px;border-radius:999px;border:2.5px solid var(--ink);background:#fff;font-size:1.2rem;line-height:1;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.rnav .back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 
 .top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:.65rem .9rem .7rem}
 .top .k{font:500 .6rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase;text-align:center}
@@ -128,7 +130,7 @@ header[data-spk-nav]{flex:0 0 auto;display:flex;align-items:center;
   <!-- Slot-Modus (wie chat.html): nav.js füllt diese Kopfzeile mit der Wortmarke.
        Die untere Tab-Leiste montiert nav.js selbst; data-nav-active hält den
        Tab „Werkstatt" aktiv, ohne nav.js anzufassen. -->
-  <header data-spk-nav></header>
+  <header class="rnav"><button class="back" onclick="location.href='haus.html'" aria-label="zurück">‹</button></header>
 
   <div class="top">
     <div class="k" id="eyebrow">Bibliothek · Lernroman</div>
@@ -447,9 +449,6 @@ if (document.readyState === 'loading') {
   window.spkWarm  = warm;
   if (typeof window.warmVoice === 'function') window.warmVoice();
 </script>
-
-<script src="capy-vivo.js" defer></script>
-<script src="nav.js" defer></script>
 
 </body>
 </html>
