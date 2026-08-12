@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Spikiu</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-  --white:#ffffff; --bg:#faf9f7; --bg2:#f3f1ee; --ink:#1c1917; --mid:#78716c;
+  --white:#ffffff; --bg:#f5f1e7; --bg2:#f3f1ee; --ink:#15163a; --mid:#78716c; --ow:2.5px;
   --faint:#e7e5e4; --warm:#d6cfc8; --accent:#2d6a4f; --accent2:#e8f5ee; --capy:#a97c50;
   --accent3:#1f5239; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
   /* Übersetzungs-Kästchen (Feinschliff): gedämpfte Muleta, sekundär (Stil = Prototyp) */
@@ -18,7 +18,10 @@
 }
 html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; }
 .app { display:flex; flex-direction:column; height:calc(100dvh - var(--spk-navh, 0px)); max-width:680px; margin:0 auto; background:var(--white); }
-header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem 0.875rem; border-bottom:1px solid var(--faint); background:var(--white); flex-shrink:0; }
+header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem 0.875rem; border-bottom:var(--ow) solid var(--ink); background:var(--white); flex-shrink:0; }
+  .rnav{ justify-content:flex-start; gap:.6rem; }
+  .rnav .back{ width:36px; height:36px; border-radius:999px; border:2.5px solid var(--ink); background:#fff; font-size:1.2rem; line-height:1; box-shadow:2px 2px 0 var(--ink); cursor:pointer; flex:0 0 auto; }
+  .rnav .back:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 var(--ink); }
 .header-left { display:flex; align-items:center; gap:0.65rem; }
 .capy-icon { width:38px; height:38px; flex-shrink:0; }
 .brand-name { font-family:'Lora',serif; font-size:1.2rem; font-weight:500; color:var(--ink); letter-spacing:-0.01em; }
@@ -298,7 +301,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
   <!-- Slot-Modus: nav.js (data-spk-nav) füllt diese vorhandene Kopfzeile mit
        Hamburger + Logo — KEINE zweite Leiste. „← Dashboard" wandert in den Drawer.
        Die Seiten-eigenen header-Styles (flex, padding, border-bottom) bleiben. -->
-  <header data-spk-nav></header>
+  <header class="rnav"><button class="back" onclick="location.href='haus.html'" aria-label="zurück">‹</button></header>
 
   <!-- Profil-Chip: gelesen aus spikiu_user, Onboarding übersprungen -->
   <div class="profile-bar" id="profileBar">
@@ -1996,6 +1999,5 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- Voz primero (Paket 5): capy-vivo.js liefert den Sprech-Zustand (Mund + Aura) +
      Blinzeln/Blick für den Präsenz-Gruß. Idempotent (IIFE-Guard), nav.js lädt es ohnehin. -->
 <script src="capy-vivo.js" defer></script>
-<script src="nav.js" defer></script>
 </body>
 </html>
