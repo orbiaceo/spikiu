@@ -8,9 +8,10 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-  --white:#ffffff; --bg:#f5f1e7; --bg2:#f3f1ee; --ink:#15163a; --mid:#78716c; --ow:2.5px;
-  --faint:#e7e5e4; --warm:#d6cfc8; --accent:#2d6a4f; --accent2:#e8f5ee; --capy:#a97c50;
-  --accent3:#1f5239; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
+  --white:#ffffff; --bg:#eef7f1; --bg2:#ffffff; --ink:#15163a; --mid:#5f7068; --ow:2.5px;
+  --bubS:#fff; --you:#ffd24a; --youtx:#15163a; --spk:#ff4f9a; --shb:3px 4px; --shs:3px 3px; --de:#f1faf5;
+  --faint:#dfe6e0; --warm:#cddcd3; --accent:#ff6b5a; --accent2:#ffe4de; --capy:#a97c50;
+  --accent3:#d84a3a; --gold:#a07830; --wrong:#c0392b; --wrong-bg:#fdebe9;
   /* Übersetzungs-Kästchen (Feinschliff): gedämpfte Muleta, sekundär (Stil = Prototyp) */
   --trans-bg:#f1eee8; --trans-ink:#8a847d; --trans-border:#e2ddd4;
   /* Korrektur-Karte „Du hast gesagt" (P3, Stil = prototyp-feinschliff-iii.html) */
@@ -24,7 +25,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
   .rnav .back:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 var(--ink); }
 .header-left { display:flex; align-items:center; gap:0.65rem; }
 .capy-icon { width:38px; height:38px; flex-shrink:0; }
-.brand-name { font-family:'Lora',serif; font-size:1.2rem; font-weight:500; color:var(--ink); letter-spacing:-0.01em; }
+.brand-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:500; color:var(--ink); letter-spacing:-0.01em; }
 .brand-name span { color:var(--accent); font-style:italic; }
 .back-link { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:var(--mid); text-decoration:none; }
 .back-link:hover { color:var(--ink); }
@@ -41,8 +42,8 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes fadeUp { from { opacity:0; transform:translateY(6px);} to { opacity:1; transform:translateY(0);} }
 .avatar-spikiu { background:var(--accent2); border-radius:50%; display:flex; align-items:center; justify-content:center; width:32px; height:32px; flex-shrink:0; margin-top:2px; }
 .bubble { max-width:82%; padding:0.85rem 1.1rem; border-radius:1.2rem; font-size:1rem; line-height:1.65; }
-.bubble.spikiu { background:var(--white); color:var(--ink); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; font-family:'Lora',serif; font-size:1.025rem; position:relative; padding-right:2.7rem; }
-.bubble.user { background:var(--accent); color:var(--white); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; font-size:0.975rem; }
+.bubble.spikiu { background:var(--bubS); color:var(--ink); border:var(--ow) solid var(--ink); box-shadow:var(--shb) 0 var(--ink); border-radius:0.3rem 1.2rem 1.2rem 1.2rem; font-family:'Cormorant Garamond',serif; font-size:1.2rem; line-height:1.4; position:relative; padding-right:2.7rem; }
+.bubble.user { background:var(--you); color:var(--youtx); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; font:800 1rem/1.3 'DM Sans',sans-serif; }
 /* Feinschliff II: Zielsprache IMMER aufrecht — auch wenn das Modell die fremde
    Wendung in _…_/*…* setzt, kippt die Blase nie ins Kursive. Kursiv bleibt allein
    dem Übersetzungs-Kästchen (.trans). Betonung trägt <strong>. */
@@ -73,7 +74,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .gabelung { align-self:center; width:100%; max-width:30rem; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.6rem; padding:0.25rem 0.75rem 0.5rem; animation:fadeUp 0.35s ease forwards; opacity:0; }
 .gab-label { font-size:0.78rem; color:var(--mid); font-weight:500; }
 /* Opener-Überschrift (Teil 35): ruhige einzelne Zeile statt Gruß-Bubble. */
-.gab-ask { font-family:'Lora',serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin:0 0 0.25rem; }
+.gab-ask { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin:0 0 0.25rem; }
 .gab-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }
 .chip { background:var(--white); border:2px solid var(--ink); color:var(--ink); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:transform .1s,box-shadow .1s; -webkit-tap-highlight-color:transparent; }
 .chip:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
@@ -122,13 +123,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .w-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold); margin-bottom:0.65rem; display:flex; align-items:center; gap:0.35rem; }
 .hap-card { display:flex; align-items:center; gap:0.65rem; border:var(--ow) solid var(--ink); border-radius:14px; box-shadow:2px 3px 0 var(--ink); padding:0.55rem 0.7rem; margin-bottom:0.6rem; }
 .hap-card:last-child { margin-bottom:0; }
-.hap-play { width:30px; height:30px; flex-shrink:0; border:2px solid var(--ink); cursor:pointer; background:var(--accent); color:var(--white); border-radius:50%; box-shadow:2px 2px 0 var(--ink); display:flex; align-items:center; justify-content:center; transition:0.18s; -webkit-tap-highlight-color:transparent; }
+.hap-play { width:32px; height:32px; flex-shrink:0; border:2px solid var(--ink); cursor:pointer; background:var(--spk); color:#fff; border-radius:50%; box-shadow:2px 2px 0 var(--ink); display:flex; align-items:center; justify-content:center; transition:0.18s; -webkit-tap-highlight-color:transparent; }
 .hap-play:hover { background:var(--accent3); transform:scale(1.06); }
 .hap-play.playing { animation:pulse 1s ease infinite; }
 @keyframes pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(45,106,79,0.4);} 50%{ box-shadow:0 0 0 7px rgba(45,106,79,0);} }
 .hap-play svg { width:13px; height:13px; }
 .hap-text { flex:1; text-align:left; min-width:0; }
-.hap-ziel { font-family:'Lora',serif; font-weight:500; font-size:0.9rem; line-height:1.15; }
+.hap-ziel { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:0.9rem; line-height:1.15; }
 .hap-card-solo { border:none; padding:1.2rem 0.4rem; justify-content:center; }
 .hap-card-solo .hap-ziel { font-size:1.4rem; line-height:1.3; }
 .hap-card-solo .hap-trans { font-size:1rem; }
@@ -141,16 +142,16 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-flip.flipped .hap-flip-inner { transform:rotateY(180deg); }
 .hap-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; border:var(--ow) solid var(--ink); border-radius:18px; box-shadow:4px 5px 0 var(--ink); background:var(--white); padding:1.2rem; }
 .hap-face.back { transform:rotateY(180deg); background:var(--accent2); border-color:#cfe5da; }
-.hap-flip .hap-ziel { font-family:'Lora',serif; font-weight:500; font-size:1.4rem; line-height:1.3; text-align:center; }
+.hap-flip .hap-ziel { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:1.4rem; line-height:1.3; text-align:center; }
 .hap-flip .hap-phon { font-size:0.8rem; margin-top:0; }
 .hap-tlabel { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--accent3); }
-.hap-back-trans { font-family:'Lora',serif; font-size:1.3rem; line-height:1.3; text-align:center; color:var(--ink); }
+.hap-back-trans { font-family:'Cormorant Garamond',serif; font-size:1.3rem; line-height:1.3; text-align:center; color:var(--ink); }
 .hap-fliphint { font-size:0.72rem; color:var(--gold); font-weight:600; }
 .hv-speaker { display:flex; margin:0.2rem auto 0.7rem; width:56px; height:56px; background:var(--accent); border:none; border-radius:50%; cursor:pointer; align-items:center; justify-content:center; color:var(--white); box-shadow:0 6px 18px rgba(45,106,79,0.3); transition:0.18s; -webkit-tap-highlight-color:transparent; }
 .hv-speaker:hover { transform:scale(1.05); }
 .hv-speaker.playing { animation:pulse 1.1s ease infinite; }
 .hv-speaker svg { width:24px; height:24px; }
-.hv-q { text-align:center; font-family:'Lora',serif; font-style:italic; font-size:0.9rem; margin-bottom:0.65rem; }
+.hv-q { text-align:center; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.9rem; margin-bottom:0.65rem; }
 .hv-opt { display:flex; align-items:center; gap:0.55rem; width:100%; background:var(--white); border:1.5px solid var(--faint); cursor:pointer; padding:0.6rem 0.7rem; border-radius:12px; margin-bottom:0.4rem; transition:0.3s; font-family:inherit; font-size:0.84rem; text-align:left; color:var(--ink); -webkit-tap-highlight-color:transparent; }
 .hv-opt:last-of-type { margin-bottom:0; }
 .hv-opt:hover:not(:disabled) { border-color:var(--accent); }
@@ -168,7 +169,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Word-Spotting (Übungs-Varianten): gehörte Wörter antippen, Distraktoren als
    Minimalpaar. Stil aus prototyp-feinschliff-iii.html. ── */
 .ws-words { display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; }
-.ws-word { background:var(--white); border:2px solid var(--ink); border-radius:100px; box-shadow:2px 2px 0 var(--ink); padding:0.45rem 0.85rem; font-family:'Lora',serif; font-size:0.85rem; font-weight:600; color:var(--ink); cursor:pointer; transition:0.14s; -webkit-tap-highlight-color:transparent; }
+.ws-word { background:var(--white); border:2px solid var(--ink); border-radius:100px; box-shadow:2px 2px 0 var(--ink); padding:0.45rem 0.85rem; font-family:'Cormorant Garamond',serif; font-size:0.85rem; font-weight:600; color:var(--ink); cursor:pointer; transition:0.14s; -webkit-tap-highlight-color:transparent; }
 .ws-word.sel { background:var(--accent); color:var(--white); border-color:var(--accent); }
 .ws-word.ok { background:var(--accent2); border-color:var(--accent); color:var(--accent3); }
 .ws-word.bad { background:var(--wrong-bg); border-color:var(--wrong); color:var(--wrong); text-decoration:line-through; }
@@ -183,7 +184,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-spin { width:16px; height:16px; flex-shrink:0; border:2.5px solid var(--faint); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 /* Übergabe-Notiz (Szene/Brücke) */
-.scene-note { align-self:center; text-align:center; font-family:'Lora',serif; font-style:italic; font-size:0.82rem; color:var(--mid); background:rgba(0,0,0,0.02); padding:0.45rem 0.85rem; border-radius:10px; max-width:90%; opacity:0; animation:fadeUp 0.45s ease forwards; }
+.scene-note { align-self:center; text-align:center; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.82rem; color:var(--mid); background:rgba(0,0,0,0.02); padding:0.45rem 0.85rem; border-radius:10px; max-width:90%; opacity:0; animation:fadeUp 0.45s ease forwards; }
 
 /* ── Korrektur-Karte am Szenenende (Paket 3) — zwei Spalten „Du hast gesagt → Besser",
    NUR kommunikativ unpassend, OHNE Erklärung; 🔊 auf „Besser". Stil = prototyp-feinschliff-iii.html. */
@@ -194,7 +195,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .kk-head > div { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; text-align:center; }
 .kk-head .h-said { color:var(--said-ink); }
 .kk-head .h-better { color:var(--accent); }
-.kk-cell { border-radius:10px; padding:0.5rem 0.6rem; font-family:'Lora',serif; font-size:0.86rem; line-height:1.3; }
+.kk-cell { border-radius:10px; padding:0.5rem 0.6rem; font-family:'Cormorant Garamond',serif; font-size:0.86rem; line-height:1.3; }
 .kk-said { background:var(--said-bg); border:2px solid var(--ink); color:var(--said-ink); }
 .kk-better { background:var(--accent2); border:2px solid var(--ink); color:var(--accent3); font-weight:600; position:relative; padding-right:1.9rem; }
 .kk-better .speak-btn { top:50%; transform:translateY(-50%); right:0.4rem; width:24px; height:24px; background:var(--white); }
@@ -228,8 +229,8 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
    Gruß + einladende Frage zentriert. Optik nach prototyp-final-spikiu-frei.html. */
 .voz-greet { align-self:stretch; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.45rem; padding:1.4rem 0 0.4rem; cursor:pointer; -webkit-tap-highlight-color:transparent; animation:fadeUp 0.4s ease forwards; opacity:0; }
 .voz-capy { width:90px; height:90px; overflow:visible; animation:vozBreathe 4.5s ease-in-out infinite; }
-.voz-greet-line { font-family:'Lora',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
-.voz-invite { font-family:'Lora',serif; font-size:1.02rem; line-height:1.3; color:var(--mid); max-width:20rem; margin-top:0.1rem; }
+.voz-greet-line { font-family:'Cormorant Garamond',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
+.voz-invite { font-family:'Cormorant Garamond',serif; font-size:1.02rem; line-height:1.3; color:var(--mid); max-width:20rem; margin-top:0.1rem; }
 .voz-invite-sub { color:var(--accent); font-weight:600; }
 .voz-hint { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--accent); font-weight:500; margin-top:0.15rem; }
 .voz-hint::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); animation:vozPulse 1.6s ease-in-out infinite; }
@@ -253,7 +254,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-capy { width:52px; height:52px; animation:vozBreathe 4.5s ease-in-out infinite; }
 .reel-capy svg { width:52px; height:52px; display:block; }
 .reel-body { display:flex; flex-direction:column; align-items:center; gap:0.6rem; max-width:22rem; }
-.reel-line { font-family:'Lora',serif; font-size:clamp(1.55rem,5.2vw,2.15rem); line-height:1.32; color:var(--ink); font-style:normal; padding:0 0.2rem; }
+.reel-line { font-family:'Cormorant Garamond',serif; font-size:clamp(1.55rem,5.2vw,2.15rem); line-height:1.32; color:var(--ink); font-style:normal; padding:0 0.2rem; }
 .reel-line em, .reel-line strong { font-style:normal; }
 .reel-speak { position:static; width:38px; height:38px; margin:0.6rem auto 0; }
 .reel-speak svg { width:18px; height:18px; }
@@ -261,7 +262,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-hint { position:absolute; left:0; right:0; bottom:1.4rem; font-size:0.8rem; color:var(--warm); font-weight:500; animation:reelBob 1.8s ease-in-out infinite; }
 @keyframes reelBob { 0%,100%{ transform:translateX(0); opacity:0.7; } 50%{ transform:translateX(-5px); opacity:1; } }
 .reel-userbubble { background:var(--accent); color:var(--white); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; padding:0.85rem 1.2rem; font-size:1.05rem; max-width:80%; }
-.reel-learner-head { font-family:'Lora',serif; font-size:1.4rem; line-height:1.3; color:var(--ink); max-width:20rem; }
+.reel-learner-head { font-family:'Cormorant Garamond',serif; font-size:1.4rem; line-height:1.3; color:var(--ink); max-width:20rem; }
 .reel-learner-field { display:flex; flex-direction:column; gap:0.7rem; width:100%; max-width:22rem; }
 .reel-learner-field textarea { background:var(--bg2); border:1.5px solid transparent; border-radius:1.1rem; padding:0.85rem 1.1rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); resize:none; outline:none; line-height:1.5; }
 .reel-learner-field textarea:focus { border-color:var(--accent); background:var(--white); }
@@ -273,7 +274,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Phase 3a (Teil 45): geführtes SPRECHEN im Reel — Antwort-Paletten als Tinder-Karten,
    Korrektur-/Endmenü-Slides. Freier Flur (Phase 2) unverändert; Häppchen-Prep bleibt Chat. */
 .reel-cards { display:flex; flex-direction:column; gap:0.6rem; width:100%; max-width:22rem; }
-.reel-card { background:var(--white); border:2px solid var(--accent); color:var(--accent); border-radius:1rem; padding:0.95rem 1.15rem; font-family:'Lora',serif; font-size:1.12rem; font-weight:500; line-height:1.35; cursor:pointer; transition:0.16s; -webkit-tap-highlight-color:transparent; }
+.reel-card { background:var(--white); border:2px solid var(--accent); color:var(--accent); border-radius:1rem; padding:0.95rem 1.15rem; font-family:'Cormorant Garamond',serif; font-size:1.12rem; font-weight:500; line-height:1.35; cursor:pointer; transition:0.16s; -webkit-tap-highlight-color:transparent; }
 .reel-card:hover { background:var(--accent); color:var(--white); }
 .reel-card:active { transform:scale(0.98); }
 /* Tinder-Karten primär → Textfeld sekundär (gedämpft, kleiner Abstand). */
@@ -290,7 +291,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-haeppchen .widget { align-self:center; margin-left:0; width:100%; max-width:23rem; text-align:left; }
 .reel-haeppchen .flow-row { padding-left:0; justify-content:center; }
 .reel-note-card { justify-content:center; gap:1.3rem; }
-.reel-note-text { font-family:'Lora',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
+.reel-note-text { font-family:'Cormorant Garamond',serif; font-size:1.3rem; line-height:1.35; color:var(--ink); max-width:20rem; }
 .reel-note { justify-content:center; }
 .reel-note .scene-note { align-self:center; }
 .reel-spikiu .hap-spin { margin-bottom:0.2rem; }
