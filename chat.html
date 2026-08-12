@@ -811,6 +811,22 @@ function exitReel(){
 // nächste kommt von rechts. Kein vertikaler Stapel mehr.
 var reelIndex = 0;
 function reelSlides(){ var r = reelEl(); return r ? r.querySelectorAll('.reel-slide') : []; }
+// ── ZENTRALE Auto-Fit: skaliert den Haupttext jeder Reel-Karte, damit er immer
+//    sauber in die Karte passt. Kurz = gross, lang = schrumpft automatisch.
+//    Ein Ort, eine Regel — statt fixer Groessen pro Element. ──
+function fitSlide(slide){
+  if (!slide) return;
+  var mains = slide.querySelectorAll('.reel-line, .hap-flip .hap-ziel, .hap-back-trans, .hv-q, .reel-learner-head');
+  if (!mains.length) return;
+  var start = Math.min(58, Math.max(26, Math.round((slide.clientWidth||360) * 0.15)));
+  var min = 18, px = start, guard = 0, i;
+  for (i = 0; i < mains.length; i++) mains[i].style.setProperty('font-size', px + 'px', 'important');
+  while (slide.scrollHeight > slide.clientHeight - 4 && px > min && guard < 70){
+    px -= 1.5;
+    for (i = 0; i < mains.length; i++) mains[i].style.setProperty('font-size', px + 'px', 'important');
+    guard++;
+  }
+}
 function reelLayout(){
   var slides = reelSlides(); if (!slides.length) return;
   if (reelIndex > slides.length - 1) reelIndex = slides.length - 1;
@@ -821,6 +837,8 @@ function reelLayout(){
     s.classList.add(i < reelIndex ? 'reel-past' : (i === reelIndex ? 'reel-current' : 'reel-next'));
     if (i !== reelIndex){ var hf = s.querySelector('.hap-flip'); if (hf) hf.classList.remove('flipped'); }  // Teil 60: neu erreichte Karte zeigt die Vorderseite
   }
+  var __cur = slides[reelIndex];
+  if (__cur){ if (window.requestAnimationFrame) requestAnimationFrame(function(){ fitSlide(__cur); }); else fitSlide(__cur); }
 }
 function reelGoTo(i){ reelIndex = i; reelLayout(); }
 function reelAdvance(){ if (reelIndex < reelSlides().length - 1){ reelIndex++; reelLayout(); } }
@@ -831,6 +849,7 @@ function scrollReelToEnd(){ reelGoTo(reelSlides().length - 1); }   // „letzte 
 function bindReelGestures(){
   var reel = reelEl(); if (!reel || reel.__spkReelBound) return;
   reel.__spkReelBound = true;
+  window.addEventListener('resize', function(){ if (reelSlides().length) reelLayout(); });
   var x0 = null, y0 = null;
   reel.addEventListener('touchstart', function(e){ var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive:true });
   reel.addEventListener('touchend', function(e){
