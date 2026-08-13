@@ -164,6 +164,10 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-haeppchen .hap-play svg { width:22px; height:22px; }
 .reel-haeppchen .hap-fliphint, .reel-haeppchen .hap-tlabel { font-size:1.02rem !important; }
 .reel-haeppchen .hap-phon { font-size:1.25rem !important; }
+.reel-haeppchen .drill-say { font:700 .82rem 'DM Sans',sans-serif; color:var(--mid); text-transform:uppercase; letter-spacing:.05em; margin-bottom:.2rem; }
+.reel-haeppchen .drill-done-emoji { font-size:3rem; }
+.reel-haeppchen .drill-done-title { font:800 1.6rem 'DM Sans',sans-serif; color:var(--ink); margin-top:.4rem; }
+.reel-haeppchen .drill-done-sub { font:500 1rem/1.4 'DM Sans',sans-serif; color:var(--mid); margin-top:.35rem; max-width:26ch; }
 .reel-haeppchen .w-eyebrow { font-size:0.74rem; }
 /* HÖREN (hv) + LEKTION (kk) im Reel — genauso gross wie WÖRTER */
 .reel-haeppchen .hv-q { font-family:'Lora',serif; font-weight:600; font-style:normal; font-size:clamp(1.7rem,6.5vw,2.4rem) !important; line-height:1.28; margin-bottom:1.1rem; color:var(--ink); }
@@ -1847,17 +1851,70 @@ function nextHV(){
 }
 function handover(){
   setStage('sprechen');
-  if (reelActive){
-    // Phase 3b: Übergabe als eigene Karte mit „Weiter" — der Lerner liest sie, dann startet
-    // per Tipp der Seed-Zug (sonst würde die Tipp-Karte sofort von der Typing-Karte überholt).
-    var w = document.createElement('div');
-    w.innerHTML = '<div class="reel-note-text">' + escPlain(HAP_UI[uiLang()].handover) + '</div>';
-    mountWidget(w, 'reel-note-card');
-    addFlowButton(HAP_UI[uiLang()].weiter, startSeedTurn);
-    return;
-  }
-  addNote(HAP_UI[uiLang()].handover);   // (Chat-Fallback; geführt läuft seit Phase 3b im Reel)
-  startSeedTurn();
+  startDrill();   // Etappe 3a: geführtes Sprechen = Produktions-Drill (0 Token) statt /api-Rollenspiel
+}
+
+// ── A · PRODUKTIONS-DRILL (0 Token) ──────────────────────────────────────────
+// Umgekehrter Flip: vorne Cue in Muttersprache → laut sagen → tippen → hinten die
+// Zielphrase + Audio + Lautschrift. Nutzt die schon geladenen HAP.wortschatz.
+var DRILL_UI = {
+  de:{ title:'Sprechen üben', say:'Sag auf der Zielsprache:', check:'tippen zum Prüfen', done:'Geschafft! 🎉', doneSub:'Du hast die ganze Szene gesprochen.', enough:'Genug für heute' },
+  es:{ title:'Practicar habla', say:'Dilo en el idioma meta:', check:'toca para comprobar', done:'¡Listo! 🎉', doneSub:'Has hablado toda la escena.', enough:'Suficiente por hoy' },
+  en:{ title:'Speaking practice', say:'Say it in the target language:', check:'tap to check', done:'Done! 🎉', doneSub:'You spoke the whole scene.', enough:'Enough for today' }
+};
+function startDrill(){
+  var ui = uiLang(), U = DRILL_UI[ui] || DRILL_UI.de;
+  var list = (typeof HAP !== 'undefined' && HAP && HAP.wortschatz) ? HAP.wortschatz : [];
+  if (!list.length){ drillDone(); return; }
+  var n = list.length, startLen = reelSlides().length;
+  list.forEach(function(h, i){
+    var phon = h.lautschrift ? '<div class="hap-phon">' + escPlain(h.lautschrift) + '</div>' : '';
+    var w = document.createElement('div'); w.className = 'widget';
+    w.innerHTML = '<div class="w-eyebrow">🗣️ ' + escPlain(U.title) + ' · ' + (i+1) + ' / ' + n + '</div>'
+      + '<div class="hap-flip"><div class="hap-flip-inner">'
+      +   '<div class="hap-face front">'
+      +     '<div class="drill-say">' + escPlain(U.say) + '</div>'
+      +     '<div class="hap-ziel">' + escPlain(h.uebersetzung || '') + '</div>'
+      +     '<div class="hap-fliphint">' + escPlain(U.check) + '</div>'
+      +   '</div>'
+      +   '<div class="hap-face back">'
+      +     '<button class="hap-play" type="button">' + PLAY_SVG + '</button>'
+      +     '<div class="hap-ziel">' + escPlain(h.ziel) + '</div>' + phon
+      +   '</div>'
+      + '</div></div>'
+      + '<div class="hap-swipe-hint">' + escPlain(reelUI().swipe) + '</div>';
+    mountWidget(w);
+    var flip = w.querySelector('.hap-flip');
+    flip.addEventListener('click', function(e){
+      var pb = e.target.closest('.hap-play');
+      if (pb){ playFrom(pb, h.ziel, 'playing'); return; }   // 🔊 spielt die Zielphrase, dreht NICHT
+      flip.classList.toggle('flipped');
+    });
+    if (i === n - 1){ addFlowButton(HAP_UI[ui].weiter, drillDone); }
+  });
+  reelGoTo(startLen);
+  chat.scrollTop = chat.scrollHeight;
+}
+function drillDone(){
+  var ui = uiLang(), U = DRILL_UI[ui] || DRILL_UI.de;
+  setStage('lektion');
+  // Szene als erledigt markieren → FSRS-Palette bringt sie als „fällig" zurück (Etappe 2).
+  try{
+    var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
+    u.szenen = u.szenen || {};
+    if (typeof TOPIC_ID !== 'undefined' && TOPIC_ID){
+      var prev = u.szenen[TOPIC_ID] || {};
+      u.szenen[TOPIC_ID] = { done:true, last:Date.now(), stab:(prev.stab || 0) + 1 };
+    }
+    localStorage.setItem('spikiu_user', JSON.stringify(u));
+  }catch(e){}
+  try{ if (window.spikiuSitzung && window.spikiuSitzung.raeume) window.spikiuSitzung.raeume('gespraech'); }catch(e){}
+  var w = document.createElement('div');
+  w.innerHTML = '<div class="drill-done-emoji">🎉</div>'
+    + '<div class="drill-done-title">' + escPlain(U.done) + '</div>'
+    + '<div class="drill-done-sub">' + escPlain(U.doneSub) + '</div>';
+  mountWidget(w, 'reel-note-card');
+  addFlowButton(U.enough, function(){ location.href = 'haus.html'; });
 }
 // Der BESTEHENDE P1-Seed-Zug: schickt „Ich möchte das Thema … üben" an /api/gespraech
 // → Themen-Entrada → Rollenspiel. Unverändert, nur jetzt NACH den Häppchen. Das Thema
