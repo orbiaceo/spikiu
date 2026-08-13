@@ -1,95 +1,78 @@
-# AKTUELLER AUFTRAG — Geführtes Gespräch: 0-Token-Themen-Palette (Etappe 1)
+# AKTUELLER AUFTRAG — Geführtes Gespräch: Sprechen + Lektion 0-Token (Etappe 3)
 
-_Stand: 13.08.2026 · claude.ai-Design · Leo abgenommen (Konzept)_
-
-═══════════════════════════════════════════════════════════
-NORDSTERN — die zwei Modalitäten trennen
-═══════════════════════════════════════════════════════════
-- **GEFÜHRTES GESPRÄCH** = 0 Token · sicher · **Gratis**. Der User wählt IMMER
-  aus einer **Themen-Palette** — es gibt KEIN „Einfach plaudern" mehr.
-- **FREIES GESPRÄCH** = LLM · token-gebunden · **Premium**. Kommt später.
-
-**Warum kein „plaudern":** Sicherheit (keine Tabu-Themen, die zur Sperre führen),
-kein Chaos (v. a. für User, die nicht wissen, was sie lernen sollen), 0 Token.
-
-**Die Palette entsteht aus dem Lernweg, fortschrittsbasiert:**
-**3 neue (anstehend) + 2 fällige (wiederholen).**
-
-**Das „Gehirn" = FSRS-Scheduler (ALGORITHMUS, 0 Token) — NICHT LLM.**
-Liest die Spuren des Users (localStorage → Supabase Phase 2) und rechnet
-deterministisch aus, was heute fällig ist. Genau wie der Gym für Vokabeln —
-dasselbe Prinzip auf Szenen/Themen. Eine LLM würde Tokens kosten → verboten fürs Geführte.
-
-**Szenen sind vorgeschrieben (statisch, wie `haeppchen-db.js`) → 0 Token.**
-(Content-Arbeit, eigenes Paket — Etappe 3.)
+_Stand: 13.08.2026 · claude.ai-Design · Leo: „A+B und die statische Lektion"_
 
 ═══════════════════════════════════════════════════════════
-ITEM-MODELL — jede Szene ist ein FSRS-Item
+PROBLEM
 ═══════════════════════════════════════════════════════════
-Szene/Thema = Item mit: `id`, `titel`, `emoji`, `cefr` (a1..b2),
-`stab` (Stabilität), `due` (fällig-am, ms), `done` (bool), `last` (ms).
+Im geführten Fluss (Wörter → Hören → **Sprechen** → **Lektion**) sind die letzten
+zwei Schritte NICHT token-frei:
+- **Sprechen** ruft `/api/gespraech` → OpenAI **erfindet** den Verlauf, kostet
+  Tokens, zeigt ein **„schreib was"-Textfeld** (Chaos-/Sicherheitsrisiko).
+- **Lektion** ruft `/api/generate` → Tokens.
+Beides muss beim GEFÜHRTEN Gespräch **0 Token + vorgeschrieben** sein.
 
-Tracking in localStorage: `spikiu_user.szenen = { <id>: {stab, due, done, last} }`.
-FSRS-light wie im Gym: richtig durchgespielt → Stabilität hoch, due weiter in die
-Zukunft; wackelig → due bald. (Der echte Scheduler ist Etappe 2 — eigenes Paket.)
-
-═══════════════════════════════════════════════════════════
-THEMEN-GERÜST (CEFR-Standard) — Start-Set
-═══════════════════════════════════════════════════════════
-- **A1:** familie · wohnen · essen_trinken · einkaufen · tagesablauf · uhrzeit · wegbeschreibung
-- **A2:** freizeit · reisen · arzt · arbeit · wetter · kleidung · verabredung
-- **B1/B2:** bildung · medien · umwelt · meinungen · beruf · gesellschaft (später)
-- **Szenen (Roleplay-Kontexte):** cafe · restaurant · hotel · taxi · arzt · einkaufen · bahnhof · wohnungssuche · termin
-- Bereits statisch in `haeppchen-db.js`: **cafe · hotel · taxi · restaurant** (Start).
+Datenlage: `haeppchen-db.js` hat **Wortschatz + Hörverständnis**, aber **kein
+Dialog-Skript** — deshalb füllt die KI die Lücke.
 
 ═══════════════════════════════════════════════════════════
-DIESE AUFGABE — ETAPPE 1 (UI/Routing, sofort baubar, 0-Token-Eingang)
+LÖSUNG — drei 0-Token-Bausteine (ersetzen /api/gespraech + /api/generate im geführten Pfad)
 ═══════════════════════════════════════════════════════════
-1. **Kacheln trennen** (`haus.html`, Raum Abenteuer):
-   - „Geführtes Gespräch" → `chat.html?modus=gefuehrt`
-   - „Freies Gespräch"   → `chat.html?modus=frei`
 
-2. **`chat.html` liest `?modus`:**
-   - `gefuehrt`: KEIN „Einfach plaudern". Opener = **nur Themen-Palette**.
-   - `frei`: **Premium-Sperre** — ruhige Karte „✨ Freies Gespräch ist Premium —
-     bald verfügbar" + Zurück + Link zu Abonnement. KEIN offener Chat.
+**A · PRODUKTIONS-DRILL** (nutzt vorhandenen `wortschatz`)
+- Pro Kern-Phrase eine Reel-Karte: Cue in **Muttersprache** („Sag: einen Kaffee,
+  bitte") → User sagt laut → Knopf **„Zeigen"** → Zielphrase + 🔊 + Lautschrift →
+  Selbst-Einschätzung **„Konnte ich" / „Nochmal"** → weiter.
+- Wie der Flip/Gym, aber PRODUKTION (Mutter → Ziel). **Kein Textfeld, keine KI.**
+- „Nochmal" hängt die Karte hinten wieder an (leichter Spaced-Effekt, lokal).
 
-3. **„Einfach plaudern" aus dem geführten Opener entfernen.**
+**B · SKRIPT-ROLLENSPIEL** (neue Daten: `szenen-dialog.js`)
+- Spikiu spielt die Rolle (feste Zeilen, Ziel + Übersetzung). Der User **wählt**
+  seine Antwort aus 2–3 Optionen (Multiple Choice). Richtig → nächste Zeile;
+  falsch → sanftes Orange + richtige Option markiert, dann weiter.
+- Reihenfolge fest pro Szene. **Kein Textfeld, keine KI, 0 Token.**
 
-4. **Themen-Palette (Gerüst):** zeigt **3 neue + 2 fällige** aus `szenen.js`.
-   Fürs Erste einfache Reihenfolge (neue zuerst, dann die 2 „ältesten geübten"
-   als Platzhalter für „fällig"). Der echte FSRS-Scheduler kommt in Etappe 2.
-   Jede Palette-Karte im Pop/Minz-Look (wie die Themen-Chips heute).
+**LEKTION · STATISCH** (aus `wortschatz` + den geübten Items)
+- Feste 3-Teile-Karte (Grammatik-Häppchen / Bedeutung / Aussprache) + kurzes
+  Multiple-Choice-Quiz aus den Wörtern der Szene. Alles aus der DB, **kein
+  `/api/generate`**. Als Reel-Slide (kk-*), wie heute — nur Quelle statisch.
+- „Lektion speichern" schreibt wie gehabt nach `spikiu_user.lessons` (lokal).
 
-5. **`szenen.js` (neu):** die Start-Themen-Liste als Array `window.spikiuSzenen`
-   mit `{id, titel, emoji, cefr, scene}` (scene = Roleplay-Kontext, mappt später
-   auf die vorgeschriebene Szene). Erweiterbar. Eigennamen-frei.
+Reihenfolge im geführten Fluss: **Wörter → Hören → A (Drill) → B (Rollenspiel) → Lektion (statisch)**.
+
+═══════════════════════════════════════════════════════════
+DATEN — `szenen-dialog.js` (neu, wie haeppchen-db: pro Thema × Zielsprache)
+═══════════════════════════════════════════════════════════
+```
+window.spikiuSzenenDialog(themaId, zielsprache) → {
+  rolle: 'Kellner'|'Rezeption'|...,               // wen Spikiu spielt (Muttersprache)
+  schritte: [ { spikiu:{ziel, trans}, tip?, opts:[{text, ok:true|false}] }, ... ]
+} | null
+```
+Start: `cafe · restaurant · hotel · taxi` × `es` (wie haeppchen-db). Andere
+Zielsprachen später. Español neutro, A1-Niveau.
+
+═══════════════════════════════════════════════════════════
+BAU-ETAPPEN (chirurgisch, getestet, live Premium schonen)
+═══════════════════════════════════════════════════════════
+- **3a:** A (Drill) + statische Lektion — nutzt vorhandene Daten, sofort baubar.
+  `/api/gespraech`-Rollenspiel + `/api/generate` im geführten Pfad entfernen.
+- **3b:** B (Skript-Rollenspiel) + `szenen-dialog.js` einbinden — zwischen A und Lektion.
 
 ═══════════════════════════════════════════════════════════
 ABNAHME-KRITERIEN
 ═══════════════════════════════════════════════════════════
-- [ ] Abenteuer-Kachel „Geführtes" → `chat.html?modus=gefuehrt` → Opener zeigt
-      NUR Themen (kein „Einfach plaudern").
-- [ ] „Freies" → `chat.html?modus=frei` → Premium-Sperre, kein offener Chat.
-- [ ] Palette zeigt Themen aus `szenen.js` (3 neu + 2 fällig, Platzhalter-Logik).
-- [ ] **0 Token im geführten Opener:** keine `/api/*`-Aufrufe beim Öffnen/Wählen.
-- [ ] Der bestehende Fluss (Wörter → Hören → Sprechen → Lektion) bleibt nach der
-      Themenwahl erreichbar (dessen Token-Freiheit macht Etappe 3).
-
-═══════════════════════════════════════════════════════════
-NICHT IN DIESER ETAPPE (Roadmap)
-═══════════════════════════════════════════════════════════
-- **Etappe 2:** FSRS-Scheduler für Szenen (client-seitig, wie Gym) — echte
-  „3 neu + 2 fällig"-Logik aus Stabilität/Fälligkeit.
-- **Etappe 3:** Szenen vorschreiben (0-Token-Content: Wörter → Hören →
-  Skript-Rollenspiel → statische Lektion, ohne `/api`).
-- **Etappe 4 (Premium):** Freies Gespräch (LLM, token-gebunden) freischalten.
+- [ ] Geführter Fluss ruft **kein `/api/*`** mehr (Wörter/Hören/A/B/Lektion alle statisch).
+- [ ] **Kein „schreib was"-Textfeld** im geführten Sprechen.
+- [ ] A: Cue → Zeigen → Selbst-Einschätzung; „Nochmal" wiederholt die Karte.
+- [ ] B: MC-Antworten, richtig=grün / falsch=orange, fester Dialog-Verlauf.
+- [ ] Lektion statisch (3-Teile + MC-Quiz aus dem Wortschatz), speicherbar.
+- [ ] Freies Gespräch (Premium, `/api/gespraech`) bleibt als eigener Pfad unberührt.
+- [ ] Alles groß/lesbar (zentrale fitSlide-Regel), Text schwarz, grün/orange-Feedback.
 
 ═══════════════════════════════════════════════════════════
 EISERNE REGELN
 ═══════════════════════════════════════════════════════════
-- Geführtes Gespräch = **0 Token**. Kein `/api/*` im Gratis-Pfad.
-- Scheduling = **FSRS-Algorithmus**, nie LLM.
-- Pop/Minz-Look + kantige DM-Sans-Typo (Chrome) wie das Haus; Lese-Inhalt Serifen.
-- Mascot immer „Spikiu". „Lernroman", nicht „Learnroman".
-- Alte `nav.js` unangetastet lassen, wo nicht nötig.
+- Geführtes = 0 Token. `/api/*` nur im Freien Gespräch (Premium).
+- Kein Textfeld, keine erfundenen Inhalte im Geführten.
+- Español neutro · Hochdeutsch · US-Englisch. „Lernroman", Mascot „Spikiu".
