@@ -1978,13 +1978,14 @@ function sitzungWiederherstellen(s){
 // Eintritt: gibt es eine wirklich angefangene, unfertige Sitzung → „Weiter, wo du warst?".
 // Sonst der normale Opener (unverändert).
 function startGespraech(){
+  if (getModus() === 'frei'){ showPremiumSperre(); return; }   // Freies Gespräch = Premium (Etappe 4) — nie Sitzung
   var s = null;
   try { s = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('gespraech') : null; } catch(e){ s = null; }
-  if (window.spikiuSitzung && s && Array.isArray(s.verlauf) && s.verlauf.length >= 2){
-    var FREI = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
+  // Nur GEFÜHRTE Sitzungen wieder aufnehmen (frei-Sitzungen gibt es künftig nicht mehr).
+  if (window.spikiuSitzung && s && s.gefuehrt && Array.isArray(s.verlauf) && s.verlauf.length >= 2){
     window.spikiuSitzung.frageWiederkommen({
       raum: 'gespraech', ts: s.ts,
-      wo: (s.topicLabel || FREI[uiLang()] || FREI.de),
+      wo: (s.topicLabel || 'Geführtes Gespräch'),
       beimWeiter: function(){ sitzungWiederherstellen(s); },
       beimNeu: function(){ gespraechRaeumen(); startOpener(); }
     });
