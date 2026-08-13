@@ -75,6 +75,12 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .gab-label { font-size:0.78rem; color:var(--mid); font-weight:500; }
 /* Opener-Überschrift (Teil 35): ruhige einzelne Zeile statt Gruß-Bubble. */
 .gab-ask { font-family:'DM Sans',sans-serif; font-size:1.12rem; font-weight:800; color:var(--ink); margin:0 0 0.35rem; }
+    .premgate{ text-align:center; display:flex; flex-direction:column; align-items:center; gap:.55rem; padding:2rem 1.2rem; }
+    .pg-emoji{ font-size:2.6rem; }
+    .pg-title{ font:800 1.35rem 'DM Sans',sans-serif; color:var(--ink); }
+    .pg-sub{ font:500 .98rem/1.45 'DM Sans',sans-serif; color:var(--mid); max-width:26ch; }
+    .pg-btn{ margin-top:.6rem; display:inline-block; background:var(--accent); color:#fff; font:800 1rem 'DM Sans',sans-serif; text-decoration:none; padding:.7rem 1.7rem; border-radius:100px; border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); }
+    .pg-back{ background:#fff; color:var(--ink); font:700 .9rem 'DM Sans',sans-serif; border:2px solid var(--ink); border-radius:100px; padding:.5rem 1.3rem; box-shadow:2px 2px 0 var(--ink); cursor:pointer; }
 .gab-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }
 .chip { background:var(--white); border:2px solid var(--ink); color:var(--ink); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:transform .1s,box-shadow .1s; -webkit-tap-highlight-color:transparent; }
 .chip:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
@@ -380,6 +386,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 <!-- Teil 64: feste Häppchen-DB (4 Themen × es/de/en/el) SYNCHRON vor dem Haupt-Script,
      damit loadHaeppchen sie ohne API-Call nutzen kann (Fallback bleibt /api/haeppchen). -->
 <script src="haeppchen-db.js"></script>
+<script src="szenen.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════════
 //  SPIKIU · RAUM: FREIES GESPRÄCH (der Flur)
@@ -1441,9 +1448,9 @@ function sendMessage(){
 // ab da läuft der normale turn()-Zyklus. KEINE Häppchen/Hörverständnis/Lektion
 // in Paket 1 — die gibt es noch nicht.
 var GAB = {
-  de:{ chooseActivity:'Wähle eine Aktivität', free:'Einfach plaudern', orTopic:'…oder ein Thema üben', other:'Etwas anderes…', describe:'Beschreibe, was du üben willst', placeholder:'z. B. ein Zimmer reservieren…', seed:function(t){ return 'Ich möchte das Thema „'+t+'" üben.'; } },
-  es:{ chooseActivity:'Elige una actividad', free:'Charlar sin más', orTopic:'…o practicar un tema', other:'Otra cosa…', describe:'Describe lo que quieres practicar', placeholder:'p. ej. reservar una habitación…', seed:function(t){ return 'Quiero practicar el tema «'+t+'».'; } },
-  en:{ chooseActivity:'Choose an activity', free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
+  de:{ chooseActivity:'Wähle eine Aktivität', chooseTopic:'Wähle ein Thema', free:'Einfach plaudern', orTopic:'…oder ein Thema üben', other:'Etwas anderes…', describe:'Beschreibe, was du üben willst', placeholder:'z. B. ein Zimmer reservieren…', seed:function(t){ return 'Ich möchte das Thema „'+t+'" üben.'; } },
+  es:{ chooseActivity:'Elige una actividad', chooseTopic:'Elige un tema', free:'Charlar sin más', orTopic:'…o practicar un tema', other:'Otra cosa…', describe:'Describe lo que quieres practicar', placeholder:'p. ej. reservar una habitación…', seed:function(t){ return 'Quiero practicar el tema «'+t+'».'; } },
+  en:{ chooseActivity:'Choose an activity', chooseTopic:'Choose a topic', free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
 };
 var TOPICS = [
   { id:'hotel',      emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel' },
@@ -1456,29 +1463,39 @@ function removeGabelung(){ var g = document.getElementById('gabelung'); if (g) g
 
 function showGabelung(){
   if (document.getElementById('gabelung')) return;
-  setExitVisible(false);              // an der Themen-Gabelung läuft kein Rollenspiel
+  setExitVisible(false);
   var ui = uiLang(), t = GAB[ui];
-  var chips = TOPICS.map(function(topic, i){
-    return '<button class="chip" type="button" data-i="' + i + '">' + topic.emoji + ' ' + escPlain(topic[ui]) + '</button>';
+  var pal = (window.spikiuSzenenPalette ? window.spikiuSzenenPalette() : TOPICS.slice(0, 5));   // 3 neu + 2 faellig aus szenen.js
+  var chips = pal.map(function(topic, i){
+    return '<button class="chip" type="button" data-i="' + i + '">' + topic.emoji + ' ' + escPlain(topic[ui] || topic.de) + '</button>';
   }).join('');
   var wrap = document.createElement('div');
   wrap.className = 'gabelung'; wrap.id = 'gabelung';
   wrap.innerHTML =
-    '<div class="gab-ask">' + escPlain(t.chooseActivity) + '</div>'
-    + '<button class="chip full" type="button" id="gabFree">💬 ' + escPlain(t.free) + '</button>'
-    + '<div class="gab-label">' + escPlain(t.orTopic) + '</div>'
-    + '<div class="gab-chips" id="gabChips">' + chips
-      + '<button class="chip ghost" type="button" id="gabOther">✍️ ' + escPlain(t.other) + '</button>'
-    + '</div>';
+    '<div class="gab-ask">' + escPlain(t.chooseTopic || t.chooseActivity) + '</div>'
+    + '<div class="gab-chips" id="gabChips">' + chips + '</div>';
   chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
-  document.getElementById('gabFree').onclick = goFree;
-  document.getElementById('gabOther').onclick = customTopic;
   wrap.querySelectorAll('.gab-chips .chip[data-i]').forEach(function(b){
-    b.onclick = function(){ var topic = TOPICS[+b.getAttribute('data-i')]; pickTopic(topic[uiLang()], topic.id); };
+    b.onclick = function(){ var topic = pal[+b.getAttribute('data-i')]; pickTopic(topic[uiLang()] || topic.de, topic.id); };
   });
 }
 
+function getModus(){ try{ return new URLSearchParams(location.search).get('modus') || 'gefuehrt'; }catch(e){ return 'gefuehrt'; } }
+function showPremiumSperre(){
+  if (document.getElementById('gabelung')) return;
+  removeOpenerGreeting();
+  var wrap = document.createElement('div');
+  wrap.className = 'gabelung premgate'; wrap.id = 'gabelung';
+  wrap.innerHTML =
+    '<div class="pg-emoji">✨</div>'
+    + '<div class="pg-title">Freies Gespräch ist Premium</div>'
+    + '<div class="pg-sub">Frei mit Spikiu reden kommt bald. Bis dahin übe geführt aus einem Thema.</div>'
+    + '<a class="pg-btn" href="spikiu-products.html">Premium ansehen</a>'
+    + '<button class="pg-back" type="button" id="pgBack">Zurück</button>';
+  chat.appendChild(wrap);
+  var pb = document.getElementById('pgBack'); if (pb) pb.onclick = function(){ location.href = 'haus.html'; };
+}
 function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(false); setExitVisible(false); removeGabelung(); removeOpenerGreeting(); enterReel(); }   // freier Flur = Reel (Phase 2): Vollbild-Slides statt Blasen; Lerner-Slide trägt das Textfeld
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
@@ -1924,8 +1941,9 @@ function renderOpenerGreeting(){
 }
 
 function startOpener(){
-  sessionGezaehlt = false;      // Teil 36: frischer Eintritt → Blatt-Zähler zurück
-  setOpenerChrome(true);        // Profil-Chip + Schreibfeld aus, solange die Gabelung steht
+  sessionGezaehlt = false;
+  setOpenerChrome(true);
+  if (getModus() === 'frei'){ showPremiumSperre(); return; }   // Freies Gespräch = Premium (Etappe 4)
   renderOpenerGreeting();       // Voz primero: Präsenz-Gruß (lädt ein, KEIN Auto-Play)
   showGabelung();
 }
