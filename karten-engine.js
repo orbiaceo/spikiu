@@ -85,7 +85,11 @@
     + '.spk-doc .quizq{font:700 .95rem "DM Sans",sans-serif;margin-bottom:.4rem}'
     + '.spk-note-emoji{font-size:3rem}'
     + '.spk-note-title{font:800 1.5rem "DM Sans",sans-serif;color:var(--ink,#15163a)}'
-    + '.spk-note-sub{font:500 1rem/1.45 "DM Sans",sans-serif;color:var(--muted,#5f7068);max-width:28ch}';
+    + '.spk-note-sub{font:500 1rem/1.45 "DM Sans",sans-serif;color:var(--muted,#5f7068);max-width:28ch}'
+    + '@keyframes spkFromRight{from{transform:translateX(60%);opacity:0}to{transform:none;opacity:1}}'
+    + '@keyframes spkFromLeft{from{transform:translateX(-60%);opacity:0}to{transform:none;opacity:1}}'
+    + '.spk-card.from-right{animation:spkFromRight .32s cubic-bezier(.4,0,.2,1)}'
+    + '.spk-card.from-left{animation:spkFromLeft .32s cubic-bezier(.4,0,.2,1)}';
 
   function injectCSS() {
     if (document.getElementById('spkKartenCSS')) return;
@@ -147,7 +151,29 @@
     var foot = el('div', 'spk-foot');
     foot.innerHTML = '<div class="spk-feedback"></div>';
     card.appendChild(body); card.appendChild(foot);
-    return { card: card, body: body, foot: foot, feedback: foot.querySelector('.spk-feedback') };
+    var F = { card: card, body: body, foot: foot, feedback: foot.querySelector('.spk-feedback') };
+    /* Swipe-Meta: Wisch links = weiter (nur wenn erlaubt), Wisch rechts = zurück. */
+    F.swipe = { canNext: false, nextFn: null, backFn: null };
+    F.armNext = function (fn) { F.swipe.canNext = true; F.swipe.nextFn = fn; };
+    return F;
+  }
+  function bindSwipe(F) {
+    var sx = 0, sy = 0, live = false;
+    function go(dx, dy) {
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) { if (F.swipe.canNext && F.swipe.nextFn) F.swipe.nextFn(); }
+      else { if (F.swipe.backFn) F.swipe.backFn(); }
+    }
+    F.card.addEventListener('touchstart', function (e) {
+      if (!e.touches || !e.touches.length) return;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY; live = true;
+    }, { passive: true });
+    F.card.addEventListener('touchend', function (e) {
+      if (!live || !e.changedTouches || !e.changedTouches.length) return;
+      live = false;
+      go(e.changedTouches[0].clientX - sx, e.changedTouches[0].clientY - sy);
+    }, { passive: true });
+    F.card.__spkSwipe = { go: go, meta: F.swipe };   /* testbar */
   }
   function footButton(F, label, cls, fn) {
     var old = F.foot.querySelector('.spk-btn'); if (old) old.remove();
@@ -182,6 +208,7 @@
         zone.classList.toggle('flipped');
       });
       footButton(F, item.weiter || 'Weiter', '', next);
+      F.armNext(next);
     },
 
     /* choice: { typ:'choice', eyebrow?, audio?, instr, options:[{text, ok}], multi?, optsZiel?, pruefen?, weiter? } */
@@ -224,6 +251,7 @@
         F.feedback.textContent = ok ? (item.richtig || 'Richtig!') : (item.fast || 'Fast — schau dir die richtige Antwort an.');
         F.feedback.className = 'spk-feedback ' + (ok ? 'ok' : 'no');
         footButton(F, item.weiter || 'Weiter', '', next);
+        F.armNext(next);
         fitCard(F.card);
       });
     },
@@ -249,6 +277,7 @@
             list.querySelectorAll('.spk-opt').forEach(function (x, j) { if (opts[j].ok) x.classList.add('correct'); });
           }
           footButton(F, item.weiter || 'Weiter', '', next);
+          F.armNext(next);
           fitCard(F.card);
         };
         list.appendChild(b);
@@ -277,6 +306,7 @@
         b.onclick = function () { b.classList.add(b.getAttribute('data-a') ? 'correct' : 'wrong'); };
       });
       footButton(F, item.weiter || 'Weiter', item.weiterGhost ? 'ghost' : '', next);
+      F.armNext(next);
     },
 
     /* note: { typ:'note', emoji?, title, sub?, buttons:[{label, ghost?, go}] } */
@@ -294,11 +324,15 @@
     }
   };
 
-  function render(item, next) {
+  function render(item, next, opts) {
+    opts = opts || {};
     injectCSS();
     if (!CFG.stage) throw new Error('SpikiuKarten.setup({stage}) fehlt');
     var F = buildFrame();
+    F.swipe.backFn = opts.back || null;
     RENDER[item.typ](item, F, next || function () {});
+    bindSwipe(F);
+    if (opts.anim) F.card.classList.add(opts.anim === 'back' ? 'from-left' : 'from-right');
     CFG.stage.innerHTML = '';
     CFG.stage.appendChild(F.card);
     CUR = F.card;
@@ -307,12 +341,15 @@
     return F;
   }
 
+  /* Sequenz mit Reel-Navigation: Wisch links = weiter (wenn erlaubt), rechts = zurück. */
   function sequence(items, onDone) {
     var i = 0;
-    (function step() {
+    function show(anim) {
       if (i >= items.length) { (onDone || function () {})(); return; }
-      render(items[i], function () { i++; step(); });
-    })();
+      render(items[i], function () { i++; show('next'); },
+        { anim: anim, back: i > 0 ? function () { i--; show('back'); } : null });
+    }
+    show(null);
   }
 
   window.addEventListener('resize', function () { if (CUR) fitCard(CUR); });
