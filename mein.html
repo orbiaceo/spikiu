@@ -87,4 +87,5 @@ document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=func
 document.getElementById('logout').onclick=function(){ toast('Abmelden — bald verfügbar'); };
 </script>
 <script src="bottomnav.js" defer></script>
+<script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 </body></html>
