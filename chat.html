@@ -168,6 +168,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-haeppchen .drill-done-emoji { font-size:3rem; }
 .reel-haeppchen .drill-done-title { font:800 1.6rem 'DM Sans',sans-serif; color:var(--ink); margin-top:.4rem; }
 .reel-haeppchen .drill-done-sub { font:500 1rem/1.4 'DM Sans',sans-serif; color:var(--mid); margin-top:.35rem; max-width:26ch; }
+.reel-haeppchen .drill-view-btn { margin-top:.9rem; background:#fff !important; color:var(--ink) !important; border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); font-weight:800 !important; }
+.reel-haeppchen .rp-line { display:flex; flex-direction:column; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+.reel-haeppchen .rp-ziel { font-family:'Lora',serif; font-weight:600; font-size:clamp(1.7rem,7vw,2.5rem); line-height:1.25; color:var(--read,#2b2621); }
+.reel-haeppchen .rp-trans { font:500 1rem/1.35 'DM Sans',sans-serif; color:var(--mid); }
+.reel-haeppchen .rp-tip { font:600 .9rem 'DM Sans',sans-serif; color:var(--mid); margin-bottom:.7rem; }
+.reel-haeppchen .rp-opts { display:flex; flex-direction:column; gap:.6rem; width:100%; }
+.reel-haeppchen .rp-opt { text-align:center; justify-content:center; }
 .reel-haeppchen .w-eyebrow { font-size:0.74rem; }
 /* HÖREN (hv) + LEKTION (kk) im Reel — genauso gross wie WÖRTER */
 .reel-haeppchen .hv-q { font-family:'Lora',serif; font-weight:600; font-style:normal; font-size:clamp(1.7rem,6.5vw,2.4rem) !important; line-height:1.28; margin-bottom:1.1rem; color:var(--ink); }
@@ -391,6 +398,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
      damit loadHaeppchen sie ohne API-Call nutzen kann (Fallback bleibt /api/haeppchen). -->
 <script src="haeppchen-db.js"></script>
 <script src="szenen.js"></script>
+<script src="szenen-dialog.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════════
 //  SPIKIU · RAUM: FREIES GESPRÄCH (der Flur)
@@ -827,7 +835,7 @@ function reelSlides(){ var r = reelEl(); return r ? r.querySelectorAll('.reel-sl
 //    Ein Ort, eine Regel — statt fixer Groessen pro Element. ──
 function fitSlide(slide){
   if (!slide) return;
-  var mains = slide.querySelectorAll('.reel-line, .hap-flip .hap-ziel, .hap-back-trans, .hv-q, .reel-learner-head');
+  var mains = slide.querySelectorAll('.reel-line, .hap-flip .hap-ziel, .hap-back-trans, .hv-q, .reel-learner-head, .rp-ziel');
   var opts  = slide.querySelectorAll('.hv-opt');   // Antwort-Chips folgen jetzt auch der Regel
   if (!mains.length && !opts.length) return;
   var start = Math.min(60, Math.max(32, Math.round((slide.clientWidth||360) * 0.15)));
@@ -1890,31 +1898,135 @@ function startDrill(){
       if (pb){ playFrom(pb, h.ziel, 'playing'); return; }   // 🔊 spielt die Zielphrase, dreht NICHT
       flip.classList.toggle('flipped');
     });
-    if (i === n - 1){ addFlowButton(HAP_UI[ui].weiter, drillDone); }
+    if (i === n - 1){ addFlowButton(HAP_UI[ui].weiter, startRollenspiel); }
   });
   reelGoTo(startLen);
   chat.scrollTop = chat.scrollHeight;
 }
+// ── STATISCHE LEKTION (0 Token) ──────────────────────────────────────────────
+// Baut das gleiche Lesson-Objekt wie /api/generate-lesson (title/subtitle/goal/
+// vocab/grammar/dialogue/quiz), nur aus dem, was in dieser Szene schon geladen
+// wurde (HAP.wortschatz + der Rollenspiel-Dialog). lektionen.html liest sie
+// identisch — kein Unterschied zwischen KI- und statisch erzeugten Lektionen.
+var LESSON_UI = {
+  de:{ subtitle:'Deine geführte Szene', goalLabel:'Ziel',
+       goal:function(t){ return 'Du hast das Thema „' + t + '" geübt: Wörter, Aussprache und ein kurzes Rollenspiel.'; },
+       vocabLabel:'Wortschatz', dialogueLabel:'Rollenspiel', quizLabel:'Quiz', you:'Du',
+       quizQ:function(w){ return 'Was bedeutet „' + w + '"?'; }, view:'Lektion ansehen' },
+  es:{ subtitle:'Tu escena guiada', goalLabel:'Objetivo',
+       goal:function(t){ return 'Practicaste el tema «' + t + '»: vocabulario, pronunciación y un breve juego de roles.'; },
+       vocabLabel:'Vocabulario', dialogueLabel:'Juego de roles', quizLabel:'Quiz', you:'Tú',
+       quizQ:function(w){ return '¿Qué significa «' + w + '»?'; }, view:'Ver la lección' },
+  en:{ subtitle:'Your guided scene', goalLabel:'Goal',
+       goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, pronunciation and a short roleplay.'; },
+       vocabLabel:'Vocabulary', dialogueLabel:'Roleplay', quizLabel:'Quiz', you:'You',
+       quizQ:function(w){ return 'What does "' + w + '" mean?'; }, view:'View lesson' }
+};
+function buildStaticLesson(){
+  var ui = uiLang(), L = LESSON_UI[ui] || LESSON_UI.de;
+  var list = (typeof HAP !== 'undefined' && HAP && HAP.wortschatz) ? HAP.wortschatz : [];
+  var vocab = list.map(function(h){ return { word: h.ziel, translation: h.uebersetzung || '' }; });
+  var dialogue = [];
+  if (RP && RP.schritte && RP.schritte.length){
+    RP.schritte.forEach(function(st){
+      dialogue.push({ speaker: RP.rolle, text: st.spikiu.ziel, translation: st.spikiu.trans });
+      var okOpt = null, k;
+      for (k = 0; k < st.opts.length; k++){ if (st.opts[k].ok){ okOpt = st.opts[k]; break; } }
+      if (okOpt) dialogue.push({ speaker: L.you, text: okOpt.text, translation: '' });
+    });
+  }
+  var quiz = [];
+  vocab.forEach(function(v, i){
+    if (!v.translation) return;
+    var distract = [];
+    vocab.forEach(function(x, j){ if (j !== i && x.translation && distract.indexOf(x.translation) === -1) distract.push(x.translation); });
+    var opts = shuffle([v.translation].concat(shuffle(distract).slice(0, 2)));
+    quiz.push({ question: L.quizQ(v.word), options: opts, answer: v.translation });
+  });
+  return {
+    title: TOPIC_LABEL || L.subtitle, subtitle: L.subtitle,
+    goalLabel: L.goalLabel, goal: L.goal(TOPIC_LABEL || ''),
+    vocabLabel: L.vocabLabel, vocab: vocab,
+    dialogueLabel: L.dialogueLabel, dialogue: dialogue,
+    quizLabel: L.quizLabel, quiz: quiz
+  };
+}
 function drillDone(){
-  var ui = uiLang(), U = DRILL_UI[ui] || DRILL_UI.de;
+  var ui = uiLang(), U = DRILL_UI[ui] || DRILL_UI.de, L = LESSON_UI[ui] || LESSON_UI.de;
   setStage('lektion');
-  // Szene als erledigt markieren → FSRS-Palette bringt sie als „fällig" zurück (Etappe 2).
+  var lesson = buildStaticLesson();
   try{
     var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
+    // Szene als erledigt markieren → FSRS-Palette bringt sie als „fällig" zurück (Etappe 2).
     u.szenen = u.szenen || {};
     if (typeof TOPIC_ID !== 'undefined' && TOPIC_ID){
       var prev = u.szenen[TOPIC_ID] || {};
       u.szenen[TOPIC_ID] = { done:true, last:Date.now(), stab:(prev.stab || 0) + 1 };
     }
+    // Lektion archivieren — gleiche Form wie makeLessonAndLeave, nur ohne /api.
+    var entry = {
+      id: 'lesson_' + Date.now(),
+      topic: lesson.title || 'Lektion',
+      thema: TOPIC_LABEL || lesson.title,
+      fromConversation: false,
+      lesson: lesson,
+      createdAt: new Date().toISOString(),
+      zielsprache: (typeof PROFILE !== 'undefined' && PROFILE) ? PROFILE.zielsprache : undefined
+    };
+    var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
+    arr.push(entry);
+    arr.sort(function(a, b){ return (b.createdAt || '').localeCompare(a.createdAt || ''); });
+    u.lessons = arr.slice(0, 14);
     localStorage.setItem('spikiu_user', JSON.stringify(u));
   }catch(e){}
   try{ if (window.spikiuSitzung && window.spikiuSitzung.raeume) window.spikiuSitzung.raeume('gespraech'); }catch(e){}
   var w = document.createElement('div');
   w.innerHTML = '<div class="drill-done-emoji">🎉</div>'
     + '<div class="drill-done-title">' + escPlain(U.done) + '</div>'
-    + '<div class="drill-done-sub">' + escPlain(U.doneSub) + '</div>';
+    + '<div class="drill-done-sub">' + escPlain(U.doneSub) + '</div>'
+    + '<button class="reel-send drill-view-btn" type="button" id="drillViewLesson">' + escPlain(L.view) + '</button>';
   mountWidget(w, 'reel-note-card');
+  var vb = w.querySelector('#drillViewLesson'); if (vb) vb.onclick = function(){ location.href = 'lektionen.html'; };
   addFlowButton(U.enough, function(){ location.href = 'haus.html'; });
+}
+
+// ── B · SKRIPT-ROLLENSPIEL (0 Token) ─────────────────────────────────────────
+// Spikiu spielt die Rolle (feste Zeilen aus szenen-dialog.js), der User waehlt
+// seine Antwort aus Optionen (Multiple Choice). Richtig=gruen, falsch=orange.
+var RP_UI = { de:{ title:'Rollenspiel' }, es:{ title:'Juego de roles' }, en:{ title:'Roleplay' } };
+var RP = null, RP_I = 0;
+function startRollenspiel(){
+  var ziel = (typeof PROFILE !== 'undefined' && PROFILE && PROFILE.zielsprache) ? PROFILE.zielsprache : 'es';
+  var dlg = (window.spikiuSzenenDialog && typeof TOPIC_ID !== 'undefined' && TOPIC_ID) ? window.spikiuSzenenDialog(TOPIC_ID, ziel) : null;
+  if (!dlg || !dlg.schritte || !dlg.schritte.length){ drillDone(); return; }   // kein Skript → direkt Abschluss
+  RP = dlg; RP_I = 0;
+  renderRPStep();
+}
+function renderRPStep(){
+  if (!RP || RP_I >= RP.schritte.length){ drillDone(); return; }               // Skript zu Ende → Abschluss
+  var st = RP.schritte[RP_I], ui = uiLang(), n = RP.schritte.length;
+  var opts = shuffle(st.opts.slice());
+  var optHTML = opts.map(function(o, k){ return '<button class="hv-opt rp-opt" type="button" data-k="' + k + '">' + escPlain(o.text) + '</button>'; }).join('');
+  var w = document.createElement('div');
+  w.innerHTML = '<div class="w-eyebrow">🎭 ' + escPlain(RP_UI[ui].title) + ' · ' + escPlain(RP.rolle) + ' · ' + (RP_I + 1) + ' / ' + n + '</div>'
+    + '<div class="rp-line"><button class="hap-play" type="button" id="rpPlay">' + PLAY_SVG + '</button>'
+    +   '<div class="rp-ziel">' + escPlain(st.spikiu.ziel) + '</div>'
+    +   '<div class="rp-trans">' + escPlain(st.spikiu.trans) + '</div></div>'
+    + (st.tip ? '<div class="rp-tip">💬 ' + escPlain(st.tip) + '</div>' : '')
+    + '<div class="rp-opts">' + optHTML + '</div>';
+  mountWidget(w, 'reel-haeppchen');
+  var pb = w.querySelector('#rpPlay'); if (pb) pb.onclick = function(){ playFrom(pb, st.spikiu.ziel, 'playing'); };
+  w.querySelectorAll('.rp-opt').forEach(function(b){
+    b.onclick = function(){
+      if (b.getAttribute('data-done')) return;
+      var chosen = opts[+b.getAttribute('data-k')];
+      var all = w.querySelectorAll('.rp-opt');
+      all.forEach(function(x){ x.setAttribute('data-done', '1'); });
+      if (chosen.ok){ b.classList.add('correct'); }
+      else { b.classList.add('wrong'); all.forEach(function(x, idx){ if (opts[idx].ok) x.classList.add('correct'); }); }
+      addFlowButton(HAP_UI[ui].weiter, function(){ RP_I++; renderRPStep(); });
+    };
+  });
 }
 // Der BESTEHENDE P1-Seed-Zug: schickt „Ich möchte das Thema … üben" an /api/gespraech
 // → Themen-Entrada → Rollenspiel. Unverändert, nur jetzt NACH den Häppchen. Das Thema
