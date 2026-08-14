@@ -127,7 +127,16 @@ button{font:inherit;cursor:pointer}
   };
   var U = T[MUT] || T.de;
 
-  var CAPY = '<svg viewBox="0 0 80 80"><ellipse cx="40" cy="46" rx="24" ry="19" fill="#c9956a"/><ellipse cx="40" cy="27" rx="16" ry="13" fill="#c9956a"/><ellipse cx="33" cy="17" rx="4" ry="5" fill="#b8845a"/><ellipse cx="47" cy="17" rx="4" ry="5" fill="#b8845a"/><ellipse cx="40" cy="32" rx="9" ry="6.5" fill="#b8845a"/><ellipse cx="40" cy="30" rx="3.5" ry="2.5" fill="#8b5e3c"/><circle cx="38.6" cy="30" r=".7" fill="#6b4226"/><circle cx="41.4" cy="30" r=".7" fill="#6b4226"/><circle cx="33" cy="24" r="2.2" fill="#3d2b1f"/><circle cx="47" cy="24" r="2.2" fill="#3d2b1f"/><circle cx="33.7" cy="23.3" r=".7" fill="#fff"/><circle cx="47.7" cy="23.3" r=".7" fill="#fff"/><path d="M37 35 Q40 37 43 35" stroke="#8b5e3c" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="66" rx="4" ry="3" fill="#b8845a"/><ellipse cx="38" cy="68" rx="4" ry="3" fill="#b8845a"/><ellipse cx="46" cy="68" rx="4" ry="3" fill="#b8845a"/><ellipse cx="54" cy="66" rx="4" ry="3" fill="#b8845a"/></svg>';
+  var CAPY = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
 
   /* ── Rail ── */
   var railEl = document.getElementById('rail');
@@ -159,13 +168,23 @@ button{font:inherit;cursor:pointer}
     var done = {};
     try { done = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').szenen) || {}; } catch (e) {}
     var wrap = document.createElement('div'); wrap.className = 'palette';
-    wrap.innerHTML = '<span class="cap">' + CAPY + '</span><h2>' + esc(U.waehle) + '</h2>'
+    wrap.innerHTML = '<span class="cap" role="button" aria-label="Spikiu" style="cursor:pointer">' + CAPY + '</span><h2>' + esc(U.waehle) + '</h2>'
       + '<div class="chips">' + alle.map(function (s, i) {
           var wieder = done[s.id] && done[s.id].done;
           return '<button class="chip" data-i="' + i + '">' + s.emoji + ' ' + esc(s[MUT] || s.de)
             + (wieder ? ' ↻' : '') + '</button>';
         }).join('') + '</div>';
     stage.innerHTML = ''; stage.appendChild(wrap);
+    var SAG = { es:'¡Elige un tema!', de:'Wähl ein Thema!', en:'Choose a topic!', el:'Διάλεξε ένα θέμα!' };
+    wrap.querySelector('.cap').onclick = function () {
+      var txt = SAG[ZIEL] || SAG.es;
+      try {
+        if (window.sprich) { window.sprich(txt, ZIEL); }
+        else if (window.speechSynthesis && window.SpeechSynthesisUtterance) {
+          var uo = new SpeechSynthesisUtterance(txt); speechSynthesis.cancel(); speechSynthesis.speak(uo);
+        }
+      } catch (e) {}
+    };
     wrap.querySelectorAll('.chip').forEach(function (b) {
       b.onclick = function () {
         var s = alle[+b.getAttribute('data-i')];

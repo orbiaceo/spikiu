@@ -198,7 +198,7 @@ button{font-family:inherit}
 .meta a:active{color:var(--ink)}
 </style></head>
 <body data-nav="haus">
-<div class="badge">Haus · alle Räume</div>
+
 
 <section class="view welcome active" id="welcome">
   <div class="big" id="wbig"></div>
@@ -428,9 +428,26 @@ function tileEl(it){var b=document.createElement('button');b.className='tile'+(i
  if(it.bg)b.style.background=it.bg;
  b.innerHTML='<span class="em">'+it.em+'</span><span class="tt">'+it.tt+'</span>'+(it.ss?'<span class="ss">'+it.ss+'</span>':'')+(it.pill?'<span class="pill" style="background:'+(it.pillBg||'#fff')+'">'+it.pill+'</span>':'');
  b.onclick=function(){it.go();};return b;}
+function capySagt(){
+ try{
+  var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');
+  var zl=(u.profile&&u.profile.zielsprache)||'es';
+  var n=vorname();
+  var GR={es:'¡Hola'+(n?', '+n:'')+'! ¡Elige una actividad!',
+          de:'Hallo'+(n?', '+n:'')+'! Wähl eine Aktivität!',
+          en:'Hi'+(n?', '+n:'')+'! Choose an activity!',
+          el:'Γεια'+(n?', '+n:'')+'! Διάλεξε μια δραστηριότητα!'};
+  var txt=GR[zl]||GR.es;
+  if(window.sprich){window.sprich(txt,zl);}
+  else if(window.speechSynthesis&&window.SpeechSynthesisUtterance){
+   var uo=new SpeechSynthesisUtterance(txt);speechSynthesis.cancel();speechSynthesis.speak(uo);}
+ }catch(e){}
+}
 function kacheln(opts){var wrap=document.createElement('div');wrap.className='k-wrap';
  if(opts.greet){var g=document.createElement('div');g.className='k-greet';
-  g.innerHTML='<span class="cap">'+capy()+'</span><h2>'+opts.greet.title+'</h2>'+(opts.greet.kr?'<p class="kr">'+opts.greet.kr+'</p>':'');
+  g.innerHTML='<span class="cap" role="button" aria-label="Spikiu">'+capy()+'</span><h2>'+opts.greet.title+'</h2>'+(opts.greet.kr?'<p class="kr">'+opts.greet.kr+'</p>':'');
+  g.querySelector('.cap').onclick=capySagt;
+  g.querySelector('.cap').style.cursor='pointer';
   wrap.appendChild(g);}
  var grid=document.createElement('div');grid.className='k-'+opts.layout;
  opts.items.forEach(function(it,i){var t=tileEl(it);if(opts.layout==='tri'&&i===0)t.classList.add('k-top');grid.appendChild(t);});
@@ -722,4 +739,5 @@ document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.ke
 })();
 </script>
 <script src="bottomnav.js" defer></script>
+<script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 </body></html>
