@@ -4,19 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spikiu — Speak Without Fear</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 :root {
   --white:   #ffffff;
-  --off:     #faf9f7;
-  --ink:     #1a1816;
+  --off:     #f6fbf8;
+  --ink:     #15163a;
   --mid:     #6b6560;
   --faint:   #e8e4df;
   --warm:    #d4cdc6;
   --accent:  #2d6a4f;
+  --terra:   #ff6b5a;
+  --mustard: #ffd24a;
+  --sky:     #d3eef6;
+  --ow:      2.5px;
   --accent2: #e8f2ed;
   --accent3: #1a4a38;
   --capy:    #c9956a;
@@ -24,7 +28,7 @@ html { scroll-behavior: smooth; }
 }
 
 body {
-  background: var(--white);
+  background: #eef7f1;
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +49,7 @@ nav {
 }
 
 .logo {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--ink);
@@ -85,7 +89,7 @@ nav {
 }
 
 .hero h1 {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
   font-weight: 700;
   line-height: 1.08;
@@ -126,7 +130,7 @@ nav {
   background: var(--white);
 }
 
-.split-col.free { background: var(--accent2); }
+.split-col.free { background: var(--sky); }
 
 .split-tag {
   display: inline-block;
@@ -137,7 +141,7 @@ nav {
   padding: 0.25rem 0.8rem;
   border-radius: 100px;
   margin-bottom: 1rem;
-}
+ border:2px solid var(--ink); border-radius:100px; padding:.15rem .6rem; font-weight:800;}
 
 .split-col.free .split-tag {
   background: var(--accent);
@@ -150,7 +154,7 @@ nav {
 }
 
 .split-col h3 {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--ink);
@@ -218,7 +222,7 @@ nav {
   text-decoration: none;
   transition: all 0.2s;
   border: 2px solid var(--accent);
-}
+ border:var(--ow) solid var(--ink); box-shadow:3px 4px 0 var(--ink); font-weight:800;}
 .btn-primary:hover {
   background: var(--accent3);
   border-color: var(--accent3);
@@ -295,7 +299,7 @@ nav {
 }
 
 .how h2 {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 700;
   text-align: center;
@@ -320,7 +324,7 @@ nav {
   padding: 2rem 1.5rem;
   text-align: center;
   position: relative;
-}
+ border:var(--ow) solid var(--ink); border-radius:18px; box-shadow:3px 4px 0 var(--ink);}
 
 .step-num {
   width: 36px;
@@ -338,7 +342,7 @@ nav {
 }
 
 .step h4 {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--ink);
@@ -395,7 +399,7 @@ blockquote::before {
 }
 
 .final h2 {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
   color: var(--white);
@@ -421,7 +425,7 @@ blockquote::before {
   text-decoration: none;
   display: inline-block;
   transition: all 0.2s;
-}
+ border:var(--ow) solid var(--ink); box-shadow:3px 4px 0 var(--ink); font-weight:800;}
 .btn-white:hover {
   background: var(--off);
   transform: translateY(-2px);
@@ -439,7 +443,7 @@ footer {
   gap: 1rem;
 }
 .footer-logo {
-  font-family: 'Lora', serif;
+  font-family: 'Archivo Black', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--white);
@@ -451,7 +455,7 @@ footer {
 @media (max-width: 640px) {
   .split { grid-template-columns: 1fr; }
   .split-divider { display: none; }
-  .split-col { padding: 1.5rem; }
+  .split-col { padding: 1.5rem; background:#fff; border:var(--ow) solid var(--ink); border-radius:20px; box-shadow:4px 5px 0 var(--ink); }
   .steps { grid-template-columns: 1fr 1fr; }
   .hero { padding: 3.5rem 1.5rem 2.5rem; }
   .how { padding: 3.5rem 1.5rem; }
@@ -517,7 +521,7 @@ footer {
     <div class="split-col free">
       <span class="split-tag" data-i18n="split.freeTag">For Free</span>
       <h3 data-i18n="split.freeTitle">Start today</h3>
-      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;" data-i18n="split.freeDesc">Assessment · Learning path · 3 conversations · 3 books</p>
+      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;" data-i18n="split.freeDesc">Guided conversation · Your learning path · 4 Lernroman chapters · Vocabulary · Proverbs</p>
       <a href="spikiu-products.html#free" style="font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:600;" data-i18n="split.included">What's included →</a>
       <div class="price" style="margin-top:1rem;">€0 <span data-i18n="split.freePrice">no card needed</span></div>
     </div>
@@ -527,14 +531,14 @@ footer {
     <div class="split-col premium">
       <span class="split-tag" data-i18n="split.premiumTag">Premium</span>
       <h3 data-i18n="split.premiumTitle">Made for you</h3>
-      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;" data-i18n="split.premiumDesc">Your coach · Your book · Your language · Unlimited</p>
+      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;" data-i18n="split.premiumDesc">Free conversation · Reading & writing workshop · The whole Lernroman · No limits</p>
       <a href="spikiu-products.html#premium" style="font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:600;" data-i18n="split.included2">What's included →</a>
       <div class="price" style="margin-top:1rem;">€8 <span data-i18n="split.premiumPrice">/ month · 1 week free</span></div>
     </div>
   </div>
 
   <div class="cta-group">
-    <a href="chat.html" class="btn-primary" data-i18n="hero.cta">Start talking — it's free →</a>
+    <a href="haus.html" class="btn-primary" data-i18n="hero.cta">Start talking — it's free →</a>
   </div>
 
   <span class="hero-note" data-i18n="hero.note">Available in Spanish, German & English · No registration needed</span>
@@ -552,37 +556,12 @@ footer {
   </div>
 </section>
 
-<!-- SPIKIU FOR TEAMS -->
-<section style="background: var(--ink); padding: 5rem 5vw;">
-  <div style="max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2.5rem;">
-
-    <div>
-      <span style="display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--capy); margin-bottom:1rem;" data-i18n="teams.tag">For Companies</span>
-      <h2 style="font-family:'Lora',serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; color:var(--white); letter-spacing:-0.02em; line-height:1.1; margin-bottom:1rem;" data-i18n="teams.title">
-        Spikiu<br><em style="color:var(--capy); font-style:italic;">for Teams.</em>
-      </h2>
-      <p style="color:#888; font-size:1rem; line-height:1.75; max-width:380px; margin-bottom:1.5rem;" data-i18n="teams.desc">
-        Real communication for international teams.<br>
-        Built around your world — your meetings, your clients, your language.
-      </p>
-      <a href="teams_dashboard.html" style="font-size:0.88rem; color:var(--capy); text-decoration:none; font-weight:600; border-bottom:1px solid rgba(201,149,106,0.4); padding-bottom:2px;" data-i18n="teams.learn">Learn more →</a>
-    </div>
-
-    <div style="border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:2rem; min-width:220px; text-align:center;">
-      <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#555; margin-bottom:1.2rem;" data-i18n="teams.pricing">Pricing</div>
-      <div style="font-family:'Lora',serif; font-size:2.2rem; font-weight:700; color:var(--white); line-height:1;" data-i18n="teams.onRequest">On request</div>
-      <div style="font-size:0.78rem; color:#555; margin-top:0.4rem;" data-i18n="teams.includes">Assessment · Syllabus · Training</div>
-      <a href="teams_dashboard.html" style="display:block; margin-top:1.5rem; background:var(--capy); color:var(--white); padding:0.8rem 1.5rem; border-radius:100px; font-size:0.88rem; font-weight:600; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='#a07830'" onmouseout="this.style.background='var(--capy)'" data-i18n="teams.cta">Request a proposal →</a>
-    </div>
-
-  </div>
-</section>
 
 <!-- FINAL CTA -->
 <section class="final">
   <h2 data-i18n="final.title">Just speak.<br><em>Now. Don't wait.</em></h2>
   <p data-i18n="final.sub">No registration. No credit card. Just open the chat.</p>
-  <a href="chat.html" class="btn-white" data-i18n="final.cta">Start talking — it's free →</a>
+  <a href="haus.html" class="btn-white" data-i18n="final.cta">Start talking — it's free →</a>
 </section>
 
 <!-- FOOTER -->
@@ -603,24 +582,16 @@ const TRANSLATIONS = {
     'hero.note': 'Available in Spanish, German & English · No registration needed',
     'split.freeTag': 'For Free',
     'split.freeTitle': 'Start today',
-    'split.freeDesc': 'Assessment · Learning path · 3 conversations · 3 books',
+    'split.freeDesc': 'Guided conversation · Your learning path · 4 Lernroman chapters · Vocabulary · Proverbs',
     'split.freePrice': 'no card needed',
     'split.premiumTag': 'Premium',
     'split.premiumTitle': 'Made for you',
-    'split.premiumDesc': 'Your coach · Your book · Your language · Unlimited',
+    'split.premiumDesc': 'Free conversation · Reading & writing workshop · The whole Lernroman · No limits',
     'split.premiumPrice': '/ month · 1 week free',
     'split.included': 'What\'s included →',
     'split.included2': 'What\'s included →',
     'testimonial.quote': 'After 20 minutes with Spikiu I spoke more Spanish than in three years with other Apps. It doesn\'t feel like learning. It feels like talking.',
     'testimonial.location': 'Munich, Germany',
-    'teams.tag': 'For Companies',
-    'teams.title': 'Spikiu<br><em style="color:var(--capy); font-style:italic;">for Teams.</em>',
-    'teams.desc': 'Real communication for international teams.<br>Built around your world — your meetings, your clients, your language.',
-    'teams.learn': 'Learn more →',
-    'teams.pricing': 'Pricing',
-    'teams.onRequest': 'On request',
-    'teams.includes': 'Assessment · Syllabus · Training',
-    'teams.cta': 'Request a proposal →',
     'final.title': 'Just speak.<br><em>Now. Don\'t wait.</em>',
     'final.sub': 'No registration. No credit card. Just open the chat.',
     'final.cta': 'Start talking — it\'s free →'
@@ -634,24 +605,16 @@ const TRANSLATIONS = {
     'hero.note': 'Verfügbar auf Spanisch, Deutsch & Englisch · Keine Anmeldung nötig',
     'split.freeTag': 'Kostenlos',
     'split.freeTitle': 'Heute starten',
-    'split.freeDesc': 'Assessment · Lernpfad · 3 Gespräche · 3 Bücher',
+    'split.freeDesc': 'Geführtes Gespräch · Dein Lernweg · 4 Kapitel Lernroman · Wortschatz · Sprichwörter',
     'split.freePrice': 'Keine Kreditkarte',
     'split.premiumTag': 'Premium',
     'split.premiumTitle': 'Für dich gemacht',
-    'split.premiumDesc': 'Dein Coach · Dein Buch · Deine Sprache · Unbegrenzt',
+    'split.premiumDesc': 'Freies Gespräch · Lese- & Schreibwerkstatt · Ganzer Lernroman · Ohne Limit',
     'split.premiumPrice': '/ Monat · 1 Woche gratis',
     'split.included': 'Was enthalten ist →',
     'split.included2': 'Was enthalten ist →',
     'testimonial.quote': 'Nach 20 Minuten mit Spikiu habe ich mehr Spanisch gesprochen als in drei Jahren mit anderen Apps. Es fühlt sich nicht nach Lernen an. Es fühlt sich nach Reden an.',
     'testimonial.location': 'München, Deutschland',
-    'teams.tag': 'Für Unternehmen',
-    'teams.title': 'Spikiu<br><em style="color:var(--capy); font-style:italic;">für Teams.</em>',
-    'teams.desc': 'Echte Kommunikation für internationale Teams.<br>Gebaut für deine Welt — deine Meetings, deine Kunden, deine Sprache.',
-    'teams.learn': 'Mehr erfahren →',
-    'teams.pricing': 'Preis',
-    'teams.onRequest': 'Auf Anfrage',
-    'teams.includes': 'Assessment · Lehrplan · Training',
-    'teams.cta': 'Angebot anfragen →',
     'final.title': 'Einfach sprechen.<br><em>Jetzt. Nicht warten.</em>',
     'final.sub': 'Keine Anmeldung. Keine Kreditkarte. Einfach den Chat öffnen.',
     'final.cta': 'Jetzt sprechen — kostenlos →'
@@ -665,24 +628,16 @@ const TRANSLATIONS = {
     'hero.note': 'Disponible en español, alemán e inglés · Sin registro',
     'split.freeTag': 'Gratis',
     'split.freeTitle': 'Empieza hoy',
-    'split.freeDesc': 'Assessment · Camino de aprendizaje · 3 conversaciones · 3 libros',
+    'split.freeDesc': 'Conversación guiada · Tu camino · 4 capítulos del Lernroman · Vocabulario · Refranes',
     'split.freePrice': 'Sin tarjeta',
     'split.premiumTag': 'Premium',
     'split.premiumTitle': 'Hecho para ti',
-    'split.premiumDesc': 'Tu coach · Tu libro · Tu idioma · Sin límites',
+    'split.premiumDesc': 'Conversación libre · Taller de lectura y escritura · Todo el Lernroman · Sin límites',
     'split.premiumPrice': '/ mes · 1 semana gratis',
     'split.included': 'Qué incluye →',
     'split.included2': 'Qué incluye →',
     'testimonial.quote': 'Después de 20 minutos con Spikiu hablé más español que en tres años con otras Apps. No se siente como aprender. Se siente como hablar.',
     'testimonial.location': 'Múnich, Alemania',
-    'teams.tag': 'Para empresas',
-    'teams.title': 'Spikiu<br><em style="color:var(--capy); font-style:italic;">para equipos.</em>',
-    'teams.desc': 'Comunicación real para equipos internacionales.<br>Diseñado en torno a tu mundo — tus reuniones, tus clientes, tu idioma.',
-    'teams.learn': 'Saber más →',
-    'teams.pricing': 'Precio',
-    'teams.onRequest': 'Bajo consulta',
-    'teams.includes': 'Assessment · Plan · Entrenamiento',
-    'teams.cta': 'Solicitar propuesta →',
     'final.title': 'Solo habla.<br><em>Ahora. No esperes.</em>',
     'final.sub': 'Sin registro. Sin tarjeta. Solo abre el chat.',
     'final.cta': 'Empieza a hablar — es gratis →'
