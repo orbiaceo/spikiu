@@ -9,9 +9,9 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --white:#ffffff; --bg:#eef7f1; --bg2:#ffffff; --ink:#15163a; --mid:#5f7068; --ow:2.5px;
-  --bubS:#fff; --you:#ffd24a; --youtx:#15163a; --spk:#2d6a4f; --shb:3px 4px; --shs:3px 3px; --de:#f1faf5; --sky:#d3eef6;
-  --faint:#dfe6e0; --warm:#cddcd3; --accent:#2d6a4f; --accent2:#e8f5ee; --capy:#a97c50;
-  --accent3:#1f5239; --gold:#15163a; --wrong:#c67a1e; --wrong-bg:#fbf0e0;
+  --bubS:#fff; --you:#ffd24a; --youtx:#15163a; --spk:#1f93b0; --shb:3px 4px; --shs:3px 3px; --de:#f1faf5; --sky:#d3eef6;
+  --faint:#dfe6e0; --warm:#cddcd3; --accent:#1f93b0; --accent2:#e8f5ee; --capy:#a97c50;
+  --accent3:#1f93b0; --gold:#15163a; --wrong:#c67a1e; --wrong-bg:#fbf0e0;
   /* Übersetzungs-Kästchen (Feinschliff): gedämpfte Muleta, sekundär (Stil = Prototyp) */
   --trans-bg:#f1eee8; --trans-ink:#8a847d; --trans-border:#e2ddd4;
   /* Korrektur-Karte „Du hast gesagt" (P3, Stil = prototyp-feinschliff-iii.html) */
@@ -87,7 +87,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .chip:hover { background:var(--accent); color:var(--white); }
 .chip:active { transform:scale(0.97); }
 .chip.full { background:var(--accent); color:var(--white); width:100%; padding:0.65rem; font-weight:600; }
-.chip.full:hover { background:#1f5239; }
+.chip.full:hover { background:#1f93b0; }
 .chip.ghost { border-style:dashed; border-color:var(--capy); color:var(--capy); }
 .chip.ghost:hover { background:var(--capy); color:var(--white); }
 .gab-input { display:flex; gap:0.45rem; }
@@ -105,7 +105,7 @@ textarea { flex:1; background:var(--bg2); border:1.5px solid transparent; border
 textarea:focus { border-color:var(--accent); background:var(--white); }
 textarea::placeholder { color:var(--mid); font-style:italic; }
 .send-btn { width:46px; height:46px; background:var(--accent); border:none; border-radius:50%; color:var(--white); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.2s; -webkit-tap-highlight-color:transparent; }
-.send-btn:hover { background:#1f5239; transform:scale(1.05); }
+.send-btn:hover { background:#1f93b0; transform:scale(1.05); }
 .send-btn:active { transform:scale(0.95); }
 .send-btn:disabled { opacity:0.35; cursor:not-allowed; transform:none; }
 .send-btn svg { width:20px; height:20px; transform:translateX(1px); }
