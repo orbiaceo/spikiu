@@ -59,7 +59,7 @@
         + '.spk-tab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;'
           + 'gap:.15rem;color:#5f7068;font:700 .68rem "DM Sans",system-ui,sans-serif}'
         + '.spk-tab .tic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}'
-        + '.spk-tab.act{color:#2d6a4f}'
+        + '.spk-tab.act{color:#1f93b0}'
         + '.spk-tab.center{flex:0 0 auto}'
         + '.spk-tab.center .ball{width:62px;height:62px;border-radius:999px;background:#fff;border:2.5px solid #15163a;'
           + 'display:flex;align-items:center;justify-content:center;box-shadow:3px 4px 0 #15163a;transform:translateY(-14px);'
