@@ -126,7 +126,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 
 /* ── Häppchen-Widgets (inline im Chat, Stil aus prototyp-gespraech-gefuehrt.html) ── */
 .widget { align-self:stretch; background:var(--white); border:1px solid var(--faint); border-radius:16px; padding:0.85rem 0.8rem; margin-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; box-shadow:0 6px 18px rgba(0,0,0,0.05); }
-.w-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold); margin-bottom:0.65rem; display:flex; align-items:center; gap:0.35rem; }
+.w-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--muted,#5f7068); margin-bottom:0.65rem; display:flex; align-items:center; gap:0.35rem; }
 .hap-card { display:flex; align-items:center; gap:0.65rem; border:var(--ow) solid var(--ink); border-radius:14px; box-shadow:2px 3px 0 var(--ink); padding:0.55rem 0.7rem; margin-bottom:0.6rem; }
 .hap-card:last-child { margin-bottom:0; }
 .hap-play { width:32px; height:32px; flex-shrink:0; border:2px solid var(--ink); cursor:pointer; background:var(--spk); color:#fff; border-radius:50%; box-shadow:2px 2px 0 var(--ink); display:flex; align-items:center; justify-content:center; transition:0.18s; -webkit-tap-highlight-color:transparent; }
@@ -140,7 +140,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-card-solo .hap-ziel { font-size:1.4rem; line-height:1.3; }
 .hap-card-solo .hap-trans { font-size:1rem; }
 .hap-swipe-hint { text-align:center; color:#b0a89f; font-size:0.8rem; font-weight:600; margin-top:0.9rem; }
-.hap-phon { font-size:0.66rem; color:var(--gold); font-weight:500; margin-top:0.08rem; }
+.hap-phon { font-size:0.66rem; color:var(--muted,#5f7068); font-weight:500; margin-top:0.08rem; }
 .hap-trans { font-size:0.72rem; color:var(--mid); font-style:italic; margin-top:0.08rem; }
 /* ── Teil 60: Wort-Häppchen als Flip-Karte (Vorderseite Ziel+🔊 · Rückseite Übersetzung) ── */
 .hap-flip { perspective:1200px; cursor:pointer; width:100%; flex:1 1 auto; min-height:14rem; -webkit-tap-highlight-color:transparent; }
@@ -152,7 +152,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .hap-flip .hap-phon { font-size:0.8rem; margin-top:0; }
 .hap-tlabel { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink); }
 .hap-back-trans { font-family:'Cormorant Garamond',serif; font-size:1.3rem; line-height:1.3; text-align:center; color:var(--ink); }
-.hap-fliphint { font-size:0.72rem; color:var(--gold); font-weight:600; }
+.hap-fliphint { font-size:0.72rem; color:var(--muted,#5f7068); font-weight:600; }
 /* ── Reel-Häppchen: die .widget ist im Reel KEINE eigene Karte, sondern füllt die grosse Reel-Karte ── */
 .reel-haeppchen .widget { border:none !important; box-shadow:none !important; background:transparent !important; margin:0 !important; padding:0 !important; width:100%; flex:1 1 auto; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; animation:none; opacity:1; }
 .reel-haeppchen .w-eyebrow { font-size:0.66rem; margin-bottom:0; justify-content:center; }
@@ -226,7 +226,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* ── Korrektur-Karte am Szenenende (Paket 3) — zwei Spalten „Du hast gesagt → Besser",
    NUR kommunikativ unpassend, OHNE Erklärung; 🔊 auf „Besser". Stil = prototyp-feinschliff-iii.html. */
 .kk { align-self:stretch; background:var(--white); border:1px solid var(--faint); border-radius:16px; padding:0.85rem 0.8rem; margin-left:2.75rem; opacity:0; animation:fadeUp 0.45s ease forwards; box-shadow:0 6px 18px rgba(0,0,0,0.05); }
-.kk-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold); margin-bottom:0.6rem; text-align:center; }
+.kk-eyebrow { font-size:0.6rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--muted,#5f7068); margin-bottom:0.6rem; text-align:center; }
 .kk-row { display:grid; grid-template-columns:1fr 1fr; gap:0.45rem; margin-bottom:0.45rem; }
 .kk-row:last-child { margin-bottom:0; }
 .kk-head > div { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; text-align:center; }

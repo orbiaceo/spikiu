@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-:root{--pink:#ff4f9a;--sage:#9bd14a;--gold:#a87b2e;--red:#e05252;--green:#1f93b0}
+:root{--pink:#1f93b0;--sage:#9bd14a;--gold:#a87b2e;--red:#e05252;--green:#1f93b0}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%}
 body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#6b6154;--read:#2b2621;--de:#fbf8f0;--ow:2.5px;
@@ -58,11 +58,11 @@ button{font-family:inherit}
 .orden .done.right{background:var(--sage)}
 .orden .done.wrong{background:#f7d5d5}
 .orden .done .corr{display:block;margin-top:.3rem;color:var(--green);font-weight:600}
-.prem{background:var(--de);border:2.5px dashed var(--gold);border-radius:16px;padding:.9rem 1rem;margin-top:1rem;text-align:center}
+.prem{background:#f2f9ea;border:2.5px dashed var(--ink);border-radius:16px;padding:.9rem 1rem;margin-top:1rem;text-align:center}
 .prem .lock{font-size:1.3rem}
 .prem .pt{font-family:'Lora',serif;font-size:1.15rem;color:var(--ink);margin:.3rem 0}
 .prem .pq{color:var(--muted);font-size:.9rem}
-.prem .tag{display:inline-block;margin-top:.5rem;font:800 .72rem/1 'DM Sans';color:#fff;background:var(--gold);border:2px solid var(--ink);border-radius:999px;padding:.35rem .7rem;box-shadow:2px 2px 0 var(--ink)}
+.prem .tag{display:inline-block;margin-top:.5rem;font:800 .72rem/1 'DM Sans';color:var(--ink);background:#ffd24a;border:2px solid var(--ink);border-radius:999px;padding:.35rem .7rem;box-shadow:2px 2px 0 var(--ink)}
 .schluss{margin-top:1.3rem;font-family:'Lora',serif;font-style:italic;color:var(--muted);text-align:center;font-size:1.1rem}
 .empty{margin:3rem auto;text-align:center;color:var(--muted);font-family:'Lora',serif;font-size:1.2rem;max-width:24ch}
 .foot{flex:0 0 auto;display:flex;gap:.6rem;padding:.7rem .9rem calc(.9rem + env(safe-area-inset-bottom));border-top:var(--ow) solid var(--ink);background:rgba(255,255,255,.7)}
@@ -139,7 +139,7 @@ button{font-family:inherit}
   a.teile.forEach(function(p,k){h+='<button class="part" data-k="'+k+'">'+esc(p)+'</button>';});
   return h+'</div><div class="done" style="display:none"></div></div>';}
  function freiHTML(a){return '<div class="prem"><div class="lock">🔒</div><div class="pt">'+esc(a.frage)+'</div>'+
-  '<div class="pq">'+esc(T.premHint)+'</div><div class="tag">✨ '+esc(T.prem)+'</div></div>';}
+  '<div class="pq">'+esc(T.premHint)+'</div><div class="tag">'+esc(T.prem)+'</div></div>';}
 
  var CAPY_SMALL='<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
   + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'

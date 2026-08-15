@@ -20,10 +20,10 @@
   .controls label{display:flex;align-items:center;gap:.35rem}
   select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:10px;padding:.28rem .55rem;cursor:pointer}
   select:focus{outline:none;border-color:var(--green)}
-  .dev-tag{font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--gold);border:2px solid var(--ink);border-radius:999px;padding:.14rem .5rem}
+  .dev-tag{font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:#ffd24a;border:2px solid var(--ink);border-radius:999px;padding:.14rem .5rem}
   .bench{flex:1;width:100%;max-width:980px;margin:0 auto;padding:1.8rem 1.2rem 1.6rem;display:flex;flex-direction:column;background:var(--paper)}
   @media (min-width:700px){.bench{margin:1.2rem auto;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:7px 8px 0 rgba(0,0,0,.25);max-width:940px}}
-  .aufgabe-label{font:700 .66rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+  .aufgabe-label{font:700 .66rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted,#5f7068);margin-bottom:.4rem}
   .aufgabe-input{display:block;width:100%;font-family:'Lora',serif;font-size:1.08rem;font-style:italic;color:var(--muted);line-height:1.4;border-bottom:2px dashed var(--line);padding:0 0 .5rem;margin-bottom:1.6rem}
   .aufgabe-input:focus{outline:none;border-bottom-color:var(--green);color:var(--ink)}
   .stage{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start}
@@ -31,9 +31,9 @@
   .werkstueck{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:1.5rem 1.6rem;min-height:170px;font-family:'Lora',serif;font-size:1.4rem;line-height:1.6;color:var(--read);white-space:pre-wrap;transition:box-shadow .3s}
   .werkstueck.empty{color:#bcae93;font-style:italic}
   .werkstueck.fertig{box-shadow:3px 4px 0 var(--green);border-color:var(--green)}
-  .spot{background:linear-gradient(var(--gold) 0 0) bottom left/0% 3px no-repeat;padding-bottom:2px;transition:background-size .5s ease}
+  .spot{background:linear-gradient(var(--ink) 0 0) bottom left/0% 3px no-repeat;padding-bottom:2px;transition:background-size .5s ease}
   .spot.lit{background-size:100% 3px}
-  .lektor{background:var(--de);border:2.5px solid var(--ink);border-left:6px solid var(--gold);border-radius:14px;padding:.9rem 1rem;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;box-shadow:3px 4px 0 var(--ink)}
+  .lektor{background:var(--de);border:2.5px solid var(--ink);border-left:6px solid var(--ink);border-radius:14px;padding:.9rem 1rem;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;box-shadow:3px 4px 0 var(--ink)}
   .lektor.show{opacity:1;transform:none}
   .lektor.treffer{border-left-color:var(--green)}
   .lek-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
@@ -44,12 +44,12 @@
   .lek-sache b{color:var(--ink);font-weight:700}
   .lek-form{font-family:'Lora',serif;font-size:1.3rem;color:var(--green);margin:.7rem 0 .1rem}
   .lek-laut{font-size:.86rem;color:var(--muted);font-style:italic;margin-bottom:.2rem}
-  .lek-status{font-weight:700}.lek-status.t{color:var(--green)}.lek-status.b{color:var(--gold)}
+  .lek-status{font-weight:700}.lek-status.t{color:var(--green)}.lek-status.b{color:var(--muted,#5f7068)}
   .uebernehmen{margin-top:.7rem;font:800 .82rem 'DM Sans';color:#fff;background:var(--green);border:var(--ow) solid var(--ink);border-radius:999px;padding:.5rem 1rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
   .uebernehmen:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
   .lesson-btn{margin-top:.9rem;font:800 .9rem 'DM Sans';color:var(--ink);background:var(--sage);border:var(--ow) solid var(--ink);border-radius:999px;padding:.6rem 1.1rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
   .lesson-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-  .lek-error{font-size:.95rem;color:var(--gold);line-height:1.5}
+  .lek-error{font-size:.95rem;color:var(--muted,#5f7068);line-height:1.5}
   .retry{margin-top:.6rem;font:700 .82rem 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
   .hands{margin-top:1.6rem}
   .hands-label{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
