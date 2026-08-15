@@ -26,6 +26,11 @@
       if (done[s.id] && done[s.id].done) faellig.push(s); else neu.push(s);
     });
     faellig.sort(function(a,b){ return ((done[a.id]&&done[a.id].last)||0) - ((done[b.id]&&done[b.id].last)||0); });
-    return neu.slice(0,3).concat(faellig.slice(0,2));
+    // 3 neue + 2 fällige — und IMMER auf 5 auffüllen: ein frischer Lerner hat noch
+    // nichts Fälliges (sähe sonst nur 3), ein weit fortgeschrittener kaum noch Neues.
+    var pal = neu.slice(0,3).concat(faellig.slice(0,2));
+    var rest = neu.slice(3).concat(faellig.slice(2));
+    while (pal.length < 5 && rest.length) pal.push(rest.shift());
+    return pal;
   };
 })();
