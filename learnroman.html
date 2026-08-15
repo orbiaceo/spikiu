@@ -133,7 +133,7 @@ button{font-family:inherit}
   <header class="rnav"><button class="back" onclick="location.href='haus.html'" aria-label="zurück">‹</button></header>
 
   <div class="top">
-    <div class="k" id="eyebrow">Bibliothek · Lernroman</div>
+    <div class="k" id="eyebrow">Lernroman</div>
     <h1 id="buchTitel">Lernroman</h1>
     <div class="etnote" id="etnote" hidden></div>
     <div class="etrow" id="etrow" hidden></div>
@@ -200,21 +200,21 @@ var DEV = /[?&]dev=1\b/.test(window.location.search);
 
 // ── UI-Texte in der MUTTERSPRACHE des Lerners ──
 var UI = {
-  de:{ eyebrow:'Bibliothek · Lernroman', kap:'Kapitel', offen:'offen', zu:'öffnet sich später',
+  de:{ eyebrow:'Lernroman', kap:'Kapitel', offen:'offen', zu:'öffnet sich später',
        lock:function(nm){ return '✦ öffnet sich in der Etappe ' + nm; },
        hint:'Tipp auf eine Zeile zeigt die Übersetzung.', ende:'— Ende des Kapitels —',
        back:'zurück', hoeren:'Vorlesen', devnote:'Deine Etappe · zum Testen umschaltbar',
        leerH:'Dieses Buch entsteht noch.',
        leerP:'Der Lernroman für diese Sprache ist noch nicht geschrieben. Spikiu schreibt ihn lieber gut als schnell.',
        leerZ:'Zurück in die Bibliothek' },
-  es:{ eyebrow:'Biblioteca · Lernroman', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
+  es:{ eyebrow:'Lernroman', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
        lock:function(nm){ return '✦ se abre en la etapa ' + nm; },
        hint:'Toca una línea para ver la traducción.', ende:'— Fin del capítulo —',
        back:'atrás', hoeren:'Escuchar', devnote:'Tu etapa · conmutable para probar',
        leerH:'Este libro todavía se está escribiendo.',
        leerP:'El Lernroman de este idioma aún no existe. Spikiu prefiere escribirlo bien antes que rápido.',
        leerZ:'Volver a la biblioteca' },
-  en:{ eyebrow:'Library · Lernroman', kap:'Chapter', offen:'open', zu:'opens later',
+  en:{ eyebrow:'Lernroman', kap:'Chapter', offen:'open', zu:'opens later',
        lock:function(nm){ return '✦ opens in the ' + nm + ' stage'; },
        hint:'Tap a line to see the translation.', ende:'— End of the chapter —',
        back:'back', hoeren:'Read aloud', devnote:'Your stage · switchable for testing',
