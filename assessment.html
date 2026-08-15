@@ -73,10 +73,53 @@
   .btn-ghost{ background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:.92rem;
     cursor:pointer; padding:.5rem; text-decoration:underline; }
   .btn-ghost:hover{ color:var(--ink); }
+
+/* ═══ Abo-Design (spikiu-products) — Cyan + Senf, Pop, Minz ═══ */
+:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffd24a;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:2.5px;
+  --paper:#eef7f1;--white:#fff;--mid:#5f7068;--faint:#e6efe8;--warm:#cddcd3;--accent:#1f93b0;--accent2:#e7f4f8;--accent3:#1f93b0;--gold:#ffd24a}
+body{background:var(--minz) !important;color:var(--ink) !important;font-family:'DM Sans',system-ui,sans-serif !important}
+/* Kopf wie .top der Abo-Seite */
+header,.top{background:rgba(255,255,255,.85) !important;border-bottom:var(--ow) solid var(--ink) !important}
+.btn-back{width:36px;height:36px;border-radius:999px !important;border:2.5px solid var(--ink) !important;background:#fff !important;
+  color:var(--ink) !important;font-size:1.2rem !important;box-shadow:2px 2px 0 var(--ink);padding:0 !important;
+  display:flex;align-items:center;justify-content:center}
+.btn-back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+/* Fortschritt: Pop-Balken */
+.progress{height:10px !important;background:#fff !important;border:2px solid var(--ink) !important;border-radius:999px !important}
+.progress-fill{background:var(--cyan) !important}
+/* Spikius Sprechblase wie .card */
+.bubble{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:20px !important;
+  box-shadow:5px 6px 0 var(--ink) !important;padding:1.2rem 1.3rem !important}
+.bubble p{font-family:'DM Sans',sans-serif !important;font-weight:700 !important;font-size:1.12rem !important;line-height:1.45 !important;color:var(--ink) !important}
+.bubble strong{color:var(--cyan)}
+.okayq{font-style:normal !important;font-weight:600 !important;color:var(--muted) !important}
+/* Antwort-Karten wie .item + Pop */
+.option{background:#fff !important;border:2px solid var(--ink) !important;border-radius:16px !important;
+  box-shadow:3px 3px 0 var(--ink) !important;font-weight:700 !important;padding:.95rem 1.1rem !important}
+.option:hover{background:#fff !important;border-color:var(--ink) !important}
+.option:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink) !important}
+.option.sel{background:var(--sky) !important;border-color:var(--ink) !important}
+.option-sub{color:var(--muted) !important;font-weight:600 !important}
+/* Chips im Pop */
+.chip{background:#fff !important;border:2px solid var(--ink) !important;border-radius:999px !important;
+  box-shadow:2px 2px 0 var(--ink) !important;font-weight:700 !important;padding:.5rem 1rem !important}
+.chip:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink) !important}
+.chip.sel{background:var(--mustard) !important;border-color:var(--ink) !important;color:var(--ink) !important}
+/* Eingaben */
+input,textarea{background:#fff !important;border:2px solid var(--ink) !important;border-radius:16px !important;
+  font-weight:600 !important;color:var(--ink) !important}
+input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2px 0 var(--ink)}
+.field-label{font-weight:800 !important}
+/* Knöpfe wie .btn der Abo-Seite */
+.btn-next{background:var(--cyan) !important;color:#fff !important;border:var(--ow) solid var(--ink) !important;
+  box-shadow:4px 4px 0 var(--ink) !important;border-radius:100px !important;font:700 1rem 'DM Sans' !important;padding:.85rem 2rem !important}
+.btn-next:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink) !important}
+.btn-next.ghost,.btn-skip{background:#fff !important;color:var(--ink) !important;border:2px solid var(--ink) !important;box-shadow:2px 2px 0 var(--ink) !important}
+/* Zusammenfassung/Resümee-Karten */
+.summary,.resume,.card{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:24px !important;box-shadow:5px 6px 0 var(--ink) !important}
 </style>
 </head>
 <body>
-
 <header>
   <button class="btn-back hidden" id="btn-back" onclick="goBack()">←</button>
   <div class="progress"><div class="progress-fill" id="progress"></div></div>
