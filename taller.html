@@ -75,7 +75,7 @@ button{font-family:inherit}
 <div class="app">
   <div class="top">
     <button class="back" id="back" aria-label="zurück">‹</button>
-    <div class="tt-wrap"><div class="k" id="kK">Übung</div><h1 id="kRoom">Lesewerkstatt</h1></div>
+    <div class="tt-wrap"><h1 id="kRoom">Lesewerkstatt</h1></div>
     <div class="dev" id="dev">
       <select id="selLang"><option value="es">es</option><option value="de">de</option><option value="en">en</option><option value="el">el</option></select>
       <select id="selKoennen"><option value="anfang">anfang</option><option value="mittel">mittel</option><option value="fortgeschritten">fortgeschritten</option></select>
@@ -122,7 +122,6 @@ button{font-family:inherit}
   en:{k:'Practice',room:'Reading workshop',again:'Another text',enough:'Enough for today',prem:'Premium',premHint:'Write freely — Spikiu reads your sentence.',corr:'Correct: ',empty:'More texts here soon.'}
  };
  var T=TXT[muttersprache()];
- document.getElementById('kK').textContent=T.k;
  document.getElementById('kRoom').textContent=T.room;
  document.getElementById('back').onclick=function(){location.href='haus.html';};
 
