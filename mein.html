@@ -35,10 +35,17 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#2d6a4f;--muted:#5f7068;--de:#f1faf5;--ow:
 .row .tag{font:800 .6rem 'DM Sans';padding:.2rem .5rem;border-radius:999px;border:2px solid var(--ink);background:var(--mustard);color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:6rem;transform:translateX(-50%);z-index:400;background:var(--ink);color:#fff;font-weight:700;font-size:.82rem;padding:.5rem .85rem;border-radius:999px;box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
+
+/* Raum-Regel: Zurueck-Pfeil oben, keine Bottom-Nav (Ebene 2). */
+.rnav{display:flex;align-items:center;gap:.7rem;padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;background:#eef7f1;border-bottom:2.5px solid #15163a}
+.rnav .back{width:36px;height:36px;flex:0 0 36px;border-radius:999px;border:2.5px solid #15163a;background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 #15163a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.rnav .back:active{transform:translate(1px,1px);box-shadow:0 0 0 #15163a}
+.rnav .rtitle{font:800 1.05rem 'DM Sans',sans-serif;color:#15163a}
 </style></head>
-<body data-nav="mein">
+<body>
+<header class="rnav"><button class="back" onclick="location.href=\'haus.html\'" aria-label="zurück">‹</button><div class="rtitle">Mein</div></header>
 <div class="frame">
-  <div class="head"><h1>Mein</h1></div>
+  
   <div class="body">
     <div class="card usercard">
       <span class="abo-badge" id="aboBadge">Free</span>
@@ -64,7 +71,7 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#2d6a4f;--muted:#5f7068;--de:#f1faf5;--ow:
       <button class="row" id="logout"><span class="ic" style="background:#fff">↩︎</span><span class="rl"><span class="rt" style="color:var(--terra)">Abmelden</span></span></button>
     </div>
   </div>
-  <div id="spk-bnav-slot"></div>
+  
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -86,6 +93,5 @@ document.querySelectorAll('.row[data-go]').forEach(function(b){ b.onclick=functi
 document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=function(){ toast(b.getAttribute('data-soon')); }; });
 document.getElementById('logout').onclick=function(){ toast('Abmelden — bald verfügbar'); };
 </script>
-<script src="bottomnav.js" defer></script>
 <script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 </body></html>
