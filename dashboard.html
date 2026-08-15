@@ -1,1538 +1,189 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spikiu — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Lernweg</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --white:#ffffff;--off:#faf9f7;--ink:#1a1816;--mid:#6b6560;
-  --faint:#e8e4df;--warm:#d4cdc6;--accent:#2d6a4f;--accent2:#e8f2ed;
-  --accent3:#1a4a38;--capy:#c9956a;--gold:#a07830;--sidebar:#1a1816;
-}
-body { background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;padding-bottom:var(--spk-navh, 0px); }
-.app { min-height:100vh; }
-.sidebar { background:var(--sidebar);padding:2rem 1.5rem;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto; }
-.sidebar-logo { font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:var(--white);letter-spacing:-0.02em;margin-bottom:2.5rem;display:flex;align-items:center;gap:0.6rem;text-decoration:none; }
-.sidebar-logo em { color:var(--capy);font-style:italic; }
-.nav-label { font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#444;margin-bottom:0.6rem;padding-left:0.75rem;margin-top:1.5rem; }
-.nav-item { display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.75rem;border-radius:8px;color:#666;text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.15s;cursor:pointer;margin-bottom:0.2rem; }
-.nav-item:hover { background:rgba(255,255,255,0.06);color:#aaa; }
-.nav-item.active { background:rgba(45,106,79,0.2);color:#a8d5be; }
-.nav-item svg { width:16px;height:16px;flex-shrink:0;opacity:0.7; }
-.sidebar-bottom { margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06); }
-.user-chip { display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.75rem; }
-.user-avatar { width:32px;height:32px;background:var(--capy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:0.9rem;font-weight:700;color:white;flex-shrink:0; }
-.user-name { font-size:0.85rem;font-weight:600;color:#aaa; }
-.user-plan { font-size:0.72rem;color:#444;margin-top:0.1rem; }
-.main { padding:2.5rem;max-width:900px;margin:0 auto; }
-.topbar { display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:2rem;gap:0.4rem; }
-.greeting h1 { font-family:'Lora',serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.2; }
-.greeting h1 em { color:var(--accent);font-style:italic; }
-.greeting p { font-size:0.88rem;color:var(--mid);margin-top:0.2rem; }
-.btn-speak { display:inline-flex;align-items:center;align-self:center;margin-top:1.1rem;background:var(--accent);color:var(--white);padding:0.75rem 1.8rem;border-radius:100px;font-size:0.92rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all 0.2s;white-space:nowrap; }
-.btn-speak:hover { background:var(--accent3);transform:translateY(-1px); }
-.notification { display:flex;align-items:flex-start;gap:0.8rem;padding:1rem 1.2rem;background:var(--accent2);border-radius:10px;margin-bottom:1.5rem;border-left:3px solid var(--accent); }
-.notification-icon { font-size:1.1rem;flex-shrink:0;margin-top:0.1rem; }
-.notification-text { font-size:0.85rem;color:var(--accent3);line-height:1.5; }
-.notification-text strong { font-weight:600; }
-.tree-hero { background:var(--white);border:1.5px solid var(--faint);border-radius:20px;padding:2rem;margin-bottom:1.5rem;display:flex;justify-content:center;text-align:center; }
-.tree-level { display:inline-flex;align-items:center;gap:0.4rem;background:var(--accent2);color:var(--accent);font-size:0.78rem;font-weight:700;padding:0.25rem 0.8rem;border-radius:100px;margin-bottom:0.8rem; }
-.tree-info { max-width:340px; }
-.tree-info h2 { font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:0.6rem; }
-.tree-leafline { font-size:0.85rem;color:var(--mid);margin:0.4rem 0 0; }
-.memoria-us { font-size:0.82rem;color:var(--mid);margin:0.35rem 0 0;opacity:0.9; }
-.memoria-last { font-size:0.8rem;color:var(--mid);margin:0.2rem 0 0;opacity:0.8; }
-.memoria-link { color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap; }
-.memoria-link:hover { text-decoration:underline; }
-.tree-stats { display:flex;gap:1.5rem;margin-bottom:1.2rem;flex-wrap:wrap; }
-.stat-num { font-family:'Lora',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1; }
-.stat-label { font-size:0.72rem;color:var(--mid);margin-top:0.2rem; }
-.progress-label { display:flex;justify-content:space-between;font-size:0.75rem;color:var(--mid);margin-bottom:0.4rem; }
-.progress-bar { height:6px;background:var(--faint);border-radius:100px;overflow:hidden; }
-.progress-fill { height:100%;background:linear-gradient(90deg,var(--accent),#5aa080);border-radius:100px;width:0;transition:width 1s ease; }
-.tree-svg-wrap { display:block;max-width:230px;margin:0.4rem auto 0.2rem; }
-.grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem; }
-.card { background:var(--white);border:1.5px solid var(--faint);border-radius:16px;padding:1.5rem;transition:border-color 0.2s; }
-.card:hover { border-color:var(--warm); }
-.card-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem; }
-.card-title { font-family:'Lora',serif;font-size:0.95rem;font-weight:700;color:var(--ink); }
-.card-tag { font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);background:var(--accent2);padding:0.2rem 0.6rem;border-radius:100px; }
-.path-steps { display:flex;flex-direction:column;gap:0.8rem; }
-.path-step { display:flex;gap:0.8rem;align-items:flex-start; }
-.step-dot { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0;margin-top:0.1rem; }
-.step-dot.done { background:var(--accent);color:white; }
-.step-dot.active { background:var(--capy);color:white; }
-.step-dot.pending { background:var(--faint);color:var(--mid); }
-.step-name { font-size:0.85rem;font-weight:600;color:var(--ink);margin-bottom:0.1rem; }
-.step-name.done { color:var(--mid);text-decoration:line-through; }
-.step-desc { font-size:0.75rem;color:var(--mid);line-height:1.5; }
-.lesson-blocks { display:flex;flex-direction:column;gap:0.7rem; }
-.lesson-block { background:var(--off);border-radius:8px;padding:0.75rem 1rem; }
-.lesson-block-title { font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--capy);margin-bottom:0.3rem; }
-.lesson-block-content { font-size:0.85rem;color:var(--mid);line-height:1.5; }
-.lesson-block-content strong { color:var(--ink); }
-.books-grid { display:flex;flex-direction:column;gap:0.7rem; }
-.book-item { display:flex;align-items:center;gap:0.9rem;padding:0.75rem 1rem;background:var(--off);border-radius:8px;text-decoration:none;transition:background 0.15s;cursor:pointer; }
-.book-item:hover { background:var(--faint); }
-.book-icon { width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0; }
-.book-icon.reader { background:rgba(45,106,79,0.12); }
-.book-icon.glossary { background:rgba(201,149,106,0.15); }
-.book-icon.grammar { background:rgba(160,120,48,0.12); }
-.book-name { font-size:0.85rem;font-weight:600;color:var(--ink); }
-.book-desc { font-size:0.75rem;color:var(--mid);margin-top:0.1rem; }
-.book-arrow { margin-left:auto;color:var(--warm);font-size:0.9rem; }
-.upgrade-banner { background:var(--ink);border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem; }
-.upgrade-banner h3 { font-family:'Lora',serif;font-size:1rem;font-weight:700;color:var(--white);margin-bottom:0.3rem; }
-.upgrade-banner p { font-size:0.82rem;color:#666;line-height:1.5; }
-.upgrade-tree { font-size:1.4rem; }
-.btn-upgrade { background:var(--capy);color:var(--white);padding:0.7rem 1.5rem;border-radius:100px;font-size:0.85rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:background 0.2s; }
-.btn-upgrade:hover { background:var(--gold); }
-.sessions-list { display:flex;flex-direction:column;gap:0.7rem; }
-.session-item { display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem;background:var(--off);border-radius:8px; }
-.session-day { font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:var(--ink);line-height:1; }
-.session-month { font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid); }
-.session-name { font-size:0.85rem;font-weight:600;color:var(--ink); }
-.session-time { font-size:0.75rem;color:var(--mid);margin-top:0.1rem; }
-.session-badge { font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:100px;background:var(--accent2);color:var(--accent); }
-.btn-book { display:block;text-align:center;margin-top:1rem;padding:0.65rem;border:1.5px solid var(--faint);border-radius:100px;font-size:0.82rem;font-weight:600;color:var(--mid);text-decoration:none;transition:all 0.2s; }
-.btn-book:hover { border-color:var(--accent);color:var(--accent); }
-
-/* ── MOBILE HEADER + DRAWER ─────────────────────────── */
-.mobile-header {
-  display: none;
-  position: sticky;
-  top: 0;
-  z-index: 90;
-  background: var(--white);
-  border-bottom: 1px solid var(--faint);
-  padding: 0.75rem 1rem;
-  align-items: center;
-  gap: 0.7rem;
-}
-.hamburger {
-  background: var(--bg2, #f3f1ee);
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.18s, transform 0.1s;
-  -webkit-tap-highlight-color: transparent;
-  color: var(--ink);
-}
-.hamburger:hover { background: var(--faint); }
-.hamburger:active { transform: scale(0.94); }
-.hamburger svg { width: 20px; height: 20px; }
-.mobile-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: 'Lora', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--ink);
-  text-decoration: none;
-}
-.mobile-logo em { color: var(--accent); font-style: italic; }
-.mobile-logo svg { width: 24px; height: 24px; }
-.backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 95;
-  opacity: 0;
-  transition: opacity 0.22s ease;
-}
-.backdrop.show { display: block; opacity: 1; }
-
-@media (max-width:768px) {
-  .mobile-header { display: flex; }
-  .app { grid-template-columns:1fr; }
-  .sidebar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 100dvh;
-    width: 280px;
-    transform: translateX(-100%);
-    transition: transform 0.26s cubic-bezier(0.32, 0.72, 0, 1);
-    z-index: 100;
-    overflow-y: auto;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.25);
-  }
-  .sidebar.open { transform: translateX(0); }
-  .main { padding:1.5rem 1.1rem; }
-  .grid-2 { grid-template-columns:1fr; }
-}
-
-/* Raum-Regel: Zurueck-Pfeil oben, keine Bottom-Nav (Ebene 2). */
-.rnav{display:flex;align-items:center;gap:.7rem;padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;background:#eef7f1;border-bottom:2.5px solid #15163a}
-.rnav .back{width:36px;height:36px;flex:0 0 36px;border-radius:999px;border:2.5px solid #15163a;background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 #15163a;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.rnav .back:active{transform:translate(1px,1px);box-shadow:0 0 0 #15163a}
-.rnav .rtitle{font:800 1.05rem 'DM Sans',sans-serif;color:#15163a}
+/* ═══ Lernweg — still, minimal. Der Baum trägt. Keine Zahlen, kein Druck. ═══ */
+:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#2d6a4f; --ow:2.5px; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;
+  display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+button{font:inherit;cursor:pointer}
+.rnav{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;
+  padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;
+  background:var(--minz);border-bottom:var(--ow) solid var(--ink)}
+.rnav .back{width:36px;height:36px;flex:0 0 36px;border-radius:999px;border:2.5px solid var(--ink);
+  background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 var(--ink);
+  display:flex;align-items:center;justify-content:center}
+.rnav .back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+.rnav .rtitle{font:800 1.05rem 'DM Sans',sans-serif}
+.wrap{flex:1;min-height:0;overflow-y:auto;padding:1.1rem 1.05rem 2rem;max-width:560px;width:100%;margin:0 auto}
+.card{background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);
+  padding:1.15rem 1.15rem 1.25rem;margin-bottom:1rem}
+.lbl{font:800 .68rem 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--acc);margin-bottom:.55rem}
+/* Baum */
+.baum-card{text-align:center}
+.etappe-pill{display:inline-block;font:800 .8rem 'DM Sans',sans-serif;border:2px solid var(--ink);
+  border-radius:100px;padding:.28rem .85rem;background:var(--minz);box-shadow:2px 2px 0 var(--ink);margin-bottom:.7rem}
+#baumWrap{display:flex;justify-content:center}
+#baumWrap svg{max-width:230px;height:auto}
+.leafline{font:600 .85rem 'DM Sans',sans-serif;color:var(--muted);margin-top:.6rem}
+/* Versprechen */
+.versprechen{font-family:'Lora',serif;font-size:1.15rem;line-height:1.5;color:var(--ink)}
+/* Weg */
+.weg-step{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0}
+.weg-step + .weg-step{border-top:1.5px solid #e6efe8}
+.weg-dot{flex:0 0 26px;width:26px;height:26px;border-radius:999px;border:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;font:800 .78rem 'DM Sans',sans-serif;background:#fff;margin-top:.1rem}
+.weg-step.jetzt .weg-dot{background:var(--acc);color:#fff}
+.weg-name{font:700 .95rem 'DM Sans',sans-serif}
+.weg-sub{font:500 .82rem/1.4 'DM Sans',sans-serif;color:var(--muted)}
+/* Szenen */
+.szenen-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.szene-chip{font:700 .88rem 'DM Sans',sans-serif;background:#e8f5ee;border:2px solid var(--ink);
+  border-radius:100px;padding:.4rem .85rem;box-shadow:2px 2px 0 var(--ink)}
+.leer{font:600 .9rem/1.5 'DM Sans',sans-serif;color:var(--muted)}
+.leer a{color:var(--acc);font-weight:800;text-decoration:none}
 </style>
-<style>
-  /* Teil 35/41: Die von nav.js injizierte .spk-topbar NUR hier ausblenden — das Dashboard
-     trägt oben seinen eigenen Gruß (Teil 41: Spikiu als atmender Gastgeber). nav.js bleibt
-     unberührt; books/sessions behalten ihre Topbar. */
-  .spk-topbar{ display:none !important; }
-
-  /* Teil 41 — Spikiu begrüßt: vollständiger Capy LINKS (atmend/lebendig via capy-vivo.js),
-     Gruß + Memoria RECHTS. Ein Gruß ohne Spikiu wäre ein Text ohne Autor. */
-  /* Teil 42 — Begrüßung zentriert & betont: Capy mittig OBEN (~64px, weicher Halo),
-     darunter Titel + Gold-Trenner + Memoria, alles zentriert. Inhalt/Logik unverändert. */
-  .greeting-host{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.55rem; }
-  .host-capy{ position:relative; flex:0 0 auto; width:64px; height:64px; transform-origin:center bottom;
-              animation:dash-capy-breathe 4s ease-in-out infinite; }
-  .host-capy::before{ content:''; position:absolute; inset:-15px; border-radius:50%; z-index:0;
-              background:radial-gradient(circle, var(--accent2) 0%, rgba(232,242,237,0) 70%); }
-  .host-capy svg{ position:relative; z-index:1; width:100%; height:100%; display:block; overflow:visible; }
-  .host-text{ min-width:0; text-align:center; }
-  .greeting-host #greeting-title{ font-size:clamp(1.5rem,3.2vw,1.7rem); }
-  .greet-divider{ width:46px; height:2px; background:var(--gold); opacity:0.5; border-radius:2px; margin:0.5rem auto 0.6rem; }
-  @keyframes dash-capy-breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
-  @media (prefers-reduced-motion: reduce){ .host-capy{ animation:none; } }
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-<header class="rnav"><button class="back" onclick="history.length>1?history.back():location.href='haus.html'" aria-label="zurück">‹</button><div class="rtitle">Lernweg</div></header>
+<header class="rnav">
+  <button class="back" onclick="history.length>1?history.back():location.href='haus.html'" aria-label="zurück">‹</button>
+  <div class="rtitle" id="pageTitle">Lernweg</div>
+</header>
+<div class="wrap">
 
-<div class="app">
-
-<!-- MAIN -->
-<main class="main">
-
-  <div class="topbar">
-    <div class="greeting greeting-host">
-      <!-- Teil 41: Spikiu, der Gastgeber — vollständiger kanonischer Capy (2 Ohren / Schnauze /
-           Nase / 4 Pfoten / Lächeln, NIE trasquilado). Augen in der Gruppe spk-capy-eyes →
-           von capy-vivo.js belebt (atmet via CSS dieser Seite, blinzelt, Blick folgt). -->
-      <div class="host-capy" aria-hidden="true">
-        <svg id="dashHostCapy" viewBox="0 0 80 80" fill="none">
-          <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
-          <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
-          <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
-          <g class="spk-capy-eyes">
-            <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
-            <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
-          </g>
-          <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
-          <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
-          <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
-          <path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-        </svg>
-      </div>
-      <div class="host-text">
-        <h1 id="greeting-title">Good morning, <em id="user-name-display">friend</em>.</h1>
-        <div class="greet-divider" aria-hidden="true"></div>
-        <p id="greeting-sub">Your tree is waiting. Last session: 2 days ago.</p>
-        <p id="memoria-us" class="memoria-us" hidden></p>
-        <p id="memoria-last" class="memoria-last" hidden></p>
-      </div>
-    </div>
-    <a href="chat.html" class="btn-speak" data-i18n="speak">Start talking →</a>
+  <div class="card baum-card">
+    <div class="etappe-pill" id="etappePill">🌱</div>
+    <div id="baumWrap"></div>
+    <div class="leafline" id="leafline"></div>
   </div>
 
-  <!-- ROADMAP CARD — shown if user has a roadmap -->
-  <div id="roadmap-card" style="display:none;background:linear-gradient(135deg,#e8f2ed 0%,#faf9f7 100%);border:1.5px solid #2d6a4f;border-radius:18px;padding:1.8rem 2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.8rem;">
-      <div style="display:flex;align-items:center;gap:0.6rem;">
-        <span style="font-size:1.4rem;">🗺️</span>
-        <h2 id="roadmap-card-title" style="font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:#1a4a38;">Mein Weg</h2>
-      </div>
-      <div style="display:flex;gap:0.5rem;">
-        <button id="roadmap-card-btn" onclick="openRoadmap()" style="background:#2d6a4f;color:white;border:none;border-radius:100px;padding:0.5rem 1.2rem;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Ansehen →</button>
-      </div>
-    </div>
-    <p id="roadmap-summary" data-i18n="roadmapReady" style="font-size:0.92rem;color:#6b6560;line-height:1.6;">Your Roadmap is ready.</p>
+  <div class="card" id="verspCard" style="display:none">
+    <div class="lbl" id="verspLbl">Mein Versprechen</div>
+    <div class="versprechen" id="verspText"></div>
   </div>
 
-  <!-- FULL ROADMAP MODAL -->
-  <div id="roadmap-modal" style="display:none;position:fixed;inset:0;background:rgba(26,24,22,0.9);backdrop-filter:blur(8px);z-index:1000;overflow-y:auto;padding:2rem 1rem;">
-    <div style="max-width:794px;margin:0 auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding:0 0.5rem;flex-wrap:wrap;gap:0.5rem;">
-        <button id="roadmap-back-btn" data-i18n="back" onclick="closeRoadmap()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:0.55rem 1.2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;">← Zurück</button>
-        <span id="roadmap-print-tip" data-i18n="printTip" style="color:rgba(255,255,255,0.5);font-size:0.78rem;font-family:'DM Sans',sans-serif;">💡 Cmd/Ctrl + P zum Drucken oder als PDF speichern</span>
-      </div>
-      <div id="roadmap-poster"></div>
-    </div>
+  <div class="card" id="wegCard" style="display:none">
+    <div class="lbl" id="wegLbl">Mein Weg</div>
+    <div id="wegList"></div>
   </div>
 
-  <div class="notification">
-    <span class="notification-icon">🌱</span>
-    <div class="notification-text" data-i18n="freeBanner">
-      <strong>1 conversation left on your free plan.</strong> After that, your tree stops growing. Start your free week of Premium — no card needed.
-    </div>
+  <div class="card">
+    <div class="lbl" id="szenenLbl">Geübte Szenen</div>
+    <div class="szenen-chips" id="szenenChips" style="display:none"></div>
+    <div class="leer" id="szenenLeer" style="display:none"></div>
   </div>
 
-  <!-- TREE HERO -->
-  <div class="tree-hero">
-    <div class="tree-info">
-      <div class="tree-level" id="tree-stage">🌱 Seed</div>
-      <h2 id="tree-title">Your Growth Tree — Spanish</h2>
-      <div id="baumWrap" class="tree-svg-wrap"></div>
-      <p class="tree-leafline" data-i18n="treeLeafLine">Every session grows a new leaf.</p>
-    </div>
-  </div>
-
-  <!-- UPGRADE -->
-  <div class="upgrade-banner">
-    <div class="upgrade-tree">🌱 → 🌿</div>
-    <div>
-      <h3 data-i18n="upTitle">Your tree wants to keep growing.</h3>
-      <p data-i18n="upDesc">Unlimited conversations · Lessons after every chat · Your personal Reader · First week free.</p>
-    </div>
-    <a href="#" class="btn-upgrade" data-i18n="upBtn">Start free week →</a>
-  </div>
-
-  <div class="grid-2">
-
-    <!-- LEARNING PATH -->
-    <div class="card" id="lernweg" style="scroll-margin-top:80px;">
-      <div class="card-header">
-        <span class="card-title" data-i18n="cardRoadmap">Your Language Roadmap</span>
-        <span class="card-tag" id="roadmap-target-tag">Spanish</span>
-      </div>
-      <div class="path-steps">
-        <div class="path-step">
-          <div class="step-dot done">✓</div>
-          <div>
-            <div class="step-name done" data-i18n="step1Name">Assessment & First Words</div>
-            <div class="step-desc" data-i18n="step1Desc">Completed · Week 1</div>
-          </div>
-        </div>
-        <div class="path-step">
-          <div class="step-dot active">2</div>
-          <div>
-            <div class="step-name" data-i18n="step2Name">Everyday Conversations</div>
-            <div class="step-desc" data-i18n="step2Desc">In progress — greetings, daily situations</div>
-          </div>
-        </div>
-        <div class="path-step">
-          <div class="step-dot pending">3</div>
-          <div>
-            <div class="step-name" data-i18n="step3Name">Work & Professional</div>
-            <div class="step-desc" data-i18n="step3Desc">Meetings, emails, client calls</div>
-          </div>
-        </div>
-        <div class="path-step">
-          <div class="step-dot pending">4</div>
-          <div>
-            <div class="step-name" data-i18n="step4Name">🌳 Crown — Goal Reached</div>
-            <div class="step-desc" data-i18n="step4Desc">Full professional communication in Madrid</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lektionen-Anker (Teil 35): stabiles Ziel für den Lektionen-Tab + den
-         #lektionen-Redirect aus chat.html. display:contents → stört das Grid nicht. -->
-    <div id="lektionen" style="display:contents;">
-
-    <!-- MY LESSONS (dynamic) -->
-    <div class="card" id="lessons-card" style="display:none;scroll-margin-top:80px;">
-      <div class="card-header">
-        <span class="card-title" data-i18n="cardLessons">My Lessons</span>
-        <span class="card-tag" id="lessons-count">0 / 3</span>
-      </div>
-      <div id="lessons-list" style="display:flex;flex-direction:column;gap:0.6rem;"></div>
-    </div>
-
-    <!-- PLACEHOLDER when no lessons yet -->
-    <div class="card" id="no-lessons-card" style="scroll-margin-top:80px;">
-      <div class="card-header">
-        <span class="card-title" data-i18n="cardLessons">My Lessons</span>
-        <span class="card-tag">0 / 3</span>
-      </div>
-      <div style="padding:0.5rem 0;color:var(--mid);font-size:0.88rem;line-height:1.55;">
-        Ask Spikiu in the chat for a lesson on any topic — it will appear here.
-      </div>
-    </div>
-    </div><!-- /#lektionen -->
-
-  </div>
-
-  <!-- LESSON VIEWER MODAL -->
-  <div id="lesson-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:var(--spk-navh,0px);background:rgba(26,24,22,0.9);backdrop-filter:blur(8px);z-index:85;overflow-y:auto;padding:2rem 1rem;">
-    <div style="max-width:720px;margin:0 auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding:0 0.5rem;flex-wrap:wrap;gap:0.5rem;">
-        <button onclick="closeLesson()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:0.55rem 1.2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;">← Back</button>
-        <button id="lpPdfBtn" onclick="dashLessonToPdf()" style="background:#faf9f7;color:#2d6a4f;border:none;padding:0.55rem 1.2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;">📄 Als PDF herunterladen</button>
-      </div>
-      <div id="lesson-viewer"></div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-
-    <!-- BOOKS -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title" data-i18n="cardBooks">My Books</span>
-        <a href="books.html" style="font-size:0.78rem;color:var(--accent);text-decoration:none;font-weight:600" data-i18n="seeAll">See all →</a>
-      </div>
-      <div class="books-grid">
-        <a href="books.html" onclick="localStorage.setItem('spikiu_book_section','reader')" class="book-item">
-          <div class="book-icon reader">📖</div>
-          <div><div class="book-name" id="db-book-reader">Reader</div><div class="book-desc" id="db-book-reader-desc">4 free chapters available</div></div>
-          <span class="book-arrow">›</span>
-        </a>
-        <a href="books.html" onclick="localStorage.setItem('spikiu_book_section','grammar')" class="book-item">
-          <div class="book-icon grammar">⚙</div>
-          <div><div class="book-name" id="db-book-grammar">Grammar</div><div class="book-desc" id="db-book-grammar-desc">Interactive exercises</div></div>
-          <span class="book-arrow">›</span>
-        </a>
-        <a href="books.html" onclick="localStorage.setItem('spikiu_book_section','glossary')" class="book-item">
-          <div class="book-icon glossary">📒</div>
-          <div><div class="book-name" id="db-book-glossary">Glossary</div><div class="book-desc" id="db-book-glossary-desc">Vocabulary in context</div></div>
-          <span class="book-arrow">›</span>
-        </a>
-      </div>
-    </div>
-
-    <!-- SESSIONS -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title" data-i18n="cardSessions">Live Sessions</span>
-        <a href="sessions.html" style="font-size:0.78rem;color:var(--accent);text-decoration:none;font-weight:600" data-i18n="bookBtn">Book →</a>
-      </div>
-      <div class="sessions-list">
-        <div class="session-item">
-          <div style="text-align:center;min-width:40px;">
-            <div class="session-day">24</div>
-            <div class="session-month">May</div>
-          </div>
-          <div class="session-info">
-            <div class="session-name">María González</div>
-            <div class="session-time">11:00 – 11:45 · Spanish · 1 person</div>
-          </div>
-          <span class="session-badge" data-i18n="confirmed">Confirmed</span>
-        </div>
-      </div>
-      <a href="sessions.html" class="btn-book" data-i18n="bookAnother">+ Book another session</a>
-    </div>
-
-  </div>
-
-</main>
 </div>
+<script src="baum.js"></script>
+<script src="szenen.js"></script>
 <script>
-// ── ROADMAP POSTER CSS (injected at runtime) ──────────
-const ROADMAP_POSTER_CSS = `
-.rm-page { width:100%; max-width:794px; background:#faf9f7; padding:38px 48px; margin:0 auto; border-radius:8px; box-shadow:0 8px 40px rgba(0,0,0,0.3); display:flex; flex-direction:column; min-height:1123px; font-family:'DM Sans',sans-serif; color:#1a1816; }
-.rm-header { display:flex; align-items:flex-start; justify-content:space-between; padding-bottom:16px; border-bottom:2px solid #1a1816; margin-bottom:22px; }
-.rm-brand { display:flex; align-items:center; gap:0.5rem; }
-.rm-brand-name { font-family:'Lora',serif; font-size:1.3rem; font-weight:700; letter-spacing:-0.02em; }
-.rm-brand-name em { color:#2d6a4f; font-style:italic; }
-.rm-timeline { text-align:right; font-size:0.72rem; color:#6b6560; line-height:1.4; }
-.rm-timeline strong { color:#1a1816; }
-.rm-title-block { text-align:center; margin-bottom:24px; }
-.rm-title-label { font-size:0.62rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#2d6a4f; margin-bottom:0.4rem; }
-.rm-title { font-family:'Lora',serif; font-size:1.9rem; font-weight:700; letter-spacing:-0.02em; line-height:1.1; margin-bottom:0.4rem; }
-.rm-title em { color:#2d6a4f; font-style:italic; }
-.rm-subtitle { font-family:'Lora',serif; font-style:italic; font-size:0.95rem; color:#6b6560; }
-.rm-destination { background:#e8f2ed; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:22px; }
-.rm-dest-label { font-size:0.62rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#2d6a4f; margin-bottom:0.5rem; }
-.rm-dest-list { display:grid; grid-template-columns:1fr 1fr; gap:4px 18px; list-style:none; margin:0; padding:0; }
-.rm-dest-list li { font-size:0.78rem; line-height:1.5; padding-left:16px; position:relative; }
-.rm-dest-list li::before { content:"→"; color:#2d6a4f; position:absolute; left:0; font-weight:700; }
-.rm-phases-label { font-size:0.62rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#a07830; margin-bottom:10px; text-align:center; }
-.rm-phases { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; flex:1; margin-bottom:18px; }
-.rm-phase { background:white; border:1.5px solid #e8e4df; border-radius:10px; padding:14px 14px 12px; display:flex; flex-direction:column; }
-.rm-phase-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem; }
-.rm-phase-icon { font-size:1.4rem; line-height:1; }
-.rm-phase-date { font-size:0.62rem; color:#6b6560; font-weight:600; text-align:right; line-height:1.2; }
-.rm-phase-name { font-family:'Lora',serif; font-size:0.95rem; font-weight:700; margin-bottom:0.45rem; }
-.rm-phase-focus { font-size:0.74rem; color:#6b6560; line-height:1.45; font-style:italic; margin-bottom:0.7rem; padding-bottom:0.6rem; border-bottom:1px dashed #e8e4df; }
-.rm-phase-activities { list-style:none; padding:0; margin:0; }
-.rm-phase-activities li { font-size:0.72rem; line-height:1.5; padding:3px 0 3px 14px; position:relative; }
-.rm-phase-activities li::before { content:"•"; color:#2d6a4f; position:absolute; left:4px; font-weight:700; }
-.rm-commitment { background:#1a1816; color:white; border-radius:10px; padding:14px 18px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
-.rm-commit-text { font-family:'Lora',serif; font-style:italic; font-size:0.88rem; line-height:1.45; flex:1; }
-.rm-commit-text strong { color:#c9956a; font-style:normal; font-weight:600; }
-.rm-commit-date { font-family:'Lora',serif; font-size:1.5rem; font-weight:700; color:#c9956a; text-align:right; line-height:1; white-space:nowrap; }
-.rm-commit-date small { display:block; font-family:'DM Sans',sans-serif; font-size:0.6rem; color:#888; font-weight:500; text-transform:uppercase; letter-spacing:0.14em; margin-top:4px; }
-.rm-footer { display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px solid #e8e4df; font-size:0.62rem; color:#6b6560; }
-.rm-footer-cap { font-family:'Lora',serif; font-style:italic; color:#2d6a4f; }
+/* Lernweg — liest NUR, zeigt still. Keine Zahlen, kein Fortschritts-Prozent. */
+(function () {
+  'use strict';
 
-/* Portrait page (page 2) */
-.rm-portrait-page { margin-top:24px; }
-.rm-portrait-content {
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:2rem 1rem;
-  max-width:560px;
-  margin:0 auto;
-}
-.rm-portrait-icon {
-  font-size:2.5rem;
-  margin-bottom:1.5rem;
-  opacity:0.7;
-}
-.rm-portrait-text {
-  font-family:'Lora',serif;
-  font-size:1.05rem;
-  line-height:1.85;
-  color:#1a1816;
-  font-style:italic;
-}
+  // Alte Links (chat.html → dashboard.html#lektionen / #lesson=…) weiterleiten.
+  if (/^#(lektionen|lesson)/.test(location.hash)) { location.replace('lektionen.html'); return; }
 
-/* ── LESSON POSTER STYLES ────────────────────────────── */
-.lp-lesson { max-width:720px; margin:0 auto; background:#faf9f7; border-radius:12px; padding:40px 48px; box-shadow:0 8px 40px rgba(0,0,0,0.12); font-family:'DM Sans',sans-serif; color:#1a1816; }
-.lp-header { display:flex; align-items:flex-start; justify-content:space-between; padding-bottom:18px; border-bottom:2px solid #1a1816; margin-bottom:26px; }
-.lp-brand { display:flex; align-items:center; gap:0.5rem; }
-.lp-brand-name { font-family:'Lora',serif; font-size:1.3rem; font-weight:700; letter-spacing:-0.02em; }
-.lp-brand-name em { color:#2d6a4f; font-style:italic; }
-.lp-meta { text-align:right; font-size:0.72rem; color:#6b6560; line-height:1.5; }
-.lp-meta strong { color:#1a1816; }
-.lp-level { display:inline-block; background:#e8f2ed; color:#2d6a4f; padding:0.2rem 0.6rem; border-radius:100px; font-size:0.7rem; font-weight:700; letter-spacing:0.06em; margin-top:0.4rem; }
-.lp-title-block { margin-bottom:28px; }
-.lp-eyebrow { font-size:0.66rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#a07830; margin-bottom:0.5rem; }
-.lp-title { font-family:'Lora',serif; font-size:2rem; font-weight:700; letter-spacing:-0.02em; line-height:1.15; margin-bottom:0.5rem; }
-.lp-title em { color:#2d6a4f; font-style:italic; }
-.lp-subtitle { font-family:'Lora',serif; font-style:italic; font-size:1rem; color:#6b6560; }
-.lp-goal { background:#e8f2ed; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:28px; }
-.lp-goal-label { font-size:0.65rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#2d6a4f; margin-bottom:0.5rem; }
-.lp-goal-text { font-size:0.92rem; line-height:1.55; }
-.lp-section { margin-bottom:28px; }
-.lp-section-label { font-size:0.65rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#a07830; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.5rem; }
-.lp-section-label::after { content:""; flex:1; height:1px; background:#e8e4df; }
-.lp-vocab-list { list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; }
-.lp-vocab-item { background:white; border:1px solid #e8e4df; border-radius:10px; padding:12px 16px; display:grid; grid-template-columns:1fr 1fr; gap:8px 16px; }
-.lp-vocab-word { font-family:'Lora',serif; font-weight:700; font-size:1.02rem; }
-.lp-vocab-trans { font-size:0.88rem; color:#6b6560; }
-.lp-vocab-example { grid-column:1 / -1; font-size:0.84rem; font-style:italic; padding-top:4px; border-top:1px dashed #e8e4df; }
-.lp-vocab-example em { font-style:normal; color:#2d6a4f; font-weight:600; }
-.lp-grammar-card { background:white; border:1px solid #e8e4df; border-radius:10px; padding:16px 18px; }
-.lp-grammar-card h4 { font-family:'Lora',serif; font-size:1rem; font-weight:700; margin-bottom:0.5rem; }
-.lp-grammar-card p { font-size:0.88rem; line-height:1.65; margin-bottom:0.6rem; }
-.lp-grammar-card .lp-example { background:#faf9f7; padding:0.6rem 0.9rem; border-radius:6px; font-size:0.86rem; font-style:italic; color:#2d6a4f; border-left:2px solid #2d6a4f; margin-top:0.6rem; }
-.lp-dialogue { background:white; border:1px solid #e8e4df; border-radius:10px; padding:16px 18px; }
-.lp-dialogue-line { display:flex; gap:0.7rem; margin-bottom:0.7rem; }
-.lp-dialogue-line:last-child { margin-bottom:0; }
-.lp-dialogue-speaker { font-weight:700; font-size:0.82rem; color:#2d6a4f; min-width:50px; flex-shrink:0; }
-.lp-dialogue-text { font-size:0.92rem; line-height:1.55; }
-.lp-dialogue-text .lp-trans { display:block; font-size:0.78rem; color:#6b6560; font-style:italic; margin-top:2px; }
-/* 🔊 im Poster (Teil 32): nur auf Zielsprache — Wortschatz-Wort + Dialog-Zeile. Spricht über audio.js. */
-.lp-speak { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; margin-left:0.4rem; vertical-align:-0.28rem; border:none; cursor:pointer; background:#e8f2ed; color:#2d6a4f; border-radius:50%; transition:background 0.16s, color 0.16s; -webkit-tap-highlight-color:transparent; }
-.lp-speak:hover { background:#2d6a4f; color:#fff; }
-.lp-speak svg { width:12px; height:12px; }
-.lp-speak.playing { animation:lpSpkPulse 1s ease infinite; }
-@keyframes lpSpkPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(45,106,79,0.4);} 50%{ box-shadow:0 0 0 6px rgba(45,106,79,0);} }
-.lp-quiz-item { background:white; border:1px solid #e8e4df; border-radius:10px; padding:14px 16px; margin-bottom:10px; }
-.lp-quiz-question { font-weight:600; font-size:0.92rem; margin-bottom:0.7rem; }
-.lp-quiz-question .lp-num { color:#2d6a4f; font-weight:700; margin-right:0.4rem; }
-.lp-quiz-options { list-style:none; display:flex; flex-direction:column; gap:6px; padding:0; margin:0; }
-.lp-quiz-opt {
-  display:flex; align-items:center; gap:0.5rem;
-  padding:9px 12px; background:#faf9f7;
-  border:1.5px solid transparent; border-radius:8px;
-  font-size:0.88rem; cursor:pointer;
-  font-family:inherit; text-align:left; width:100%;
-  color:#1a1816; transition: background 0.18s, border-color 0.18s, color 0.18s;
-}
-.lp-quiz-opt:hover:not(:disabled) { background:#f0ede5; border-color:#d6d0c4; }
-.lp-quiz-opt:disabled { cursor:default; }
-.lp-quiz-opt .lp-quiz-mark {
-  margin-left:auto; font-weight:700; font-size:1rem; opacity:0;
-  transition: opacity 0.2s;
-}
-.lp-quiz-opt.correct {
-  background:#e8f5ee; border-color:#2d6a4f; color:#1a4a38; font-weight:600;
-}
-.lp-quiz-opt.correct .lp-quiz-mark { color:#2d6a4f; opacity:1; }
-.lp-quiz-opt.wrong {
-  background:#fdebe9; border-color:#c0392b; color:#a02e22;
-}
-.lp-quiz-opt.wrong .lp-quiz-mark { color:#c0392b; opacity:1; }
-.lp-quiz-answer {
-  margin-top:12px; padding:10px 12px;
-  background:#faf9f7; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0;
-  font-size:0.85rem; color:#1a1816; line-height:1.5;
-  display:none; animation: lpFadeIn 0.25s ease;
-}
-.lp-quiz-answer.visible { display:block; }
-.lp-quiz-answer strong { color:#2d6a4f; }
-@keyframes lpFadeIn {
-  from { opacity:0; transform: translateY(-4px); }
-  to   { opacity:1; transform: translateY(0); }
-}
+  var u = {};
+  try { u = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch (e) { u = {}; }
+  var P = u.profile || {};
+  var MUT = (['de','es','en'].indexOf(P.muttersprache) > -1) ? P.muttersprache
+          : ({ 'Deutsch':'de', 'Español':'es', 'English':'en' }[u.nativeLang] || 'de');
 
-/* ── LESSON GENERATION BUTTON STATES ───────────────── */
-.btn-spinner {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  vertical-align: -2px;
-  margin-right: 0.45rem;
-  animation: btnSpin 0.8s linear infinite;
-}
-@keyframes btnSpin {
-  to { transform: rotate(360deg); }
-}
-.btn-loading {
-  opacity: 0.7;
-  cursor: wait !important;
-  pointer-events: none;
-}
-.lp-footer { margin-top:32px; padding-top:16px; border-top:1px solid #e8e4df; display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#6b6560; }
-.lp-footer-cap { font-family:'Lora',serif; font-style:italic; color:#2d6a4f; }
-@media (max-width:600px) {
-  .lp-lesson { padding:24px 22px; }
-  .lp-title { font-size:1.5rem; }
-  .lp-vocab-item { grid-template-columns:1fr; }
-}
-@media (max-width:820px) {
-  .rm-page { padding:24px 22px; }
-  .rm-phases { grid-template-columns:1fr; }
-  .rm-dest-list { grid-template-columns:1fr; }
-  .rm-commitment { flex-direction:column; text-align:center; }
-  .rm-commit-date { text-align:center; }
-}
-
-/* ── PRINT: Only the roadmap, on exactly one A4 page ── */
-@media print {
-  /* Reset & hide everything by default */
-  html, body {
-    background: white !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 210mm !important;
-    height: auto !important;
-  }
-
-  /* Hide ALL dashboard elements completely */
-  .sidebar, .topbar, .notification, .tree-hero, .upgrade-banner,
-  .grid-2, footer, #roadmap-card, .app {
-    display: none !important;
-  }
-  .main { padding: 0 !important; max-width: 100% !important; display: block !important; }
-
-  /* Show modal as static content - no overlay */
-  #roadmap-modal {
-    background: white !important;
-    position: static !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    backdrop-filter: none !important;
-    inset: auto !important;
-    overflow: visible !important;
-    display: block !important;
-    width: 100% !important;
-  }
-  #roadmap-modal > div {
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  /* Hide the "Back" button row */
-  #roadmap-modal > div > div:first-child { display: none !important; }
-  #roadmap-poster { margin: 0 !important; padding: 0 !important; }
-
-  /* The poster - EXACTLY one A4 page */
-  .rm-page {
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    background: white !important;
-    max-width: 210mm !important;
-    width: 210mm !important;
-    height: 297mm !important;
-    max-height: 297mm !important;
-    min-height: 0 !important;
-    padding: 10mm 12mm !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    page-break-inside: avoid !important;
-    page-break-after: avoid !important;
-    page-break-before: avoid !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  /* Force colors to render */
-  .rm-destination, .rm-commitment, .rm-phase, .rm-header, .rm-footer {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Compress everything to fit A4 */
-  .rm-header { padding-bottom: 5px !important; margin-bottom: 7px !important; }
-  .rm-brand-name { font-size: 0.95rem !important; }
-  .rm-timeline { font-size: 0.58rem !important; }
-  .rm-title-block { margin-bottom: 7px !important; }
-  .rm-title { font-size: 1.3rem !important; }
-  .rm-subtitle { font-size: 0.75rem !important; }
-  .rm-title-label { font-size: 0.5rem !important; margin-bottom: 0.15rem !important; }
-  .rm-destination { padding: 6px 10px !important; margin-bottom: 7px !important; }
-  .rm-dest-label { font-size: 0.5rem !important; margin-bottom: 0.2rem !important; }
-  .rm-dest-list li { font-size: 0.62rem !important; line-height: 1.25 !important; }
-  .rm-dest-list { gap: 2px 10px !important; }
-  .rm-phases-label { margin-bottom: 4px !important; font-size: 0.5rem !important; }
-  .rm-phases { gap: 6px !important; margin-bottom: 7px !important; flex: 1; }
-  .rm-phase { padding: 7px 8px 6px !important; }
-  .rm-phase-top { margin-bottom: 0.22rem !important; }
-  .rm-phase-icon { font-size: 0.95rem !important; }
-  .rm-phase-date { font-size: 0.48rem !important; }
-  .rm-phase-name { font-size: 0.74rem !important; margin-bottom: 0.2rem !important; }
-  .rm-phase-focus { font-size: 0.58rem !important; line-height: 1.25 !important; margin-bottom: 0.3rem !important; padding-bottom: 0.28rem !important; }
-  .rm-phase-activities li { font-size: 0.57rem !important; line-height: 1.3 !important; padding: 1px 0 1px 10px !important; }
-  .rm-commitment { padding: 7px 11px !important; margin-bottom: 5px !important; }
-  .rm-commit-text { font-size: 0.68rem !important; line-height: 1.3 !important; }
-  .rm-commit-date { font-size: 1rem !important; }
-  .rm-commit-date small { font-size: 0.46rem !important; }
-  .rm-footer { padding-top: 3px !important; font-size: 0.5rem !important; }
-
-  /* Portrait page (if exists) → second printed page */
-  .rm-portrait-page {
-    page-break-before: always !important;
-    margin-top: 0 !important;
-  }
-  .rm-portrait-content { padding: 1.5rem 1rem !important; }
-  .rm-portrait-icon { font-size: 2rem !important; margin-bottom: 1rem !important; }
-  .rm-portrait-text { font-size: 0.85rem !important; line-height: 1.7 !important; }
-
-  @page {
-    size: A4 portrait;
-    margin: 0;
-  }
-}
-`;
-
-// Inject CSS once
-(function() {
-  const style = document.createElement('style');
-  style.textContent = ROADMAP_POSTER_CSS;
-  document.head.appendChild(style);
-})();
-
-// Teil 40 „Spikiu befreit": Deko-Poster-Capy entfernt — der Lernweg-Poster-Kopf
-// trägt nur noch die Wortmarke „Spikiu" (Charakter-Capys bleiben, Deko/Logos raus).
-const CAPY_LOGO = '';
-
-// ── AUDIO IM POSTER (Teil 32) ──────────────────────────
-// audio.js liegt am Root als ES-Modul (unten importiert → window.spkSpeak/spkWarm).
-// Nur auf der ZIELSPRACHE: Wortschatz-Wörter (Teil 2) + Dialog-Zeilen (Teil 3).
-// Browser-Fallback steckt schon in audio.js; diese Mini-Notbremse hält den Knopf
-// hörbar, falls der Import gar nicht greift (nie stummer Knopf).
-const LP_SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
-function lpPlain(s){ return String(s==null?'':s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim(); }
-function lpAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function lpSpeakBtn(zieltext){
-  var t = lpPlain(zieltext);
-  if (!t) return '';
-  return '<button type="button" class="lp-speak" data-speak="' + lpAttr(t) + '" aria-label="Vorlesen">' + LP_SPK_ICON + '</button>';
-}
-// Zielsprache → Audio-Code (de/es/en/el), defensiv (Muster chat.html langCode).
-function dashLangCode(v){
-  if(!v) return null; v=(''+v).toLowerCase();
-  if(/^(de|es|en|el)$/.test(v)) return v;
-  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1||v.indexOf('alem')>-1) return 'de';
-  if(v.indexOf('span')>-1||v.indexOf('español')>-1||v.indexOf('espanol')>-1) return 'es';
-  if(v.indexOf('engl')>-1||v.indexOf('ingl')>-1) return 'en';
-  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
-  return null;
-}
-function dashSpeak(text, ziel){
-  if (window.spkSpeak){ try { return window.spkSpeak(text, ziel); } catch(e){} }
-  try {
-    var synth = window.speechSynthesis;
-    if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){
-      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[ziel] || 'en-US';
-      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp;
-      synth.cancel(); synth.speak(u);
-    }
-  } catch(e){}
-}
-function dashWarm(ziel){ if (window.spkWarm){ try { window.spkWarm(ziel); } catch(e){} } }
-
-// ── RENDER ROADMAP POSTER FROM JSON ────────────────────
-function renderRoadmapPoster(r, nativeLang) {
-  if (!r || !r.page2) {
-    const nf = { 'Deutsch':'Lernweg nicht gefunden.', 'Español':'Camino no encontrado.', 'English':'Path not found.' };
-    return `<p style="color:white;text-align:center;padding:2rem;">${nf[nativeLang] || nf['English']}</p>`;
-  }
-
-  const meta = r.meta || {};
-  const p1 = r.page1 || {};
-  const p2 = r.page2 || {};
-  const portrait = p1.portrait || {};
-  const ziel = p1.ziel || {};
-  const zeit = p1.zeitplan || {};
-  const versp = p1.versprechen || {};
-  const etappen = Array.isArray(p2.etappen) ? p2.etappen : [];
-  const nl = meta.nativeLang || nativeLang || 'Deutsch';
-
-  const pageWord = { 'Deutsch':'Seite', 'Español':'Página', 'English':'Page' }[nl] || 'Seite';
-  const ROW = {
-    'Deutsch':  { ziel:'Ziel', inhalt:'Lerninhalt', spikiu:'Mit Spikiu', ende:'Am Ende' },
-    'Español':  { ziel:'Meta', inhalt:'Contenido', spikiu:'Con Spikiu', ende:'Al final' },
-    'English':  { ziel:'Goal', inhalt:'Focus', spikiu:'With Spikiu', ende:'By the end' }
-  }[nl] || { ziel:'Ziel', inhalt:'Lerninhalt', spikiu:'Mit Spikiu', ende:'Am Ende' };
-
-  // Bildschirm-Stile inline → kein CSS-Eingriff nötig (A4-Druckschliff folgt in Schritt 5)
-  const PAGE = "background:#fff;color:#1a1816;max-width:794px;margin:0 auto 1.5rem;border-radius:14px;padding:2rem 2.2rem;font-family:'DM Sans',sans-serif;";
-  const PLABEL = "font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#2d6a4f;text-align:center;margin-bottom:0.8rem;";
-  const TITLE = "font-family:'Lora',serif;font-size:1.6rem;font-weight:700;text-align:center;line-height:1.2;margin-bottom:0.2rem;";
-  const METAL = "text-align:center;font-size:0.85rem;color:#6b6560;margin-bottom:1.4rem;";
-  const BOX = "border:1.5px solid #e8e0d0;border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem;";
-  const H3 = "font-family:'Lora',serif;font-size:1rem;font-weight:700;color:#2d6a4f;margin-bottom:0.6rem;";
-
-  const zielItems = (ziel.items || []).map(i =>
-    `<li style="padding:0.35rem 0 0.35rem 1.6rem;position:relative;font-size:0.95rem;line-height:1.5;">
-       <span style="position:absolute;left:0;color:#2d6a4f;font-weight:700;">✓</span>${i}</li>`).join('');
-
-  const etappenHtml = etappen.map(et => {
-    const inhalt = (et.lerninhalt || []).map(b =>
-      `<li style="padding:0.15rem 0 0.15rem 0.9rem;position:relative;font-size:0.92rem;line-height:1.45;">
-         <span style="position:absolute;left:0.15rem;color:#2d6a4f;font-weight:700;">·</span>${b}</li>`).join('');
-    const rowLbl = "font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#2d6a4f;display:block;margin-bottom:0.2rem;";
-    return `
-      <div style="border:1.5px solid #e8e0d0;border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem;">
-        <div style="display:flex;align-items:baseline;gap:0.5rem;">
-          <span style="font-size:1.3rem;">${et.icon || '🌱'}</span>
-          <span style="font-family:'Lora',serif;font-size:1.15rem;font-weight:700;">${et.name || ''}</span>
-        </div>
-        <div style="font-size:0.8rem;color:#6b6560;margin-bottom:0.8rem;">${et.dates || ''} · ${et.duration || ''}</div>
-        ${et.ziel ? `<div style="margin-bottom:0.7rem;"><span style="${rowLbl}">${ROW.ziel}</span><p style="font-size:0.93rem;line-height:1.5;">${et.ziel}</p></div>` : ''}
-        ${inhalt ? `<div style="margin-bottom:0.7rem;"><span style="${rowLbl}">${ROW.inhalt}</span><ul style="list-style:none;">${inhalt}</ul></div>` : ''}
-        ${et.wieSpikiuHilft ? `<div style="margin-bottom:0.7rem;"><span style="${rowLbl}">${ROW.spikiu}</span><p style="font-size:0.93rem;line-height:1.5;">${et.wieSpikiuHilft}</p></div>` : ''}
-        ${et.endziel ? `<div><span style="${rowLbl}">${ROW.ende}</span><p style="font-size:0.93rem;line-height:1.5;font-style:italic;color:#1a4a38;">${et.endziel}</p></div>` : ''}
-      </div>`;
-  }).join('');
-
-  return `
-    <div class="rm-page" style="${PAGE}">
-      <div style="${PLABEL}">${pageWord} 1</div>
-      <h1 style="${TITLE}">${meta.name || ''} — <em style="color:#2d6a4f;font-style:italic;">${meta.targetLang || ''}</em></h1>
-      <div style="${METAL}">${meta.startDate || ''} → ${meta.endDate || ''}</div>
-
-      ${portrait.body ? `<div style="${BOX}background:#e8f2ed;border-color:#2d6a4f;">
-        ${portrait.title ? `<div style="${H3}">${portrait.title}</div>` : ''}
-        <p style="font-style:italic;line-height:1.65;font-size:0.96rem;">${portrait.body}</p></div>` : ''}
-
-      ${zielItems ? `<div style="${BOX}"><div style="${H3}">${ziel.label || ''}</div>
-        <ul style="list-style:none;">${zielItems}</ul></div>` : ''}
-
-      <div style="${BOX}">
-        <div style="${H3}">${zeit.label || ''}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-bottom:0.7rem;font-size:0.9rem;">
-          <span style="font-weight:600;">${zeit.start || ''}</span>
-          <span style="flex:1;height:2px;background:#2d6a4f;opacity:0.4;border-radius:2px;"></span>
-          <span style="font-weight:600;">${zeit.end || ''}</span>
-        </div>
-        ${zeit.weeklyCommitment ? `<p style="font-size:0.9rem;color:#1a1816;font-weight:600;">${zeit.weeklyCommitment}</p>` : ''}
-        ${zeit.deadlineNote ? `<p style="font-size:0.9rem;color:#6b6560;">${zeit.deadlineNote}</p>` : ''}
-      </div>
-
-      ${versp.text ? `<div style="${BOX}background:#e8f2ed;border-color:#2d6a4f;">
-        <div style="${H3}">${versp.label || ''}</div>
-        <p style="line-height:1.6;color:#1a4a38;font-size:0.96rem;">${versp.text}</p></div>` : ''}
-
-      <div style="text-align:right;font-size:0.78rem;color:#6b6560;margin-top:0.5rem;">spikiu.com 🐾</div>
-    </div>
-
-    <div class="rm-page" style="${PAGE}">
-      <div style="${PLABEL}">${pageWord} 2</div>
-      ${p2.title ? `<h1 style="${TITLE}">${p2.title}</h1>` : ''}
-      ${p2.subtitle ? `<div style="${METAL}">${p2.subtitle}</div>` : '<div style="margin-bottom:1rem;"></div>'}
-      ${etappenHtml}
-      <div style="text-align:right;font-size:0.78rem;color:#6b6560;margin-top:0.5rem;">spikiu.com 🐾</div>
-    </div>
-  `;
-}
-
-// ── MODAL CONTROLS ─────────────────────────────────────
-function openRoadmap() {
-  const raw = localStorage.getItem('spikiu_user');
-  if (!raw) return;
-  try {
-    const user = JSON.parse(raw);
-    if (!user.roadmap) return;
-    document.getElementById('roadmap-poster').innerHTML = renderRoadmapPoster(user.roadmap, user.nativeLang);
-    document.getElementById('roadmap-modal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-  } catch(e) { console.error(e); }
-}
-
-function closeRoadmap() {
-  document.getElementById('roadmap-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-// ── RENDER LESSON POSTER FROM JSON ─────────────────────
-function renderLessonPoster(l) {
-  if (!l) return '<p style="color:white;text-align:center;padding:2rem;">Lesson not found.</p>';
-
-  const vocabHtml = (l.vocab || []).map(v => `
-    <li class="lp-vocab-item">
-      <span class="lp-vocab-word">${v.word || ''}${lpSpeakBtn(v.word)}</span>
-      <span class="lp-vocab-trans">${v.translation || ''}</span>
-      ${v.example ? `<div class="lp-vocab-example">"${v.example}"</div>` : ''}
-    </li>
-  `).join('');
-
-  const grammarExamples = (l.grammar && l.grammar.examples || []).map(ex =>
-    `<div class="lp-example">${ex}</div>`
-  ).join('');
-
-  const dialogueHtml = (l.dialogue || []).map(d => `
-    <div class="lp-dialogue-line">
-      <span class="lp-dialogue-speaker">${d.speaker || ''}</span>
-      <div class="lp-dialogue-text">
-        ${d.text || ''}${lpSpeakBtn(d.text)}
-        ${d.translation ? `<span class="lp-trans">${d.translation}</span>` : ''}
-      </div>
-    </div>
-  `).join('');
-
-  // ── INTERACTIVE QUIZ ──────────────────────────────────
-  // Parse the "answer" field to detect which option is correct.
-  // Expected formats from generate-lesson.js (all supported):
-  //   "b) ..."     → letter b is correct
-  //   "b"          → letter b is correct
-  //   "Option B — ..."  → letter B is correct
-  // Then each option (a, b, c, ...) becomes a clickable button.
-  // On click: wrong → red, correct option auto-highlighted green,
-  // explanation revealed, all buttons disabled.
-  function correctLetterFromAnswer(answerText, optionsLen) {
-    if (!answerText) return null;
-    const m = String(answerText).trim().match(/^[^a-z]*([a-z])\b/i);
-    if (!m) return null;
-    const letter = m[1].toLowerCase();
-    const idx = letter.charCodeAt(0) - 97; // a=0, b=1, c=2
-    return (idx >= 0 && idx < optionsLen) ? letter : null;
-  }
-  const quizHtml = (l.quiz || []).map((q, qIdx) => {
-    const opts = q.options || [];
-    const correct = correctLetterFromAnswer(q.answer, opts.length);
-    const optionsButtons = opts.map((o, oIdx) => {
-      const letter = String.fromCharCode(97 + oIdx); // a, b, c
-      const isCorrect = (letter === correct);
-      const safeText = String(o).replace(/"/g, '&quot;');
-      return `<li><button type="button" class="lp-quiz-opt"
-        data-correct="${isCorrect ? '1' : '0'}"
-        data-q="${qIdx}"
-        onclick="lpQuizClick(this, ${qIdx})">
-        <span class="lp-quiz-label">${safeText}</span>
-        <span class="lp-quiz-mark"></span>
-      </button></li>`;
-    }).join('');
-    return `
-    <div class="lp-quiz-item" data-quiz-idx="${qIdx}">
-      <div class="lp-quiz-question"><span class="lp-num">${qIdx+1}.</span>${q.question || ''}</div>
-      <ul class="lp-quiz-options">${optionsButtons}</ul>
-      <div class="lp-quiz-answer" id="lp-answer-${qIdx}"><strong>Answer:</strong> ${q.answer || ''}</div>
-    </div>`;
-  }).join('');
-
-  return `
-    <div class="lp-lesson">
-      <div class="lp-header">
-        <div class="lp-brand">
-          ${CAPY_LOGO}
-          <span class="lp-brand-name">Spi<em>k</em>iu</span>
-        </div>
-        <div class="lp-meta">
-          <strong>Lesson ${l.lessonNumber || 1} of ${l.lessonOf || 3}</strong><br>
-          ${l.date || ''}
-          <div class="lp-level">${l.level || ''}</div>
-        </div>
-      </div>
-      <div class="lp-title-block">
-        <div class="lp-eyebrow">${l.eyebrow || ''}</div>
-        <h1 class="lp-title">${l.title || ''}</h1>
-        <p class="lp-subtitle">${l.subtitle || ''}</p>
-      </div>
-      <div class="lp-goal">
-        <div class="lp-goal-label">🎯 ${l.goalLabel || 'Goal'}</div>
-        <p class="lp-goal-text">${l.goal || ''}</p>
-      </div>
-      ${l.vocab && l.vocab.length ? `
-        <div class="lp-section">
-          <div class="lp-section-label">📖 ${l.vocabLabel || 'Vocabulary'}</div>
-          <ul class="lp-vocab-list">${vocabHtml}</ul>
-        </div>` : ''}
-      ${l.grammar ? `
-        <div class="lp-section">
-          <div class="lp-section-label">⚙ ${l.grammarLabel || 'Grammar'}</div>
-          <div class="lp-grammar-card">
-            <h4>${l.grammar.title || ''}</h4>
-            <p>${l.grammar.explanation || ''}</p>
-            ${grammarExamples}
-          </div>
-        </div>` : ''}
-      ${l.dialogue && l.dialogue.length ? `
-        <div class="lp-section">
-          <div class="lp-section-label">💬 ${l.dialogueLabel || 'Dialogue'}</div>
-          <div class="lp-dialogue">${dialogueHtml}</div>
-        </div>` : ''}
-      ${l.quiz && l.quiz.length ? `
-        <div class="lp-section">
-          <div class="lp-section-label">✓ ${l.quizLabel || 'Quiz'}</div>
-          ${quizHtml}
-        </div>` : ''}
-      <div class="lp-footer">
-        <span>spikiu.com · ${l.footerLeft || ''}</span>
-        <span class="lp-footer-cap">🐾 ${l.footerRight || ''}</span>
-      </div>
-    </div>
-  `;
-}
-
-// ── INTERACTIVE QUIZ CLICK HANDLER ─────────────────────
-// Wrong click → red. Correct option auto-highlighted green.
-// Explanation revealed below. All options disabled after first click.
-// Global so it's reachable from the dynamically injected modal HTML.
-window.lpQuizClick = function(btn, qIdx) {
-  const item = btn.closest('.lp-quiz-item');
-  if (!item || item.dataset.answered === '1') return;
-  item.dataset.answered = '1';
-
-  const isCorrect = btn.dataset.correct === '1';
-  const allBtns = item.querySelectorAll('.lp-quiz-opt');
-
-  // Mark the clicked one + always highlight the correct one
-  allBtns.forEach(b => {
-    b.disabled = true;
-    const mark = b.querySelector('.lp-quiz-mark');
-    if (b.dataset.correct === '1') {
-      b.classList.add('correct');
-      if (mark) mark.textContent = '✓';
-    }
-    if (b === btn && !isCorrect) {
-      b.classList.add('wrong');
-      if (mark) mark.textContent = '✗';
-    }
-  });
-
-  // Reveal the explanation
-  const ans = item.querySelector('.lp-quiz-answer');
-  if (ans) ans.classList.add('visible');
-};
-
-// ── OPEN/CLOSE LESSON MODAL ────────────────────────────
-// ── Echter Lektions-PDF (jsPDF) — Teil 65: aus lektionen.html portiert, damit das
-// Dashboard-Poster denselben Download-Knopf hat (heller Knopf, echtes mehrseitiges PDF).
-function buildLessonPdf(L, fileName, JsPDF){
-  var doc = new JsPDF({ unit:'pt', format:'a4' });
-  var M = 48, W = 595.28, Hh = 841.89, maxW = W - 2*M, y = M;
-  var INK=[26,24,22], MID=[107,101,96], GREEN=[45,106,79], GOLD=[160,120,48];
-
-  function strip(s){
-    return String(s==null?'':s)
-      .replace(/<[^>]*>/g,'')
-      .replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#0?39;/g,"'")
-      .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ')
-      .replace(/\s+/g,' ').trim();
-  }
-  function ensure(h){ if (y + h > Hh - M){ doc.addPage(); y = M; } }
-  function setColor(c){ doc.setTextColor(c[0],c[1],c[2]); }
-  function para(text, size, opt){
-    opt = opt || {};
-    var t = strip(text); if (!t) return;
-    doc.setFont(opt.font||'helvetica', opt.style||'normal');
-    doc.setFontSize(size); setColor(opt.color||INK);
-    var x = opt.x||M, w = opt.w||maxW;
-    var lines = doc.splitTextToSize(t, w);
-    for (var i=0;i<lines.length;i++){ ensure(size*1.4); doc.text(lines[i], x, y); y += size*1.4; }
-  }
-  function gap(h){ y += h; }
-  function label(txt){
-    ensure(20); doc.setFont('helvetica','bold'); doc.setFontSize(8); setColor(GOLD);
-    doc.text(strip(txt).toUpperCase(), M, y); y += 15;
-  }
-
-  doc.setFont('times','bold'); doc.setFontSize(20); setColor(INK);
-  doc.text('Spikiu', M, y);
-  doc.setFont('helvetica','normal'); doc.setFontSize(9); setColor(MID);
-  doc.text('Lektion ' + (L.lessonNumber||1) + ' von ' + (L.lessonOf||1), W-M, y-9, { align:'right' });
-  var sub = strip(L.date||''); var lvl = strip(L.level||''); if (lvl) sub += (sub?'   ':'') + lvl;
-  if (sub) doc.text(sub, W-M, y+3, { align:'right' });
-  y += 12; doc.setDrawColor(INK[0],INK[1],INK[2]); doc.setLineWidth(1.2); doc.line(M, y, W-M, y); y += 24;
-
-  if (L.eyebrow){ para(L.eyebrow, 8.5, { color:GOLD, style:'bold' }); gap(2); }
-  para(L.title||'Lektion', 19, { font:'times', style:'bold' }); gap(3);
-  if (L.subtitle) para(L.subtitle, 11, { font:'times', style:'italic', color:MID });
-  gap(16);
-
-  if (L.goal){
-    if (L.goalLabel) para(L.goalLabel, 9, { color:GREEN, style:'bold' });
-    para(L.goal, 10.5); gap(14);
-  }
-
-  if (L.vocab && L.vocab.length){
-    label(L.vocabLabel || 'Wortschatz');
-    L.vocab.forEach(function(v){
-      ensure(20);
-      doc.setFont('times','bold'); doc.setFontSize(11.5); setColor(INK);
-      doc.text(strip(v.word||''), M, y);
-      doc.setFont('helvetica','normal'); doc.setFontSize(10); setColor(MID);
-      var tr = strip(v.translation||'');
-      var trLines = doc.splitTextToSize(tr, maxW - 215);
-      doc.text(trLines, M + 215, y);
-      y += Math.max(15, trLines.length * 13);
-      if (v.example) para('\u201E' + strip(v.example) + '\u201C', 9.5, { style:'italic', color:GREEN });
-      gap(7);
-    });
-    gap(8);
-  }
-
-  if (L.grammar && (L.grammar.title || L.grammar.explanation)){
-    label(L.grammarLabel || 'Grammatik');
-    if (L.grammar.title) para(L.grammar.title, 11, { style:'bold' });
-    if (L.grammar.explanation) para(L.grammar.explanation, 10.5);
-    (L.grammar.examples || []).forEach(function(ex){ para('\u2022 ' + strip(ex), 9.5, { style:'italic', color:GREEN }); });
-    gap(12);
-  }
-
-  if (L.dialogue && L.dialogue.length){
-    label(L.dialogueLabel || 'Dialog');
-    L.dialogue.forEach(function(d){
-      para((d.speaker?strip(d.speaker)+': ':'') + strip(d.text||''), 10.5);
-      if (d.translation) para('   ' + strip(d.translation), 9, { style:'italic', color:MID });
-      gap(4);
-    });
-    gap(12);
-  }
-
-  if (L.quiz && L.quiz.length){
-    label(L.quizLabel || 'Quiz');
-    L.quiz.forEach(function(q, i){
-      para((i+1) + '. ' + strip(q.question||''), 10.5, { style:'bold' });
-      (q.options || []).forEach(function(o, oi){ para('   ' + String.fromCharCode(97+oi) + ') ' + strip(o), 9.5); });
-      if (q.answer) para('   \u2192 ' + strip(q.answer), 9.5, { color:GREEN, style:'bold' });
-      gap(8);
-    });
-  }
-
-  ensure(24); gap(6);
-  doc.setDrawColor(225,225,221); doc.setLineWidth(0.6); doc.line(M, y, W-M, y); y += 13;
-  doc.setFont('helvetica','normal'); doc.setFontSize(8); setColor(MID);
-  doc.text('spikiu.com', M, y);
-
-  doc.save(fileName);
-  return doc;
-}
-
-function dashLessonToPdf(){
-  var E = window.DASH_CURRENT_LESSON; var L = E && E.lesson; if (!L) return;
-  var nm = 'Spikiu-Lektion-' + String(L.title||'lektion').replace(/<[^>]*>/g,'').replace(/[^\w\u00C0-\u024F -]+/g,'').replace(/\s+/g,'-').slice(0,50) + '.pdf';
-  if (window.jspdf && window.jspdf.jsPDF){
-    try { buildLessonPdf(L, nm, window.jspdf.jsPDF); return; } catch(e){ /* Fallback unten */ }
-  }
-  try { window.print(); } catch(e){}
-}
-
-function openLesson(lessonId) {
-  const raw = localStorage.getItem('spikiu_user');
-  if (!raw) return;
-  try {
-    const user = JSON.parse(raw);
-    const lessonEntry = (user.lessons || []).find(l => l.id === lessonId);
-    if (!lessonEntry) return;
-    window.DASH_CURRENT_LESSON = lessonEntry;   // für den PDF-Download (Teil 65)
-    var _pdfL = { de:'📄 Als PDF herunterladen', es:'📄 Descargar como PDF', en:'📄 Download as PDF' };
-    var _ml = (user.profile && user.profile.muttersprache) || dashLangCode(user.nativeLang) || 'de';
-    var _pb = document.getElementById('lpPdfBtn'); if (_pb) _pb.textContent = _pdfL[_ml] || _pdfL.de;
-    // Zielsprache fürs 🔊: bevorzugt am Lektion-Eintrag, sonst defensiv aus dem Profil.
-    const ziel = lessonEntry.zielsprache
-      || (user.profile && (user.profile.zielsprache || dashLangCode(user.profile.targetLang)))
-      || 'es';
-    const viewer = document.getElementById('lesson-viewer');
-    viewer.innerHTML = renderLessonPoster(lessonEntry.lesson);
-    viewer.querySelectorAll('.lp-speak').forEach(function(btn){
-      btn.onclick = function(){ dashSpeak(btn.dataset.speak, ziel); };
-    });
-    dashWarm(ziel);   // Stimme still vorwärmen (wie beim Raum-Eintritt im Chat)
-    document.getElementById('lesson-modal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-  } catch(e) { console.error(e); }
-}
-
-function closeLesson() {
-  document.getElementById('lesson-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-// Teil 55: kommt der Nutzer aus dem Archiv (lektionen.html) mit #lesson=<id> bzw.
-// #lesson=last, hier die VOLLSTÄNDIGE Lektion (mit Quiz) öffnen — eine Quelle für alle.
-function openLessonFromHash() {
-  var m = (location.hash || '').match(/^#lesson=(.+)$/);
-  if (!m) return;
-  var id = decodeURIComponent(m[1]);
-  try {
-    var raw = localStorage.getItem('spikiu_user');
-    var user = raw ? JSON.parse(raw) : {};
-    var ls = (user.lessons || []).slice().sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
-    if (id === 'last') { if (!ls.length) return; id = ls[0].id; }
-    openLesson(id);
-  } catch(e){}
-}
-
-// ── RENDER LESSONS LIST IN DASHBOARD ───────────────────
-function renderLessonsList(user) {
-  const lessons = user.lessons || [];
-  const card = document.getElementById('lessons-card');
-  const noCard = document.getElementById('no-lessons-card');
-
-  if (lessons.length === 0) {
-    if (card) card.style.display = 'none';
-    if (noCard) noCard.style.display = 'block';
-    return;
-  }
-
-  if (card) card.style.display = 'block';
-  if (noCard) noCard.style.display = 'none';
-
-  document.getElementById('lessons-count').textContent = `${lessons.length} / 14`;
-
-  // Chronologisch: neueste zuerst (nach createdAt absteigend). Alt-Lektionen ohne
-  // createdAt stabil ans Ende.
-  const sorted = lessons.slice().sort((a, b) => {
-    const ca = a.createdAt || '', cb = b.createdAt || '';
-    if (ca && cb) return cb.localeCompare(ca);
-    if (cb && !ca) return 1;
-    if (ca && !cb) return -1;
-    return 0;
-  });
-
-  const list = document.getElementById('lessons-list');
-  list.innerHTML = sorted.map((l, i) => {
-    const title = (l.lesson && l.lesson.title) || l.topic || 'Lesson';
-    const subtitle = (l.lesson && l.lesson.subtitle) || '';
-    return `
-      <div onclick="openLesson('${l.id}')" style="background:#faf9f7;border:1px solid #e8e4df;border-radius:10px;padding:0.85rem 1rem;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.borderColor='#2d6a4f';this.style.background='#e8f2ed';" onmouseout="this.style.borderColor='#e8e4df';this.style.background='#faf9f7';">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.8rem;">
-          <div style="flex:1;min-width:0;">
-            <div style="font-family:'Lora',serif;font-size:0.95rem;font-weight:700;color:#1a1816;margin-bottom:0.15rem;">${title}</div>
-            <div style="font-size:0.78rem;color:#6b6560;line-height:1.4;">${subtitle}</div>
-          </div>
-          <span style="color:#2d6a4f;font-size:0.82rem;font-weight:600;white-space:nowrap;">View →</span>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// ── UPDATE BOOKS CARD (target language aware) ──────────
-function updateBooksCard(user) {
-  if (!user || !user.profile) return;
-  const target = user.profile.targetLang;
-  const native = user.nativeLang;
-
-  // Labels per native language
-  const labels = {
-    'Deutsch': {
-      reader: 'Reader', readerDesc: '4 freie Kapitel verfügbar',
-      grammar: 'Grammatik', grammarDesc: 'Interaktive Übungen',
-      glossary: 'Glossar', glossaryDesc: 'Vokabeln im Kontext'
-    },
-    'Español': {
-      reader: 'Reader', readerDesc: '4 capítulos gratuitos',
-      grammar: 'Gramática', grammarDesc: 'Ejercicios interactivos',
-      glossary: 'Glosario', glossaryDesc: 'Vocabulario en contexto'
-    },
-    'English': {
-      reader: 'Reader', readerDesc: '4 free chapters available',
-      grammar: 'Grammar', grammarDesc: 'Interactive exercises',
-      glossary: 'Glossary', glossaryDesc: 'Vocabulary in context'
-    }
+  var T = {
+    de: { titel:'Lernweg', etappen:{ samen:'🌱 Samen', stamm:'🌿 Stamm', krone:'🌳 Krone' },
+          leaf:'Jede Szene lässt ein Blatt wachsen.', versp:'Mein Versprechen', weg:'Mein Weg',
+          szenen:'Geübte Szenen',
+          leer:'Noch keine Szene geübt. Beginne im <a href="gefuehrt.html">Geführten Gespräch</a> — dann wächst hier dein Weg.' },
+    es: { titel:'Camino', etappen:{ samen:'🌱 Semilla', stamm:'🌿 Tronco', krone:'🌳 Copa' },
+          leaf:'Cada escena hace crecer una hoja.', versp:'Mi promesa', weg:'Mi camino',
+          szenen:'Escenas practicadas',
+          leer:'Aún no has practicado ninguna escena. Empieza en la <a href="gefuehrt.html">Conversación guiada</a>.' },
+    en: { titel:'Path', etappen:{ samen:'🌱 Seed', stamm:'🌿 Trunk', krone:'🌳 Crown' },
+          leaf:'Every scene grows a new leaf.', versp:'My promise', weg:'My path',
+          szenen:'Practiced scenes',
+          leer:'No scene practiced yet. Start in the <a href="gefuehrt.html">Guided conversation</a>.' }
   };
-  const L = labels[native] || labels['English'];
+  var L = T[MUT] || T.de;
 
-  const targetDisplay = (user.profile.targetLangDisplay || target || '').toString();
-  document.getElementById('db-book-reader').textContent = L.reader + (targetDisplay ? ' — ' + targetDisplay : '');
-  document.getElementById('db-book-reader-desc').textContent = L.readerDesc;
-  document.getElementById('db-book-grammar').textContent = L.grammar;
-  document.getElementById('db-book-grammar-desc').textContent = L.grammarDesc;
-  document.getElementById('db-book-glossary').textContent = L.glossary;
-  document.getElementById('db-book-glossary-desc').textContent = L.glossaryDesc;
-}
+  document.getElementById('pageTitle').textContent = L.titel;
+  document.getElementById('verspLbl').textContent = L.versp;
+  document.getElementById('wegLbl').textContent = L.weg;
+  document.getElementById('szenenLbl').textContent = L.szenen;
+  document.getElementById('leafline').textContent = L.leaf;
 
-// ── STATIC I18N (Dashboard ganz in Muttersprache) ──────
-function normLang(v){ if(!v) return ''; v=(''+v).trim().toLowerCase();
-  if(['de','deutsch','german','aleman','alemán'].indexOf(v)>=0) return 'Deutsch';
-  if(['es','espanol','español','spanish','spanisch'].indexOf(v)>=0) return 'Español';
-  if(['en','english','englisch','ingles','inglés'].indexOf(v)>=0) return 'English';
-  return ''; }
-var DASH_TARGETNAME = {
-  'Deutsch': {'Deutsch':'Deutsch','Español':'Spanisch','English':'Englisch'},
-  'Español': {'Deutsch':'Alemán','Español':'Español','English':'Inglés'},
-  'English': {'Deutsch':'German','Español':'Spanish','English':'English'} };
-var DASH_TREEPREFIX = {'Deutsch':'Dein Baum','Español':'Tu árbol','English':'Your tree'};
-var DASH_I18N = {
- 'Deutsch': { speak:'Jetzt sprechen →', roadmapReady:'Dein Lernweg ist bereit.', back:'← Zurück',
-   printTip:'💡 Cmd/Strg + P zum Drucken oder als PDF speichern',
-   freeBanner:'<strong>1 Gespräch übrig in deinem Gratis-Plan.</strong> Danach hört dein Baum auf zu wachsen. Starte deine Gratis-Woche Premium — keine Karte nötig.',
-   upTitle:'Dein Baum will weiterwachsen.', upDesc:'Unbegrenzte Gespräche · Lektionen nach jedem Chat · Dein persönlicher Reader · Erste Woche gratis.', upBtn:'Gratis-Woche starten →',
-   cardRoadmap:'Dein Lernweg', cardLessons:'Meine Lektionen', cardBooks:'Meine Bücher', cardSessions:'Live-Begegnungen',
-   seeAll:'Alle ansehen →', bookBtn:'Buchen →', confirmed:'Bestätigt', bookAnother:'+ Weitere Begegnung buchen',
-   statConv:'Gespräche', statLess:'Lektionen', statWords:'Wörter gelernt', statTime:'Gesamtzeit',
-   progressTo:'Fortschritt zu 🌿 Ast', treeLevel:'🌱 Spross — Stufe 2 von 4', treeLeafLine:'Bei jeder Sitzung wächst ein Blatt.',
-   step1Name:'Assessment & erste Wörter', step1Desc:'Abgeschlossen · Woche 1',
-   step2Name:'Alltagsgespräche', step2Desc:'In Arbeit — Begrüßungen, Alltagssituationen',
-   step3Name:'Arbeit & Beruf', step3Desc:'Meetings, E-Mails, Kundengespräche',
-   step4Name:'🌳 Krone — Ziel erreicht', step4Desc:'Volle berufliche Kommunikation in Madrid' },
- 'Español': { speak:'Hablar ahora →', roadmapReady:'Tu ruta está lista.', back:'← Atrás',
-   printTip:'💡 Cmd/Ctrl + P para imprimir o guardar como PDF',
-   freeBanner:'<strong>1 conversación restante en tu plan gratis.</strong> Después tu árbol deja de crecer. Empieza tu semana gratis de Premium — sin tarjeta.',
-   upTitle:'Tu árbol quiere seguir creciendo.', upDesc:'Conversaciones ilimitadas · Lecciones tras cada chat · Tu Reader personal · Primera semana gratis.', upBtn:'Empezar semana gratis →',
-   cardRoadmap:'Tu ruta de aprendizaje', cardLessons:'Mis lecciones', cardBooks:'Mis libros', cardSessions:'Sesiones en vivo',
-   seeAll:'Ver todo →', bookBtn:'Reservar →', confirmed:'Confirmado', bookAnother:'+ Reservar otra sesión',
-   statConv:'conversaciones', statLess:'lecciones', statWords:'palabras aprendidas', statTime:'tiempo total',
-   progressTo:'Progreso hacia 🌿 Rama', treeLevel:'🌱 Brote — Nivel 2 de 4', treeLeafLine:'Con cada sesión crece una hoja.',
-   step1Name:'Evaluación y primeras palabras', step1Desc:'Completado · Semana 1',
-   step2Name:'Conversaciones cotidianas', step2Desc:'En curso — saludos, situaciones diarias',
-   step3Name:'Trabajo y profesión', step3Desc:'Reuniones, correos, llamadas con clientes',
-   step4Name:'🌳 Copa — meta alcanzada', step4Desc:'Comunicación profesional completa en Madrid' },
- 'English': { speak:'Start talking →', roadmapReady:'Your roadmap is ready.', back:'← Back',
-   printTip:'💡 Cmd/Ctrl + P to print or save as PDF',
-   freeBanner:'<strong>1 conversation left on your free plan.</strong> After that, your tree stops growing. Start your free week of Premium — no card needed.',
-   upTitle:'Your tree wants to keep growing.', upDesc:'Unlimited conversations · Lessons after every chat · Your personal Reader · First week free.', upBtn:'Start free week →',
-   cardRoadmap:'Your Language Roadmap', cardLessons:'My Lessons', cardBooks:'My Books', cardSessions:'Live Sessions',
-   seeAll:'See all →', bookBtn:'Book →', confirmed:'Confirmed', bookAnother:'+ Book another session',
-   statConv:'conversations', statLess:'lessons', statWords:'words learned', statTime:'total time',
-   progressTo:'Progress to 🌿 Branch', treeLevel:'🌱 Sprout — Level 2 of 4', treeLeafLine:'Every session grows a new leaf.',
-   step1Name:'Assessment & First Words', step1Desc:'Completed · Week 1',
-   step2Name:'Everyday Conversations', step2Desc:'In progress — greetings, daily situations',
-   step3Name:'Work & Professional', step3Desc:'Meetings, emails, client calls',
-   step4Name:'🌳 Crown — Goal Reached', step4Desc:'Full professional communication in Madrid' } };
-function applyDashI18n(native, target){
-  var L = DASH_I18N[native] || DASH_I18N['English'];
-  document.querySelectorAll('[data-i18n]').forEach(function(el){
-    var k = el.getAttribute('data-i18n'); if(L[k]!=null) el.innerHTML = L[k]; });
-  var tname = (DASH_TARGETNAME[native] && DASH_TARGETNAME[native][target]) || target || '';
-  var tt = document.getElementById('tree-title');
-  if(tt) tt.textContent = (DASH_TREEPREFIX[native]||'Your tree') + (tname ? ' — ' + tname : '');
-  var tag = document.getElementById('roadmap-target-tag');
-  if(tag && tname) tag.textContent = tname;
-}
-
-// ── LOAD USER FROM LOCALSTORAGE ────────────────────────
-function loadUser() {
-  const raw = localStorage.getItem('spikiu_user');
-  if (!raw) return;
-
+  // ── Baum ──
+  var etappe = P.etappe || 'samen';
+  if (!L.etappen[etappe]) etappe = 'samen';
+  document.getElementById('etappePill').textContent = L.etappen[etappe];
   try {
-    const user = JSON.parse(raw);
-    const firstName = (user.name || 'friend').split(' ')[0];
-
-    // Greeting
-    const greetings = {
-      'Deutsch': `Hallo <em>${firstName}</em>, willkommen.`,
-      'Español': `Hola <em>${firstName}</em>, bienvenido.`,
-      'English': `Hello <em>${firstName}</em>, welcome.`
-    };
-    const subs = {
-      'Deutsch': `Dein Lernabenteuer beginnt — Spikiu wartet auf dich.`,
-      'Español': `Tu aventura comienza — Spikiu te está esperando.`,
-      'English': `Your learning adventure starts — Spikiu is waiting for you.`
-    };
-    const _native = normLang(user.nativeLang) || 'Deutsch';
-    const _target = normLang((user.profile && user.profile.targetLang) || user.targetLang) || 'Español';
-    document.getElementById('greeting-title').innerHTML = greetings[_target] || greetings['English'];
-    document.getElementById('greeting-sub').textContent = subs[_native] || subs['English'];
-    applyDashI18n(_native, _target);
-    renderMemoria(user, _native);   // Paket 4: Kontinuität + „Wir zwei" aus ECHTEN Daten
-
-    // Show roadmap card if roadmap exists
-    if (user.roadmap) {
-      document.getElementById('roadmap-card').style.display = 'block';
-      const r = user.roadmap;
-      const targetName = (r.meta && r.meta.targetLang) || user.targetLangDisplay || '';
-      const nl = user.nativeLang || 'Deutsch';
-
-      const cardTitles = { 'Deutsch':'Mein Weg', 'Español':'Mi camino', 'English':'My path' };
-      const cardBtns   = { 'Deutsch':'Ansehen →', 'Español':'Ver →', 'English':'View →' };
-      const backLabels = { 'Deutsch':'← Zurück', 'Español':'← Atrás', 'English':'← Back' };
-      const printTips  = {
-        'Deutsch':'💡 Cmd/Ctrl + P zum Drucken oder als PDF speichern',
-        'Español':'💡 Cmd/Ctrl + P para imprimir o guardar como PDF',
-        'English':'💡 Cmd/Ctrl + P to print or save as PDF'
-      };
-      const summaries = {
-        'Deutsch': `Dein Weg zu <strong>${targetName}</strong> ist bereit. Drei Etappen bis zu deinem Ziel.`,
-        'Español': `Tu camino hacia el <strong>${targetName}</strong> está listo. Tres etapas hasta tu meta.`,
-        'English': `Your path to <strong>${targetName}</strong> is ready. Three stages to your goal.`
-      };
-      document.getElementById('roadmap-card-title').textContent = cardTitles[nl] || cardTitles['English'];
-      document.getElementById('roadmap-card-btn').textContent = cardBtns[nl] || cardBtns['English'];
-      document.getElementById('roadmap-back-btn').textContent = backLabels[nl] || backLabels['English'];
-      document.getElementById('roadmap-print-tip').textContent = printTips[nl] || printTips['English'];
-      document.getElementById('roadmap-summary').innerHTML = summaries[nl] || summaries['English'];
-    }
-
-    // Render lessons list
-    renderLessonsList(user);
-
-    // Update books card with target language
-    updateBooksCard(user);
-  } catch(e) {
-    console.error('Error loading user', e);
-  }
-}
-
-// ── Memoria que se siente (Paket 4) ───────────────────
-// Spikiu empfängt mit KONTINUITÄT — NUR aus echten Daten in spikiu_user
-// (lessons rolling-3 + blaetter). Keine erfundenen Zahlen, kein Streak, keine „Tage".
-function memEsc(s){ return String(s == null ? '' : s)
-  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function memPlural(n, sing, plur){ return n === 1 ? sing : plur; }
-function renderMemoria(user, native){
-  native = native || 'Deutsch';
-  var lessons  = Array.isArray(user && user.lessons) ? user.lessons : [];
-  var blaetter = Math.max(0, (user && user.blaetter) || 0);
-
-  // jüngste Lektion (createdAt absteigend; Alt-Lektionen ohne createdAt ans Ende)
-  var sorted = lessons.slice().sort(function(a, b){
-    var ca = (a && a.createdAt) || '', cb = (b && b.createdAt) || '';
-    if (ca && cb) return cb.localeCompare(ca);
-    if (cb && !ca) return 1;
-    if (ca && !cb) return -1;
-    return 0;
-  });
-  var newest = sorted[0] || null;
-  var title  = newest ? ((newest.lesson && newest.lesson.title) || newest.topic || '') : '';
-
-  // 1) Kontinuitäts-Untertitel — nur wenn echte Historie da ist (sonst Willkommen lassen)
-  if (title) {
-    var cont = {
-      'Deutsch': { txt:'Letztes Mal: «' + memEsc(title) + '». Machen wir weiter?', link:'Weiter plaudern →' },
-      'Español': { txt:'La última vez: «' + memEsc(title) + '». ¿Seguimos?',       link:'Seguir charlando →' },
-      'English': { txt:'Last time: «' + memEsc(title) + '». Shall we keep going?',  link:'Keep chatting →' }
-    };
-    var c = cont[native] || cont['English'];
-    var sub = document.getElementById('greeting-sub');
-    // c.txt enthält den schon via memEsc() gesäuberten Titel; restliche Teile sind eigene Literale.
-    if (sub) sub.innerHTML = c.txt + ' <a href="chat.html" class="memoria-link">' + c.link + '</a>';
-  }
-
-  // 2) „Wir zwei" — echte Zähler (blaetter = Gespräche, lessons.length = Lektionen)
-  var usEl = document.getElementById('memoria-us');
-  if (usEl) {
-    if (blaetter > 0 || lessons.length > 0) {
-      var g = blaetter, l = lessons.length, line;
-      if (native === 'Español') {
-        line = 'Nosotros dos: ' + g + ' ' + memPlural(g,'charla','charlas') + ' · ' + l + ' ' + memPlural(l,'lección','lecciones');
-      } else if (native === 'English') {
-        line = 'Us two: ' + g + ' ' + memPlural(g,'conversation','conversations') + ' · ' + l + ' ' + memPlural(l,'lesson','lessons');
-      } else {
-        line = 'Wir zwei: ' + g + ' ' + memPlural(g,'Gespräch','Gespräche') + ' · ' + l + ' ' + memPlural(l,'Lektion','Lektionen');
-      }
-      usEl.textContent = line;
-      usEl.hidden = false;
-    } else {
-      usEl.hidden = true;
-    }
-  }
-
-  // 3) Optional: ruhiger „von letztem Mal"-Wort-Anker — nur wenn die Felder echt da sind
-  var lastEl = document.getElementById('memoria-last');
-  if (lastEl) {
-    var v0 = newest && newest.lesson && Array.isArray(newest.lesson.vocab) ? newest.lesson.vocab[0] : null;
-    if (v0 && v0.word) {
-      var pre = { 'Deutsch':'Von letztem Mal: ', 'Español':'De la última vez: ', 'English':'From last time: ' };
-      var w = v0.word + (v0.translation ? ' (' + v0.translation + ')' : '');
-      lastEl.textContent = (pre[native] || pre['English']) + w;
-      lastEl.hidden = false;
-    } else {
-      lastEl.hidden = true;
-    }
-  }
-}
-
-// ── Spikiu, der Gastgeber (Teil 41) ───────────────────
-// Belebt den vollständigen Capy NEBEN dem Gruß: atmet (CSS dieser Seite, .host-capy),
-// blinzelt + Blick folgt via capy-vivo.js (spkCapyAlive). Genau EIN Capy auf dem
-// Dashboard, als Charakter (Gastgeber). Der „Spruch des Tages" zog mit Teil 41 raus
-// (sprichwort.js bleibt im Repo — zieht später in den Raum „Proverbios" um).
-function belebeGastgeber() {
-  if (typeof window.spkCapyAlive !== 'function') return;
-  var svg = document.getElementById('dashHostCapy');
-  if (svg) window.spkCapyAlive(svg);
-}
-
-// ── Der lebende Baum (Teil 36) ────────────────────────
-// Etappen-Pille (kanonisch, i18n nach Muttersprache) + lebender Baum aus
-// echter profile.etappe + user.blaetter. baum.js ist ein statischer Root-Helfer.
-var DASH_STAGE = {
-  'Deutsch': { samen:'🌱 Samen',   stamm:'🪵 Stamm',  krone:'🌳 Krone' },
-  'Español': { samen:'🌱 Semilla', stamm:'🪵 Tronco', krone:'🌳 Copa'  },
-  'English': { samen:'🌱 Seed',    stamm:'🪵 Trunk',  krone:'🌳 Crown' }
-};
-function renderBaum() {
-  if (typeof window.spkBaum !== 'function') return;
-  var wrap = document.getElementById('baumWrap');
-  if (!wrap) return;
-  var etappe = 'samen', blaetter = 0, native = 'Deutsch';
-  try {
-    var u = JSON.parse(localStorage.getItem('spikiu_user') || 'null');
-    if (u) {
-      etappe   = (u.profile && u.profile.etappe) || 'samen';
-      blaetter = u.blaetter || 0;
-      native   = normLang(u.nativeLang) || 'Deutsch';
-    }
+    if (window.spkBaum) window.spkBaum(document.getElementById('baumWrap'), { etappe: etappe, blaetter: u.blaetter || 0 });
   } catch (e) {}
-  if (!DASH_STAGE['Deutsch'][etappe]) etappe = 'samen';
-  window.spkBaum(wrap, { etappe: etappe, blaetter: blaetter });
-  var pill = document.getElementById('tree-stage');
-  if (pill) pill.textContent = (DASH_STAGE[native] || DASH_STAGE['English'])[etappe];
-}
 
-// Teil 49: „Lektionen"-Tab führt auf dashboard.html#lektionen. Der Anker #lektionen ist
-// display:contents (keine Box → kein Scroll-Ziel). Darum hier zur ECHTEN Lektions-Karte
-// scrollen (sichtbare lessons-card bzw. sonst no-lessons-card) — NUR bei Hash #lektionen,
-// NACH renderLessonsList (loadUser). Ein Frame Aufschub, damit das Layout steht.
-function scrollToLektionen() {
-  if (location.hash !== '#lektionen') return;
-  requestAnimationFrame(function() {
-    var card   = document.getElementById('lessons-card');
-    var noCard = document.getElementById('no-lessons-card');
-    var target = (card && card.style.display !== 'none') ? card : noCard;
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-}
+  // ── Versprechen (aus dem Lernweg-Dokument, wenn vorhanden) ──
+  function textAus(x) {
+    if (!x) return '';
+    if (typeof x === 'string') return x;
+    if (typeof x === 'object') {
+      var keys = ['text', 'satz', 'versprechen', 'goal', 'ziel'];
+      for (var i = 0; i < keys.length; i++) if (typeof x[keys[i]] === 'string' && x[keys[i]]) return x[keys[i]];
+      var vals = Object.keys(x).map(function (k) { return x[k]; }).filter(function (v) { return typeof v === 'string' && v.length > 3; });
+      if (vals.length) return vals[0];
+    }
+    return '';
+  }
+  var versp = '';
+  if (u.roadmap && u.roadmap.page1) versp = textAus(u.roadmap.page1.versprechen) || textAus(u.roadmap.page1.ziel);
+  if (versp) {
+    document.getElementById('verspText').textContent = versp;
+    document.getElementById('verspCard').style.display = 'block';
+  }
 
-window.addEventListener('load', () => {
-  loadUser();
-  renderBaum();
-  belebeGastgeber();   // Teil 41: Spikiu atmet/blinzelt als Gastgeber neben dem Gruß
-  scrollToLektionen();  // Teil 49: bei #lektionen zur Lektions-Karte scrollen (nach renderLessonsList)
-  openLessonFromHash();  // Teil 55: bei #lesson=<id> die volle Lektion oeffnen
-});
-// Schon auf dem Dashboard + „Lektionen" getippt → Hash wechselt → ebenfalls hinscrollen.
-window.addEventListener('hashchange', scrollToLektionen);
-window.addEventListener('hashchange', openLessonFromHash);  // Teil 55
+  // ── Mein Weg (kompakt: Etappen-Titel, aktuelle markiert) ──
+  var etappen = (u.roadmap && u.roadmap.page2 && Array.isArray(u.roadmap.page2.etappen)) ? u.roadmap.page2.etappen : [];
+  if (etappen.length) {
+    var jetztIdx = { samen: 0, stamm: 1, krone: 2 }[etappe] || 0;
+    var list = document.getElementById('wegList');
+    etappen.forEach(function (e, i) {
+      var name = textAus(e && (e.titel || e.name || e.title)) || textAus(e) || ('Etappe ' + (i + 1));
+      var sub = textAus(e && (e.inhalt || e.fokus || e.desc || e.ziel));
+      var row = document.createElement('div');
+      row.className = 'weg-step' + (i === jetztIdx ? ' jetzt' : '');
+      row.innerHTML = '<div class="weg-dot">' + (i < jetztIdx ? '✓' : (i + 1)) + '</div>'
+        + '<div><div class="weg-name"></div>' + (sub ? '<div class="weg-sub"></div>' : '') + '</div>';
+      row.querySelector('.weg-name').textContent = name;
+      if (sub) row.querySelector('.weg-sub').textContent = sub;
+      list.appendChild(row);
+    });
+    document.getElementById('wegCard').style.display = 'block';
+  }
 
-// Close modal on Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeRoadmap();
-});
+  // ── Geübte Szenen ──
+  var done = u.szenen || {};
+  var ids = Object.keys(done).filter(function (k) { return done[k] && done[k].done; });
+  var chips = document.getElementById('szenenChips');
+  var leer = document.getElementById('szenenLeer');
+  if (ids.length) {
+    ids.sort(function (a, b) { return (done[b].last || 0) - (done[a].last || 0); });
+    ids.forEach(function (id) {
+      var s = (window.spikiuSzenen || []).filter(function (x) { return x.id === id; })[0];
+      var chip = document.createElement('span');
+      chip.className = 'szene-chip';
+      chip.textContent = (s ? (s.emoji + ' ' + (s[MUT] || s.de)) : id) + ' ✓';
+      chips.appendChild(chip);
+    });
+    chips.style.display = 'flex';
+  } else {
+    leer.innerHTML = L.leer;
+    leer.style.display = 'block';
+  }
+})();
 </script>
-<!-- Audio (Teil 32): audio.js ist ein ES-Modul am Root. Hier importiert, via window
-     an das klassische Haupt-Script durchgereicht (dashSpeak/dashWarm). Nur fürs 🔊 im
-     Lektion-Poster — Browser-Fallback steckt schon in audio.js. -->
-<script type="module">
-  import { speak, warm } from '/audio.js';
-  window.spkSpeak = speak;
-  window.spkWarm  = warm;
-</script>
-<script src="baum.js" defer></script>
-<script src="capy-vivo.js" defer></script>
 </body>
 </html>
