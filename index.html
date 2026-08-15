@@ -16,13 +16,13 @@ html { scroll-behavior: smooth; }
   --mid:     #6b6560;
   --faint:   #e8e4df;
   --warm:    #d4cdc6;
-  --accent:  #2d6a4f;
+  --accent:  #1f93b0;
   --terra:   #ff6b5a;
   --mustard: #ffd24a;
   --sky:     #d3eef6;
   --ow:      2.5px;
   --accent2: #e8f2ed;
-  --accent3: #1a4a38;
+  --accent3: #1f93b0;
   --capy:    #c9956a;
   --gold:    #a07830;
 }
@@ -461,9 +461,66 @@ footer {
   .how { padding: 3.5rem 1.5rem; }
   footer { flex-direction: column; text-align: center; }
 }
+
+/* ═══ ÜBERNOMMEN 1:1 AUS spikiu-products.html (Abonnement) ═══ */
+:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffd24a;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:2.5px}
+body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5}
+/* Kopf wie .top */
+nav{background:rgba(255,255,255,.85) !important;border-bottom:var(--ow) solid var(--ink) !important;box-shadow:none !important}
+.logo{font-family:'DM Sans' !important;font-weight:800 !important;font-size:1.05rem !important;color:var(--ink) !important}
+.logo em{font-style:normal;color:var(--cyan) !important}
+.lang-btn{border:2px solid var(--ink) !important;background:#fff !important;color:var(--ink) !important;font:800 .72rem 'DM Sans',sans-serif !important;border-radius:999px !important;padding:.24rem .6rem !important}
+.lang-btn.active{background:var(--sky) !important;box-shadow:2px 2px 0 var(--ink)}
+/* Knöpfe wie .btn */
+.btn-start{background:var(--cyan) !important;color:#fff !important;border:var(--ow) solid var(--ink) !important;box-shadow:3px 3px 0 var(--ink) !important;border-radius:100px !important;font:700 .88rem 'DM Sans' !important;padding:.5rem 1.1rem !important}
+.btn-primary,.btn-white{border:var(--ow) solid var(--ink) !important;box-shadow:4px 4px 0 var(--ink) !important;border-radius:100px !important;font:700 1rem 'DM Sans' !important;padding:.85rem 2rem !important;display:inline-block;text-decoration:none}
+.btn-start:active,.btn-primary:active,.btn-white:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink) !important}
+/* Überschriften wie h2 der Abo-Karten */
+.hero h1,.how h2,.final h2{font-family:'DM Sans' !important;font-weight:800 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
+.hero h1 em,.final h2 em{font-style:normal;color:var(--cyan) !important}
+.price{font-family:'Archivo Black',sans-serif !important;color:var(--ink) !important}
+.price span{font-family:'DM Sans' !important;font-weight:500 !important;color:var(--muted) !important}
+/* Karten wie .card */
+.split-col{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:24px !important;box-shadow:5px 6px 0 var(--ink) !important;padding:1.6rem 1.4rem !important}
+.split-tag{font:800 .62rem/1 'DM Sans' !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:var(--ink) !important;border:2px solid var(--ink) !important;border-radius:999px !important;padding:.24rem .6rem !important;box-shadow:2px 2px 0 var(--ink) !important;margin-bottom:1rem !important}
+.split-col.free .split-tag{background:var(--sky) !important}
+.split-col.premium .split-tag{background:#c7e89a !important}
+.split-col.free h3 em{color:var(--cyan) !important}
+.split-col.premium h3 em{color:#4e7a2e !important}
+.split-col h3{font-family:'DM Sans' !important;font-weight:800 !important;color:var(--ink) !important}
+.split-list li::before{color:var(--cyan) !important}
+/* Schritt-Karten wie .item */
+.step{background:#fff !important;border:2px solid var(--ink) !important;border-radius:18px !important;box-shadow:3px 4px 0 var(--ink) !important}
+.step-num{background:var(--sky) !important;color:var(--ink) !important;border:2px solid var(--ink) !important;border-radius:9px !important;font-family:'DM Sans' !important;font-weight:800 !important}
+.step h4{font-family:'DM Sans' !important;font-weight:700 !important;color:var(--ink) !important}
+.hero-note{background:#fff !important;color:var(--ink) !important;border:2px solid var(--ink) !important;border-radius:999px !important;font-weight:700 !important}
+blockquote::before{color:var(--cyan) !important}
+/* Fuß wie .foot */
+footer{background:#fff !important;border-top:var(--ow) solid var(--ink) !important}
+.footer-logo{font-family:'DM Sans' !important;font-weight:800 !important;color:var(--ink) !important}
+footer a,footer span,footer p{color:var(--muted) !important}
+
+
+
+
+.btn-primary,.btn-white{background:var(--cyan) !important;color:#fff !important}
+.split-col.free{background:var(--sky) !important}
+.split-col.premium{background:#c7e89a !important}
+.split-col.free .split-tag,.split-col.premium .split-tag{background:#fff !important}
+.final{background:#fff !important;border-top:var(--ow) solid var(--ink)}
+.final h2,.final p{color:var(--ink) !important}
+.how{background:var(--minz) !important}
+
+
+
+
+
+
 </style>
 </head>
 <body>
+
+<div class=\"mutbadge\">G · Abo 1:1 (Cyan + Senf)</div>
 
 <!-- NAV -->
 <nav>
@@ -691,5 +748,6 @@ function showReader(type) {
   });
 }
 </script>
+
 </body>
 </html>
