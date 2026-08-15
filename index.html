@@ -649,7 +649,7 @@ nav > *{ min-width:0 }
 // ── TRANSLATIONS ───────────────────────────────────────
 const TRANSLATIONS = {
   en: {
-    'nav.cta': 'Start free →',
+    'nav.cta': 'Start free →', 'nav.ctaBack': 'Continue →', 'hero.ctaBack': 'Keep going →', 'final.ctaBack': 'Keep going →',
     'hero.tagline': 'In a world of noise — one place to speak and learn with calm.',
     'hero.title': 'Don\'t wait any longer.<br><em>Start speaking now.</em>',
     'hero.sub': 'Most people study languages for years and wait too long to feel “ready”. They never speak.<br><br>Spikiu does not expect perfection. Only the courage to begin.<br><br>The words are already inside you. Spikiu helps you bring them into conversation.',
@@ -672,7 +672,7 @@ const TRANSLATIONS = {
     'final.cta': 'Start talking — it\'s free →'
   },
   de: {
-    'nav.cta': 'Kostenlos starten →',
+    'nav.cta': 'Kostenlos starten →', 'nav.ctaBack': 'Weiter lernen →', 'hero.ctaBack': 'Weiter lernen →', 'final.ctaBack': 'Weiter lernen →',
     'hero.tagline': 'In einer Welt voller Lärm — ein Ort, um in Ruhe zu sprechen und zu lernen.',
     'hero.title': 'Warte nicht länger.<br><em>Fang jetzt an zu sprechen.</em>',
     'hero.sub': 'Die meisten lernen jahrelang Sprachen und warten zu lange, bis sie sich „bereit“ fühlen. Sie sprechen nie.<br><br>Spikiu erwartet keine Perfektion. Nur den Mut anzufangen.<br><br>Die Worte sind schon in dir. Spikiu hilft dir, sie ins Gespräch zu bringen.',
@@ -695,7 +695,7 @@ const TRANSLATIONS = {
     'final.cta': 'Jetzt sprechen — kostenlos →'
   },
   es: {
-    'nav.cta': 'Empieza gratis →',
+    'nav.cta': 'Empieza gratis →', 'nav.ctaBack': 'Seguir aprendiendo →', 'hero.ctaBack': 'Seguir aprendiendo →', 'final.ctaBack': 'Seguir aprendiendo →',
     'hero.tagline': 'En un mundo de ruido — un lugar para hablar y aprender con calma.',
     'hero.title': 'No esperes más.<br><em>Empieza a hablar ahora.</em>',
     'hero.sub': 'La mayoría estudia idiomas durante años y espera demasiado para sentirse „listo“. Nunca habla.<br><br>Spikiu no espera perfección. Solo el valor de empezar.<br><br>Las palabras ya están en ti. Spikiu te ayuda a llevarlas a la conversación.',
@@ -720,6 +720,31 @@ const TRANSLATIONS = {
 };
 
 // ── LANGUAGE SWITCHER ──────────────────────────────────
+/* ── Wiederkehrer-Weiche: wer das Assessment schon gemacht hat, wird nicht
+      erneut hindurchgeschickt — die CTAs führen dann direkt ins Haus. ── */
+function hatProfil() {
+  try {
+    var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
+    var p = u.profile || {};
+    return !!(p.zielsprache || p.muttersprache || u.targetLang);
+  } catch (e) { return false; }
+}
+function ctaWeiche(lang) {
+  if (!hatProfil()) return;                       // neuer Besucher: alles bleibt wie es ist
+  var T = TRANSLATIONS[lang] || {};
+  var paare = [
+    ['.btn-start',   'nav.ctaBack'],
+    ['.btn-primary', 'hero.ctaBack'],
+    ['.btn-white',   'final.ctaBack']
+  ];
+  paare.forEach(function (pair) {
+    document.querySelectorAll(pair[0]).forEach(function (a) {
+      a.setAttribute('href', 'haus.html');
+      if (T[pair[1]]) a.innerHTML = T[pair[1]];
+    });
+  });
+}
+
 function setLang(lang) {
   if (!TRANSLATIONS[lang]) lang = 'en';
   document.documentElement.lang = lang;
@@ -737,6 +762,8 @@ function setLang(lang) {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
+
+  ctaWeiche(lang);
 }
 
 // ── AUTO-DETECT ON LOAD ────────────────────────────────
