@@ -61,6 +61,7 @@ button{font:inherit;cursor:pointer}
   <div class="stage" id="stage"></div>
 </div>
 
+<script src="sitzung.js"></script>
 <script src="haeppchen-db.js"></script>
 <script src="szenen.js"></script>
 <script src="szenen-dialog.js"></script>
@@ -154,6 +155,29 @@ button{font:inherit;cursor:pointer}
 
   var TOPIC_ID = null, TOPIC_LABEL = '', HAP = null, RP = null;
 
+  /* ── Sitzungs-Persistenz: keine Arbeit geht durch einen Fehl-Tipp verloren.
+        Gespeichert wird Thema + Phase + Karten-Index (entprellt).
+        Raum-Schlüssel 'gefuehrt'. Kein Zombie-Resume: Abschluss räumt auf. ── */
+  var SITZ_PHASE = null, SITZ_INDEX = 0, sitzTimer = null;
+  function sitzSpeichern() {
+    if (!TOPIC_ID || !SITZ_PHASE) return;
+    clearTimeout(sitzTimer);
+    sitzTimer = setTimeout(function () {
+      try {
+        if (window.spikiuSitzung && window.spikiuSitzung.speichere) {
+          window.spikiuSitzung.speichere('gefuehrt', {
+            topicId: TOPIC_ID, topicLabel: TOPIC_LABEL, phase: SITZ_PHASE, index: SITZ_INDEX
+          });
+        }
+      } catch (e) {}
+    }, 350);
+  }
+  function sitzSetze(phase, index) { SITZ_PHASE = phase; SITZ_INDEX = index || 0; sitzSpeichern(); }
+  function sitzRaeumen() {
+    clearTimeout(sitzTimer); SITZ_PHASE = null; SITZ_INDEX = 0;
+    try { if (window.spikiuSitzung && window.spikiuSitzung.raeume) window.spikiuSitzung.raeume('gefuehrt'); } catch (e) {}
+  }
+
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 
@@ -197,7 +221,7 @@ button{font:inherit;cursor:pointer}
   }
 
   /* ── WÖRTER: Erkennungs-Flips (Ziel vorne + Audio, Übersetzung hinten) ── */
-  function startWoerter() {
+  function startWoerter(startIdx) {
     setRail(1);
     var items = HAP.wortschatz.map(function (h, i) {
       return {
@@ -208,11 +232,12 @@ button{font:inherit;cursor:pointer}
         weiter: U.weiter
       };
     });
-    SpikiuKarten.sequence(items, startHoeren);
+    SpikiuKarten.sequence(items, startHoeren,
+      { start: startIdx || 0, onStep: function (i) { sitzSetze('woerter', i); } });
   }
 
   /* ── HÖREN: aus hoerverstehen (minimalpaar → single, woerter → multi) ── */
-  function startHoeren() {
+  function startHoeren(startIdx) {
     setRail(2);
     var hv = HAP.hoerverstehen || [];
     if (!hv.length) { startDrill(); return; }
@@ -227,11 +252,12 @@ button{font:inherit;cursor:pointer}
         options: h.optionen.map(function (x) { return { text: x.text, ok: !!x.richtig }; }),
         pruefen: U.pruefen, weiter: U.weiter, richtig: U.richtig, fast: U.fast };
     });
-    SpikiuKarten.sequence(items, startDrill);
+    SpikiuKarten.sequence(items, startDrill,
+      { start: startIdx || 0, onStep: function (i) { sitzSetze('hoeren', i); } });
   }
 
   /* ── SPRECHEN A: Produktions-Drill (Cue Muttersprache → Ziel + Audio) ── */
-  function startDrill() {
+  function startDrill(startIdx) {
     setRail(3);
     var items = HAP.wortschatz.map(function (h, i) {
       return {
@@ -242,11 +268,12 @@ button{font:inherit;cursor:pointer}
         weiter: U.weiter
       };
     });
-    SpikiuKarten.sequence(items, startRollenspiel);
+    SpikiuKarten.sequence(items, startRollenspiel,
+      { start: startIdx || 0, onStep: function (i) { sitzSetze('drill', i); } });
   }
 
   /* ── SPRECHEN B: Skript-Rollenspiel (szenen-dialog.js) ── */
-  function startRollenspiel() {
+  function startRollenspiel(startIdx) {
     RP = (window.spikiuSzenenDialog) ? window.spikiuSzenenDialog(TOPIC_ID, ZIEL) : null;
     if (!RP || !RP.schritte || !RP.schritte.length) { finishScene(); return; }
     var rolle = (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
@@ -259,7 +286,8 @@ button{font:inherit;cursor:pointer}
         weiter: U.weiter
       };
     });
-    SpikiuKarten.sequence(items, finishScene);
+    SpikiuKarten.sequence(items, finishScene,
+      { start: startIdx || 0, onStep: function (i) { sitzSetze('rollenspiel', i); } });
   }
 
   /* ── LEKTION: statisch bauen, speichern, zeigen; Szene für FSRS markieren ── */
@@ -292,6 +320,7 @@ button{font:inherit;cursor:pointer}
 
   function finishScene() {
     setRail(4);
+    sitzRaeumen();
     var lesson = buildLesson();
     try {
       var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
@@ -322,7 +351,36 @@ button{font:inherit;cursor:pointer}
     });
   }
 
-  showPalette();
+  /* ── Eintritt: nur bei einer WIRKLICH angefangenen, unfertigen Sitzung fragen ── */
+  function sitzWiederherstellen(sv) {
+    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
+    if (db.indexOf(sv.topicId) === -1) { showPalette(); return; }
+    TOPIC_ID = sv.topicId;
+    var sz = (window.spikiuSzenen || []).filter(function (x) { return x.id === sv.topicId; })[0];
+    TOPIC_LABEL = sv.topicLabel || (sz ? (sz[MUT] || sz.de) : sv.topicId);
+    HAP = window.spikiuHaeppchen(TOPIC_ID, ZIEL, MUT);
+    if (!HAP) { showPalette(); return; }
+    var i = sv.index || 0;
+    if (sv.phase === 'hoeren')          { setRail(2); startHoeren(i); }
+    else if (sv.phase === 'drill')      { setRail(3); startDrill(i); }
+    else if (sv.phase === 'rollenspiel'){ setRail(3); startRollenspiel(i); }
+    else                                { setRail(1); startWoerter(i); }
+  }
+  function eintritt() {
+    var sv = null;
+    try { sv = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('gefuehrt') : null; } catch (e) { sv = null; }
+    var angefangen = sv && sv.topicId && sv.phase && !(sv.phase === 'woerter' && !sv.index);
+    if (angefangen && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen) {
+      window.spikiuSitzung.frageWiederkommen({
+        raum: 'gefuehrt', ts: sv.ts, wo: sv.topicLabel || '',
+        beimWeiter: function () { sitzWiederherstellen(sv); },
+        beimNeu: function () { sitzRaeumen(); showPalette(); }
+      });
+      return;
+    }
+    showPalette();
+  }
+  eintritt();
 })();
 </script>
 </body>

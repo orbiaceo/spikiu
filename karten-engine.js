@@ -342,11 +342,15 @@
     return F;
   }
 
-  /* Sequenz mit Reel-Navigation: Wisch links = weiter (wenn erlaubt), rechts = zurück. */
-  function sequence(items, onDone) {
-    var i = 0;
+  /* Sequenz mit Reel-Navigation: Wisch links = weiter (wenn erlaubt), rechts = zurück.
+     opts.start  = bei diesem Index beginnen (Sitzungs-Wiederherstellung)
+     opts.onStep = wird bei jeder gezeigten Karte mit dem Index gerufen (Persistenz) */
+  function sequence(items, onDone, opts) {
+    opts = opts || {};
+    var i = Math.max(0, Math.min(items.length - 1, opts.start || 0));
     function show(anim) {
       if (i >= items.length) { (onDone || function () {})(); return; }
+      if (opts.onStep) { try { opts.onStep(i); } catch (e) {} }
       render(items[i], function () { i++; show('next'); },
         { anim: anim, back: i > 0 ? function () { i--; show('back'); } : null });
     }
