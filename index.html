@@ -517,6 +517,24 @@ footer a,footer span,footer p{color:var(--muted) !important}
 
 
 
+
+/* ── Nav: im Hochformat nie überlappen (umbruchfähig + kompakt) ── */
+nav{ flex-wrap:wrap; row-gap:.55rem; column-gap:.9rem }
+nav > *{ min-width:0 }
+.logo{ flex:0 0 auto }
+.nav-right{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:flex-end }
+.lang-switcher{ display:flex; gap:.4rem; flex:0 0 auto }
+@media (max-width:600px){
+  nav{ padding:.8rem 4vw }
+  .logo{ font-size:1.15rem }
+  .nav-right{ gap:.55rem }
+  .lang-btn{ padding:.28rem .5rem !important; font-size:.68rem !important }
+  .btn-start{ padding:.5rem 1rem !important; font-size:.8rem !important }
+}
+@media (max-width:380px){
+  .lang-btn{ padding:.24rem .42rem !important; font-size:.63rem !important }
+  .btn-start{ padding:.45rem .85rem !important; font-size:.75rem !important }
+}
 </style>
 </head>
 <body>
@@ -525,8 +543,8 @@ footer a,footer span,footer p{color:var(--muted) !important}
 <!-- NAV -->
 <nav>
   <a href="#" class="logo">Spi<em>k</em>iu</a>
-  <div style="display:flex; align-items:center; gap:1rem;">
-    <div class="lang-switcher" style="display:flex; gap:0.4rem;">
+  <div class="nav-right">
+    <div class="lang-switcher">
       <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
       <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
