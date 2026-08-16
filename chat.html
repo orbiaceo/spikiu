@@ -1494,6 +1494,10 @@ function showGabelung(){
 }
 
 function getModus(){ try{ return new URLSearchParams(location.search).get('modus') || 'gefuehrt'; }catch(e){ return 'gefuehrt'; } }
+// Dev-Tür (gleiches Muster wie learnroman.html ?dev=1): öffnet den freien Flur zum
+// Testen, solange der Kostproben-Zähler noch nicht gebaut ist. Ohne dev=1 gilt die
+// Premium-Sperre unverändert für alle.
+function devOffen(){ try{ return new URLSearchParams(location.search).get('dev') === '1'; }catch(e){ return false; } }
 function showPremiumSperre(){
   if (document.getElementById('gabelung')) return;
   removeOpenerGreeting();
@@ -2112,7 +2116,10 @@ function renderOpenerGreeting(){
 function startOpener(){
   sessionGezaehlt = false;
   setOpenerChrome(true);
-  if (getModus() === 'frei'){ showPremiumSperre(); return; }   // Freies Gespräch = Premium (Etappe 4)
+  if (getModus() === 'frei'){
+    if (!devOffen()){ showPremiumSperre(); return; }   // Freies Gespräch = Premium (Etappe 4)
+    goFree(); return;                                  // Dev-Tür: direkt in den freien Flur (Reel), keine Themen-Palette
+  }
   renderOpenerGreeting();       // Voz primero: Präsenz-Gruß (lädt ein, KEIN Auto-Play)
   showGabelung();
 }
@@ -2147,7 +2154,7 @@ function sitzungWiederherstellen(s){
 // Eintritt: gibt es eine wirklich angefangene, unfertige Sitzung → „Weiter, wo du warst?".
 // Sonst der normale Opener (unverändert).
 function startGespraech(){
-  if (getModus() === 'frei'){ showPremiumSperre(); return; }   // Freies Gespräch = Premium (Etappe 4) — nie Sitzung
+  if (getModus() === 'frei' && !devOffen()){ showPremiumSperre(); return; }   // Freies Gespräch = Premium (Etappe 4) — nie Sitzung
   var s = null;
   try { s = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('gespraech') : null; } catch(e){ s = null; }
   // Nur GEFÜHRTE Sitzungen wieder aufnehmen (frei-Sitzungen gibt es künftig nicht mehr).
