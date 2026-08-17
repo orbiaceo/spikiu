@@ -73,6 +73,7 @@
   .btn-ghost{ background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:.92rem;
     cursor:pointer; padding:.5rem; text-decoration:underline; }
   .btn-ghost:hover{ color:var(--ink); }
+    .summary-hint{ font:500 .88rem/1.45 'DM Sans',sans-serif; color:var(--mid); text-align:center; margin:.2rem 0 0; max-width:30ch; }
 
 /* ═══ Abo-Design (spikiu-products) — Cyan + Senf, Pop, Minz ═══ */
 :root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffd24a;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:2.5px;
@@ -286,7 +287,9 @@ function render(){
   else if (S.type==='summary'){
     var act=el('div','actions');
     act.appendChild(btn('Okay — los geht’s →', function(){ finish(); }, 'btn-next'));
-    act.appendChild(btn('Zurück — ich ergänze noch etwas', function(){ step=0; render(); }, 'btn-ghost'));
+    var hinweis = el('p','summary-hint');
+    hinweis.textContent = 'Möchtest du etwas ändern? Nutze den Pfeil oben links.';
+    act.appendChild(hinweis);
     c.appendChild(act);
   }
 }
