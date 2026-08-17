@@ -19,7 +19,12 @@
      SpikiuKarten.setup({ stage: HTMLElement, zielsprache: 'es', sprich: fn })
      SpikiuKarten.render(item, next)          → eine Karte zeigen
      SpikiuKarten.sequence(items, onDone)     → Karten nacheinander
-     Item-Typen: 'flip' · 'choice' · 'roleplay' · 'lesson' · 'note'
+     Item-Typen: 'flip' · 'choice' · 'roleplay' · 'lesson' · 'note' · 'erklaerung'
+
+   AUDIO-GESETZ (17.08.2026, nach dem Piper-Mischmasch-Bug):
+   Eine Zeile trägt genau EINE Sprache. audioBtn() bekommt ausschliesslich
+   Zielsprach-Text. Umschrift und Muttersprache erreichen die Sprachausgabe
+   auf keinem Pfad — das wird hier erzwungen, nicht im Prompt erbeten.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -87,6 +92,29 @@
     + '.spk-note-emoji{font-size:3rem}'
     + '.spk-note-title{font:800 1.5rem "DM Sans",sans-serif;color:var(--ink,#15163a)}'
     + '.spk-note-sub{font:500 1rem/1.45 "DM Sans",sans-serif;color:var(--muted,#5f7068);max-width:28ch}'
+    /* ── Erklärkarte (Typ 'erklaerung'). GESETZ: eine Zeile = eine Sprache.
+          Audio hängt NUR an Zielsprach-Zeilen; Umschrift und Muttersprache
+          bekommen strukturell keinen Knopf. ── */
+    + '.spk-audio.mini{width:38px;height:38px;flex:0 0 38px;box-shadow:3px 3px 0 var(--ink,#15163a)}'
+    + '.spk-audio.mini svg{width:16px;height:16px}'
+    + '.spk-um{font-family:"DM Sans",sans-serif;font-weight:600;font-style:italic;'
+    + 'font-size:calc(1rem*var(--scale));line-height:1.3;color:var(--muted,#5f7068)}'
+    + '.spk-erk-hr{width:100%;height:2px;background:#eef1ee;border:0;margin:.1rem 0}'
+    + '.spk-erk-box{width:100%;background:#f7faf8;border:2px solid #eef1ee;border-radius:14px;'
+    + 'padding:.6rem .75rem;display:flex;flex-direction:column;gap:.35rem;text-align:left}'
+    + '.spk-erk-zeile{display:flex;align-items:center;gap:.65rem;width:100%}'
+    + '.spk-sp{display:flex;flex-direction:column;gap:.05rem;min-width:0;flex:1}'
+    + '.spk-glied{display:flex;align-items:center;gap:.6rem;width:100%;padding:.32rem 0;'
+    + 'border-bottom:1px solid #eef1ee;text-align:left}'
+    + '.spk-glied:last-child{border-bottom:0}'
+    + '.spk-glied-z{font-family:"Lora",serif;font-weight:600;font-size:calc(1.2rem*var(--scale));color:var(--ink,#15163a)}'
+    + '.spk-glied-um{font-family:"DM Sans",sans-serif;font-weight:500;font-style:italic;'
+    + 'font-size:calc(.82rem*var(--scale));color:var(--muted,#5f7068)}'
+    + '.spk-glied-na{font-family:"DM Sans",sans-serif;font-weight:600;font-size:calc(.95rem*var(--scale));'
+    + 'color:var(--muted,#5f7068);text-align:right;margin-left:auto}'
+    + '.spk-punkte{display:flex;gap:.35rem;justify-content:center;padding-top:.15rem}'
+    + '.spk-punkt{width:8px;height:8px;border-radius:50%;background:var(--ink,#15163a);opacity:.22}'
+    + '.spk-punkt.an{opacity:1}'
     + '@keyframes spkFromRight{from{transform:translateX(60%);opacity:0}to{transform:none;opacity:1}}'
     + '@keyframes spkFromLeft{from{transform:translateX(-60%);opacity:0}to{transform:none;opacity:1}}'
     + '.spk-card.from-right{animation:spkFromRight .32s cubic-bezier(.4,0,.2,1)}'
@@ -308,6 +336,111 @@
       });
       footButton(F, item.weiter || 'Weiter', item.weiterGhost ? 'ghost' : '', next);
       F.armNext(next);
+    },
+
+    /* ── erklaerung ──────────────────────────────────────────────────────
+       Antwort auf eine Meta-Frage im Gespräch. Ersetzt die zweckentfremdete
+       Gesprächsblase, in der Ziel- und Muttersprache in EINE Audio-Zeichenkette
+       gerieten (Bug 17.08.2026, Piper las Griechisch+Deutsch gemischt vor).
+
+       { typ:'erklaerung', kartentyp:'wort'|'satz'|'grammatik'|'ausdruck',
+         z, tr?, na,                       ← Vorderseite (Form C)
+         glieder?:[{z,tr,na}],             ← nur 'satz', max 5, zweite Folie
+         regel?, bz?, btr?, bna?,          ← nur 'grammatik'
+         wann?,                            ← nur 'ausdruck'
+         eyebrow?, gliederLabel?, weiter? }
+
+       GESETZ: audioBtn() bekommt ausschliesslich ein z-Feld. na, tr, regel und
+       wann erreichen die Sprachausgabe auf keinem Pfad. */
+    erklaerung: function (item, F, next) {
+      var glieder = (item.glieder || []).slice(0, 5);   /* harte Grenze: 5 */
+      var hatZwei = item.kartentyp === 'satz' && glieder.length > 0;
+      var zurueckAusRender = F.swipe.backFn;            /* von render(opts.back) */
+
+      function punkte(seite) {
+        var p = el('div', 'spk-punkte');
+        p.appendChild(el('div', 'spk-punkt' + (seite === 0 ? ' an' : '')));
+        p.appendChild(el('div', 'spk-punkt' + (seite === 1 ? ' an' : '')));
+        return p;
+      }
+
+      /* Zielsprach-Zeile mit eigenem Knopf: z (+tr darunter), Knopf rechts. */
+      function zielZeile(z, tr, mini) {
+        var r = el('div', 'spk-erk-zeile');
+        var sp = el('div', 'spk-sp');
+        sp.appendChild(el('div', 'spk-ziel', esc(z)));
+        if (tr) sp.appendChild(el('div', 'spk-um', esc(tr)));
+        r.appendChild(sp);
+        var b = audioBtn(z);
+        if (mini) b.className = 'spk-audio mini';
+        r.appendChild(b);
+        return r;
+      }
+
+      function vorderseite() {
+        F.body.innerHTML = '';
+        F.body.style.alignItems = 'center';
+        F.body.style.textAlign = 'center';
+        F.body.style.justifyContent = 'center';
+        if (item.eyebrow) F.body.appendChild(el('div', 'spk-eyebrow', esc(item.eyebrow)));
+
+        if (item.kartentyp === 'grammatik') {
+          F.body.appendChild(el('div', 'spk-instr', esc(item.regel)));
+          if (item.bz) {
+            F.body.appendChild(el('hr', 'spk-erk-hr'));
+            var box = el('div', 'spk-erk-box');
+            box.appendChild(zielZeile(item.bz, item.btr, true));
+            if (item.bna) box.appendChild(el('div', 'spk-sub', esc(item.bna)));
+            F.body.appendChild(box);
+          }
+        } else {
+          F.body.appendChild(el('div', 'spk-ziel', esc(item.z)));
+          if (item.tr) F.body.appendChild(el('div', 'spk-um', esc(item.tr)));
+          F.body.appendChild(audioBtn(item.z));          /* NUR z */
+          F.body.appendChild(el('div', 'spk-nativ', esc(item.na)));
+          if (item.wann) {
+            F.body.appendChild(el('hr', 'spk-erk-hr'));
+            F.body.appendChild(el('div', 'spk-sub', esc(item.wann)));
+          }
+        }
+
+        if (hatZwei) {
+          F.body.appendChild(punkte(0));
+          footButton(F, item.gliederLabel || 'Stück für Stück', 'ghost', function () { rueckseite(); });
+          F.armNext(function () { rueckseite(); });      /* Wisch links = Folie 2 */
+          F.swipe.backFn = zurueckAusRender;
+        } else {
+          footButton(F, item.weiter || 'Weiter', '', next);
+          F.armNext(next);
+          F.swipe.backFn = zurueckAusRender;
+        }
+        fitCard(F.card);
+      }
+
+      function rueckseite() {
+        F.body.innerHTML = '';
+        F.body.style.alignItems = 'stretch';
+        F.body.style.textAlign = 'left';
+        F.body.style.justifyContent = 'center';
+        glieder.forEach(function (g) {
+          var r = el('div', 'spk-glied');
+          var b = audioBtn(g.z); b.className = 'spk-audio mini';
+          r.appendChild(b);                              /* NUR z */
+          var sp = el('div', 'spk-sp');
+          sp.appendChild(el('div', 'spk-glied-z', esc(g.z)));
+          if (g.tr) sp.appendChild(el('div', 'spk-glied-um', esc(g.tr)));
+          r.appendChild(sp);
+          r.appendChild(el('div', 'spk-glied-na', esc(g.na)));
+          F.body.appendChild(r);
+        });
+        F.body.appendChild(punkte(1));
+        footButton(F, item.weiter || 'Weiter', '', next);
+        F.armNext(next);
+        F.swipe.backFn = function () { vorderseite(); }; /* Wisch rechts = zurück */
+        fitCard(F.card);
+      }
+
+      vorderseite();
     },
 
     /* note: { typ:'note', emoji?, title, sub?, buttons:[{label, ghost?, go}] } */
