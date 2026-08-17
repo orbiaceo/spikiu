@@ -318,6 +318,36 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-learner .reel-cards ~ .reel-learner-field { margin-top:0.9rem; opacity:0.92; }
 .reel-learner .reel-cards ~ .reel-learner-field textarea { font-size:0.92rem; }
 .reel-korrektur .kk { align-self:center; margin-left:0; max-width:24rem; width:100%; }
+
+/* ── Erklärkarte (17.08.2026): Antwort auf eine Meta-Frage im Gespräch.
+   GESETZ: eine Zeile = eine Sprache. Der 🔊 hängt NUR an Zielsprach-Zeilen;
+   Umschrift und Muttersprache bleiben stumm. Behebt den Piper-Mischmasch,
+   bei dem „πρέπει να = ich muss" als EINE Zeichenkette vorgelesen wurde. */
+.reel-erk { gap:0.55rem; }
+.reel-erk .erk-braue { font:800 0.68rem 'DM Sans',sans-serif; letter-spacing:0.04em; text-transform:uppercase; color:var(--mid); opacity:0.75; }
+.reel-erk .erk-z { font-family:'Lora',serif; font-weight:600; font-size:clamp(1.9rem,7.5vw,2.8rem); line-height:1.24; color:var(--read,#2b2621); max-width:22rem; align-self:center; }
+.reel-erk .erk-tr { font-family:'DM Sans',sans-serif; font-style:italic; font-weight:600; font-size:0.95rem; line-height:1.35; color:var(--mid); max-width:20rem; align-self:center; }
+.reel-erk .erk-na { font-family:'DM Sans',sans-serif; font-weight:700; font-size:1.15rem; line-height:1.3; color:var(--ink); max-width:20rem; align-self:center; }
+.reel-erk .erk-regel { font-family:'DM Sans',sans-serif; font-weight:600; font-size:1.02rem; line-height:1.5; color:var(--ink); max-width:21rem; align-self:center; }
+.reel-erk .erk-wann { font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.9rem; line-height:1.45; color:var(--mid); max-width:20rem; align-self:center; }
+.reel-erk .erk-hr { width:100%; max-width:20rem; height:2px; background:var(--line,#eef1ee); border:0; align-self:center; margin:0.1rem 0; }
+.reel-erk .erk-box { width:100%; max-width:21rem; align-self:center; background:var(--bg2); border:2px solid var(--line,#eef1ee); border-radius:14px; padding:0.6rem 0.75rem; display:flex; flex-direction:column; gap:0.3rem; text-align:left; }
+.reel-erk .erk-zeile { display:flex; align-items:center; gap:0.6rem; width:100%; }
+.reel-erk .erk-sp { display:flex; flex-direction:column; gap:0.05rem; min-width:0; flex:1; }
+.reel-erk .speak-btn.erk-speak { position:static; width:38px; height:38px; flex:0 0 38px; margin:0; }
+.reel-erk .speak-btn.erk-speak svg { width:18px; height:18px; }
+.reel-erk .erk-gross { width:56px; height:56px; flex:0 0 56px; margin:0.35rem auto 0; align-self:center; }
+.reel-erk .erk-gross svg { width:24px; height:24px; }
+.reel-erk .erk-glied { display:flex; align-items:center; gap:0.6rem; width:100%; max-width:22rem; align-self:center; padding:0.34rem 0; border-bottom:1px solid var(--line,#eef1ee); text-align:left; }
+.reel-erk .erk-glied:last-of-type { border-bottom:0; }
+.reel-erk .erk-glied-z { font-family:'Lora',serif; font-weight:600; font-size:1.2rem; line-height:1.25; color:var(--read,#2b2621); }
+.reel-erk .erk-glied-tr { font-family:'DM Sans',sans-serif; font-style:italic; font-weight:500; font-size:0.8rem; color:var(--mid); }
+.reel-erk .erk-glied-na { font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.92rem; color:var(--mid); text-align:right; margin-left:auto; }
+.reel-erk .erk-btn { align-self:center; margin-top:0.5rem; background:var(--white); color:var(--accent); border:2px solid var(--accent); border-radius:100px; padding:0.6rem 1.4rem; font:800 0.92rem 'DM Sans',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.reel-erk .erk-btn:active { transform:scale(0.98); }
+.reel-erk .erk-punkte { display:flex; gap:0.35rem; justify-content:center; align-self:center; margin-top:0.35rem; }
+.reel-erk .erk-punkt { width:8px; height:8px; border-radius:50%; background:var(--ink); opacity:0.22; }
+.reel-erk .erk-punkt.an { opacity:1; }
 .reel-endmenu .reel-cards { gap:0.55rem; }
 .reel-endmenu .reel-card.full { background:var(--accent); color:var(--white); border-color:var(--accent); }
 .reel-endmenu .reel-card.full:hover { background:var(--accent3); }
@@ -701,6 +731,196 @@ function renderKorrekturCard(pairs){
   chat.appendChild(card); chat.scrollTop = chat.scrollHeight;
 }
 
+// ── Erklärkarte: Meta-Fragen im Gespräch (17.08.2026) ──────────────────
+// Fragt der Lerner ÜBER die Sprache statt IN ihr („Was heißt das?"), antwortet
+// Spikiu mit [KARTE:typ]…[/KARTE] statt mit einer Gesprächsblase. Grund: die
+// Blase kennt nur EIN Format (Zielsprache + [[Übersetzung]]); eine Erklärung
+// passt nicht hinein und landete gemischt im Audio-Feld.
+//
+//   [KARTE:satz]
+//   z: Πρέπει να φύγω τώρα.
+//   tr: prépi na fígo tóra
+//   na: Ich muss jetzt gehen.
+//   --
+//   πρέπει | prépi | es ist nötig
+//   να | na | dass
+//   [/KARTE]
+//
+// Typen: wort · satz · grammatik · ausdruck. Der --Block nur bei satz (max 5).
+var ERK_TYPEN = { wort:1, satz:1, grammatik:1, ausdruck:1 };
+var ERK_UI = {
+  de:{ braue:{wort:'Wort', satz:'Satz', grammatik:'Warum das so ist', ausdruck:'So sagt man das'},
+       glieder:'Stück für Stück', zurueck:'Zurück ins Gespräch' },
+  es:{ braue:{wort:'Palabra', satz:'Frase', grammatik:'Por qué es así', ausdruck:'Así se dice'},
+       glieder:'Parte por parte', zurueck:'Volver a la conversación' },
+  en:{ braue:{wort:'Word', satz:'Sentence', grammatik:'Why it works this way', ausdruck:'How to say it'},
+       glieder:'Piece by piece', zurueck:'Back to the conversation' }
+};
+function erkUI(){ return ERK_UI[uiLang()] || ERK_UI.de; }
+
+function extractKarte(text){
+  var m = (text||'').match(/\[KARTE:\s*([a-zA-ZäöüÄÖÜ]+)\s*\]([\s\S]*?)\[\/KARTE\]/);
+  if (!m) return { text: text, karte: null };
+  var typ = String(m[1]).toLowerCase();
+  var rest = (text||'').replace(m[0], ' ').replace(/[ \t]+/g,' ').trim();
+  if (!ERK_TYPEN[typ]) return { text: text, karte: null };   // unbekannt → roher Pfad
+
+  var roh = m[2] || '';
+  var teile = roh.split(/^\s*--\s*$/m);
+  var kopf = teile[0] || '', gliederRoh = teile[1] || '';
+
+  var K = { kartentyp: typ, glieder: [] };
+  kopf.split('\n').forEach(function(zeile){
+    var f = zeile.match(/^\s*([a-zA-Z]+)\s*:\s*([\s\S]*?)\s*$/);
+    if (!f) return;
+    var schl = f[1].toLowerCase();
+    if (['z','tr','na','regel','bz','btr','bna','wann'].indexOf(schl) !== -1) K[schl] = f[2];
+  });
+
+  if (typ === 'satz' && gliederRoh){
+    gliederRoh.split('\n').forEach(function(zeile){
+      if (K.glieder.length >= 5) return;                      // harte Grenze: 5
+      if (zeile.indexOf('|') === -1) return;
+      var sp = zeile.split('|');
+      var g = { z:(sp[0]||'').trim(), tr:(sp[1]||'').trim(), na:(sp[2]||'').trim() };
+      if (g.z && g.na) K.glieder.push(g);
+    });
+  }
+
+  // Mindestbedingung je Typ. Fehlt sie, gilt die Karte als kaputt und der
+  // bestehende Malformed-Pfad zeigt lieber rohen Text als eine leere Folie.
+  var ok = (typ === 'grammatik') ? !!K.regel : (!!K.z && !!K.na);
+  if (!ok) return { text: text, karte: null };
+
+  return { text: rest, karte: K };
+}
+
+// Zielsprach-Zeile mit eigenem 🔊. Bekommt IMMER nur einen z-Text — nie na/tr.
+function erkSprechZeile(zText, trText, klasseZ, klasseTr){
+  var wrap = document.createElement('div'); wrap.className = 'erk-zeile';
+  var sp = document.createElement('div'); sp.className = 'erk-sp';
+  var z = document.createElement('div'); z.className = klasseZ; z.textContent = zText;
+  sp.appendChild(z);
+  if (trText){ var t = document.createElement('div'); t.className = klasseTr; t.textContent = trText; sp.appendChild(t); }
+  wrap.appendChild(sp);
+  wrap.appendChild(erkSpeakBtn(zText, 'erk-speak'));
+  return wrap;
+}
+function erkSpeakBtn(zText, extraKlasse){
+  var b = document.createElement('button');
+  b.className = 'speak-btn ' + (extraKlasse || 'erk-speak');
+  b.type = 'button'; b.setAttribute('aria-label','Vorlesen'); b.innerHTML = SPK_ICON;
+  b.onclick = function(){ playFrom(b, plainForSpeech(zText), 'playing'); };
+  return b;
+}
+
+function renderErklaerung(K){
+  if (!reelActive){ renderErklaerungChat(K); return; }
+  var reel = reelEl(); if (!reel) return;
+  var ui = erkUI();
+  var hatZwei = K.kartentyp === 'satz' && K.glieder.length > 0;
+
+  function punkte(seite){
+    var p = document.createElement('div'); p.className = 'erk-punkte';
+    [0,1].forEach(function(i){
+      var d = document.createElement('div');
+      d.className = 'erk-punkt' + (i === seite ? ' an' : '');
+      p.appendChild(d);
+    });
+    return p;
+  }
+  function neueFolie(){
+    var s = document.createElement('div'); s.className = 'reel-slide reel-erk';
+    s.innerHTML = '<div class="reel-capy" aria-hidden="true">' + CAPY_SMALL + '</div>';
+    return s;
+  }
+  function txt(cls, t){ var d = document.createElement('div'); d.className = cls; d.textContent = t; return d; }
+
+  // ── Folie 1: Form C ────────────────────────────────────────────────
+  var s1 = neueFolie();
+  s1.appendChild(txt('erk-braue', ui.braue[K.kartentyp] || ''));
+
+  if (K.kartentyp === 'grammatik'){
+    s1.appendChild(txt('erk-regel', K.regel));
+    if (K.bz){
+      s1.appendChild(document.createElement('hr')).className = 'erk-hr';
+      var box = document.createElement('div'); box.className = 'erk-box';
+      box.appendChild(erkSprechZeile(K.bz, K.btr, 'erk-glied-z', 'erk-glied-tr'));
+      if (K.bna) box.appendChild(txt('erk-wann', K.bna));
+      s1.appendChild(box);
+    }
+  } else {
+    s1.appendChild(txt('erk-z', K.z));
+    if (K.tr) s1.appendChild(txt('erk-tr', K.tr));
+    s1.appendChild(erkSpeakBtn(K.z, 'erk-speak erk-gross'));   // NUR z
+    s1.appendChild(txt('erk-na', K.na));
+    if (K.wann){
+      var hr = document.createElement('hr'); hr.className = 'erk-hr'; s1.appendChild(hr);
+      s1.appendChild(txt('erk-wann', K.wann));
+    }
+  }
+
+  if (hatZwei){
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'erk-btn'; btn.textContent = ui.glieder;
+    btn.onclick = function(){ reelAdvance(); };                // Knopf = derselbe Weg wie Wischen
+    s1.appendChild(btn);
+    s1.appendChild(punkte(0));
+  }
+
+  var learner = document.getElementById('reelLearner');
+  var ersteNeue = reelSlides().length;
+  if (learner) reel.insertBefore(s1, learner); else reel.appendChild(s1);
+
+  // ── Folie 2: die Glieder, nur bei satz ─────────────────────────────
+  if (hatZwei){
+    var s2 = neueFolie();
+    s2.appendChild(txt('erk-braue', ui.glieder));
+    K.glieder.forEach(function(g){
+      var r = document.createElement('div'); r.className = 'erk-glied';
+      r.appendChild(erkSpeakBtn(g.z, 'erk-speak'));            // NUR z
+      var sp = document.createElement('div'); sp.className = 'erk-sp';
+      sp.appendChild(txt('erk-glied-z', g.z));
+      if (g.tr) sp.appendChild(txt('erk-glied-tr', g.tr));
+      r.appendChild(sp);
+      r.appendChild(txt('erk-glied-na', g.na));
+      s2.appendChild(r);
+    });
+    s2.appendChild(punkte(1));
+    if (learner) reel.insertBefore(s2, learner); else reel.appendChild(s2);
+  }
+
+  renderLearnerSlide(false);        // nach der Karte: du bist dran
+  reelGoTo(ersteNeue);              // zuerst die Karte zeigen
+}
+
+// Fallback für den Blasen-Modus (geführt). Gleiche Regel: 🔊 nur auf z.
+function renderErklaerungChat(K){
+  var ui = erkUI();
+  var card = document.createElement('div'); card.className = 'kk';
+  var braue = document.createElement('div'); braue.className = 'kk-eyebrow';
+  braue.textContent = ui.braue[K.kartentyp] || ''; card.appendChild(braue);
+  function zeile(zText, trText, naText){
+    var row = document.createElement('div'); row.className = 'kk-row';
+    var links = document.createElement('div'); links.className = 'kk-cell kk-better';
+    links.appendChild(document.createTextNode(zText));
+    links.appendChild(erkSpeakBtn(zText, 'erk-speak'));
+    var rechts = document.createElement('div'); rechts.className = 'kk-cell kk-said';
+    rechts.textContent = naText + (trText ? ' · ' + trText : '');
+    row.appendChild(links); row.appendChild(rechts); card.appendChild(row);
+  }
+  if (K.kartentyp === 'grammatik'){
+    var r = document.createElement('div'); r.className = 'kk-row';
+    r.textContent = K.regel; card.appendChild(r);
+    if (K.bz) zeile(K.bz, K.btr, K.bna || '');
+  } else {
+    zeile(K.z, K.tr, K.na);
+    (K.glieder || []).forEach(function(g){ zeile(g.z, g.tr, g.na); });
+    if (K.wann){ var w = document.createElement('div'); w.className = 'kk-row'; w.textContent = K.wann; card.appendChild(w); }
+  }
+  chat.appendChild(card); chat.scrollTop = chat.scrollHeight;
+}
+
 // Drei Knöpfe: gleiches Thema / anderes Thema / beenden→Lektion. Kein Auto-Sprung.
 function renderEndMenu(){
   if (document.getElementById('endmenu')) return;
@@ -835,7 +1055,7 @@ function reelSlides(){ var r = reelEl(); return r ? r.querySelectorAll('.reel-sl
 //    Ein Ort, eine Regel — statt fixer Groessen pro Element. ──
 function fitSlide(slide){
   if (!slide) return;
-  var mains = slide.querySelectorAll('.reel-line, .hap-flip .hap-ziel, .hap-back-trans, .hv-q, .reel-learner-head, .rp-ziel');
+  var mains = slide.querySelectorAll('.reel-line, .hap-flip .hap-ziel, .hap-back-trans, .hv-q, .reel-learner-head, .rp-ziel, .erk-z, .erk-glied-z');
   var opts  = slide.querySelectorAll('.hv-opt');   // Antwort-Chips folgen jetzt auch der Regel
   if (!mains.length && !opts.length) return;
   var start = Math.min(60, Math.max(32, Math.round((slide.clientWidth||360) * 0.15)));
@@ -1419,13 +1639,31 @@ async function turn(){
   hideTyping();
   try {
     // Signale in fester Reihenfolge abfangen, NIE als Rohtext zeigen:
-    // [WECHSEL] → Tür · [KORREKTUR] → Karte (vor dem Menü) · [SZENENENDE] → Menü.
-    var w = extractWechsel(reply);
+    // [KARTE] → Erklärkarte (unterbricht) · [WECHSEL] → Tür ·
+    // [KORREKTUR] → Karte (vor dem Menü) · [SZENENENDE] → Menü.
+    var ka = extractKarte(reply);
+    var w = extractWechsel(ka.text);
     var k = extractKorrektur(w.text);
     var s = extractSceneEnd(k.text);
     var o = extractOptionen(s.text);                        // [OPTIONEN] → Antwort-Chips
     var shown = o.text;
-    if (!shown && !k.pairs.length && !s.ended && !w.ziel && !o.optionen.length) shown = reply;  // malformed → roh statt leer
+    if (!shown && !ka.karte && !k.pairs.length && !s.ended && !w.ziel && !o.optionen.length) shown = reply;  // malformed → roh statt leer
+
+    // Die Karte ist die GANZE Antwort: kein Fließtext daneben, keine Rollen-Replik
+    // im selben Zug. Sonst mischt sich die Szene wieder in die Erklärung.
+    if (ka.karte){
+      renderErklaerung(ka.karte);
+      // In den Verlauf wandert eine NOTIZ, nicht die Karte. Läge das Kartenformat
+      // im Verlauf, ahmte Spikiu es in den Folgezügen nach und antwortete auch
+      // auf normale Gesprächszüge in Kartenform.
+      var kurz = String(ka.karte.z || ka.karte.regel || '').slice(0, 40);
+      verlauf.push({ role:'assistant', content:'(Erklärkarte: ' + kurz + ')' });
+      sitzungSpeichern();
+      lastTurnOk = true;
+      busy = false; sendBtn.disabled = input.value.trim() === '';
+      return;                                               // Szene läuft beim nächsten Zug weiter
+    }
+
     if (shown){
       addMessage('spikiu', shown);                          // nur Anzeige (ohne Marker)
       verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf (Marker raus, [[…]] bleibt)
