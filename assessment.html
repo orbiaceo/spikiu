@@ -79,7 +79,7 @@
   --paper:#eef7f1;--white:#fff;--mid:#5f7068;--faint:#e6efe8;--warm:#cddcd3;--accent:#1f93b0;--accent2:#e7f4f8;--accent3:#1f93b0;--gold:#ffd24a}
 body{background:var(--minz) !important;color:var(--ink) !important;font-family:'DM Sans',system-ui,sans-serif !important}
 /* Kopf wie .top der Abo-Seite */
-header,.top{background:rgba(255,255,255,.85) !important;border-bottom:var(--ow) solid var(--ink) !important}
+header,.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96) !important;border-bottom:var(--ow) solid var(--ink) !important;backdrop-filter:saturate(180%) blur(6px)}
 .btn-back{width:36px;height:36px;border-radius:999px !important;border:2.5px solid var(--ink) !important;background:#fff !important;
   color:var(--ink) !important;font-size:1.2rem !important;box-shadow:2px 2px 0 var(--ink);padding:0 !important;
   display:flex;align-items:center;justify-content:center}
@@ -121,7 +121,7 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
 </head>
 <body>
 <header>
-  <button class="btn-back hidden" id="btn-back" onclick="goBack()">←</button>
+  <button class="btn-back hidden" id="btn-back" onclick="goBack()" aria-label="Ein Schritt zurück" title="Ein Schritt zurück">‹</button>
   <div class="progress"><div class="progress-fill" id="progress"></div></div>
   <a class="logo" href="index.html">Spi<em>k</em>iu</a>
 </header>
