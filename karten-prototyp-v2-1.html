@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Erklärkarten v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--mint:#e8f2ea;--ow:2.5px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--mint);color:var(--ink);
+  font-family:"DM Sans",system-ui,sans-serif;overscroll-behavior:none}
+body{min-height:100dvh;display:flex;flex-direction:column}
+
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.5rem .7rem;
+  position:sticky;top:0;z-index:40}
+.pult h1{margin:0 0 .45rem;font-size:.78rem;font-weight:800;letter-spacing:.03em;
+  text-transform:uppercase;opacity:.5}
+.reihe{display:flex;gap:.28rem;flex-wrap:wrap;margin-bottom:.32rem}
+.reihe:last-child{margin-bottom:0}
+.lab{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  opacity:.42;width:100%;margin-bottom:.06rem}
+.tog{font:800 .74rem "DM Sans",sans-serif;padding:.3rem .55rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+.buehne{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:.85rem .8rem 1.1rem;gap:.55rem;min-height:0}
+
+/* Wisch-Bühne: zwei Folien nebeneinander, nur bei Satz */
+.gleis{width:100%;max-width:430px;overflow:hidden;position:relative;border-radius:22px}
+.band{display:flex;transition:transform .28s cubic-bezier(.22,.8,.3,1)}
+.folie{flex:0 0 100%;min-width:0}
+
+.karte{width:100%;height:min(68dvh,600px);background:#fff;
+  border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);
+  overflow:hidden;display:flex;flex-direction:column;--scale:1;position:relative}
+.kopfz{padding:.7rem 1.1rem .3rem;flex:0 0 auto}
+.brauen{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.04em;
+  text-transform:uppercase;opacity:.6}
+.leib{flex:1;min-height:0;overflow:hidden;padding:.3rem 1.1rem 1rem;
+  display:flex;flex-direction:column;gap:.5rem;justify-content:center}
+.leib.mitte{align-items:center;text-align:center}
+.fuss{flex:0 0 auto;display:flex;justify-content:center;padding:.5rem 1.1rem .9rem;
+  border-top:2px solid #eef1ee}
+
+.ziel{font-family:"Lora",serif;font-weight:600;line-height:1.24;
+  font-size:calc(2.05rem*var(--scale));margin:0}
+.umschrift{font-weight:600;font-style:italic;font-size:calc(1rem*var(--scale));
+  line-height:1.3;color:var(--muted);margin:0}
+.nativ{font-weight:700;font-size:calc(1.28rem*var(--scale));line-height:1.28;margin:0}
+.nativ.klein{font-size:calc(1rem*var(--scale));font-weight:600;color:var(--muted)}
+.regel{font-weight:600;font-size:calc(1.06rem*var(--scale));line-height:1.45;margin:0}
+.trenner{width:100%;height:2px;background:#eef1ee;border:0;margin:.1rem 0}
+
+.audio{width:56px;height:56px;flex:0 0 56px;border-radius:50%;
+  border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;
+  box-shadow:4px 4px 0 var(--ink);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:1.3rem;padding:0}
+.audio:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.audio.mini{width:38px;height:38px;flex:0 0 38px;font-size:.92rem;box-shadow:3px 3px 0 var(--ink)}
+.audio.spricht{background:#ffd24a;color:var(--ink)}
+
+.stueck{display:flex;align-items:center;gap:.6rem;padding:.32rem 0;
+  border-bottom:1px solid #eef1ee}
+.stueck:last-child{border-bottom:0}
+.st-ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(1.2rem*var(--scale))}
+.st-um{font-style:italic;font-size:calc(.82rem*var(--scale));color:var(--muted)}
+.st-nativ{font-weight:600;font-size:calc(.95rem*var(--scale));color:var(--muted);
+  text-align:right;margin-left:auto}
+.spalte{display:flex;flex-direction:column;gap:.05rem;min-width:0}
+.kasten{background:#f7faf8;border:2px solid #eef1ee;border-radius:14px;
+  padding:.55rem .7rem;display:flex;flex-direction:column;gap:.3rem}
+.zeile{display:flex;align-items:center;gap:.65rem}
+
+.knopf{font:800 1rem "DM Sans",sans-serif;padding:.68rem 1.2rem;border-radius:14px;
+  border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;
+  box-shadow:4px 4px 0 var(--ink);cursor:pointer;max-width:230px;width:100%}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.knopf.geist{background:#fff;color:var(--ink)}
+
+.wischhint{font:700 .74rem "DM Sans",sans-serif;color:var(--muted);opacity:.7;
+  text-align:center;padding-bottom:.2rem}
+.punkte{display:flex;gap:.35rem;justify-content:center}
+.punkt{width:8px;height:8px;border-radius:50%;background:var(--ink);opacity:.22}
+.punkt.an{opacity:1}
+
+.szene{width:100%;max-width:430px;background:#fff;border:var(--ow) solid var(--ink);
+  border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:.95rem 1.05rem;
+  display:flex;flex-direction:column;gap:.45rem}
+.rolle{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.04em;
+  text-transform:uppercase;opacity:.55}
+.lernerZug{width:100%;max-width:430px;background:var(--ink);color:#fff;
+  border-radius:18px;padding:.65rem .9rem;font-weight:700;font-size:.96rem}
+.lernerZug small{display:block;opacity:.6;font-weight:600;font-size:.68rem;
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem}
+
+.pruef{width:100%;max-width:430px;background:#fffbe8;border:2px dashed #c67a1e;
+  border-radius:14px;padding:.5rem .65rem;font-size:.76rem;line-height:1.45;color:#7a4a08}
+.pruef b{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;
+  opacity:.7;margin-bottom:.22rem}
+.pruef code{font-family:ui-monospace,monospace;background:#fff;padding:.08rem .28rem;
+  border-radius:5px;word-break:break-word}
+.warnung{color:#a01818;font-weight:800}
+.skala{position:absolute;right:.5rem;top:.5rem;font:800 .6rem "DM Sans",sans-serif;
+  background:var(--ink);color:#fff;padding:.14rem .4rem;border-radius:7px;opacity:.55}
+.hinweis{max-width:430px;font-size:.74rem;line-height:1.5;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Erklärkarten v2 · C + Wisch</h1>
+  <div class="reihe"><span class="lab">Sprache</span>
+    <button class="tog" data-g="lang" data-v="el">Griechisch</button>
+    <button class="tog" data-g="lang" data-v="es">Spanisch</button>
+    <button class="tog" data-g="lang" data-v="de">Deutsch</button>
+  </div>
+  <div class="reihe"><span class="lab">Frage</span>
+    <button class="tog" data-g="typ" data-v="wort">Was bedeutet X?</button>
+    <button class="tog" data-g="typ" data-v="satz">Was heißt das?</button>
+    <button class="tog" data-g="typ" data-v="grammatik">Warum so?</button>
+    <button class="tog" data-g="typ" data-v="ausdruck">Wie sagt man X?</button>
+  </div>
+  <div class="reihe"><span class="lab">Prüfen</span>
+    <button class="tog" id="tLang">Langer Satz (5 Glieder)</button>
+    <button class="tog" id="tPruef">Audio-Prüfung</button>
+    <button class="tog" id="tAblauf">Ablauf zeigen</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script>
+/* GESETZ: eine Zeile = eine Sprache. Audio NUR auf z. tr und na sind stumm.
+   Felder wie im Lernroman: z = Zielsprache, tr = Umschrift, na = Muttersprache. */
+
+var S = { lang:'el', typ:'satz', lang5:false, pruef:false, ablauf:false };
+var folie = 0, zurueck = false, letzterAudio = null;
+var STIMME = { el:'el-GR', es:'es-ES', de:'de-DE' };
+
+var D = {
+ el:{
+  szene:{rolle:'Am Bahnhof · die Angestellte', z:'Πρέπει να φύγω τώρα.', tr:'prépi na fígo tóra', na:'Ich muss jetzt gehen.'},
+  wort:{frage:'Was bedeutet τώρα?', z:'τώρα', tr:'tóra', na:'jetzt'},
+  satz:{frage:'Was heißt das?', z:'Πρέπει να φύγω τώρα.', tr:'prépi na fígo tóra', na:'Ich muss jetzt gehen.',
+    g:[{z:'πρέπει',tr:'prépi',na:'es ist nötig'},{z:'να',tr:'na',na:'dass'},
+       {z:'φύγω',tr:'fígo',na:'ich gehe weg'},{z:'τώρα',tr:'tóra',na:'jetzt'}]},
+  satz5:{frage:'Was heißt das?', z:'Δεν μπορώ να έρθω μαζί σου.', tr:'den boró na értho mazí su', na:'Ich kann nicht mit dir kommen.',
+    g:[{z:'δεν',tr:'den',na:'nicht'},{z:'μπορώ',tr:'boró',na:'ich kann'},
+       {z:'να έρθω',tr:'na értho',na:'dass ich komme'},{z:'μαζί',tr:'mazí',na:'zusammen'},
+       {z:'σου',tr:'su',na:'mit dir'}]},
+  grammatik:{frage:'Warum φύγω und nicht φεύγω?',
+    regel:'Nach πρέπει να steht die Form, die die Handlung als Ganzes meint — nicht als Verlauf.',
+    b:{z:'Πρέπει να φύγω.', tr:'prépi na fígo', na:'Ich muss weg.'}},
+  ausdruck:{frage:'Wie sagt man „Wie geht es dir?"', z:'Τι κάνεις;', tr:'ti kánis', na:'Wie geht es dir?',
+    wann:'Unter Freunden. Förmlich: Τι κάνετε;'}
+ },
+ es:{
+  szene:{rolle:'Im Café · der Kellner', z:'¿Qué le pongo?', tr:'', na:'Was darf ich Ihnen bringen?'},
+  wort:{frage:'Was bedeutet pan?', z:'el pan', tr:'', na:'das Brot'},
+  satz:{frage:'Was heißt das?', z:'¿Qué le pongo?', tr:'', na:'Was darf ich Ihnen bringen?',
+    g:[{z:'qué',tr:'',na:'was'},{z:'le',tr:'',na:'Ihnen'},{z:'pongo',tr:'',na:'ich stelle hin'}]},
+  satz5:{frage:'Was heißt das?', z:'No puedo ir contigo hoy.', tr:'', na:'Ich kann heute nicht mit dir gehen.',
+    g:[{z:'no',tr:'',na:'nicht'},{z:'puedo',tr:'',na:'ich kann'},{z:'ir',tr:'',na:'gehen'},
+       {z:'contigo',tr:'',na:'mit dir'},{z:'hoy',tr:'',na:'heute'}]},
+  grammatik:{frage:'Warum le und nicht te?',
+    regel:'le ist die höfliche Form. Zu Fremden sagt man le, zu Freunden te.',
+    b:{z:'¿Qué le pongo?', tr:'', na:'Was darf ich Ihnen bringen?'}},
+  ausdruck:{frage:'Wie bestellt man die Rechnung?', z:'La cuenta, por favor.', tr:'', na:'Die Rechnung, bitte.',
+    wann:'Immer so. „Pagar, por favor" sagt kein Muttersprachler.'}
+ },
+ de:{
+  szene:{rolle:'Beim Bäcker · die Verkäuferin', z:'Was darf es sein?', tr:'', na:'¿Qué desea?'},
+  wort:{frage:'¿Qué significa Brötchen?', z:'das Brötchen', tr:'', na:'el panecillo'},
+  satz:{frage:'¿Qué significa eso?', z:'Was darf es sein?', tr:'', na:'¿Qué desea?',
+    g:[{z:'was',tr:'',na:'qué'},{z:'darf',tr:'',na:'puede'},{z:'es',tr:'',na:'ello'},{z:'sein',tr:'',na:'ser'}]},
+  satz5:{frage:'¿Qué significa eso?', z:'Ich kann heute nicht mitkommen.', tr:'', na:'Hoy no puedo acompañarte.',
+    g:[{z:'ich',tr:'',na:'yo'},{z:'kann',tr:'',na:'puedo'},{z:'heute',tr:'',na:'hoy'},
+       {z:'nicht',tr:'',na:'no'},{z:'mitkommen',tr:'',na:'acompañar'}]},
+  grammatik:{frage:'¿Por qué darf es sein?',
+    regel:'Eine feste Wendung im Laden. Wort für Wort ergibt sie keinen Sinn — man lernt sie als Ganzes.',
+    b:{z:'Was darf es sein?', tr:'', na:'¿Qué desea?'}},
+  ausdruck:{frage:'¿Cómo se pide la cuenta?', z:'Zahlen, bitte.', tr:'', na:'La cuenta, por favor.',
+    wann:'Kurz und üblich. Höflicher: „Ich möchte zahlen, bitte."'}
+ }
+};
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+
+function sprich(txt,btn){
+  letzterAudio = txt;
+  if (S.pruef) malPruef();
+  try{
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(txt);
+    u.lang=STIMME[S.lang]; u.rate=.92;
+    if(btn){btn.classList.add('spricht');
+      u.onend=function(){btn.classList.remove('spricht');};
+      u.onerror=function(){btn.classList.remove('spricht');};}
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* Der EINZIGE Weg zu einem Audio-Knopf. Nimmt nur ein z-Feld entgegen. */
+function aud(zText,mini){
+  var b=el('button','audio'+(mini?' mini':''),'🔊');
+  b.type='button'; b.dataset.at=zText;
+  b.onclick=function(){sprich(zText,b);};
+  return b;
+}
+
+function rahmen(braue){
+  var k=el('div','karte');
+  var kf=el('div','kopfz'); kf.appendChild(el('div','brauen',braue)); k.appendChild(kf);
+  var l=el('div','leib'); k.appendChild(l);
+  return {k:k,l:l};
+}
+
+/* Vorderseite: immer C — knapp, mittig, ein Lautsprecher. */
+function vorne(braue,d,fussText){
+  var F=rahmen(braue), l=F.l; l.classList.add('mitte');
+  l.appendChild(el('p','ziel',d.z));
+  if(d.tr) l.appendChild(el('p','umschrift',d.tr));
+  l.appendChild(aud(d.z));
+  l.appendChild(el('p','nativ',d.na));
+  if(fussText){ l.appendChild(el('hr','trenner')); l.appendChild(el('p','nativ klein',fussText)); }
+  return F.k;
+}
+
+function karteGrammatik(d){
+  var F=rahmen('Warum das so ist'), l=F.l;
+  l.appendChild(el('p','regel',d.regel));
+  l.appendChild(el('hr','trenner'));
+  var kasten=el('div','kasten'), z=el('div','zeile'), sp=el('div','spalte');
+  sp.appendChild(el('p','ziel',d.b.z));
+  if(d.b.tr) sp.appendChild(el('p','umschrift',d.b.tr));
+  z.appendChild(sp); z.appendChild(aud(d.b.z,true));
+  kasten.appendChild(z); kasten.appendChild(el('p','nativ klein',d.b.na));
+  l.appendChild(kasten);
+  return F.k;
+}
+
+/* Rückseite nur bei Satz: die Glieder, Zeile für Zeile, jedes einsprachig. */
+function karteGlieder(d){
+  var F=rahmen('Stück für Stück'), l=F.l;
+  l.style.justifyContent='center';
+  d.g.forEach(function(s){
+    var r=el('div','stueck');
+    r.appendChild(aud(s.z,true));
+    var sp=el('div','spalte');
+    sp.appendChild(el('span','st-ziel',s.z));
+    if(s.tr) sp.appendChild(el('span','st-um',s.tr));
+    r.appendChild(sp);
+    r.appendChild(el('span','st-nativ',s.na));
+    l.appendChild(r);
+  });
+  return F.k;
+}
+
+function passeEin(k){
+  var l=k.querySelector('.leib'); if(!l) return 1;
+  k.style.setProperty('--scale','1');
+  if(l.scrollHeight<=l.clientHeight+1) return 1;
+  var lo=.45,hi=1,i,m;
+  for(i=0;i<10;i++){m=(lo+hi)/2;k.style.setProperty('--scale',m.toFixed(3));
+    if(l.scrollHeight<=l.clientHeight+1) lo=m; else hi=m;}
+  k.style.setProperty('--scale',lo.toFixed(3));
+  return lo;
+}
+function badge(k){
+  var s=passeEin(k), b=el('div','skala','Skala '+s.toFixed(2));
+  if(s<.70) b.style.background='#a01818';
+  k.appendChild(b);
+}
+
+function daten(){
+  var d=D[S.lang];
+  if(S.typ==='satz' && S.lang5) return d.satz5;
+  return d[S.typ];
+}
+
+function mal(){
+  var b=document.getElementById('buehne'); b.innerHTML='';
+  var d=D[S.lang], kd=daten();
+
+  if(zurueck){
+    var s2=el('div','szene');
+    s2.appendChild(el('div','rolle',d.szene.rolle+' · weiter'));
+    var z2=el('div','zeile'), p2=el('div','spalte');
+    p2.appendChild(el('p','ziel',d.szene.z));
+    if(d.szene.tr) p2.appendChild(el('p','umschrift',d.szene.tr));
+    z2.appendChild(p2); z2.appendChild(aud(d.szene.z,true));
+    s2.appendChild(z2); s2.appendChild(el('p','nativ klein',d.szene.na));
+    b.appendChild(s2);
+    b.appendChild(el('div','hinweis','Die Szene läuft weiter, wo sie stand. Die Karte bleibt nicht im Verlauf.'));
+    var nk=el('button','knopf geist','Noch einmal'); nk.type='button';
+    nk.onclick=function(){zurueck=false;folie=0;mal();};
+    b.appendChild(nk);
+    malPruef(); return;
+  }
+
+  if(S.ablauf){
+    var sz=el('div','szene');
+    sz.appendChild(el('div','rolle',d.szene.rolle));
+    var zl=el('div','zeile'), sp=el('div','spalte');
+    sp.appendChild(el('p','ziel',d.szene.z));
+    if(d.szene.tr) sp.appendChild(el('p','umschrift',d.szene.tr));
+    zl.appendChild(sp); zl.appendChild(aud(d.szene.z,true));
+    sz.appendChild(zl); sz.appendChild(el('p','nativ klein',d.szene.na));
+    b.appendChild(sz);
+    var lz=el('div','lernerZug');
+    lz.appendChild(el('small',null,'Der Lerner fragt'));
+    lz.appendChild(document.createTextNode(kd.frage));
+    b.appendChild(lz);
+  }
+
+  var hatZwei = (S.typ==='satz');
+  var karten = [];
+  if(S.typ==='wort')            karten=[vorne('Wort',kd)];
+  else if(S.typ==='satz')       karten=[vorne('Satz',kd), karteGlieder(kd)];
+  else if(S.typ==='grammatik')  karten=[karteGrammatik(kd)];
+  else                          karten=[vorne('So sagt man das',kd,kd.wann)];
+
+  var gleis=el('div','gleis'), band=el('div','band');
+  karten.forEach(function(k){var f=el('div','folie');f.appendChild(k);band.appendChild(f);});
+  gleis.appendChild(band); b.appendChild(gleis);
+
+  if(hatZwei){
+    b.appendChild(el('div','wischhint', folie===0 ? 'Stück für Stück →' : '← zurück'));
+    var pk=el('div','punkte');
+    karten.forEach(function(_,i){var p=el('div','punkt'+(i===folie?' an':''));pk.appendChild(p);});
+    b.appendChild(pk);
+    wisch(gleis,band,karten.length);
+  }
+  band.style.transform='translateX('+(-folie*100)+'%)';
+
+  if(S.ablauf){
+    var wb=el('button','knopf','Zurück ins Gespräch'); wb.type='button';
+    wb.onclick=function(){zurueck=true;mal();};
+    b.appendChild(wb);
+  }
+
+  karten.forEach(badge);
+  malPruef();
+}
+
+function wisch(gleis,band,n){
+  var x0=null,dx=0;
+  gleis.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;dx=0;},{passive:true});
+  gleis.addEventListener('touchmove',function(e){
+    if(x0===null)return; dx=e.touches[0].clientX-x0;
+    band.style.transition='none';
+    band.style.transform='translateX(calc('+(-folie*100)+'% + '+dx+'px))';
+  },{passive:true});
+  gleis.addEventListener('touchend',function(){
+    band.style.transition='';
+    if(dx<-45 && folie<n-1) folie++;
+    else if(dx>45 && folie>0) folie--;
+    x0=null; mal();
+  });
+}
+
+function malPruef(){
+  var alt=document.querySelector('.pruef'); if(alt) alt.remove();
+  if(!S.pruef) return;
+  var b=document.getElementById('buehne');
+  var kn=b.querySelectorAll('[data-at]');
+  var box=el('div','pruef');
+  box.appendChild(el('b',null,'Audio-Prüfung · was an Piper ginge'));
+  var lat=/[a-zA-ZäöüÄÖÜß]/, warn=0;
+  for(var i=0;i<kn.length;i++){
+    var t=kn[i].dataset.at, r=el('div');
+    r.appendChild(document.createTextNode((i+1)+'. '));
+    r.appendChild(el('code',null,t));
+    if(S.lang==='el' && lat.test(t)){ r.appendChild(el('span','warnung','  ← MISCHUNG!')); warn++; }
+    box.appendChild(r);
+  }
+  if(!kn.length) box.appendChild(el('div',null,'(kein Audio auf dieser Folie)'));
+  else if(S.lang==='el') box.appendChild(el('div',null, warn ? '⚠ '+warn+' gemischt.' : '✓ alle rein griechisch.'));
+  else box.appendChild(el('div',null,'✓ '+kn.length+' Knopf/Knöpfe, je eine reine Zielsprach-Zeile.'));
+  if(letzterAudio){
+    var lz=el('div'); lz.style.marginTop='.35rem';
+    lz.appendChild(el('b',null,'Zuletzt gesprochen'));
+    lz.appendChild(el('code',null,letzterAudio));
+    box.appendChild(lz);
+  }
+  b.appendChild(box);
+}
+
+function schalter(){
+  document.querySelectorAll('[data-g]').forEach(function(x){
+    var g=x.dataset.g,v=x.dataset.v;
+    x.setAttribute('aria-pressed',
+      ((g==='lang'&&S.lang===v)||(g==='typ'&&S.typ===v))?'true':'false');
+  });
+  document.getElementById('tLang').setAttribute('aria-pressed',S.lang5?'true':'false');
+  document.getElementById('tPruef').setAttribute('aria-pressed',S.pruef?'true':'false');
+  document.getElementById('tAblauf').setAttribute('aria-pressed',S.ablauf?'true':'false');
+}
+document.querySelectorAll('[data-g]').forEach(function(x){
+  x.onclick=function(){
+    if(x.dataset.g==='lang') S.lang=x.dataset.v; else S.typ=x.dataset.v;
+    folie=0; zurueck=false; letzterAudio=null; schalter(); mal();
+  };
+});
+document.getElementById('tLang').onclick=function(){S.lang5=!S.lang5;folie=0;schalter();mal();};
+document.getElementById('tPruef').onclick=function(){S.pruef=!S.pruef;schalter();mal();};
+document.getElementById('tAblauf').onclick=function(){S.ablauf=!S.ablauf;zurueck=false;schalter();mal();};
+
+window.addEventListener('resize',mal);
+if(document.fonts) document.fonts.ready.then(mal);
+schalter(); mal();
+</script>
+</body>
+</html>
