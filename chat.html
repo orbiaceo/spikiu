@@ -297,6 +297,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-speak svg { width:18px; height:18px; }
 .reel-trans { font-family:'DM Sans',sans-serif; font-style:italic; font-size:0.95rem; line-height:1.5; color:var(--mid); max-width:20rem; }
 .reel-hint { position:absolute; left:0; right:0; bottom:1.4rem; font-size:0.8rem; color:var(--warm); font-weight:500; animation:reelBob 1.8s ease-in-out infinite; }
+/* Vertipper-Schutz (18.08.2026, Kind-Test): sieht ein Zug nach Versehen aus,
+   geht KEIN Aufruf raus. Der Text bleibt stehen, das Feld färbt sich, ein
+   zweiter Druck auf Senden schickt es doch — der Nutzer hat das letzte Wort. */
+.reel-learner-field textarea.gewarnt { border-color:#c67a1e; background:#fffbe8; }
+.reel-warn { font:700 0.82rem 'DM Sans',sans-serif; color:#a0630a; text-align:center; margin-top:0.45rem; line-height:1.4; }
+.reel-korr { align-self:center; margin-top:0.7rem; background:var(--accent); color:var(--white); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.6rem 1.25rem; font:800 0.9rem 'DM Sans',sans-serif; cursor:pointer; }
+.reel-korr:active { transform:translateY(2px); box-shadow:0 0 0 var(--ink); }
 @keyframes reelBob { 0%,100%{ transform:translateX(0); opacity:0.7; } 50%{ transform:translateX(-5px); opacity:1; } }
 .reel-userbubble { background:var(--you); color:var(--youtx); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; padding:0.8rem 1.1rem; font:800 clamp(1.2rem,5vw,1.65rem)/1.3 'DM Sans',sans-serif; max-width:86%; }
 /* Zug ändern (18.08.2026): ein zu früh gesendeter Zug lässt sich korrigieren.
@@ -1136,6 +1143,16 @@ function appendSpikiuSlide(ziel, trans){
     + '<div class="reel-hint">' + escPlain(reelUI().swipe) + '</div>';
   var sb = slide.querySelector('.speak-btn');
   if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(ziel), 'playing'); };
+  // War der letzte Lerner-Zug ein mutmaßlicher Vertipper, bekommt Spikius
+  // Antwort einen direkten Weg zurück. Ohne ihn müsste der Nutzer erst
+  // begreifen, dass er zurückwischen kann (Beobachtung 18.08.2026).
+  if (reelSendVerdaechtig){
+    reelSendVerdaechtig = false;
+    var kb = document.createElement('button');
+    kb.type = 'button'; kb.className = 'reel-korr'; kb.textContent = warnUI().korr;
+    kb.onclick = reelKorrigieren;
+    slide.querySelector('.reel-body').appendChild(kb);
+  }
   reel.appendChild(slide);
 }
 // UI-Texte fürs Ändern eines Zugs.
@@ -1250,17 +1267,78 @@ function renderLearnerSlide(first){
   if (ta) ta.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); reelSend(); } });
   var eb = slide.querySelector('#reelEndBtn'); if (eb) eb.onclick = reelEnd;
 }
+// ── Vertipper-Filter ───────────────────────────────────────────────────
+// Bewusst ENG: darf einen echten kurzen Zug nie blockieren. „Sí", „hola",
+// „Un café" müssen durch — „Gor", „asdf", „xkcd" nicht.
+var ECHTE_KURZE = { si:1,'sí':1,no:1,ja:1,yes:1,ok:1,hola:1,pan:1,'café':1,cafe:1,
+  agua:1,uno:1,dos:1,tres:1,gut:1,und:1,der:1,die:1,das:1,ich:1,du:1,er:1,sie:1,
+  soy:1,'té':1,te:1,con:1,sin:1,mas:1,'más':1,por:1,que:1,'qué':1,wie:1,wo:1,wer:1,
+  was:1,hi:1,hey:1,bye:1,gern:1,bitte:1,dank:1,nein:1,doch:1,also:1,noch:1,nur:1,
+  ναι:1,'όχι':1,'γεια':1 };
+var WARN_UI = {
+  de:{ warn:'Sieht nach einem Vertipper aus. Nochmal senden schickt es trotzdem.', korr:'← Zug korrigieren' },
+  es:{ warn:'Parece un error de tecleo. Pulsa enviar otra vez para mandarlo igual.', korr:'← Corregir mi mensaje' },
+  en:{ warn:'Looks like a typo. Press send again to send it anyway.', korr:'← Fix my message' }
+};
+function warnUI(){ return WARN_UI[uiLang()] || WARN_UI.de; }
+
+function vertipper(s){
+  var t = (s || '').trim();
+  if (t.length < 2) return 'kurz';
+  if (t.indexOf(' ') === -1){
+    if (!/[aeiouáéíóúäöüàèìòùαεηιουω]/i.test(t)) return 'vokallos';
+    if (/^(.)\1+$/i.test(t)) return 'wiederholung';
+    if (/^[a-zäöüß]{2,4}$/i.test(t) && !ECHTE_KURZE[t.toLowerCase()]) return 'unbekannt';
+  }
+  if (/(.)\1{3,}/.test(t)) return 'salat';
+  return null;
+}
+
 function reelSend(){
   if (busy || guiding) return;
   var ta = document.getElementById('reelInput'); if (!ta) return;
   var text = ta.value.trim();
-  // Stiller Enter-Schutz (Kind-Test 18.08.2026): ein einzelnes Zeichen ist fast
-  // immer ein zu früh gedrücktes Enter. Es geht nichts raus — kein Dialog, keine
-  // Nachfrage, der Text bleibt stehen. Wer wirklich ein Zeichen senden will,
-  // benutzt den Knopf … auch nicht, aber das kostet niemanden etwas.
+  // Stiller Enter-Schutz: ein einzelnes Zeichen ist fast immer ein zu früh
+  // gedrücktes Enter. Es geht nichts raus — kein Dialog, der Text bleibt stehen.
   if (text.length < 2) return;
-  ta.value = '';
+
+  // Vertipper-Filter: erster Versuch warnt nur, KEIN Aufruf. Zweiter Druck
+  // auf denselben Text schickt es doch.
+  if (vertipper(text) && ta.dataset.zweit !== text){
+    ta.dataset.zweit = text;
+    ta.classList.add('gewarnt');
+    reelWarnZeigen(warnUI().warn);
+    return;
+  }
+  ta.value = ''; ta.dataset.zweit = '';
+  ta.classList.remove('gewarnt');
+  reelWarnWeg();
+  reelSendVerdaechtig = !!vertipper(text);   // für den Korrektur-Knopf
   sendUserTurn(text);          // MOTOR unverändert (addMessage('user') routet hierher)
+}
+var reelSendVerdaechtig = false;
+
+function reelWarnZeigen(txt){
+  var slide = document.getElementById('reelLearner'); if (!slide) return;
+  reelWarnWeg();
+  var w = document.createElement('div'); w.className = 'reel-warn'; w.textContent = txt;
+  slide.appendChild(w); fitSlide(slide);
+}
+function reelWarnWeg(){
+  var w = document.querySelector('.reel-warn'); if (w) w.remove();
+}
+
+// Vom Antwort-Slide direkt zurück auf die eigene Blase, Textfeld sofort offen.
+// Der Nutzer soll nicht erst suchen lernen müssen, wo sein Zug lag.
+function reelKorrigieren(){
+  var alle = reelSlides();
+  for (var k = alle.length - 1; k >= 0; k--){
+    if (alle[k].classList.contains('reel-user')){
+      reelGoTo(k);
+      reelEditStart(alle[k]);
+      return;
+    }
+  }
 }
 function reelEnd(){
   if (gefuehrt){ terminar(); return; }   // geführtes Sprechen: regulärer Abschluss (setStage Lektion + exitReel + Angebot)
