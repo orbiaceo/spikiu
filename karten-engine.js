@@ -40,7 +40,12 @@
     + 'align-items:center;justify-content:center;gap:1rem;padding:1.4rem 1.3rem;text-align:center}'
     + '.spk-eyebrow{flex:0 0 auto;display:flex;align-items:center;gap:.4rem;justify-content:center;'
     + 'font:800 .68rem "DM Sans",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--ink,#15163a);opacity:.62}'
-    + '.spk-audio{width:56px;height:56px;flex:0 0 56px;border-radius:50%;border:var(--ow,2.5px) solid var(--ink,#15163a);'
+    /* Der Knopf muss in JEDEM Flex-Kontext ein Kreis bleiben. Ohne box-sizing
+       und Unter-/Obergrenzen wurde er breitgezogen und border-radius:50%
+       machte daraus ein Ei (gesehen 18.08.2026 in gefuehrt.html). */
+    + '.spk-audio{box-sizing:border-box;width:56px;height:56px;min-width:56px;max-width:56px;'
+    + 'min-height:56px;max-height:56px;aspect-ratio:1;flex:0 0 auto;padding:0;'
+    + 'border-radius:50%;border:var(--ow,2.5px) solid var(--ink,#15163a);'
     + 'background:var(--acc,#1f93b0);color:#fff;box-shadow:4px 4px 0 var(--ink,#15163a);'
     + 'display:flex;align-items:center;justify-content:center;cursor:pointer;align-self:center}'
     + '.spk-audio svg{width:22px;height:22px;flex:0 0 auto}'
@@ -54,7 +59,10 @@
     + '.spk-opt{font-family:"DM Sans",sans-serif;font-weight:700;font-size:calc(1.12rem*var(--scale));line-height:1.3;'
     + 'color:var(--ink,#15163a);background:#fff;border:2px solid var(--ink,#15163a);border-radius:16px;'
     + 'padding:.7rem .95rem;text-align:center;cursor:pointer}'
-    + '.spk-opts.chips .spk-opt{border-radius:100px;padding:.55rem 1rem}'
+    /* Chips brauchen eine Mindestbreite, sonst wirken Ein-Wort-Optionen gestaucht. */
+    + '.spk-opts.chips{gap:.5rem}'
+    + '.spk-opts.chips .spk-opt{border-radius:100px;padding:.7rem 1.35rem;min-width:6rem;text-align:center}'
+    + '.spk-opts.chips .spk-opt.ziel{font-size:calc(1.24rem*var(--scale))}'
     + '.spk-opt.ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(1.5rem*var(--scale))}'
     + '.spk-opt.picked{outline:3px solid var(--ink,#15163a)}'
     + '.spk-opt.correct{background:#e8f5ee;border-color:var(--acc,#1f93b0);color:var(--acc,#1f93b0)}'
@@ -67,9 +75,14 @@
     + 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem}'
     + '.spk-face.back{transform:rotateY(180deg)}'
     + '.spk-hint{font:700 .8rem "DM Sans",sans-serif;color:var(--muted,#5f7068);opacity:.75}'
-    + '.spk-foot{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:.55rem;'
-    + 'padding:.5rem 1.2rem .95rem;border-top:2px solid #eef1ee}'
-    + '.spk-feedback{font:800 .95rem "DM Sans",sans-serif;min-height:0}'
+    /* Der Fuss reserviert den Platz fuer die Rueckmeldung von Anfang an.
+       Vorher hatte .spk-feedback min-height:0, wuchs erst beim Pruefen und
+       der Weiter-Knopf legte sich ueber das Wort „Richtig!". */
+    + '.spk-foot{position:relative;z-index:2;background:#fff;flex:0 0 auto;display:flex;'
+    + 'flex-direction:column;align-items:center;gap:.6rem;'
+    + 'padding:.6rem 1.2rem 1rem;border-top:2px solid #eef1ee}'
+    + '.spk-feedback{font:800 .95rem/1.35 "DM Sans",sans-serif;min-height:1.35rem;'
+    + 'display:flex;align-items:center;justify-content:center;text-align:center}'
     + '.spk-feedback.ok{color:var(--acc,#1f93b0)}'
     + '.spk-feedback.no{color:var(--ink,#15163a);background:#ffd24a;border:2px solid var(--ink,#15163a);'
     + 'border-radius:999px;padding:.4rem .95rem;box-shadow:2px 2px 0 var(--ink,#15163a);display:inline-block}'
