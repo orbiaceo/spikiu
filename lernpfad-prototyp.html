@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Lernpfad-Baum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--mint:#e8f2ea;--tief:#1b4f72;--ow:2.5px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--mint);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+body{min-height:100dvh;display:flex;flex-direction:column}
+
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.5rem .7rem;position:sticky;top:0;z-index:40}
+.pult h1{margin:0 0 .4rem;font:800 .76rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5}
+.reihe{display:flex;gap:.28rem;flex-wrap:wrap}
+.tog{font:800 .72rem "DM Sans",sans-serif;padding:.3rem .55rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+.buehne{flex:1;padding:.9rem .8rem 2rem;display:flex;flex-direction:column;
+  align-items:center;gap:.75rem}
+.spalte{width:100%;max-width:460px;display:flex;flex-direction:column;gap:.7rem}
+
+.stufe{font:800 .7rem "DM Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:.4rem 0 -.1rem;display:flex;align-items:center;gap:.5rem}
+.stufe::after{content:'';flex:1;height:2px;background:var(--ink);opacity:.12}
+
+.gitter{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.st{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;
+  box-shadow:4px 4px 0 var(--ink);padding:.65rem .7rem;text-align:left;cursor:pointer;
+  display:flex;flex-direction:column;gap:.25rem;position:relative;min-height:88px}
+.st:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.st .em{font-size:1.35rem;line-height:1}
+.st .tt{font:800 .88rem "DM Sans",sans-serif;line-height:1.2}
+.st .zz{font:600 .72rem "DM Sans",sans-serif;color:var(--muted)}
+.st.zu{opacity:.42}
+.st.jetzt{border-color:var(--acc);box-shadow:4px 4px 0 var(--acc)}
+.ring{position:absolute;top:.5rem;right:.5rem;width:15px;height:15px;border-radius:50%;
+  border:2.5px solid var(--ink);background:#fff}
+.ring.halb{background:linear-gradient(90deg,var(--tief) 50%,#fff 50%)}
+.ring.voll{background:var(--tief)}
+
+.legende{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;
+  font:600 .72rem "DM Sans",sans-serif;color:var(--muted);padding:.2rem 0 .1rem}
+.legende span{display:flex;align-items:center;gap:.3rem}
+.lr{width:13px;height:13px;border-radius:50%;border:2.5px solid var(--ink);background:#fff}
+.lr.halb{background:linear-gradient(90deg,var(--tief) 50%,#fff 50%)}
+.lr.voll{background:var(--tief)}
+
+/* Station-Detail */
+.blatt{background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;
+  box-shadow:5px 6px 0 var(--ink);padding:.95rem 1rem;display:flex;flex-direction:column;gap:.7rem}
+.blatt h2{margin:0;font:800 1.25rem "DM Sans",sans-serif;display:flex;align-items:center;gap:.5rem}
+.braue{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--muted)}
+.teil{border:2px solid #e6ece8;border-radius:14px;padding:.6rem .7rem;background:#f8fbf9}
+.teil h3{margin:0 0 .4rem;font:800 .68rem "DM Sans",sans-serif;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--acc)}
+.wz{display:flex;justify-content:space-between;gap:.6rem;padding:.24rem 0;
+  border-bottom:1px solid #e9efeb;font-size:.9rem}
+.wz:last-child{border-bottom:0}
+.wz b{font-family:"Lora",serif;font-weight:600;font-size:1.02rem}
+.wz span{color:var(--muted);text-align:right}
+.dlg{display:flex;flex-direction:column;gap:.35rem}
+.dlg .zeile{font-size:.9rem;line-height:1.35}
+.dlg .wer{font:800 .64rem "DM Sans",sans-serif;text-transform:uppercase;
+  letter-spacing:.04em;color:var(--muted)}
+.dlg em{font-style:italic;color:var(--muted);font-size:.82rem;display:block}
+.txt{font-family:"Lora",serif;font-size:1rem;line-height:1.5}
+.frage{font-weight:700;font-size:.9rem;margin-top:.45rem}
+.opt{font-size:.86rem;padding:.16rem 0;color:var(--muted)}
+.opt.r{color:#2d6a4f;font-weight:700}
+.zurueck{align-self:flex-start;background:#fff;border:2px solid var(--ink);border-radius:100px;
+  padding:.4rem .9rem;font:800 .8rem "DM Sans",sans-serif;cursor:pointer}
+
+pre{background:#15163a;color:#dfe7ff;border-radius:14px;padding:.7rem .8rem;overflow-x:auto;
+  font:500 .7rem/1.5 ui-monospace,monospace;margin:0}
+.hinweis{font:600 .76rem "DM Sans",sans-serif;color:var(--muted);line-height:1.5;text-align:center}
+.zahl{font:800 .74rem "DM Sans",sans-serif;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Lernpfad · Baum &amp; Schema</h1>
+  <div class="reihe">
+    <button class="tog" data-a="baum" aria-pressed="true">Baum</button>
+    <button class="tog" data-a="schema">Schema</button>
+    <button class="tog" id="tSim">Fortschritt simulieren</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LERNPFAD — Entwurf
+   Der BAUM ist fest und für alle gleich (statische Datei, null Token).
+   Persoenlich ist nur der WEG hindurch: Einstieg, Reihenfolge, Status.
+
+   Struktur:  zielsprache → stufe → thema  =  eine Station
+   Themen-IDs sind die aus szenen.js, damit haeppchen-db.js und
+   gefuehrt.html unveraendert weiterlaufen.
+
+   STATUS je Station (Entscheid 18.08.):
+     offen         — noch nicht betreten
+     durchschritten— einmal beruehrt (oeffnet die naechste Station)
+     gesetzt       — die Woerter kamen im Gym wieder und wurden erkannt
+   Kein Tor, ein Sog: blockiert wird nie, aber der Baum zeigt, was offen ist.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var L = window.SpikiuLernpfad;
+var THEMEN = L.themen.map(function(t){ return { id:t.id, em:t.em, de:t.na.de }; });
+var STUFEN = L.stufen;
+var SCHRITT = {};
+Object.keys(L.schritt).forEach(function(k){
+  SCHRITT[k] = { a1: L.schritt[k].a1.de, a2: L.schritt[k].a2.de };
+});
+
+/* Simulierter Fortschritt, damit die drei Zustaende sichtbar werden. */
+var FORTSCHRITT = {};
+var simAn = false;
+function status(stufe, thema){
+  if (!simAn) return stufe === 'a1' && thema === 'cafe' ? 'jetzt' : 'offen';
+  return FORTSCHRITT[stufe + '.' + thema] || 'offen';
+}
+function simSetzen(){
+  FORTSCHRITT = {
+    'a1.cafe':'gesetzt', 'a1.restaurant':'gesetzt', 'a1.einkaufen':'durchschritten',
+    'a1.wegbeschreibung':'durchschritten', 'a1.taxi':'jetzt'
+  };
+}
+
+var ansicht = 'baum', offeneStation = null;
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+
+function mal(){
+  var b = document.getElementById('buehne'); b.innerHTML = '';
+  var sp = el('div','spalte');
+
+  if (ansicht === 'schema'){ schemaAnsicht(sp); b.appendChild(sp); return; }
+  if (offeneStation){ stationAnsicht(sp, offeneStation); b.appendChild(sp); return; }
+
+  var lg = el('div','legende');
+  [['','offen'],['halb','durchschritten'],['voll','gesetzt']].forEach(function(p){
+    var s = el('span'); s.appendChild(el('i','lr ' + p[0]));
+    s.appendChild(document.createTextNode(p[1])); lg.appendChild(s);
+  });
+  sp.appendChild(lg);
+
+  STUFEN.forEach(function(stufe){
+    sp.appendChild(el('div','stufe', stufe.toUpperCase()));
+    var g = el('div','gitter');
+    THEMEN.forEach(function(t){
+      var s = status(stufe, t.id);
+      var zu = !L.gefuellt(stufe, t.id);
+      var k = el('button','st' + (s === 'jetzt' ? ' jetzt' : '') + (zu ? ' zu' : ''));
+      k.type = 'button';
+      k.appendChild(el('div','em', t.em));
+      k.appendChild(el('div','tt', t.de));
+      k.appendChild(el('div','zz', SCHRITT[t.id][stufe]));
+      var r = el('div','ring' + (s === 'durchschritten' ? ' halb' : s === 'gesetzt' ? ' voll' : ''));
+      k.appendChild(r);
+      k.onclick = function(){ offeneStation = { stufe:stufe, thema:t }; mal(); };
+      g.appendChild(k);
+    });
+    sp.appendChild(g);
+  });
+
+  sp.appendChild(el('div','zahl', THEMEN.length * STUFEN.length + ' Stationen · Spanisch · A1–A2'));
+  sp.appendChild(el('div','hinweis',
+    'A1 ist vollständig gefüllt (10 Stationen, 120 Wörter). A2 folgt.'));
+  b.appendChild(sp);
+}
+
+function stationAnsicht(sp, st){
+  var zu = el('button','zurueck','← Baum'); zu.type='button';
+  zu.onclick = function(){ offeneStation = null; mal(); };
+  sp.appendChild(zu);
+
+  var bl = el('div','blatt');
+  bl.appendChild(el('div','braue', 'es · ' + st.stufe.toUpperCase() + ' · ' + st.thema.id));
+  var h = el('h2'); h.appendChild(el('span',null,st.thema.em));
+  h.appendChild(document.createTextNode(st.thema.de)); bl.appendChild(h);
+  bl.appendChild(el('div','braue', SCHRITT[st.thema.id][st.stufe]));
+
+  var B = L.station(st.stufe, st.thema.id);
+  if (!B){
+    var leer = el('div','teil');
+    leer.appendChild(el('h3',null,'Noch leer'));
+    leer.appendChild(el('div',null,
+      'Diese Station hat denselben Bauplan wie „Im Café · A1": 12 Wörter, ein Dialog, ein Lesetext mit Frage, eine Schreibaufgabe, eine Grammatik-Notiz. Der Inhalt wird einmal erzeugt, geprüft und fest abgelegt.'));
+    bl.appendChild(leer); sp.appendChild(bl); return;
+  }
+
+  var w = el('div','teil'); w.appendChild(el('h3',null,'Wortschatz · ' + B.wortschatz.length));
+  B.wortschatz.forEach(function(x){
+    var r = el('div','wz'); r.appendChild(el('b',null,x.z));
+    r.appendChild(el('span',null,x.na.de)); w.appendChild(r);
+  });
+  bl.appendChild(w);
+
+  var d = el('div','teil'); d.appendChild(el('h3',null,'Geführter Dialog'));
+  var dd = el('div','dlg');
+  B.dialog.zeilen.forEach(function(z){
+    var r = el('div','zeile');
+    r.appendChild(el('div','wer', z.wer === 'spikiu' ? B.dialog.rolle.de : 'Du'));
+    r.appendChild(document.createTextNode(z.z));
+    r.appendChild(el('em',null,z.na.de));
+    dd.appendChild(r);
+  });
+  d.appendChild(dd); bl.appendChild(d);
+
+  var l = el('div','teil'); l.appendChild(el('h3',null,'Lesetext'));
+  l.appendChild(el('div','txt', B.lesetext.z));
+  l.appendChild(el('div','frage', B.lesetext.frage.de));
+  B.lesetext.optionen.forEach(function(o){
+    l.appendChild(el('div','opt' + (o.richtig ? ' r' : ''), (o.richtig ? '● ' : '○ ') + o.na.de));
+  });
+  bl.appendChild(l);
+
+  var s = el('div','teil'); s.appendChild(el('h3',null,'Schreibaufgabe'));
+  s.appendChild(el('div',null,B.schreibaufgabe.auftrag.de));
+  s.appendChild(el('div','txt', B.schreibaufgabe.muster));
+  bl.appendChild(s);
+
+  var g = el('div','teil'); g.appendChild(el('h3',null,B.grammatik.titel.de));
+  g.appendChild(el('div',null,B.grammatik.text.de));
+  B.grammatik.beispiele.forEach(function(x){
+    var r = el('div','wz'); r.appendChild(el('b',null,x.z));
+    r.appendChild(el('span',null,x.na.de)); g.appendChild(r);
+  });
+  bl.appendChild(g);
+
+  sp.appendChild(bl);
+}
+
+function schemaAnsicht(sp){
+  sp.appendChild(el('div','hinweis',
+    'Eine Station als Daten. Sprachneutrale Schlüssel: z = Zielsprache, na = Muttersprachen. ' +
+    'Ein spanischer Inhalt bedient den deutschen UND den englischen Lerner.'));
+  var pre = document.createElement('pre');
+  pre.textContent = JSON.stringify(L.station('a1','cafe'), null, 2);
+  sp.appendChild(pre);
+  sp.appendChild(el('div','hinweis',
+    'Der Fortschritt liegt getrennt davon — der Baum ist für alle gleich, nur der Weg ist persönlich:'));
+  var p2 = document.createElement('pre');
+  p2.textContent = JSON.stringify({
+    spikiu_pfad: {
+      zielsprache: 'es',
+      stufe: 'a1',
+      stationen: {
+        'a1.cafe':       { status:'gesetzt',        beruehrt:'2026-08-12', woerterGesetzt:12 },
+        'a1.restaurant': { status:'durchschritten', beruehrt:'2026-08-17', woerterGesetzt:4  },
+        'a1.taxi':       { status:'offen' }
+      }
+    }
+  }, null, 2);
+  sp.appendChild(p2);
+}
+
+document.querySelectorAll('[data-a]').forEach(function(b){
+  b.onclick = function(){
+    ansicht = b.dataset.a; offeneStation = null;
+    document.querySelectorAll('[data-a]').forEach(function(x){
+      x.setAttribute('aria-pressed', x.dataset.a === ansicht ? 'true' : 'false');
+    });
+    mal();
+  };
+});
+document.getElementById('tSim').onclick = function(){
+  simAn = !simAn; if (simAn) simSetzen();
+  this.setAttribute('aria-pressed', simAn ? 'true' : 'false');
+  ansicht = 'baum'; offeneStation = null;
+  document.querySelectorAll('[data-a]').forEach(function(x){
+    x.setAttribute('aria-pressed', x.dataset.a === 'baum' ? 'true' : 'false');
+  });
+  mal();
+};
+
+mal();
+</script>
+</body>
+</html>
