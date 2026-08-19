@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Führung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--mint:#e8f2ea;--tief:#1b4f72;--ow:2.5px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--mint);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+body{min-height:100dvh;display:flex;flex-direction:column}
+
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.5rem .7rem;position:sticky;top:0;z-index:40}
+.pult h1{margin:0 0 .4rem;font:800 .74rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5}
+.reihe{display:flex;gap:.28rem;flex-wrap:wrap;align-items:center}
+.tog{font:800 .72rem "DM Sans",sans-serif;padding:.3rem .55rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+.buehne{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:.85rem .8rem 1.2rem;gap:.55rem;min-height:0}
+.folie{width:100%;max-width:430px;background:#fff;border:var(--ow) solid var(--ink);
+  border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem 1.05rem;
+  display:flex;flex-direction:column;gap:.6rem;min-height:min(62dvh,530px);justify-content:center}
+.capy{font-size:2rem;line-height:1;align-self:flex-start}
+.gruss{font-family:"Lora",serif;font-weight:600;font-size:1.75rem;line-height:1.25;margin:0}
+.frage{font-weight:700;font-size:1.05rem;color:var(--muted);margin:0}
+.marke{font:800 .64rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.ziel{font-family:"Lora",serif;font-weight:600;font-size:1.5rem;line-height:1.28;margin:0}
+.trans{font-weight:600;font-style:italic;font-size:.94rem;color:var(--muted);margin:0}
+
+.chips{display:flex;flex-direction:column;gap:.4rem;margin-top:.2rem}
+.chip{display:flex;align-items:center;gap:.6rem;text-align:left;background:#fff;
+  border:2.5px solid var(--ink);border-radius:14px;padding:.55rem .7rem;cursor:pointer;
+  box-shadow:3px 3px 0 var(--ink);font:800 .95rem "DM Sans",sans-serif}
+.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.chip .em{font-size:1.2rem}
+.chip .sub{display:block;font:600 .74rem "DM Sans",sans-serif;color:var(--muted);margin-top:.1rem}
+.chip .ring{width:13px;height:13px;border-radius:50%;border:2.5px solid var(--ink);
+  background:#fff;margin-left:auto;flex:0 0 13px}
+.chip .ring.halb{background:linear-gradient(90deg,var(--tief) 50%,#fff 50%)}
+.chip .ring.voll{background:var(--tief)}
+.chip.leise{border-color:#c9d4cd;box-shadow:3px 3px 0 #c9d4cd;font-weight:700;color:var(--muted)}
+
+.knopf{align-self:stretch;font:800 .95rem "DM Sans",sans-serif;padding:.65rem 1rem;
+  border-radius:14px;border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;
+  box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.knopf.geist{background:#fff;color:var(--ink)}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.zurueck{align-self:flex-start;background:#fff;border:2px solid var(--ink);border-radius:100px;
+  padding:.35rem .85rem;font:800 .78rem "DM Sans",sans-serif;cursor:pointer}
+
+.tuer{width:100%;max-width:430px;background:#fffbe8;border:2px dashed #c67a1e;border-radius:14px;
+  padding:.6rem .7rem;font:600 .8rem "DM Sans",sans-serif;color:#7a4a08;line-height:1.5}
+.tuer b{display:block;font:800 .64rem "DM Sans",sans-serif;text-transform:uppercase;
+  letter-spacing:.05em;opacity:.7;margin-bottom:.2rem}
+.zaehler{width:100%;max-width:430px;text-align:center;font:700 .74rem "DM Sans",sans-serif;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Spikiu führt · Einstieg &amp; Räume</h1>
+  <div class="reihe">
+    <button class="tog" data-m="gefuehrt" aria-pressed="true">Geführt</button>
+    <button class="tog" data-m="frei">Freies Gespräch</button>
+    <button class="tog" id="tSim">Fortschritt</button>
+    <button class="tog" id="tReset">Von vorn</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   SPIKIU FÜHRT — Einstiegsverhalten mit bestehendem Lernpfad
+
+   Regel 1: Besteht ein Pfad, grüßt Spikiu und bietet die Themen der
+            AKTUELLEN Stufe an. Kein leeres Feld, keine Ratlosigkeit.
+   Regel 2: Das freie Gespräch UNTERRICHTET nicht. Es simuliert Sprechen.
+            Will der Lerner üben, öffnet Spikiu die Tür zum richtigen Raum.
+   Regel 3: Wo Material in der Datenbank liegt, wird es GELESEN, nie erzeugt.
+            Jeder gelbe Kasten unten zeigt: hier fiele sonst ein Aufruf an.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var L = window.SpikiuLernpfad;
+var NAME = 'Leo';
+var STUFE = 'a1';
+var modus = 'gefuehrt';
+var simAn = false;
+var ansicht = 'gruss';     // gruss | station | gespraech | tuer
+var gewaehlt = null, tuerZiel = null, aufrufe = 0;
+
+var FORTSCHRITT = {};
+function simSetzen(){
+  FORTSCHRITT = { 'a1.cafe':'gesetzt', 'a1.restaurant':'gesetzt',
+                  'a1.einkaufen':'durchschritten', 'a1.wegbeschreibung':'durchschritten' };
+}
+function stat(t){ return simAn ? (FORTSCHRITT['a1.' + t] || 'offen') : 'offen'; }
+
+/* Die nächste Station, die noch nicht gesetzt ist — Spikiu schlägt sie zuerst vor. */
+function naechste(){
+  var r = null;
+  L.themen.forEach(function(t){ if (!r && stat(t.id) !== 'gesetzt') r = t; });
+  return r || L.themen[0];
+}
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+
+function mal(){
+  var b = document.getElementById('buehne'); b.innerHTML = '';
+  if (ansicht === 'gruss')     malGruss(b);
+  else if (ansicht === 'station')  malStation(b);
+  else if (ansicht === 'gespraech')malGespraech(b);
+  else                              malTuer(b);
+  b.appendChild(el('div','zaehler','Modell-Aufrufe in dieser Sitzung: ' + aufrufe));
+}
+
+/* ── 1. Der Gruß. Identisch in beiden Modi. ────────────────────────── */
+function malGruss(b){
+  var d = el('div','folie');
+  d.appendChild(el('div','capy','🦫'));
+  d.appendChild(el('p','gruss','Hallo ' + NAME + '!'));
+  d.appendChild(el('p','frage','Worauf hast du Lust?'));
+  d.appendChild(el('div','marke','Stufe ' + STUFE.toUpperCase() + ' · Spanisch'));
+
+  var c = el('div','chips');
+  var n = naechste();
+  L.themen.forEach(function(t){
+    var s = stat(t.id);
+    var k = el('button','chip'); k.type = 'button';
+    k.appendChild(el('span','em', t.em));
+    var sp = el('span');
+    sp.appendChild(document.createTextNode(t.na.de));
+    sp.appendChild(el('span','sub', L.schritt[t.id][STUFE].de + (t === n ? ' · als Nächstes' : '')));
+    k.appendChild(sp);
+    k.appendChild(el('span','ring' + (s === 'durchschritten' ? ' halb' : s === 'gesetzt' ? ' voll' : '')));
+    k.onclick = function(){ gewaehlt = t; ansicht = (modus === 'frei' ? 'gespraech' : 'station'); mal(); };
+    c.appendChild(k);
+  });
+  d.appendChild(c);
+  b.appendChild(d);
+
+  b.appendChild(tuerKasten('Der Gruß und die Themenliste kosten NICHTS. ' +
+    'Namen, Stufe und Themen stehen im Pfad und in lernpfad-daten.js.'));
+}
+
+/* ── 2. Geführt: die Station wird GELESEN, nicht erzeugt ───────────── */
+function malStation(b){
+  var S = L.station(STUFE, gewaehlt.id);
+  var zu = el('button','zurueck','← zurück'); zu.type='button';
+  zu.onclick = function(){ ansicht='gruss'; mal(); };
+
+  var d = el('div','folie');
+  d.appendChild(zu);
+  d.appendChild(el('div','marke', gewaehlt.em + '  ' + gewaehlt.na.de + ' · ' + STUFE.toUpperCase()));
+  d.appendChild(el('p','ziel', S.dialog.zeilen[0].z));
+  d.appendChild(el('p','trans', S.dialog.zeilen[0].na.de));
+  d.appendChild(el('div','marke','Aus der Datenbank · ' + S.wortschatz.length + ' Wörter, ' +
+    S.dialog.zeilen.length + ' Zeilen'));
+
+  var w = el('div','chips');
+  ['Dialog spielen','Wörter üben','Text lesen','Schreibaufgabe'].forEach(function(x,i){
+    var k = el('button','chip leise'); k.type='button';
+    k.appendChild(el('span','em',['🗣️','🧠','📖','✍️'][i]));
+    k.appendChild(el('span',null,x));
+    k.onclick = function(){ /* Prototyp: nur Anzeige */ };
+    w.appendChild(k);
+  });
+  d.appendChild(w);
+  b.appendChild(d);
+
+  b.appendChild(tuerKasten('NULL Token. Dialog, Wörter, Lesetext und Schreibaufgabe liegen ' +
+    'fertig in lernpfad-daten.js. Spikiu liest sie, er erfindet nichts.'));
+}
+
+/* ── 3. Frei: sprechen, nicht unterrichten ─────────────────────────── */
+function malGespraech(b){
+  var S = L.station(STUFE, gewaehlt.id);
+  var zu = el('button','zurueck','← zurück'); zu.type='button';
+  zu.onclick = function(){ ansicht='gruss'; mal(); };
+
+  var d = el('div','folie');
+  d.appendChild(zu);
+  d.appendChild(el('div','capy','🦫'));
+  d.appendChild(el('div','marke', S.dialog.rolle.de + ' · ' + gewaehlt.na.de));
+  d.appendChild(el('p','ziel', S.dialog.zeilen[0].z));
+  d.appendChild(el('p','trans', S.dialog.zeilen[0].na.de));
+
+  var c = el('div','chips');
+  [['Ich antworte frei','gespraech'],
+   ['Ich will die Wörter üben','gym'],
+   ['Mach mir eine Lektion','lektionen'],
+   ['Ich will dazu lesen','lesewerkstatt']].forEach(function(p){
+    var k = el('button','chip' + (p[1] === 'gespraech' ? '' : ' leise')); k.type='button';
+    k.appendChild(el('span',null,p[0]));
+    k.onclick = function(){
+      if (p[1] === 'gespraech'){ aufrufe++; mal(); return; }
+      tuerZiel = p[1]; ansicht = 'tuer'; mal();
+    };
+    c.appendChild(k);
+  });
+  d.appendChild(c);
+  b.appendChild(d);
+
+  b.appendChild(tuerKasten('Nur „frei antworten" kostet Token (Sonnet). Die Szene kommt aus ' +
+    'der Datenbank — Spikiu erfindet den Einstieg nicht neu.'));
+}
+
+/* ── 4. Die Tür: Spikiu unterrichtet nicht, er verweist ────────────── */
+function malTuer(b){
+  var RAUM = {
+    gym:          { em:'🧠', na:'Gym', satz:'Dafür ist das Gym da. Dort sind deine Wörter, und es kostet nichts.' },
+    lektionen:    { em:'📋', na:'Geführtes Gespräch', satz:'Eine fertige Lektion liegt schon bereit — im geführten Gespräch, ohne Wartezeit.' },
+    lesewerkstatt:{ em:'📖', na:'Lesewerkstatt', satz:'Zu diesem Thema gibt es einen Text. Die Lesewerkstatt hat ihn.' }
+  }[tuerZiel];
+
+  var d = el('div','folie');
+  d.appendChild(el('div','capy','🦫'));
+  d.appendChild(el('p','ziel','Das machen wir woanders.'));
+  d.appendChild(el('p','frage', RAUM.satz));
+  var k = el('button','knopf', RAUM.em + '  ' + RAUM.na + ' öffnen'); k.type='button';
+  k.onclick = function(){ ansicht='gruss'; mal(); };
+  d.appendChild(k);
+  var z = el('button','knopf geist','Lieber weiterreden'); z.type='button';
+  z.onclick = function(){ ansicht='gespraech'; mal(); };
+  d.appendChild(z);
+  b.appendChild(d);
+
+  b.appendChild(tuerKasten('Spikiu unterrichtet im freien Gespräch NICHT. Er öffnet die Tür zum ' +
+    'Raum, in dem das Material schon liegt. Diese Weiterleitung kostet null Token — ' +
+    'und spart den Aufruf, der sonst eine Lektion erzeugt hätte.'));
+}
+
+function tuerKasten(txt){
+  var t = el('div','tuer');
+  t.appendChild(el('b',null,'Was das kostet'));
+  t.appendChild(document.createTextNode(txt));
+  return t;
+}
+
+document.querySelectorAll('[data-m]').forEach(function(x){
+  x.onclick = function(){
+    modus = x.dataset.m; ansicht = 'gruss';
+    document.querySelectorAll('[data-m]').forEach(function(y){
+      y.setAttribute('aria-pressed', y.dataset.m === modus ? 'true' : 'false');
+    });
+    mal();
+  };
+});
+document.getElementById('tSim').onclick = function(){
+  simAn = !simAn; if (simAn) simSetzen();
+  this.setAttribute('aria-pressed', simAn ? 'true' : 'false');
+  ansicht = 'gruss'; mal();
+};
+document.getElementById('tReset').onclick = function(){
+  simAn = false; aufrufe = 0; ansicht = 'gruss';
+  document.getElementById('tSim').setAttribute('aria-pressed','false');
+  mal();
+};
+
+mal();
+</script>
+</body>
+</html>
