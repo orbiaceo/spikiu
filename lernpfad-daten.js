@@ -37,6 +37,21 @@
 
   var STUFEN = ['a1', 'a2'];
 
+  /* ── Die Gruppen ──────────────────────────────────────────────────────
+     Zwei Ebenen statt einer langen Liste. Bei 10 Stationen kostet das
+     einen Tipp; bei 20 (A1+A2) oder 40 (bis B2) hält es die Auswahl kurz.
+     Jedes Thema liegt in genau einer Gruppe — geprüft, keine Dopplung. */
+  var KATEGORIEN = [
+    { id:'essen',     em:'🍽️', na:{ de:'Essen & Trinken', en:'Food & Drink' },
+      themen:['cafe','restaurant'] },
+    { id:'unterwegs', em:'🧳', na:{ de:'Unterwegs',       en:'Getting around' },
+      themen:['wegbeschreibung','taxi','bahnhof','hotel'] },
+    { id:'alltag',    em:'🛒', na:{ de:'Alltag',          en:'Everyday life' },
+      themen:['einkaufen','wetter'] },
+    { id:'menschen',  em:'👥', na:{ de:'Menschen',        en:'People' },
+      themen:['familie','arzt'] }
+  ];
+
   /* Dasselbe Thema, andere Handlung je Stufe. */
   var SCHRITT = {
     cafe:            { a1:{ de:'bestellen, bezahlen',        en:'ordering, paying' },
@@ -1164,8 +1179,15 @@
   raum.SpikiuLernpfad = {
     themen: THEMEN,
     stufen: STUFEN,
+    kategorien: KATEGORIEN,
     schritt: SCHRITT,
     stationen: STATIONEN,
+
+    /* Ein Thema nach id. */
+    thema: function (id) {
+      for (var i = 0; i < THEMEN.length; i++) if (THEMEN[i].id === id) return THEMEN[i];
+      return null;
+    },
 
     /* Eine Station holen. Gibt null zurück, wenn noch kein Inhalt da ist —
        die Oberfläche zeigt sie dann als „noch leer", statt zu erfinden. */

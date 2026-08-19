@@ -80,6 +80,39 @@
     });
   }
 
+  /* Die erste Ebene: Gruppen statt Themen. Jede trägt eine Perlenreihe —
+     so viele Perlen wie gefüllte Stationen darin, gefüllt nach Stand.
+     Kein Zähler, kein Prozent: man sieht den Stand, statt ihn zu lesen. */
+  function kategorien(welcheStufe) {
+    var D = daten(); if (!D || !D.kategorien) return [];
+    var st = welcheStufe || stufe();
+    var nx = naechste(st);
+    return D.kategorien.map(function (K) {
+      var drin = K.themen.filter(function (id) { return D.gefuellt(st, id); });
+      return {
+        id: K.id,
+        em: K.em,
+        na: K.na,
+        themen: drin,
+        perlen: drin.map(function (id) { return status(id, st); }),
+        naechste: !!(nx && drin.indexOf(nx.id) !== -1),
+        stufe: st
+      };
+    }).filter(function (K) { return K.themen.length > 0; });   // leere Gruppen nie zeigen
+  }
+
+  /* Die zweite Ebene: die Themen EINER Gruppe. */
+  function themenIn(katId, welcheStufe) {
+    var st = welcheStufe || stufe();
+    return palette(st).filter(function (x) {
+      var D = daten();
+      for (var i = 0; i < D.kategorien.length; i++) {
+        if (D.kategorien[i].id === katId) return D.kategorien[i].themen.indexOf(x.id) !== -1;
+      }
+      return false;
+    });
+  }
+
   /* Die eine Station, die Spikiu zuerst vorschlägt. */
   function naechste(welcheStufe) {
     var p = palette(welcheStufe);
@@ -156,6 +189,8 @@
     stufe: stufe,
     status: status,
     palette: palette,
+    kategorien: kategorien,
+    themenIn: themenIn,
     naechste: naechste,
     stufeRund: stufeRund,
     beruehre: beruehre,

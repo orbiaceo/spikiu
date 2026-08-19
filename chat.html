@@ -84,14 +84,30 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .gab-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }
 .chip { background:var(--white); border:2px solid var(--ink); color:var(--ink); padding:0.5rem 0.85rem; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:transform .1s,box-shadow .1s; -webkit-tap-highlight-color:transparent; }
 .chip:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
-/* Lernpfad-Chips (18.08.2026): der Ring zeigt den Stand der Station.
-   Kein Schloss, keine Zahl, kein Prozent — nur offen / halb / voll.
-   Führung durch Vorschlag: die nächste Station trägt einen Punkt. */
-.chip .pf-ring { display:inline-block; width:11px; height:11px; border-radius:50%; border:2px solid var(--ink); background:var(--white); margin-left:0.45rem; vertical-align:-1px; }
-.chip .pf-ring.halb { background:linear-gradient(90deg,#1b4f72 50%,var(--white) 50%); }
-.chip .pf-ring.voll { background:#1b4f72; }
-.chip.pf-naechste { border-color:var(--accent); box-shadow:2px 2px 0 var(--accent); }
-.chip.pf-naechste::before { content:'●'; color:var(--accent); margin-right:0.3rem; font-size:0.7em; vertical-align:1px; }
+/* Lernpfad-Kacheln (18.08.2026): ersetzt die Pillen-Palette, die bei
+   unterschiedlich langen Namen unregelmäßig umbrach. Gleiche Breite,
+   gleiche Höhe, ruhige Kante — und Platz für den Schritt unter dem Namen.
+   Zwei Ebenen: erst Kategorien, dann die Themen darin. Bei 10 Stationen
+   ein Tipp mehr, bei 40 (bis B2) unverzichtbar. */
+.pf-raster { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; width:100%; }
+.pf-kachel { position:relative; background:var(--white); border:2.5px solid var(--ink); border-radius:16px; box-shadow:3px 3px 0 var(--ink); padding:0.7rem 0.6rem 0.6rem; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.2rem; min-height:98px; font-family:'DM Sans',sans-serif; -webkit-tap-highlight-color:transparent; transition:transform .1s,box-shadow .1s; }
+.pf-kachel:active { transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+.pf-kachel .pf-em { font-size:1.6rem; line-height:1; }
+.pf-kachel .pf-tt { font-weight:800; font-size:0.84rem; line-height:1.2; text-align:center; color:var(--ink); }
+.pf-kachel .pf-sub { font-weight:600; font-size:0.68rem; line-height:1.25; text-align:center; color:var(--mid); }
+.pf-kachel.pf-naechste { border-color:var(--accent); box-shadow:3px 3px 0 var(--accent); }
+.pf-kachel .pf-punkt { position:absolute; top:0.55rem; left:0.55rem; width:7px; height:7px; border-radius:50%; background:var(--accent); }
+.pf-ring { position:absolute; top:0.5rem; right:0.5rem; width:12px; height:12px; border-radius:50%; border:2px solid var(--ink); background:var(--white); }
+.pf-ring.halb { background:linear-gradient(90deg,#1b4f72 50%,var(--white) 50%); }
+.pf-ring.voll { background:#1b4f72; }
+/* Perlenreihe statt Zahl: so viele Perlen wie Themen in der Gruppe,
+   gefüllt nach Stand. Man SIEHT den Stand, ohne dass er gezählt wird. */
+.pf-perlen { display:flex; gap:3px; justify-content:center; margin-top:0.1rem; }
+.pf-perle { width:6px; height:6px; border-radius:50%; background:var(--ink); opacity:0.2; }
+.pf-perle.halb { opacity:0.55; background:#1b4f72; }
+.pf-perle.voll { opacity:1; background:#1b4f72; }
+.pf-kopf { font:800 1.02rem 'DM Sans',sans-serif; display:flex; align-items:center; justify-content:center; gap:0.45rem; color:var(--ink); }
+.pf-zurueck { align-self:flex-start; background:var(--white); border:2px solid var(--ink); border-radius:100px; padding:0.35rem 0.9rem; font:800 0.78rem 'DM Sans',sans-serif; color:var(--ink); cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .gab-stufe { font:800 0.66rem 'DM Sans',sans-serif; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); text-align:center; margin-bottom:0.35rem; opacity:0.75; }
 .chip:hover { background:var(--accent); color:var(--white); }
 .chip:active { transform:scale(0.97); }
@@ -1915,52 +1931,107 @@ function removeGabelung(){ var g = document.getElementById('gabelung'); if (g) g
 function showGabelung(){
   if (document.getElementById('gabelung')) return;
   setExitVisible(false);
-  var ui = uiLang(), t = GAB[ui];
 
-  // Besteht ein Lernpfad, kommen die Themen von dort: nur die AKTUELLE Stufe,
-  // mit Fortschrittsring, und eine Station als „nächste" markiert.
-  // Sonst wie bisher aus szenen.js — kein Bruch für Nutzer ohne Pfad.
   var P = window.SpikiuPfad;
-  var pfadPal = (P && P.existiert()) ? P.palette() : [];
-  var pal, chips, stufeZeile = '';
+  // Besteht ein Lernpfad, führt Spikiu: erst Gruppen, dann die Themen darin —
+  // beides als Kacheln. Ohne Pfad bleibt die alte Pillen-Palette aus szenen.js,
+  // damit Nutzer ohne Pfad keinen Bruch sehen.
+  if (P && P.existiert() && P.kategorien().length){ showKategorien(); return; }
 
-  if (pfadPal.length){
-    pal = pfadPal;
-    stufeZeile = '<div class="gab-stufe">' + escPlain(pal[0].stufe.toUpperCase()) + '</div>';
-    chips = pal.map(function(x, i){
-      var ring = x.status === 'gesetzt' ? ' voll' : x.status === 'durchschritten' ? ' halb' : '';
-      return '<button class="chip' + (x.naechste ? ' pf-naechste' : '') + '" type="button" data-i="' + i + '">'
-        + x.em + ' ' + escPlain(x.na[ui] || x.na.de)
-        + '<span class="pf-ring' + ring + '" aria-hidden="true"></span></button>';
-    }).join('');
-  } else {
-    pal = (window.spikiuSzenenPalette ? window.spikiuSzenenPalette() : TOPICS.slice(0, 5));
-    chips = pal.map(function(topic, i){
-      return '<button class="chip" type="button" data-i="' + i + '">' + topic.emoji + ' ' + escPlain(topic[ui] || topic.de) + '</button>';
-    }).join('');
-  }
+  var ui = uiLang(), t = GAB[ui];
+  var pal = (window.spikiuSzenenPalette ? window.spikiuSzenenPalette() : TOPICS.slice(0, 5));
+  var chips = pal.map(function(topic, i){
+    return '<button class="chip" type="button" data-i="' + i + '">' + topic.emoji + ' ' + escPlain(topic[ui] || topic.de) + '</button>';
+  }).join('');
+  var wrap = document.createElement('div');
+  wrap.className = 'gabelung'; wrap.id = 'gabelung';
+  wrap.innerHTML =
+    '<div class="gab-ask">' + escPlain(t.chooseTopic || t.chooseActivity) + '</div>'
+    + '<div class="gab-chips" id="gabChips">' + chips + '</div>';
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+  wrap.querySelectorAll('.gab-chips .chip[data-i]').forEach(function(b){
+    b.onclick = function(){ var topic = pal[+b.getAttribute('data-i')]; pickTopic(topic[uiLang()] || topic.de, topic.id); };
+  });
+}
+
+/* Ebene 1: die Gruppen. */
+function showKategorien(){
+  var alt = document.getElementById('gabelung'); if (alt) alt.remove();
+  var ui = uiLang(), t = GAB[ui], P = window.SpikiuPfad;
+  var kats = P.kategorien();
 
   var wrap = document.createElement('div');
   wrap.className = 'gabelung'; wrap.id = 'gabelung';
   wrap.innerHTML =
     '<div class="gab-ask">' + escPlain(t.chooseTopic || t.chooseActivity) + '</div>'
-    + stufeZeile
-    + '<div class="gab-chips" id="gabChips">' + chips + '</div>';
+    + '<div class="gab-stufe">' + escPlain(kats[0].stufe.toUpperCase()) + '</div>';
+
+  var g = document.createElement('div'); g.className = 'pf-raster';
+  kats.forEach(function(K){
+    var k = document.createElement('button');
+    k.type = 'button';
+    k.className = 'pf-kachel' + (K.naechste ? ' pf-naechste' : '');
+    var perlen = K.perlen.map(function(s){
+      return '<span class="pf-perle' + (s === 'gesetzt' ? ' voll' : s === 'durchschritten' ? ' halb' : '') + '"></span>';
+    }).join('');
+    k.innerHTML = (K.naechste ? '<span class="pf-punkt"></span>' : '')
+      + '<span class="pf-em">' + K.em + '</span>'
+      + '<span class="pf-tt">' + escPlain(K.na[ui] || K.na.de) + '</span>'
+      + '<span class="pf-perlen">' + perlen + '</span>';
+    k.onclick = function(){ showThemen(K.id); };
+    g.appendChild(k);
+  });
+  wrap.appendChild(g);
   chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
-  wrap.querySelectorAll('.gab-chips .chip[data-i]').forEach(function(b){
-    b.onclick = function(){
-      var x = pal[+b.getAttribute('data-i')];
-      if (pfadPal.length){
-        // Betreten heißt berühren — mehr wird nicht behauptet. Eine gesetzte
-        // Station fällt dadurch nicht zurück (siehe lernpfad.js).
-        try { P.beruehre(x.id, x.stufe); } catch(e){}
-        pickTopic(x.na[uiLang()] || x.na.de, x.id);
-      } else {
-        pickTopic(x[uiLang()] || x.de, x.id);
-      }
+}
+
+/* Ebene 2: die Themen einer Gruppe. */
+function showThemen(katId){
+  var alt = document.getElementById('gabelung'); if (alt) alt.remove();
+  var ui = uiLang(), P = window.SpikiuPfad;
+  var liste = P.themenIn(katId);
+  var K = null;
+  P.kategorien().forEach(function(x){ if (x.id === katId) K = x; });
+  if (!liste.length){ showKategorien(); return; }
+
+  var wrap = document.createElement('div');
+  wrap.className = 'gabelung'; wrap.id = 'gabelung';
+
+  var zu = document.createElement('button');
+  zu.type = 'button'; zu.className = 'pf-zurueck';
+  zu.textContent = '← ' + (GAB[ui].chooseTopic || 'Themen');
+  zu.onclick = function(){ showKategorien(); };
+  wrap.appendChild(zu);
+
+  var kopf = document.createElement('div');
+  kopf.className = 'pf-kopf';
+  kopf.innerHTML = '<span>' + K.em + '</span><span>' + escPlain(K.na[ui] || K.na.de) + '</span>';
+  wrap.appendChild(kopf);
+
+  var g = document.createElement('div'); g.className = 'pf-raster';
+  liste.forEach(function(x){
+    var k = document.createElement('button');
+    k.type = 'button';
+    k.className = 'pf-kachel' + (x.naechste ? ' pf-naechste' : '');
+    var ring = x.status === 'gesetzt' ? ' voll' : x.status === 'durchschritten' ? ' halb' : '';
+    k.innerHTML = (x.naechste ? '<span class="pf-punkt"></span>' : '')
+      + '<span class="pf-ring' + ring + '"></span>'
+      + '<span class="pf-em">' + x.em + '</span>'
+      + '<span class="pf-tt">' + escPlain(x.na[ui] || x.na.de) + '</span>'
+      + (x.schritt ? '<span class="pf-sub">' + escPlain(x.schritt[ui] || x.schritt.de) + '</span>' : '');
+    k.onclick = function(){
+      // Betreten heißt berühren — mehr wird nicht behauptet. Eine gesetzte
+      // Station fällt dadurch nicht zurück (siehe lernpfad.js).
+      try { P.beruehre(x.id, x.stufe); } catch(e){}
+      pickTopic(x.na[uiLang()] || x.na.de, x.id);
     };
+    g.appendChild(k);
   });
+  wrap.appendChild(g);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
 }
 
 function getModus(){ try{ return new URLSearchParams(location.search).get('modus') || 'gefuehrt'; }catch(e){ return 'gefuehrt'; } }
