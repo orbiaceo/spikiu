@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Wiedersehen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--mid:#5f7068;--mint:#e8f2ea;--tief:#1b4f72;--white:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--mint);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+body{min-height:100dvh;display:flex;flex-direction:column}
+.pult{background:#fff;border-bottom:2.5px solid var(--ink);padding:.5rem .7rem;position:sticky;top:0;z-index:40}
+.pult h1{margin:0 0 .4rem;font:800 .74rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5}
+.reihe{display:flex;gap:.28rem;flex-wrap:wrap}
+.tog{font:800 .72rem "DM Sans",sans-serif;padding:.3rem .55rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.buehne{flex:1;padding:.9rem .8rem 2rem;display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.spalte{width:100%;max-width:430px;display:flex;flex-direction:column;gap:.6rem}
+
+.karte{background:var(--white);border:2.5px solid var(--ink);border-radius:20px;
+  box-shadow:4px 5px 0 var(--ink);padding:.95rem 1rem;display:flex;flex-direction:column;gap:.6rem}
+.wort{font-family:"Lora",serif;font-weight:600;font-size:2rem;text-align:center;margin:0}
+.satz{font-family:"Lora",serif;font-size:1rem;color:var(--mid);text-align:center;margin:0;font-style:italic}
+.marke{font:800 .64rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);text-align:center}
+.opt{display:flex;flex-direction:column;gap:.4rem}
+.ob{background:var(--white);border:2.5px solid var(--ink);border-radius:14px;padding:.6rem .8rem;
+  font:700 1rem "DM Sans",sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--ink);text-align:left}
+.ob:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.ob.r{background:#dff2e5;border-color:#2d6a4f}
+.ob.f{background:#fbe3e3;border-color:#a01818}
+
+.raster{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.kachel{position:relative;background:var(--white);border:2.5px solid var(--ink);border-radius:16px;
+  box-shadow:3px 3px 0 var(--ink);padding:.65rem .55rem;display:flex;flex-direction:column;
+  align-items:center;gap:.15rem;min-height:88px;justify-content:center}
+.kachel .em{font-size:1.4rem}
+.kachel .tt{font:800 .8rem "DM Sans",sans-serif;text-align:center;line-height:1.2}
+.kachel .zz{font:600 .66rem "DM Sans",sans-serif;color:var(--mid)}
+.ring{position:absolute;top:.45rem;right:.45rem;width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--ink);background:var(--white)}
+.ring.halb{background:linear-gradient(90deg,var(--tief) 50%,var(--white) 50%)}
+.ring.voll{background:var(--tief)}
+.balken{height:5px;background:#e3ebe6;border-radius:3px;overflow:hidden;width:100%;margin-top:.15rem}
+.balken i{display:block;height:100%;background:var(--tief)}
+
+.knopf{font:800 .92rem "DM Sans",sans-serif;padding:.6rem 1rem;border-radius:14px;
+  border:2.5px solid var(--ink);background:var(--acc);color:#fff;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.knopf.geist{background:#fff;color:var(--ink)}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.info{background:#fffbe8;border:2px dashed #c67a1e;border-radius:14px;padding:.55rem .7rem;
+  font:600 .77rem "DM Sans",sans-serif;color:#7a4a08;line-height:1.5}
+.info b{display:block;font:800 .64rem "DM Sans",sans-serif;text-transform:uppercase;
+  letter-spacing:.05em;opacity:.7;margin-bottom:.2rem}
+.wieder{background:#dff2e5;border:2.5px solid #2d6a4f;border-radius:16px;padding:.7rem .8rem;
+  font:700 .9rem "DM Sans",sans-serif;color:#1d4d38;text-align:center;line-height:1.45}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Wiedersehen · Station → Gym → Ring</h1>
+  <div class="reihe">
+    <button class="tog" id="tTag">Ein Tag vergeht</button>
+    <button class="tog" id="tReset">Alles löschen</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script src="lernpfad.js"></script>
+<script src="woerter.js"></script>
+<script>
+var D = window.SpikiuLernpfad, P = window.SpikiuPfad, W = window.SpikiuWoerter;
+var STUFE='a1', Z='es', MU='de';
+var wort = null, antwort = null, frischGesetzt = [];
+
+/* „Ein Tag vergeht": datiert alle Treffer um einen Tag zurück, damit man
+   das Wiedersehen sehen kann, ohne wirklich zu warten. Nur im Prototyp. */
+function tagVergeht(){
+  try{
+    var raw = JSON.parse(localStorage.getItem('spikiu_woerter')||'{}');
+    Object.keys(raw).forEach(function(k){
+      raw[k].tage = (raw[k].tage||[]).map(function(t){
+        var d = new Date(t); d.setDate(d.getDate()-1);
+        return d.toISOString().slice(0,10);
+      });
+    });
+    localStorage.setItem('spikiu_woerter', JSON.stringify(raw));
+  }catch(e){}
+  mal();
+}
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+
+function neuesWort(){
+  var liste = W.ausStationen(Z,MU);
+  wort = liste.length ? liste[0] : null;
+  antwort = null;
+}
+
+function falscheN(richtig,n){
+  var alle = [];
+  D.themen.forEach(function(t){ D.woerter(STUFE,t.id).forEach(function(w){
+    var tr = w.na[MU]||w.na.de; if (tr && tr!==richtig) alle.push(tr);
+  });});
+  var out=[];
+  while(out.length<n && alle.length){
+    var i = Math.floor(Math.random()*alle.length);
+    if (out.indexOf(alle[i])===-1) out.push(alle[i]);
+    alle.splice(i,1);
+  }
+  return out;
+}
+
+function mal(){
+  var b=document.getElementById('buehne'); b.innerHTML='';
+  var sp=el('div','spalte');
+
+  /* Noch keine Station berührt → erst eine wählen */
+  var beruehrt = D.themen.filter(function(t){ return P.status(t.id,STUFE)!=='offen'; });
+  if (!beruehrt.length){
+    var k=el('div','karte');
+    k.appendChild(el('div','marke','Schritt 1'));
+    k.appendChild(el('p','wort','Eine Station betreten'));
+    k.appendChild(el('p','satz','Erst dann hat das Gym etwas zu üben.'));
+    var g=el('div','raster');
+    D.themen.slice(0,4).forEach(function(t){
+      var c=el('button','kachel'); c.type='button';
+      c.appendChild(el('div','em',t.em));
+      c.appendChild(el('div','tt',t.na.de));
+      c.onclick=function(){ P.beruehre(t.id,STUFE); neuesWort(); mal(); };
+      g.appendChild(c);
+    });
+    k.appendChild(g); sp.appendChild(k); b.appendChild(sp); return;
+  }
+
+  if (frischGesetzt.length){
+    var wd=el('div','wieder');
+    wd.textContent = frischGesetzt.map(function(x){
+      var t=D.thema(x.thema); return t.em+' '+t.na.de;
+    }).join(' · ') + ' sitzt jetzt.';
+    sp.appendChild(wd);
+    frischGesetzt=[];
+  }
+
+  if (!wort) neuesWort();
+
+  if (wort){
+    var kk=el('div','karte');
+    kk.appendChild(el('div','marke','Aus '+wort.station));
+    kk.appendChild(el('p','wort',wort.wort));
+    if (wort.text) kk.appendChild(el('p','satz',wort.text));
+    var o=el('div','opt');
+    var richtig = wort.tr;
+    var opts = falscheN(richtig,2).concat([richtig]).sort(function(){return Math.random()-.5;});
+    opts.forEach(function(x){
+      var bt=el('button','ob'+(antwort? (x===richtig?' r':(x===antwort?' f':'')):''),x);
+      bt.type='button';
+      bt.disabled = !!antwort;
+      bt.onclick=function(){
+        antwort=x;
+        W.melde(Z, wort.wort, x===richtig, wort.station);
+        frischGesetzt = W.pruefeStationen(Z);
+        mal();
+      };
+      o.appendChild(bt);
+    });
+    kk.appendChild(o);
+    if (antwort){
+      var nx=el('button','knopf','Nächstes Wort'); nx.type='button';
+      nx.onclick=function(){ neuesWort(); mal(); };
+      kk.appendChild(nx);
+    }
+    sp.appendChild(kk);
+  } else {
+    var fertig=el('div','karte');
+    fertig.appendChild(el('p','wort','Alles gesetzt.'));
+    fertig.appendChild(el('p','satz','Betritt eine neue Station, dann gibt es wieder etwas zu üben.'));
+    sp.appendChild(fertig);
+  }
+
+  /* Der Baum daneben — man sieht die Ringe wachsen */
+  var g2=el('div','raster');
+  D.themen.forEach(function(t){
+    var s=P.status(t.id,STUFE);
+    if (s==='offen') return;
+    var st=W.standDerStation(STUFE,t.id,Z);
+    var c=el('div','kachel');
+    c.appendChild(el('div','ring'+(s==='durchschritten'?' halb':' voll')));
+    c.appendChild(el('div','em',t.em));
+    c.appendChild(el('div','tt',t.na.de));
+    c.appendChild(el('div','zz',st.gesetzt+' von '+st.gesamt+' sitzen'));
+    var ba=el('div','balken'); var i=el('i');
+    i.style.width = Math.round(st.gesetzt/st.gesamt*100)+'%';
+    ba.appendChild(i); c.appendChild(ba);
+    g2.appendChild(c);
+  });
+  sp.appendChild(g2);
+
+  var inf=el('div','info');
+  inf.appendChild(el('b',null,'Die Regel'));
+  inf.appendChild(document.createTextNode(
+    'Ein Wort sitzt, wenn es an ZWEI VERSCHIEDENEN Tagen erkannt wurde. Zweimal heute zählt als einmal — '
+    + 'deshalb der Knopf „Ein Tag vergeht". Eine Station wird gesetzt, wenn 70 % ihrer Wörter sitzen. '
+    + 'Ein Fehlgriff löscht nichts, er holt das Wort nur öfter zurück. Alles ohne einen einzigen Token.'));
+  sp.appendChild(inf);
+
+  b.appendChild(sp);
+}
+
+document.getElementById('tTag').onclick = tagVergeht;
+document.getElementById('tReset').onclick = function(){
+  P.raeume(); W.raeume(); wort=null; antwort=null; frischGesetzt=[]; mal();
+};
+mal();
+</script>
+</body>
+</html>
