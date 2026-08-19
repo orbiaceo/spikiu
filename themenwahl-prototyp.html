@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Themenwahl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--mid:#5f7068;--mint:#e8f2ea;--tief:#1b4f72;--white:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--mint);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+body{min-height:100dvh;display:flex;flex-direction:column}
+
+.pult{background:#fff;border-bottom:2.5px solid var(--ink);padding:.5rem .7rem;position:sticky;top:0;z-index:40}
+.pult h1{margin:0 0 .4rem;font:800 .74rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5}
+.reihe{display:flex;gap:.28rem;flex-wrap:wrap}
+.tog{font:800 .72rem "DM Sans",sans-serif;padding:.3rem .55rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+.buehne{flex:1;padding:1rem .8rem 2rem;display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.spalte{width:100%;max-width:430px;display:flex;flex-direction:column;gap:.55rem}
+
+.capy{font-size:2.4rem;text-align:center;line-height:1}
+.gruss{font-family:"Lora",serif;font-weight:600;font-size:1.6rem;line-height:1.25;text-align:center;margin:0}
+.frage{font-weight:700;font-size:1rem;color:var(--mid);text-align:center;margin:0}
+.stufe{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--mid);text-align:center;opacity:.75;margin-top:.2rem}
+
+/* ── Raster: gleiche Breite, gleiche Höhe, ruhige Kante ─────────────── */
+.raster{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.kachel{position:relative;background:var(--white);border:2.5px solid var(--ink);border-radius:16px;
+  box-shadow:3px 3px 0 var(--ink);padding:.7rem .6rem .6rem;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:.2rem;min-height:98px;justify-content:center}
+.kachel:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.kachel .em{font-size:1.6rem;line-height:1}
+.kachel .tt{font:800 .84rem "DM Sans",sans-serif;line-height:1.2;text-align:center}
+.kachel .sub{font:600 .68rem "DM Sans",sans-serif;color:var(--mid);text-align:center;line-height:1.25}
+.kachel .zahl{font:700 .68rem "DM Sans",sans-serif;color:var(--mid)}
+.kachel.naechste{border-color:var(--acc);box-shadow:3px 3px 0 var(--acc)}
+.ring{position:absolute;top:.5rem;right:.5rem;width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--ink);background:var(--white)}
+.ring.halb{background:linear-gradient(90deg,var(--tief) 50%,var(--white) 50%)}
+.ring.voll{background:var(--tief)}
+.punkt{position:absolute;top:.55rem;left:.55rem;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+
+/* Kategorie-Fortschritt als kleine Perlenreihe statt Zahl */
+.perlen{display:flex;gap:3px;justify-content:center;margin-top:.1rem}
+.perle{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.2}
+.perle.halb{opacity:.55;background:var(--tief)}
+.perle.voll{opacity:1;background:var(--tief)}
+
+.zurueck{align-self:flex-start;background:var(--white);border:2px solid var(--ink);
+  border-radius:100px;padding:.35rem .9rem;font:800 .78rem "DM Sans",sans-serif;cursor:pointer}
+.kopf{font:800 1.05rem "DM Sans",sans-serif;display:flex;align-items:center;gap:.5rem;justify-content:center}
+.hinweis{font:600 .74rem "DM Sans",sans-serif;color:var(--mid);text-align:center;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Themenwahl · Kacheln</h1>
+  <div class="reihe">
+    <button class="tog" data-v="flach" aria-pressed="true">Alle auf einmal</button>
+    <button class="tog" data-v="kat">Kategorien</button>
+    <button class="tog" id="tSim">Fortschritt</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script>
+var L = window.SpikiuLernpfad;
+var STUFE = 'a1', variante = 'flach', simAn = false, offeneKat = null;
+
+/* Gruppen. Bei 10 Themen kostet die zweite Ebene einen Tipp — bei 20 (A1+A2)
+   oder 40 (bis B2) spart sie eine endlose Liste. Deshalb jetzt schon bauen. */
+var KATEGORIEN = [
+  { id:'essen',    em:'🍽️', na:'Essen & Trinken', themen:['cafe','restaurant'] },
+  { id:'unterwegs',em:'🧳', na:'Unterwegs',       themen:['wegbeschreibung','taxi','bahnhof','hotel'] },
+  { id:'alltag',   em:'🛒', na:'Alltag',          themen:['einkaufen','wetter'] },
+  { id:'menschen', em:'👥', na:'Menschen',        themen:['familie','arzt'] }
+];
+
+var FORTSCHRITT = {};
+function simSetzen(){
+  FORTSCHRITT = { cafe:'gesetzt', restaurant:'gesetzt', einkaufen:'durchschritten',
+                  wegbeschreibung:'durchschritten', taxi:'durchschritten' };
+}
+function stat(id){ return simAn ? (FORTSCHRITT[id] || 'offen') : 'offen'; }
+function naechste(){
+  var r = null;
+  L.themen.forEach(function(t){ if (!r && stat(t.id) !== 'gesetzt') r = t.id; });
+  return r;
+}
+function thema(id){ var r=null; L.themen.forEach(function(t){ if(t.id===id) r=t; }); return r; }
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+
+function kachelThema(t, nx){
+  var s = stat(t.id);
+  var k = el('button','kachel' + (t.id === nx ? ' naechste' : '')); k.type='button';
+  if (t.id === nx) k.appendChild(el('div','punkt'));
+  k.appendChild(el('div','ring' + (s==='durchschritten'?' halb':s==='gesetzt'?' voll':'')));
+  k.appendChild(el('div','em', t.em));
+  k.appendChild(el('div','tt', t.na.de));
+  k.appendChild(el('div','sub', L.schritt[t.id][STUFE].de));
+  return k;
+}
+
+function mal(){
+  var b = document.getElementById('buehne'); b.innerHTML = '';
+  var sp = el('div','spalte');
+  var nx = naechste();
+
+  if (variante === 'kat' && offeneKat){
+    var K = KATEGORIEN.filter(function(x){ return x.id === offeneKat; })[0];
+    var zu = el('button','zurueck','← Kategorien'); zu.type='button';
+    zu.onclick = function(){ offeneKat = null; mal(); };
+    sp.appendChild(zu);
+    var kopf = el('div','kopf');
+    kopf.appendChild(el('span',null,K.em));
+    kopf.appendChild(document.createTextNode(K.na));
+    sp.appendChild(kopf);
+    var g2 = el('div','raster');
+    K.themen.forEach(function(id){ g2.appendChild(kachelThema(thema(id), nx)); });
+    sp.appendChild(g2);
+    b.appendChild(sp); return;
+  }
+
+  sp.appendChild(el('div','capy','🦫'));
+  sp.appendChild(el('p','gruss','Hallo Leo!'));
+  sp.appendChild(el('p','frage','Worauf hast du Lust?'));
+  sp.appendChild(el('div','stufe', STUFE.toUpperCase()));
+
+  var g = el('div','raster');
+
+  if (variante === 'flach'){
+    L.themen.forEach(function(t){ g.appendChild(kachelThema(t, nx)); });
+  } else {
+    KATEGORIEN.forEach(function(K){
+      var k = el('button','kachel'); k.type='button';
+      var hatNaechste = K.themen.indexOf(nx) !== -1;
+      if (hatNaechste){ k.className = 'kachel naechste'; k.appendChild(el('div','punkt')); }
+      k.appendChild(el('div','em', K.em));
+      k.appendChild(el('div','tt', K.na));
+      /* Perlenreihe statt Zahl: so viele Perlen wie Themen, gefüllt nach Stand.
+         Kein Zähler, kein Prozent — man SIEHT, wie voll die Gruppe ist. */
+      var per = el('div','perlen');
+      K.themen.forEach(function(id){
+        var s = stat(id);
+        per.appendChild(el('div','perle' + (s==='durchschritten'?' halb':s==='gesetzt'?' voll':'')));
+      });
+      k.appendChild(per);
+      k.onclick = function(){ offeneKat = K.id; mal(); };
+      g.appendChild(k);
+    });
+  }
+
+  sp.appendChild(g);
+  sp.appendChild(el('div','hinweis', variante === 'flach'
+    ? '10 Themen auf einmal. Bei A1+A2 werden es 20, bis B2 vierzig.'
+    : '4 Gruppen. Ein Tipp mehr — aber die Liste bleibt kurz, egal wie viele Stationen dazukommen.'));
+  b.appendChild(sp);
+}
+
+document.querySelectorAll('[data-v]').forEach(function(x){
+  x.onclick = function(){
+    variante = x.dataset.v; offeneKat = null;
+    document.querySelectorAll('[data-v]').forEach(function(y){
+      y.setAttribute('aria-pressed', y.dataset.v === variante ? 'true':'false');
+    });
+    mal();
+  };
+});
+document.getElementById('tSim').onclick = function(){
+  simAn = !simAn; if (simAn) simSetzen();
+  this.setAttribute('aria-pressed', simAn ? 'true':'false');
+  offeneKat = null; mal();
+};
+
+mal();
+</script>
+</body>
+</html>
