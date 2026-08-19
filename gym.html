@@ -30,6 +30,17 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .word-icon{font-size:4.4rem;line-height:1;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12));}
 .gym-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan,#1f93b0);}
 .gym-eyebrow.ueb{color:var(--green);}
+/* Wiedersehen (18.08.2026): eine Station ist rund geworden, weil ihre Wörter
+   wiederkamen. Leise, einmalig, ohne Zahl und ohne Konfetti — kein Streak,
+   keine Punkte. „Fortschritt wird gefühlt, nie gezählt." */
+.pf-wieder{position:fixed;left:50%;bottom:1.6rem;transform:translateX(-50%);z-index:60;
+  background:#dff2e5;border:2.5px solid #2d6a4f;border-radius:16px;
+  padding:.65rem 1.1rem;max-width:min(22rem,88vw);text-align:center;
+  font:700 .92rem/1.4 'DM Sans',sans-serif;color:#1d4d38;
+  box-shadow:3px 3px 0 #2d6a4f;animation:pfAuf .4s ease forwards;}
+.pf-wieder.weg{animation:pfZu .7s ease forwards;}
+@keyframes pfAuf{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes pfZu{to{opacity:0;transform:translate(-50%,8px)}}
 .gym-wort{font-family:'Lora',serif;font-weight:600;font-size:clamp(1.7rem,7vw,2.4rem);line-height:1.25;color:var(--read);}
 .gym-speak{width:48px;height:48px;border:var(--ow) solid var(--ink);border-radius:999px;cursor:pointer;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink);}
 .gym-speak:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
@@ -162,6 +173,19 @@ function loadBuch(){ try { var a = JSON.parse(localStorage.getItem('spikiu_buch'
 function saveOwn(list){ try { localStorage.setItem(STORE_KEY, JSON.stringify(list)); } catch(e){} }
 function buildWords(){
   var out = [];
+  // ── Quelle 1: die berührten Stationen des Lernpfads ──────────────────
+  // Das Gym übt, was der Lernpfad lehrt. Wackelnde Wörter kommen zuerst,
+  // bereits sitzende ruhen. Erst wenn daraus nichts (mehr) kommt, greift
+  // der feste Starter-Wortschatz — sonst übt man an der Reise vorbei.
+  if (window.SpikiuWoerter && window.SpikiuPfad && window.SpikiuLernpfad){
+    try {
+      var ausPfad = window.SpikiuWoerter.ausStationen(PROFILE.zielsprache, PROFILE.muttersprache) || [];
+      ausPfad.forEach(function(it){
+        out.push({ wort:it.wort, tr:it.tr, text:it.text || '', own:false, icon:'', station:it.station });
+      });
+    } catch(e){}
+  }
+  // ── Quelle 2: fester Starter-Wortschatz ──────────────────────────────
   if (typeof window.spikiuWortschatz === 'function'){
     var starter = window.spikiuWortschatz(PROFILE.zielsprache, PROFILE.muttersprache) || [];
     starter.forEach(function(it){ out.push({ wort:it.wort, tr:it.tr, text:it.text || '', own:false, icon:it.icon||'' }); });
@@ -173,7 +197,15 @@ function buildWords(){
     var key = String(e.roh||e.wort).trim().toLowerCase(); if (seen[key]) return; seen[key]=1;
     out.push({ wort:(e.roh||e.wort), tr:(e.tr || (window.spikiuWoerterbuch && window.spikiuWoerterbuch.tr(e.roh||e.wort, PROFILE.zielsprache, PROFILE.muttersprache)) || ''), text:'', own:false, buch:true, icon:'' });
   });
-  return out;
+  // Doppelte entfernen: ein Wort aus einer Station schlägt dasselbe Wort
+  // aus dem Starter-Set, weil es die Station kennt.
+  var gesehen = {}, sauber = [];
+  out.forEach(function(w){
+    var k = String(w.wort).trim().toLowerCase();
+    if (gesehen[k]) return;
+    gesehen[k] = 1; sauber.push(w);
+  });
+  return sauber;
 }
 
 // ── Deck mit echtem Verlauf ──
@@ -225,10 +257,42 @@ function makeUebungCard(wi){
   var card = document.createElement('div'); card.className = 'card ueb-card';
   var eb = document.createElement('div'); eb.className = 'gym-eyebrow ueb'; eb.textContent = ui().uebung;
   card.appendChild(eb);
-  card.appendChild(window.spikiuUebung(item, type));
+  var uebEl = window.spikiuUebung(item, type);
+  card.appendChild(uebEl);
+  // Rückweg zum Lernpfad: uebung.js feuert 'ueb-done' mit detail.ok.
+  // Erkannt oder gewackelt wird gemeldet — ein Fehlgriff löscht nichts,
+  // er holt das Wort nur öfter zurück (siehe woerter.js).
+  if (window.SpikiuWoerter){
+    uebEl.addEventListener('ueb-done', function(ev){
+      try {
+        window.SpikiuWoerter.melde(PROFILE.zielsprache, wd.wort, !!(ev.detail && ev.detail.ok), wd.station || null);
+        var frisch = window.SpikiuWoerter.pruefeStationen(PROFILE.zielsprache) || [];
+        if (frisch.length) zeigeWiedersehen(frisch);
+      } catch(e){}
+    });
+  }
   var hint = document.createElement('div'); hint.className = 'card-hint'; hint.textContent = ui().hintFwd;
   card.appendChild(hint);
   return card;
+}
+
+// Eine Station ist rund geworden. Leise, einmalig, ohne Zahl und ohne Konfetti —
+// „Fortschritt wird gefühlt, nie gezählt." Kein Streak, keine Punkte.
+function zeigeWiedersehen(frisch){
+  var D = window.SpikiuLernpfad; if (!D) return;
+  var alt = document.getElementById('pfWieder'); if (alt) alt.remove();
+  var namen = frisch.map(function(x){
+    var t = D.thema(x.thema);
+    return t ? (t.em + ' ' + (t.na[uiLang()] || t.na.de)) : '';
+  }).filter(Boolean).join(' · ');
+  if (!namen) return;
+  var TXT = { de:' sitzt jetzt.', es:' ya se quedó.', en:' has settled.' };
+  var box = document.createElement('div');
+  box.id = 'pfWieder'; box.className = 'pf-wieder';
+  box.textContent = namen + (TXT[uiLang()] || TXT.de);
+  document.body.appendChild(box);
+  setTimeout(function(){ box.classList.add('weg'); }, 3200);
+  setTimeout(function(){ if (box.parentNode) box.remove(); }, 4000);
 }
 
 function ensureStep(i){
@@ -327,5 +391,8 @@ window.addEventListener('load', function(){
 <script src="woerterbuch.js" defer></script>
 <script src="wortschatz.js" defer></script>
 <script src="uebung.js" defer></script>
+<script src="lernpfad-daten.js" defer></script>
+<script src="lernpfad.js" defer></script>
+<script src="woerter.js" defer></script>
 </body>
 </html>
