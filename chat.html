@@ -1264,7 +1264,18 @@ function renderLearnerSlide(first){
   reel.appendChild(slide);
   slide.querySelector('#reelSendBtn').onclick = reelSend;
   var ta = slide.querySelector('#reelInput');
-  if (ta) ta.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); reelSend(); } });
+  if (ta){
+    ta.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); reelSend(); } });
+    // Sobald der Nutzer etwas ändert, ist die Warnung veraltet — sonst glaubt er,
+    // seine korrigierte Eingabe sei immer noch falsch (Beobachtung 18.08.2026).
+    ta.addEventListener('input', function(){
+      if (ta.dataset.zweit && ta.value.trim() !== ta.dataset.zweit){
+        ta.dataset.zweit = '';
+        ta.classList.remove('gewarnt');
+        reelWarnWeg();
+      }
+    });
+  }
   var eb = slide.querySelector('#reelEndBtn'); if (eb) eb.onclick = reelEnd;
 }
 // ── Vertipper-Filter ───────────────────────────────────────────────────
