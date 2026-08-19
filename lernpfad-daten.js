@@ -1177,6 +1177,9 @@
 
   /* ── Öffentliche Fläche ───────────────────────────────────────────── */
   raum.SpikiuLernpfad = {
+    /* Diese Datei traegt EINE Zielsprache. Jeder Raum muss dagegen pruefen,
+       sonst bekommt ein Griechisch-Lerner spanische Woerter (18.08.2026). */
+    zielsprache: 'es',
     themen: THEMEN,
     stufen: STUFEN,
     kategorien: KATEGORIEN,

@@ -66,6 +66,8 @@ button{font:inherit;cursor:pointer}
 <script src="szenen.js"></script>
 <script src="szenen-dialog.js"></script>
 <script src="karten-engine.js"></script>
+<script src="lernpfad-daten.js"></script>
+<script src="lernpfad.js"></script>
 <script type="module">
   import { speak, warm } from './audio.js';
   window.sprich = speak;
@@ -155,6 +157,45 @@ button{font:inherit;cursor:pointer}
 
   var TOPIC_ID = null, TOPIC_LABEL = '', HAP = null, RP = null;
 
+  /* ── Eine Quelle fuer den Stoff dieses Raums ──────────────────────────
+     Liegt fuer dieses Thema eine Lernpfad-Station bereit, kommen die
+     WOERTER von dort — dann zaehlen sie im Gym auf den Ring der Station
+     ein (siehe woerter.js). Sonst bleibt der bisherige Haeppchen-Satz.
+
+     Das HOERVERSTEHEN kommt IMMER aus haeppchen-db.js: die Stationen haben
+     keins, und es hier zu erfinden waere geraten statt gebaut.
+
+     Andere Zielsprachen als Spanisch laufen unveraendert weiter, weil es
+     dort noch keine Stationen gibt. Kein Bruch, nur ein Aufwerten. */
+  function ladeStoff() {
+    var h = window.spikiuHaeppchen(TOPIC_ID, ZIEL, MUT);
+    if (!h) return null;
+    try {
+      var P = window.SpikiuPfad, D = window.SpikiuLernpfad;
+      if (P && D && P.existiert() && D.zielsprache === ZIEL) {
+        var st = P.stufe();
+        var S = D.station(st, TOPIC_ID);
+        if (S && S.wortschatz && S.wortschatz.length) {
+          h.wortschatz = S.wortschatz.map(function (w) {
+            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (w.na && (w.na[MUT] || w.na.de)) || '' };
+          });
+          h.station = st + '.' + TOPIC_ID;
+          h.stufe = st;
+        }
+      }
+    } catch (e) { /* Stoff darf nie am Lernpfad scheitern */ }
+    return h;
+  }
+
+  /* Betreten heisst beruehren — mehr wird nicht behauptet. Eine gesetzte
+     Station faellt dadurch nicht zurueck (siehe lernpfad.js). */
+  function markiereBesuch() {
+    try {
+      var P = window.SpikiuPfad;
+      if (P && P.existiert() && HAP && HAP.stufe) P.beruehre(TOPIC_ID, HAP.stufe);
+    } catch (e) {}
+  }
+
   /* ── Sitzungs-Persistenz: keine Arbeit geht durch einen Fehl-Tipp verloren.
         Gespeichert wird Thema + Phase + Karten-Index (entprellt).
         Raum-Schlüssel 'gefuehrt'. Kein Zombie-Resume: Abschluss räumt auf. ── */
@@ -213,8 +254,9 @@ button{font:inherit;cursor:pointer}
       b.onclick = function () {
         var s = alle[+b.getAttribute('data-i')];
         TOPIC_ID = s.id; TOPIC_LABEL = s[MUT] || s.de;
-        HAP = window.spikiuHaeppchen(TOPIC_ID, ZIEL, MUT);
+        HAP = ladeStoff();
         if (!HAP) { showPalette(); return; }
+        markiereBesuch();
         startWoerter();
       };
     });
@@ -358,7 +400,7 @@ button{font:inherit;cursor:pointer}
     TOPIC_ID = sv.topicId;
     var sz = (window.spikiuSzenen || []).filter(function (x) { return x.id === sv.topicId; })[0];
     TOPIC_LABEL = sv.topicLabel || (sz ? (sz[MUT] || sz.de) : sv.topicId);
-    HAP = window.spikiuHaeppchen(TOPIC_ID, ZIEL, MUT);
+    HAP = ladeStoff();
     if (!HAP) { showPalette(); return; }
     var i = sv.index || 0;
     if (sv.phase === 'hoeren')          { setRail(2); startHoeren(i); }
