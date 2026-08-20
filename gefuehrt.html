@@ -225,21 +225,10 @@ button{font:inherit;cursor:pointer}
   /* ── THEMA: Palette = 3 neu + 2 fällig, gefiltert auf 0-Token-Themen (DB) ── */
   function showPalette() {
     setRail(0);
-    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
-    var alle = (window.spikiuSzenenPalette ? window.spikiuSzenenPalette() : []).filter(function (s) { return db.indexOf(s.id) > -1; });
-    if (!alle.length) {
-      alle = (window.spikiuSzenen || []).filter(function (s) { return db.indexOf(s.id) > -1; }).slice(0, 5);
-    }
-    var done = {};
-    try { done = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').szenen) || {}; } catch (e) {}
     var wrap = document.createElement('div'); wrap.className = 'palette';
-    wrap.innerHTML = '<span class="cap" role="button" aria-label="Spikiu" style="cursor:pointer">' + CAPY + '</span><h2>' + esc(U.waehle) + '</h2>'
-      + '<div class="chips">' + alle.map(function (s, i) {
-          var wieder = done[s.id] && done[s.id].done;
-          return '<button class="chip" data-i="' + i + '">' + s.emoji + ' ' + esc(s[MUT] || s.de)
-            + (wieder ? ' ↻' : '') + '</button>';
-        }).join('') + '</div>';
+    wrap.innerHTML = '<span class="cap" role="button" aria-label="Spikiu" style="cursor:pointer">' + CAPY + '</span><h2>' + esc(U.waehle) + '</h2>';
     stage.innerHTML = ''; stage.appendChild(wrap);
+
     var SAG = { es:'¡Elige un tema!', de:'Wähl ein Thema!', en:'Choose a topic!', el:'Διάλεξε ένα θέμα!' };
     wrap.querySelector('.cap').onclick = function () {
       var txt = SAG[ZIEL] || SAG.es;
@@ -250,14 +239,48 @@ button{font:inherit;cursor:pointer}
         }
       } catch (e) {}
     };
-    wrap.querySelectorAll('.chip').forEach(function (b) {
+
+    function betrete(id, label) {
+      TOPIC_ID = id; TOPIC_LABEL = label;
+      HAP = ladeStoff();
+      if (!HAP) { showPalette(); return; }
+      markiereBesuch();
+      startWoerter();
+    }
+
+    // Die Kachelwahl kommt aus lernpfad.js — dieselbe wie im Chat.
+    // Zwei Oberflächen für dieselbe Sache wären zwei Wahrheiten.
+    var P = window.SpikiuPfad, D = window.SpikiuLernpfad;
+    if (P && D && P.existiert() && D.zielsprache === ZIEL && P.kategorien().length) {
+      var host = document.createElement('div');
+      wrap.appendChild(host);
+      P.waehler(host, {
+        ui: MUT,
+        zurueck: U.waehle,
+        onWahl: function (id, stufe, x) { betrete(id, x.na[MUT] || x.na.de); }
+      });
+      return;
+    }
+
+    // Ohne Lernpfad (Deutsch, Englisch, Griechisch): bisherige Palette.
+    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
+    var alle = (window.spikiuSzenenPalette ? window.spikiuSzenenPalette() : []).filter(function (s) { return db.indexOf(s.id) > -1; });
+    if (!alle.length) {
+      alle = (window.spikiuSzenen || []).filter(function (s) { return db.indexOf(s.id) > -1; }).slice(0, 5);
+    }
+    var done = {};
+    try { done = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').szenen) || {}; } catch (e) {}
+    var chips = document.createElement('div'); chips.className = 'chips';
+    chips.innerHTML = alle.map(function (s, i) {
+      var wieder = done[s.id] && done[s.id].done;
+      return '<button class="chip" data-i="' + i + '">' + s.emoji + ' ' + esc(s[MUT] || s.de)
+        + (wieder ? ' ↻' : '') + '</button>';
+    }).join('');
+    wrap.appendChild(chips);
+    chips.querySelectorAll('.chip').forEach(function (b) {
       b.onclick = function () {
         var s = alle[+b.getAttribute('data-i')];
-        TOPIC_ID = s.id; TOPIC_LABEL = s[MUT] || s.de;
-        HAP = ladeStoff();
-        if (!HAP) { showPalette(); return; }
-        markiereBesuch();
-        startWoerter();
+        betrete(s.id, s[MUT] || s.de);
       };
     });
   }

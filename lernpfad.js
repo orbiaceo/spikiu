@@ -183,6 +183,142 @@
     try { localStorage.removeItem(SCHLUESSEL); } catch (e) {}
   }
 
+  /* ══════════════════════════════════════════════════════════════════
+     DIE KACHELWAHL — einmal gebaut, von allen Räumen geerbt.
+
+     Sie lag zuerst nur in chat.html; gefuehrt.html zeigte weiter Pillen.
+     Zwei Oberflächen für dieselbe Sache sind zwei Wahrheiten — deshalb
+     wohnt sie ab 18.08.2026 hier, wie sitzung.js oder audio.js.
+
+     Zwei Ebenen: erst Gruppen, dann die Themen darin. Ring = Stand der
+     Station, Perlen = Stand der Gruppe, Punkt = die nächste Station.
+     Kein Schloss, keine Zahl, kein Prozent.
+
+       SpikiuPfad.waehler(ziel, { ui, onWahl })
+     ══════════════════════════════════════════════════════════════════ */
+
+  var CSS_ID = 'spikiu-pfad-css';
+  var CSS = ''
+    + '.pf-wahl{display:flex;flex-direction:column;align-items:center;gap:.6rem;width:100%;max-width:30rem;margin:0 auto}'
+    + '.pf-raster{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;width:100%}'
+    + '.pf-kachel{position:relative;box-sizing:border-box;background:#fff;'
+    + 'border:2.5px solid var(--ink,#15163a);border-radius:16px;box-shadow:3px 3px 0 var(--ink,#15163a);'
+    + 'padding:.7rem .6rem .6rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;'
+    + 'justify-content:center;gap:.2rem;min-height:98px;font-family:"DM Sans",sans-serif;'
+    + '-webkit-tap-highlight-color:transparent;transition:transform .1s,box-shadow .1s}'
+    + '.pf-kachel:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink,#15163a)}'
+    + '.pf-kachel .pf-em{font-size:1.6rem;line-height:1}'
+    + '.pf-kachel .pf-tt{font-weight:800;font-size:.84rem;line-height:1.2;text-align:center;color:var(--ink,#15163a)}'
+    + '.pf-kachel .pf-sub{font-weight:600;font-size:.68rem;line-height:1.25;text-align:center;color:var(--muted,#5f7068)}'
+    + '.pf-kachel.pf-naechste{border-color:var(--accent,#1f93b0);box-shadow:3px 3px 0 var(--accent,#1f93b0)}'
+    + '.pf-kachel .pf-punkt{position:absolute;top:.55rem;left:.55rem;width:7px;height:7px;'
+    + 'border-radius:50%;background:var(--accent,#1f93b0)}'
+    + '.pf-ring{position:absolute;top:.5rem;right:.5rem;width:12px;height:12px;border-radius:50%;'
+    + 'border:2px solid var(--ink,#15163a);background:#fff}'
+    + '.pf-ring.halb{background:linear-gradient(90deg,#1b4f72 50%,#fff 50%)}'
+    + '.pf-ring.voll{background:#1b4f72}'
+    + '.pf-perlen{display:flex;gap:3px;justify-content:center;margin-top:.1rem}'
+    + '.pf-perle{width:6px;height:6px;border-radius:50%;background:var(--ink,#15163a);opacity:.2}'
+    + '.pf-perle.halb{opacity:.55;background:#1b4f72}'
+    + '.pf-perle.voll{opacity:1;background:#1b4f72}'
+    + '.pf-kopf{font:800 1.02rem "DM Sans",sans-serif;display:flex;align-items:center;'
+    + 'justify-content:center;gap:.45rem;color:var(--ink,#15163a)}'
+    + '.pf-zurueck{align-self:flex-start;background:#fff;border:2px solid var(--ink,#15163a);'
+    + 'border-radius:100px;padding:.35rem .9rem;font:800 .78rem "DM Sans",sans-serif;'
+    + 'color:var(--ink,#15163a);cursor:pointer;-webkit-tap-highlight-color:transparent}'
+    + '.pf-stufe{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase;'
+    + 'color:var(--muted,#5f7068);opacity:.75}';
+
+  function css() {
+    if (document.getElementById(CSS_ID)) return;
+    var st = document.createElement('style');
+    st.id = CSS_ID; st.textContent = CSS;
+    document.head.appendChild(st);
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function kachel(inhalt, extra) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pf-kachel' + (extra || '');
+    b.innerHTML = inhalt;
+    return b;
+  }
+
+  /* Baut die Wahl in ein Element. onWahl(themaId, stufe) beim Tippen.
+     Der Raum entscheidet selbst, was dann passiert — der Helfer führt nur. */
+  function waehler(ziel, opt) {
+    opt = opt || {};
+    var ui = opt.ui || 'de';
+    css();
+    ziel.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.className = 'pf-wahl';
+    ziel.appendChild(wrap);
+
+    function ebene1() {
+      var kats = kategorien();
+      wrap.innerHTML = '';
+      if (!kats.length) return;
+      var st = document.createElement('div');
+      st.className = 'pf-stufe'; st.textContent = kats[0].stufe.toUpperCase();
+      wrap.appendChild(st);
+      var g = document.createElement('div'); g.className = 'pf-raster';
+      kats.forEach(function (K) {
+        var perlen = K.perlen.map(function (s) {
+          return '<span class="pf-perle' + (s === 'gesetzt' ? ' voll' : s === 'durchschritten' ? ' halb' : '') + '"></span>';
+        }).join('');
+        var k = kachel(
+          (K.naechste ? '<span class="pf-punkt"></span>' : '')
+          + '<span class="pf-em">' + K.em + '</span>'
+          + '<span class="pf-tt">' + esc(K.na[ui] || K.na.de) + '</span>'
+          + '<span class="pf-perlen">' + perlen + '</span>',
+          K.naechste ? ' pf-naechste' : '');
+        k.onclick = function () { ebene2(K); };
+        g.appendChild(k);
+      });
+      wrap.appendChild(g);
+    }
+
+    function ebene2(K) {
+      var liste = themenIn(K.id);
+      if (!liste.length) { ebene1(); return; }
+      wrap.innerHTML = '';
+      var zu = document.createElement('button');
+      zu.type = 'button'; zu.className = 'pf-zurueck';
+      zu.textContent = '← ' + (opt.zurueck || 'Themen');
+      zu.onclick = ebene1;
+      wrap.appendChild(zu);
+      var kopf = document.createElement('div');
+      kopf.className = 'pf-kopf';
+      kopf.innerHTML = '<span>' + K.em + '</span><span>' + esc(K.na[ui] || K.na.de) + '</span>';
+      wrap.appendChild(kopf);
+      var g = document.createElement('div'); g.className = 'pf-raster';
+      liste.forEach(function (x) {
+        var ring = x.status === 'gesetzt' ? ' voll' : x.status === 'durchschritten' ? ' halb' : '';
+        var k = kachel(
+          (x.naechste ? '<span class="pf-punkt"></span>' : '')
+          + '<span class="pf-ring' + ring + '"></span>'
+          + '<span class="pf-em">' + x.em + '</span>'
+          + '<span class="pf-tt">' + esc(x.na[ui] || x.na.de) + '</span>'
+          + (x.schritt ? '<span class="pf-sub">' + esc(x.schritt[ui] || x.schritt.de) + '</span>' : ''),
+          x.naechste ? ' pf-naechste' : '');
+        k.onclick = function () {
+          if (opt.onWahl) opt.onWahl(x.id, x.stufe, x);
+        };
+        g.appendChild(k);
+      });
+      wrap.appendChild(g);
+    }
+
+    ebene1();
+    return { zurueckZuGruppen: ebene1 };
+  }
+
   /* ── Öffentliche Fläche ───────────────────────────────────────────── */
   raum.SpikiuPfad = {
     lade: lade,
@@ -191,6 +327,7 @@
     palette: palette,
     kategorien: kategorien,
     themenIn: themenIn,
+    waehler: waehler,
     naechste: naechste,
     stufeRund: stufeRund,
     beruehre: beruehre,
