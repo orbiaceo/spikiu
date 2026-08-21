@@ -2966,6 +2966,15 @@ function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(fa
 
 // Paket 2: ein Thema startet NICHT mehr sofort das Rollenspiel, sondern erst die
 // Vorbereitung (Häppchen). Der bestehende P1-Seed-Zug folgt unverändert danach.
+// Der Themen-Wunsch als erster Zug. gespraech-modus.md sagt dazu: „Kommt der
+// erste Zug als Themen-Wunsch, bestätigst du kurz und steigst SOFORT in ein
+// themen-fokussiertes Gespräch / leichtes Rollenspiel ein."
+var WUNSCH = {
+  de: function(t){ return 'Ich möchte das Thema „' + t + '" üben.'; },
+  es: function(t){ return 'Quiero practicar el tema «' + t + '».'; },
+  en: function(t){ return 'I would like to practise the topic "' + t + '".'; }
+};
+
 function pickTopic(label, id){
   if (busy || guiding) return;
   setOpenerChrome(false);                // Gespräch beginnt → Schreibfeld + Profil-Chip wieder ein (geführt: sichtbar, aber gesperrt)
@@ -2975,9 +2984,23 @@ function pickTopic(label, id){
   removeOptionen();
   korrekturen = [];                      // neue Szene → frische Korrektur-Sammlung
   sessionGezaehlt = false;               // Teil 36: neuer Gesprächsbogen → Blatt-Zähler zurück
-  gefuehrt = true;                       // geführtes Thema-Rollenspiel → Antwort-Chips erlaubt
   TOPIC_LABEL = label;
   TOPIC_ID = id || null;                 // Teil 64: feste Themen treffen die DB; Frei-Themen (kein id) → API-Fallback
+
+  // FREIES GESPRÄCH: keine Häppchen, keine Drills, keine Leiste.
+  // Wörter, Hören und Sprechen sind Sache des geführten Raums — hier wird
+  // GESPROCHEN. Das ist nicht nur die Architektur-Entscheidung vom 18.08.2026,
+  // es beendet auch die doppelte Karten-Umsetzung: die .hap-/.hv-Widgets in
+  // dieser Datei laufen nur noch im geführten Modus, wo sie herkommen.
+  if (getModus() === 'frei'){
+    gefuehrt = false;                    // freier Flur: keine Antwort-Chips erzwingen
+    hideRail();
+    enterReel();
+    sendUserTurn((WUNSCH[uiLang()] || WUNSCH.de)(label));
+    return;
+  }
+
+  gefuehrt = true;                       // geführtes Thema-Rollenspiel → Antwort-Chips erlaubt
   showRail(); setStage('wortschatz');
   enterReel();                           // Phase 3b: der GANZE geführte Pfad läuft im horizontalen Deck
   addMessage('user', label);             // die Wahl als (erste) Karte im Deck
@@ -3031,6 +3054,8 @@ function fillRail(){
   });
 }
 function showRail(){ var r = document.getElementById('rail'); if (r){ fillRail(); r.classList.remove('hidden'); } }
+// Im freien Flur gibt es keine Etappen — nur ein Gespräch.
+function hideRail(){ var r = document.getElementById('rail'); if (r) r.classList.add('hidden'); }
 function setStage(stage){
   var order = ['thema','wortschatz','hoeren','sprechen','lektion'];
   var idx = order.indexOf(stage);
