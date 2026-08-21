@@ -33,7 +33,14 @@
   /* ── Engine-CSS: einmal injiziert. Nutzt die Seiten-Tokens (--ink usw.),
         mit Fallbacks, damit die Engine überall alleine stehen kann. ── */
   var CSS = ''
-    + '.spk-card{position:absolute;inset:.8rem .85rem 1.1rem;display:flex;flex-direction:column;'
+    /* Die Karte umschliesst ihren Inhalt und sitzt mittig, statt die Buehne
+       immer ganz zu fuellen. Vorher stand bei duennen Karten (Sprech-Drill)
+       die halbe Flaeche leer, waehrend volle Karten gut aussahen.
+       Eine Untergrenze haelt sie trotzdem stattlich, eine Obergrenze
+       laesst fitCard weiter schrumpfen, wenn viel drin ist. */
+    + '.spk-card{position:absolute;left:.85rem;right:.85rem;top:50%;transform:translateY(-50%);'
+    + 'height:auto;min-height:min(58dvh,26rem);max-height:calc(100% - 1.9rem);'
+    + 'display:flex;flex-direction:column;'
     + 'background:#fff;border:var(--ow,2.5px) solid var(--ink,#15163a);border-radius:22px;'
     + 'box-shadow:5px 6px 0 var(--ink,#15163a);overflow:hidden;--scale:1}'
     + '.spk-body{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;'
@@ -62,7 +69,9 @@
     /* Chips brauchen eine Mindestbreite, sonst wirken Ein-Wort-Optionen gestaucht. */
     + '.spk-opts.chips{gap:.5rem}'
     + '.spk-opts.chips .spk-opt{border-radius:100px;padding:.7rem 1.35rem;min-width:6rem;text-align:center}'
-    + '.spk-opts.chips .spk-opt.ziel{font-size:calc(1.24rem*var(--scale))}'
+    /* Untergrenze: die Chip-Schrift darf mit --scale nicht ins Winzige rutschen. */
+    + '.spk-opts.chips .spk-opt{font-size:max(1rem,calc(1.05rem*var(--scale)))}'
+    + '.spk-opts.chips .spk-opt.ziel{font-size:max(1.08rem,calc(1.24rem*var(--scale)))}'
     + '.spk-opt.ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(1.5rem*var(--scale))}'
     + '.spk-opt.picked{outline:3px solid var(--ink,#15163a)}'
     + '.spk-opt.correct{background:#e8f5ee;border-color:var(--acc,#1f93b0);color:var(--acc,#1f93b0)}'
