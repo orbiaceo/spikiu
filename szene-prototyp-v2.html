@@ -34,6 +34,7 @@ body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,san
   display:flex;flex-direction:column;gap:.4rem}
 
 .bild{font-size:4rem;line-height:1;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12))}
+.bild img{width:min(58vw,15rem);height:auto;border-radius:16px;display:block}
 .rollen{font:700 1.08rem/1.45 "DM Sans",sans-serif;max-width:20rem}
 .rollen b{color:var(--acc)}
 .ort{font:600 .85rem "DM Sans",sans-serif;color:var(--mid)}
@@ -88,6 +89,7 @@ body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,san
 <div class="buehne" id="buehne"></div>
 
 <script src="lernpfad-daten.js"></script>
+<script src="bilder-db.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
    SZENE v2 — die Antwort auf „was passiert bei Abweichung?"
@@ -199,7 +201,11 @@ function malBuehne(b){
   var k=el('div','karte');
   k.appendChild(el('div','kopf')).appendChild(el('div','braue', t.na.de));
   var l=el('div','leib');
-  l.appendChild(el('div','bild', t.em));
+  /* Das Szenenbild statt des Emojis, wenn eins da ist. */
+  var bw=el('div','bild');
+  var im = window.SpikiuBilder && window.SpikiuBilder.img(THEMA, MU);
+  if(im) bw.appendChild(im); else bw.textContent=t.em;
+  l.appendChild(bw);
   var ro=el('div','rollen');
   ro.innerHTML='Ich bin <b>'+r.s.de+'</b>,<br>du bist <b>'+r.l.de+'</b>.';
   l.appendChild(ro);
