@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Szene v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--mid:#5f7068;--minz:#eef7f1;--tief:#1b4f72;--ow:2.5px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;
+  display:flex;flex-direction:column;overflow:hidden}
+
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.45rem .7rem;flex-shrink:0}
+.pult h1{font:800 .7rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5;margin-bottom:.3rem}
+.reihe{display:flex;gap:.26rem;flex-wrap:wrap;align-items:center}
+.tog{font:800 .68rem "DM Sans",sans-serif;padding:.26rem .48rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.kosten{margin-left:auto;font:800 .66rem "DM Sans",sans-serif;color:var(--mid);text-align:right;line-height:1.3}
+.kosten b{color:var(--ink)}
+
+.buehne{flex:1;position:relative;min-height:0}
+.karte{position:absolute;inset:.7rem .85rem 1.4rem;display:flex;flex-direction:column;
+  background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;
+  box-shadow:5px 6px 0 var(--ink);overflow:hidden}
+.kopf{flex:0 0 auto;padding:.65rem 1.1rem .15rem;text-align:center}
+.braue{font:800 .64rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);opacity:.8}
+.leib{flex:1 1 auto;min-height:0;overflow-y:auto;padding:.4rem 1.1rem .5rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.45rem;text-align:center}
+.fuss{flex:0 0 auto;padding:.5rem 1rem .8rem;border-top:2px solid #eef1ee;
+  display:flex;flex-direction:column;gap:.4rem}
+
+.bild{font-size:4rem;line-height:1;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12))}
+.rollen{font:700 1.08rem/1.45 "DM Sans",sans-serif;max-width:20rem}
+.rollen b{color:var(--acc)}
+.ort{font:600 .85rem "DM Sans",sans-serif;color:var(--mid)}
+
+.ziel{font-family:"Lora",serif;font-weight:600;font-size:clamp(1.35rem,5.4vw,1.85rem);line-height:1.26}
+.ziel.klein{font-size:1.2rem}
+.trans{font:600 .9rem/1.3 "DM Sans",sans-serif;color:var(--mid);font-style:italic}
+.audio{width:48px;height:48px;flex:none;border-radius:50%;border:var(--ow) solid var(--ink);
+  background:var(--acc);color:#fff;box-shadow:3px 3px 0 var(--ink);display:flex;
+  align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;padding:0}
+.audio:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.duSagtest{background:var(--minz);border-radius:12px;padding:.35rem .7rem;
+  font:700 .88rem "DM Sans",sans-serif;max-width:19rem}
+.duLabel{font:800 .58rem "DM Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mid)}
+
+.dranLabel{font:800 .6rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--mid);text-align:center}
+.aw{background:#fff;border:2.5px solid var(--ink);border-radius:13px;padding:.5rem .7rem;
+  font:700 .96rem "DM Sans",sans-serif;color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink);
+  text-align:center;width:100%}
+.aw:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.eingabe{display:flex;gap:.4rem;align-items:stretch}
+.eingabe textarea{flex:1;border:2.5px solid var(--ink);border-radius:13px;padding:.45rem .6rem;
+  font:700 .95rem "DM Sans",sans-serif;resize:none;background:#fff;color:var(--ink)}
+.senden{flex:0 0 auto;border:2.5px solid var(--ink);border-radius:13px;background:var(--acc);
+  color:#fff;font:800 .9rem "DM Sans",sans-serif;padding:0 .9rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.senden:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.knopf{font:800 .96rem "DM Sans",sans-serif;padding:.6rem 1.2rem;border-radius:100px;
+  border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;box-shadow:4px 4px 0 var(--ink);
+  cursor:pointer;align-self:center;min-width:9rem}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.deckel{font:700 .74rem "DM Sans",sans-serif;color:#a0630a;text-align:center;line-height:1.35}
+
+.spur{position:absolute;left:.85rem;right:.85rem;bottom:.2rem;display:flex;gap:.3rem;
+  justify-content:center;align-items:center;font:700 .64rem "DM Sans",sans-serif;color:var(--mid)}
+.marke{width:9px;height:9px;border-radius:50%;background:#cfdad3}
+.marke.skript{background:var(--tief)}
+.marke.abweich{background:#c67a1e}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Szene v2 · Skript + Mini-Prompt</h1>
+  <div class="reihe">
+    <button class="tog" id="tNeu">Von vorn</button>
+    <button class="tog" id="tPrompt">Mini-Prompt zeigen</button>
+    <span class="kosten" id="kosten"></span>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   SZENE v2 — die Antwort auf „was passiert bei Abweichung?"
+
+   ZWEI SPUREN, EINE KARTE.
+   Das Skript liegt in lernpfad-daten.js: sechs Zeilen, abwechselnd.
+   Der Lerner darf jederzeit tippen ODER waehlen — das Menue verschwindet
+   nie, es gibt keinen Modus-Wechsel.
+
+     Trifft er die Skriptzeile  → naechste Zeile. NULL Token.
+     Weicht er ab              → EIN Mini-Prompt an Haiku:
+                                 keine Seele, kein Raum-Prompt, kein Verlauf.
+                                 Nur Rolle, Ort, sein Satz, die Zielzeile.
+                                 ~250 Token statt 6.500.
+
+   Danach ist die Szene wieder auf Kurs. Die Figur bleibt die Figur —
+   sie reagiert echt, aber sie fuehrt zurueck („Am Gelernten bleiben").
+
+   DECKEL: hoechstens 5 Abweichungen je Szene. Danach nur noch Menue,
+   sonst wird die kostenlose Szene durch die Hintertuer zum Chat.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var D = window.SpikiuLernpfad;
+var STUFE='a1', THEMA='cafe', MU='de';
+var ABWEICH_DECKEL = 5;
+
+/* Gehoert spaeter in lernpfad-daten.js — kein Koenig ohne Untertan. */
+var ROLLEN = {
+  cafe:            { s:{de:'der Kellner'},      l:{de:'der Gast'},      o:{de:'auf einer Terrasse in Madrid'} },
+  restaurant:      { s:{de:'die Kellnerin'},    l:{de:'der Gast'},      o:{de:'in einem kleinen Restaurant'} },
+  einkaufen:       { s:{de:'die Verkäuferin'},  l:{de:'die Kundin'},    o:{de:'auf dem Markt'} },
+  wegbeschreibung: { s:{de:'eine Passantin'},   l:{de:'ein Reisender'}, o:{de:'auf der Straße'} },
+  taxi:            { s:{de:'der Taxifahrer'},   l:{de:'der Fahrgast'},  o:{de:'im Taxi'} },
+  familie:         { s:{de:'eine Nachbarin'},   l:{de:'du selbst'},     o:{de:'beim Kaffee'} },
+  hotel:           { s:{de:'die Empfangsdame'}, l:{de:'der Gast'},      o:{de:'an der Rezeption'} },
+  bahnhof:         { s:{de:'der Mann am Schalter'}, l:{de:'der Reisende'}, o:{de:'am Bahnhof'} },
+  arzt:            { s:{de:'die Ärztin'},       l:{de:'die Patientin'}, o:{de:'in der Praxis'} },
+  wetter:          { s:{de:'ein Nachbar'},      l:{de:'du selbst'},     o:{de:'vor der Tür'} }
+};
+
+var phase='buehne', zug=0, gesagt=null, abweichung=null, abwZahl=0;
+var spur=[];              // 'skript' | 'abweich' — fuer die Anzeige unten
+var zeigePrompt=false, letzterPrompt='';
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+function S(){ return D.station(STUFE,THEMA); }
+function TH(){ return D.thema(THEMA); }
+function R(){ return ROLLEN[THEMA]; }
+
+function sprich(t){
+  try{ speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t); u.lang='es-ES'; u.rate=.92; speechSynthesis.speak(u);
+  }catch(e){}
+}
+function audioKnopf(t){ var b=el('button','audio','🔊'); b.type='button'; b.onclick=function(){sprich(t);}; return b; }
+
+/* Das Menue: Skriptzeile + zwei Ablenker aus anderen Stationen. Alles DB. */
+function menue(richtig){
+  var out=[richtig], pool=[];
+  D.themen.forEach(function(t){
+    if(t.id===THEMA) return;
+    var s=D.station(STUFE,t.id); if(!s) return;
+    s.dialog.zeilen.forEach(function(z){ if(z.wer==='lerner') pool.push(z.z); });
+  });
+  while(out.length<3 && pool.length){
+    var i=Math.floor(Math.random()*pool.length);
+    if(out.indexOf(pool[i])===-1) out.push(pool[i]);
+    pool.splice(i,1);
+  }
+  return out.sort(function(){return Math.random()-.5;});
+}
+
+/* DER MINI-PROMPT. Das ist der ganze Trick: keine Seele, kein Verlauf. */
+function baueMiniPrompt(satz, zielzeile){
+  var r=R();
+  return 'Du bist ' + r.s.de + ' ' + r.o.de + '.\n'
+    + 'Der Gast sagte: „' + satz + '"\n'
+    + 'Antworte in EINEM kurzen Satz auf Spanisch, in der Rolle, freundlich.\n'
+    + 'Führe danach zurück zu: „' + zielzeile + '"\n'
+    + 'Keine Erklärung, keine Regieanweisung, nur die Replik.';
+}
+function tokenSchaetzung(p){ return Math.round(p.length/3.3) + 60; }
+
+function kostenAnzeige(){
+  var skript=spur.filter(function(x){return x==='skript';}).length;
+  var abw=spur.filter(function(x){return x==='abweich';}).length;
+  var usd=abw*0.00055;
+  document.getElementById('kosten').innerHTML =
+    'Skript <b>'+skript+'</b> · Abweichung <b>'+abw+'</b><br>≈ <b>'+usd.toFixed(4)+' USD</b>';
+}
+
+function mal(){
+  var b=document.getElementById('buehne'); b.innerHTML='';
+  kostenAnzeige();
+  if(phase==='buehne') malBuehne(b); else malSzene(b);
+  malSpur(b);
+}
+
+function malSpur(b){
+  var s=el('div','spur');
+  spur.forEach(function(x){ s.appendChild(el('div','marke '+x)); });
+  for(var i=spur.length;i<6;i++) s.appendChild(el('div','marke'));
+  s.appendChild(el('span',null,'  blau = Skript · gold = Abweichung'));
+  b.appendChild(s);
+}
+
+function malBuehne(b){
+  var st=S(), t=TH(), r=R();
+  var k=el('div','karte');
+  k.appendChild(el('div','kopf')).appendChild(el('div','braue', t.na.de));
+  var l=el('div','leib');
+  l.appendChild(el('div','bild', t.em));
+  var ro=el('div','rollen');
+  ro.innerHTML='Ich bin <b>'+r.s.de+'</b>,<br>du bist <b>'+r.l.de+'</b>.';
+  l.appendChild(ro);
+  l.appendChild(el('div','ort', r.o.de));
+  k.appendChild(l);
+  var f=el('div','fuss');
+  var los=el('button','knopf','Los!'); los.type='button';
+  los.onclick=function(){ phase='szene'; zug=0; gesagt=null; abweichung=null; mal(); };
+  f.appendChild(los);
+  k.appendChild(f);
+  b.appendChild(k);
+}
+
+function malSzene(b){
+  var st=S(), zeilen=st.dialog.zeilen;
+  var sIdx=zug*2;
+  if(sIdx>=zeilen.length){ malEnde(b); return; }
+  var sp=zeilen[sIdx], lz=zeilen[sIdx+1]||null;
+  var r=R();
+
+  var k=el('div','karte');
+  var kopf=el('div','kopf');
+  kopf.appendChild(el('div','braue', r.s.de));
+  k.appendChild(kopf);
+
+  var l=el('div','leib');
+  /* Wich der Lerner ab, spricht zuerst die Mini-Prompt-Antwort. */
+  if(abweichung){
+    l.appendChild(el('div','ziel klein', abweichung.antwort));
+    l.appendChild(audioKnopf(abweichung.antwort));
+    l.appendChild(el('div','trans', abweichung.trans));
+  } else {
+    l.appendChild(el('div','ziel', sp.z));
+    l.appendChild(audioKnopf(sp.z));
+    l.appendChild(el('div','trans', sp.na.de));
+  }
+  if(gesagt){
+    l.appendChild(el('div','duLabel','Du'));
+    l.appendChild(el('div','duSagtest', gesagt));
+  }
+  k.appendChild(l);
+
+  var f=el('div','fuss');
+
+  if(gesagt && !abweichung){
+    var w=el('button','knopf','Weiter'); w.type='button';
+    w.onclick=function(){ zug++; gesagt=null; mal(); };
+    f.appendChild(w);
+  } else {
+    f.appendChild(el('div','dranLabel','Du bist dran'));
+    var offen = abwZahl < ABWEICH_DECKEL;
+
+    /* Das Menue verschwindet NIE. Kein Modus-Wechsel. */
+    if(lz){
+      menue(lz.z).forEach(function(x){
+        var a=el('button','aw',x); a.type='button';
+        a.onclick=function(){ antwortete(x, lz.z, sp); };
+        f.appendChild(a);
+      });
+    }
+    /* Darunter das Feld — wer weiss was er sagen will, tippt. */
+    if(offen){
+      var wrap=el('div','eingabe');
+      var ta=document.createElement('textarea'); ta.rows=1; ta.placeholder='… oder selbst schreiben';
+      var snd=el('button','senden','▶'); snd.type='button';
+      snd.onclick=function(){ var v=ta.value.trim(); if(v.length<2) return; antwortete(v, lz?lz.z:'', sp); };
+      wrap.appendChild(ta); wrap.appendChild(snd);
+      f.appendChild(wrap);
+    } else {
+      f.appendChild(el('div','deckel','Lass uns die Szene zu Ende bringen.'));
+    }
+  }
+  k.appendChild(f);
+  b.appendChild(k);
+
+  if(zeigePrompt && letzterPrompt){
+    var pr=el('div','spur');
+    pr.style.cssText='position:static;padding:.4rem .85rem;display:block;text-align:left;'
+      +'font:600 .66rem/1.45 ui-monospace,monospace;color:#7a4a08;background:#fffbe8;'
+      +'border:2px dashed #c67a1e;border-radius:12px;margin:.2rem .85rem .8rem;white-space:pre-wrap';
+    pr.textContent='MINI-PROMPT (' + tokenSchaetzung(letzterPrompt) + ' Token statt ~6500):\n\n' + letzterPrompt;
+    b.appendChild(pr);
+  }
+}
+
+function antwortete(satz, skriptzeile, spikiuZeile){
+  gesagt = satz;
+  if(satz === skriptzeile){
+    spur.push('skript');
+    abweichung = null;                      /* auf Kurs — null Token */
+  } else {
+    spur.push('abweich');
+    abwZahl++;
+    letzterPrompt = baueMiniPrompt(satz, spikiuZeile.z);
+    /* Simulierte Haiku-Replik. In echt: ein Aufruf mit genau diesem Prompt. */
+    abweichung = {
+      antwort: '¡Ah, mucho gusto! Pero dígame — ' + spikiuZeile.z.replace(/^[¡¿]?[^¿]*[¿]/,'¿'),
+      trans: 'Ah, sehr erfreut! Aber sagen Sie — ' + spikiuZeile.na.de
+    };
+  }
+  mal();
+  if(abweichung){
+    /* Nach der Rueckfuehrung geht es auf derselben Zeile weiter. */
+    setTimeout(function(){ /* nur Anzeige; Weiter kommt ueber erneute Antwort */ },0);
+  }
+}
+
+function malEnde(b){
+  var k=el('div','karte');
+  var l=el('div','leib');
+  l.appendChild(el('div','bild','🫶'));
+  l.appendChild(el('div','rollen','Szene zu Ende.'));
+  var skript=spur.filter(function(x){return x==='skript';}).length;
+  var abw=spur.filter(function(x){return x==='abweich';}).length;
+  l.appendChild(el('div','ort', skript+' Züge aus dem Skript, '+abw+' Abweichungen — '
+    + (abw*0.00055).toFixed(4)+' USD.'));
+  k.appendChild(l);
+  var f=el('div','fuss');
+  var n=el('button','knopf','Noch einmal'); n.type='button';
+  n.onclick=neu; f.appendChild(n);
+  k.appendChild(f);
+  b.appendChild(k);
+}
+
+function neu(){ phase='buehne'; zug=0; gesagt=null; abweichung=null; abwZahl=0; spur=[]; letzterPrompt=''; mal(); }
+document.getElementById('tNeu').onclick=neu;
+document.getElementById('tPrompt').onclick=function(){
+  zeigePrompt=!zeigePrompt; this.setAttribute('aria-pressed',zeigePrompt?'true':'false'); mal();
+};
+mal();
+</script>
+</body>
+</html>
