@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Szene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--mid:#5f7068;--minz:#eef7f1;--tief:#1b4f72;--ow:2.5px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;
+  display:flex;flex-direction:column;overflow:hidden}
+
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.45rem .7rem;flex-shrink:0}
+.pult h1{font:800 .72rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5;margin-bottom:.35rem}
+.reihe{display:flex;gap:.28rem;flex-wrap:wrap;align-items:center}
+.tog{font:800 .7rem "DM Sans",sans-serif;padding:.28rem .5rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--ink);color:#fff}
+.zaehler{margin-left:auto;font:800 .7rem "DM Sans",sans-serif;color:var(--mid)}
+
+.buehne{flex:1;position:relative;min-height:0;padding:.8rem .85rem 1.1rem}
+
+.karte{position:absolute;inset:.8rem .85rem 1.1rem;display:flex;flex-direction:column;
+  background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;
+  box-shadow:5px 6px 0 var(--ink);overflow:hidden}
+.kopf{flex:0 0 auto;padding:.7rem 1.1rem .2rem;text-align:center}
+.braue{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);opacity:.8}
+.leib{flex:1 1 auto;min-height:0;overflow-y:auto;padding:.5rem 1.1rem .6rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center}
+.fuss{flex:0 0 auto;padding:.6rem 1.1rem .95rem;border-top:2px solid #eef1ee;
+  display:flex;flex-direction:column;gap:.5rem}
+
+/* Bühnenkarte */
+.bild{font-size:4.4rem;line-height:1}
+.rollen{font:700 1.12rem/1.45 "DM Sans",sans-serif;max-width:20rem}
+.rollen b{color:var(--acc)}
+.ort{font:600 .88rem "DM Sans",sans-serif;color:var(--mid)}
+
+/* Szenenkarte */
+.ziel{font-family:"Lora",serif;font-weight:600;font-size:clamp(1.5rem,6vw,2rem);line-height:1.26}
+.trans{font:600 .95rem/1.35 "DM Sans",sans-serif;color:var(--mid);font-style:italic}
+.audio{width:52px;height:52px;flex:none;border-radius:50%;border:var(--ow) solid var(--ink);
+  background:var(--acc);color:#fff;box-shadow:4px 4px 0 var(--ink);display:flex;
+  align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;padding:0}
+.audio:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+/* Eingabe — auf DERSELBEN Karte */
+.dranLabel{font:800 .64rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--mid);text-align:center}
+.antworten{display:flex;flex-direction:column;gap:.4rem}
+.aw{background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:.6rem .8rem;
+  font:700 1.02rem "DM Sans",sans-serif;color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink);
+  text-align:center}
+.aw:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.aw.gewaehlt{background:#dff2e5;border-color:#2d6a4f}
+textarea{width:100%;border:2.5px solid var(--ink);border-radius:14px;padding:.55rem .7rem;
+  font:700 1rem "DM Sans",sans-serif;resize:none;background:#fff;color:var(--ink)}
+.wechsel{background:none;border:0;font:700 .78rem "DM Sans",sans-serif;color:var(--acc);
+  text-decoration:underline;cursor:pointer;align-self:center}
+.knopf{font:800 1rem "DM Sans",sans-serif;padding:.7rem 1.2rem;border-radius:100px;
+  border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;box-shadow:4px 4px 0 var(--ink);
+  cursor:pointer;align-self:center;min-width:9rem}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+.info{position:absolute;left:.85rem;right:.85rem;bottom:.15rem;font:600 .68rem "DM Sans",sans-serif;
+  color:var(--mid);text-align:center;opacity:.75}
+.gesagt{font:700 .9rem "DM Sans",sans-serif;color:var(--ink);background:var(--minz);
+  border-radius:12px;padding:.4rem .7rem;display:inline-block}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Szene · Bühne, Eingabe auf der Karte</h1>
+  <div class="reihe">
+    <button class="tog" id="tNeu">Von vorn</button>
+    <span class="zaehler" id="zaehler">Token-Aufrufe: 0</span>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   SZENE — Entwurf nach Leos Vorgaben (18.08.2026)
+
+   1. Bühnenkarte: Bild + „Ich bin X, du bist Y" + Los!
+   2. Danach die Szene. Spikius Zeile UND die Eingabe auf DERSELBEN Karte.
+   3. Der Dialog kommt aus lernpfad-daten.js — NULL Token, solange der
+      Lerner aus den Antworten wählt.
+   4. Tippt er frei, geht EIN Aufruf raus. Der Zähler oben zeigt es.
+   5. Keine Meta-Beschreibungen. Nur Rede.
+
+   FEHLT IN DEN DATEN: die Rolle des LERNERS. Die Station kennt nur
+   Spikius Rolle. Hier vorläufig ergänzt — muss in die Datei.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var D = window.SpikiuLernpfad;
+var STUFE = 'a1', THEMA = 'cafe', MU = 'de';
+
+/* Muss später in lernpfad-daten.js: rolleLerner + ort je Station. */
+var ROLLEN = {
+  cafe:            { lerner:{de:'der Gast'},        ort:{de:'auf einer Terrasse'} },
+  restaurant:      { lerner:{de:'der Gast'},        ort:{de:'im Restaurant'} },
+  einkaufen:       { lerner:{de:'die Kundin'},      ort:{de:'auf dem Markt'} },
+  wegbeschreibung: { lerner:{de:'ein Reisender'},   ort:{de:'auf der Straße'} },
+  taxi:            { lerner:{de:'der Fahrgast'},    ort:{de:'im Taxi'} },
+  familie:         { lerner:{de:'du selbst'},       ort:{de:'beim Kaffee'} },
+  hotel:           { lerner:{de:'der Gast'},        ort:{de:'an der Rezeption'} },
+  bahnhof:         { lerner:{de:'der Reisende'},    ort:{de:'am Schalter'} },
+  arzt:            { lerner:{de:'die Patientin'},   ort:{de:'in der Praxis'} },
+  wetter:          { lerner:{de:'du selbst'},       ort:{de:'vor der Tür'} }
+};
+
+var zug = 0;          // Index in dialog.zeilen (immer eine Spikiu-Zeile)
+var phase = 'buehne'; // buehne | szene
+var modusFrei = false;
+var aufrufe = 0;
+var gesagt = null;
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+function S(){ return D.station(STUFE, THEMA); }
+function thema(){ return D.thema(THEMA); }
+
+function sprich(t){
+  try{ speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t); u.lang='es-ES'; u.rate=.92; speechSynthesis.speak(u);
+  }catch(e){}
+}
+function audioKnopf(t){
+  var b=el('button','audio','🔊'); b.type='button';
+  b.onclick=function(){ sprich(t); }; return b;
+}
+
+/* Antwortmenü: die Skriptzeile des Lerners + zwei Ablenker aus anderen
+   Stationen. Beides steht in der Datenbank — kein Aufruf noetig. */
+function antworten(richtig){
+  var out=[richtig], pool=[];
+  D.themen.forEach(function(t){
+    if (t.id===THEMA) return;
+    var s=D.station(STUFE,t.id); if(!s) return;
+    s.dialog.zeilen.forEach(function(z){ if(z.wer==='lerner') pool.push(z.z); });
+  });
+  while(out.length<3 && pool.length){
+    var i=Math.floor(Math.random()*pool.length);
+    if(out.indexOf(pool[i])===-1) out.push(pool[i]);
+    pool.splice(i,1);
+  }
+  return out.sort(function(){return Math.random()-.5;});
+}
+
+function mal(){
+  var b=document.getElementById('buehne'); b.innerHTML='';
+  document.getElementById('zaehler').textContent='Token-Aufrufe: '+aufrufe;
+  if(phase==='buehne') malBuehne(b); else malSzene(b);
+}
+
+/* ── 1. Die Bühnenkarte ────────────────────────────────────────────── */
+function malBuehne(b){
+  var st=S(), t=thema(), R=ROLLEN[THEMA];
+  var k=el('div','karte');
+  k.appendChild(el('div','kopf')).appendChild(el('div','braue', t.na.de));
+
+  var l=el('div','leib');
+  l.appendChild(el('div','bild', t.em));          /* hier käme das Cartoon-Bild */
+  var r=el('div','rollen');
+  r.innerHTML='Ich bin <b>'+st.dialog.rolle.de.replace(/^Der |^Die /,'')
+    +'</b>, du bist <b>'+R.lerner.de+'</b>.';
+  l.appendChild(r);
+  l.appendChild(el('div','ort', R.ort.de));
+  k.appendChild(l);
+
+  var f=el('div','fuss');
+  var los=el('button','knopf','Los!'); los.type='button';
+  los.onclick=function(){ phase='szene'; zug=0; gesagt=null; mal(); };
+  f.appendChild(los);
+  k.appendChild(f);
+  b.appendChild(k);
+
+  b.appendChild(el('div','info','Bild, Rollen, ein Knopf. Kein Aufruf — alles aus der Datenbank.'));
+}
+
+/* ── 2. Die Szene: Spikius Zeile UND die Eingabe auf EINER Karte ───── */
+function malSzene(b){
+  var st=S(), zeilen=st.dialog.zeilen;
+  /* Spikiu-Zeilen liegen auf 0,2,4 — die Lernerzeile danach ist das Skript. */
+  var sIdx=zug*2;
+  if(sIdx>=zeilen.length){ malEnde(b); return; }
+  var sp=zeilen[sIdx], lz=zeilen[sIdx+1] || null;
+
+  var k=el('div','karte');
+  var kopf=el('div','kopf');
+  kopf.appendChild(el('div','braue', st.dialog.rolle.de));
+  k.appendChild(kopf);
+
+  var l=el('div','leib');
+  l.appendChild(el('div','ziel', sp.z));
+  l.appendChild(audioKnopf(sp.z));
+  l.appendChild(el('div','trans', sp.na.de));
+  if(gesagt){
+    l.appendChild(el('div','trans','Du:'));
+    l.appendChild(el('div','gesagt', gesagt));
+  }
+  k.appendChild(l);
+
+  /* Der Fuß trägt die Eingabe — kein Wischen, keine zweite Karte. */
+  var f=el('div','fuss');
+  if(gesagt){
+    var w=el('button','knopf','Weiter'); w.type='button';
+    w.onclick=function(){ zug++; gesagt=null; mal(); };
+    f.appendChild(w);
+  } else {
+    f.appendChild(el('div','dranLabel','Du bist dran'));
+    if(!modusFrei && lz){
+      var box=el('div','antworten');
+      antworten(lz.z).forEach(function(x){
+        var a=el('button','aw',x); a.type='button';
+        a.onclick=function(){
+          gesagt=x;
+          if(x!==lz.z) aufrufe++;   /* falsche Wahl → Spikiu muss reagieren */
+          mal();
+        };
+        box.appendChild(a);
+      });
+      f.appendChild(box);
+      var wf=el('button','wechsel','lieber selbst schreiben'); wf.type='button';
+      wf.onclick=function(){ modusFrei=true; mal(); };
+      f.appendChild(wf);
+    } else {
+      var ta=document.createElement('textarea'); ta.rows=2; ta.placeholder='Antworte auf Spanisch …';
+      f.appendChild(ta);
+      var snd=el('button','knopf','Senden'); snd.type='button';
+      snd.onclick=function(){
+        var v=ta.value.trim(); if(v.length<2) return;
+        gesagt=v; aufrufe++;        /* freier Text → ein Aufruf */
+        mal();
+      };
+      f.appendChild(snd);
+      if(lz){
+        var wm=el('button','wechsel','lieber auswählen'); wm.type='button';
+        wm.onclick=function(){ modusFrei=false; mal(); };
+        f.appendChild(wm);
+      }
+    }
+  }
+  k.appendChild(f);
+  b.appendChild(k);
+
+  b.appendChild(el('div','info', modusFrei
+    ? 'Freier Text: jeder Zug kostet einen Aufruf.'
+    : 'Auswahl aus der Datenbank: null Token, solange die Skriptzeile getroffen wird.'));
+}
+
+function malEnde(b){
+  var k=el('div','karte');
+  var l=el('div','leib');
+  l.appendChild(el('div','bild','🫶'));
+  l.appendChild(el('div','rollen','Szene zu Ende.'));
+  l.appendChild(el('div','ort','Der Ring dieser Station steht jetzt auf halb.'));
+  k.appendChild(l);
+  var f=el('div','fuss');
+  var n=el('button','knopf','Noch einmal'); n.type='button';
+  n.onclick=function(){ phase='buehne'; zug=0; gesagt=null; aufrufe=0; mal(); };
+  f.appendChild(n);
+  k.appendChild(f);
+  b.appendChild(k);
+}
+
+document.getElementById('tNeu').onclick=function(){
+  phase='buehne'; zug=0; gesagt=null; aufrufe=0; modusFrei=false; mal();
+};
+mal();
+</script>
+</body>
+</html>
