@@ -59,10 +59,7 @@
     + '.spk-opt{font-family:"DM Sans",sans-serif;font-weight:700;font-size:calc(1.12rem*var(--scale));line-height:1.3;'
     + 'color:var(--ink,#15163a);background:#fff;border:2px solid var(--ink,#15163a);border-radius:16px;'
     + 'padding:.7rem .95rem;text-align:center;cursor:pointer}'
-    /* Chips brauchen eine Mindestbreite, sonst wirken Ein-Wort-Optionen gestaucht. */
-    + '.spk-opts.chips{gap:.5rem}'
-    + '.spk-opts.chips .spk-opt{border-radius:100px;padding:.7rem 1.35rem;min-width:6rem;text-align:center}'
-    + '.spk-opts.chips .spk-opt.ziel{font-size:calc(1.24rem*var(--scale))}'
+    + '.spk-opts.chips .spk-opt{border-radius:100px;padding:.55rem 1rem}'
     + '.spk-opt.ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(1.5rem*var(--scale))}'
     + '.spk-opt.picked{outline:3px solid var(--ink,#15163a)}'
     + '.spk-opt.correct{background:#e8f5ee;border-color:var(--acc,#1f93b0);color:var(--acc,#1f93b0)}'
