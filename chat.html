@@ -344,6 +344,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* Eingabe AUF der Spikiu-Folie (18.08.2026): Frage und Antwort gehoeren
    zusammen. Vorher lag Spikius Zeile auf einer Karte und „Du bist dran"
    auf der naechsten — der Lerner musste wischen, um zu antworten. */
+/* Echo des eigenen Zugs (18.08.2026): Er stand als EIGENE gelbe Karte im Reel —
+   nach jeder Antwort eine Zwischenkarte, die niemand sehen wollte. Jetzt sitzt
+   er klein oben auf Spikius Antwortkarte, mit dem Ändern-Knopf daneben. */
+.reel-spikiu .reel-echo { width:100%; max-width:22rem; margin-bottom:0.9rem; padding-bottom:0.7rem; border-bottom:2px solid var(--line,#eef1ee); display:flex; align-items:center; justify-content:center; gap:0.5rem; flex-wrap:wrap; }
+.reel-spikiu .reel-echo .re-text { font:700 0.95rem 'DM Sans',sans-serif; color:var(--mid); }
+.reel-spikiu .reel-echo .re-edit { background:none; border:2px solid var(--line,#eef1ee); border-radius:100px; padding:0.2rem 0.65rem; font:800 0.7rem 'DM Sans',sans-serif; color:var(--mid); cursor:pointer; }
+.reel-spikiu .reel-echo .re-edit:active { transform:scale(0.97); }
 .reel-spikiu .reel-antwort { width:100%; max-width:22rem; margin-top:1.1rem; padding-top:0.9rem; border-top:2px solid var(--line,#eef1ee); display:flex; flex-direction:column; align-items:center; gap:0.7rem; }
 /* Variante C (18.08.2026): Rahmen ums Feld, damit der Lerner sieht, WO er
    antwortet. Nur drei Punkte als Andeutung — „Schreib etwas" sagt nichts,
@@ -1180,6 +1187,19 @@ function appendSpikiuSlide(ziel, trans){
     + (trans ? '<div class="reel-trans">' + fmt(trans) + '</div>' : '')
     + '</div>'
     + '<div class="reel-hint">' + escPlain(reelUI().swipe) + '</div>';
+  // Der Zug des Lerners steht klein über Spikius Antwort, mit Ändern-Knopf.
+  if (offenerEcho){
+    var echo = document.createElement('div');
+    echo.className = 'reel-echo';
+    echo.dataset.userText = offenerEcho;
+    var et = document.createElement('span'); et.className = 're-text'; et.textContent = offenerEcho;
+    var eb2 = document.createElement('button');
+    eb2.type = 'button'; eb2.className = 're-edit'; eb2.textContent = editUI().edit;
+    eb2.onclick = function(){ reelEditStart(echo); };
+    echo.appendChild(et); echo.appendChild(eb2);
+    slide.insertBefore(echo, slide.firstChild);
+    offenerEcho = null;
+  }
   var sb = slide.querySelector('.speak-btn');
   if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(ziel), 'playing'); };
   // War der letzte Lerner-Zug ein mutmaßlicher Vertipper, bekommt Spikius
@@ -1246,8 +1266,14 @@ function renderBuehne(themaId, weiter){
   return true;
 }
 
+var offenerEcho = null;   // der Zug des Lerners, der auf Spikius nächste Karte gehört
+
 function appendUserSlide(text){
   var reel = reelEl(); if (!reel) return;
+  // Freier Flur: KEINE eigene Karte. Der Zug erscheint klein auf Spikius
+  // Antwortkarte — sonst liegt zwischen Frage und Antwort eine gelbe
+  // Zwischenkarte, die den Fluss zerschneidet.
+  if (!gefuehrt){ offenerEcho = text; return; }
   var slide = document.createElement('div');
   slide.className = 'reel-slide reel-user';
   slide.dataset.userText = text;
@@ -1274,13 +1300,24 @@ function reelEditStart(slide){
   var row = document.createElement('div'); row.className = 'reel-editrow';
   var no = document.createElement('button'); no.type='button'; no.className='no'; no.textContent = ui.no;
   var ok = document.createElement('button'); ok.type='button'; ok.className='ok'; ok.textContent = ui.ok;
+  var istEcho = slide.classList.contains('reel-echo');
   no.onclick = function(){
-    slide.innerHTML = '<div class="reel-userbubble">' + escPlain(alt) + '</div>';
-    var eb = document.createElement('button');
-    eb.type='button'; eb.className='reel-edit'; eb.textContent = ui.edit;
-    eb.onclick = function(){ reelEditStart(slide); };
-    slide.appendChild(eb);
-    fitSlide(slide);
+    slide.innerHTML = '';
+    if (istEcho){
+      // Echo: kleine Zeile mit Ändern-Knopf, wie zuvor auf Spikius Karte.
+      var et = document.createElement('span'); et.className = 're-text'; et.textContent = alt;
+      var ee = document.createElement('button');
+      ee.type='button'; ee.className='re-edit'; ee.textContent = ui.edit;
+      ee.onclick = function(){ reelEditStart(slide); };
+      slide.appendChild(et); slide.appendChild(ee);
+    } else {
+      slide.innerHTML = '<div class="reel-userbubble">' + escPlain(alt) + '</div>';
+      var eb = document.createElement('button');
+      eb.type='button'; eb.className='reel-edit'; eb.textContent = ui.edit;
+      eb.onclick = function(){ reelEditStart(slide); };
+      slide.appendChild(eb);
+    }
+    var sl = slide.closest('.reel-slide') || slide; fitSlide(sl);
   };
   ok.onclick = function(){
     var neu = ta.value.trim();
@@ -1290,7 +1327,7 @@ function reelEditStart(slide){
   row.appendChild(no); row.appendChild(ok);
   box.appendChild(ta); box.appendChild(row);
   slide.appendChild(box);
-  fitSlide(slide);
+  fitSlide(slide.closest('.reel-slide') || slide);
   setTimeout(function(){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 40);
 }
 
@@ -1299,13 +1336,16 @@ function reelEditStart(slide){
 function reelEditResend(slide, neuerText){
   var reel = reelEl(); if (!reel) return;
 
-  // 1. Wievielter Lerner-Zug ist das? (Folien zählen, nicht raten)
-  var alle = reelSlides(), nummer = 0, gefunden = -1;
-  for (var i = 0; i < alle.length; i++){
-    if (alle[i] === slide){ gefunden = nummer; break; }
-    if (alle[i].classList.contains('reel-user')) nummer++;
-  }
-  if (gefunden < 0) return;
+  // 1. Wievielter Lerner-Zug ist das? Gezählt werden eigene User-Folien
+  //    (geführt) UND Echos auf Spikius Karten (frei) — beide tragen
+  //    data-user-text, in der Reihenfolge, in der sie im Reel stehen.
+  var traeger = reel.querySelectorAll('[data-user-text]');
+  var nummer = -1;
+  for (var i = 0; i < traeger.length; i++){ if (traeger[i] === slide){ nummer = i; break; } }
+  if (nummer < 0) return;
+  var gefunden = nummer;
+  // Die Karte, ab der aufgeräumt wird: bei einem Echo ist es Spikius Karte.
+  var abKarte = slide.classList.contains('reel-echo') ? slide.closest('.reel-slide') : slide;
 
   // 2. verlauf bis vor diesen user-Eintrag kürzen (Spikius Antwort darauf inklusive)
   var z = 0, schnitt = verlauf.length;
@@ -1320,9 +1360,10 @@ function reelEditResend(slide, neuerText){
   // 3. Folien ab hier entfernen (Lerner-Folie wird ohnehin neu gebaut)
   var weg = false;
   reelSlides().forEach(function(s){
-    if (s === slide) weg = true;
+    if (s === abKarte) weg = true;
     if (weg) s.remove();
   });
+  offenerEcho = null;
   removeLearnerSlide();
 
   // 4. Der korrigierte Zug zählt NICHT als neue Kostprobe — es ist derselbe Zug.
