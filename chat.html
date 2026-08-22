@@ -347,6 +347,21 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* Echo des eigenen Zugs (18.08.2026): Er stand als EIGENE gelbe Karte im Reel —
    nach jeder Antwort eine Zwischenkarte, die niemand sehen wollte. Jetzt sitzt
    er klein oben auf Spikius Antwortkarte, mit dem Ändern-Knopf daneben. */
+/* ── Aufgeräumte Szenenkarte (19.08.2026) ───────────────────────────────
+   Vorher zehn Blöcke: Echo · Ändern · Linie · Capy · Ziel · Audio ·
+   Übersetzung · Feld · Senden · Beenden. Bei langen Sätzen wurde oben
+   abgeschnitten, weil der WICHTIGSTE Block den Rest bekam.
+   Jetzt fünf: Rolle · Ziel · Audio · Feld · Senden.
+     Capy raus (in der Szene ist Spikiu die Figur, nicht das Maskottchen),
+     Echo raus (der Lerner weiß, was er getippt hat — ein Stift genügt),
+     Übersetzung erst auf Tippen (er soll erst raten),
+     Beenden in die Kopfzeile, wo es nie mitwächst. */
+.reel-slide.hat-antwort .reel-capy { display:none; }
+.reel-kopf { flex:0 0 auto; display:flex; align-items:center; gap:0.5rem; width:100%; max-width:24rem; padding:0 0 0.5rem; margin-bottom:0.8rem; border-bottom:2px solid var(--line,#eef1ee); }
+.reel-kopf .rk-rolle { font:800 0.66rem 'DM Sans',sans-serif; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); flex:1; text-align:left; }
+.reel-kopf .rk-btn { flex:0 0 auto; width:30px; height:30px; border-radius:50%; border:2px solid var(--line,#eef1ee); background:var(--white); color:var(--mid); font-size:0.82rem; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.reel-kopf .rk-btn:active { transform:scale(0.94); }
+.reel-uez { background:none; border:0; font:700 0.78rem 'DM Sans',sans-serif; color:var(--accent); text-decoration:underline; cursor:pointer; margin-top:0.2rem; }
 /* Auf einer Karte mit Antwortfeld gibt es nichts zu wischen — dort wird
    geantwortet. Der fest positionierte Hinweis lag sonst über dem Senden-Knopf. */
 .reel-slide.hat-antwort .reel-hint { display:none; }
@@ -1085,9 +1100,9 @@ function addPlainSpikiu(text){
 // ════════════════════════════════════════════════════════════════
 var reelActive = false;
 var REEL_UI = {
-  de:{ yourTurn:'Du bist dran', start:'Worüber möchtest du plaudern?', write:'Schreib etwas…', send:'Senden', swipe:'← nach links wischen', end:'Gespräch beenden', error:'Spikiu ist gerade nicht erreichbar.', retry:'Nochmal' },
-  es:{ yourTurn:'Te toca', start:'¿De qué quieres charlar?', write:'Escribe algo…', send:'Enviar', swipe:'← desliza a la izquierda', end:'Terminar conversación', error:'Spikiu no está disponible ahora mismo.', retry:'Otra vez' },
-  en:{ yourTurn:'Your turn', start:'What would you like to chat about?', write:'Write something…', send:'Send', swipe:'← swipe left', end:'End conversation', error:'Spikiu is unavailable right now.', retry:'Again' }
+  de:{ yourTurn:'Du bist dran', start:'Worüber möchtest du plaudern?', write:'Schreib etwas…', send:'Senden', swipe:'← nach links wischen', end:'Gespräch beenden', error:'Spikiu ist gerade nicht erreichbar.', retry:'Nochmal' , uebersetzung:'Übersetzung'},
+  es:{ yourTurn:'Te toca', start:'¿De qué quieres charlar?', write:'Escribe algo…', send:'Enviar', swipe:'← desliza a la izquierda', end:'Terminar conversación', error:'Spikiu no está disponible ahora mismo.', retry:'Otra vez' , uebersetzung:'Traducción'},
+  en:{ yourTurn:'Your turn', start:'What would you like to chat about?', write:'Write something…', send:'Send', swipe:'← swipe left', end:'End conversation', error:'Spikiu is unavailable right now.', retry:'Again' , uebersetzung:'Translation'}
 };
 function reelUI(){ return REEL_UI[uiLang()] || REEL_UI.de; }
 function reelEl(){ return document.getElementById('reel'); }
@@ -1180,6 +1195,17 @@ function bindReelGestures(){
 function removeLearnerSlide(){ var s = document.getElementById('reelLearner'); if (s) s.remove(); }
 
 // Spikiu-Slide: kleiner vollständiger Capy + große Zielsprachen-Zeile + 🔊 + Übersetzung.
+// Die Rolle, die Spikiu in dieser Szene spielt — steht in der Kopfzeile.
+function szenenRolle(){
+  try {
+    var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
+    if (!D || !TOPIC_ID) return '';
+    var R = D.rolle(TOPIC_ID); if (!R) return '';
+    var ui = uiLang();
+    return R.spikiu[ui] || R.spikiu.de || '';
+  } catch(e){ return ''; }
+}
+
 function appendSpikiuSlide(ziel, trans){
   var reel = reelEl(); if (!reel) return;
   var slide = document.createElement('div');
@@ -1190,18 +1216,42 @@ function appendSpikiuSlide(ziel, trans){
     + (trans ? '<div class="reel-trans">' + fmt(trans) + '</div>' : '')
     + '</div>'
     + '<div class="reel-hint">' + escPlain(reelUI().swipe) + '</div>';
-  // Der Zug des Lerners steht klein über Spikius Antwort, mit Ändern-Knopf.
-  if (offenerEcho){
-    var echo = document.createElement('div');
-    echo.className = 'reel-echo';
-    echo.dataset.userText = offenerEcho;
-    var et = document.createElement('span'); et.className = 're-text'; et.textContent = offenerEcho;
-    var eb2 = document.createElement('button');
-    eb2.type = 'button'; eb2.className = 're-edit'; eb2.textContent = editUI().edit;
-    eb2.onclick = function(){ reelEditStart(echo); };
-    echo.appendChild(et); echo.appendChild(eb2);
-    slide.insertBefore(echo, slide.firstChild);
-    offenerEcho = null;
+  // Kopfzeile: Rolle links, Stift und Beenden rechts. Feste Höhe — sie wächst
+  // nie mit dem Satz, egal wie lang er wird. Nur im freien Flur.
+  if (!gefuehrt){
+    var ui2 = reelUI();
+    var kopf = document.createElement('div');
+    kopf.className = 'reel-kopf';
+    var rolle = document.createElement('div');
+    rolle.className = 'rk-rolle';
+    rolle.textContent = szenenRolle();
+    kopf.appendChild(rolle);
+    if (offenerEcho){
+      // Der Lerner weiß, was er getippt hat — ein Stift genügt statt des Echos.
+      var stift = document.createElement('button');
+      stift.type = 'button'; stift.className = 'rk-btn'; stift.textContent = '\u270e';
+      stift.title = editUI().edit;
+      stift.dataset.userText = offenerEcho;
+      stift.onclick = function(){ reelEditStart(stift); };
+      kopf.appendChild(stift);
+      offenerEcho = null;
+    }
+    var xb = document.createElement('button');
+    xb.type = 'button'; xb.className = 'rk-btn'; xb.textContent = '\u2715';
+    xb.title = ui2.end; xb.onclick = reelEnd;
+    kopf.appendChild(xb);
+    slide.insertBefore(kopf, slide.firstChild);
+
+    // Übersetzung erst auf Tippen: der Lerner soll erst raten.
+    var tr = slide.querySelector('.reel-trans');
+    if (tr){
+      tr.style.display = 'none';
+      var uez = document.createElement('button');
+      uez.type = 'button'; uez.className = 'reel-uez';
+      uez.textContent = ui2.uebersetzung;
+      uez.onclick = function(){ tr.style.display = ''; uez.remove(); fitSlide(slide); };
+      tr.parentNode.insertBefore(uez, tr);
+    }
   }
   var sb = slide.querySelector('.speak-btn');
   if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(ziel), 'playing'); };
@@ -1303,7 +1353,32 @@ function reelEditStart(slide){
   var row = document.createElement('div'); row.className = 'reel-editrow';
   var no = document.createElement('button'); no.type='button'; no.className='no'; no.textContent = ui.no;
   var ok = document.createElement('button'); ok.type='button'; ok.className='ok'; ok.textContent = ui.ok;
+  var istStift = slide.classList.contains('rk-btn');
   var istEcho = slide.classList.contains('reel-echo');
+  if (istStift){
+    // Der Stift sitzt in der Kopfzeile: das Feld oeffnet sich auf DERSELBEN
+    // Karte, nicht anstelle des Knopfs.
+    var karte = slide.closest('.reel-slide');
+    var vorhanden = karte.querySelector('.reel-editbox');
+    if (vorhanden){ vorhanden.remove(); fitSlide(karte); return; }
+    var bx = document.createElement('div'); bx.className = 'reel-editbox';
+    var t2 = document.createElement('textarea'); t2.rows = 2; t2.value = alt;
+    var r2 = document.createElement('div'); r2.className = 'reel-editrow';
+    var n2 = document.createElement('button'); n2.type='button'; n2.className='no'; n2.textContent = ui.no;
+    var o2 = document.createElement('button'); o2.type='button'; o2.className='ok'; o2.textContent = ui.ok;
+    n2.onclick = function(){ bx.remove(); fitSlide(karte); };
+    o2.onclick = function(){
+      var nn = t2.value.trim();
+      if (nn.length < 2 || nn === alt){ bx.remove(); fitSlide(karte); return; }
+      reelEditResend(slide, nn);
+    };
+    r2.appendChild(n2); r2.appendChild(o2);
+    bx.appendChild(t2); bx.appendChild(r2);
+    karte.insertBefore(bx, karte.querySelector('.reel-kopf').nextSibling);
+    fitSlide(karte);
+    setTimeout(function(){ t2.focus(); t2.setSelectionRange(t2.value.length, t2.value.length); }, 40);
+    return;
+  }
   no.onclick = function(){
     slide.innerHTML = '';
     if (istEcho){
@@ -1348,7 +1423,8 @@ function reelEditResend(slide, neuerText){
   if (nummer < 0) return;
   var gefunden = nummer;
   // Die Karte, ab der aufgeräumt wird: bei einem Echo ist es Spikius Karte.
-  var abKarte = slide.classList.contains('reel-echo') ? slide.closest('.reel-slide') : slide;
+  var abKarte = (slide.classList.contains('reel-echo') || slide.classList.contains('rk-btn'))
+    ? slide.closest('.reel-slide') : slide;
 
   // 2. verlauf bis vor diesen user-Eintrag kürzen (Spikius Antwort darauf inklusive)
   var z = 0, schnitt = verlauf.length;
@@ -1384,13 +1460,13 @@ function appendAntwortFeld(slide){
   var box = document.createElement('div');
   box.className = 'reel-antwort';
   // Kein „Du bist dran": der Rahmen sagt es schon. Platzhalter sind drei Punkte.
+  // Kein „Gespräch beenden" mehr im Fuß — es sitzt als ✕ in der Kopfzeile,
+  // wo es bei jeder Karte gleich steht und nie mitwächst.
   box.innerHTML = '<textarea id="reelInput" rows="2" placeholder="\u00b7\u00b7\u00b7"></textarea>'
-    + '<button class="ra-send" type="button" id="reelSendBtn">' + escPlain(ui.send) + '</button>'
-    + '<button class="ra-end" type="button" id="reelEndBtn">' + escPlain(ui.end) + '</button>';
+    + '<button class="ra-send" type="button" id="reelSendBtn">' + escPlain(ui.send) + '</button>';
   slide.appendChild(box);
   slide.classList.add('hat-antwort');       // blendet den Wisch-Hinweis aus
   box.querySelector('#reelSendBtn').onclick = reelSend;
-  var eb = box.querySelector('#reelEndBtn'); if (eb) eb.onclick = reelEnd;
   var ta = box.querySelector('#reelInput');
   if (ta){
     ta.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); reelSend(); } });
