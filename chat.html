@@ -332,6 +332,18 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-user .reel-editrow .no { background:var(--white); color:var(--ink); }
 .reel-learner-head { font-family:'Lora',serif; font-weight:600; font-size:clamp(1.9rem,7.5vw,2.8rem); line-height:1.25; color:var(--read,#2b2621); max-width:22rem; }
 .reel-learner-field { display:flex; flex-direction:column; gap:0.7rem; width:100%; max-width:22rem; }
+/* Eingabe AUF der Spikiu-Folie (18.08.2026): Frage und Antwort gehoeren
+   zusammen. Vorher lag Spikius Zeile auf einer Karte und „Du bist dran"
+   auf der naechsten — der Lerner musste wischen, um zu antworten. */
+.reel-spikiu .reel-antwort { width:100%; max-width:22rem; margin-top:1.1rem; padding-top:0.9rem; border-top:2px solid var(--line,#eef1ee); display:flex; flex-direction:column; gap:0.6rem; }
+.reel-spikiu .reel-antwort .ra-label { font:800 0.62rem 'DM Sans',sans-serif; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); }
+.reel-spikiu .reel-antwort textarea { background:var(--bg2); border:2px solid transparent; border-radius:1.1rem; padding:0.7rem 0.95rem; font:600 1rem 'DM Sans',sans-serif; color:var(--ink); resize:none; outline:none; line-height:1.45; width:100%; }
+.reel-spikiu .reel-antwort textarea:focus { border-color:var(--accent); background:var(--white); }
+.reel-spikiu .reel-antwort textarea.gewarnt { border-color:#c67a1e; background:#fffbe8; }
+.reel-spikiu .reel-antwort .ra-reihe { display:flex; gap:0.5rem; align-items:center; }
+.reel-spikiu .reel-antwort .ra-send { flex:0 0 auto; background:var(--accent); color:var(--white); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.6rem 1.4rem; font:800 0.95rem 'DM Sans',sans-serif; cursor:pointer; }
+.reel-spikiu .reel-antwort .ra-send:active { transform:translateY(2px); box-shadow:0 0 0 var(--ink); }
+.reel-spikiu .reel-antwort .ra-end { background:none; border:0; font:700 0.78rem 'DM Sans',sans-serif; color:var(--mid); text-decoration:underline; cursor:pointer; align-self:center; }
 .reel-learner-field textarea { background:var(--bg2); border:1.5px solid transparent; border-radius:1.1rem; padding:0.85rem 1.1rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); resize:none; outline:none; line-height:1.5; }
 .reel-learner-field textarea:focus { border-color:var(--accent); background:var(--white); }
 .reel-send { background:var(--accent); color:#fff; border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.7rem 1.6rem; font-family:'DM Sans',sans-serif; font-size:0.98rem; font-weight:800; cursor:pointer; align-self:center; -webkit-tap-highlight-color:transparent; }
@@ -1308,6 +1320,45 @@ function reelEditResend(slide, neuerText){
 }
 var reelResendLaeuft = false;
 // Lerner-Slide: Textfeld → Senden ruft den BESTEHENDEN sendUserTurn(). Optional „Beenden".
+// Die Eingabe wandert AUF Spikius Folie: Frage und Antwort auf einer Karte.
+// Ersetzt im freien Flur die eigene „Du bist dran"-Folie. Der geführte Modus
+// behält seine Lerner-Folie, weil dort Karten und Chips darauf sitzen.
+function appendAntwortFeld(slide){
+  if (!slide || slide.querySelector('.reel-antwort')) return;
+  var ui = reelUI();
+  var box = document.createElement('div');
+  box.className = 'reel-antwort';
+  box.innerHTML = '<div class="ra-label">' + escPlain(ui.yourTurn) + '</div>'
+    + '<div class="ra-reihe"><textarea id="reelInput" rows="2" placeholder="'
+    + ui.write.replace(/"/g,'&quot;') + '"></textarea>'
+    + '<button class="ra-send" type="button" id="reelSendBtn">' + escPlain(ui.send) + '</button></div>'
+    + '<button class="ra-end" type="button" id="reelEndBtn">' + escPlain(ui.end) + '</button>';
+  slide.appendChild(box);
+  box.querySelector('#reelSendBtn').onclick = reelSend;
+  var eb = box.querySelector('#reelEndBtn'); if (eb) eb.onclick = reelEnd;
+  var ta = box.querySelector('#reelInput');
+  if (ta){
+    ta.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); reelSend(); } });
+    ta.addEventListener('input', function(){
+      if (ta.dataset.zweit && ta.value.trim() !== ta.dataset.zweit){
+        ta.dataset.zweit = ''; ta.classList.remove('gewarnt'); reelWarnWeg();
+      }
+    });
+  }
+  fitSlide(slide);
+}
+
+// Die letzte Spikiu-Folie bekommt das Feld. Gibt es keine (Gesprächsanfang),
+// bleibt es bei der eigenen Einladungs-Folie.
+function antwortAufLetzterFolie(){
+  var reel = reelEl(); if (!reel) return false;
+  var alle = reel.querySelectorAll('.reel-slide.reel-spikiu:not(#reelTyping):not(#reelErr)');
+  if (!alle.length) return false;
+  removeLearnerSlide();
+  appendAntwortFeld(alle[alle.length - 1]);
+  return true;
+}
+
 function renderLearnerSlide(first){
   var reel = reelEl(); if (!reel) return;
   removeLearnerSlide();
@@ -1384,13 +1435,21 @@ function reelSend(){
   ta.value = ''; ta.dataset.zweit = '';
   ta.classList.remove('gewarnt');
   reelWarnWeg();
+  // Das Feld gehoert zu der Karte, die eben beantwortet wurde. Es verschwindet,
+  // damit auf einer alten Karte nicht zweimal geantwortet werden kann.
+  var alteBox = ta.closest('.reel-antwort'); if (alteBox) alteBox.remove();
   reelSendVerdaechtig = !!vertipper(text);   // für den Korrektur-Knopf
   sendUserTurn(text);          // MOTOR unverändert (addMessage('user') routet hierher)
 }
 var reelSendVerdaechtig = false;
 
 function reelWarnZeigen(txt){
-  var slide = document.getElementById('reelLearner'); if (!slide) return;
+  // Die Warnung haengt dort, wo das Eingabefeld gerade sitzt: im freien Flur
+  // auf Spikius Folie, im gefuehrten auf der eigenen Lerner-Folie.
+  var ta = document.getElementById('reelInput');
+  var slide = ta ? (ta.closest('.reel-slide') || document.getElementById('reelLearner'))
+                 : document.getElementById('reelLearner');
+  if (!slide) return;
   reelWarnWeg();
   var w = document.createElement('div'); w.className = 'reel-warn'; w.textContent = txt;
   slide.appendChild(w); fitSlide(slide);
@@ -1490,7 +1549,9 @@ function addReelMessage(role, text){
       var parts = splitBridge(seg);
       appendSpikiuSlide(parts.ziel, parts.trans);
     });
-    renderLearnerSlide(false);      // nach Spikius Karten: du bist dran (← wischen)
+    // Frei: die Eingabe sitzt AUF Spikius letzter Karte. Geführt: eigene Folie,
+    // weil dort Karten und Antwort-Chips liegen.
+    if (!gefuehrt) antwortAufLetzterFolie(); else renderLearnerSlide(false);
     reelGoTo(firstNew);             // zuerst Spikius neue Karte zeigen
   } else {
     appendUserSlide(text);
