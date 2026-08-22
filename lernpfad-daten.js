@@ -76,6 +76,43 @@
                        a2:{ de:'Pläne vom Wetter abhängig machen', en:'planning around the weather' } }
   };
 
+  /* ── Rollen und Ort je Thema ──────────────────────────────────────────
+     Kein Koenig ohne Untertan: jede Szene hat zwei Rollen. Sie stehen auf
+     der Buehnenkarte („Ich bin X, du bist Y") und im Mini-Prompt, wenn der
+     Lerner vom Skript abweicht. Gilt fuer A1 und A2 gleichermassen. */
+  var ROLLEN = {
+    cafe:            { spikiu:{ de:'der Kellner',          es:'el camarero',        en:'the waiter' },
+                       lerner:{ de:'der Gast',             es:'el cliente',         en:'the customer' },
+                       ort:   { de:'auf einer Terrasse',   es:'en una terraza',     en:'on a terrace' } },
+    restaurant:      { spikiu:{ de:'die Kellnerin',        es:'la camarera',        en:'the waitress' },
+                       lerner:{ de:'der Gast',             es:'el cliente',         en:'the guest' },
+                       ort:   { de:'in einem Restaurant',  es:'en un restaurante',  en:'in a restaurant' } },
+    einkaufen:       { spikiu:{ de:'die Verkäuferin',      es:'la vendedora',       en:'the shopkeeper' },
+                       lerner:{ de:'die Kundin',           es:'la clienta',         en:'the customer' },
+                       ort:   { de:'auf dem Markt',        es:'en el mercado',      en:'at the market' } },
+    wegbeschreibung: { spikiu:{ de:'eine Passantin',       es:'una transeúnte',     en:'a passer-by' },
+                       lerner:{ de:'ein Reisender',        es:'un viajero',         en:'a traveller' },
+                       ort:   { de:'auf der Straße',       es:'en la calle',        en:'in the street' } },
+    taxi:            { spikiu:{ de:'der Taxifahrer',       es:'el taxista',         en:'the taxi driver' },
+                       lerner:{ de:'der Fahrgast',         es:'el pasajero',        en:'the passenger' },
+                       ort:   { de:'im Taxi',              es:'en el taxi',         en:'in the taxi' } },
+    familie:         { spikiu:{ de:'eine Nachbarin',       es:'una vecina',         en:'a neighbour' },
+                       lerner:{ de:'du selbst',            es:'tú mismo',           en:'yourself' },
+                       ort:   { de:'beim Kaffee',          es:'tomando café',       en:'over coffee' } },
+    hotel:           { spikiu:{ de:'die Empfangsdame',     es:'la recepcionista',   en:'the receptionist' },
+                       lerner:{ de:'der Gast',             es:'el huésped',         en:'the guest' },
+                       ort:   { de:'an der Rezeption',     es:'en la recepción',    en:'at reception' } },
+    bahnhof:         { spikiu:{ de:'der Mann am Schalter', es:'el hombre de la taquilla', en:'the man at the counter' },
+                       lerner:{ de:'der Reisende',         es:'el viajero',         en:'the traveller' },
+                       ort:   { de:'am Bahnhof',           es:'en la estación',     en:'at the station' } },
+    arzt:            { spikiu:{ de:'die Ärztin',           es:'la médica',          en:'the doctor' },
+                       lerner:{ de:'die Patientin',        es:'la paciente',        en:'the patient' },
+                       ort:   { de:'in der Praxis',        es:'en la consulta',     en:'at the surgery' } },
+    wetter:          { spikiu:{ de:'ein Nachbar',          es:'un vecino',          en:'a neighbour' },
+                       lerner:{ de:'du selbst',            es:'tú mismo',           en:'yourself' },
+                       ort:   { de:'vor der Tür',          es:'en la puerta',       en:'outside the door' } }
+  };
+
   /* ══════════════════════════════════════════════════════════════════
      STATIONEN — A1
      Bauplan, für jede Station identisch:
@@ -1183,8 +1220,12 @@
     themen: THEMEN,
     stufen: STUFEN,
     kategorien: KATEGORIEN,
+    rollen: ROLLEN,
     schritt: SCHRITT,
     stationen: STATIONEN,
+
+    /* Die zwei Rollen und der Ort einer Szene. */
+    rolle: function (thema) { return ROLLEN[thema] || null; },
 
     /* Ein Thema nach id. */
     thema: function (id) {

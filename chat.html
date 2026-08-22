@@ -306,6 +306,18 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-korr { align-self:center; margin-top:0.7rem; background:var(--accent); color:var(--white); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.6rem 1.25rem; font:800 0.9rem 'DM Sans',sans-serif; cursor:pointer; }
 .reel-korr:active { transform:translateY(2px); box-shadow:0 0 0 var(--ink); }
 @keyframes reelBob { 0%,100%{ transform:translateX(0); opacity:0.7; } 50%{ transform:translateX(-5px); opacity:1; } }
+/* Bühnenkarte (18.08.2026): steht vor jeder Szene im freien Flur.
+   Bild, Rollen, ein Knopf. Kein Aufruf — alles aus der Datenbank.
+   Sie ersetzt Spikius bisheriges „¡Perfecto! Vamos a practicar…", das
+   einen ganzen Zug für eine Höflichkeit verbraucht hat. */
+.reel-buehne { gap:0.75rem; }
+.reel-buehne .bu-bild { width:min(58vw,15rem); height:auto; border-radius:18px; border:var(--ow) solid var(--ink); box-shadow:4px 5px 0 var(--ink); display:block; }
+.reel-buehne .bu-em { font-size:4.4rem; line-height:1; filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12)); }
+.reel-buehne .bu-rollen { font:700 clamp(1.05rem,4.4vw,1.3rem)/1.45 'DM Sans',sans-serif; color:var(--ink); max-width:20rem; }
+.reel-buehne .bu-rollen b { color:var(--accent); }
+.reel-buehne .bu-ort { font:600 0.88rem 'DM Sans',sans-serif; color:var(--mid); }
+.reel-buehne .bu-los { margin-top:0.4rem; background:var(--accent); color:var(--white); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.7rem 2.2rem; font:800 1.05rem 'DM Sans',sans-serif; cursor:pointer; }
+.reel-buehne .bu-los:active { transform:translateY(2px); box-shadow:0 0 0 var(--ink); }
 .reel-userbubble { background:var(--you); color:var(--youtx); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:1.2rem 0.3rem 1.2rem 1.2rem; padding:0.8rem 1.1rem; font:800 clamp(1.2rem,5vw,1.65rem)/1.3 'DM Sans',sans-serif; max-width:86%; }
 /* Zug ändern (18.08.2026): ein zu früh gesendeter Zug lässt sich korrigieren.
    Beim Neusenden fliegt er samt Spikius Antwort aus dem verlauf — sonst baut
@@ -450,6 +462,7 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 <script src="szenen-dialog.js"></script>
 <script src="lernpfad-daten.js"></script>
 <script src="lernpfad.js"></script>
+<script src="bilder-db.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════════
 //  SPIKIU · RAUM: FREIES GESPRÄCH (der Flur)
@@ -1165,6 +1178,50 @@ var EDIT_UI = {
   en:{ edit:'✎ Edit',    ok:'Send again',     no:'Cancel' }
 };
 function editUI(){ return EDIT_UI[uiLang()] || EDIT_UI.de; }
+
+// Die Bühnenkarte: Bild, „Ich bin X, du bist Y", ein Knopf.
+// Sie kostet nichts — Bild, Rollen und Ort stehen in der Datenbank.
+// Erst nach „Los!" geht der erste Zug an das Modell.
+var BUEHNE_UI = { de:{ los:'Los!' }, es:{ los:'¡Vamos!' }, en:{ los:'Let\u2019s go!' } };
+
+function renderBuehne(themaId, weiter){
+  var reel = reelEl(); if (!reel) return false;
+  var D = window.SpikiuLernpfad;
+  var R = D && D.rolle ? D.rolle(themaId) : null;
+  if (!R) return false;                       // ohne Rollen keine Bühne
+  var ui = uiLang();
+  var t = D.thema(themaId);
+
+  var slide = document.createElement('div');
+  slide.className = 'reel-slide reel-buehne';
+
+  var bild = window.SpikiuBilder && window.SpikiuBilder.img(themaId, ui, 'bu-bild');
+  if (bild) slide.appendChild(bild);
+  else if (t) { var e = document.createElement('div'); e.className = 'bu-em'; e.textContent = t.em; slide.appendChild(e); }
+
+  var ro = document.createElement('div');
+  ro.className = 'bu-rollen';
+  var ICH = { de:'Ich bin', es:'Yo soy', en:'I am' };
+  var DU  = { de:'du bist', es:'tú eres', en:'you are' };
+  ro.innerHTML = escPlain(ICH[ui] || ICH.de) + ' <b>' + escPlain(R.spikiu[ui] || R.spikiu.de) + '</b>,<br>'
+               + escPlain(DU[ui] || DU.de) + ' <b>' + escPlain(R.lerner[ui] || R.lerner.de) + '</b>.';
+  slide.appendChild(ro);
+
+  var ort = document.createElement('div');
+  ort.className = 'bu-ort';
+  ort.textContent = R.ort[ui] || R.ort.de;
+  slide.appendChild(ort);
+
+  var los = document.createElement('button');
+  los.type = 'button'; los.className = 'bu-los';
+  los.textContent = (BUEHNE_UI[ui] || BUEHNE_UI.de).los;
+  los.onclick = function(){ los.disabled = true; weiter(); };
+  slide.appendChild(los);
+
+  reel.appendChild(slide);
+  reelGoTo(reelSlides().length - 1);
+  return true;
+}
 
 function appendUserSlide(text){
   var reel = reelEl(); if (!reel) return;
@@ -2996,7 +3053,11 @@ function pickTopic(label, id){
     gefuehrt = false;                    // freier Flur: keine Antwort-Chips erzwingen
     hideRail();
     enterReel();
-    sendUserTurn((WUNSCH[uiLang()] || WUNSCH.de)(label));
+    removeLearnerSlide();                // die Bühne kommt zuerst, nicht das Textfeld
+    var start = function(){ sendUserTurn((WUNSCH[uiLang()] || WUNSCH.de)(label)); };
+    // Bühnenkarte statt Spikius Höflichkeitszug: Bild, Rollen, „Los!".
+    // Fehlen Rollen oder Bild, geht es ohne sie direkt los.
+    if (!renderBuehne(TOPIC_ID, start)) start();
     return;
   }
 
