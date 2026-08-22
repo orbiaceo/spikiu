@@ -335,15 +335,17 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* Eingabe AUF der Spikiu-Folie (18.08.2026): Frage und Antwort gehoeren
    zusammen. Vorher lag Spikius Zeile auf einer Karte und „Du bist dran"
    auf der naechsten — der Lerner musste wischen, um zu antworten. */
-.reel-spikiu .reel-antwort { width:100%; max-width:22rem; margin-top:1.1rem; padding-top:0.9rem; border-top:2px solid var(--line,#eef1ee); display:flex; flex-direction:column; gap:0.6rem; }
-.reel-spikiu .reel-antwort .ra-label { font:800 0.62rem 'DM Sans',sans-serif; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); }
-.reel-spikiu .reel-antwort textarea { background:var(--bg2); border:2px solid transparent; border-radius:1.1rem; padding:0.7rem 0.95rem; font:600 1rem 'DM Sans',sans-serif; color:var(--ink); resize:none; outline:none; line-height:1.45; width:100%; }
-.reel-spikiu .reel-antwort textarea:focus { border-color:var(--accent); background:var(--white); }
+.reel-spikiu .reel-antwort { width:100%; max-width:22rem; margin-top:1.1rem; padding-top:0.9rem; border-top:2px solid var(--line,#eef1ee); display:flex; flex-direction:column; align-items:center; gap:0.7rem; }
+/* Variante C (18.08.2026): Rahmen ums Feld, damit der Lerner sieht, WO er
+   antwortet. Nur drei Punkte als Andeutung — „Schreib etwas" sagt nichts,
+   was der Rahmen nicht schon sagt. Senden darunter und mittig. */
+.reel-spikiu .reel-antwort textarea { width:100%; background:var(--white); border:2.5px solid var(--ink); border-radius:16px; padding:0.85rem 1rem; font:600 1.05rem/1.45 'DM Sans',sans-serif; color:var(--ink); resize:none; outline:none; min-height:5.4rem; text-align:center; }
+.reel-spikiu .reel-antwort textarea::placeholder { color:#b8c4bd; letter-spacing:0.18em; font-size:1.3rem; }
+.reel-spikiu .reel-antwort textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(31,147,176,0.14); }
 .reel-spikiu .reel-antwort textarea.gewarnt { border-color:#c67a1e; background:#fffbe8; }
-.reel-spikiu .reel-antwort .ra-reihe { display:flex; gap:0.5rem; align-items:center; }
-.reel-spikiu .reel-antwort .ra-send { flex:0 0 auto; background:var(--accent); color:var(--white); border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.6rem 1.4rem; font:800 0.95rem 'DM Sans',sans-serif; cursor:pointer; }
-.reel-spikiu .reel-antwort .ra-send:active { transform:translateY(2px); box-shadow:0 0 0 var(--ink); }
-.reel-spikiu .reel-antwort .ra-end { background:none; border:0; font:700 0.78rem 'DM Sans',sans-serif; color:var(--mid); text-decoration:underline; cursor:pointer; align-self:center; }
+.reel-spikiu .reel-antwort .ra-send { background:var(--accent); color:var(--white); border:var(--ow) solid var(--ink); box-shadow:4px 4px 0 var(--ink); border-radius:100px; padding:0.65rem 2.4rem; font:800 1rem 'DM Sans',sans-serif; cursor:pointer; }
+.reel-spikiu .reel-antwort .ra-send:active { transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink); }
+.reel-spikiu .reel-antwort .ra-end { background:none; border:0; font:700 0.78rem 'DM Sans',sans-serif; color:var(--mid); text-decoration:underline; cursor:pointer; }
 .reel-learner-field textarea { background:var(--bg2); border:1.5px solid transparent; border-radius:1.1rem; padding:0.85rem 1.1rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); resize:none; outline:none; line-height:1.5; }
 .reel-learner-field textarea:focus { border-color:var(--accent); background:var(--white); }
 .reel-send { background:var(--accent); color:#fff; border:var(--ow) solid var(--ink); box-shadow:var(--shs) 0 var(--ink); border-radius:100px; padding:0.7rem 1.6rem; font-family:'DM Sans',sans-serif; font-size:0.98rem; font-weight:800; cursor:pointer; align-self:center; -webkit-tap-highlight-color:transparent; }
@@ -1328,10 +1330,9 @@ function appendAntwortFeld(slide){
   var ui = reelUI();
   var box = document.createElement('div');
   box.className = 'reel-antwort';
-  box.innerHTML = '<div class="ra-label">' + escPlain(ui.yourTurn) + '</div>'
-    + '<div class="ra-reihe"><textarea id="reelInput" rows="2" placeholder="'
-    + ui.write.replace(/"/g,'&quot;') + '"></textarea>'
-    + '<button class="ra-send" type="button" id="reelSendBtn">' + escPlain(ui.send) + '</button></div>'
+  // Kein „Du bist dran": der Rahmen sagt es schon. Platzhalter sind drei Punkte.
+  box.innerHTML = '<textarea id="reelInput" rows="2" placeholder="\u00b7\u00b7\u00b7"></textarea>'
+    + '<button class="ra-send" type="button" id="reelSendBtn">' + escPlain(ui.send) + '</button>'
     + '<button class="ra-end" type="button" id="reelEndBtn">' + escPlain(ui.end) + '</button>';
   slide.appendChild(box);
   box.querySelector('#reelSendBtn').onclick = reelSend;
