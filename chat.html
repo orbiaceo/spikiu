@@ -289,7 +289,16 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-slide.reel-current { transform:translateX(0) rotate(0); opacity:1; pointer-events:auto; z-index:2; }
 .reel-slide.reel-next { transform:translateX(114%) rotate(1.5deg); opacity:0; pointer-events:none; z-index:1; }
 .reel-slide.reel-past { transform:translateX(-114%) rotate(-1.5deg); opacity:0; pointer-events:none; z-index:1; }
-.reel-capy { width:52px; height:52px; animation:vozBreathe 4.5s ease-in-out infinite; }
+.reel-capy { width:52px; height:52px; margin:0 auto; align-self:center; animation:vozBreathe 4.5s ease-in-out infinite; }
+/* Warten AUF der Karte (18.08.2026): nach dem Senden bleibt der Lerner bei
+   seiner Karte stehen und sieht drei Punkte, wo eben das Feld war. Vorher
+   sprang er auf eine leere Folie mit einem einsamen Capy. */
+.reel-antwort .ra-warten { display:flex; gap:0.45rem; align-items:center; justify-content:center; min-height:5.4rem; }
+.reel-antwort .ra-warten span { width:10px; height:10px; border-radius:50%; background:var(--accent); opacity:0.35; animation:raPuls 1.25s ease-in-out infinite; }
+.reel-antwort .ra-warten span:nth-child(2){ animation-delay:0.18s; }
+.reel-antwort .ra-warten span:nth-child(3){ animation-delay:0.36s; }
+@keyframes raPuls { 0%,100%{ opacity:0.28; transform:translateY(0); } 50%{ opacity:1; transform:translateY(-4px); } }
+.reel-antwort .ra-echo { font:700 0.95rem 'DM Sans',sans-serif; color:var(--mid); text-align:center; max-width:22rem; }
 .reel-capy svg { width:52px; height:52px; display:block; }
 .reel-body { display:flex; flex-direction:column; align-items:center; gap:0.6rem; max-width:22rem; }
 .reel-line { font-family:'Lora',serif; font-weight:600; font-size:clamp(2.1rem,8vw,3.1rem); line-height:1.24; color:var(--read,#2b2621); font-style:normal; padding:0 0.2rem; }
@@ -1436,9 +1445,8 @@ function reelSend(){
   ta.value = ''; ta.dataset.zweit = '';
   ta.classList.remove('gewarnt');
   reelWarnWeg();
-  // Das Feld gehoert zu der Karte, die eben beantwortet wurde. Es verschwindet,
-  // damit auf einer alten Karte nicht zweimal geantwortet werden kann.
-  var alteBox = ta.closest('.reel-antwort'); if (alteBox) alteBox.remove();
+  // Das Feld bleibt stehen — reelTypingOn() macht daraus die Warte-Punkte,
+  // reelTypingOff() raeumt es weg. So wartet der Lerner auf seiner Karte.
   reelSendVerdaechtig = !!vertipper(text);   // für den Korrektur-Knopf
   sendUserTurn(text);          // MOTOR unverändert (addMessage('user') routet hierher)
 }
@@ -1561,6 +1569,15 @@ function addReelMessage(role, text){
 }
 function reelTypingOn(){
   var reel = reelEl(); if (!reel) return;
+  // Im freien Flur wartet die Karte, auf der eben geantwortet wurde: das
+  // Antwortfeld weicht drei Punkten. Kein Sprung auf eine leere Folie.
+  var box = document.querySelector('.reel-antwort');
+  if (box && !gefuehrt){
+    box.dataset.warten = '1';
+    box.innerHTML = '<div class="ra-warten"><span></span><span></span><span></span></div>';
+    var sl = box.closest('.reel-slide'); if (sl) fitSlide(sl);
+    return;
+  }
   removeLearnerSlide();
   if (document.getElementById('reelTyping')) return;
   var slide = document.createElement('div');
@@ -1569,7 +1586,13 @@ function reelTypingOn(){
     + '<div class="typing-bubble"><span></span><span></span><span></span></div>';
   reel.appendChild(slide); scrollReelToEnd();
 }
-function reelTypingOff(){ var t = document.getElementById('reelTyping'); if (t) t.remove(); }
+function reelTypingOff(){
+  var t = document.getElementById('reelTyping'); if (t) t.remove();
+  // Die wartende Karte ist beantwortet — ihr Punkte-Feld verschwindet ganz,
+  // damit auf einer alten Karte nicht noch einmal geantwortet werden kann.
+  var w = document.querySelector('.reel-antwort[data-warten="1"]');
+  if (w){ var sl = w.closest('.reel-slide'); w.remove(); if (sl) fitSlide(sl); }
+}
 function reelError(detail){
   var reel = reelEl(); if (!reel) return;
   reelTypingOff(); removeLearnerSlide();
