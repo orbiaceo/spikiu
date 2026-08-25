@@ -361,6 +361,15 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-kopf .rk-rolle { font:800 0.66rem 'DM Sans',sans-serif; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); flex:1; text-align:left; }
 .reel-kopf .rk-btn { flex:0 0 auto; width:30px; height:30px; border-radius:50%; border:2px solid var(--line,#eef1ee); background:var(--white); color:var(--mid); font-size:0.82rem; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
 .reel-kopf .rk-btn:active { transform:scale(0.94); }
+/* Schluss-Karte im freien Flur (19.08.2026): „Gespräch beenden" fiel bisher
+   aus dem Reel in den alten Blasen-Chat — daher die verdoppelten Angebote.
+   Jetzt endet die Szene IM Reel, und beide Wege führen nach Hause. */
+.reel-schluss { gap:0.9rem; }
+.reel-schluss .rs-frage { font:800 clamp(1.15rem,4.8vw,1.45rem)/1.4 'DM Sans',sans-serif; color:var(--ink); max-width:20rem; }
+.reel-schluss .rs-btn { width:100%; max-width:20rem; border:var(--ow) solid var(--ink); border-radius:100px; padding:0.7rem 1.2rem; font:800 1rem 'DM Sans',sans-serif; cursor:pointer; box-shadow:4px 4px 0 var(--ink); }
+.reel-schluss .rs-btn.ja { background:var(--accent); color:var(--white); }
+.reel-schluss .rs-btn.nein { background:var(--white); color:var(--ink); }
+.reel-schluss .rs-btn:active { transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink); }
 .reel-uez { background:none; border:0; font:700 0.78rem 'DM Sans',sans-serif; color:var(--accent); text-decoration:underline; cursor:pointer; margin-top:0.2rem; }
 /* Auf einer Karte mit Antwortfeld gibt es nichts zu wischen — dort wird
    geantwortet. Der fest positionierte Hinweis lag sonst über dem Senden-Knopf. */
@@ -1601,9 +1610,40 @@ function reelKorrigieren(){
   }
 }
 function reelEnd(){
-  if (gefuehrt){ terminar(); return; }   // geführtes Sprechen: regulärer Abschluss (setStage Lektion + exitReel + Angebot)
-  exitReel();                  // freier Flur: zurück zur normalen Ansicht …
-  offerLesson();               // … bestehende Lektions-Angebot-Logik UNVERÄNDERT
+  if (gefuehrt){ terminar(); return; }   // geführtes Sprechen: regulärer Abschluss
+  renderReelSchluss();                   // freier Flur: Schluss-Karte IM Reel
+}
+
+// Die Szene endet im Reel, nicht im alten Blasen-Chat. Beide Wege führen nach
+// Hause: mit Lektion oder ohne. Vorher landete der Lerner in einer Ansicht, in
+// der Spikiu weiterredete und das Angebot sich verdoppelte.
+function renderReelSchluss(){
+  var reel = reelEl(); if (!reel) return;
+  if (document.getElementById('reelSchluss')) return;
+  removeLearnerSlide();
+  var w = document.querySelector('.reel-antwort'); if (w) w.remove();
+  var ui = endUI();
+
+  var slide = document.createElement('div');
+  slide.id = 'reelSchluss';
+  slide.className = 'reel-slide reel-spikiu reel-schluss';
+  slide.innerHTML = '<div class="reel-capy" aria-hidden="true">' + CAPY_SMALL + '</div>'
+    + '<div class="rs-frage">' + escPlain(ui.offer) + '</div>';
+
+  var ja = document.createElement('button');
+  ja.type = 'button'; ja.className = 'rs-btn ja'; ja.textContent = ui.yes;
+  ja.onclick = function(){ ja.disabled = true; makeLessonAndLeave(); };
+
+  var nein = document.createElement('button');
+  nein.type = 'button'; nein.className = 'rs-btn nein'; nein.textContent = ui.no;
+  nein.onclick = function(){
+    try { if (window.SpikiuSitzung) window.SpikiuSitzung.raeume('gespraech'); } catch(e){}
+    location.href = 'haus.html';
+  };
+
+  slide.appendChild(ja); slide.appendChild(nein);
+  reel.appendChild(slide);
+  reelGoTo(reelSlides().length - 1);
 }
 
 // ── Phase 3a (Teil 45): geführte Sprechen-Elemente als Reel-Slides ──────────
