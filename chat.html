@@ -2066,7 +2066,7 @@ async function callGespraech(){
   var r = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: safeMessages, profile: safeProfile, maxTokens: 600 })
+    body: JSON.stringify({ messages: safeMessages, profile: safeProfile, maxTokens: 300 })
   });
   // Diagnose (Charta: den echten Fehler SEHEN, nicht raten): Body robust lesen (Text→JSON),
   // bei !ok die volle Server-Antwort loggen und den ECHTEN Grund in den Fehler geben.
