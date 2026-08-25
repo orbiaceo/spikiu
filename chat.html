@@ -1058,7 +1058,10 @@ function otroTema(){                      // zurück zur Themen-Gabelung → reg
 function terminar(){
   removeEndMenu();
   setStage('lektion');
-  if (reelActive) exitReel();            // Phase 3a: Reel verlassen → Lektions-Angebot in der Chat-Ansicht
+  // Freier Flur: die Szene endet IM Reel. Vorher fiel sie in den Blasen-Chat,
+  // dort redete Spikiu weiter und „Beenden" führte nirgendwohin (19.08.2026).
+  if (reelActive && !gefuehrt){ renderReelSchluss(); return; }
+  if (reelActive) exitReel();            // geführt: Lektions-Angebot in der Chat-Ansicht
   offerLesson();
 }
 
@@ -1811,8 +1814,11 @@ function offerLesson(){
   wrap.querySelector('#loYes').onclick = makeLessonAndLeave;
   wrap.querySelector('#loNo').onclick = function(){
     wrap.remove();
-    addPlainSpikiu(endUI().byeNo);          // warmer Abschied; Chat bleibt (nicht auflösen)
-    updateFreeExit();
+    addPlainSpikiu(endUI().byeNo);
+    // Beenden heißt beenden: nach dem Abschied nach Hause. Vorher blieb der
+    // Lerner im Chat hängen und konnte endlos weiter auf „Beenden" tippen.
+    try { if (window.SpikiuSitzung) window.SpikiuSitzung.raeume('gespraech'); } catch(e){}
+    setTimeout(function(){ location.href = 'haus.html'; }, 900);
   };
 }
 
@@ -2263,7 +2269,11 @@ function getModus(){ try{ return new URLSearchParams(location.search).get('modus
 // Dev-Tür (gleiches Muster wie learnroman.html ?dev=1): öffnet den freien Flur zum
 // Testen, solange der Kostproben-Zähler noch nicht gebaut ist. Ohne dev=1 gilt die
 // Premium-Sperre unverändert für alle.
-function devOffen(){ try{ return new URLSearchParams(location.search).get('dev') === '1'; }catch(e){ return false; } }
+// Beta-Test (19.08.2026): das freie Gespräch ist für alle offen, damit die
+// Tester es ohne Sonder-URL erreichen. Der Kostproben-Zähler ist noch nicht
+// gebaut — bis dahin schützt allein das Ausgabenlimit in der Konsole.
+// Zum Wiedereinschalten hier auf die alte Prüfung zurückstellen.
+function devOffen(){ return true; }
 function showPremiumSperre(){
   if (document.getElementById('gabelung')) return;
   removeOpenerGreeting();
