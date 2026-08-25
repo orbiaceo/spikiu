@@ -97,10 +97,17 @@ export default async function handler(req, res) {
                       : profile.zielsprache === 'el'
   };
 
-  const system =
-    docs.seele + '\n\n' +
-    docs.raum + '\n\n' +
-    laufzeitProfil(p);
+  // Prompt-Caching: Block 1 ist ueber alle Nutzer BYTE-IDENTISCH und wird
+  // zwischengespeichert (Schreiben einmal, Lesen danach zu ~1/10). Block 2
+  // traegt das Laufzeitprofil und darf sich pro Nutzer aendern.
+  // WICHTIG: nichts Dynamisches in Block 1 schieben, sonst ist der Cache tot.
+  const system = [
+    { type: 'text',
+      text: docs.seele + '\n\n' + docs.raum,
+      cache_control: { type: 'ephemeral' } },
+    { type: 'text',
+      text: laufzeitProfil(p) }
+  ];
 
   // Leere History → Opener. Das Modell begrüßt warm OHNE Frage (siehe Raum-Prompt).
   let chatMessages = messages.length === 0
@@ -122,7 +129,10 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: maxTokens || 600,
+        // Netz gegen Textwaende: drei Saetze / vierzig Woerter passen bequem in
+        // 300 Token. Der Prompt sagt es, das Limit erzwingt es — und der Client
+        // kann die Grenze nicht nach oben schieben (19.08.2026).
+        max_tokens: Math.min(maxTokens || 300, 400),
         system,
         messages: chatMessages
       })
