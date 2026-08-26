@@ -113,6 +113,121 @@
                        ort:   { de:'vor der Tür',          es:'en la puerta',       en:'outside the door' } }
   };
 
+  /* ── Die drei Aufgaben je Station ─────────────────────────────────────
+     Nach dem Vorbild von Googles Uebungsmodus: eine Szene ist erledigt, wenn
+     drei konkrete Aufgaben erfuellt sind. Sie sind KEINE Erfindung — sie
+     beschreiben genau die drei Lernerzeilen des Stations-Dialogs.
+
+     In der MUTTERSPRACHE, weil ein Anfaenger sie verstehen muss, ohne sie
+     schon sagen zu koennen. Waeren sie in der Zielsprache, waeren sie schon
+     die halbe Antwort.
+
+     Sie sind der Anker: Spikiu bekommt je Zug nur die offene Aufgabe als
+     Anweisung. Deshalb kann das Gespraech nicht entgleisen, egal was der
+     Lerner einwirft. */
+  var AUFGABEN = {
+    'a1.arzt': [
+      { de:'Sag, wo es weh tut', en:'Say where it hurts' },
+      { de:'Sag, seit wann', en:'Say since when' },
+      { de:'Bedanke dich', en:'Say thank you' }
+    ],
+    'a1.bahnhof': [
+      { de:'Kaufe eine Fahrkarte', en:'Buy a ticket' },
+      { de:'Frag nach der Abfahrtszeit', en:'Ask about the departure time' },
+      { de:'Frag nach dem Gleis', en:'Ask which platform' }
+    ],
+    'a1.cafe': [
+      { de:'Bestelle etwas zu trinken', en:'Order something to drink' },
+      { de:'Sag, wie du ihn möchtest', en:'Say how you want it' },
+      { de:'Bitte um die Rechnung', en:'Ask for the bill' }
+    ],
+    'a1.einkaufen': [
+      { de:'Kaufe ein Kilo Obst', en:'Buy a kilo of fruit' },
+      { de:'Frag nach dem Preis', en:'Ask about the price' },
+      { de:'Bezahle', en:'Pay' }
+    ],
+    'a1.familie': [
+      { de:'Sag, ob du Geschwister hast', en:'Say whether you have siblings' },
+      { de:'Nenne ihren Namen', en:'Give her name' },
+      { de:'Sag, wie alt sie ist', en:'Say how old she is' }
+    ],
+    'a1.hotel': [
+      { de:'Sag, dass du reserviert hast', en:'Say that you have a booking' },
+      { de:'Frag nach dem Frühstück', en:'Ask about breakfast' },
+      { de:'Frag nach der Etage', en:'Ask which floor' }
+    ],
+    'a1.restaurant': [
+      { de:'Sag, für wie viele der Tisch ist', en:'Say how many the table is for' },
+      { de:'Frag nach einer Empfehlung', en:'Ask for a recommendation' },
+      { de:'Bestelle dein Essen', en:'Order your food' }
+    ],
+    'a1.taxi': [
+      { de:'Frag, ob das Taxi frei ist', en:'Ask if the taxi is free' },
+      { de:'Nenne dein Ziel', en:'Name your destination' },
+      { de:'Sag, dass du Gepäck hast', en:'Say that you have luggage' }
+    ],
+    'a1.wegbeschreibung': [
+      { de:'Frag, wo der Platz ist', en:'Ask where the square is' },
+      { de:'Frag, ob es weit ist', en:'Ask whether it is far' },
+      { de:'Bedanke dich', en:'Say thank you' }
+    ],
+    'a1.wetter': [
+      { de:'Sag, wie das Wetter heute ist', en:'Say what the weather is like today' },
+      { de:'Sag, wie es morgen wird', en:'Say what it will be tomorrow' },
+      { de:'Verabschiede dich', en:'Say goodbye' }
+    ],
+    'a2.arzt': [
+      { de:'Erzähle, was passiert ist', en:'Tell what happened' },
+      { de:'Nenne deine Medikamente und Allergien', en:'Name your medication and allergies' },
+      { de:'Frag nach einem weiteren Termin', en:'Ask about another appointment' }
+    ],
+    'a2.bahnhof': [
+      { de:'Sag, dass dein Zug Verspätung hat', en:'Say that your train is delayed' },
+      { de:'Nenne die Umsteigezeit', en:'Give the connection time' },
+      { de:'Frag, was passiert, wenn du ihn verpasst', en:'Ask what happens if you miss it' }
+    ],
+    'a2.cafe': [
+      { de:'Sag höflich, dass etwas nicht stimmt', en:'Politely say something is wrong' },
+      { de:'Frag nach den Zutaten', en:'Ask about the ingredients' },
+      { de:'Wähle etwas anderes', en:'Choose something else' }
+    ],
+    'a2.einkaufen': [
+      { de:'Sag, was mit dem Stück nicht stimmt', en:'Say what is wrong with the item' },
+      { de:'Frag, ob du umtauschen kannst', en:'Ask whether you can exchange it' },
+      { de:'Frag, ob du es anprobieren darfst', en:'Ask whether you may try it on' }
+    ],
+    'a2.familie': [
+      { de:'Erzähle, wo ihr früher gewohnt habt', en:'Tell where you used to live' },
+      { de:'Erzähle, was ihr sonntags gemacht habt', en:'Tell what you did on Sundays' },
+      { de:'Sag, wen du vermisst', en:'Say who you miss' }
+    ],
+    'a2.hotel': [
+      { de:'Melde, was im Zimmer nicht funktioniert', en:'Report what is not working in the room' },
+      { de:'Sag, seit wann', en:'Say since when' },
+      { de:'Bitte um ein anderes Zimmer', en:'Ask for another room' }
+    ],
+    'a2.restaurant': [
+      { de:'Frag nach der Spezialität', en:'Ask about the speciality' },
+      { de:'Sag, dass ihr teilen wollt', en:'Say that you want to share' },
+      { de:'Bitte um getrennte Rechnungen', en:'Ask for separate bills' }
+    ],
+    'a2.taxi': [
+      { de:'Nenne dein Ziel und sag, dass du es eilig hast', en:'Name your destination and say you are in a hurry' },
+      { de:'Frag, ob der andere Weg schneller ist', en:'Ask whether the other way is faster' },
+      { de:'Bitte um eine Quittung', en:'Ask for a receipt' }
+    ],
+    'a2.wegbeschreibung': [
+      { de:'Frag nach dem Weg zum Museum', en:'Ask the way to the museum' },
+      { de:'Frag, wie es weitergeht', en:'Ask what comes next' },
+      { de:'Frag, ob man zu Fuß gehen kann', en:'Ask whether you can walk' }
+    ],
+    'a2.wetter': [
+      { de:'Frag nach der Vorhersage', en:'Ask about the forecast' },
+      { de:'Frag nach dem Nachmittag', en:'Ask about the afternoon' },
+      { de:'Schlag etwas vor', en:'Make a suggestion' }
+    ]
+  };
+
   /* ══════════════════════════════════════════════════════════════════
      STATIONEN — A1
      Bauplan, für jede Station identisch:
@@ -1221,8 +1336,13 @@
     stufen: STUFEN,
     kategorien: KATEGORIEN,
     rollen: ROLLEN,
+    aufgaben: AUFGABEN,
     schritt: SCHRITT,
     stationen: STATIONEN,
+
+    /* Die drei Aufgaben einer Station. Leeres Array, wenn keine da sind —
+       die Oberflaeche zeigt dann keine, statt welche zu erfinden. */
+    aufgabenVon: function (stufe, thema) { return AUFGABEN[stufe + '.' + thema] || []; },
 
     /* Die zwei Rollen und der Ort einer Szene. */
     rolle: function (thema) { return ROLLEN[thema] || null; },

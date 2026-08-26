@@ -364,6 +364,17 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* Schluss-Karte im freien Flur (19.08.2026): „Gespräch beenden" fiel bisher
    aus dem Reel in den alten Blasen-Chat — daher die verdoppelten Angebote.
    Jetzt endet die Szene IM Reel, und beide Wege führen nach Hause. */
+/* Die drei Aufgaben (19.08.2026) — der Anker der Szene.
+   Sie stehen auf der Bühne UND auf jeder Karte: verschwinden sie, vergisst
+   der Lerner sie. Kein Zähler, keine Punkte — drei Kreise, die sich füllen. */
+.reel-aufg { width:100%; max-width:21rem; display:flex; flex-direction:column; gap:0.3rem; margin-top:0.5rem; }
+.reel-aufg .ra-zeile { display:flex; align-items:center; gap:0.55rem; text-align:left; font:700 0.86rem/1.3 'DM Sans',sans-serif; color:var(--mid); padding:0.34rem 0.5rem; border-radius:12px; }
+.reel-aufg .ra-kreis { flex:0 0 auto; width:16px; height:16px; border-radius:50%; border:2.5px solid var(--ink); background:var(--white); opacity:0.4; display:flex; align-items:center; justify-content:center; font-size:0.58rem; color:var(--white); }
+.reel-aufg .ra-zeile.jetzt { background:#eaf4f7; color:var(--ink); }
+.reel-aufg .ra-zeile.jetzt .ra-kreis { opacity:1; border-color:var(--accent); }
+.reel-aufg .ra-zeile.fertig { opacity:0.6; }
+.reel-aufg .ra-zeile.fertig .ra-kreis { background:#1b4f72; border-color:#1b4f72; opacity:1; }
+.reel-aufg .ra-zeile.fertig .ra-txt { text-decoration:line-through; }
 .reel-schluss { gap:0.9rem; }
 .reel-schluss .rs-frage { font:800 clamp(1.15rem,4.8vw,1.45rem)/1.4 'DM Sans',sans-serif; color:var(--ink); max-width:20rem; }
 .reel-schluss .rs-btn { width:100%; max-width:20rem; border:var(--ow) solid var(--ink); border-radius:100px; padding:0.7rem 1.2rem; font:800 1rem 'DM Sans',sans-serif; cursor:pointer; box-shadow:4px 4px 0 var(--ink); }
@@ -1207,6 +1218,41 @@ function bindReelGestures(){
 function removeLearnerSlide(){ var s = document.getElementById('reelLearner'); if (s) s.remove(); }
 
 // Spikiu-Slide: kleiner vollständiger Capy + große Zielsprachen-Zeile + 🔊 + Übersetzung.
+// ── Die drei Aufgaben ──────────────────────────────────────────────────
+// Sie sind der Anker: Spikiu bekommt je Zug nur die OFFENE Aufgabe als
+// Anweisung. Deshalb kann die Szene nicht entgleisen, egal was der Lerner
+// einwirft. Harte Decke bei sechs Zügen — die Kosten sind fest begrenzt.
+var SZENE_ZUG_DECKEL = 6;
+var szeneAufgaben = [];   // [{de,en}] aus lernpfad-daten.js
+var szeneOffen = 0;       // Index der offenen Aufgabe
+var szeneZug = 0;         // Spikiu-Züge in dieser Szene
+
+function szeneAufgabenLaden(){
+  szeneAufgaben = []; szeneOffen = 0; szeneZug = 0;
+  try {
+    var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
+    if (D && P && TOPIC_ID) szeneAufgaben = D.aufgabenVon(P.stufe(), TOPIC_ID) || [];
+  } catch(e){ szeneAufgaben = []; }
+}
+
+function renderAufgaben(){
+  if (!szeneAufgaben.length) return null;
+  var ui = uiLang();
+  var box = document.createElement('div');
+  box.className = 'reel-aufg';
+  szeneAufgaben.forEach(function(a, i){
+    var z = document.createElement('div');
+    z.className = 'ra-zeile' + (i < szeneOffen ? ' fertig' : i === szeneOffen ? ' jetzt' : '');
+    var k = document.createElement('div');
+    k.className = 'ra-kreis'; k.textContent = i < szeneOffen ? '\u2713' : '';
+    var t = document.createElement('span');
+    t.className = 'ra-txt'; t.textContent = a[ui] || a.de;
+    z.appendChild(k); z.appendChild(t);
+    box.appendChild(z);
+  });
+  return box;
+}
+
 // Die Rolle, die Spikiu in dieser Szene spielt — steht in der Kopfzeile.
 function szenenRolle(){
   try {
@@ -1265,6 +1311,10 @@ function appendSpikiuSlide(ziel, trans){
       tr.parentNode.insertBefore(uez, tr);
     }
   }
+  if (!gefuehrt){
+    var auf2 = renderAufgaben();
+    if (auf2) slide.appendChild(auf2);
+  }
   var sb = slide.querySelector('.speak-btn');
   if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(ziel), 'playing'); };
   // War der letzte Lerner-Zug ein mutmaßlicher Vertipper, bekommt Spikius
@@ -1319,6 +1369,11 @@ function renderBuehne(themaId, weiter){
   ort.className = 'bu-ort';
   ort.textContent = R.ort[ui] || R.ort.de;
   slide.appendChild(ort);
+
+  // Die drei Aufgaben stehen schon hier — der Lerner weiß, worauf er zusteuert.
+  szeneAufgabenLaden();
+  var auf = renderAufgaben();
+  if (auf) slide.appendChild(auf);
 
   var los = document.createElement('button');
   los.type = 'button'; los.className = 'bu-los';
@@ -1841,6 +1896,14 @@ function hideLessonSpinner(){ var s = document.getElementById('lessonSpin'); if 
 var FREI_LESSON = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
 
 async function makeLessonAndLeave(){
+  // Spinner, Fehlermeldung und „Nochmal versuchen" leben im Blasen-Chat. Der ist
+  // versteckt, solange der Reel laeuft — deshalb wirkte „Ja, gern" wie ein toter
+  // Knopf (19.08.2026). Erst den Reel verlassen, dann die Lektion bauen.
+  if (reelActive){
+    var rs = document.getElementById('reelSchluss'); if (rs) rs.remove();
+    exitReel();
+    chat.innerHTML = '';                 // die Szene ist vorbei — keine alten Blasen
+  }
   var offer = document.getElementById('lessonOffer'); if (offer) offer.remove();
   var oldRetry = document.getElementById('lessonRetry'); if (oldRetry) oldRetry.remove();
   setExitVisible(false); freeExitBar.hidden = true;
@@ -2081,6 +2144,24 @@ async function callGespraech(){
     koennen:       (PROFILE && PROFILE.koennen) || 'anfang',
     fremde_schrift: !!(PROFILE && PROFILE.fremde_schrift)
   };
+  // Der Anker: die offene Aufgabe geht als eigener Auftrag mit. Spikiu bekommt
+  // damit je Zug EINE Anweisung — deshalb kann die Szene nicht entgleisen.
+  // Die Rollen verhindern, dass er eine dritte Figur erfindet.
+  if (!gefuehrt && szeneAufgaben.length){
+    var mu = safeProfile.muttersprache;
+    var Rz = (window.SpikiuLernpfad && TOPIC_ID) ? window.SpikiuLernpfad.rolle(TOPIC_ID) : null;
+    safeProfile.szene = {
+      offen:      szeneOffen < szeneAufgaben.length
+                    ? (szeneAufgaben[szeneOffen][mu] || szeneAufgaben[szeneOffen].de) : null,
+      erledigt:   szeneOffen,
+      gesamt:     szeneAufgaben.length,
+      zug:        szeneZug + 1,
+      maxZuege:   SZENE_ZUG_DECKEL,
+      rolleSpikiu: Rz ? (Rz.spikiu[mu] || Rz.spikiu.de) : '',
+      rolleLerner: Rz ? (Rz.lerner[mu] || Rz.lerner.de) : '',
+      ort:         Rz ? (Rz.ort[mu] || Rz.ort.de) : ''
+    };
+  }
   // (1) Gleit-Fenster: nur Seed + die letzten GESP_WINDOW Nachrichten ausgehend.
   // verlauf bleibt unangetastet (Referenzen → unten beim Cap NIE in-place mutieren).
   function fenster(msgs){
@@ -2144,6 +2225,15 @@ async function turn(){
     // Signale in fester Reihenfolge abfangen, NIE als Rohtext zeigen:
     // [KARTE] → Erklärkarte (unterbricht) · [WECHSEL] → Tür ·
     // [KORREKTUR] → Karte (vor dem Menü) · [SZENENENDE] → Menü.
+    // Spikiu meldet mit [AUFGABE], wenn die offene Aufgabe erfüllt ist.
+    // Ein Struktur-Signal wie alle anderen: nie sichtbar, nie erklärt.
+    if (!gefuehrt && szeneAufgaben.length){
+      szeneZug++;
+      if (/\[AUFGABE\]/.test(reply)){
+        reply = reply.replace(/\[AUFGABE\]/g, '').trim();
+        if (szeneOffen < szeneAufgaben.length) szeneOffen++;
+      }
+    }
     var ka = extractKarte(reply);
     var w = extractWechsel(ka.text);
     var k = extractKorrektur(w.text);
@@ -2167,6 +2257,11 @@ async function turn(){
       return;                                               // Szene läuft beim nächsten Zug weiter
     }
 
+    // Alle Aufgaben erledigt oder Zug-Decke erreicht: die Szene schließt.
+    // Die Replik wird noch gezeigt, danach kommt die Schluss-Karte.
+    var szeneVorbei = !gefuehrt && szeneAufgaben.length
+      && (szeneOffen >= szeneAufgaben.length || szeneZug >= SZENE_ZUG_DECKEL);
+
     if (shown){
       addMessage('spikiu', shown);                          // nur Anzeige (ohne Marker)
       verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf (Marker raus, [[…]] bleibt)
@@ -2176,6 +2271,7 @@ async function turn(){
     if (k.pairs.length){ korrekturen = korrekturen.concat(k.pairs); renderKorrekturCard(k.pairs); }
     if (w.ziel) addDoorButton(w.ziel);                      // sanfter Knopf, kein Auto-Sprung
     if (s.ended) renderEndMenu();                           // drei Knöpfe nach der Karte
+    else if (szeneVorbei) renderReelSchluss();              // Aufgaben erledigt oder Zug-Decke erreicht
     else if (o.optionen.length) renderOptionen(o.optionen); // sonst: Antwort-Chips (nur geführt, in renderOptionen geprüft)
   } catch(e){
     showError('Anzeige: ' + ((e && e.message) || e));
