@@ -1027,6 +1027,9 @@ function renderErklaerungChat(K){
 // Drei Knöpfe: gleiches Thema / anderes Thema / beenden→Lektion. Kein Auto-Sprung.
 function renderEndMenu(){
   if (document.getElementById('endmenu')) return;
+  // Freier Flur: [SZENENENDE] führt direkt zur Schluss-Karte. Das Drei-Knopf-
+  // Menü („gleiches Thema / anderes / beenden") gehört zum geführten Sprechen.
+  if (!gefuehrt && reelActive){ renderReelSchluss(); return; }
   setExitVisible(false);                // Szenenende-Menü zeigt die Optionen schon → Leiste weg
   setStage('sprechen');                 // Szenenende; „Lektion" erst bei „Terminar"
   if (reelActive){ renderReelEndMenu(); return; }   // Phase 3a: Szenenende-Menü als Reel-Slide
@@ -1224,12 +1227,16 @@ function removeLearnerSlide(){ var s = document.getElementById('reelLearner'); i
 // Anweisung. Deshalb kann die Szene nicht entgleisen, egal was der Lerner
 // einwirft. Harte Decke bei sechs Zügen — die Kosten sind fest begrenzt.
 var SZENE_ZUG_DECKEL = 6;
+// Ein Schalter statt vieler Enden: sobald die Szene beendet ist, rendert
+// nichts mehr nach. Vorher schob ein noch laufender Aufruf danach eine neue
+// Karte nach, und je nach Weg landete der Lerner woanders (19.08.2026).
+var szeneBeendet = false;
 var szeneAufgaben = [];   // [{de,en}] aus lernpfad-daten.js
 var szeneOffen = 0;       // Index der offenen Aufgabe
 var szeneZug = 0;         // Spikiu-Züge in dieser Szene
 
 function szeneAufgabenLaden(){
-  szeneAufgaben = []; szeneOffen = 0; szeneZug = 0;
+  szeneAufgaben = []; szeneOffen = 0; szeneZug = 0; szeneBeendet = false;
   try {
     var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
     if (D && P && TOPIC_ID) szeneAufgaben = D.aufgabenVon(P.stufe(), TOPIC_ID) || [];
@@ -1625,7 +1632,7 @@ function vertipper(s){
 }
 
 function reelSend(){
-  if (busy || guiding) return;
+  if (busy || guiding || szeneBeendet) return;
   var ta = document.getElementById('reelInput'); if (!ta) return;
   var text = ta.value.trim();
   // Stiller Enter-Schutz: ein einzelnes Zeichen ist fast immer ein zu früh
@@ -1688,6 +1695,8 @@ function reelEnd(){
 function renderReelSchluss(){
   var reel = reelEl(); if (!reel) return;
   if (document.getElementById('reelSchluss')) return;
+  szeneBeendet = true;                 // ab jetzt rendert nichts mehr nach
+  busy = true;                          // und es geht kein Zug mehr raus
   removeLearnerSlide();
   var w = document.querySelector('.reel-antwort'); if (w) w.remove();
   var ui = endUI();
@@ -1988,7 +1997,9 @@ async function makeLessonAndLeave(){
   // Sanfte Auflösung (fade + leichtes blur) → Dashboard.
   var app = document.querySelector('.app');
   setTimeout(function(){ if (app) app.classList.add('dissolving'); }, 350);
-  setTimeout(function(){ window.location.href = 'dashboard.html#lektionen'; }, 1050);
+  // Beenden heißt beenden: nach Hause, nicht ins Dashboard. Die Lektion
+  // liegt dort und wartet — der Lerner findet sie über die Bibliothek.
+  setTimeout(function(){ window.location.href = 'haus.html'; }, 1050);
 }
 
 // Beruhigende Fehlnachricht + „Nochmal versuchen" (pending bleibt; Finalizer übernimmt sonst).
@@ -2272,6 +2283,7 @@ async function turn(){
     var szeneVorbei = !gefuehrt && szeneAufgaben.length
       && (szeneOffen >= szeneAufgaben.length || szeneZug >= SZENE_ZUG_DECKEL);
 
+    if (szeneBeendet) return;          // die Szene ist zu — keine Nachzügler
     if (shown){
       addMessage('spikiu', shown);                          // nur Anzeige (ohne Marker)
       verlauf.push({ role: 'assistant', content: shown });  // sauberer Verlauf (Marker raus, [[…]] bleibt)
