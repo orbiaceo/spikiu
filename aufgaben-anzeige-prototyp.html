@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Aufgaben-Anzeige</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--mid:#5f7068;--minz:#eef7f1;--line:#eef1ee;--tief:#1b4f72;--ow:2.5px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;
+  display:flex;flex-direction:column;overflow:hidden}
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.45rem .7rem;flex-shrink:0}
+.pult h1{font:800 .7rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5;margin-bottom:.3rem}
+.tog{font:800 .68rem "DM Sans",sans-serif;padding:.26rem .5rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;margin-right:.22rem}
+.tog[aria-pressed="true"]{background:var(--ink);color:#fff}
+.buehne{flex:1;position:relative;min-height:0}
+.karte{position:absolute;inset:.7rem .85rem 1.2rem;background:#fff;border:var(--ow) solid var(--ink);
+  border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem 1.05rem;overflow-y:auto;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;text-align:center}
+.bild{width:min(46vw,10.5rem);border-radius:16px;border:var(--ow) solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);display:block}
+.rollen{font:700 1rem/1.45 "DM Sans",sans-serif;max-width:20rem}
+.rollen b{color:var(--acc)}
+.ort{font:600 .84rem "DM Sans",sans-serif;color:var(--mid)}
+.los{background:var(--acc);color:#fff;border:var(--ow) solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  border-radius:100px;padding:.6rem 2.2rem;font:800 .98rem "DM Sans",sans-serif;cursor:pointer;margin-top:.3rem}
+.info{position:absolute;left:.85rem;right:.85rem;bottom:.2rem;font:600 .66rem "DM Sans",sans-serif;
+  color:var(--mid);text-align:center;opacity:.85}
+
+/* ── A · Fortschrittsbalken mit einer Zeile ─────────────────────────
+   Nur die AKTUELLE Aufgabe steht da. Kein Listenbild, nichts zum Tippen. */
+.va{width:100%;max-width:21rem;display:flex;flex-direction:column;gap:.4rem;align-items:center}
+.va .schritte{display:flex;gap:.3rem;width:100%}
+.va .st{flex:1;height:5px;border-radius:3px;background:#dfe7e2}
+.va .st.fertig{background:var(--tief)}
+.va .st.jetzt{background:var(--acc)}
+.va .jetzt-txt{font:800 .98rem/1.35 "DM Sans",sans-serif;color:var(--ink);max-width:19rem}
+.va .klein{font:600 .72rem "DM Sans",sans-serif;color:var(--mid)}
+
+/* ── B · Liste ohne Kreise, mit Zahlen ─────────────────────────────── */
+.vb{width:100%;max-width:21rem;display:flex;flex-direction:column;gap:.15rem;text-align:left}
+.vb .z{display:flex;gap:.6rem;align-items:baseline;padding:.3rem .1rem;
+  font:700 .88rem/1.35 "DM Sans",sans-serif;color:var(--mid)}
+.vb .nr{flex:0 0 auto;font:800 .74rem "DM Sans",sans-serif;color:#b8c4bd;width:1rem}
+.vb .z.jetzt{color:var(--ink)}
+.vb .z.jetzt .nr{color:var(--acc)}
+.vb .z.fertig{opacity:.45}
+.vb .z.fertig .txt{text-decoration:line-through}
+.vb .z.fertig .nr{color:var(--tief)}
+
+/* ── C · Häkchen statt Kreis ───────────────────────────────────────── */
+.vc{width:100%;max-width:21rem;display:flex;flex-direction:column;gap:.15rem;text-align:left}
+.vc .z{display:flex;gap:.55rem;align-items:baseline;padding:.3rem .1rem;
+  font:700 .88rem/1.35 "DM Sans",sans-serif;color:var(--mid)}
+.vc .hk{flex:0 0 auto;width:1.1rem;font-size:.85rem;color:var(--tief);text-align:center}
+.vc .z.jetzt{color:var(--ink)}
+.vc .z.jetzt .hk{color:var(--acc)}
+.vc .z.fertig{opacity:.45}
+.vc .z.fertig .txt{text-decoration:line-through}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Aufgaben-Anzeige · ohne Klick-Anmutung</h1>
+  <div>
+    <button class="tog" data-v="a" aria-pressed="true">A · nur die aktuelle</button>
+    <button class="tog" data-v="b">B · Zahlen</button>
+    <button class="tog" data-v="c">C · Häkchen</button>
+    <button class="tog" id="tWeiter">eine erledigen</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script src="bilder-db.js"></script>
+<script>
+/* Der Kreis vor einer Zeile liest sich als Radiobutton — man will ihn tippen.
+   Drei Wege, das zu vermeiden. */
+var D=window.SpikiuLernpfad, B=window.SpikiuBilder;
+var THEMA='taxi', STUFE='a1', MU='de';
+var variante='a', offen=0;
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+function AUF(){ return D.aufgabenVon(STUFE,THEMA); }
+
+function vA(){
+  var a=AUF(), box=el('div','va');
+  var s=el('div','schritte');
+  a.forEach(function(_,i){ s.appendChild(el('div','st'+(i<offen?' fertig':i===offen?' jetzt':''))); });
+  box.appendChild(s);
+  if(offen<a.length){
+    box.appendChild(el('div','klein','Aufgabe '+(offen+1)+' von '+a.length));
+    box.appendChild(el('div','jetzt-txt', a[offen].de));
+  } else {
+    box.appendChild(el('div','jetzt-txt','Alles erledigt.'));
+  }
+  return box;
+}
+function vB(){
+  var a=AUF(), box=el('div','vb');
+  a.forEach(function(x,i){
+    var z=el('div','z'+(i<offen?' fertig':i===offen?' jetzt':''));
+    z.appendChild(el('span','nr',(i+1)+'.'));
+    z.appendChild(el('span','txt',x.de));
+    box.appendChild(z);
+  });
+  return box;
+}
+function vC(){
+  var a=AUF(), box=el('div','vc');
+  a.forEach(function(x,i){
+    var z=el('div','z'+(i<offen?' fertig':i===offen?' jetzt':''));
+    z.appendChild(el('span','hk', i<offen?'✓':i===offen?'›':'·'));
+    z.appendChild(el('span','txt',x.de));
+    box.appendChild(z);
+  });
+  return box;
+}
+
+function mal(){
+  var b=document.getElementById('buehne'); b.innerHTML='';
+  var r=D.rolle(THEMA), t=D.thema(THEMA);
+  var k=el('div','karte');
+  var im=B&&B.img(THEMA,MU,'bild'); if(im) k.appendChild(im);
+  var ro=el('div','rollen');
+  ro.innerHTML='Ich bin <b>'+r.spikiu.de+'</b>, du bist <b>'+r.lerner.de+'</b>.';
+  k.appendChild(ro);
+  k.appendChild(el('div','ort', r.ort.de));
+  k.appendChild(variante==='a'?vA():variante==='b'?vB():vC());
+  var l=el('button','los','Los!'); l.type='button'; k.appendChild(l);
+  b.appendChild(k);
+  var txt={a:'Nur die aktuelle Aufgabe. Der Balken zeigt den Stand — nichts sieht nach Knopf aus.',
+           b:'Alle drei, aber mit Zahlen statt Kreisen. Zahlen liest niemand als Knopf.',
+           c:'Häkchen, Pfeil, Punkt. Kein Rahmen, keine Fläche zum Tippen.'};
+  b.appendChild(el('div','info', txt[variante]));
+}
+
+document.querySelectorAll('[data-v]').forEach(function(b){
+  b.onclick=function(){ variante=b.dataset.v;
+    document.querySelectorAll('[data-v]').forEach(function(x){
+      x.setAttribute('aria-pressed', x===b?'true':'false'); });
+    mal(); };
+});
+document.getElementById('tWeiter').onclick=function(){
+  offen=(offen+1)%(AUF().length+1); mal(); };
+mal();
+</script>
+</body>
+</html>
