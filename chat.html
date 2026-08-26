@@ -365,16 +365,28 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
    aus dem Reel in den alten Blasen-Chat — daher die verdoppelten Angebote.
    Jetzt endet die Szene IM Reel, und beide Wege führen nach Hause. */
 /* Die drei Aufgaben (19.08.2026) — der Anker der Szene.
-   Sie stehen auf der Bühne UND auf jeder Karte: verschwinden sie, vergisst
-   der Lerner sie. Kein Zähler, keine Punkte — drei Kreise, die sich füllen. */
-.reel-aufg { width:100%; max-width:21rem; display:flex; flex-direction:column; gap:0.3rem; margin-top:0.5rem; }
-.reel-aufg .ra-zeile { display:flex; align-items:center; gap:0.55rem; text-align:left; font:700 0.86rem/1.3 'DM Sans',sans-serif; color:var(--mid); padding:0.34rem 0.5rem; border-radius:12px; }
-.reel-aufg .ra-kreis { flex:0 0 auto; width:16px; height:16px; border-radius:50%; border:2.5px solid var(--ink); background:var(--white); opacity:0.4; display:flex; align-items:center; justify-content:center; font-size:0.58rem; color:var(--white); }
-.reel-aufg .ra-zeile.jetzt { background:#eaf4f7; color:var(--ink); }
-.reel-aufg .ra-zeile.jetzt .ra-kreis { opacity:1; border-color:var(--accent); }
-.reel-aufg .ra-zeile.fertig { opacity:0.6; }
-.reel-aufg .ra-zeile.fertig .ra-kreis { background:#1b4f72; border-color:#1b4f72; opacity:1; }
+   ZWEI Formen, aus gutem Grund:
+   Auf der BÜHNE die volle Liste mit Zahlen — dort schaut der Lerner sich die
+   Szene an. Zahlen statt Kreise, weil ein Kreis vor einer Zeile wie ein
+   Radiobutton aussieht und zum Tippen verleitet.
+   In der SZENE nur die aktuelle Aufgabe plus ein dünner Balken. Drei Aufgaben
+   gleichzeitig sind drei Dinge im Kopf — die Regel heißt: ein Gedanke pro Karte. */
+.reel-aufg { width:100%; max-width:21rem; display:flex; flex-direction:column; gap:0.15rem; margin-top:0.5rem; text-align:left; }
+.reel-aufg .ra-zeile { display:flex; gap:0.6rem; align-items:baseline; padding:0.3rem 0.1rem; font:700 0.88rem/1.35 'DM Sans',sans-serif; color:var(--mid); }
+.reel-aufg .ra-nr { flex:0 0 auto; width:1rem; font:800 0.74rem 'DM Sans',sans-serif; color:#b8c4bd; }
+.reel-aufg .ra-zeile.jetzt { color:var(--ink); }
+.reel-aufg .ra-zeile.jetzt .ra-nr { color:var(--accent); }
+.reel-aufg .ra-zeile.fertig { opacity:0.45; }
+.reel-aufg .ra-zeile.fertig .ra-nr { color:#1b4f72; }
 .reel-aufg .ra-zeile.fertig .ra-txt { text-decoration:line-through; }
+
+.reel-jetzt { width:100%; max-width:21rem; display:flex; flex-direction:column; align-items:center; gap:0.4rem; margin-top:0.6rem; }
+.reel-jetzt .rj-schritte { display:flex; gap:0.3rem; width:100%; }
+.reel-jetzt .rj-st { flex:1; height:5px; border-radius:3px; background:#dfe7e2; }
+.reel-jetzt .rj-st.fertig { background:#1b4f72; }
+.reel-jetzt .rj-st.jetzt { background:var(--accent); }
+.reel-jetzt .rj-klein { font:600 0.72rem 'DM Sans',sans-serif; color:var(--mid); }
+.reel-jetzt .rj-txt { font:800 0.96rem/1.35 'DM Sans',sans-serif; color:var(--ink); max-width:19rem; text-align:center; }
 .reel-schluss { gap:0.9rem; }
 .reel-schluss .rs-frage { font:800 clamp(1.15rem,4.8vw,1.45rem)/1.4 'DM Sans',sans-serif; color:var(--ink); max-width:20rem; }
 .reel-schluss .rs-btn { width:100%; max-width:20rem; border:var(--ow) solid var(--ink); border-radius:100px; padding:0.7rem 1.2rem; font:800 1rem 'DM Sans',sans-serif; cursor:pointer; box-shadow:4px 4px 0 var(--ink); }
@@ -1235,6 +1247,7 @@ function szeneAufgabenLaden(){
   } catch(e){ szeneAufgaben = []; }
 }
 
+// Bühne: die volle Liste mit Zahlen.
 function renderAufgaben(){
   if (!szeneAufgaben.length) return null;
   var ui = uiLang();
@@ -1243,13 +1256,40 @@ function renderAufgaben(){
   szeneAufgaben.forEach(function(a, i){
     var z = document.createElement('div');
     z.className = 'ra-zeile' + (i < szeneOffen ? ' fertig' : i === szeneOffen ? ' jetzt' : '');
-    var k = document.createElement('div');
-    k.className = 'ra-kreis'; k.textContent = i < szeneOffen ? '\u2713' : '';
+    var n = document.createElement('span');
+    n.className = 'ra-nr'; n.textContent = (i + 1) + '.';
     var t = document.createElement('span');
     t.className = 'ra-txt'; t.textContent = a[ui] || a.de;
-    z.appendChild(k); z.appendChild(t);
+    z.appendChild(n); z.appendChild(t);
     box.appendChild(z);
   });
+  return box;
+}
+
+// Szene: nur die aktuelle Aufgabe, darüber ein dünner Balken.
+var AUFG_UI = { de:'Aufgabe %1 von %2', es:'Tarea %1 de %2', en:'Task %1 of %2' };
+function renderAufgabeJetzt(){
+  if (!szeneAufgaben.length) return null;
+  var ui = uiLang();
+  var box = document.createElement('div');
+  box.className = 'reel-jetzt';
+  var s = document.createElement('div'); s.className = 'rj-schritte';
+  szeneAufgaben.forEach(function(_, i){
+    var b = document.createElement('div');
+    b.className = 'rj-st' + (i < szeneOffen ? ' fertig' : i === szeneOffen ? ' jetzt' : '');
+    s.appendChild(b);
+  });
+  box.appendChild(s);
+  if (szeneOffen < szeneAufgaben.length){
+    var k = document.createElement('div');
+    k.className = 'rj-klein';
+    k.textContent = (AUFG_UI[ui] || AUFG_UI.de)
+      .replace('%1', szeneOffen + 1).replace('%2', szeneAufgaben.length);
+    var t = document.createElement('div');
+    t.className = 'rj-txt';
+    t.textContent = szeneAufgaben[szeneOffen][ui] || szeneAufgaben[szeneOffen].de;
+    box.appendChild(k); box.appendChild(t);
+  }
   return box;
 }
 
@@ -1312,7 +1352,7 @@ function appendSpikiuSlide(ziel, trans){
     }
   }
   if (!gefuehrt){
-    var auf2 = renderAufgaben();
+    var auf2 = renderAufgabeJetzt();   // in der Szene nur die aktuelle
     if (auf2) slide.appendChild(auf2);
   }
   var sb = slide.querySelector('.speak-btn');
