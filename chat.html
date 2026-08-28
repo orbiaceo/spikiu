@@ -1261,9 +1261,15 @@ var szeneOffen = 0;       // Index der offenen Aufgabe
 var szeneZug = 0;         // Spikiu-Züge in dieser Szene
 
 var szeneBeispiele = [];   // die Skriptzeilen des Lerners — der Souffleur
+// Der erste Zug ist der Themen-Wunsch („Ich möchte das Thema … üben"), nicht
+// die Antwort auf eine Aufgabe. Zählte er mit, sprang die Anzeige auf
+// „Aufgabe 2 von 3", bevor Spikiu überhaupt gesprochen hatte — und der
+// Souffleur bot den Satz zur falschen Aufgabe an (19.08.2026).
+var szeneStartzug = false;
 
 function szeneAufgabenLaden(){
-  szeneAufgaben = []; szeneBeispiele = []; szeneOffen = 0; szeneZug = 0; szeneBeendet = false;
+  szeneAufgaben = []; szeneBeispiele = []; szeneOffen = 0; szeneZug = 0;
+  szeneBeendet = false; szeneStartzug = false;
   try {
     var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
     if (!D || !P || !TOPIC_ID) return;
@@ -2384,9 +2390,13 @@ async function turn(){
     // weiter. Das ist ehrlicher: die Aufgaben führen, sie prüfen nicht.
     // Der Marker wird nur noch aus dem Text entfernt, falls er doch kommt.
     if (!gefuehrt && szeneAufgaben.length){
-      szeneZug++;
       reply = reply.replace(/\[AUFGABE\]/g, '').trim();
-      if (szeneOffen < szeneAufgaben.length) szeneOffen++;
+      if (szeneStartzug){
+        szeneStartzug = false;             // Startschuss: Aufgabe 1 bleibt offen
+      } else {
+        szeneZug++;
+        if (szeneOffen < szeneAufgaben.length) szeneOffen++;
+      }
     }
     var ka = extractKarte(reply);
     var w = extractWechsel(ka.text);
@@ -2574,7 +2584,10 @@ function pickTopic(label, id){
     hideRail();
     enterReel();
     removeLearnerSlide();                // die Bühne kommt zuerst, nicht das Textfeld
-    var start = function(){ sendUserTurn((WUNSCH[uiLang()] || WUNSCH.de)(label)); };
+    var start = function(){
+      szeneStartzug = true;                // der Themen-Wunsch ist keine Antwort
+      sendUserTurn((WUNSCH[uiLang()] || WUNSCH.de)(label));
+    };
     // Bühnenkarte statt Spikius Höflichkeitszug: Bild, Rollen, „Los!".
     // Fehlen Rollen oder Bild, geht es ohne sie direkt los.
     if (!renderBuehne(TOPIC_ID, start)) start();
