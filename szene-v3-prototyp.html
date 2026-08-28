@@ -46,27 +46,33 @@ body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,san
 .trans{font:600 .9rem/1.35 "DM Sans",sans-serif;color:var(--mid);font-style:italic;max-width:20rem}
 
 /* 1 · Der Beispielsatz statt eines Menüs */
-.souff{position:relative;flex:0 0 auto}
-.souff .sf-capy{width:46px;height:46px;border-radius:50%;border:2.5px solid var(--ink);
+/* Der Aufgabentitel steht GANZ OBEN, direkt unter der Kopfzeile — er sagt,
+   worum es geht, bevor irgendetwas anderes kommt.
+   Der Souffleur ist eine eigene Zeile über dem Trennstrich: Capy links,
+   sein Vorschlag daneben. Keine Blase, kein Schweben, nichts liegt über
+   dem Eingabefeld (19.08.2026). */
+.aufgabe{width:100%;max-width:22rem;display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  padding:.7rem .9rem .55rem;border-bottom:2px solid var(--line);margin:0 auto}
+.aufgabe .ag-txt{font:800 1.02rem/1.3 "DM Sans",sans-serif;color:var(--ink);text-align:center}
+
+.souff{display:flex;align-items:center;gap:.6rem;width:100%;max-width:22rem;
+  padding:.5rem .2rem .55rem;margin:0 auto;border-top:2px solid var(--line)}
+.souff .sf-capy{width:42px;height:42px;border-radius:50%;border:2.5px solid var(--ink);
   background:#fff;box-shadow:3px 3px 0 var(--ink);cursor:pointer;display:flex;
   align-items:center;justify-content:center;padding:0;flex:0 0 auto}
-.souff .sf-capy svg{width:30px;height:30px}
+.souff .sf-capy svg{width:27px;height:27px}
 .souff .sf-capy:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-/* Die Blase klappt nach OBEN auf und deckt nichts zu: der Senden-Knopf
-   liegt darunter, das Textfeld darueber. Sie ist eine Schicht ueber der
-   Karte, aber ausserhalb aller Bedienelemente. */
-.souff .sf-blase{position:absolute;left:0;bottom:calc(100% + .5rem);z-index:6;
-  width:max-content;max-width:min(70vw,17rem);background:#fff;border:2.5px solid var(--ink);
-  border-radius:16px 16px 16px 4px;box-shadow:3px 3px 0 var(--ink);padding:.5rem .7rem;
-  display:flex;flex-direction:column;gap:.25rem;animation:sfAuf .22s ease;text-align:left}
-@keyframes sfAuf{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}
-.souff .sf-kopf{font:800 .58rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mid)}
+/* Der Vorschlag steht NEBEN dem Capy in derselben Zeile — keine Blase,
+   die etwas verdecken könnte. Solange nichts angetippt ist, steht dort
+   eine leise Einladung. */
+.souff .sf-satz{flex:1;min-width:0;text-align:left;animation:sfAuf .22s ease}
+@keyframes sfAuf{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.souff .sf-kopf{font:800 .56rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mid)}
 .souff .sf-txt{font-family:"Lora",serif;font-weight:600;font-size:1rem;line-height:1.3;color:var(--ink)}
+.souff .sf-leer{font:600 .78rem "DM Sans",sans-serif;color:var(--mid);opacity:.8;font-style:italic}
 
 .fuss{flex:0 0 auto;padding:.55rem 1rem .8rem;border-top:2px solid var(--line);
   display:flex;flex-direction:column;align-items:center;gap:.5rem}
-.fuss .f-reihe{display:flex;align-items:center;gap:.6rem;width:100%;justify-content:center;position:relative}
-.fuss .f-reihe .souff{position:absolute;left:0}
 .feld{width:100%;max-width:21rem;background:#fff;border:2.5px solid var(--ink);border-radius:16px;
   padding:.65rem .9rem;font:600 1rem/1.4 "DM Sans",sans-serif;color:var(--ink);resize:none;
   outline:none;min-height:3.4rem;text-align:center}
@@ -253,6 +259,13 @@ function malSzene(b){
   var k=el('div','karte');
   k.appendChild(kopfzeile());
 
+  /* Die Aufgabe steht GANZ OBEN: sie sagt, worum es geht, bevor Spikiu redet. */
+  var ag=el('div','aufgabe');
+  ag.appendChild(schritte());
+  ag.appendChild(el('div','klein','Aufgabe '+(offen+1)+' von '+a.length));
+  ag.appendChild(el('div','ag-txt', a[offen].de));
+  k.appendChild(ag);
+
   var l=el('div','leib');
   l.appendChild(el('div','ziel', sp.z));
   var au=el('button','audio','🔊'); au.type='button'; au.onclick=function(){sprich(sp.z);};
@@ -260,10 +273,6 @@ function malSzene(b){
   var u=el('button','uez','Übersetzung'); u.type='button';
   u.onclick=function(){ u.replaceWith(el('div','trans', sp.na.de)); };
   l.appendChild(u);
-  l.appendChild(schritte());
-  l.appendChild(el('div','klein','Aufgabe '+(offen+1)+' von '+a.length));
-  l.appendChild(el('div','jetzt-txt', a[offen].de));
-
   k.appendChild(l);
 
   var f=el('div','fuss');
@@ -279,30 +288,25 @@ function malSzene(b){
     else letzterPrompt=bauePrompt();
     mal();
   };
-  /* Der Souffleur: angetippt sagt der Capy den Satz — Ton UND Schrift.
-     Versteckt, weil ein offener Beispielsatz nur abgeschrieben wird.
-     Der Capy steht NEBEN der Bühne, nicht darauf: er spricht nicht als
-     Figur, er souffliert. */
+  /* Der Souffleur als eigene Zeile ueber dem Fuss: Capy links, sein
+     Vorschlag daneben. Keine Blase — nichts kann etwas verdecken.
+     Er steht NEBEN der Buehne, nicht darauf: er souffliert, er spielt nicht. */
   var so=el('div','souff');
   var cb=el('button','sf-capy'); cb.type='button';
   cb.setAttribute('aria-label','Spikiu fragen');
   cb.innerHTML=CAPY_SMALL;
-  var blase=null;
+  var satz=el('div','sf-satz');
+  satz.appendChild(el('div','sf-leer','Tipp mich an, wenn du nicht weiterweißt.'));
   cb.onclick=function(){
-    if(blase){ blase.remove(); blase=null; return; }
-    blase=el('div','sf-blase');
-    blase.appendChild(el('div','sf-kopf','Du könntest sagen'));
-    blase.appendChild(el('div','sf-txt', bsp[offen].z));
-    so.appendChild(blase);
+    satz.innerHTML='';
+    satz.appendChild(el('div','sf-kopf','Du könntest sagen'));
+    satz.appendChild(el('div','sf-txt', bsp[offen].z));
     sprich(bsp[offen].z);
   };
-  so.appendChild(cb);
+  so.appendChild(cb); so.appendChild(satz);
 
-  /* Capy links, Senden mittig — beide im Fuss, nichts liegt uebereinander. */
-  var reihe=el('div','f-reihe');
-  reihe.appendChild(so);
-  reihe.appendChild(s);
-  f.appendChild(reihe);
+  f.appendChild(s);
+  k.appendChild(so);
   k.appendChild(f);
   b.appendChild(k);
 
