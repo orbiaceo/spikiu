@@ -46,21 +46,27 @@ body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,san
 .trans{font:600 .9rem/1.35 "DM Sans",sans-serif;color:var(--mid);font-style:italic;max-width:20rem}
 
 /* 1 · Der Beispielsatz statt eines Menüs */
-.souff{position:absolute;left:.9rem;bottom:.9rem;z-index:4;display:flex;align-items:flex-end;gap:.5rem}
+.souff{position:relative;flex:0 0 auto}
 .souff .sf-capy{width:46px;height:46px;border-radius:50%;border:2.5px solid var(--ink);
   background:#fff;box-shadow:3px 3px 0 var(--ink);cursor:pointer;display:flex;
   align-items:center;justify-content:center;padding:0;flex:0 0 auto}
 .souff .sf-capy svg{width:30px;height:30px}
 .souff .sf-capy:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.souff .sf-blase{max-width:min(62vw,15rem);background:#fff;border:2.5px solid var(--ink);
+/* Die Blase klappt nach OBEN auf und deckt nichts zu: der Senden-Knopf
+   liegt darunter, das Textfeld darueber. Sie ist eine Schicht ueber der
+   Karte, aber ausserhalb aller Bedienelemente. */
+.souff .sf-blase{position:absolute;left:0;bottom:calc(100% + .5rem);z-index:6;
+  width:max-content;max-width:min(70vw,17rem);background:#fff;border:2.5px solid var(--ink);
   border-radius:16px 16px 16px 4px;box-shadow:3px 3px 0 var(--ink);padding:.5rem .7rem;
-  display:flex;flex-direction:column;gap:.25rem;animation:sfAuf .22s ease}
+  display:flex;flex-direction:column;gap:.25rem;animation:sfAuf .22s ease;text-align:left}
 @keyframes sfAuf{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}
 .souff .sf-kopf{font:800 .58rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mid)}
 .souff .sf-txt{font-family:"Lora",serif;font-weight:600;font-size:1rem;line-height:1.3;color:var(--ink)}
 
 .fuss{flex:0 0 auto;padding:.55rem 1rem .8rem;border-top:2px solid var(--line);
   display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.fuss .f-reihe{display:flex;align-items:center;gap:.6rem;width:100%;justify-content:center;position:relative}
+.fuss .f-reihe .souff{position:absolute;left:0}
 .feld{width:100%;max-width:21rem;background:#fff;border:2.5px solid var(--ink);border-radius:16px;
   padding:.65rem .9rem;font:600 1rem/1.4 "DM Sans",sans-serif;color:var(--ink);resize:none;
   outline:none;min-height:3.4rem;text-align:center}
@@ -273,9 +279,6 @@ function malSzene(b){
     else letzterPrompt=bauePrompt();
     mal();
   };
-  f.appendChild(s); k.appendChild(f);
-  b.appendChild(k);
-
   /* Der Souffleur: angetippt sagt der Capy den Satz — Ton UND Schrift.
      Versteckt, weil ein offener Beispielsatz nur abgeschrieben wird.
      Der Capy steht NEBEN der Bühne, nicht darauf: er spricht nicht als
@@ -294,7 +297,14 @@ function malSzene(b){
     sprich(bsp[offen].z);
   };
   so.appendChild(cb);
-  b.appendChild(so);
+
+  /* Capy links, Senden mittig — beide im Fuss, nichts liegt uebereinander. */
+  var reihe=el('div','f-reihe');
+  reihe.appendChild(so);
+  reihe.appendChild(s);
+  f.appendChild(reihe);
+  k.appendChild(f);
+  b.appendChild(k);
 
   b.appendChild(el('div','info', letzte
     ? 'Letzte Aufgabe — der Ausgang ist da, nicht vorher.'
