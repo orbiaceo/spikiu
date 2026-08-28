@@ -394,13 +394,13 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 /* Der Ausgang erscheint erst bei der letzten Aufgabe — nicht davor. */
 .reel-antwort .ra-send.ausgang { background:#dff2e5; color:#1d4d38; border-color:#2d6a4f; box-shadow:4px 4px 0 #2d6a4f; }
 /* Die Ernte: Wendungen und Wörter der Station, aus der Datenbank. */
-.reel-ernte { width:100%; max-width:22rem; display:flex; flex-direction:column; gap:0.2rem; text-align:left; margin-top:0.5rem; }
-.reel-ernte .e-kopf { font:800 0.6rem 'DM Sans',sans-serif; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); margin:0.5rem 0 0.15rem; padding-left:0.5rem; }
+.reel-ernte { width:100%; max-width:22rem; display:flex; flex-direction:column; gap:0.4rem; text-align:left; margin-top:0.9rem; }
+.reel-ernte .e-kopf { font:800 0.62rem 'DM Sans',sans-serif; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); margin:1.1rem 0 0.35rem; padding-left:0.6rem; }
 .reel-ernte .e-kopf:first-child { margin-top:0; }
-.reel-ernte .e-z { display:flex; align-items:flex-start; gap:0.5rem; padding:0.32rem 0.5rem; border-radius:10px; background:var(--bg2); }
+.reel-ernte .e-z { display:flex; align-items:center; gap:0.7rem; padding:0.6rem 0.75rem; border-radius:13px; background:var(--bg2); line-height:1.35; }
 .reel-ernte .e-a { width:26px; height:26px; flex:0 0 auto; border-radius:50%; border:0; background:#dff0ef; color:var(--accent); font-size:0.66rem; cursor:pointer; }
 .reel-ernte .e-w { font-family:'Lora',serif; font-weight:600; font-size:0.98rem; color:var(--ink); }
-.reel-ernte .e-t { color:var(--mid); font-weight:600; font-size:0.82rem; margin-left:auto; text-align:right; }
+.reel-ernte .e-t { color:var(--mid); font-weight:600; font-size:0.84rem; margin-left:auto; text-align:right; padding-left:0.5rem; }
 .reel-schluss { gap:0.9rem; }
 .reel-schluss .rs-frage { font:800 clamp(1.15rem,4.8vw,1.45rem)/1.4 'DM Sans',sans-serif; color:var(--ink); max-width:20rem; }
 .reel-schluss .rs-btn { width:100%; max-width:20rem; border:var(--ow) solid var(--ink); border-radius:100px; padding:0.7rem 1.2rem; font:800 1rem 'DM Sans',sans-serif; cursor:pointer; box-shadow:4px 4px 0 var(--ink); }
@@ -1266,6 +1266,9 @@ var szeneBeispiele = [];   // die Skriptzeilen des Lerners — der Souffleur
 // „Aufgabe 2 von 3", bevor Spikiu überhaupt gesprochen hatte — und der
 // Souffleur bot den Satz zur falschen Aufgabe an (19.08.2026).
 var szeneStartzug = false;
+// Teilt Spikiu seine Antwort in mehrere Blasen, tragen Aufgabe und Capy nur
+// die letzte davon.
+var spikiuTeilzug = false;
 
 function szeneAufgabenLaden(){
   szeneAufgaben = []; szeneBeispiele = []; szeneOffen = 0; szeneZug = 0;
@@ -1408,14 +1411,16 @@ function appendSpikiuSlide(ziel, trans){
       tr.parentNode.insertBefore(uez, tr);
     }
   }
-  if (!gefuehrt){
-    // Aufgabe GANZ OBEN, direkt nach der Kopfzeile.
+  if (!gefuehrt && !spikiuTeilzug){
+    // Aufgabe und Capy nur auf der LETZTEN Karte eines Zuges. Teilt Spikiu
+    // seine Antwort mit --- in zwei Blasen, entstehen zwei Karten; vorher
+    // trugen beide „Aufgabe 2 von 3" und die erste einen leeren Capy
+    // (19.08.2026).
     var auf2 = renderAufgabeJetzt();
     if (auf2){
       var kopfEl = slide.querySelector('.reel-kopf');
       if (kopfEl) kopfEl.after(auf2); else slide.insertBefore(auf2, slide.firstChild);
     }
-    // Souffleur ganz unten, als eigene Zeile.
     var sf = renderSouffleur();
     if (sf) slide.appendChild(sf);
   }
@@ -1933,10 +1938,12 @@ function addReelMessage(role, text){
     var firstNew = reelSlides().length;     // Index der ERSTEN neuen Spikiu-Karte
     var segments = splitThoughts(text);
     if (!segments.length) segments = [text || ''];
-    segments.forEach(function(seg){
+    segments.forEach(function(seg, si){
+      spikiuTeilzug = (si < segments.length - 1);
       var parts = splitBridge(seg);
       appendSpikiuSlide(parts.ziel, parts.trans);
     });
+    spikiuTeilzug = false;
     // Frei: die Eingabe sitzt AUF Spikius letzter Karte. Geführt: eigene Folie,
     // weil dort Karten und Antwort-Chips liegen.
     if (!gefuehrt) antwortAufLetzterFolie(); else renderLearnerSlide(false);
