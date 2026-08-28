@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spikiu · Szene v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Lora:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15163a;--acc:#1f93b0;--mid:#5f7068;--minz:#eef7f1;--line:#eef1ee;--tief:#1b4f72;--ow:2.5px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;
+  display:flex;flex-direction:column;overflow:hidden}
+.pult{background:#fff;border-bottom:var(--ow) solid var(--ink);padding:.45rem .7rem;flex-shrink:0}
+.pult h1{font:800 .7rem "DM Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;opacity:.5;margin-bottom:.3rem}
+.reihe{display:flex;gap:.26rem;align-items:center;flex-wrap:wrap}
+.tog{font:800 .68rem "DM Sans",sans-serif;padding:.26rem .5rem;border-radius:11px;
+  border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.zaehler{margin-left:auto;font:800 .66rem "DM Sans",sans-serif;color:var(--mid);text-align:right;line-height:1.3}
+.zaehler b{color:var(--ink)}
+
+.buehne{flex:1;position:relative;min-height:0}
+.karte{position:absolute;inset:.7rem .85rem 1.2rem;background:#fff;
+  border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);
+  display:flex;flex-direction:column;overflow:hidden}
+.kopf{flex:0 0 auto;display:flex;align-items:center;gap:.45rem;padding:.6rem .85rem .5rem;
+  border-bottom:2px solid var(--line)}
+.rolle{font:800 .62rem "DM Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--mid);flex:1;text-align:left}
+.kbtn{flex:0 0 auto;height:28px;min-width:28px;padding:0 .5rem;border-radius:100px;
+  border:2px solid var(--line);background:#fff;color:var(--mid);font:800 .72rem "DM Sans",sans-serif;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.25rem;position:relative}
+.kbtn .pill{background:var(--acc);color:#fff;border-radius:100px;font-size:.6rem;
+  padding:0 .3rem;min-width:1rem;line-height:1.1rem}
+
+.leib{flex:1 1 auto;min-height:0;overflow-y:auto;padding:.9rem 1.05rem .5rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;text-align:center}
+.ziel{font-family:"Lora",serif;font-weight:600;font-size:clamp(1.4rem,5.6vw,2rem);
+  line-height:1.25;max-width:22rem}
+.audio{width:44px;height:44px;border-radius:50%;border:0;background:#dff0ef;color:var(--acc);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer}
+.uez{background:none;border:0;font:700 .76rem "DM Sans",sans-serif;color:var(--acc);
+  text-decoration:underline;cursor:pointer}
+.trans{font:600 .9rem/1.35 "DM Sans",sans-serif;color:var(--mid);font-style:italic;max-width:20rem}
+
+/* 1 · Der Beispielsatz statt eines Menüs */
+.tipp{width:100%;max-width:21rem;background:#f2f7f9;border:2px solid #d8e7ec;border-radius:14px;
+  padding:.55rem .7rem;display:flex;flex-direction:column;gap:.3rem;margin-top:.5rem}
+.tipp .tp-kopf{font:800 .62rem "DM Sans",sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--mid);display:flex;align-items:center;gap:.3rem}
+.tipp .tp-satz{display:flex;align-items:center;gap:.5rem;justify-content:center}
+.tipp .tp-txt{font-family:"Lora",serif;font-weight:600;font-size:1.05rem;color:var(--acc)}
+.tipp .tp-au{width:30px;height:30px;border-radius:50%;border:0;background:#dff0ef;color:var(--acc);
+  font-size:.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+.fuss{flex:0 0 auto;padding:.55rem 1rem .8rem;border-top:2px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.feld{width:100%;max-width:21rem;background:#fff;border:2.5px solid var(--ink);border-radius:16px;
+  padding:.65rem .9rem;font:600 1rem/1.4 "DM Sans",sans-serif;color:var(--ink);resize:none;
+  outline:none;min-height:3.4rem;text-align:center}
+.feld::placeholder{color:#b8c4bd;letter-spacing:.18em;font-size:1.2rem}
+.feld:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(31,147,176,.14)}
+.send,.los{background:var(--acc);color:#fff;border:var(--ow) solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);border-radius:100px;padding:.55rem 2.2rem;
+  font:800 .96rem "DM Sans",sans-serif;cursor:pointer}
+/* 2 · Der Ausgang erscheint, wenn er dran ist */
+.send.ausgang{background:#dff2e5;color:#1d4d38;border-color:#2d6a4f;box-shadow:4px 4px 0 #2d6a4f}
+
+/* 4 · Aufgaben hinter einem Knopf */
+.aufblatt{position:absolute;left:.85rem;right:.85rem;top:3.4rem;background:#fff;
+  border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:5px 6px 0 var(--ink);
+  padding:.8rem .9rem;z-index:5;display:flex;flex-direction:column;gap:.3rem;text-align:left}
+.aufblatt .ab-z{display:flex;gap:.6rem;align-items:baseline;padding:.28rem .1rem;
+  font:700 .88rem/1.35 "DM Sans",sans-serif;color:var(--mid)}
+.aufblatt .ab-nr{flex:0 0 auto;width:1rem;font:800 .74rem "DM Sans",sans-serif;color:#b8c4bd}
+.aufblatt .ab-z.jetzt{color:var(--ink)} .aufblatt .ab-z.jetzt .ab-nr{color:var(--acc)}
+.aufblatt .ab-z.fertig{opacity:.45} .aufblatt .ab-z.fertig .ab-t{text-decoration:line-through}
+
+/* Fortschritt */
+.schritte{display:flex;gap:.3rem;width:100%;max-width:21rem}
+.st{flex:1;height:5px;border-radius:3px;background:#dfe7e2}
+.st.fertig{background:var(--tief)} .st.jetzt{background:var(--acc)}
+.jetzt-txt{font:800 .92rem/1.35 "DM Sans",sans-serif;color:var(--ink);max-width:19rem}
+.klein{font:600 .7rem "DM Sans",sans-serif;color:var(--mid)}
+
+/* 3 · Die Ernte */
+.ernte{width:100%;max-width:21rem;display:flex;flex-direction:column;gap:.2rem;text-align:left;
+  margin-top:.4rem;max-height:38vh;overflow-y:auto}
+.ernte .e-z{display:flex;align-items:center;gap:.5rem;padding:.32rem .5rem;border-radius:10px;
+  background:#f7faf8;font:700 .9rem "DM Sans",sans-serif}
+.ernte .e-w{font-family:"Lora",serif;font-weight:600;font-size:1rem}
+.ernte .e-t{color:var(--mid);font-weight:600;font-size:.82rem;margin-left:auto}
+.ernte .e-a{width:26px;height:26px;border-radius:50%;border:0;background:#dff0ef;color:var(--acc);
+  font-size:.66rem;cursor:pointer;flex:0 0 auto}
+.info{position:absolute;left:.85rem;right:.85rem;bottom:.18rem;font:600 .64rem "DM Sans",sans-serif;
+  color:var(--mid);text-align:center;opacity:.85}
+</style>
+</head>
+<body>
+
+<div class="pult">
+  <h1>Szene v3 · Beispielsatz · Ausgang · Ernte</h1>
+  <div class="reihe">
+    <button class="tog" id="tNeu">Von vorn</button>
+    <button class="tog" id="tPrompt">Prompt</button>
+    <span class="zaehler" id="zaehler"></span>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="lernpfad-daten.js"></script>
+<script src="bilder-db.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   VIER PUNKTE AUS GOOGLES ÜBUNGSMODUS — alle vier kosten NULL Token,
+   weil das Material schon in lernpfad-daten.js steht.
+
+   1 BEISPIELSATZ statt Antwort-Menü. Es ist die Skriptzeile der Station.
+     Sie hilft dem Lerner UND zeigt dem Modell das Niveau — deshalb steht
+     sie auch im Auftrag. Damit erübrigt sich die Abkürzung „Stufe A1",
+     die zu Sätzen wie „Cuando quiera, le traigo la cuenta" geführt hat.
+   2 DER AUSGANG erscheint, wenn die letzte Aufgabe läuft — nicht davor.
+   3 DIE ERNTE am Schluss: die Wörter der Station mit Klang, statt einer
+     Frage nach einer Lektion.
+   4 DIE AUFGABEN hinter einem Knopf mit Zähler, statt auf der Karte.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var D=window.SpikiuLernpfad, B=window.SpikiuBilder;
+var STUFE='a1', THEMA='cafe', MU='de', DECKEL=6;
+var phase='buehne', offen=0, zug=0, aufrufe=0, blattOffen=false, zeigePrompt=false, letzterPrompt='';
+
+function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n;}
+function S(){return D.station(STUFE,THEMA);} function R(){return D.rolle(THEMA);}
+function AUF(){return D.aufgabenVon(STUFE,THEMA);}
+/* Die Skriptzeilen des Lerners — der Beispielsatz je Aufgabe. */
+function BSP(){ return S().dialog.zeilen.filter(function(z){return z.wer==='lerner';}); }
+function sprich(t){try{speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.92;speechSynthesis.speak(u);}catch(e){}}
+
+function bauePrompt(){
+  var r=R(), a=AUF(), b=BSP();
+  return 'Du bist '+r.spikiu.de+' '+r.ort.de+'. Der Lerner ist '+r.lerner.de+'.\n'
+   +'OFFEN: „'+a[offen].de+'"\n'
+   +'Er wird ungefähr sagen: „'+b[offen].z+'"\n'
+   +'ANTWORTE AUF GENAU DIESEM NIVEAU. Kein Subjuntivo, keine Vergangenheit,\n'
+   +'nur Präsens. Höchstens zwei Sätze.\n'
+   +'Zug '+(zug+1)+' von '+DECKEL+'.';
+}
+function kosten(){
+  document.getElementById('zaehler').innerHTML=
+    'Züge <b>'+zug+'/'+DECKEL+'</b> · Aufgaben <b>'+offen+'/3</b><br>Aufrufe <b>'+aufrufe+'</b>';
+}
+function schritte(){
+  var s=el('div','schritte');
+  AUF().forEach(function(_,i){ s.appendChild(el('div','st'+(i<offen?' fertig':i===offen?' jetzt':''))); });
+  return s;
+}
+function kopfzeile(){
+  var r=R(), k=el('div','kopf');
+  k.appendChild(el('div','rolle', r.spikiu.de));
+  /* 4 · Aufgaben hinter einem Knopf, mit Zähler der OFFENEN */
+  var ab=el('button','kbtn'); ab.type='button';
+  ab.appendChild(el('span',null,'☰'));
+  var rest=AUF().length-offen;
+  if(rest>0) ab.appendChild(el('span','pill', String(rest)));
+  ab.onclick=function(){ blattOffen=!blattOffen; mal(); };
+  k.appendChild(ab);
+  var st=el('button','kbtn','✎'); st.type='button'; k.appendChild(st);
+  var x=el('button','kbtn','✕'); x.type='button';
+  x.onclick=function(){ phase='ernte'; mal(); };
+  k.appendChild(x);
+  return k;
+}
+function aufgabenBlatt(){
+  var box=el('div','aufblatt');
+  AUF().forEach(function(a,i){
+    var z=el('div','ab-z'+(i<offen?' fertig':i===offen?' jetzt':''));
+    z.appendChild(el('span','ab-nr',(i+1)+'.'));
+    z.appendChild(el('span','ab-t',a.de));
+    box.appendChild(z);
+  });
+  box.onclick=function(){ blattOffen=false; mal(); };
+  return box;
+}
+
+function mal(){
+  var b=document.getElementById('buehne'); b.innerHTML=''; kosten();
+  if(phase==='buehne') malBuehne(b);
+  else if(phase==='ernte') malErnte(b);
+  else malSzene(b);
+  if(blattOffen && phase==='szene') b.appendChild(aufgabenBlatt());
+  if(zeigePrompt && letzterPrompt){
+    var p=el('div'); p.style.cssText='position:absolute;left:.85rem;right:.85rem;bottom:.3rem;'
+      +'background:#fffbe8;border:2px dashed #c67a1e;border-radius:12px;padding:.45rem .6rem;'
+      +'font:600 .62rem/1.45 ui-monospace,monospace;color:#7a4a08;white-space:pre-wrap;z-index:6';
+    p.textContent=letzterPrompt; b.appendChild(p);
+  }
+}
+
+function malBuehne(b){
+  var r=R(), t=D.thema(THEMA), a=AUF();
+  var k=el('div','karte');
+  var l=el('div','leib');
+  var im=B&&B.img(THEMA,MU); if(im){ im.style.cssText='width:min(48vw,11rem);border-radius:16px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink)'; l.appendChild(im); }
+  var ro=el('div','jetzt-txt');
+  ro.innerHTML='Ich bin <span style="color:var(--acc)">'+r.spikiu.de+'</span>,<br>du bist <span style="color:var(--acc)">'+r.lerner.de+'</span>.';
+  l.appendChild(ro);
+  l.appendChild(el('div','klein', r.ort.de));
+  l.appendChild(schritte());
+  l.appendChild(el('div','klein','Aufgabe 1 von '+a.length));
+  l.appendChild(el('div','jetzt-txt', a[0].de));
+  k.appendChild(l);
+  var f=el('div','fuss');
+  var los=el('button','los','Los!'); los.type='button';
+  los.onclick=function(){ phase='szene'; zug=0; offen=0; aufrufe=1; letzterPrompt=bauePrompt(); mal(); };
+  f.appendChild(los); k.appendChild(f);
+  b.appendChild(k);
+  b.appendChild(el('div','info','Bild, Rollen, erste Aufgabe. Null Token.'));
+}
+
+function malSzene(b){
+  var st=S(), zeilen=st.dialog.zeilen, a=AUF(), bsp=BSP();
+  var sp=zeilen[Math.min(offen*2, zeilen.length-2)];
+  var letzte = offen===a.length-1;
+  var k=el('div','karte');
+  k.appendChild(kopfzeile());
+
+  var l=el('div','leib');
+  l.appendChild(el('div','ziel', sp.z));
+  var au=el('button','audio','🔊'); au.type='button'; au.onclick=function(){sprich(sp.z);};
+  l.appendChild(au);
+  var u=el('button','uez','Übersetzung'); u.type='button';
+  u.onclick=function(){ u.replaceWith(el('div','trans', sp.na.de)); };
+  l.appendChild(u);
+  l.appendChild(schritte());
+  l.appendChild(el('div','klein','Aufgabe '+(offen+1)+' von '+a.length));
+  l.appendChild(el('div','jetzt-txt', a[offen].de));
+
+  /* 1 · Der Beispielsatz — ein Angebot, kein Menü */
+  var tp=el('div','tipp');
+  var tk=el('div','tp-kopf'); tk.appendChild(el('span',null,'💡'));
+  tk.appendChild(el('span',null,'Du könntest sagen')); tp.appendChild(tk);
+  var ts=el('div','tp-satz');
+  ts.appendChild(el('span','tp-txt', bsp[offen].z));
+  var ta2=el('button','tp-au','🔊'); ta2.type='button';
+  ta2.onclick=function(){ sprich(bsp[offen].z); };
+  ts.appendChild(ta2); tp.appendChild(ts);
+  l.appendChild(tp);
+  k.appendChild(l);
+
+  var f=el('div','fuss');
+  var ta=document.createElement('textarea'); ta.className='feld'; ta.rows=2; ta.placeholder='···';
+  f.appendChild(ta);
+  /* 2 · Der Ausgang erscheint erst bei der letzten Aufgabe */
+  var s=el('button','send'+(letzte?' ausgang':''), letzte?'Senden & abschließen':'Senden');
+  s.type='button';
+  s.onclick=function(){
+    if(ta.value.trim().length<2) return;
+    zug++; aufrufe++; offen++;
+    if(offen>=a.length || zug>=DECKEL){ phase='ernte'; letzterPrompt='Szene zu Ende.'; }
+    else letzterPrompt=bauePrompt();
+    mal();
+  };
+  f.appendChild(s); k.appendChild(f);
+  b.appendChild(k);
+  b.appendChild(el('div','info', letzte
+    ? 'Letzte Aufgabe — der Ausgang ist da, nicht vorher.'
+    : 'Der Beispielsatz zeigt dem Modell das Niveau. Kein „A1" mehr im Prompt.'));
+}
+
+/* 3 · Die Ernte statt der Lektionsfrage */
+function malErnte(b){
+  var w=D.woerter(STUFE,THEMA);
+  var k=el('div','karte');
+  var l=el('div','leib');
+  l.appendChild(el('div','jetzt-txt','Das hast du geübt'));
+  l.appendChild(el('div','klein', w.length+' Wörter · '+D.thema(THEMA).na.de));
+  var e=el('div','ernte');
+  w.forEach(function(x){
+    var z=el('div','e-z');
+    var ab=el('button','e-a','🔊'); ab.type='button'; ab.onclick=function(){ sprich(x.z); };
+    z.appendChild(ab);
+    z.appendChild(el('span','e-w', x.z));
+    z.appendChild(el('span','e-t', x.na.de));
+    e.appendChild(z);
+  });
+  l.appendChild(e);
+  k.appendChild(l);
+  var f=el('div','fuss');
+  var n=el('button','los','Nach Hause'); n.type='button';
+  n.onclick=function(){ phase='buehne'; offen=0; zug=0; aufrufe=0; letzterPrompt=''; mal(); };
+  f.appendChild(n); k.appendChild(f);
+  b.appendChild(k);
+  b.appendChild(el('div','info','Die Ernte kommt aus der Datenbank. Null Token, kein Aufruf.'));
+}
+
+document.getElementById('tNeu').onclick=function(){
+  phase='buehne'; offen=0; zug=0; aufrufe=0; blattOffen=false; letzterPrompt=''; mal(); };
+document.getElementById('tPrompt').onclick=function(){
+  zeigePrompt=!zeigePrompt; this.setAttribute('aria-pressed',zeigePrompt?'true':'false'); mal(); };
+mal();
+</script>
+</body>
+</html>
