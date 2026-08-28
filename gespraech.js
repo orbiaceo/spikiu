@@ -94,10 +94,6 @@ Wirft der Lerner etwas Fremdes ein — eine andere Sprache, einen Scherz, eine
 Beschwerde, eine Bitte um eine dritte Person — bleibst du die Figur, gehst
 kurz darauf ein und lenkst zurück. Du erfindest KEINE weitere Figur.
 
-Hat der Lerner die offene Aufgabe mit seinem letzten Zug erfüllt, hängst du
-[AUFGABE] an deine Antwort. Nur dann. Das Signal steht allein am Ende,
-du erklärst es nie und zeigst die Klammern nie.
-
 Ist ${s.zug} gleich ${s.maxZuege}, schließt du die Szene mit einer natürlichen
 Abschiedsreplik ab — auch wenn noch etwas offen ist.`;
 }

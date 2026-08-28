@@ -2377,14 +2377,16 @@ async function turn(){
     // Signale in fester Reihenfolge abfangen, NIE als Rohtext zeigen:
     // [KARTE] → Erklärkarte (unterbricht) · [WECHSEL] → Tür ·
     // [KORREKTUR] → Karte (vor dem Menü) · [SZENENENDE] → Menü.
-    // Spikiu meldet mit [AUFGABE], wenn die offene Aufgabe erfüllt ist.
-    // Ein Struktur-Signal wie alle anderen: nie sichtbar, nie erklärt.
+    // Der Fortschritt hängt NICHT am Modell. Erst tat er es — Spikiu sollte
+    // [AUFGABE] melden — und lieferte den Marker fast nie: die Aufgabe blieb
+    // bei 1 von 3 stehen, der Souffleur wiederholte ewig denselben Satz
+    // (gesehen 19.08.2026). Jetzt rückt jeder Zug des Lerners eine Aufgabe
+    // weiter. Das ist ehrlicher: die Aufgaben führen, sie prüfen nicht.
+    // Der Marker wird nur noch aus dem Text entfernt, falls er doch kommt.
     if (!gefuehrt && szeneAufgaben.length){
       szeneZug++;
-      if (/\[AUFGABE\]/.test(reply)){
-        reply = reply.replace(/\[AUFGABE\]/g, '').trim();
-        if (szeneOffen < szeneAufgaben.length) szeneOffen++;
-      }
+      reply = reply.replace(/\[AUFGABE\]/g, '').trim();
+      if (szeneOffen < szeneAufgaben.length) szeneOffen++;
     }
     var ka = extractKarte(reply);
     var w = extractWechsel(ka.text);
