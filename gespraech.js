@@ -64,7 +64,42 @@ DIESE SITZUNG (Laufzeit)
 - Zielsprache, in der geredet wird: ${sprache}
 - Internes Können-Band (NIE aussprechen, steuert nur deinen Regler): ${p.koennen}
 - Fremde Schrift: ${p.fremde_schrift ? 'JA — Lautschrift-Brücke nach Regler' : 'nein'}
-- Du bist im RAUM FREIES GESPRÄCH (der Flur). Geredet wird, nicht am Text gefeilt.`;
+- Du bist im RAUM FREIES GESPRÄCH (der Flur). Geredet wird, nicht am Text gefeilt.${szenenAuftrag(p)}`;
+}
+
+// ── Der Szenen-Auftrag ────────────────────────────────────────────────────
+// Der Anker, der verhindert, dass eine Szene entgleist: Spikiu bekommt je Zug
+// GENAU EINE offene Aufgabe und die zwei Rollen. Ohne ihn erfand er dritte
+// Figuren und redete sich in Register hinein, die der Lerner nicht versteht
+// (19.08.2026 — Vorbild: Googles Uebungsmodus, Material aus lernpfad-daten.js).
+function szenenAuftrag(p) {
+  const s = p && p.szene;
+  if (!s || !s.offen) return '';
+  return `
+
+═══════════════════════════════════════════════════════════
+DIESE SZENE — dein Auftrag für DIESEN Zug
+═══════════════════════════════════════════════════════════
+- Du bist ${s.rolleSpikiu} ${s.ort}. Der Lerner ist ${s.rolleLerner}.
+- OFFEN IST NOCH: „${s.offen}"
+- Er wird ungefähr sagen: „${s.beispiel}"
+- Erledigt: ${s.erledigt} von ${s.gesamt}. Zug ${s.zug} von ${s.maxZuege}.
+
+ANTWORTE AUF GENAU DEM NIVEAU DIESES BEISPIELSATZES. Er ist das Maß, nicht
+eine Stufenbezeichnung: benutze nur Wörter und Formen, die dazu passen.
+Kein Subjuntivo, keine Vergangenheit, wenn der Beispielsatz keine hat.
+
+Führe das Gespräch zu dieser einen offenen Aufgabe. Nichts anderes.
+Wirft der Lerner etwas Fremdes ein — eine andere Sprache, einen Scherz, eine
+Beschwerde, eine Bitte um eine dritte Person — bleibst du die Figur, gehst
+kurz darauf ein und lenkst zurück. Du erfindest KEINE weitere Figur.
+
+Hat der Lerner die offene Aufgabe mit seinem letzten Zug erfüllt, hängst du
+[AUFGABE] an deine Antwort. Nur dann. Das Signal steht allein am Ende,
+du erklärst es nie und zeigst die Klammern nie.
+
+Ist ${s.zug} gleich ${s.maxZuege}, schließt du die Szene mit einer natürlichen
+Abschiedsreplik ab — auch wenn noch etwas offen ist.`;
 }
 
 export default async function handler(req, res) {
@@ -129,7 +164,10 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: maxTokens || 600,
+        // Netz gegen Textwaende: drei Saetze / vierzig Woerter passen bequem in
+        // 300 Token. Der Prompt sagt es, das Limit erzwingt es — und der Client
+        // kann die Grenze nicht nach oben schieben (19.08.2026).
+        max_tokens: Math.min(maxTokens || 300, 400),
         system,
         messages: chatMessages
       })

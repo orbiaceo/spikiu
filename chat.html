@@ -376,6 +376,31 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-jetzt .rj-st.jetzt { background:var(--accent); }
 .reel-jetzt .rj-klein { font:600 0.72rem 'DM Sans',sans-serif; color:var(--mid); }
 .reel-jetzt .rj-txt { font:800 0.96rem/1.35 'DM Sans',sans-serif; color:var(--ink); max-width:19rem; text-align:center; }
+/* Verteilung der Szenenkarte (19.08.2026, nach Googles Übungsmodus):
+   Kopfzeile → Aufgabe → Spikius Replik → Souffleur → Feld & Senden.
+   Die Aufgabe steht GANZ OBEN, weil sie sagt, worum es geht, bevor jemand
+   redet. Der Souffleur ist eine eigene Zeile, keine schwebende Blase —
+   so kann nichts das Eingabefeld verdecken. */
+.reel-aufgabe { width:100%; max-width:22rem; display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:0 0 0.55rem; margin-bottom:0.7rem; border-bottom:2px solid var(--line,#eef1ee); }
+.reel-aufgabe .ag-txt { font:800 1.02rem/1.3 'DM Sans',sans-serif; color:var(--ink); text-align:center; }
+.reel-souff { display:flex; align-items:center; gap:0.6rem; width:100%; max-width:22rem; padding:0.55rem 0.1rem 0; margin-top:0.9rem; border-top:2px solid var(--line,#eef1ee); }
+.reel-souff .sf-capy { width:42px; height:42px; flex:0 0 auto; border-radius:50%; border:2.5px solid var(--ink); background:var(--white); box-shadow:3px 3px 0 var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.reel-souff .sf-capy svg { width:27px; height:27px; }
+.reel-souff .sf-capy:active { transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+.reel-souff .sf-satz { flex:1; min-width:0; text-align:left; }
+.reel-souff .sf-kopf { font:800 0.56rem 'DM Sans',sans-serif; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); }
+.reel-souff .sf-txt { font-family:'Lora',serif; font-weight:600; font-size:1rem; line-height:1.3; color:var(--ink); }
+.reel-souff .sf-leer { font:600 0.78rem 'DM Sans',sans-serif; color:var(--mid); opacity:0.8; font-style:italic; }
+/* Der Ausgang erscheint erst bei der letzten Aufgabe — nicht davor. */
+.reel-antwort .ra-send.ausgang { background:#dff2e5; color:#1d4d38; border-color:#2d6a4f; box-shadow:4px 4px 0 #2d6a4f; }
+/* Die Ernte: Wendungen und Wörter der Station, aus der Datenbank. */
+.reel-ernte { width:100%; max-width:22rem; display:flex; flex-direction:column; gap:0.2rem; text-align:left; margin-top:0.5rem; }
+.reel-ernte .e-kopf { font:800 0.6rem 'DM Sans',sans-serif; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); margin:0.5rem 0 0.15rem; padding-left:0.5rem; }
+.reel-ernte .e-kopf:first-child { margin-top:0; }
+.reel-ernte .e-z { display:flex; align-items:flex-start; gap:0.5rem; padding:0.32rem 0.5rem; border-radius:10px; background:var(--bg2); }
+.reel-ernte .e-a { width:26px; height:26px; flex:0 0 auto; border-radius:50%; border:0; background:#dff0ef; color:var(--accent); font-size:0.66rem; cursor:pointer; }
+.reel-ernte .e-w { font-family:'Lora',serif; font-weight:600; font-size:0.98rem; color:var(--ink); }
+.reel-ernte .e-t { color:var(--mid); font-weight:600; font-size:0.82rem; margin-left:auto; text-align:right; }
 .reel-schluss { gap:0.9rem; }
 .reel-schluss .rs-frage { font:800 clamp(1.15rem,4.8vw,1.45rem)/1.4 'DM Sans',sans-serif; color:var(--ink); max-width:20rem; }
 .reel-schluss .rs-btn { width:100%; max-width:20rem; border:var(--ow) solid var(--ink); border-radius:100px; padding:0.7rem 1.2rem; font:800 1rem 'DM Sans',sans-serif; cursor:pointer; box-shadow:4px 4px 0 var(--ink); }
@@ -1235,21 +1260,65 @@ var szeneAufgaben = [];   // [{de,en}] aus lernpfad-daten.js
 var szeneOffen = 0;       // Index der offenen Aufgabe
 var szeneZug = 0;         // Spikiu-Züge in dieser Szene
 
+var szeneBeispiele = [];   // die Skriptzeilen des Lerners — der Souffleur
+
 function szeneAufgabenLaden(){
-  szeneAufgaben = []; szeneOffen = 0; szeneZug = 0; szeneBeendet = false;
+  szeneAufgaben = []; szeneBeispiele = []; szeneOffen = 0; szeneZug = 0; szeneBeendet = false;
   try {
     var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
-    if (D && P && TOPIC_ID) szeneAufgaben = D.aufgabenVon(P.stufe(), TOPIC_ID) || [];
-  } catch(e){ szeneAufgaben = []; }
+    if (!D || !P || !TOPIC_ID) return;
+    var st = P.stufe();
+    szeneAufgaben = D.aufgabenVon(st, TOPIC_ID) || [];
+    // Die Lernerzeilen der Station: der Satz, den der Capy souffliert — und
+    // zugleich das Maß, das Spikiu im Auftrag bekommt. Deshalb reicht kein
+    // „Stufe A1" mehr; das Beispiel IST die Stufe.
+    var S = D.station(st, TOPIC_ID);
+    if (S) szeneBeispiele = S.dialog.zeilen.filter(function(z){ return z.wer === 'lerner'; });
+  } catch(e){ szeneAufgaben = []; szeneBeispiele = []; }
 }
 
-// Szene: nur die aktuelle Aufgabe, darüber ein dünner Balken.
+// Der Souffleur: eine eigene Zeile, Capy links, sein Vorschlag daneben.
+// Versteckt, weil ein offener Beispielsatz nur abgeschrieben wird — und
+// keine Blase, damit nichts das Eingabefeld verdeckt.
+var SOUFF_UI = {
+  de:{ leer:'Tipp mich an, wenn du nicht weiterweißt.', kopf:'Du könntest sagen' },
+  es:{ leer:'Tócame si no sabes cómo seguir.',          kopf:'Podrías decir' },
+  en:{ leer:'Tap me if you are stuck.',                 kopf:'You could say' }
+};
+function renderSouffleur(){
+  var b = szeneBeispiele[szeneOffen];
+  if (!b) return null;
+  var ui = SOUFF_UI[uiLang()] || SOUFF_UI.de;
+  var box = document.createElement('div');
+  box.className = 'reel-souff';
+  var cb = document.createElement('button');
+  cb.type = 'button'; cb.className = 'sf-capy';
+  cb.setAttribute('aria-label', ui.kopf);
+  cb.innerHTML = CAPY_SMALL;
+  var satz = document.createElement('div');
+  satz.className = 'sf-satz';
+  var leer = document.createElement('div');
+  leer.className = 'sf-leer'; leer.textContent = ui.leer;
+  satz.appendChild(leer);
+  cb.onclick = function(){
+    satz.innerHTML = '';
+    var k = document.createElement('div'); k.className = 'sf-kopf'; k.textContent = ui.kopf;
+    var t = document.createElement('div'); t.className = 'sf-txt'; t.textContent = b.z;
+    satz.appendChild(k); satz.appendChild(t);
+    try { playFrom(cb, plainForSpeech(b.z), 'playing'); } catch(e){}
+    var sl = box.closest('.reel-slide'); if (sl) fitSlide(sl);
+  };
+  box.appendChild(cb); box.appendChild(satz);
+  return box;
+}
+
+// Die Aufgabe steht GANZ OBEN — sie sagt, worum es geht, bevor jemand redet.
 var AUFG_UI = { de:'Aufgabe %1 von %2', es:'Tarea %1 de %2', en:'Task %1 of %2' };
 function renderAufgabeJetzt(){
   if (!szeneAufgaben.length) return null;
   var ui = uiLang();
   var box = document.createElement('div');
-  box.className = 'reel-jetzt';
+  box.className = 'reel-aufgabe';
   var s = document.createElement('div'); s.className = 'rj-schritte';
   szeneAufgaben.forEach(function(_, i){
     var b = document.createElement('div');
@@ -1263,7 +1332,7 @@ function renderAufgabeJetzt(){
     k.textContent = (AUFG_UI[ui] || AUFG_UI.de)
       .replace('%1', szeneOffen + 1).replace('%2', szeneAufgaben.length);
     var t = document.createElement('div');
-    t.className = 'rj-txt';
+    t.className = 'ag-txt';
     t.textContent = szeneAufgaben[szeneOffen][ui] || szeneAufgaben[szeneOffen].de;
     box.appendChild(k); box.appendChild(t);
   }
@@ -1329,8 +1398,15 @@ function appendSpikiuSlide(ziel, trans){
     }
   }
   if (!gefuehrt){
-    var auf2 = renderAufgabeJetzt();   // in der Szene nur die aktuelle
-    if (auf2) slide.appendChild(auf2);
+    // Aufgabe GANZ OBEN, direkt nach der Kopfzeile.
+    var auf2 = renderAufgabeJetzt();
+    if (auf2){
+      var kopfEl = slide.querySelector('.reel-kopf');
+      if (kopfEl) kopfEl.after(auf2); else slide.insertBefore(auf2, slide.firstChild);
+    }
+    // Souffleur ganz unten, als eigene Zeile.
+    var sf = renderSouffleur();
+    if (sf) slide.appendChild(sf);
   }
   var sb = slide.querySelector('.speak-btn');
   if (sb) sb.onclick = function(){ playFrom(sb, plainForSpeech(ziel), 'playing'); };
@@ -1546,8 +1622,12 @@ function appendAntwortFeld(slide){
   // Kein „Du bist dran": der Rahmen sagt es schon. Platzhalter sind drei Punkte.
   // Kein „Gespräch beenden" mehr im Fuß — es sitzt als ✕ in der Kopfzeile,
   // wo es bei jeder Karte gleich steht und nie mitwächst.
+  // Der Ausgang erscheint erst, wenn die letzte Aufgabe läuft — nicht davor.
+  var letzte = szeneAufgaben.length && szeneOffen === szeneAufgaben.length - 1;
+  var SCHLUSS = { de:'Senden & abschließen', es:'Enviar y terminar', en:'Send & finish' };
   box.innerHTML = '<textarea id="reelInput" rows="2" placeholder="\u00b7\u00b7\u00b7"></textarea>'
-    + '<button class="ra-send" type="button" id="reelSendBtn">' + escPlain(ui.send) + '</button>';
+    + '<button class="ra-send' + (letzte ? ' ausgang' : '') + '" type="button" id="reelSendBtn">'
+    + escPlain(letzte ? (SCHLUSS[uiLang()] || SCHLUSS.de) : ui.send) + '</button>';
   slide.appendChild(box);
   slide.classList.add('hat-antwort');       // blendet den Wisch-Hinweis aus
   box.querySelector('#reelSendBtn').onclick = reelSend;
@@ -1704,21 +1784,71 @@ function renderReelSchluss(){
   var slide = document.createElement('div');
   slide.id = 'reelSchluss';
   slide.className = 'reel-slide reel-spikiu reel-schluss';
-  slide.innerHTML = '<div class="reel-capy" aria-hidden="true">' + CAPY_SMALL + '</div>'
-    + '<div class="rs-frage">' + escPlain(ui.offer) + '</div>';
+
+  // Die ERNTE statt der Lektionsfrage: Wendungen und Wörter der Station,
+  // mit Klang. Alles aus lernpfad-daten.js — null Token, kein Aufruf.
+  // „La cuenta, por favor" bringt weiter, „la cuenta" allein nicht.
+  var ERNTE_UI = {
+    de:{ titel:'Das hast du geübt', sagen:'Das kannst du sagen', woerter:'Wörter', heim:'Nach Hause' },
+    es:{ titel:'Esto has practicado', sagen:'Esto ya lo puedes decir', woerter:'Palabras', heim:'A casa' },
+    en:{ titel:'This is what you practised', sagen:'You can say this now', woerter:'Words', heim:'Home' }
+  };
+  var eui = ERNTE_UI[uiLang()] || ERNTE_UI.de;
+  var geerntet = [];
+  try {
+    var D2 = window.SpikiuLernpfad, P2 = window.SpikiuPfad;
+    if (D2 && D2.ernte && P2 && TOPIC_ID) geerntet = D2.ernte(P2.stufe(), TOPIC_ID, uiLang()) || [];
+  } catch(e){}
+
+  if (geerntet.length){
+    var t0 = document.createElement('div');
+    t0.className = 'rs-frage'; t0.textContent = eui.titel;
+    slide.appendChild(t0);
+    var box = document.createElement('div'); box.className = 'reel-ernte';
+    function ernteGruppe(titel, liste){
+      if (!liste.length) return;
+      var h = document.createElement('div'); h.className = 'e-kopf'; h.textContent = titel;
+      box.appendChild(h);
+      liste.forEach(function(x){
+        var z = document.createElement('div'); z.className = 'e-z';
+        var ab = document.createElement('button');
+        ab.type = 'button'; ab.className = 'e-a'; ab.innerHTML = SPK_ICON;
+        ab.onclick = function(){ playFrom(ab, plainForSpeech(x.z), 'playing'); };
+        var w = document.createElement('span'); w.className = 'e-w'; w.textContent = x.z;
+        var tr = document.createElement('span'); tr.className = 'e-t'; tr.textContent = x.na;
+        z.appendChild(ab); z.appendChild(w); z.appendChild(tr);
+        box.appendChild(z);
+      });
+    }
+    ernteGruppe(eui.sagen,  geerntet.filter(function(x){ return x.art === 'wendung'; }));
+    ernteGruppe(eui.woerter, geerntet.filter(function(x){ return x.art === 'wort'; }));
+    slide.appendChild(box);
+  } else {
+    slide.innerHTML = '<div class="reel-capy" aria-hidden="true">' + CAPY_SMALL + '</div>'
+      + '<div class="rs-frage">' + escPlain(ui.offer) + '</div>';
+  }
 
   var ja = document.createElement('button');
-  ja.type = 'button'; ja.className = 'rs-btn ja'; ja.textContent = ui.yes;
-  ja.onclick = function(){ ja.disabled = true; makeLessonAndLeave(); };
-
-  var nein = document.createElement('button');
-  nein.type = 'button'; nein.className = 'rs-btn nein'; nein.textContent = ui.no;
-  nein.onclick = function(){
-    try { if (window.SpikiuSitzung) window.SpikiuSitzung.raeume('gespraech'); } catch(e){}
-    location.href = 'haus.html';
+  ja.type = 'button'; ja.className = 'rs-btn ja';
+  ja.textContent = geerntet.length ? eui.heim : ui.yes;
+  ja.onclick = function(){
+    ja.disabled = true;
+    if (geerntet.length){
+      try { if (window.SpikiuSitzung) window.SpikiuSitzung.raeume('gespraech'); } catch(e){}
+      location.href = 'haus.html';
+    } else makeLessonAndLeave();
   };
+  slide.appendChild(ja);
 
-  slide.appendChild(ja); slide.appendChild(nein);
+  if (!geerntet.length){
+    var nein = document.createElement('button');
+    nein.type = 'button'; nein.className = 'rs-btn nein'; nein.textContent = ui.no;
+    nein.onclick = function(){
+      try { if (window.SpikiuSitzung) window.SpikiuSitzung.raeume('gespraech'); } catch(e){}
+      location.href = 'haus.html';
+    };
+    slide.appendChild(nein);
+  }
   reel.appendChild(slide);
   reelGoTo(reelSlides().length - 1);
 }
@@ -2174,6 +2304,7 @@ async function callGespraech(){
     safeProfile.szene = {
       offen:      szeneOffen < szeneAufgaben.length
                     ? (szeneAufgaben[szeneOffen][mu] || szeneAufgaben[szeneOffen].de) : null,
+      beispiel:   szeneBeispiele[szeneOffen] ? szeneBeispiele[szeneOffen].z : '',
       erledigt:   szeneOffen,
       gesamt:     szeneAufgaben.length,
       zug:        szeneZug + 1,
