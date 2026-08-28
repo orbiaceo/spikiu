@@ -1261,18 +1261,22 @@ var szeneOffen = 0;       // Index der offenen Aufgabe
 var szeneZug = 0;         // Spikiu-Züge in dieser Szene
 
 var szeneBeispiele = [];   // die Skriptzeilen des Lerners — der Souffleur
-// Der erste Zug ist der Themen-Wunsch („Ich möchte das Thema … üben"), nicht
-// die Antwort auf eine Aufgabe. Zählte er mit, sprang die Anzeige auf
-// „Aufgabe 2 von 3", bevor Spikiu überhaupt gesprochen hatte — und der
-// Souffleur bot den Satz zur falschen Aufgabe an (19.08.2026).
-var szeneStartzug = false;
 // Teilt Spikiu seine Antwort in mehrere Blasen, tragen Aufgabe und Capy nur
 // die letzte davon.
 var spikiuTeilzug = false;
 
+// Wie oft hat der Lerner geantwortet? Der erste user-Eintrag ist der
+// Themen-Wunsch („Ich möchte das Thema … üben") — der Startschuss, keine
+// Antwort. Daraus folgt, welche Aufgabe offen ist.
+function lernerZuege(){
+  var n = 0;
+  for (var i = 0; i < verlauf.length; i++) if (verlauf[i].role === 'user') n++;
+  return Math.max(0, n - 1);
+}
+
 function szeneAufgabenLaden(){
   szeneAufgaben = []; szeneBeispiele = []; szeneOffen = 0; szeneZug = 0;
-  szeneBeendet = false; szeneStartzug = false;
+  szeneBeendet = false;
   try {
     var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
     if (!D || !P || !TOPIC_ID) return;
@@ -2403,12 +2407,13 @@ async function turn(){
     // Der Marker wird nur noch aus dem Text entfernt, falls er doch kommt.
     if (!gefuehrt && szeneAufgaben.length){
       reply = reply.replace(/\[AUFGABE\]/g, '').trim();
-      if (szeneStartzug){
-        szeneStartzug = false;             // Startschuss: Aufgabe 1 bleibt offen
-      } else {
-        szeneZug++;
-        if (szeneOffen < szeneAufgaben.length) szeneOffen++;
-      }
+      // Die offene Aufgabe wird ABGELEITET, nicht hochgezählt. Ein Zähler
+      // sprang gelegentlich um zwei (Aufgabe 1 → 3), weil ein Zug doppelt
+      // durchlief. Aus dem verlauf gerechnet kann das nicht passieren:
+      // das Ergebnis hängt am Zustand, nicht an der Anzahl der Aufrufe.
+      // Der erste user-Eintrag ist der Themen-Wunsch und zählt nicht mit.
+      szeneOffen = Math.min(lernerZuege(), szeneAufgaben.length);
+      szeneZug = lernerZuege();
     }
     var ka = extractKarte(reply);
     var w = extractWechsel(ka.text);
@@ -2597,7 +2602,6 @@ function pickTopic(label, id){
     enterReel();
     removeLearnerSlide();                // die Bühne kommt zuerst, nicht das Textfeld
     var start = function(){
-      szeneStartzug = true;                // der Themen-Wunsch ist keine Antwort
       sendUserTurn((WUNSCH[uiLang()] || WUNSCH.de)(label));
     };
     // Bühnenkarte statt Spikius Höflichkeitszug: Bild, Rollen, „Los!".
