@@ -1286,15 +1286,23 @@ function szeneAufgabenLaden(){
 // Der Souffleur: eine eigene Zeile, Capy links, sein Vorschlag daneben.
 // Versteckt, weil ein offener Beispielsatz nur abgeschrieben wird — und
 // keine Blase, damit nichts das Eingabefeld verdeckt.
+// Der Capy sagt, WAS zu tun ist — nicht WELCHEN Satz man tippen soll.
+// Erst soufflierte er die Skriptzeile der Station. Das ging schief, sobald
+// der Lerner vom Skript abwich: er bestellte ein Bier, Spikiu fragte nach
+// Essen, und der Capy bot „Con leche, gracias" an (19.08.2026). Die Aufgabe
+// dagegen passt immer, egal was bestellt wurde.
+// Der Beispielsatz bleibt trotzdem im Auftrag ans Modell — dort misst er das
+// Niveau, nicht den Inhalt.
 var SOUFF_UI = {
-  de:{ leer:'Tipp mich an, wenn du nicht weiterweißt.', kopf:'Du könntest sagen' },
-  es:{ leer:'Tócame si no sabes cómo seguir.',          kopf:'Podrías decir' },
-  en:{ leer:'Tap me if you are stuck.',                 kopf:'You could say' }
+  de:{ leer:'Was soll ich tun?', kopf:'Deine Aufgabe' },
+  es:{ leer:'¿Qué tengo que hacer?', kopf:'Tu tarea' },
+  en:{ leer:'What should I do?', kopf:'Your task' }
 };
 function renderSouffleur(){
-  var b = szeneBeispiele[szeneOffen];
-  if (!b) return null;
-  var ui = SOUFF_UI[uiLang()] || SOUFF_UI.de;
+  if (!szeneAufgaben.length || szeneOffen >= szeneAufgaben.length) return null;
+  var lang = uiLang();
+  var ui = SOUFF_UI[lang] || SOUFF_UI.de;
+  var a = szeneAufgaben[szeneOffen];
   var box = document.createElement('div');
   box.className = 'reel-souff';
   var cb = document.createElement('button');
@@ -1309,9 +1317,8 @@ function renderSouffleur(){
   cb.onclick = function(){
     satz.innerHTML = '';
     var k = document.createElement('div'); k.className = 'sf-kopf'; k.textContent = ui.kopf;
-    var t = document.createElement('div'); t.className = 'sf-txt'; t.textContent = b.z;
+    var t = document.createElement('div'); t.className = 'sf-txt'; t.textContent = a[lang] || a.de;
     satz.appendChild(k); satz.appendChild(t);
-    try { playFrom(cb, plainForSpeech(b.z), 'playing'); } catch(e){}
     var sl = box.closest('.reel-slide'); if (sl) fitSlide(sl);
   };
   box.appendChild(cb); box.appendChild(satz);
@@ -1337,10 +1344,8 @@ function renderAufgabeJetzt(){
     k.className = 'rj-klein';
     k.textContent = (AUFG_UI[ui] || AUFG_UI.de)
       .replace('%1', szeneOffen + 1).replace('%2', szeneAufgaben.length);
-    var t = document.createElement('div');
-    t.className = 'ag-txt';
-    t.textContent = szeneAufgaben[szeneOffen][ui] || szeneAufgaben[szeneOffen].de;
-    box.appendChild(k); box.appendChild(t);
+    // Der Aufgabentext steht beim Capy, nicht hier — sonst stünde er doppelt.
+    box.appendChild(k);
   }
   return box;
 }

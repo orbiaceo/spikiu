@@ -138,11 +138,11 @@
     ],
     'a1.cafe': [
       { de:'Bestelle etwas zu trinken', en:'Order something to drink' },
-      { de:'Sag, wie du ihn möchtest', en:'Say how you want it' },
+      { de:'Sag, wie du es möchtest', en:'Say how you want it' },
       { de:'Bitte um die Rechnung', en:'Ask for the bill' }
     ],
     'a1.einkaufen': [
-      { de:'Kaufe ein Kilo Obst', en:'Buy a kilo of fruit' },
+      { de:'Kaufe etwas ein', en:'Buy something' },
       { de:'Frag nach dem Preis', en:'Ask about the price' },
       { de:'Bezahle', en:'Pay' }
     ],
@@ -188,7 +188,7 @@
     ],
     'a2.cafe': [
       { de:'Sag höflich, dass etwas nicht stimmt', en:'Politely say something is wrong' },
-      { de:'Frag nach den Zutaten', en:'Ask about the ingredients' },
+      { de:'Frag, was darin ist', en:'Ask what is in it' },
       { de:'Wähle etwas anderes', en:'Choose something else' }
     ],
     'a2.einkaufen': [
@@ -1362,6 +1362,53 @@
     /* Gefüllt oder leer? Der Baum färbt danach. */
     gefuellt: function (stufe, thema) {
       return !!STATIONEN[stufe + '.' + thema];
+    },
+
+    /* Die ERNTE einer Station: Woerter UND Wendungen, in einer Liste.
+       Nur Wendungen sind im Alltag brauchbar — „la cuenta" allein bringt
+       niemanden weiter, „La cuenta, por favor" schon. Beides steht laengst
+       da, nur an drei Orten: wortschatz, dialog.zeilen und grammatik.
+       Diese Funktion legt es zusammen. Null Token.
+
+       art: 'wort' | 'wendung' — die Oberflaeche kann sie trennen.
+       Doppelte fliegen raus; die Wendung schlaegt das Einzelwort. */
+    ernte: function (stufe, thema, muttersprache) {
+      var S = STATIONEN[stufe + '.' + thema];
+      if (!S) return [];
+      var mu = muttersprache || 'de';
+      var out = [], gesehen = {};
+      function nimm(z, na, art) {
+        var k = String(z).trim().toLowerCase();
+        if (!k || gesehen[k]) return;
+        gesehen[k] = 1;
+        out.push({ z: String(z).trim(), na: na, art: art });
+      }
+      /* Was eine Wendung ist, entscheidet die Form, nicht die Herkunft:
+         mehr als zwei Woerter, oder ein Satzzeichen. „un café" aus der
+         Grammatik-Notiz ist ein Wort, „¿Cuánto es?" aus dem Wortschatz
+         ist eine Wendung. */
+      function art(t) {
+        var x = String(t).trim();
+        if (/[¿?¡!.,;]/.test(x)) return 'wendung';
+        return x.split(/\s+/).length > 2 ? 'wendung' : 'wort';
+      }
+      /* Wendungen zuerst: sie sind das, was man wirklich sagen kann. */
+      (S.dialog.zeilen || []).forEach(function (z) {
+        nimm(z.z, (z.na && (z.na[mu] || z.na.de)) || '', 'wendung');
+      });
+      (S.wortschatz || []).forEach(function (w) {
+        nimm(w.z, (w.na && (w.na[mu] || w.na.de)) || '', art(w.z));
+      });
+      if (S.grammatik && S.grammatik.beispiele) {
+        S.grammatik.beispiele.forEach(function (b) {
+          nimm(b.z, (b.na && (b.na[mu] || b.na.de)) || '', art(b.z));
+        });
+      }
+      /* Wendungen nach oben, Woerter darunter — in ihrer Reihenfolge. */
+      out.sort(function (a, b) {
+        return (a.art === b.art) ? 0 : (a.art === 'wendung' ? -1 : 1);
+      });
+      return out;
     },
 
     /* Alle Wörter einer Station, flach — für das Gym. */
