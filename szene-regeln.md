@@ -1,10 +1,9 @@
 # SZENE — die Regeln, gegen die geprüft wird
 
-Entwurf 19.08.2026. **Noch kein Code.** Diese Liste ist der Maßstab: Der
+Fassung 29.08.2026. Die vier offenen Fragen des Entwurfs sind beantwortet
+(Leonardo, 29.08.). **Noch kein Code.** Diese Liste ist der Maßstab: Der
 Automat wird gebaut, um sie zu erfüllen, und jede Zeile wird kopflos
 durchgespielt, bevor die Oberfläche daran hängt.
-
-Lies sie durch und sag, was fehlt, falsch ist oder anders sein soll.
 
 ---
 
@@ -22,19 +21,40 @@ Eine Szene ist zu jedem Zeitpunkt in genau EINER Phase:
 Es gibt keine anderen. Was nicht in dieser Tabelle steht, kann nicht
 passieren.
 
+`wartetAufSpikiu` trägt zusätzlich ein Merkmal `fehler` (ja/nein). Das ist
+**keine eigene Phase** — die erlaubten Ausgänge sind dieselben. Es ändert nur,
+was die Karte zeigt: drei Punkte oder „Nochmal".
+
 ---
 
 ## Die erlaubten Übergänge
 
-Nur diese fünf. Jeder andere Versuch wird abgelehnt und ändert nichts.
+Nur diese sechs. Jeder andere Versuch wird abgelehnt und ändert nichts.
 
 | von | Ereignis | nach |
 |---|---|---|
 | `buehne` | `los()` | `wartetAufSpikiu` |
-| `wartetAufLerner` | `antworte(text)` | `wartetAufSpikiu` |
+| `wartetAufLerner` | `antworte(text, art)` | `wartetAufSpikiu` |
 | `wartetAufSpikiu` | `spikiuAntwortet(text)` | `wartetAufLerner` **oder** `ernte` |
+| `wartetAufSpikiu` | `netzFehler()` | `wartetAufSpikiu` mit `fehler = ja` |
+| `wartetAufSpikiu` (`fehler`) | `nochmal()` | `wartetAufSpikiu` mit `fehler = nein` |
 | jede | `abbrechen()` | `ernte` |
 | `ernte` | `nachHause()` | (Szene vorbei) |
+
+---
+
+## Die drei Arten von Lerner-Zügen
+
+`antworte(text, art)` bekommt vom Sieb (siehe unten) eine von drei Arten:
+
+| `art` | Beispiel | rückt die Aufgabe vor | zählt gegen die Sechs |
+|---|---|---|---|
+| `offen` | „Un café con leche, por favor" | **ja** | ja |
+| `rolle` | „¿Cómo?", „No entiendo" | **nein** | ja |
+| `meta` | „Was heißt 'la cuenta'?" | **nein** | ja |
+
+Der Automat entscheidet die Art nicht — er bekommt sie. Wer sie bestimmt,
+steht unter „Das Sieb".
 
 ---
 
@@ -45,24 +65,27 @@ und der Capy zeigt Aufgabe 1.
 
 **R2 · Der Themen-Wunsch zählt nicht.** Der erste Zug, der an Spikiu geht
 („Ich möchte das Thema … üben"), ist der Startschuss, keine Antwort. Er
-rückt die Aufgabe nicht vor.
+rückt die Aufgabe nicht vor und zählt nicht gegen die Sechs.
 
-**R3 · Jede Antwort des Lerners schließt genau eine Aufgabe ab.** Nach der
-ersten Antwort ist Aufgabe 2 offen, nach der zweiten Aufgabe 3.
+**R3 · Ein offener Zug schließt genau eine Aufgabe ab.** Nach dem ersten
+ist Aufgabe 2 offen, nach dem zweiten Aufgabe 3. Auch eine unpassende
+Antwort schließt ab — die Aufgaben führen, sie prüfen nicht.
 
-**R4 · Antworten während `wartetAufSpikiu` werden abgelehnt.** Der Zustand
+**R4 · Züge während `wartetAufSpikiu` werden abgelehnt.** Der Zustand
 bleibt unverändert — kein zweiter Zug, keine übersprungene Aufgabe. Das
 gilt für Doppelklick, für Enter plus Knopf, für alles.
 
 **R5 · Teilt Spikiu seine Antwort in mehrere Blasen**, entstehen mehrere
 Karten. Zähler, Aufgabe und Capy trägt **nur die letzte**.
 
-**R6 · Nach der dritten Antwort** geht die Szene in `ernte`, egal wie
-Spikiu geantwortet hat.
+**R6 · Nach der dritten Aufgabe endet die Szene NICHT von selbst.** Sie
+öffnet den Ausgang: Spikiu gibt eine Schluss-Replik, der Knopf „Fertig"
+erscheint. Der Lerner geht selbst in die Ernte. Nichts bricht mitten im
+Satz ab.
 
-**R7 · Nach sechs Zügen des Lerners** geht die Szene in `ernte`, auch wenn
-weniger als drei Aufgaben erledigt sind. (Kann nur eintreten, wenn R3
-verletzt wäre — die Regel ist die Notbremse.)
+**R7 · Nach sechs Zügen des Lerners** geht die Szene in `ernte`, egal wie
+viele Aufgaben offen sind. R6 öffnet die Tür, R7 schließt sie. Das ist die
+harte Kostendecke und sie ist nicht verhandelbar.
 
 **R8 · `abbrechen()` führt aus jeder Phase nach `ernte`.** Auch aus
 `wartetAufSpikiu`; eine noch laufende Antwort wird verworfen und nicht
@@ -77,8 +100,45 @@ Beispielsatz, nie die Aufgabe davor oder danach.
 **R11 · Die Ernte kommt aus der Datenbank**, nie aus einem Aufruf: die
 Wendungen und Wörter der Station, in der Sprache des Lerners.
 
-**R12 · Jeder Weg endet zu Hause.** Aus der Ernte führt genau ein Knopf,
-und der geht nach `haus.html`.
+**R12 · Jeder Weg endet zu Hause.** Aus der Ernte führt ein Hauptknopf, und
+der geht nach `haus.html`. Beim ersten Abschluss einer Station steht
+darüber leise „Dieses Thema als Blatt mitnehmen" — auch dieser Weg endet
+nach dem Blatt zu Hause.
+
+**R13 · Eine Rückfrage rückt die Aufgabe nicht vor.** Ein Zug der Art
+`rolle` oder `meta` zählt gegen die Sechs, aber nicht gegen die Aufgaben.
+Wer nachfragt, weil er nicht verstanden hat, verliert keine Aufgabe. Wer
+zwanzigmal nachfragt, ist trotzdem nach sechs Zügen fertig.
+
+**R14 · Ein Netzfehler ist kein Zug.** `netzFehler()` zählt nicht gegen die
+Sechs und rückt nichts vor. `nochmal()` schickt denselben Text erneut. Zwei
+Fehler hintereinander → `ernte` mit dem, was da ist.
+
+---
+
+## Das Sieb
+
+Vor jedem Absenden entscheidet der Client, welche Art Zug vorliegt. Nicht das
+Modell, nicht der Prompt. Grundsatz wie beim Audio-Gesetz: **durchsetzen in
+der Engine, nicht im Prompt.**
+
+| Urteil | woran erkannt |
+|---|---|
+| `rolle` | steht auf der festen Liste der Rückfragen in der Zielsprache (`¿Cómo?`, `No entiendo`, `¿Perdón?`, `Otra vez` …) **oder** höchstens drei Wörter und kein Muttersprach-Wort darin |
+| `meta` | enthält eine Muttersprach-Wendung: „Was heißt", „Wie sagt man", „Was bedeutet", „Erklär", „auf Deutsch" (je nach Muttersprache de/es/en) |
+| `offen` | alles andere |
+
+Die Art wandert als **stille Regie-Anweisung** an die ausgehende Nachricht,
+als eigenes Objekt — **nie in den `verlauf`.** Sonst ahmt Spikiu das Format in
+Folgezügen nach (dieselbe Falle wie früher bei `[KORREKTUR]`). Muster: wie
+`CLOSE_HINT`.
+
+Trifft das Sieb daneben, antwortet Spikiu wie ohne Sieb. Es blockiert nichts,
+es flüstert nur zu. Der Schaden einer Fehlentscheidung ist null.
+
+**Gemessener Anlass:** Haiku 4.5 hielt im Test vom 29.08. alle vier
+Struktur-Signale (20/20, 20/20, 20/20, 20/20), verwechselte aber 3 von 10
+Rollen-Rückfragen mit Meta-Fragen. Das Sieb ist die Antwort darauf.
 
 ---
 
@@ -92,39 +152,31 @@ bevor eine Oberfläche daran hängt.
 Er entscheidet auch nicht, ob eine Antwort **richtig** war. Die Aufgaben
 führen, sie prüfen nicht.
 
+Und er entscheidet nicht, welche **Art** ein Zug hat. Das tut das Sieb; der
+Automat bekommt das Urteil als Parameter. So bleibt er ohne Wörterbuch
+testbar.
+
 ---
 
 ## Die Fälle, die durchgespielt werden
 
 Jeder einzeln, mit erwartetem Ergebnis:
 
-1. Sauberer Durchlauf: Los! → drei Antworten → Ernte
+1. Sauberer Durchlauf: Los! → drei offene Züge → Ausgang offen → Fertig → Ernte
 2. Doppelklick auf Senden → nur ein Zug, Aufgabe rückt einmal vor
-3. Antwort, während Spikiu noch schreibt → abgelehnt
+3. Zug, während Spikiu noch schreibt → abgelehnt
 4. Spikiu antwortet in zwei Blasen → zwei Karten, Zähler nur auf der zweiten
 5. Abbruch auf der Bühne → direkt Ernte
 6. Abbruch mitten im Gespräch → Ernte, die laufende Antwort verfällt
 7. Abbruch, während Spikiu schreibt → Ernte, die Antwort wird verworfen
 8. Zweiter Abbruch → wird abgelehnt, nichts passiert
-9. Sechs Züge ohne dritte Aufgabe → Ernte (Notbremse)
+9. Sechs Züge ohne dritte Aufgabe → Ernte (Notbremse R7)
 10. Zug nach der Ernte → abgelehnt
-11. Themen-Wunsch rückt die Aufgabe nicht vor
+11. Themen-Wunsch rückt die Aufgabe nicht vor und zählt nicht
 12. Der Capy zeigt in jeder Phase die richtige Aufgabe
-
----
-
-## Was ich von dir brauche
-
-**Fehlt eine Regel?** Besonders: Was soll passieren, wenn Spikiu gar nicht
-antwortet (Netzfehler)? Heute gibt es „Nochmal" — bleibt das?
-
-**Ist R3 richtig so?** Jede Antwort schließt eine Aufgabe ab, auch eine
-unpassende. Der Lerner bestellt „a la China" und die Aufgabe gilt trotzdem
-als erledigt. Das ist die Entscheidung „führen, nicht prüfen" — aber es ist
-eine Entscheidung, keine Selbstverständlichkeit.
-
-**Ist R7 die richtige Zahl?** Sechs Züge bei drei Aufgaben heißt: doppelt so
-viel Spielraum wie nötig. Bei R3 kann sie ohnehin nie greifen.
-
-**Und: soll die Ernte wirklich das Ende sein?** Oder gehört dorthin noch das
-Lektionsblatt aus b) — „Dieses Thema als Blatt mitnehmen"?
+13. Drei Rückfragen hintereinander → Aufgabe 1 immer noch offen, Zugzähler bei 3
+14. Sechs Rückfragen → Ernte, null Aufgaben erledigt, keine Endlosschleife
+15. Netzfehler → `fehler`-Merkmal, Zugzähler unverändert
+16. Nochmal nach Fehler → derselbe Text, Zugzähler zählt ihn einmal
+17. Zwei Netzfehler hintereinander → Ernte
+18. Dritte Aufgabe erledigt, Lerner redet weiter → erlaubt bis Zug sechs, Ausgang bleibt offen
