@@ -405,16 +405,28 @@ function siebPruefe(titel, text, zielsprache, muttersprache, soll) {
   siebPruefe('Sieb · Offen ' + (i + 1), fall[0], fall[1], fall[2], 'offen');
 });
 
-// ── Die drei Grenzfälle ────────────────────────────────────────────────────
-// „Ok" — kein deutsches Wort in der Liste, ein Wort → Rückfrage. Folge: es schließt
-// keine Aufgabe ab, und genau das ist richtig; ein „Ok" ist keine Antwort.
-siebPruefe('Grenzfall 1', 'Ok', 'es', 'de', 'rolle');
-// „Sí" — ein Wort Zielsprache, kein Muttersprach-Wort → Rückfrage. Schließt keine
-// Aufgabe ab; ein bloßes „Sí" führt die Szene nicht weiter.
-siebPruefe('Grenzfall 2', 'Sí', 'es', 'de', 'rolle');
-// „Hallo" — steht als deutsches Wort im Muttersprach-Verzeichnis, also greift die
-// Drei-Wörter-Regel nicht → offen.
+// ── Die Grenzfälle ─────────────────────────────────────────────────────────
+// Seit dem Entscheid „Vorfahrt für offen" (29.08.) ist NUR Rückfrage, was auf der
+// festen Liste steht. Alles Unbekannte ist ein offener Zug — ein falsches „rolle"
+// kostet die Szene, ein falsches „offen" nur eine Aufgabe.
+siebPruefe('Grenzfall 1', 'Ok', 'es', 'de', 'offen');
+siebPruefe('Grenzfall 2', 'Sí', 'es', 'de', 'offen');
 siebPruefe('Grenzfall 3', 'Hallo', 'es', 'de', 'offen');
+
+// Die kurzen ECHTEN Antworten, an denen die alte Regel scheiterte. Sie sind der
+// Grund für den Entscheid und dürfen nie wieder als Rückfrage gelten.
+siebPruefe('Kurz-echt 1', 'Un café', 'es', 'de', 'offen');
+siebPruefe('Kurz-echt 2', 'Dos cafés', 'es', 'de', 'offen');
+siebPruefe('Kurz-echt 3', 'La cuenta', 'es', 'de', 'offen');
+siebPruefe('Kurz-echt 4', 'Con leche', 'es', 'de', 'offen');
+siebPruefe('Kurz-echt 5', 'Hallo', 'de', 'es', 'offen');
+siebPruefe('Kurz-echt 6', 'Guten Tag', 'de', 'es', 'offen');
+siebPruefe('Kurz-echt 7', 'Ein Kaffee bitte', 'de', 'es', 'offen');
+
+// Gegenprobe: die echten Rückfragen von der Liste bleiben unberührt.
+siebPruefe('Liste bleibt 1', '¿Cómo?', 'es', 'de', 'rolle');
+siebPruefe('Liste bleibt 2', 'Otra vez', 'es', 'de', 'rolle');
+siebPruefe('Liste bleibt 3', 'Wie bitte?', 'de', 'es', 'rolle');
 
 // ── Schluss ────────────────────────────────────────────────────────────────
 console.log('');

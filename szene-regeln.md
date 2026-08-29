@@ -1,7 +1,8 @@
 # SZENE — die Regeln, gegen die geprüft wird
 
-Fassung 29.08.2026. Die vier offenen Fragen des Entwurfs sind beantwortet
-(Leonardo, 29.08.). **Noch kein Code.** Diese Liste ist der Maßstab: Der
+Fassung 29.08.2026, zweite Runde. Die vier offenen Fragen des Entwurfs sind
+beantwortet (Leonardo, 29.08.); das Sieb ist nach dem ersten Testlauf
+nachgeschärft (Vorfahrt für `offen`). **Noch kein Code.** Diese Liste ist der Maßstab: Der
 Automat wird gebaut, um sie zu erfüllen, und jede Zeile wird kopflos
 durchgespielt, bevor die Oberfläche daran hängt.
 
@@ -124,7 +125,7 @@ der Engine, nicht im Prompt.**
 
 | Urteil | woran erkannt |
 |---|---|
-| `rolle` | steht auf der festen Liste der Rückfragen in der Zielsprache (`¿Cómo?`, `No entiendo`, `¿Perdón?`, `Otra vez` …) **oder** höchstens drei Wörter und kein Muttersprach-Wort darin |
+| `rolle` | steht **wörtlich** auf der festen Liste der Rückfragen in der Zielsprache (`¿Cómo?`, `No entiendo`, `¿Perdón?`, `Otra vez` …) |
 | `meta` | enthält eine Muttersprach-Wendung: „Was heißt", „Wie sagt man", „Was bedeutet", „Erklär", „auf Deutsch" (je nach Muttersprache de/es/en) |
 | `offen` | alles andere |
 
@@ -134,11 +135,41 @@ Folgezügen nach (dieselbe Falle wie früher bei `[KORREKTUR]`). Muster: wie
 `CLOSE_HINT`.
 
 Trifft das Sieb daneben, antwortet Spikiu wie ohne Sieb. Es blockiert nichts,
-es flüstert nur zu. Der Schaden einer Fehlentscheidung ist null.
+es flüstert nur zu.
+
+**Vorfahrt für `offen`.** Die beiden Fehler sind nicht gleich teuer. Ein
+falsches `offen` kostet eine Aufgabe. Ein falsches `rolle` kostet die ganze
+Szene: der Lerner antwortet richtig, aber knapp („Un café"), die Aufgabe rückt
+nicht vor, und er erreicht den Ausgang nie — nur die Notbremse. Deshalb wird
+nicht geraten. **Nur was auf der Liste steht, ist eine Rückfrage. Alles
+Unbekannte ist ein offener Zug.** Die frühere Regel „höchstens drei Wörter und
+kein Muttersprach-Wort" wurde am 29.08. nach dem ersten Testlauf ersatzlos
+gestrichen; sie hatte genau diesen Fehler in die falsche Richtung gemacht.
+
+Der Preis: eine Rückfrage in ungewohnter Formulierung („Eh?", „¿Mande?")
+kostet eine Aufgabe. Bei drei Aufgaben und sechs Zügen verkraftbar. Die Listen
+wachsen mit der Beta — sie sind der einzige Ort, an dem nachgebessert wird.
 
 **Gemessener Anlass:** Haiku 4.5 hielt im Test vom 29.08. alle vier
 Struktur-Signale (20/20, 20/20, 20/20, 20/20), verwechselte aber 3 von 10
 Rollen-Rückfragen mit Meta-Fragen. Das Sieb ist die Antwort darauf.
+
+---
+
+## Drei Auslegungen, die im Bau entschieden wurden
+
+Sie stehen hier, damit sie nicht wieder verhandelt werden.
+
+**Wann R7 greift.** Der sechste Zug geht noch nach `wartetAufSpikiu`, Spikiu
+antwortet ein letztes Mal, **danach** Ernte. Niemand wird mitten im Satz
+abgeschnitten, und die Kostendecke bleibt bei sechs Aufrufen.
+
+**Was „Fertig" ist.** Der Knopf aus R6 ist `abbrechen()` bei
+`ausgangOffen === true`. Für den Automaten derselbe Übergang, für die
+Oberfläche zwei Beschriftungen — „Gespräch beenden" vorher, „Fertig" danach.
+
+**R8 gegen R9.** R8 sagt „aus jeder Phase", R9 sagt „in der Ernte geht nichts
+mehr raus". Es gilt R9: ein zweiter Abbruch wird abgelehnt.
 
 ---
 

@@ -12,6 +12,15 @@
 //
 // Gemessener Anlass: Haiku 4.5 hielt am 29.08. alle vier Struktur-Signale
 // (20/20), verwechselte aber 3 von 10 Rollen-Rückfragen mit Meta-Fragen.
+//
+// VORFAHRT FÜR „OFFEN" (Entscheid 29.08., nach dem ersten Testlauf):
+// Die Fehler sind nicht gleich teuer. Ein falsches „offen" kostet EINE Aufgabe.
+// Ein falsches „rolle" kostet die SZENE — der Lerner antwortet richtig, aber
+// knapp („Un café"), die Aufgabe rückt nicht vor, und er erreicht den Ausgang
+// nie, nur die Notbremse. Deshalb wurde die frühere Regel „höchstens drei
+// Wörter und kein Muttersprach-Wort → Rückfrage" ersatzlos gestrichen.
+// Es gilt jetzt: NUR was auf der festen Liste steht, ist eine Rückfrage.
+// Alles Unbekannte ist ein offener Zug. Die Listen wachsen mit der Beta.
 
 (function (global) {
   'use strict';
@@ -35,10 +44,6 @@
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/ς/g, 'σ');   // ς → σ
-  }
-
-  function woerter(gefaltet) {
-    return gefaltet.length ? gefaltet.split(' ') : [];
   }
 
   // ── Die festen Listen der Rückfragen, in der ZIELSPRACHE ───────────────────
@@ -107,44 +112,6 @@
     ]
   };
 
-  // ── Muttersprach-Wörter ────────────────────────────────────────────────────
-  // Nur für die zweite Hälfte der Rollen-Regel: „höchstens drei Wörter und KEIN
-  // Muttersprach-Wort darin". Hochfrequente Funktionswörter reichen dafür.
-  var MUTTER_WOERTER = {
-    de: ('ich du er sie es wir ihr man mich mir dich dir uns euch ihn ihm ' +
-         'ist bin bist sind seid war waren wäre hat habe haben hast hatte hatten ' +
-         'kann kannst können könnte muss musst müssen will willst möchte möchten ' +
-         'weiß wissen soll sollte darf werde wird ' +
-         'was wie wer wen wem wo wohin woher wann warum welche welcher welches ' +
-         'der die das den dem des ein eine einen einem eines einer ' +
-         'und oder aber denn nicht kein keine keinen nichts auch nur schon noch ' +
-         'mit ohne für von zu zum zur auf in im an am bei aus nach über unter vor ' +
-         'bitte danke hallo tschüss ja nein doch gern gerne ' +
-         'gut schlecht sehr mehr weniger wieder mal etwas alles ' +
-         'heißt heisst bedeutet sagt sagen sagst sag verstehe verstanden verstehen ' +
-         'deutsch spanisch englisch wort satz frage antwort').split(' '),
-    es: ('yo tú tu vos él ella nosotros ustedes ellos ellas me te se le lo la los las nos ' +
-         'un una unos unas el del al ' +
-         'es son soy eres somos era eran fue fui está están estoy estamos hay ' +
-         'tiene tengo tienes puedo puedes puede quiero quieres quiere ' +
-         'qué que cómo como quién quien dónde donde cuándo cuando cuál cual ' +
-         'por porque para y o pero ni también sólo solo ya todavía muy más menos ' +
-         'con sin de en a sobre bajo antes después entre hasta desde ' +
-         'favor gracias sí si hola adiós bien mal bueno mala ' +
-         'significa dice decir digo entiendo explica palabra frase pregunta respuesta ' +
-         'español alemán inglés').split(' '),
-    en: ('i you he she it we they me my your his her our their us him them ' +
-         'the a an this that these those ' +
-         'is are am was were be been being have has had do does did ' +
-         'can could would should will shall may might must ' +
-         'what how who whom where when why which ' +
-         'and or but not no yes hello hi hey thanks thank please ' +
-         'very more less again already still just only too also ' +
-         'in on at to for of with without from about into over under ' +
-         'mean means meaning say says said word sentence question answer ' +
-         'understand explain translate english german spanish good bad').split(' ')
-  };
-
   // Listen einmal falten, damit der Vergleich beidseitig gleich läuft.
   function falteListe(liste) {
     var raus = [];
@@ -154,25 +121,11 @@
     }
     return raus;
   }
-  function falteMenge(liste) {
-    var menge = Object.create(null);
-    for (var i = 0; i < liste.length; i++) {
-      var g = falte(liste[i]);
-      if (g) menge[g] = true;
-    }
-    return menge;
-  }
-
   var ROLLE_GEFALTET = {};
   for (var zs in ROLLE_LISTEN) ROLLE_GEFALTET[zs] = falteListe(ROLLE_LISTEN[zs]);
 
   var META_GEFALTET = {};
   for (var ms in META_WENDUNGEN) META_GEFALTET[ms] = falteListe(META_WENDUNGEN[ms]);
-
-  var WORT_MENGEN = {};
-  for (var mw in MUTTER_WOERTER) WORT_MENGEN[mw] = falteMenge(MUTTER_WOERTER[mw]);
-
-  var MAX_KURZ = 3;   // „höchstens drei Wörter"
 
   // ── Das Urteil ─────────────────────────────────────────────────────────────
   function art(text, zielsprache, muttersprache) {
@@ -184,7 +137,8 @@
 
     // 1. Steht es wörtlich auf der festen Liste der Rückfragen in der Zielsprache?
     //    Diese Prüfung kommt zuerst: „No entiendo" ist eine Rückfrage, auch wenn
-    //    „no" zufällig ein englisches Wort ist.
+    //    „no" zufällig ein englisches Wort ist. NUR was auf der Liste steht, ist
+    //    eine Rückfrage — es wird nicht geraten (siehe Kopf: Vorfahrt für „offen").
     var liste = ROLLE_GEFALTET[zs2];
     if (liste && liste.indexOf(gefaltet) !== -1) return 'rolle';
 
@@ -196,20 +150,7 @@
       }
     }
 
-    // 3. Höchstens drei Wörter und kein Muttersprach-Wort darin → Rückfrage.
-    var teile = woerter(gefaltet);
-    if (teile.length <= MAX_KURZ) {
-      var menge = WORT_MENGEN[ms2];
-      var mutterDrin = false;
-      if (menge) {
-        for (var k = 0; k < teile.length; k++) {
-          if (menge[teile[k]]) { mutterDrin = true; break; }
-        }
-      }
-      if (!mutterDrin) return 'rolle';
-    }
-
-    // 4. Alles andere.
+    // 3. Alles andere ist ein offener Zug.
     return 'offen';
   }
 
