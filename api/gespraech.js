@@ -158,7 +158,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-haiku-4-5',
         // Netz gegen Textwaende: drei Saetze / vierzig Woerter passen bequem in
         // 300 Token. Der Prompt sagt es, das Limit erzwingt es — und der Client
         // kann die Grenze nicht nach oben schieben (19.08.2026).
