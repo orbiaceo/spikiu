@@ -557,6 +557,11 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 <script src="lernpfad-daten.js"></script>
 <script src="lernpfad.js"></script>
 <script src="bilder-db.js"></script>
+<!-- Schattenlauf: der Szenen-Automat und das Sieb laufen MIT, ändern nichts und
+     melden Abweichungen. Synchron vor dem Haupt-Script wie sitzung.js, damit
+     window.SpikiuSzene/SpikiuSieb beim ersten szeneAufgabenLaden() schon da sind. -->
+<script src="szene.js"></script>
+<script src="frage-sieb.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════════
 //  SPIKIU · RAUM: FREIES GESPRÄCH (der Flur)
@@ -1265,6 +1270,54 @@ var szeneBeispiele = [];   // die Skriptzeilen des Lerners — der Souffleur
 // die letzte davon.
 var spikiuTeilzug = false;
 
+// ── Der Schattenlauf ───────────────────────────────────────────────────
+// Der Automat aus szene.js läuft neben der alten Rechnung her. Er LIEST nur:
+// keine der fünf Globalen oben wird von ihm angefasst, kein Zweig hängt an ihm.
+// Fällt er aus (Helfer fehlt, Ausnahme), läuft die Szene wie bisher weiter —
+// deshalb steht jeder Zugriff in try/catch und nichts wirft je nach draußen.
+var schatten = null;        // SpikiuSzene-Instanz, läuft nur mit
+var schattenFunde = [];     // gesammelte Abweichungen
+var schattenArt = null;     // zuletzt gesiebte Art — steht bei jedem Fund dabei
+
+// Nur mit ?dev=1 wird überhaupt etwas gezeigt. Ohne ist der Schatten unsichtbar.
+function schattenDev(){
+  try { return new URLSearchParams(location.search).get('dev') === '1'; } catch(e){ return false; }
+}
+
+function merke(was, alt, neu){
+  schattenFunde.push({ was: was, alt: alt, neu: neu, art: schattenArt });
+}
+
+// Der Vergleich: alte Rechnung (szeneOffen/szeneZug) gegen den Automaten.
+// ERWARTET ist jeder Fund mit (Sieb: rolle) oder (Sieb: meta) — dort wirkt R13,
+// die neue Regel, dass nur ein OFFENER Zug eine Aufgabe vorrückt. Ein Fund mit
+// (Sieb: offen) ist unerklärt: da stimmt die Übersetzung nicht.
+function vergleiche(z){
+  if (!z) return;
+  if (z.aufgabeIndex !== szeneOffen) merke('Aufgabe', szeneOffen, z.aufgabeIndex);
+  if (z.zug !== szeneZug)            merke('Zug',     szeneZug,   z.zug);
+  var altVorbei = (szeneOffen >= szeneAufgaben.length || szeneZug >= SZENE_ZUG_DECKEL);
+  var neuVorbei = (z.phase === 'ernte' || z.ausgangOffen);
+  if (altVorbei !== neuVorbei)       merke('Ende',    altVorbei,  neuVorbei);
+}
+
+// Ein Zug des Lerners geht in den Automaten. Der ERSTE user-Eintrag ist der
+// Themen-Wunsch — der Startschuss, keine Antwort (R2). Genau so rechnet auch
+// lernerZuege() (Anzahl user-Einträge minus eins); beide Seiten müssen an
+// derselben Stelle dasselbe zählen, sonst misst der Schatten sich selbst.
+function schattenZug(text){
+  if (!schatten) return;
+  try {
+    var lerner = 0;
+    for (var i = 0; i < verlauf.length; i++) if (verlauf[i].role === 'user') lerner++;
+    if (lerner <= 1){ schattenArt = null; schatten.los(text); return; }
+    schattenArt = window.SpikiuSieb
+      ? window.SpikiuSieb.art(text, PROFILE.zielsprache, PROFILE.muttersprache)
+      : 'offen';
+    schatten.antworte(text, schattenArt);
+  } catch(e){}
+}
+
 // Wie oft hat der Lerner geantwortet? Der erste user-Eintrag ist der
 // Themen-Wunsch („Ich möchte das Thema … üben") — der Startschuss, keine
 // Antwort. Daraus folgt, welche Aufgabe offen ist.
@@ -1288,6 +1341,14 @@ function szeneAufgabenLaden(){
     var S = D.station(st, TOPIC_ID);
     if (S) szeneBeispiele = S.dialog.zeilen.filter(function(z){ return z.wer === 'lerner'; });
   } catch(e){ szeneAufgaben = []; szeneBeispiele = []; }
+  // Der Schatten wird mit derselben Vorgabe geboren wie die alte Rechnung.
+  try {
+    schatten = (window.SpikiuSzene && szeneAufgaben.length)
+      ? window.SpikiuSzene.erzeuge({ aufgaben: szeneAufgaben, maxZuege: SZENE_ZUG_DECKEL })
+      : null;
+  } catch(e){ schatten = null; }
+  schattenFunde = [];
+  schattenArt = null;
 }
 
 // Der Souffleur: eine eigene Zeile, Capy links, sein Vorschlag daneben.
@@ -1848,6 +1909,29 @@ function renderReelSchluss(){
       + '<div class="rs-frage">' + escPlain(ui.offer) + '</div>';
   }
 
+  // ── Der Schattenlauf, nur mit ?dev=1 ────────────────────────────────
+  // Ein Messgerät, kein Bauteil: kleine Schrift, gedämpft, kein Kasten.
+  // Ohne dev=1 passiert hier gar nichts — der Nutzer sieht den Schatten nie.
+  if (schatten){ try { schatten.abbrechen(); } catch(e){} }
+  if (schatten && schattenDev()){
+    try {
+      var sz = document.createElement('div');
+      sz.style.cssText = 'margin-top:14px;font-size:11px;line-height:1.6;opacity:.45;';
+      if (!schattenFunde.length){
+        sz.textContent = 'Schatten: einig ✓';
+      } else {
+        sz.textContent = 'Schatten:';
+        schattenFunde.forEach(function(f){
+          var z = document.createElement('div');
+          z.textContent = f.was + ' alt=' + f.alt + ' neu=' + f.neu
+                        + ' (Sieb: ' + (f.art || '—') + ')';
+          sz.appendChild(z);
+        });
+      }
+      slide.appendChild(sz);
+    } catch(e){}
+  }
+
   var ja = document.createElement('button');
   ja.type = 'button'; ja.className = 'rs-btn ja';
   ja.textContent = geerntet.length ? eui.heim : ui.yes;
@@ -2226,6 +2310,7 @@ function sendUserTurn(text){
   removeGabelung(); removeOptionen();          // alte Wahl-Elemente weg
   addMessage('user', text);
   verlauf.push({ role: 'user', content: text });
+  schattenZug(text);                           // Schattenlauf: Sieb fragen, Automat füttern
   sitzungSpeichern();                          // Teil 62: nach dem User-Zug sichern
   turn();
 }
@@ -2391,7 +2476,9 @@ async function turn(){
   try {
     reply = await callGespraech();          // nur Netzwerk
   } catch(e){
-    hideTyping(); showError('Netz: ' + ((e && e.message) || e));
+    hideTyping();
+    if (schatten){ try { schatten.netzFehler(); } catch(e2){} }   // R14 · ein Netzfehler ist kein Zug
+    showError('Netz: ' + ((e && e.message) || e));
     busy = false; sendBtn.disabled = input.value.trim() === ''; return;
   }
   hideTyping();
@@ -2414,6 +2501,10 @@ async function turn(){
       // Der erste user-Eintrag ist der Themen-Wunsch und zählt nicht mit.
       szeneOffen = Math.min(lernerZuege(), szeneAufgaben.length);
       szeneZug = lernerZuege();
+      // Die alte Rechnung ist fertig — genau hier vergleicht der Schatten.
+      if (schatten){
+        try { vergleiche(schatten.spikiuAntwortet(reply || '')); } catch(e){}
+      }
     }
     var ka = extractKarte(reply);
     var w = extractWechsel(ka.text);
