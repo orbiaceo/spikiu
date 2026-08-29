@@ -1,151 +1,186 @@
-# AKTUELLER AUFTRAG — DER SZENEN-AUTOMAT
+# AKTUELLER AUFTRAG — DER SCHATTENLAUF
 
 Stand: 29.08.2026 · Erteilt von claude.ai · Für Claude Code (Terminal)
 
-**Ein Auftrag, ein Durchlauf.** Leonardo ist unterwegs. Arbeite durch, melde am
-Ende die Testtabelle. Frag nichts.
+**Ein Auftrag, ein Durchlauf.** Leonardo ist unterwegs. Frag nichts, melde am
+Ende, was gebaut wurde.
 
 ---
 
-## Warum
+## Warum kein Tausch, sondern ein Schatten
 
-Der Szenenzustand liegt heute in fünf globalen Variablen (`szeneAufgaben`,
-`szeneOffen`, `szeneZug`, `szeneBeendet`, `spikiuTeilzug`) plus `verlauf`,
-`gefuehrt`, `busy`, `TOPIC_ID`, gesetzt an vier Stellen in einer 164-KB-Datei
-mit 133 Funktionen. **Es gibt keinen Ort, an dem steht, wie eine Szene
-abläuft.** Fünf Reparaturversuche an derselben Stelle haben jeweils eine
-weitere globale Variable dazugelegt.
+`szene.js` ist mit 66/66 kopflos bewiesen. Was **nicht** bewiesen ist: dass die
+Übersetzung vom alten Verhalten in `chat.html` ins neue stimmt. Zählt
+`lernerZuege()` dasselbe wie `zug` im Automaten? Rückt `szeneOffen` im selben
+Moment vor wie `aufgabeIndex`? Genau dort würde ein Fehler sich verstecken, und
+`chat.html` ist inzwischen **203 KB** und trägt auch den geführten Modus.
 
-Dieser Auftrag baut den Ablauf als eigenes, prüfbares Ding — **ohne
-`chat.html` anzufassen.** Erst wenn er beweisbar richtig ist, hängt später die
-Oberfläche daran. Das ist die vereinbarte Reihenfolge.
-
-**Maßstab ist `szene-regeln.md` im Repo-Root.** Lies sie zuerst und ganz. Wo
-dieser Auftrag und die Regeln sich widersprechen, gelten die Regeln.
+Deshalb: Der Automat läuft **mit**, ändert **nichts**, und **meldet
+Abweichungen**. Leonardo spielt eine Szene am Gerät. Keine unerklärte
+Abweichung → der Tausch ist danach langweilig. Der Tausch selbst ist ein
+eigener, späterer Auftrag.
 
 ---
 
 ## Was gebaut wird
 
-Zwei neue Dateien im **Repo-Root**, beide reines JS, beide ohne DOM, ohne
-`fetch`, ohne `localStorage`:
+**EINE Datei: `chat.html`.** Sonst nichts.
 
-### 1. `szene.js` — der Automat
+### 1. Die zwei Helfer laden
 
-Exponiert `window.SpikiuSzene` im Browser **und** `module.exports` unter Node
-(Muster: `if (typeof module !== 'undefined') module.exports = …`), damit die
-Tests ohne Browser laufen.
+Synchron vor dem Haupt-Script, nach dem Muster von `sitzung.js`:
 
-```
-SpikiuSzene.erzeuge({ aufgaben: [...], maxZuege: 6, streng: false })
+```html
+<script src="szene.js"></script>
+<script src="frage-sieb.js"></script>
 ```
 
-Gibt ein Objekt mit sieben Ereignis-Methoden zurück:
+### 2. Der Schatten-Automat
 
-`los()` · `antworte(text, art)` · `spikiuAntwortet(text)` · `netzFehler()` ·
-`nochmal()` · `abbrechen()` · `nachHause()`
+Neben den bestehenden fünf Globalen (`szeneBeendet`, `szeneAufgaben`,
+`szeneOffen`, `szeneZug`, `spikiuTeilzug`) — die **alle unverändert bleiben** —
+eine einzige neue Variable:
 
-Jede gibt den **neuen Zustand** zurück:
-
-```
-{ phase, fehler, zug, aufgabeIndex, ausgangOffen, vorbei, abgelehnt }
-```
-
-- `phase` — eine der vier aus den Regeln
-- `fehler` — Merkmal von `wartetAufSpikiu`, keine eigene Phase
-- `zug` — Zähler gegen `maxZuege`
-- `aufgabeIndex` — welche Aufgabe offen ist (0-basiert)
-- `ausgangOffen` — R6: dritte Aufgabe erledigt, „Fertig" darf erscheinen
-- `abgelehnt` — Grund als Zeichenkette, wenn das Ereignis nichts bewirkt hat
-
-**`art`** ist `'offen'` | `'rolle'` | `'meta'` und kommt von außen. Der Automat
-entscheidet sie nicht (Regeln, Abschnitt „Was der Automat NICHT tut").
-
-**Abgelehnte Ereignisse:** normal (Doppelklick, Zug während
-`wartetAufSpikiu`, Zug nach der Ernte) → Zustand unverändert zurück,
-`abgelehnt` gesetzt, **kein Wurf**. Bei `streng: true` wirft er stattdessen —
-das nutzen die Tests, damit ein still verschluckter Fehler nicht durchrutscht.
-
-**Der Zustand ist unveränderlich nach außen.** Jede Methode gibt eine Kopie
-zurück; kein Aufrufer kann in den inneren Zustand hineingreifen. Genau das war
-der alte Fehler.
-
-### 2. `frage-sieb.js` — das Sieb
-
-```
-SpikiuSieb.art(text, zielsprache, muttersprache)  →  'offen' | 'rolle' | 'meta'
+```js
+var schatten = null;        // SpikiuSzene-Instanz, läuft nur mit
+var schattenFunde = [];     // gesammelte Abweichungen
 ```
 
-Regeln stehen in `szene-regeln.md`, Abschnitt „Das Sieb". Feste Listen für
-`es` / `de` / `en` / `el`; Muttersprach-Wendungen für `de` / `es` / `en`.
-Rein, ohne Zustand, ohne Netz.
+**In `szeneAufgabenLaden()`**, ganz am Ende, zusätzlich:
 
-### 3. `szene.test.js` — die Tests
+```js
+schatten = (window.SpikiuSzene && szeneAufgaben.length)
+  ? window.SpikiuSzene.erzeuge({ aufgaben: szeneAufgaben, maxZuege: SZENE_ZUG_DECKEL })
+  : null;
+schattenFunde = [];
+```
 
-Plain Node, **kein Framework, keine Abhängigkeit**. Läuft mit
-`node szene.test.js` und druckt je Fall eine Zeile plus eine Schlusszeile
-`x/y grün`. Rückgabewert 1 bei jedem Fehlschlag.
+Danach einmal `schatten.los()` an der Stelle, an der die Szene wirklich
+beginnt (dort, wo heute der Themen-Wunsch als erster user-Eintrag rausgeht).
 
-Alle **18 Fälle** aus `szene-regeln.md` müssen als eigener Fall vorkommen.
-Dazu für das Sieb mindestens: je fünf echte Rollen-Rückfragen und fünf echte
-Meta-Fragen pro Muttersprache, plus die Grenzfälle „Ok", „Sí", „Hallo".
+**Bei jedem Zug des Lerners** (dort, wo der user-Eintrag in `verlauf`
+gepusht wird): Sieb fragen, Automat füttern.
+
+```js
+if (schatten){
+  var art = window.SpikiuSieb
+    ? window.SpikiuSieb.art(text, zielsprache, muttersprache)
+    : 'offen';
+  schatten.antworte(text, art);
+}
+```
+
+**Bei jeder Antwort Spikius** (nach `szeneOffen = Math.min(…)`, also an der
+Stelle, an der die alte Rechnung fertig ist):
+
+```js
+if (schatten){
+  var z = schatten.spikiuAntwortet(shown || '');
+  vergleiche(z);
+}
+```
+
+Bei `netzFehler` / `showError` entsprechend `schatten.netzFehler()`, beim
+Abbruch `schatten.abbrechen()`.
+
+### 3. Der Vergleich
+
+```js
+function vergleiche(z){
+  if (!z) return;
+  if (z.aufgabeIndex !== szeneOffen) merke('Aufgabe', szeneOffen, z.aufgabeIndex);
+  if (z.zug !== szeneZug)            merke('Zug',     szeneZug,   z.zug);
+  var altVorbei = (szeneOffen >= szeneAufgaben.length || szeneZug >= SZENE_ZUG_DECKEL);
+  var neuVorbei = (z.phase === 'ernte' || z.ausgangOffen);
+  if (altVorbei !== neuVorbei)       merke('Ende',    altVorbei,  neuVorbei);
+}
+```
+
+`merke(was, alt, neu)` hängt einen Eintrag an `schattenFunde` — **und
+vermerkt dazu die zuletzt gesiebte Art.** Das ist entscheidend, siehe unten.
+
+### 4. Die Anzeige — nur mit `?dev=1`
+
+Am Ende der Szene (in `renderReelSchluss`, unterhalb der Ernte) eine schlichte
+Zeile, **nur wenn `?dev=1` gesetzt ist**, sonst gar nichts:
+
+- keine Abweichung → `Schatten: einig ✓`
+- sonst je Fund eine Zeile: `Aufgabe alt=2 neu=1 (Sieb: rolle)`
+
+Kleine Schrift, gedämpft, kein Kasten, keine Farbe. Es ist ein Messgerät, kein
+Bauteil. Ohne `?dev=1` ist der Schattenlauf für den Nutzer **vollständig
+unsichtbar**.
+
+---
+
+## Die Abweichungen, die ERWARTET sind
+
+Das ist der Kern des Auftrags — verwechsle sie nicht mit Fehlern.
+
+Die alte Logik rückt bei **jedem** Zug eine Aufgabe vor
+(`szeneOffen = Math.min(lernerZuege(), …)`). Der Automat rückt nach **R13**
+nur bei `art === 'offen'` vor. Sagt das Sieb also `rolle` oder `meta`, **muss**
+eine Abweichung erscheinen — das ist die neue Regel, die sichtbar wird, nicht
+ein Bug.
+
+Deshalb steht bei jedem Fund die gesiebte Art dabei. Die Auswertung lautet:
+
+- Fund **mit** `(Sieb: rolle)` oder `(Sieb: meta)` → **erwartet.** R13 wirkt.
+- Fund **mit** `(Sieb: offen)` → **unerklärt.** Da stimmt die Übersetzung nicht.
 
 ---
 
 ## Was du NICHT anfasst
 
-`chat.html` · `gefuehrt.html` · `karten-engine.js` · `lernpfad.js` ·
-`lernpfad-daten.js` · `woerter.js` · `sitzung.js` · alle `api/*` · alle
-`*-modus.md` · `spikiu-seele.md` · `szene-regeln.md` (nur lesen) ·
-`SPIKIU-BUILD-LEDGER.md` · diesen Auftrag.
+`szene.js` · `frage-sieb.js` · `szene.test.js` · `szene-regeln.md` ·
+`gefuehrt.html` · `karten-engine.js` · alle `api/*` · alle Prompts · das
+Ledger · diesen Auftrag.
 
-**Der Automat wird nirgends eingebunden.** Kein `<script src="szene.js">`,
-kein Aufruf aus einer HTML-Datei. Er liegt da und ist getestet, mehr nicht.
-Das Anhängen der Oberfläche ist ein eigener, späterer Auftrag.
-
-Kein `package.json`, keine npm-Abhängigkeit. Vercel rät den Modultyp aus der
-Syntax.
+**In `chat.html` selbst:** keine der fünf Globalen entfernen, keine Zuweisung
+an sie ändern, `lernerZuege()` unberührt, `renderOptionen`/`renderEndMenu`/
+`extractKarte`/den ganzen geführten Zweig unberührt. **Der Schatten liest, er
+schreibt nie.** Fällt der Schattenlauf aus (Helfer fehlt, Ausnahme), läuft die
+Szene wie heute weiter — alles in `try/catch`, nie werfend.
 
 ---
 
 ## Die zwei Fallen aus der Lernhistorie
 
-**Keine browser-belegten Namen.** Nie `history`, `location`, `name`, `status`,
-`top`, `length`, `event` als Variable. Der Verlauf heißt `verlauf`. Teuer
-gelernt am 16.06.
+**Nur mit eindeutigen Ankern arbeiten, nie mit Zeichenpositionen.** So
+entstanden am 18.08. 51 KB doppelter Code in genau dieser Datei.
 
-**Bei Änderungen nur mit eindeutigen Ankern arbeiten**, nie mit
-Zeichenpositionen. So entstanden am 18.08. 51 KB doppelter Code in
-`chat.html`. Hier neue Dateien, also unkritisch — aber die Regel gilt.
+**Keine browser-belegten Namen.** Nie `history`, `location`, `name`, `status`,
+`top`, `length`, `event` als Variable.
 
 ---
 
 ## Ablauf
 
-1. `szene-regeln.md` lesen.
-2. `szene.js`, `frage-sieb.js`, `szene.test.js` schreiben.
-3. `node --check` auf alle drei.
-4. `node szene.test.js` — **so lange, bis alles grün ist.**
-5. Wenn ein Test nicht grün wird, weil eine Regel widersprüchlich ist:
-   **nicht die Regel biegen, sondern melden.** Der Fall bleibt rot.
+1. `szene-regeln.md` lesen (R13 und der Abschnitt „Das Sieb").
+2. `szene.js` überfliegen — welche Rückgabefelder es wirklich gibt.
+3. `chat.html` ändern.
+4. `node --check` auf **alle** Inline-Script-Blöcke von `chat.html`.
+5. **Größenprobe: `chat.html` darf um höchstens 6 KB wachsen.** Mehr heißt,
+   dass etwas doppelt drin ist — dann anhalten und melden.
 6. Committen und pushen:
 
 ```
-git add szene.js frage-sieb.js szene.test.js
-git commit -m "Szenen-Automat + Sieb, kopflos getestet, noch nicht eingebunden"
+git add chat.html
+git commit -m "Schattenlauf: Automat laeuft mit, aendert nichts, meldet Abweichungen"
 git pull --rebase origin dev
 git push origin dev
 ```
 
-7. `git status` muss sauber sein. Außer den drei neuen Dateien kein Diff.
+7. `git status` sauber, außer `chat.html` kein Diff.
 
 ---
 
 ## Was du meldest
 
-- die Schlusszeile der Tests (`x/y grün`)
-- jeden roten Fall mit einem Satz, warum
-- jede Stelle, an der `szene-regeln.md` unklar oder widersprüchlich war
+- die Dateigröße vorher und nachher
+- an welchen Ankern du eingehängt hast (Funktionsnamen, nicht Zeilennummern)
+- ob `node --check` auf allen Blöcken grün war
+- alles, was in `chat.html` nicht zum Auftrag passte
 
 **Du fasst das Ledger nicht an.** Das schreibt claude.ai.
 
@@ -153,5 +188,4 @@ git push origin dev
 
 ## Der Satz, mit dem Leonardo dich startet
 
-> Lies AKTUELLER-AUFTRAG.md und arbeite ihn komplett durch. Frag mich nichts,
-> melde am Ende nur die Testtabelle.
+> Lies AKTUELLER-AUFTRAG.md und arbeite ihn komplett durch. Frag mich nichts.
