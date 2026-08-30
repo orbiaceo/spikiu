@@ -15,8 +15,23 @@
    Ein spanischer Inhalt bedient den deutschen UND den englischen Lerner.
    Bei vier Zielsprachen ist das der Unterschied zwischen 20 und 60 Dateien.
 
-   Spanisch: español neutro (mexikanische Färbung). NIE voseo/rioplatense.
-   Stand: 18.08.2026 — A1 und A2 vollständig (Spanisch).
+   SPANISCH-REGEL (Leo, 29.08.2026): Wo Lateinamerika viele Varianten kennt,
+   gilt die Form aus SPANIEN. Also echar de menos (nicht extrañar), el billete
+   (nicht boleto), la patata (nicht papa), dos calles (nicht cuadras),
+   el ticket im Laden, la tarta im Café. Voseo/rioplatense bleibt ausgeschlossen.
+
+   AUFGABEN tragen jetzt drei Sprachen { de, es, en } — ein Mexikaner, der
+   hier übt, braucht die Anweisung auf Spanisch.
+
+   ERÖFFNUNG und ABRUNDUNG (neu, 29.08.2026): Der Skript-Dialog beginnt in
+   10 von 20 Stationen mit dem LERNER. Die Szene ließ aber Spikiu zuerst
+   sprechen — damit war Aufgabe 1 tot, bevor der Lerner tippte. Diese zehn
+   Stationen haben nun eine eigene eroeffnung. Und weil die Szene nach der
+   dritten Aufgabe abbrach, hat jede Station eine abrundung: Spikius letzte
+   Reaktion, bevor der Ausgang erscheint (R6 aus szene-regeln.md).
+
+   Stand: 29.08.2026 — A1 und A2 vollständig (Spanisch), mit Eröffnung,
+   Abrundung und dreisprachigen Aufgaben.
    ══════════════════════════════════════════════════════════════════════ */
 
 (function (raum) {
@@ -127,104 +142,104 @@
      Lerner einwirft. */
   var AUFGABEN = {
     'a1.arzt': [
-      { de:'Sag, wo es weh tut', en:'Say where it hurts' },
-      { de:'Sag, seit wann', en:'Say since when' },
-      { de:'Bedanke dich', en:'Say thank you' }
+      { de:'Sag, wo es weh tut', es:'Di dónde te duele', en:'Say where it hurts' },
+      { de:'Sag, seit wann', es:'Di desde cuándo', en:'Say since when' },
+      { de:'Bedanke dich', es:'Da las gracias', en:'Say thank you' }
     ],
     'a1.bahnhof': [
-      { de:'Kaufe eine Fahrkarte', en:'Buy a ticket' },
-      { de:'Frag nach der Abfahrtszeit', en:'Ask about the departure time' },
-      { de:'Frag nach dem Gleis', en:'Ask which platform' }
+      { de:'Kaufe eine Fahrkarte', es:'Compra un billete', en:'Buy a ticket' },
+      { de:'Frag nach der Abfahrtszeit', es:'Pregunta a qué hora sale', en:'Ask about the departure time' },
+      { de:'Frag nach dem Gleis', es:'Pregunta de qué andén sale', en:'Ask which platform' }
     ],
     'a1.cafe': [
-      { de:'Bestelle etwas zu trinken', en:'Order something to drink' },
-      { de:'Sag, wie du es möchtest', en:'Say how you want it' },
-      { de:'Bitte um die Rechnung', en:'Ask for the bill' }
+      { de:'Bestelle etwas zu trinken', es:'Pide algo de beber', en:'Order something to drink' },
+      { de:'Sag, wie du es möchtest', es:'Di cómo lo quieres', en:'Say how you want it' },
+      { de:'Bitte um die Rechnung', es:'Pide la cuenta', en:'Ask for the bill' }
     ],
     'a1.einkaufen': [
-      { de:'Kaufe etwas ein', en:'Buy something' },
-      { de:'Frag nach dem Preis', en:'Ask about the price' },
-      { de:'Bezahle', en:'Pay' }
+      { de:'Kaufe etwas ein', es:'Compra algo', en:'Buy something' },
+      { de:'Frag nach dem Preis', es:'Pregunta el precio', en:'Ask about the price' },
+      { de:'Bezahle', es:'Paga', en:'Pay' }
     ],
     'a1.familie': [
-      { de:'Sag, ob du Geschwister hast', en:'Say whether you have siblings' },
-      { de:'Nenne ihren Namen', en:'Give her name' },
-      { de:'Sag, wie alt sie ist', en:'Say how old she is' }
+      { de:'Sag, ob du Geschwister hast', es:'Di si tienes hermanos', en:'Say whether you have siblings' },
+      { de:'Nenne ihren Namen', es:'Di cómo se llama', en:'Give her name' },
+      { de:'Sag, wie alt sie ist', es:'Di qué edad tiene', en:'Say how old she is' }
     ],
     'a1.hotel': [
-      { de:'Sag, dass du reserviert hast', en:'Say that you have a booking' },
-      { de:'Frag nach dem Frühstück', en:'Ask about breakfast' },
-      { de:'Frag nach der Etage', en:'Ask which floor' }
+      { de:'Sag, dass du reserviert hast', es:'Di que tienes una reserva', en:'Say that you have a booking' },
+      { de:'Frag nach dem Frühstück', es:'Pregunta por el desayuno', en:'Ask about breakfast' },
+      { de:'Frag nach der Etage', es:'Pregunta en qué piso está', en:'Ask which floor' }
     ],
     'a1.restaurant': [
-      { de:'Sag, für wie viele der Tisch ist', en:'Say how many the table is for' },
-      { de:'Frag nach einer Empfehlung', en:'Ask for a recommendation' },
-      { de:'Bestelle dein Essen', en:'Order your food' }
+      { de:'Sag, für wie viele der Tisch ist', es:'Di para cuántas personas es la mesa', en:'Say how many the table is for' },
+      { de:'Frag nach einer Empfehlung', es:'Pide una recomendación', en:'Ask for a recommendation' },
+      { de:'Bestelle dein Essen', es:'Pide tu comida', en:'Order your food' }
     ],
     'a1.taxi': [
-      { de:'Frag, ob das Taxi frei ist', en:'Ask if the taxi is free' },
-      { de:'Nenne dein Ziel', en:'Name your destination' },
-      { de:'Sag, dass du Gepäck hast', en:'Say that you have luggage' }
+      { de:'Frag, ob das Taxi frei ist', es:'Pregunta si el taxi está libre', en:'Ask if the taxi is free' },
+      { de:'Nenne dein Ziel', es:'Di adónde vas', en:'Name your destination' },
+      { de:'Sag, dass du Gepäck hast', es:'Di que llevas equipaje', en:'Say that you have luggage' }
     ],
     'a1.wegbeschreibung': [
-      { de:'Frag, wo der Platz ist', en:'Ask where the square is' },
-      { de:'Frag, ob es weit ist', en:'Ask whether it is far' },
-      { de:'Bedanke dich', en:'Say thank you' }
+      { de:'Frag, wo der Platz ist', es:'Pregunta dónde está la plaza', en:'Ask where the square is' },
+      { de:'Frag, ob es weit ist', es:'Pregunta si está lejos', en:'Ask whether it is far' },
+      { de:'Bedanke dich', es:'Da las gracias', en:'Say thank you' }
     ],
     'a1.wetter': [
-      { de:'Sag, wie das Wetter heute ist', en:'Say what the weather is like today' },
-      { de:'Sag, wie es morgen wird', en:'Say what it will be tomorrow' },
-      { de:'Verabschiede dich', en:'Say goodbye' }
+      { de:'Sag, wie das Wetter heute ist', es:'Di qué tiempo hace hoy', en:'Say what the weather is like today' },
+      { de:'Sag, wie es morgen wird', es:'Di qué tiempo hará mañana', en:'Say what it will be tomorrow' },
+      { de:'Verabschiede dich', es:'Despídete', en:'Say goodbye' }
     ],
     'a2.arzt': [
-      { de:'Erzähle, was passiert ist', en:'Tell what happened' },
-      { de:'Nenne deine Medikamente und Allergien', en:'Name your medication and allergies' },
-      { de:'Frag nach einem weiteren Termin', en:'Ask about another appointment' }
+      { de:'Erzähle, was passiert ist', es:'Cuenta qué pasó', en:'Tell what happened' },
+      { de:'Nenne deine Medikamente und Allergien', es:'Di qué medicinas tomas y a qué eres alérgico', en:'Name your medication and allergies' },
+      { de:'Frag nach einem weiteren Termin', es:'Pregunta por otra cita', en:'Ask about another appointment' }
     ],
     'a2.bahnhof': [
-      { de:'Sag, dass dein Zug Verspätung hat', en:'Say that your train is delayed' },
-      { de:'Nenne die Umsteigezeit', en:'Give the connection time' },
-      { de:'Frag, was passiert, wenn du ihn verpasst', en:'Ask what happens if you miss it' }
+      { de:'Sag, dass dein Zug Verspätung hat', es:'Di que tu tren lleva retraso', en:'Say that your train is delayed' },
+      { de:'Nenne die Umsteigezeit', es:'Di la hora del transbordo', en:'Give the connection time' },
+      { de:'Frag, was passiert, wenn du ihn verpasst', es:'Pregunta qué pasa si lo pierdes', en:'Ask what happens if you miss it' }
     ],
     'a2.cafe': [
-      { de:'Sag höflich, dass etwas nicht stimmt', en:'Politely say something is wrong' },
-      { de:'Frag, was darin ist', en:'Ask what is in it' },
-      { de:'Wähle etwas anderes', en:'Choose something else' }
+      { de:'Sag höflich, dass etwas nicht stimmt', es:'Di con cortesía que algo no está bien', en:'Politely say something is wrong' },
+      { de:'Frag, was darin ist', es:'Pregunta qué lleva', en:'Ask what is in it' },
+      { de:'Wähle etwas anderes', es:'Elige otra cosa', en:'Choose something else' }
     ],
     'a2.einkaufen': [
-      { de:'Sag, was mit dem Stück nicht stimmt', en:'Say what is wrong with the item' },
-      { de:'Frag, ob du umtauschen kannst', en:'Ask whether you can exchange it' },
-      { de:'Frag, ob du es anprobieren darfst', en:'Ask whether you may try it on' }
+      { de:'Sag, was mit dem Stück nicht stimmt', es:'Di qué problema tiene la prenda', en:'Say what is wrong with the item' },
+      { de:'Frag, ob du umtauschen kannst', es:'Pregunta si puedes cambiarla', en:'Ask whether you can exchange it' },
+      { de:'Frag, ob du es anprobieren darfst', es:'Pregunta si te la puedes probar', en:'Ask whether you may try it on' }
     ],
     'a2.familie': [
-      { de:'Erzähle, wo ihr früher gewohnt habt', en:'Tell where you used to live' },
-      { de:'Erzähle, was ihr sonntags gemacht habt', en:'Tell what you did on Sundays' },
-      { de:'Sag, wen du vermisst', en:'Say who you miss' }
+      { de:'Erzähle, wo ihr früher gewohnt habt', es:'Cuenta dónde vivían antes', en:'Tell where you used to live' },
+      { de:'Erzähle, was ihr sonntags gemacht habt', es:'Cuenta qué hacían los domingos', en:'Tell what you did on Sundays' },
+      { de:'Sag, wen du vermisst', es:'Di a quién echas de menos', en:'Say who you miss' }
     ],
     'a2.hotel': [
-      { de:'Melde, was im Zimmer nicht funktioniert', en:'Report what is not working in the room' },
-      { de:'Sag, seit wann', en:'Say since when' },
-      { de:'Bitte um ein anderes Zimmer', en:'Ask for another room' }
+      { de:'Melde, was im Zimmer nicht funktioniert', es:'Informa qué no funciona en la habitación', en:'Report what is not working in the room' },
+      { de:'Sag, seit wann', es:'Di desde cuándo', en:'Say since when' },
+      { de:'Bitte um ein anderes Zimmer', es:'Pide otra habitación', en:'Ask for another room' }
     ],
     'a2.restaurant': [
-      { de:'Frag nach der Spezialität', en:'Ask about the speciality' },
-      { de:'Sag, dass ihr teilen wollt', en:'Say that you want to share' },
-      { de:'Bitte um getrennte Rechnungen', en:'Ask for separate bills' }
+      { de:'Frag nach der Spezialität', es:'Pregunta por la especialidad', en:'Ask about the speciality' },
+      { de:'Sag, dass ihr teilen wollt', es:'Di que quieren compartir', en:'Say that you want to share' },
+      { de:'Bitte um getrennte Rechnungen', es:'Pide cuentas separadas', en:'Ask for separate bills' }
     ],
     'a2.taxi': [
-      { de:'Nenne dein Ziel und sag, dass du es eilig hast', en:'Name your destination and say you are in a hurry' },
-      { de:'Frag, ob der andere Weg schneller ist', en:'Ask whether the other way is faster' },
-      { de:'Bitte um eine Quittung', en:'Ask for a receipt' }
+      { de:'Nenne dein Ziel und sag, dass du es eilig hast', es:'Di adónde vas y que tienes prisa', en:'Name your destination and say you are in a hurry' },
+      { de:'Frag, ob der andere Weg schneller ist', es:'Pregunta si el otro camino es más rápido', en:'Ask whether the other way is faster' },
+      { de:'Bitte um eine Quittung', es:'Pide un recibo', en:'Ask for a receipt' }
     ],
     'a2.wegbeschreibung': [
-      { de:'Frag nach dem Weg zum Museum', en:'Ask the way to the museum' },
-      { de:'Frag, wie es weitergeht', en:'Ask what comes next' },
-      { de:'Frag, ob man zu Fuß gehen kann', en:'Ask whether you can walk' }
+      { de:'Frag nach dem Weg zum Museum', es:'Pregunta cómo llegar al museo', en:'Ask the way to the museum' },
+      { de:'Frag, wie es weitergeht', es:'Pregunta cómo sigue', en:'Ask what comes next' },
+      { de:'Frag, ob man zu Fuß gehen kann', es:'Pregunta si se puede ir a pie', en:'Ask whether you can walk' }
     ],
     'a2.wetter': [
-      { de:'Frag nach der Vorhersage', en:'Ask about the forecast' },
-      { de:'Frag nach dem Nachmittag', en:'Ask about the afternoon' },
-      { de:'Schlag etwas vor', en:'Make a suggestion' }
+      { de:'Frag nach der Vorhersage', es:'Pregunta por el pronóstico', en:'Ask about the forecast' },
+      { de:'Frag nach dem Nachmittag', es:'Pregunta por la tarde', en:'Ask about the afternoon' },
+      { de:'Schlag etwas vor', es:'Propón algo', en:'Make a suggestion' }
     ]
   };
 
@@ -241,6 +256,9 @@
 
     /* ── A1 · Im Café ───────────────────────────────────────────────── */
     'a1.cafe': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Gracias a usted. ¡Que tenga buen día!', na:{ de:'Ich danke Ihnen. Schönen Tag noch!', en:'Thank you. Have a nice day!' } },
       wortschatz: [
         { z:'el café',     na:{ de:'der Kaffee',      en:'coffee' } },
         { z:'el té',       na:{ de:'der Tee',         en:'tea' } },
@@ -295,6 +313,9 @@
 
     /* ── A1 · Im Restaurant ─────────────────────────────────────────── */
     'a1.restaurant': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Excelente elección. Enseguida vuelvo.', na:{ de:'Ausgezeichnete Wahl. Ich komme gleich wieder.', en:'Excellent choice. I\'ll be right back.' } },
       wortschatz: [
         { z:'la mesa',        na:{ de:'der Tisch',        en:'the table' } },
         { z:'la carta',       na:{ de:'die Speisekarte',  en:'the menu' } },
@@ -349,6 +370,9 @@
 
     /* ── A1 · Einkaufen ─────────────────────────────────────────────── */
     'a1.einkaufen': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Aquí tiene el cambio. ¡Hasta luego!', na:{ de:'Hier Ihr Wechselgeld. Auf Wiedersehen!', en:'Here\'s your change. See you!' } },
       wortschatz: [
         { z:'la tienda',     na:{ de:'der Laden',        en:'the shop' } },
         { z:'el mercado',    na:{ de:'der Markt',        en:'the market' } },
@@ -403,6 +427,12 @@
 
     /* ── A1 · Nach dem Weg fragen ───────────────────────────────────── */
     'a1.wegbeschreibung': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'¿Le ayudo?', na:{ de:'Kann ich helfen?', en:'Can I help?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'De nada. ¡Buen paseo!', na:{ de:'Gern geschehen. Schönen Spaziergang!', en:'You\'re welcome. Enjoy the walk!' } },
       wortschatz: [
         { z:'la calle',        na:{ de:'die Straße',      en:'the street' } },
         { z:'la plaza',        na:{ de:'der Platz',       en:'the square' } },
@@ -457,6 +487,12 @@
 
     /* ── A1 · Im Taxi ───────────────────────────────────────────────── */
     'a1.taxi': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'¿Sí? Buenas noches.', na:{ de:'Ja bitte? Guten Abend.', en:'Yes? Good evening.' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Aquí estamos. ¡Buen viaje!', na:{ de:'Da wären wir. Gute Reise!', en:'Here we are. Have a good trip!' } },
       wortschatz: [
         { z:'el taxi',          na:{ de:'das Taxi',        en:'the taxi' } },
         { z:'el aeropuerto',    na:{ de:'der Flughafen',   en:'the airport' } },
@@ -511,6 +547,9 @@
 
     /* ── A1 · Über die Familie ──────────────────────────────────────── */
     'a1.familie': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Qué bien. Salúdalos de mi parte.', na:{ de:'Wie schön. Grüß sie von mir.', en:'That\'s nice. Say hello from me.' } },
       wortschatz: [
         { z:'la familia',   na:{ de:'die Familie',    en:'the family' } },
         { z:'la madre',     na:{ de:'die Mutter',     en:'the mother' } },
@@ -565,6 +604,9 @@
 
     /* ── A1 · Im Hotel ──────────────────────────────────────────────── */
     'a1.hotel': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Aquí tiene la llave. ¡Que descanse!', na:{ de:'Hier Ihr Schlüssel. Gute Erholung!', en:'Here\'s your key. Have a good rest!' } },
       wortschatz: [
         { z:'la habitación',  na:{ de:'das Zimmer',       en:'the room' } },
         { z:'la reserva',     na:{ de:'die Reservierung', en:'the booking' } },
@@ -619,6 +661,12 @@
 
     /* ── A1 · Am Bahnhof ────────────────────────────────────────────── */
     'a1.bahnhof': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'Buenos días. Dígame.', na:{ de:'Guten Tag. Bitte sehr.', en:'Good morning. Yes please?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Aquí tiene. ¡Buen viaje!', na:{ de:'Bitte sehr. Gute Fahrt!', en:'Here you go. Safe travels!' } },
       wortschatz: [
         { z:'la estación',    na:{ de:'der Bahnhof',      en:'the station' } },
         { z:'el tren',        na:{ de:'der Zug',          en:'the train' } },
@@ -673,6 +721,9 @@
 
     /* ── A1 · Beim Arzt ─────────────────────────────────────────────── */
     'a1.arzt': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Cuídese mucho. ¡Que se mejore!', na:{ de:'Passen Sie gut auf sich auf. Gute Besserung!', en:'Take care. Feel better soon!' } },
       wortschatz: [
         { z:'el médico',      na:{ de:'der Arzt',          en:'the doctor' } },
         { z:'me duele',       na:{ de:'mir tut weh',       en:'it hurts me' } },
@@ -727,6 +778,9 @@
 
     /* ── A1 · Über das Wetter ───────────────────────────────────────── */
     'a1.wetter': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Perfecto. ¡Hasta mañana!', na:{ de:'Perfekt. Bis morgen!', en:'Perfect. See you tomorrow!' } },
       wortschatz: [
         { z:'el tiempo',      na:{ de:'das Wetter',      en:'the weather' } },
         { z:'hace sol',       na:{ de:'die Sonne scheint', en:'it is sunny' } },
@@ -788,6 +842,12 @@
 
     /* ── A2 · Im Café ───────────────────────────────────────────────── */
     'a2.cafe': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'¿Qué tal todo por aquí?', na:{ de:'Alles in Ordnung bei Ihnen?', en:'How\'s everything over here?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Buena elección. Enseguida se lo traigo.', na:{ de:'Gute Wahl. Ich bringe es Ihnen sofort.', en:'Good choice. I\'ll bring it right away.' } },
       wortschatz: [
         { z:'está frío',        na:{ de:'es ist kalt (Speise)', en:'it is cold (food)' } },
         { z:'lo siento',        na:{ de:'es tut mir leid',      en:'I am sorry' } },
@@ -807,9 +867,9 @@
         zeilen: [
           { wer:'lerner', z:'Disculpe, el café está frío.', na:{ de:'Entschuldigen Sie, der Kaffee ist kalt.', en:'Excuse me, the coffee is cold.' } },
           { wer:'spikiu', z:'Lo siento mucho. Se lo cambio ahora mismo.', na:{ de:'Das tut mir sehr leid. Ich tausche ihn sofort.', en:'I am very sorry. I will change it right away.' } },
-          { wer:'lerner', z:'Gracias. Una cosa más: ¿el pastel lleva frutos secos?', na:{ de:'Danke. Noch etwas: sind in dem Kuchen Nüsse?', en:'Thank you. One more thing: does the cake contain nuts?' } },
-          { wer:'spikiu', z:'Ese sí. Pero el de limón no lleva nada.', na:{ de:'Der schon. Aber der Zitronenkuchen enthält nichts davon.', en:'That one does. But the lemon one has none.' } },
-          { wer:'lerner', z:'Perfecto, soy alérgico. Entonces el de limón.', na:{ de:'Perfekt, ich bin allergisch. Dann den Zitronenkuchen.', en:'Perfect, I am allergic. Then the lemon one.' } },
+          { wer:'lerner', z:'Gracias. Una cosa más: ¿la tarta lleva frutos secos?', na:{ de:'Danke. Noch etwas: sind in dem Kuchen Nüsse?', en:'Thank you. One more thing: does the cake contain nuts?' } },
+          { wer:'spikiu', z:'Esa sí. Pero la de limón no lleva nada.', na:{ de:'Der schon. Aber der Zitronenkuchen enthält nichts davon.', en:'That one does. But the lemon one has none.' } },
+          { wer:'lerner', z:'Perfecto, soy alérgico. Entonces la de limón.', na:{ de:'Perfekt, ich bin allergisch. Dann den Zitronenkuchen.', en:'Perfect, I am allergic. Then the lemon one.' } },
           { wer:'spikiu', z:'Muy bien. Enseguida se lo traigo.', na:{ de:'Sehr gut. Ich bringe ihn Ihnen sofort.', en:'Very good. I will bring it right away.' } }
         ]
       },
@@ -827,7 +887,7 @@
       schreibaufgabe: {
         auftrag:{ de:'Sag höflich, dass dein Tee kalt ist, und frage, ob der Kuchen Milch enthält. Zwei Sätze.',
                   en:'Politely say your tea is cold and ask whether the cake contains milk. Two sentences.' },
-        muster:'Disculpe, el té está frío. ¿El pastel lleva leche?'
+        muster:'Disculpe, el té está frío. ¿La tarta lleva leche?'
       },
       grammatik: {
         titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you' },
@@ -842,6 +902,12 @@
 
     /* ── A2 · Im Restaurant ─────────────────────────────────────────── */
     'a2.restaurant': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'Buenas tardes. ¿Ya saben qué van a tomar?', na:{ de:'Guten Abend. Wissen Sie schon, was Sie nehmen?', en:'Good evening. Have you decided?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Por supuesto. Ahora mismo se las traigo.', na:{ de:'Selbstverständlich. Ich bringe sie sofort.', en:'Of course. I\'ll bring them right away.' } },
       wortschatz: [
         { z:'la especialidad',  na:{ de:'die Spezialität',    en:'the speciality' } },
         { z:'el primero',       na:{ de:'die Vorspeise',      en:'the starter' } },
@@ -860,7 +926,7 @@
         rolle: { de:'Die Kellnerin', en:'The waitress' },
         zeilen: [
           { wer:'lerner', z:'¿Cuál es la especialidad de la casa?', na:{ de:'Was ist die Spezialität des Hauses?', en:'What is the house speciality?' } },
-          { wer:'spikiu', z:'El cochinito. Es picante, pero muy rico.', na:{ de:'Das Spanferkel. Es ist scharf, aber sehr gut.', en:'The suckling pig. It is spicy, but very good.' } },
+          { wer:'spikiu', z:'El cochinillo asado. Es fuerte, pero está muy rico.', na:{ de:'Das Spanferkel aus dem Ofen. Kräftig, aber sehr gut.', en:'The roast suckling pig. Hearty, but very good.' } },
           { wer:'lerner', z:'¿Hay algo más ligero? Queremos compartir.', na:{ de:'Gibt es etwas Leichteres? Wir möchten teilen.', en:'Is there something lighter? We want to share.' } },
           { wer:'spikiu', z:'Entonces el pescado con verduras. Alcanza para dos.', na:{ de:'Dann der Fisch mit Gemüse. Der reicht für zwei.', en:'Then the fish with vegetables. It is enough for two.' } },
           { wer:'lerner', z:'Perfecto. Y después, ¿nos trae la cuenta por separado?', na:{ de:'Perfekt. Und danach: Bringen Sie uns die Rechnung getrennt?', en:'Perfect. And afterwards, could you bring us separate bills?' } },
@@ -896,10 +962,16 @@
 
     /* ── A2 · Einkaufen ─────────────────────────────────────────────── */
     'a2.einkaufen': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'Buenos días. ¿En qué puedo ayudarle?', na:{ de:'Guten Tag. Womit kann ich helfen?', en:'Hello. What can I help you with?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Claro. Le espero aquí.', na:{ de:'Gerne. Ich warte hier auf Sie.', en:'Sure. I\'ll wait here.' } },
       wortschatz: [
         { z:'cambiar',        na:{ de:'umtauschen',        en:'to exchange' } },
         { z:'devolver',       na:{ de:'zurückgeben',       en:'to return' } },
-        { z:'el recibo',      na:{ de:'der Kassenbon',     en:'the receipt' } },
+        { z:'el ticket',      na:{ de:'der Kassenbon',     en:'the receipt' } },
         { z:'la talla',       na:{ de:'die Größe',         en:'the size' } },
         { z:'me queda grande',na:{ de:'es ist mir zu groß',en:'it is too big for me' } },
         { z:'me queda bien',  na:{ de:'es passt mir',      en:'it fits me' } },
@@ -914,7 +986,7 @@
         rolle: { de:'Der Verkäufer', en:'The shop assistant' },
         zeilen: [
           { wer:'lerner', z:'Compré esta camisa ayer, pero me queda grande.', na:{ de:'Ich habe dieses Hemd gestern gekauft, aber es ist mir zu groß.', en:'I bought this shirt yesterday, but it is too big for me.' } },
-          { wer:'spikiu', z:'¿Trae el recibo?', na:{ de:'Haben Sie den Kassenbon dabei?', en:'Do you have the receipt?' } },
+          { wer:'spikiu', z:'¿Trae el ticket?', na:{ de:'Haben Sie den Kassenbon dabei?', en:'Do you have the receipt?' } },
           { wer:'lerner', z:'Sí, aquí está. ¿Puedo cambiarla?', na:{ de:'Ja, hier ist er. Kann ich es umtauschen?', en:'Yes, here it is. Can I exchange it?' } },
           { wer:'spikiu', z:'Claro. ¿Qué talla necesita?', na:{ de:'Klar. Welche Größe brauchen Sie?', en:'Of course. What size do you need?' } },
           { wer:'lerner', z:'Una menos. ¿Me la puedo probar?', na:{ de:'Eine kleiner. Kann ich es anprobieren?', en:'One smaller. May I try it on?' } },
@@ -922,7 +994,7 @@
         ]
       },
       lesetext: {
-        z:'Marta compró unos zapatos la semana pasada. En casa vio que uno estaba roto. Volvió a la tienda con el recibo. No tenían otro par de esa talla, así que le devolvieron el dinero.',
+        z:'Marta compró unos zapatos la semana pasada. En casa vio que uno estaba roto. Volvió a la tienda con el ticket. No tenían otro par de esa talla, así que le devolvieron el dinero.',
         na:{ de:'Marta kaufte letzte Woche Schuhe. Zu Hause sah sie, dass einer kaputt war. Sie ging mit dem Kassenbon in den Laden zurück. Sie hatten kein zweites Paar in der Größe, also gaben sie ihr das Geld zurück.',
              en:'Marta bought some shoes last week. At home she saw that one was broken. She went back to the shop with the receipt. They had no other pair in that size, so they gave her the money back.' },
         frage:{ de:'Warum bekam Marta ihr Geld zurück?', en:'Why did Marta get her money back?' },
@@ -950,6 +1022,12 @@
 
     /* ── A2 · Nach dem Weg fragen ───────────────────────────────────── */
     'a2.wegbeschreibung': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'¿Necesita ayuda?', na:{ de:'Brauchen Sie Hilfe?', en:'Do you need help?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Sí, se llega bien. ¡Que lo disfrute!', na:{ de:'Ja, das geht gut. Viel Freude dabei!', en:'Yes, it\'s an easy walk. Enjoy!' } },
       wortschatz: [
         { z:'siga',            na:{ de:'gehen Sie weiter',   en:'carry on' } },
         { z:'gire',            na:{ de:'biegen Sie ab',      en:'turn' } },
@@ -1004,6 +1082,12 @@
 
     /* ── A2 · Im Taxi ───────────────────────────────────────────────── */
     'a2.taxi': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'Buenos días. ¿Adónde le llevo?', na:{ de:'Guten Tag. Wohin darf ich Sie bringen?', en:'Morning. Where can I take you?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Claro que sí. ¡Buen vuelo!', na:{ de:'Aber sicher. Guten Flug!', en:'Absolutely. Have a good flight!' } },
       wortschatz: [
         { z:'el tráfico',      na:{ de:'der Verkehr',        en:'the traffic' } },
         { z:'el atasco',       na:{ de:'der Stau',           en:'the traffic jam' } },
@@ -1058,6 +1142,9 @@
 
     /* ── A2 · Über die Familie ──────────────────────────────────────── */
     'a2.familie': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Se entiende. Seguro que la ves pronto.', na:{ de:'Das kann ich verstehen. Ihr seht euch bestimmt bald.', en:'I understand. You\'ll see her soon, I\'m sure.' } },
       wortschatz: [
         { z:'cuando era niño', na:{ de:'als ich klein war',  en:'when I was a child' } },
         { z:'vivíamos',        na:{ de:'wir wohnten',        en:'we used to live' } },
@@ -1112,6 +1199,12 @@
 
     /* ── A2 · Im Hotel ──────────────────────────────────────────────── */
     'a2.hotel': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'Buenos días. ¿Qué tal la habitación?', na:{ de:'Guten Morgen. Wie ist das Zimmer?', en:'Good morning. How\'s the room?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Le preparo la 305. ¡Que descanse!', na:{ de:'Ich mache Ihnen die 305 fertig. Gute Erholung!', en:'I\'ll get 305 ready for you. Have a good rest!' } },
       wortschatz: [
         { z:'no funciona',     na:{ de:'es funktioniert nicht', en:'it does not work' } },
         { z:'la calefacción',  na:{ de:'die Heizung',           en:'the heating' } },
@@ -1166,6 +1259,12 @@
 
     /* ── A2 · Am Bahnhof ────────────────────────────────────────────── */
     'a2.bahnhof': {
+      /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
+         Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
+      eroeffnung: { z:'Buenos días. ¿Le ayudo con algo?', na:{ de:'Guten Tag. Kann ich Ihnen helfen?', en:'Morning. Can I help you with something?' } },
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'No se preocupe. ¡Buen viaje!', na:{ de:'Machen Sie sich keine Sorgen. Gute Fahrt!', en:'Don\'t worry. Safe travels!' } },
       wortschatz: [
         { z:'el retraso',      na:{ de:'die Verspätung',      en:'the delay' } },
         { z:'lleva retraso',   na:{ de:'er hat Verspätung',   en:'it is delayed' } },
@@ -1220,6 +1319,9 @@
 
     /* ── A2 · Beim Arzt ─────────────────────────────────────────────── */
     'a2.arzt': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Le apunto para el jueves. ¡Que se mejore!', na:{ de:'Ich trage Sie für Donnerstag ein. Gute Besserung!', en:'I\'ll put you down for Thursday. Feel better!' } },
       wortschatz: [
         { z:'los síntomas',    na:{ de:'die Symptome',        en:'the symptoms' } },
         { z:'la receta',       na:{ de:'das Rezept',          en:'the prescription' } },
@@ -1274,6 +1376,9 @@
 
     /* ── A2 · Über das Wetter ───────────────────────────────────────── */
     'a2.wetter': {
+      /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
+         Ohne sie bricht die Szene mitten im Satz ab (R6). */
+      abrundung: { z:'Buena idea. ¡Que lo pasen bien!', na:{ de:'Gute Idee. Viel Spaß euch!', en:'Good idea. Have fun!' } },
       wortschatz: [
         { z:'la previsión',    na:{ de:'die Vorhersage',      en:'the forecast' } },
         { z:'va a llover',     na:{ de:'es wird regnen',      en:'it is going to rain' } },
@@ -1343,6 +1448,28 @@
     /* Die drei Aufgaben einer Station. Leeres Array, wenn keine da sind —
        die Oberflaeche zeigt dann keine, statt welche zu erfinden. */
     aufgabenVon: function (stufe, thema) { return AUFGABEN[stufe + '.' + thema] || []; },
+
+    /* Die ERÖFFNUNG: Spikius erste Zeile in der Szene.
+       Existiert nur dort, wo der Skript-Dialog mit dem LERNER beginnt —
+       sonst ist dialog.zeilen[0] bereits die Eröffnung. Sie grüßt und lädt
+       ein, ohne Aufgabe 1 vorwegzunehmen. Wer sie ignoriert, baut wieder
+       den Fehler vom 29.08.: der Taxifahrer fragt „wohin?", während die
+       Aufgabe noch lautet „frag, ob er frei ist". */
+    eroeffnungVon: function (stufe, thema) {
+      var S = STATIONEN[stufe + '.' + thema];
+      if (!S) return null;
+      if (S.eroeffnung) return S.eroeffnung;
+      var z = (S.dialog && S.dialog.zeilen) || [];
+      return (z[0] && z[0].wer === 'spikiu') ? z[0] : null;
+    },
+
+    /* Die ABRUNDUNG: Spikius Reaktion NACH der dritten Aufgabe.
+       Kein Abschied per Formel — je nach Szene Dank, Wunsch, Zusage,
+       Gruß oder Trost. Ohne sie endet die Szene mitten im Satz (R6). */
+    abrundungVon: function (stufe, thema) {
+      var S = STATIONEN[stufe + '.' + thema];
+      return (S && S.abrundung) || null;
+    },
 
     /* Die zwei Rollen und der Ort einer Szene. */
     rolle: function (thema) { return ROLLEN[thema] || null; },
