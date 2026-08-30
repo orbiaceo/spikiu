@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Szene</title>
+<!--
+  ══════════════════════════════════════════════════════════════════════
+  SPIKIU — DIE SZENE (freies Gespräch an einer Station)
+
+  Ersetzt den Szenen-Teil von chat.html. Diese Datei wird NEU gebaut, nicht
+  aus chat.html geschnitten — genau wie gefuehrt.html am 15.08. Grund: in
+  chat.html liegen 199 KB mit dem geführten Modus, einem toten Blasen-Weg
+  und fünf globalen Variablen für den Szenenzustand. Fünf Reparaturen dort
+  haben jeweils eine sechste Variable dazugelegt.
+
+  WAS HIER NICHT DRIN IST (Leos Entscheid 30.08.):
+    kein geführter Modus       → gefuehrt.html ist der einzige
+    kein Blasen-Weg            → nur Reel-Karten
+    keine Lektionserzeugung    → die Ernte ist der Abschluss
+    kein [KORREKTUR]           → die Figur reformuliert, sie korrigiert nicht
+    kein [OPTIONEN]            → hier wird frei geantwortet, nicht gewählt
+
+  DAS GEHIRN LIEGT AUSSERHALB:
+    szene.js       — der Ablauf (66/66 kopflos geprüft). Kennt kein DOM.
+    frage-sieb.js  — offen | rolle | meta. Vorfahrt für „offen".
+  Diese Datei ZEICHNET nur. Sie rechnet den Zustand nicht selbst aus.
+
+  DER FEHLER, DEN SIE BEHEBT (29.08.):
+  In 10 von 20 Stationen beginnt der Skript-Dialog mit dem LERNER. Die alte
+  Szene ließ trotzdem Spikiu zuerst sprechen — der Taxifahrer fragte „wohin?",
+  während Aufgabe 1 noch lautete „frag, ob er frei ist". Jetzt kommt die
+  erste Zeile aus eroeffnungVon(): sie grüßt, ohne die Aufgabe vorwegzunehmen.
+
+  WEG B: Spikiu antwortet frei, bekommt aber die Skriptzeile als ZIEL mit
+  (profile.szene.zielzeile). Das Skript ist Zielvorgabe, nicht Kulisse.
+
+  Kein Bottom-Nav: das hier ist ein Raum, nur haus.html trägt die Navi.
+  ══════════════════════════════════════════════════════════════════════
+-->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#eef7f1;--white:#fff;--ink:#15163a;--mid:#5f7068;--accent:#1f93b0;
+  --accent2:#e8f5ee;--du:#ffd24a;--faint:#dfe6e0;--ow:2.5px;
+  --trans-bg:#f1eee8;--trans-ink:#8a847d;--trans-border:#e2ddd4;
+}
+html,body{height:100%;background:var(--bg);color:var(--ink);
+  font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:680px;margin:0 auto}
+
+.kopf{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;
+  border-bottom:var(--ow) solid var(--ink);background:var(--bg);flex:0 0 auto}
+.back{width:38px;height:38px;border-radius:999px;border:2.5px solid var(--ink);
+  background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 var(--ink);
+  cursor:pointer;flex:0 0 auto}
+.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.kopf .titel{font:600 .95rem/1.2 'DM Sans'}
+.kopf .titel span{display:block;font-weight:400;font-size:.75rem;color:var(--mid)}
+
+.deck{flex:1;overflow-y:auto;scroll-behavior:smooth;padding:1rem;
+  display:flex;flex-direction:column;gap:1rem;-webkit-overflow-scrolling:touch}
+.karte{background:var(--white);border:var(--ow) solid var(--ink);border-radius:1.1rem;
+  box-shadow:5px 6px 0 var(--ink);padding:1.2rem 1.1rem;flex:0 0 auto;
+  animation:auf .3s ease both}
+@keyframes auf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.karte{animation:none}.deck{scroll-behavior:auto}}
+
+.bue-bild{height:130px;border-radius:.7rem;border:2px solid var(--ink);
+  background:linear-gradient(145deg,#cfe6db,#a9cfc0);display:flex;align-items:center;
+  justify-content:center;font-size:3rem;margin-bottom:.9rem}
+.bue-titel{font:600 1.6rem/1.15 'Cormorant Garamond',serif;margin-bottom:.4rem}
+.bue-ort{font:400 .85rem/1.4 'DM Sans';color:var(--mid);margin-bottom:.9rem}
+.rollen{display:flex;gap:.6rem;margin-bottom:1rem}
+.rolle{flex:1;background:var(--accent2);border:2px solid var(--ink);
+  border-radius:.6rem;padding:.6rem}
+.rolle .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:.25rem}
+.rolle .n{font:600 .95rem/1.2 'DM Sans'}
+
+.k-rolle{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:.85rem}
+.zug{font:400 1.55rem/1.35 'Cormorant Garamond',serif;text-align:center;margin-bottom:.7rem}
+.werkz{display:flex;gap:.55rem;justify-content:center;margin-bottom:.2rem}
+.ikon{width:42px;height:42px;border-radius:999px;border:2px solid var(--ink);
+  background:var(--accent2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.05rem;color:var(--ink)}
+.ikon:active{transform:translate(1px,1px)}
+.ueb{font:italic 400 .88rem/1.45 'DM Sans';color:var(--trans-ink);background:var(--trans-bg);
+  border:1px solid var(--trans-border);border-radius:.5rem;padding:.5rem .7rem;
+  margin-top:.7rem;display:none}
+.ueb.an{display:block}
+
+.trenn{height:1px;background:var(--faint);margin:1rem 0}
+.schritte{display:flex;gap:.4rem;justify-content:center;margin-bottom:.6rem}
+.st{width:34px;height:5px;border-radius:99px;background:var(--faint)}
+.st.jetzt{background:var(--accent)}
+.st.fertig{background:var(--ink)}
+.zaehler{text-align:center;font:500 .78rem/1 'DM Sans';color:var(--mid);margin-bottom:.9rem}
+.aufg{display:flex;gap:.7rem;align-items:center}
+.capy{width:42px;height:42px;flex:0 0 auto;border-radius:50%;border:2.5px solid var(--ink);
+  background:#fff;box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;
+  justify-content:center;animation:schweben 4s ease-in-out infinite}
+@keyframes schweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.capy{animation:none}}
+.capy svg{width:27px;height:27px}
+.aufg .txt .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:.2rem}
+.aufg .txt .t{font:600 1.15rem/1.25 'Cormorant Garamond',serif}
+
+.feld{width:100%;min-height:74px;border:var(--ow) solid var(--ink);border-radius:.8rem;
+  padding:.8rem;font:400 1.05rem/1.4 'DM Sans';text-align:center;resize:none;
+  background:#fff;margin-top:1rem;color:var(--ink)}
+.feld:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px #d3eef6}
+.knopf{width:100%;margin-top:.7rem;padding:.85rem;border:var(--ow) solid var(--ink);
+  border-radius:999px;background:var(--accent);color:#fff;font:700 1rem/1 'DM Sans';
+  box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.knopf.gelb{background:var(--du);color:var(--ink)}
+.knopf.stumm{background:#fff;color:var(--ink)}
+.knopf[disabled]{opacity:.45;cursor:default}
+
+.karte.du{background:var(--du)}
+.karte.du .zug{font-family:'DM Sans',sans-serif;font-size:1.15rem;font-weight:500;
+  text-align:right;margin:0}
+
+.k-erklaer{background:var(--accent2)}
+.k-erklaer .w{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:.3rem}
+.k-erklaer .b{font:400 .95rem/1.45 'DM Sans';color:var(--mid)}
+
+.e-kopf{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mid);margin:1.1rem 0 .5rem}
+.e-z{display:flex;gap:.6rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--faint)}
+.e-a{width:32px;height:32px;flex:0 0 auto;border-radius:999px;border:none;
+  background:var(--accent2);color:var(--accent);cursor:pointer;font-size:.85rem}
+.e-w{flex:1;font:500 1.15rem/1.25 'Cormorant Garamond',serif}
+.e-t{font:400 .82rem/1.25 'DM Sans';color:var(--mid);text-align:right}
+
+.punkte{text-align:center;font-size:1.6rem;letter-spacing:.2em;color:var(--faint);padding:1.4rem 0}
+.fehlerkarte{border-color:#b4534b;box-shadow:5px 6px 0 #b4534b}
+.fehlerkarte .zug{font-family:'DM Sans',sans-serif;font-size:1rem;color:#b4534b}
+
+.wahl{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.wahl button{flex:1 1 44%;padding:.7rem .5rem;border:2px solid var(--ink);
+  border-radius:.7rem;background:#fff;font:600 .9rem/1.2 'DM Sans';cursor:pointer;
+  box-shadow:3px 3px 0 var(--ink);color:var(--ink)}
+.wahl button:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
+.wahl button.leer{opacity:.4}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="kopf">
+    <button class="back" id="zurueck" aria-label="Zurück">‹</button>
+    <div class="titel" id="kopfTitel">Szene<span id="kopfUnter">wird geladen …</span></div>
+  </div>
+  <div class="deck" id="deck"></div>
+</div>
+
+<script src="lernpfad-daten.js"></script>
+<script src="lernpfad-daten-de.js"></script>
+<script src="lernpfad-daten-en.js"></script>
+<script src="lernpfad-sprache.js"></script>
+<script src="szene.js"></script>
+<script src="frage-sieb.js"></script>
+<script src="sitzung.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var ENDPOINT   = '/api/gespraech';
+  var ZUG_DECKEL = 6;          // R7 · die harte Kostendecke
+  var MAX_TOKENS = 300;
+
+  var deck  = document.getElementById('deck');
+  var titel = document.getElementById('kopfTitel');
+  var unter = document.getElementById('kopfUnter');
+
+  /* ── Kanonischer Spikiu. Nie neu erfinden, immer diese Form. ── */
+  var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-hidden="true">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="26" cy="17" rx="5" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="54" cy="17" rx="5" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>'
+  + '<ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<circle cx="33" cy="26" r="2.4" fill="#3d2b1f"/><circle cx="47" cy="26" r="2.4" fill="#3d2b1f"/>'
+  + '<circle cx="33.8" cy="25.2" r=".8" fill="#fff"/><circle cx="47.8" cy="25.2" r=".8" fill="#fff"/>'
+  + '<path d="M35 40 Q40 43 45 40" stroke="#8b5e3c" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
+  + '<ellipse cx="26" cy="66" rx="5" ry="4" fill="#b8845a"/>'
+  + '<ellipse cx="36" cy="68" rx="5" ry="4" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="5" ry="4" fill="#b8845a"/>'
+  + '<ellipse cx="56" cy="66" rx="5" ry="4" fill="#b8845a"/></svg>';
+
+  /* ── Werkzeug ─────────────────────────────────────────────── */
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function pfeil(name) {
+    try { return new URLSearchParams(location.search).get(name) || ''; }
+    catch (e) { return ''; }
+  }
+  function inSprache(objekt, mu) {
+    if (!objekt) return '';
+    return objekt[mu] || objekt.de || objekt.en || objekt.es || '';
+  }
+
+  /* ── Profil ───────────────────────────────────────────────── */
+  var PROFIL = {};
+  try { PROFIL = JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {}; }
+  catch (e) { PROFIL = {}; }
+  var MU  = PROFIL.muttersprache || 'de';
+  var ZS  = PROFIL.zielsprache   || 'es';
+
+  /* Die Datendatei zur Zielsprache. Der Umschalter hat sie schon gesetzt;
+     wir fragen ihn nur, ob es geklappt hat. */
+  var LP = window.SpikiuLernpfad || null;
+
+  /* ── Zustand dieser Seite (KEIN Szenenzustand — der liegt in szene.js) ── */
+  var STUFE = pfeil('stufe') || 'a1';
+  var THEMA = pfeil('thema') || '';
+  var ST    = null;    // die Station aus der Datenbank
+  var ROLLE = null;
+  var automat = null;  // SpikiuSzene-Instanz
+  var verlauf = [];    // was an das Modell geht
+  var busy = false;
+  var zielzeilen = [];       // Weg B: die Skriptzeile als Ziel je Aufgabe
+  var abrundungIstZiel = false;
+  var geerntet = { gesagt: [], gehoert: [] };
+  var letzteKarte = null;    // für den Netzfehler-Wiederholer
+
+  /* ══════════════════════════════════════════════════════════
+     KARTEN
+     ══════════════════════════════════════════════════════════ */
+  function karte(klasse) {
+    var d = document.createElement('div');
+    d.className = 'karte' + (klasse ? ' ' + klasse : '');
+    deck.appendChild(d);
+    setTimeout(function () {
+      try { d.scrollIntoView({ block: 'start' }); } catch (e) {}
+    }, 30);
+    return d;
+  }
+
+  var punkteEl = null;
+  function punkteAn() {
+    if (punkteEl) return;
+    punkteEl = document.createElement('div');
+    punkteEl.className = 'punkte';
+    punkteEl.textContent = '• • •';
+    deck.appendChild(punkteEl);
+    try { punkteEl.scrollIntoView({ block: 'end' }); } catch (e) {}
+  }
+  function punkteAus() {
+    if (punkteEl && punkteEl.parentNode) punkteEl.parentNode.removeChild(punkteEl);
+    punkteEl = null;
+  }
+
+  /* audio.js reicht speak() als window.spkSpeak durch (ES-Modul, siehe unten).
+     Greift der Import nicht, hält diese Notbremse den Knopf trotzdem hörbar —
+     ein stummer Lautsprecher ist schlimmer als eine mittelmäßige Stimme. */
+  function sprich(text) {
+    if (window.spkSpeak) { try { return window.spkSpeak(text, ZS); } catch (e) {} }
+    try {
+      var synth = window.speechSynthesis;
+      if (synth && typeof SpeechSynthesisUtterance !== 'undefined') {
+        var bcp = { de: 'de-DE', es: 'es-ES', en: 'en-US', el: 'el-GR' }[ZS] || 'en-US';
+        var u = new SpeechSynthesisUtterance(String(text));
+        u.lang = bcp;
+        synth.cancel();
+        synth.speak(u);
+      }
+    } catch (e) {}
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     1 · BÜHNE
+     ══════════════════════════════════════════════════════════ */
+  function buehne() {
+    var thema = LP.thema(THEMA);
+    var k = karte();
+    k.innerHTML =
+      '<div class="bue-bild">' + esc(thema ? thema.em : '🎭') + '</div>'
+    + '<div class="bue-titel">' + esc(inSprache(thema && thema.na, MU)) + '</div>'
+    + '<div class="bue-ort">' + esc(inSprache(ROLLE && ROLLE.ort, MU)) + '</div>'
+    + '<div class="rollen">'
+    +   '<div class="rolle"><div class="l">Spikiu ist</div><div class="n">'
+    +     esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div></div>'
+    +   '<div class="rolle"><div class="l">Du bist</div><div class="n">'
+    +     esc(inSprache(ROLLE && ROLLE.lerner, MU)) + '</div></div>'
+    + '</div>';
+    var b = document.createElement('button');
+    b.className = 'knopf';
+    b.textContent = 'Los!';
+    b.onclick = function () {
+      b.disabled = true;
+      automat.los();
+      eroeffnen();
+    };
+    k.appendChild(b);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     2 · ERÖFFNUNG — aus der Datenbank, NULL Token
+     Sie grüßt, ohne Aufgabe 1 vorwegzunehmen (Weg B).
+     ══════════════════════════════════════════════════════════ */
+  function eroeffnen() {
+    var e = LP.eroeffnungVon(STUFE, THEMA);
+    var text = (e && e.z) || '';
+    var na   = (e && e.na) ? inSprache(e.na, MU) : '';
+    geerntet.gehoert.push(text);
+    /* Der Automat wartet nach los() auf Spikiu. Die Eröffnung IST Spikius
+       erster Zug — nur eben aus der Datenbank statt aus dem Modell. */
+    automat.spikiuAntwortet(text);
+    verlauf.push({ role: 'assistant', content: text });
+    spikiuKarte(text, na, true);
+    speichern();
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3 · SPIKIU-KARTE (mit Aufgabe und Eingabe, wenn dran)
+     ══════════════════════════════════════════════════════════ */
+  function spikiuKarte(text, brueckentext, mitFeld) {
+    var z = automat.zustand();
+    var aufgaben = automat.aufgabenListe();
+    var k = karte();
+
+    var h = '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
+          + '<div class="zug">' + esc(text) + '</div>'
+          + '<div class="werkz">'
+          +   '<button class="ikon" data-hoer aria-label="Anhören">🔊</button>'
+          +   (brueckentext ? '<button class="ikon" data-ueb aria-label="Übersetzung">文</button>' : '')
+          + '</div>'
+          + (brueckentext ? '<div class="ueb">' + esc(brueckentext) + '</div>' : '');
+
+    var zeigeAufgabe = mitFeld && z.aufgabeIndex < aufgaben.length;
+    if (zeigeAufgabe) {
+      h += '<div class="trenn"></div><div class="schritte">';
+      for (var i = 0; i < aufgaben.length; i++) {
+        h += '<div class="st' + (i < z.aufgabeIndex ? ' fertig'
+                               : i === z.aufgabeIndex ? ' jetzt' : '') + '"></div>';
+      }
+      h += '</div>'
+        +  '<div class="zaehler">Aufgabe ' + (z.aufgabeIndex + 1) + ' von ' + aufgaben.length + '</div>'
+        +  '<div class="aufg"><div class="capy">' + CAPY + '</div>'
+        +    '<div class="txt"><div class="l">Deine Aufgabe</div>'
+        +    '<div class="t">' + esc(inSprache(aufgaben[z.aufgabeIndex], MU)) + '</div></div></div>'
+        +  '<textarea class="feld" placeholder="Antworte …"></textarea>';
+    }
+    k.innerHTML = h;
+
+    var hoerBtn = k.querySelector('[data-hoer]');
+    if (hoerBtn) hoerBtn.onclick = function () { sprich(text); };
+    var uebBtn = k.querySelector('[data-ueb]');
+    if (uebBtn) uebBtn.onclick = function () { k.querySelector('.ueb').classList.toggle('an'); };
+
+    if (zeigeAufgabe) {
+      var feld = k.querySelector('.feld');
+      var b = document.createElement('button');
+      b.className = 'knopf';
+      b.textContent = 'Senden';
+      b.disabled = true;
+      feld.addEventListener('input', function () { b.disabled = !feld.value.trim(); });
+      feld.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); b.click(); }
+      });
+      b.onclick = function () {
+        var t = feld.value.trim();
+        if (!t || busy) return;                 // R4 · Doppelklick prallt ab
+        b.disabled = true; feld.disabled = true;
+        senden(t);
+      };
+      k.appendChild(b);
+      setTimeout(function () { try { feld.focus(); } catch (e) {} }, 60);
+    }
+    return k;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     4 · DER ZUG DES LERNERS
+     ══════════════════════════════════════════════════════════ */
+  function senden(text) {
+    var art = 'offen';
+    try {
+      if (window.SpikiuSieb) art = window.SpikiuSieb.art(text, ZS, MU);
+    } catch (e) { art = 'offen'; }
+
+    var vorher = automat.zustand();
+    var z = automat.antworte(text, art);
+    if (z.abgelehnt) return;                     // der Automat hat entschieden
+
+    var k = karte('du');
+    k.innerHTML = '<div class="zug">' + esc(text) + '</div>';
+
+    /* Nur ein offener Zug wandert in die Ernte — eine Rückfrage ist keine
+       Leistung, die man mit nach Hause nimmt (R13). */
+    if (art === 'offen') geerntet.gesagt.push(text);
+
+    verlauf.push({ role: 'user', content: text });
+    speichern();
+    holen(vorher.aufgabeIndex, art);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     5 · DAS MODELL — Weg B: die Skriptzeile geht als ZIEL mit
+     ══════════════════════════════════════════════════════════ */
+  function baueSzeneBlock(aufgabeIndex, art) {
+    var aufgaben = automat.aufgabenListe();
+    var z = automat.zustand();
+    var offen = aufgaben[aufgabeIndex] ? inSprache(aufgaben[aufgabeIndex], MU) : null;
+    var ziel  = zielzeilen[aufgabeIndex] || null;
+
+    return {
+      offen:       offen,
+      /* WEG B. Nicht „sei ein Taxifahrer", sondern: deine nächste Zeile muss
+         DAS bedeuten — reagiere zuerst kurz auf das, was er wirklich gesagt
+         hat. Damit ist das Skript Zielvorgabe statt Kulisse, und Aufgabe und
+         Gespräch können nicht mehr auseinanderlaufen. */
+      zielzeile:   ziel,
+      /* Das Sieb hat entschieden, was für ein Zug das war. Bei „rolle" soll
+         die Figur sich einfacher wiederholen statt weiterzugehen. */
+      zugart:      art,
+      erledigt:    z.aufgabeIndex,
+      gesamt:      aufgaben.length,
+      zug:         z.zug,
+      maxZuege:    ZUG_DECKEL,
+      rolleSpikiu: inSprache(ROLLE && ROLLE.spikiu, MU),
+      rolleLerner: inSprache(ROLLE && ROLLE.lerner, MU),
+      ort:         inSprache(ROLLE && ROLLE.ort, MU)
+    };
+  }
+
+  async function holen(aufgabeIndex, art) {
+    busy = true;
+    punkteAn();
+
+    var profil = {
+      name:           PROFIL.name || '',
+      muttersprache:  MU,
+      zielsprache:    ZS,
+      koennen:        PROFIL.koennen || 'anfang',
+      fremde_schrift: !!PROFIL.fremde_schrift,
+      szene:          baueSzeneBlock(aufgabeIndex, art)
+    };
+
+    var antwort = '';
+    try {
+      var r = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: verlauf.slice(), profile: profil, maxTokens: MAX_TOKENS })
+      });
+      var roh = await r.text();
+      var d = null;
+      try { d = roh ? JSON.parse(roh) : null; } catch (e) { d = null; }
+      if (!r.ok) {
+        console.error('gespraech ' + r.status, d || roh);
+        throw new Error('http ' + r.status);
+      }
+      antwort = (d && d.text) || '';
+    } catch (e) {
+      punkteAus();
+      busy = false;
+      netzfehler(aufgabeIndex, art, (e && e.message) || String(e));
+      return;
+    }
+
+    punkteAus();
+    busy = false;
+    zeigeAntwort(antwort);
+  }
+
+  /* R14 · Ein Netzfehler ist kein Zug. Der Zähler bleibt stehen, „Nochmal"
+     schickt denselben Text erneut. Zwei Fehler hintereinander → Ernte. */
+  function netzfehler(aufgabeIndex, art, meldung) {
+    var z = automat.netzFehler();
+    if (z.phase === 'ernte') { ernte(); return; }
+
+    var k = karte('fehlerkarte');
+    k.innerHTML = '<div class="zug">Keine Verbindung. ' + esc(meldung) + '</div>';
+    var b = document.createElement('button');
+    b.className = 'knopf stumm';
+    b.textContent = 'Nochmal';
+    b.onclick = function () {
+      b.disabled = true;
+      automat.nochmal();
+      if (k.parentNode) k.parentNode.removeChild(k);
+      holen(aufgabeIndex, art);
+    };
+    k.appendChild(b);
+  }
+
+  /* ── Marker aus dem Text lösen ────────────────────────────── */
+  function loeseKarte(text) {
+    var m = /\[KARTE:([^\]]*)\]/.exec(text);
+    if (!m) return { text: text, karte: null };
+    var teile = m[1].split('|');
+    return {
+      text: text.replace(m[0], '').trim(),
+      karte: { wort: (teile[0] || '').trim(), erklaerung: (teile[1] || '').trim() }
+    };
+  }
+  function loeseBruecke(text) {
+    var m = /\[\[([^\]]*)\]\]/.exec(text);
+    if (!m) return { text: text, bruecke: '' };
+    return { text: text.replace(m[0], '').trim(), bruecke: (m[1] || '').trim() };
+  }
+  function putzen(text) {
+    /* [WECHSEL:] und [SZENENENDE] haben in einer Station-Szene keine Wirkung:
+       gewechselt wird über die Stationsliste, beendet wird über R6/R7. Sie
+       werden nur entfernt, damit sie nie im Text auftauchen. */
+    return String(text || '')
+      .replace(/\[WECHSEL:[^\]]*\]/g, '')
+      .replace(/\[SZENENENDE\]/g, '')
+      .replace(/\[AUFGABE\]/g, '')
+      .replace(/\[KORREKTUR\][\s\S]*?(?:\n|$)/g, '')
+      .trim();
+  }
+
+  function zeigeAntwort(roh) {
+    var ka = loeseKarte(putzen(roh));
+
+    /* Die Erklärkarte ist die GANZE Antwort — kein Fließtext daneben, sonst
+       mischt sich die Szene in die Erklärung. In den Verlauf wandert eine
+       Notiz, nicht die Karte: läge das Kartenformat im Verlauf, ahmte Spikiu
+       es in den Folgezügen nach (teuer gelernt). */
+    if (ka.karte && ka.karte.wort) {
+      automat.spikiuAntwortet(roh || '');
+      var k = karte('k-erklaer');
+      k.innerHTML = '<div class="w">' + esc(ka.karte.wort) + '</div>'
+                  + '<div class="b">' + esc(ka.karte.erklaerung) + '</div>';
+      verlauf.push({ role: 'assistant', content: '(Erklärkarte: ' + ka.karte.wort + ')' });
+      weiter();
+      speichern();
+      return;
+    }
+
+    var br = loeseBruecke(ka.text);
+    var text = br.text || putzen(roh) || '…';
+
+    automat.spikiuAntwortet(text);
+    geerntet.gehoert.push(text);
+    verlauf.push({ role: 'assistant', content: text });
+    speichern();
+
+    var z = automat.zustand();
+    /* R6 · Alle Aufgaben erledigt → der Ausgang geht auf, die Szene endet
+       NICHT von selbst. R7 · Sechs Züge → sie endet doch. */
+    var mitFeld = !z.ausgangOffen && z.zug < ZUG_DECKEL;
+    spikiuKarte(text, br.bruecke, mitFeld);
+
+    if (z.ausgangOffen || z.zug >= ZUG_DECKEL) schluss();
+  }
+
+  /* Nach einer Erklärkarte läuft die Szene weiter — dieselbe Aufgabe bleibt. */
+  function weiter() {
+    var z = automat.zustand();
+    if (z.zug >= ZUG_DECKEL) { schluss(); return; }
+    var letzte = '';
+    for (var i = verlauf.length - 1; i >= 0; i--) {
+      if (verlauf[i].role === 'assistant' && verlauf[i].content.indexOf('(Erklärkarte') !== 0) {
+        letzte = verlauf[i].content; break;
+      }
+    }
+    spikiuKarte(letzte || '…', '', true);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     6 · DER RUNDE ABSCHLUSS
+     Leo, 30.08.: „Das Gespräch soll nie abrupt enden. Spikiu muss
+     darauf reagieren. Dann erst soll eine Karte stehen mit beenden.
+     Denn der User kann theoretisch zurück wollen."
+     ══════════════════════════════════════════════════════════ */
+  function schluss() {
+    /* Die Abrundung kommt aus der Datenbank — null Token. Fiel sie schon als
+       Zielzeile in die letzte Modell-Antwort, wird sie nicht doppelt gezeigt. */
+    if (!abrundungIstZiel) {
+      var a = LP.abrundungVon(STUFE, THEMA);
+      if (a && a.z) {
+        geerntet.gehoert.push(a.z);
+        spikiuKarte(a.z, a.na ? inSprache(a.na, MU) : '', false);
+      }
+    }
+    var k = karte();
+    k.innerHTML = '<div class="zaehler" style="margin:0 0 .9rem">'
+      + 'Du kannst nach oben blättern und alles noch einmal ansehen.</div>';
+    var b = document.createElement('button');
+    b.className = 'knopf gelb';
+    b.textContent = 'Szene beenden';
+    b.onclick = function () { b.disabled = true; automat.abbrechen(); ernte(); };
+    k.appendChild(b);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     7 · DIE ERNTE — nur was im Gespräch vorkam (Leo, Frage 1)
+     ══════════════════════════════════════════════════════════ */
+  function normal(t) {
+    return ' ' + String(t || '').toLowerCase()
+      .replace(/[¿?¡!.,;:„“"'()]/g, ' ')
+      .replace(/\s+/g, ' ') + ' ';
+  }
+
+  function ernte() {
+    var alles = normal(geerntet.gesagt.join(' ') + ' ' + geerntet.gehoert.join(' '));
+    var lager = LP.ernte(STUFE, THEMA, MU) || [];
+
+    var vorgekommen = lager.filter(function (x) {
+      var n = normal(x.z).trim();
+      if (!n) return false;
+      if (alles.indexOf(' ' + n + ' ') > -1) return true;
+      /* Eine Wendung gilt auch als vorgekommen, wenn ihre tragenden Wörter
+         gefallen sind — „La cuenta, por favor" und „la cuenta por favor?"
+         sind dasselbe Ereignis. Kurze Füllwörter zählen dabei nicht mit. */
+      var woerter = n.split(' ').filter(function (w) { return w.length > 3; });
+      if (!woerter.length) return false;
+      return woerter.every(function (w) { return alles.indexOf(' ' + w) > -1; });
+    });
+
+    var thema = LP.thema(THEMA);
+    var k = karte();
+    var h = '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">Das hast du geübt</div>'
+          + '<div class="bue-ort">' + esc(inSprache(thema && thema.na, MU)) + '</div>';
+
+    function gruppe(ueberschrift, liste) {
+      if (!liste.length) return '';
+      var s = '<div class="e-kopf">' + ueberschrift + '</div>';
+      liste.forEach(function (x) {
+        s += '<div class="e-z"><button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
+          +  '<span class="e-w">' + esc(x.z) + '</span>'
+          +  '<span class="e-t">' + esc(x.na) + '</span></div>';
+      });
+      return s;
+    }
+    h += gruppe('Das kannst du sagen', vorgekommen.filter(function (x) { return x.art === 'wendung'; }));
+    h += gruppe('Wörter', vorgekommen.filter(function (x) { return x.art === 'wort'; }));
+    if (!vorgekommen.length) {
+      h += '<div class="e-kopf">Noch nichts eingesammelt</div>'
+        +  '<div class="bue-ort" style="margin:0">Beim nächsten Mal bleibt hier stehen, '
+        +  'was ihr wirklich gesagt habt.</div>';
+    }
+    k.innerHTML = h;
+
+    Array.prototype.forEach.call(k.querySelectorAll('[data-sag]'), function (b) {
+      b.onclick = function () { sprich(b.getAttribute('data-sag')); };
+    });
+
+    var b = document.createElement('button');
+    b.className = 'knopf';
+    b.textContent = 'Nach Hause';
+    b.onclick = function () { raeumen(); location.href = 'haus.html'; };
+    k.appendChild(b);
+
+    raeumen();   // R9 · die Szene ist zu, kein Wiederkommen anbieten
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     SITZUNG — keine Arbeit geht durch einen Fehl-Tipp verloren
+     ══════════════════════════════════════════════════════════ */
+  function speichern() {
+    try {
+      if (!window.spikiuSitzung) return;
+      var z = automat.zustand();
+      if (z.vorbei || z.phase === 'ernte') return;
+      window.spikiuSitzung.speichere('szene', {
+        stufe: STUFE, thema: THEMA, verlauf: verlauf, geerntet: geerntet
+      });
+    } catch (e) {}
+  }
+  function raeumen() {
+    try { if (window.spikiuSitzung) window.spikiuSitzung.raeume('szene'); } catch (e) {}
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     STATIONSWAHL, falls die Seite ohne Thema aufgerufen wird
+     ══════════════════════════════════════════════════════════ */
+  function waehler() {
+    titel.firstChild.nodeValue = 'Szene';
+    unter.textContent = 'Wähle ein Thema';
+    var k = karte();
+    var h = '<div class="bue-titel" style="font-size:1.3rem">Wo möchtest du üben?</div>'
+          + '<div class="bue-ort">Stufe ' + esc(STUFE.toUpperCase()) + '</div><div class="wahl">';
+    LP.themen.forEach(function (t) {
+      var da = LP.gefuellt(STUFE, t.id);
+      h += '<button data-thema="' + esc(t.id) + '"' + (da ? '' : ' class="leer" disabled') + '>'
+        +  esc(t.em) + ' ' + esc(inSprache(t.na, MU)) + '</button>';
+    });
+    h += '</div>';
+    k.innerHTML = h;
+    Array.prototype.forEach.call(k.querySelectorAll('[data-thema]'), function (b) {
+      b.onclick = function () {
+        location.href = 'szene.html?stufe=' + encodeURIComponent(STUFE)
+                      + '&thema=' + encodeURIComponent(b.getAttribute('data-thema'));
+      };
+    });
+  }
+
+  function hinweis(text) {
+    var k = karte();
+    k.innerHTML = '<div class="zug" style="font-family:\'DM Sans\',sans-serif;font-size:1rem">'
+                + esc(text) + '</div>';
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     START
+     ══════════════════════════════════════════════════════════ */
+  document.getElementById('zurueck').onclick = function () { location.href = 'haus.html'; };
+
+  if (!LP || !window.SpikiuSzene) {
+    unter.textContent = 'Fehler';
+    hinweis('Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. '
+          + 'Prüfe die <script>-Reihenfolge in szene.html.');
+    return;
+  }
+  if (LP.zielsprache !== ZS) {
+    /* Laut melden statt still falsche Wörter zeigen (Lehre vom 18.08.). */
+    console.warn('[Szene] Profil will "' + ZS + '", geladen ist "' + LP.zielsprache + '".');
+    ZS = LP.zielsprache;
+  }
+
+  if (!THEMA || !LP.gefuellt(STUFE, THEMA)) { waehler(); return; }
+
+  ST    = LP.station(STUFE, THEMA);
+  ROLLE = LP.rolle(THEMA);
+  var aufgaben = LP.aufgabenVon(STUFE, THEMA);
+
+  if (!ST || !aufgaben.length) {
+    unter.textContent = 'noch leer';
+    hinweis('Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.');
+    return;
+  }
+
+  /* WEG B · Die Zielzeilen. Spikius Skriptzeilen der Reihe nach — beginnt der
+     Dialog mit Spikiu, ist seine erste Zeile bereits die Eröffnung und zählt
+     nicht als Ziel. Ist die Liste erschöpft, ist die Abrundung das Ziel: dann
+     reagiert Spikiu auf die letzte Antwort UND schließt in einem Zug. */
+  (function () {
+    var zeilen = (ST.dialog && ST.dialog.zeilen) || [];
+    var spikiuZeilen = zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+    var versatz = (zeilen[0] && zeilen[0].wer === 'spikiu') ? 1 : 0;
+    var abr = LP.abrundungVon(STUFE, THEMA);
+    for (var i = 0; i < aufgaben.length; i++) {
+      var z = spikiuZeilen[i + versatz];
+      if (z) {
+        zielzeilen.push(z.z);
+      } else {
+        zielzeilen.push(abr ? abr.z : null);
+        if (i === aufgaben.length - 1) abrundungIstZiel = true;
+      }
+    }
+  })();
+
+  var thema = LP.thema(THEMA);
+  titel.firstChild.nodeValue = inSprache(thema && thema.na, MU) + ' ';
+  unter.textContent = STUFE.toUpperCase() + ' · ' + inSprache(ROLLE && ROLLE.ort, MU);
+
+  automat = window.SpikiuSzene.erzeuge({ aufgaben: aufgaben, maxZuege: ZUG_DECKEL });
+  buehne();
+
+})();
+</script>
+<!-- Audio: audio.js ist ein ES-Modul am Root und lässt sich NICHT als klassisches
+     <script src> laden. Es wird hier importiert und via window an das Haupt-Script
+     durchgereicht — dasselbe Muster wie in chat.html. Der Browser-Fallback steckt
+     bereits in audio.js. -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
+</script>
+</body>
+</html>
