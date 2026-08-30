@@ -2,6 +2,73 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 30.08.2026 (**Design + Bau 30.08. (claude.ai, Leo lädt selbst hoch): DER SZENEN-BRUCH GEFUNDEN UND BEHOBEN · PROTOTYP ABGENOMMEN · ALLE 60 STATIONEN IN DREI ZIELSPRACHEN GEBAUT.**
+
+**═══ 1. DER SCHATTENLAUF SCHEITERTE — UND DECKTE DEN EIGENTLICHEN FEHLER AUF ═══**
+Leo testete den Schattenlauf am Gerät und schickte acht Screenshots. Sein Urteil: „ein absolutes Disaster. Weder die Abfolge, noch Capy passen zusammen. Ich habe den Eindruck, du zerstörst was wir erreicht haben. Das liegt an deinem Flicken." **Er hatte recht, und der Fehler war meiner.**
+**DIE WURZEL:** Der Stations-Dialog in `lernpfad-daten.js` beginnt in **10 von 20 Stationen mit dem LERNER** (Taxi: „¿Está libre?"). Die Szene ließ aber immer SPIKIU zuerst sprechen. Der Taxifahrer sagte „¡Hola! ¿A dónde vamos?", während Aufgabe 1 lautete „Frag, ob das Taxi frei ist" — die Aufgabe war tot, bevor der Lerner tippte. **Ab dem ersten Wort um eine Zeile verschoben, danach nie wieder zusammenzubringen.** Derselbe Bruch bei Nachbarin und Café.
+**MEIN ANTEIL, protokolliert damit er nicht wiederkommt:** Ich habe den Fehler nicht gefunden, sondern **verdeckt**. R3 („jeder Zug schließt eine Aufgabe ab") schob den Zähler brav von 1 auf 3, während Aufgabe und Gespräch nichts miteinander zu tun hatten. „Die Aufgaben führen, sie prüfen nicht" klang nach Haltung — in Wahrheit war es eine Ausrede für einen Zähler über einem Bruch. Ich habe an einer 199-KB-Datei gearbeitet, deren Ablauf ich nicht kannte, und Leos stehende Regel „Prototyp vor Produktionscode" übergangen.
+
+**═══ 2. BESTANDSAUFNAHME `chat.html` — ZWÖLF FRAGEN, ALLE BEANTWORTET ═══**
+Statt zu flicken: komplette Analyse, zwölf durchnummerierte Fragen an Leo. **199 KB · 3.429 Zeilen · 149 Funktionen.** CSS 50 KB (217 Klassen, 13 tot) · geführter Modus 24 KB · Szene 36 KB · API 17 KB · Signale 14 KB · Opener 10 KB · Lektion 8 KB · Reel 7 KB.
+**DER TEUERSTE FUND: ein erreichbarer Doppelgänger.** 24 KB in `chat.html` machen dasselbe wie `gefuehrt.html`. Der Ledger notierte am 15.08. „damit tot" — er ist es nicht: `haus.html` Zeile 521 führt auf `chat.html?modus=frei` (Szene), **Zeile 528 auf `chat.html`** (den alten geführten Zweig). Zwei Wege, zwei verschiedene Räume.
+**LEOS ANTWORTEN (1–12):** Ernte zeigt **nur was im Gespräch vorkam** · `gefuehrt.html` ist der einzige geführte Raum, alles andere verschwindet · **der Blasen-Weg fliegt raus**, es bleiben nur Reel-Karten · Lektionserzeugung fliegt aus dem freien Gespräch · `[KORREKTUR]` und `[OPTIONEN]` fliegen, `[KARTE:]`/`[WECHSEL:]`/`[SZENENENDE]` bleiben · **neue Datei `szene.html`**, `chat.html` wird stillgelegt wie damals bei `gefuehrt.html` · **Weg B** (Eröffnungszeile) · Aufgabe steht offen, kein Satz zum Kopieren · Capy bleibt bei 27 px · **kein abrupter Schluss** · alles Funktionslose fliegt · Prototyp zuerst.
+**ZU FRAGE 10 SAGTE LEO WÖRTLICH:** „Das Gespräch soll nie abrupt enden. Wenn ich als dritte Aufgabe ‚La cuenta por favor' gesagt habe, kommt die Wortliste sofort danach. Das darf nicht sein. Spikiu muss darauf reagieren. Dann erst soll eine Karte stehen mit ‚beenden'. Denn der User kann theoretisch zurück wollen und sich die Karten noch mal ansehen." → **Der Reel-Rücklauf bleibt also erhalten**, entgegen meinem Vorschlag in der Bestandsaufnahme.
+
+**═══ 3. DER PROTOTYP — ABGENOMMEN ═══**
+`proto-szene.html`, eine Datei, kein Backend, zwei Stationen (Taxi mit neuer Eröffnung, Café mit vorhandener). Zeigt: Weg B · Aufgabe immer offen · Sieb (R13) · **runder Abschluss statt Abbruch** · Ernte nur aus dem Gespräch · scrollbares Kartendeck.
+**Leos Urteil: „Es gefällt mir total gut! Und sogar die Reihenfolge von oben nach unten ist super! Und die farbliche Unterscheidung mit Gelb für den User ist fantastisch."** → **Gelbe Karte für den Lerner ist damit gesetzt.** Vertikales Deck statt Wischen ebenfalls.
+
+**═══ 4. WIE SPIKIU IM BETRIEB ANTWORTET — ENTSCHEIDUNG B ═══**
+Der Prototyp verdeckte, dass Spikius Zeilen dort fest verdrahtet sind. Zwei Wege standen zur Wahl: **(A) Spikiu antwortet immer mit der nächsten Skriptzeile** — kostet fast nichts (~0,002 statt 0,014 USD), ist aber `gefuehrt.html` mit Tastatur, und der Unterschied, für den jemand Premium zahlt, wäre weg. **(B) Haiku antwortet frei, bekommt aber die Skriptzeile als ZIEL** — nicht „sei ein Taxifahrer", sondern „deine nächste Zeile muss bedeuten: ‚Sehr gut, haben Sie Koffer dabei?' — reagiere zuerst kurz auf das, was er wirklich gesagt hat".
+**Leo: B.** Damit ist das Skript nicht mehr Kulisse, sondern Zielvorgabe — und genau dadurch passen Aufgabe und Gespräch endlich zusammen.
+
+**═══ 5. INHALTE — DREI ZIELSPRACHEN, VIER GESETZE ═══**
+Leo wollte Deutsch und Englisch sofort, nicht nach der Beta („Ich habe mehrere Menschen, die Deutsch mit Spikiu lernen wollen, auch Englisch"). Entschieden: **Paare** Englisch für de+es · Spanisch für de+en · Deutsch für es+en. **Lokalisiert, nicht übersetzt.** **20 Themen bleiben fest.**
+**LOKALISIERUNG, nicht Übersetzung — die Ausbeute:** Deutsch bekam getrennt zahlen · das Pfund · stimmt so · die Kurtaxe · der Stock · die Bahncard · das Gleis · krankschreiben · die Versichertenkarte · der Feierabend · der Kassenbon · der Knödel · die Baustelle · **die Zugbindung** · die Überweisung · sicherheitshalber. Englisch bekam for here or to go · how many in your party · a block · hop in · have a good one · **entrée = Hauptgericht** · **third floor = zweiter Stock** · a backup = Stau · not at all = ja · **rebooking fee statt Zugbindung**. Keines davon wäre aus einer Übersetzung entstanden.
+**DIE NEUE PRÜFREGEL, entstanden aus einem Fehler, den LEO fand:** *Jede Spikiu-Zeile muss die folgende Lerner-Aufgabe EINLADEN, ohne sie vorwegzunehmen.* Zwei Verstoßarten: **Vorwegnahme** (Taxifahrer fragt „wohin?", bevor man fragen kann ob er frei ist) und **Fehlleitung** (Kellner fragt nach Getränken, Aufgabe verlangt eine Empfehlung — Leos Fund: „¡Preguntas por bebida y le ofreces luego un salmón!"). **120 Übergänge geprüft, ein Fehler gefunden und behoben.**
+**DIE SPANIEN-REGEL (Leo):** „Behalte das Spanische aus Spanien für all diese Begriffe, wo es in Latinoamerika viele Varianten gibt." → *echar de menos* statt *extrañar* · *el billete* · *la patata* · *dos calles* statt *cuadras* · *el ticket* im Laden · *la tarta* im Café. Das deckte drei Fehler im BESTAND auf: *cochinito* → **cochinillo asado** (und in Spanien nicht scharf) · *¿Trae el recibo?* → **el ticket** (beim Taxi bleibt *recibo*) · *el pastel* → **la tarta** samt Artikelwechsel *la de limón*.
+**DIE BRÜCKEN-REGEL (Leo fand den Anlass: „quiero pagar no se dice"):** *Die Brücke übersetzt die Bedeutung, nie die Wörter.* → **¿Cuánto le debo?**
+**GRAMMATIK OHNE EIN EINZIGES FACHWORT.** 60 Notizen, kein Nominativ, kein Konjunktiv, kein Present Perfect. Stattdessen „eine palabrita davor" · „das Verb kommt zuerst" · „ein *es*, das niemand ist" · „ein Achselzucken in Worten". Zehn Notizen vergleichen ausdrücklich mit der Muttersprache, weil dort gestolpert wird: *ich habe Kopfschmerzen* gegen *me duele* · *ich bin gestürzt* gegen *ich habe* · *not at all* = ja · *actually* ≠ aktuell · *third floor* = zweiter Stock.
+**DER BEFUND, der beim Nebeneinanderlegen entstand:** **Deutsch macht Höflichkeit mit Wörtern** (leider, denn, könnten, würde, darf, wohl) · **Englisch mit Formeln** (sorry to bother you, would you mind, I'd rather, actually) · **Spanisch mit der Verbform.** Dieselbe Arbeit, drei Werkzeuge — steht jetzt in den Notizen, statt dass es jemand erklären müsste.
+
+**═══ 6. GEBAUT UND GEPRÜFT ═══**
+**`lernpfad-daten.js` (Spanisch, überarbeitet):** 60 Aufgaben jetzt DREISPRACHIG `{de,es,en}` · **10 Eröffnungszeilen** · **20 Abrundungen** · die drei Regionalismus-Korrekturen samt Folgestellen (Vokabelliste, Lesetext, Schreibaufgabe). Neue API: **`eroeffnungVon(stufe,thema)`** — gibt wo nötig die neue Eröffnung, sonst `dialog.zeilen[0]`, der Aufrufer muss den Unterschied nicht kennen — und **`abrundungVon(stufe,thema)`**. Alte Zugriffe unverändert lauffähig.
+**`lernpfad-daten-de.js` (NEU, 105 KB):** Deutsch als Zielsprache, Brücken es+en, `window.SpikiuLernpfadDE`. 20 Stationen × (12 Wörter · 6 Dialogzeilen · Eröffnung · Abrundung · Lesetext mit 3 Optionen · Schreibaufgabe · Grammatik in beiden Brückensprachen). Geprüft: **0 Fehler.**
+**`lernpfad-daten-en.js` (NEU, 105 KB):** Englisch, US-neutral mit britischen Zusätzen (check/bill · trunk/boot · elevator/lift · track/platform · pharmacy/chemist's), Brücken de+es, `window.SpikiuLernpfadEN`. Geprüft: **0 Fehler.**
+**`lernpfad-sprache.js` (NEU):** der Umschalter. Liest `zielsprache` aus `spikiu_user` und setzt `window.SpikiuLernpfad` auf die passende Datei. Unbekannte Sprache → Spanisch **plus laute Warnung**, nie stillschweigend falsche Wörter (Lehre vom 18.08.). `SpikiuSprache.waehle/vorhanden/ausProfil`. Getestet gegen alle drei Dateien plus die Fälle „Griechisch" und „kein Profil".
+**Reihenfolge im HTML:** Datendateien zuerst, dann `lernpfad-sprache.js`, dann `lernpfad.js`. **Alle drei Datendateien werden geladen** (~300 KB statisch, gecacht) — die Alternative wäre asynchrones Laden oder `document.write`, beides neue Fehlerquellen in laufenden Seiten. Umkehrbar.
+**BESTAND: 60 Stationen · 720 Vokabeln · 360 Dialogzeilen · 180 Aufgaben · 60 Eröffnungen · 60 Abrundungen · 60 Lesetexte · 60 Schreibaufgaben · 60 Grammatik-Notizen.**
+
+**═══ 7. EIN EIGENER FEHLER, PROTOKOLLIERT ═══**
+Beim Zusammenfassen der dreizehn Inhalts-Blöcke habe ich `cat` und `rm` in EINE Shell-Zeile gehängt. Der Schreibvorgang brach ab, das Löschen lief trotzdem — **dreizehn Markdown-Quelldateien vernichtet.** Der Inhalt war nicht verloren (er stand im Gespräch und wurde direkt in die JS-Dateien gebaut), aber die Lehre gilt: **niemals Erzeugen und Löschen in derselben Zeile.** Leo entschied daraufhin, das Markdown zu überspringen und direkt die Datendateien zu bauen — die sind ohnehin die dauerhafte Wahrheit.
+
+**═══ 8. WAS ALS NÄCHSTES KOMMT ═══**
+**Sofort:** `szene.html` nach dem abgenommenen Prototyp bauen — vertikales Kartendeck, gelbe Lerner-Karten, Aufgabe offen, `szene.js` + `frage-sieb.js` als Gehirn, Eröffnung und Abrundung aus der Datenbank, Ernte nur aus dem Gespräch. **`chat.html` und `gefuehrt.html` werden dabei NICHT angefasst.** Danach `chat.html` stilllegen und die zweite Verlinkung in `haus.html` (Zeile 528) entfernen.
+**Danach:** der Raum-Prompt für Weg B (Skriptzeile als Ziel, nicht als Kulisse) · die vier verbliebenen Google-Anleihen (Chaoten-Farben auf der Stationskachel · Hinweise aus der DB · Wort-Antippen mit DB-zuerst · drei Einführungs-Popups) · Lektionsblatt · Privatstunde.
+**Nach der Beta:** Mikrofon (Browser-Erkennung zuerst, Groq nur falls iOS scheitert) · Aussprache-Vergleich in der Ernte.
+**NOCH UNBEANTWORTET, das größte offene Kapitel:** **Abo-Modell und Angriffs-Abwehr.** Leo wörtlich: „Prinzip, gar keine Überraschungen oder Verluste. Ich muss eine automatisierte Live-Kontrolle führen können, die das mögliche Überschreiten von Limits jederzeit automatisch stoppen kann." Bedrohungen: Bot-Angriffe, bezahlte Auslastung durch Konkurrenten. Drei Abo-Varianten stehen zur Wahl. **Bis dahin schützt allein das Ausgabenlimit in der Anthropic-Konsole.**
+**AUFGESCHOBEN, MIT BEDINGUNG (Leo, 30.08.): `lernpfad-daten.js` → `lernpfad-daten-es.js` umbenennen.**
+Der Name stammt aus der Zeit, als es nur eine Zielsprache gab. Jetzt liest er sich, als
+wäre Spanisch die Norm und Deutsch/Englisch Sonderfälle — genau die Asymmetrie, die
+„Räume ≠ Sprachen" nicht will. Der Umschalter muss sie heute ausbügeln: er sichert den
+Altbestand unter `SpikiuLernpfadES`, weil die Datei `window.SpikiuLernpfad` direkt belegt.
+Der Umbau umfasst: Datei umbenennen · darin `raum.SpikiuLernpfad` → `raum.SpikiuLernpfadES` ·
+die Sicherungszeile in `lernpfad-sprache.js` entfernen · **jede Seite anpassen, die sie
+einbindet** (mindestens `chat.html` und `lernpfad.js`, vor dem Umbau vollständig auszählen).
+**LEOS BEDINGUNG, wörtlich: erst wenn es zu 100 % KEINE PROBLEME verursacht.** Also nicht,
+solange `chat.html` noch lebt. Der richtige Zeitpunkt ist NACH der Stilllegung von
+`chat.html` — dann sind es wenige Stellen, und jede davon ist neu geschrieben.
+Kein Nutzen für den Lerner, reine Ordnung. Wenn es wackelt: nicht anfassen.
+
+**Weiter offen:** `devOffen()` liefert immer true · Landing-Texte in `index.html` · Dashboard „3 capítulos" → „4" · Reader EN+EL · Legal vor Einnahmen · Supabase Phase 2.
+
+**═══ 9. GEÄNDERTE DATEIEN DIESER SITZUNG ═══**
+`lernpfad-daten.js` (überarbeitet) · `lernpfad-daten-de.js` (neu) · `lernpfad-daten-en.js` (neu) · `lernpfad-sprache.js` (neu) · `szene-regeln.md` (Sieb umgedreht) · `frage-sieb.js` (Drei-Wörter-Regel raus) · `szene.test.js` (66/66) · `SPIKIU-BUILD-LEDGER.md`.
+**NICHT angefasst:** `chat.html` · `gefuehrt.html` · `szene.js` · alle Prompts · alle `api/*` · alle übrigen Frontend-Dateien.
+**Nur zum Lesen, nicht im Repo:** `proto-szene.html` (abgenommener Prototyp) · `BESTANDSAUFNAHME-chat.md` (die zwölf Fragen).
+
+
 Stand: 29.08.2026 (**Design + Bau 29.08. (claude.ai, Leo lädt selbst hoch; ein Teilschritt über Claude Code im Terminal): HAIKU BESTANDEN, DER SZENEN-AUTOMAT STEHT UND IST KOPFLOS BEWIESEN, DAS SIEB WURDE NACH DEM ERSTEN TESTLAUF UMGEDREHT.**
 
 **═══ 1. DIE GOOGLE-ANALYSE, KAPITELWEISE (Leos PDF „Übungsmodus") ═══**
