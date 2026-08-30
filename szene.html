@@ -6,34 +6,36 @@
 <title>Spikiu · Szene</title>
 <!--
   ══════════════════════════════════════════════════════════════════════
-  SPIKIU — DIE SZENE (freies Gespräch an einer Station)
+  SPIKIU — DIE SZENE
 
-  Ersetzt den Szenen-Teil von chat.html. Diese Datei wird NEU gebaut, nicht
-  aus chat.html geschnitten — genau wie gefuehrt.html am 15.08. Grund: in
-  chat.html liegen 199 KB mit dem geführten Modus, einem toten Blasen-Weg
-  und fünf globalen Variablen für den Szenenzustand. Fünf Reparaturen dort
-  haben jeweils eine sechste Variable dazugelegt.
+  WAS DER LERNER HIER TUT (Leos Worte, 30.08.):
+  „Der User bekommt ganz konkrete Aufgaben. Es ist so eine Art
+   Übersetzungsaufgabe, wo er seinen Wortschatz und seine Fähigkeit zu
+   formulieren trainiert."
+  Er weiß WAS er sagen soll und muss es SELBST BAUEN. Das kann er weder im
+  geführten Gespräch (dort wählt er) noch im Gym (dort erkennt er).
 
-  WAS HIER NICHT DRIN IST (Leos Entscheid 30.08.):
-    kein geführter Modus       → gefuehrt.html ist der einzige
-    kein Blasen-Weg            → nur Reel-Karten
-    keine Lektionserzeugung    → die Ernte ist der Abschluss
-    kein [KORREKTUR]           → die Figur reformuliert, sie korrigiert nicht
-    kein [OPTIONEN]            → hier wird frei geantwortet, nicht gewählt
+  WARUM SPIKIU AUS DER DATENBANK ANTWORTET
+  Erster Versuch (30.08.): Haiku antwortete frei, mit der Skriptzeile als Ziel.
+  Am Gerät fragte der Taxifahrer „¿Cuántas maletas tienes?", die Szene driftete,
+  nach drei Zügen war sie vorbei ohne dass etwas geübt worden wäre. Leo: „Das
+  bringt gar nichts." Jetzt ist Spikius Zeile IMMER die nächste Skriptzeile.
+  Die Szene kann nicht entgleisen, weil nichts zu entgleisen ist.
 
-  DAS GEHIRN LIEGT AUSSERHALB:
-    szene.js       — der Ablauf (66/66 kopflos geprüft). Kennt kein DOM.
-    frage-sieb.js  — offen | rolle | meta. Vorfahrt für „offen".
-  Diese Datei ZEICHNET nur. Sie rechnet den Zustand nicht selbst aus.
+  **NULL TOKEN. Kein fetch, kein Modell, kein Netz.** Die Szene läuft offline.
+  Das Modell kommt später für EINEN Aufruf am Ende — die Rückmeldung auf das,
+  was der Lerner wirklich geschrieben hat. Eigener Schritt, noch nicht gebaut.
 
-  DER FEHLER, DEN SIE BEHEBT (29.08.):
-  In 10 von 20 Stationen beginnt der Skript-Dialog mit dem LERNER. Die alte
-  Szene ließ trotzdem Spikiu zuerst sprechen — der Taxifahrer fragte „wohin?",
-  während Aufgabe 1 noch lautete „frag, ob er frei ist". Jetzt kommt die
-  erste Zeile aus eroeffnungVon(): sie grüßt, ohne die Aufgabe vorwegzunehmen.
+  DER DANEBENSCHUSS (Leos „Joker-User")
+  Wir kennen die Zeile, die er hätte sagen sollen — also können wir prüfen,
+  umsonst. Der Test ist milde: EIN tragendes Wort genügt, akzentfrei und
+  endungstolerant. Beim zweiten Danebenschuss geht die Aufgabe TROTZDEM durch;
+  niemand steckt fest (Entscheid A).
 
-  WEG B: Spikiu antwortet frei, bekommt aber die Skriptzeile als ZIEL mit
-  (profile.szene.zielzeile). Das Skript ist Zielvorgabe, nicht Kulisse.
+  DER SOUFFLEUR (Entscheid 30.08., kehrt Frage 8 um)
+  Die Aufgabe steht NICHT offen da. Erster Tipp auf den Capy: die Aufgabe.
+  Zweiter Tipp: der fertige Satz mit „Einsetzen". Abschreiben ist erlaubt —
+  es ist seine Entscheidung, und er darf ihn vorher ändern.
 
   Kein Bottom-Nav: das hier ist ein Raum, nur haus.html trägt die Navi.
   ══════════════════════════════════════════════════════════════════════
@@ -83,9 +85,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   color:var(--mid);margin-bottom:.85rem}
 .zug{font:400 1.55rem/1.35 'Cormorant Garamond',serif;text-align:center;margin-bottom:.7rem}
 .werkz{display:flex;gap:.55rem;justify-content:center;margin-bottom:.2rem}
-.ikon{width:42px;height:42px;border-radius:999px;border:2px solid var(--ink);
-  background:var(--accent2);display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:1.05rem;color:var(--ink)}
+.ikon{height:42px;min-width:42px;padding:0 .75rem;border-radius:999px;
+  border:2px solid var(--ink);background:var(--accent2);display:flex;
+  align-items:center;justify-content:center;cursor:pointer;
+  font:700 .78rem/1 'DM Sans';color:var(--ink)}
 .ikon:active{transform:translate(1px,1px)}
 .ueb{font:italic 400 .88rem/1.45 'DM Sans';color:var(--trans-ink);background:var(--trans-bg);
   border:1px solid var(--trans-border);border-radius:.5rem;padding:.5rem .7rem;
@@ -98,13 +101,27 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .st.jetzt{background:var(--accent)}
 .st.fertig{background:var(--ink)}
 .zaehler{text-align:center;font:500 .78rem/1 'DM Sans';color:var(--mid);margin-bottom:.9rem}
-.aufg{display:flex;gap:.7rem;align-items:center}
+.aufg{display:flex;gap:.7rem;align-items:center;min-height:44px}
 .capy{width:42px;height:42px;flex:0 0 auto;border-radius:50%;border:2.5px solid var(--ink);
   background:#fff;box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;
-  justify-content:center;animation:schweben 4s ease-in-out infinite}
+  justify-content:center;cursor:pointer;position:relative;
+  animation:schweben 4s ease-in-out infinite}
 @keyframes schweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @media (prefers-reduced-motion:reduce){.capy{animation:none}}
 .capy svg{width:27px;height:27px}
+.capy .punkt{position:absolute;top:-3px;right:-3px;width:14px;height:14px;
+  border-radius:50%;background:var(--accent);border:2px solid var(--ink)}
+.aufg .txt{flex:1}
+.aufg .txt .leer{font:400 .95rem/1.3 'DM Sans';color:var(--mid);font-style:italic}
+.hinweis{margin-top:.8rem;background:var(--accent2);border:2px solid var(--ink);
+  border-radius:.7rem;padding:.7rem .8rem;display:none}
+.hinweis.an{display:block}
+.hinweis .l{font:700 .6rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:.3rem}
+.hinweis .s{font:500 1.15rem/1.3 'Cormorant Garamond',serif;margin-bottom:.5rem}
+.hinweis .kn{display:flex;gap:.5rem}
+.hinweis button{flex:1;padding:.5rem;border:2px solid var(--ink);border-radius:.5rem;
+  background:#fff;font:600 .8rem/1 'DM Sans';cursor:pointer;color:var(--ink)}
 .aufg .txt .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
   color:var(--mid);margin-bottom:.2rem}
 .aufg .txt .t{font:600 1.15rem/1.25 'Cormorant Garamond',serif}
@@ -169,15 +186,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 (function () {
   'use strict';
 
-  var ENDPOINT   = '/api/gespraech';
-  var ZUG_DECKEL = 6;          // R7 · die harte Kostendecke
-  var MAX_TOKENS = 300;
+  /* Die Decke ist hier KEINE Kostenbremse mehr — die Szene kostet nichts.
+     Sie sorgt nur dafür, dass eine Szene endet: drei Aufgaben mal höchstens
+     zwei Versuche plus ein paar Rückfragen. */
+  var ZUG_DECKEL  = 9;
+  var MAX_DANEBEN = 2;    // beim zweiten Danebenschuss geht die Aufgabe durch
 
   var deck  = document.getElementById('deck');
   var titel = document.getElementById('kopfTitel');
   var unter = document.getElementById('kopfUnter');
 
-  /* ── Kanonischer Spikiu. Nie neu erfinden, immer diese Form. ── */
+  /* Kanonischer Spikiu. Nie neu erfinden, immer diese Form. */
   var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-hidden="true">'
   + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>'
   + '<ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
@@ -194,6 +213,18 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   + '<ellipse cx="46" cy="68" rx="5" ry="4" fill="#b8845a"/>'
   + '<ellipse cx="56" cy="66" rx="5" ry="4" fill="#b8845a"/></svg>';
 
+  /* Die Figur bleibt in der Rolle, wenn sie nicht versteht — sie schimpft
+     nicht und erklärt nicht. Dieselbe Zeile für alle Stationen, deshalb hier
+     und nicht in den Datendateien. */
+  var NICHT_VERSTANDEN = {
+    es: { z: 'Perdone, no le entiendo.',
+          na: { de: 'Verzeihung, ich verstehe Sie nicht.', en: "Sorry, I don't understand." } },
+    de: { z: 'Entschuldigung, das verstehe ich nicht.',
+          na: { es: 'Perdone, no le entiendo.', en: "Sorry, I don't understand." } },
+    en: { z: "Sorry, I didn't catch that.",
+          na: { de: 'Entschuldigung, das habe ich nicht verstanden.', es: 'Perdone, no le entendí.' } }
+  };
+
   /* ── Werkzeug ─────────────────────────────────────────────── */
   function esc(t) {
     return String(t == null ? '' : t)
@@ -204,34 +235,85 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     try { return new URLSearchParams(location.search).get(name) || ''; }
     catch (e) { return ''; }
   }
-  function inSprache(objekt, mu) {
-    if (!objekt) return '';
-    return objekt[mu] || objekt.de || objekt.en || objekt.es || '';
+  function inSprache(o, mu) { return o ? (o[mu] || o.de || o.en || o.es || '') : ''; }
+
+  /* Akzente weg, Satzzeichen weg, klein. „¿Está libre?" und „esta libre"
+     sind dasselbe — Tippfehler dürfen nicht bestraft werden. */
+  function flach(t) {
+    return String(t || '')
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zäöüß0-9\s]/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     DIE TREFFERPRÜFUNG (Entscheid A: ein Wort genügt)
+
+     Wir kennen die Zeile, die er hätte sagen sollen. Aus ihr nehmen wir die
+     tragenden Wörter — ab vier Buchstaben, ohne Füllwörter. Kommt EINES davon
+     in seiner Antwort vor, ist er in der Szene.
+
+     Verglichen wird der WORTSTAMM (fünf Buchstaben), damit „maleta / maletas /
+     Maletas." alle zählen. Der Preis: „No tengo maleta" besteht auch. Das ist
+     richtig so — geprüft wird, ob er in der Szene ist, nicht ob er die
+     Wahrheit sagt.
+     ══════════════════════════════════════════════════════════ */
+  var FUELL = ('der die das den dem des ein eine einen einem und oder aber ist sind war'
+    + ' ich sie wir ihr mit von zum zur fuer auf aus nicht kein sehr auch noch schon dann'
+    + ' habe haben hast bitte danke'
+    + ' el la los las un una unos unas pero es son esta estan soy eres con para por del al'
+    + ' que muy tambien mas favor gracias tengo tiene'
+    + ' the an and but are was with from for you your this that have has please thanks'
+    + ' would like want').split(/\s+/);
+
+  function stamm(w) { return w.slice(0, 5); }
+
+  function tragend(zeile) {
+    var w = flach(zeile).split(' ').filter(function (x) { return x.length >= 4; });
+    var ohneFuell = w.filter(function (x) { return FUELL.indexOf(x) === -1; });
+    if (ohneFuell.length) return ohneFuell;
+    /* Vier von 180 Skriptzeilen tragen kein Wort ab vier Buchstaben:
+       „Para dos, por favor." · „¿De qué vía?" · „Two, please." · „Is it far?"
+       Ohne Rückfallstufe würden sie ALLES durchlassen. Deshalb hier ab drei
+       Buchstaben — „dos", „via", „two", „far" sind dort das ganze Ereignis. */
+    return flach(zeile).split(' ').filter(function (x) {
+      return x.length >= 3 && FUELL.indexOf(x) === -1;
+    });
+  }
+
+  function trifft(antwort, erwartet) {
+    var ziel = tragend(erwartet);
+    if (!ziel.length) return true;                  // nichts zu prüfen → durchlassen
+    var meine = flach(antwort).split(' ').filter(function (w) { return w.length >= 3; });
+    for (var i = 0; i < ziel.length; i++) {
+      for (var j = 0; j < meine.length; j++) {
+        if (stamm(meine[j]) === stamm(ziel[i])) return true;
+      }
+    }
+    return false;
   }
 
   /* ── Profil ───────────────────────────────────────────────── */
   var PROFIL = {};
   try { PROFIL = JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {}; }
   catch (e) { PROFIL = {}; }
-  var MU  = PROFIL.muttersprache || 'de';
-  var ZS  = PROFIL.zielsprache   || 'es';
-
-  /* Die Datendatei zur Zielsprache. Der Umschalter hat sie schon gesetzt;
-     wir fragen ihn nur, ob es geklappt hat. */
+  var MU = PROFIL.muttersprache || 'de';
+  var ZS = PROFIL.zielsprache   || 'es';
   var LP = window.SpikiuLernpfad || null;
 
-  /* ── Zustand dieser Seite (KEIN Szenenzustand — der liegt in szene.js) ── */
+  /* ── Zustand dieser Seite ─────────────────────────────────── */
   var STUFE = pfeil('stufe') || 'a1';
   var THEMA = pfeil('thema') || '';
-  var ST    = null;    // die Station aus der Datenbank
-  var ROLLE = null;
-  var automat = null;  // SpikiuSzene-Instanz
-  var verlauf = [];    // was an das Modell geht
-  var busy = false;
-  var zielzeilen = [];       // Weg B: die Skriptzeile als Ziel je Aufgabe
+  var ST = null, ROLLE = null, automat = null;
+  var zielzeilen = [];
+  var lernerZeilen = [];
   var abrundungIstZiel = false;
+  var daneben = 0;
   var geerntet = { gesagt: [], gehoert: [] };
-  var letzteKarte = null;    // für den Netzfehler-Wiederholer
+  var protokoll = [];        // für die spätere Rückmeldung am Ende
+  var busy = false;
 
   /* ══════════════════════════════════════════════════════════
      KARTEN
@@ -240,39 +322,32 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var d = document.createElement('div');
     d.className = 'karte' + (klasse ? ' ' + klasse : '');
     deck.appendChild(d);
-    setTimeout(function () {
-      try { d.scrollIntoView({ block: 'start' }); } catch (e) {}
-    }, 30);
+    setTimeout(function () { try { d.scrollIntoView({ block: 'start' }); } catch (e) {} }, 30);
     return d;
   }
 
-  var punkteEl = null;
-  function punkteAn() {
-    if (punkteEl) return;
-    punkteEl = document.createElement('div');
-    punkteEl.className = 'punkte';
-    punkteEl.textContent = '• • •';
-    deck.appendChild(punkteEl);
-    try { punkteEl.scrollIntoView({ block: 'end' }); } catch (e) {}
-  }
-  function punkteAus() {
-    if (punkteEl && punkteEl.parentNode) punkteEl.parentNode.removeChild(punkteEl);
-    punkteEl = null;
+  /* Eine kurze Pause vor Spikius Antwort. Die Zeile steht sofort bereit —
+     ohne Pause wirkt es wie ein Automat, nicht wie ein Gegenüber. */
+  function nachDenkpause(fn) {
+    var p = document.createElement('div');
+    p.className = 'punkte';
+    p.textContent = '• • •';
+    deck.appendChild(p);
+    try { p.scrollIntoView({ block: 'end' }); } catch (e) {}
+    setTimeout(function () {
+      if (p.parentNode) p.parentNode.removeChild(p);
+      fn();
+    }, 700);
   }
 
-  /* audio.js reicht speak() als window.spkSpeak durch (ES-Modul, siehe unten).
-     Greift der Import nicht, hält diese Notbremse den Knopf trotzdem hörbar —
-     ein stummer Lautsprecher ist schlimmer als eine mittelmäßige Stimme. */
   function sprich(text) {
     if (window.spkSpeak) { try { return window.spkSpeak(text, ZS); } catch (e) {} }
     try {
-      var synth = window.speechSynthesis;
-      if (synth && typeof SpeechSynthesisUtterance !== 'undefined') {
-        var bcp = { de: 'de-DE', es: 'es-ES', en: 'en-US', el: 'el-GR' }[ZS] || 'en-US';
+      var s = window.speechSynthesis;
+      if (s && typeof SpeechSynthesisUtterance !== 'undefined') {
         var u = new SpeechSynthesisUtterance(String(text));
-        u.lang = bcp;
-        synth.cancel();
-        synth.speak(u);
+        u.lang = { de: 'de-DE', es: 'es-ES', en: 'en-US', el: 'el-GR' }[ZS] || 'en-US';
+        s.cancel(); s.speak(u);
       }
     } catch (e) {}
   }
@@ -299,32 +374,20 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     b.onclick = function () {
       b.disabled = true;
       automat.los();
-      eroeffnen();
+      var e = LP.eroeffnungVon(STUFE, THEMA);
+      spikiuSagt((e && e.z) || '', (e && e.na) ? inSprache(e.na, MU) : '', true);
     };
     k.appendChild(b);
   }
 
   /* ══════════════════════════════════════════════════════════
-     2 · ERÖFFNUNG — aus der Datenbank, NULL Token
-     Sie grüßt, ohne Aufgabe 1 vorwegzunehmen (Weg B).
+     2 · SPIKIU SAGT — immer aus der Datenbank
      ══════════════════════════════════════════════════════════ */
-  function eroeffnen() {
-    var e = LP.eroeffnungVon(STUFE, THEMA);
-    var text = (e && e.z) || '';
-    var na   = (e && e.na) ? inSprache(e.na, MU) : '';
-    geerntet.gehoert.push(text);
-    /* Der Automat wartet nach los() auf Spikiu. Die Eröffnung IST Spikius
-       erster Zug — nur eben aus der Datenbank statt aus dem Modell. */
+  function spikiuSagt(text, bruecke, mitFeld) {
     automat.spikiuAntwortet(text);
-    verlauf.push({ role: 'assistant', content: text });
-    spikiuKarte(text, na, true);
+    geerntet.gehoert.push(text);
     speichern();
-  }
 
-  /* ══════════════════════════════════════════════════════════
-     3 · SPIKIU-KARTE (mit Aufgabe und Eingabe, wenn dran)
-     ══════════════════════════════════════════════════════════ */
-  function spikiuKarte(text, brueckentext, mitFeld) {
     var z = automat.zustand();
     var aufgaben = automat.aufgabenListe();
     var k = karte();
@@ -333,9 +396,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
           + '<div class="zug">' + esc(text) + '</div>'
           + '<div class="werkz">'
           +   '<button class="ikon" data-hoer aria-label="Anhören">🔊</button>'
-          +   (brueckentext ? '<button class="ikon" data-ueb aria-label="Übersetzung">文</button>' : '')
+          +   (bruecke ? '<button class="ikon" data-ueb aria-label="Übersetzung">'
+                       + esc(MU.toUpperCase()) + '</button>' : '')
           + '</div>'
-          + (brueckentext ? '<div class="ueb">' + esc(brueckentext) + '</div>' : '');
+          + (bruecke ? '<div class="ueb">' + esc(bruecke) + '</div>' : '');
 
     var zeigeAufgabe = mitFeld && z.aufgabeIndex < aufgaben.length;
     if (zeigeAufgabe) {
@@ -344,282 +408,163 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         h += '<div class="st' + (i < z.aufgabeIndex ? ' fertig'
                                : i === z.aufgabeIndex ? ' jetzt' : '') + '"></div>';
       }
-      h += '</div>'
-        +  '<div class="zaehler">Aufgabe ' + (z.aufgabeIndex + 1) + ' von ' + aufgaben.length + '</div>'
-        +  '<div class="aufg"><div class="capy">' + CAPY + '</div>'
-        +    '<div class="txt"><div class="l">Deine Aufgabe</div>'
-        +    '<div class="t">' + esc(inSprache(aufgaben[z.aufgabeIndex], MU)) + '</div></div></div>'
+      h += '</div><div class="zaehler">Aufgabe ' + (z.aufgabeIndex + 1)
+        +  ' von ' + aufgaben.length + '</div>'
+        +  '<div class="aufg">'
+        +    '<div class="capy" data-capy role="button" tabindex="0" aria-label="Hilfe">'
+        +      '<span class="punkt" data-punkt></span>' + CAPY + '</div>'
+        +    '<div class="txt"><div class="l" data-lbl></div>'
+        +    '<div class="t leer" data-aufg>Was soll ich tun?</div></div>'
+        +  '</div>'
+        +  '<div class="hinweis" data-hinweis>'
+        +    '<div class="l">So könntest du es sagen</div>'
+        +    '<div class="s" data-satz></div>'
+        +    '<div class="kn"><button data-einsetzen>Einsetzen</button>'
+        +      '<button data-hsprich>🔊 Anhören</button></div>'
+        +  '</div>'
         +  '<textarea class="feld" placeholder="Antworte …"></textarea>';
     }
     k.innerHTML = h;
 
-    var hoerBtn = k.querySelector('[data-hoer]');
-    if (hoerBtn) hoerBtn.onclick = function () { sprich(text); };
-    var uebBtn = k.querySelector('[data-ueb]');
-    if (uebBtn) uebBtn.onclick = function () { k.querySelector('.ueb').classList.toggle('an'); };
+    var hb = k.querySelector('[data-hoer]'); if (hb) hb.onclick = function () { sprich(text); };
+    var ub = k.querySelector('[data-ueb]');
+    if (ub) ub.onclick = function () { k.querySelector('.ueb').classList.toggle('an'); };
 
-    if (zeigeAufgabe) {
-      var feld = k.querySelector('.feld');
-      var b = document.createElement('button');
-      b.className = 'knopf';
-      b.textContent = 'Senden';
-      b.disabled = true;
-      feld.addEventListener('input', function () { b.disabled = !feld.value.trim(); });
-      feld.addEventListener('keydown', function (ev) {
-        if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); b.click(); }
-      });
-      b.onclick = function () {
-        var t = feld.value.trim();
-        if (!t || busy) return;                 // R4 · Doppelklick prallt ab
-        b.disabled = true; feld.disabled = true;
-        senden(t);
-      };
-      k.appendChild(b);
-      setTimeout(function () { try { feld.focus(); } catch (e) {} }, 60);
+    if (zeigeAufgabe) bauSouffleur(k, z.aufgabeIndex, aufgaben);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3 · DER SOUFFLEUR — zwei Stufen auf Tipp
+     Erster Tipp: die Aufgabe. Zweiter: der fertige Satz.
+     Der blaue Punkt sagt „hier gibt es noch mehr" und verschwindet,
+     wenn alles ausgeklappt ist — sonst weiß niemand, dass man tippen kann.
+     ══════════════════════════════════════════════════════════ */
+  function bauSouffleur(k, index, aufgaben) {
+    var stufe  = 0;
+    var capy   = k.querySelector('[data-capy]');
+    var punkt  = k.querySelector('[data-punkt]');
+    var lbl    = k.querySelector('[data-lbl]');
+    var txt    = k.querySelector('[data-aufg]');
+    var hin    = k.querySelector('[data-hinweis]');
+    var satzEl = k.querySelector('[data-satz]');
+    var feld   = k.querySelector('.feld');
+
+    /* Der Satz zum Abschreiben ist die LERNERZEILE aus dem Skript — sie steht
+       in der Datenbank, der Hinweis kostet nichts. */
+    var satz = lernerZeilen[index] ? lernerZeilen[index].z : '';
+    satzEl.textContent = satz;
+
+    function zeichne() {
+      if (stufe === 0) {
+        lbl.textContent = '';
+        txt.className = 't leer';
+        txt.textContent = 'Was soll ich tun?';
+      } else {
+        lbl.textContent = 'Deine Aufgabe';
+        txt.className = 't';
+        txt.textContent = inSprache(aufgaben[index], MU);
+      }
+      hin.classList.toggle('an', stufe >= 2 && !!satz);
+      punkt.style.display = (stufe >= 2 || (stufe === 1 && !satz)) ? 'none' : 'block';
     }
-    return k;
+    capy.onclick = function () { stufe = Math.min(stufe + 1, 2); zeichne(); };
+    capy.onkeydown = function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); capy.click(); }
+    };
+    zeichne();
+
+    /* Wer schon einmal danebenlag, bekommt die Aufgabe von selbst zu sehen —
+       er soll nicht auch noch raten müssen, wo die Hilfe steckt. */
+    if (daneben > 0) { stufe = 1; zeichne(); }
+
+    k.querySelector('[data-hsprich]').onclick = function () { sprich(satz); };
+    k.querySelector('[data-einsetzen]').onclick = function () {
+      feld.value = satz;
+      feld.dispatchEvent(new Event('input'));
+      try { feld.focus(); } catch (e) {}
+    };
+
+    var b = document.createElement('button');
+    b.className = 'knopf';
+    b.textContent = 'Senden';
+    b.disabled = true;
+    feld.addEventListener('input', function () { b.disabled = !feld.value.trim(); });
+    feld.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); if (!b.disabled) b.click(); }
+    });
+    b.onclick = function () {
+      var t = feld.value.trim();
+      if (!t || busy) return;                     // R4 · Doppelklick prallt ab
+      b.disabled = true; feld.disabled = true; capy.onclick = null;
+      senden(t, index);
+    };
+    k.appendChild(b);
+    setTimeout(function () { try { feld.focus(); } catch (e) {} }, 60);
   }
 
   /* ══════════════════════════════════════════════════════════
      4 · DER ZUG DES LERNERS
      ══════════════════════════════════════════════════════════ */
-  function senden(text) {
+  function senden(text, index) {
     var art = 'offen';
-    try {
-      if (window.SpikiuSieb) art = window.SpikiuSieb.art(text, ZS, MU);
-    } catch (e) { art = 'offen'; }
+    try { if (window.SpikiuSieb) art = window.SpikiuSieb.art(text, ZS, MU); } catch (e) {}
 
-    var vorher = automat.zustand();
-    var z = automat.antworte(text, art);
-    if (z.abgelehnt) return;                     // der Automat hat entschieden
+    var erwartet = lernerZeilen[index] ? lernerZeilen[index].z : '';
+    var getroffen = (art === 'offen') && trifft(text, erwartet);
+    var durchlassen = getroffen || daneben >= MAX_DANEBEN - 1;
 
-    var k = karte('du');
-    k.innerHTML = '<div class="zug">' + esc(text) + '</div>';
+    /* Nur ein offener UND durchgelassener Zug rückt die Aufgabe vor. Alles
+       andere zählt gegen die Decke, aber nicht gegen die Aufgaben (R13). */
+    var z = automat.antworte(text, (art === 'offen' && durchlassen) ? 'offen' : 'rolle');
+    if (z.abgelehnt) return;
 
-    /* Nur ein offener Zug wandert in die Ernte — eine Rückfrage ist keine
-       Leistung, die man mit nach Hause nimmt (R13). */
-    if (art === 'offen') geerntet.gesagt.push(text);
-
-    verlauf.push({ role: 'user', content: text });
-    speichern();
-    holen(vorher.aufgabeIndex, art);
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     5 · DAS MODELL — Weg B: die Skriptzeile geht als ZIEL mit
-     ══════════════════════════════════════════════════════════ */
-  function baueSzeneBlock(aufgabeIndex, art) {
-    var aufgaben = automat.aufgabenListe();
-    var z = automat.zustand();
-    var offen = aufgaben[aufgabeIndex] ? inSprache(aufgaben[aufgabeIndex], MU) : null;
-    var ziel  = zielzeilen[aufgabeIndex] || null;
-
-    return {
-      offen:       offen,
-      /* WEG B. Nicht „sei ein Taxifahrer", sondern: deine nächste Zeile muss
-         DAS bedeuten — reagiere zuerst kurz auf das, was er wirklich gesagt
-         hat. Damit ist das Skript Zielvorgabe statt Kulisse, und Aufgabe und
-         Gespräch können nicht mehr auseinanderlaufen. */
-      zielzeile:   ziel,
-      /* Das Sieb hat entschieden, was für ein Zug das war. Bei „rolle" soll
-         die Figur sich einfacher wiederholen statt weiterzugehen. */
-      zugart:      art,
-      erledigt:    z.aufgabeIndex,
-      gesamt:      aufgaben.length,
-      zug:         z.zug,
-      maxZuege:    ZUG_DECKEL,
-      rolleSpikiu: inSprache(ROLLE && ROLLE.spikiu, MU),
-      rolleLerner: inSprache(ROLLE && ROLLE.lerner, MU),
-      ort:         inSprache(ROLLE && ROLLE.ort, MU)
-    };
-  }
-
-  async function holen(aufgabeIndex, art) {
     busy = true;
-    punkteAn();
+    karte('du').innerHTML = '<div class="zug">' + esc(text) + '</div>';
+    protokoll.push({ aufgabe: index, gesagt: text, erwartet: erwartet, getroffen: getroffen });
 
-    var profil = {
-      name:           PROFIL.name || '',
-      muttersprache:  MU,
-      zielsprache:    ZS,
-      koennen:        PROFIL.koennen || 'anfang',
-      fremde_schrift: !!PROFIL.fremde_schrift,
-      szene:          baueSzeneBlock(aufgabeIndex, art)
-    };
-
-    var antwort = '';
-    try {
-      var r = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: verlauf.slice(), profile: profil, maxTokens: MAX_TOKENS })
-      });
-      var roh = await r.text();
-      var d = null;
-      try { d = roh ? JSON.parse(roh) : null; } catch (e) { d = null; }
-      if (!r.ok) {
-        console.error('gespraech ' + r.status, d || roh);
-        throw new Error('http ' + r.status);
-      }
-      antwort = (d && d.text) || '';
-    } catch (e) {
-      punkteAus();
-      busy = false;
-      netzfehler(aufgabeIndex, art, (e && e.message) || String(e));
-      return;
-    }
-
-    punkteAus();
-    busy = false;
-    zeigeAntwort(antwort);
-  }
-
-  /* R14 · Ein Netzfehler ist kein Zug. Der Zähler bleibt stehen, „Nochmal"
-     schickt denselben Text erneut. Zwei Fehler hintereinander → Ernte. */
-  function netzfehler(aufgabeIndex, art, meldung) {
-    var z = automat.netzFehler();
-    if (z.phase === 'ernte') { ernte(); return; }
-
-    var k = karte('fehlerkarte');
-    k.innerHTML = '<div class="zug">Keine Verbindung. ' + esc(meldung) + '</div>';
-    var b = document.createElement('button');
-    b.className = 'knopf stumm';
-    b.textContent = 'Nochmal';
-    b.onclick = function () {
-      b.disabled = true;
-      automat.nochmal();
-      if (k.parentNode) k.parentNode.removeChild(k);
-      holen(aufgabeIndex, art);
-    };
-    k.appendChild(b);
-  }
-
-  /* ── Marker aus dem Text lösen ────────────────────────────── */
-  function loeseKarte(text) {
-    var m = /\[KARTE:([^\]]*)\]/.exec(text);
-    if (!m) return { text: text, karte: null };
-    var teile = m[1].split('|');
-    return {
-      text: text.replace(m[0], '').trim(),
-      karte: { wort: (teile[0] || '').trim(), erklaerung: (teile[1] || '').trim() }
-    };
-  }
-  function loeseBruecke(text) {
-    var m = /\[\[([^\]]*)\]\]/.exec(text);
-    if (!m) return { text: text, bruecke: '' };
-    return { text: text.replace(m[0], '').trim(), bruecke: (m[1] || '').trim() };
-  }
-  function putzen(text) {
-    /* Alle Signale, die in diesem Raum keine Wirkung haben, verschwinden aus
-       dem Text — sonst stehen sie roh auf der Karte (gesehen 30.08.):
-         [OPTIONEN]…[/OPTIONEN]  hier wird frei geantwortet, nicht gewählt
-         [KORREKTUR]             die Figur reformuliert, sie korrigiert nicht
-         [WECHSEL:…]             gewechselt wird über die Stationsliste
-         [SZENENENDE]            beendet wird über R6/R7, nicht vom Modell
-       Der Prompt kennt diese Signale noch aus chat.html. Bis er angepasst
-       ist, ist das Wegputzen die einzige Sicherung — und es bleibt danach
-       stehen, weil ein Modell eine Regel vergessen kann, eine Funktion nicht. */
-    return String(text || '')
-      .replace(/\[OPTIONEN\][\s\S]*?\[\/OPTIONEN\]/g, '')
-      .replace(/\[\/?OPTIONEN\]/g, '')
-      .replace(/\[KORREKTUR\][\s\S]*?(?:\n|$)/g, '')
-      .replace(/\[WECHSEL:[^\]]*\]/g, '')
-      .replace(/\[SZENENENDE\]/g, '')
-      .replace(/\[AUFGABE\]/g, '')
-      .replace(/[ \t]{2,}/g, ' ')
-      .trim();
-  }
-
-  /* R5 · Spikiu darf seine Replik in mehrere Blasen teilen, getrennt durch
-     eine Strichzeile. Jede Blase wird eine eigene Karte; Zähler, Aufgabe und
-     Eingabefeld trägt NUR DIE LETZTE.
-     szene.js teilt nur an Zeilen, die ausschließlich aus Strichen bestehen.
-     Haiku setzt die Striche aber auch mitten in die Zeile („Muy bien. --- ¿A
-     qué dirección vamos?", gesehen 30.08.), deshalb hier die tolerantere
-     Fassung: Striche mit Leerraum drumherum trennen ebenfalls. */
-  function teileInBlasen(text) {
-    return String(text || '')
-      .split(/(?:^|\s)(?:-{3,}|—)(?:\s|$)/)
-      .map(function (s) { return s.trim(); })
-      .filter(function (s) { return s.length > 0; });
-  }
-
-  function zeigeAntwort(roh) {
-    var ka = loeseKarte(putzen(roh));
-
-    /* Die Erklärkarte ist die GANZE Antwort — kein Fließtext daneben, sonst
-       mischt sich die Szene in die Erklärung. In den Verlauf wandert eine
-       Notiz, nicht die Karte: läge das Kartenformat im Verlauf, ahmte Spikiu
-       es in den Folgezügen nach (teuer gelernt). */
-    if (ka.karte && ka.karte.wort) {
-      automat.spikiuAntwortet(roh || '');
-      var k = karte('k-erklaer');
-      k.innerHTML = '<div class="w">' + esc(ka.karte.wort) + '</div>'
-                  + '<div class="b">' + esc(ka.karte.erklaerung) + '</div>';
-      verlauf.push({ role: 'assistant', content: '(Erklärkarte: ' + ka.karte.wort + ')' });
-      weiter();
-      speichern();
-      return;
-    }
-
-    /* Erst teilen, DANN je Blase die Brücke lösen. Andersherum bleibt bei
-       zwei Blasen die zweite Brücke stehen — genau der Fehler vom 30.08.:
-       „¿A qué dirección vamos? [[Zu welcher Adresse fahren wir?]]" stand roh
-       auf der Karte, weil nur die erste [[…]] entfernt worden war. */
-    var blasen = teileInBlasen(ka.text);
-    if (!blasen.length) blasen = [putzen(roh) || '…'];
-
-    var stuecke = blasen.map(function (b) {
-      var br = loeseBruecke(b);
-      return { text: br.text || b, bruecke: br.bruecke };
-    }).filter(function (x) { return x.text; });
-    if (!stuecke.length) stuecke = [{ text: '…', bruecke: '' }];
-
-    var ganz = stuecke.map(function (x) { return x.text; }).join(' ');
-    automat.spikiuAntwortet(ganz);
-    geerntet.gehoert.push(ganz);
-    verlauf.push({ role: 'assistant', content: ganz });
+    if (art === 'offen' && durchlassen) { geerntet.gesagt.push(text); daneben = 0; }
+    else if (art === 'offen')           { daneben += 1; }
     speichern();
 
-    var z = automat.zustand();
-    /* R6 · Alle Aufgaben erledigt → der Ausgang geht auf, die Szene endet
-       NICHT von selbst. R7 · Sechs Züge → sie endet doch. */
-    var mitFeld = !z.ausgangOffen && z.zug < ZUG_DECKEL;
-    stuecke.forEach(function (x, i) {
-      spikiuKarte(x.text, x.bruecke, mitFeld && i === stuecke.length - 1);
-    });
+    nachDenkpause(function () {
+      busy = false;
+      var neu = automat.zustand();
 
-    if (z.ausgangOffen || z.zug >= ZUG_DECKEL) schluss();
+      if (art !== 'offen') {
+        /* Rückfrage oder Meta-Frage: die Figur wiederholt ihre Zeile,
+           die Aufgabe bleibt stehen. */
+        spikiuSagt(zielzeilen[index] || '', brueckeZu(index), true);
+        return;
+      }
+      if (!durchlassen) {
+        var nv = NICHT_VERSTANDEN[ZS] || NICHT_VERSTANDEN.es;
+        spikiuSagt(nv.z, inSprache(nv.na, MU), true);
+        return;
+      }
+      spikiuSagt(zielzeilen[index] || '', brueckeZu(index),
+                 !neu.ausgangOffen && neu.zug < ZUG_DECKEL);
+      if (neu.ausgangOffen || neu.zug >= ZUG_DECKEL) schluss();
+    });
   }
 
-  /* Nach einer Erklärkarte läuft die Szene weiter — dieselbe Aufgabe bleibt. */
-  function weiter() {
-    var z = automat.zustand();
-    if (z.zug >= ZUG_DECKEL) { schluss(); return; }
-    var letzte = '';
-    for (var i = verlauf.length - 1; i >= 0; i--) {
-      if (verlauf[i].role === 'assistant' && verlauf[i].content.indexOf('(Erklärkarte') !== 0) {
-        letzte = verlauf[i].content; break;
-      }
-    }
-    spikiuKarte(letzte || '…', '', true);
+  /* Die Brücke zu Spikius Zeile — aus der Datenbank, nicht erfunden. */
+  function brueckeZu(index) {
+    var zeilen = (ST.dialog && ST.dialog.zeilen) || [];
+    var sp = zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+    var versatz = (zeilen[0] && zeilen[0].wer === 'spikiu') ? 1 : 0;
+    var z = sp[index + versatz];
+    if (z && z.na) return inSprache(z.na, MU);
+    var a = LP.abrundungVon(STUFE, THEMA);
+    return (a && a.na) ? inSprache(a.na, MU) : '';
   }
 
   /* ══════════════════════════════════════════════════════════
-     6 · DER RUNDE ABSCHLUSS
-     Leo, 30.08.: „Das Gespräch soll nie abrupt enden. Spikiu muss
-     darauf reagieren. Dann erst soll eine Karte stehen mit beenden.
-     Denn der User kann theoretisch zurück wollen."
+     5 · DER RUNDE ABSCHLUSS
      ══════════════════════════════════════════════════════════ */
   function schluss() {
-    /* Die Abrundung kommt aus der Datenbank — null Token. Fiel sie schon als
-       Zielzeile in die letzte Modell-Antwort, wird sie nicht doppelt gezeigt. */
     if (!abrundungIstZiel) {
       var a = LP.abrundungVon(STUFE, THEMA);
-      if (a && a.z) {
-        geerntet.gehoert.push(a.z);
-        spikiuKarte(a.z, a.na ? inSprache(a.na, MU) : '', false);
-      }
+      if (a && a.z) spikiuSagt(a.z, a.na ? inSprache(a.na, MU) : '', false);
     }
     var k = karte();
     k.innerHTML = '<div class="zaehler" style="margin:0 0 .9rem">'
@@ -632,28 +577,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   }
 
   /* ══════════════════════════════════════════════════════════
-     7 · DIE ERNTE — nur was im Gespräch vorkam (Leo, Frage 1)
+     6 · DIE ERNTE — nur was vorkam
      ══════════════════════════════════════════════════════════ */
-  function normal(t) {
-    return ' ' + String(t || '').toLowerCase()
-      .replace(/[¿?¡!.,;:„“"'()]/g, ' ')
-      .replace(/\s+/g, ' ') + ' ';
-  }
-
   function ernte() {
-    var alles = normal(geerntet.gesagt.join(' ') + ' ' + geerntet.gehoert.join(' '));
+    var alles = ' ' + flach(geerntet.gesagt.join(' ') + ' ' + geerntet.gehoert.join(' ')) + ' ';
     var lager = LP.ernte(STUFE, THEMA, MU) || [];
 
-    var vorgekommen = lager.filter(function (x) {
-      var n = normal(x.z).trim();
+    var da = lager.filter(function (x) {
+      var n = flach(x.z);
       if (!n) return false;
       if (alles.indexOf(' ' + n + ' ') > -1) return true;
-      /* Eine Wendung gilt auch als vorgekommen, wenn ihre tragenden Wörter
-         gefallen sind — „La cuenta, por favor" und „la cuenta por favor?"
-         sind dasselbe Ereignis. Kurze Füllwörter zählen dabei nicht mit. */
-      var woerter = n.split(' ').filter(function (w) { return w.length > 3; });
-      if (!woerter.length) return false;
-      return woerter.every(function (w) { return alles.indexOf(' ' + w) > -1; });
+      var w = n.split(' ').filter(function (s) { return s.length > 3; });
+      if (!w.length) return false;
+      return w.every(function (s) { return alles.indexOf(' ' + s) > -1; });
     });
 
     var thema = LP.thema(THEMA);
@@ -661,9 +597,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var h = '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">Das hast du geübt</div>'
           + '<div class="bue-ort">' + esc(inSprache(thema && thema.na, MU)) + '</div>';
 
-    function gruppe(ueberschrift, liste) {
+    function gruppe(ueber, liste) {
       if (!liste.length) return '';
-      var s = '<div class="e-kopf">' + ueberschrift + '</div>';
+      var s = '<div class="e-kopf">' + ueber + '</div>';
       liste.forEach(function (x) {
         s += '<div class="e-z"><button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
           +  '<span class="e-w">' + esc(x.z) + '</span>'
@@ -671,11 +607,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       });
       return s;
     }
-    h += gruppe('Das kannst du sagen', vorgekommen.filter(function (x) { return x.art === 'wendung'; }));
-    h += gruppe('Wörter', vorgekommen.filter(function (x) { return x.art === 'wort'; }));
-    if (!vorgekommen.length) {
+    h += gruppe('Das kannst du sagen', da.filter(function (x) { return x.art === 'wendung'; }));
+    h += gruppe('Wörter', da.filter(function (x) { return x.art === 'wort'; }));
+    if (!da.length) {
       h += '<div class="e-kopf">Noch nichts eingesammelt</div>'
-        +  '<div class="bue-ort" style="margin:0">Beim nächsten Mal bleibt hier stehen, '
+        +  '<div class="bue-ort" style="margin:0">Beim nächsten Mal steht hier, '
         +  'was ihr wirklich gesagt habt.</div>';
     }
     k.innerHTML = h;
@@ -690,19 +626,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     b.onclick = function () { raeumen(); location.href = 'haus.html'; };
     k.appendChild(b);
 
-    raeumen();   // R9 · die Szene ist zu, kein Wiederkommen anbieten
+    raeumen();
   }
 
-  /* ══════════════════════════════════════════════════════════
-     SITZUNG — keine Arbeit geht durch einen Fehl-Tipp verloren
-     ══════════════════════════════════════════════════════════ */
+  /* ── Sitzung ──────────────────────────────────────────────── */
   function speichern() {
     try {
-      if (!window.spikiuSitzung) return;
+      if (!window.spikiuSitzung || !automat) return;
       var z = automat.zustand();
       if (z.vorbei || z.phase === 'ernte') return;
       window.spikiuSitzung.speichere('szene', {
-        stufe: STUFE, thema: THEMA, verlauf: verlauf, geerntet: geerntet
+        stufe: STUFE, thema: THEMA, geerntet: geerntet, protokoll: protokoll
       });
     } catch (e) {}
   }
@@ -710,11 +644,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     try { if (window.spikiuSitzung) window.spikiuSitzung.raeume('szene'); } catch (e) {}
   }
 
-  /* ══════════════════════════════════════════════════════════
-     STATIONSWAHL, falls die Seite ohne Thema aufgerufen wird
-     ══════════════════════════════════════════════════════════ */
+  /* ── Themenwahl ohne Parameter ────────────────────────────── */
   function waehler() {
-    titel.firstChild.nodeValue = 'Szene';
+    titel.firstChild.nodeValue = 'Szene ';
     unter.textContent = 'Wähle ein Thema';
     var k = karte();
     var h = '<div class="bue-titel" style="font-size:1.3rem">Wo möchtest du üben?</div>'
@@ -724,8 +656,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       h += '<button data-thema="' + esc(t.id) + '"' + (da ? '' : ' class="leer" disabled') + '>'
         +  esc(t.em) + ' ' + esc(inSprache(t.na, MU)) + '</button>';
     });
-    h += '</div>';
-    k.innerHTML = h;
+    k.innerHTML = h + '</div>';
     Array.prototype.forEach.call(k.querySelectorAll('[data-thema]'), function (b) {
       b.onclick = function () {
         location.href = 'szene.html?stufe=' + encodeURIComponent(STUFE)
@@ -733,11 +664,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       };
     });
   }
-
-  function hinweis(text) {
-    var k = karte();
-    k.innerHTML = '<div class="zug" style="font-family:\'DM Sans\',sans-serif;font-size:1rem">'
-                + esc(text) + '</div>';
+  function hinweisKarte(t) {
+    karte().innerHTML = '<div class="zug" style="font-family:\'DM Sans\',sans-serif;font-size:1rem">'
+                      + esc(t) + '</div>';
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -747,43 +676,40 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 
   if (!LP || !window.SpikiuSzene) {
     unter.textContent = 'Fehler';
-    hinweis('Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. '
-          + 'Prüfe die <script>-Reihenfolge in szene.html.');
+    hinweisKarte('Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. '
+               + 'Prüfe die Script-Reihenfolge in szene.html.');
     return;
   }
   if (LP.zielsprache !== ZS) {
-    /* Laut melden statt still falsche Wörter zeigen (Lehre vom 18.08.). */
     console.warn('[Szene] Profil will "' + ZS + '", geladen ist "' + LP.zielsprache + '".');
     ZS = LP.zielsprache;
   }
-
   if (!THEMA || !LP.gefuellt(STUFE, THEMA)) { waehler(); return; }
 
-  ST    = LP.station(STUFE, THEMA);
+  ST = LP.station(STUFE, THEMA);
   ROLLE = LP.rolle(THEMA);
   var aufgaben = LP.aufgabenVon(STUFE, THEMA);
-
   if (!ST || !aufgaben.length) {
     unter.textContent = 'noch leer';
-    hinweis('Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.');
+    hinweisKarte('Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.');
     return;
   }
 
-  /* WEG B · Die Zielzeilen. Spikius Skriptzeilen der Reihe nach — beginnt der
-     Dialog mit Spikiu, ist seine erste Zeile bereits die Eröffnung und zählt
-     nicht als Ziel. Ist die Liste erschöpft, ist die Abrundung das Ziel: dann
-     reagiert Spikiu auf die letzte Antwort UND schließt in einem Zug. */
+  /* Spikius Zeilen der Reihe nach. Beginnt der Dialog mit ihm, ist seine erste
+     Zeile bereits die Eröffnung und zählt nicht mit. Ist die Liste erschöpft,
+     übernimmt die Abrundung — dann antwortet Spikiu auf die letzte Aufgabe UND
+     schließt in einem Zug, ohne dass sich etwas doppelt. */
   (function () {
     var zeilen = (ST.dialog && ST.dialog.zeilen) || [];
-    var spikiuZeilen = zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+    var sp = zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+    lernerZeilen = zeilen.filter(function (z) { return z.wer === 'lerner'; });
     var versatz = (zeilen[0] && zeilen[0].wer === 'spikiu') ? 1 : 0;
     var abr = LP.abrundungVon(STUFE, THEMA);
     for (var i = 0; i < aufgaben.length; i++) {
-      var z = spikiuZeilen[i + versatz];
-      if (z) {
-        zielzeilen.push(z.z);
-      } else {
-        zielzeilen.push(abr ? abr.z : null);
+      var z = sp[i + versatz];
+      if (z) zielzeilen.push(z.z);
+      else {
+        zielzeilen.push(abr ? abr.z : '');
         if (i === aufgaben.length - 1) abrundungIstZiel = true;
       }
     }
