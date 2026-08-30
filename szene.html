@@ -510,15 +510,38 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     return { text: text.replace(m[0], '').trim(), bruecke: (m[1] || '').trim() };
   }
   function putzen(text) {
-    /* [WECHSEL:] und [SZENENENDE] haben in einer Station-Szene keine Wirkung:
-       gewechselt wird über die Stationsliste, beendet wird über R6/R7. Sie
-       werden nur entfernt, damit sie nie im Text auftauchen. */
+    /* Alle Signale, die in diesem Raum keine Wirkung haben, verschwinden aus
+       dem Text — sonst stehen sie roh auf der Karte (gesehen 30.08.):
+         [OPTIONEN]…[/OPTIONEN]  hier wird frei geantwortet, nicht gewählt
+         [KORREKTUR]             die Figur reformuliert, sie korrigiert nicht
+         [WECHSEL:…]             gewechselt wird über die Stationsliste
+         [SZENENENDE]            beendet wird über R6/R7, nicht vom Modell
+       Der Prompt kennt diese Signale noch aus chat.html. Bis er angepasst
+       ist, ist das Wegputzen die einzige Sicherung — und es bleibt danach
+       stehen, weil ein Modell eine Regel vergessen kann, eine Funktion nicht. */
     return String(text || '')
+      .replace(/\[OPTIONEN\][\s\S]*?\[\/OPTIONEN\]/g, '')
+      .replace(/\[\/?OPTIONEN\]/g, '')
+      .replace(/\[KORREKTUR\][\s\S]*?(?:\n|$)/g, '')
       .replace(/\[WECHSEL:[^\]]*\]/g, '')
       .replace(/\[SZENENENDE\]/g, '')
       .replace(/\[AUFGABE\]/g, '')
-      .replace(/\[KORREKTUR\][\s\S]*?(?:\n|$)/g, '')
+      .replace(/[ \t]{2,}/g, ' ')
       .trim();
+  }
+
+  /* R5 · Spikiu darf seine Replik in mehrere Blasen teilen, getrennt durch
+     eine Strichzeile. Jede Blase wird eine eigene Karte; Zähler, Aufgabe und
+     Eingabefeld trägt NUR DIE LETZTE.
+     szene.js teilt nur an Zeilen, die ausschließlich aus Strichen bestehen.
+     Haiku setzt die Striche aber auch mitten in die Zeile („Muy bien. --- ¿A
+     qué dirección vamos?", gesehen 30.08.), deshalb hier die tolerantere
+     Fassung: Striche mit Leerraum drumherum trennen ebenfalls. */
+  function teileInBlasen(text) {
+    return String(text || '')
+      .split(/(?:^|\s)(?:-{3,}|—)(?:\s|$)/)
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 0; });
   }
 
   function zeigeAntwort(roh) {
@@ -539,19 +562,32 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       return;
     }
 
-    var br = loeseBruecke(ka.text);
-    var text = br.text || putzen(roh) || '…';
+    /* Erst teilen, DANN je Blase die Brücke lösen. Andersherum bleibt bei
+       zwei Blasen die zweite Brücke stehen — genau der Fehler vom 30.08.:
+       „¿A qué dirección vamos? [[Zu welcher Adresse fahren wir?]]" stand roh
+       auf der Karte, weil nur die erste [[…]] entfernt worden war. */
+    var blasen = teileInBlasen(ka.text);
+    if (!blasen.length) blasen = [putzen(roh) || '…'];
 
-    automat.spikiuAntwortet(text);
-    geerntet.gehoert.push(text);
-    verlauf.push({ role: 'assistant', content: text });
+    var stuecke = blasen.map(function (b) {
+      var br = loeseBruecke(b);
+      return { text: br.text || b, bruecke: br.bruecke };
+    }).filter(function (x) { return x.text; });
+    if (!stuecke.length) stuecke = [{ text: '…', bruecke: '' }];
+
+    var ganz = stuecke.map(function (x) { return x.text; }).join(' ');
+    automat.spikiuAntwortet(ganz);
+    geerntet.gehoert.push(ganz);
+    verlauf.push({ role: 'assistant', content: ganz });
     speichern();
 
     var z = automat.zustand();
     /* R6 · Alle Aufgaben erledigt → der Ausgang geht auf, die Szene endet
        NICHT von selbst. R7 · Sechs Züge → sie endet doch. */
     var mitFeld = !z.ausgangOffen && z.zug < ZUG_DECKEL;
-    spikiuKarte(text, br.bruecke, mitFeld);
+    stuecke.forEach(function (x, i) {
+      spikiuKarte(x.text, x.bruecke, mitFeld && i === stuecke.length - 1);
+    });
 
     if (z.ausgangOffen || z.zug >= ZUG_DECKEL) schluss();
   }
