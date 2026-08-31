@@ -817,7 +817,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
           zielsprache:   ZS,
           muttersprache: MU,
           koennen:       PROFIL.koennen || 'anfang',
-          duzen:         LP.duzt ? LP.duzt(STUFE, THEMA) : false,
+          /* Kein duzen mehr: Spikiu duzt in der Rückmeldung IMMER. Die Rolle
+             in der Szene darf siezen — hier spricht aber nicht die Rolle,
+             sondern Spikiu mit dem Lerner (Leo, 31.08.). */
           szene:         inSprache(thema && thema.na, MU) + ' · '
                        + inSprache(ROLLE && ROLLE.ort, MU),
           paare:         paare
