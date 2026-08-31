@@ -27,10 +27,20 @@ const WORTE = {
   en: { titel: 'A look at your sentences',  gut: 'That worked.', besser: 'More natural would be' }
 };
 
-function systemPrompt(ziel, mutter, duzen, koennen) {
+// SPIKIU DUZT IMMER (Leo, 31.08.).
+// Die ROLLE in der Szene kann siezen — der Taxifahrer sagt „¿Lleva maletas?".
+// Aber hier spricht nicht die Rolle, sondern Spikiu, und Spikiu spricht mit
+// dem Lerner. Das gilt in allen Sprachen: du · tú · you.
+const ANREDE = {
+  de: 'Duze den Lerner („du", nie „Sie").',
+  es: 'Tutea al alumno („tú", nunca „usted").',
+  en: 'Address the learner informally as "you".'
+};
+
+function systemPrompt(ziel, mutter, koennen) {
   const ZS = SPRACHE[ziel] || 'Spanisch';
   const MU = SPRACHE[mutter] || 'Deutsch';
-  const anrede = duzen ? 'Duze den Lerner.' : 'Sieze den Lerner.';
+  const anrede = ANREDE[mutter] || ANREDE.de;
 
   return [
     `Du bist Spikiu. Ein Lerner hat gerade eine kurze Übungsszene auf ${ZS} gespielt.`,
@@ -80,7 +90,6 @@ export default async function handler(req, res) {
   const body = req.body || {};
   const ziel = body.zielsprache || 'es';
   const mutter = body.muttersprache || 'de';
-  const duzen = !!body.duzen;
   const koennen = body.koennen || 'anfang';
   const paare = Array.isArray(body.paare) ? body.paare.slice(0, 6) : [];
 
@@ -114,7 +123,7 @@ export default async function handler(req, res) {
         // Drei Anmerkungen zu je zwei kurzen Zeilen plus ein Schlusssatz
         // passen bequem in 600 Token. Der Client kann das nicht anheben.
         max_tokens: 600,
-        system: systemPrompt(ziel, mutter, duzen, koennen),
+        system: systemPrompt(ziel, mutter, koennen),
         messages: [{ role: 'user', content: szene + zeilen }]
       })
     });
