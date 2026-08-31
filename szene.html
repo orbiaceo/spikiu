@@ -818,7 +818,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       });
       return s;
     }
-    h += gruppe('Das kannst du sagen', da.filter(function (x) { return x.art === 'wendung'; }), true);
+    /* Nicht „Das kannst du sagen": in der Liste stehen auch die Zeilen des
+       Kellners, und die muss man VERSTEHEN, nicht sprechen (Leo, 31.08.). */
+    h += gruppe('Wendungen und Sätze', da.filter(function (x) { return x.art === 'wendung'; }), true);
     h += gruppe('Wörter', da.filter(function (x) { return x.art === 'wort'; }), false);
     if (!da.length) {
       h += '<div class="e-kopf">Noch nichts eingesammelt</div>'
