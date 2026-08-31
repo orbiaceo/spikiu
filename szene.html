@@ -72,7 +72,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   box-shadow:5px 6px 0 var(--ink);padding:1.3rem 1.2rem;
   transform:translateX(118%);opacity:0;pointer-events:none;
   transition:transform .38s cubic-bezier(.4,0,.2,1),opacity .38s ease;
-  will-change:transform,opacity}
+  will-change:transform,opacity;backface-visibility:hidden}
 .karte.jetzt{transform:translateX(0) rotate(0);opacity:1;pointer-events:auto;z-index:2}
 .karte.kommt{transform:translateX(114%) rotate(1.5deg);opacity:0;z-index:1}
 .karte.war  {transform:translateX(-114%) rotate(-1.5deg);opacity:0;z-index:1}
@@ -94,6 +94,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   justify-content:center;font-size:3rem;margin-bottom:.9rem}
 .bue-titel{font:600 1.6rem/1.15 'Cormorant Garamond',serif;margin-bottom:.4rem}
 .bue-ort{font:400 .85rem/1.4 'DM Sans';color:var(--mid);margin-bottom:.9rem}
+.fakten{background:var(--du);border:2px solid var(--ink);border-radius:.7rem;
+  padding:.75rem .85rem;margin-bottom:.9rem;box-shadow:3px 3px 0 var(--ink)}
+.fakten .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink);opacity:.6;margin-bottom:.3rem}
+.fakten .t{font:500 1.05rem/1.35 'DM Sans'}
 .rollen{display:flex;gap:.6rem;margin-bottom:1rem}
 .rolle{flex:1;background:var(--accent2);border:2px solid var(--ink);
   border-radius:.6rem;padding:.6rem}
@@ -150,6 +155,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   padding:.8rem;font:400 1.05rem/1.4 'DM Sans';text-align:center;resize:none;
   background:#fff;margin-top:1rem;color:var(--ink)}
 .feld:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px #d3eef6}
+/* Die Karte selbst darf nicht scrollen, wenn die Tastatur aufgeht — sonst
+   rutscht der Inhalt unter dem Finger weg. Passt der Text nicht, verkleinert
+   ihn anpassen(). */
+.karte{overscroll-behavior:contain}
 .knopf{width:100%;margin-top:.7rem;padding:.85rem;border:var(--ow) solid var(--ink);
   border-radius:999px;background:var(--accent);color:#fff;font:700 1rem/1 'DM Sans';
   box-shadow:4px 4px 0 var(--ink);cursor:pointer}
@@ -351,7 +360,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* Passt den Haupttext an, bis die Karte ohne Scrollen hineinpasst. Eine
      Regel an einem Ort statt fester Größen pro Element (aus chat.html). */
   function anpassen(s) {
-    if (!s) return;
+    if (!s || s.__angepasst) return;
+    s.__angepasst = true;
     var haupt = s.querySelectorAll('.zug');
     if (!haupt.length) return;
     var px = Math.min(30, Math.max(19, Math.round((s.clientWidth || 340) * 0.075)));
@@ -365,21 +375,21 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     }
   }
 
+  /* Nur die Karten anfassen, deren Zustand sich WIRKLICH ändert. Vorher wurde
+     bei jedem Schritt das className aller Karten neu zusammengesetzt — der
+     Browser startete dadurch sämtliche Übergänge neu, und auf dem Gerät sah
+     es aus wie ein Super-8-Film mit sichtbaren Schnitten (Leo, 31.08.). */
   function anordnen() {
     var l = slides();
     if (!l.length) return;
     if (reelIndex > l.length - 1) reelIndex = l.length - 1;
     if (reelIndex < 0) reelIndex = 0;
     for (var i = 0; i < l.length; i++) {
-      l[i].className = l[i].className.replace(/\s*(jetzt|war|kommt)/g, '')
-        + ' ' + (i < reelIndex ? 'war' : i === reelIndex ? 'jetzt' : 'kommt');
-    }
-    var jetzt = l[reelIndex];
-    if (jetzt) {
-      if (window.requestAnimationFrame) requestAnimationFrame(function () { anpassen(jetzt); });
-      else anpassen(jetzt);
-      var f = jetzt.querySelector('.feld');
-      if (f && !f.disabled) setTimeout(function () { try { f.focus(); } catch (e) {} }, 250);
+      var soll = (i < reelIndex) ? 'war' : (i === reelIndex) ? 'jetzt' : 'kommt';
+      var el = l[i];
+      if (el.classList.contains(soll)) continue;      // schon richtig → nicht anfassen
+      el.classList.remove('war', 'jetzt', 'kommt');
+      el.classList.add(soll);
     }
   }
   function zeige(i) { reelIndex = i; anordnen(); }
@@ -388,7 +398,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   function rueck() { if (reelIndex > 0) { reelIndex--; anordnen(); } }
 
   (function gesten() {
-    window.addEventListener('resize', function () { if (slides().length) anordnen(); });
+    /* Die Tastatur ändert auf dem Handy nur die HÖHE. Würden wir darauf neu
+       anordnen, wackelte das Deck bei jedem Tastendruck. Nur die Breite zählt. */
+    var letzteBreite = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === letzteBreite) return;
+      letzteBreite = window.innerWidth;
+      var l = slides();
+      for (var i = 0; i < l.length; i++) l[i].__angepasst = false;
+      if (l.length) { anpassen(l[reelIndex]); anordnen(); }
+    });
     var x0 = null, y0 = null;
     deck.addEventListener('touchstart', function (e) {
       var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY;
@@ -426,8 +445,15 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var d = document.createElement('div');
     d.className = 'karte' + (klasse ? ' ' + klasse : '') + ' kommt';
     deck.appendChild(d);
-    if (!stehenbleiben) setTimeout(zurZuletzt, 20);
-    else setTimeout(anordnen, 20);
+    /* Der Inhalt wird gleich nach diesem Aufruf gesetzt. Erst im nächsten
+       Bild messen und schieben — sonst misst anpassen() eine leere Karte und
+       der Text springt beim Erscheinen von groß auf klein. */
+    var ziel = stehenbleiben ? anordnen : zurZuletzt;
+    requestAnimationFrame(function () {
+      anpassen(d);                 // einmal, solange die Karte noch rechts steht
+      void d.offsetWidth;          // Reflow: der Browser kennt jetzt „kommt"
+      requestAnimationFrame(ziel); // erst danach schieben → echter Übergang
+    });
     return d;
   }
 
@@ -460,11 +486,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      ══════════════════════════════════════════════════════════ */
   function buehne() {
     var thema = LP.thema(THEMA);
+    var fakten = LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : '';
     var k = karte();
     k.innerHTML =
       '<div class="bue-bild">' + esc(thema ? thema.em : '🎭') + '</div>'
     + '<div class="bue-titel">' + esc(inSprache(thema && thema.na, MU)) + '</div>'
     + '<div class="bue-ort">' + esc(inSprache(ROLLE && ROLLE.ort, MU)) + '</div>'
+    /* WAS IN DIESER SZENE GILT. Ohne diesen Kasten verlangten die Aufgaben
+       Aussagen über das echte Leben des Lerners — wer keine Schwester hat,
+       müsste lügen, und die KI müsste den Bruch auffangen. Mit ihm ist es
+       ein Theaterstück: „Sí, una hermana" ist die Rolle, keine Behauptung.
+       Gelb wie die Karten des Lerners — es gehört ihm. */
+    + (fakten ? '<div class="fakten"><div class="l">Deine Rolle</div>'
+              + '<div class="t">' + esc(fakten) + '</div></div>' : '')
     + '<div class="rollen">'
     +   '<div class="rolle"><div class="l">Spikiu ist</div><div class="n">'
     +     esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div></div>'
@@ -644,11 +678,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         protokoll[nr].geaendert = true;
         speichern();
         ansicht();
-        anordnen();
+        k.__angepasst = false; anpassen(k);
       };
       k.appendChild(fertig);
       setTimeout(function () { try { f.focus(); } catch (e) {} }, 60);
-      anordnen();
     }
     ansicht();
     return k;

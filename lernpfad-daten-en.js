@@ -209,6 +209,10 @@
   var STATIONEN = {
 
     'a1.arzt': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du hast seit gestern Kopfschmerzen und Fieber.', es:'Desde ayer te duele la cabeza y tienes fiebre.', en:'Since yesterday you\'ve had a headache and a fever.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Of course. I\'ll send the prescription to your pharmacy. Feel better!', na:{ de:'Gern. Ich schicke das Rezept an Ihre Apotheke. Gute Besserung!', es:'Con gusto. Mando la receta a su farmacia. ¡Que se mejore!' } },
       wortschatz: [
@@ -261,6 +265,10 @@
     },
 
     'a1.bahnhof': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du willst nach Boston und wieder zurück.', es:'Quieres ir a Boston y volver.', en:'You want to go to Boston and come back.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Next in line. What can I do for you?', na:{ de:'Der Nächste bitte. Was kann ich für Sie tun?', es:'El siguiente. ¿En qué le ayudo?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -315,6 +323,10 @@
     },
 
     'a1.cafe': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du bist Gast im Café. Du möchtest einen Kaffee mit Milch und danach zahlen.', es:'Eres cliente en la cafetería. Quieres un café con leche y después pagar.', en:'You\'re a customer at the café. You want a coffee with milk and then to pay.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'That\'ll be three fifty. Have a great day!', na:{ de:'Das macht drei fünfzig. Schönen Tag noch!', es:'Son tres cincuenta. ¡Que tenga buen día!' } },
       wortschatz: [
@@ -367,6 +379,10 @@
     },
 
     'a1.einkaufen': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Im Supermarkt kaufst du Äpfel und Käse. Du zahlst mit Karte.', es:'En el supermercado compras manzanas y queso. Pagas con tarjeta.', en:'At the supermarket you buy apples and cheese. You\'re paying by card.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'All set. Have a good one!', na:{ de:'Fertig. Machen Sie es gut!', es:'Listo. ¡Que le vaya bien!' } },
       wortschatz: [
@@ -419,6 +435,10 @@
     },
 
     'a1.familie': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du hast eine Schwester. Sie heißt Klara und ist zwölf Jahre alt.', es:'Tienes una hermana. Se llama Clara y tiene doce años.', en:'You have a sister. Her name is Clara and she is twelve.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Oh, that\'s a fun age. Say hi to her from me!', na:{ de:'Ach, das schöne Alter. Grüß sie von mir!', es:'Ay, qué edad tan bonita. ¡Salúdala de mi parte!' } },
       wortschatz: [
@@ -471,6 +491,10 @@
     },
 
     'a1.hotel': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du heißt Weber, hast zwei Nächte gebucht und checkst gerade ein.', es:'Te apellidas Weber, has reservado dos noches y estás registrándote.', en:'Your name is Weber, you\'ve booked two nights and you\'re checking in.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Third floor — elevator\'s right around the corner. Enjoy your stay!', na:{ de:'Dritter Stock, der Aufzug ist gleich um die Ecke. Schönen Aufenthalt!', es:'Tercera planta, el ascensor está a la vuelta. ¡Que disfrute su estancia!' } },
       wortschatz: [
@@ -523,6 +547,10 @@
     },
 
     'a1.restaurant': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Ihr seid zu zweit und habt nicht reserviert. Was ihr esst, wisst ihr noch nicht.', es:'Son dos y no tienen reserva. Todavía no saben qué van a comer.', en:'There are two of you and no reservation. You haven\'t decided what to eat.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Excellent choice. I\'ll be right back with your water.', na:{ de:'Ausgezeichnete Wahl. Ich bringe Ihnen gleich Wasser.', es:'Excelente elección. Ahora les traigo agua.' } },
       wortschatz: [
@@ -575,6 +603,10 @@
     },
 
     'a1.taxi': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du hast einen Koffer dabei und willst zum Flughafen.', es:'Llevas una maleta y quieres ir al aeropuerto.', en:'You have one suitcase and you want to go to the airport.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Evening. Yeah?', na:{ de:'Guten Abend. Ja bitte?', es:'Buenas noches. ¿Sí?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -629,6 +661,10 @@
     },
 
     'a1.wegbeschreibung': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du suchst den Marktplatz und bist zu Fuß unterwegs.', es:'Buscas la plaza del mercado y vas a pie.', en:'You\'re looking for the market square and you\'re on foot.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Are you looking for something?', na:{ de:'Suchen Sie etwas?', es:'¿Busca algo?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -683,6 +719,10 @@
     },
 
     'a1.wetter': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Heute scheint die Sonne. Morgen soll es regnen.', es:'Hoy hace sol. Mañana dicen que va a llover.', en:'The sun is out today. Tomorrow it\'s supposed to rain.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'See you! Stay dry out there.', na:{ de:'Bis dann! Bleib trocken.', es:'¡Hasta luego! Que no te mojes.' } },
       wortschatz: [
@@ -735,6 +775,10 @@
     },
 
     'a2.arzt': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du bist letzte Woche gestürzt. Du nimmst Schmerztabletten und bist gegen Penizillin allergisch.', es:'Te caíste la semana pasada. Tomas analgésicos y eres alérgico a la penicilina.', en:'You fell last week. You take painkillers and you\'re allergic to penicillin.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Yes — come back Thursday. I\'ll write you a referral to a specialist.', na:{ de:'Ja, kommen Sie Donnerstag wieder. Ich schreibe Ihnen eine Überweisung zum Facharzt.', es:'Sí, vuelva el jueves. Le hago un volante para el especialista.' } },
       wortschatz: [
@@ -787,6 +831,10 @@
     },
 
     'a2.bahnhof': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Dein Zug hat zwanzig Minuten Verspätung. In Albany musst du um Viertel nach drei umsteigen.', es:'Tu tren lleva veinte minutos de retraso. En Albany tienes el transbordo a las tres y cuarto.', en:'Your train is twenty minutes late. You change in Albany at quarter past three.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Next. What can I do for you?', na:{ de:'Der Nächste bitte. Was kann ich für Sie tun?', es:'El siguiente. ¿En qué le ayudo?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -841,6 +889,10 @@
     },
 
     'a2.cafe': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Dein Kaffee ist kalt. Und du bist allergisch gegen Nüsse.', es:'Tu café está frío. Y eres alérgico a los frutos secos.', en:'Your coffee is cold. And you\'re allergic to nuts.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'How\'s everything over here?', na:{ de:'Alles in Ordnung bei Ihnen?', es:'¿Qué tal todo por aquí?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -895,6 +947,10 @@
     },
 
     'a2.einkaufen': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du hast gestern ein Hemd gekauft. Es ist dir zu groß, den Kassenbon hast du dabei.', es:'Ayer compraste una camisa. Te queda grande y llevas el ticket.', en:'You bought a shirt yesterday. It\'s too big and you have the receipt.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Hi there — what can I help you with?', na:{ de:'Guten Tag, womit kann ich Ihnen helfen?', es:'Hola, ¿en qué le puedo ayudar?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -949,6 +1005,10 @@
     },
 
     'a2.familie': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Als Kind hast du in einem kleinen Dorf gewohnt. Deine Schwester ist weggezogen.', es:'De niño vivías en un pueblo pequeño. Tu hermana se mudó.', en:'As a child you lived in a small village. Your sister has moved away.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'I get that. You\'ll see her soon enough, I bet.', na:{ de:'Das kann ich verstehen. Ihr seht euch bestimmt bald wieder.', es:'Lo entiendo. Seguro que la ves pronto.' } },
       wortschatz: [
@@ -1001,6 +1061,10 @@
     },
 
     'a2.hotel': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Seit gestern Abend geht die Heizung nicht, warmes Wasser auch nicht.', es:'Desde anoche no funciona la calefacción, y tampoco hay agua caliente.', en:'Since last night the heating hasn\'t worked, and there\'s no hot water either.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Good morning. How\'s the room treating you?', na:{ de:'Guten Morgen. Alles zu Ihrer Zufriedenheit?', es:'Buenos días. ¿Qué tal la habitación?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -1055,6 +1119,10 @@
     },
 
     'a2.restaurant': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Ihr seid zu zweit, wollt euch ein Gericht teilen und getrennt zahlen.', es:'Son dos, quieren compartir un plato y pagar por separado.', en:'There are two of you; you want to share a dish and pay separately.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Have you two decided, or do you need another minute?', na:{ de:'Haben Sie schon gewählt, oder brauchen Sie noch einen Moment?', es:'¿Ya eligieron, o necesitan un momento más?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -1109,6 +1177,10 @@
     },
 
     'a2.taxi': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du willst zum Flughafen und hast es eilig. Am Ende brauchst du eine Quittung.', es:'Quieres ir al aeropuerto y tienes prisa. Al final necesitas un recibo.', en:'You\'re in a hurry to the airport. At the end you need a receipt.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Morning. Where can I take you?', na:{ de:'Guten Morgen. Wohin darf ich Sie bringen?', es:'Buenos días. ¿Adónde le llevo?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -1163,6 +1235,10 @@
     },
 
     'a2.wegbeschreibung': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Du suchst das Museum und gehst gern zu Fuß.', es:'Buscas el museo y te gusta ir a pie.', en:'You\'re looking for the museum and you don\'t mind walking.' },
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'You look a little lost — need a hand?', na:{ de:'Sie sehen etwas ratlos aus — kann ich helfen?', es:'Parece un poco perdido, ¿le ayudo?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
@@ -1217,6 +1293,10 @@
     },
 
     'a2.wetter': {
+      /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
+         es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
+         Leben des Lerners — wer keine Schwester hat, müsste lügen. */
+      deineRolle: { de:'Ihr wollt am Samstag an den See. Du hast die Vorhersage noch nicht gesehen.', es:'Quieren ir al lago el sábado. Todavía no has visto el pronóstico.', en:'You want to go to the lake on Saturday. You haven\'t checked the forecast yet.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Works for me. I\'ll swing by around two — see you Saturday!', na:{ de:'Passt mir. Ich hole dich gegen zwei ab — bis Samstag!', es:'Me parece bien. Paso por ti a eso de las dos. ¡Hasta el sábado!' } },
       wortschatz: [
@@ -1296,6 +1376,14 @@
       var z = (S.dialog && S.dialog.zeilen) || [];
       return (z[0] && z[0].wer === 'spikiu') ? z[0] : null;
     },
+    /* Was in dieser Szene gilt — in der Sprache des Lerners. */
+    rolleFaktenVon: function (stufe, thema, muttersprache) {
+      var S = STATIONEN[stufe + '.' + thema];
+      if (!S || !S.deineRolle) return '';
+      var mu = muttersprache || 'de';
+      return S.deineRolle[mu] || S.deineRolle.de || S.deineRolle.en || '';
+    },
+
     abrundungVon: function (stufe, thema) {
       var S = STATIONEN[stufe + '.' + thema];
       return (S && S.abrundung) || null;
