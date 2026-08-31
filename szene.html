@@ -180,6 +180,15 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .k-erklaer .w{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:.3rem}
 .k-erklaer .b{font:400 .95rem/1.45 'DM Sans';color:var(--mid)}
 
+/* ── Rückmeldung ── */
+.r-titel{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:.9rem}
+.r-block{border-left:3px solid var(--accent);padding-left:.8rem;margin-bottom:1rem}
+.r-du{font:400 .95rem/1.35 'DM Sans';color:var(--mid);margin-bottom:.35rem}
+.r-du b{font-weight:500;color:var(--ink);font-style:normal}
+.r-besser{font:500 1.15rem/1.3 'Cormorant Garamond',serif;margin-bottom:.3rem}
+.r-warum{font:400 .88rem/1.4 'DM Sans';color:var(--mid)}
+.r-schluss{font:400 1rem/1.45 'DM Sans';background:var(--accent2);
+  border:2px solid var(--ink);border-radius:.7rem;padding:.75rem .85rem;margin-top:.4rem}
 .e-kopf{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
   color:var(--mid);margin:1.1rem 0 .5rem}
 .e-z{display:flex;gap:.6rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--faint)}
@@ -770,7 +779,84 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     b.className = 'knopf gelb';
     b.style.marginTop = '1.3rem';
     b.textContent = 'Szene beenden';
-    b.onclick = function () { b.disabled = true; automat.abbrechen(); ernte(); };
+    b.onclick = function () { b.disabled = true; automat.abbrechen(); rueckmeldung(); };
+    k.appendChild(b);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     DIE RÜCKMELDUNG — der EINZIGE Modellaufruf einer Szene
+
+     Während des Gesprächs wird nichts geprüft (siehe oben). Verstanden wird
+     hier, einmal: drei Paare aus Musterzeile und dem, was der Lerner wirklich
+     geschrieben hat.
+
+     Sie nennt NUR, wo es natürlicher geht (Leos Entscheid A, 31.08.). Was saß,
+     bleibt unerwähnt — Lob für Selbstverständliches nutzt sich ab. Saß alles,
+     kommt ein einzelner Satz, damit die Karte nicht leer wirkt.
+
+     Fällt der Aufruf aus, geht es ohne ihn weiter. Eine kaputte Leitung darf
+     dem Lerner nicht seine Ernte wegnehmen.
+     ══════════════════════════════════════════════════════════ */
+  async function rueckmeldung() {
+    var paare = protokoll.map(function (p) {
+      return { erwartet: p.erwartet, gesagt: p.gesagt };
+    }).filter(function (p) { return p.gesagt; });
+
+    if (!paare.length) { ernte(); return; }
+
+    var thema = LP.thema(THEMA);
+    var wartet = karte();
+    wartet.innerHTML = '<div class="punkte">• • •</div>';
+
+    var d = null;
+    try {
+      var r = await fetch('/api/rueckmeldung', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          zielsprache:   ZS,
+          muttersprache: MU,
+          koennen:       PROFIL.koennen || 'anfang',
+          duzen:         LP.duzt ? LP.duzt(STUFE, THEMA) : false,
+          szene:         inSprache(thema && thema.na, MU) + ' · '
+                       + inSprache(ROLLE && ROLLE.ort, MU),
+          paare:         paare
+        })
+      });
+      d = await r.json();
+      if (!r.ok) { console.error('rueckmeldung ' + r.status, d); d = null; }
+    } catch (e) {
+      console.error('rueckmeldung', e);
+      d = null;
+    }
+
+    if (wartet.parentNode) wartet.parentNode.removeChild(wartet);
+    if (reelIndex >= slides().length) reelIndex = slides().length - 1;
+
+    if (!d || (!d.schluss && !(d.anmerkungen && d.anmerkungen.length))) { ernte(); return; }
+
+    var w = d.worte || { titel: 'Ein Blick auf deine Sätze', besser: 'Natürlicher wäre' };
+    var k = karte();
+    k.style.justifyContent = 'flex-start';
+
+    var h = '<div class="r-titel">' + esc(w.titel) + '</div>';
+    (d.anmerkungen || []).forEach(function (a) {
+      var nr = parseInt(a.nr, 10);
+      var meins = paare[nr - 1] ? paare[nr - 1].gesagt : '';
+      h += '<div class="r-block">'
+        +    (meins ? '<div class="r-du">Du: <b>' + esc(meins) + '</b></div>' : '')
+        +    (a.besser ? '<div class="r-besser">' + esc(a.besser) + '</div>' : '')
+        +    (a.warum ? '<div class="r-warum">' + esc(a.warum) + '</div>' : '')
+        +  '</div>';
+    });
+    if (d.schluss) h += '<div class="r-schluss">' + esc(d.schluss) + '</div>';
+    k.innerHTML = h;
+
+    var b = document.createElement('button');
+    b.className = 'knopf';
+    b.style.marginTop = '1.2rem';
+    b.textContent = 'Weiter';
+    b.onclick = function () { b.disabled = true; ernte(); };
     k.appendChild(b);
   }
 
