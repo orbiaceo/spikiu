@@ -188,6 +188,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .e-w{flex:1;font:500 1.15rem/1.25 'Cormorant Garamond',serif}
 .e-t{font:400 .82rem/1.25 'DM Sans';color:var(--mid);text-align:right}
 
+/* WENDUNGEN brauchen die ganze Breite. In zwei Spalten brach „¡Qué buen
+   tiempo hace hoy!" auf fünf Zeilen um und war nicht mehr lesbar (Leo,
+   31.08.). Also: Satz oben über die volle Zeile, Übersetzung darunter.
+   Die WÖRTER bleiben zweispaltig — dort passt es. */
+.e-z.wendung{display:block;padding:.7rem 0}
+.e-z.wendung .kopf{display:flex;gap:.6rem;align-items:flex-start}
+.e-z.wendung .e-w{font-size:1.2rem;line-height:1.3;text-align:left}
+.e-z.wendung .e-t{display:block;text-align:left;margin-top:.3rem;padding-left:2.6rem;
+  font-size:.88rem;line-height:1.35}
+
 .punkte{text-align:center;font-size:1.6rem;letter-spacing:.2em;color:var(--faint);padding:1.4rem 0}
 .fehlerkarte{border-color:#b4534b;box-shadow:5px 6px 0 #b4534b}
 .fehlerkarte .zug{font-family:'DM Sans',sans-serif;font-size:1rem;color:#b4534b}
@@ -782,21 +792,34 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 
     var thema = LP.thema(THEMA);
     var k = karte();
+    /* Die Ernte ist lang und wird gelesen, nicht betrachtet: oben anfangen. */
+    k.style.justifyContent = 'flex-start';
     var h = '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">Das hast du geübt</div>'
           + '<div class="bue-ort">' + esc(inSprache(thema && thema.na, MU)) + '</div>';
 
-    function gruppe(ueber, liste) {
+    /* Wendungen untereinander (Satz, dann Übersetzung), Wörter nebeneinander. */
+    function gruppe(ueber, liste, alsWendung) {
       if (!liste.length) return '';
       var s = '<div class="e-kopf">' + ueber + '</div>';
       liste.forEach(function (x) {
-        s += '<div class="e-z"><button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
-          +  '<span class="e-w">' + esc(x.z) + '</span>'
-          +  '<span class="e-t">' + esc(x.na) + '</span></div>';
+        if (alsWendung) {
+          s += '<div class="e-z wendung">'
+            +    '<div class="kopf">'
+            +      '<button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
+            +      '<span class="e-w">' + esc(x.z) + '</span>'
+            +    '</div>'
+            +    '<span class="e-t">' + esc(x.na) + '</span>'
+            +  '</div>';
+        } else {
+          s += '<div class="e-z"><button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
+            +  '<span class="e-w">' + esc(x.z) + '</span>'
+            +  '<span class="e-t">' + esc(x.na) + '</span></div>';
+        }
       });
       return s;
     }
-    h += gruppe('Das kannst du sagen', da.filter(function (x) { return x.art === 'wendung'; }));
-    h += gruppe('Wörter', da.filter(function (x) { return x.art === 'wort'; }));
+    h += gruppe('Das kannst du sagen', da.filter(function (x) { return x.art === 'wendung'; }), true);
+    h += gruppe('Wörter', da.filter(function (x) { return x.art === 'wort'; }), false);
     if (!da.length) {
       h += '<div class="e-kopf">Noch nichts eingesammelt</div>'
         +  '<div class="bue-ort" style="margin:0">Beim nächsten Mal steht hier, '
