@@ -130,7 +130,7 @@
       { de:'Bezahle', es:'Paga', en:'Pay' }
     ],
     'a1.familie': [
-      { de:'Sag, ob du Geschwister hast', es:'Di si tienes hermanos', en:'Say whether you have siblings' },
+      { de:'Sag, dass du eine Schwester hast', es:'Di que tienes una hermana', en:'Say that you have a sister' },
       { de:'Nenne ihren Namen', es:'Di cómo se llama', en:'Give her name' },
       { de:'Sag, wie alt sie ist', es:'Di qué edad tiene', en:'Say how old she is' }
     ],
