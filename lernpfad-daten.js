@@ -567,6 +567,10 @@
 
     /* ── A1 · Über die Familie ──────────────────────────────────────── */
     'a1.familie': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -814,6 +818,10 @@
 
     /* ── A1 · Über das Wetter ───────────────────────────────────────── */
     'a1.wetter': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -1202,6 +1210,10 @@
 
     /* ── A2 · Über die Familie ──────────────────────────────────────── */
     'a2.familie': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -1452,6 +1464,10 @@
 
     /* ── A2 · Über das Wetter ───────────────────────────────────────── */
     'a2.wetter': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -1547,6 +1563,11 @@
        Kein Abschied per Formel — je nach Szene Dank, Wunsch, Zusage,
        Gruß oder Trost. Ohne sie endet die Szene mitten im Satz (R6). */
     /* Was in dieser Szene gilt — in der Sprache des Lerners. */
+    duzt: function (stufe, thema) {
+      var S = STATIONEN[stufe + '.' + thema];
+      return !!(S && S.duzen);
+    },
+
     rolleFaktenVon: function (stufe, thema, muttersprache) {
       var S = STATIONEN[stufe + '.' + thema];
       if (!S || !S.deineRolle) return '';

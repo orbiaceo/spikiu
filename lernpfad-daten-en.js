@@ -435,6 +435,10 @@
     },
 
     'a1.familie': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -719,6 +723,10 @@
     },
 
     'a1.wetter': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -1005,6 +1013,10 @@
     },
 
     'a2.familie': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -1293,6 +1305,10 @@
     },
 
     'a2.wetter': {
+      /* Diese Figur DUZT. Steuert die Zeilen, die NICHT aus dem Skript kommen
+         — etwa das 'ich verstehe dich nicht' der Szene. Ohne dieses Feld
+         siezte Spikiu mitten in einem Du-Gespraech (Leo, 31.08.). */
+      duzen: true,
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
@@ -1377,6 +1393,11 @@
       return (z[0] && z[0].wer === 'spikiu') ? z[0] : null;
     },
     /* Was in dieser Szene gilt — in der Sprache des Lerners. */
+    duzt: function (stufe, thema) {
+      var S = STATIONEN[stufe + '.' + thema];
+      return !!(S && S.duzen);
+    },
+
     rolleFaktenVon: function (stufe, thema, muttersprache) {
       var S = STATIONEN[stufe + '.' + thema];
       if (!S || !S.deineRolle) return '';

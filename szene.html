@@ -26,11 +26,12 @@
   Das Modell kommt später für EINEN Aufruf am Ende — die Rückmeldung auf das,
   was der Lerner wirklich geschrieben hat. Eigener Schritt, noch nicht gebaut.
 
-  DER DANEBENSCHUSS (Leos „Joker-User")
-  Wir kennen die Zeile, die er hätte sagen sollen — also können wir prüfen,
-  umsonst. Der Test ist milde: EIN tragendes Wort genügt, akzentfrei und
-  endungstolerant. Beim zweiten Danebenschuss geht die Aufgabe TROTZDEM durch;
-  niemand steckt fest (Entscheid A).
+  ES WIRD NICHTS GEPRÜFT (Entscheid 31.08.)
+  Der Versuch, die Antwort mit der Skriptzeile zu vergleichen, war Raten ohne
+  Verstehen — „12" statt „doce" fiel durch, „Sí." statt „Sí, tengo una hermana."
+  wäre ebenso durchgefallen. Eine Aufgabe hat unendlich viele richtige
+  Formulierungen. Deshalb rückt JEDE Antwort die Aufgabe vor. Beurteilt wird
+  einmal am Ende, von einem Modell, das wirklich versteht.
 
   DER SOUFFLEUR (Entscheid 30.08., kehrt Frage 8 um)
   Die Aufgabe steht NICHT offen da. Erster Tipp auf den Capy: die Aufgabe.
@@ -219,8 +220,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* Die Decke ist hier KEINE Kostenbremse mehr — die Szene kostet nichts.
      Sie sorgt nur dafür, dass eine Szene endet: drei Aufgaben mal höchstens
      zwei Versuche plus ein paar Rückfragen. */
-  var ZUG_DECKEL  = 9;
-  var MAX_DANEBEN = 2;    // beim zweiten Danebenschuss geht die Aufgabe durch
+  var ZUG_DECKEL  = 9;   // reicht für drei Aufgaben plus Rückfragen
 
   var deck  = document.getElementById('deck');
   var titel = document.getElementById('kopfTitel');
@@ -246,15 +246,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* Die Figur bleibt in der Rolle, wenn sie nicht versteht — sie schimpft
      nicht und erklärt nicht. Dieselbe Zeile für alle Stationen, deshalb hier
      und nicht in den Datendateien. */
-  var NICHT_VERSTANDEN = {
-    es: { z: 'Perdone, no le entiendo.',
-          na: { de: 'Verzeihung, ich verstehe Sie nicht.', en: "Sorry, I don't understand." } },
-    de: { z: 'Entschuldigung, das verstehe ich nicht.',
-          na: { es: 'Perdone, no le entiendo.', en: "Sorry, I don't understand." } },
-    en: { z: "Sorry, I didn't catch that.",
-          na: { de: 'Entschuldigung, das habe ich nicht verstanden.', es: 'Perdone, no le entendí.' } }
-  };
-
   /* ── Werkzeug ─────────────────────────────────────────────── */
   function esc(t) {
     return String(t == null ? '' : t)
@@ -267,8 +258,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   }
   function inSprache(o, mu) { return o ? (o[mu] || o.de || o.en || o.es || '') : ''; }
 
-  /* Akzente weg, Satzzeichen weg, klein. „¿Está libre?" und „esta libre"
-     sind dasselbe — Tippfehler dürfen nicht bestraft werden. */
+  /* Akzente weg, Satzzeichen weg, klein. Wird nur noch für die ERNTE
+     gebraucht — um zu sehen, welche Wörter im Gespräch vorkamen. */
   function flach(t) {
     return String(t || '')
       .toLowerCase()
@@ -279,51 +270,24 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   }
 
   /* ══════════════════════════════════════════════════════════
-     DIE TREFFERPRÜFUNG (Entscheid A: ein Wort genügt)
+     WARUM HIER NICHTS MEHR GEPRÜFT WIRD (Leo, 31.08.)
 
-     Wir kennen die Zeile, die er hätte sagen sollen. Aus ihr nehmen wir die
-     tragenden Wörter — ab vier Buchstaben, ohne Füllwörter. Kommt EINES davon
-     in seiner Antwort vor, ist er in der Szene.
+     Bis eben verglich die Szene die Antwort mit der Skriptzeile. Das war
+     der Versuch, ohne Verstehen zu urteilen — also Raten. Und Raten liegt
+     daneben: „12" statt „doce" wurde abgelehnt. Danach: „Sí." statt
+     „Sí, tengo una hermana." wäre ebenso abgelehnt worden, und „Mucho",
+     „A veces", „Depende" auch. Eine Aufgabe hat unendlich viele richtige
+     Formulierungen; keine Tabelle fängt sie ein.
 
-     Verglichen wird der WORTSTAMM (fünf Buchstaben), damit „maleta / maletas /
-     Maletas." alle zählen. Der Preis: „No tengo maleta" besteht auch. Das ist
-     richtig so — geprüft wird, ob er in der Szene ist, nicht ob er die
-     Wahrheit sagt.
+     Deshalb prüft die Szene NICHTS. Jede Antwort rückt die Aufgabe vor,
+     Spikiu antwortet mit der nächsten Skriptzeile, die Szene läuft glatt
+     durch. Beurteilt wird EINMAL AM ENDE, von einem Modell, das wirklich
+     versteht — ein Aufruf statt sechs.
+
+     Nur das Sieb bleibt: eine Rückfrage („¿Cómo?") ist keine Antwort und
+     rückt die Aufgabe nicht vor (R13). Das ist keine Beurteilung, sondern
+     eine Formsache, und dafür reicht eine feste Liste.
      ══════════════════════════════════════════════════════════ */
-  var FUELL = ('der die das den dem des ein eine einen einem und oder aber ist sind war'
-    + ' ich sie wir ihr mit von zum zur fuer auf aus nicht kein sehr auch noch schon dann'
-    + ' habe haben hast bitte danke'
-    + ' el la los las un una unos unas pero es son esta estan soy eres con para por del al'
-    + ' que muy tambien mas favor gracias tengo tiene'
-    + ' the an and but are was with from for you your this that have has please thanks'
-    + ' would like want').split(/\s+/);
-
-  function stamm(w) { return w.slice(0, 5); }
-
-  function tragend(zeile) {
-    var w = flach(zeile).split(' ').filter(function (x) { return x.length >= 4; });
-    var ohneFuell = w.filter(function (x) { return FUELL.indexOf(x) === -1; });
-    if (ohneFuell.length) return ohneFuell;
-    /* Vier von 180 Skriptzeilen tragen kein Wort ab vier Buchstaben:
-       „Para dos, por favor." · „¿De qué vía?" · „Two, please." · „Is it far?"
-       Ohne Rückfallstufe würden sie ALLES durchlassen. Deshalb hier ab drei
-       Buchstaben — „dos", „via", „two", „far" sind dort das ganze Ereignis. */
-    return flach(zeile).split(' ').filter(function (x) {
-      return x.length >= 3 && FUELL.indexOf(x) === -1;
-    });
-  }
-
-  function trifft(antwort, erwartet) {
-    var ziel = tragend(erwartet);
-    if (!ziel.length) return true;                  // nichts zu prüfen → durchlassen
-    var meine = flach(antwort).split(' ').filter(function (w) { return w.length >= 3; });
-    for (var i = 0; i < ziel.length; i++) {
-      for (var j = 0; j < meine.length; j++) {
-        if (stamm(meine[j]) === stamm(ziel[i])) return true;
-      }
-    }
-    return false;
-  }
 
   /* ── Profil ───────────────────────────────────────────────── */
   var PROFIL = {};
@@ -340,7 +304,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   var zielzeilen = [];
   var lernerZeilen = [];
   var abrundungIstZiel = false;
-  var daneben = 0;
   var geerntet = { gesagt: [], gehoert: [] };
   var protokoll = [];        // für die spätere Rückmeldung am Ende
   var busy = false;
@@ -612,10 +575,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     };
     zeichne();
 
-    /* Wer schon einmal danebenlag, bekommt die Aufgabe von selbst zu sehen —
-       er soll nicht auch noch raten müssen, wo die Hilfe steckt. */
-    if (daneben > 0) { stufe = 1; zeichne(); }
-
     k.querySelector('[data-hsprich]').onclick = function () { sprich(satz); };
     k.querySelector('[data-einsetzen]').onclick = function () {
       feld.value = satz;
@@ -674,7 +633,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         var i = geerntet.gesagt.indexOf(alt);
         if (i > -1) geerntet.gesagt[i] = neu;
         protokoll[nr].gesagt = neu;
-        protokoll[nr].getroffen = trifft(neu, protokoll[nr].erwartet);
         protokoll[nr].geaendert = true;
         speichern();
         ansicht();
@@ -695,20 +653,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     try { if (window.SpikiuSieb) art = window.SpikiuSieb.art(text, ZS, MU); } catch (e) {}
 
     var erwartet = lernerZeilen[index] ? lernerZeilen[index].z : '';
-    var getroffen = (art === 'offen') && trifft(text, erwartet);
-    var durchlassen = getroffen || daneben >= MAX_DANEBEN - 1;
 
-    /* Nur ein offener UND durchgelassener Zug rückt die Aufgabe vor. Alles
-       andere zählt gegen die Decke, aber nicht gegen die Aufgaben (R13). */
-    var z = automat.antworte(text, (art === 'offen' && durchlassen) ? 'offen' : 'rolle');
+    /* JEDE offene Antwort rückt die Aufgabe vor. Nur eine Rückfrage nicht —
+       das ist eine Formsache, keine Beurteilung (R13). */
+    var z = automat.antworte(text, art === 'offen' ? 'offen' : 'rolle');
     if (z.abgelehnt) return;
 
     busy = true;
-    protokoll.push({ aufgabe: index, gesagt: text, erwartet: erwartet, getroffen: getroffen });
+    /* Das Protokoll ist die Grundlage der Rückmeldung am Ende: was er sagen
+       sollte, was er gesagt hat. Beurteilt wird dort, nicht hier. */
+    protokoll.push({ aufgabe: index, gesagt: text, erwartet: erwartet });
     lernerKarte(text, protokoll.length - 1);
 
-    if (art === 'offen' && durchlassen) { geerntet.gesagt.push(text); daneben = 0; }
-    else if (art === 'offen')           { daneben += 1; }
+    if (art === 'offen') geerntet.gesagt.push(text);
     speichern();
 
     nachDenkpause(function () {
@@ -719,11 +676,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         /* Rückfrage oder Meta-Frage: die Figur wiederholt ihre Zeile,
            die Aufgabe bleibt stehen. */
         spikiuSagt(zielzeilen[index] || '', brueckeZu(index), true);
-        return;
-      }
-      if (!durchlassen) {
-        var nv = NICHT_VERSTANDEN[ZS] || NICHT_VERSTANDEN.es;
-        spikiuSagt(nv.z, inSprache(nv.na, MU), true);
         return;
       }
       spikiuSagt(zielzeilen[index] || '', brueckeZu(index),
