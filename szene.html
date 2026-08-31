@@ -68,12 +68,15 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
    links, die kommenden rechts. Kein Scrollen, um an „Senden" zu kommen. */
 .deck{flex:1;position:relative;overflow:hidden;background:var(--bg)}
 .karte{position:absolute;inset:1rem .9rem;box-sizing:border-box;display:flex;
-  flex-direction:column;justify-content:center;overflow-y:auto;
+  flex-direction:column;justify-content:safe center;overflow-y:auto;
   background:var(--white);border:var(--ow) solid var(--ink);border-radius:22px;
   box-shadow:5px 6px 0 var(--ink);padding:1.3rem 1.2rem;
   transform:translateX(118%);opacity:0;pointer-events:none;
   transition:transform .38s cubic-bezier(.4,0,.2,1),opacity .38s ease;
   will-change:transform,opacity;backface-visibility:hidden}
+/* „safe center" zentriert nur, solange der Inhalt passt. Wird die Karte zu
+   klein — etwa weil die Tastatur aufgeht —, rutscht der Inhalt nach oben
+   statt oben abgeschnitten zu werden. Sonst verschwindet Spikius Satz. */
 .karte.jetzt{transform:translateX(0) rotate(0);opacity:1;pointer-events:auto;z-index:2}
 .karte.kommt{transform:translateX(114%) rotate(1.5deg);opacity:0;z-index:1}
 .karte.war  {transform:translateX(-114%) rotate(-1.5deg);opacity:0;z-index:1}
@@ -398,11 +401,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     });
   })();
 
-  /* stehenbleiben = true legt die Karte an, springt aber NICHT hin. Nötig am
-     Schluss: dort entstehen drei Karten hintereinander (letzte Antwort,
-     Abrundung, Ausgang). Sprang das Deck jedesmal ans Ende, sah der Lerner
-     nur den Ausgang und musste zurückblättern, um Spikius letzte Worte zu
-     finden (gesehen 31.08.). Jetzt bleibt er stehen und wischt selbst. */
+  /* stehenbleiben = true legt die Karte an, springt aber NICHT hin.
+     Wird derzeit nirgends gebraucht — der Schluss steht seit dem 31.08. auf
+     EINER Karte. Bleibt, weil jede Karte, die still im Hintergrund entstehen
+     soll, genau das braucht. */
   function karte(klasse, stehenbleiben) {
     var d = document.createElement('div');
     d.className = 'karte' + (klasse ? ' ' + klasse : '') + ' kommt';
@@ -586,7 +588,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     k.querySelector('[data-einsetzen]').onclick = function () {
       feld.value = satz;
       feld.dispatchEvent(new Event('input'));
-      try { feld.focus(); } catch (e) {}
+      /* Auch hier kein Fokus: der Satz steht sichtbar im Feld, „Senden" ist
+         frei. Wer ihn ändern will, tippt hinein — dann kommt die Tastatur. */
     };
 
     var b = document.createElement('button');
@@ -604,7 +607,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       senden(t, index);
     };
     k.appendChild(b);
-    setTimeout(function () { try { feld.focus(); } catch (e) {} }, 60);
+    /* KEIN automatischer Fokus. Auf dem Handy sprang sonst die Tastatur auf
+       und verdeckte Spikius Satz und die Aufgabe — der erste fremde Tester
+       fragte wörtlich „Was soll ich tun?" (31.08.). Die Karte gehört erst
+       gelesen; die Tastatur kommt, wenn er das Feld antippt. */
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -646,6 +652,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         k.__angepasst = false; anpassen(k);
       };
       k.appendChild(fertig);
+      /* Hier ist der Fokus gewollt: er hat den Stift angetippt, um zu ändern. */
       setTimeout(function () { try { f.focus(); } catch (e) {} }, 60);
     }
     ansicht();
@@ -685,9 +692,13 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         spikiuSagt(zielzeilen[index] || '', brueckeZu(index), true);
         return;
       }
-      spikiuSagt(zielzeilen[index] || '', brueckeZu(index),
-                 !neu.ausgangOffen && neu.zug < ZUG_DECKEL);
-      if (neu.ausgangOffen || neu.zug >= ZUG_DECKEL) schluss();
+      if (neu.ausgangOffen || neu.zug >= ZUG_DECKEL) {
+        /* Kein eigener Zug mehr: die letzte Antwort, die Abrundung und der
+           Ausgang stehen zusammen auf EINER Karte. */
+        schluss(zielzeilen[index] || '', brueckeZu(index));
+        return;
+      }
+      spikiuSagt(zielzeilen[index] || '', brueckeZu(index), true);
     });
   }
 
@@ -705,16 +716,49 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* ══════════════════════════════════════════════════════════
      5 · DER RUNDE ABSCHLUSS
      ══════════════════════════════════════════════════════════ */
-  function schluss() {
+  /* Eine Karte, nicht drei (Leo, 31.08.: „verlorener Raum und Zeit durch
+     Wischen"). Spikius letzte Antwort und die Abrundung gehören zusammen —
+     ein Taxifahrer sagt „Perfecto. Son veinte euros. Aquí estamos. ¡Buen
+     viaje!" in einem Atemzug. Darunter gleich der Ausgang. */
+  function schluss(letzteZeile, letzteBruecke) {
+    var teile = [], bruecken = [];
+    if (letzteZeile) { teile.push(letzteZeile); if (letzteBruecke) bruecken.push(letzteBruecke); }
+
+    /* Die Abrundung nur, wenn sie nicht schon die letzte Antwort WAR
+       (bei Stationen, deren Skript vorher ausgeht). */
     if (!abrundungIstZiel) {
       var a = LP.abrundungVon(STUFE, THEMA);
-      if (a && a.z) spikiuSagt(a.z, a.na ? inSprache(a.na, MU) : '', false, true);
+      if (a && a.z) {
+        teile.push(a.z);
+        if (a.na) bruecken.push(inSprache(a.na, MU));
+      }
     }
-    var k = karte(null, true);
-    k.innerHTML = '<div class="zaehler" style="margin:0 0 .9rem">'
-      + 'Du kannst zurückwischen und alles noch einmal ansehen.</div>';
+
+    var text    = teile.join(' ');
+    var bruecke = bruecken.join(' ');
+
+    automat.spikiuAntwortet(text);
+    geerntet.gehoert.push(text);
+    speichern();
+
+    var k = karte();
+    k.innerHTML =
+        '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
+      + '<div class="zug">' + esc(text) + '</div>'
+      + '<div class="werkz">'
+      +   '<button class="ikon" data-hoer aria-label="Anhören">🔊</button>'
+      +   (bruecke ? '<button class="ikon" data-ueb aria-label="Übersetzung">'
+                   + esc(MU.toUpperCase()) + '</button>' : '')
+      + '</div>'
+      + (bruecke ? '<div class="ueb">' + esc(bruecke) + '</div>' : '');
+
+    k.querySelector('[data-hoer]').onclick = function () { sprich(text); };
+    var ub = k.querySelector('[data-ueb]');
+    if (ub) ub.onclick = function () { k.querySelector('.ueb').classList.toggle('an'); };
+
     var b = document.createElement('button');
     b.className = 'knopf gelb';
+    b.style.marginTop = '1.3rem';
     b.textContent = 'Szene beenden';
     b.onclick = function () { b.disabled = true; automat.abbrechen(); ernte(); };
     k.appendChild(b);
