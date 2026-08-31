@@ -356,7 +356,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     }
   }
   function zeige(i) { reelIndex = i; anordnen(); }
-  function zurZuletzt() { zeige(slides().length - 1); }
   function vor()  { if (reelIndex < slides().length - 1) { reelIndex++; anordnen(); } }
   function rueck() { if (reelIndex > 0) { reelIndex--; anordnen(); } }
 
@@ -411,11 +410,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     /* Der Inhalt wird gleich nach diesem Aufruf gesetzt. Erst im nächsten
        Bild messen und schieben — sonst misst anpassen() eine leere Karte und
        der Text springt beim Erscheinen von groß auf klein. */
-    var ziel = stehenbleiben ? anordnen : zurZuletzt;
+    /* Die eigene Position JETZT merken, nicht später „die letzte" suchen.
+       Am Schluss entstehen drei Karten in derselben Runde (letzte Antwort,
+       Abrundung, Ausgang). Wer erst im nächsten Bild „ans Ende" springt,
+       landet auf der dritten — und die Abrundung wurde übersprungen, bis
+       man zurückwischte (Leo, 31.08., zweimal gemeldet). */
+    var meinPlatz = slides().length - 1;
     requestAnimationFrame(function () {
       anpassen(d);                 // einmal, solange die Karte noch rechts steht
       void d.offsetWidth;          // Reflow: der Browser kennt jetzt „kommt"
-      requestAnimationFrame(ziel); // erst danach schieben → echter Übergang
+      requestAnimationFrame(function () {
+        if (stehenbleiben) anordnen();
+        else zeige(meinPlatz);     // genau hierher, nicht „ans Ende"
+      });
     });
     return d;
   }
