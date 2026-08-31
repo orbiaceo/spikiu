@@ -417,11 +417,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     });
   })();
 
-  function karte(klasse) {
+  /* stehenbleiben = true legt die Karte an, springt aber NICHT hin. Nötig am
+     Schluss: dort entstehen drei Karten hintereinander (letzte Antwort,
+     Abrundung, Ausgang). Sprang das Deck jedesmal ans Ende, sah der Lerner
+     nur den Ausgang und musste zurückblättern, um Spikius letzte Worte zu
+     finden (gesehen 31.08.). Jetzt bleibt er stehen und wischt selbst. */
+  function karte(klasse, stehenbleiben) {
     var d = document.createElement('div');
     d.className = 'karte' + (klasse ? ' ' + klasse : '') + ' kommt';
     deck.appendChild(d);
-    setTimeout(zurZuletzt, 20);
+    if (!stehenbleiben) setTimeout(zurZuletzt, 20);
+    else setTimeout(anordnen, 20);
     return d;
   }
 
@@ -482,14 +488,14 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* ══════════════════════════════════════════════════════════
      2 · SPIKIU SAGT — immer aus der Datenbank
      ══════════════════════════════════════════════════════════ */
-  function spikiuSagt(text, bruecke, mitFeld) {
+  function spikiuSagt(text, bruecke, mitFeld, stehenbleiben) {
     automat.spikiuAntwortet(text);
     geerntet.gehoert.push(text);
     speichern();
 
     var z = automat.zustand();
     var aufgaben = automat.aufgabenListe();
-    var k = karte();
+    var k = karte(null, stehenbleiben);
 
     var h = '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
           + '<div class="zug">' + esc(text) + '</div>'
@@ -710,11 +716,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   function schluss() {
     if (!abrundungIstZiel) {
       var a = LP.abrundungVon(STUFE, THEMA);
-      if (a && a.z) spikiuSagt(a.z, a.na ? inSprache(a.na, MU) : '', false);
+      if (a && a.z) spikiuSagt(a.z, a.na ? inSprache(a.na, MU) : '', false, true);
     }
-    var k = karte();
+    var k = karte(null, true);
     k.innerHTML = '<div class="zaehler" style="margin:0 0 .9rem">'
-      + 'Du kannst nach oben blättern und alles noch einmal ansehen.</div>';
+      + 'Du kannst zurückwischen und alles noch einmal ansehen.</div>';
     var b = document.createElement('button');
     b.className = 'knopf gelb';
     b.textContent = 'Szene beenden';
