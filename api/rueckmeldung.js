@@ -53,9 +53,15 @@ function systemPrompt(ziel, szene) {
   return [
     `Du berichtigst Sätze auf ${ZS}, die ein Lerner in einer Übungsszene geschrieben hat.`,
     szene ? `\nDie Szene: ${szene}\n` : '',
-    'Zu jeder Zeile bekommst du zwei Angaben, die den Sinn festlegen:',
+    'Zu jeder Zeile bekommst du drei Angaben, die den Sinn festlegen:',
     '- was der Lerner in diesem Zug sagen sollte (seine Aufgabe)',
     `- was sein Gegenüber unmittelbar davor gesagt hat, auf ${ZS}`,
+    '- eine übliche Formulierung für diesen Zug („So sagt man es hier")',
+    '',
+    'DIE ÜBLICHE FORMULIERUNG IST KEINE LÖSUNG. Sie zeigt dir nur, welche Art',
+    'Satz an dieser Stelle passt. Schreibe sie NICHT ab und drücke die Zeile',
+    'des Lerners nicht in ihre Form. Weicht er ab und ist trotzdem richtig,',
+    'bleibt seine Fassung stehen.',
     '',
     'BERICHTIGE MIT BLICK AUF DIESEN ZUSAMMENHANG. Ein Satz, der für sich',
     'genommen richtig aussieht, kann in dieser Lage falsch sein. Achte',
@@ -67,9 +73,11 @@ function systemPrompt(ziel, szene) {
     '',
     'MISCHT DER LERNER EINE ANDERE SPRACHE HINEIN, ersetze das Wort durch das',
     `richtige ${ZS}e: „Grazie" → „Gracias", „per favore" → „por favor".`,
-    'Nimm dabei die Wendung, die man in dieser Lage wirklich sagt: „Pagare,',
-    'per favore" im Lokal wird zu „La cuenta, por favor", nicht zu „Pagar,',
-    'por favor".',
+    '',
+    'ÜBERSETZE NICHT WÖRTLICH, sondern nimm die Wendung, die man an DIESER',
+    'Stelle wirklich sagt. Ein deutsches „Bitte!" beim Geldreichen ist nicht',
+    '„Por favor", sondern die Formel, mit der man etwas überreicht. Welche das',
+    'ist, sagt dir die Lage — nicht eine allgemeine Regel.',
     '',
     'Gib JEDE Zeile berichtigt zurück, in derselben Reihenfolge und Anzahl.',
     'Ist eine Zeile schon richtig, gib sie unverändert zurück.',
@@ -103,14 +111,18 @@ export default async function handler(req, res) {
   // sagte. Ohne diesen Zusammenhang wurde „Tengo desayuno?" wörtlich zu
   // „Sí. ¿Tengo desayuno?" repariert statt zu „¿Tienen desayuno?" (31.08.).
   //
-  // Die MUSTERZEILE geht weiterhin NICHT mit: sie machte jede Abweichung zum
-  // Fehler und verwandelte das gültige „2" in „Para dos, por favor.".
-  // Aufgabe und Vorzeile geben den Sinn, ohne eine Lösung vorzuschreiben.
+  // Die Musterzeile geht seit dem 31.08. wieder MIT — aber ausdrücklich als
+  // „so sagt man es hier üblicherweise", nicht als Lösung. Ohne sie hielt
+  // Haiku beim Bezahlen im Supermarkt „Por favor." für „La cuenta, por favor"
+  // (die Café-Formel). Dass sie früher schadete, lag daran, dass DAS MODELL
+  // den Vergleich machte; das tut jetzt der Code, und die kurzen gültigen
+  // Antworten schützt das Sicherheitsnetz weiter unten.
   const zuege = (Array.isArray(body.zuege) ? body.zuege : [])
     .map(z => ({
       gesagt:  String((z && z.gesagt) || '').slice(0, 200),
       aufgabe: String((z && z.aufgabe) || '').slice(0, 120),
-      vorher:  String((z && z.vorher) || '').slice(0, 200)
+      vorher:  String((z && z.vorher) || '').slice(0, 200),
+      ueblich: String((z && z.ueblich) || '').slice(0, 200)
     }))
     .filter(z => z.gesagt.trim());
 
@@ -124,6 +136,7 @@ export default async function handler(req, res) {
     const teile = [`${i + 1}. Geschrieben: ${z.gesagt}`];
     if (z.aufgabe) teile.push(`   Aufgabe: ${z.aufgabe}`);
     if (z.vorher)  teile.push(`   Gegenüber sagte davor: ${z.vorher}`);
+    if (z.ueblich) teile.push(`   So sagt man es hier üblicherweise: ${z.ueblich}`);
     return teile.join('\n');
   }).join('\n\n');
 
