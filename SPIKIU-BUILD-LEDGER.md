@@ -2,6 +2,78 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 31.08.2026 (**Design + Bau 31.08. (claude.ai, Leo lädt selbst hoch): DIE SZENE LÄUFT ENDE ZU ENDE. WEG B GESCHEITERT UND ERSETZT · SPIKIU ANTWORTET AUS DER DATENBANK · NULL TOKEN IM GESPRÄCH · EIN AUFRUF AM ENDE · A1 VOLLSTÄNDIG GETESTET.**
+
+**═══ 1. WEG B IST AM GERÄT GESCHEITERT ═══**
+Am 30.08. entschieden: Haiku antwortet frei, bekommt aber die Skriptzeile als ZIEL mit (`profile.szene.zielzeile`). Am Gerät getestet — und es funktionierte nicht. Der Taxifahrer fragte „¿Cuántas maletas tienes?", statt auf die Zeile zuzusteuern; die Szene driftete; nach drei Zügen war sie vorbei, ohne dass etwas geübt worden wäre.
+**Leo wörtlich:** „Es ist ein riesiges Problem, also Haiku versteht nicht die Szene. Das bringt gar nichts. Also wir verlieren unsere Zeit hier. Ich glaube, das Konzept ist einfach unmöglich von der Technik."
+**MEIN ANTEIL, protokolliert:** Ich hatte Leo einen Testlink gegeben, obwohl ich wusste, dass `gespraech-modus.md` die neue Zielvorgabe gar nicht kennt. Er testete eine Baustelle. Das darf nicht wieder vorkommen: **kein Testlink zu einer halb gebauten Kette.**
+**Zweiter, echter Fehler im selben Test:** die Abrundung wurde ANGEHÄNGT statt eine ANTWORT zu sein. Der Fahrer fragte „¿Cuántas maletas?" und die nächste Karte sagte „Aquí estamos. ¡Buen viaje!". Auch mit perfektem Prompt wäre das falsch gewesen.
+
+**═══ 2. DIE KEHRTWENDE: SPIKIU ANTWORTET AUS DER DATENBANK ═══**
+Zwei Wege standen zur Wahl. **(A)** Weg B eine letzte Chance geben, Prompt schärfen. **(B)** Umdrehen: der Lerner schreibt frei, Spikius Antwort ist IMMER die nächste Skriptzeile. **Leo: B.**
+**Leos eigene Beschreibung, die das Produkt besser trifft als meine:** „Der User bekommt ganz konkrete Aufgaben. Es ist so eine Art Übersetzungsaufgabe, wo er seinen Wortschatz und seine Fähigkeit zu formulieren trainiert." Er weiß WAS er sagen soll und muss es SELBST BAUEN — das kann er weder im geführten Gespräch (dort wählt er) noch im Gym (dort erkennt er).
+**FOLGE: die Szene kostet NULL TOKEN.** Kein `fetch`, kein Modell, kein Netz. Sie läuft offline. Ich hatte B am 30.08. abgelehnt („das ist gefuehrt.html mit Tastatur") — das war zu schnell. Der Wert liegt im freien Formulieren und in der Rückmeldung darauf, nicht darin, dass die Figur improvisiert.
+**Damit wird auch die Produkt-Staffelung sauber:** Geführt = wählen · **Szene = frei formulieren, geführt** · Privatstunde = wirklich reden. Vorher überschnitten sich Szene und Privatstunde: beide „frei reden", einmal billig und kaputt, einmal teuer.
+
+**═══ 3. DER EIGENTLICHE KONSTRUKTIONSFEHLER: DAS OBJEKT NUTZER ═══**
+Leo fand ihn, nicht ich: **die Aufgaben verlangten Aussagen über sein echtes Leben.** „Sag, dass du eine Schwester hast", „sag, dass du Gepäck hast". Wer keine Schwester hat, muss lügen oder weicht ab — und dann bräuchte man die KI, um den Bruch aufzufangen. Genau das kostet Tokens.
+Drei Wege abgewogen: (A) die Rollenkarte ausbauen, null Token · (B) Fakten aus dem Profil holen · (C) freie Fakten, KI fängt es auf. **Leo: A**, mit „Immer lokalisiert"-Energie: „Ja, A, mein lieber Genie."
+**GEBAUT: Feld `deineRolle` in allen 60 Stationen**, dazu `rolleFaktenVon(stufe, thema, muttersprache)`. Auf der Bühne steht jetzt ein gelber Kasten — gelb wie die Lernerkarten, weil er ihm gehört:
+> DEINE ROLLE · Du hast einen Koffer dabei und willst zum Flughafen.
+Damit ist „Sí, una maleta" keine Behauptung über sein Leben, sondern seine Rolle. **Es ist ein Theaterstück, und jeder weiß es.** Null Token, es steht in der Datenbank wie alles andere.
+
+**═══ 4. DAS RATEN IST GESTORBEN — DIE WICHTIGSTE LEHRE DES TAGES ═══**
+Zwischenstufe: Weil wir die Musterzeile kennen, wurde geprüft, ob die Antwort „in der Szene" ist (ein tragendes Wort genügt, akzentfrei, endungstolerant; beim zweiten Fehlversuch ging es durch). Dann kamen drei Meldungen von Leo in Folge:
+**(a)** „Klara ist doce años. Ich schreibe 12 → Spikiu sagt: ich verstehe dich nicht." Gebaut: eine Zahlenbrücke aus Regeln für alle drei Sprachen bis hundert (auch „treinta y tres", „dreiunddreißig", „twenty-eight"), plus die Aufhebung eines Längenfilters, der zweistellige Zahlen verschluckte.
+**(b)** „Und zweitens: ‚no le entiendo' ist USTED, aber die Fragen sind im tú." Gebaut: Feld `duzen` je Station, handverlesen (es: familie+wetter A1/A2 · de: a1.wetter, a2.familie, a2.wetter), zwei Fassungen je Sprache.
+**(c) UND DANN DER SCHLAG, der beide Reparaturen als Pflaster entlarvte.** Leo: „Wenn ich gefragt werde ‚Te gusta el vino?', kann ich antworten: Sí. Mucho. A veces. Depende. Etc. **Das heisst, was passiert wenn der User sich an die gegebene Rolle hält aber anders antwortet als es in der Tabelle steht?**"
+**Er hat recht: eine Aufgabe hat unendlich viele richtige Formulierungen. Keine Tabelle fängt sie ein.** Wir prüften die falsche Richtung — „sagt er, was im Skript steht?" statt „ist er in der Szene?".
+**ENTSCHEID (Leo: B): ES WIRD GAR NICHTS MEHR GEPRÜFT.** Jede Antwort rückt die Aufgabe vor. Der ganze Rate-Apparat flog raus — Trefferprüfung, Zahlentabelle, „ich verstehe dich nicht", Fehlversuchszähler. Fast 10 KB weniger.
+**DIE LEHRE, die über diesen Raum hinausgeht:** *Prüfen ohne Verstehen ist Raten, und jedes Raten produziert Ärger.* Das Verstehen kostet Tokens — aber nur EINMAL am Ende, nicht bei jedem Zug.
+**Geblieben ist nur das Sieb** (`¿Cómo?` ist eine Rückfrage, keine Antwort, R13). Das ist keine Beurteilung, sondern eine Formsache, und dafür reicht eine feste Liste.
+
+**═══ 5. DIE RÜCKMELDUNG — VIER ANLÄUFE, VIERMAL MEIN PROMPT ═══**
+Neuer, kleiner Endpoint **`api/rueckmeldung.js`** (nicht `gespraech.js` mit seinen 6.545 Token Seele). Haiku 4.5. **Rund 0,14 Cent je Szene.** Entscheid A: nur melden, wo es wirklich hakt; Gelungenes bleibt unerwähnt.
+**Anlauf 1 — ich bat um ERKLÄRUNGEN.** Ergebnis bei „Uno pescado y uno ensalda": *„Vor pescado brauchst du una, nicht uno, und ensalada hat kein d am Ende."* Beides erfunden. **Leo: „Damit haben wir einen besoffenen Lehrer, der nicht weiß, was er sagt."** Dazu wurde sein völlig gültiges „2" zu „Para dos, por favor." korrigiert — weil ich die MUSTERZEILE mitschickte und jede Abweichung zum Fehler wurde.
+→ Erklärungen ganz gestrichen. Nur noch zwei Zeilen: durchgestrichen in Rot, was er schrieb; darunter kursiv die berichtigte Fassung mit 🔊. Leos Idee, wörtlich umgesetzt.
+**Anlauf 2 — bei Unsinn kam GAR NICHTS.** „No hago tiempo", „Sabo nada.", „Eh no se" → „Sehr gut!". Ursache: mein Prompt bestand fast nur aus Verboten („nicht anfassen: kurze Antworten wie ‚Sí.'"), und Haiku hielt „Eh no se" für so eine kurze Antwort.
+→ **Das Modell urteilt nicht mehr.** Es bekommt die Zeilen und gibt sie ALLE berichtigt zurück, auch die richtigen. Ob sich etwas geändert hat, stellt der CODE fest. **Engine statt Prompt, wie beim Sieb.** Beim Selbsttest fand ich dabei einen eigenen Fehler: ich hatte im Vergleich die Akzente wegnormalisiert — bei „Eh no se" → „Eh, no sé." IST der Akzent die Korrektur.
+**Anlauf 3 — kein Zusammenhang.** „Sí. Tengo desayuno?" wurde zu „Sí. ¿Tengo desayuno?" statt „¿Tienen desayuno?". Haiku sah drei nackte Zeilen ohne Ort und Aufgabe.
+→ Szene, Aufgabe und Spikius Vorzeile gehen mit. **Und ein echter Fund dabei: ich schickte nur Spikius Rolle, nicht die des Lerners.** Bei „¿Teno manzanas?" kann niemand wissen, ob „¿Tengo?" oder „¿Tiene?" gemeint ist, ohne zu wissen, wer wen fragt. Jetzt gehen BEIDE Rollen plus die Rollenfakten mit.
+**Anlauf 4 — MEIN EIGENES BEISPIEL VERGIFTETE DEN PROMPT.** Ich hatte hineingeschrieben: „Pagare, per favore → La cuenta, por favor". Haiku erkannte das Muster und wandte es am Marktstand an: „Por favor." beim Bezahlen wurde zu „La cuenta, por favor" statt „Aquí tiene.".
+→ Konkretes Beispiel raus, Regel abstrakt. **Und die Musterzeile kommt zurück** — aber als *„So sagt man es hier üblicherweise"*, ausdrücklich NICHT als Lösung. Dass sie früher schadete, lag daran, dass DAS MODELL den Vergleich machte; das tut jetzt der Code.
+**DIE LEHRE ÜBER ALLE VIER ANLÄUFE: kein einziges Mal war Haiku zu schwach. Jedes Mal fehlte ihm Information, oder mein Prompt gab ihm ein falsches Muster.** Der Sonnet-Wechsel wurde erwogen und verworfen — er hätte den Fehler nur teurer gemacht. Falls er später doch nötig wird: **0,40 statt 0,14 Cent je Szene**, ein Aufruf, eine Zeile Änderung.
+**Erscheint nichts zu berichtigen**, gibt es KEINE eigene Karte (Leo: „‚Alles saß' allein ist keine Rückmeldung"). Stattdessen steht **„Sehr gut!"** in Grün über der Wortliste. Spikiu **duzt in der Rückmeldung immer** — die Rolle darf siezen, aber hier spricht nicht die Rolle, sondern Spikiu mit dem Lerner.
+
+**═══ 6. `szene.html` — DER RAUM, GEBAUT UND MEHRFACH KORRIGIERT ═══**
+Neue Datei, 46 KB statt 199. Kein geführter Modus, kein Blasen-Weg, keine Lektionserzeugung, kein `[KORREKTUR]`, kein `[OPTIONEN]`. `chat.html` und `gefuehrt.html` **unangetastet**.
+**Layout:** Erst ein vertikales Deck nach dem Prototyp — Leo verglich es am Gerät mit `chat.html` und entschied für das **horizontale Reel**: „das aktuelle springt und wackelt wie ein alter Super-8-Film, wo jeder Cut zu merken war." Zurückgeholt und geglättet; vier Ursachen, alle meine: className aller Karten bei jedem Schritt neu zusammengesetzt (Browser startete alle Übergänge neu) · kein Reflow vor dem Schieben · Schriftanpassung maß beim ersten Mal eine leere Karte · die Tastatur löste ein Neuanordnen aus (nur die Breite zählt jetzt).
+**Änderungs-Stift** auf jeder gelben Karte (Leo). Geändert wird NUR der Text; die Szene spult nicht zurück, weil Spikius Antwort ohnehin dieselbe wäre (Entscheid A).
+**Souffleur:** Leo kehrte seine Antwort auf Frage 8 um — die Aufgabe steht NICHT mehr offen. Erster Tipp auf den Capy: die Aufgabe. Zweiter: der fertige Satz mit „Einsetzen". Blauer Punkt zeigt, dass es mehr gibt.
+**Übersetzungs-Symbol:** 文 raus (Leo: „das ist Googles Zeichen"). Stattdessen das **Sprachkürzel** der Muttersprache — DE · ES · EN. Vier Varianten als Prototyp gezeigt, Leo wählte 1.
+**Schlusskarten — ZWEIMAL falsch, bevor es saß.** Erst wurden Abrundung und Ausgang übersprungen; Ursache: `zurZuletzt` sprang zur jeweils letzten Karte, aber bis der Sprung lief, hatte `schluss()` schon zwei weitere angehängt. Jede Karte merkt sich jetzt beim Anlegen ihren eigenen Platz. **Dann Leo: „7, 8 und 9 sind verlorener Raum und Zeit durch Wischen."** → letzte Antwort, Abrundung und Ausgang stehen jetzt auf EINER Karte. Liest sich auch richtiger: ein Taxifahrer sagt „Perfecto. Son veinte euros. Aquí estamos. ¡Buen viaje!" in einem Atemzug.
+**UX-Fund eines fremden Testers (der beste Befund des Tages):** Nach „Los!" öffnete der Auto-Fokus sofort die Tastatur und verdeckte Spikius Satz und die Aufgabe. Der Tester fragte wörtlich „Was soll ich tun?" — und genau dieser Satz stand unlesbar auf dem Bildschirm. **Auto-Fokus komplett raus**, auch beim „Einsetzen". Nur der Stift fokussiert, dort ist es gewollt. Dazu `justify-content: safe center`, damit der Inhalt bei kleinem Fenster nach oben rutscht statt oben abgeschnitten zu werden.
+**Ernte:** Wendungen bekommen die volle Breite (Satz oben, Übersetzung darunter) — zweispaltig brach „¡Qué buen tiempo hace hoy!" auf fünf Zeilen um. Wörter bleiben zweispaltig. Überschrift **„Wendungen und Sätze"** statt „Das kannst du sagen" — Leo: „Die Sätze des Kellners muss man verstehen, aber nicht unbedingt sagen."
+
+**═══ 7. EIN INHALTLICHES GESETZ, AUS EINEM FEHLER GEBOREN ═══**
+Bei der Prüfung aller 180 Antwortzeilen fand sich **genau ein echter Bruch, in allen drei Sprachen**: Aufgabe „Sag, **ob** du Geschwister hast" — sagt der Lerner „Nein, ich bin Einzelkind", antwortet Spikiu „Und wie heißt sie?". Geändert zu „Sag, **dass** du eine Schwester hast" (mit Rollenfakten dahinter, siehe 3).
+**REGEL: Eine Aufgabe ist eine Anweisung, keine Frage.** „Frag, ob…" ist erlaubt (Spikiu antwortet auf eine Frage, und die Antwort passt zu jeder Frageform). „Sag, ob…" nicht — sie lässt zwei Antworten zu, und die Skriptzeile kennt nur eine. Gegengeprüft: null offen gestellte Behauptungs-Aufgaben übrig.
+
+**═══ 8. GEÄNDERTE DATEIEN ═══**
+`szene.html` (neu, 46 KB) · `api/rueckmeldung.js` (neu) · `lernpfad-daten.js` · `lernpfad-daten-de.js` · `lernpfad-daten-en.js` (je: `deineRolle` in 20 Stationen, `duzen`, Aufgabe „ob"→„dass", API `rolleFaktenVon` + `duzt`) · `SPIKIU-BUILD-LEDGER.md`.
+**NICHT angefasst:** `chat.html` · `gefuehrt.html` · `szene.js` · `frage-sieb.js` · `lernpfad-sprache.js` · alle Prompts · alle übrigen `api/*`.
+**Nur zum Lesen, nicht im Repo:** `proto-souffleur.html` (Souffleur- und Symbol-Vergleich).
+
+**═══ 9. WAS ALS NÄCHSTES KOMMT ═══**
+**Getestet ist A1 vollständig (Leo, 31.08.).** Offen: A2 durchspielen · Deutsch und Englisch als Zielsprache gegentesten (dieselbe Datei, dieselbe Funktion, aber ungetestet — der Prompt ist auf Deutsch geschrieben und nennt spanische Beispiele).
+**Dann:** `haus.html` auf `szene.html` umhängen (Zeile 521 und die doppelte Verlinkung in Zeile 528) · `chat.html` stilllegen · danach die aufgeschobene Umbenennung `lernpfad-daten.js` → `-es.js` (Leos Bedingung: nur wenn es zu 100 % keine Probleme macht).
+**Danach:** die vier verbliebenen Google-Anleihen (Chaoten-Farben auf der Stationskachel · Wort-Antippen mit DB-zuerst · drei Einführungs-Popups) · Lektionsblatt · Privatstunde.
+**Tote Felder, ehrlich vermerkt:** `duzen` an den Stationen hat seit dem Entscheid „Rückmeldung duzt immer" keinen Abnehmer mehr. Es beschreibt korrekt, wie die Figur spricht, und der nächste Raum wird es brauchen — aber im Moment ist es Gewicht ohne Wirkung.
+**NOCH UNBEANTWORTET, das größte offene Kapitel, unverändert seit dem 29.08.:** **Abo-Modell und Angriffs-Abwehr.** Leo: „Prinzip, gar keine Überraschungen oder Verluste. Ich muss eine automatisierte Live-Kontrolle führen können, die das mögliche Überschreiten von Limits jederzeit automatisch stoppen kann." **Neu ist die Ausgangslage: die Szene kostet nichts mehr.** Nur die Rückmeldung kostet, ein Aufruf zu 0,14 Cent — der Angriffsvektor ist damit erheblich kleiner geworden. Bis das Abo steht, schützt weiterhin allein das Ausgabenlimit in der Anthropic-Konsole.
+**Weiter offen:** `devOffen()` liefert immer true · Landing-Texte in `index.html` · Dashboard „3 capítulos" → „4" · Reader EN+EL · Legal vor Einnahmen · Supabase Phase 2.
+
+
 Stand: 30.08.2026 (**Design + Bau 30.08. (claude.ai, Leo lädt selbst hoch): DER SZENEN-BRUCH GEFUNDEN UND BEHOBEN · PROTOTYP ABGENOMMEN · ALLE 60 STATIONEN IN DREI ZIELSPRACHEN GEBAUT.**
 
 **═══ 1. DER SCHATTENLAUF SCHEITERTE — UND DECKTE DEN EIGENTLICHEN FEHLER AUF ═══**
