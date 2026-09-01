@@ -823,7 +823,15 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var zuege = protokoll
       .filter(function (p) { return p.gesagt && p.gesagt.trim(); })
       .map(function (p) {
-        return { gesagt: p.gesagt, aufgabe: p.auftrag || '', vorher: p.vorher || '' };
+        return {
+          gesagt:  p.gesagt,
+          aufgabe: p.auftrag || '',
+          vorher:  p.vorher || '',
+          /* Die Skriptzeile — als „so sagt man es hier", NICHT als Lösung.
+             Ohne sie hielt Haiku beim Bezahlen im Supermarkt „Por favor."
+             für die Café-Formel „La cuenta, por favor" (Leo, 31.08.). */
+          ueblich: p.erwartet || ''
+        };
       });
     var zeilen = zuege.map(function (z) { return z.gesagt; });
 
