@@ -38,39 +38,48 @@ const SPRACHE = { de: 'Deutsch', es: 'Spanisch', en: 'Englisch', el: 'Griechisch
 // Überschrift und der Satz für den fehlerfreien Fall stehen HIER, nicht im
 // Modell. Feste Worte sollen fest sein — ein Modell formuliert sie jedes Mal
 // anders und irgendwann daneben.
+// „sauber" erscheint NICHT als eigene Karte, sondern als kurzer Gruß ÜBER
+// der Wortliste (Leo, 31.08.: eine Karte, auf der nur „Alles saß" steht, ist
+// keine Rückmeldung).
 const WORTE = {
-  de: { titel: 'Ein Blick auf deine Sätze', sauber: 'Alles saß.' },
-  es: { titel: 'Una mirada a tus frases',   sauber: 'Todo correcto.' },
-  en: { titel: 'A look at your sentences',  sauber: 'All good.' }
+  de: { titel: 'Deine Sätze, berichtigt', sauber: 'Sehr gut!' },
+  es: { titel: 'Tus frases, corregidas',  sauber: '¡Muy bien!' },
+  en: { titel: 'Your sentences, corrected', sauber: 'Well done!' }
 };
 
 function systemPrompt(ziel) {
   const ZS = SPRACHE[ziel] || 'Spanisch';
 
   return [
-    `Du korrigierst kurze Sätze auf ${ZS}, die ein Lerner in einer Übungsszene geschrieben hat.`,
+    `Ein Lerner hat kurze Sätze auf ${ZS} geschrieben. Berichtige sie.`,
     '',
-    'DEINE EINZIGE AUFGABE: die Zeile berichtigen. NICHT erklären, NICHT begründen,',
-    'NICHT loben, NICHT beraten. Nur die berichtigte Zeile.',
+    'GIB JEDE ZEILE ZURÜCK, DIE EINEN FEHLER ENTHÄLT. Dazu gehören:',
+    '- Rechtschreibfehler und Tippfehler',
+    '- falsche Wortformen (falsche Endung, falsche Zeit, falscher Artikel)',
+    `- Wörter aus einer anderen Sprache statt ${ZS}`,
+    '- fehlende kleine Wörter, ohne die der Satz nicht steht',
+    '- Wortfolgen, die keinen Sinn ergeben — schreibe dann, was der Lerner',
+    '  in dieser Lage vermutlich sagen wollte',
     '',
-    'ÄNDERE SO WENIG WIE MÖGLICH:',
-    '- Nur was wirklich falsch ist: Rechtschreibung, Wortform, fehlendes kleines Wort.',
-    '- Wortwahl und Satzbau des Lerners bleiben stehen, wenn sie verständlich sind.',
-    '- Keine Verschönerung. Keine höflichere Fassung. Keine idiomatischere Fassung.',
+    'Sei nicht zurückhaltend: hat eine Zeile einen Fehler, gehört sie in die Liste.',
     '',
-    'NICHT ANFASSEN — das sind KEINE Fehler:',
-    `- Kurze Antworten. "2", "Sí.", "Ja.", "Mucho." sind vollständige, richtige`,
-    '  Antworten in einem Gespräch. Sie werden NICHT zu ganzen Sätzen ausgebaut.',
+    'NUR BERICHTIGEN, NICHT ERKLÄREN. Keine Begründung, kein Lob, kein Rat,',
+    'kein Kommentar. Nur die berichtigte Zeile.',
+    '',
+    'ÄNDERE SO WENIG WIE NÖTIG:',
+    '- Wortwahl und Satzbau des Lerners bleiben, wenn sie verständlich sind.',
+    '- Keine Verschönerung, keine höflichere oder idiomatischere Fassung.',
+    '',
+    'DAS SIND KEINE FEHLER — nicht anfassen und NICHT in die Liste:',
+    '- Kurze Antworten. "2", "Sí.", "Ja.", "Mucho." sind in einem Gespräch',
+    '  vollständige, richtige Antworten. Niemals zu ganzen Sätzen ausbauen.',
     '- Zahlen als Ziffern. "2" ist richtig geschrieben.',
-    '- Fehlende Anführungs- oder Fragezeichen am Anfang, wenn der Satz klar ist.',
-    '- Eine Antwort, die anders ausfällt als erwartet, aber richtig ist.',
-    '',
-    'Ist eine Zeile in Ordnung, kommt sie NICHT in die Liste. Ist keine Zeile',
-    'zu berichtigen, gib eine leere Liste zurück.',
+    '- Fehlende Frage- oder Anführungszeichen, wenn der Satz klar ist.',
     '',
     'ANTWORTE AUSSCHLIESSLICH MIT JSON, ohne Vorwort, ohne Codeblock:',
     '{"korrekturen":[{"nr":1,"richtig":"…"}]}',
-    'nr ist die Nummer der Zeile. "richtig" ist die berichtigte Zeile, sonst nichts.'
+    'nr ist die Nummer der Zeile. "richtig" ist die berichtigte Zeile, sonst nichts.',
+    'Ist keine Zeile zu berichtigen: {"korrekturen":[]}'
   ].join('\n');
 }
 
@@ -135,14 +144,22 @@ export default async function handler(req, res) {
       .slice(0, 6)
       .map(k => ({ nr: parseInt(k.nr, 10) || 0, richtig: String(k.richtig || '').trim() }))
       .filter(k => k.nr > 0 && k.richtig)
-      // Sicherheitsnetz gegen die Umschreib-Neigung: hat das Modell die Zeile
-      // trotz aller Anweisungen komplett neu gebaut, verwerfen wir sie. Eine
-      // Korrektur, die nichts mit dem Original zu tun hat, ist keine.
+      // Sicherheitsnetz, eng gefasst: geschützt sind NUR die kurzen, gültigen
+      // Antworten, die das Modell gern zu ganzen Sätzen ausbaut — „2" wurde
+      // zu „Para dos, por favor." (31.08.). Alles andere darf so lang werden
+      // wie nötig; bei Unsinn ist die richtige Fassung nun mal länger.
       .filter(k => {
-        const alt = (zeilen[k.nr - 1] || '').toLowerCase();
-        const neu = k.richtig.toLowerCase();
+        const alt = (zeilen[k.nr - 1] || '').trim().toLowerCase();
+        const neu = k.richtig.trim().toLowerCase();
         if (!alt || alt === neu) return false;
-        return neu.length <= alt.length * 2 + 12;
+
+        const kern = alt.replace(/[.,!?¿¡]/g, '').trim();
+        const kurzUndGueltig = /^\d+$/.test(kern) || (kern.split(/\s+/).length === 1 && kern.length <= 4);
+        if (!kurzUndGueltig) return true;
+
+        // Kurze gültige Antwort: nur durchlassen, wenn es eine echte
+        // Berichtigung ist und kein Ausbau zum Satz.
+        return neu.replace(/[.,!?¿¡]/g, '').trim().split(/\s+/).length <= 2;
       });
 
     return res.status(200).json({ korrekturen, worte });
