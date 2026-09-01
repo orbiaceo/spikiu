@@ -47,27 +47,34 @@ const WORTE = {
   en: { titel: 'Your sentences, corrected', sauber: 'Well done!' }
 };
 
-function systemPrompt(ziel) {
+function systemPrompt(ziel, szene) {
   const ZS = SPRACHE[ziel] || 'Spanisch';
 
   return [
-    `Du berichtigst Sätze auf ${ZS}.`,
+    `Du berichtigst Sätze auf ${ZS}, die ein Lerner in einer Übungsszene geschrieben hat.`,
+    szene ? `\nDie Szene: ${szene}\n` : '',
+    'Zu jeder Zeile bekommst du zwei Angaben, die den Sinn festlegen:',
+    '- was der Lerner in diesem Zug sagen sollte (seine Aufgabe)',
+    `- was sein Gegenüber unmittelbar davor gesagt hat, auf ${ZS}`,
     '',
-    'Du bekommst nummerierte Zeilen. Gib JEDE Zeile berichtigt zurück, in',
-    'derselben Reihenfolge und derselben Anzahl.',
+    'BERICHTIGE MIT BLICK AUF DIESEN ZUSAMMENHANG. Ein Satz, der für sich',
+    'genommen richtig aussieht, kann in dieser Lage falsch sein:',
+    '„Tengo desayuno?" heißt „Habe ich Frühstück?" — im Hotel gefragt wird',
+    '„¿Tienen desayuno?".',
     '',
+    'Gib JEDE Zeile berichtigt zurück, in derselben Reihenfolge und Anzahl.',
     'Ist eine Zeile schon richtig, gib sie unverändert zurück.',
-    'Ist sie falsch, gib die richtige Fassung zurück.',
-    'Ergibt sie keinen Sinn, gib das zurück, was der Lerner vermutlich sagen wollte.',
+    'Ergibt sie keinen Sinn, gib das zurück, was der Lerner sagen wollte.',
     '',
-    'ÄNDERE SO WENIG WIE NÖTIG. Wortwahl und Satzbau des Lerners bleiben, wenn',
-    'sie verständlich sind. Keine Verschönerung, keine höflichere Fassung.',
+    'ÄNDERE SO WENIG WIE NÖTIG. Die Wörter des Lerners bleiben stehen, wo sie',
+    'tragen. Keine Verschönerung, keine höflichere Fassung, kein Ausbau einer',
+    'kurzen Antwort zu einem ganzen Satz.',
     '',
     'Nur die Zeilen. Keine Erklärung, kein Kommentar, keine Nummerierung im Text.',
     '',
     'ANTWORTE AUSSCHLIESSLICH MIT JSON, ohne Vorwort, ohne Codeblock:',
     '{"zeilen":["…","…","…"]}'
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 }
 
 export default async function handler(req, res) {
@@ -83,17 +90,33 @@ export default async function handler(req, res) {
   const mutter = body.muttersprache || 'de';
   const worte = WORTE[mutter] || WORTE.de;
 
-  // Nur die Zeilen des Lerners. Die Musterzeile geht bewusst NICHT mit —
-  // sonst wird jede Abweichung davon zum „Fehler" (Lehre vom 31.08.).
-  const zeilen = (Array.isArray(body.zeilen) ? body.zeilen : [])
-    .map(z => String(z || '').slice(0, 200))
-    .filter(z => z.trim());
+  // Je Zug: was er schrieb, was seine Aufgabe war, was das Gegenüber davor
+  // sagte. Ohne diesen Zusammenhang wurde „Tengo desayuno?" wörtlich zu
+  // „Sí. ¿Tengo desayuno?" repariert statt zu „¿Tienen desayuno?" (31.08.).
+  //
+  // Die MUSTERZEILE geht weiterhin NICHT mit: sie machte jede Abweichung zum
+  // Fehler und verwandelte das gültige „2" in „Para dos, por favor.".
+  // Aufgabe und Vorzeile geben den Sinn, ohne eine Lösung vorzuschreiben.
+  const zuege = (Array.isArray(body.zuege) ? body.zuege : [])
+    .map(z => ({
+      gesagt:  String((z && z.gesagt) || '').slice(0, 200),
+      aufgabe: String((z && z.aufgabe) || '').slice(0, 120),
+      vorher:  String((z && z.vorher) || '').slice(0, 200)
+    }))
+    .filter(z => z.gesagt.trim());
+
+  const zeilen = zuege.map(z => z.gesagt);
 
   if (!zeilen.length) {
     return res.status(200).json({ korrekturen: [], worte });
   }
 
-  const eingabe = zeilen.map((z, i) => `${i + 1}. ${z}`).join('\n');
+  const eingabe = zuege.map((z, i) => {
+    const teile = [`${i + 1}. Geschrieben: ${z.gesagt}`];
+    if (z.aufgabe) teile.push(`   Aufgabe: ${z.aufgabe}`);
+    if (z.vorher)  teile.push(`   Gegenüber sagte davor: ${z.vorher}`);
+    return teile.join('\n');
+  }).join('\n\n');
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -107,8 +130,8 @@ export default async function handler(req, res) {
         model: 'claude-haiku-4-5',
         // Drei berichtigte Zeilen brauchen keine 300 Token. Der Client kann
         // das nicht anheben.
-        max_tokens: 300,
-        system: systemPrompt(ziel),
+        max_tokens: 400,
+        system: systemPrompt(ziel, String(body.szene || '').slice(0, 160)),
         messages: [{ role: 'user', content: eingabe }]
       })
     });
