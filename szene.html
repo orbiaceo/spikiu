@@ -826,6 +826,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       });
       d = await r.json();
       if (!r.ok) { console.error('rueckmeldung ' + r.status, d); d = null; }
+      /* Bleibt die Liste leer, obwohl etwas falsch war, steht hier, was Haiku
+         wirklich zurückgab. Ohne das rätselt man (31.08.). */
+      else if (d && (!d.korrekturen || !d.korrekturen.length)) {
+        console.log('[Rückmeldung] keine Korrektur. Antwort:', d.roh);
+      }
     } catch (e) {
       console.error('rueckmeldung', e);
       d = null;
