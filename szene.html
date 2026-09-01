@@ -840,9 +840,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         body: JSON.stringify({
           zielsprache:   ZS,
           muttersprache: MU,
-          szene:         inSprache((LP.thema(THEMA) || {}).na, MU) + ' — '
-                       + inSprache(ROLLE && ROLLE.ort, MU)
-                       + ' (Spikiu: ' + inSprache(ROLLE && ROLLE.spikiu, MU) + ')',
+          /* BEIDE Rollen, nicht nur Spikius. Ohne „du bist der Kunde" kann
+             niemand wissen, ob „¿Teno manzanas?" zu „¿Tengo…?" oder zu
+             „¿Tiene…?" gehört — der Satz ist grammatisch in beide Richtungen
+             reparierbar, nur eine passt zur Lage (Leo, 31.08.). Dazu die
+             Rollenfakten, die auf der Bühne stehen. */
+          szene: [
+            inSprache((LP.thema(THEMA) || {}).na, MU) + ' — ' + inSprache(ROLLE && ROLLE.ort, MU),
+            'Spikiu spielt: ' + inSprache(ROLLE && ROLLE.spikiu, MU),
+            'Der Lerner ist: ' + inSprache(ROLLE && ROLLE.lerner, MU),
+            LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : ''
+          ].filter(Boolean).join(' · '),
           zuege:         zuege
         })
       });
