@@ -335,6 +335,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   var geerntet = { gesagt: [], gehoert: [] };
   var protokoll = [];        // für die spätere Rückmeldung am Ende
   var busy = false;
+  var letzteSpikiuZeile = '';   // worauf der Lerner gerade antwortet
 
   /* ══════════════════════════════════════════════════════════
      KARTEN
@@ -521,6 +522,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      ══════════════════════════════════════════════════════════ */
   function spikiuSagt(text, bruecke, mitFeld, stehenbleiben) {
     automat.spikiuAntwortet(text);
+    letzteSpikiuZeile = text;
     geerntet.gehoert.push(text);
     speichern();
 
@@ -701,7 +703,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     busy = true;
     /* Das Protokoll ist die Grundlage der Rückmeldung am Ende: was er sagen
        sollte, was er gesagt hat. Beurteilt wird dort, nicht hier. */
-    protokoll.push({ aufgabe: index, gesagt: text, erwartet: erwartet });
+    /* `vorher` ist Spikius Zeile, auf die er gerade antwortet — sie gibt der
+       Rückmeldung den Zusammenhang. `aufgabe` ist die Anweisung in seiner
+       Sprache. Beides zusammen legt den Sinn fest, ohne eine Lösung
+       vorzuschreiben (die Musterzeile geht bewusst NICHT mit). */
+    protokoll.push({
+      aufgabe:  index,
+      gesagt:   text,
+      erwartet: erwartet,
+      auftrag:  inSprache(automat.aufgabenListe()[index], MU),
+      vorher:   letzteSpikiuZeile
+    });
     lernerKarte(text, protokoll.length - 1);
 
     if (art === 'offen') geerntet.gesagt.push(text);
@@ -808,11 +820,14 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
        sie mit, wurde jede Abweichung davon zum „Fehler", und die völlig
        gültige Antwort „2" wurde zu „Para dos, por favor." berichtigt
        (Leo, 31.08.). */
-    var zeilen = protokoll
-      .map(function (p) { return p.gesagt; })
-      .filter(function (t) { return t && t.trim(); });
+    var zuege = protokoll
+      .filter(function (p) { return p.gesagt && p.gesagt.trim(); })
+      .map(function (p) {
+        return { gesagt: p.gesagt, aufgabe: p.auftrag || '', vorher: p.vorher || '' };
+      });
+    var zeilen = zuege.map(function (z) { return z.gesagt; });
 
-    if (!zeilen.length) { ernte(); return; }
+    if (!zuege.length) { ernte(); return; }
 
     var wartet = karte();
     wartet.innerHTML = '<div class="punkte">• • •</div>';
@@ -822,7 +837,14 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       var r = await fetch('/api/rueckmeldung', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ zielsprache: ZS, muttersprache: MU, zeilen: zeilen })
+        body: JSON.stringify({
+          zielsprache:   ZS,
+          muttersprache: MU,
+          szene:         inSprache((LP.thema(THEMA) || {}).na, MU) + ' — '
+                       + inSprache(ROLLE && ROLLE.ort, MU)
+                       + ' (Spikiu: ' + inSprache(ROLLE && ROLLE.spikiu, MU) + ')',
+          zuege:         zuege
+        })
       });
       d = await r.json();
       if (!r.ok) { console.error('rueckmeldung ' + r.status, d); d = null; }
