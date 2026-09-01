@@ -190,8 +190,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   text-decoration:line-through;text-decoration-thickness:1px;margin-bottom:.4rem}
 .r-richtig{display:flex;gap:.55rem;align-items:center}
 .r-richtig .t{flex:1;font:500 1.2rem/1.3 'Cormorant Garamond',serif;font-style:italic}
-.r-sauber{font:400 1.05rem/1.45 'DM Sans';background:var(--accent2);
-  border:2px solid var(--ink);border-radius:.7rem;padding:.8rem .9rem;text-align:center}
+/* Der Gruß bei fehlerfreier Szene. Steht ÜBER der Wortliste, nicht auf einer
+   eigenen Karte — „Alles saß" allein auf einer Karte ist keine Rückmeldung
+   (Leo, 31.08.). */
+.r-sauber{font:600 1.5rem/1.2 'Cormorant Garamond',serif;color:var(--accent);
+  margin-bottom:.6rem}
 .e-kopf{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
   color:var(--mid);margin:1.1rem 0 .5rem}
 .e-z{display:flex;gap:.6rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--faint)}
@@ -833,29 +836,28 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 
     if (!d) { ernte(); return; }      // Leitung tot → die Ernte bleibt ihm
 
-    var w = d.worte || { titel: 'Ein Blick auf deine Sätze', sauber: 'Alles saß.' };
+    var w = d.worte || { titel: 'Deine Sätze, berichtigt', sauber: 'Sehr gut!' };
+    var liste = d.korrekturen || [];
+
+    /* Nichts zu berichtigen: KEINE eigene Karte. Der Gruß wandert als
+       Überschrift auf die Wortliste. Eine Karte, auf der nur „Alles saß"
+       steht, ist keine Rückmeldung (Leo, 31.08.). */
+    if (!liste.length) { ernte(w.sauber); return; }
+
     var k = karte();
     k.style.justifyContent = 'flex-start';
 
     var h = '<div class="r-titel">' + esc(w.titel) + '</div>';
-    var liste = d.korrekturen || [];
-
-    if (!liste.length) {
-      /* Fehlerfrei: EIN fester Satz. Nicht vom Modell formuliert, und keine
-         übersprungene Karte — das Überspringen sah aus wie ein Fehler. */
-      h += '<div class="r-sauber">' + esc(w.sauber) + '</div>';
-    } else {
-      liste.forEach(function (kor) {
-        var meins = zeilen[kor.nr - 1] || '';
-        h += '<div class="r-block">'
-          +    (meins ? '<div class="r-falsch">' + esc(meins) + '</div>' : '')
-          +    '<div class="r-richtig">'
-          +      '<button class="e-a" data-sag="' + esc(kor.richtig) + '">🔊</button>'
-          +      '<span class="t">' + esc(kor.richtig) + '</span>'
-          +    '</div>'
-          +  '</div>';
-      });
-    }
+    liste.forEach(function (kor) {
+      var meins = zeilen[kor.nr - 1] || '';
+      h += '<div class="r-block">'
+        +    (meins ? '<div class="r-falsch">' + esc(meins) + '</div>' : '')
+        +    '<div class="r-richtig">'
+        +      '<button class="e-a" data-sag="' + esc(kor.richtig) + '">🔊</button>'
+        +      '<span class="t">' + esc(kor.richtig) + '</span>'
+        +    '</div>'
+        +  '</div>';
+    });
     k.innerHTML = h;
 
     Array.prototype.forEach.call(k.querySelectorAll('[data-sag]'), function (btn) {
@@ -873,7 +875,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* ══════════════════════════════════════════════════════════
      6 · DIE ERNTE — nur was vorkam
      ══════════════════════════════════════════════════════════ */
-  function ernte() {
+  function ernte(gruss) {
     var alles = ' ' + flach(geerntet.gesagt.join(' ') + ' ' + geerntet.gehoert.join(' ')) + ' ';
     var lager = LP.ernte(STUFE, THEMA, MU) || [];
 
@@ -890,7 +892,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var k = karte();
     /* Die Ernte ist lang und wird gelesen, nicht betrachtet: oben anfangen. */
     k.style.justifyContent = 'flex-start';
-    var h = '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">Das hast du geübt</div>'
+    var h = (gruss ? '<div class="r-sauber">' + esc(gruss) + '</div>' : '')
+          + '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">Das hast du geübt</div>'
           + '<div class="bue-ort">' + esc(inSprache(thema && thema.na, MU)) + '</div>';
 
     /* Wendungen untereinander (Satz, dann Übersetzung), Wörter nebeneinander. */
