@@ -181,14 +181,17 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .k-erklaer .b{font:400 .95rem/1.45 'DM Sans';color:var(--mid)}
 
 /* ── Rückmeldung ── */
-.r-titel{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:.9rem}
-.r-block{border-left:3px solid var(--accent);padding-left:.8rem;margin-bottom:1rem}
-.r-du{font:400 .95rem/1.35 'DM Sans';color:var(--mid);margin-bottom:.35rem}
-.r-du b{font-weight:500;color:var(--ink);font-style:normal}
-.r-besser{font:500 1.15rem/1.3 'Cormorant Garamond',serif;margin-bottom:.3rem}
-.r-warum{font:400 .88rem/1.4 'DM Sans';color:var(--mid)}
-.r-schluss{font:400 1rem/1.45 'DM Sans';background:var(--accent2);
-  border:2px solid var(--ink);border-radius:.7rem;padding:.75rem .85rem;margin-top:.4rem}
+/* Zwei Zeilen, keine Erklärung: was du schriebst, und dasselbe berichtigt.
+   Kein Wort mehr — die erklärende Fassung erfand Grammatik (31.08.). */
+.r-titel{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:1rem}
+.r-block{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--faint)}
+.r-block:last-of-type{border-bottom:none}
+.r-falsch{font:400 1.05rem/1.35 'DM Sans';color:#b4534b;
+  text-decoration:line-through;text-decoration-thickness:1px;margin-bottom:.4rem}
+.r-richtig{display:flex;gap:.55rem;align-items:center}
+.r-richtig .t{flex:1;font:500 1.2rem/1.3 'Cormorant Garamond',serif;font-style:italic}
+.r-sauber{font:400 1.05rem/1.45 'DM Sans';background:var(--accent2);
+  border:2px solid var(--ink);border-radius:.7rem;padding:.8rem .9rem;text-align:center}
 .e-kopf{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
   color:var(--mid);margin:1.1rem 0 .5rem}
 .e-z{display:flex;gap:.6rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--faint)}
@@ -798,13 +801,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      dem Lerner nicht seine Ernte wegnehmen.
      ══════════════════════════════════════════════════════════ */
   async function rueckmeldung() {
-    var paare = protokoll.map(function (p) {
-      return { erwartet: p.erwartet, gesagt: p.gesagt };
-    }).filter(function (p) { return p.gesagt; });
+    /* NUR die Zeilen des Lerners. Die Musterzeile bleibt hier — schickten wir
+       sie mit, wurde jede Abweichung davon zum „Fehler", und die völlig
+       gültige Antwort „2" wurde zu „Para dos, por favor." berichtigt
+       (Leo, 31.08.). */
+    var zeilen = protokoll
+      .map(function (p) { return p.gesagt; })
+      .filter(function (t) { return t && t.trim(); });
 
-    if (!paare.length) { ernte(); return; }
+    if (!zeilen.length) { ernte(); return; }
 
-    var thema = LP.thema(THEMA);
     var wartet = karte();
     wartet.innerHTML = '<div class="punkte">• • •</div>';
 
@@ -813,17 +819,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       var r = await fetch('/api/rueckmeldung', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          zielsprache:   ZS,
-          muttersprache: MU,
-          koennen:       PROFIL.koennen || 'anfang',
-          /* Kein duzen mehr: Spikiu duzt in der Rückmeldung IMMER. Die Rolle
-             in der Szene darf siezen — hier spricht aber nicht die Rolle,
-             sondern Spikiu mit dem Lerner (Leo, 31.08.). */
-          szene:         inSprache(thema && thema.na, MU) + ' · '
-                       + inSprache(ROLLE && ROLLE.ort, MU),
-          paare:         paare
-        })
+        body: JSON.stringify({ zielsprache: ZS, muttersprache: MU, zeilen: zeilen })
       });
       d = await r.json();
       if (!r.ok) { console.error('rueckmeldung ' + r.status, d); d = null; }
@@ -835,28 +831,40 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     if (wartet.parentNode) wartet.parentNode.removeChild(wartet);
     if (reelIndex >= slides().length) reelIndex = slides().length - 1;
 
-    if (!d || (!d.schluss && !(d.anmerkungen && d.anmerkungen.length))) { ernte(); return; }
+    if (!d) { ernte(); return; }      // Leitung tot → die Ernte bleibt ihm
 
-    var w = d.worte || { titel: 'Ein Blick auf deine Sätze', besser: 'Natürlicher wäre' };
+    var w = d.worte || { titel: 'Ein Blick auf deine Sätze', sauber: 'Alles saß.' };
     var k = karte();
     k.style.justifyContent = 'flex-start';
 
     var h = '<div class="r-titel">' + esc(w.titel) + '</div>';
-    (d.anmerkungen || []).forEach(function (a) {
-      var nr = parseInt(a.nr, 10);
-      var meins = paare[nr - 1] ? paare[nr - 1].gesagt : '';
-      h += '<div class="r-block">'
-        +    (meins ? '<div class="r-du">Du: <b>' + esc(meins) + '</b></div>' : '')
-        +    (a.besser ? '<div class="r-besser">' + esc(a.besser) + '</div>' : '')
-        +    (a.warum ? '<div class="r-warum">' + esc(a.warum) + '</div>' : '')
-        +  '</div>';
-    });
-    if (d.schluss) h += '<div class="r-schluss">' + esc(d.schluss) + '</div>';
+    var liste = d.korrekturen || [];
+
+    if (!liste.length) {
+      /* Fehlerfrei: EIN fester Satz. Nicht vom Modell formuliert, und keine
+         übersprungene Karte — das Überspringen sah aus wie ein Fehler. */
+      h += '<div class="r-sauber">' + esc(w.sauber) + '</div>';
+    } else {
+      liste.forEach(function (kor) {
+        var meins = zeilen[kor.nr - 1] || '';
+        h += '<div class="r-block">'
+          +    (meins ? '<div class="r-falsch">' + esc(meins) + '</div>' : '')
+          +    '<div class="r-richtig">'
+          +      '<button class="e-a" data-sag="' + esc(kor.richtig) + '">🔊</button>'
+          +      '<span class="t">' + esc(kor.richtig) + '</span>'
+          +    '</div>'
+          +  '</div>';
+      });
+    }
     k.innerHTML = h;
+
+    Array.prototype.forEach.call(k.querySelectorAll('[data-sag]'), function (btn) {
+      btn.onclick = function () { sprich(btn.getAttribute('data-sag')); };
+    });
 
     var b = document.createElement('button');
     b.className = 'knopf';
-    b.style.marginTop = '1.2rem';
+    b.style.marginTop = '1.3rem';
     b.textContent = 'Weiter';
     b.onclick = function () { b.disabled = true; ernte(); };
     k.appendChild(b);
