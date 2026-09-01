@@ -51,35 +51,22 @@ function systemPrompt(ziel) {
   const ZS = SPRACHE[ziel] || 'Spanisch';
 
   return [
-    `Ein Lerner hat kurze Sätze auf ${ZS} geschrieben. Berichtige sie.`,
+    `Du berichtigst Sätze auf ${ZS}.`,
     '',
-    'GIB JEDE ZEILE ZURÜCK, DIE EINEN FEHLER ENTHÄLT. Dazu gehören:',
-    '- Rechtschreibfehler und Tippfehler',
-    '- falsche Wortformen (falsche Endung, falsche Zeit, falscher Artikel)',
-    `- Wörter aus einer anderen Sprache statt ${ZS}`,
-    '- fehlende kleine Wörter, ohne die der Satz nicht steht',
-    '- Wortfolgen, die keinen Sinn ergeben — schreibe dann, was der Lerner',
-    '  in dieser Lage vermutlich sagen wollte',
+    'Du bekommst nummerierte Zeilen. Gib JEDE Zeile berichtigt zurück, in',
+    'derselben Reihenfolge und derselben Anzahl.',
     '',
-    'Sei nicht zurückhaltend: hat eine Zeile einen Fehler, gehört sie in die Liste.',
+    'Ist eine Zeile schon richtig, gib sie unverändert zurück.',
+    'Ist sie falsch, gib die richtige Fassung zurück.',
+    'Ergibt sie keinen Sinn, gib das zurück, was der Lerner vermutlich sagen wollte.',
     '',
-    'NUR BERICHTIGEN, NICHT ERKLÄREN. Keine Begründung, kein Lob, kein Rat,',
-    'kein Kommentar. Nur die berichtigte Zeile.',
+    'ÄNDERE SO WENIG WIE NÖTIG. Wortwahl und Satzbau des Lerners bleiben, wenn',
+    'sie verständlich sind. Keine Verschönerung, keine höflichere Fassung.',
     '',
-    'ÄNDERE SO WENIG WIE NÖTIG:',
-    '- Wortwahl und Satzbau des Lerners bleiben, wenn sie verständlich sind.',
-    '- Keine Verschönerung, keine höflichere oder idiomatischere Fassung.',
-    '',
-    'DAS SIND KEINE FEHLER — nicht anfassen und NICHT in die Liste:',
-    '- Kurze Antworten. "2", "Sí.", "Ja.", "Mucho." sind in einem Gespräch',
-    '  vollständige, richtige Antworten. Niemals zu ganzen Sätzen ausbauen.',
-    '- Zahlen als Ziffern. "2" ist richtig geschrieben.',
-    '- Fehlende Frage- oder Anführungszeichen, wenn der Satz klar ist.',
+    'Nur die Zeilen. Keine Erklärung, kein Kommentar, keine Nummerierung im Text.',
     '',
     'ANTWORTE AUSSCHLIESSLICH MIT JSON, ohne Vorwort, ohne Codeblock:',
-    '{"korrekturen":[{"nr":1,"richtig":"…"}]}',
-    'nr ist die Nummer der Zeile. "richtig" ist die berichtigte Zeile, sonst nichts.',
-    'Ist keine Zeile zu berichtigen: {"korrekturen":[]}'
+    '{"zeilen":["…","…","…"]}'
   ].join('\n');
 }
 
@@ -137,32 +124,56 @@ export default async function handler(req, res) {
       out = JSON.parse(roh);
     } catch (e) {
       // Kaputtes JSON darf die Szene nicht sprengen: lieber leer als kaputt.
+      // `roh` geht mit, damit im Browser sichtbar wird, WAS zurückkam.
       return res.status(200).json({ korrekturen: [], worte, roh });
     }
 
-    const korrekturen = (Array.isArray(out.korrekturen) ? out.korrekturen : [])
-      .slice(0, 6)
-      .map(k => ({ nr: parseInt(k.nr, 10) || 0, richtig: String(k.richtig || '').trim() }))
-      .filter(k => k.nr > 0 && k.richtig)
+    // ══════════════════════════════════════════════════════════════
+    // DER VERGLEICH LIEGT HIER, NICHT IM MODELL (Leo, 31.08.)
+    //
+    // Vorher entschied das Modell selbst, ob etwas ein Fehler ist. Mit einer
+    // Liste „das sind keine Fehler" davor wurde es so vorsichtig, dass
+    // „No hago tiempo", „Sabo nada." und „Eh no se" allesamt durchgingen und
+    // der Lerner „Sehr gut!" bekam.
+    //
+    // Jetzt berichtigt das Modell nur noch JEDE Zeile. Ob sich etwas geändert
+    // hat, stellt der Code fest — deterministisch, ohne Urteil.
+    // Engine statt Prompt, wie beim Sieb.
+    // ══════════════════════════════════════════════════════════════
+    const zurueck = Array.isArray(out.zeilen) ? out.zeilen : [];
+
+    // AKZENTE BLEIBEN STEHEN. Sie wegzunormalisieren war ein Fehler: bei
+    // „Eh no se" → „Eh, no sé." IST der Akzent die Korrektur, und der
+    // Vergleich hielt beide für gleich (gefunden beim Selbsttest 31.08.).
+    // Ignoriert werden nur Groß-/Kleinschreibung, Leerraum und die
+    // Satzzeichen am Rand — ein fehlendes ¿ oder ein Punkt am Ende ist
+    // keine Meldung wert.
+    const flach = t => String(t || '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/^[¿¡"'\s]+/, '')
+      .replace(/[.,;:!?"'\s]+$/, '')
+      .trim();
+
+    const korrekturen = [];
+    for (let i = 0; i < zeilen.length; i++) {
+      const alt = zeilen[i];
+      const neu = String(zurueck[i] || '').trim();
+      if (!neu) continue;
+      if (flach(alt) === flach(neu)) continue;      // nichts geändert → kein Fehler
+
       // Sicherheitsnetz, eng gefasst: geschützt sind NUR die kurzen, gültigen
       // Antworten, die das Modell gern zu ganzen Sätzen ausbaut — „2" wurde
-      // zu „Para dos, por favor." (31.08.). Alles andere darf so lang werden
-      // wie nötig; bei Unsinn ist die richtige Fassung nun mal länger.
-      .filter(k => {
-        const alt = (zeilen[k.nr - 1] || '').trim().toLowerCase();
-        const neu = k.richtig.trim().toLowerCase();
-        if (!alt || alt === neu) return false;
+      // zu „Para dos, por favor." (31.08.).
+      const kern = alt.replace(/[.,!?¿¡]/g, '').trim();
+      const kurzUndGueltig = /^\d+$/.test(kern)
+        || (kern.split(/\s+/).length === 1 && kern.length <= 4);
+      if (kurzUndGueltig && neu.replace(/[.,!?¿¡]/g, '').trim().split(/\s+/).length > 2) continue;
 
-        const kern = alt.replace(/[.,!?¿¡]/g, '').trim();
-        const kurzUndGueltig = /^\d+$/.test(kern) || (kern.split(/\s+/).length === 1 && kern.length <= 4);
-        if (!kurzUndGueltig) return true;
+      korrekturen.push({ nr: i + 1, richtig: neu });
+    }
 
-        // Kurze gültige Antwort: nur durchlassen, wenn es eine echte
-        // Berichtigung ist und kein Ausbau zum Satz.
-        return neu.replace(/[.,!?¿¡]/g, '').trim().split(/\s+/).length <= 2;
-      });
-
-    return res.status(200).json({ korrekturen, worte });
+    return res.status(200).json({ korrekturen, worte, roh });
   } catch (e) {
     return res.status(502).json({
       error: 'anthropic_unreachable',
