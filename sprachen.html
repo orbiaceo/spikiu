@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Sprachen umschalten</title>
+<!--
+  ══════════════════════════════════════════════════════════════════════
+  WERKZEUG, KEIN PRODUKT — wie pruefung.html.
+
+  Setzt Ziel- und Muttersprache im Profil, damit sich Deutsch und Englisch
+  als Zielsprache testen lassen, ohne durchs Assessment zu gehen.
+
+  DAS PROFIL LIEGT VERSCHACHTELT: spikiu_user.profile.zielsprache
+  So schreibt es das Assessment, so lesen es chat.html, haus.html und
+  pruefung.html. Am 31.08. fiel auf, dass szene.html und lernpfad-sprache.js
+  nur an der Oberfläche nachsahen und deshalb still auf Spanisch zurückfielen.
+  Diese Seite schreibt an BEIDE Stellen, damit kein Raum leer ausgeht.
+
+  Kein Bottom-Nav: ein Raum, nur haus.html trägt die Navi.
+  ══════════════════════════════════════════════════════════════════════
+-->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#eef7f1;--ink:#15163a;--mid:#5f7068;--accent:#1f93b0;--accent2:#e8f5ee;
+  --du:#ffd24a;--faint:#dfe6e0;--ow:2.5px}
+html,body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;
+  -webkit-font-smoothing:antialiased;min-height:100%}
+.app{max-width:680px;margin:0 auto;padding-bottom:3rem}
+.kopf{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;
+  border-bottom:var(--ow) solid var(--ink)}
+.back{width:38px;height:38px;border-radius:999px;border:2.5px solid var(--ink);
+  background:#fff;font-size:1.15rem;box-shadow:2px 2px 0 var(--ink);cursor:pointer;color:var(--ink)}
+.kopf .titel{font:600 .95rem/1.2 'DM Sans'}
+.kopf .titel span{display:block;font-weight:400;font-size:.75rem;color:var(--mid)}
+.karte{background:#fff;border:var(--ow) solid var(--ink);border-radius:1.1rem;
+  box-shadow:5px 6px 0 var(--ink);padding:1.2rem 1.1rem;margin:1rem}
+h2{font:600 1.3rem/1.2 'Cormorant Garamond',serif;margin-bottom:.2rem}
+.unter{font:400 .85rem/1.4 'DM Sans';color:var(--mid);margin-bottom:1rem}
+.l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mid);margin:1.1rem 0 .5rem}
+.reihe{display:flex;gap:.5rem}
+.reihe button{flex:1;padding:.85rem .4rem;border:2px solid var(--ink);border-radius:.7rem;
+  background:#fff;font:600 .95rem/1.2 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--ink);
+  color:var(--ink)}
+.reihe button:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
+.reihe button.an{background:var(--du)}
+.reihe button[disabled]{opacity:.35;cursor:default;box-shadow:none}
+.jetzt{background:var(--accent2);border:2px solid var(--ink);border-radius:.7rem;
+  padding:.8rem .9rem;margin-top:1.2rem;font:400 .95rem/1.5 'DM Sans'}
+.jetzt b{font-weight:600}
+.warn{background:#fff6f5;border:2px solid #b4534b;color:#b4534b;border-radius:.7rem;
+  padding:.7rem .85rem;margin-top:.9rem;font:400 .88rem/1.45 'DM Sans'}
+.knopf{display:block;width:100%;margin-top:.7rem;padding:.85rem;border:var(--ow) solid var(--ink);
+  border-radius:999px;background:var(--accent);color:#fff;font:700 1rem/1 'DM Sans';
+  box-shadow:4px 4px 0 var(--ink);cursor:pointer;text-align:center;text-decoration:none}
+.knopf.gelb{background:var(--du);color:var(--ink)}
+.knopf.stumm{background:#fff;color:var(--ink)}
+.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.wahl{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem}
+.wahl a{flex:1 1 44%;padding:.65rem .4rem;border:2px solid var(--ink);border-radius:.6rem;
+  background:#fff;font:600 .85rem/1.2 'DM Sans';color:var(--ink);text-decoration:none;
+  text-align:center;box-shadow:2px 2px 0 var(--ink)}
+pre{font:400 .72rem/1.4 ui-monospace,monospace;background:#f5f7f5;border:1px solid var(--faint);
+  border-radius:.5rem;padding:.7rem;overflow-x:auto;margin-top:.7rem;color:var(--mid)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="kopf">
+    <button class="back" onclick="location.href='haus.html'" aria-label="Zurück">‹</button>
+    <div class="titel">Sprachen umschalten<span>Werkzeug · kein Produkt</span></div>
+  </div>
+
+  <div class="karte">
+    <h2>Was möchtest du lernen?</h2>
+    <div class="unter">Setzt Ziel- und Muttersprache im Profil. Alle Räume lesen sie sofort.</div>
+
+    <div class="l">Zielsprache — die du lernst</div>
+    <div class="reihe" id="ziel"></div>
+
+    <div class="l">Muttersprache — die Brücke</div>
+    <div class="reihe" id="mutter"></div>
+
+    <div class="l">Stand — steuert die Brücken, nie sichtbar</div>
+    <div class="reihe" id="koennen"></div>
+
+    <div class="jetzt" id="jetzt"></div>
+    <div id="warnung"></div>
+  </div>
+
+  <div class="karte">
+    <h2>Direkt in eine Szene</h2>
+    <div class="unter" id="szenenInfo"></div>
+    <div class="l">A1</div>
+    <div class="wahl" id="a1"></div>
+    <div class="l">A2</div>
+    <div class="wahl" id="a2"></div>
+    <a class="knopf gelb" href="haus.html" style="margin-top:1.2rem">Nach Hause</a>
+  </div>
+
+  <div class="karte">
+    <h2>Das steht im Profil</h2>
+    <div class="unter">Roh, wie es im Speicher liegt.</div>
+    <pre id="roh"></pre>
+    <button class="knopf stumm" id="loeschen">Profil löschen</button>
+  </div>
+</div>
+
+<script src="lernpfad-daten.js"></script>
+<script src="lernpfad-daten-de.js"></script>
+<script src="lernpfad-daten-en.js"></script>
+<script src="lernpfad-sprache.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var NAME = { de: 'Deutsch', es: 'Español', en: 'English' };
+  var STAND = { anfang: 'Anfänger', mittel: 'Mittel', fortgeschritten: 'Fortgeschritten' };
+
+  function lade() {
+    try { return JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {}; }
+    catch (e) { return {}; }
+  }
+
+  /* Liest beide Formen: verschachtelt (so schreibt es das Assessment) und
+     an der Oberfläche (ältere Profile). */
+  function feld(name, standard) {
+    var u = lade();
+    var p = u.profile || {};
+    return p[name] || u[name] || standard;
+  }
+
+  /* Schreibt an BEIDE Stellen. Die verschachtelte ist die Wahrheit; die
+     obere bleibt gefüllt, damit kein Raum leer ausgeht, der noch dort
+     nachsieht. Doppelt schreiben ist hier richtig — es ist ein Werkzeug,
+     das eine bekannte Uneinigkeit überbrückt, kein zweiter Datenhalter. */
+  function setze(name, wert) {
+    var u = lade();
+    if (!u.profile) u.profile = {};
+    u.profile[name] = wert;
+    u[name] = wert;
+    if (name === 'zielsprache') {
+      u.profile.fremde_schrift = (wert === 'el');
+      u.fremde_schrift = u.profile.fremde_schrift;
+    }
+    if (!u.profile.name && u.name) u.profile.name = u.name;
+    localStorage.setItem('spikiu_user', JSON.stringify(u));
+    zeichne();
+  }
+
+  function knopfReihe(id, werte, namen, aktuell, beiKlick, gesperrt) {
+    var el = document.getElementById(id);
+    el.innerHTML = '';
+    werte.forEach(function (w) {
+      var b = document.createElement('button');
+      b.textContent = namen[w] || w;
+      if (w === aktuell) b.className = 'an';
+      if (gesperrt && gesperrt.indexOf(w) > -1) {
+        b.disabled = true;
+        b.title = 'als Zielsprache und Muttersprache zugleich geht nicht';
+      } else {
+        b.onclick = function () { beiKlick(w); };
+      }
+      el.appendChild(b);
+    });
+  }
+
+  function stationen(stufe, elId, ziel) {
+    var el = document.getElementById(elId);
+    el.innerHTML = '';
+    var LP = window['SpikiuLernpfad' + ziel.toUpperCase()]
+          || (ziel === 'es' ? window.SpikiuLernpfadES : null)
+          || window.SpikiuLernpfad;
+    if (!LP) { el.innerHTML = '<div class="unter">Daten nicht geladen.</div>'; return; }
+    var mu = feld('muttersprache', 'de');
+    LP.themen.forEach(function (t) {
+      if (!LP.gefuellt(stufe, t.id)) return;
+      var a = document.createElement('a');
+      a.href = 'szene.html?stufe=' + stufe + '&thema=' + encodeURIComponent(t.id);
+      a.textContent = t.em + ' ' + ((t.na && (t.na[mu] || t.na.de || t.na.en)) || t.id);
+      el.appendChild(a);
+    });
+  }
+
+  function zeichne() {
+    var ziel = feld('zielsprache', 'es');
+    var mutter = feld('muttersprache', 'de');
+    var koennen = feld('koennen', 'anfang');
+
+    knopfReihe('ziel', ['es', 'de', 'en'], NAME, ziel, function (w) {
+      /* Ziel und Muttersprache dürfen nicht dieselbe sein — sonst gäbe es
+         keine Brücke. Beim Wechsel weicht die Muttersprache automatisch aus. */
+      if (w === feld('muttersprache', 'de')) {
+        setze('muttersprache', w === 'de' ? 'es' : 'de');
+      }
+      setze('zielsprache', w);
+    }, []);
+
+    knopfReihe('mutter', ['de', 'es', 'en'], NAME, mutter, function (w) {
+      setze('muttersprache', w);
+    }, [ziel]);
+
+    knopfReihe('koennen', ['anfang', 'mittel', 'fortgeschritten'], STAND, koennen, function (w) {
+      setze('koennen', w);
+    }, []);
+
+    document.getElementById('jetzt').innerHTML =
+      'Du lernst <b>' + (NAME[ziel] || ziel) + '</b>, '
+    + 'die Brücke ist <b>' + (NAME[mutter] || mutter) + '</b>.';
+
+    /* Laut melden, wenn die gewünschte Datendatei gar nicht geladen ist —
+       sonst zeigt die Szene still spanische Wörter (Lehre vom 18.08.). */
+    var da = window.SpikiuSprache ? window.SpikiuSprache.vorhanden() : [];
+    var w = document.getElementById('warnung');
+    w.innerHTML = (da.indexOf(ziel) > -1) ? '' :
+      '<div class="warn">Die Daten für <b>' + (NAME[ziel] || ziel)
+      + '</b> sind auf dieser Seite nicht geladen. Die Szene würde auf Spanisch '
+      + 'zurückfallen. Geladen: ' + (da.join(', ') || 'keine') + '.</div>';
+
+    document.getElementById('szenenInfo').textContent =
+      (NAME[ziel] || ziel) + ' üben, Erklärungen auf ' + (NAME[mutter] || mutter) + '.';
+
+    if (window.SpikiuSprache) window.SpikiuSprache.waehle(ziel);
+    stationen('a1', 'a1', ziel);
+    stationen('a2', 'a2', ziel);
+
+    document.getElementById('roh').textContent = JSON.stringify(lade(), null, 2);
+  }
+
+  document.getElementById('loeschen').onclick = function () {
+    if (!confirm('Profil wirklich löschen? Danach ist es leer.')) return;
+    localStorage.removeItem('spikiu_user');
+    zeichne();
+  };
+
+  zeichne();
+})();
+</script>
+</body>
+</html>

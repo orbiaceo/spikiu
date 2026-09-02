@@ -318,9 +318,24 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      ══════════════════════════════════════════════════════════ */
 
   /* ── Profil ───────────────────────────────────────────────── */
+  /* Das Profil liegt VERSCHACHTELT: spikiu_user.profile — so liest es
+     chat.html, haus.html und pruefung.html. Die Oberfläche wird zusätzlich
+     durchsucht, weil ältere Profile die Felder dort tragen. Wer nur oben
+     nachsah, fiel still auf Spanisch zurück und merkte es nie (31.08.). */
   var PROFIL = {};
-  try { PROFIL = JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {}; }
-  catch (e) { PROFIL = {}; }
+  try {
+    var roh = JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {};
+    var p = roh.profile || {};
+    PROFIL = {
+      name:           p.name           || roh.name           || '',
+      muttersprache:  p.muttersprache  || roh.muttersprache  || 'de',
+      zielsprache:    p.zielsprache    || roh.zielsprache    || 'es',
+      koennen:        p.koennen        || roh.koennen        || 'anfang',
+      etappe:         p.etappe         || roh.etappe         || 'samen'
+    };
+  } catch (e) {
+    PROFIL = { muttersprache: 'de', zielsprache: 'es', koennen: 'anfang' };
+  }
   var MU = PROFIL.muttersprache || 'de';
   var ZS = PROFIL.zielsprache   || 'es';
   var LP = window.SpikiuLernpfad || null;

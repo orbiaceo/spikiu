@@ -52,8 +52,14 @@
     try {
       var roh = raum.localStorage && raum.localStorage.getItem('spikiu_user');
       if (!roh) return 'es';
-      var p = JSON.parse(roh);
-      var z = p && (p.zielsprache || p.ziel);
+      var u = JSON.parse(roh) || {};
+      /* Das Profil liegt verschachtelt unter .profile — so schreibt es das
+         Assessment und so lesen es chat.html, haus.html und pruefung.html.
+         Die Oberfläche wird zusätzlich durchsucht, weil ältere Profile die
+         Felder dort tragen. Wer nur oben nachsah, fiel still auf Spanisch
+         zurück und merkte es nie (31.08.). */
+      var p = u.profile || {};
+      var z = p.zielsprache || u.zielsprache || p.ziel || u.ziel;
       return TAFEL[z] ? z : 'es';
     } catch (e) {
       return 'es';
