@@ -863,6 +863,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         body: JSON.stringify({
           zielsprache:   ZS,
           muttersprache: MU,
+          /* Der Stand bremst die Korrektur: von einem Anfänger wird keine
+             gehobenere Fassung verlangt, wenn seine einfache richtig ist. */
+          koennen:       PROFIL.koennen || 'anfang',
           /* BEIDE Rollen, nicht nur Spikius. Ohne „du bist der Kunde" kann
              niemand wissen, ob „¿Teno manzanas?" zu „¿Tengo…?" oder zu
              „¿Tiene…?" gehört — der Satz ist grammatisch in beide Richtungen
