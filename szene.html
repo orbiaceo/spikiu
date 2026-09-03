@@ -141,7 +141,6 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .capy .punkt{position:absolute;top:-3px;right:-3px;width:14px;height:14px;
   border-radius:50%;background:var(--accent);border:2px solid var(--ink)}
 .aufg .txt{flex:1}
-.aufg .txt .leer{font:400 .95rem/1.3 'DM Sans';color:var(--mid);font-style:italic}
 .hinweis{margin-top:.8rem;background:var(--accent2);border:2px solid var(--ink);
   border-radius:.7rem;padding:.7rem .8rem;display:none}
 .hinweis.an{display:block}
@@ -564,10 +563,12 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       h += '</div><div class="zaehler">Aufgabe ' + (z.aufgabeIndex + 1)
         +  ' von ' + aufgaben.length + '</div>'
         +  '<div class="aufg">'
-        +    '<div class="capy" data-capy role="button" tabindex="0" aria-label="Hilfe">'
+        +    '<div class="capy" data-capy role="button" tabindex="0" '
+        +      'aria-label="Zeig mir, wie man es sagt">'
         +      '<span class="punkt" data-punkt></span>' + CAPY + '</div>'
-        +    '<div class="txt"><div class="l" data-lbl></div>'
-        +    '<div class="t leer" data-aufg>Was soll ich tun?</div></div>'
+        +    '<div class="txt"><div class="l" data-lbl>Deine Aufgabe</div>'
+        +    '<div class="t" data-aufg>' + esc(inSprache(aufgaben[z.aufgabeIndex], MU))
+        +    '</div></div>'
         +  '</div>'
         +  '<div class="hinweis" data-hinweis>'
         +    '<div class="l">So könntest du es sagen</div>'
@@ -593,7 +594,13 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      wenn alles ausgeklappt ist — sonst weiß niemand, dass man tippen kann.
      ══════════════════════════════════════════════════════════ */
   function bauSouffleur(k, index, aufgaben) {
-    var stufe  = 0;
+    /* Die Aufgabe steht SOFORT da (Leo, 01.09.). Als sie noch vage war
+       („Frag, was darin ist"), hatte das Verstecken einen Sinn. Jetzt ist sie
+       die eigentliche Anweisung — quasi eine Übersetzungsaufgabe —, und ein
+       Tipp, um sie überhaupt zu sehen, ist ein Schritt ohne Nutzen.
+       Der Capy behält genau eine Aufgabe: den fertigen Satz auf Tipp, für
+       den, der an der Aufgabe scheitert. */
+    var stufe  = 1;
     var capy   = k.querySelector('[data-capy]');
     var punkt  = k.querySelector('[data-punkt]');
     var lbl    = k.querySelector('[data-lbl]');
@@ -608,19 +615,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     satzEl.textContent = satz;
 
     function zeichne() {
-      if (stufe === 0) {
-        lbl.textContent = '';
-        txt.className = 't leer';
-        txt.textContent = 'Was soll ich tun?';
-      } else {
-        lbl.textContent = 'Deine Aufgabe';
-        txt.className = 't';
-        txt.textContent = inSprache(aufgaben[index], MU);
-      }
+      lbl.textContent = 'Deine Aufgabe';
+      txt.className = 't';
+      txt.textContent = inSprache(aufgaben[index], MU);
       hin.classList.toggle('an', stufe >= 2 && !!satz);
-      punkt.style.display = (stufe >= 2 || (stufe === 1 && !satz)) ? 'none' : 'block';
+      /* Der Punkt sagt „hier gibt es noch Hilfe" und verschwindet, sobald
+         der Satz sichtbar ist. Gibt es keinen Satz, gibt es auch nichts
+         zu holen — dann bleibt der Punkt von Anfang an weg. */
+      punkt.style.display = (stufe >= 2 || !satz) ? 'none' : 'block';
     }
-    capy.onclick = function () { stufe = Math.min(stufe + 1, 2); zeichne(); };
+    capy.onclick = function () { if (satz) { stufe = 2; zeichne(); } };
     capy.onkeydown = function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); capy.click(); }
     };
