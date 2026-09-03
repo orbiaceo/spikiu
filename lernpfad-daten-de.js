@@ -110,104 +110,104 @@
 
   var AUFGABEN = {
     'a1.arzt': [
-      { de:'Sag, wo es weh tut', es:'Di dónde te duele', en:'Say where it hurts' },
-      { de:'Sag, seit wann', es:'Di desde cuándo', en:'Say since when' },
-      { de:'Bedanke dich', es:'Da las gracias', en:'Say thank you' }
+      { de:'Sag, dass du Kopfschmerzen hast', es:'Di que te duele la cabeza', en:'Say you have a headache' },
+      { de:'Sag: seit gestern, und dass du Fieber hast', es:'Di que desde ayer y que tienes fiebre', en:'Say since yesterday, and that you have a fever' },
+      { de:'Bedanke dich bei der Ärztin', es:'Da las gracias a la doctora', en:'Thank the doctor' }
     ],
     'a1.bahnhof': [
-      { de:'Kaufe eine Fahrkarte', es:'Compra un billete', en:'Buy a ticket' },
-      { de:'Frag nach der Abfahrtszeit', es:'Pregunta a qué hora sale', en:'Ask about the departure time' },
-      { de:'Frag nach dem Gleis', es:'Pregunta de qué andén sale', en:'Ask which platform' }
+      { de:'Kaufe eine Fahrkarte nach München', es:'Compra un billete para Múnich', en:'Buy a ticket to Munich' },
+      { de:'Sag: hin und zurück, und frag, wann der Zug fährt', es:'Di que ida y vuelta y pregunta a qué hora sale el tren', en:'Say return, and ask when the train leaves' },
+      { de:'Frag, von welchem Gleis er fährt', es:'Pregunta de qué andén sale', en:'Ask which platform it leaves from' }
     ],
     'a1.cafe': [
-      { de:'Bestelle etwas zu trinken', es:'Pide algo de beber', en:'Order something to drink' },
-      { de:'Sag, wie du es möchtest', es:'Di cómo lo quieres', en:'Say how you want it' },
-      { de:'Bitte um die Rechnung', es:'Pide la cuenta', en:'Ask for the bill' }
+      { de:'Bestelle einen Kaffee', es:'Pide un café', en:'Order a coffee' },
+      { de:'Sag, dass du ihn hier trinken möchtest', es:'Di que lo quieres para tomar allí', en:'Say you want it for here' },
+      { de:'Verneine und frag, was es kostet', es:'Di que no y pregunta cuánto es', en:'Say no and ask what it costs' }
     ],
     'a1.einkaufen': [
-      { de:'Kaufe etwas ein', es:'Compra algo', en:'Buy something' },
-      { de:'Frag nach dem Preis', es:'Pregunta el precio', en:'Ask about the price' },
-      { de:'Bezahle', es:'Paga', en:'Pay' }
+      { de:'Melde dich und bestelle ein Kilo Äpfel', es:'Di que eres tú y pide un kilo de manzanas', en:'Say it is you and ask for a kilo of apples' },
+      { de:'Bestelle ein halbes Pfund Käse und frag, was es kostet', es:'Pide un cuarto de kilo de queso y pregunta cuánto cuesta', en:'Ask for half a pound of cheese and what it costs' },
+      { de:'Gib ihr zehn Euro', es:'Dale diez euros', en:'Hand over ten euros' }
     ],
     'a1.familie': [
-      { de:'Sag, dass du eine Schwester hast', es:'Di que tienes una hermana', en:'Say that you have a sister' },
-      { de:'Nenne ihren Namen', es:'Di cómo se llama', en:'Give her name' },
-      { de:'Sag, wie alt sie ist', es:'Di qué edad tiene', en:'Say how old she is' }
+      { de:'Bejahe und sag, dass du eine Schwester hast', es:'Di que sí, que tienes una hermana', en:'Say yes, you have a sister' },
+      { de:'Sag, dass sie Klara heißt', es:'Di que se llama Klara', en:'Say her name is Klara' },
+      { de:'Sag, dass sie zwölf ist', es:'Di que tiene doce años', en:'Say she is twelve' }
     ],
     'a1.hotel': [
-      { de:'Sag, dass du reserviert hast', es:'Di que tienes una reserva', en:'Say that you have a booking' },
-      { de:'Frag nach dem Frühstück', es:'Pregunta por el desayuno', en:'Ask about breakfast' },
-      { de:'Frag nach der Etage', es:'Pregunta en qué piso está', en:'Ask which floor' }
+      { de:'Bejahe und nenne deinen Namen: Weber', es:'Di que sí, a nombre de Weber', en:'Say yes, under the name Weber' },
+      { de:'Bestätige und frag, ob das Frühstück dabei ist', es:'Confirma y pregunta si el desayuno está incluido', en:'Confirm and ask whether breakfast is included' },
+      { de:'Bedanke dich und frag, in welchem Stock das Zimmer ist', es:'Da las gracias y pregunta en qué planta está la habitación', en:'Say thanks and ask which floor the room is on' }
     ],
     'a1.restaurant': [
-      { de:'Sag, für wie viele der Tisch ist', es:'Di para cuántas personas es la mesa', en:'Say how many the table is for' },
-      { de:'Frag nach einer Empfehlung', es:'Pide una recomendación', en:'Ask for a recommendation' },
-      { de:'Bestelle dein Essen', es:'Pide tu comida', en:'Order your food' }
+      { de:'Verneine und sag, dass ihr zu zweit seid', es:'Di que no y que son dos personas', en:'Say no, and that there are two of you' },
+      { de:'Frag, was er empfiehlt', es:'Pregunta qué recomienda', en:'Ask what he recommends' },
+      { de:'Bestelle den Schweinebraten', es:'Pide el asado de cerdo', en:'Order the roast pork' }
     ],
     'a1.taxi': [
-      { de:'Frag, ob das Taxi frei ist', es:'Pregunta si el taxi está libre', en:'Ask if the taxi is free' },
-      { de:'Nenne dein Ziel', es:'Di adónde vas', en:'Name your destination' },
-      { de:'Sag, dass du Gepäck hast', es:'Di que llevas equipaje', en:'Say that you have luggage' }
+      { de:'Frag, ob das Taxi frei ist', es:'Pregunta si el taxi está libre', en:'Ask whether the taxi is free' },
+      { de:'Sag, dass du zum Flughafen willst', es:'Di que vas al aeropuerto', en:'Say you are going to the airport' },
+      { de:'Bejahe und sag, dass du einen Koffer hast', es:'Di que sí, que llevas una maleta', en:'Say yes, you have one suitcase' }
     ],
     'a1.wegbeschreibung': [
-      { de:'Frag, wo der Platz ist', es:'Pregunta dónde está la plaza', en:'Ask where the square is' },
+      { de:'Frag, wo der Marktplatz ist', es:'Pregunta dónde está la plaza del mercado', en:'Ask where the market square is' },
       { de:'Frag, ob es weit ist', es:'Pregunta si está lejos', en:'Ask whether it is far' },
       { de:'Bedanke dich', es:'Da las gracias', en:'Say thank you' }
     ],
     'a1.wetter': [
-      { de:'Sag, wie das Wetter heute ist', es:'Di qué tiempo hace hoy', en:'Say what the weather is like today' },
-      { de:'Sag, wie es morgen wird', es:'Di qué tiempo hará mañana', en:'Say what it will be tomorrow' },
-      { de:'Verabschiede dich', es:'Despídete', en:'Say goodbye' }
+      { de:'Stimme zu und sag, dass die Sonne scheint und es warm ist', es:'Dale la razón y di que hace sol y calor', en:'Agree and say the sun is out and it is warm' },
+      { de:'Sag, dass es morgen wohl regnet', es:'Di que mañana probablemente llueve', en:'Say it will probably rain tomorrow' },
+      { de:'Sag, dass das eine gute Idee ist, und verabschiede dich bis morgen', es:'Di que es buena idea y despídete hasta mañana', en:'Say that is a good idea and say see you tomorrow' }
     ],
     'a2.arzt': [
-      { de:'Erzähle, was passiert ist', es:'Cuenta qué pasó', en:'Say what happened' },
-      { de:'Nenne deine Medikamente und Allergien', es:'Di qué medicinas tomas y a qué eres alérgico', en:'Name your medication and allergies' },
-      { de:'Frag nach einem weiteren Termin', es:'Pregunta por otra cita', en:'Ask about another appointment' }
+      { de:'Erzähle, dass du letzte Woche gestürzt bist und die Schulter schlimmer geworden ist', es:'Cuenta que te caíste la semana pasada y que el hombro ha empeorado', en:'Say you fell last week and your shoulder has got worse' },
+      { de:'Sag, dass du nur Schmerztabletten nimmst und gegen Penizillin allergisch bist', es:'Di que solo tomas analgésicos y que eres alérgico a la penicilina', en:'Say you only take painkillers and that you are allergic to penicillin' },
+      { de:'Stimme zu und frag, ob du noch einen Termin brauchst', es:'Di que de acuerdo y pregunta si necesitas otra cita', en:'Agree and ask whether you need another appointment' }
     ],
     'a2.bahnhof': [
-      { de:'Sag, dass dein Zug Verspätung hat', es:'Di que tu tren lleva retraso', en:'Say that your train is delayed' },
-      { de:'Nenne die Umsteigezeit', es:'Di la hora del transbordo', en:'Give the connection time' },
+      { de:'Sag, dass dein Zug zwanzig Minuten Verspätung hat', es:'Di que tu tren lleva veinte minutos de retraso', en:'Say your train is twenty minutes late' },
+      { de:'Sag: in Hannover, um Viertel nach drei', es:'Di que en Hannover, a las tres y cuarto', en:'Say in Hanover, at quarter past three' },
       { de:'Frag, was passiert, wenn du ihn verpasst', es:'Pregunta qué pasa si lo pierdes', en:'Ask what happens if you miss it' }
     ],
     'a2.cafe': [
-      { de:'Sag höflich, dass etwas nicht stimmt', es:'Di con cortesía que algo no está bien', en:'Politely say something is wrong' },
-      { de:'Frag, was darin ist', es:'Pregunta qué lleva', en:'Ask what is in it' },
-      { de:'Wähle etwas anderes', es:'Elige otra cosa', en:'Choose something else' }
+      { de:'Sag höflich, dass dein Kaffee kalt ist', es:'Di con cortesía que tu café está frío', en:'Politely say your coffee is cold' },
+      { de:'Bedanke dich und frag, ob in dem Kuchen Nüsse sind', es:'Da las gracias y pregunta si el pastel lleva frutos secos', en:'Say thanks and ask whether the cake has nuts in it' },
+      { de:'Sag, dass du allergisch bist, und nimm den Zitronenkuchen', es:'Di que eres alérgico y pide el de limón', en:'Say you are allergic and take the lemon cake' }
     ],
     'a2.einkaufen': [
-      { de:'Sag, was mit dem Stück nicht stimmt', es:'Di qué problema tiene la prenda', en:'Say what is wrong with the item' },
-      { de:'Frag, ob du umtauschen kannst', es:'Pregunta si puedes cambiarla', en:'Ask whether you can exchange it' },
-      { de:'Frag, ob du es anprobieren darfst', es:'Pregunta si te la puedes probar', en:'Ask whether you may try it on' }
+      { de:'Sag, dass du das Hemd gestern gekauft hast und es dir zu groß ist', es:'Di que compraste esta camisa ayer y que te queda grande', en:'Say you bought this shirt yesterday and it is too big for you' },
+      { de:'Bejahe und frag, ob du es umtauschen kannst', es:'Di que sí y pregunta si puedes cambiarla', en:'Say yes and ask whether you can exchange it' },
+      { de:'Sag: eine Nummer kleiner, und frag, ob du es anprobieren darfst', es:'Di que una talla menos y pregunta si te la puedes probar', en:'Say one size down and ask whether you may try it on' }
     ],
     'a2.familie': [
-      { de:'Erzähle, wo ihr früher gewohnt habt', es:'Cuenta dónde vivíais antes', en:'Say where you used to live' },
-      { de:'Erzähle, was ihr sonntags gemacht habt', es:'Cuenta qué hacíais los domingos', en:'Say what you used to do on Sundays' },
-      { de:'Sag, wen du vermisst', es:'Di a quién echas de menos', en:'Say who you miss' }
+      { de:'Sag, dass ihr in einem kleinen Dorf gewohnt habt', es:'Di que vivíais en un pueblo pequeño', en:'Say you lived in a small village' },
+      { de:'Bejahe und erzähle, dass ihr euch sonntags bei der Tante getroffen habt', es:'Di que sí y cuenta que los domingos se reunían en casa de tu tía', en:'Say yes, and that on Sundays you met at your aunt\'s' },
+      { de:'Sag, dass deine Schwester weggezogen ist und dass du sie vermisst', es:'Di que tu hermana se mudó y que la echas de menos', en:'Say your sister moved away and that you miss her' }
     ],
     'a2.hotel': [
-      { de:'Melde, was im Zimmer nicht funktioniert', es:'Informa qué no funciona en la habitación', en:'Report what is not working in the room' },
-      { de:'Sag, seit wann', es:'Di desde cuándo', en:'Say since when' },
-      { de:'Bitte um ein anderes Zimmer', es:'Pide otra habitación', en:'Ask for another room' }
+      { de:'Sag, dass die Heizung nicht funktioniert', es:'Di que la calefacción no funciona', en:'Say the heating is not working' },
+      { de:'Sag: seit gestern Abend, und dass es kein warmes Wasser gibt', es:'Di que desde anoche y que tampoco hay agua caliente', en:'Say since last night, and that there is no hot water either' },
+      { de:'Sag, dass du lieber das Zimmer wechseln möchtest', es:'Di que prefieres cambiar de habitación', en:'Say you would rather change rooms' }
     ],
     'a2.restaurant': [
-      { de:'Frag nach der Spezialität', es:'Pregunta por la especialidad', en:'Ask about the speciality' },
-      { de:'Sag, dass ihr teilen wollt', es:'Di que quieren compartir', en:'Say that you want to share' },
-      { de:'Bitte um getrennte Rechnungen', es:'Pide cuentas separadas', en:'Ask for separate bills' }
+      { de:'Sag, dass ihr noch nicht gewählt habt, und frag nach der Spezialität', es:'Di que todavía no han elegido y pregunta por la especialidad', en:'Say you have not decided yet and ask about the speciality' },
+      { de:'Frag nach etwas Leichterem und sag, dass ihr teilen wollt', es:'Pregunta si hay algo más ligero y di que quieren compartir', en:'Ask for something lighter and say you want to share' },
+      { de:'Nimm den Fisch und frag, ob ihr getrennt zahlen könnt', es:'Acepta el pescado y pregunta si pueden pagar por separado', en:'Take the fish and ask whether you can pay separately' }
     ],
     'a2.taxi': [
-      { de:'Nenne dein Ziel und sag, dass du es eilig hast', es:'Di adónde vas y que tienes prisa', en:'Name your destination and say you are in a hurry' },
-      { de:'Frag, ob der andere Weg schneller ist', es:'Pregunta si el otro camino es más rápido', en:'Ask whether the other way is faster' },
-      { de:'Bitte um eine Quittung', es:'Pide un recibo', en:'Ask for a receipt' }
+      { de:'Sag, dass du zum Flughafen willst und es eilig hast', es:'Di que vas al aeropuerto y que tienes prisa', en:'Say you are going to the airport and you are in a hurry' },
+      { de:'Frag, ob der Weg durch die Stadt schneller ist', es:'Pregunta si por el centro es más rápido', en:'Ask whether going through town is faster' },
+      { de:'Sag: dann diesen Weg, und frag nach einer Quittung', es:'Di que vaya por ahí y pregunta por un recibo', en:'Say take that route, and ask for a receipt' }
     ],
     'a2.wegbeschreibung': [
-      { de:'Frag nach dem Weg zum Museum', es:'Pregunta cómo llegar al museo', en:'Ask the way to the museum' },
-      { de:'Frag, wie es weitergeht', es:'Pregunta cómo sigue', en:'Ask what comes next' },
-      { de:'Frag, ob man zu Fuß gehen kann', es:'Pregunta si se puede ir a pie', en:'Ask whether you can walk' }
+      { de:'Frag, wie du zum Museum kommst', es:'Pregunta cómo llegar al museo', en:'Ask how to get to the museum' },
+      { de:'Frag, wie es danach weitergeht', es:'Pregunta cómo sigues después', en:'Ask what comes after that' },
+      { de:'Frag, ob man zu Fuß hingehen kann', es:'Pregunta si se puede ir a pie', en:'Ask whether you can walk there' }
     ],
     'a2.wetter': [
-      { de:'Frag nach der Vorhersage', es:'Pregunta por el pronóstico', en:'Ask about the forecast' },
-      { de:'Frag nach dem Nachmittag', es:'Pregunta por la tarde', en:'Ask about the afternoon' },
-      { de:'Schlag etwas vor', es:'Propón algo', en:'Make a suggestion' }
+      { de:'Sag, es kommt aufs Wetter an, und frag nach der Vorhersage', es:'Di que depende del tiempo y pregunta por el pronóstico', en:'Say it depends on the weather and ask about the forecast' },
+      { de:'Frag, wie es am Nachmittag wird', es:'Pregunta qué tiempo hará por la tarde', en:'Ask what it will be like in the afternoon' },
+      { de:'Schlag vor, nachmittags zu fahren, und sag, dass du eine Jacke mitnimmst', es:'Propón ir por la tarde y di que llevas una chaqueta', en:'Suggest going in the afternoon and say you will bring a jacket' }
     ]
   };
 
