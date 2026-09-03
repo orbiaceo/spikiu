@@ -47,50 +47,54 @@ const WORTE = {
   en: { titel: 'Your sentences, corrected', sauber: 'Well done!' }
 };
 
-function systemPrompt(ziel, szene) {
+function systemPrompt(ziel, szene, stand) {
   const ZS = SPRACHE[ziel] || 'Spanisch';
+  const STAND = { anfang: 'Anfänger', mittel: 'mittleres Niveau',
+                  fortgeschritten: 'fortgeschritten' }[stand] || 'Anfänger';
 
   return [
-    `Du berichtigst Sätze auf ${ZS}, die ein Lerner in einer Übungsszene geschrieben hat.`,
+    `Ein Lerner (${STAND}) hat kurze Sätze auf ${ZS} geschrieben.`,
     szene ? `\nDie Szene: ${szene}\n` : '',
     'Zu jeder Zeile bekommst du drei Angaben, die den Sinn festlegen:',
     '- was der Lerner in diesem Zug sagen sollte (seine Aufgabe)',
     `- was sein Gegenüber unmittelbar davor gesagt hat, auf ${ZS}`,
-    '- eine übliche Formulierung für diesen Zug („So sagt man es hier")',
+    '- eine mögliche Formulierung, damit du die Lage verstehst',
     '',
-    'DIE ÜBLICHE FORMULIERUNG IST KEINE LÖSUNG. Sie zeigt dir nur, welche Art',
-    'Satz an dieser Stelle passt. Schreibe sie NICHT ab und drücke die Zeile',
-    'des Lerners nicht in ihre Form. Weicht er ab und ist trotzdem richtig,',
-    'bleibt seine Fassung stehen.',
+    '════ DEINE REGEL, WICHTIGER ALS ALLES ANDERE ════',
+    'Gib jede Zeile zurück. Ändere sie NUR, wenn sie einen FEHLER enthält.',
+    'Ist sie richtig, gib sie Zeichen für Zeichen UNVERÄNDERT zurück.',
     '',
-    'BERICHTIGE MIT BLICK AUF DIESEN ZUSAMMENHANG. Ein Satz, der für sich',
-    'genommen richtig aussieht, kann in dieser Lage falsch sein. Achte',
-    'besonders darauf, WER hier WEN fragt:',
-    '- „Tengo desayuno?" heißt „Habe ich Frühstück?". Der Gast fragt die',
-    '  Rezeption, also: „¿Tienen desayuno?"',
-    '- „¿Teno manzanas?" will nicht „¿Tengo manzanas?" sein, sondern',
-    '  „¿Tiene manzanas?" — der Kunde fragt die Verkäuferin.',
+    'ES GIBT VIELE RICHTIGE FORMULIERUNGEN. Weicht der Lerner von der',
+    'möglichen Formulierung ab und ist trotzdem korrekt, ist das KEIN Fehler.',
+    'Beispiele für Sätze, die alle richtig sind und unverändert bleiben:',
+    '- „Me duele la cabeza." und „Tengo dolor de cabeza." — beide richtig.',
+    '- „Tengo gripe.", „Me he cogido una gripe.", „Ando con gripe." — alle drei.',
+    '- „¿Está libre?" und „¿Está usted libre?" — beide richtig.',
+    'Die mögliche Formulierung ist KEIN Ziel. Schreibe sie nicht ab und',
+    'drücke die Zeile des Lerners nicht in ihre Form.',
     '',
-    'MISCHT DER LERNER EINE ANDERE SPRACHE HINEIN, ersetze das Wort durch das',
-    `richtige ${ZS}e: „Grazie" → „Gracias", „per favore" → „por favor".`,
+    'Verlange auch keine gehobenere Fassung, als sein Niveau erwarten lässt.',
+    'Einfach und richtig ist richtig.',
     '',
-    'ÜBERSETZE NICHT WÖRTLICH, sondern nimm die Wendung, die man an DIESER',
-    'Stelle wirklich sagt. Ein deutsches „Bitte!" beim Geldreichen ist nicht',
-    '„Por favor", sondern die Formel, mit der man etwas überreicht. Welche das',
-    'ist, sagt dir die Lage — nicht eine allgemeine Regel.',
+    '════ WAS EIN FEHLER IST ════',
+    '- Rechtschreib- und Tippfehler, falsche Akzente',
+    '- falsche Wortformen (Endung, Zeit, Artikel, falsche Person)',
+    `- Wörter aus einer anderen Sprache statt ${ZS}`,
+    '- fehlende kleine Wörter, ohne die der Satz nicht steht',
+    '- Wortfolgen ohne Sinn — gib dann zurück, was er sagen wollte',
+    '- ein Satz, der in DIESER Lage nicht passt, weil er die falsche Person',
+    '  meint: „¿Teno manzanas?" will „¿Tiene manzanas?" sein — der Kunde',
+    '  fragt die Verkäuferin, nicht sich selbst.',
     '',
-    'Gib JEDE Zeile berichtigt zurück, in derselben Reihenfolge und Anzahl.',
-    'Ist eine Zeile schon richtig, gib sie unverändert zurück.',
-    'Ergibt sie keinen Sinn, gib das zurück, was der Lerner sagen wollte.',
+    'Mischt der Lerner eine andere Sprache hinein, ersetze das Wort durch das',
+    `richtige ${ZS}e. Übersetze dabei nicht wörtlich, sondern nimm die`,
+    'Wendung, die man an DIESER Stelle wirklich sagt.',
     '',
-    'ÄNDERE SO WENIG WIE NÖTIG. Die Wörter des Lerners bleiben stehen, wo sie',
-    'tragen. Keine Verschönerung, keine höflichere Fassung, kein Ausbau einer',
-    'kurzen Antwort zu einem ganzen Satz.',
-    '',
-    'Nur die Zeilen. Keine Erklärung, kein Kommentar, keine Nummerierung im Text.',
+    'NUR BERICHTIGEN, NICHT ERKLÄREN. Keine Begründung, kein Lob, kein Rat.',
     '',
     'ANTWORTE AUSSCHLIESSLICH MIT JSON, ohne Vorwort, ohne Codeblock:',
-    '{"zeilen":["…","…","…"]}'
+    '{"zeilen":["…","…","…"]}',
+    'Dieselbe Reihenfolge, dieselbe Anzahl wie die Eingabe.'
   ].filter(Boolean).join('\n');
 }
 
@@ -136,7 +140,7 @@ export default async function handler(req, res) {
     const teile = [`${i + 1}. Geschrieben: ${z.gesagt}`];
     if (z.aufgabe) teile.push(`   Aufgabe: ${z.aufgabe}`);
     if (z.vorher)  teile.push(`   Gegenüber sagte davor: ${z.vorher}`);
-    if (z.ueblich) teile.push(`   So sagt man es hier üblicherweise: ${z.ueblich}`);
+    if (z.ueblich) teile.push(`   Eine mögliche Formulierung: ${z.ueblich}`);
     return teile.join('\n');
   }).join('\n\n');
 
@@ -153,7 +157,8 @@ export default async function handler(req, res) {
         // Drei berichtigte Zeilen brauchen keine 300 Token. Der Client kann
         // das nicht anheben.
         max_tokens: 400,
-        system: systemPrompt(ziel, String(body.szene || '').slice(0, 160)),
+        system: systemPrompt(ziel, String(body.szene || '').slice(0, 200),
+                             String(body.koennen || 'anfang')),
         messages: [{ role: 'user', content: eingabe }]
       })
     });
