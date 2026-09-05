@@ -228,7 +228,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 <div class="app">
   <div class="kopf">
     <button class="back" id="zurueck" aria-label="">‹</button>
-    <div class="titel" id="kopfTitel">Szene<span id="kopfUnter">wird geladen …</span></div>
+    <div class="titel" id="kopfTitel"><span id="kopfUnter"></span></div>
   </div>
   <div class="deck" id="deck"></div>
 </div>
@@ -365,6 +365,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       nachHause:'Nach Hause', woUeben:'Wo möchtest du üben?',
       waehleThema:'Wähle ein Thema', deineStufe:' · deine Stufe',
       hilfeLabel:'Zeig mir, wie man es sagt', zurueck:'Zurück', fehler:'Fehler',
+      szene:'Szene', laedt:'wird geladen …',
       nochLeer:'noch leer',
       keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. Prüfe die Script-Reihenfolge in szene.html.',
       keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.'
@@ -383,6 +384,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       nachHause:'A casa', woUeben:'¿Dónde quieres practicar?',
       waehleThema:'Elige un tema', deineStufe:' · tu nivel',
       hilfeLabel:'Enséñame cómo se dice', zurueck:'Atrás', fehler:'Error',
+      szene:'Escena', laedt:'cargando …',
       nochLeer:'aún vacío',
       keineDaten:'Los datos del camino o el guion de la escena no están cargados. Revisa el orden de los scripts en szene.html.',
       keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.'
@@ -401,6 +403,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       nachHause:'Home', woUeben:'Where would you like to practise?',
       waehleThema:'Choose a topic', deineStufe:' · your level',
       hilfeLabel:'Show me how to say it', zurueck:'Back', fehler:'Error',
+      szene:'Scene', laedt:'loading …',
       nochLeer:'still empty',
       keineDaten:'The path data or the scene script is not loaded. Check the script order in szene.html.',
       keineAufgaben:'This station has no tasks yet. Choose another topic.'
@@ -1122,7 +1125,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* Beide Stufen anbieten. Die eigene ist zuerst und trägt einen Hinweis —
      aber niemand ist eingesperrt: wer weiter will, tippt einfach unten. */
   function waehler() {
-    titel.firstChild.nodeValue = 'Szene ';
+    titel.firstChild.nodeValue = T('szene') + ' ';
     unter.textContent = T('waehleThema');
     var k = karte();
     k.style.justifyContent = 'flex-start';
@@ -1158,6 +1161,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* ══════════════════════════════════════════════════════════
      START
      ══════════════════════════════════════════════════════════ */
+  /* Kopfzeile SOFORT in der Muttersprache setzen. Stand sie fest im HTML,
+     las ein Mexikaner „Szene" über „Elige un tema" (Leo, 01.09.). */
+  titel.insertBefore(document.createTextNode(T('szene') + ' '), unter);
+  unter.textContent = T('laedt');
+
   var zurueckBtn = document.getElementById('zurueck');
   zurueckBtn.setAttribute('aria-label', T('zurueck'));
   zurueckBtn.onclick = function () { location.href = 'haus.html'; };
