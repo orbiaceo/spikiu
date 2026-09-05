@@ -346,6 +346,32 @@ function finish(){
       lastSeenAt: new Date().toISOString()
     }));
     localStorage.setItem('spikiu_lang', muttersprache);
+
+    /* ══════════════════════════════════════════════════════════════
+       DEN WEG ANLEGEN (01.09.2026)
+
+       Bis heute schrieb das Assessment nur `spikiu_user.profile.koennen`.
+       Der WEG (`spikiu_pfad`) blieb leer, und die Szene stand fest auf a1 —
+       egal wie sich jemand einstufte, er landete in A1 (Leo, 01.09.).
+
+       Hier wird der Weg EINMAL angelegt, mit der Stufe aus der Einstufung.
+       A0/A1 → a1 · A2/B1/B2 → a2, dieselbe Zuordnung wie bei `koennen`.
+
+       WICHTIG: Ein BESTEHENDER Weg wird NICHT angefasst. Er trägt den
+       Fortschritt des Lerners — welche Stationen er durchschritten hat und
+       wo er wirklich steht. Der Test darf ihn nicht zurücksetzen, auch nicht,
+       wenn jemand die Einstufung wiederholt. Deshalb: nur anlegen, nie
+       überschreiben. Die Struktur stammt aus lernpfad.js (leer()). */
+    try {
+      var wegDa = localStorage.getItem('spikiu_pfad');
+      if (!wegDa) {
+        localStorage.setItem('spikiu_pfad', JSON.stringify({
+          zielsprache: zielsprache,
+          stufe: (koennen === 'anfang') ? 'a1' : 'a2',
+          stationen: {}
+        }));
+      }
+    } catch (e) { console.error('Weg konnte nicht angelegt werden', e); }
   } catch (e) { console.error('Storage failed', e); }
   window.location.href = 'haus.html';
 }
