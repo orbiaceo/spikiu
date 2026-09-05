@@ -518,15 +518,24 @@ var THEMES={
 function roomEintauchen(){
  kacheln({greet:{title:'¡Hola'+(vorname()?', '+vorname():'')+'! 👋',kr:letzteAktivitaet()},layout:'two',items:[
   {em:'🎭',tt:'Geführtes<br>Gespräch',ss:'Szenen üben',pill:'gratis',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
-  {em:'💬',tt:'Freies<br>Gespräch',ss:'Frei reden',pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='chat.html?modus=frei';}}
+  /* 01.09.2026: von chat.html auf szene.html umgehängt. Die Szene ist der
+     neue Raum — Aufgaben aus der Datenbank, null Token im Gespräch, ein
+     Aufruf am Ende. chat.html bleibt vorerst liegen als Rückweg, bis alle
+     drei Sprachen durchgetestet sind. */
+  {em:'💬',tt:'Freies<br>Gespräch',ss:'Frei reden',pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
  ]});
 }
+/* TOT — wird nirgends aufgerufen (geprüft 01.09.2026). Steht nur noch da,
+   weil roomEintauchen() daraus hervorging. Der Verweis auf chat.html hier
+   führt in den ALTEN geführten Zweig innerhalb von chat.html; wer diese
+   Funktion je wiederbelebt, muss ihn zuerst auf szene.html ändern.
 function roomEintauchenOld(){
  spikiu('Womit möchtest du dich ausdrücken?',function(){
   bigcards([
    {em:'🎭',tt:'Geführtes Gespräch',ss:'Szenen üben — Schritt für Schritt · gratis',go:function(){location.href='gefuehrt.html';}},
    {em:'💬',tt:'Freies Gespräch',ss:'Frei reden, in deinem Tempo · Premium',go:function(){location.href='chat.html';}}
   ]);});}
+*/
 function advBegruessung(){newStep(0);
  spikiu('Hallo '+NAME+'! Schön, dass du da bist. Heute ein kleines Sprachabenteuer — wohin soll es gehen?',function(){
   bigcards([
