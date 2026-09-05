@@ -227,7 +227,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 <body>
 <div class="app">
   <div class="kopf">
-    <button class="back" id="zurueck" aria-label="Zurück">‹</button>
+    <button class="back" id="zurueck" aria-label="">‹</button>
     <div class="titel" id="kopfTitel">Szene<span id="kopfUnter">wird geladen …</span></div>
   </div>
   <div class="deck" id="deck"></div>
@@ -338,6 +338,78 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   var MU = PROFIL.muttersprache || 'de';
   var ZS = PROFIL.zielsprache   || 'es';
   var LP = window.SpikiuLernpfad || null;
+
+
+  /* ══════════════════════════════════════════════════════════
+     DIE OBERFLÄCHE SPRICHT DIE MUTTERSPRACHE
+
+     Bis heute stand jeder Knopf und jede Überschrift fest auf Deutsch —
+     ein Mexikaner, der Englisch lernt, las „Wo möchtest du üben?" (Leo,
+     01.09.). Das Assessment fragt ausdrücklich, in welcher Sprache man
+     sich verständigen will; also gilt sie überall.
+
+     Nur drei Sprachen: de · es · en. Griechisch ist Zielsprache, nie
+     Oberfläche (Charta). Fehlt ein Eintrag, gilt Deutsch. */
+  var WORT = {
+    de: {
+      deineRolle:'Deine Rolle', spikiuIst:'Spikiu ist', duBist:'Du bist',
+      wischhilfe:'← wischen zum Weiterblättern →', los:'Los!',
+      anhoeren:'Anhören', uebersetzung:'Übersetzung',
+      aufgabe:'Aufgabe', von:'von', deineAufgabe:'Deine Aufgabe',
+      soKoenntest:'So könntest du es sagen', einsetzen:'Einsetzen',
+      antworte:'Antworte …', senden:'Senden', beenden:'Szene beenden',
+      weiter:'Weiter', geuebt:'Das hast du geübt',
+      wendungen:'Wendungen und Sätze', woerter:'Wörter',
+      nichtsGeerntet:'Noch nichts eingesammelt',
+      nichtsGeerntetText:'Beim nächsten Mal steht hier, was ihr wirklich gesagt habt.',
+      nachHause:'Nach Hause', woUeben:'Wo möchtest du üben?',
+      waehleThema:'Wähle ein Thema', deineStufe:' · deine Stufe',
+      hilfeLabel:'Zeig mir, wie man es sagt', zurueck:'Zurück', fehler:'Fehler',
+      nochLeer:'noch leer',
+      keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. Prüfe die Script-Reihenfolge in szene.html.',
+      keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.'
+    },
+    es: {
+      deineRolle:'Tu papel', spikiuIst:'Spikiu es', duBist:'Tú eres',
+      wischhilfe:'← desliza para avanzar →', los:'¡Empezamos!',
+      anhoeren:'Escuchar', uebersetzung:'Traducción',
+      aufgabe:'Tarea', von:'de', deineAufgabe:'Tu tarea',
+      soKoenntest:'Así lo podrías decir', einsetzen:'Usar esta frase',
+      antworte:'Responde …', senden:'Enviar', beenden:'Terminar la escena',
+      weiter:'Seguir', geuebt:'Esto has practicado',
+      wendungen:'Frases', woerter:'Palabras',
+      nichtsGeerntet:'Todavía nada recogido',
+      nichtsGeerntetText:'La próxima vez aparecerá aquí lo que realmente dijisteis.',
+      nachHause:'A casa', woUeben:'¿Dónde quieres practicar?',
+      waehleThema:'Elige un tema', deineStufe:' · tu nivel',
+      hilfeLabel:'Enséñame cómo se dice', zurueck:'Atrás', fehler:'Error',
+      nochLeer:'aún vacío',
+      keineDaten:'Los datos del camino o el guion de la escena no están cargados. Revisa el orden de los scripts en szene.html.',
+      keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.'
+    },
+    en: {
+      deineRolle:'Your role', spikiuIst:'Spikiu is', duBist:'You are',
+      wischhilfe:'← swipe to move on →', los:"Let's go!",
+      anhoeren:'Listen', uebersetzung:'Translation',
+      aufgabe:'Task', von:'of', deineAufgabe:'Your task',
+      soKoenntest:'You could say it like this', einsetzen:'Use this',
+      antworte:'Answer …', senden:'Send', beenden:'End the scene',
+      weiter:'Continue', geuebt:'This is what you practised',
+      wendungen:'Phrases and sentences', woerter:'Words',
+      nichtsGeerntet:'Nothing collected yet',
+      nichtsGeerntetText:'Next time this is where what you actually said will appear.',
+      nachHause:'Home', woUeben:'Where would you like to practise?',
+      waehleThema:'Choose a topic', deineStufe:' · your level',
+      hilfeLabel:'Show me how to say it', zurueck:'Back', fehler:'Error',
+      nochLeer:'still empty',
+      keineDaten:'The path data or the scene script is not loaded. Check the script order in szene.html.',
+      keineAufgaben:'This station has no tasks yet. Choose another topic.'
+    }
+  };
+  function T(k) {
+    var t = WORT[MU] || WORT.de;
+    return t[k] || WORT.de[k] || '';
+  }
 
   /* ── Zustand dieser Seite ─────────────────────────────────── */
   /* ══════════════════════════════════════════════════════════
@@ -535,19 +607,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
        müsste lügen, und die KI müsste den Bruch auffangen. Mit ihm ist es
        ein Theaterstück: „Sí, una hermana" ist die Rolle, keine Behauptung.
        Gelb wie die Karten des Lerners — es gehört ihm. */
-    + (fakten ? '<div class="fakten"><div class="l">Deine Rolle</div>'
+    + (fakten ? '<div class="fakten"><div class="l">' + esc(T('deineRolle')) + '</div>'
               + '<div class="t">' + esc(fakten) + '</div></div>' : '')
     + '<div class="rollen">'
-    +   '<div class="rolle"><div class="l">Spikiu ist</div><div class="n">'
+    +   '<div class="rolle"><div class="l">' + esc(T('spikiuIst')) + '</div><div class="n">'
     +     esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div></div>'
-    +   '<div class="rolle"><div class="l">Du bist</div><div class="n">'
+    +   '<div class="rolle"><div class="l">' + esc(T('duBist')) + '</div><div class="n">'
     +     esc(inSprache(ROLLE && ROLLE.lerner, MU)) + '</div></div>'
     + '</div>';
     k.insertAdjacentHTML('beforeend',
-      '<div class="wischhilfe">← wischen zum Weiterblättern →</div>');
+      '<div class="wischhilfe">' + esc(T('wischhilfe')) + '</div>');
     var b = document.createElement('button');
     b.className = 'knopf';
-    b.textContent = 'Los!';
+    b.textContent = T('los');
     b.onclick = function () {
       b.disabled = true;
       automat.los();
@@ -573,8 +645,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var h = '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
           + '<div class="zug">' + esc(text) + '</div>'
           + '<div class="werkz">'
-          +   '<button class="ikon" data-hoer aria-label="Anhören">🔊</button>'
-          +   (bruecke ? '<button class="ikon" data-ueb aria-label="Übersetzung">'
+          +   '<button class="ikon" data-hoer aria-label="' + esc(T('anhoeren')) + '">🔊</button>'
+          +   (bruecke ? '<button class="ikon" data-ueb aria-label="' + esc(T('uebersetzung')) + '">'
                        + esc(MU.toUpperCase()) + '</button>' : '')
           + '</div>'
           + (bruecke ? '<div class="ueb">' + esc(bruecke) + '</div>' : '');
@@ -586,23 +658,23 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         h += '<div class="st' + (i < z.aufgabeIndex ? ' fertig'
                                : i === z.aufgabeIndex ? ' jetzt' : '') + '"></div>';
       }
-      h += '</div><div class="zaehler">Aufgabe ' + (z.aufgabeIndex + 1)
-        +  ' von ' + aufgaben.length + '</div>'
+      h += '</div><div class="zaehler">' + esc(T('aufgabe')) + ' ' + (z.aufgabeIndex + 1)
+        +  ' ' + esc(T('von')) + ' ' + aufgaben.length + '</div>'
         +  '<div class="aufg">'
         +    '<div class="capy" data-capy role="button" tabindex="0" '
-        +      'aria-label="Zeig mir, wie man es sagt">'
+        +      'aria-label="' + esc(T('hilfeLabel')) + '">'
         +      '<span class="punkt" data-punkt></span>' + CAPY + '</div>'
-        +    '<div class="txt"><div class="l" data-lbl>Deine Aufgabe</div>'
+        +    '<div class="txt"><div class="l" data-lbl>' + esc(T('deineAufgabe')) + '</div>'
         +    '<div class="t" data-aufg>' + esc(inSprache(aufgaben[z.aufgabeIndex], MU))
         +    '</div></div>'
         +  '</div>'
         +  '<div class="hinweis" data-hinweis>'
-        +    '<div class="l">So könntest du es sagen</div>'
+        +    '<div class="l">' + esc(T('soKoenntest')) + '</div>'
         +    '<div class="s" data-satz></div>'
-        +    '<div class="kn"><button data-einsetzen>Einsetzen</button>'
-        +      '<button data-hsprich>🔊 Anhören</button></div>'
+        +    '<div class="kn"><button data-einsetzen>' + esc(T('einsetzen')) + '</button>'
+        +      '<button data-hsprich>🔊 ' + esc(T('anhoeren')) + '</button></div>'
         +  '</div>'
-        +  '<textarea class="feld" placeholder="Antworte …"></textarea>';
+        +  '<textarea class="feld" placeholder="' + esc(T('antworte')) + '"></textarea>';
     }
     k.innerHTML = h;
 
@@ -641,7 +713,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     satzEl.textContent = satz;
 
     function zeichne() {
-      lbl.textContent = 'Deine Aufgabe';
+      lbl.textContent = T('deineAufgabe');
       txt.className = 't';
       txt.textContent = inSprache(aufgaben[index], MU);
       hin.classList.toggle('an', stufe >= 2 && !!satz);
@@ -666,7 +738,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 
     var b = document.createElement('button');
     b.className = 'knopf';
-    b.textContent = 'Senden';
+    b.textContent = T('senden');
     b.disabled = true;
     feld.addEventListener('input', function () { b.disabled = !feld.value.trim(); });
     feld.addEventListener('keydown', function (ev) {
@@ -841,7 +913,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var b = document.createElement('button');
     b.className = 'knopf gelb';
     b.style.marginTop = '1.3rem';
-    b.textContent = 'Szene beenden';
+    b.textContent = T('beenden');
     b.onclick = function () { b.disabled = true; automat.abbrechen(); rueckmeldung(); };
     k.appendChild(b);
   }
@@ -958,7 +1030,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var b = document.createElement('button');
     b.className = 'knopf';
     b.style.marginTop = '1.3rem';
-    b.textContent = 'Weiter';
+    b.textContent = T('weiter');
     b.onclick = function () { b.disabled = true; ernte(); };
     k.appendChild(b);
   }
@@ -984,7 +1056,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     /* Die Ernte ist lang und wird gelesen, nicht betrachtet: oben anfangen. */
     k.style.justifyContent = 'flex-start';
     var h = (gruss ? '<div class="r-sauber">' + esc(gruss) + '</div>' : '')
-          + '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">Das hast du geübt</div>'
+          + '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">' + esc(T('geuebt')) + '</div>'
           + '<div class="bue-ort">' + esc(inSprache(thema && thema.na, MU)) + '</div>';
 
     /* Wendungen untereinander (Satz, dann Übersetzung), Wörter nebeneinander. */
@@ -1010,12 +1082,11 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     }
     /* Nicht „Das kannst du sagen": in der Liste stehen auch die Zeilen des
        Kellners, und die muss man VERSTEHEN, nicht sprechen (Leo, 31.08.). */
-    h += gruppe('Wendungen und Sätze', da.filter(function (x) { return x.art === 'wendung'; }), true);
-    h += gruppe('Wörter', da.filter(function (x) { return x.art === 'wort'; }), false);
+    h += gruppe(esc(T('wendungen')), da.filter(function (x) { return x.art === 'wendung'; }), true);
+    h += gruppe(esc(T('woerter')), da.filter(function (x) { return x.art === 'wort'; }), false);
     if (!da.length) {
-      h += '<div class="e-kopf">Noch nichts eingesammelt</div>'
-        +  '<div class="bue-ort" style="margin:0">Beim nächsten Mal steht hier, '
-        +  'was ihr wirklich gesagt habt.</div>';
+      h += '<div class="e-kopf">' + esc(T('nichtsGeerntet')) + '</div>'
+        +  '<div class="bue-ort" style="margin:0">' + esc(T('nichtsGeerntetText')) + '</div>';
     }
     k.innerHTML = h;
 
@@ -1025,7 +1096,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 
     var b = document.createElement('button');
     b.className = 'knopf';
-    b.textContent = 'Nach Hause';
+    b.textContent = T('nachHause');
     b.onclick = function () { raeumen(); location.href = 'haus.html'; };
     k.appendChild(b);
 
@@ -1052,16 +1123,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      aber niemand ist eingesperrt: wer weiter will, tippt einfach unten. */
   function waehler() {
     titel.firstChild.nodeValue = 'Szene ';
-    unter.textContent = 'Wähle ein Thema';
+    unter.textContent = T('waehleThema');
     var k = karte();
     k.style.justifyContent = 'flex-start';
 
     var reihenfolge = (STUFE === 'a2') ? ['a2', 'a1'] : ['a1', 'a2'];
-    var h = '<div class="bue-titel" style="font-size:1.3rem">Wo möchtest du üben?</div>';
+    var h = '<div class="bue-titel" style="font-size:1.3rem">' + esc(T('woUeben')) + '</div>';
 
     reihenfolge.forEach(function (st, i) {
       h += '<div class="e-kopf">' + esc(st.toUpperCase())
-        +  (i === 0 ? ' · deine Stufe' : '') + '</div><div class="wahl">';
+        +  (i === 0 ? esc(T('deineStufe')) : '') + '</div><div class="wahl">';
       LP.themen.forEach(function (t) {
         var da = LP.gefuellt(st, t.id);
         h += '<button data-stufe="' + esc(st) + '" data-thema="' + esc(t.id) + '"'
@@ -1087,12 +1158,13 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   /* ══════════════════════════════════════════════════════════
      START
      ══════════════════════════════════════════════════════════ */
-  document.getElementById('zurueck').onclick = function () { location.href = 'haus.html'; };
+  var zurueckBtn = document.getElementById('zurueck');
+  zurueckBtn.setAttribute('aria-label', T('zurueck'));
+  zurueckBtn.onclick = function () { location.href = 'haus.html'; };
 
   if (!LP || !window.SpikiuSzene) {
-    unter.textContent = 'Fehler';
-    hinweisKarte('Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. '
-               + 'Prüfe die Script-Reihenfolge in szene.html.');
+    unter.textContent = T('fehler');
+    hinweisKarte(T('keineDaten'));
     return;
   }
   if (LP.zielsprache !== ZS) {
@@ -1105,8 +1177,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   ROLLE = LP.rolle(THEMA);
   var aufgaben = LP.aufgabenVon(STUFE, THEMA);
   if (!ST || !aufgaben.length) {
-    unter.textContent = 'noch leer';
-    hinweisKarte('Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.');
+    unter.textContent = T('nochLeer');
+    hinweisKarte(T('keineAufgaben'));
     return;
   }
 
