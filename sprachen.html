@@ -206,9 +206,20 @@ pre{font:400 .72rem/1.4 ui-monospace,monospace;background:#f5f7f5;border:1px sol
       setze('koennen', w);
     }, []);
 
+    /* Welche Stufe die Szene nehmen wird — nach derselben Regel wie dort:
+       Weg zuerst, sonst aus dem Stand abgeleitet. */
+    var stufe = (function () {
+      try {
+        var r = JSON.parse(localStorage.getItem('spikiu_pfad') || 'null');
+        if (r && r.stufe) return r.stufe;
+      } catch (e) {}
+      return (koennen === 'mittel' || koennen === 'fortgeschritten') ? 'a2' : 'a1';
+    })();
+
     document.getElementById('jetzt').innerHTML =
       'Du lernst <b>' + (NAME[ziel] || ziel) + '</b>, '
-    + 'die Brücke ist <b>' + (NAME[mutter] || mutter) + '</b>.';
+    + 'die Brücke ist <b>' + (NAME[mutter] || mutter) + '</b>. '
+    + 'Die Szene startet in <b>' + stufe.toUpperCase() + '</b>.';
 
     /* Laut melden, wenn die gewünschte Datendatei gar nicht geladen ist —
        sonst zeigt die Szene still spanische Wörter (Lehre vom 18.08.). */

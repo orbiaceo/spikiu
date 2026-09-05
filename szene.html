@@ -340,7 +340,33 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   var LP = window.SpikiuLernpfad || null;
 
   /* ── Zustand dieser Seite ─────────────────────────────────── */
-  var STUFE = pfeil('stufe') || 'a1';
+  /* ══════════════════════════════════════════════════════════
+     WELCHE STUFE GILT?
+
+     Drei Quellen, in dieser Reihenfolge:
+     1. der Parameter in der Adresse — wer ausdrücklich wählt, bekommt das
+     2. der WEG (spikiu_pfad.stufe) — wo der Lerner wirklich steht
+     3. der Stand aus dem Assessment (koennen) — für den, der neu ist
+
+     Bis heute stand hier fest 'a1'. Egal wie sich jemand einstufte, er
+     landete in A1 — das Assessment war mit der Szene gar nicht verbunden
+     (Leo, 01.09.). Das Bindeglied gehört eigentlich ins Assessment: es
+     müsste beim Abschluss spikiu_pfad.stufe setzen. Bis dahin schließt
+     diese Ableitung die Lücke, ohne dass ein zweiter Datenhalter entsteht —
+     sie LIEST nur. */
+  function ausStand(k) {
+    return (k === 'mittel' || k === 'fortgeschritten') ? 'a2' : 'a1';
+  }
+  function stufeAusWeg() {
+    /* Nur benutzen, wenn der Weg WIRKLICH gespeichert ist. Ein leerer Weg
+       liefert 'a1' als Vorgabe — das wäre wieder die alte Falle. */
+    try {
+      var r = JSON.parse(localStorage.getItem('spikiu_pfad') || 'null');
+      return (r && r.stufe) ? r.stufe : null;
+    } catch (e) { return null; }
+  }
+  var STUFE = pfeil('stufe') || stufeAusWeg() || ausStand(PROFIL.koennen);
+  if (STUFE !== 'a1' && STUFE !== 'a2') STUFE = 'a1';
   var THEMA = pfeil('thema') || '';
   var ST = null, ROLLE = null, automat = null;
   var zielzeilen = [];
@@ -1022,21 +1048,33 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   }
 
   /* ── Themenwahl ohne Parameter ────────────────────────────── */
+  /* Beide Stufen anbieten. Die eigene ist zuerst und trägt einen Hinweis —
+     aber niemand ist eingesperrt: wer weiter will, tippt einfach unten. */
   function waehler() {
     titel.firstChild.nodeValue = 'Szene ';
     unter.textContent = 'Wähle ein Thema';
     var k = karte();
-    var h = '<div class="bue-titel" style="font-size:1.3rem">Wo möchtest du üben?</div>'
-          + '<div class="bue-ort">Stufe ' + esc(STUFE.toUpperCase()) + '</div><div class="wahl">';
-    LP.themen.forEach(function (t) {
-      var da = LP.gefuellt(STUFE, t.id);
-      h += '<button data-thema="' + esc(t.id) + '"' + (da ? '' : ' class="leer" disabled') + '>'
-        +  esc(t.em) + ' ' + esc(inSprache(t.na, MU)) + '</button>';
+    k.style.justifyContent = 'flex-start';
+
+    var reihenfolge = (STUFE === 'a2') ? ['a2', 'a1'] : ['a1', 'a2'];
+    var h = '<div class="bue-titel" style="font-size:1.3rem">Wo möchtest du üben?</div>';
+
+    reihenfolge.forEach(function (st, i) {
+      h += '<div class="e-kopf">' + esc(st.toUpperCase())
+        +  (i === 0 ? ' · deine Stufe' : '') + '</div><div class="wahl">';
+      LP.themen.forEach(function (t) {
+        var da = LP.gefuellt(st, t.id);
+        h += '<button data-stufe="' + esc(st) + '" data-thema="' + esc(t.id) + '"'
+          +  (da ? '' : ' class="leer" disabled') + '>'
+          +  esc(t.em) + ' ' + esc(inSprache(t.na, MU)) + '</button>';
+      });
+      h += '</div>';
     });
-    k.innerHTML = h + '</div>';
+    k.innerHTML = h;
+
     Array.prototype.forEach.call(k.querySelectorAll('[data-thema]'), function (b) {
       b.onclick = function () {
-        location.href = 'szene.html?stufe=' + encodeURIComponent(STUFE)
+        location.href = 'szene.html?stufe=' + encodeURIComponent(b.getAttribute('data-stufe'))
                       + '&thema=' + encodeURIComponent(b.getAttribute('data-thema'));
       };
     });
