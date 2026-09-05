@@ -2,6 +2,59 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.09.2026 (**Design + Bau 01.09. (claude.ai, Leo lädt selbst hoch): ALLE 180 AUFGABEN NEU GESCHRIEBEN · SPRACHUMSCHALTER · EIN VERSTECKTER PROFIL-BUG GEFUNDEN · DIE RÜCKMELDUNG KORRIGIERT NUR NOCH ECHTE FEHLER.**
+
+**═══ 1. EIN VERSTECKTER BUG, GEFUNDEN BEIM BAU DES UMSCHALTERS ═══**
+Das Profil liegt **verschachtelt** unter `spikiu_user.profile` — so schreibt es das Assessment, so lesen es `chat.html`, `haus.html` und `pruefung.html`. Aber `szene.html` und `lernpfad-sprache.js` sahen nur an der OBERFLÄCHE nach.
+**Folge:** Beim Umschalten auf Deutsch oder Englisch wären beide still auf Spanisch zurückgefallen — ohne Fehler, ohne Warnung. Leo hätte Deutsch eingestellt, spanische Sätze bekommen und den Fehler bei Haiku gesucht. Der Bug war nur deshalb nie aufgefallen, weil Leo Spanisch lernt und der Rückfall zufällig richtig war.
+**Behoben:** beide lesen jetzt BEIDE Formen (verschachtelt zuerst, Oberfläche als Rückfall für ältere Profile). Gegen sechs Fälle geprüft.
+**LEHRE: Ein Rückfall, der zufällig richtig ist, ist kein funktionierender Code — er ist ein unentdeckter Fehler.**
+
+**═══ 2. `sprachen.html` — WERKZEUG ZUM UMSCHALTEN ═══**
+Neue Datei am Root, im Geist von `pruefung.html`: Werkzeug, kein Produkt. Drei Knopfreihen (Zielsprache · Muttersprache · Stand), darunter alle Stationen als Direktlinks, unten das rohe Profil.
+Schreibt an BEIDE Stellen (verschachtelt + Oberfläche), damit kein Raum leer ausgeht. Ziel- und Muttersprache können nicht dieselbe sein — die Muttersprache weicht beim Wechsel automatisch aus. Setzt `fremde_schrift` mit, für Griechisch später.
+**Warnt ROT**, wenn die Datendatei zur gewählten Sprache nicht geladen ist — statt still auf Spanisch zurückzufallen (Lehre vom 18.08.).
+
+**═══ 3. ALLE 180 AUFGABEN NEU — ZWEI KONSTRUKTIONSFEHLER ═══**
+Leo testete A2 Café und fand beides in einem Durchgang.
+**(a) ZU VAGE.** „Frag, was darin ist" — der Lerner muss raten, WAS und WORIN. Leo: „Der User zerbricht sich den Kopf und klickt dann sofort auf Spikiu und übernimmt seinen Vorschlag." Genau das darf nicht passieren: dann formuliert er nicht mehr selbst, und die Aufgabe verfehlt ihren Zweck.
+**(b) DIE REAKTION AUF X FEHLTE.** Spikiu fragt X („Perfecto. Dos noches, ¿verdad?"), die Aufgabe verlangt Y („Frag nach dem Frühstück"). Wer den Capy nicht antippt, antwortet nur „Sí" — und die nächste Karte ist auf die Antwort zu Y gebaut. **Leo: „Der User ist verwirrt, warum soll ich X machen, wenn ich nach Y gefragt werde. Lösung: Spikiu soll X und Y meinen."**
+**GEBAUT: alle 180 Aufgaben (60 Stationen × 3, in de/es/en) neu geschrieben**, jede gegen ihre Vorzeile und ihre Musterzeile geprüft. Null vage Formulierungen übrig.
+Beispiele: „Frag, was darin ist" → **„Bedanke dich und frag, ob die Torte Nüsse enthält"** · „Frag nach dem Frühstück" → **„Bestätige und frag, ob das Frühstück dabei ist"** · „Bezahle" → **„Gib ihr zehn Euro und bedanke dich"** · „Wähle etwas anderes" → **„Sag, dass du allergisch bist, und nimm die Zitronentorte"** · „Schlag etwas vor" → **„Schlag vor, nachmittags zu fahren, und sag, dass du eine Jacke mitnimmst"**.
+**DAS GESETZ, das daraus folgt (Leos Formulierung):** *Die Aufgabe ist eine ÜBERSETZUNGSAUFGABE.* Sie sagt in der Sprache des Lerners genau, was er in der Zielsprache sagen soll — **nicht mehr** (kein fertiger Satz) und **nicht weniger** (kein Rätsel). Und sie muss auf das reagieren, was Spikiu gerade gesagt hat, sonst passt die nächste Karte nicht zur Eingabe.
+
+**═══ 4. DIE RÜCKMELDUNG — ZWEI WEITERE ANLÄUFE (macht sechs) ═══**
+**Anlauf 5 — kein Zusammenhang, Teil zwei.** „Sí. Tengo desayuno?" wurde zu „Sí. ¿Tengo desayuno?" statt „¿Tienen desayuno?". Ursache: **ich schickte nur Spikius Rolle mit, nicht die des Lerners.** Bei „¿Teno manzanas?" kann niemand wissen, ob „¿Tengo?" oder „¿Tiene?" gemeint ist, ohne zu wissen, wer wen fragt. Jetzt gehen BEIDE Rollen plus die Rollenfakten mit. Leos Beispiele stehen wörtlich im Prompt.
+**Anlauf 6 — MEIN EIGENES BEISPIEL VERGIFTETE DEN PROMPT.** Ich hatte hineingeschrieben „Pagare, per favore → La cuenta, por favor". Haiku erkannte das Muster und wandte es am Marktstand an: „Por favor." beim Bezahlen wurde zu „La cuenta, por favor" statt „Aquí tiene.". **Konkretes Beispiel raus, Regel abstrakt.** Und die Musterzeile kam zurück — als *„Eine mögliche Formulierung"*, ausdrücklich NICHT als Lösung.
+**DANN LEOS ENTSCHEIDENDER BEFUND:** „Tengo dolor de cabeza" wurde zu „Me duele la cabeza" korrigiert. **Beide Sätze sind richtig.** Leo: „Es gibt korrekte Sätze für eine bestimmte Aufgabe. Haiku müsste eigentlich aus seinem Wissensschatz wissen, dass beide richtig sind."
+**Der Fehler saß in EINEM WORT meines Prompts:** „gib jede Zeile **berichtigt** zurück" ist eine Aufforderung zum Umschreiben. Neu: *„Gib jede Zeile zurück. Ändere sie NUR, wenn sie einen FEHLER enthält. Ist sie richtig, gib sie Zeichen für Zeichen UNVERÄNDERT zurück."* Dazu Leos Beispiele wörtlich: „Me duele la cabeza" / „Tengo dolor de cabeza" · „Tengo gripe" / „Me he cogido una gripe" / „Ando con gripe" · „¿Está libre?" / „¿Está usted libre?" — alle richtig, alle bleiben stehen.
+**Und Leos Niveau-Punkt:** der Stand (`koennen`) geht jetzt mit, der Prompt sagt ausdrücklich *„Verlange keine gehobenere Fassung, als sein Niveau erwarten lässt. Einfach und richtig ist richtig."*
+**BILANZ ÜBER ALLE SECHS ANLÄUFE: kein einziges Mal war Haiku zu schwach.** Jedes Mal fehlte Information (Szene · Rolle des Lerners · Musterzeile · Niveau) oder mein Prompt gab ein falsches Muster vor. Der Sonnet-Wechsel wurde zweimal erwogen und zweimal verworfen — er hätte den Fehler nur teurer gemacht (0,40 statt 0,14 Cent je Szene, ein Aufruf, eine Zeile Änderung).
+
+**═══ 5. DER SOUFFLEUR KEHRT ZU FRAGE 8 ZURÜCK ═══**
+**Leo, 01.09.: „Der Capy soll nur geklickt werden, wenn der User an der Aufgabe scheitert. Die Aufgabe soll automatisch mit der Karte erscheinen."**
+Das ist keine Rücknahme, sondern eine Folge von Abschnitt 3: **solange die Aufgaben vage waren, hatte das Verstecken einen Sinn** (ein offener Satz wird nur abgeschrieben). Jetzt IST die Aufgabe die Anweisung — sie zu verstecken war ein Schritt ohne Nutzen.
+Die Aufgabe steht sofort auf der Karte. Der Capy behält genau eine Aufgabe: **einmal antippen → der fertige Satz mit „Einsetzen" und 🔊.** Der blaue Punkt bedeutet jetzt eindeutig „hier gibt es noch Hilfe" und verschwindet, sobald der Satz sichtbar ist. Gibt es keinen Mustersatz, erscheint er gar nicht — ein Tipp ins Leere soll niemand erleben.
+Platzhalter „Was soll ich tun?" und die zugehörige CSS-Klasse entfernt.
+
+**═══ 6. GEÄNDERTE DATEIEN ═══**
+`sprachen.html` (neu) · `szene.html` · `api/rueckmeldung.js` · `lernpfad-sprache.js` · `lernpfad-daten.js` · `lernpfad-daten-de.js` · `lernpfad-daten-en.js` (je 60 Aufgaben neu) · `SPIKIU-BUILD-LEDGER.md`.
+**NICHT angefasst:** `chat.html` · `gefuehrt.html` · `szene.js` · `frage-sieb.js` · alle Prompts außer `rueckmeldung` · alle übrigen `api/*`.
+
+**═══ 7. GETESTET ═══**
+**A1 Spanisch vollständig (31.08.).** **Deutsch als Zielsprache mit spanischer Brücke: A1 Café geprüft, Rückmeldung korrekt (01.09.).** Umschalter ohne Warnung, alle drei Datendateien geladen.
+**Offen:** A2 in allen drei Sprachen · Englisch als Zielsprache · die neuen 180 Aufgaben im Betrieb.
+
+**═══ 8. WAS ALS NÄCHSTES KOMMT ═══**
+**Sofort — und es ist eine Testaufgabe, keine Bauaufgabe:** die 60 Stationen durchspielen. Reihenfolge: Spanisch A2 · Deutsch A1+A2 · Englisch A1+A2. Zu prüfen ist besonders, ob die neuen Aufgaben (Abschnitt 3) im Betrieb tragen — ob also jede Aufgabe konkret genug ist und auf Spikius Zeile reagiert.
+**Danach, der eigentliche nächste Bauschritt: `haus.html` auf `szene.html` umhängen.** Heute führt Zeile 521 auf `chat.html?modus=frei` und Zeile 528 (die Liste) auf `chat.html` ohne Parameter — also in den ALTEN geführten Zweig innerhalb von chat.html. Beide müssen auf `szene.html`. Danach `chat.html` stilllegen.
+**Erst dann** die aufgeschobene Umbenennung `lernpfad-daten.js` → `-es.js` (Leos Bedingung vom 30.08.: nur wenn es zu 100 % keine Probleme macht — also nach der Stilllegung von `chat.html`).
+**Danach:** die vier verbliebenen Google-Anleihen (Chaoten-Farben auf der Stationskachel · Wort-Antippen mit DB-zuerst · drei Einführungs-Popups) · Lektionsblatt · Privatstunde.
+**Tote Felder, ehrlich vermerkt:** `duzen` an den Stationen hat seit dem Entscheid „Rückmeldung duzt immer" keinen Abnehmer mehr. Es beschreibt korrekt, wie die Figur spricht — im Moment ist es Gewicht ohne Wirkung.
+**NOCH UNBEANTWORTET, das größte offene Kapitel:** **Abo-Modell und Angriffs-Abwehr.** Unverändert seit dem 29.08. Neu ist die Ausgangslage: die Szene kostet nichts, nur die Rückmeldung kostet (ein Aufruf zu 0,14 Cent). Bis das Abo steht, schützt allein das Ausgabenlimit in der Anthropic-Konsole.
+**Weiter offen:** `devOffen()` liefert immer true · Landing-Texte in `index.html` · Dashboard „3 capítulos" → „4" · Reader EN+EL · Legal vor Einnahmen · Supabase Phase 2.
+
+
 Stand: 31.08.2026 (**Design + Bau 31.08. (claude.ai, Leo lädt selbst hoch): DIE SZENE LÄUFT ENDE ZU ENDE. WEG B GESCHEITERT UND ERSETZT · SPIKIU ANTWORTET AUS DER DATENBANK · NULL TOKEN IM GESPRÄCH · EIN AUFRUF AM ENDE · A1 VOLLSTÄNDIG GETESTET.**
 
 **═══ 1. WEG B IST AM GERÄT GESCHEITERT ═══**
