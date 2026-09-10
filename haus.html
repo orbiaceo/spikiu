@@ -204,7 +204,7 @@ button{font-family:inherit}
 <section class="view welcome active" id="welcome">
   <div class="big" id="wbig"></div>
   <h1>¡Hola! Yo soy Spikiu.</h1>
-  <p id="wsub">Wie heißt du?</p>
+  <p id="wsub"></p>
   <div class="namebox" id="namebox"><input id="nameIn" placeholder="dein Name…" autocomplete="off"><button class="go" onclick="submitName()">→</button></div>
   <div class="langrow" id="langrow" style="display:none"></div>
 </section>
@@ -721,7 +721,13 @@ function uebKarte(i){
   scrollEnd();};
  S.appendChild(f);scrollEnd();}
 
-/* ===== Onboarding ===== */
+/* ===== Onboarding =====
+   HINWEIS (01.09.2026): submitName() ist TOT. Das Namensfeld, das es
+   auswertet, wird von boot() unten durch den „Los geht's"-Knopf ersetzt —
+   und wer schon ein Profil hat, landet gar nicht erst hier. Der Name wird
+   heute EINMAL im Assessment gefragt. Funktion bleibt stehen, damit der
+   onclick im HTML nicht ins Leere zeigt; wer sie wiederbelebt, muss zuerst
+   klären, wer den Namen fragt. */
 function submitName(){var v=(document.getElementById('nameIn').value||'').trim();NAME=v||'Pepe';
  document.getElementById('wsub').textContent='Schön, '+NAME+'. Welche Sprache möchtest du lernen?';
  document.getElementById('namebox').style.display='none';
@@ -737,11 +743,31 @@ document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.ke
 (function boot(){
  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'null');
   if(u&&u.name){NAME=u.name;enterHouse();return;}}catch(e){}
+ /* ══════════════════════════════════════════════════════════════
+    NEU HIER? Dann fragt das ASSESSMENT nach dem Namen, nicht diese Seite.
+    Das Namensfeld ist längst durch einen Knopf ersetzt — die Überschrift
+    „Wie heißt du?" fragte aber weiter, und gleich danach fragte das
+    Assessment dasselbe noch einmal. Leo, 01.09.: „Die Begrüßung wiederholt
+    sich. Das ist absurd."
+    Also: hier nur begrüßen und weiterschicken. Gefragt wird einmal.
+    Sprache: was wir wissen (spikiu_lang aus einer früheren Sitzung),
+    sonst Deutsch — ein Profil gibt es an dieser Stelle noch nicht.
+    ══════════════════════════════════════════════════════════════ */
+ var lg='de'; try{ var gl=localStorage.getItem('spikiu_lang'); if(gl==='es'||gl==='en') lg=gl; }catch(e){}
+ var HEY={
+   de:{sub:'Schön, dass du da bist. Lass uns anfangen.', btn:"Los geht's →"},
+   es:{sub:'Me alegra que estés aquí. Vamos a empezar.', btn:'¡Empezamos! →'},
+   en:{sub:'Good to have you here. Let us get started.',  btn:"Let's go →"}
+ }[lg];
+ var ws=document.getElementById('wsub'); if(ws) ws.textContent=HEY.sub;
  var nb=document.getElementById('namebox');
  if(nb){nb.innerHTML='';
   var b=document.createElement('button');b.className='go';
-  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;padding:.9rem 1rem';
-  b.textContent="Los geht's →";
+  /* Blau wie im Assessment und in der Szene. Das Haus trägt sonst ein
+     Korallenrot (--acc); für die Knöpfe gilt ab jetzt der eine Blauton. */
+  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;'
+                 +'padding:.9rem 1rem;background:#1f93b0;color:#fff';
+  b.textContent=HEY.btn;
   b.onclick=function(){location.href='assessment.html';};
   nb.appendChild(b);}
  var lr=document.getElementById('langrow');if(lr)lr.style.display='none';
