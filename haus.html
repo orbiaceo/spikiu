@@ -763,10 +763,9 @@ document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.ke
  var nb=document.getElementById('namebox');
  if(nb){nb.innerHTML='';
   var b=document.createElement('button');b.className='go';
-  /* Blau wie im Assessment und in der Szene. Das Haus trägt sonst ein
-     Korallenrot (--acc); für die Knöpfe gilt ab jetzt der eine Blauton. */
-  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;'
-                 +'padding:.9rem 1rem;background:#1f93b0;color:#fff';
+  /* Hausfarbe, nicht Blau. Das Haus hat sein eigenes Korallenrot (--acc);
+     die Klasse .go trägt es bereits (Leo, 01.09.: „Das Haus bleibt so"). */
+  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;padding:.9rem 1rem';
   b.textContent=HEY.btn;
   b.onclick=function(){location.href='assessment.html';};
   nb.appendChild(b);}
