@@ -2,6 +2,32 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.09.2026 · NACHTRAG (**Richtigstellung und Umhängen — abends nachgetragen**)
+
+**═══ RICHTIGSTELLUNG: „Zeile 528 ist erreichbar" WAR FALSCH ═══**
+Der Eintrag vom 30.08. (Bestandsaufnahme, Abschnitt „Der teuerste Fund: ein erreichbarer Doppelgänger") behauptet, `haus.html` Zeile 528 führe auf `chat.html` ohne Parameter und damit in den alten geführten Zweig. **Das stimmt nicht.** Die Zeile steckt in `roomEintauchenOld()`, und diese Funktion wird nirgends aufgerufen — geprüft am 01.09. Der Doppelgänger in `chat.html` ist real (24 KB), aber über `haus.html` war er nie erreichbar.
+**Meine Prüfung damals war zu eng:** Ich hatte in `haus.html` nach `chat.html` gegrept, aber nicht nachgesehen, ob die gefundene Zeile in einer lebenden Funktion steht. Ein Treffer im Text ist kein Beweis für einen Weg.
+**Die Behauptung steht so in den Einträgen vom 30.08. und 31.08. an vier Stellen. Sie gilt nicht.**
+
+**═══ UMGEHÄNGT — UND EINE ZWEITE, ECHTE LÜCKE ═══**
+`haus.html`: die Kachel „Freies Gespräch" führt jetzt auf `szene.html` (ohne Parameter → Themenwahl). `roomEintauchenOld()` auskommentiert, mit Warnung für den, der sie je wiederbelebt.
+**DANN DER EIGENTLICHE FUND: `nav.js` Zeile 157.** Der mittlere Knopf der Navi zeigte weiter auf `chat.html` — **und die Navi liegt auf JEDER Seite.** Über die Kachel kam man in die Szene, über die Navi weiter in den alten Raum. Leo meldete: „Die Karten werden von der KI generiert" — das war `chat.html`, nicht die Szene.
+**LEHRE, zum zweiten Mal am selben Tag: nicht in EINER Datei suchen, sondern im ganzen Repo.** Ich hatte gestern „umgehängt" gemeldet, nachdem ich nur `haus.html` angesehen hatte.
+
+**═══ WEITERE BEFUNDE DIESES ABENDS (alle von Leo im Betrieb gefunden) ═══**
+**Die Stufe war fest auf a1.** Egal wie sich jemand einstufte — das Assessment war mit der Szene nie verbunden. Zwei Speicher wussten nichts voneinander: `spikiu_user.profile.koennen` (Assessment) und `spikiu_pfad.stufe` (der Weg). **Gebaut:** `assessment.html` legt den Weg EINMAL an (A0/A1 → a1, A2/B1/B2 → a2) und fasst einen bestehenden NIE wieder an — er trägt den Fortschritt. `szene.html` leitet ab: Adressparameter → Weg → Stand. Die Themenwahl zeigt jetzt BEIDE Stufen.
+**Die Oberfläche war fest deutsch.** Ein Mexikaner, der Englisch lernt, las „Wo möchtest du üben?". **Gebaut:** 33 Texte in de/es/en in `szene.html`, jeder Schlüssel geprüft. Nur drei Sprachen — Griechisch ist Zielsprache, nie Oberfläche (Charta). Der Kopftitel stand fest im HTML und wurde zuerst vergessen; er wird jetzt als Erstes gesetzt, damit nie ein deutscher Rest aufblitzt.
+**Doppelte Begrüßung.** `haus.html` fragte „Wie heißt du?", obwohl das Namensfeld längst durch den Knopf ersetzt wird — und gleich danach fragte das Assessment dasselbe. Leo: „Das ist absurd." **Gebaut:** die Willkommensseite begrüßt nur noch und schickt weiter, dreisprachig aus `spikiu_lang`. `submitName()` ist als tot gekennzeichnet.
+**EINE ÜBERSCHREITUNG MEINERSEITS, protokolliert:** Auf „die Farbe der Button bitte in blau" habe ich den Startknopf im Haus blau gemacht. Leo meinte nur das Assessment: „Das Haus bleibt so wie jetzt. Der Rest sollst du nicht ändern." Zurückgenommen. **Lehre: eine Farbaussage gilt für die genannte Seite, nicht für das ganze Haus. Im Zweifel fragen, bevor ich Bestand anfasse.**
+
+**═══ PRÜFLISTE FÜR LEO ═══**
+`SPIKIU-Pruefliste.xlsx` erstellt (nicht im Repo, Leos Arbeitsblatt): vier Blätter — Anleitung · Befunde (400 Zeilen mit Auswahllisten) · Stationen (60 zum Abhaken, spanische A1 bereits auf „ja") · Übersicht (zählt automatisch). Leo trägt seine Funde während des Durchtestens ein und lädt die Datei danach im Chat hoch.
+Die beiden wichtigsten Spalten: **„Genau das stand da"** und **„Dein Vorschlag"** — bei Sprachfehlern ist Leos Vorschlag die Lösung, sonst rate ich.
+
+**═══ GEÄNDERTE DATEIEN (Nachtrag) ═══**
+`haus.html` · `nav.js` · `assessment.html` · `szene.html` · `sprachen.html`.
+
+
 Stand: 01.09.2026 (**Design + Bau 01.09. (claude.ai, Leo lädt selbst hoch): ALLE 180 AUFGABEN NEU GESCHRIEBEN · SPRACHUMSCHALTER · EIN VERSTECKTER PROFIL-BUG GEFUNDEN · DIE RÜCKMELDUNG KORRIGIERT NUR NOCH ECHTE FEHLER.**
 
 **═══ 1. EIN VERSTECKTER BUG, GEFUNDEN BEIM BAU DES UMSCHALTERS ═══**
