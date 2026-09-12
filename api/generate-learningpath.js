@@ -9,10 +9,37 @@
 // Lerninhalt jeder Etappe wird individuell generiert.
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  /* ══════════════════════════════════════════════════════════════
+     WACHE (01.09.2026) — siehe api/rueckmeldung.js für dasselbe Muster.
+
+     Nur der eigene Ursprung. Vorher stand hier `Allow-Origin: *`, und damit
+     konnte JEDE fremde Webseite diesen Endpoint im Browser ihrer Besucher
+     aufrufen — auf Leos Rechnung. Spikiu braucht das nicht: alle Seiten
+     liegen auf demselben Ursprung.
+
+     Das hält kein `curl` auf. Es beendet nur die Einbettung in fremde
+     Seiten — den billigsten Angriff. Gegen Schleifen hilft erst eine
+     Begrenzung pro Zeit; die fehlt noch.
+     ══════════════════════════════════════════════════════════════ */
+  const ERLAUBT = [
+    'https://spikiu.com',
+    'https://www.spikiu.com',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+  ];
+  const herkunft = req.headers.origin || '';
+  const eigen = ERLAUBT.includes(herkunft) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(herkunft);
+  if (herkunft && !eigen) return res.status(403).json({ error: 'origin_not_allowed' });
+  if (eigen) {
+    res.setHeader('Access-Control-Allow-Origin', herkunft);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  /* POST erzwingen: ein GET lässt sich aus einer fremden Seite auslösen
+     (etwa über ein <img>-Element) und kostet dann Geld. */
+  if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
 
   const { name, nativeLang, profile } = req.body || {};
 
