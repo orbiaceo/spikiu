@@ -2,6 +2,49 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.09.2026 · SICHERHEIT (**Nachmittag: EIN OFFENER WEITERLEITER ENTDECKT UND GESCHLOSSEN · ALLE NEUN ENDPOINTS GEHÄRTET · ANFRAGEBREMSE EINGEBAUT.**
+
+**═══ 1. `api/chat.js` — DAS SCHEUNENTOR ═══**
+Beim Rechnen fürs Abo-Modell zuerst die Endpoints angesehen. Dabei gefunden:
+**`api/chat.js` war ein reiner Weiterleiter.** Beliebiger System-Prompt vom Client, beliebige Nachrichten, `max_tokens: maxTokens || 4000`, Modell **claude-sonnet-4-5**, dazu `Access-Control-Allow-Origin: *`.
+**Jeder im Internet konnte Leos Anthropic-Schlüssel als kostenlose Sonnet-API benutzen** — ohne Spikiu zu öffnen, ohne Konto, von jeder fremden Webseite aus. Ein Aufruf mit 4.000 Ausgabe-Token kostet rund **6 Cent**; ein Skript schafft mehrere pro Sekunde. In einer Stunde dreistellige Beträge.
+Die Charta führt die Datei als „Dumb-Proxy/Referenz-Muster" — sie war als Vorlage geschrieben, nicht als Produkt. Aber sie lag live auf dev. **Geprüft: kein Frontend rief sie auf.** Leo: „Sicherheit steht an erster Stelle. Sofort lösen." → **gelöscht.**
+**LEHRE: Eine Datei, die als Muster entstand, ist trotzdem live. „Referenz" ist kein Schutz.**
+
+**═══ 2. DREI KLASSEN VON LÖCHERN IN DEN ÜBRIGEN NEUN ═══**
+**(a) DER CLIENT BESTIMMTE `max_tokens`.** `lektor.js` und `taller.js` schrieben `maxTokens || 600` bzw. `|| fallbackTokens` — wer die Anfrage selbst baut, setzt 8000 ein. Nur `gespraech.js` machte es richtig (`Math.min(maxTokens || 300, 400)`). → Überall harter Deckel im Server: lektor 600 · taller 900 · die festen Werte blieben.
+**(b) FÜNF ENDPOINTS ERZWANGEN KEIN POST.** `generate-lesson`, `assessment`, `onboarding`, `detect-language`, `generate-learningpath` antworteten auch auf GET — und ein GET lässt sich aus einer fremden Seite auslösen (`<img src=…>`) und kostet dann Geld. → 405 für alles außer POST/OPTIONS.
+**(c) CORS STAND FÜR ALLE OFFEN.** `Allow-Origin: *` in acht Dateien. Jede fremde Webseite konnte die Endpoints im Browser ihrer Besucher aufrufen, auf Leos Rechnung. → Erlaubt sind nur noch spikiu.com, `*.vercel.app` und localhost; alles andere bekommt 403. Getestet gegen `boeser-angreifer.de` und `spikiu.com.evil.de`.
+**Fünf Endpoints laufen weiterhin auf Sonnet** (assessment, onboarding, detect-language, generate-learningpath — chat ist weg). Der Haiku-Entscheid vom 17.08. hat sie nie erreicht. Nicht geändert, weil sie selten laufen; bleibt als offener Punkt.
+
+**═══ 3. DIE ANFRAGEBREMSE ═══**
+Je IP und Minute, in allen neun Endpoints. Grenzen nach Preis gestaffelt: `rueckmeldung` 12 · `gespraech` 30 · `lektor`/`taller` 20 · `generate-lesson` 6 · `generate-learningpath`/`assessment`/`onboarding` 5 · `detect-language` 30. Über der Grenze: **429 mit `Retry-After`**. Getestet: 40 Anfragen derselben IP → 12 durch, 28 abgewiesen.
+**EHRLICH ZU DEN GRENZEN DIESER BREMSE — steht auch im Code:** Sie zählt IN DER LAUFENDEN INSTANZ. Vercel hält eine Instanz warm, darum trifft eine Schleife vom selben Rechner meist dieselbe Instanz. **Verteilte Angriffe über viele IPs fängt sie NICHT.**
+**Sie ist die DRITTE von drei Ebenen, nicht die erste:**
+  1. **Vercel Firewall** — weist ab, BEVOR die Funktion startet, kostet keine Token. Wirksamste Ebene, liegt im Vercel-Dashboard, nicht im Code. **Noch nicht geprüft, was Leos Plan dort erlaubt.**
+  2. **Ausgabenlimit in der Anthropic-Konsole** — die letzte Reißleine. **Höhe noch nicht bestätigt.**
+  3. Diese Bremse.
+**Bewusst OHNE fremden Dienst:** eine verteilte Zählung (Upstash o. ä.) wäre ein zweiter Vertrag und ein zweites Datenschutzkapitel — dieselben Gründe, aus denen DeepInfra am 17.08. abgelehnt wurde.
+**Die Bremse steht in JEDER Datei statt in einem gemeinsamen Modul.** Grund im Code vermerkt: ob Vercel ein Modul ohne `package.json` zuverlässig mitbündelt, ließ sich von hier nicht prüfen — und eine Bremse, die beim Bündeln verlorengeht, ist schlimmer als keine. Neun Kopien sind hässlich, aber überprüfbar. **Zusammenlegen, sobald ein gemeinsames Modul im Betrieb bewiesen ist.**
+
+**═══ 4. EIN TITEL, DER ZU VIEL VERSPRACH ═══**
+Leo, 01.09.: „Sprichwörter als Titel ist unpassend für den Inhalt drinnen." In der Werkstatt stehen überwiegend feste **Wendungen** („por si acaso", „stimmt so"), nicht Sprichwörter im engen Sinn.
+Geändert in `nav.js` und `index.html`, dreisprachig: **Wendungen & Sprichwörter · Giros & Proverbios · Phrases & Proverbs.**
+**REGEL: Ein Titel ist ein Versprechen. Was darunter steht, muss es einlösen.** Dieselbe Regel hatte am 31.08. schon „Das kannst du sagen" → „Wendungen und Sätze" bewirkt, weil die Liste auch Zeilen des Kellners enthält, die man nur VERSTEHEN muss.
+
+**═══ 5. GEÄNDERTE DATEIEN ═══**
+**GELÖSCHT: `api/chat.js`.**
+Gehärtet: `api/gespraech.js` · `api/lektor.js` · `api/taller.js` · `api/generate-lesson.js` · `api/assessment.js` · `api/onboarding.js` · `api/detect-language.js` · `api/generate-learningpath.js` · `api/rueckmeldung.js`.
+Titel: `nav.js` · `index.html`.
+
+**═══ 6. WAS ALS NÄCHSTES KOMMT ═══**
+**Leo testet weiter** die 60 Stationen und trägt seine Funde in `SPIKIU-Pruefliste.xlsx` ein (vier Blätter: Anleitung · Befunde mit Auswahllisten · Stationen zum Abhaken · Übersicht). Die Tabelle kommt anschließend in den Chat, daraus wird gebaut.
+**DAS NÄCHSTE KAPITEL WIRD IN EINEM EIGENEN CHAT ERÖFFNET (Leo, 01.09.):** **Anmeldung über E-Mail · Abo-Modell · Online-Zahlungswege.** Alles, was zum Kassieren gehört.
+**Zwei Zahlen, die dort zuerst gebraucht werden und noch fehlen:** was Leos Vercel-Plan an Firewall erlaubt, und wie hoch das Ausgabenlimit in der Anthropic-Konsole steht.
+**Die Kostenlage für das Abo, Stand heute:** Die Szene kostet im Gespräch NICHTS (Antworten aus der Datenbank); nur die Rückmeldung am Ende kostet, ein Aufruf zu **0,14 Cent**. Ein Vielnutzer mit drei Szenen täglich kommt auf rund **13 Cent im Monat** — bei 3,50 USD Abo unter 5 %. Der Engpass ist nicht mehr der ehrliche Nutzer, sondern der Missbrauch; deshalb war die Härtung die Voraussetzung fürs Abo, nicht ein Nebenweg.
+**Offen, unverändert:** fünf Endpoints auf Sonnet · `devOffen()` liefert immer true · Landing-Texte in `index.html` · Dashboard „3 capítulos" → „4" · Reader EN+EL · Legal vor Einnahmen · Supabase Phase 2 · `chat.html` stilllegen · Umbenennung `lernpfad-daten.js` → `-es.js` · das tote Feld `duzen`.
+
+
 Stand: 01.09.2026 · NACHTRAG (**Richtigstellung und Umhängen — abends nachgetragen**)
 
 **═══ RICHTIGSTELLUNG: „Zeile 528 ist erreichbar" WAR FALSCH ═══**

@@ -63,7 +63,7 @@
       navStart: 'Start', navReader: 'Reader', navTalk: 'Gespräch', navWerkstatt: 'Werkstatt', navMein: 'Mein',
       navLektionen: 'Lektionen',
       reader: 'Reader · Meine Bücher',
-      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Wortschatz-Werkstatt', proverbios: 'Sprichwörter',
+      write: 'Schreibwerkstatt', read: 'Lesewerkstatt', gym: 'Wortschatz-Werkstatt', proverbios: 'Wendungen & Sprichwörter',
       path: 'Lernweg', verlauf: 'Verlauf', lessons: 'Lektionen', settings: 'Einstellungen',
       lastLesson: 'Deine letzte Lektion', pastLessons: 'Vergangene Lektionen',
       soon: 'bald' },
@@ -71,7 +71,7 @@
       navStart: 'Inicio', navReader: 'Reader', navTalk: 'Conversa', navWerkstatt: 'Taller', navMein: 'Perfil',
       navLektionen: 'Lecciones',
       reader: 'Reader · Mis libros',
-      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Taller de vocabulario', proverbios: 'Proverbios',
+      write: 'Taller de escritura', read: 'Taller de lectura', gym: 'Taller de vocabulario', proverbios: 'Giros & Proverbios',
       path: 'Ruta', verlauf: 'Progreso', lessons: 'Lecciones', settings: 'Ajustes',
       lastLesson: 'Tu última lección', pastLessons: 'Lecciones pasadas',
       soon: 'pronto' },
@@ -79,11 +79,15 @@
       navStart: 'Home', navReader: 'Reader', navTalk: 'Talk', navWerkstatt: 'Workshop', navMein: 'Profile',
       navLektionen: 'Lessons',
       reader: 'Reader · My Books',
-      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Vocabulary Workshop', proverbios: 'Proverbs',
+      write: 'Writing Workshop', read: 'Reading Workshop', gym: 'Vocabulary Workshop', proverbios: 'Phrases & Proverbs',
       path: 'Path', verlauf: 'Progress', lessons: 'Lessons', settings: 'Settings',
       lastLesson: 'Your last lesson', pastLessons: 'Past lessons',
       soon: 'soon' }
   };
+
+  /* „Sprichwörter" allein war ein falsches Versprechen: in der Werkstatt
+     stehen überwiegend feste WENDUNGEN („por si acaso", „stimmt so"), nicht
+     Sprichwörter im engen Sinn. Der Titel nennt jetzt beides (Leo, 01.09.). */
 
   // ── Aktive Seite (Dateiname → Tab-Schlüssel) ────────────────────
   function normalizeActive(v) {
