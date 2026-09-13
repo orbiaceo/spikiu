@@ -5,6 +5,42 @@
 // The lesson is presented in the Dashboard using a beautiful HTML template.
 // NEVER displayed inline in the chat.
 
+/* ══════════════════════════════════════════════════════════════
+   BREMSE (01.09.2026) — 6 Anfragen je Minute und IP.
+   8000 Token je Aufruf — der teuerste Haiku-Endpoint
+
+   Sie zählt IN DER LAUFENDEN INSTANZ. Vercel hält eine Instanz nach einem
+   Aufruf warm, darum trifft eine Schleife vom selben Rechner meist dieselbe
+   Instanz und läuft hinein. Verteilte Angriffe fängt sie NICHT — dafür
+   braucht es die Vercel Firewall davor und das Ausgabenlimit dahinter.
+
+   Absichtlich ohne fremden Dienst: eine Zählung in Upstash o. ä. wäre ein
+   zweiter Vertrag und ein zweites Datenschutzkapitel, aus denselben Gründen
+   abgelehnt wie DeepInfra (17.08.).
+   ══════════════════════════════════════════════════════════════ */
+const _fenster = 60 * 1000;
+const _grenze = 6;
+const _zaehler = new Map();
+
+function _zuOft(req) {
+  const roh = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unbekannt';
+  const ip = String(roh).split(',')[0].trim();
+  const jetzt = Date.now();
+
+  /* Alte Einträge wegräumen, damit die Map nicht wächst. */
+  if (_zaehler.size > 5000) {
+    for (const [k, v] of _zaehler) if (jetzt - v.start > _fenster) _zaehler.delete(k);
+  }
+
+  const e = _zaehler.get(ip);
+  if (!e || jetzt - e.start > _fenster) {
+    _zaehler.set(ip, { n: 1, start: jetzt });
+    return 0;
+  }
+  e.n += 1;
+  return e.n > _grenze ? Math.ceil((_fenster - (jetzt - e.start)) / 1000) : 0;
+}
+
 export default async function handler(req, res) {
   /* ══════════════════════════════════════════════════════════════
      WACHE (01.09.2026) — siehe api/rueckmeldung.js für dasselbe Muster.
@@ -37,6 +73,13 @@ export default async function handler(req, res) {
   /* POST erzwingen: ein GET lässt sich aus einer fremden Seite auslösen
      (etwa über ein <img>-Element) und kostet dann Geld. */
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
+  /* Bremse: greift, bevor irgendetwas Geld kostet. */
+  const _warte = _zuOft(req);
+  if (_warte) {
+    res.setHeader('Retry-After', String(_warte));
+    return res.status(429).json({ error: 'zu_viele_anfragen', retryAfter: _warte });
+  }
+
 
   const { name, nativeLang, profile, topic, focusInterest, conversationHistory } = req.body;
 
