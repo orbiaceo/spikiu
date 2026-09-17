@@ -2,6 +2,36 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 17.09.2026 · KONSOLE (**Design 17.09. (claude.ai, Leo am Handy, kein Code): EIGENER WORKSPACE `spikiu-prod` MIT HARTEN DECKELN · NEUER SCHLÜSSEL IN VERCEL · DIE ZWEITE EBENE AUS DEM SICHERHEITS-EINTRAG VOM 01.09. IST JETZT BESTÄTIGT.**
+
+**═══ 1. WAS VORHER GALT ═══**
+Seit 21.04.2026 lief alles im **Default-Workspace** (nicht bearbeitbar, nicht löschbar). Organisation = Typ „individual". **Organisations-Ausgabenlimit: 30,00 USD/Monat.** Org-Ratenlimits Sonnet 4.x: 10.000 Anfragen/Min · 10 Mio. Eingabe-Token/Min · 2 Mio. Ausgabe-Token/Min — praktisch offen.
+Umwandlung in eine Team-Organisation angeboten → **abgelehnt** (kostet nichts, bringt allein nichts; Workspaces gehen auch so).
+
+**═══ 2. WAS JETZT GILT (platform.claude.com, früher console.anthropic.com) ═══**
+**Neuer Workspace `spikiu-prod`** · Geo **US** (EU nicht wählbar — für DSGVO-Kapitel merken).
+**Ausgabenlimit: 25 USD/Monat** (unter dem Org-Limit 30). E-Mail-Benachrichtigung bei **12,50 USD** und **20 USD**.
+**Ratenlimits:**
+  · **Sonnet 4.x:** 30 Anfragen/Min · 250.000 Eingabe-Token/Min · 4.000 Ausgabe-Token/Min
+  · **Haiku 4.x:** 30 Anfragen/Min · 250.000 Eingabe-Token/Min · 8.000 Ausgabe-Token/Min
+**Warum 250.000 Eingabe:** jeder Aufruf schickt ~6.500 Token Seele+Raumprompt+Verlauf mit (Cache-Lesevorgänge zählen nicht mit). 4.000 hätte schon den zweiten Aufruf pro Minute blockiert.
+**WAS DAS IN DOLLAR HEISST (Worst Case Sonnet):** Eingabe 250k × 3 $/Mio = 0,75 $/Min · Ausgabe 4k × 15 $/Mio = 0,06 $/Min → **~0,81 $/Min ≈ 49 $/Std.** Nach gut 30 Min Dauerangriff greift der 25-$-Deckel und stoppt alles. **Der Deckel ist der maximale Verlust; die Ratenlimits bremsen das Tempo — auch gegen verteilte Angriffe über viele IPs, die unsere Code-Bremse nicht fängt.** Das ist die „automatische Live-Kontrolle", die Leo am 29.08. verlangt hatte.
+
+**═══ 3. SCHLÜSSEL ═══**
+Neuer API-Schlüssel **`vercel-prod`** in `spikiu-prod`, Ablauf: nie. (Identitätsföderation angeboten → ignoriert, Vercel wird nicht unterstützt.)
+In Vercel → Settings → Environment Variables → **`ANTHROPIC_API_KEY`** ersetzt (einziger Name, geprüft in `api/gespraech.js`). **Redeploy des neuesten dev-Deploys (Preview, 35bf2c…)** angestoßen. Der main-/Production-Redeploy wurde bewusst abgebrochen.
+**Nebenbefund:** Vercel-Plan ist **Pro** → die Vercel Firewall (Ebene 1 vom 01.09.) steht zur Verfügung. Noch nicht eingerichtet.
+
+**═══ 4. OFFEN — FÜR DEN NÄCHSTEN START ═══**
+1. **Prüfen, dass der neue Schlüssel wirklich zieht:** auf dev eine Szene-Rückmeldung + freies Gespräch auslösen → in der Konsole muss der Verbrauch unter `spikiu-prod` erscheinen, NICHT unter Default. Nicht aus dem Gefühl schließen.
+2. **Prüfen, für welche Umgebungen die Variable gesetzt ist** (Production / Preview / Development). Wenn nur eine: spikiu.com (main) läuft evtl. noch mit dem alten Schlüssel.
+3. **Alten Schlüssel im Default-Workspace deaktivieren/löschen** — ERST nach Punkt 1 und 2. Solange er lebt, gilt für ihn nur das Org-Limit 30 $, ohne Ratenbremse.
+4. **Vercel Firewall** (Pro) einrichten: Rate-Limit-Regel auf `/api/*` — Ebene 1, weist ab, bevor Token entstehen.
+5. Weiter offen aus 01.09.: fünf Endpoints auf Sonnet · `devOffen()` liefert immer true (freies Gespräch offen auf Sonnet — jetzt aber gedeckelt) · Abo/Anmeldung/Zahlung im eigenen Chat · Landing-Texte · Legal vor Einnahmen · Supabase Phase 2.
+
+**LEHRE: Ein Monatsbudget schützt nicht vor einer Stunde. Erst Deckel UND Tempo-Bremse zusammen sind eine Reißleine.**
+
+
 Stand: 01.09.2026 · SICHERHEIT (**Nachmittag: EIN OFFENER WEITERLEITER ENTDECKT UND GESCHLOSSEN · ALLE NEUN ENDPOINTS GEHÄRTET · ANFRAGEBREMSE EINGEBAUT.**
 
 **═══ 1. `api/chat.js` — DAS SCHEUNENTOR ═══**
