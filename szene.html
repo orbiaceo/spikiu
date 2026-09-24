@@ -35,8 +35,10 @@
 
   DER SOUFFLEUR (Entscheid 30.08., kehrt Frage 8 um)
   Die Aufgabe steht NICHT offen da. Erster Tipp auf den Capy: die Aufgabe.
-  Zweiter Tipp: der fertige Satz mit „Einsetzen". Abschreiben ist erlaubt —
-  es ist seine Entscheidung, und er darf ihn vorher ändern.
+  Zweiter Tipp: der fertige Satz — zum Anhören und mit Übersetzung, aber
+  OHNE „Einsetzen" (Entscheid 24.09., nach Test mit einem Schüler): wer den
+  Satz nur antippt, lernt nichts. Er bleibt sichtbar stehen und muss von
+  Hand abgeschrieben werden. Das Tippen ist die Übung.
 
   Kein Bottom-Nav: das hier ist ein Raum, nur haus.html trägt die Navi.
   ══════════════════════════════════════════════════════════════════════
@@ -125,11 +127,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .ueb.an{display:block}
 
 .trenn{height:1px;background:var(--faint);margin:1rem 0}
-.schritte{display:flex;gap:.4rem;justify-content:center;margin-bottom:.6rem}
+.schritte{display:flex;gap:.4rem;justify-content:center;margin-bottom:1rem}
 .st{width:34px;height:5px;border-radius:99px;background:var(--faint)}
 .st.jetzt{background:var(--accent)}
 .st.fertig{background:var(--ink)}
-.zaehler{text-align:center;font:500 .78rem/1 'DM Sans';color:var(--mid);margin-bottom:.9rem}
 .aufg{display:flex;gap:.7rem;align-items:center;min-height:44px}
 .capy{width:42px;height:42px;flex:0 0 auto;border-radius:50%;border:2.5px solid var(--ink);
   background:#fff;box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;
@@ -150,6 +151,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .hinweis .kn{display:flex;gap:.5rem}
 .hinweis button{flex:1;padding:.5rem;border:2px solid var(--ink);border-radius:.5rem;
   background:#fff;font:600 .8rem/1 'DM Sans';cursor:pointer;color:var(--ink)}
+.hinweis .kn .ikon{flex:0 0 auto;border-radius:999px;background:var(--accent2)}
+.hinweis .ueb{margin-top:.5rem}
 .aufg .txt .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
   color:var(--mid);margin-bottom:.2rem}
 .aufg .txt .t{font:600 1.15rem/1.25 'Cormorant Garamond',serif}
@@ -356,7 +359,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       wischhilfe:'← wischen zum Weiterblättern →', los:'Los!',
       anhoeren:'Anhören', uebersetzung:'Übersetzung',
       aufgabe:'Aufgabe', von:'von', deineAufgabe:'Deine Aufgabe',
-      soKoenntest:'So könntest du es sagen', einsetzen:'Einsetzen',
+      soKoenntest:'So könntest du es sagen',
       antworte:'Antworte …', senden:'Senden', beenden:'Szene beenden',
       weiter:'Weiter', geuebt:'Das hast du geübt',
       wendungen:'Wendungen und Sätze', woerter:'Wörter',
@@ -375,7 +378,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       wischhilfe:'← desliza para avanzar →', los:'¡Empezamos!',
       anhoeren:'Escuchar', uebersetzung:'Traducción',
       aufgabe:'Tarea', von:'de', deineAufgabe:'Tu tarea',
-      soKoenntest:'Así lo podrías decir', einsetzen:'Usar esta frase',
+      soKoenntest:'Así lo podrías decir',
       antworte:'Responde …', senden:'Enviar', beenden:'Terminar la escena',
       weiter:'Seguir', geuebt:'Esto has practicado',
       wendungen:'Frases', woerter:'Palabras',
@@ -394,7 +397,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       wischhilfe:'← swipe to move on →', los:"Let's go!",
       anhoeren:'Listen', uebersetzung:'Translation',
       aufgabe:'Task', von:'of', deineAufgabe:'Your task',
-      soKoenntest:'You could say it like this', einsetzen:'Use this',
+      soKoenntest:'You could say it like this',
       antworte:'Answer …', senden:'Send', beenden:'End the scene',
       weiter:'Continue', geuebt:'This is what you practised',
       wendungen:'Phrases and sentences', woerter:'Words',
@@ -661,8 +664,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         h += '<div class="st' + (i < z.aufgabeIndex ? ' fertig'
                                : i === z.aufgabeIndex ? ' jetzt' : '') + '"></div>';
       }
-      h += '</div><div class="zaehler">' + esc(T('aufgabe')) + ' ' + (z.aufgabeIndex + 1)
-        +  ' ' + esc(T('von')) + ' ' + aufgaben.length + '</div>'
+      h += '</div>'
         +  '<div class="aufg">'
         +    '<div class="capy" data-capy role="button" tabindex="0" '
         +      'aria-label="' + esc(T('hilfeLabel')) + '">'
@@ -674,8 +676,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         +  '<div class="hinweis" data-hinweis>'
         +    '<div class="l">' + esc(T('soKoenntest')) + '</div>'
         +    '<div class="s" data-satz></div>'
-        +    '<div class="kn"><button data-einsetzen>' + esc(T('einsetzen')) + '</button>'
-        +      '<button data-hsprich>🔊 ' + esc(T('anhoeren')) + '</button></div>'
+        +    '<div class="kn"><button data-hsprich>🔊 ' + esc(T('anhoeren')) + '</button>'
+        +      '<button class="ikon" data-hueb aria-label="' + esc(T('uebersetzung')) + '">'
+        +        esc(MU.toUpperCase()) + '</button></div>'
+        +    '<div class="ueb" data-huebtext></div>'
         +  '</div>'
         +  '<textarea class="feld" placeholder="' + esc(T('antworte')) + '"></textarea>';
     }
@@ -732,12 +736,19 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     zeichne();
 
     k.querySelector('[data-hsprich]').onclick = function () { sprich(satz); };
-    k.querySelector('[data-einsetzen]').onclick = function () {
-      feld.value = satz;
-      feld.dispatchEvent(new Event('input'));
-      /* Auch hier kein Fokus: der Satz steht sichtbar im Feld, „Senden" ist
-         frei. Wer ihn ändern will, tippt hinein — dann kommt die Tastatur. */
-    };
+    /* Kein „Einsetzen" mehr (24.09.): der Satz bleibt stehen, abgeschrieben
+       wird von Hand. Dafür der runde Muttersprach-Knopf wie bei Spikius Zeile —
+       die Übersetzung steht in der Datenbank (na), kostet nichts. */
+    var hueb = k.querySelector('[data-hueb]');
+    var huebText = k.querySelector('[data-huebtext]');
+    var satzNa = lernerZeilen[index] && lernerZeilen[index].na
+      ? inSprache(lernerZeilen[index].na, MU) : '';
+    if (satzNa) {
+      huebText.textContent = satzNa;
+      hueb.onclick = function () { huebText.classList.toggle('an'); };
+    } else {
+      hueb.remove(); huebText.remove();
+    }
 
     var b = document.createElement('button');
     b.className = 'knopf';
