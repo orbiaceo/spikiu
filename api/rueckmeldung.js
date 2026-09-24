@@ -154,7 +154,7 @@ export default async function handler(req, res) {
     'http://127.0.0.1:3000'
   ];
   const herkunft = req.headers.origin || '';
-  const eigen = ERLAUBT.includes(herkunft) || /^https:\/\/[a-z0-9-]+\\.vercel\\.app$/.test(herkunft);
+  const eigen = ERLAUBT.includes(herkunft) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(herkunft);
   if (herkunft && !eigen) return res.status(403).json({ error: 'origin_not_allowed' });
   if (eigen) {
     res.setHeader('Access-Control-Allow-Origin', herkunft);
