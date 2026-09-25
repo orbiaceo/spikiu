@@ -290,6 +290,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     try { return new URLSearchParams(location.search).get(name) || ''; }
     catch (e) { return ''; }
   }
+  function mitPunkt(t) {
+    t = String(t || '').trim();
+    return (!t || /[.!?…:;]$/.test(t)) ? t : t + '.';
+  }
   function inSprache(o, mu) { return o ? (o[mu] || o.de || o.en || o.es || '') : ''; }
 
   /* Akzente weg, Satzzeichen weg, klein. Wird nur noch für die ERNTE
@@ -724,7 +728,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var satz = lernerZeilen[index] ? lernerZeilen[index].z : '';
     satzEl.textContent = satz;
     lbl.textContent = T('deineAufgabe');
-    txt.textContent = inSprache(aufgaben[index], MU);
+    /* Satzzeichen setzt der Code, nicht die Datenbank (24.09.): alle 180
+       Aufgaben dort enden ohne Punkt. Ein Punkt nur, wo keiner steht —
+       ein „?" oder „!" in künftigen Daten bleibt unangetastet. */
+    txt.textContent = mitPunkt(inSprache(aufgaben[index], MU));
 
     function aufgabeZeigen(an) {
       aufgBox.classList.toggle('weg', !an);
