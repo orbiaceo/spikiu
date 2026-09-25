@@ -33,8 +33,11 @@
   Formulierungen. Deshalb rückt JEDE Antwort die Aufgabe vor. Beurteilt wird
   einmal am Ende, von einem Modell, das wirklich versteht.
 
-  DER SOUFFLEUR (Entscheid 30.08., kehrt Frage 8 um)
-  Die Aufgabe steht NICHT offen da. Erster Tipp auf den Capy: die Aufgabe.
+  DER SOUFFLEUR (Entscheid 30.08., neu gefasst 24.09.)
+  Unter Spikius Satz steht nur der Capy. Erster Tipp: die Aufgabe blendet
+  ein — und wieder aus, sobald er ins Feld tippt. Er soll sie im Kopf haben,
+  nicht abschreiben. Nur beim allerersten Zug der Sitzung steht sie von
+  selbst da, damit niemand fragt „Was soll ich tun?" (31.08.).
   Zweiter Tipp: der fertige Satz — zum Anhören und mit Übersetzung, aber
   OHNE „Einsetzen" (Entscheid 24.09., nach Test mit einem Schüler): wer den
   Satz nur antippt, lernt nichts. Er bleibt sichtbar stehen und muss von
@@ -141,7 +144,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .capy svg{width:27px;height:27px}
 .capy .punkt{position:absolute;top:-3px;right:-3px;width:14px;height:14px;
   border-radius:50%;background:var(--accent);border:2px solid var(--ink)}
-.aufg .txt{flex:1}
+.aufg .txt{flex:1;transition:opacity .35s ease}
+.aufg .txt.weg{opacity:0}
 .hinweis{margin-top:.8rem;background:var(--accent2);border:2px solid var(--ink);
   border-radius:.7rem;padding:.7rem .8rem;display:none}
 .hinweis.an{display:block}
@@ -693,23 +697,24 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   }
 
   /* ══════════════════════════════════════════════════════════
-     3 · DER SOUFFLEUR — zwei Stufen auf Tipp
-     Erster Tipp: die Aufgabe. Zweiter: der fertige Satz.
-     Der blaue Punkt sagt „hier gibt es noch mehr" und verschwindet,
-     wenn alles ausgeklappt ist — sonst weiß niemand, dass man tippen kann.
+     3 · DER SOUFFLEUR — der Capy hält beides (Leo, 24.09.)
+     Erster Tipp: die Aufgabe blendet ein. Sie blendet aus, sobald er ins
+     Feld tippt — im Moment des Schreibens muss er sie im Kopf haben.
+     Zweiter Tipp: das Beispiel. Es bleibt bis „Senden".
+     Jeder weitere Tipp holt die Aufgabe noch einmal kurz zurück.
+     Der Platz der Aufgabe bleibt reserviert (nur unsichtbar), damit Feld
+     und Knopf nicht springen.
+     Der blaue Punkt sagt „hier gibt es noch mehr" und verschwindet, wenn
+     das Beispiel steht.
      ══════════════════════════════════════════════════════════ */
+  var aufgabeSchonGezeigt = false;   // nur der allererste Zug zeigt sie von selbst
   function bauSouffleur(k, index, aufgaben) {
-    /* Die Aufgabe steht SOFORT da (Leo, 01.09.). Als sie noch vage war
-       („Frag, was darin ist"), hatte das Verstecken einen Sinn. Jetzt ist sie
-       die eigentliche Anweisung — quasi eine Übersetzungsaufgabe —, und ein
-       Tipp, um sie überhaupt zu sehen, ist ein Schritt ohne Nutzen.
-       Der Capy behält genau eine Aufgabe: den fertigen Satz auf Tipp, für
-       den, der an der Aufgabe scheitert. */
-    var stufe  = 1;
+    var tipps  = 0;
     var capy   = k.querySelector('[data-capy]');
     var punkt  = k.querySelector('[data-punkt]');
     var lbl    = k.querySelector('[data-lbl]');
     var txt    = k.querySelector('[data-aufg]');
+    var aufgBox  = txt.parentNode;              // .txt — Überschrift + Aufgabe
     var hin    = k.querySelector('[data-hinweis]');
     var satzEl = k.querySelector('[data-satz]');
     var feld   = k.querySelector('.feld');
@@ -718,21 +723,34 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
        in der Datenbank, der Hinweis kostet nichts. */
     var satz = lernerZeilen[index] ? lernerZeilen[index].z : '';
     satzEl.textContent = satz;
+    lbl.textContent = T('deineAufgabe');
+    txt.textContent = inSprache(aufgaben[index], MU);
 
-    function zeichne() {
-      lbl.textContent = T('deineAufgabe');
-      txt.className = 't';
-      txt.textContent = inSprache(aufgaben[index], MU);
-      hin.classList.toggle('an', stufe >= 2 && !!satz);
-      /* Der Punkt sagt „hier gibt es noch Hilfe" und verschwindet, sobald
-         der Satz sichtbar ist. Gibt es keinen Satz, gibt es auch nichts
-         zu holen — dann bleibt der Punkt von Anfang an weg. */
-      punkt.style.display = (stufe >= 2 || !satz) ? 'none' : 'block';
+    function aufgabeZeigen(an) {
+      aufgBox.classList.toggle('weg', !an);
+      aufgBox.setAttribute('aria-hidden', an ? 'false' : 'true');
     }
-    capy.onclick = function () { if (satz) { stufe = 2; zeichne(); } };
+    function beispielDa() { return tipps >= 2 && !!satz; }
+    function zeichne() {
+      hin.classList.toggle('an', beispielDa());
+      /* Punkt weg, sobald nichts mehr zu holen ist: nach dem Beispiel —
+         oder, wenn es keinen Satz gibt, nach dem ersten Tipp. */
+      punkt.style.display = (beispielDa() || (!satz && tipps >= 1)) ? 'none' : 'block';
+    }
+
+    aufgabeZeigen(!aufgabeSchonGezeigt);
+    aufgabeSchonGezeigt = true;
+
+    capy.onclick = function () {
+      tipps++;
+      aufgabeZeigen(tipps === 1 || tipps >= 3 || !satz);
+      zeichne();
+    };
     capy.onkeydown = function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); capy.click(); }
     };
+    /* Sobald er schreiben will, ist die Aufgabe weg. Das Beispiel bleibt. */
+    feld.addEventListener('focus', function () { aufgabeZeigen(false); });
     zeichne();
 
     k.querySelector('[data-hsprich]').onclick = function () { sprich(satz); };
