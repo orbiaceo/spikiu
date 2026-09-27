@@ -6,6 +6,8 @@ Stand: 27.09.2026 · TITEL NACHGEZOGEN (**Der Beschluss vom 01.09. „Wendungen 
 
 **Geändert:** `haus.html` (Bibliothek-Kachel: „Wendungen & Sprichwörter") · `proverbios.html` (`<title>`, `h1#roomTitle`, Eyebrow dreisprachig: **Wendungen & Sprichwörter · Giros & Proverbios · Phrases & Proverbs**).
 **Nachgezogen (Leo: „FAQ auch"):** `faq.html` („ein Kontingent für Wortschatz sowie Wendungen & Sprichwörter") · `spikiu-products.html` (Free: „Wendungen & Sprichwörter", Premium: „Wortschatz, Wendungen & Sprichwörter ohne Limit"). grep: kein nacktes „Sprichwörter" mehr als Titel.
+**Karten ohne Titel (Leo, 27.09.):** Der Raumtitel steht oben — auf der Sprichwort-Karte selbst erscheint er NICHT mehr (Eyebrow aus `makeProverbCard` entfernt; `ui().eyebrow` speist nur noch `#roomTitle`).
+**OFFEN — Bilder statt 📜:** Die Schriftrolle ist in `makeProverbCard` fest verdrahtet, daher auf JEDER Karte. Der Beschluss vom 17.08. (Gym-Chat: pro Karte ein passendes Icon aus freier, selbst gehosteter Datenbank — OpenMoji; nur Sichtbares, Abstraktes ohne Icon) wurde nur für Gym-Wortkarten gefasst, nie ins Ledger geschrieben und nie auf den Sprichwort-Raum übertragen. Wartet auf Leos Entscheidung.
 **REGEL (bestätigt): Ein Titel-Beschluss gilt für JEDE Stelle, an der der Titel erscheint — vor dem Abhaken per grep alle Vorkommen prüfen.**
 
 Stand: 17.09.2026 · KONSOLE (**Design 17.09. (claude.ai, Leo am Handy, kein Code): EIGENER WORKSPACE `spikiu-prod` MIT HARTEN DECKELN · NEUER SCHLÜSSEL IN VERCEL · DIE ZWEITE EBENE AUS DEM SICHERHEITS-EINTRAG VOM 01.09. IST JETZT BESTÄTIGT.**

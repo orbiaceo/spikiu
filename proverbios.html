@@ -159,7 +159,6 @@ function makeProverbCard(provI){
   var card = document.createElement('div'); card.className = 'card prov';
   card.innerHTML =
       '<div class="prov-icon" aria-hidden="true">📜</div>'
-    + '<div class="prov-eyebrow">' + escPlain(ui().eyebrow) + '</div>'
     + '<div class="prov-text">' + escPlain(prov.text) + '</div>'
     + '<button class="prov-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="prov-trans">' + escPlain(prov.translation) + '</div>'
