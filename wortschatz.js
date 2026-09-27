@@ -89,7 +89,7 @@
   };
 
   // Icon-Map: Konzept (t.en) → Emoji. NUR sichtbare Dinge; abstrakte bleiben leer.
-  // (Demo: System-Emoji. Produktion später: self-hosted OpenMoji über denselben Schlüssel.)
+  // Das Emoji ist nur der Schlüssel: gym.html zeigt bilder/om-<Codepunkte>.svg (self-hosted OpenMoji, 27.09.).
   var ICONMAP = {
     'the house':'🏠','the water':'💧','the food':'🍽️','the street':'🛣️','the night':'🌙',
     'the hand':'✋','the book':'📖','the door':'🚪','the car':'🚗','the sun':'☀️',

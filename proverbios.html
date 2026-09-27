@@ -126,15 +126,19 @@ function playFrom(btn, text){
 // ── Feste DB aus sprichwort.js (Zielsprache + Übersetzung in der Muttersprache) ──
 var LIST = [];   // [{ text, translation, src }]
 function buildList(){
-  var out = [];
-  if (typeof window.spikiuSprichwort === 'function' && window.spikiuSprichwort.daten){
-    var raw = window.spikiuSprichwort.daten[PROFILE.zielsprache] || window.spikiuSprichwort.daten.es || [];
-    for (var i=0;i<raw.length;i++){
-      var p = raw[i];
+  // Wendungen und Sprichwörter im Wechsel — der Titel verspricht beides.
+  var S = window.spikiuSprichwort, z = PROFILE.zielsprache;
+  if (typeof S !== 'function' || !S.daten) return [];
+  function map(raw){
+    return (raw || []).map(function(p){
       var tr = (p.t && (p.t[PROFILE.muttersprache] || p.t.de || p.t.en || p.t.es)) || '';
-      out.push({ text: p.text, translation: tr, src: p.src, icon: p.icon || '' });
-    }
+      return { text: p.text, translation: tr, src: p.src, icon: p.icon || '' };
+    });
   }
+  var spr = map(S.daten[z] || S.daten.es);
+  var wen = map(S.wendungen && (S.wendungen[z] || S.wendungen.es));
+  var out = [], n = Math.max(spr.length, wen.length);
+  for (var i=0;i<n;i++){ if (wen[i]) out.push(wen[i]); if (spr[i]) out.push(spr[i]); }
   return out;
 }
 

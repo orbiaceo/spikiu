@@ -27,7 +27,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .card.deck-current{transform:translateX(0) rotate(0);opacity:1;pointer-events:auto;z-index:2;}
 .card.deck-next{transform:translateX(115%) rotate(1.4deg);opacity:0;z-index:1;}
 .card.deck-past{transform:translateX(-115%) rotate(-1.4deg);opacity:0;z-index:1;}
-.word-icon{font-size:4.4rem;line-height:1;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12));}
+.word-icon{display:block;width:96px;height:96px;flex:0 0 auto;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12));}
 .gym-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan,#1f93b0);}
 .gym-eyebrow.ueb{color:var(--green);}
 /* Wiedersehen (18.08.2026): eine Station ist rund geworden, weil ihre Wörter
@@ -223,11 +223,19 @@ function deckLayout(){
   var b = document.getElementById('btnBack'); if (b) b.disabled = pointer <= 0;
 }
 
+// Emoji → self-hosted OpenMoji-SVG (bilder/om-<Codepunkte>.svg), wie in proverbios.html.
+function omIcon(e){
+  if (!e) return '';
+  var cps = [];
+  for (var i=0;i<e.length;i++){ var c=e.codePointAt(i); if (c>0xFFFF) i++; if (c!==0xFE0F) cps.push(c.toString(16).toUpperCase()); }
+  return '<img class="word-icon" src="bilder/om-' + cps.join('-') + '.svg" alt="" aria-hidden="true" width="96" height="96">';
+}
+
 function makeWordCard(wi){
   var wd = WORDS[wi] || { wort:'', tr:'', text:'' };
   var card = document.createElement('div'); card.className = 'card wort';
   card.innerHTML =
-      (wd.icon ? '<div class="word-icon">' + escPlain(wd.icon) + '</div>' : '')
+        omIcon(wd.icon)
     + '<div class="gym-eyebrow">' + escPlain(ui().eyebrow) + '</div>'
     + '<div class="gym-wort">' + escPlain(wd.wort) + '</div>'
     + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'

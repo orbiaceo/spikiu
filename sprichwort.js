@@ -68,6 +68,59 @@
     ]
   };
 
+
+  /* WENDUNGEN — feste Redewendungen (keine Sprichwörter im engen Sinn).
+     Eigene Liste, damit das „Sprichwort des Tages" (spikiuSprichwort) unberührt bleibt;
+     der Raum proverbios.html mischt beide (Leo 01.09./27.09.: der Titel verspricht beides). */
+  var WENDUNGEN = {
+    es: [
+      { text: 'Por si acaso.', icon: '☂️', src: 'Giro español',
+        t: { de: 'Für alle Fälle.', en: 'Just in case.' } },
+      { text: 'Estar en las nubes.', icon: '☁️', src: 'Giro español',
+        t: { de: 'Mit den Gedanken ganz woanders sein.', en: 'To have one\u2019s head in the clouds.' } },
+      { text: 'Ser pan comido.', icon: '🍞', src: 'Giro español',
+        t: { de: 'Ein Kinderspiel sein.', en: 'To be a piece of cake.' } },
+      { text: 'Echar una mano.', icon: '🤝', src: 'Giro español',
+        t: { de: 'Mit anpacken, helfen.', en: 'To lend a hand.' } },
+      { text: 'Ponerse las pilas.', icon: '🔋', src: 'Giro español',
+        t: { de: 'Sich ins Zeug legen.', en: 'To get one\u2019s act together.' } },
+      { text: 'Estar como pez en el agua.', icon: '🐟', src: 'Giro español',
+        t: { de: 'Sich pudelwohl fühlen.', en: 'To be in one\u2019s element.' } },
+      { text: 'Costar un ojo de la cara.', icon: '💰', src: 'Giro español',
+        t: { de: 'Ein Vermögen kosten.', en: 'To cost an arm and a leg.' } },
+      { text: 'Tomar el pelo a alguien.', src: 'Giro español',
+        t: { de: 'Jemanden auf den Arm nehmen.', en: 'To pull someone\u2019s leg.' } }
+    ],
+    de: [
+      { text: 'Stimmt so.', icon: '🪙', src: 'Deutsche Wendung',
+        t: { es: 'Así está bien, quédese con el cambio.', en: 'Keep the change.' } },
+      { text: 'Ich verstehe nur Bahnhof.', icon: '🚉', src: 'Deutsche Wendung',
+        t: { es: 'No entiendo nada.', en: 'It\u2019s all Greek to me.' } },
+      { text: 'Tomaten auf den Augen haben.', icon: '🍅', src: 'Deutsche Wendung',
+        t: { es: 'No ver lo que está delante de las narices.', en: 'To be blind to the obvious.' } },
+      { text: 'Das ist nicht mein Bier.', icon: '🍺', src: 'Deutsche Wendung',
+        t: { es: 'No es asunto mío.', en: 'That\u2019s not my problem.' } },
+      { text: 'Die Daumen drücken.', icon: '👍', src: 'Deutsche Wendung',
+        t: { es: 'Cruzar los dedos.', en: 'To keep one\u2019s fingers crossed.' } }
+    ],
+    en: [
+      { text: 'It\u2019s raining cats and dogs.', icon: '🌧️', src: 'English phrase',
+        t: { de: 'Es regnet in Strömen.', es: 'Llueve a cántaros.' } },
+      { text: 'It\u2019s a piece of cake.', icon: '🍰', src: 'English phrase',
+        t: { de: 'Das ist ein Kinderspiel.', es: 'Es pan comido.' } },
+      { text: 'Break a leg!', icon: '🎭', src: 'English phrase',
+        t: { de: 'Hals- und Beinbruch!', es: '¡Mucha suerte!' } },
+      { text: 'To feel under the weather.', icon: '🤒', src: 'English phrase',
+        t: { de: 'Nicht ganz auf dem Damm sein.', es: 'Estar pachucho.' } }
+    ],
+    el: [
+      { text: 'Τα έκανε θάλασσα.', icon: '🌊', src: 'Ελληνική έκφραση',
+        t: { de: 'Er hat alles vermasselt.', en: 'He made a total mess of it.', es: 'Lo echó todo a perder.' } },
+      { text: 'Κάνω την πάπια.', icon: '🦆', src: 'Ελληνική έκφραση',
+        t: { de: 'Sich dumm stellen.', en: 'To play dumb.', es: 'Hacerse el sueco.' } }
+    ]
+  };
+
   // Kalendertag-Index (lokal, rotiert täglich, gleich für alle Geräte am selben Tag)
   function dayIndex() {
     return Math.floor(Date.now() / 86400000);
@@ -89,5 +142,6 @@
 
   // optionaler Direktzugriff auf die Daten (für Kuration/Tests)
   w.spikiuSprichwort.daten = SPRICHWOERTER;
+  w.spikiuSprichwort.wendungen = WENDUNGEN;
 
 })(window);
