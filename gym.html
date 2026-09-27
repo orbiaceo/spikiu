@@ -177,7 +177,10 @@ function buildWords(){
   // Das Gym übt, was der Lernpfad lehrt. Wackelnde Wörter kommen zuerst,
   // bereits sitzende ruhen. Erst wenn daraus nichts (mehr) kommt, greift
   // der feste Starter-Wortschatz — sonst übt man an der Reise vorbei.
-  if (window.SpikiuWoerter && window.SpikiuPfad && window.SpikiuLernpfad){
+  // Zielsprach-Wache: Stationswörter nur, wenn die geladenen Daten zur Zielsprache passen
+  // (z. B. Griechisch hat noch keinen Lernpfad → nur Starter-Wortschatz, nie fremde Wörter).
+  if (window.SpikiuWoerter && window.SpikiuPfad && window.SpikiuLernpfad
+      && window.SpikiuLernpfad.zielsprache === PROFILE.zielsprache){
     try {
       var ausPfad = window.SpikiuWoerter.ausStationen(PROFILE.zielsprache, PROFILE.muttersprache) || [];
       ausPfad.forEach(function(it){
@@ -399,6 +402,11 @@ window.addEventListener('load', function(){
 <script src="wortschatz.js" defer></script>
 <script src="uebung.js" defer></script>
 <script src="lernpfad-daten.js" defer></script>
+<!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher lud das Gym nur Spanisch,
+     Deutsch-/Englisch-Lerner bekamen spanische Stationswörter. defer hält die Reihenfolge. -->
+<script src="lernpfad-daten-de.js" defer></script>
+<script src="lernpfad-daten-en.js" defer></script>
+<script src="lernpfad-sprache.js" defer></script>
 <script src="lernpfad.js" defer></script>
 <script src="woerter.js" defer></script>
 <script src="icon-db.js" defer></script>
