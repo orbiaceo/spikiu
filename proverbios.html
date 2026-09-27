@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Spikiu · Proverbios</title>
+<title>Spikiu · Giros & Proverbios</title>
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
 :root{--bg:#eef7f1;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--de:#fbf8f0;--sage:#9bd14a;--green:#1f93b0;--pink:#1f93b0;--gold:#a87b2e;--red:#e05252;--ow:2.5px;--warm:#c3bcae;}
@@ -54,7 +54,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 <body>
 
 <div class="app">
-  <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><h1 id="roomTitle">Sprichwörter</h1></div><div style="width:36px"></div></div>
+  <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><h1 id="roomTitle">Wendungen &amp; Sprichwörter</h1></div><div style="width:36px"></div></div>
   <div class="deck" id="deck"></div>
   <div class="deck-nav">
     <button class="deck-btn" type="button" id="btnBack">‹ <span id="btnBackLbl">zurück</span></button>
@@ -88,9 +88,9 @@ var PROFILE = { zielsprache: zielC, muttersprache: mutterC, koennen: stored.koen
 function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ eyebrow:'Sprichwörter', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
-  es:{ eyebrow:'Proverbios',   uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
-  en:{ eyebrow:'Proverbs',     uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' }
+  de:{ eyebrow:'Wendungen & Sprichwörter', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
+  es:{ eyebrow:'Giros & Proverbios', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
+  en:{ eyebrow:'Phrases & Proverbs', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 

@@ -2,6 +2,12 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 27.09.2026 · TITEL NACHGEZOGEN (**Der Beschluss vom 01.09. „Wendungen & Sprichwörter" stand nur in `nav.js`/`index.html` — Szene und Raum zeigten noch „Sprichwörter". Jetzt überall.**)
+
+**Geändert:** `haus.html` (Bibliothek-Kachel: „Wendungen & Sprichwörter") · `proverbios.html` (`<title>`, `h1#roomTitle`, Eyebrow dreisprachig: **Wendungen & Sprichwörter · Giros & Proverbios · Phrases & Proverbs**).
+**Nachgezogen (Leo: „FAQ auch"):** `faq.html` („ein Kontingent für Wortschatz sowie Wendungen & Sprichwörter") · `spikiu-products.html` (Free: „Wendungen & Sprichwörter", Premium: „Wortschatz, Wendungen & Sprichwörter ohne Limit"). grep: kein nacktes „Sprichwörter" mehr als Titel.
+**REGEL (bestätigt): Ein Titel-Beschluss gilt für JEDE Stelle, an der der Titel erscheint — vor dem Abhaken per grep alle Vorkommen prüfen.**
+
 Stand: 17.09.2026 · KONSOLE (**Design 17.09. (claude.ai, Leo am Handy, kein Code): EIGENER WORKSPACE `spikiu-prod` MIT HARTEN DECKELN · NEUER SCHLÜSSEL IN VERCEL · DIE ZWEITE EBENE AUS DEM SICHERHEITS-EINTRAG VOM 01.09. IST JETZT BESTÄTIGT.**
 
 **═══ 1. WAS VORHER GALT ═══**
