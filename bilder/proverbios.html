@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Giros & Proverbios</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+<style>
+:root{--bg:#eef7f1;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--de:#fbf8f0;--sage:#9bd14a;--green:#1f93b0;--pink:#1f93b0;--gold:#a87b2e;--red:#e05252;--ow:2.5px;--warm:#c3bcae;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;height:100%;}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;display:flex;align-items:center;justify-content:center;min-height:100dvh;-webkit-font-smoothing:antialiased;}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px;}
+ body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px;}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink);}
+}
+.app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden;}
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem;}
+.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);}
+.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink);}
+.tt-wrap{flex:1;text-align:center;}
+.tt-wrap .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--green);text-transform:uppercase;}
+.tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
+.deck{flex:1;position:relative;overflow:hidden;min-height:0;}
+.card{position:absolute;inset:1.1rem 1rem;background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.9rem;padding:1.6rem 1.4rem;overflow-y:auto;transform:translateX(115%);opacity:0;pointer-events:none;transition:transform .38s cubic-bezier(.4,0,.2,1),opacity .38s ease;will-change:transform,opacity;}
+.card.deck-current{transform:translateX(0) rotate(0);opacity:1;pointer-events:auto;z-index:2;}
+.card.deck-next{transform:translateX(115%) rotate(1.4deg);opacity:0;z-index:1;}
+.card.deck-past{transform:translateX(-115%) rotate(-1.4deg);opacity:0;z-index:1;}
+.prov-icon{font-size:3.6rem;line-height:1;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12));}
+.prov-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan,#1f93b0);}
+.prov-text{font-family:'Lora',serif;font-size:clamp(1.4rem,5.5vw,1.9rem);line-height:1.4;color:var(--read);max-width:20rem;}
+.prov-speak{width:48px;height:48px;border:var(--ow) solid var(--ink);border-radius:999px;cursor:pointer;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink);}
+.prov-speak:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+.prov-speak svg{width:20px;height:20px;}
+.prov-speak.playing{animation:provPulse 1s ease infinite;}
+.prov-speak.loading svg{display:none;}
+.prov-speak.loading::after{content:'';width:16px;height:16px;border:2.5px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:provSpin .7s linear infinite;}
+@keyframes provPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+@keyframes provSpin{to{transform:rotate(360deg);}}
+.prov-trans{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:var(--muted);max-width:20rem;}
+.prov-src{font:600 .78rem/1 'DM Mono',monospace;color:#8a8378;letter-spacing:.02em;}
+.ueb-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--green);}
+.card-hint{position:absolute;left:0;right:0;bottom:.7rem;font:600 .72rem/1 'DM Mono',monospace;color:var(--warm);letter-spacing:.05em;animation:provNudge 1.8s ease-in-out infinite;}
+@keyframes provNudge{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(-5px);opacity:1;}}
+.deck-nav{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.7rem 1rem calc(1rem + env(safe-area-inset-bottom));border-top:var(--ow) solid var(--ink);background:rgba(255,255,255,.7);}
+.deck-btn{background:#fff;border:var(--ow) solid var(--ink);color:var(--ink);border-radius:999px;padding:.6rem .9rem;font:800 .86rem/1 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--ink);white-space:nowrap;}
+.deck-btn:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+.deck-btn:disabled{opacity:.35;box-shadow:none;cursor:default;}
+.deck-btn.fwd{background:var(--green);color:#fff;}
+@media (prefers-reduced-motion:reduce){.card-hint{animation:none;}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><h1 id="roomTitle">Wendungen &amp; Sprichwörter</h1></div><div style="width:36px"></div></div>
+  <div class="deck" id="deck"></div>
+  <div class="deck-nav">
+    <button class="deck-btn" type="button" id="btnBack">‹ <span id="btnBackLbl">zurück</span></button>
+    <button class="deck-btn fwd" type="button" id="btnFwd"><span id="btnFwdLbl">weiter</span> ›</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  SPIKIU · RAUM „PROVERBIOS" (Teil 51) — Tinder-Deck OHNE KI.
+//  Feste DB (sprichwort.js) → Proverbio → Übung (uebung.js) → Proverbio → …
+//  Daumen LINKS = weiter, RECHTS = zurück (echter Verlauf). Anti-Gamification.
+//  Reuse: sprichwort.js (DB), uebung.js (Übungs-Motor), audio.js (🔊). Self-contained (Pop, Rueckweg ins Haus).
+// ════════════════════════════════════════════════════════════════════
+
+// ── Profil defensiv (Codes de/es/en/el — 1:1 wie chat.html) ──
+var stored = {};
+try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+function langCode(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v)) return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+  if(v.indexOf('engl')>-1) return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  return null;
+}
+var zielC = stored.zielsprache || langCode(stored.targetLang) || 'es';
+var mutterC = stored.muttersprache || langCode(stored.nativeLang) || 'de';
+var PROFILE = { zielsprache: zielC, muttersprache: mutterC, koennen: stored.koennen || 'anfang' };
+function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+
+var UI = {
+  de:{ eyebrow:'Wendungen & Sprichwörter', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
+  es:{ eyebrow:'Giros & Proverbios', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
+  en:{ eyebrow:'Phrases & Proverbs', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' }
+};
+function ui(){ return UI[uiLang()] || UI.de; }
+
+var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+var CAPY_SVG = '<svg viewBox="0 0 80 80" fill="none">'
+  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
+  + '<g class="spk-capy-eyes"><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/></g>'
+  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+  + '<path class="spk-capy-mouth" d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+function escPlain(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Audio (🔊) ──
+var voiceReady = false;
+function warmVoice(){ if (!window.spkWarm) return; try { var p = window.spkWarm(PROFILE.zielsprache); if (p && p.then) p.then(function(){ voiceReady = true; }, function(){}); } catch(e){} }
+function speakText(text){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, PROFILE.zielsprache); } catch(e){} }
+  try { var s = window.speechSynthesis;
+    if (s && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[PROFILE.zielsprache] || 'en-US';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp; s.cancel(); s.speak(u);
+    } } catch(e){}
+}
+function playFrom(btn, text){
+  var loading = !voiceReady; if (btn){ btn.classList.add(loading ? 'loading' : 'playing'); }
+  var fin = function(){ voiceReady = true; if (btn){ btn.classList.remove('loading'); btn.classList.remove('playing'); } };
+  var p = speakText(text); if (p && p.then){ p.then(fin, fin); } else { setTimeout(fin, 1400); }
+}
+
+// ── Feste DB aus sprichwort.js (Zielsprache + Übersetzung in der Muttersprache) ──
+var LIST = [];   // [{ text, translation, src }]
+function buildList(){
+  var out = [];
+  if (typeof window.spikiuSprichwort === 'function' && window.spikiuSprichwort.daten){
+    var raw = window.spikiuSprichwort.daten[PROFILE.zielsprache] || window.spikiuSprichwort.daten.es || [];
+    for (var i=0;i<raw.length;i++){
+      var p = raw[i];
+      var tr = (p.t && (p.t[PROFILE.muttersprache] || p.t.de || p.t.en || p.t.es)) || '';
+      out.push({ text: p.text, translation: tr, src: p.src });
+    }
+  }
+  return out;
+}
+
+// ── Deck mit echtem Verlauf: Schritte (Karten) + Zeiger ──
+// gerader Index = Proverbio, ungerader = Übung zum vorigen Proverbio.
+var deck = document.getElementById('deck');
+var stepEls = [];
+var pointer = 0;
+
+function deckLayout(){
+  for (var i=0;i<stepEls.length;i++){
+    var c = stepEls[i]; if (!c) continue;
+    c.classList.remove('deck-current','deck-past','deck-next');
+    c.classList.add(i < pointer ? 'deck-past' : (i === pointer ? 'deck-current' : 'deck-next'));
+  }
+  var b = document.getElementById('btnBack'); if (b) b.disabled = pointer <= 0;
+}
+
+function makeProverbCard(provI){
+  var prov = LIST[provI] || { text:'', translation:'', src:'' };
+  var card = document.createElement('div'); card.className = 'card prov';
+  card.innerHTML =
+      '<div class="prov-icon" aria-hidden="true">📜</div>'
+    + '<div class="prov-text">' + escPlain(prov.text) + '</div>'
+    + '<button class="prov-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
+    + '<div class="prov-trans">' + escPlain(prov.translation) + '</div>'
+    + '<div class="prov-src">' + (prov.src ? '— ' + escPlain(prov.src) : '') + '</div>'
+    + '<div class="card-hint">' + escPlain(ui().hintFwd) + '</div>';
+  var sb = card.querySelector('.prov-speak');
+  if (sb) sb.onclick = function(){ playFrom(sb, prov.text); };
+  return card;
+}
+
+function makeUebungCard(provI){
+  var prov = LIST[provI] || { text:'', translation:'', src:'' };
+  // mean = richtige Übersetzung + 2 fremde Übersetzungen (Distraktoren) — datengetrieben.
+  var others = [];
+  for (var k=0;k<LIST.length;k++){ if (k !== provI && LIST[k].translation) others.push(LIST[k].translation); }
+  window.spikiuUebung.shuffle(others);
+  var mean = [prov.translation, others[0] || '', others[1] || ''].filter(Boolean);
+  var item = { text: prov.text, tr: prov.translation, mean: mean, lang: PROFILE.zielsprache, nativeLang: uiLang() };
+  var types = window.spikiuUebung.types;
+  var type = types[Math.floor(Math.random() * types.length)];
+
+  var card = document.createElement('div'); card.className = 'card ueb-card';
+  var eb = document.createElement('div'); eb.className = 'ueb-eyebrow'; eb.textContent = ui().uebung;
+  card.appendChild(eb);
+  card.appendChild(window.spikiuUebung(item, type));
+  var hint = document.createElement('div'); hint.className = 'card-hint'; hint.textContent = ui().hintFwd;
+  card.appendChild(hint);
+  return card;
+}
+
+function ensureStep(i){
+  if (i < 0) return null;
+  if (stepEls[i]) return stepEls[i];
+  if (!LIST.length) return null;
+  var provI = Math.floor(i / 2) % LIST.length;
+  var card = (i % 2 === 0) ? makeProverbCard(provI) : makeUebungCard(provI);
+  stepEls[i] = card; deck.appendChild(card); deckLayout();
+  return card;
+}
+function forward(){ pointer++; ensureStep(pointer); deckLayout(); }
+function back(){ if (pointer > 0){ pointer--; deckLayout(); } }
+
+// ── Daumen: links = weiter, rechts = zurück (+ Knöpfe als Hilfe) ──
+function bindSwipe(){
+  var x0 = null, y0 = null;
+  deck.addEventListener('touchstart', function(e){ var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive:true });
+  deck.addEventListener('touchend', function(e){
+    if (x0 == null) return;
+    var t = e.changedTouches[0]; var dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+    if (Math.abs(dx) < 45 || Math.abs(dy) > Math.abs(dx)) return;   // nur klar horizontale Wische
+    if (dx < 0) forward(); else back();                            // links = weiter, rechts = zurück
+  }, { passive:true });
+}
+
+document.getElementById('btnBack').onclick = back;
+document.getElementById('btnFwd').onclick = forward;
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight') forward();
+  else if (e.key === 'ArrowLeft') back();
+});
+
+// ── Start (nach defer-Scripts + Audio-Modul) ──
+window.addEventListener('load', function(){
+  document.getElementById('btnBackLbl').textContent = ui().back;
+  document.getElementById('btnFwdLbl').textContent = ui().fwd;
+  document.getElementById('roomTitle').textContent = ui().eyebrow;
+  document.getElementById('btnHaus').onclick = function(){ location.href='haus.html'; };
+  LIST = buildList();
+  bindSwipe();
+  warmVoice();
+  pointer = 0; ensureStep(0); deckLayout();
+});
+</script>
+<!-- Audio (ES-Modul am Root) → window.spkSpeak/spkWarm. Fallback steckt in audio.js. -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
+</script>
+<script src="sprichwort.js" defer></script>
+<script src="uebung.js" defer></script>
+</body>
+</html>
