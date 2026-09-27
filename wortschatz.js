@@ -101,7 +101,7 @@
     var mutter = muttersprache || 'de';
     return list.map(function (it) {
       var tr = (it.t && (it.t[mutter] || it.t.de || it.t.en || it.t.es)) || '';
-      return { wort: it.wort, text: it.text, tr: tr, icon: (it.t && ICONMAP[it.t.en]) || '' };
+      return { wort: it.wort, text: it.text, tr: tr, icon: (it.t && ICONMAP[it.t.en]) || '', konzept: (it.t && it.t.en) || '' };
     });
   };
   w.spikiuWortschatz.daten = WS;

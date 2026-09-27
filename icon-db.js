@@ -28,9 +28,11 @@
   var KONZEPT = {
     // Starter-Wortschatz
     'house':'🏠', 'water':'💧', 'food':'🍽️', 'street':'🛣️', 'night':'🌙', 'hand':'✋',
-    'book':'📖', 'door':'🚪', 'car':'🚗', 'sun':'☀️', 'city':'🏙️', 'money':'💶',
-    'family':'👪', 'work':'💼', 'time':'⏰', 'day':'📅', 'word':'💬', 'name':'📛',
-    'friend':'🤝', 'table':'🪑',
+    'book':'📚', 'door':'🚪', 'car':'🚗', 'sun':'☀️', 'money':'💶',
+    'family':'👪', 'time':'⏰', 'day':'📅', 'word':'💬', 'name':'🪪', 'friend':'🤝',
+    // Spikiu-eigene Zeichnungen im OpenMoji-Stil (bilder/sp-*.svg), wo OpenMoji
+    // kein treffendes Motiv hat (Leo, 27.09.: „suggestivere Bilder").
+    'table':'sp-tisch', 'city':'sp-stadtplan', 'street':'sp-zebrastreifen', 'work':'sp-arbeit',
     // Café · Restaurant · Essen
     'coffee':'☕', 'tea':'🍵', 'milk':'🥛', 'cup':'☕', 'glass':'🥃', 'bill':'🧾',
     'check':'🧾', 'receipt':'🧾', 'menu':'📋', 'bread':'🍞', 'breakfast':'🥐',
@@ -108,6 +110,18 @@
   raum.spikiuIcon = function (wort) {
     if (!index) bauen();
     return index[norm(wort)] || '';
+  };
+  /* Direkt über das Konzept (englisch) — für Karten, die ihr Konzept kennen.
+     Wichtig bei Doppeldeutigem: „el tiempo" ist im Starter-Wortschatz die ZEIT,
+     in der Wetter-Station das WETTER (27.09.). */
+  raum.spikiuIcon.konzept = function (en) { return KONZEPT[norm(en)] || ''; };
+  /* Emoji oder sp-Name → Dateipfad in bilder/. */
+  raum.spikiuIcon.datei = function (e) {
+    if (!e) return '';
+    if (/^sp-[a-z0-9-]+$/.test(e)) return 'bilder/' + e + '.svg';
+    var cps = [];
+    for (var i = 0; i < e.length; i++) { var c = e.codePointAt(i); if (c > 0xFFFF) i++; if (c !== 0xFE0F) cps.push(c.toString(16).toUpperCase()); }
+    return 'bilder/om-' + cps.join('-') + '.svg';
   };
   /* Nach dem Laden weiterer Daten neu aufbauen lassen. */
   raum.spikiuIcon.neu = function () { index = null; };

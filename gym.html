@@ -191,7 +191,7 @@ function buildWords(){
   // ── Quelle 2: fester Starter-Wortschatz ──────────────────────────────
   if (typeof window.spikiuWortschatz === 'function'){
     var starter = window.spikiuWortschatz(PROFILE.zielsprache, PROFILE.muttersprache) || [];
-    starter.forEach(function(it){ out.push({ wort:it.wort, tr:it.tr, text:it.text || '', own:false, icon:it.icon||'' }); });
+    starter.forEach(function(it){ out.push({ wort:it.wort, tr:it.tr, text:it.text || '', own:false, icon:it.icon||'', konzept:it.konzept||'' }); });
   }
   loadOwn().forEach(function(it){ if (it && it.wort) out.push({ wort:it.wort, tr:it.tr||'', text:it.text||'', own:true }); });
   var seen = {}; out.forEach(function(w){ seen[String(w.wort).trim().toLowerCase()] = 1; });
@@ -229,16 +229,16 @@ function deckLayout(){
 // Emoji → self-hosted OpenMoji-SVG (bilder/om-<Codepunkte>.svg), wie in proverbios.html.
 function omIcon(e){
   if (!e) return '';
-  var cps = [];
-  for (var i=0;i<e.length;i++){ var c=e.codePointAt(i); if (c>0xFFFF) i++; if (c!==0xFE0F) cps.push(c.toString(16).toUpperCase()); }
-  return '<img class="word-icon" src="bilder/om-' + cps.join('-') + '.svg" alt="" aria-hidden="true" width="96" height="96">';
+  var src = (window.spikiuIcon && window.spikiuIcon.datei) ? window.spikiuIcon.datei(e) : '';
+  if (!src) return '';
+  return '<img class="word-icon" src="' + src + '" alt="" aria-hidden="true" width="96" height="96">';
 }
 
 function makeWordCard(wi){
   var wd = WORDS[wi] || { wort:'', tr:'', text:'' };
   var card = document.createElement('div'); card.className = 'card wort';
   card.innerHTML =
-        omIcon((window.spikiuIcon && window.spikiuIcon(wd.wort)) || wd.icon)
+        omIcon((window.spikiuIcon && ((wd.konzept && window.spikiuIcon.konzept(wd.konzept)) || window.spikiuIcon(wd.wort))) || wd.icon)
     + '<div class="gym-wort">' + escPlain(wd.wort) + '</div>'
     + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="gym-tr">' + escPlain(wd.tr) + '</div>'
