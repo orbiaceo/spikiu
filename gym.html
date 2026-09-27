@@ -235,8 +235,7 @@ function makeWordCard(wi){
   var wd = WORDS[wi] || { wort:'', tr:'', text:'' };
   var card = document.createElement('div'); card.className = 'card wort';
   card.innerHTML =
-        omIcon(wd.icon)
-    + '<div class="gym-eyebrow">' + escPlain(ui().eyebrow) + '</div>'
+        omIcon((window.spikiuIcon && window.spikiuIcon(wd.wort)) || wd.icon)
     + '<div class="gym-wort">' + escPlain(wd.wort) + '</div>'
     + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="gym-tr">' + escPlain(wd.tr) + '</div>'
@@ -402,5 +401,6 @@ window.addEventListener('load', function(){
 <script src="lernpfad-daten.js" defer></script>
 <script src="lernpfad.js" defer></script>
 <script src="woerter.js" defer></script>
+<script src="icon-db.js" defer></script>
 </body>
 </html>

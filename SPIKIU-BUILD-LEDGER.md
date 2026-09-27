@@ -13,7 +13,13 @@ Stand: 27.09.2026 · TITEL NACHGEZOGEN (**Der Beschluss vom 01.09. „Wendungen 
 (2) **Gym auf OpenMoji:** `gym.html` `omIcon()` zeigt `bilder/om-<Codepunkte>.svg` statt System-Emoji; `wortschatz.js` ICONMAP bleibt der Schlüssel (13 Icons dazu).
 (3) **Wendungen im Raum:** `sprichwort.js` hat jetzt eine eigene Liste `WENDUNGEN` (es 8 · de 5 · en 4 · el 2, Quelle „Giro español / Deutsche Wendung / English phrase / Ελληνική έκφραση"), exportiert als `spikiuSprichwort.wendungen`. Das „Sprichwort des Tages" bleibt unberührt. `proverbios.html` mischt im Wechsel: Wendung → Sprichwort → Wendung … „Tomar el pelo" bewusst OHNE Icon (abstrakt).
 **Zusammen jetzt 46 OpenMoji-SVGs in `bilder/`.** Leo prüft als Linguist die Wendungen und ihre Übersetzungen.
-**OFFEN (Frage an Leo):** Die Gym-Wortkarte zeigt noch die Überschrift „WORTSCHATZ" auf jeder Karte — dasselbe Muster, das auf den Sprichwort-Karten gestrichen wurde.
+**Gym, zweite Runde (Leo, 27.09. abends: „Wortschatz soll nicht auf den Karten sein. Nicht jede Karte, z. B. Trabajo, hat ein Bild"):**
+(a) Überschrift „WORTSCHATZ" von der Wortkarte entfernt (Übungskarte behält „Übung").
+(b) **Ursache der fehlenden Bilder:** Icons gab es nur über die kleine ICONMAP in `wortschatz.js` (13 von 20 Starter-Begriffen — „the work" fehlte, daher kein Bild bei *el trabajo*). Stationswörter und „Mein Buch" bekamen im Code fest `icon:''`.
+(c) **Behoben mit `icon-db.js` (NEU, Root):** EINE Liste Konzept (englisch) → Emoji, ~150 sichtbare Begriffe. Baut beim ersten Aufruf einen Index Zielwort → Konzept aus allen geladenen Daten (Lernpfad es/de/en, Starter-Wortschatz); deutsche Stationsdaten werden über ihr spanisches `na` zugeordnet. `spikiuIcon('el trabajo')` → 💼. Gym nutzt es für JEDE Wortkarte, egal woher das Wort stammt.
+**Abdeckung:** Starter 20/20 (es, de), 12/12 (en) · Stationen es 91/240, de 52/240, en 84/240 — der Rest sind Verben, Adverbien, Höflichkeiten und Familienmitglieder, die nach der Regel vom 17.08. bewusst KEIN Icon bekommen (keine Figuren).
+**Zusammen jetzt 114 OpenMoji-SVGs in `bilder/`.**
+**BEOBACHTUNG (nicht angefasst):** `gym.html` lädt nur `lernpfad-daten.js` (Spanisch), nicht `-de`/`-en` und nicht `lernpfad-sprache.js` — für Deutsch-/Englisch-Lerner kommen im Gym daher vermutlich keine Stationswörter. FRAGE AN DESIGN: prüfen und nachziehen?
 **REGEL (bestätigt): Ein Titel-Beschluss gilt für JEDE Stelle, an der der Titel erscheint — vor dem Abhaken per grep alle Vorkommen prüfen.**
 
 Stand: 17.09.2026 · KONSOLE (**Design 17.09. (claude.ai, Leo am Handy, kein Code): EIGENER WORKSPACE `spikiu-prod` MIT HARTEN DECKELN · NEUER SCHLÜSSEL IN VERCEL · DIE ZWEITE EBENE AUS DEM SICHERHEITS-EINTRAG VOM 01.09. IST JETZT BESTÄTIGT.**
