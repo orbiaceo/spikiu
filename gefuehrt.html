@@ -67,6 +67,10 @@ button{font:inherit;cursor:pointer}
 <script src="szenen-dialog.js"></script>
 <script src="karten-engine.js"></script>
 <script src="lernpfad-daten.js"></script>
+<!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher nur Spanisch geladen. -->
+<script src="lernpfad-daten-de.js"></script>
+<script src="lernpfad-daten-en.js"></script>
+<script src="lernpfad-sprache.js"></script>
 <script src="lernpfad.js"></script>
 <script type="module">
   import { speak, warm } from './audio.js';
@@ -177,7 +181,7 @@ button{font:inherit;cursor:pointer}
         var S = D.station(st, TOPIC_ID);
         if (S && S.wortschatz && S.wortschatz.length) {
           h.wortschatz = S.wortschatz.map(function (w) {
-            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (w.na && (w.na[MUT] || w.na.de)) || '' };
+            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[MUT] || w.na.de || w.na.en || w.na.es)) || '') };
           });
           h.station = st + '.' + TOPIC_ID;
           h.stufe = st;

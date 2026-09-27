@@ -82,31 +82,21 @@
     index = {};
     // Englisch selbst: das Konzept IST das Wort.
     Object.keys(KONZEPT).forEach(function (k) { index[k] = KONZEPT[k]; });
-    // Lernpfad-Daten (welche gerade geladen sind)
-    var es = raum.SpikiuLernpfadES || raum.SpikiuLernpfad, spanisch = {};
+    // Lernpfad-Daten (welche gerade geladen sind). Rohdaten der Station:
+    // es/de tragen na.en, die englische Datei ist selbst das Konzept.
+    var es = raum.SpikiuLernpfadES || (raum.SpikiuLernpfad && raum.SpikiuLernpfad.zielsprache === 'es' ? raum.SpikiuLernpfad : null);
     [es, raum.SpikiuLernpfadDE, raum.SpikiuLernpfadEN].forEach(function (D) {
-      if (!D || !D.stufen || !D.themen || typeof D.woerter !== 'function') return;
+      if (!D || !D.stufen || !D.themen || typeof D.station !== 'function') return;
       D.stufen.forEach(function (st) {
         D.themen.forEach(function (t) {
-          (D.woerter(st, t.id) || []).forEach(function (w) {
-            var na = w.na;
-            if (na && typeof na === 'object' && na.en) { merke(w.z, na.en); spanisch[norm(w.z)] = na.en; }
+          var S = D.station(st, t.id);
+          ((S && S.wortschatz) || []).forEach(function (w) {
+            if (D.zielsprache === 'en') merke(w.z, w.z);
+            else if (w.na && typeof w.na === 'object' && w.na.en) merke(w.z, w.na.en);
           });
         });
       });
     });
-    // Deutsche Daten tragen nur die spanische Übersetzung (na = 'el café')
-    // → über das spanische Wort zum Konzept.
-    var DE = raum.SpikiuLernpfadDE;
-    if (DE && DE.stufen) {
-      DE.stufen.forEach(function (st) {
-        DE.themen.forEach(function (t) {
-          (DE.woerter(st, t.id) || []).forEach(function (w) {
-            if (typeof w.na === 'string' && spanisch[norm(w.na)]) merke(w.z, spanisch[norm(w.na)]);
-          });
-        });
-      });
-    }
     // Starter-Wortschatz
     var WS = raum.spikiuWortschatz && raum.spikiuWortschatz.daten;
     if (WS) Object.keys(WS).forEach(function (z) {

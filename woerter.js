@@ -152,11 +152,13 @@
     D.stufen.forEach(function (st) {
       D.themen.forEach(function (t) {
         if (P.status(t.id, st) === 'offen') return;   /* nur Berührtes üben */
-        D.woerter(st, t.id).forEach(function (w) {
+        D.woerter(st, t.id, mu).forEach(function (w) {
           if (gesetzt(z, w.z)) return;                /* Gesetztes ruht */
           out.push({
             wort: w.z,
-            tr: w.na[mu] || w.na.de || '',
+            /* es-Daten liefern na als Objekt, de/en-Daten schon aufgelöst als Text
+               (27.09.: vorher blieb die Übersetzung für de/en-Lerner leer). */
+            tr: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[mu] || w.na.de || w.na.en || w.na.es)) || ''),
             text: uebungsSatz(st, t.id, w.z),
             station: st + '.' + t.id
           });

@@ -555,6 +555,10 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 <script src="szenen.js"></script>
 <script src="szenen-dialog.js"></script>
 <script src="lernpfad-daten.js"></script>
+<!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher nur Spanisch geladen. -->
+<script src="lernpfad-daten-de.js"></script>
+<script src="lernpfad-daten-en.js"></script>
+<script src="lernpfad-sprache.js"></script>
 <script src="lernpfad.js"></script>
 <script src="bilder-db.js"></script>
 <!-- Schattenlauf: der Szenen-Automat und das Sieb laufen MIT, ändern nichts und
@@ -631,6 +635,13 @@ function koennenFrom(v){
   return null;
 }
 var ziel = stored.zielsprache || langCode(stored.targetLang) || 'es';
+// Lernpfad-Daten NUR, wenn sie zur Zielsprache passen (27.09.). Vorher bekam ein
+// Deutsch-Lerner spanische Musterzeilen und Ernte-Wörter. Kein Treffer → null,
+// der Chat läuft dann ohne Stationsdaten weiter wie ohne Lernpfad.
+function pfadDaten(){
+  var D = window.SpikiuLernpfad;
+  return (D && typeof PROFILE !== 'undefined' && D.zielsprache === PROFILE.zielsprache) ? D : null;
+}
 var PROFILE = {
   name:          stored.name || '',
   muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de',
@@ -1331,7 +1342,7 @@ function szeneAufgabenLaden(){
   szeneAufgaben = []; szeneBeispiele = []; szeneOffen = 0; szeneZug = 0;
   szeneBeendet = false;
   try {
-    var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
+    var D = pfadDaten(), P = window.SpikiuPfad;
     if (!D || !P || !TOPIC_ID) return;
     var st = P.stufe();
     szeneAufgaben = D.aufgabenVon(st, TOPIC_ID) || [];
@@ -1421,7 +1432,7 @@ function renderAufgabeJetzt(){
 // Die Rolle, die Spikiu in dieser Szene spielt — steht in der Kopfzeile.
 function szenenRolle(){
   try {
-    var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
+    var D = pfadDaten(), P = window.SpikiuPfad;
     if (!D || !TOPIC_ID) return '';
     var R = D.rolle(TOPIC_ID); if (!R) return '';
     var ui = uiLang();
@@ -1518,7 +1529,7 @@ var BUEHNE_UI = { de:{ los:'Los!' }, es:{ los:'¡Vamos!' }, en:{ los:'Let\u2019s
 
 function renderBuehne(themaId, weiter){
   var reel = reelEl(); if (!reel) return false;
-  var D = window.SpikiuLernpfad;
+  var D = pfadDaten();
   var R = D && D.rolle ? D.rolle(themaId) : null;
   if (!R) return false;                       // ohne Rollen keine Bühne
   var ui = uiLang();
@@ -1877,7 +1888,7 @@ function renderReelSchluss(){
   var eui = ERNTE_UI[uiLang()] || ERNTE_UI.de;
   var geerntet = [];
   try {
-    var D2 = window.SpikiuLernpfad, P2 = window.SpikiuPfad;
+    var D2 = pfadDaten(), P2 = window.SpikiuPfad;
     if (D2 && D2.ernte && P2 && TOPIC_ID) geerntet = D2.ernte(P2.stufe(), TOPIC_ID, uiLang()) || [];
   } catch(e){}
 
@@ -2407,7 +2418,7 @@ async function callGespraech(){
   // Die Rollen verhindern, dass er eine dritte Figur erfindet.
   if (!gefuehrt && szeneAufgaben.length){
     var mu = safeProfile.muttersprache;
-    var Rz = (window.SpikiuLernpfad && TOPIC_ID) ? window.SpikiuLernpfad.rolle(TOPIC_ID) : null;
+    var Rz = (pfadDaten() && TOPIC_ID) ? pfadDaten().rolle(TOPIC_ID) : null;
     safeProfile.szene = {
       offen:      szeneOffen < szeneAufgaben.length
                     ? (szeneAufgaben[szeneOffen][mu] || szeneAufgaben[szeneOffen].de) : null,
