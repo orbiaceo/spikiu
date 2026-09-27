@@ -20,47 +20,50 @@
 (function (w) {
   'use strict';
 
+  /* icon: Emoji als Schlüssel → self-hosted OpenMoji-SVG in bilder/om-*.svg
+     (Dateiname = Codepunkte ohne FE0F). Nur wo ein Bild trägt; sonst weglassen,
+     dann zeigt die Karte KEIN Icon (Leo 17.08./27.09.: keine Einheits-Schriftrolle). */
   var SPRICHWOERTER = {
     es: [
-      { text: 'Quien mucho abarca, poco aprieta.', src: 'Refrán español',
+      { text: 'Quien mucho abarca, poco aprieta.', icon: '🤲', src: 'Refrán español',
         t: { de: 'Wer zu viel auf einmal will, schafft am Ende wenig.', en: 'Grasp all, lose all.' } },
-      { text: 'A buen entendedor, pocas palabras bastan.', src: 'Refrán español',
+      { text: 'A buen entendedor, pocas palabras bastan.', icon: '👂', src: 'Refrán español',
         t: { de: 'Dem Klugen genügen wenige Worte.', en: 'A word to the wise is enough.' } },
-      { text: 'No por mucho madrugar amanece más temprano.', src: 'Refrán español',
+      { text: 'No por mucho madrugar amanece más temprano.', icon: '🌅', src: 'Refrán español',
         t: { de: 'Früher aufstehen lässt die Sonne nicht früher aufgehen.', en: 'Rising early won\u2019t make the sun come up sooner.' } },
-      { text: 'Más vale tarde que nunca.', src: 'Refrán español',
+      { text: 'Más vale tarde que nunca.', icon: '⏰', src: 'Refrán español',
         t: { de: 'Besser spät als nie.', en: 'Better late than never.' } },
-      { text: 'Más vale pájaro en mano que ciento volando.', src: 'Refrán español',
+      { text: 'Más vale pájaro en mano que ciento volando.', icon: '🐦', src: 'Refrán español',
         t: { de: 'Besser ein Spatz in der Hand als eine Taube auf dem Dach.', en: 'A bird in the hand is worth two in the bush.' } },
-      { text: 'El que no arriesga, no gana.', src: 'Refrán español',
+      { text: 'El que no arriesga, no gana.', icon: '🎲', src: 'Refrán español',
         t: { de: 'Wer nicht wagt, der nicht gewinnt.', en: 'Nothing ventured, nothing gained.' } },
-      { text: 'No dejes para mañana lo que puedas hacer hoy.', src: 'Refrán español',
+      { text: 'No dejes para mañana lo que puedas hacer hoy.', icon: '📅', src: 'Refrán español',
         t: { de: 'Verschiebe nicht auf morgen, was du heute tun kannst.', en: 'Don\u2019t put off until tomorrow what you can do today.' } },
-      { text: 'Poco a poco se anda lejos.', src: 'Refrán español',
+      { text: 'Poco a poco se anda lejos.', icon: '🐢', src: 'Refrán español',
         t: { de: 'Schritt für Schritt kommt man weit.', en: 'Little by little, one goes far.' } }
     ],
     de: [
-      { text: 'Übung macht den Meister.', src: 'Deutsches Sprichwort',
+      { text: 'Übung macht den Meister.', icon: '🛠️', src: 'Deutsches Sprichwort',
         t: { es: 'La práctica hace al maestro.', en: 'Practice makes perfect.' } },
-      { text: 'Morgenstund hat Gold im Mund.', src: 'Deutsches Sprichwort',
+      { text: 'Morgenstund hat Gold im Mund.', icon: '🌄', src: 'Deutsches Sprichwort',
         t: { es: 'A quien madruga, Dios le ayuda.', en: 'The early bird catches the worm.' } },
-      { text: 'Aller Anfang ist schwer.', src: 'Deutsches Sprichwort',
+      { text: 'Aller Anfang ist schwer.', icon: '🌱', src: 'Deutsches Sprichwort',
         t: { es: 'Todo comienzo es difícil.', en: 'Every beginning is hard.' } },
-      { text: 'Wer A sagt, muss auch B sagen.', src: 'Deutsches Sprichwort',
+      { text: 'Wer A sagt, muss auch B sagen.', icon: '🔤', src: 'Deutsches Sprichwort',
         t: { es: 'Quien dice A, debe decir B.', en: 'In for a penny, in for a pound.' } }
     ],
     en: [
-      { text: 'Practice makes perfect.', src: 'English proverb',
+      { text: 'Practice makes perfect.', icon: '🛠️', src: 'English proverb',
         t: { de: 'Übung macht den Meister.', es: 'La práctica hace al maestro.' } },
-      { text: 'Where there\u2019s a will, there\u2019s a way.', src: 'English proverb',
+      { text: 'Where there\u2019s a will, there\u2019s a way.', icon: '🧭', src: 'English proverb',
         t: { de: 'Wo ein Wille ist, ist auch ein Weg.', es: 'Querer es poder.' } },
-      { text: 'Better late than never.', src: 'English proverb',
+      { text: 'Better late than never.', icon: '⏰', src: 'English proverb',
         t: { de: 'Besser spät als nie.', es: 'Más vale tarde que nunca.' } }
     ],
     el: [
-      { text: 'Η γλώσσα κόκαλα δεν έχει και κόκαλα τσακίζει.', src: 'Ελληνική παροιμία',
+      { text: 'Η γλώσσα κόκαλα δεν έχει και κόκαλα τσακίζει.', icon: '👅', src: 'Ελληνική παροιμία',
         t: { de: 'Die Zunge hat keine Knochen und bricht doch Knochen.', en: 'The tongue has no bones, yet it breaks bones.', es: 'La lengua no tiene huesos, pero rompe huesos.' } },
-      { text: 'Όπου λαλούν πολλά κοκόρια, αργεί να ξημερώσει.', src: 'Ελληνική παροιμία',
+      { text: 'Όπου λαλούν πολλά κοκόρια, αργεί να ξημερώσει.', icon: '🐓', src: 'Ελληνική παροιμία',
         t: { de: 'Wo viele Hähne krähen, dauert es lange bis zum Morgen.', en: 'Where many roosters crow, dawn is slow to come.', es: 'Donde cantan muchos gallos, tarda en amanecer.' } }
     ]
   };
