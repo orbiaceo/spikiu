@@ -27,8 +27,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .card.deck-current{transform:translateX(0) rotate(0);opacity:1;pointer-events:auto;z-index:2;}
 .card.deck-next{transform:translateX(115%) rotate(1.4deg);opacity:0;z-index:1;}
 .card.deck-past{transform:translateX(-115%) rotate(-1.4deg);opacity:0;z-index:1;}
-.prov-icon{font-size:3.6rem;line-height:1;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12));}
-.prov-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan,#1f93b0);}
+.prov-icon{display:block;width:96px;height:96px;flex:0 0 auto;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12));}
 .prov-text{font-family:'Lora',serif;font-size:clamp(1.4rem,5.5vw,1.9rem);line-height:1.4;color:var(--read);max-width:20rem;}
 .prov-speak{width:48px;height:48px;border:var(--ow) solid var(--ink);border-radius:999px;cursor:pointer;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink);}
 .prov-speak:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
@@ -133,7 +132,7 @@ function buildList(){
     for (var i=0;i<raw.length;i++){
       var p = raw[i];
       var tr = (p.t && (p.t[PROFILE.muttersprache] || p.t.de || p.t.en || p.t.es)) || '';
-      out.push({ text: p.text, translation: tr, src: p.src });
+      out.push({ text: p.text, translation: tr, src: p.src, icon: p.icon || '' });
     }
   }
   return out;
@@ -154,11 +153,19 @@ function deckLayout(){
   var b = document.getElementById('btnBack'); if (b) b.disabled = pointer <= 0;
 }
 
+// Emoji → self-hosted OpenMoji-SVG. Kein Icon im Datensatz → kein Icon auf der Karte.
+function iconHtml(e){
+  if (!e) return '';
+  var cps = [];
+  for (var i=0;i<e.length;i++){ var c=e.codePointAt(i); if (c>0xFFFF) i++; if (c!==0xFE0F) cps.push(c.toString(16).toUpperCase()); }
+  return '<img class="prov-icon" src="bilder/om-' + cps.join('-') + '.svg" alt="" aria-hidden="true" width="96" height="96" loading="eager">';
+}
+
 function makeProverbCard(provI){
   var prov = LIST[provI] || { text:'', translation:'', src:'' };
   var card = document.createElement('div'); card.className = 'card prov';
   card.innerHTML =
-      '<div class="prov-icon" aria-hidden="true">📜</div>'
+      iconHtml(prov.icon)
     + '<div class="prov-text">' + escPlain(prov.text) + '</div>'
     + '<button class="prov-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="prov-trans">' + escPlain(prov.translation) + '</div>'
