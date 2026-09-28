@@ -105,7 +105,7 @@
       { text: 'Costar un ojo de la cara.', icon: '💰', src: 'Giro español',
         w: { de: 'Ein Auge aus dem Gesicht kosten.', en: 'To cost an eye out of one\u2019s face.' },
         t: { de: 'Ein Vermögen kosten.', en: 'To cost an arm and a leg.' } },
-      { text: 'Tomar el pelo a alguien.', src: 'Giro español',
+      { text: 'Tomar el pelo a alguien.', icon: 'sp-pelo', src: 'Giro español',
         w: { de: 'Jemandem das Haar nehmen.', en: 'To take someone\u2019s hair.' },
         t: { de: 'Jemanden auf den Arm nehmen.', en: 'To pull someone\u2019s leg.' } }
     ],
