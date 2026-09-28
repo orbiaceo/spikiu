@@ -1,13 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
-  <!-- Spikiu-eigenes Icon im OpenMoji-Stil: Tisch -->
-  <g stroke-linecap="round" stroke-linejoin="round">
-    <path fill="#A57939" d="M9 27h54l-4 7H13z"/>
-    <path fill="#6A462F" d="M16 34h5v25h-5zM51 34h5v25h-5z"/>
-    <path fill="#8B5E3C" d="M13 34h46v4H13z"/>
+  <!-- Spikiu-eigenes Icon im OpenMoji-Stil: gedeckter Tisch mit Spaghetti und Weinflasche (Leo, 28.09.) -->
+  <g stroke="#000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Tischbeine -->
+    <path fill="#6A462F" d="M13 44h5v20h-5zM54 44h5v20h-5z"/>
+    <!-- Tischplatte (leicht von oben) + Kante -->
+    <path fill="#A57939" d="M8 38l6-6h44l6 6z"/>
+    <path fill="#8B5E3C" d="M8 38h56v6H8z"/>
+    <!-- Weinflasche (dunkelgrün, Etikett) -->
+    <path fill="#3F6D1F" d="M42 34V20c0-3 2-4 2-7v-5h4v5c0 3 2 4 2 7v14z"/>
+    <path fill="#8B1E3F" d="M44 8h4v3h-4z"/>
+    <path fill="#F5EBD7" d="M42.5 23h7v6h-7z"/>
+    <!-- Weinglas mit Rotwein -->
+    <path fill="#fff" d="M54 18h8c0 5-2 8-4 8s-4-3-4-8z"/>
+    <path fill="#8B1E3F" d="M54.6 21h6.8c-.5 3-1.8 5-3.4 5s-2.9-2-3.4-5z"/>
+    <path fill="none" d="M58 26v6M55 33h6"/>
+    <!-- Teller -->
+    <ellipse cx="28" cy="33" rx="14" ry="3.6" fill="#fff"/>
+    <!-- Spaghetti-Berg -->
+    <path fill="#FCEA2B" d="M17 32c0-6 5-10 11-10s11 4 11 10z"/>
   </g>
-  <g fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 27h54l-4 7H13z"/>
-    <path d="M13 34h46v4H13z"/>
-    <path d="M16 38v21h5V38M51 38v21h5V38"/>
+  <!-- Nudel-Linien + Tomatensoße + Gabel -->
+  <g fill="none" stroke="#000" stroke-width="1.3" stroke-linecap="round">
+    <path d="M20 30c3-4 6-4 8-1s5 3 8-1M22 26c3-2 5-2 7 0s5 2 7-1"/>
   </g>
+  <circle cx="28" cy="23.5" r="3.2" fill="#EA5A47" stroke="#000" stroke-width="1.5"/>
+  <path fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" d="M33 21l4-9M36 11l2 1"/>
 </svg>
