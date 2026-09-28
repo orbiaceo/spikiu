@@ -37,6 +37,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .prov-speak.loading::after{content:'';width:16px;height:16px;border:2.5px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:provSpin .7s linear infinite;}
 @keyframes provPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
 @keyframes provSpin{to{transform:rotate(360deg);}}
+.prov-text.has-lit{cursor:pointer;text-decoration:underline dotted rgba(21,22,58,.35);text-underline-offset:.28em;text-decoration-thickness:2px;}
+.prov-lit{font-family:'DM Sans',sans-serif;font-size:.98rem;line-height:1.4;color:var(--ink,#15163a);background:#fff6d6;border:2px dashed #e0c36a;border-radius:12px;padding:.45rem .75rem;max-width:20rem;}
+.prov-lit-k{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#a87b2e;margin-right:.3rem;}
 .prov-trans{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:var(--muted);max-width:20rem;}
 .prov-src{font:600 .78rem/1 'DM Mono',monospace;color:#8a8378;letter-spacing:.02em;}
 .ueb-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--green);}
@@ -87,9 +90,9 @@ var PROFILE = { zielsprache: zielC, muttersprache: mutterC, koennen: stored.koen
 function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ eyebrow:'Wendungen & Sprichwörter', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
-  es:{ eyebrow:'Giros & Proverbios', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
-  en:{ eyebrow:'Phrases & Proverbs', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' }
+  de:{ eyebrow:'Wendungen & Sprichwörter', woertlich:'wörtlich', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
+  es:{ eyebrow:'Giros & Proverbios', woertlich:'literalmente', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
+  en:{ eyebrow:'Phrases & Proverbs', woertlich:'literally', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
@@ -132,7 +135,8 @@ function buildList(){
   function map(raw){
     return (raw || []).map(function(p){
       var tr = (p.t && (p.t[PROFILE.muttersprache] || p.t.de || p.t.en || p.t.es)) || '';
-      return { text: p.text, translation: tr, src: p.src, icon: p.icon || '' };
+      var lit = (p.w && p.w[PROFILE.muttersprache]) || '';
+      return { text: p.text, translation: tr, src: p.src, icon: p.icon || '', woertlich: lit };
     });
   }
   var spr = map(S.daten[z] || S.daten.es);
@@ -172,13 +176,23 @@ function makeProverbCard(provI){
   var card = document.createElement('div'); card.className = 'card prov';
   card.innerHTML =
       iconHtml(prov.icon)
-    + '<div class="prov-text">' + escPlain(prov.text) + '</div>'
+    + (prov.woertlich
+        ? '<div class="prov-text has-lit" role="button" tabindex="0" aria-expanded="false">' + escPlain(prov.text) + '</div>'
+          + '<div class="prov-lit" hidden><span class="prov-lit-k">' + escPlain(ui().woertlich) + '</span> ' + escPlain(prov.woertlich) + '</div>'
+        : '<div class="prov-text">' + escPlain(prov.text) + '</div>')
     + '<button class="prov-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="prov-trans">' + escPlain(prov.translation) + '</div>'
     + '<div class="prov-src">' + (prov.src ? '— ' + escPlain(prov.src) : '') + '</div>'
     + '<div class="card-hint">' + escPlain(ui().hintFwd) + '</div>';
   var sb = card.querySelector('.prov-speak');
   if (sb) sb.onclick = function(){ playFrom(sb, prov.text); };
+  // Antippen des Satzes klappt die wörtliche Übersetzung auf/zu (Leo, 28.09.).
+  var pt = card.querySelector('.prov-text.has-lit'), pl = card.querySelector('.prov-lit');
+  if (pt && pl){
+    var umschalten = function(){ var auf = pl.hidden; pl.hidden = !auf; pt.setAttribute('aria-expanded', auf ? 'true' : 'false'); };
+    pt.onclick = umschalten;
+    pt.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); umschalten(); } };
+  }
   return card;
 }
 
