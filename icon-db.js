@@ -27,7 +27,7 @@
 
   var KONZEPT = {
     // Starter-Wortschatz
-    'house':'🏠', 'water':'💧', 'food':'🍽️', 'street':'🛣️', 'night':'🌙', 'hand':'✋',
+    'house':'🏠', 'water':'sp-wasser', 'food':'🍽️', 'street':'🛣️', 'night':'🌙', 'hand':'✋',
     'book':'📚', 'door':'🚪', 'car':'🚗', 'sun':'☀️', 'money':'💵',
     'family':'👪', 'time':'⏰', 'day':'📅', 'word':'💬', 'name':'🪪', 'friend':'🤝',
     // Spikiu-eigene Zeichnungen im OpenMoji-Stil (bilder/sp-*.svg), wo OpenMoji

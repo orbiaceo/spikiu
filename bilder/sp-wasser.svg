@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
+  <!-- Spikiu-eigenes Icon im OpenMoji-Stil: Trinkwasser — Flasche und Glas (Leo, 28.09.) -->
+  <g stroke="#000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Flasche -->
+    <path fill="#E4F4FC" d="M18 62V30c0-4 4-6 4-10v-4h8v4c0 4 4 6 4 10v32z"/>
+    <path fill="#92D3F5" d="M18 36h16v26H18z"/>
+    <path fill="#1E50A0" d="M21 9h10v7H21z"/>
+    <path fill="#fff" d="M18 42h16v8H18z"/>
+    <!-- Glas -->
+    <path fill="#E4F4FC" d="M40 32h22l-3 30H43z"/>
+    <path fill="#61B2E4" d="M40.9 41h20.2l-2.1 21H43z"/>
+  </g>
+  <!-- Glanz + Tropfen -->
+  <g fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round">
+    <path d="M22 54v4M45 46l1 12"/>
+  </g>
+  <path fill="#92D3F5" stroke="#000" stroke-width="1.6" stroke-linejoin="round" d="M51 14c-3 4-4 6-4 8a4 4 0 0 0 8 0c0-2-1-4-4-8z"/>
+  <path fill="none" stroke="#1E50A0" stroke-width="1.4" stroke-linecap="round" d="M21 46h10"/>
+</svg>
