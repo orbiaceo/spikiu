@@ -32,7 +32,7 @@
     'family':'👪', 'time':'⏰', 'day':'📅', 'word':'💬', 'name':'🪪', 'friend':'🤝',
     // Spikiu-eigene Zeichnungen im OpenMoji-Stil (bilder/sp-*.svg), wo OpenMoji
     // kein treffendes Motiv hat (Leo, 27.09.: „suggestivere Bilder").
-    'table':'sp-tisch', 'city':'sp-stadtplan', 'street':'sp-zebrastreifen', 'work':'sp-arbeit',
+    'table':'sp-tisch', 'city':'sp-stadtplan', 'street':'sp-strasse', 'work':'sp-arbeit',
     // Café · Restaurant · Essen
     'coffee':'☕', 'tea':'🍵', 'milk':'🥛', 'cup':'☕', 'glass':'🥃', 'bill':'🧾',
     'check':'🧾', 'receipt':'🧾', 'menu':'📋', 'bread':'🍞', 'breakfast':'🥐',

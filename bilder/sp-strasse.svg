@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
+  <!-- Spikiu-eigenes Icon im OpenMoji-Stil: kurvige Straße mit Baum (Leo, 28.09.) -->
+  <defs><clipPath id="spStrFeld"><ellipse cx="40" cy="42" rx="30" ry="26"/></clipPath></defs>
+  <!-- Wiese als weiches Feld -->
+  <ellipse cx="40" cy="42" rx="30" ry="26" fill="#B1CC33"/>
+  <!-- Straße: eine Mittellinie, dreifach gezogen (Kontur · Belag · Strich), im Feld beschnitten -->
+  <g clip-path="url(#spStrFeld)" fill="none" stroke-linejoin="round">
+    <path stroke="#000" stroke-width="13" d="M22 72c3-9 10-14 18-19 8-5 9-11 6-16-3-5 0-10 7-14 5-3 10-5 15-6"/>
+    <path stroke="#9B9B9A" stroke-width="9" d="M22 72c3-9 10-14 18-19 8-5 9-11 6-16-3-5 0-10 7-14 5-3 10-5 15-6"/>
+    <path stroke="#FCEA2B" stroke-width="2" stroke-dasharray="3.5 3.5" d="M22 72c3-9 10-14 18-19 8-5 9-11 6-16-3-5 0-10 7-14 5-3 10-5 15-6"/>
+  </g>
+  <ellipse cx="40" cy="42" rx="30" ry="26" fill="none" stroke="#000" stroke-width="2"/>
+  <!-- Baum -->
+  <path fill="#A57939" stroke="#000" stroke-width="2" d="M18 34h4v9h-4z"/>
+  <path fill="#5C9E31" stroke="#000" stroke-width="2" stroke-linejoin="round" d="M20 11c-6 6-9 16-5 23h10c4-7 1-17-5-23z"/>
+</svg>
