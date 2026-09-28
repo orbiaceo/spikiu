@@ -25,7 +25,7 @@
      dann zeigt die Karte KEIN Icon (Leo 17.08./27.09.: keine Einheits-Schriftrolle). */
   var SPRICHWOERTER = {
     es: [
-      { text: 'Quien mucho abarca, poco aprieta.', icon: '🤲', src: 'Refrán español',
+      { text: 'Quien mucho abarca, poco aprieta.', icon: 'sp-abarcar', src: 'Refrán español',
         t: { de: 'Wer zu viel auf einmal will, schafft am Ende wenig.', en: 'Grasp all, lose all.' } },
       { text: 'A buen entendedor, pocas palabras bastan.', icon: '👂', src: 'Refrán español',
         t: { de: 'Dem Klugen genügen wenige Worte.', en: 'A word to the wise is enough.' } },

@@ -160,6 +160,8 @@ function deckLayout(){
 // Emoji → self-hosted OpenMoji-SVG. Kein Icon im Datensatz → kein Icon auf der Karte.
 function iconHtml(e){
   if (!e) return '';
+  // Eigene Zeichnungen (sp-<name>) liegen als bilder/sp-<name>.svg
+  if (/^sp-[a-z0-9-]+$/.test(e)) return '<img class="prov-icon" src="bilder/' + e + '.svg" alt="" aria-hidden="true" width="96" height="96" loading="eager">';
   var cps = [];
   for (var i=0;i<e.length;i++){ var c=e.codePointAt(i); if (c>0xFFFF) i++; if (c!==0xFE0F) cps.push(c.toString(16).toUpperCase()); }
   return '<img class="prov-icon" src="bilder/om-' + cps.join('-') + '.svg" alt="" aria-hidden="true" width="96" height="96" loading="eager">';
