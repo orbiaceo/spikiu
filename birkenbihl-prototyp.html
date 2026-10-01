@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Birkenbihl Spielplatz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&family=Lora:wght@500;600&display=swap">
+<style>
+/* Layout: eine Handy-Säule. Hub mit zwei Türen. ABC-Liste = senkrechte Buchstabenleiste, KaWa = Wort senkrecht, je Buchstabe ein Gedanke. Spikiu-Kartenstil. */
+:root{
+  --bg:#eef7f1; --card:#ffffff; --ink:#15163a; --mid:#5f7068; --faint:#dfe6e0;
+  --accent:#1f93b0; --accent-soft:#e3f3f8; --you:#ffd24a; --you-soft:#fff3c4;
+  --known:#c7e89a; --lent:#eceee9; --warn:#c67a1e;
+  --f-ui:'DM Sans',system-ui,sans-serif; --f-word:'Lora',Georgia,serif; --f-label:'DM Mono',ui-monospace,monospace;
+  --ow:2.5px; --sh:4px 5px 0 var(--ink);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12132a; --card:#1c1e3c; --ink:#e9ecf5; --mid:#a5b0c2; --faint:#2f3257;
+  --accent:#4fb8d4; --accent-soft:#1d3346; --you:#e9bd3a; --you-soft:#3b3420;
+  --known:#5d8a2e; --lent:#2a2c4a; --warn:#e6a04a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12132a; --card:#1c1e3c; --ink:#e9ecf5; --mid:#a5b0c2; --faint:#2f3257;
+  --accent:#4fb8d4; --accent-soft:#1d3346; --you:#e9bd3a; --you-soft:#3b3420;
+  --known:#5d8a2e; --lent:#2a2c4a; --warn:#e6a04a; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);-webkit-font-smoothing:antialiased}
+body{padding-inline:16px;padding-block:0 40px}
+.wrap{max-width:560px;margin:0 auto}
+button,input{font-family:inherit;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:3px solid var(--ink);margin-bottom:18px}
+.back{width:44px;height:44px;flex:none;border-radius:50%;border:var(--ow) solid var(--ink);background:var(--card);color:var(--ink);box-shadow:2px 3px 0 var(--ink);font:800 1.2rem var(--f-ui);cursor:pointer}
+.htxt{flex:1;min-width:0}
+h1{font:800 1.35rem/1.1 var(--f-ui);margin:0;text-wrap:balance}
+.eyebrow{font:500 .7rem var(--f-label);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0}
+.lang{flex:none;display:flex;border:2px solid var(--ink);border-radius:100px;overflow:hidden}
+.lang button{border:none;background:var(--card);color:var(--ink);font:800 .75rem var(--f-ui);padding:.4rem .6rem;cursor:pointer}
+.lang button.on{background:var(--ink);color:var(--bg)}
+
+.spk{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.spk svg{width:54px;height:54px;flex:none;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.bubble{background:var(--card);border:var(--ow) solid var(--ink);border-radius:.3rem 1.2rem 1.2rem 1.2rem;box-shadow:3px 4px 0 var(--ink);padding:.7rem .9rem;font-size:.95rem;line-height:1.45;min-width:0}
+.bubble em{font-family:var(--f-word);font-style:normal;font-weight:600}
+
+.doors{display:grid;gap:14px}
+.door{display:flex;gap:14px;align-items:center;text-align:left;background:var(--card);color:var(--ink);border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:var(--sh);padding:16px;cursor:pointer}
+.door:active{transform:translate(3px,4px);box-shadow:1px 1px 0 var(--ink)}
+.door .glyph{flex:none;width:58px;height:58px;border-radius:14px;border:2px solid var(--ink);display:grid;place-items:center;font:600 1.3rem var(--f-word)}
+.door b{display:block;font-size:1.08rem;margin-bottom:2px}
+.door span{font-size:.85rem;color:var(--mid);line-height:1.35}
+.note{margin-top:22px;font-size:.8rem;color:var(--mid);line-height:1.5;border-top:1.5px dashed var(--faint);padding-top:12px}
+
+.themes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pill{background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:100px;box-shadow:2px 2px 0 var(--ink);padding:.4rem .85rem;font:700 .88rem var(--f-ui);cursor:pointer}
+.pill.on{background:var(--ink);color:var(--bg)}
+
+/* ABC-Liste */
+.abc{background:var(--card);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:var(--sh);overflow:hidden}
+.row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-bottom:1.5px solid var(--faint);min-height:52px}
+.row:last-child{border-bottom:none}
+.row.full .let{background:var(--ink);color:var(--bg)}
+.let{flex:none;width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;font:600 1.15rem var(--f-word);background:var(--card);color:var(--ink);cursor:pointer;margin-top:1px}
+.entries{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-top:2px}
+.w{display:inline-flex;flex-direction:column;border:2px solid var(--ink);border-radius:12px;padding:.18rem .6rem;font:600 1.05rem/1.2 var(--f-word);background:var(--you-soft);color:var(--ink);cursor:pointer}
+.w small{font:500 .72rem var(--f-ui);color:var(--mid)}
+.w.known{background:var(--known);color:#15163a}
+.w.known small{color:#2f4a1a}
+.w.lent{background:var(--lent);border-style:dashed}
+.w.old{opacity:.75}
+.add{border:2px dashed var(--faint);background:none;color:var(--mid);border-radius:12px;padding:.3rem .6rem;font:700 .85rem var(--f-ui);cursor:pointer}
+.inrow{display:flex;gap:6px;width:100%;margin-top:2px}
+.inrow input{flex:1;min-width:0;border:2px solid var(--ink);border-radius:100px;padding:.5rem .9rem;font:500 1.05rem var(--f-word);background:var(--card);color:var(--ink)}
+.inrow button{flex:none;border:2px solid var(--ink);border-radius:100px;padding:.45rem .8rem;font:800 .85rem var(--f-ui);cursor:pointer;background:var(--accent);color:#fff}
+.inrow button.ghost{background:var(--card);color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:12px 2px 0;font-size:.78rem;color:var(--mid)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;border:1.5px solid var(--ink);vertical-align:-2px;margin-right:4px}
+.foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:16px}
+.btn{background:var(--accent);color:#fff;border:var(--ow) solid var(--ink);border-radius:100px;box-shadow:3px 4px 0 var(--ink);padding:.6rem 1.2rem;font-weight:800;font-size:1rem;cursor:pointer}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.whisper{font-size:.85rem;color:var(--mid);min-height:1.3em;margin-top:8px;padding-inline:4px}
+
+/* KaWa */
+.kawa{background:var(--card);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:var(--sh);padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+.kline{display:flex;align-items:center;gap:10px}
+.kbig{flex:none;width:52px;height:52px;border-radius:14px;border:var(--ow) solid var(--ink);display:grid;place-items:center;font:600 1.9rem var(--f-word);background:var(--you);color:#15163a;box-shadow:2px 3px 0 var(--ink)}
+.kline input{flex:1;min-width:0;border:none;border-bottom:2px solid var(--faint);background:none;color:var(--ink);padding:.45rem .2rem;font:500 1.15rem var(--f-word)}
+.kline input:focus{outline:none;border-bottom-color:var(--accent)}
+.kline .hint{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);background:var(--card);cursor:pointer;display:grid;place-items:center;padding:0}
+.kline .hint svg{width:26px;height:26px}
+.kline .tr{flex:none;font-size:.75rem;color:var(--mid);max-width:30%;text-align:right}
+.words{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.kcard{background:var(--card);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:var(--sh);padding:18px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:baseline}
+.kcard .L{font:600 2rem/1 var(--f-word);color:var(--accent)}
+.kcard .A{font:500 1.15rem var(--f-word)}
+.kcard .A small{display:block;font:500 .78rem var(--f-ui);color:var(--mid)}
+.kcard h2{grid-column:1/-1;margin:0 0 6px;font:800 .75rem var(--f-label);letter-spacing:.2em;color:var(--mid);text-transform:uppercase}
+.saved{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mini{border:2px solid var(--ink);border-radius:12px;padding:.35rem .7rem;font:600 .95rem var(--f-word);background:var(--you-soft);color:var(--ink);cursor:pointer}
+h3{font:800 .72rem var(--f-label);letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin:22px 0 8px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head><body>
+<div class="wrap">
+  <header class="bar">
+    <button class="back" id="back" hidden aria-label="atrás">‹</button>
+    <div class="htxt">
+      <p class="eyebrow" id="eyebrow"></p>
+      <h1 id="title"></h1>
+    </div>
+    <div class="lang" role="group" aria-label="Zielsprache">
+      <button id="lg-de" type="button">DE</button><button id="lg-es" type="button">ES</button>
+    </div>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+/* ═══ Spikiu, kanonisch ═══ */
+var SPIKIU_SVG='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
+/* ═══ Wortfelder (Zielsprache · Übersetzung) ═══ */
+var FELDER = {
+  es:{
+    cocina:{t:'La cocina', w:'el aceite·das Öl|el agua·das Wasser|el ajo·der Knoblauch|el arroz·der Reis|el azúcar·der Zucker|la botella·die Flasche|el café·der Kaffee|la cazuela·der Schmortopf|la cebolla·die Zwiebel|la cena·das Abendessen|cocinar·kochen|la cuchara·der Löffel|el cuchillo·das Messer|el delantal·die Schürze|el desayuno·das Frühstück|la ensalada·der Salat|las especias·die Gewürze|el fregadero·die Spüle|freír·braten|la fruta·das Obst|el grifo·der Wasserhahn|la harina·das Mehl|hervir·kochen (Wasser)|el horno·der Backofen|el huevo·das Ei|el jamón·der Schinken|la jarra·der Krug|lavar·waschen|la leche·die Milch|el limón·die Zitrone|la mantequilla·die Butter|la mesa·der Tisch|el microondas·die Mikrowelle|la naranja·die Orange|la nevera·der Kühlschrank|la olla·der Kochtopf|el pan·das Brot|la pimienta·der Pfeffer|el plato·der Teller|el queso·der Käse|la receta·das Rezept|la sal·das Salz|la sartén·die Pfanne|la sopa·die Suppe|la taza·die Tasse|el tenedor·die Gabel|el tomate·die Tomate|la uva·die Traube|el vaso·das Glas|la verdura·das Gemüse|el yogur·der Joghurt|la zanahoria·die Karotte|el zumo·der Saft'},
+    ciudad:{t:'La ciudad', w:'la acera·der Gehweg|el autobús·der Bus|la avenida·die Allee|el ayuntamiento·das Rathaus|el banco·die Bank|el bar·die Bar|la biblioteca·die Bibliothek|la calle·die Straße|el cine·das Kino|el coche·das Auto|el edificio·das Gebäude|la esquina·die Ecke|la estación·der Bahnhof|la farmacia·die Apotheke|la farola·die Straßenlaterne|la fuente·der Brunnen|la gente·die Leute|el hospital·das Krankenhaus|el hotel·das Hotel|la iglesia·die Kirche|el jardín·der Garten|el kiosco·der Kiosk|la librería·die Buchhandlung|el mercado·der Markt|el metro·die U-Bahn|el museo·das Museum|la oficina·das Büro|la panadería·die Bäckerei|el parque·der Park|la plaza·der Platz|el puente·die Brücke|el quiosco·der Kiosk|el restaurante·das Restaurant|el río·der Fluss|el semáforo·die Ampel|el supermercado·der Supermarkt|el taxi·das Taxi|el teatro·das Theater|la tienda·der Laden|el tráfico·der Verkehr|la universidad·die Universität|el vecino·der Nachbar|la zapatería·das Schuhgeschäft|el zoo·der Zoo'},
+    cuerpo:{t:'El cuerpo', w:'la boca·der Mund|el brazo·der Arm|la barriga·der Bauch|la cabeza·der Kopf|la cara·das Gesicht|el codo·der Ellbogen|el corazón·das Herz|el cuello·der Hals|el dedo·der Finger|el diente·der Zahn|la espalda·der Rücken|el estómago·der Magen|la frente·die Stirn|la garganta·die Kehle|el hombro·die Schulter|el hueso·der Knochen|el labio·die Lippe|la lengua·die Zunge|la mano·die Hand|la nariz·die Nase|el ojo·das Auge|la oreja·das Ohr|el pelo·das Haar|el pie·der Fuß|la piel·die Haut|la pierna·das Bein|el pulmón·die Lunge|la rodilla·das Knie|la sangre·das Blut|el tobillo·der Knöchel|la uña·der Nagel|la vena·die Vene|la voz·die Stimme'}
+  },
+  de:{
+    cocina:{t:'Die Küche', w:'der Apfel·la manzana|der Backofen·el horno|der Becher·el vaso|das Besteck·los cubiertos|das Brot·el pan|die Butter·la mantequilla|der Deckel·la tapa|die Dose·la lata|das Ei·el huevo|der Essig·el vinagre|die Gabel·el tenedor|das Gemüse·la verdura|das Gewürz·la especia|das Glas·el vaso|die Gurke·el pepino|der Herd·la cocina (aparato)|der Honig·la miel|der Joghurt·el yogur|der Kaffee·el café|der Käse·el queso|die Kanne·la jarra|kochen·cocinar|der Kühlschrank·la nevera|der Löffel·la cuchara|das Mehl·la harina|das Messer·el cuchillo|die Milch·la leche|die Nudeln·la pasta|das Obst·la fruta|das Öl·el aceite|die Pfanne·la sartén|der Pfeffer·la pimienta|der Quark·el requesón|der Reis·el arroz|das Rezept·la receta|das Salz·la sal|die Schüssel·el cuenco|die Suppe·la sopa|die Tasse·la taza|der Teller·el plato|die Tomate·el tomate|der Topf·la olla|die Vorratsdose·el bote|das Wasser·el agua|die Wurst·el embutido|die Zitrone·el limón|der Zucker·el azúcar|die Zwiebel·la cebolla'},
+    ciudad:{t:'Die Stadt', w:'die Ampel·el semáforo|die Apotheke·la farmacia|die Bäckerei·la panadería|der Bahnhof·la estación|die Bank·el banco|die Bibliothek·la biblioteca|die Brücke·el puente|der Brunnen·la fuente|der Bus·el autobús|das Café·la cafetería|das Denkmal·el monumento|die Ecke·la esquina|das Fahrrad·la bicicleta|die Gasse·el callejón|das Gebäude·el edificio|die Haltestelle·la parada|das Hochhaus·el rascacielos|das Hotel·el hotel|das Kino·el cine|die Kirche·la iglesia|das Krankenhaus·el hospital|die Kreuzung·el cruce|der Laden·la tienda|der Markt·el mercado|das Museum·el museo|der Nachbar·el vecino|der Park·el parque|der Platz·la plaza|die Post·correos|das Rathaus·el ayuntamiento|das Restaurant·el restaurante|die Straße·la calle|die Straßenbahn·el tranvía|der Supermarkt·el supermercado|das Taxi·el taxi|das Theater·el teatro|der Turm·la torre|die U-Bahn·el metro|der Verkehr·el tráfico|das Viertel·el barrio|der Weg·el camino|das Zentrum·el centro|der Zoo·el zoo'},
+    cuerpo:{t:'Der Körper', w:'der Arm·el brazo|das Auge·el ojo|der Bauch·la barriga|das Bein·la pierna|das Blut·la sangre|der Daumen·el pulgar|der Ellbogen·el codo|der Finger·el dedo|der Fuß·el pie|das Gesicht·la cara|das Haar·el pelo|der Hals·el cuello|die Hand·la mano|die Haut·la piel|das Herz·el corazón|die Hüfte·la cadera|das Kinn·la barbilla|das Knie·la rodilla|der Knochen·el hueso|der Kopf·la cabeza|die Lippe·el labio|die Lunge·el pulmón|der Magen·el estómago|der Mund·la boca|der Nacken·la nuca|die Nase·la nariz|das Ohr·la oreja|der Rücken·la espalda|die Schulter·el hombro|die Stimme·la voz|die Stirn·la frente|der Zahn·el diente|die Zehe·el dedo del pie|die Zunge·la lengua'}
+  }
+};
+var ABC = {es:'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split(''), de:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')};
+var KAWA_WOERTER = {es:['MAR','CASA','LUNA','NOCHE','PAN'], de:['MEER','HAUS','MOND','NACHT','BROT']};
+var KAWA_BEISPIEL = {
+  es:{wort:'MAR', a:['Málaga','azul','ruido de olas']},
+  de:{wort:'MEER', a:['Möwe','Ebbe','endlos','Rauschen']}
+};
+
+/* ═══ UI in der Muttersprache (lernt es → UI de, lernt de → UI es) ═══ */
+var UI = {
+  de:{eyebrow:'Spiele nach Birkenbihl', hub:'Spielplatz', hello:'Zwei Spiele, in denen nicht ich frage, sondern <em>dein Kopf</em> antwortet. Alles, was dir einfällt, zählt.',
+      abcT:'ABC-Liste', abcD:'Ein Thema, das ganze Alphabet. Schreib, was dir einfällt.',
+      kawaT:'KaWa', kawaD:'Ein Wort, senkrecht. Zu jedem Buchstaben ein Gedanke.',
+      abcIntro:'Wähl ein Thema. Tipp einen Buchstaben und schreib ein Wort, das dir dazu einfällt. Nicht der Reihe nach, einfach wie es kommt.',
+      write:'Wort mit', ok:'dazu', close:'fertig', lend:'Spikiu flüstert',
+      lgKnown:'kenne ich', lgYou:'dein Wort', lgLent:'von Spikiu geliehen',
+      unknownW:'Kenne ich noch nicht. Es bleibt auf deiner Liste.', knownW:function(w,t){return '<em>'+w+'</em> = '+t;},
+      lentW:function(w,t){return 'Spikiu flüstert: <em>'+w+'</em> ('+t+'). Jetzt du.';}, noLend:'Hier fällt mir auch nichts ein.',
+      wrongLetter:function(L){return 'Das beginnt nicht mit '+L+'. Gehört es woanders hin?';},
+      again:'Nochmal von vorn', againConfirm:'Wirklich leeren? Tipp nochmal.', lastTime:'Deine Liste vom letzten Mal liegt noch da. Mach einfach weiter.',
+      kawaIntro:'So sieht ein KaWa aus. Jeder Buchstabe öffnet eine Tür. Wörter, Orte, Gefühle, auch in deiner Sprache.',
+      pick:'Wähl ein Wort:', own:'eigenes Wort', ownPh:'Wort eingeben', start:'Los',
+      kawaHint:'Hängst du? Tipp auf Spikiu neben dem Buchstaben.', done:'Fertig', saved:'Deine KaWas', yourKawa:'Dein KaWa',
+      newKawa:'Neues KaWa', note:'Prototyp. Wortfelder als Beispiel (3 Themen). Deine Listen bleiben nur in diesem Browser gespeichert.'},
+  es:{eyebrow:'Juegos según Birkenbihl', hub:'Patio de juegos', hello:'Dos juegos en los que no pregunto yo: <em>tu cabeza</em> responde. Todo lo que se te ocurra cuenta.',
+      abcT:'Lista ABC', abcD:'Un tema, todo el abecedario. Escribe lo que se te ocurra.',
+      kawaT:'KaWa', kawaD:'Una palabra en vertical. Una idea por cada letra.',
+      abcIntro:'Elige un tema. Toca una letra y escribe una palabra que te venga. No hace falta ir en orden: como salga.',
+      write:'Palabra con', ok:'añadir', close:'listo', lend:'Spikiu susurra',
+      lgKnown:'la conozco', lgYou:'tu palabra', lgLent:'prestada por Spikiu',
+      unknownW:'Todavía no la conozco. Se queda en tu lista.', knownW:function(w,t){return '<em>'+w+'</em> = '+t;},
+      lentW:function(w,t){return 'Spikiu susurra: <em>'+w+'</em> ('+t+'). Ahora tú.';}, noLend:'Aquí tampoco se me ocurre nada.',
+      wrongLetter:function(L){return 'No empieza por '+L+'. ¿Va en otra letra?';},
+      again:'Empezar de nuevo', againConfirm:'¿Vaciar de verdad? Toca otra vez.', lastTime:'Tu lista de la última vez sigue aquí. Sigue sin más.',
+      kawaIntro:'Así es un KaWa. Cada letra abre una puerta: palabras, lugares, sensaciones, también en tu idioma.',
+      pick:'Elige una palabra:', own:'palabra propia', ownPh:'Escribe una palabra', start:'Vamos',
+      kawaHint:'¿Atascado? Toca a Spikiu junto a la letra.', done:'Listo', saved:'Tus KaWas', yourKawa:'Tu KaWa',
+      newKawa:'Nuevo KaWa', note:'Prototipo. Campos de palabras de ejemplo (3 temas). Tus listas solo se guardan en este navegador.'}
+};
+
+/* ═══ Zustand ═══ */
+function lesen(k,d){ try{ var v=localStorage.getItem('bb_'+k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+function schreiben(k,v){ try{ localStorage.setItem('bb_'+k,JSON.stringify(v)); }catch(e){} }
+var ziel = lesen('ziel','de');
+function ui(){ return UI[ziel==='es'?'de':'es']; }
+function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ß/g,'ss').trim(); }
+function ohneArtikel(s){ return s.replace(/^(el|la|los|las|un|una|der|die|das|ein|eine)\s+/i,''); }
+function erster(s){ var c=ohneArtikel(s.trim()).charAt(0).toUpperCase(); if(ziel==='es'&&c==='Ñ') return 'Ñ'; return c.normalize('NFD').charAt(0); }
+function feldListe(th){ return FELDER[ziel][th].w.split('|').map(function(p){ var x=p.split('·'); return {z:x[0], tr:x[1], key:norm(ohneArtikel(x[0]))}; }); }
+function alleWoerter(){ var r=[]; Object.keys(FELDER[ziel]).forEach(function(k){ r=r.concat(feldListe(k)); }); return r; }
+function finde(wort,liste){ var k=norm(ohneArtikel(wort)); for(var i=0;i<liste.length;i++){ if(liste[i].key===k) return liste[i]; } return null; }
+
+var app=document.getElementById('app');
+function kopf(titel,zurueck){
+  document.getElementById('eyebrow').textContent=ui().eyebrow;
+  document.getElementById('title').textContent=titel;
+  document.getElementById('back').hidden=!zurueck;
+  document.getElementById('lg-de').className=ziel==='de'?'on':'';
+  document.getElementById('lg-es').className=ziel==='es'?'on':'';
+  document.documentElement.lang = ziel==='es'?'de':'es';
+}
+function spikiu(html){ var d=el('div','spk'); d.innerHTML=SPIKIU_SVG; var b=el('div','bubble'); b.innerHTML=html; d.appendChild(b); return d; }
+
+/* ═══ Router ═══ */
+var ansicht='hub';
+function zeige(a){ ansicht=a; app.innerHTML=''; scrollTo(0,0); if(a==='abc') abc(); else if(a==='kawa') kawa(); else hub(); }
+document.getElementById('back').addEventListener('click',function(){ zeige('hub'); });
+['de','es'].forEach(function(l){ document.getElementById('lg-'+l).addEventListener('click',function(){ ziel=l; schreiben('ziel',l); zeige(ansicht); }); });
+
+function hub(){
+  kopf(ui().hub,false);
+  app.appendChild(spikiu(ui().hello));
+  var d=el('div','doors');
+  [['abc','A–Z','var(--you)',ui().abcT,ui().abcD],['kawa',KAWA_BEISPIEL[ziel].wort.charAt(0),'var(--known)',ui().kawaT,ui().kawaD]].forEach(function(x){
+    var b=el('button','door'); var g=el('div','glyph',x[1]); g.style.background=x[2]; g.style.color='#15163a'; b.appendChild(g);
+    var t=el('div'); t.appendChild(el('b',null,x[3])); t.appendChild(el('span',null,x[4])); b.appendChild(t);
+    b.addEventListener('click',function(){ zeige(x[0]); }); d.appendChild(b);
+  });
+  app.appendChild(d);
+  app.appendChild(el('p','note',ui().note));
+}
+
+/* ═══ 1. ABC-Liste ═══ */
+function abc(){
+  var U=ui(), thema=lesen('thema_'+ziel,'cocina');
+  kopf(U.abcT,true);
+  var speicherKey='abc_'+ziel+'_'+thema, daten=lesen(speicherKey,{});
+  var hatteAlt=Object.keys(daten).some(function(k){return daten[k].length;});
+  app.appendChild(spikiu(hatteAlt?U.lastTime:U.abcIntro));
+  var th=el('div','themes');
+  Object.keys(FELDER[ziel]).forEach(function(k){ var p=el('button','pill'+(k===thema?' on':''),FELDER[ziel][k].t);
+    p.addEventListener('click',function(){ schreiben('thema_'+ziel,k); zeige('abc'); }); th.appendChild(p); });
+  app.appendChild(th);
+  var liste=feldListe(thema), box=el('div','abc'), whisper=el('div','whisper'), offen=null;
+  app.appendChild(box);
+  var leg=el('div','legend'); leg.innerHTML='<span><i style="background:var(--known)"></i>'+U.lgKnown+'</span><span><i style="background:var(--you-soft)"></i>'+U.lgYou+'</span><span><i style="background:var(--lent);border-style:dashed"></i>'+U.lgLent+'</span>';
+  app.appendChild(leg); app.appendChild(whisper);
+  function speichern(){ schreiben(speicherKey,daten); }
+  function zeile(L){
+    var r=el('div','row'), b=el('button','let',L), e=el('div','entries');
+    b.setAttribute('aria-label',U.write+' '+L);
+    r.appendChild(b); r.appendChild(e);
+    function render(){
+      e.innerHTML=''; var eintr=daten[L]||[];
+      r.classList.toggle('full',eintr.length>0);
+      eintr.forEach(function(x,ix){
+        var c=el('button','w'+(x.k?' known':'')+(x.l?' lent':''),x.z);
+        if(x.tr) c.appendChild(el('small',null,x.tr));
+        c.title='×'; c.addEventListener('click',function(){ eintr.splice(ix,1); speichern(); render(); whisper.textContent=''; });
+        e.appendChild(c);
+      });
+      if(offen===L){
+        var ir=el('div','inrow'), inp=el('input'); inp.id='abc-in'; inp.placeholder=U.write+' '+L+' …'; inp.autocapitalize='off'; inp.autocomplete='off'; inp.spellcheck=false;
+        var go=el('button',null,U.ok), lend=el('button','ghost',U.lend);
+        ir.appendChild(inp); ir.appendChild(go); ir.appendChild(lend); e.appendChild(ir);
+        function add(){
+          var v=inp.value.trim(); if(!v) return;
+          if(erster(v)!==L){ whisper.textContent=U.wrongLetter(L); return; }
+          var f=finde(v,liste)||finde(v,alleWoerter());
+          (daten[L]=daten[L]||[]).push(f?{z:f.z,tr:f.tr,k:1}:{z:v});
+          whisper.innerHTML=f?U.knownW(f.z,f.tr):U.unknownW; speichern(); render();
+          var ni=document.getElementById('abc-in'); if(ni) ni.focus();
+        }
+        go.addEventListener('click',add);
+        inp.addEventListener('keydown',function(ev){ if(ev.key==='Enter') add(); });
+        lend.addEventListener('click',function(){
+          var schon=(daten[L]||[]).map(function(x){return norm(ohneArtikel(x.z));});
+          var kand=liste.filter(function(x){ return erster(x.z)===L && schon.indexOf(x.key)<0; });
+          if(!kand.length){ whisper.textContent=U.noLend; return; }
+          var f=kand[Math.floor(Math.random()*kand.length)];
+          (daten[L]=daten[L]||[]).push({z:f.z,tr:f.tr,k:1,l:1}); speichern(); whisper.innerHTML=U.lentW(f.z,f.tr); render();
+        });
+        setTimeout(function(){ inp.focus(); },30);
+      } else {
+        var a=el('button','add','+'); a.setAttribute('aria-label',U.write+' '+L);
+        a.addEventListener('click',oeffne); e.appendChild(a);
+      }
+    }
+    function oeffne(){ var vorher=offen; offen=(offen===L?null:L); whisper.textContent=''; if(vorher&&zeilen[vorher]) zeilen[vorher](); render(); }
+    b.addEventListener('click',oeffne);
+    zeilen[L]=render; render();
+    return r;
+  }
+  var zeilen={};
+  ABC[ziel].forEach(function(L){ box.appendChild(zeile(L)); });
+  var foot=el('div','foot'), neu=el('button','btn ghost',U.again), armed=false;
+  neu.addEventListener('click',function(){ if(!armed){ armed=true; neu.textContent=U.againConfirm; return; } daten={}; speichern(); zeige('abc'); });
+  foot.appendChild(neu); app.appendChild(foot);
+}
+
+/* ═══ 2. KaWa ═══ */
+function kawa(){
+  var U=ui(); kopf(U.kawaT,true);
+  var bsp=KAWA_BEISPIEL[ziel], lex=alleWoerter();
+  app.appendChild(spikiu(U.kawaIntro));
+  app.appendChild(kawaKarte(bsp.wort,bsp.a.map(function(a){return {z:a};}),U.kawaT+' · Spikiu'));
+  app.appendChild(el('h3',null,U.pick));
+  var w=el('div','words');
+  KAWA_WOERTER[ziel].forEach(function(x){ var p=el('button','pill',x); p.addEventListener('click',function(){ bauen(x); }); w.appendChild(p); });
+  app.appendChild(w);
+  var ir=el('div','inrow'), inp=el('input'); inp.id='kawa-own'; inp.placeholder=U.ownPh; inp.maxLength=9;
+  var go=el('button',null,U.start); ir.appendChild(inp); ir.appendChild(go); app.appendChild(ir);
+  function eigen(){ var v=inp.value.replace(/[^A-Za-zÄÖÜäöüÑñÁÉÍÓÚáéíóúß]/g,'').toUpperCase(); if(v.length>=2) bauen(v); }
+  go.addEventListener('click',eigen); inp.addEventListener('keydown',function(ev){ if(ev.key==='Enter') eigen(); });
+  var alle=lesen('kawas_'+ziel,[]);
+  if(alle.length){ app.appendChild(el('h3',null,U.saved)); var s=el('div','saved');
+    alle.slice().reverse().forEach(function(k){ var m=el('button','mini',k.wort); m.addEventListener('click',function(){ app.innerHTML=''; kopf(U.yourKawa,true); app.appendChild(kawaKarte(k.wort,k.a,U.yourKawa)); var f=el('div','foot'); var nb=el('button','btn',U.newKawa); nb.addEventListener('click',function(){ zeige('kawa'); }); f.appendChild(nb); app.appendChild(f); }); s.appendChild(m); });
+    app.appendChild(s); }
+
+  function bauen(wort){
+    app.innerHTML=''; scrollTo(0,0); kopf(U.kawaT+': '+wort,true);
+    app.appendChild(spikiu(U.kawaHint));
+    var k=el('div','kawa'), felder=[], whisper=el('div','whisper');
+    wort.split('').forEach(function(L,ix){
+      var line=el('div','kline'), big=el('div','kbig',L), inp=el('input'), tr=el('span','tr'), h=el('button','hint');
+      inp.id='kawa-'+ix; inp.autocomplete='off'; inp.spellcheck=false; inp.setAttribute('aria-label',L);
+      h.innerHTML=SPIKIU_SVG; h.setAttribute('aria-label',U.lend);
+      h.addEventListener('click',function(){
+        var schon=felder.map(function(f){return norm(ohneArtikel(f.inp.value));});
+        var kand=lex.filter(function(x){ return erster(x.z)===L.normalize('NFD').charAt(0) && schon.indexOf(x.key)<0; });
+        if(!kand.length){ whisper.textContent=U.noLend; return; }
+        var f=kand[Math.floor(Math.random()*kand.length)]; inp.value=f.z; tr.textContent=f.tr; whisper.innerHTML=U.lentW(f.z,f.tr);
+      });
+      inp.addEventListener('input',function(){ var f=finde(inp.value,lex); tr.textContent=f?f.tr:''; });
+      inp.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ var n=felder[ix+1]; if(n) n.inp.focus(); else inp.blur(); } });
+      line.appendChild(big); line.appendChild(inp); line.appendChild(tr); line.appendChild(h); k.appendChild(line);
+      felder.push({L:L,inp:inp,tr:tr});
+    });
+    app.appendChild(k); app.appendChild(whisper);
+    var f=el('div','foot'), fertig=el('button','btn',U.done);
+    fertig.addEventListener('click',function(){
+      var a=felder.map(function(x){ var v=x.inp.value.trim(); var fd=v?finde(v,lex):null; return {z:v, tr:fd?fd.tr:''}; });
+      if(!a.some(function(x){return x.z;})){ felder[0].inp.focus(); return; }
+      var alle=lesen('kawas_'+ziel,[]); alle.push({wort:wort,a:a}); schreiben('kawas_'+ziel,alle.slice(-30));
+      app.innerHTML=''; scrollTo(0,0); kopf(U.yourKawa,true);
+      app.appendChild(kawaKarte(wort,a,U.yourKawa));
+      var f2=el('div','foot'), nb=el('button','btn',U.newKawa); nb.addEventListener('click',function(){ zeige('kawa'); }); f2.appendChild(nb); app.appendChild(f2);
+    });
+    f.appendChild(fertig); app.appendChild(f);
+    setTimeout(function(){ felder[0].inp.focus(); },30);
+  }
+}
+function kawaKarte(wort,a,ueber){
+  var c=el('div','kcard'); c.appendChild(el('h2',null,ueber));
+  wort.split('').forEach(function(L,i){
+    c.appendChild(el('div','L',L));
+    var x=a[i]||{z:''}, d=el('div','A',x.z||'·'); if(x.tr) d.appendChild(el('small',null,x.tr)); c.appendChild(d);
+  });
+  return c;
+}
+
+zeige('hub');
+</script>
+</body></html>

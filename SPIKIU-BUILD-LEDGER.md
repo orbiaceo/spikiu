@@ -13,7 +13,8 @@ Stand: 01.10.2026 · SPIELKISTE (**Design 29.09.–01.10. (claude.ai, Leo am Han
 - **Sitzungsende Geführtes Gespräch:** Spiel aus der Ernte DIESER Sitzung (Sätze → Globos, Wörter → Piñata/Gemelos). **Angeboten, nie verordnet** („¿Una piñata para cerrar?" neben „Hasta luego") — sonst wird es Pflicht-Ritual = Gamification. Eigener späterer Auftrag.
 - Piñata: Eindringling stammt aus einer anderen Wendung → nach dem Treffer „gehört zu …". Verpasst = Spikiu fängt ihn auf, kein Verlieren.
 **Auftrag:** `AKTUELLER-AUFTRAG.md` → DIE SPIELKISTE (Teile A juegos.js · B Übung/spiele.html · C proverbios.html). Der alte Schattenlauf-Auftrag (29.08.) war nie als erledigt markiert; überschrieben.
-**Offen im Design:** ein mnemotechnisches Spiel nach Birkenbihl (Leo, 01.10.) — wird gerade entworfen.
+**Birkenbihl (Leo, 01.10.: „1 und 2 als Prototyp zum Testen"):** `birkenbihl-prototyp.html` (NEU, Root) — **ABC-Liste** (Thema → A–Z, freie Einfälle; erkannte Wörter grün mit Übersetzung, eigene gelb, „Spikiu flüstert" leiht ein Wort gestrichelt; Liste bleibt fürs nächste Mal) und **KaWa** (Wort senkrecht, je Buchstabe eine Assoziation, Spikiu-Hilfe pro Buchstabe, fertige KaWas gesammelt). Umschalter DE/ES, UI in der Muttersprache, null Token, kein Zählen. Wartet auf Leos Test.
+**ARBEITSWEISE (Leo, 01.10.):** Claude (claude.ai/Cowork) arbeitet direkt im Repo; Leo ist gerade nicht am Terminal. Die SPIELKISTE baut daher Claude selbst nach Leos Birkenbihl-Test, der Auftrag bleibt als Spezifikation.
 
 
 Stand: 27.09.2026 · TITEL NACHGEZOGEN (**Der Beschluss vom 01.09. „Wendungen & Sprichwörter" stand nur in `nav.js`/`index.html` — Szene und Raum zeigten noch „Sprichwörter". Jetzt überall.**)
