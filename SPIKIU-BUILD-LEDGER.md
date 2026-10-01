@@ -2,6 +2,20 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.10.2026 · SPIELKISTE (**Design 29.09.–01.10. (claude.ai, Leo am Handy, Claude lädt selbst hoch): VIER SPIELE GEWÄHLT · PROTOTYP IM REPO · AUFTRAG FÜR CLAUDE CODE GESCHRIEBEN.**)
+
+**Prototyp:** `giros-spielplatz-prototyp.html` (NEU, Root) — sieben Mini-Spiele aus EINEM Datensatz (6 deutsche Wendungen für Spanisch-Sprecher): Piñata · Globos · Tendedero · Al pie de la letra · Frankenstein · La otra mitad · Gemelos. Reine Design-Datei, nichts verdrahtet.
+**Leos Wahl (01.10.):** „Me encantan la piñata, globos, al pie de la letra y gemelos." Tendedero, Frankenstein, La otra mitad fallen raus.
+**BESCHLÜSSE:**
+- **Ein Motor, drei Orte:** `juegos.js` (eigene Datei, NICHT in `chat.html`, die 203 KB hat).
+- **Übung → 4. Kachel „Spiele":** Piñata + Globos (schnell, aktiv).
+- **Bibliothek → Wendungen & Sprichwörter:** Al pie de la letra + Gemelos (ruhig). Daten liegen schon in `sprichwort.js` (`w` = wörtlich, `t` = Bedeutung) → keine neue Kuratierung nötig.
+- **Sitzungsende Geführtes Gespräch:** Spiel aus der Ernte DIESER Sitzung (Sätze → Globos, Wörter → Piñata/Gemelos). **Angeboten, nie verordnet** („¿Una piñata para cerrar?" neben „Hasta luego") — sonst wird es Pflicht-Ritual = Gamification. Eigener späterer Auftrag.
+- Piñata: Eindringling stammt aus einer anderen Wendung → nach dem Treffer „gehört zu …". Verpasst = Spikiu fängt ihn auf, kein Verlieren.
+**Auftrag:** `AKTUELLER-AUFTRAG.md` → DIE SPIELKISTE (Teile A juegos.js · B Übung/spiele.html · C proverbios.html). Der alte Schattenlauf-Auftrag (29.08.) war nie als erledigt markiert; überschrieben.
+**Offen im Design:** ein mnemotechnisches Spiel nach Birkenbihl (Leo, 01.10.) — wird gerade entworfen.
+
+
 Stand: 27.09.2026 · TITEL NACHGEZOGEN (**Der Beschluss vom 01.09. „Wendungen & Sprichwörter" stand nur in `nav.js`/`index.html` — Szene und Raum zeigten noch „Sprichwörter". Jetzt überall.**)
 
 **Geändert:** `haus.html` (Bibliothek-Kachel: „Wendungen & Sprichwörter") · `proverbios.html` (`<title>`, `h1#roomTitle`, Eyebrow dreisprachig: **Wendungen & Sprichwörter · Giros & Proverbios · Phrases & Proverbs**).
