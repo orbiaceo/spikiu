@@ -1,5 +1,7 @@
 # AKTUELLER AUFTRAG — DIE SPIELKISTE
 
+**ERLEDIGT am 01.10.2026 (von Claude direkt im Repo gebaut) · kein offener Auftrag.** Abweichung: Garten und Akrostichon kamen als 3. und 4. Tür in `spiele.html` dazu (Leo, 01.10.). Rest-Scope: Spiel am Sitzungsende des Geführten Gesprächs — eigener späterer Auftrag. Details im Ledger.
+
 Stand: 01.10.2026 · Erteilt von claude.ai · Für Claude Code (Terminal)
 
 **Ein Auftrag, ein Durchlauf.** Frag nichts, melde am Ende, was gebaut wurde.

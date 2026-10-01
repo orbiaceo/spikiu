@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Spiele</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+<style>
+:root{--bg:#eef7f1;--ink:#15163a;--mid:#5f7068;--green:#1f93b0;--ow:2.5px;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;height:100%;}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;display:flex;align-items:center;justify-content:center;min-height:100dvh;-webkit-font-smoothing:antialiased;}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px;}
+ body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px;}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink);}
+}
+.app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden;}
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem;}
+.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink);}
+.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink);}
+.tt-wrap{flex:1;text-align:center;min-width:0;}
+.tt-wrap .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--green);text-transform:uppercase;}
+.tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
+.stage{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1rem 1rem calc(1.4rem + env(safe-area-inset-bottom));}
+.inner{max-width:30rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;text-align:center;min-height:9.2rem;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
+.door:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink);}
+.door svg,.door img{width:2.9rem;height:2.9rem;}
+.door b{font:800 .98rem/1.1 'DM Sans',sans-serif;}
+.door span{font-size:.74rem;line-height:1.2;font-weight:600;color:rgba(21,22,58,.72);}
+.note{font-size:.76rem;color:var(--mid);line-height:1.45;text-align:center;margin:.4rem 0 0;}
+.ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;}
+.end{background:#fff;color:var(--ink);border:var(--ow) solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--ink);}
+.end.primary{background:var(--green);color:#fff;}
+.end:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+.card{background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem .9rem;}
+.empty{text-align:center;color:var(--mid);}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="top"><button class="back" id="btnZurueck" aria-label="zurück">‹</button><div class="tt-wrap"><div class="rk" id="roomEyebrow"></div><h1 id="roomTitle">Spiele</h1></div><div style="width:36px"></div></div>
+  <div class="stage" id="stage"><div class="inner" id="inner"></div></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+//  SPIKIU · RAUM „SPIELE" (Übung → 4. Kachel) · Spielkiste 01.10.2026
+//  Vier Türen: Piñata · Globos · Spikius Garten · Akrostichon.
+//  Motor: juegos.js. Daten: sprichwort.js, wortschatz.js, Lernpfad (mit
+//  Sprachwache). NULL Token. Kein Punktestand, kein Streak.
+//  Sitzung: sitzung.js, Schlüssel spikiu_sitzung:spiele.
+// ════════════════════════════════════════════════════════════════════
+
+var stored = {};
+try { stored = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {}; } catch(e){}
+function langCode(v){
+  if(!v) return null; v=(''+v).toLowerCase();
+  if(/^(de|es|en|el)$/.test(v)) return v;
+  if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
+  if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
+  if(v.indexOf('engl')>-1) return 'en';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  return null;
+}
+var PROFILE = {
+  zielsprache: stored.zielsprache || langCode(stored.targetLang) || 'es',
+  muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de'
+};
+function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+
+var UI = {
+  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Kurz und leicht. Such dir eins aus.',
+       pinata:['Piñata','Schlag zu und fang den Eindringling.'], globos:['Globos','Lass die Wörter in der richtigen Reihenfolge platzen.'],
+       huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'], acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
+       weiter:'noch eine ›', genug:'Genug für heute', themaWortschatz:'Wortschatz',
+       leer:'Für deine Zielsprache gibt es hier noch keine Sätze.', fuss:'Garten und Akrostichon nach Ideen von Vera F. Birkenbihl.' },
+  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Cortos y ligeros. Elige uno.',
+       pinata:['Piñata','¡Dale! Y atrapa al intruso.'], globos:['Globos','Revienta las palabras en el orden correcto.'],
+       huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'], acrostico:['Acróstico','Una palabra, una idea por letra.'],
+       weiter:'otra ›', genug:'Basta por hoy', themaWortschatz:'Vocabulario',
+       leer:'Para tu idioma meta todavía no hay frases aquí.', fuss:'Huerto y acróstico según ideas de Vera F. Birkenbihl.' },
+  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Short and light. Pick one.',
+       pinata:['Piñata','Swing and catch the intruder.'], globos:['Balloons','Pop the words in the right order.'],
+       huerto:['Spikiu’s garden','From A to Z: plant your words.'], acrostico:['Acrostic','One word, one thought per letter.'],
+       weiter:'another ›', genug:'Enough for today', themaWortschatz:'Vocabulary',
+       leer:'There are no sentences for your target language here yet.', fuss:'Garden and acrostic after ideas by Vera F. Birkenbihl.' }
+};
+function ui(){ return UI[uiLang()] || UI.de; }
+
+var BEISPIEL = {
+  es:{ wort:'MAR',  a:['Málaga','azul','ruido de olas'] },
+  de:{ wort:'MEER', a:['Möwe','Ebbe','endlos','Rauschen'] },
+  en:{ wort:'SUN',  a:['summer','umbrella','noon'] }
+};
+
+var GLYPH = {
+  pinata:'<svg viewBox="0 0 44 44"><path d="M22 2v8" stroke="#15163a" stroke-width="2"/><circle cx="22" cy="24" r="10" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><path d="M22 14l-3-4h6zM32 24l4-3v6zM12 24l-4-3v6zM22 34l-3 4h6z" fill="#e0412f" stroke="#15163a" stroke-width="1.5"/></svg>',
+  globos:'<svg viewBox="0 0 44 44"><ellipse cx="16" cy="15" rx="9" ry="11" fill="#f7bcd8" stroke="#15163a" stroke-width="2"/><ellipse cx="29" cy="19" rx="9" ry="11" fill="#9fd6e8" stroke="#15163a" stroke-width="2"/><path d="M16 26q2 8 0 16M29 30q-2 6 0 12" stroke="#15163a" stroke-width="1.5" fill="none"/></svg>',
+  huerto:'<img src="bilder/om-1F331.svg" alt="" aria-hidden="true">',
+  acrostico:'<svg viewBox="0 0 44 44"><rect x="12" y="3" width="13" height="11" rx="3" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><rect x="12" y="17" width="13" height="11" rx="3" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><rect x="12" y="31" width="13" height="11" rx="3" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><path d="M29 8h12M29 22h9M29 36h11" stroke="#15163a" stroke-width="2" stroke-linecap="round"/></svg>'
+};
+var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#cdbdf2' };
+
+// ── Audio ──
+function sprich(text){
+  if (window.spkSpeak){ try { return window.spkSpeak(text, PROFILE.zielsprache); } catch(e){} }
+  try { var s = window.speechSynthesis;
+    if (s && typeof SpeechSynthesisUtterance !== 'undefined'){
+      var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[PROFILE.zielsprache] || 'es-ES';
+      var u = new SpeechSynthesisUtterance(String(text)); u.lang = bcp; s.cancel(); s.speak(u);
+    } } catch(e){}
+}
+function opts(){ return { nativeLang: uiLang(), zielLang: PROFILE.zielsprache, sprich: sprich }; }
+
+// ── Daten (nur eigene Zielsprache) ──
+var SAETZE = [];   // [{ satz, art }]
+var LEXIKON = [];  // [{ z, tr }]
+function lernpfad(){ var D = window.SpikiuLernpfad; return (D && D.zielsprache === PROFILE.zielsprache) ? D : null; }
+function trVon(na){ if(!na) return ''; return na[PROFILE.muttersprache] || na.de || na.es || na.en || ''; }
+function baueDaten(){
+  var z = PROFILE.zielsprache, SP = window.spikiuSprichwort, J = window.spikiuJuegos;
+  SAETZE = [];
+  if (SP && SP.daten){
+    (SP.daten[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, art:'spruch' }); });
+    ((SP.wendungen||{})[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, art:'wendung' }); });
+  }
+  var WS = (typeof window.spikiuWortschatz === 'function' && window.spikiuWortschatz.daten && window.spikiuWortschatz.daten[z])
+    ? window.spikiuWortschatz(z, PROFILE.muttersprache) : [];
+  WS.forEach(function(x){ if (x.text) SAETZE.push({ satz:x.text, art:'beispiel' }); LEXIKON.push({ z:x.wort, tr:x.tr }); });
+  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return n >= 3 && n <= 8; });
+  var D = lernpfad();
+  if (D){
+    D.themen.forEach(function(t){ woerterVonThema(t.id).forEach(function(x){ LEXIKON.push(x); }); });
+  }
+}
+function woerterVonThema(id){
+  var D = lernpfad();
+  if (!D || id === '_ws'){
+    var z = PROFILE.zielsprache;
+    return (typeof window.spikiuWortschatz === 'function' && window.spikiuWortschatz.daten[z])
+      ? window.spikiuWortschatz(z, PROFILE.muttersprache).map(function(x){ return { z:x.wort, tr:x.tr }; }) : [];
+  }
+  var out = [];
+  (D.stufen || ['a1','a2']).forEach(function(st){
+    // ES-Datei liefert na als Objekt, DE/EN als fertigen String — beides tragen.
+    (D.woerter(st, id, PROFILE.muttersprache) || []).forEach(function(w){ out.push({ z:w.z, tr:(typeof w.na === 'string') ? w.na : trVon(w.na) }); });
+  });
+  return out;
+}
+function themen(){
+  var D = lernpfad();
+  if (!D) return [{ id:'_ws', t: ui().themaWortschatz }];
+  return D.themen.filter(function(t){ return woerterVonThema(t.id).length; })
+    .map(function(t){ return { id:t.id, t:(t.em ? t.em + ' ' : '') + trVon(t.na) }; });
+}
+
+// ── Speicher ──
+function lies(k, d){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
+function schreib(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function SZ(){ return window.spikiuSitzung || null; }
+var sitzTimer = 0, sitzOffen = null;
+function sichereSitzung(zustand, sofort){
+  var S = SZ(); if (!S) return;
+  clearTimeout(sitzTimer); sitzOffen = null;
+  if (sofort) { S.speichere('spiele', zustand); return; }
+  sitzOffen = zustand;
+  sitzTimer = setTimeout(function(){ sitzOffen = null; S.speichere('spiele', zustand); }, 350);
+}
+// Entprellten Rest nicht verlieren, wenn die Seite verlassen wird.
+window.addEventListener('pagehide', function(){ var S = SZ(); if (S && sitzOffen) { S.speichere('spiele', sitzOffen); sitzOffen = null; } });
+function raeumeSitzung(){ clearTimeout(sitzTimer); sitzOffen = null; var S = SZ(); if (S) S.raeume('spiele'); }
+
+// ── Ansichten ──
+var inner = document.getElementById('inner');
+var aktiv = null;   // laufende Spiel-Karte (für stop())
+var ansicht = 'tueren';
+var letzterSatz = '';
+function leeren(){ if (aktiv && aktiv.stop) aktiv.stop(); aktiv = null; inner.innerHTML = ''; document.getElementById('stage').scrollTop = 0; }
+function kopf(titel){ document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = ui().eyebrow; }
+
+function tueren(){
+  ansicht = 'tueren'; leeren(); kopf(ui().titel);
+  var J = window.spikiuJuegos; J.css();
+  var hi = document.createElement('div'); hi.className = 'jg-spk';
+  hi.innerHTML = J.spikiuSvg + '<div class="jg-bub"></div>'; hi.querySelector('.jg-bub').textContent = ui().hallo;
+  var wrap = document.createElement('div'); wrap.className = 'jg'; wrap.appendChild(hi); inner.appendChild(wrap);
+  var d = document.createElement('div'); d.className = 'doors';
+  ['pinata','globos','huerto','acrostico'].forEach(function(id){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'door'; b.style.background = FARBE[id];
+    b.innerHTML = GLYPH[id] + '<b></b><span></span>';
+    b.querySelector('b').textContent = ui()[id][0]; b.querySelector('span').textContent = ui()[id][1];
+    b.onclick = function(){ oeffne(id); };
+    d.appendChild(b);
+  });
+  inner.appendChild(d);
+  var n = document.createElement('p'); n.className = 'note'; n.textContent = ui().fuss; inner.appendChild(n);
+}
+
+function enden(nochmal){
+  var e = document.createElement('div'); e.className = 'ends';
+  var g = document.createElement('button'); g.className = 'end'; g.type = 'button'; g.textContent = ui().genug;
+  g.onclick = function(){ raeumeSitzung(); location.href = 'haus.html'; };
+  e.appendChild(g);
+  if (nochmal){ var w = document.createElement('button'); w.className = 'end primary'; w.type = 'button'; w.textContent = ui().weiter; w.onclick = nochmal; e.appendChild(w); }
+  inner.appendChild(e);
+  return e;
+}
+function zieheSatz(){
+  if (!SAETZE.length) return null;
+  var pool = SAETZE.filter(function(s){ return s.satz !== letzterSatz; });
+  if (!pool.length) pool = SAETZE;
+  var s = pool[Math.floor(Math.random() * pool.length)]; letzterSatz = s.satz; return s;
+}
+function leerHinweis(){ var p = document.createElement('div'); p.className = 'card empty'; p.textContent = ui().leer; inner.appendChild(p); enden(null); }
+
+function rundeKarte(spiel){
+  leeren(); kopf(ui()[spiel][0]); ansicht = spiel;
+  sichereSitzung({ spiel: spiel }, true);
+  var J = window.spikiuJuegos, s = zieheSatz();
+  if (!s) { leerHinweis(); return; }
+  var karte;
+  if (spiel === 'pinata'){
+    var ein = J.eindringling(s.satz, SAETZE.map(function(x){ return x.satz; }), PROFILE.zielsprache);
+    if (!ein) { leerHinweis(); return; }
+    karte = J.pinata({ satz: s.satz, intruso: ein.wort, intrusoDe: ein.aus }, opts());
+  } else {
+    karte = J.globos({ satz: s.satz }, opts());
+  }
+  var c = document.createElement('div'); c.className = 'card'; c.appendChild(karte); inner.appendChild(c);
+  aktiv = karte;
+  var e = null;
+  karte.addEventListener('jg-done', function(){ if (!e) e = enden(function(){ rundeKarte(spiel); }); });
+}
+
+function garten(themaId){
+  leeren(); kopf(ui().huerto[0]); ansicht = 'huerto';
+  var z = PROFILE.zielsprache, alle = themen();
+  var gespeichert = lies('spikiu_huerto', {});
+  var thema = themaId || lies('spikiu_huerto_thema', {})[z] || (alle[0] && alle[0].id);
+  if (!alle.some(function(t){ return t.id === thema; })) thema = alle[0] && alle[0].id;
+  var tz = lies('spikiu_huerto_thema', {}); tz[z] = thema; schreib('spikiu_huerto_thema', tz);
+  sichereSitzung({ spiel: 'huerto', thema: thema }, true);
+  var ansichtEl = window.spikiuJuegos.huerto({
+    themen: alle, thema: thema,
+    woerterVon: woerterVonThema, lexikon: LEXIKON,
+    lade: function(id){ return ((gespeichert[z] || {})[id]) || {}; },
+    speichere: function(id, daten){ gespeichert = lies('spikiu_huerto', {}); gespeichert[z] = gespeichert[z] || {}; gespeichert[z][id] = daten; schreib('spikiu_huerto', gespeichert); },
+    beiThema: function(id){ garten(id); }
+  }, opts());
+  inner.appendChild(ansichtEl); aktiv = ansichtEl;
+  enden(null);
+}
+
+function akrostichon(entwurf){
+  leeren(); kopf(ui().acrostico[0]); ansicht = 'acrostico';
+  var z = PROFILE.zielsprache;
+  sichereSitzung({ spiel: 'acrostico', entwurf: entwurf || null }, true);
+  // Wortwahl: kurze Einzelwörter aus dem Lexikon (ohne Artikel), groß geschrieben.
+  var seen = {}, kand = [];
+  LEXIKON.forEach(function(x){
+    var k = String(x.z).trim().replace(/^(el|la|los|las|un|una|der|die|das|ein|eine|the|a|an|ο|η|το|οι|τα)\s+/i, '');
+    if (!/^\p{L}{3,6}$/u.test(k)) return;
+    var K = k.toUpperCase(); if (seen[K]) return; seen[K] = 1; kand.push(K);
+  });
+  var woerter = window.spikiuJuegos.mezcla(kand).slice(0, 6);
+  var ansichtEl = window.spikiuJuegos.acrostico({
+    woerter: woerter, lexikon: LEXIKON, beispiel: BEISPIEL[z] || null,
+    lade: function(){ return (lies('spikiu_acrosticos', {})[z]) || []; },
+    speichere: function(liste){ var a = lies('spikiu_acrosticos', {}); a[z] = liste; schreib('spikiu_acrosticos', a); },
+    entwurf: entwurf || null,
+    beiEntwurf: function(e){ sichereSitzung({ spiel: 'acrostico', entwurf: e }, false); }
+  }, opts());
+  inner.appendChild(ansichtEl); aktiv = ansichtEl;
+  enden(null);
+}
+
+function oeffne(id, zustand){
+  zustand = zustand || {};
+  if (id === 'pinata' || id === 'globos') rundeKarte(id);
+  else if (id === 'huerto') garten(zustand.thema);
+  else if (id === 'acrostico') akrostichon(zustand.entwurf);
+  else tueren();
+}
+
+document.getElementById('btnZurueck').onclick = function(){
+  raeumeSitzung();
+  if (ansicht === 'tueren') location.href = 'haus.html'; else tueren();
+};
+
+window.addEventListener('load', function(){
+  document.documentElement.lang = uiLang();
+  if (!window.spikiuJuegos){ inner.textContent = 'juegos.js fehlt.'; return; }
+  baueDaten();
+  var S = SZ(), z = S ? S.lade('spiele') : null;
+  if (z && z.spiel && UI.de[z.spiel]){
+    tueren();
+    S.frageWiederkommen({ raum:'spiele', ts:z.ts, wo: ui()[z.spiel][0],
+      beimWeiter: function(){ oeffne(z.spiel, z); },
+      beimNeu: function(){ raeumeSitzung(); tueren(); } });
+  } else {
+    tueren();
+  }
+});
+</script>
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
+</script>
+<script src="sitzung.js" defer></script>
+<script src="sprichwort.js" defer></script>
+<script src="wortschatz.js" defer></script>
+<script src="lernpfad-daten.js" defer></script>
+<script src="lernpfad-daten-de.js" defer></script>
+<script src="lernpfad-daten-en.js" defer></script>
+<script src="lernpfad-sprache.js" defer></script>
+<script src="juegos.js" defer></script>
+</body>
+</html>

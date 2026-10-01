@@ -2,6 +2,18 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.10.2026 · SPIELKISTE GEBAUT (**Bau 01.10. nachts (claude.ai/Cowork direkt im Repo, Leo nicht am Terminal): SECHS SPIELE LIVE · ÜBUNG HAT VIER KACHELN · JEDE DRITTE SPRICHWORT-ÜBUNG IST EIN SPIEL.**)
+
+**NEU:** `juegos.js` (Root) — EIN Motor, null Token, CSS-Namensraum `jg-`, UI de/es/en aus der Muttersprache. Karten: `pinata` · `globos` · `literal` · `gemelos` (feuern `jg-done`, haben `.stop()`). Ansichten: `huerto` (Spikius Garten / El huerto de Spikiu) · `acrostico` (Akrostichon). Helfer `eindringling()` (Inhaltswort ≥4 Buchstaben aus einem ANDEREN Satz derselben Zielsprache).
+**NEU:** `spiele.html` — Raum mit Zurück-Pfeil, vier Türen: Piñata · Globos · Spikius Garten · Akrostichon. Sätze aus `sprichwort.js` (Sprichwörter + Wendungen) und `wortschatz.js` (Beispielsätze), 3–8 Wörter. Garten-Themen = die 10 Lernpfad-Themen (Sprachwache: nur wenn `SpikiuLernpfad.zielsprache` passt; sonst ein Thema „Wortschatz"). Speicher: Garten `spikiu_huerto`, Akrosticha `spikiu_acrosticos` (je Zielsprache). Sitzung `spikiu_sitzung:spiele` (offenes Spiel, Gartenthema, Akrostichon-Entwurf; entprellt 350 ms + Flush bei `pagehide`) mit Wiederkommen-Karte. Fußnote: „nach Ideen von Vera F. Birkenbihl". Audio über `/audio.js` (Anhören-Knopf nach jeder Runde).
+**GEÄNDERT:** `haus.html` `roomUebung()` → Layout `four`, 4. Kachel 🪅 „Spiele · Kurz und leicht" → `spiele.html`. `proverbios.html` → `makeSpielCard()`; in `ensureStep()` ist jede dritte Übung ein Spiel, abwechselnd Al pie de la letra (wörtlich `w` + Bedeutung `t`, OpenMoji-Icon) und Gemelos (4 Paare); Spielkarte beginnt oben und scrollt; lädt `juegos.js`.
+**LEHRE (eigener Fehler, sofort behoben):** Ein Inline-Script lief VOR den `defer`-Helfern → `var S = window.spikiuSitzung` war `undefined`, die Sitzung wurde nie gespeichert. Helfer, die per `defer` kommen, immer erst zur Laufzeit holen (`SZ()`).
+**LEHRE (Datenvertrag):** `woerter(stufe, thema, mutter)` liefert in `lernpfad-daten.js` (ES) `na` als OBJEKT, in `-de.js`/`-en.js` als fertigen STRING. Wer die Wörter liest, muss beides tragen.
+**GEPRÜFT (headless Chromium, 360 px, es→de und de→es):** Piñata (Fallen, Auffangen durch Spikiu, Satz + „gehört zu …"), Globos (Reihenfolge), Garten (pflanzen, erkennen mit Übersetzung, säen), Akrostichon (Entwurf, säen), Wiederkommen-Karte nach Reload, Sprichwort-Deck Schritt 5 = Al pie de la letra, Schritt 11 = Gemelos. Kein horizontales Scrollen, keine Seitenfehler. **Nicht geprüft:** echtes Handy, Ton, iOS, die neue Kachel im Haus (nur Syntax).
+**FRAGE AN DESIGN:** Al pie de la letra zeigt das OpenMoji-Icon des Eintrags. Die gezeichneten „wörtlichen" Spikiu-Szenen aus dem Prototyp (Tomaten auf den Augen …) wären ein eigenes Zeichen-Paket.
+**Als Nächstes:** Leo testet am Handy. Danach: Spiel am Ende des Geführten Gesprächs aus der Ernte (angeboten, nie verordnet; eigener Auftrag, berührt `gefuehrt.html`).
+
+
 Stand: 01.10.2026 · SPIELKISTE (**Design 29.09.–01.10. (claude.ai, Leo am Handy, Claude lädt selbst hoch): VIER SPIELE GEWÄHLT · PROTOTYP IM REPO · AUFTRAG FÜR CLAUDE CODE GESCHRIEBEN.**)
 
 **Prototyp:** `giros-spielplatz-prototyp.html` (NEU, Root) — sieben Mini-Spiele aus EINEM Datensatz (6 deutsche Wendungen für Spanisch-Sprecher): Piñata · Globos · Tendedero · Al pie de la letra · Frankenstein · La otra mitad · Gemelos. Reine Design-Datei, nichts verdrahtet.

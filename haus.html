@@ -696,10 +696,11 @@ window.addEventListener('keydown',function(e){var ov=document.getElementById('bo
 /* ===== RAUM: ÜBUNG ===== */
 var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
 function roomUebung(){
- kacheln({layout:'tri',items:[
+ kacheln({layout:'four',items:[
   {em:'🃏',tt:'Wortschatz',ss:'Dein Deck',bg:'#ffd0b0',go:function(){location.href='gym.html';}},
   {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
-  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}}
+  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}},
+  {em:'🪅',tt:'Spiele',ss:'Kurz und leicht',bg:'#ffe08a',go:function(){location.href='spiele.html';}}
  ]});}
 function uebKarte(i){
  if(i>=UWORDS.length){
