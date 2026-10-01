@@ -48,6 +48,12 @@ button{font:inherit;cursor:pointer}
 .chips .chip{font:700 .95rem 'DM Sans',sans-serif;color:var(--ink);background:#fff;
   border:2px solid var(--ink);border-radius:100px;padding:.6rem 1.05rem;box-shadow:2px 2px 0 var(--ink)}
 .chips .chip:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+/* Spiel zum Schluss (01.10.): eigenes Blatt über der Bühne, scrollt. */
+.spiel-ende{position:absolute;inset:0;z-index:5;overflow-y:auto;background:var(--minz);padding:1rem 1rem calc(1.4rem + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:1rem}
+.spiel-ende .karte{background:#fff;border:2.5px solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem .9rem;max-width:30rem;width:100%;margin:0 auto}
+.spiel-ende .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;max-width:30rem;width:100%;margin:0 auto}
+.spiel-ende .end{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;box-shadow:3px 3px 0 var(--ink)}
+.spiel-ende .end.primary{background:var(--acc);color:#fff}
 .pal-note{font:600 .82rem 'DM Sans',sans-serif;color:var(--muted);max-width:28ch}
 </style>
 </head>
@@ -72,6 +78,7 @@ button{font:inherit;cursor:pointer}
 <script src="lernpfad-daten-en.js"></script>
 <script src="lernpfad-sprache.js"></script>
 <script src="lernpfad.js"></script>
+<script src="juegos.js"></script>
 <script type="module">
   import { speak, warm } from './audio.js';
   window.sprich = speak;
@@ -106,6 +113,7 @@ button{font:inherit;cursor:pointer}
           quizQ:function(w){ return 'Was bedeutet „' + w + '"?'; },
           done:'Geschafft!', doneSub:'Du hast die ganze Szene gesprochen.',
           viewLesson:'Lektion ansehen', enough:'Genug für heute',
+          spielPinata:'🪅 Noch eine Piñata zum Schluss?', spielGemelos:'🧩 Noch Paare finden zum Schluss?',
           weiter:'Weiter', pruefen:'Prüfen', richtig:'Richtig!', fast:'Fast — schau dir die richtige Antwort an.' },
     es: { titel:'Conversación guiada', waehle:'Elige un tema', neu:'nuevo', wieder:'repasar',
           rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
@@ -118,6 +126,7 @@ button{font:inherit;cursor:pointer}
           quizQ:function(w){ return '¿Qué significa «' + w + '»?'; },
           done:'¡Listo!', doneSub:'Has hablado toda la escena.',
           viewLesson:'Ver la lección', enough:'Suficiente por hoy',
+          spielPinata:'🪅 ¿Una piñata para cerrar?', spielGemelos:'🧩 ¿Unas parejas para cerrar?',
           weiter:'Seguir', pruefen:'Comprobar', richtig:'¡Correcto!', fast:'Casi — mira la respuesta correcta.' },
     en: { titel:'Guided conversation', waehle:'Choose a topic', neu:'new', wieder:'review',
           rail:['Topic','Words','Listen','Speak','Lesson'],
@@ -130,6 +139,7 @@ button{font:inherit;cursor:pointer}
           quizQ:function(w){ return 'What does "' + w + '" mean?'; },
           done:'Done!', doneSub:'You spoke the whole scene.',
           viewLesson:'View lesson', enough:'Enough for today',
+          spielPinata:'🪅 A piñata to finish?', spielGemelos:'🧩 Match some pairs to finish?',
           weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.' }
   };
   var U = T[MUT] || T.de;
@@ -410,13 +420,64 @@ button{font:inherit;cursor:pointer}
     } catch (e) {}
     var lessonItem = lesson; lessonItem.typ = 'lesson'; lessonItem.weiter = U.weiter;
     SpikiuKarten.render(lessonItem, function () {
-      SpikiuKarten.render({
-        typ: 'note', emoji: '🎉', title: U.done, sub: U.doneSub,
-        buttons: [
-          { label: U.viewLesson, ghost: true, go: function () { location.href = 'lektionen.html'; } },
-          { label: U.enough, go: function () { location.href = 'haus.html'; } }
-        ]
-      }, function () {});
+      var spiel = spielZumSchluss();
+      var knoepfe = [];
+      if (spiel) knoepfe.push({ label: spiel.label, go: spiel.start });
+      knoepfe.push({ label: U.viewLesson, ghost: true, go: function () { location.href = 'lektionen.html'; } });
+      knoepfe.push({ label: U.enough, ghost: !!spiel, go: function () { location.href = 'haus.html'; } });
+      SpikiuKarten.render({ typ: 'note', emoji: '🎉', title: U.done, sub: U.doneSub, buttons: knoepfe }, function () {});
+    });
+  }
+
+  /* ── SPIEL ZUM SCHLUSS (Leo, 01.10.): aus der Ernte DIESER Szene, null Token.
+     ANGEBOTEN, nie verordnet — „Genug für heute" steht gleichwertig daneben.
+     Sätze aus dem Rollenspiel → Piñata (Eindringling aus einem anderen Satz
+     derselben Szene). Wörter → Gemelos. Abwechselnd je Szene; fehlt der
+     Stoff für das eine, kommt das andere; fehlt beides, kein Angebot. ── */
+  function spielZumSchluss() {
+    var J = window.spikiuJuegos; if (!J) return null;
+    var saetze = [];
+    if (RP && RP.schritte) RP.schritte.forEach(function (st) {
+      if (st.spikiu && st.spikiu.ziel) saetze.push(st.spikiu.ziel);
+      st.opts.forEach(function (o) { if (o.ok) saetze.push(o.text); });
+    });
+    var passend = saetze.filter(function (x) { var n = J.woerterAus(x).length; return n >= 3 && n <= 8; });
+    var woerter = (HAP && HAP.wortschatz || []).filter(function (h) { return h.ziel && h.uebersetzung; });
+    var pool = saetze.concat(woerter.map(function (h) { return h.ziel; }));
+    var pinata = null;
+    J.mezcla(passend).some(function (satz) {
+      var ein = J.eindringling(satz, pool, ZIEL);
+      if (ein) pinata = { satz: satz, intruso: ein.wort, intrusoDe: ein.aus };
+      return !!pinata;
+    });
+    var gemelos = woerter.length >= 4 ? J.mezcla(woerter).slice(0, 4).map(function (h) { return { z: h.ziel, na: h.uebersetzung }; }) : null;
+    var zaehler = 0; try { zaehler = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').blaetter) || 0; } catch (e) {}
+    var willPinata = (zaehler % 2 === 1);
+    var art = (willPinata && pinata) ? 'pinata' : (gemelos ? 'gemelos' : (pinata ? 'pinata' : null));
+    if (!art) return null;
+    return {
+      label: art === 'pinata' ? U.spielPinata : U.spielGemelos,
+      start: function () { zeigeSpiel(art, art === 'pinata' ? pinata : gemelos); }
+    };
+  }
+  function zeigeSpiel(art, daten) {
+    var J = window.spikiuJuegos;
+    var opts = { nativeLang: MUT, zielLang: ZIEL, sprich: function (t) { try { if (window.sprich) window.sprich(t, ZIEL); } catch (e) {} } };
+    var blatt = document.createElement('div'); blatt.className = 'spiel-ende';
+    var karte = document.createElement('div'); karte.className = 'karte';
+    var spiel = (art === 'pinata') ? J.pinata(daten, opts) : J.gemelos(daten, opts);
+    karte.appendChild(spiel); blatt.appendChild(karte);
+    document.getElementById('stage').appendChild(blatt);
+    var fertig = false;
+    spiel.addEventListener('jg-done', function () {
+      if (fertig) return; fertig = true;
+      var e = document.createElement('div'); e.className = 'ends';
+      var a = document.createElement('button'); a.className = 'end'; a.type = 'button'; a.textContent = U.viewLesson;
+      a.onclick = function () { spiel.stop(); location.href = 'lektionen.html'; };
+      var b = document.createElement('button'); b.className = 'end primary'; b.type = 'button'; b.textContent = U.enough;
+      b.onclick = function () { spiel.stop(); location.href = 'haus.html'; };
+      e.appendChild(a); e.appendChild(b); blatt.appendChild(e);
+      setTimeout(function () { try { e.scrollIntoView({ behavior: 'smooth', block: 'end' }); } catch (x) {} }, 900);
     });
   }
 

@@ -2,6 +2,16 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 02.10.2026 · SPIEL ZUM SCHLUSS (**Leo, 00:01: „Ein Spiel als Ende vom Geführten Gespräch anbieten, falls der User das möchte." Beschluss vom 01.10. umgesetzt.**)
+
+`gefuehrt.html` (lädt jetzt `juegos.js`): Die Abschluss-Karte 🎉 bietet als ERSTEN Knopf ein Spiel an — „🪅 Noch eine Piñata zum Schluss?" bzw. „🧩 Noch Paare finden zum Schluss?" (de/es/en). „Lektion ansehen" und „Genug für heute" stehen gleichwertig daneben: **angeboten, nie verordnet.**
+- Stoff = Ernte DIESER Szene, null Token: **Piñata** aus den Rollenspiel-Sätzen (Spikius Zeilen + richtige Lerner-Antworten, 3–8 Wörter), Eindringling aus einem ANDEREN Satz/Wort derselben Szene („gehört zu: …"). **Gemelos** aus 4 Wörtern der Szene (Wort ↔ Übersetzung).
+- Abwechselnd je Szene (über `u.blaetter`); fehlt der Stoff für das eine, kommt das andere; fehlt beides, kein Angebot.
+- Neue Funktionen `spielZumSchluss()`, `zeigeSpiel()`; Spiel läuft als eigenes Blatt `.spiel-ende` über der Bühne, danach „Lektion ansehen" / „Genug für heute". Sitzung ist zu diesem Zeitpunkt schon geräumt (Abschluss), daher kein Wiederkommen.
+- Headless geprüft (es→de zweimal, de→es): ganze Szene durchgeklickt, Angebot erscheint, Piñata und Gemelos laufen bis zum Ende, keine Fehler.
+**Offen:** `chat.html` (Freies Gespräch) bekommt das Angebot NICHT — bewusst, bis der Tausch dort steht.
+
+
 Stand: 01.10.2026 · AKROSTICHON KOMPAKT (**Leo, 23:58: „Die vertikalen Buchstaben sind zu groß. Ein langes Wort passt nicht mehr rein."**)
 
 `juegos.js` `acrostico()`: Buchstabenkacheln 2,1 rem statt 2,9 rem (Schrift 1,2 rem), ab 8 Buchstaben Klasse `lang` mit 1,8 rem; engere Zeilen, kleinere Spikiu-Hilfe. Eigenes Wort bis 14 statt 10 Buchstaben (vorher wurde „Kühlschrank" still zu KÜHLSCHRAN gekürzt). Headless geprüft: 10 Buchstaben + Knöpfe passen auf einen Handy-Bildschirm.
