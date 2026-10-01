@@ -146,6 +146,7 @@
     '.jg-fb{min-height:1.4em;font-weight:700;font-size:1rem;color:var(--jg-okInk);line-height:1.35}',
     '.jg-fb.soft{color:var(--jg-warn)}',
     '.jg-chip{background:#fff;color:var(--jg-ink);border:2.5px solid var(--jg-ink);border-radius:16px;box-shadow:3px 4px 0 var(--jg-ink);padding:.4rem .85rem;font:500 1.2rem Lora,Georgia,serif;cursor:pointer;white-space:nowrap}',
+    '.jg-mini-chip{font-size:.98rem;padding:.22rem .55rem;border-width:2px;border-radius:12px;box-shadow:2px 2px 0 var(--jg-ink)}',
     '.jg-chip.ok{background:var(--jg-ok2)}.jg-chip.no{background:var(--jg-warn2);border-color:var(--jg-warn);animation:jgWob .4s}',
     '.jg-phrase{font:600 clamp(1.3rem,5.6vw,1.75rem)/1.3 Lora,Georgia,serif;text-wrap:balance}',
     '.jg-explain{background:var(--jg-acc2);border-radius:14px;padding:.65rem .85rem;font-size:.95rem;line-height:1.45;text-align:left;width:100%}',
@@ -162,6 +163,7 @@
     '.jg-field{position:relative;width:100%;height:min(56vh,400px);min-height:300px;border-radius:16px;border:2px solid var(--jg-ink);background:linear-gradient(var(--jg-sky),#fff 85%);overflow:hidden;touch-action:manipulation}',
     '.jg-floor{position:absolute;left:0;right:0;bottom:0;height:30px;background:repeating-linear-gradient(90deg,var(--jg-faint) 0 14px,transparent 14px 28px);border-top:2.5px solid var(--jg-ink)}',
     '.jg-fly{position:absolute;left:0;top:0;will-change:transform;transition:none}',
+    '.jg-fly.no{animation:none}',
     '.jg-rope{position:absolute;left:50%;top:0;width:2px;height:34px;background:var(--jg-ink)}',
     '.jg-pin{position:absolute;left:50%;top:30px;width:110px;margin-left:-55px;transform-origin:50% -30px;animation:jgSwing 2.4s ease-in-out infinite}',
     '.jg-go{position:absolute;left:50%;bottom:48px;transform:translateX(-50%)}',
@@ -278,9 +280,13 @@
     return '<svg viewBox="0 0 120 130" aria-hidden="true">' + s + '</svg>';
   }
 
-  /* ═══ 1. PIÑATA ═══ */
+  /* ═══ 1. PIÑATA ═══
+     Leo 01.10.: kleinere Kapseln, nichts darf sich verdecken, langsamer.
+     → Nach dem Platzen ordnen sich die Wörter in Spalten und Reihen
+       (jede Kapsel hat ihren eigenen Platz), dann fallen alle gleich
+       schnell und gemächlich. Unten stapeln sie sich je Spalte. */
   function pinata(d, opts) {
-    var U = T(opts), root = wurzel(), raf = 0, fertig = false, last = 0, parts = [];
+    var U = T(opts), root = wurzel(), raf = 0, fertig = false, last = 0, parts = [], spaltenBoden = [];
     var woerter = woerterAus(d.satz);
     root.appendChild(el('p', 'jg-task', U.pinataTask));
     var f = el('div', 'jg-field'); root.appendChild(f);
@@ -291,20 +297,31 @@
     var go = el('button', 'jg-big jg-go', U.dale); go.type = 'button'; f.appendChild(go);
     var fb = el('div', 'jg-fb'); root.appendChild(fb);
 
+    var FALL_MAX = 0.6, SCHWERE = 0.035, SAMMELN = 70;   // px/Frame, Frames bis zum Fallen
     function schleife(ts) {
       var dt = last ? Math.min(40, ts - last) / 16 : 1; last = ts;
-      var W = f.clientWidth, H = f.clientHeight - 30;
+      var H = f.clientHeight - 30;
       parts.forEach(function (p) {
         if (p.weg) return;
-        p.vy = Math.min(p.vy + 0.09 * dt, p.konf ? 2.4 : 1.1);
-        p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= Math.pow(.995, dt); p.r += p.vr * dt;
-        var bw = p.e.offsetWidth, bh = p.e.offsetHeight;
-        if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx); }
-        if (p.x + bw > W) { p.x = Math.max(0, W - bw); p.vx = -Math.abs(p.vx); }
-        if (p.y + bh >= H) {
-          p.y = H - bh; p.vy = 0; p.vx = 0; p.vr = 0; p.r *= .5;
-          if (p.konf) { p.weg = true; p.e.style.opacity = '.35'; }
-          else if (!p.unten) { p.unten = true; if (p.intr && !fertig) gefangen(p); }
+        if (p.konf) {
+          p.vy = Math.min(p.vy + 0.09 * dt, 2.2); p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt;
+          if (p.y >= H - 14) { p.weg = true; p.e.style.opacity = '.35'; p.y = H - 14; }
+        } else if (!p.unten) {
+          p.t += dt;
+          if (p.t < SAMMELN) {                       // 1) an den eigenen Platz schweben
+            var k = 1 - Math.pow(1 - 0.06, dt);
+            p.x += (p.tx - p.x) * k; p.y += (p.ty - p.y) * k;
+          } else {                                   // 2) gemeinsam, langsam fallen
+            p.x += (p.tx - p.x) * 0.1;
+            p.vy = Math.min(p.vy + SCHWERE * dt, FALL_MAX); p.y += p.vy * dt;
+          }
+          p.r = Math.sin((p.t + p.ph) / 22) * 3;     // leichtes Schaukeln, bleibt lesbar
+          var boden = Math.min(H, spaltenBoden[p.spalte]);
+          if (p.y + p.h >= boden) {
+            p.y = boden - p.h; p.r = 0; p.unten = true;
+            spaltenBoden[p.spalte] = p.y - 4;
+            if (p.intr && !fertig) gefangen(p);
+          }
         }
         p.e.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) rotate(' + p.r + 'deg)';
       });
@@ -315,21 +332,25 @@
 
     go.addEventListener('click', function () {
       go.remove(); pin.remove(); rope.remove();
-      var W = f.clientWidth, H = f.clientHeight, cx = W / 2, cy = 90;
+      var W = f.clientWidth, H = f.clientHeight - 30, cx = W / 2, cy = 80;
       var cols = ['#e0412f', '#ffd24a', '#1f93b0', '#9bd14a', '#e87fb6', '#f08a2c'];
-      if (!RUHIG) for (var k = 0; k < 24; k++) {
+      if (!RUHIG) for (var k = 0; k < 22; k++) {
         var c = el('div', 'jg-conf'); c.style.background = cols[k % 6]; f.appendChild(c);
         parts.push({ e: c, konf: true, x: cx, y: cy, vx: (Math.random() - .5) * 7, vy: -2 - Math.random() * 3, r: 0, vr: (Math.random() - .5) * 14 });
       }
-      var alle = mezcla(woerter.concat([d.intruso]));
+      var alle = mezcla(woerter.concat([d.intruso])), n = alle.length;
+      var reihen = n <= 4 ? 1 : (n <= 8 ? 2 : 3), spalten = Math.ceil(n / reihen), spB = W / spalten;
+      for (var s2 = 0; s2 < spalten; s2++) spaltenBoden[s2] = H;
       alle.forEach(function (wort, ix) {
-        var b = el('button', 'jg-chip jg-fly', wort); b.type = 'button'; f.appendChild(b);
-        var p = { e: b, x: cx - b.offsetWidth / 2, y: cy, vx: (Math.random() - .5) * 5, vy: -2.6 - Math.random() * 1.6,
-          r: (Math.random() - .5) * 20, vr: (Math.random() - .5) * 1.2, intr: (wort === d.intruso) };
-        if (RUHIG) { // ruhig: Wörter liegen verteilt im Feld
-          p.x = 10 + (ix % 3) * ((W - 20) / 3); p.y = 30 + Math.floor(ix / 3) * 58; p.vx = p.vy = p.vr = 0; p.r = 0; p.unten = true;
-          b.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)';
-        }
+        var b = el('button', 'jg-chip jg-mini-chip jg-fly', wort); b.type = 'button'; f.appendChild(b);
+        var bw = b.offsetWidth, bh = b.offsetHeight;
+        var reihe = Math.floor(ix / spalten), spalte = ix % spalten;
+        var mitte = spB * (spalte + 0.5);   // jede Kapsel bleibt in ihrer Spalte
+        var tx = Math.max(4, Math.min(W - bw - 4, mitte - bw / 2));
+        var ty = 16 + reihe * (bh + 18);
+        var p = { e: b, x: cx - bw / 2, y: cy, tx: tx, ty: ty, vy: 0, r: 0, t: 0, ph: ix * 9, h: bh, spalte: spalte, intr: (wort === d.intruso) };
+        if (RUHIG) { p.x = tx; p.y = ty + 40; p.unten = true; b.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)'; }
+        else b.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)';
         parts.push(p);
         b.addEventListener('click', function () {
           if (fertig) return;

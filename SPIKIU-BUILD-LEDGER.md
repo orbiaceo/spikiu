@@ -2,6 +2,11 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.10.2026 · PIÑATA RUHIGER (**Leo am Handy, 23:52: „Todos están bien menos la piñata: demasiado rápida, las cápsulas se tapan." Alle anderen Spiele abgenommen.**)
+
+`juegos.js` `pinata()`: kleinere Kapseln (`.jg-mini-chip`, ~1rem, schmaler Rand); nach dem Platzen schwebt jedes Wort an einen **eigenen Platz** (Spalten × Reihen, 1–3 Reihen je nach Wortzahl), dann fallen alle **gleich schnell und langsam** (max. 0,6 px/Frame statt 1,1; Runde ≈ 9–11 s), nur leichtes Schaukeln (±3°) statt Drehen. Unten stapeln sie sich je Spalte. Fehltipp wackelt nicht mehr per CSS-Animation (die überschrieb die Position). Headless geprüft: 0 Überlappungen am Ende, keine Fehler.
+
+
 Stand: 01.10.2026 · SPIELKISTE GEBAUT (**Bau 01.10. nachts (claude.ai/Cowork direkt im Repo, Leo nicht am Terminal): SECHS SPIELE LIVE · ÜBUNG HAT VIER KACHELN · JEDE DRITTE SPRICHWORT-ÜBUNG IST EIN SPIEL.**)
 
 **NEU:** `juegos.js` (Root) — EIN Motor, null Token, CSS-Namensraum `jg-`, UI de/es/en aus der Muttersprache. Karten: `pinata` · `globos` · `literal` · `gemelos` (feuern `jg-done`, haben `.stop()`). Ansichten: `huerto` (Spikius Garten / El huerto de Spikiu) · `acrostico` (Akrostichon). Helfer `eindringling()` (Inhaltswort ≥4 Buchstaben aus einem ANDEREN Satz derselben Zielsprache).
