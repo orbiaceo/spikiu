@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&family=Lora:wght@500;600&display=swap">
 <style>
-/* Layout: eine Handy-Säule. Hub mit zwei Türen. ABC-Liste = senkrechte Buchstabenleiste, KaWa = Wort senkrecht, je Buchstabe ein Gedanke. Spikiu-Kartenstil. */
+/* Layout: eine Handy-Säule. Hub mit zwei Türen. Spikius Garten = senkrechte Buchstabenleiste, Akrostichon = Wort senkrecht, je Buchstabe ein Gedanke. Spikiu-Kartenstil. */
 :root{
   --bg:#eef7f1; --card:#ffffff; --ink:#15163a; --mid:#5f7068; --faint:#dfe6e0;
   --accent:#1f93b0; --accent-soft:#e3f3f8; --you:#ffd24a; --you-soft:#fff3c4;
@@ -57,8 +57,9 @@ h1{font:800 1.35rem/1.1 var(--f-ui);margin:0;text-wrap:balance}
 .abc{background:var(--card);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:var(--sh);overflow:hidden}
 .row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-bottom:1.5px solid var(--faint);min-height:52px}
 .row:last-child{border-bottom:none}
-.row.full .let{background:var(--ink);color:var(--bg)}
-.let{flex:none;width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;font:600 1.15rem var(--f-word);background:var(--card);color:var(--ink);cursor:pointer;margin-top:1px}
+.row.full .let{background:var(--known);color:#15163a}
+.row.full .let::after{content:"";position:absolute;right:-5px;top:-7px;width:12px;height:12px;background:radial-gradient(circle at 30% 70%,#4f8a2a 0 45%,transparent 46%),radial-gradient(circle at 75% 35%,#6fae3a 0 40%,transparent 41%)}
+.let{position:relative;flex:none;width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;font:600 1.15rem var(--f-word);background:var(--card);color:var(--ink);cursor:pointer;margin-top:1px}
 .entries{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-top:2px}
 .w{display:inline-flex;flex-direction:column;border:2px solid var(--ink);border-radius:12px;padding:.18rem .6rem;font:600 1.05rem/1.2 var(--f-word);background:var(--you-soft);color:var(--ink);cursor:pointer}
 .w small{font:500 .72rem var(--f-ui);color:var(--mid)}
@@ -78,7 +79,7 @@ h1{font:800 1.35rem/1.1 var(--f-ui);margin:0;text-wrap:balance}
 .btn.ghost{background:var(--card);color:var(--ink)}
 .whisper{font-size:.85rem;color:var(--mid);min-height:1.3em;margin-top:8px;padding-inline:4px}
 
-/* KaWa */
+/* Akrostichon */
 .kawa{background:var(--card);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:var(--sh);padding:16px 14px;display:flex;flex-direction:column;gap:10px}
 .kline{display:flex;align-items:center;gap:10px}
 .kbig{flex:none;width:52px;height:52px;border-radius:14px;border:var(--ow) solid var(--ink);display:grid;place-items:center;font:600 1.9rem var(--f-word);background:var(--you);color:#15163a;box-shadow:2px 3px 0 var(--ink)}
@@ -141,33 +142,33 @@ var KAWA_BEISPIEL = {
 /* ═══ UI in der Muttersprache (lernt es → UI de, lernt de → UI es) ═══ */
 var UI = {
   de:{eyebrow:'Spiele nach Birkenbihl', hub:'Spielplatz', hello:'Zwei Spiele, in denen nicht ich frage, sondern <em>dein Kopf</em> antwortet. Alles, was dir einfällt, zählt.',
-      abcT:'ABC-Liste', abcD:'Ein Thema, das ganze Alphabet. Schreib, was dir einfällt.',
-      kawaT:'KaWa', kawaD:'Ein Wort, senkrecht. Zu jedem Buchstaben ein Gedanke.',
-      abcIntro:'Wähl ein Thema. Tipp einen Buchstaben und schreib ein Wort, das dir dazu einfällt. Nicht der Reihe nach, einfach wie es kommt.',
-      write:'Wort mit', ok:'dazu', close:'fertig', lend:'Spikiu flüstert',
-      lgKnown:'kenne ich', lgYou:'dein Wort', lgLent:'von Spikiu geliehen',
+      abcT:'Spikius Garten', abcD:'Ein Thema, ein Beet von A bis Z. Pflanz jedes Wort, das dir einfällt.',
+      kawaT:'Akrostichon', kawaD:'Ein Wort, senkrecht. Zu jedem Buchstaben ein Gedanke.',
+      abcIntro:'Das ist mein Garten. Jeder Buchstabe ist ein Beet. Wähl ein Thema, tipp ein Beet an und pflanz ein Wort. Nicht der Reihe nach, einfach wie es kommt.',
+      write:'Wort mit', ok:'pflanzen', close:'fertig', lend:'Spikiu sät',
+      lgKnown:'kenne ich', lgYou:'dein Wort', lgLent:'von Spikiu gesät',
       unknownW:'Kenne ich noch nicht. Es bleibt auf deiner Liste.', knownW:function(w,t){return '<em>'+w+'</em> = '+t;},
-      lentW:function(w,t){return 'Spikiu flüstert: <em>'+w+'</em> ('+t+'). Jetzt du.';}, noLend:'Hier fällt mir auch nichts ein.',
+      lentW:function(w,t){return 'Spikiu sät: <em>'+w+'</em> ('+t+'). Jetzt du.';}, noLend:'In diesem Beet habe ich keine Samen mehr.',
       wrongLetter:function(L){return 'Das beginnt nicht mit '+L+'. Gehört es woanders hin?';},
-      again:'Nochmal von vorn', againConfirm:'Wirklich leeren? Tipp nochmal.', lastTime:'Deine Liste vom letzten Mal liegt noch da. Mach einfach weiter.',
-      kawaIntro:'So sieht ein KaWa aus. Jeder Buchstabe öffnet eine Tür. Wörter, Orte, Gefühle, auch in deiner Sprache.',
+      again:'Neu anlegen', againConfirm:'Wirklich umgraben? Tipp nochmal.', lastTime:'Dein Garten vom letzten Mal wächst noch. Pflanz einfach weiter.',
+      kawaIntro:'So sieht ein Akrostichon aus. Jeder Buchstabe öffnet eine Tür. Wörter, Orte, Gefühle, auch in deiner Sprache.',
       pick:'Wähl ein Wort:', own:'eigenes Wort', ownPh:'Wort eingeben', start:'Los',
-      kawaHint:'Hängst du? Tipp auf Spikiu neben dem Buchstaben.', done:'Fertig', saved:'Deine KaWas', yourKawa:'Dein KaWa',
-      newKawa:'Neues KaWa', note:'Prototyp. Wortfelder als Beispiel (3 Themen). Deine Listen bleiben nur in diesem Browser gespeichert.'},
+      kawaHint:'Hängst du? Tipp auf Spikiu neben dem Buchstaben.', done:'Fertig', saved:'Deine Akrosticha', yourKawa:'Dein Akrostichon',
+      newKawa:'Neues Akrostichon', note:'Nach Ideen von Vera F. Birkenbihl. Prototyp: Wortfelder als Beispiel (3 Themen). Dein Garten bleibt nur in diesem Browser gespeichert.'},
   es:{eyebrow:'Juegos según Birkenbihl', hub:'Patio de juegos', hello:'Dos juegos en los que no pregunto yo: <em>tu cabeza</em> responde. Todo lo que se te ocurra cuenta.',
-      abcT:'Lista ABC', abcD:'Un tema, todo el abecedario. Escribe lo que se te ocurra.',
-      kawaT:'KaWa', kawaD:'Una palabra en vertical. Una idea por cada letra.',
-      abcIntro:'Elige un tema. Toca una letra y escribe una palabra que te venga. No hace falta ir en orden: como salga.',
-      write:'Palabra con', ok:'añadir', close:'listo', lend:'Spikiu susurra',
-      lgKnown:'la conozco', lgYou:'tu palabra', lgLent:'prestada por Spikiu',
+      abcT:'El huerto de Spikiu', abcD:'Un tema, un bancal de la A a la Z. Planta cada palabra que se te ocurra.',
+      kawaT:'Acróstico', kawaD:'Una palabra en vertical. Una idea por cada letra.',
+      abcIntro:'Este es mi huerto. Cada letra es un bancal. Elige un tema, toca un bancal y planta una palabra. No hace falta ir en orden: como salga.',
+      write:'Palabra con', ok:'plantar', close:'listo', lend:'Spikiu siembra',
+      lgKnown:'la conozco', lgYou:'tu palabra', lgLent:'sembrada por Spikiu',
       unknownW:'Todavía no la conozco. Se queda en tu lista.', knownW:function(w,t){return '<em>'+w+'</em> = '+t;},
-      lentW:function(w,t){return 'Spikiu susurra: <em>'+w+'</em> ('+t+'). Ahora tú.';}, noLend:'Aquí tampoco se me ocurre nada.',
+      lentW:function(w,t){return 'Spikiu siembra: <em>'+w+'</em> ('+t+'). Ahora tú.';}, noLend:'En este bancal ya no me quedan semillas.',
       wrongLetter:function(L){return 'No empieza por '+L+'. ¿Va en otra letra?';},
-      again:'Empezar de nuevo', againConfirm:'¿Vaciar de verdad? Toca otra vez.', lastTime:'Tu lista de la última vez sigue aquí. Sigue sin más.',
-      kawaIntro:'Así es un KaWa. Cada letra abre una puerta: palabras, lugares, sensaciones, también en tu idioma.',
+      again:'Empezar otro huerto', againConfirm:'¿Remover la tierra de verdad? Toca otra vez.', lastTime:'Tu huerto de la última vez sigue creciendo. Sigue plantando.',
+      kawaIntro:'Así es un acróstico. Cada letra abre una puerta: palabras, lugares, sensaciones, también en tu idioma.',
       pick:'Elige una palabra:', own:'palabra propia', ownPh:'Escribe una palabra', start:'Vamos',
-      kawaHint:'¿Atascado? Toca a Spikiu junto a la letra.', done:'Listo', saved:'Tus KaWas', yourKawa:'Tu KaWa',
-      newKawa:'Nuevo KaWa', note:'Prototipo. Campos de palabras de ejemplo (3 temas). Tus listas solo se guardan en este navegador.'}
+      kawaHint:'¿Atascado? Toca a Spikiu junto a la letra.', done:'Listo', saved:'Tus acrósticos', yourKawa:'Tu acróstico',
+      newKawa:'Nuevo acróstico', note:'Según ideas de Vera F. Birkenbihl. Prototipo: campos de palabras de ejemplo (3 temas). Tu huerto solo se guarda en este navegador.'}
 };
 
 /* ═══ Zustand ═══ */
@@ -204,7 +205,7 @@ function hub(){
   kopf(ui().hub,false);
   app.appendChild(spikiu(ui().hello));
   var d=el('div','doors');
-  [['abc','A–Z','var(--you)',ui().abcT,ui().abcD],['kawa',KAWA_BEISPIEL[ziel].wort.charAt(0),'var(--known)',ui().kawaT,ui().kawaD]].forEach(function(x){
+  [['abc','A–Z','var(--known)',ui().abcT,ui().abcD],['kawa',KAWA_BEISPIEL[ziel].wort.charAt(0),'var(--you)',ui().kawaT,ui().kawaD]].forEach(function(x){
     var b=el('button','door'); var g=el('div','glyph',x[1]); g.style.background=x[2]; g.style.color='#15163a'; b.appendChild(g);
     var t=el('div'); t.appendChild(el('b',null,x[3])); t.appendChild(el('span',null,x[4])); b.appendChild(t);
     b.addEventListener('click',function(){ zeige(x[0]); }); d.appendChild(b);
@@ -281,7 +282,7 @@ function abc(){
   foot.appendChild(neu); app.appendChild(foot);
 }
 
-/* ═══ 2. KaWa ═══ */
+/* ═══ 2. Akrostichon ═══ */
 function kawa(){
   var U=ui(); kopf(U.kawaT,true);
   var bsp=KAWA_BEISPIEL[ziel], lex=alleWoerter();
