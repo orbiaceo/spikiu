@@ -214,14 +214,16 @@
     '.jg-legend i{display:inline-block;width:11px;height:11px;border-radius:4px;border:1.5px solid var(--jg-ink);vertical-align:-1px;margin-right:4px}',
     '.jg-whisper{font-size:.88rem;color:var(--jg-mid);min-height:1.3em;width:100%;text-align:left}',
     /* Akrostichon */
-    '.jg-kawa{width:100%;background:#fff;border:2.5px solid var(--jg-ink);border-radius:20px;box-shadow:4px 5px 0 var(--jg-ink);padding:.9rem .8rem;display:flex;flex-direction:column;gap:.55rem}',
+    '.jg-kawa{width:100%;background:#fff;border:2.5px solid var(--jg-ink);border-radius:20px;box-shadow:4px 5px 0 var(--jg-ink);padding:.7rem .7rem;display:flex;flex-direction:column;gap:.3rem}',
     '.jg-kl{display:flex;align-items:center;gap:.55rem}',
-    '.jg-kb{flex:none;width:2.9rem;height:2.9rem;border-radius:13px;border:2.5px solid var(--jg-ink);display:grid;place-items:center;font:600 1.7rem Lora,Georgia,serif;background:var(--jg-yel);box-shadow:2px 3px 0 var(--jg-ink)}',
-    '.jg-kl input{flex:1;min-width:0;border:none;border-bottom:2px solid var(--jg-faint);background:none;color:var(--jg-ink);padding:.4rem .15rem;font:500 1.1rem Lora,Georgia,serif}',
+    '.jg-kb{flex:none;width:2.1rem;height:2.1rem;border-radius:9px;border:2px solid var(--jg-ink);display:grid;place-items:center;font:600 1.2rem Lora,Georgia,serif;background:var(--jg-yel);box-shadow:1.5px 2px 0 var(--jg-ink)}',
+    '.jg-kawa.lang .jg-kb{width:1.8rem;height:1.8rem;font-size:1.05rem;border-radius:8px}',
+    '.jg-kawa.lang{gap:.2rem}',
+    '.jg-kl input{flex:1;min-width:0;border:none;border-bottom:2px solid var(--jg-faint);background:none;color:var(--jg-ink);padding:.25rem .15rem;font:500 1.05rem Lora,Georgia,serif}',
     '.jg-kl input:focus{outline:none;border-bottom-color:var(--jg-acc)}',
     '.jg-kl .tr{flex:none;font-size:.72rem;color:var(--jg-mid);max-width:28%;text-align:right;overflow-wrap:anywhere}',
-    '.jg-kl .hint{flex:none;width:2.2rem;height:2.2rem;border-radius:50%;border:2px solid var(--jg-ink);background:#fff;cursor:pointer;display:grid;place-items:center;padding:0}',
-    '.jg-kl .hint svg{width:1.6rem;height:1.6rem}',
+    '.jg-kl .hint{flex:none;width:1.9rem;height:1.9rem;border-radius:50%;border:2px solid var(--jg-ink);background:#fff;cursor:pointer;display:grid;place-items:center;padding:0}',
+    '.jg-kl .hint svg{width:1.35rem;height:1.35rem}',
     '.jg-kc{width:100%;background:#fff;border:2.5px solid var(--jg-ink);border-radius:20px;box-shadow:4px 5px 0 var(--jg-ink);padding:1rem;display:grid;grid-template-columns:auto 1fr;gap:.3rem .9rem;align-items:baseline;text-align:left}',
     '.jg-kc h4{grid-column:1/-1;margin:0 0 .3rem;font:500 .68rem "DM Mono",monospace;letter-spacing:.18em;color:var(--jg-mid);text-transform:uppercase}',
     '.jg-kc .L{font:600 1.8rem/1 Lora,Georgia,serif;color:var(--jg-acc)}',
@@ -627,7 +629,7 @@
       var ws = el('div', 'jg-words');
       (cfg.woerter || []).forEach(function (x) { var p = el('button', 'jg-pill', x); p.type = 'button'; p.addEventListener('click', function () { bauen(x, []); }); ws.appendChild(p); });
       root.appendChild(ws);
-      var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-acro-own'; inp.placeholder = U.aOwn; inp.maxLength = 10;
+      var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-acro-own'; inp.placeholder = U.aOwn; inp.maxLength = 14;
       var go = el('button', null, U.aGo); go.type = 'button'; ir.appendChild(inp); ir.appendChild(go); root.appendChild(ir);
       var eigen = function () { var v = inp.value.replace(/[^\p{L}]/gu, '').toUpperCase(); if (v.length >= 2) bauen(v, []); };
       go.addEventListener('click', eigen); inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') eigen(); });
@@ -650,7 +652,7 @@
     }
     function bauen(wort, vorher) {
       leeren(); root.appendChild(spikiuSagt(esc(U.aHint)));
-      var k = el('div', 'jg-kawa'), felder = [], whisper = el('div', 'jg-whisper');
+      var k = el('div', 'jg-kawa' + (wort.length > 7 ? ' lang' : '')), felder = [], whisper = el('div', 'jg-whisper');
       function entwurf() {
         if (cfg.beiEntwurf) cfg.beiEntwurf({ wort: wort, a: felder.map(function (x) { return x.inp.value; }) });
       }

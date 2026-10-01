@@ -2,6 +2,11 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 01.10.2026 · AKROSTICHON KOMPAKT (**Leo, 23:58: „Die vertikalen Buchstaben sind zu groß. Ein langes Wort passt nicht mehr rein."**)
+
+`juegos.js` `acrostico()`: Buchstabenkacheln 2,1 rem statt 2,9 rem (Schrift 1,2 rem), ab 8 Buchstaben Klasse `lang` mit 1,8 rem; engere Zeilen, kleinere Spikiu-Hilfe. Eigenes Wort bis 14 statt 10 Buchstaben (vorher wurde „Kühlschrank" still zu KÜHLSCHRAN gekürzt). Headless geprüft: 10 Buchstaben + Knöpfe passen auf einen Handy-Bildschirm.
+
+
 Stand: 01.10.2026 · PIÑATA RUHIGER (**Leo am Handy, 23:52: „Todos están bien menos la piñata: demasiado rápida, las cápsulas se tapan." Alle anderen Spiele abgenommen.**)
 
 `juegos.js` `pinata()`: kleinere Kapseln (`.jg-mini-chip`, ~1rem, schmaler Rand); nach dem Platzen schwebt jedes Wort an einen **eigenen Platz** (Spalten × Reihen, 1–3 Reihen je nach Wortzahl), dann fallen alle **gleich schnell und langsam** (max. 0,6 px/Frame statt 1,1; Runde ≈ 9–11 s), nur leichtes Schaukeln (±3°) statt Drehen. Unten stapeln sie sich je Spalte. Fehltipp wackelt nicht mehr per CSS-Animation (die überschrieb die Position). Headless geprüft: 0 Überlappungen am Ende, keine Fehler.
