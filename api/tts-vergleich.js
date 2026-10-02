@@ -21,6 +21,10 @@ const STIMMEN = {
   'google-aoede':  { anbieter: 'google', name: 'de-DE-Chirp3-HD-Aoede' },
   'google-kore':   { anbieter: 'google', name: 'de-DE-Chirp3-HD-Kore' },
   'google-charon': { anbieter: 'google', name: 'de-DE-Chirp3-HD-Charon' },
+  // Google WaveNet (günstiger, 4 Mio. Zeichen/Monat gratis)
+  'wavenet-a': { anbieter: 'google', name: 'de-DE-Wavenet-A' },
+  'wavenet-f': { anbieter: 'google', name: 'de-DE-Wavenet-F' },
+  'wavenet-b': { anbieter: 'google', name: 'de-DE-Wavenet-B' },
   // Microsoft Azure Neural
   'azure-katja':     { anbieter: 'azure', name: 'de-DE-KatjaNeural' },
   'azure-seraphina': { anbieter: 'azure', name: 'de-DE-SeraphinaMultilingualNeural' },
