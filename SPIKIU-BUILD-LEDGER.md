@@ -10,6 +10,12 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > selbst nachsehen, selbst schreiben. Prototypen zusätzlich als Artifact zeigen, damit Leo sie
 > am Handy anklicken kann. Ledger-Pflege wie gehabt bei jedem Schritt.
 
+> **OFFENE UNTERNEHMERISCHE ENTSCHEIDUNG — PREISMODELL (Leo, 02.10.2026, bitte bei passender Gelegenheit daran erinnern):**
+> Grundsatz: **Alles, was Tokens verbraucht, ist Premium und wird bezahlt.** Die Schreibwerkstatt gehört damit zum Premium-Abo
+> (deckt sich mit „GRATIS = NULL TOKEN", 17.08.: Freies Gespräch, Lesewerkstatt, Schreibwerkstatt, Lektionserzeugung).
+> Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
+> **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
+
 Stand: 02.10.2026 · SCHREIBWERKSTATT: ABSCHLUSS + LEKTION GEBAUT (**Leo, 10:25, zum Prototyp: „Sí, dale!"**)
 
 **`schreibwerkstatt.html`:**
