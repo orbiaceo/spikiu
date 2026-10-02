@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spikiu — Stimmen-Vergleich Deutsch</title>
+<!--
+  TEST-ROUTE (02.10.2026) — Leos Hör-Vergleich der deutschen Stimmen: Piper (lokal, gratis),
+  Geräte-Stimme (gratis) und Cloud-Anbieter (Google Chirp 3 HD, Azure Neural, ElevenLabs).
+  Nicht im Menü verlinkt. Nach der Anbieter-Entscheidung entfernen (samt api/tts-vergleich.js).
+-->
+<style>
+  :root { --ink:#2b2118; --warm:#c9956a; --bg:#faf6f0; --muted:#7a6a58; --card:#fff; --line:#eadfce; --ok:#3f8f5a; --bad:#b4483c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; padding:24px 16px 48px; }
+  main { max-width:34rem; margin:0 auto; display:flex; flex-direction:column; gap:18px; }
+  header { display:flex; align-items:center; gap:14px; }
+  .capy { width:64px; height:64px; flex:0 0 auto; }
+  h1 { font-size:1.2rem; margin:0; }
+  .sub { font-size:.88rem; color:var(--muted); margin:4px 0 0; line-height:1.45; }
+  textarea { width:100%; min-height:6.6rem; border:1.5px solid var(--line); border-radius:14px; padding:12px; font:inherit; font-size:1rem; background:#fff; color:var(--ink); resize:vertical; }
+  h2 { font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 0; }
+  .hint { font-size:.8rem; color:var(--muted); margin:0; line-height:1.4; }
+  .row { display:flex; align-items:center; gap:12px; background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:10px 12px; }
+  .row .info { flex:1 1 auto; min-width:0; }
+  .row .n { font-weight:600; font-size:.98rem; }
+  .row .d { font-size:.78rem; color:var(--muted); margin-top:2px; }
+  .row .s { font-size:.76rem; margin-top:3px; min-height:1em; color:var(--muted); }
+  .row .s.ok { color:var(--ok); } .row .s.bad { color:var(--bad); }
+  .play { flex:0 0 auto; width:48px; height:48px; border-radius:50%; border:none; background:var(--warm); color:#fff; font-size:1.1rem; cursor:pointer; box-shadow:0 3px 10px rgba(201,149,106,.35); }
+  .play:disabled { opacity:.4; cursor:not-allowed; box-shadow:none; }
+  .play.laeuft { background:#8b5e3c; }
+  .aktuell { border-color:var(--warm); }
+  .tag { display:inline-block; font-size:.66rem; font-weight:600; padding:1px 7px; border-radius:99px; background:#efe6da; color:#6b5942; margin-left:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <h1>Stimmen-Vergleich Deutsch</h1>
+      <p class="sub">Derselbe Satz, alle Stimmen. Unter jeder Stimme steht, wie lange es bis zum ersten Ton dauerte.</p>
+    </div>
+  </header>
+
+  <textarea id="text">Guten Morgen! Ich hätte gern einen Kaffee mit Milch, bitte. Und dazu ein Stück Apfelkuchen, wenn Sie noch welchen haben.</textarea>
+
+  <h2>Piper · im Handy, gratis, offline</h2>
+  <p class="hint">Erster Klick pro Stimme lädt das Modell einmalig (Sekunden). Zweiter Klick zeigt das echte Tempo.</p>
+  <div id="piper"></div>
+
+  <h2>Gerätestimme · gratis, sofort</h2>
+  <p class="hint">Die deutschen Stimmen, die auf <em>diesem</em> Gerät installiert sind. Andere Handys klingen anders.</p>
+  <div id="geraet"></div>
+
+  <h2>Cloud · bester Klang, kostet pro Zeichen</h2>
+  <p class="hint" id="cloudHint">Prüfe Schlüssel …</p>
+  <div id="cloud"></div>
+</main>
+
+<script type="module">
+import { TtsSession } from '/audio/vendor/piper-tts-web.js';
+
+const $ = (id) => document.getElementById(id);
+const textEl = $('text');
+const satz = () => textEl.value.replace(/\s+/g, ' ').trim().slice(0, 300);
+
+// ── Gemeinsame Wiedergabe: immer nur EINE Stimme gleichzeitig ──────────────
+let aktuell = null;   // { stop }
+function stopAlles() {
+  if (aktuell) { try { aktuell.stop(); } catch (_) {} aktuell = null; }
+  try { speechSynthesis.cancel(); } catch (_) {}
+  document.querySelectorAll('.play.laeuft').forEach((b) => { b.classList.remove('laeuft'); b.textContent = '▶'; });
+}
+function spieleUrl(url, onEnde) {
+  const a = new Audio(url);
+  aktuell = { stop: () => { a.pause(); onEnde(); } };
+  a.onended = () => { aktuell = null; onEnde(); };
+  a.onerror = () => { aktuell = null; onEnde(); };
+  return a.play();
+}
+
+function zeile(container, name, detail, tag, onPlay) {
+  const r = document.createElement('div'); r.className = 'row';
+  r.innerHTML = '<div class="info"><div class="n"></div><div class="d"></div><div class="s"></div></div><button class="play" type="button" aria-label="Anhören">▶</button>';
+  r.querySelector('.n').textContent = name;
+  if (tag) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = tag; r.querySelector('.n').appendChild(t); }
+  r.querySelector('.d').textContent = detail;
+  const btn = r.querySelector('.play'), st = r.querySelector('.s');
+  const setStatus = (txt, cls) => { st.textContent = txt; st.className = 's' + (cls ? ' ' + cls : ''); };
+  btn.onclick = async () => {
+    const warLaufend = btn.classList.contains('laeuft');
+    stopAlles();
+    if (warLaufend) return;
+    document.querySelectorAll('.row.aktuell').forEach((x) => x.classList.remove('aktuell'));
+    r.classList.add('aktuell');
+    btn.classList.add('laeuft'); btn.textContent = '■';
+    const ende = () => { btn.classList.remove('laeuft'); btn.textContent = '▶'; };
+    try { await onPlay(setStatus, ende); }
+    catch (e) { ende(); setStatus('Fehler: ' + (e && e.message || e), 'bad'); }
+  };
+  container.appendChild(r);
+  return { btn, setStatus };
+}
+const sek = (ms) => (ms / 1000).toFixed(1).replace('.', ',') + ' s';
+
+// ── Piper ──────────────────────────────────────────────────────────────────
+const WASM_PATHS = {
+  onnxWasm: '/audio/vendor/ort/',
+  piperWasm: '/audio/vendor/piper/piper_phonemize.wasm',
+  piperData: '/audio/vendor/piper/piper_phonemize.data',
+};
+const PIPER = [
+  ['de_DE-thorsten-medium', 'Thorsten · medium', '♂ · jetzt in Spikiu', 'aktiv'],
+  ['de_DE-thorsten-high', 'Thorsten · high', '♂ · bisher, langsamer', ''],
+  ['de_DE-thorsten_emotional-medium', 'Thorsten emotional · medium', '♂ · lebendiger', ''],
+  ['de_DE-mls-medium', 'MLS · medium', 'Hörbuch-Sprecher, gemischt', ''],
+  ['de_DE-kerstin-low', 'Kerstin · low', '♀', ''],
+  ['de_DE-ramona-low', 'Ramona · low', '♀', ''],
+  ['de_DE-eva_k-x_low', 'Eva K · x_low', '♀ · verworfen', ''],
+];
+const sessions = new Map();
+let baukette = Promise.resolve();
+function piperSession(voiceId, onProgress) {
+  if (sessions.has(voiceId)) return sessions.get(voiceId);
+  const p = baukette.then(() => {
+    TtsSession._instance = null;
+    return TtsSession.create({ voiceId, wasmPaths: WASM_PATHS, progress: onProgress });
+  });
+  baukette = p.then(() => {}, () => {});
+  sessions.set(voiceId, p);
+  p.catch(() => sessions.delete(voiceId));
+  return p;
+}
+for (const [id, name, detail, tag] of PIPER) {
+  zeile($('piper'), name, detail, tag, async (setStatus, ende) => {
+    const t0 = performance.now();
+    const kalt = !sessions.has(id);
+    if (kalt) setStatus('lädt Modell …');
+    const s = await piperSession(id, (ev) => {
+      if (ev && ev.total) setStatus('lädt Modell … ' + Math.round(100 * ev.loaded / ev.total) + ' %');
+    });
+    const t1 = performance.now();
+    setStatus('rechnet …');
+    const blob = await s.predict(satz());
+    const t2 = performance.now();
+    const url = URL.createObjectURL(blob);
+    await spieleUrl(url, () => { URL.revokeObjectURL(url); ende(); });
+    setStatus((kalt ? 'Laden ' + sek(t1 - t0) + ' · ' : '') + 'erster Ton nach ' + sek(t2 - t1) + ' Rechnen', 'ok');
+  });
+}
+
+// ── Gerätestimme ───────────────────────────────────────────────────────────
+function geraeteStimmen() {
+  const box = $('geraet'); box.innerHTML = '';
+  const alle = (window.speechSynthesis && speechSynthesis.getVoices()) || [];
+  const de = alle.filter((v) => v.lang && v.lang.toLowerCase().startsWith('de'));
+  if (!window.speechSynthesis) { box.innerHTML = '<p class="hint">Dieser Browser hat keine Sprachausgabe.</p>'; return; }
+  if (!de.length) { box.innerHTML = '<p class="hint">Keine deutsche Gerätestimme gefunden (oder noch nicht geladen).</p>'; return; }
+  for (const v of de) {
+    zeile(box, v.name, v.lang + (v.localService ? ' · offline' : ' · online'), v.default ? 'Standard' : '', (setStatus, ende) => new Promise((resolve) => {
+      const u = new SpeechSynthesisUtterance(satz());
+      u.lang = v.lang; u.voice = v;
+      const t0 = performance.now();
+      u.onstart = () => setStatus('erster Ton nach ' + sek(performance.now() - t0), 'ok');
+      u.onend = u.onerror = () => { ende(); resolve(); };
+      aktuell = { stop: () => { speechSynthesis.cancel(); ende(); } };
+      speechSynthesis.speak(u);
+    }));
+  }
+}
+if (window.speechSynthesis) {
+  geraeteStimmen();
+  speechSynthesis.onvoiceschanged = geraeteStimmen;
+} else geraeteStimmen();
+
+// ── Cloud ──────────────────────────────────────────────────────────────────
+const CLOUD = [
+  ['google', 'google-aoede', 'Google Chirp 3 HD · Aoede', '♀ · 1 Mio. Zeichen/Monat gratis, danach 30 $/Mio.'],
+  ['google', 'google-kore', 'Google Chirp 3 HD · Kore', '♀'],
+  ['google', 'google-charon', 'Google Chirp 3 HD · Charon', '♂'],
+  ['azure', 'azure-katja', 'Azure Neural · Katja', '♀ · 0,5 Mio. Zeichen/Monat gratis'],
+  ['azure', 'azure-seraphina', 'Azure Neural · Seraphina', '♀ · mehrsprachig'],
+  ['azure', 'azure-conrad', 'Azure Neural · Conrad', '♂'],
+  ['elevenlabs', 'eleven-flash', 'ElevenLabs Flash · Matilda', '♀ · ca. 0,05 $/1000 Zeichen'],
+  ['elevenlabs', 'eleven-multi', 'ElevenLabs Multilingual v2 · Matilda', '♀ · beste Qualität, ca. 0,10 $/1000 Zeichen'],
+];
+const DEMO = {
+  google: 'https://cloud.google.com/text-to-speech',
+  azure: 'https://speech.microsoft.com/portal/voicegallery',
+  elevenlabs: 'https://elevenlabs.io/text-to-speech',
+};
+(async () => {
+  let da = {};
+  try { const r = await fetch('/api/tts-vergleich'); da = (await r.json()).anbieter || {}; } catch (_) {}
+  const fehlt = Object.keys(DEMO).filter((k) => !da[k]);
+  $('cloudHint').innerHTML = fehlt.length
+    ? 'Ohne Schlüssel grau. Zum Probehören ohne Schlüssel: Satz kopieren und in die offizielle Demo einfügen — ' +
+      fehlt.map((k) => '<a href="' + DEMO[k] + '" target="_blank" rel="noopener">' + ({ google: 'Google', azure: 'Azure', elevenlabs: 'ElevenLabs' })[k] + '</a>').join(' · ')
+    : 'Jeder Klick erzeugt die Stimme neu in der Cloud (kostet ein paar Hundert Zeichen).';
+  for (const [anb, id, name, detail] of CLOUD) {
+    const z = zeile($('cloud'), name, detail, '', async (setStatus, ende) => {
+      const t0 = performance.now();
+      setStatus('fragt Cloud …');
+      const r = await fetch('/api/tts-vergleich', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ stimme: id, text: satz() }) });
+      if (!r.ok) { let m = r.status; try { m = (await r.json()).error; } catch (_) {} throw new Error(m); }
+      const blob = await r.blob();
+      const t1 = performance.now();
+      const url = URL.createObjectURL(blob);
+      await spieleUrl(url, () => { URL.revokeObjectURL(url); ende(); });
+      setStatus('erster Ton nach ' + sek(t1 - t0) + ' (inkl. Netz)', 'ok');
+    });
+    if (!da[anb]) { z.btn.disabled = true; z.setStatus('Schlüssel fehlt'); }
+  }
+})();
+</script>
+</body>
+</html>

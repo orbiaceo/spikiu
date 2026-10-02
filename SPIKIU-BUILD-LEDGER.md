@@ -16,6 +16,14 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 02.10.2026 · STIMMEN-VERGLEICH DEUTSCH (Test-Route, **Leo, 21:16: „Ja, wechseln zu Thorsten und danach einen Vergleich"**)
+
+Leo fand `eva_k-x_low` „nicht gut" und fragte nach anderen Anbietern. Deutsch läuft wieder mit `thorsten-medium`. Für die Anbieter-Entscheidung:
+- **`stimmen-vergleich.html`** (NEU, Root, nicht verlinkt): ein editierbarer Testsatz für alle Stimmen. (1) **Piper live**: thorsten-medium (aktiv) / -high / thorsten_emotional-medium / mls-medium / kerstin-low / ramona-low / eva_k-x_low. (2) **Gerätestimme**: alle deutschen `speechSynthesis`-Stimmen des Geräts. (3) **Cloud**: Google Chirp 3 HD (Aoede ♀, Kore ♀, Charon ♂), Azure Neural (Katja ♀, Seraphina ♀, Conrad ♂), ElevenLabs Matilda (Flash v2.5 + Multilingual v2). Jede Zeile zeigt die Zeit bis zum ersten Ton; immer nur eine Stimme gleichzeitig.
+- **`api/tts-vergleich.js`** (NEU): GET meldet, welche Schlüssel da sind; POST `{stimme, text}` → MP3. Nur feste Stimmen, Text ≤ 300 Zeichen. Schlüssel als Vercel-Env (alle optional): `GOOGLE_TTS_API_KEY`, `AZURE_SPEECH_KEY` + `AZURE_SPEECH_REGION`, `ELEVENLABS_API_KEY`. Ohne Schlüssel bleiben die Cloud-Knöpfe grau, mit Links zu den offiziellen Demos.
+- Geprüft: Syntax, Endpoint lokal (GET → alle false; POST ohne Schlüssel → 503; unbekannte Stimme → 400), Seite bei 375 px angesehen. Cloud-Aufrufe selbst NICHT geprüft (keine Schlüssel, Sandbox ohne Netz zu den Anbietern).
+- **Offen:** Leo hört und entscheidet den Anbieter (Kosten-Notiz: Google Chirp 3 HD 1 Mio. Zeichen/Monat gratis, dann 30 $/Mio.; Azure Neural 0,5 Mio. gratis; ElevenLabs ca. 0,05 $ (Flash) bzw. 0,10 $ (Multilingual) pro 1000 Zeichen). Idee für den Bau: feste Texte (Gym, Karten, Sprichwörter, Lektionen) einmal erzeugen und cachen → jedes Wort nur einmal bezahlt. **Nach der Entscheidung `stimmen-vergleich.html` + `api/tts-vergleich.js` entfernen.**
+
 Stand: 02.10.2026 · AUDIO: DEUTSCHE STIMME VERSPÄTET / DESYNC BEHOBEN (**Leo, 20:27: „Ja, alles bitte. Ich bin mit allen einverstanden."**)
 
 **Befund (Leo, 11:57):** Deutsche Stimme setzt verspätet ein; beim nächsten Schritt läuft das Audio des letzten Schritts asynchron nach. Drei Ursachen in `audio.js` / den Räumen:
