@@ -2,7 +2,7 @@
 
 Stand: 20.06.2026 · Design-Sitzung (claude.ai) · eingefrorenes Spec, Quelle für die Bau-Aufträge
 Update 20.06.: Stimmen per Ohr getestet → VIER STIMMEN final neu gesetzt (siehe unten).
-Update 02.10.: Deutsch auf `eva_k-x_low` (Tempo, Leos Wahl); `audio.js` hat jetzt `stop()` (Anti-Desync).
+Update 02.10.: Deutsch auf `thorsten-medium` (Tempo); Cloud-Anbieter-Vergleich offen (`stimmen-vergleich.html`); `audio.js` hat jetzt `stop()` (Anti-Desync).
 Phase-A-Auftrag ist auf Leos Wunsch (20.06.) JETZT der aktive `AKTUELLER-AUFTRAG.md` (Audio zuerst);
 Kleinkram geparkt in `AUFTRAG-KLEINKRAM.md` (kommt direkt danach).
 Branch: dev · Gehört zum Ledger.
@@ -29,7 +29,7 @@ Stimme angehört. Lehre: die `low`/`x_low`-Tiers klingen amateurhaft — Sprung 
 
 | Sprache | voiceId | Sex | Tier | Notiz |
 |---|---|---|---|---|
-| Deutsch | `de_DE-eva_k-x_low` | ♀ | x_low | **02.10.2026, Leos Wahl** (vorher `thorsten-high`: zu langsam, Verzögerung beim Schrittwechsel; kurz `thorsten-medium`). Kleinstes Modell → schnellste Synthese. HF: `de/de_DE/eva_k/x_low/de_DE-eva_k-x_low.onnx` |
+| Deutsch | `de_DE-thorsten-medium` | ♂ | medium | **02.10.2026:** high → medium (high zu langsam beim Schrittwechsel). `eva_k-x_low` kurz probiert, von Leo verworfen („nicht gut"). Gute deutsche FRAUENSTIMME gibt es in Piper nicht (alle low/x_low). |
 | Spanisch | `es_ES-sharvard-medium` | ♂ | medium | Leos Wahl; `es_ES-sharvard-high` existiert nicht (nur medium) |
 | Englisch (US) | `en_US-lessac-high` | ♀ | high | männliche Reserve in high vorhanden: `en_US-ryan-high` |
 | Griechisch | `el_GR-rapunzelina-low` | — | low | EINZIGE griechische Piper-Stimme; medium/high existiert NICHT |
