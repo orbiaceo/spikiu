@@ -18,7 +18,7 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 Stand: 02.10.2026 · PREMIUM-PILLEN IM HAUS (**Leo, 11:30: Pille „Premium" wie beim Freien Gespräch für Lesewerkstatt, Schreibwerkstatt, Lektionen; bei Lektionen „Aus Gesprächen" weg, Titel „Deine Lektionen".**)
 
-`haus.html`: Übung → Lesewerkstatt + Schreibwerkstatt bekommen `pill:'Premium'` (gelb `#ffd24a`, wie Freies Gespräch). Bibliothek → Kachel heißt jetzt „Deine Lektionen", Untertitel „Aus Gesprächen" entfernt (Lektionen kommen inzwischen auch aus der Schreibwerkstatt), Pille „Premium". Headless am 375-px-Bildschirm angesehen, keine Seitenfehler. Nur eine Anzeige: Der Zugang selbst ist noch nicht gesperrt (folgt mit der Preisentscheidung).
+`haus.html`: Übung → Lesewerkstatt + Schreibwerkstatt bekommen `pill:'Premium'` (gelb `#ffd24a`, wie Freies Gespräch). Bibliothek → Kachel heißt jetzt „Deine Lektionen", Untertitel „Aus Gesprächen" entfernt (Lektionen kommen inzwischen auch aus der Schreibwerkstatt), Pille „Premium" in **Grün** `#9bd14a` (Leo, 11:33: Kontrast zur gelben Kachel). Headless am 375-px-Bildschirm angesehen, keine Seitenfehler. Nur eine Anzeige: Der Zugang selbst ist noch nicht gesperrt (folgt mit der Preisentscheidung).
 
 Stand: 02.10.2026 · SCHREIBWERKSTATT: ABSCHLUSS + LEKTION GEBAUT (**Leo, 10:25, zum Prototyp: „Sí, dale!"**)
 
