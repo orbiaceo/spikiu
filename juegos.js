@@ -355,7 +355,7 @@
     f.appendChild(el('div', 'jg-floor'));
     var rope = el('div', 'jg-rope'), pin = el('div', 'jg-pin'); pin.innerHTML = pinataSvg();
     f.appendChild(rope); f.appendChild(pin);
-    var catcher = el('div', 'jg-catch'); catcher.innerHTML = SPIKIU; catcher.style.left = 'calc(50% - 30px)'; f.appendChild(catcher);
+    var catcher = el('div', 'jg-catch'); catcher.innerHTML = SPIKIU; catcher.style.left = 'calc(100% - 66px)'; f.appendChild(catcher);
     var go = el('button', 'jg-big jg-go', U.dale); go.type = 'button'; f.appendChild(go);
     var fb = el('div', 'jg-fb'); root.appendChild(fb);
 

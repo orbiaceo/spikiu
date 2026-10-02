@@ -2,6 +2,9 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 02.10.2026 · SPIKIU IN DER ECKE (**Leo, 09:58, Screenshot: Spikiu stand mittig unter „¡Dale!" und war verdeckt.**) — `juegos.js` `pinata()`: Spikiu wartet jetzt rechts unten in der Ecke (`calc(100% - 66px)`); zum Auffangen läuft er wie bisher zum Eindringling.
+
+
 Stand: 02.10.2026 · KLANG BEI FALSCHEM PAAR (**Leo, 09:54: eigener Mini-Klang `pareja_falsch.wav` für Parejas/Gemelos am Ende des Geführten Gesprächs. „Bei richtig (grün) reicht ohne Audio."**)
 
 **NEU:** `audio/spiel/paar-falsch.wav` — Leos Original (WAV 44,1 kHz, Stereo, Anschlag ab 2 ms, Spitze −23,2 dBFS), nur stille Fahne gekürzt (3,95 → 2,0 s, 0,5 s Ausblenden; Klang endet bei ~1,5 s).
