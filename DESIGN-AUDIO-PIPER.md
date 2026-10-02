@@ -52,6 +52,14 @@ Mehrkosten der Wahl: nur feste Texte doppelt erzeugt (einmalig ≈ 15 $ oder im 
   Grenzwerte werden später berechnet (Basis: Abo ≈ 3,50 €/Monat brutto ≈ 2,94 € netto).
 - Technische Pflicht beim Bau: Verbrauch serverseitig pro Nutzer zählen (braucht Nutzer-Identität → Supabase);
   in Google Cloud **harte Kontingente** (Quota) setzen, nicht nur Budget-Warnungen — Warnungen stoppen nichts.
+- **Leo, 23:08: festes Kontingent JA.** Umsetzung in drei Schichten: (1) eigener Monatszähler im Endpoint
+  `api/tts.js` (Gesamt-Zeichen/Monat in der DB; über dem Deckel → keine Cloud-Synthese mehr), (2) Google-Kontingent
+  „Zeichen pro Minute" als Sicherheitsnetz (Google-TTS-Kontingente sind pro Minute, nicht pro Monat → begrenzt die
+  maximal mögliche Monatssumme), (3) Budget-Warnung per Mail als Frühwarnung.
+- **Limit erreicht (Leo, 23:08):** Nutzer bekommt eine Nachricht „Du hast dein Limit erreicht. Wenn du … willst,
+  kannst du für … das bekommen." (Upgrade-Angebot). Text, Preis und was bis zum Upgrade passiert: noch offen
+  (Vorschlag: Spikiu spricht dann mit Piper weiter, offen angekündigt). FRAGE AN DESIGN: Ton gegen Seele prüfen
+  („gefühlt, nie gezählt" — keine Zahlen/Zähler zeigen); Währung € statt $.
 
 **Noch offen:** Google-API-Schlüssel
 (`GOOGLE_TTS_API_KEY`) + Speicher für die Audios (Vercel Blob oder Cloudflare R2); Premium-Erkennung im Client.

@@ -16,6 +16,10 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 02.10.2026 · KONTINGENT + LIMIT-NACHRICHT (**Leo, 23:08:** festes Kontingent ja; bei Limit Nachricht mit Upgrade-Angebot)
+
+Details + Drei-Schichten-Deckel in `DESIGN-AUDIO-PIPER.md`. Offen: Text der Limit-Nachricht, Preis der Stufe, Verhalten bis zum Upgrade.
+
 Stand: 02.10.2026 · STIMMEN ♂/♀ + KOSTEN-GRUNDSATZ (**Leo, 22:59**)
 
 Nutzer wählt männlich/weiblich. ♂ Enceladus (es-US, de-DE, en-US, el-GR); ♀ Kore (es-US, de-DE, el-GR), Erinome (en-US). Tabelle in `DESIGN-AUDIO-PIPER.md`. **Kosten-Grundsatz:** „klare Kalkulation und absolute Kontrolle über die Kosten. Keine Überraschungen." → Verbrauch pro Nutzer messen; an einer Grenze steigt das Abo (kein stilles Umschalten auf Piper); Grenzwerte später berechnen. Beim Bau: serverseitige Zählung (Supabase) + harte Google-Kontingente.
