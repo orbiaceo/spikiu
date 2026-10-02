@@ -16,7 +16,11 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
-Stand: 02.10.2026 · ENTSCHEIDUNG CLOUD-STIMME: GOOGLE CHIRP 3 HD (**Leo, 21:48: „Wähle die beste Qualität und günstigste Variante."**)
+Stand: 02.10.2026 · BESTÄTIGT: CHIRP 3 HD FÜR ALLES (**Leo, 22:30: „Nehmen wir chirp 3 HD für alles."**)
+
+Leo hat Chirp 3 HD und Gemini 2.5 Flash TTS gehört (Gemini „der Hammer", Chirp „ziemlich gut") und nach Kostenvergleich Chirp für alle Textarten und Sprachen gewählt. Gemini verworfen (Wort-Treue, Tempo, Preissprung 2027). Details in `DESIGN-AUDIO-PIPER.md`. **Nächster Bau-Auftrag:** `api/tts.js` (Chirp + Cache), `audio.js` innen umstellen (Cloud → Piper → Gerät), Stimmwahl pro Sprache, Testseite + `api/tts-vergleich.js` danach entfernen.
+
+ (**Leo, 21:48: „Wähle die beste Qualität und günstigste Variante."**)
 
 Festgehalten in `DESIGN-AUDIO-PIPER.md` (Abschnitt ENTSCHEIDUNG 02.10.). Kurz: feste Texte → Chirp 3 HD für alle, einmal erzeugt + gespeichert (≈ 0 $); frei erzeugte Texte → Chirp nur Premium, sonst Piper/Gerätestimme; ElevenLabs nicht mehr Phase 2. Kostenschätzung 10.000 Nutzer / 15 % Premium ≈ 690 $/Monat. **Offen vor dem Bau:** Stimmwahl pro Sprache (Leo hört), `GOOGLE_TTS_API_KEY` in Vercel, Speicher (Vercel Blob oder R2), Premium-Erkennung.
 

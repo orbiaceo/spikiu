@@ -26,6 +26,12 @@ Gemini-TTS wird ab 01.2027 doppelt so teuer.
 Schätzung bei 10.000 Nutzern, 15 % Premium, 20 Min. frei erzeugtes Hören pro Premium-Nutzer/Monat:
 ≈ 690 $/Monat (≈ 0,46 $ pro zahlendem Nutzer). Alle Nutzer mit Cloud-Stimme bei frei erzeugten Texten wären ≈ 4.770 $.
 
+**Bestätigt 02.10., 22:30 (Leo: „Nehmen wir chirp 3 HD für alles.")** — nach Hör-Test (Chirp „ziemlich gut",
+Gemini 2.5 Flash TTS „der Hammer") und Kostenvergleich. Chirp 3 HD für ALLE Textarten und alle vier Sprachen.
+**Gemini-TTS verworfen**, obwohl ~⅓ günstiger (≈ 19 $ vs. 30 $ pro Mio. Zeichen): Modell kann Wörter
+verändern (für eine Lern-App heikel), langsamer bis zum ersten Ton, Nachfolger ab 01.2027 ≈ 34 $/Mio. Zeichen.
+Hinweis Stimmwahl: Spanisch = español neutro → eher `es-US`-Chirp-Stimmen als `es-ES` prüfen.
+
 **Noch offen:** welche Chirp-Stimme pro Sprache (Leo hört auf `stimmen-vergleich.html`); Google-API-Schlüssel
 (`GOOGLE_TTS_API_KEY`) + Speicher für die Audios (Vercel Blob oder Cloudflare R2); Premium-Erkennung im Client.
 
