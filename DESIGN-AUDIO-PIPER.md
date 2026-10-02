@@ -9,6 +9,28 @@ Branch: dev · Gehört zum Ledger.
 
 ---
 
+## ENTSCHEIDUNG 02.10.2026 — Cloud-Stimme Google Chirp 3 HD (Leo, 21:48: „Wähle die beste Qualität und günstigste Variante.")
+
+Ersetzt den Plan „ElevenLabs = Phase 2". Grund: Chirp 3 HD ist Googles beste Stimme, etwa halb so teuer
+wie ElevenLabs Flash, mit 1 Mio. Zeichen/Monat gratis. WaveNet wäre billiger, klingt aber hörbar schlechter;
+Gemini-TTS wird ab 01.2027 doppelt so teuer.
+
+1. **Feste Texte** (Gym, Karten, Sprichwörter, Lernpfad, Lernroman, Bücher): **Chirp 3 HD für ALLE Nutzer**,
+   je Text EINMAL erzeugt, gespeichert (Schlüssel = Hash aus Stimme + Text), danach nur noch ausgeliefert.
+   Kosten einmalig, praktisch 0 $ (passt in die Gratis-Million).
+2. **Frei erzeugte Texte** (freies Gespräch, eigene Lektionen, Schreibwerkstatt): **Chirp 3 HD nur im
+   Premium-Abo** (passt zum Grundsatz „was laufend kostet, ist Premium"). Gratis-Nutzer: Piper bzw. Gerätestimme.
+3. **Rückfall immer:** kein Netz / Fehler → Piper → Gerätestimme. Nie stumm.
+4. `speak(text, zielsprache)` bleibt die EINZIGE Schnittstelle; nur `audio.js` innen + ein Endpoint ändern sich.
+
+Schätzung bei 10.000 Nutzern, 15 % Premium, 20 Min. frei erzeugtes Hören pro Premium-Nutzer/Monat:
+≈ 690 $/Monat (≈ 0,46 $ pro zahlendem Nutzer). Alle Nutzer mit Cloud-Stimme bei frei erzeugten Texten wären ≈ 4.770 $.
+
+**Noch offen:** welche Chirp-Stimme pro Sprache (Leo hört auf `stimmen-vergleich.html`); Google-API-Schlüssel
+(`GOOGLE_TTS_API_KEY`) + Speicher für die Audios (Vercel Blob oder Cloudflare R2); Premium-Erkennung im Client.
+
+---
+
 ## ZIEL
 
 Audio in Vokabel-Übungen, Lektionen und vor allem im **Gym** (stilles Üben unterwegs,

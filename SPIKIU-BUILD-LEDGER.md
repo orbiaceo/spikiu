@@ -16,7 +16,11 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
-Stand: 02.10.2026 · STIMMEN-VERGLEICH DEUTSCH (Test-Route, **Leo, 21:16: „Ja, wechseln zu Thorsten und danach einen Vergleich"**)
+Stand: 02.10.2026 · ENTSCHEIDUNG CLOUD-STIMME: GOOGLE CHIRP 3 HD (**Leo, 21:48: „Wähle die beste Qualität und günstigste Variante."**)
+
+Festgehalten in `DESIGN-AUDIO-PIPER.md` (Abschnitt ENTSCHEIDUNG 02.10.). Kurz: feste Texte → Chirp 3 HD für alle, einmal erzeugt + gespeichert (≈ 0 $); frei erzeugte Texte → Chirp nur Premium, sonst Piper/Gerätestimme; ElevenLabs nicht mehr Phase 2. Kostenschätzung 10.000 Nutzer / 15 % Premium ≈ 690 $/Monat. **Offen vor dem Bau:** Stimmwahl pro Sprache (Leo hört), `GOOGLE_TTS_API_KEY` in Vercel, Speicher (Vercel Blob oder R2), Premium-Erkennung.
+
+ (Test-Route, **Leo, 21:16: „Ja, wechseln zu Thorsten und danach einen Vergleich"**)
 
 Leo fand `eva_k-x_low` „nicht gut" und fragte nach anderen Anbietern. Deutsch läuft wieder mit `thorsten-medium`. Für die Anbieter-Entscheidung:
 - **`stimmen-vergleich.html`** (NEU, Root, nicht verlinkt): ein editierbarer Testsatz für alle Stimmen. (1) **Piper live**: thorsten-medium (aktiv) / -high / thorsten_emotional-medium / mls-medium / kerstin-low / ramona-low / eva_k-x_low. (2) **Gerätestimme**: alle deutschen `speechSynthesis`-Stimmen des Geräts. (3) **Cloud**: Google Chirp 3 HD (Aoede ♀, Kore ♀, Charon ♂), Azure Neural (Katja ♀, Seraphina ♀, Conrad ♂), ElevenLabs Matilda (Flash v2.5 + Multilingual v2). Jede Zeile zeigt die Zeit bis zum ersten Ton; immer nur eine Stimme gleichzeitig.
