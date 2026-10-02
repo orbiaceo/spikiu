@@ -618,7 +618,7 @@ function roomBibliothek(){
  kacheln({layout:'four',items:[
   {em:'📖',tt:'Lernroman',ss:'Immersiv lesen',bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
   {em:'📜',tt:'Wendungen & Sprichwörter',ss:'Sprache & Kultur',bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
-  {em:'📓',tt:'Lektionen',ss:'Aus Gesprächen',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
+  {em:'📓',tt:'Deine<br>Lektionen',pill:'Premium',pillBg:'#ffd24a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
   {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter',bg:'#c7e89a',go:renderBook}
  ]});}
 function readRoman(){
@@ -698,8 +698,8 @@ var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'
 function roomUebung(){
  kacheln({layout:'four',items:[
   {em:'🃏',tt:'Wortschatz',ss:'Dein Deck',bg:'#ffd0b0',go:function(){location.href='gym.html';}},
-  {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
-  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}},
+  {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen',pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
+  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}},
   {em:'🪅',tt:'Spiele',ss:'Kurz und leicht',bg:'#ffe08a',go:function(){location.href='spiele.html';}}
  ]});}
 function uebKarte(i){
