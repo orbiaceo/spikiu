@@ -18,7 +18,7 @@ import { TtsSession } from '/audio/vendor/piper-tts-web.js';
 // ── Die vier finalen Stimmen (Design 20.06., fest verdrahtet) ──────────────────
 // Kein Aufrufer kennt je einen voiceId — nur die zielsprache.
 const VOICE_MAP = {
-  de: 'de_DE-thorsten-medium',   // 02.10.: high → medium (gleicher Sprecher, deutlich schneller)
+  de: 'de_DE-eva_k-x_low',       // 02.10.: Leos Wahl (Frauenstimme, kleinstes Modell = schnellstes); vorher thorsten-high
   es: 'es_ES-sharvard-medium',
   en: 'en_US-lessac-high',
   el: 'el_GR-rapunzelina-low',
