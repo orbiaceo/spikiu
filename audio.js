@@ -3,6 +3,8 @@
 // EINZIGE öffentliche Schnittstelle für ALLE Räume:
 //     import { speak, warm } from '/audio.js';
 //     await speak(text, zielsprache);     // zielsprache ∈ 'de' | 'es' | 'en' | 'el'
+//     stop();                              // laufende Ausgabe SOFORT abbrechen (Schrittwechsel)
+//     warm();                              // ohne Argument: Zielsprache aus dem Profil
 //
 // Heute: Piper-WASM (lokal im Browser, self-gehostet, MIT-Modelle von HuggingFace,
 // OPFS-Cache → offline). Morgen (Phase 2): ElevenLabs hinter DERSELBEN speak()-API —
@@ -16,7 +18,7 @@ import { TtsSession } from '/audio/vendor/piper-tts-web.js';
 // ── Die vier finalen Stimmen (Design 20.06., fest verdrahtet) ──────────────────
 // Kein Aufrufer kennt je einen voiceId — nur die zielsprache.
 const VOICE_MAP = {
-  de: 'de_DE-thorsten-high',
+  de: 'de_DE-thorsten-medium',   // 02.10.: high → medium (gleicher Sprecher, deutlich schneller)
   es: 'es_ES-sharvard-medium',
   en: 'en_US-lessac-high',
   el: 'el_GR-rapunzelina-low',
@@ -118,22 +120,71 @@ function splitSentences(text) {
   for (const s of parts) {
     const t = s.trim();
     if (!t) continue;
-    if (t.length <= 220) { out.push(t); continue; }
-    for (let i = 0; i < t.length; i += 200) out.push(t.slice(i, i + 200));
+    for (const k of splitClauses(t)) {
+      if (k.length <= 220) { out.push(k); continue; }
+      for (let i = 0; i < k.length; i += 200) out.push(k.slice(i, i + 200));
+    }
   }
   return out;
 }
 
+// Lange Sätze zusätzlich an Komma/Semikolon/Doppelpunkt teilen (02.10.): Piper rechnet
+// einen Brocken immer KOMPLETT, bevor der erste Ton kommt. Kürzere Brocken = früherer
+// erster Ton, und ein überholter Brocken blockiert die Engine nur kurz. Kurze Teilstücke
+// werden wieder zusammengelegt (mind. ~40 Zeichen), damit die Satzmelodie nicht zerfällt.
+function splitClauses(satz) {
+  if (satz.length <= 90) return [satz];
+  const teile = satz.match(/[^,;:]+[,;:]+|[^,;:]+$/g) || [satz];
+  const out = [];
+  let puffer = '';
+  for (const t of teile) {
+    puffer = puffer ? puffer + ' ' + t.trim() : t.trim();
+    if (puffer.length >= 40) { out.push(puffer); puffer = ''; }
+  }
+  if (puffer) { if (out.length && puffer.length < 25) out[out.length - 1] += ' ' + puffer; else out.push(puffer); }
+  return out;
+}
+
 // ── Wiedergabe einer einzelnen WAV-Blob; löst auf, wenn fertig gespielt ────────
+// Das gerade spielende <audio> wird gemerkt, damit stop()/ein neuer speak() es
+// SOFORT abwürgen kann — vorher lief ein angefangener Satz immer bis zum Ende.
+let aktuellesAudio = null;   // { el, abbrechen }
+
 function playBlob(blob) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(blob);
     const a = new Audio(url);
-    const done = (fn, arg) => { URL.revokeObjectURL(url); fn(arg); };
+    let erledigt = false;
+    const done = (fn, arg) => {
+      if (erledigt) return;
+      erledigt = true;
+      if (aktuellesAudio && aktuellesAudio.el === a) aktuellesAudio = null;
+      URL.revokeObjectURL(url);
+      fn(arg);
+    };
+    aktuellesAudio = { el: a, abbrechen: () => { try { a.pause(); } catch (_) {} done(resolve); } };
     a.onended = () => done(resolve);
     a.onerror = () => done(reject, new Error('audio: Wiedergabe fehlgeschlagen'));
     a.play().catch((e) => done(reject, e));
   });
+}
+
+// Alles, was gerade klingt, sofort verstummen lassen (Piper-<audio> + Geräte-Stimme).
+function stopPlayback() {
+  if (aktuellesAudio) aktuellesAudio.abbrechen();
+  try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+}
+
+// ── Synthese serialisieren (02.10.) ────────────────────────────────────────────
+// Die ONNX-Session darf nicht zwei Sätze gleichzeitig rechnen. Vorher konnte ein neuer
+// Klick mit einer noch laufenden Vorab-Synthese kollidieren (→ Fehler → Browser-Stimme
+// oder Hänger). Jetzt eine Warteschlange pro Session.
+const synthChain = new WeakMap();   // session -> Promise
+function synth(session, text) {
+  const vorher = synthChain.get(session) || Promise.resolve();
+  const p = vorher.then(() => session.predict(text));
+  synthChain.set(session, p.then(() => {}, () => {}));
+  return p;
 }
 
 // ── Anti-Desync (Phase B): Generations-Zähler. Jeder speak() erhöht ihn und merkt
@@ -150,12 +201,13 @@ async function speakWithPiper(text, zielsprache, gen) {
   if (!chunks.length) return;
   emit({ phase: 'speak', zielsprache });
   // Pipeline: nächsten Satz synthetisieren, während der aktuelle spielt.
-  let nextSynth = session.predict(chunks[0]);
+  let nextSynth = synth(session, chunks[0]);
   for (let i = 0; i < chunks.length; i++) {
     const blob = await nextSynth;
     if (gen !== speakGen) return;                   // ein neuerer Klick hat übernommen
-    if (i + 1 < chunks.length) nextSynth = session.predict(chunks[i + 1]);
+    if (i + 1 < chunks.length) nextSynth = synth(session, chunks[i + 1]);
     await playBlob(blob);
+    if (gen !== speakGen) return;                   // während der Wiedergabe abgebrochen
   }
 }
 
@@ -183,6 +235,7 @@ function speakWithBrowser(text, zielsprache) {
 async function speak(text, zielsprache) {
   if (!text || !String(text).trim()) return;
   const gen = ++speakGen;          // dieser Aufruf ist ab jetzt der aktuelle
+  stopPlayback();                  // altes Audio SOFORT aus — nie zwei Stimmen übereinander
   // Geräte-Stimme direkt (Griechisch immer; auf iOS ALLE Sprachen): kein stummes Piper.
   if (useDeviceVoice(zielsprache)) {
     await speakWithBrowser(text, zielsprache);
@@ -197,19 +250,57 @@ async function speak(text, zielsprache) {
   }
 }
 
-// ── Öffentlich: warm(zielsprache) — stilles Vorwärmen (für Phase B) ────────────
+// ── Öffentlich: stop() — laufende Ausgabe sofort beenden ───────────────────────
+// Für Schrittwechsel: erhöht den Generations-Zähler (laufende Pipelines verwerfen
+// ihren Rest) und würgt das gerade Klingende ab.
+function stop() {
+  speakGen++;
+  stopPlayback();
+}
+
+// Zielsprache aus dem Profil — damit warm() auch ohne Argument das Richtige tut
+// (vorher lief warm() ohne Sprache still ins Leere → Kaltstart beim ersten 🔊).
+function profilZielsprache() {
+  try {
+    const u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
+    const z = u && u.profile && u.profile.zielsprache;
+    return VOICE_MAP[z] ? z : null;
+  } catch (_) { return null; }
+}
+
+// ── Öffentlich: warm(zielsprache) — stilles Vorwärmen ─────────────────────────
+// Lädt das Modell UND rechnet einmal ein Wort still durch: so sind auch Phonemizer-
+// WASM, espeak-Daten und ONNX-Kernel beim ersten echten 🔊 schon heiß.
+const gewaermt = new Set();
 async function warm(zielsprache) {
+  zielsprache = zielsprache || profilZielsprache();
+  if (!zielsprache || !VOICE_MAP[zielsprache]) return false;
   if (useDeviceVoice(zielsprache)) return true;   // Geräte-Stimme: nichts vorzuwärmen
-  try { await getSession(zielsprache); return true; }
+  try {
+    const session = await getSession(zielsprache);
+    if (!gewaermt.has(zielsprache)) {
+      gewaermt.add(zielsprache);
+      try { await synth(session, 'Hola.'); } catch (_) { /* nur Vorwärmen */ }
+    }
+    return true;
+  }
   catch (e) { console.warn('audio: Vorwärmen fehlgeschlagen.', e); return false; }
+}
+
+// Global erreichbar für klassische Skripte (karten-engine.js ruft das bei jeder neuen Karte).
+if (typeof window !== 'undefined') {
+  window.spikiuAudioStop = stop;
+  // Seite verlassen / in den Hintergrund → nicht weiterreden.
+  window.addEventListener('pagehide', stop);
 }
 
 const audio = {
   speak,
+  stop,
   warm,
   set onstatus(fn) { statusCb = (typeof fn === 'function') ? fn : null; },
   get onstatus() { return statusCb; },
 };
 
-export { speak, warm };
+export { speak, stop, warm };
 export default audio;

@@ -82,6 +82,8 @@ button{font:inherit;cursor:pointer}
 <script type="module">
   import { speak, warm } from './audio.js';
   window.sprich = speak;
+  /* warm() ohne Argument nimmt seit 02.10. die Zielsprache aus dem Profil
+     (vorher lief es ohne Sprache still ins Leere → Kaltstart beim ersten 🔊). */
   if (typeof warm === 'function') try { warm(); } catch (e) {}
 </script>
 <script>
@@ -159,6 +161,8 @@ button{font:inherit;cursor:pointer}
   var railEl = document.getElementById('rail');
   railEl.innerHTML = U.rail.map(function (s, i) { return '<div class="step" data-i="' + i + '"><span class="dot"></span>' + s + '</div>'; }).join('');
   function setRail(idx) {
+    /* Schrittwechsel → altes Audio sofort aus (02.10.) */
+    try { if (window.spikiuAudioStop) window.spikiuAudioStop(); } catch (e) {}
     railEl.querySelectorAll('.step').forEach(function (s, i) {
       s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx);
     });

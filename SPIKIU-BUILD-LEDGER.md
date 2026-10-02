@@ -16,6 +16,23 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 02.10.2026 · AUDIO: DEUTSCHE STIMME VERSPÄTET / DESYNC BEHOBEN (**Leo, 20:27: „Ja, alles bitte. Ich bin mit allen einverstanden."**)
+
+**Befund (Leo, 11:57):** Deutsche Stimme setzt verspätet ein; beim nächsten Schritt läuft das Audio des letzten Schritts asynchron nach. Drei Ursachen in `audio.js` / den Räumen:
+1. **Kein echtes Stoppen.** Der Generations-Zähler prüfte nur ZWISCHEN Sätzen; ein angefangener Satz lief immer zu Ende, und es gab kein `stop()` für Schrittwechsel.
+2. **`warm()` ohne Sprache** (`gefuehrt.html`) lief still ins Leere → deutsches Modell wurde erst beim ersten 🔊 geladen (Kaltstart, Sekunden).
+3. **Anbieter-Teil:** `de_DE-thorsten-high` ist das schwerste der vier Modelle; Piper rechnet single-threaded (COOP/COEP bewusst aus) und jeden Brocken komplett, bevor der erste Ton kommt.
+
+**Gebaut:**
+- `audio.js`: neues `stop()` (auch als `window.spikiuAudioStop`, und bei `pagehide`); jeder `speak()` würgt laufendes Audio + Geräte-Stimme SOFORT ab; Synthese pro Session serialisiert (keine Kollision Vorab-Synthese ↔ neuer Klick); lange Sätze zusätzlich an `, ; :` geteilt (Teilstücke ≥ 40 Zeichen) → früherer erster Ton; `warm()` ohne Argument nimmt `spikiu_user.profile.zielsprache` und rechnet einmal still ein Wort durch (Phonemizer/ONNX heiß).
+- **Deutsch: `de_DE-thorsten-high` → `de_DE-thorsten-medium`** (gleicher Sprecher, deutlich schneller; Leo einverstanden). `audio-test.html`-Label nachgezogen, `DESIGN-AUDIO-PIPER.md` aktualisiert.
+- `karten-engine.js`: `render()` ruft vor jeder neuen Karte `stopAudio()` → gilt für alle Karten-Räume.
+- `gefuehrt.html`: `setRail()` (jeder Phasenwechsel) stoppt Audio; Kommentar zu `warm()`.
+
+**Geprüft:** Node-Syntaxcheck aller angefassten Dateien + Inline-Skripte. Headless Chromium mit Ersatz-Stimme (Import-Map auf Fake-`TtsSession`, da HF aus der Sandbox nicht erreichbar): `warm()` ohne Argument → de ✓; Wechsel mitten im Satz → altes Audio sofort pausiert, neuer Satz ~150 ms später, vorab berechneter alter Satz wird NICHT gespielt ✓; `spikiuAudioStop()` → Stille ✓; keine Synthese-Kollision ✓. **Nicht geprüft:** echtes thorsten-medium-Modell (Download + Klang), echtes Handy → **Leo am Gerät** (erster Aufruf lädt das medium-Modell einmalig neu).
+
+**Offen / Lehre:** Andere Räume mit eigenem Schrittwechsel ohne Karten-Engine (Gym, Spiele, Sprichwörter, Szene) können bei Bedarf `window.spikiuAudioStop()` ebenfalls rufen — jeder neue `speak()` stoppt dort ohnehin schon. Lehre: ein Generations-Zähler allein verhindert keinen Desync, wenn das gerade klingende Element nicht abgebrochen werden kann.
+
 Stand: 02.10.2026 · PREMIUM-PILLEN IM HAUS (**Leo, 11:30: Pille „Premium" wie beim Freien Gespräch für Lesewerkstatt, Schreibwerkstatt, Lektionen; bei Lektionen „Aus Gesprächen" weg, Titel „Deine Lektionen".**)
 
 `haus.html`: Übung → Lesewerkstatt + Schreibwerkstatt bekommen `pill:'Premium'` (gelb `#ffd24a`, wie Freies Gespräch). Bibliothek → Kachel heißt jetzt „Deine Lektionen", Untertitel „Aus Gesprächen" entfernt (Lektionen kommen inzwischen auch aus der Schreibwerkstatt), Pille „Premium" in **Grün** `#9bd14a` (Leo, 11:33: Kontrast zur gelben Kachel). Headless am 375-px-Bildschirm angesehen, keine Seitenfehler. Nur eine Anzeige: Der Zugang selbst ist noch nicht gesperrt (folgt mit der Preisentscheidung).

@@ -162,6 +162,14 @@
     card.style.setProperty('--scale', lo.toFixed(3));
   }
 
+  /* Laufende Ausgabe beenden: audio.js (Piper + Geräte-Stimme) oder nur die Geräte-Stimme. */
+  function stopAudio() {
+    try {
+      if (window.spikiuAudioStop) window.spikiuAudioStop();
+      else if (window.speechSynthesis) window.speechSynthesis.cancel();
+    } catch (e) { /* Audio darf nie den Fluss brechen */ }
+  }
+
   function audioBtn(text) {
     var b = el('button', 'spk-audio', SVG_PLAY);
     b.type = 'button';
@@ -472,6 +480,7 @@
     opts = opts || {};
     injectCSS();
     if (!CFG.stage) throw new Error('SpikiuKarten.setup({stage}) fehlt');
+    stopAudio();   /* neue Karte → altes Audio sofort aus (02.10., Anti-Desync) */
     var F = buildFrame();
     F.swipe.backFn = opts.back || null;
     RENDER[item.typ](item, F, next || function () {});
