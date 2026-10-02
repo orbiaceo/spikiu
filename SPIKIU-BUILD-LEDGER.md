@@ -20,6 +20,15 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 03.10.2026 · SONNET-MODELL UMSCHALTBAR (VORBEREITUNG 5.5) (**Leo, 01:43: „Ja, bereite es vor."**)
+
+- Alle neun Sonnet-Endpoints (`assessment`, `chat-spanish/-german/-english`, `detect-language`, `generate-learningpath`, `haeppchen`, `lesebegleiter`, `onboarding`) lesen das Modell aus der Konstante `SONNET` ← Vercel-Env **`SPIKIU_SONNET_MODEL`** (Whitelist `claude-sonnet-4-5` | `claude-sonnet-5-5`; leer oder Tippfehler → `claude-sonnet-4-5`). Ohne Env-Eintrag ändert sich nichts.
+- Token-Log zeigt jetzt auch das tatsächlich genutzte Modell: `[chat-spanish] tokens (claude-sonnet-…) — cache_read=…`.
+- `CLAUDE.md` Backend-Stil angepasst: Modell nie fest verdrahten, immer `SONNET`.
+- Geprüft: Syntax aller api/*.js; lokaler Lauf: ohne Env → 4.5, `claude-sonnet-5-5` → 5.5, Tippfehler → 4.5.
+- **Ablauf für Leo:** (1) Vercel → Settings → Environment Variables → `SPIKIU_SONNET_MODEL` = `claude-sonnet-5-5`, **nur Häkchen bei Preview** → dev neu ausliefern → Probegespräche auf der dev-Vorschau. (2) Gefällt Spikius Ton: dieselbe Variable auch für Production setzen. (3) Zurück jederzeit: Variable löschen.
+- Haiku-Endpoints (gespraech, lektor, taller, generate-lesson, rueckmeldung) unverändert.
+
 Stand: 02.10.2026 · PROMPT-CACHING IN ALLEN SPIKIU-GESPRÄCHS-ENDPOINTS (**Leo, 23:39: „Ja, prompt-Caching zuerst."**)
 
 **Befund:** Die Chat-Endpoints bezahlten den System-Prompt (chat-spanish: ~27.700 Zeichen) bei JEDEM Zug voll. Nur `gespraech.js` cachte schon (Muster: Block 1 fest für alle, Block 2 Laufzeitprofil).

@@ -48,7 +48,8 @@ komplett (Ohren + 4 Beine), heißt nach außen IMMER „Spikiu", nie „Capy".
 - **Daten-Verträge** aus dem Ledger einhalten (page1/page2 · [LEKTOR] · gespraech-Body).
 - **Backend-Stil** (Muster: `api/chat.js`, `api/lektor.js`, `api/gespraech.js`):
   `export default async function handler(req,res)`, CORS-Header, OPTIONS-Kurzschluss,
-  `x-api-key` aus `process.env.ANTHROPIC_API_KEY`, Modell `claude-sonnet-4-5`.
+  `x-api-key` aus `process.env.ANTHROPIC_API_KEY`, Sonnet-Modell über die Konstante `SONNET`
+  (Env `SPIKIU_SONNET_MODEL`, Whitelist, Standard `claude-sonnet-4-5`) — nie fest verdrahten.
   KEIN `import.meta` (transpiliert nicht → FUNCTION_INVOCATION_FAILED) → Pfade über
   `process.cwd()`. `.md` zur Laufzeit lesen, in `vercel.json` per `includeFiles` bündeln.
   Dateinamen `.js` (nie `.mjs`). `vercel.json`-Pfad == realer Dateiname.

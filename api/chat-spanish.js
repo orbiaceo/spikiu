@@ -15,6 +15,11 @@ function mitVerlaufsCache(msgs) {
   return msgs.slice(0, i).concat([{ ...m, content }]);
 }
 
+// Sonnet-Modell umschaltbar (03.10.): Vercel-Env SPIKIU_SONNET_MODEL. Nur geprüfte Werte, sonst Standard —
+// ein Tippfehler in Vercel darf nie den Endpoint lahmlegen. Rollout = Env setzen, kein Code.
+const SONNET_ERLAUBT = ['claude-sonnet-4-5', 'claude-sonnet-5-5'];
+const SONNET = SONNET_ERLAUBT.includes(process.env.SPIKIU_SONNET_MODEL) ? process.env.SPIKIU_SONNET_MODEL : 'claude-sonnet-4-5';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -874,7 +879,7 @@ You accompany the human to discover they can already speak Spanish.`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: SONNET,
         max_tokens: maxTokens || 600,
         // Prompt-Caching (02.10.): System-Prompt ist innerhalb einer Sitzung gleich →
         // ab dem 2. Zug zu ~1/10 gelesen statt voll bezahlt; Verlauf über mitVerlaufsCache().
@@ -894,7 +899,7 @@ You accompany the human to discover they can already speak Spanish.`;
 
     const data = await response.json();
     // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
-    try { const u = data.usage || {}; console.log('[chat-spanish] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
+    try { const u = data.usage || {}; console.log('[chat-spanish] tokens (' + (data.model || '') + ') — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     const reply = data.content[0].text;
 
     return res.status(200).json({ reply });

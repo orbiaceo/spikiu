@@ -251,7 +251,7 @@ export default async function handler(req, res) {
 
     const data = await r.json();
     // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
-    try { const u = data.usage || {}; console.log('[gespraech] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
+    try { const u = data.usage || {}; console.log('[gespraech] tokens (' + (data.model || '') + ') — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     if (!r.ok) return res.status(r.status).json(data);
 
     const text = (data.content && data.content[0] && data.content[0].text) || '';

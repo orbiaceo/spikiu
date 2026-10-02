@@ -49,6 +49,11 @@ function _zuOft(req) {
   return e.n > _grenze ? Math.ceil((_fenster - (jetzt - e.start)) / 1000) : 0;
 }
 
+// Sonnet-Modell umschaltbar (03.10.): Vercel-Env SPIKIU_SONNET_MODEL. Nur geprüfte Werte, sonst Standard —
+// ein Tippfehler in Vercel darf nie den Endpoint lahmlegen. Rollout = Env setzen, kein Code.
+const SONNET_ERLAUBT = ['claude-sonnet-4-5', 'claude-sonnet-5-5'];
+const SONNET = SONNET_ERLAUBT.includes(process.env.SPIKIU_SONNET_MODEL) ? process.env.SPIKIU_SONNET_MODEL : 'claude-sonnet-4-5';
+
 export default async function handler(req, res) {
   /* ══════════════════════════════════════════════════════════════
      WACHE (01.09.2026) — siehe api/rueckmeldung.js für dasselbe Muster.
@@ -170,7 +175,7 @@ The first character of your response MUST be { and the last character MUST be }.
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: SONNET,
         max_tokens: 600,
         system: systemPrompt,
         messages

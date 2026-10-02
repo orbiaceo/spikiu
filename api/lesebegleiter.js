@@ -76,6 +76,11 @@ ${(kontext || '').slice(0, 4000)}
 """`;
 }
 
+// Sonnet-Modell umschaltbar (03.10.): Vercel-Env SPIKIU_SONNET_MODEL. Nur geprüfte Werte, sonst Standard —
+// ein Tippfehler in Vercel darf nie den Endpoint lahmlegen. Rollout = Env setzen, kein Code.
+const SONNET_ERLAUBT = ['claude-sonnet-4-5', 'claude-sonnet-5-5'];
+const SONNET = SONNET_ERLAUBT.includes(process.env.SPIKIU_SONNET_MODEL) ? process.env.SPIKIU_SONNET_MODEL : 'claude-sonnet-4-5';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -115,7 +120,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: SONNET,
         max_tokens: 320,
         system,
         messages: [{ role: 'user', content: ('' + frage).slice(0, 800) }]
@@ -124,7 +129,7 @@ export default async function handler(req, res) {
 
     const data = await r.json();
     // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
-    try { const u = data.usage || {}; console.log('[lesebegleiter] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
+    try { const u = data.usage || {}; console.log('[lesebegleiter] tokens (' + (data.model || '') + ') — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     if (!r.ok) return res.status(r.status).json(data);
 
     const antwort = (data.content && data.content[0] && data.content[0].text) || '';
