@@ -154,11 +154,12 @@ DIESE HÄPPCHEN (Laufzeit)
 - koennen (INTERN, nie sichtbar): ${koennen}
 - Du erzeugst NUR die Vorbereitungs-Häppchen. KEIN Rollenspiel, KEINE Charla, KEINE Anrede.`;
 
-  const system =
-    docs.seele + '\n\n' +
-    docs.modus + '\n\n' +
-    laufzeit + '\n' +
-    vertragsAnweisung(SPRACHE[zielsprache], SPRACHE[muttersprache], koennen, fremde_schrift);
+  // Prompt-Caching (02.10.): Seele + Modus für ALLE gleich → gecacht; Rest pro Anfrage.
+  const system = [
+    { type: 'text', text: docs.seele + '\n\n' + docs.modus, cache_control: { type: 'ephemeral' } },
+    { type: 'text', text: laufzeit + '\n' +
+      vertragsAnweisung(SPRACHE[zielsprache], SPRACHE[muttersprache], koennen, fremde_schrift) }
+  ];
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -177,6 +178,8 @@ DIESE HÄPPCHEN (Laufzeit)
     });
 
     const data = await r.json();
+    // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
+    try { const u = data.usage || {}; console.log('[haeppchen] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     if (!r.ok) return res.status(r.status).json(data);
 
     const text = (data.content && data.content[0] && data.content[0].text) || '';

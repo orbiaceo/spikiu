@@ -100,7 +100,11 @@ export default async function handler(req, res) {
     zielsprache:   zielsprache   || 'es'
   };
 
-  const system = s.seele + '\n\n' + rolle(p, kapitel, kontext);
+  // Prompt-Caching (02.10.): Seele für ALLE gleich → gecacht; Rolle/Kapitel pro Anfrage.
+  const system = [
+    { type: 'text', text: s.seele, cache_control: { type: 'ephemeral' } },
+    { type: 'text', text: rolle(p, kapitel, kontext) }
+  ];
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -119,6 +123,8 @@ export default async function handler(req, res) {
     });
 
     const data = await r.json();
+    // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
+    try { const u = data.usage || {}; console.log('[lesebegleiter] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     if (!r.ok) return res.status(r.status).json(data);
 
     const antwort = (data.content && data.content[0] && data.content[0].text) || '';

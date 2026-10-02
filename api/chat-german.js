@@ -3,6 +3,18 @@
 // If messages is empty → Spikiu opens the conversation warmly,
 // referencing what was learned during the assessment.
 
+// Verlaufs-Caching (02.10.): Cache-Marke an die LETZTE Nachricht → alles davor (System + bisheriger
+// Verlauf) wird beim nächsten Zug zu ~1/10 gelesen. Explizite Marke statt Top-Level-Option (robuster).
+function mitVerlaufsCache(msgs) {
+  if (!Array.isArray(msgs) || !msgs.length) return msgs;
+  const i = msgs.length - 1, m = msgs[i];
+  let content;
+  if (typeof m.content === 'string') content = [{ type: 'text', text: m.content, cache_control: { type: 'ephemeral' } }];
+  else if (Array.isArray(m.content) && m.content.length) content = m.content.map((b, j) => j === m.content.length - 1 ? { ...b, cache_control: { type: 'ephemeral' } } : b);
+  else return msgs;
+  return msgs.slice(0, i).concat([{ ...m, content }]);
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -839,8 +851,10 @@ You accompany the human to discover they can already speak German.`;
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
         max_tokens: maxTokens || 600,
-        system: systemPrompt,
-        messages: chatMessages
+        // Prompt-Caching (02.10.): System-Prompt ist innerhalb einer Sitzung gleich →
+        // ab dem 2. Zug zu ~1/10 gelesen statt voll bezahlt; Verlauf über mitVerlaufsCache().
+        system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+        messages: mitVerlaufsCache(chatMessages)
       })
     });
 
@@ -854,6 +868,8 @@ You accompany the human to discover they can already speak German.`;
     }
 
     const data = await response.json();
+    // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
+    try { const u = data.usage || {}; console.log('[chat-german] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     const reply = data.content[0].text;
 
     return res.status(200).json({ reply });

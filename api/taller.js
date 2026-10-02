@@ -256,20 +256,23 @@ export default async function handler(req, res) {
   const istPhase2 = antwort && typeof antwort === 'object' &&
                     typeof antwort.satz === 'string' && antwort.satz.trim() !== '';
 
+  // Prompt-Caching (02.10.): Seele + Taller-Modus sind für ALLE Nutzer gleich → gecacht.
+  const festUndLaufzeit = (laufzeit) => [
+    { type: 'text', text: docs.seele + '\n\n' + docs.taller, cache_control: { type: 'ephemeral' } },
+    { type: 'text', text: laufzeit }
+  ];
   let system, userMsg, fallbackTokens;
   if (istPhase2) {
-    system = docs.seele + '\n\n' + docs.taller + '\n\n' +
-             laufzeitProfil(p, thema || null) + '\n' +
-             vertragPhase2(sprache, mutter, p.koennen);
+    system = festUndLaufzeit(laufzeitProfil(p, thema || null) + '\n' +
+             vertragPhase2(sprache, mutter, p.koennen));
     userMsg = '[FREITEXT-ANTWORT]\n' +
               'Frage: ' + (antwort.frage || '') + '\n' +
               'Gelesener Text: ' + (antwort.texto || '') + '\n' +
               'Satz des Lerners: ' + antwort.satz;
     fallbackTokens = 500;
   } else {
-    system = docs.seele + '\n\n' + docs.taller + '\n\n' +
-             laufzeitProfil(p, thema || null) + '\n' +
-             vertragPhase1(sprache, mutter, p.koennen, p.fremde_schrift);
+    system = festUndLaufzeit(laufzeitProfil(p, thema || null) + '\n' +
+             vertragPhase1(sprache, mutter, p.koennen, p.fremde_schrift));
     userMsg = '[TALLER_NEU]';
     fallbackTokens = 1200;
   }
@@ -291,6 +294,8 @@ export default async function handler(req, res) {
     });
 
     const data = await r.json();
+    // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
+    try { const u = data.usage || {}; console.log('[taller] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     if (!r.ok) return res.status(r.status).json(data);
 
     const text = (data.content && data.content[0] && data.content[0].text) || '';

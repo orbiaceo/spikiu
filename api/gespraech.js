@@ -133,6 +133,18 @@ function _zuOft(req) {
   return e.n > _grenze ? Math.ceil((_fenster - (jetzt - e.start)) / 1000) : 0;
 }
 
+// Verlaufs-Caching (02.10.): Cache-Marke an die LETZTE Nachricht → alles davor (System + bisheriger
+// Verlauf) wird beim nächsten Zug zu ~1/10 gelesen. Explizite Marke statt Top-Level-Option (robuster).
+function mitVerlaufsCache(msgs) {
+  if (!Array.isArray(msgs) || !msgs.length) return msgs;
+  const i = msgs.length - 1, m = msgs[i];
+  let content;
+  if (typeof m.content === 'string') content = [{ type: 'text', text: m.content, cache_control: { type: 'ephemeral' } }];
+  else if (Array.isArray(m.content) && m.content.length) content = m.content.map((b, j) => j === m.content.length - 1 ? { ...b, cache_control: { type: 'ephemeral' } } : b);
+  else return msgs;
+  return msgs.slice(0, i).concat([{ ...m, content }]);
+}
+
 export default async function handler(req, res) {
   /* ══════════════════════════════════════════════════════════════
      WACHE (01.09.2026) — siehe api/rueckmeldung.js für dasselbe Muster.
@@ -233,11 +245,13 @@ export default async function handler(req, res) {
         // kann die Grenze nicht nach oben schieben (19.08.2026).
         max_tokens: Math.min(maxTokens || 300, 400),
         system,
-        messages: chatMessages
+        messages: mitVerlaufsCache(chatMessages)
       })
     });
 
     const data = await r.json();
+    // Prompt-Caching sichtbar machen (02.10.): im Vercel-Log prüfen, ob gelesen statt neu bezahlt wird.
+    try { const u = data.usage || {}; console.log('[gespraech] tokens — cache_read=' + (u.cache_read_input_tokens||0) + ' cache_write=' + (u.cache_creation_input_tokens||0) + ' input=' + (u.input_tokens||0) + ' output=' + (u.output_tokens||0)); } catch (_) {}
     if (!r.ok) return res.status(r.status).json(data);
 
     const text = (data.content && data.content[0] && data.content[0].text) || '';

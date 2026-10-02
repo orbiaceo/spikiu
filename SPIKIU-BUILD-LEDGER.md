@@ -20,6 +20,19 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 02.10.2026 · PROMPT-CACHING IN ALLEN SPIKIU-GESPRÄCHS-ENDPOINTS (**Leo, 23:39: „Ja, prompt-Caching zuerst."**)
+
+**Befund:** Die Chat-Endpoints bezahlten den System-Prompt (chat-spanish: ~27.700 Zeichen) bei JEDEM Zug voll. Nur `gespraech.js` cachte schon (Muster: Block 1 fest für alle, Block 2 Laufzeitprofil).
+**Gebaut:**
+- `api/chat-spanish.js`, `chat-german.js`, `chat-english.js`: System-Prompt als gecachter Block (innerhalb einer Sitzung stabil) + `mitVerlaufsCache()` (Cache-Marke an der letzten Nachricht → Verlauf wird mitgelesen).
+- `api/lektor.js`: System in Block 1 (Seele + Lektor-Modus, für alle gleich, gecacht) + Block 2 (Profil + Vertrag); Verlaufs-Cache.
+- `api/gespraech.js`: Verlaufs-Cache ergänzt (System war schon gecacht).
+- `api/taller.js`, `api/haeppchen.js`, `api/lesebegleiter.js`: fester Block (Seele + Modus) gecacht, Rest pro Anfrage.
+- Alle acht loggen jetzt `[name] tokens — cache_read=… cache_write=… input=… output=…` → im Vercel-Log sehen, ob gelesen statt neu bezahlt wird.
+- Bewusst NICHT: Einzelaufrufe mit seltenem Gebrauch (generate-lesson, assessment, onboarding, detect-language, rueckmeldung, generate-learningpath) — dort kostet ein Cache-Schreiben 25 % Aufschlag ohne Gegenwert.
+**Geprüft:** Node-Syntaxcheck aller acht; lokaler Lauf aller sechs Endpoint-Typen gegen eine simulierte Anthropic-API (Status 200, System-Blöcke mit Cache-Marke, letzte Nachricht markiert); `lektor.parser.test.mjs` grün. **Nicht geprüft:** echter API-Aufruf → nach dem Deploy im Vercel-Log `cache_read` > 0 ab dem 2. Zug prüfen. Hinweis: Haiku cached erst ab 4.096 Tokens; lektor/taller-Block 1 liegt knapp darüber — zeigt der Log `cache_write=0`, ist er zu kurz (dann kein Schaden, nur kein Gewinn).
+**Offen (Leos Entscheidung):** Wechsel Sonnet 4.5 → Sonnet 5.5 (günstiger: 2 $/10 $ statt 3 $/15 $ pro Mio. Tokens).
+
 Stand: 02.10.2026 · KONTINGENT + LIMIT-NACHRICHT (**Leo, 23:08:** festes Kontingent ja; bei Limit Nachricht mit Upgrade-Angebot)
 
 Details + Drei-Schichten-Deckel in `DESIGN-AUDIO-PIPER.md`. Offen: Text der Limit-Nachricht, Preis der Stufe, Verhalten bis zum Upgrade.
