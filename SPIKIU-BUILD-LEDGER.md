@@ -16,6 +16,10 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 02.10.2026 · STIMMEN ♂/♀ + KOSTEN-GRUNDSATZ (**Leo, 22:59**)
+
+Nutzer wählt männlich/weiblich. ♂ Enceladus (es-US, de-DE, en-US, el-GR); ♀ Kore (es-US, de-DE, el-GR), Erinome (en-US). Tabelle in `DESIGN-AUDIO-PIPER.md`. **Kosten-Grundsatz:** „klare Kalkulation und absolute Kontrolle über die Kosten. Keine Überraschungen." → Verbrauch pro Nutzer messen; an einer Grenze steigt das Abo (kein stilles Umschalten auf Piper); Grenzwerte später berechnen. Beim Bau: serverseitige Zählung (Supabase) + harte Google-Kontingente.
+
 Stand: 02.10.2026 · CHIRP-STIMMEN GEWÄHLT (**Leo, 22:45/22:46:** „Spanisch US Enceladus. Deutsch Enceladus. Englisch Enceladus … Englisch USA")
 
 `es-US-Chirp3-HD-Enceladus`, `de-DE-Chirp3-HD-Enceladus`, `en-US-Chirp3-HD-Enceladus` (alle ♂). Griechisch offen. In Diskussion: Wahl männlich/weiblich durch den Nutzer; Kosten pro Nutzer im Verhältnis zu ~3,50 €/Monat Abo.

@@ -33,8 +33,25 @@ verändern (für eine Lern-App heikel), langsamer bis zum ersten Ton, Nachfolger
 Hinweis Stimmwahl: Spanisch = español neutro → eher `es-US`-Chirp-Stimmen als `es-ES` prüfen.
 
 **Stimmen gewählt 02.10., 22:45 (Leo, per Ohr):** Spanisch `es-US-Chirp3-HD-Enceladus` · Deutsch
-`de-DE-Chirp3-HD-Enceladus` · Englisch (USA) `en-US-Chirp3-HD-Enceladus` (♂). Griechisch: offen (bis dahin Gerätestimme).
-Idee in Diskussion: Nutzer wählt männlich/weiblich — Mehrkosten nur bei festen Texten (doppelt erzeugt, einmalig), frei erzeugte Texte kosten gleich viel.
+`de-DE-Chirp3-HD-Enceladus` · Englisch (USA) `en-US-Chirp3-HD-Enceladus` (♂).
+
+**Nutzer wählt männlich/weiblich (Leo, 22:59) — STIMMEN-TABELLE (final):**
+
+| Sprache | ♂ männlich | ♀ weiblich |
+|---|---|---|
+| Spanisch (US, neutro) | `es-US-Chirp3-HD-Enceladus` | `es-US-Chirp3-HD-Kore` |
+| Deutsch | `de-DE-Chirp3-HD-Enceladus` | `de-DE-Chirp3-HD-Kore` |
+| Englisch (USA) | `en-US-Chirp3-HD-Enceladus` | `en-US-Chirp3-HD-Erinome` |
+| Griechisch | `el-GR-Chirp3-HD-Enceladus` | `el-GR-Chirp3-HD-Kore` |
+
+Mehrkosten der Wahl: nur feste Texte doppelt erzeugt (einmalig ≈ 15 $ oder im Gratis-Kontingent); frei erzeugte Texte kosten gleich.
+
+**KOSTEN-GRUNDSATZ (Leo, 22:59): „klare Kalkulation und absolute Kontrolle über die Kosten. Keine Überraschungen."**
+- Pro Abonnent wird der Verbrauch gemessen (Zeichen Cloud-Stimme, später auch Claude-Tokens). Erreicht ein Nutzer
+  eine Grenze, **steigt sein Abonnement** (höhere Stufe) — kein stilles Umschalten auf Piper. Selten erwartet.
+  Grenzwerte werden später berechnet (Basis: Abo ≈ 3,50 €/Monat brutto ≈ 2,94 € netto).
+- Technische Pflicht beim Bau: Verbrauch serverseitig pro Nutzer zählen (braucht Nutzer-Identität → Supabase);
+  in Google Cloud **harte Kontingente** (Quota) setzen, nicht nur Budget-Warnungen — Warnungen stoppen nichts.
 
 **Noch offen:** Google-API-Schlüssel
 (`GOOGLE_TTS_API_KEY`) + Speicher für die Audios (Vercel Blob oder Cloudflare R2); Premium-Erkennung im Client.
