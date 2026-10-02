@@ -13,6 +13,10 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > **OFFENE UNTERNEHMERISCHE ENTSCHEIDUNG — PREISMODELL (Leo, 02.10.2026, bitte bei passender Gelegenheit daran erinnern):**
 > Grundsatz: **Alles, was Tokens verbraucht, ist Premium und wird bezahlt.** Die Schreibwerkstatt gehört damit zum Premium-Abo
 > (deckt sich mit „GRATIS = NULL TOKEN", 17.08.: Freies Gespräch, Lesewerkstatt, Schreibwerkstatt, Lektionserzeugung).
+> **Leos Entwurf Preis-Staffel (02.10.2026, 23:26):** (1) Null Token: eine Zeit gratis, dann 1,50 €/Monat, inkl. 3 Lektionen gratis zum Anfassen ·
+> (2) Freies Gespräch, Schreib- und Lesewerkstatt, Lektionen mit begrenzter Menge (Zeit): 3,50 €/Monat · (3) Freies Gespräch unbegrenzt: Preis kalkulieren ·
+> (4) Individuelle Lektion mit Spikiu (Coach-Stunde, 5–45 Min. freies Reden + ausführliches Feedback + Lektion, für Fortgeschrittene ab B1: Prüfung, Bewerbung usw.) — noch nicht gebaut, Kosten kalkulieren.
+> Befund dabei (Claude): Chat-Endpoints nutzen kein Prompt-Caching (System-Prompt bei jedem Zug voll bezahlt) → großer Spar-Hebel.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
