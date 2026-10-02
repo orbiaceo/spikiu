@@ -660,7 +660,46 @@ window.addEventListener('load', function(){
   document.getElementById('lkPdf').textContent = ui.pdf;
   render();
   if (location.hash === '#last'){ var ll = lessons(); if (ll.length) openLesson(ll[0].id); }
+  fertigeAusstehende();
 });
+
+// ── Ausstehende Lektion fertigstellen (02.10.2026) ──
+// Gleiche Logik wie der Finalizer in nav.js (Teil 61). Nötig, weil Haus und Bibliothek
+// nav.js nicht laden: Wer Gespräch oder Schreibwerkstatt verlässt, während die Lektion
+// noch entsteht, findet sie hier — genau dort, wo sie hingehört.
+function fertigeAusstehende(){
+  var p = null;
+  try { p = JSON.parse(localStorage.getItem('spikiu_pending_lesson') || 'null'); } catch(e){ p = null; }
+  if (!p || p.status !== 'pending' || !p.body) return;
+  var jetzt = Date.now();
+  if (p.inProgressTs && (jetzt - p.inProgressTs) < 60000) return;   // läuft schon (anderer Tab)
+  p.inProgressTs = jetzt;
+  try { localStorage.setItem('spikiu_pending_lesson', JSON.stringify(p)); } catch(e){}
+  var hinweis = document.createElement('div');
+  hinweis.className = 'lk-empty'; hinweis.id = 'lkWerdend';
+  hinweis.textContent = ({ de:'Spikiu baut gerade eine Lektion für dich …', es:'Spikiu está preparando una lección para ti…', en:'Spikiu is building a lesson for you…' })[uiLang()];
+  var liste = document.getElementById('lkList'); if (liste) liste.insertBefore(hinweis, liste.firstChild);
+  function loese(){
+    try { var q = JSON.parse(localStorage.getItem('spikiu_pending_lesson') || 'null');
+      if (q && q.id === p.id){ delete q.inProgressTs; localStorage.setItem('spikiu_pending_lesson', JSON.stringify(q)); } } catch(e){}
+    var h = document.getElementById('lkWerdend'); if (h) h.remove();
+  }
+  fetch('/api/generate-lesson', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(p.body) })
+    .then(function(r){ return r.text().then(function(raw){
+      var d = null; try { d = raw ? JSON.parse(raw) : null; } catch(e){ d = null; }
+      if (!r.ok || !d || !d.lesson){ console.error('generate-lesson lektionen ' + r.status, (raw || '').slice(0, 300)); loese(); return; }
+      var u = {}; try { u = JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {}; } catch(e){ u = {}; }
+      var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
+      if (!arr.some(function(l){ return l && l.id === p.id; })) arr.push({
+        id: p.id, topic: d.lesson.title || 'Lektion', thema: p.thema, fromConversation: true,
+        lesson: d.lesson, createdAt: p.createdAt, zielsprache: p.zielsprache });
+      arr.sort(function(a, b){ return (b.createdAt || '').localeCompare(a.createdAt || ''); });
+      u.lessons = arr.slice(0, MAX);
+      try { localStorage.setItem('spikiu_user', JSON.stringify(u)); localStorage.removeItem('spikiu_pending_lesson'); } catch(e){}
+      USER = u; render();
+    }); })
+    .catch(function(e){ console.error('generate-lesson lektionen netz', e); loese(); });
+}
 </script>
 <script type="module">
   import { speak } from '/audio.js';

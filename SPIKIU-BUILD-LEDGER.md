@@ -10,6 +10,16 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > selbst nachsehen, selbst schreiben. Prototypen zusätzlich als Artifact zeigen, damit Leo sie
 > am Handy anklicken kann. Ledger-Pflege wie gehabt bei jedem Schritt.
 
+Stand: 02.10.2026 · SCHREIBWERKSTATT: ABSCHLUSS + LEKTION GEBAUT (**Leo, 10:25, zum Prototyp: „Sí, dale!"**)
+
+**`schreibwerkstatt.html`:**
+- Bei `ziellinie` klappen die Hände weg (`.hands.zu`, Grid-Zeile 0fr), Werkstück grün mit Label „Dein Text ✓ fertig". Der kleine Link „Neu starten" erscheint dort nicht mehr; stattdessen in der Lektor-Karte „Lektion daraus machen" · „Neuer Text".
+- **Die Lektion entsteht jetzt wirklich** (vorher nur Knopftext): `baueLektion()` sichert den Auftrag in `spikiu_pending_lesson` (Felder wie `chat.html` + `quelle:'schreibwerkstatt'`, `text`; **überschreibt nie einen fremden offenen Auftrag**, dann ohne Sicherung und ohne den Satz „Du kannst auch gehen"), ruft `/api/generate-lesson` (Body: `name`, `nativeLang`, `profile` mit `targetLang`/`level` aus Profil oder Mapping, `conversationHistory` = Kopfzeile „[Schreibwerkstatt] Aufgabe … Endfassung …" + Verlauf), trägt in `spikiu_user.lessons` ein (Thema „Schreibwerkstatt", max. 14) und zeigt die Karte „Neue Lektion" (Titel, `subtitle`/`goal`, „📓 Liegt in der Bibliothek unter Lektionen", „Lektion öffnen" → `lektionen.html#last`, „Neuer Text").
+- Fehler: „Die Lektion ist gerade nicht entstanden. Dein Text ist sicher." · Nochmal · Neuer Text. Auftrag bleibt gesichert.
+
+**`lektionen.html`:** neue `fertigeAusstehende()` — stellt einen offenen `spikiu_pending_lesson` beim Öffnen fertig (gleiche Logik wie `nav.js` Teil 61, 60-s-Sperre), mit Hinweis „Spikiu baut gerade eine Lektion für dich …". **BEFUND dabei:** Der Finalizer in `nav.js` lief nur auf `books.html` und `learnraum.html`; Haus und Bibliothek laden `bottomnav.js`. Das Versprechen „die Lektion findest du in der Bibliothek" (auch im Gespräch) hing damit in der Luft. Jetzt hält es.
+**Headless geprüft (Chromium, 375 px, API gemockt):** ganzer Ablauf Hinlegen → Fast → In meine Hände → Geschafft → Lektion → Bereit → `lektionen.html#last` öffnet sie; Fehlerfall lässt den Auftrag liegen; Lektionen-Seite stellt ihn fertig. Keine Seitenfehler. **Nicht geprüft:** echte API-Antwort, echtes Handy.
+
 Stand: 02.10.2026 · SCHREIBWERKSTATT: ABSCHLUSS + LEKTION — PROTOTYP (**Leo, 10:11: „Wenn ich klicke Lektion daraus machen, ist die Folge-Schnittstelle nicht klar. Die Texteingabe-Maske ist noch da. Das einzige, was Orientierung gibt, ist ‚Neu starten'."**)
 
 **BEFUND (`schreibwerkstatt.html`):** Bei `ziellinie` bleibt die Eingabe sichtbar (nur `disabled`), „Neu starten" ist ein kleiner Unterstrich-Link. Der Knopf „Lektion aus diesem Text machen" erzeugt **gar nichts**: `onclick` setzt nur den Text auf „✓ Lektion gespeichert". Keine API, kein Eintrag in `spikiu_user.lessons`.
@@ -21,7 +31,7 @@ Stand: 02.10.2026 · SCHREIBWERKSTATT: ABSCHLUSS + LEKTION — PROTOTYP (**Leo, 
 4. **Bereit** — Karte zeigt Titel + Ziel der Lektion und „📓 Liegt in der Bibliothek unter Lektionen". „Lektion öffnen" (→ `lektionen.html#last`) · „Neuer Text".
 Fehlerfall: „Die Lektion ist gerade nicht entstanden. Dein Text ist sicher." · Nochmal · Neuer Text.
 **FÜR DEN BAU (nach Leos Abnahme):** `/api/generate-lesson` mit `conversationHistory` (Text-Verlauf) nutzen; den Auftrag vorher in `spikiu_pending_lesson` sichern, damit der Finalizer in `nav.js` (Teil 61) fertig baut, falls der Nutzer geht. Eintrag in `spikiu_user.lessons` im bestehenden Format (`id, topic, lesson, createdAt, zielsprache`, max. 14). Sitzung wird wie bisher bei `ziellinie` geräumt.
-**Offen:** Leo testet den Prototyp am Handy.
+**Erledigt:** Leo hat abgenommen (10:25), gebaut — siehe Eintrag darüber.
 
 Stand: 02.10.2026 · SPIKIU IN DER ECKE (**Leo, 09:58, Screenshot: Spikiu stand mittig unter „¡Dale!" und war verdeckt.**) — `juegos.js` `pinata()`: Spikiu wartet jetzt rechts unten in der Ecke (`calc(100% - 66px)`); zum Auffangen läuft er wie bisher zum Eindringling.
 

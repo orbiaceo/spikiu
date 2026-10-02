@@ -61,6 +61,29 @@
   .primary:disabled{opacity:.45;cursor:default;box-shadow:none}
   .restart{font:600 .82rem 'DM Sans';color:var(--muted);background:transparent;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   .hint{font-size:.78rem;color:var(--muted);margin-top:.6rem;font-style:italic}
+  /* Abschluss + Lektion (02.10.2026): Hände klappen weg, die Lektor-Karte führt. */
+  .werk-label{font:700 .66rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
+  .werk-label .ok{color:var(--green)}
+  .stage > *{min-width:0}
+  .hands{display:grid;grid-template-rows:1fr;transition:grid-template-rows .45s ease,opacity .35s ease,margin .45s ease}
+  .hands > div{overflow:hidden;min-height:0}
+  .hands.zu{grid-template-rows:0fr;opacity:0;margin-top:0}
+  .lektor.bereit{background:#fff;border-color:var(--green);border-left-color:var(--green);box-shadow:3px 4px 0 var(--green)}
+  .lek-leise{font-size:.88rem;line-height:1.5;color:var(--muted);margin-top:.55rem}
+  .lek-status.e{color:#b94a3a}
+  .lek-titel{font-family:'Archivo Black',sans-serif;font-size:1.2rem;line-height:1.2;text-wrap:balance}
+  .lek-ziel{font-family:'Lora',serif;font-size:1rem;line-height:1.5;color:var(--read);margin-top:.45rem}
+  .lek-ort{margin-top:.8rem;font-size:.85rem;color:var(--muted)}
+  .lek-ort b{color:var(--ink)}
+  .lek-aktionen{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:1rem}
+  .lek-aktionen .lesson-btn{margin-top:0}
+  .lesson-btn.blau{background:var(--green);color:#fff}
+  .btn-leise{font:700 .88rem 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.5rem .95rem;cursor:pointer}
+  .lesson-btn:focus-visible,.btn-leise:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .punkte{display:inline-flex;gap:.3rem;margin-left:.2rem;vertical-align:middle}
+  .punkte i{width:7px;height:7px;border-radius:50%;background:var(--green);opacity:.25;animation:atmen 1.2s ease-in-out infinite}
+  .punkte i:nth-child(2){animation-delay:.2s}.punkte i:nth-child(3){animation-delay:.4s}
+  @keyframes atmen{50%{opacity:1}}
   [hidden]{display:none !important}
   @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
 </style>
@@ -98,7 +121,10 @@
   <div class="aufgabe-input" id="aufgabe">Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.</div>
 
   <div class="stage">
-    <article class="werkstueck empty" id="werk">Hier steht dein Text.</article>
+    <div>
+      <p class="werk-label" id="werkLabel" hidden>Dein Text <span class="ok">✓ fertig</span></p>
+      <article class="werkstueck empty" id="werk">Hier steht dein Text.</article>
+    </div>
     <aside class="lektor" id="lektor" hidden>
       <div class="lek-head">
         <svg width="22" height="22" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
@@ -108,7 +134,7 @@
     </aside>
   </div>
 
-  <div class="hands" id="hands">
+  <div class="hands" id="hands"><div>
     <p class="hands-label">In deinen Händen</p>
     <textarea id="ta" spellcheck="false" placeholder="Schreib hier…"></textarea>
     <div class="hands-row">
@@ -116,7 +142,7 @@
       <button class="restart" id="restart" hidden>Neu starten</button>
     </div>
     <p class="hint" id="hint">Schreib deinen ersten Versuch und leg ihn hin.</p>
-  </div>
+  </div></div>
 </main>
 
 <script>
@@ -215,7 +241,8 @@
     } else if(l.status==='ziellinie'){
       html+='<p class="lek-status t">Geschafft.</p>';
       html+='<p class="lek-sinn" style="margin-top:.4rem">'+esc(l.sinn||'Der Text tut, was er soll.')+'</p>';
-      html+='<button class="lesson-btn" id="mklesson">Lektion aus diesem Text machen</button>';
+      html+='<div class="lek-aktionen"><button class="lesson-btn" id="mklesson">Lektion daraus machen</button>'+
+            '<button class="btn-leise" id="neuText">Neuer Text</button></div>';
     } else {
       if(l.status==='beinah') html+='<p class="lek-status b" style="margin-bottom:.4rem">Fast.</p>';
       if(l.sinn)  html+='<p class="lek-sinn">'+esc(l.sinn)+'</p>';
@@ -234,8 +261,103 @@
       ta.value=next; ta.focus();
     };
     var ml=document.getElementById('mklesson');
-    if(ml) ml.onclick=function(){ this.textContent='✓ Lektion gespeichert'; this.disabled=true; this.style.opacity=.7; };
+    if(ml) ml.onclick=function(){ baueLektion(); };
+    var nt=document.getElementById('neuText');
+    if(nt) nt.onclick=neuerText;
   }
+
+  // ── Lektion aus dem Text (02.10.2026) ────────────────────────────
+  // Gleicher Weg wie chat.html: Auftrag zuerst in spikiu_pending_lesson sichern
+  // (lektionen.html / nav.js stellen ihn fertig, falls der Nutzer geht), dann
+  // /api/generate-lesson, Eintrag in spikiu_user.lessons (max. 14).
+  var SPRACHNAME={de:'German',es:'Spanish',en:'English',el:'Greek'};
+  var STUFE={anfang:'A2',mittel:'B1',fortgeschritten:'B2'};
+  var lektionLaeuft=false;
+  function leseNutzer(){ try{ return JSON.parse(localStorage.getItem('spikiu_user')||'{}')||{}; }catch(e){ return {}; } }
+  function lesePending(){ try{ return JSON.parse(localStorage.getItem('spikiu_pending_lesson')||'null'); }catch(e){ return null; } }
+  function lektionsAuftrag(){
+    var u=leseNutzer(), pr=profile(), up=u.profile||{};
+    var prof={}; for(var k in up){ if(Object.prototype.hasOwnProperty.call(up,k)) prof[k]=up[k]; }
+    prof.targetLang = up.targetLang || SPRACHNAME[pr.zielsprache] || 'Spanish';
+    prof.level      = up.level || STUFE[pr.koennen] || 'A2';
+    var kopf={role:'assistant', content:'[Schreibwerkstatt] Aufgabe: '+(pr.aufgabe||'freier Text')+
+      '\nDer Lerner hat einen kurzen Text geschrieben und mit Spikiu als Lektor überarbeitet. '+
+      'Die Züge unten zeigen seine Fassungen und Spikius Rückmeldungen.\nEndfassung: '+currentText};
+    return {
+      name: u.name || pr.name || 'du',
+      nativeLang: u.nativeLang || SPRACHNAME[pr.muttersprache] || 'German',
+      profile: prof,
+      conversationHistory: [kopf].concat(verlauf.map(function(m){ return {role:m.role, content:m.content}; }))
+    };
+  }
+  function lektorKarte(kopf, html, cls){
+    document.getElementById('lekName').textContent=kopf;
+    lektor.classList.toggle('bereit', cls==='bereit');
+    lektor.classList.toggle('treffer', cls!=='bereit');
+    lekBody.innerHTML=html;
+    lektor.hidden=false; lektor.classList.add('show');
+    if(window.innerWidth<760) setTimeout(function(){ try{ lektor.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} },60);
+  }
+  async function baueLektion(){
+    if(lektionLaeuft) return;
+    lektionLaeuft=true;
+    // Auftrag sichern — nur in einen freien Platz oder in unseren eigenen; nie einen fremden überschreiben.
+    var pend=lesePending(), gesichert=false;
+    if(pend && pend.status==='pending' && pend.quelle==='schreibwerkstatt' && pend.text===currentText){ gesichert=true; }
+    else if(!pend || pend.status!=='pending'){
+      pend={ id:'lesson_'+Date.now(), body:lektionsAuftrag(), thema:'Schreibwerkstatt',
+             zielsprache:profile().zielsprache, createdAt:new Date().toISOString(), status:'pending',
+             quelle:'schreibwerkstatt', text:currentText };
+      try{ localStorage.setItem('spikiu_pending_lesson', JSON.stringify(pend)); gesichert=true; }catch(e){}
+    } else {
+      pend={ id:'lesson_'+Date.now(), body:lektionsAuftrag(), thema:'Schreibwerkstatt',
+             zielsprache:profile().zielsprache, createdAt:new Date().toISOString() };
+    }
+    lektorKarte('Spikiu',
+      '<p class="lek-sinn"><b>Spikiu baut deine Lektion</b> <span class="punkte" aria-hidden="true"><i></i><i></i><i></i></span></p>'+
+      (gesichert?'<p class="lek-leise">Du kannst auch gehen. Die Lektion landet trotzdem in der Bibliothek.</p>':''));
+
+    var r=null, raw='', d=null;
+    try{
+      r=await fetch('/api/generate-lesson',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pend.body)});
+      try{ raw=await r.text(); }catch(e){ raw=''; }
+      try{ d=raw?JSON.parse(raw):null; }catch(e){ d=null; }
+    }catch(e){ r=null; raw=String((e&&e.message)||e); }
+    lektionLaeuft=false;
+
+    if(!r || !r.ok || !d || !d.lesson){
+      console.error('generate-lesson '+(r?r.status:'netz'), (d&&(d.error||d.detail))||(raw||'').slice(0,300));
+      lektorKarte('Spikiu',
+        '<p class="lek-status e">Die Lektion ist gerade nicht entstanden.</p>'+
+        '<p class="lek-sinn" style="margin-top:.35rem">Dein Text ist sicher. Versuch es gleich noch einmal.</p>'+
+        '<div class="lek-aktionen"><button class="lesson-btn" id="lekNochmal">Nochmal</button>'+
+        '<button class="btn-leise" id="neuText2">Neuer Text</button></div>');
+      document.getElementById('lekNochmal').onclick=baueLektion;
+      document.getElementById('neuText2').onclick=neuerText;
+      return;
+    }
+
+    var u=leseNutzer();
+    var arr=Array.isArray(u.lessons)?u.lessons.slice():[];
+    if(!arr.some(function(x){ return x && x.id===pend.id; })) arr.push({
+      id:pend.id, topic:d.lesson.title||'Lektion', thema:pend.thema, fromConversation:true,
+      lesson:d.lesson, createdAt:pend.createdAt, zielsprache:pend.zielsprache });
+    arr.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+    u.lessons=arr.slice(0,14);
+    try{ localStorage.setItem('spikiu_user', JSON.stringify(u)); }catch(e){}
+    if(gesichert){ var p2=lesePending(); if(p2 && p2.id===pend.id){ try{ localStorage.removeItem('spikiu_pending_lesson'); }catch(e){} } }
+
+    var L=d.lesson;
+    lektorKarte('Neue Lektion',
+      '<p class="lek-titel">'+esc(L.title||'Deine Lektion')+'</p>'+
+      ((L.subtitle||L.goal)?'<p class="lek-ziel">'+esc(L.subtitle||L.goal)+'</p>':'')+
+      '<p class="lek-ort">📓 Liegt in der <b>Bibliothek</b> unter <b>Lektionen</b>.</p>'+
+      '<div class="lek-aktionen"><button class="lesson-btn blau" id="lekOeffnen">Lektion öffnen</button>'+
+      '<button class="btn-leise" id="neuText3">Neuer Text</button></div>', 'bereit');
+    document.getElementById('lekOeffnen').onclick=function(){ location.href='lektionen.html#last'; };
+    document.getElementById('neuText3').onclick=neuerText;
+  }
+  function neuerText(){ raeumeSitzung(); doRestart(); try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){} }
 
   function renderError(){
     document.getElementById('lekName').textContent='Spikiu';
@@ -280,8 +402,9 @@
 
       if(l.status==='ziellinie'){
         werk.classList.add('fertig'); werk.textContent=currentText;
-        primary.hidden=true; ta.disabled=true; restart.hidden=false;
-        hint.textContent='Der Text ist fertig. Du kannst neu starten.';
+        primary.hidden=true; ta.disabled=true;
+        document.getElementById('werkLabel').hidden=false;
+        document.getElementById('hands').classList.add('zu');   // Hände weg — die Karte führt
         raeumeSitzung();   // Ziellinie erreicht → kein Zombie-Resume
       } else {
         step='arbeit'; primary.textContent='Weiter';
@@ -301,7 +424,9 @@
   function doRestart(){
     verlauf=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false; lastLektor=null;
     werk.className='werkstueck empty'; werk.textContent='Hier steht dein Text.';
-    lektor.hidden=true; lektor.classList.remove('show','treffer'); lekBody.innerHTML='';
+    lektor.hidden=true; lektor.classList.remove('show','treffer','bereit'); lekBody.innerHTML='';
+    document.getElementById('werkLabel').hidden=true; document.getElementById('hands').classList.remove('zu');
+    document.getElementById('lekName').textContent='Spikiu liest'; lektionLaeuft=false;
     ta.disabled=false; ta.value=''; primary.hidden=false; primary.disabled=false; primary.textContent='Hinlegen';
     restart.hidden=true; hint.textContent='Schreib deinen ersten Versuch und leg ihn hin.';
   }
