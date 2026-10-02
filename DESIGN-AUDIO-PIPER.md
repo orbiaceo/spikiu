@@ -32,7 +32,11 @@ Gemini 2.5 Flash TTS „der Hammer") und Kostenvergleich. Chirp 3 HD für ALLE T
 verändern (für eine Lern-App heikel), langsamer bis zum ersten Ton, Nachfolger ab 01.2027 ≈ 34 $/Mio. Zeichen.
 Hinweis Stimmwahl: Spanisch = español neutro → eher `es-US`-Chirp-Stimmen als `es-ES` prüfen.
 
-**Noch offen:** welche Chirp-Stimme pro Sprache (Leo hört auf `stimmen-vergleich.html`); Google-API-Schlüssel
+**Stimmen gewählt 02.10., 22:45 (Leo, per Ohr):** Spanisch `es-US-Chirp3-HD-Enceladus` · Deutsch
+`de-DE-Chirp3-HD-Enceladus` · Englisch (USA) `en-US-Chirp3-HD-Enceladus` (♂). Griechisch: offen (bis dahin Gerätestimme).
+Idee in Diskussion: Nutzer wählt männlich/weiblich — Mehrkosten nur bei festen Texten (doppelt erzeugt, einmalig), frei erzeugte Texte kosten gleich viel.
+
+**Noch offen:** Google-API-Schlüssel
 (`GOOGLE_TTS_API_KEY`) + Speicher für die Audios (Vercel Blob oder Cloudflare R2); Premium-Erkennung im Client.
 
 ---

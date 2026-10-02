@@ -16,7 +16,11 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
-Stand: 02.10.2026 · BESTÄTIGT: CHIRP 3 HD FÜR ALLES (**Leo, 22:30: „Nehmen wir chirp 3 HD für alles."**)
+Stand: 02.10.2026 · CHIRP-STIMMEN GEWÄHLT (**Leo, 22:45/22:46:** „Spanisch US Enceladus. Deutsch Enceladus. Englisch Enceladus … Englisch USA")
+
+`es-US-Chirp3-HD-Enceladus`, `de-DE-Chirp3-HD-Enceladus`, `en-US-Chirp3-HD-Enceladus` (alle ♂). Griechisch offen. In Diskussion: Wahl männlich/weiblich durch den Nutzer; Kosten pro Nutzer im Verhältnis zu ~3,50 €/Monat Abo.
+
+ (**Leo, 22:30: „Nehmen wir chirp 3 HD für alles."**)
 
 Leo hat Chirp 3 HD und Gemini 2.5 Flash TTS gehört (Gemini „der Hammer", Chirp „ziemlich gut") und nach Kostenvergleich Chirp für alle Textarten und Sprachen gewählt. Gemini verworfen (Wort-Treue, Tempo, Preissprung 2027). Details in `DESIGN-AUDIO-PIPER.md`. **Nächster Bau-Auftrag:** `api/tts.js` (Chirp + Cache), `audio.js` innen umstellen (Cloud → Piper → Gerät), Stimmwahl pro Sprache, Testseite + `api/tts-vergleich.js` danach entfernen.
 
