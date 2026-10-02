@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spikiu — Prototyp Schreibwerkstatt: Abschluss & Lektion</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+<style>
+  /* Layout: Spikius Werkbank — Aufgabe, Werkstück, eine Karte, die je nach Zustand die Rolle wechselt. Eine Hauptaktion pro Zustand. Bewusst nur helles Spikiu-Papier (wie die App). */
+  :root{
+    --paper:#eef7f1; --page:#fff; --ink:#15163a; --read:#2b2621; --muted:#6b6154;
+    --green:#1f93b0; --sage:#9bd14a; --de:#fbf8f0; --line:#e6dec9; --gold:#a87b2e; --red:#b94a3a;
+    --night:#15163a; --white:#fff; --ow:2.5px;
+    --f-display:'Archivo Black','Arial Black',sans-serif;
+    --f-ui:'DM Sans',system-ui,-apple-system,sans-serif;
+    --f-text:'Lora',Georgia,serif;
+    --f-mono:'DM Mono',ui-monospace,Menlo,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
+  @media (min-width:700px){body{background:var(--night);background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1px);background-size:22px 22px}}
+  .bar{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;padding:.7rem 1.1rem;border-bottom:var(--ow) solid var(--ink);background:var(--page)}
+  .back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:var(--page);color:var(--ink);font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+  .room-name{font-family:var(--f-display);font-size:1.05rem;flex:1}
+  .proto-tag{font:700 .58rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:#ffd24a;border:2px solid var(--ink);border-radius:999px;padding:.18rem .5rem}
+  .bench{flex:1;width:100%;max-width:940px;margin:0 auto;padding:1.6rem 1.1rem 1.4rem;display:flex;flex-direction:column;background:var(--paper)}
+  @media (min-width:700px){.bench{margin:1.2rem auto;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:7px 8px 0 rgba(0,0,0,.25)}}
+  .label{font:700 .66rem/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;display:flex;align-items:center;gap:.4rem}
+  .label .ok{color:var(--green)}
+  .aufgabe{font-family:var(--f-text);font-size:1.05rem;font-style:italic;color:var(--muted);line-height:1.4;border-bottom:2px dashed var(--line);padding-bottom:.5rem;margin-bottom:1.4rem}
+  .stage{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start}
+  @media(min-width:760px){.stage{grid-template-columns:1.35fr 1fr;gap:1.5rem}}
+  .stage > *{min-width:0}
+  .werkstueck{background:var(--page);border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:1.3rem 1.4rem;min-height:140px;font-family:var(--f-text);font-size:1.3rem;line-height:1.6;color:var(--read);white-space:pre-wrap;transition:box-shadow .3s,border-color .3s}
+  .werkstueck.empty{color:#a89a80;font-style:italic}
+  .werkstueck.fertig{box-shadow:3px 4px 0 var(--green);border-color:var(--green)}
+  .spot{background:linear-gradient(var(--ink) 0 0) bottom left/100% 3px no-repeat;padding-bottom:2px}
+
+  /* Die Karte: Lektor → Abschluss → Bauen → Bereit */
+  .karte{background:var(--de);border:var(--ow) solid var(--ink);border-left:6px solid var(--ink);border-radius:14px;padding:1rem 1.05rem;box-shadow:3px 4px 0 var(--ink);animation:auf .35s ease both}
+  .karte.gruen{border-left-color:var(--green)}
+  .karte.bereit{background:var(--page);border-color:var(--green);border-left-color:var(--green);box-shadow:3px 4px 0 var(--green)}
+  @keyframes auf{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .k-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+  .k-name{font:700 .66rem/1 var(--f-mono);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .k-status{font-weight:800;font-size:1.02rem}
+  .k-status.t{color:var(--green)} .k-status.b{color:var(--muted)} .k-status.e{color:var(--red)}
+  .k-sinn{font-size:1rem;line-height:1.5;color:var(--ink);margin-top:.35rem}
+  .k-leise{font-size:.88rem;line-height:1.5;color:var(--muted);margin-top:.55rem}
+  .k-form{font-family:var(--f-text);font-size:1.25rem;color:var(--green);margin:.6rem 0 .1rem}
+  .lek-titel{font-family:var(--f-display);font-size:1.25rem;line-height:1.2;text-wrap:balance;margin-top:.15rem}
+  .lek-ziel{font-family:var(--f-text);font-size:1rem;line-height:1.5;color:var(--read);margin-top:.45rem}
+  .ort{display:flex;align-items:center;gap:.45rem;margin-top:.8rem;font-size:.85rem;color:var(--muted)}
+  .ort b{color:var(--ink)}
+  .aktionen{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:1rem}
+  .btn{font:800 .92rem var(--f-ui);color:var(--ink);background:var(--sage);border:var(--ow) solid var(--ink);border-radius:999px;padding:.62rem 1.15rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+  .btn.blau{background:var(--green);color:var(--white)}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .btn-leise{font:700 .88rem var(--f-ui);color:var(--ink);background:var(--page);border:2px solid var(--ink);border-radius:999px;padding:.5rem .95rem;cursor:pointer}
+  .btn:focus-visible,.btn-leise:focus-visible,.back:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .punkte{display:inline-flex;gap:.3rem;margin-left:.15rem;vertical-align:middle}
+  .punkte i{width:7px;height:7px;border-radius:50%;background:var(--green);opacity:.25;animation:atmen 1.2s ease-in-out infinite}
+  .punkte i:nth-child(2){animation-delay:.2s}.punkte i:nth-child(3){animation-delay:.4s}
+  @keyframes atmen{50%{opacity:1}}
+  .notiz{margin-top:.8rem;font-size:.82rem;line-height:1.45;color:var(--muted);background:var(--paper);border:2px dashed var(--line);border-radius:10px;padding:.55rem .7rem}
+
+  /* Hände: verschwinden beim Abschluss */
+  .hands{margin-top:1.5rem;display:grid;grid-template-rows:1fr;transition:grid-template-rows .45s ease,opacity .35s ease,margin .45s ease}
+  .hands > div{overflow:hidden;min-height:0}
+  .hands.zu{grid-template-rows:0fr;opacity:0;margin-top:0}
+  textarea{width:100%;font-family:var(--f-text);font-size:1.2rem;line-height:1.5;color:var(--read);background:var(--page);border:var(--ow) solid var(--ink);border-radius:14px;padding:.9rem 1rem;resize:vertical;min-height:96px;box-shadow:3px 3px 0 var(--ink)}
+  .hands-row{display:flex;align-items:center;gap:.9rem;margin-top:.9rem;flex-wrap:wrap}
+  .hint{font-size:.8rem;color:var(--muted);margin-top:.6rem;font-style:italic}
+
+  .proto{max-width:940px;width:100%;margin:0 auto;padding:.9rem 1.1rem 1.4rem;display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;align-items:center;font-size:.8rem;color:var(--muted)}
+  @media (min-width:700px){.proto{color:#d9dcef}}
+  .proto label{display:flex;align-items:center;gap:.4rem;cursor:pointer}
+  .proto button{font:700 .8rem var(--f-ui);background:none;border:0;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <button class="back" aria-label="zurück">‹</button>
+  <span class="room-name">Schreibwerkstatt</span>
+  <span class="proto-tag">Prototyp</span>
+</header>
+
+<main class="bench">
+  <p class="label">Deine Aufgabe</p>
+  <p class="aufgabe">Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.</p>
+
+  <div class="stage">
+    <div>
+      <p class="label" id="werkLabel" hidden>Dein Text <span class="ok">✓ fertig</span></p>
+      <article class="werkstueck empty" id="werk">Hier steht dein Text.</article>
+    </div>
+    <div id="kartePlatz"></div>
+  </div>
+
+  <section class="hands" id="hands">
+    <div>
+      <p class="label">In deinen Händen</p>
+      <textarea id="ta" spellcheck="false" aria-label="Dein Text">Hola Ana, voy a llegar tarde. Estoy en el metro. Lo siento!</textarea>
+      <div class="hands-row">
+        <button class="btn blau" id="primary">Hinlegen</button>
+      </div>
+      <p class="hint" id="hint">Schreib deinen ersten Versuch und leg ihn hin.</p>
+    </div>
+  </section>
+</main>
+
+<div class="proto">
+  <label><input type="checkbox" id="fehler"> Fehler beim Bauen zeigen</label>
+  <button id="vonVorn">Prototyp von vorn</button>
+</div>
+
+<script>
+(function(){
+  var CAPY='<svg width="22" height="22" viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  var START='Hola Ana, voy a llegar tarde. Estoy en el metro. Lo siento!';
+  var werk=document.getElementById('werk'), werkLabel=document.getElementById('werkLabel'),
+      platz=document.getElementById('kartePlatz'), hands=document.getElementById('hands'),
+      ta=document.getElementById('ta'), primary=document.getElementById('primary'),
+      hint=document.getElementById('hint'), fehler=document.getElementById('fehler');
+  var runde=0, text='';
+
+  function esc(s){return s.replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+  function karte(cls, kopf, inhalt){
+    platz.innerHTML='<aside class="karte '+(cls||'')+'"><div class="k-head">'+CAPY+'<span class="k-name">'+kopf+'</span></div>'+inhalt+'</aside>';
+    var k=platz.firstChild;
+    if(window.innerWidth<760) setTimeout(function(){ k.scrollIntoView({behavior:'smooth',block:'nearest'}); },60);
+    return k;
+  }
+  function on(id,fn){var b=document.getElementById(id); if(b) b.onclick=fn;}
+
+  // ── Zustand 1: Schreiben ──
+  function hinlegen(){
+    text=ta.value.trim(); if(!text) return;
+    werk.classList.remove('empty'); werk.textContent=text;
+    primary.disabled=true;
+    karte('', 'Spikiu liest', '<p class="k-sinn"><span class="punkte"><i></i><i></i><i></i></span></p>');
+    setTimeout(function(){
+      primary.disabled=false;
+      if(runde===0 && text.indexOf('¡Lo siento!')<0){ runde=1; lektorFast(); }
+      else geschafft();
+    },900);
+  }
+  function lektorFast(){
+    var z='Lo siento!', i=text.indexOf(z);
+    if(i>-1) werk.innerHTML=esc(text.slice(0,i))+'<span class="spot">'+esc(z)+'</span>'+esc(text.slice(i+z.length));
+    karte('', 'Spikiu liest',
+      '<p class="k-status b">Fast.</p>'+
+      '<p class="k-sinn">Ana versteht dich. Im Spanischen steht das Ausrufezeichen auch am Anfang.</p>'+
+      '<p class="k-form">¡Lo siento!</p>'+
+      '<div class="aktionen"><button class="btn blau" id="take">In meine Hände legen</button></div>');
+    on('take',function(){ ta.value=text.replace('Lo siento!','¡Lo siento!'); ta.focus(); });
+    primary.textContent='Weiter';
+    hint.textContent='Überarbeite die markierte Stelle und leg sie zurück.';
+  }
+
+  // ── Zustand 2: Geschafft — die Hände gehen weg, die Karte führt ──
+  function geschafft(){
+    werk.textContent=text; werk.classList.add('fertig'); werkLabel.hidden=false;
+    hands.classList.add('zu'); ta.disabled=true;
+    karte('gruen','Spikiu',
+      '<p class="k-status t">Geschafft.</p>'+
+      '<p class="k-sinn">Ana weiß, dass du später kommst und warum. Der Text tut, was er soll.</p>'+
+      '<div class="aktionen"><button class="btn" id="mk">Lektion daraus machen</button>'+
+      '<button class="btn-leise" id="neu1">Neuer Text</button></div>');
+    on('mk',bauen); on('neu1',neuerText);
+  }
+
+  // ── Zustand 3: Bauen ──
+  function bauen(){
+    karte('gruen','Spikiu',
+      '<p class="k-sinn"><b>Spikiu baut deine Lektion</b> <span class="punkte"><i></i><i></i><i></i></span></p>'+
+      '<p class="k-leise">Du kannst auch gehen. Die Lektion landet trotzdem in der Bibliothek.</p>');
+    setTimeout(fehler.checked?fehlerFall:bereit, 2200);
+  }
+
+  // ── Zustand 4: Bereit ──
+  function bereit(){
+    karte('bereit','Neue Lektion',
+      '<h2 class="lek-titel">Zu spät? So sagst du es</h2>'+
+      '<p class="lek-ziel"><em>Voy a llegar tarde</em>, <em>estoy en…</em> und <em>¡Lo siento!</em>: drei Bausteine aus deinem Text.</p>'+
+      '<p class="ort">📓 Liegt in der <b>Bibliothek</b> unter <b>Lektionen</b>.</p>'+
+      '<div class="aktionen"><button class="btn blau" id="oeffnen">Lektion öffnen</button>'+
+      '<button class="btn-leise" id="neu2">Neuer Text</button></div><div id="platzNotiz"></div>');
+    on('oeffnen',function(){ document.getElementById('platzNotiz').innerHTML='<p class="notiz">Im echten Bau öffnet sich hier Bibliothek → Lektionen, direkt bei dieser Lektion.</p>'; });
+    on('neu2',neuerText);
+  }
+
+  // ── Fehlerfall ──
+  function fehlerFall(){
+    karte('gruen','Spikiu',
+      '<p class="k-status e">Die Lektion ist gerade nicht entstanden.</p>'+
+      '<p class="k-sinn">Dein Text ist sicher. Versuch es gleich noch einmal.</p>'+
+      '<div class="aktionen"><button class="btn" id="nochmal">Nochmal</button>'+
+      '<button class="btn-leise" id="neu3">Neuer Text</button></div>');
+    on('nochmal',function(){ fehler.checked=false; bauen(); }); on('neu3',neuerText);
+  }
+
+  // ── Neuer Text ──
+  function neuerText(){
+    runde=0; text=''; platz.innerHTML='';
+    werk.className='werkstueck empty'; werk.textContent='Hier steht dein Text.'; werkLabel.hidden=true;
+    hands.classList.remove('zu'); ta.disabled=false; ta.value='';
+    primary.textContent='Hinlegen'; primary.disabled=false;
+    hint.textContent='Schreib deinen ersten Versuch und leg ihn hin.';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  primary.onclick=hinlegen;
+  document.getElementById('vonVorn').onclick=function(){ neuerText(); ta.value=START; };
+})();
+</script>
+</body>
+</html>

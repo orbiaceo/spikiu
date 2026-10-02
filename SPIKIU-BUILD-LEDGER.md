@@ -2,6 +2,27 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+> **ARBEITSWEISE — GILT FÜR ALLE CHATS (Leo, 02.10.2026, verbindlich):**
+> Leo arbeitet **nur im Chat-Dialog** (claude.ai, oft am Handy). **Claude liest und schreibt
+> direkt im Repo** `orbiaceo/spikiu` (Branch `dev`): selbst klonen/pullen, Dateien ändern,
+> committen, `git push origin dev`. Leo lädt **keine Dateien** hoch und kopiert nichts ins
+> Terminal. Also: nie „bitte hochladen", nie „bitte ins Terminal pasten" — selbst holen,
+> selbst nachsehen, selbst schreiben. Prototypen zusätzlich als Artifact zeigen, damit Leo sie
+> am Handy anklicken kann. Ledger-Pflege wie gehabt bei jedem Schritt.
+
+Stand: 02.10.2026 · SCHREIBWERKSTATT: ABSCHLUSS + LEKTION — PROTOTYP (**Leo, 10:11: „Wenn ich klicke Lektion daraus machen, ist die Folge-Schnittstelle nicht klar. Die Texteingabe-Maske ist noch da. Das einzige, was Orientierung gibt, ist ‚Neu starten'."**)
+
+**BEFUND (`schreibwerkstatt.html`):** Bei `ziellinie` bleibt die Eingabe sichtbar (nur `disabled`), „Neu starten" ist ein kleiner Unterstrich-Link. Der Knopf „Lektion aus diesem Text machen" erzeugt **gar nichts**: `onclick` setzt nur den Text auf „✓ Lektion gespeichert". Keine API, kein Eintrag in `spikiu_user.lessons`.
+**LEOS ENTSCHEID:** Die Lektion liegt in der **Bibliothek unter Lektionen** (`lektionen.html`, liest `spikiu_user.lessons`, `#last` öffnet die neueste).
+**PROTOTYP:** `prototyp-schreibwerkstatt-lektion.html` (NEU, Root, reine Design-Datei, nichts verdrahtet). Vier Zustände, EINE Karte rechts/unter dem Werkstück wechselt die Rolle, je Zustand genau eine Hauptaktion:
+1. **Schreiben** — wie heute (Lektor, „In meine Hände legen", Hinlegen/Weiter).
+2. **Geschafft** — die Hände (Textfeld + Knopf + Hinweis) **klappen weg**; Werkstück grün mit Label „Dein Text ✓ fertig". Karte: „Lektion daraus machen" (primär) · „Neuer Text" (echter Knopf statt Link).
+3. **Bauen** — „Spikiu baut deine Lektion" mit ruhigen Punkten, kein Balken, keine Prozent. Satz: „Du kannst auch gehen. Die Lektion landet trotzdem in der Bibliothek."
+4. **Bereit** — Karte zeigt Titel + Ziel der Lektion und „📓 Liegt in der Bibliothek unter Lektionen". „Lektion öffnen" (→ `lektionen.html#last`) · „Neuer Text".
+Fehlerfall: „Die Lektion ist gerade nicht entstanden. Dein Text ist sicher." · Nochmal · Neuer Text.
+**FÜR DEN BAU (nach Leos Abnahme):** `/api/generate-lesson` mit `conversationHistory` (Text-Verlauf) nutzen; den Auftrag vorher in `spikiu_pending_lesson` sichern, damit der Finalizer in `nav.js` (Teil 61) fertig baut, falls der Nutzer geht. Eintrag in `spikiu_user.lessons` im bestehenden Format (`id, topic, lesson, createdAt, zielsprache`, max. 14). Sitzung wird wie bisher bei `ziellinie` geräumt.
+**Offen:** Leo testet den Prototyp am Handy.
+
 Stand: 02.10.2026 · SPIKIU IN DER ECKE (**Leo, 09:58, Screenshot: Spikiu stand mittig unter „¡Dale!" und war verdeckt.**) — `juegos.js` `pinata()`: Spikiu wartet jetzt rechts unten in der Ecke (`calc(100% - 66px)`); zum Auffangen läuft er wie bisher zum Eindringling.
 
 
