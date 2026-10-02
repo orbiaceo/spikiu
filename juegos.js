@@ -477,7 +477,7 @@
       var b = el('button', 'jg-bal jg-fly'); b.type = 'button';
       var bb = el('span', 'b', wort); bb.style.background = cols[k % cols.length];
       b.appendChild(bb); b.appendChild(el('span', 's')); f.appendChild(b);
-      var o = { e: b, sp: .4 + Math.random() * .3, ph: Math.random() * 6, k: k, bx: 0, y: 0 };
+      var o = { e: b, sp: .55 + Math.random() * .35, ph: Math.random() * 6, k: k, bx: 0, y: 0 };
       bs.push(o);
       b.addEventListener('click', function () {
         ton.wecken();

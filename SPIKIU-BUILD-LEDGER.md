@@ -2,6 +2,9 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 02.10.2026 · GLOBOS FLOTTER (**Leo, 09:47: „Die Luftballons können ein Tick schneller laufen."**) — `juegos.js` `globos()`: Steiggeschwindigkeit 0,55–0,90 px/Frame statt 0,40–0,70 (≈ +35 %). Sonst nichts geändert.
+
+
 Stand: 02.10.2026 · KLANG IN PIÑATA + GLOBOS (**Leo, 09:43: eigene Dur- und Moll-Klänge geliefert. „Nur bei Piñata und Globos zuerst anwenden, um zu testen."**)
 
 **NEU:** `audio/spiel/dur.wav` + `audio/spiel/moll.wav` — Leos Originale (WAV 44,1 kHz, 16 Bit, Stereo, Anschlag ab 1 ms), nur die stille Fahne gekürzt (dur 4,0 → 2,4 s, moll 3,75 → 2,2 s, 0,5 s Ausblenden; hörbarer Klang endet bei ~1,9 bzw. ~1,8 s). Lautstärke unverändert: Moll ist ~12 dB leiser als Dur (Spitze −25,5 vs −13,5 dBFS) — so geliefert, nicht angeglichen.
