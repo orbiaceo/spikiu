@@ -465,6 +465,7 @@ button{font:inherit;cursor:pointer}
     var opts = { nativeLang: MUT, zielLang: ZIEL, sprich: function (t) { try { if (window.sprich) window.sprich(t, ZIEL); } catch (e) {} } };
     var blatt = document.createElement('div'); blatt.className = 'spiel-ende';
     var karte = document.createElement('div'); karte.className = 'karte';
+    if (art === 'gemelos') opts.klang = true;   // Mini-Klang bei falschem Paar (Leo, 02.10.)
     var spiel = (art === 'pinata') ? J.pinata(daten, opts) : J.gemelos(daten, opts);
     karte.appendChild(spiel); blatt.appendChild(karte);
     document.getElementById('stage').appendChild(blatt);

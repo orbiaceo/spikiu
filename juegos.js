@@ -271,7 +271,7 @@
      (iOS/Android verlangen eine Geste). Fehlt Web Audio: <audio> als Netz.
      Vorerst nur Piñata + Globos (Test). ── */
   var KLANG = (function () {
-    var PFAD = { dur: '/audio/spiel/dur.wav', moll: '/audio/spiel/moll.wav' };
+    var PFAD = { dur: '/audio/spiel/dur.wav', moll: '/audio/spiel/moll.wav', paarFalsch: '/audio/spiel/paar-falsch.wav' };
     var ctx = null, buf = {}, roh = {}, geladen = false;
     function kontext() {
       if (ctx) return ctx;
@@ -537,7 +537,8 @@
 
   /* ═══ 4. GEMELOS ═══ */
   function gemelos(paare, opts) {
-    var U = T(opts), root = wurzel();
+    var U = T(opts), root = wurzel(), mitKlang = !!(opts && opts.klang);
+    if (mitKlang) KLANG.vorladen();
     paare = (paare || []).slice(0, 4);
     root.appendChild(el('p', 'jg-task', U.gemelosTask));
     var pr = el('div', 'jg-pairs'), L = el('div', 'jg-col'), R = el('div', 'jg-col');
@@ -554,6 +555,7 @@
         if (opts && typeof opts.sprich === 'function') { try { opts.sprich(paare[a.i].z); } catch (e) {} }
         if (--offen === 0) { fb.textContent = U.gemelosDone; done(root, true); }
       } else {
+        if (mitKlang) KLANG.spiele('paarFalsch');   // Leo 02.10.: falsches Paar klingt, richtiges (grün) bleibt still
         [a, b].forEach(function (x) { x.e.className = 'jg-pc no'; setTimeout(function () { if (x.e.className.indexOf('ok') < 0) x.e.className = 'jg-pc'; }, 450); });
         fb.className = 'jg-fb soft'; fb.textContent = U.gemelosNo;
       }
@@ -561,6 +563,7 @@
     function karte(col, txt, i, seite) {
       var e = el('button', 'jg-pc', txt); e.type = 'button'; col.appendChild(e); var o = { e: e, i: i };
       e.addEventListener('click', function () {
+        if (mitKlang) KLANG.wecken();
         if (seite === 'L') { if (selL) selL.e.className = 'jg-pc'; selL = o; } else { if (selR) selR.e.className = 'jg-pc'; selR = o; }
         e.className = 'jg-pc sel'; pruefe();
       });

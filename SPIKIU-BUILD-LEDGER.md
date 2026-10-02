@@ -2,6 +2,13 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 02.10.2026 · KLANG BEI FALSCHEM PAAR (**Leo, 09:54: eigener Mini-Klang `pareja_falsch.wav` für Parejas/Gemelos am Ende des Geführten Gesprächs. „Bei richtig (grün) reicht ohne Audio."**)
+
+**NEU:** `audio/spiel/paar-falsch.wav` — Leos Original (WAV 44,1 kHz, Stereo, Anschlag ab 2 ms, Spitze −23,2 dBFS), nur stille Fahne gekürzt (3,95 → 2,0 s, 0,5 s Ausblenden; Klang endet bei ~1,5 s).
+`juegos.js`: `KLANG` kennt `paarFalsch`; `gemelos()` spielt ihn bei JEDEM falschen Paar, aber nur mit `opts.klang = true`; richtiges Paar bleibt still. `gefuehrt.html` `zeigeSpiel()` setzt `opts.klang` nur für Gemelos. **Gemelos in Wendungen & Sprichwörter bleibt bewusst stumm** (Leo nannte nur das Geführte Gespräch).
+Headless geprüft: ganze Szene → Gemelos → 4 falsche Paare = 4× Klang (2,0 s), 4 richtige = kein Klang, keine Fehler.
+
+
 Stand: 02.10.2026 · GLOBOS FLOTTER (**Leo, 09:47: „Die Luftballons können ein Tick schneller laufen."**) — `juegos.js` `globos()`: Steiggeschwindigkeit 0,55–0,90 px/Frame statt 0,40–0,70 (≈ +35 %). Sonst nichts geändert.
 
 
