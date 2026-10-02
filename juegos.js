@@ -264,6 +264,66 @@
     b.addEventListener('click', function () { try { opts.sprich(text); } catch (e) {} });
     return b;
   }
+  /* ── KLANG (Leo, 02.10.): Dur bei Erfolg, Moll bei Fehltipp — höchstens
+     EINMAL Moll pro Runde. WAV (kein MP3-Vorlauf → exakt synchron), einmal
+     vorgeladen und per Web Audio dekodiert; der Ton startet im selben
+     Moment wie der Tipp. AudioContext wird beim ersten Tippen geweckt
+     (iOS/Android verlangen eine Geste). Fehlt Web Audio: <audio> als Netz.
+     Vorerst nur Piñata + Globos (Test). ── */
+  var KLANG = (function () {
+    var PFAD = { dur: '/audio/spiel/dur.wav', moll: '/audio/spiel/moll.wav' };
+    var ctx = null, buf = {}, roh = {}, geladen = false;
+    function kontext() {
+      if (ctx) return ctx;
+      var AC = w.AudioContext || w.webkitAudioContext; if (!AC) return null;
+      try { ctx = new AC(); } catch (e) { ctx = null; }
+      return ctx;
+    }
+    function dekodiere(k) {
+      var c = kontext(); if (!c || !roh[k] || buf[k]) return;
+      try {
+        var kopie = roh[k].slice(0);
+        var fertig = function (b) { buf[k] = b; };
+        var p = c.decodeAudioData(kopie, fertig, function () {});
+        if (p && p.then) p.then(fertig, function () {});
+      } catch (e) {}
+    }
+    function vorladen() {
+      if (geladen || !w.fetch) return; geladen = true;
+      Object.keys(PFAD).forEach(function (k) {
+        fetch(PFAD[k]).then(function (r) { return r.ok ? r.arrayBuffer() : null; })
+          .then(function (ab) { if (ab) { roh[k] = ab; dekodiere(k); } }).catch(function () {});
+      });
+    }
+    function wecken() {
+      var c = kontext(); if (!c) return;
+      if (c.state === 'suspended' && c.resume) { try { c.resume(); } catch (e) {} }
+      Object.keys(roh).forEach(dekodiere);
+    }
+    function spiele(k) {
+      var c = kontext();
+      if (c && buf[k]) {
+        try {
+          if (c.state === 'suspended' && c.resume) c.resume();
+          var q = c.createBufferSource(); q.buffer = buf[k]; q.connect(c.destination); q.start(0);
+          return;
+        } catch (e) {}
+      }
+      try { var a = new Audio(PFAD[k]); a.play().catch(function () {}); } catch (e) {}
+    }
+    return { vorladen: vorladen, wecken: wecken, spiele: spiele };
+  })();
+  // Pro Runde: Dur frei, Moll nur einmal.
+  function rundenKlang() {
+    var mollSchon = false;
+    KLANG.vorladen();
+    return {
+      dur: function () { KLANG.spiele('dur'); },
+      moll: function () { if (mollSchon) return; mollSchon = true; KLANG.spiele('moll'); },
+      wecken: KLANG.wecken
+    };
+  }
+
   function wurzel() { ensureCss(); var r = el('div', 'jg'); r.stop = function () {}; return r; }
 
   // ── Piñata-Stern ──
@@ -288,7 +348,7 @@
        (jede Kapsel hat ihren eigenen Platz), dann fallen alle gleich
        schnell und gemächlich. Unten stapeln sie sich je Spalte. */
   function pinata(d, opts) {
-    var U = T(opts), root = wurzel(), raf = 0, fertig = false, last = 0, parts = [], spaltenBoden = [];
+    var U = T(opts), root = wurzel(), raf = 0, fertig = false, last = 0, parts = [], spaltenBoden = [], ton = rundenKlang();
     var woerter = woerterAus(d.satz);
     root.appendChild(el('p', 'jg-task', U.pinataTask));
     var f = el('div', 'jg-field'); root.appendChild(f);
@@ -333,6 +393,7 @@
     root.stop = function () { if (raf) cancelAnimationFrame(raf); raf = 0; };
 
     go.addEventListener('click', function () {
+      ton.wecken();
       go.remove(); pin.remove(); rope.remove();
       var W = f.clientWidth, H = f.clientHeight - 30, cx = W / 2, cy = 80;
       var cols = ['#e0412f', '#ffd24a', '#1f93b0', '#9bd14a', '#e87fb6', '#f08a2c'];
@@ -356,14 +417,15 @@
         parts.push(p);
         b.addEventListener('click', function () {
           if (fertig) return;
-          if (p.intr) { b.classList.add('ok'); fb.className = 'jg-fb'; fb.innerHTML = U.pinataOk(esc(wort)); ende(p); }
-          else { wob(b); fb.className = 'jg-fb soft'; fb.textContent = U.pinataStay; }
+          if (p.intr) { ton.dur(); b.classList.add('ok'); fb.className = 'jg-fb'; fb.innerHTML = U.pinataOk(esc(wort)); ende(p); }
+          else { ton.moll(); wob(b); fb.className = 'jg-fb soft'; fb.textContent = U.pinataStay; }
         });
       });
       last = 0; if (!RUHIG) raf = requestAnimationFrame(schleife);
     });
     function gefangen(p) {
       catcher.style.left = Math.max(0, Math.min(f.clientWidth - 60, p.x - 6)) + 'px';
+      ton.moll();
       fb.className = 'jg-fb soft'; fb.innerHTML = U.pinataCaught(esc(d.intruso));
       p.e.classList.add('ok'); ende(p);
     }
@@ -396,7 +458,7 @@
 
   /* ═══ 2. GLOBOS ═══ */
   function globos(d, opts) {
-    var U = T(opts), root = wurzel(), raf = 0, t0 = 0, fertig = false, bs = [];
+    var U = T(opts), root = wurzel(), raf = 0, t0 = 0, fertig = false, bs = [], ton = rundenKlang();
     var woerter = woerterAus(d.satz);
     root.appendChild(el('p', 'jg-task', U.globosTask));
     var ans = el('div', 'jg-ans'); root.appendChild(ans);
@@ -406,7 +468,7 @@
     var tippe = ordnung(woerter, ans, fb, U, function (o) {
       o.weg = true; o.e.style.transition = 'opacity .2s'; o.e.style.opacity = '0'; o.e.style.pointerEvents = 'none';
     }, function () {
-      fertig = true; root.stop();
+      fertig = true; root.stop(); ton.dur();
       var ph = el('div', 'jg-phrase jg-pop', d.satz); root.appendChild(ph);
       var sk = sagKnopf(d.satz, opts); if (sk) root.appendChild(sk);
       done(root, true);
@@ -418,8 +480,9 @@
       var o = { e: b, sp: .4 + Math.random() * .3, ph: Math.random() * 6, k: k, bx: 0, y: 0 };
       bs.push(o);
       b.addEventListener('click', function () {
+        ton.wecken();
         if (o.weg || fertig) return;
-        if (!tippe(wort, o)) { b.classList.add('no'); setTimeout(function () { b.classList.remove('no'); }, 450); }
+        if (!tippe(wort, o)) { ton.moll(); b.classList.add('no'); setTimeout(function () { b.classList.remove('no'); }, 450); }
       });
     });
     function platz(o, erst) {
@@ -710,7 +773,7 @@
 
   w.spikiuJuegos = {
     pinata: pinata, globos: globos, literal: literal, gemelos: gemelos,
-    huerto: huerto, acrostico: acrostico,
+    huerto: huerto, acrostico: acrostico, klang: KLANG,
     eindringling: eindringling, woerterAus: woerterAus, mezcla: mezcla, css: ensureCss,
     spikiuSvg: SPIKIU, ABC: ABC
   };

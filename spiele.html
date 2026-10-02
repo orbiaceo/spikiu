@@ -295,6 +295,7 @@ window.addEventListener('load', function(){
   document.documentElement.lang = uiLang();
   if (!window.spikiuJuegos){ inner.textContent = 'juegos.js fehlt.'; return; }
   baueDaten();
+  try { window.spikiuJuegos.klang.vorladen(); } catch (e) {}   // Dur/Moll früh laden (Piñata, Globos)
   var S = SZ(), z = S ? S.lade('spiele') : null;
   if (z && z.spiel && UI.de[z.spiel]){
     tueren();

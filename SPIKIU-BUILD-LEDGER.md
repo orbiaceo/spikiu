@@ -2,6 +2,15 @@
 _Claudes eigene autoritative Liste. Leonardo editiert nie Code — die hier
 gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt._
 
+Stand: 02.10.2026 · KLANG IN PIÑATA + GLOBOS (**Leo, 09:43: eigene Dur- und Moll-Klänge geliefert. „Nur bei Piñata und Globos zuerst anwenden, um zu testen."**)
+
+**NEU:** `audio/spiel/dur.wav` + `audio/spiel/moll.wav` — Leos Originale (WAV 44,1 kHz, 16 Bit, Stereo, Anschlag ab 1 ms), nur die stille Fahne gekürzt (dur 4,0 → 2,4 s, moll 3,75 → 2,2 s, 0,5 s Ausblenden; hörbarer Klang endet bei ~1,9 bzw. ~1,8 s). Lautstärke unverändert: Moll ist ~12 dB leiser als Dur (Spitze −25,5 vs −13,5 dBFS) — so geliefert, nicht angeglichen.
+**WARUM WAV:** MP3 setzt beim Kodieren 25–50 ms Stille vorn an → der Ton käme nach dem Tipp. WAV beginnt exakt am Schnitt.
+`juegos.js`: Modul `KLANG` (Web Audio): einmal holen + dekodieren, Start per `BufferSource` im selben Moment wie der Tipp; `AudioContext` wird beim ersten Tippen geweckt (Mobil-Pflicht); ohne Web Audio `<audio>` als Netz. `rundenKlang()` je Runde: **Dur** bei Erfolg (Piñata: Eindringling getroffen · Globos: letzter Ballon), **Moll** bei Fehltipp oder wenn Spikiu den Eindringling auffängt — **höchstens einmal pro Runde**. `spiele.html` lädt die Klänge beim Betreten vor. Gilt auch für die Piñata am Ende des Geführten Gesprächs (gleicher Motor).
+Headless geprüft: beide Dateien 200, Globos 2 Fehltipps → 1× Moll, dann Dur; Piñata ebenso. **Nicht geprüft:** Hörprobe am Handy, iOS-Stummschalter.
+**Offen (Leo entscheidet nach dem Test):** Klang auch für Al pie de la letra, Gemelos, Garten.
+
+
 Stand: 02.10.2026 · SPIEL ZUM SCHLUSS (**Leo, 00:01: „Ein Spiel als Ende vom Geführten Gespräch anbieten, falls der User das möchte." Beschluss vom 01.10. umgesetzt.**)
 
 `gefuehrt.html` (lädt jetzt `juegos.js`): Die Abschluss-Karte 🎉 bietet als ERSTEN Knopf ein Spiel an — „🪅 Noch eine Piñata zum Schluss?" bzw. „🧩 Noch Paare finden zum Schluss?" (de/es/en). „Lektion ansehen" und „Genug für heute" stehen gleichwertig daneben: **angeboten, nie verordnet.**
