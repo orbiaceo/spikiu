@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Spikiu · Abonnement</title>
+<title>Spikiu · Abo</title>
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
 :root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffd24a;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:2.5px}
@@ -47,32 +47,116 @@ h2 em{font-style:normal}
 .foot .fl a{font-size:.8rem;font-weight:600;color:var(--muted);text-decoration:none}
 </style></head>
 <body>
-<div class="top"><button class="back" onclick="history.length>1?history.back():location.href='mein.html'" aria-label="Zurück">‹</button><span class="brand">Spikiu</span><span style="width:36px"></span></div>
+<div class="top"><button class="back" id="back" onclick="window.history.length>1?window.history.back():window.location.href='mein.html'" aria-label="Zurück">‹</button><span class="brand">Spikiu</span><span style="width:36px"></span></div>
 <div class="wrap">
 
-  <div class="card free-card">
+  <div class="card free-card" id="free">
     <span class="tag free">Free</span>
-    <h2>Alles zum <em>Reinkommen</em> —<br>kostenlos.</h2>
-    <div class="item"><span class="ic">🎭</span><div><h4>Geführtes Gespräch</h4><p>Übe Szenen im Gespräch, Schritt für Schritt.</p></div></div>
-    <div class="item"><span class="ic">🧭</span><div><h4>Dein Lernweg</h4><p>Dein persönlicher Plan aus dem Assessment.</p></div></div>
-    <div class="item"><span class="ic">📖</span><div><h4>4 Kapitel Lernroman</h4><p>Immersiv lesen, Wörter sammeln.</p></div></div>
-    <div class="item"><span class="ic">🃏</span><div><h4>Wortschatz</h4><p>Die Wörter der 4 Kapitel, im ruhigen Deck.</p></div></div>
-    <div class="item"><span class="ic">📜</span><div><h4>Wendungen &amp; Sprichwörter</h4><p>Ein kleines Kontingent zum Schnuppern.</p></div></div>
-    <div class="price-row"><div class="price">€0 <span>keine Karte nötig</span></div><a class="btn" href="haus.html">Loslegen</a></div>
+    <h2 data-t="freeH"></h2>
+    <div class="item"><span class="ic">🎭</span><div><h4 data-t="f1h"></h4><p data-t="f1p"></p></div></div>
+    <div class="item"><span class="ic">🧭</span><div><h4 data-t="f2h"></h4><p data-t="f2p"></p></div></div>
+    <div class="item"><span class="ic">📖</span><div><h4 data-t="f3h"></h4><p data-t="f3p"></p></div></div>
+    <div class="item"><span class="ic">🃏</span><div><h4 data-t="f4h"></h4><p data-t="f4p"></p></div></div>
+    <div class="item"><span class="ic">📜</span><div><h4 data-t="f5h"></h4><p data-t="f5p"></p></div></div>
+    <div class="price-row"><div class="price">€0 <span data-t="freePrice"></span></div><a class="btn" href="haus.html" data-t="freeBtn"></a></div>
   </div>
 
-  <div class="card prem-card">
+  <div class="card prem-card" id="premium">
     <span class="tag">Premium</span>
-    <h2>Frei sprechen.<br><em>Ohne Grenzen.</em></h2>
-    <div class="item"><span class="ic">💬</span><div><h4>Freies Gespräch</h4><p>Rede frei mit Spikiu, wann und worüber du willst.</p></div></div>
-    <div class="item"><span class="ic">✍️</span><div><h4>Lese- & Schreibwerkstatt</h4><p>Lesen und Schreiben üben, mit Feedback.</p></div></div>
-    <div class="item"><span class="ic">📚</span><div><h4>Ganzer Lernroman</h4><p>Alle Kapitel, alle Sprachen — kein Kontingent.</p></div></div>
-    <div class="item"><span class="ic">🌱</span><div><h4>Wortschatz, Wendungen &amp; Sprichwörter ohne Limit</h4><p>So viel du willst, immer weiter.</p></div></div>
-    <div class="cmp"><div class="col"><span class="lbl">Free</span><div class="tx">4 Kapitel Lernroman, damit du reinkommst.</div></div><div class="col you"><span class="lbl">Premium</span><div class="tx">Der ganze Lernroman, Seite für Seite.</div></div></div>
-    <div class="note">Enthält alles aus Free.</div>
-    <div class="price-row"><div class="price">€8 <span>/ Monat · 1 Woche gratis</span></div><a class="btn" href="mailto:spikiuapp@gmail.com?subject=Spikiu%20Premium">Premium holen</a></div>
+    <h2 data-t="premH"></h2>
+    <div class="item"><span class="ic">💬</span><div><h4 data-t="p1h"></h4><p data-t="p1p"></p></div></div>
+    <div class="item"><span class="ic">✍️</span><div><h4 data-t="p2h"></h4><p data-t="p2p"></p></div></div>
+    <div class="item"><span class="ic">📚</span><div><h4 data-t="p3h"></h4><p data-t="p3p"></p></div></div>
+    <div class="item"><span class="ic">🌱</span><div><h4 data-t="p4h"></h4><p data-t="p4p"></p></div></div>
+    <div class="cmp"><div class="col"><span class="lbl">Free</span><div class="tx" data-t="cmpFree"></div></div><div class="col you"><span class="lbl">Premium</span><div class="tx" data-t="cmpPrem"></div></div></div>
+    <div class="note" data-t="note"></div>
+    <div class="price-row"><div class="price">€8 <span data-t="premPrice"></span></div><a class="btn" id="premBtn" href="#" data-t="premBtn"></a></div>
   </div>
 
 </div>
-<footer class="foot"><span class="fb">Spikiu</span><div class="fl"><a href="#">Impressum</a><a href="#">Datenschutz</a></div></footer>
+<footer class="foot"><span class="fb">Spikiu</span><div class="fl"><a href="#" data-t="imp"></a><a href="#" data-t="dsg"></a></div></footer>
+<script>
+/* ── Sprache = Muttersprache des Lerners (Leo, 08.10.2026) ──
+   Reihenfolge: Profil (spikiu_user) → Sprachschalter der Landing (spikiu_lang)
+   → Browser → Englisch. Nur de/es/en; alles andere fällt auf Englisch
+   (Lingua franca). */
+(function(){
+  var TX={
+    de:{ title:'Spikiu · Abo', back:'Zurück',
+      freeH:'Alles zum <em>Reinkommen</em> —<br>kostenlos.',
+      f1h:'Geführtes Gespräch', f1p:'Übe Szenen im Gespräch, Schritt für Schritt.',
+      f2h:'Dein Lernweg', f2p:'Dein persönlicher Plan aus dem Assessment.',
+      f3h:'4 Kapitel Lernroman', f3p:'Immersiv lesen, Wörter sammeln.',
+      f4h:'Wortschatz', f4p:'Die Wörter der 4 Kapitel, im ruhigen Deck.',
+      f5h:'Wendungen &amp; Sprichwörter', f5p:'Ein kleines Kontingent zum Schnuppern.',
+      freePrice:'keine Karte nötig', freeBtn:'Loslegen',
+      premH:'Frei sprechen.<br><em>Ohne Grenzen.</em>',
+      p1h:'Freies Gespräch', p1p:'Rede frei mit Spikiu, wann und worüber du willst.',
+      p2h:'Lese- &amp; Schreibwerkstatt', p2p:'Lesen und Schreiben üben, mit Feedback.',
+      p3h:'Ganzer Lernroman', p3p:'Alle Kapitel, alle Sprachen — kein Kontingent.',
+      p4h:'Wortschatz, Wendungen &amp; Sprichwörter ohne Limit', p4p:'So viel du willst, immer weiter.',
+      cmpFree:'4 Kapitel Lernroman, damit du reinkommst.', cmpPrem:'Der ganze Lernroman, Seite für Seite.',
+      note:'Enthält alles aus Free.', premPrice:'/ Monat · 1 Woche gratis', premBtn:'Premium holen',
+      imp:'Impressum', dsg:'Datenschutz' },
+    es:{ title:'Spikiu · Suscripción', back:'Atrás',
+      freeH:'Todo para <em>entrar</em> —<br>gratis.',
+      f1h:'Conversación guiada', f1p:'Practica escenas conversando, paso a paso.',
+      f2h:'Tu ruta', f2p:'Tu plan personal, hecho a partir de tu evaluación.',
+      f3h:'4 capítulos del Lernroman', f3p:'Lee inmerso en la historia y colecciona palabras.',
+      f4h:'Vocabulario', f4p:'Las palabras de los 4 capítulos, en un mazo tranquilo.',
+      f5h:'Giros &amp; Proverbios', f5p:'Una pequeña dosis para probar.',
+      freePrice:'sin tarjeta', freeBtn:'Empezar',
+      premH:'Habla libre.<br><em>Sin límites.</em>',
+      p1h:'Conversación libre', p1p:'Habla con Spikiu cuando quieras y de lo que quieras.',
+      p2h:'Taller de lectura y escritura', p2p:'Practica leer y escribir, con comentarios.',
+      p3h:'El Lernroman completo', p3p:'Todos los capítulos, todos los idiomas, sin tope.',
+      p4h:'Vocabulario, giros y proverbios sin límite', p4p:'Todo lo que quieras, siempre más.',
+      cmpFree:'4 capítulos del Lernroman, para que entres.', cmpPrem:'El Lernroman entero, página a página.',
+      note:'Incluye todo lo de Free.', premPrice:'/ mes · 1 semana gratis', premBtn:'Quiero Premium',
+      imp:'Aviso legal', dsg:'Privacidad' },
+    en:{ title:'Spikiu · Plans', back:'Back',
+      freeH:'Everything to <em>get in</em> —<br>for free.',
+      f1h:'Guided conversation', f1p:'Practise scenes in conversation, step by step.',
+      f2h:'Your path', f2p:'Your personal plan, built from your assessment.',
+      f3h:'4 chapters of the Lernroman', f3p:'Read immersively, collect words.',
+      f4h:'Vocabulary', f4p:'The words from the 4 chapters, in a calm deck.',
+      f5h:'Phrases &amp; Proverbs', f5p:'A small batch to try.',
+      freePrice:'no card needed', freeBtn:'Get started',
+      premH:'Speak freely.<br><em>No limits.</em>',
+      p1h:'Free conversation', p1p:'Talk freely with Spikiu, whenever and about whatever you like.',
+      p2h:'Reading &amp; Writing Workshop', p2p:'Practise reading and writing, with feedback.',
+      p3h:'The whole Lernroman', p3p:'Every chapter, every language — no cap.',
+      p4h:'Vocabulary, phrases &amp; proverbs, unlimited', p4p:'As much as you want, always more.',
+      cmpFree:'4 chapters of the Lernroman, to get you in.', cmpPrem:'The whole Lernroman, page by page.',
+      note:'Includes everything in Free.', premPrice:'/ month · 1 week free', premBtn:'Get Premium',
+      imp:'Imprint', dsg:'Privacy' }
+  };
+  function kurz(v){
+    v=String(v||'').toLowerCase();
+    if(v.indexOf('es')===0||v.indexOf('span')>-1) return 'es';
+    if(v.indexOf('de')===0||v.indexOf('deut')>-1||v.indexOf('germ')>-1) return 'de';
+    if(v.indexOf('en')===0||v.indexOf('engl')>-1) return 'en';
+    return '';
+  }
+  function sprache(){
+    try{
+      var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}')||{};
+      var p=u.profile||{};
+      var m=kurz(p.muttersprache)||kurz(u.nativeLang)||kurz(p.nativeLang);
+      if(m) return m;
+      var s=kurz(localStorage.getItem('spikiu_lang'));
+      if(s) return s;
+    }catch(e){}
+    return kurz(navigator.language)||'en';
+  }
+  var L=sprache(), T=TX[L];
+  document.documentElement.lang=L;
+  document.title=T.title;
+  document.getElementById('back').setAttribute('aria-label',T.back);
+  var els=document.querySelectorAll('[data-t]');
+  for(var i=0;i<els.length;i++){ var k=els[i].getAttribute('data-t'); if(T[k]!=null) els[i].innerHTML=T[k]; }
+  var subj={de:'Spikiu Premium',es:'Spikiu Premium',en:'Spikiu Premium'}[L];
+  document.getElementById('premBtn').href='mailto:spikiuapp@gmail.com?subject='+encodeURIComponent(subj);
+})();
+</script>
 </body></html>

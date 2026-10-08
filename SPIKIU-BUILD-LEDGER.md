@@ -20,6 +20,15 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 08.10.2026 · ABO-SEITE DREISPRACHIG (**Leo: „esto debe estar en los idiomas que ofrecemos por ahora Es/En/De"**)
+
+- `spikiu-products.html`: alle Texte (Free + Premium, Knöpfe, Fuß, Titel, Zurück-Label) in DE/ES/EN über ein `TX`-Wörterbuch; vorher immer Deutsch.
+- Sprache = Muttersprache: `profile.muttersprache` → `nativeLang` → `spikiu_lang` (Landing-Schalter) → Browser → **Englisch** (Lingua franca für alle anderen).
+- Anker `#free` und `#premium` ergänzt (Landing verlinkt sie seit langem, sie fehlten).
+- Benennung aus nav.js/gefuehrt.html übernommen: Conversación guiada, Tu ruta, Giros & Proverbios, Taller de lectura y escritura; „Lernroman" bleibt Eigenname.
+- Geprüft im Headless-Browser: es-Profil → ES, nativeLang English → EN, Landing de → DE, Browser fr → EN.
+- **Offen:** inhaltliche Überarbeitung der Free-Oferta (Leo will sie „bien revisar") — nächster Schritt.
+
 Stand: 03.10.2026 · SONNET-MODELL UMSCHALTBAR (VORBEREITUNG 5.5) (**Leo, 01:43: „Ja, bereite es vor."**)
 
 - Alle neun Sonnet-Endpoints (`assessment`, `chat-spanish/-german/-english`, `detect-language`, `generate-learningpath`, `haeppchen`, `lesebegleiter`, `onboarding`) lesen das Modell aus der Konstante `SONNET` ← Vercel-Env **`SPIKIU_SONNET_MODEL`** (Whitelist `claude-sonnet-4-5` | `claude-sonnet-5-5`; leer oder Tippfehler → `claude-sonnet-4-5`). Ohne Env-Eintrag ändert sich nichts.
