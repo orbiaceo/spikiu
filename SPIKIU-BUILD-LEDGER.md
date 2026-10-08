@@ -20,6 +20,14 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 08.10.2026 · ABO-SEITE INHALT NEU (FREE + PREMIUM) (**Leo: „integra los juegos, los Tokens-free de haus.html … ponle cualquier precio bajo"**)
+
+- `spikiu-products.html` folgt jetzt dem Gesetz GRATIS = NULL TOKEN (17.08.): Free = Geführtes Gespräch, Lernweg, Lernroman (wächst mit der Etappe, nicht mehr „4 Kapitel"), Wortschatz, Wendungen & Sprichwörter, Spiele (Piñata, Globos, Spikius Garten, Akrostichon), Dein Buch + Hinweis „einmalige Kostprobe von Premium".
+- Premium = alles mit Token: Freies Gespräch, Lesewerkstatt, Schreibwerkstatt, Deine Lektionen. Vergleichskasten neu: Free = vorbereitete Wege, Premium = Spikiu reagiert auf alles.
+- Preis **€5,90 / Monat · jederzeit kündbar = PLATZHALTER** (Leo rechnet die echten Preise in eigenem Chat). „1 Woche gratis" raus (ersetzt durch die Kostprobe, Entscheid 17.08.).
+- Alle Texte DE/ES/EN; Spielnamen wie in `spiele.html`.
+- **Widerspricht jetzt noch:** `faq.html` (Free/Premium-Antwort: „vier Kapitel", „ganzer Lernroman") und die Split-Kacheln in `index.html` — eigene Text-Runde.
+
 Stand: 08.10.2026 · ABO-SEITE DREISPRACHIG (**Leo: „esto debe estar en los idiomas que ofrecemos por ahora Es/En/De"**)
 
 - `spikiu-products.html`: alle Texte (Free + Premium, Knöpfe, Fuß, Titel, Zurück-Label) in DE/ES/EN über ein `TX`-Wörterbuch; vorher immer Deutsch.

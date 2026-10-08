@@ -58,6 +58,9 @@ h2 em{font-style:normal}
     <div class="item"><span class="ic">📖</span><div><h4 data-t="f3h"></h4><p data-t="f3p"></p></div></div>
     <div class="item"><span class="ic">🃏</span><div><h4 data-t="f4h"></h4><p data-t="f4p"></p></div></div>
     <div class="item"><span class="ic">📜</span><div><h4 data-t="f5h"></h4><p data-t="f5p"></p></div></div>
+    <div class="item"><span class="ic">🪅</span><div><h4 data-t="f6h"></h4><p data-t="f6p"></p></div></div>
+    <div class="item"><span class="ic">🌱</span><div><h4 data-t="f7h"></h4><p data-t="f7p"></p></div></div>
+    <div class="note" data-t="freeNote"></div>
     <div class="price-row"><div class="price">€0 <span data-t="freePrice"></span></div><a class="btn" href="haus.html" data-t="freeBtn"></a></div>
   </div>
 
@@ -65,12 +68,12 @@ h2 em{font-style:normal}
     <span class="tag">Premium</span>
     <h2 data-t="premH"></h2>
     <div class="item"><span class="ic">💬</span><div><h4 data-t="p1h"></h4><p data-t="p1p"></p></div></div>
-    <div class="item"><span class="ic">✍️</span><div><h4 data-t="p2h"></h4><p data-t="p2p"></p></div></div>
-    <div class="item"><span class="ic">📚</span><div><h4 data-t="p3h"></h4><p data-t="p3p"></p></div></div>
-    <div class="item"><span class="ic">🌱</span><div><h4 data-t="p4h"></h4><p data-t="p4p"></p></div></div>
+    <div class="item"><span class="ic">📖</span><div><h4 data-t="p2h"></h4><p data-t="p2p"></p></div></div>
+    <div class="item"><span class="ic">✍️</span><div><h4 data-t="p3h"></h4><p data-t="p3p"></p></div></div>
+    <div class="item"><span class="ic">📓</span><div><h4 data-t="p4h"></h4><p data-t="p4p"></p></div></div>
     <div class="cmp"><div class="col"><span class="lbl">Free</span><div class="tx" data-t="cmpFree"></div></div><div class="col you"><span class="lbl">Premium</span><div class="tx" data-t="cmpPrem"></div></div></div>
     <div class="note" data-t="note"></div>
-    <div class="price-row"><div class="price">€8 <span data-t="premPrice"></span></div><a class="btn" id="premBtn" href="#" data-t="premBtn"></a></div>
+    <div class="price-row"><div class="price">€5,90 <span data-t="premPrice"></span></div><a class="btn" id="premBtn" href="#" data-t="premBtn"></a></div>
   </div>
 
 </div>
@@ -84,51 +87,60 @@ h2 em{font-style:normal}
   var TX={
     de:{ title:'Spikiu · Abo', back:'Zurück',
       freeH:'Alles zum <em>Reinkommen</em> —<br>kostenlos.',
-      f1h:'Geführtes Gespräch', f1p:'Übe Szenen im Gespräch, Schritt für Schritt.',
-      f2h:'Dein Lernweg', f2p:'Dein persönlicher Plan aus dem Assessment.',
-      f3h:'4 Kapitel Lernroman', f3p:'Immersiv lesen, Wörter sammeln.',
-      f4h:'Wortschatz', f4p:'Die Wörter der 4 Kapitel, im ruhigen Deck.',
-      f5h:'Wendungen &amp; Sprichwörter', f5p:'Ein kleines Kontingent zum Schnuppern.',
+      f1h:'Geführtes Gespräch', f1p:'Übe Alltagsszenen im Dialog, Schritt für Schritt.',
+      f2h:'Dein Lernweg', f2p:'Dein persönlicher Plan aus dem Einstieg.',
+      f3h:'Lernroman', f3p:'Eine Geschichte, die mit deiner Etappe wächst. Tipp ein Wort an, nimm es mit.',
+      f4h:'Wortschatz', f4p:'Deine gesammelten Wörter, im ruhigen Deck.',
+      f5h:'Wendungen &amp; Sprichwörter', f5p:'Wie man wirklich spricht — mit Kultur dahinter.',
+      f6h:'Spiele', f6p:'Piñata, Globos, Spikius Garten, Akrostichon. Kurz und leicht, für zwischendurch.',
+      f7h:'Dein Buch', f7p:'Was du betrittst, schreibt sich Seite für Seite in dein eigenes Buch.',
+      freeNote:'Dazu eine einmalige Kostprobe von Premium: frei sprechen, lesen, schreiben.',
       freePrice:'keine Karte nötig', freeBtn:'Loslegen',
-      premH:'Frei sprechen.<br><em>Ohne Grenzen.</em>',
-      p1h:'Freies Gespräch', p1p:'Rede frei mit Spikiu, wann und worüber du willst.',
-      p2h:'Lese- &amp; Schreibwerkstatt', p2p:'Lesen und Schreiben üben, mit Feedback.',
-      p3h:'Ganzer Lernroman', p3p:'Alle Kapitel, alle Sprachen — kein Kontingent.',
-      p4h:'Wortschatz, Wendungen &amp; Sprichwörter ohne Limit', p4p:'So viel du willst, immer weiter.',
-      cmpFree:'4 Kapitel Lernroman, damit du reinkommst.', cmpPrem:'Der ganze Lernroman, Seite für Seite.',
-      note:'Enthält alles aus Free.', premPrice:'/ Monat · 1 Woche gratis', premBtn:'Premium holen',
+      premH:'Spikiu <em>antwortet</em> dir.<br>Frei.',
+      p1h:'Freies Gespräch', p1p:'Rede mit Spikiu, wann und worüber du willst.',
+      p2h:'Lesewerkstatt', p2p:'Texte auf deiner Etappe, mit Fragen und Rückmeldung.',
+      p3h:'Schreibwerkstatt', p3p:'Du schreibst, Spikiu liest mit und zeigt dir, wie es klingt.',
+      p4h:'Deine Lektionen', p4p:'Aus deinen Gesprächen wird eine Lektion, zum Behalten.',
+      cmpFree:'Du übst auf Wegen, die Spikiu für dich vorbereitet hat.', cmpPrem:'Spikiu reagiert auf alles, was du sagst und schreibst.',
+      note:'Enthält alles aus Free.', premPrice:'/ Monat · jederzeit kündbar', premBtn:'Premium holen',
       imp:'Impressum', dsg:'Datenschutz' },
     es:{ title:'Spikiu · Suscripción', back:'Atrás',
       freeH:'Todo para <em>entrar</em> —<br>gratis.',
-      f1h:'Conversación guiada', f1p:'Practica escenas conversando, paso a paso.',
-      f2h:'Tu ruta', f2p:'Tu plan personal, hecho a partir de tu evaluación.',
-      f3h:'4 capítulos del Lernroman', f3p:'Lee inmerso en la historia y colecciona palabras.',
-      f4h:'Vocabulario', f4p:'Las palabras de los 4 capítulos, en un mazo tranquilo.',
-      f5h:'Giros &amp; Proverbios', f5p:'Una pequeña dosis para probar.',
+      f1h:'Conversación guiada', f1p:'Practica escenas cotidianas en diálogo, paso a paso.',
+      f2h:'Tu ruta', f2p:'Tu plan personal, hecho a partir de tu primer encuentro.',
+      f3h:'Lernroman', f3p:'Una historia que crece con tu etapa. Toca una palabra y llévatela.',
+      f4h:'Vocabulario', f4p:'Las palabras que vas reuniendo, en un mazo tranquilo.',
+      f5h:'Giros &amp; Proverbios', f5p:'Cómo se habla de verdad, con la cultura detrás.',
+      f6h:'Juegos', f6p:'Piñata, Globos, El huerto de Spikiu, Acróstico. Cortos y ligeros, para ratitos.',
+      f7h:'Tu libro', f7p:'Lo que vas viviendo se escribe, página a página, en un libro solo tuyo.',
+      freeNote:'Además, una probadita única de Premium: hablar, leer y escribir libremente.',
       freePrice:'sin tarjeta', freeBtn:'Empezar',
-      premH:'Habla libre.<br><em>Sin límites.</em>',
+      premH:'Spikiu te <em>responde</em>.<br>Libremente.',
       p1h:'Conversación libre', p1p:'Habla con Spikiu cuando quieras y de lo que quieras.',
-      p2h:'Taller de lectura y escritura', p2p:'Practica leer y escribir, con comentarios.',
-      p3h:'El Lernroman completo', p3p:'Todos los capítulos, todos los idiomas, sin tope.',
-      p4h:'Vocabulario, giros y proverbios sin límite', p4p:'Todo lo que quieras, siempre más.',
-      cmpFree:'4 capítulos del Lernroman, para que entres.', cmpPrem:'El Lernroman entero, página a página.',
-      note:'Incluye todo lo de Free.', premPrice:'/ mes · 1 semana gratis', premBtn:'Quiero Premium',
+      p2h:'Taller de lectura', p2p:'Textos a tu medida, con preguntas y comentarios.',
+      p3h:'Taller de escritura', p3p:'Tú escribes; Spikiu lee contigo y te muestra cómo suena.',
+      p4h:'Tus lecciones', p4p:'De tus conversaciones sale una lección para guardar.',
+      cmpFree:'Practicas en caminos que Spikiu preparó para ti.', cmpPrem:'Spikiu reacciona a todo lo que dices y escribes.',
+      note:'Incluye todo lo de Free.', premPrice:'/ mes · cancela cuando quieras', premBtn:'Quiero Premium',
       imp:'Aviso legal', dsg:'Privacidad' },
     en:{ title:'Spikiu · Plans', back:'Back',
       freeH:'Everything to <em>get in</em> —<br>for free.',
-      f1h:'Guided conversation', f1p:'Practise scenes in conversation, step by step.',
-      f2h:'Your path', f2p:'Your personal plan, built from your assessment.',
-      f3h:'4 chapters of the Lernroman', f3p:'Read immersively, collect words.',
-      f4h:'Vocabulary', f4p:'The words from the 4 chapters, in a calm deck.',
-      f5h:'Phrases &amp; Proverbs', f5p:'A small batch to try.',
+      f1h:'Guided conversation', f1p:'Practise everyday scenes in dialogue, step by step.',
+      f2h:'Your path', f2p:'Your personal plan, built from your first session.',
+      f3h:'Lernroman', f3p:'A story that grows with your stage. Tap a word, take it with you.',
+      f4h:'Vocabulary', f4p:'The words you collect, in a calm deck.',
+      f5h:'Phrases &amp; Proverbs', f5p:'How people really talk, with the culture behind it.',
+      f6h:'Games', f6p:'Piñata, Balloons, Spikiu’s Garden, Acrostic. Short and light, for in-between moments.',
+      f7h:'Your book', f7p:'What you step into is written, page by page, into a book of your own.',
+      freeNote:'Plus a one-time taste of Premium: speak, read and write freely.',
       freePrice:'no card needed', freeBtn:'Get started',
-      premH:'Speak freely.<br><em>No limits.</em>',
-      p1h:'Free conversation', p1p:'Talk freely with Spikiu, whenever and about whatever you like.',
-      p2h:'Reading &amp; Writing Workshop', p2p:'Practise reading and writing, with feedback.',
-      p3h:'The whole Lernroman', p3p:'Every chapter, every language — no cap.',
-      p4h:'Vocabulary, phrases &amp; proverbs, unlimited', p4p:'As much as you want, always more.',
-      cmpFree:'4 chapters of the Lernroman, to get you in.', cmpPrem:'The whole Lernroman, page by page.',
-      note:'Includes everything in Free.', premPrice:'/ month · 1 week free', premBtn:'Get Premium',
+      premH:'Spikiu <em>answers</em> you.<br>Freely.',
+      p1h:'Free conversation', p1p:'Talk with Spikiu whenever and about whatever you like.',
+      p2h:'Reading Workshop', p2p:'Texts at your stage, with questions and feedback.',
+      p3h:'Writing Workshop', p3p:'You write; Spikiu reads along and shows you how it sounds.',
+      p4h:'Your lessons', p4p:'Your conversations become a lesson to keep.',
+      cmpFree:'You practise on paths Spikiu has prepared for you.', cmpPrem:'Spikiu responds to everything you say and write.',
+      note:'Includes everything in Free.', premPrice:'/ month · cancel anytime', premBtn:'Get Premium',
       imp:'Imprint', dsg:'Privacy' }
   };
   function kurz(v){
