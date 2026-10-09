@@ -20,6 +20,16 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 09.10.2026 · ANGEBOT ÜBERALL ANGEGLICHEN (**Leo: „Alinea todo, mi cuate!!"**)
+
+- `index.html` Split-Kacheln (de/es/en): Free = Geführtes Gespräch · Lernweg · Lernroman · Wortschatz · Wendungen & Sprichwörter · Spiele; Premium = Freies Gespräch · Lese- & Schreibwerkstatt · Deine Lektionen · Spikiu antwortet dir; Preis €5,90 (Platzhalter) · „jederzeit kündbar" statt „1 Woche gratis". „4 Kapitel" und „Ganzer Lernroman" raus.
+- `faq.html` jetzt **dreisprachig** (gleiche Sprachlogik wie `spikiu-products.html`), alle sechs Fragen übersetzt; Free/Premium-Antwort neu nach Null-Token-Gesetz, mit Link „Alle Details →" auf die Abo-Seite.
+- `chat.html` Premium-Sperre verlinkt auf `spikiu-products.html#premium` (Sperre selbst ist wegen `devOffen()` = true weiter inaktiv).
+- Geprüft: Node-Syntax aller Inline-Scripts; Headless-Render FAQ + Landing in es/en/de.
+- **Bewusst NICHT angefasst:** `books.html` und Prompts `chat-spanish/-german.js` („4 Kapitel in der Beta") beschreiben den alten Reader *Lukas/Marta* und sind dort sachlich richtig · `sessions.html` (€80 Coach) · `teams_dashboard.html` (Attrappe).
+- **FRAGE AN DESIGN:** Das Geführte Gespräch legt eine Lektion in „Lektionen" ab (null Token), die Kachel „Deine Lektionen" trägt aber die Premium-Pille. Sind gebackene Szenen-Lektionen gratis und nur die erzeugten Lektionen Premium? Abo-Seite sagt derzeit: Premium = „Aus deinen Gesprächen wird eine Lektion".
+- Offen: `haus.html` und `mein.html` sind noch einsprachig deutsch.
+
 Stand: 08.10.2026 · ABO-SEITE INHALT NEU (FREE + PREMIUM) (**Leo: „integra los juegos, los Tokens-free de haus.html … ponle cualquier precio bajo"**)
 
 - `spikiu-products.html` folgt jetzt dem Gesetz GRATIS = NULL TOKEN (17.08.): Free = Geführtes Gespräch, Lernweg, Lernroman (wächst mit der Etappe, nicht mehr „4 Kapitel"), Wortschatz, Wendungen & Sprichwörter, Spiele (Piñata, Globos, Spikius Garten, Akrostichon), Dein Buch + Hinweis „einmalige Kostprobe von Premium".

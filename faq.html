@@ -35,44 +35,82 @@ details[open] summary .pfeil{transform:rotate(90deg)}
 </head>
 <body>
 <header class="rnav">
-  <button class="back" onclick="location.href='haus.html'" aria-label="zurück">‹</button>
-  <div class="title">Hilfe</div>
+  <button class="back" id="back" onclick="window.location.href='haus.html'" aria-label="zurück">‹</button>
+  <div class="title" id="titel">Hilfe</div>
 </header>
 <div class="wrap">
-  <h2>Häufige Fragen</h2>
-
-  <details>
-    <summary>Was ist das Geführte Gespräch? <span class="pfeil">›</span></summary>
-    <div class="antwort">Du wählst ein Thema und übst eine Szene Schritt für Schritt: Wörter, Hören, Sprechen und ein kurzes Rollenspiel. Am Ende bekommst du eine Lektion zum Nachlesen — sie landet in der Bibliothek unter „Lektionen".</div>
-  </details>
-
-  <details>
-    <summary>Wie navigiere ich durch die Karten? <span class="pfeil">›</span></summary>
-    <div class="antwort">Tippe auf „Weiter" — oder wische mit dem Daumen nach links. Nach rechts wischen bringt dich eine Karte zurück. Bei Übungen geht es erst weiter, wenn du geantwortet hast.</div>
-  </details>
-
-  <details>
-    <summary>Was sammelt „Mein Buch"? <span class="pfeil">›</span></summary>
-    <div class="antwort">Wörter, die du beim Lesen und Üben einsammelst. Sie kommen später im Wortschatz-Training als Wiedersehen zurück — nichts geht verloren.</div>
-  </details>
-
-  <details>
-    <summary>Was ist der Unterschied zwischen Free und Premium? <span class="pfeil">›</span></summary>
-    <div class="antwort">Free enthält alles zum Reinkommen: Geführtes Gespräch, dein Lernweg, vier Kapitel Lernroman, ein Kontingent für Wortschatz sowie Wendungen &amp; Sprichwörter. Premium öffnet das Freie Gespräch, die Lese- und Schreibwerkstatt und den ganzen Lernroman — ohne Limit. Details unter Mein → Abonnement.</div>
-  </details>
-
-  <details>
-    <summary>Warum spricht Spikiu nicht? <span class="pfeil">›</span></summary>
-    <div class="antwort">Beim ersten Öffnen lädt die Stimme kurz im Hintergrund. Tippe einmal irgendwo auf die Seite und versuch es erneut — Browser erlauben Ton erst nach einer Berührung.</div>
-  </details>
-
-  <details>
-    <summary>Woher kommen die Bilder auf den Karten? <span class="pfeil">›</span></summary>
-    <div class="antwort">Die Icons stammen von <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a> – the open-source emoji and icon project. Lizenz: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Sie liegen bei uns selbst auf dem Server, damit sie auf jedem Gerät gleich aussehen und kein fremder Dienst mitliest.</div>
-  </details>
-
-  <div class="kontakt">Noch Fragen? Schreib uns: <a href="mailto:spikiuapp@gmail.com">spikiuapp@gmail.com</a></div>
+  <h2 id="kopf">Häufige Fragen</h2>
+  <div id="fragen"></div>
+  <div class="kontakt"><span id="kontakt">Noch Fragen? Schreib uns:</span> <a href="mailto:spikiuapp@gmail.com">spikiuapp@gmail.com</a></div>
 </div>
+<script>
+/* ── Dreisprachig nach Muttersprache (Leo, 09.10.2026) — gleiche Logik wie
+   spikiu-products.html: Profil → spikiu_lang → Browser → Englisch. ── */
+(function(){
+  var OM='<a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a>';
+  var CC='<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>';
+  var ABO='<a href="spikiu-products.html" style="color:var(--acc);font-weight:700;text-decoration:none">';
+  var TX={
+    de:{ titel:'Hilfe', kopf:'Häufige Fragen', back:'zurück', seite:'Spikiu · Hilfe', kontakt:'Noch Fragen? Schreib uns:',
+      fragen:[
+        ['Was ist das Geführte Gespräch?','Du wählst ein Thema und übst eine Szene Schritt für Schritt: Wörter, Hören, Sprechen und ein kurzes Rollenspiel. Am Ende bekommst du eine Lektion zum Nachlesen — sie landet in der Bibliothek unter „Lektionen".'],
+        ['Wie navigiere ich durch die Karten?','Tippe auf „Weiter" — oder wische mit dem Daumen nach links. Nach rechts wischen bringt dich eine Karte zurück. Bei Übungen geht es erst weiter, wenn du geantwortet hast.'],
+        ['Was sammelt „Mein Buch"?','Wörter, die du beim Lesen und Üben einsammelst. Sie kommen später im Wortschatz-Training als Wiedersehen zurück — nichts geht verloren.'],
+        ['Was ist der Unterschied zwischen Free und Premium?','Free enthält alles, was Spikiu für dich vorbereitet hat: Geführtes Gespräch, dein Lernweg, der Lernroman, Wortschatz, Wendungen &amp; Sprichwörter, die Spiele und dein Buch — dazu eine einmalige Kostprobe von Premium. Premium öffnet alles, wo Spikiu live auf dich antwortet: Freies Gespräch, Lese- und Schreibwerkstatt und deine Lektionen. '+ABO+'Alle Details →</a>'],
+        ['Warum spricht Spikiu nicht?','Beim ersten Öffnen lädt die Stimme kurz im Hintergrund. Tippe einmal irgendwo auf die Seite und versuch es erneut — Browser erlauben Ton erst nach einer Berührung.'],
+        ['Woher kommen die Bilder auf den Karten?','Die Icons stammen von '+OM+' – the open-source emoji and icon project. Lizenz: '+CC+'. Sie liegen bei uns selbst auf dem Server, damit sie auf jedem Gerät gleich aussehen und kein fremder Dienst mitliest.']
+      ]},
+    es:{ titel:'Ayuda', kopf:'Preguntas frecuentes', back:'atrás', seite:'Spikiu · Ayuda', kontakt:'¿Más preguntas? Escríbenos:',
+      fragen:[
+        ['¿Qué es la Conversación guiada?','Eliges un tema y practicas una escena paso a paso: palabras, escuchar, hablar y un breve juego de rol. Al final recibes una lección para repasar; la encuentras en la biblioteca, en «Lecciones».'],
+        ['¿Cómo paso de una tarjeta a otra?','Toca «Seguir» o desliza el pulgar hacia la izquierda. Deslizar a la derecha te lleva a la tarjeta anterior. En los ejercicios solo avanzas cuando has respondido.'],
+        ['¿Qué guarda «Mi libro»?','Las palabras que vas reuniendo al leer y practicar. Vuelven más tarde en el taller de vocabulario, como un reencuentro: nada se pierde.'],
+        ['¿Qué diferencia hay entre Free y Premium?','Free incluye todo lo que Spikiu preparó para ti: Conversación guiada, tu ruta, el Lernroman, vocabulario, giros y proverbios, los juegos y tu libro, además de una probadita única de Premium. Premium abre todo lo que Spikiu te responde en vivo: conversación libre, taller de lectura y de escritura, y tus lecciones. '+ABO+'Todos los detalles →</a>'],
+        ['¿Por qué Spikiu no habla?','La primera vez, la voz se carga un momento en segundo plano. Toca una vez cualquier parte de la pantalla y vuelve a intentarlo: los navegadores solo permiten sonido después de un toque.'],
+        ['¿De dónde vienen las imágenes de las tarjetas?','Los iconos son de '+OM+', un proyecto libre de emojis e iconos. Licencia: '+CC+'. Están en nuestro propio servidor, para que se vean igual en cualquier aparato y ningún servicio ajeno se entere de nada.']
+      ]},
+    en:{ titel:'Help', kopf:'Frequently asked questions', back:'back', seite:'Spikiu · Help', kontakt:'More questions? Write to us:',
+      fragen:[
+        ['What is the guided conversation?','You pick a topic and practise a scene step by step: words, listening, speaking and a short role-play. At the end you get a lesson to look back on — it goes into the library under “Lessons”.'],
+        ['How do I move through the cards?','Tap “Next” — or swipe left with your thumb. Swiping right takes you back one card. In exercises you only move on once you have answered.'],
+        ['What does “My book” collect?','The words you gather while reading and practising. They come back later in the vocabulary workshop as a reunion — nothing gets lost.'],
+        ['What is the difference between Free and Premium?','Free includes everything Spikiu has prepared for you: guided conversation, your path, the Lernroman, vocabulary, phrases &amp; proverbs, the games and your book — plus a one-time taste of Premium. Premium opens everything where Spikiu answers you live: free conversation, the reading and writing workshops, and your lessons. '+ABO+'All the details →</a>'],
+        ['Why doesn’t Spikiu speak?','The first time, the voice loads briefly in the background. Tap anywhere on the page once and try again — browsers only allow sound after a touch.'],
+        ['Where do the card images come from?','The icons come from '+OM+' – the open-source emoji and icon project. Licence: '+CC+'. We host them on our own server, so they look the same on every device and no outside service is listening in.']
+      ]}
+  };
+  function kurz(v){
+    v=String(v||'').toLowerCase();
+    if(v.indexOf('es')===0||v.indexOf('span')>-1) return 'es';
+    if(v.indexOf('de')===0||v.indexOf('deut')>-1||v.indexOf('germ')>-1) return 'de';
+    if(v.indexOf('en')===0||v.indexOf('engl')>-1) return 'en';
+    return '';
+  }
+  function sprache(){
+    try{
+      var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}')||{};
+      var p=u.profile||{};
+      var m=kurz(p.muttersprache)||kurz(u.nativeLang)||kurz(p.nativeLang);
+      if(m) return m;
+      var s=kurz(localStorage.getItem('spikiu_lang'));
+      if(s) return s;
+    }catch(e){}
+    return kurz(navigator.language)||'en';
+  }
+  var L=sprache(), T=TX[L];
+  document.documentElement.lang=L;
+  document.title=T.seite;
+  document.getElementById('titel').textContent=T.titel;
+  document.getElementById('kopf').textContent=T.kopf;
+  document.getElementById('kontakt').textContent=T.kontakt;
+  document.getElementById('back').setAttribute('aria-label',T.back);
+  var h='';
+  for(var i=0;i<T.fragen.length;i++){
+    h+='<details><summary>'+T.fragen[i][0]+' <span class="pfeil">›</span></summary><div class="antwort">'+T.fragen[i][1]+'</div></details>';
+  }
+  document.getElementById('fragen').innerHTML=h;
+})();
+</script>
 <script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 </body>
 </html>
