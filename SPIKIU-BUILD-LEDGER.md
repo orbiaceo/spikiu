@@ -19,6 +19,18 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Befund dabei (Claude): Chat-Endpoints nutzen kein Prompt-Caching (System-Prompt bei jedem Zug voll bezahlt) → großer Spar-Hebel.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
+> **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
+
+Stand: 11.10.2026 · SPIELZIMMER: NEUN SPIELE, SPIEL DES TAGES, ZUGANGSWACHE (**Leo, 23:57: alle fünf neuen Spiele „tal como los has diseñado“ abgenommen; 00:10: Organisation + Zugangsmodell „Es passt so! Einverstanden!“**)
+
+`juegos.js` **+5 Spiele** (UI de/es/en, null Token): `encadenado` (Wortkette, Erkennung wie Akrostichon über die Oberkategorie, Spikiu-Hilfe Buchstabe für Buchstabe, „vorletzter Buchstabe“ als Ausweg) · `oido` (hören → Bild) · `golpe` (Silben + Betonung per spanischer Regel, Klatschen per Web Audio, Tilde beim Raten versteckt) · `mercado` (zwei Körbe) · `memoria` (Wort ↔ Bild). Klang wie gehabt: Dur bei Erfolg, Moll max. 1× pro Runde.
+`spiele.html` = **Spielzimmer**: oben **Spiel des Tages** (täglich wechselnd, für alle gleich), darunter drei Regale — **Hören & Sprechen** (Oído fino, El golpe) · **Wörter finden** (Encadenado, Akrostichon, Spikius Garten, Memoria) · **Schnell & leicht** (Piñata, Globos, Al mercado). El golpe nur bei Zielsprache Spanisch (Silbenregeln gibt es nur dort). Daten: Wortfelder (Oberkategorien), Bilder über `icon-db.js` (Konzept = englische Spalte; `wortfelder.feld()` liefert jetzt `en` + `nomen`). Körbe im Mercado nur mit eindeutigen Nomen (kein *precio*, *tarjeta* …).
+**NEU `zugang.js`** (Beschluss oben): 14 Tage Probe · danach Spiel des Tages frei · Abo = alles. **`AKTIV = false`** → in der Beta ist alles frei. Sperre ansehen: `spiele.html?zugang=test` (nur dieses Gerät; `?zugang=aus` setzt zurück). Gesperrte Türen tragen 🔒, Spikiu sagt freundlich „Das gehört zum Spielzimmer (1,50 € im Monat). Heute frei: …“ mit Knopf zum Spiel des Tages. Das Spiel am Szenenende fragt die Wache nicht (immer frei).
+`icon-db.js`: **+54 Konzepte**, **49 neue OpenMoji-SVGs** in `bilder/` (Obst, Gemüse, Gerichte, Besteck, Getränke, Bus/Tram/Hotel …) → 150 Wortfeld-Begriffe mit Bild; jetzt 183 SVGs.
+`spikiu-products.html`: Spiele-Text dreisprachig auf neun Spiele + Regel (Spiel des Tages frei, Szenen-Spiel frei, 14 Tage alles).
+Headless geprüft (es→de, de→es, en→de, el→es): alle fünf neuen Spiele bis zum Ende, Regale/Spiel des Tages, Sperre im Testmodus. Keine Fehler. Commit 99121ac.
+**Offen:** El golpe für de/en/el (bräuchte kuratierte Betonungsdaten) · echte Abo-Prüfung erst mit Konten (Phase 2).
+
 
 Stand: 10.10.2026 · SPIELKISTE ZWEI — PROTOTYP (**Leo: „Ahora sí está bien chingón el juego. ¿Otra idea de juego en base a lo que ya hay, sin API/Tokens?" → „Baue ein HTML mit allen Spielen zum Testen. Ein Zug pro Spiel reicht."**)
 
