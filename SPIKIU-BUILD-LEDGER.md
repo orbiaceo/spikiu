@@ -20,6 +20,18 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · SPIELKISTE ZWEI — PROTOTYP (**Leo: „Ahora sí está bien chingón el juego. ¿Otra idea de juego en base a lo que ya hay, sin API/Tokens?" → „Baue ein HTML mit allen Spielen zum Testen. Ein Zug pro Spiel reicht."**)
+
+**NEU:** `spielkiste-zwei-prototyp.html` (Root, eigenständig: Daten, OpenMoji-Bilder und Leos Dur/Moll als data-URI eingebettet; nichts verdrahtet). Spanisch lernen, Bedienung Deutsch, Feld Essen & Trinken:
+1. **Encadenado** — Wortkette mit Spikiu: dein Wort beginnt mit dem letzten Buchstaben seines Wortes; Erkennung wie im Akrostichon (Bereich + Plural), Spikiu-Hilfe Buchstabe für Buchstabe; geht ein Buchstabe nicht, gilt der vorletzte.
+2. **Oído fino** — Spikiu spricht ein Wort, du tippst das Bild unter vier (OpenMoji).
+3. **El golpe** — Silben werden geklatscht (Web Audio, betonte Silbe laut + Trommel), du tippst die starke Silbe. Silbentrennung + Betonung per Regel (spanisch, inkl. qu/gu, Diphthong/Hiat, Tilde); Tilde wird beim Raten versteckt. 30 Wörter in Node gegengeprüft.
+4. **Al mercado** — sechs Wörter in zwei Körbe sortieren: Comer y beber · Unterwegs (Oberkategorien aus `wortfelder.js`).
+5. **Memoria** — vier Paare Wort ↔ Bild.
+Klang: Dur bei Erfolg, Moll höchstens einmal pro Runde. Stimme im Prototyp = Sprachausgabe des Geräts (in der App später Piper).
+Headless geprüft: jedes Spiel eine Runde bis zum Ende, keine Fehler, kein horizontales Scrollen. **Wartet auf Leos Test.**
+
+
 Stand: 10.10.2026 · AKROSTICHON: OBERKATEGORIE ZÄHLT (**Leo, 22:59, zwei Screenshots: Thema Café, Wort BAR — „ajo" wurde orange abgewiesen. „Si la palabra pertenece a comida en general — restaurante, bar, desayuno — todas las palabras de esa categoría superior deben ser aceptadas. Sopa: sal, solo, silla, olivas u oliva, pagar, probar … Ahora está muy limitado."**)
 
 **URSACHE:** Akzeptiert wurde nur das gewählte Thema. *ajo* stand im Feld Restaurant, nicht Café → abgewiesen. *oliva/olivas* fehlten ganz (nur *aceituna*, *olivo*).
