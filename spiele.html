@@ -125,13 +125,15 @@ function baueDaten(){
   var z = PROFILE.zielsprache, SP = window.spikiuSprichwort, J = window.spikiuJuegos;
   SAETZE = [];
   if (SP && SP.daten){
-    (SP.daten[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, art:'spruch' }); });
-    ((SP.wendungen||{})[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, art:'wendung' }); });
+    var trP = function(p){ return (p.t && p.t[PROFILE.muttersprache]) || ''; };
+    (SP.daten[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, tr:trP(p), art:'spruch' }); });
+    ((SP.wendungen||{})[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, tr:trP(p), art:'wendung' }); });
   }
   var WS = (typeof window.spikiuWortschatz === 'function' && window.spikiuWortschatz.daten && window.spikiuWortschatz.daten[z])
     ? window.spikiuWortschatz(z, PROFILE.muttersprache) : [];
-  WS.forEach(function(x){ if (x.text) SAETZE.push({ satz:x.text, art:'beispiel' }); LEXIKON.push({ z:x.wort, tr:x.tr }); });
-  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return n >= 3 && n <= 8; });
+  WS.forEach(function(x){ if (x.text) SAETZE.push({ satz:x.text, tr:x.ts || '', art:'beispiel' }); LEXIKON.push({ z:x.wort, tr:x.tr }); });
+  // Leo 10.10.: jeder Wurf endet mit der Übersetzung → nur Sätze, die eine haben.
+  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return s.tr && n >= 3 && n <= 8; });
   var D = lernpfad();
   if (D){
     D.themen.forEach(function(t){ woerterVonThema(t.id).forEach(function(x){ LEXIKON.push(x); }); });
@@ -226,9 +228,9 @@ function rundeKarte(spiel){
   if (spiel === 'pinata'){
     var ein = J.eindringling(s.satz, SAETZE.map(function(x){ return x.satz; }), PROFILE.zielsprache);
     if (!ein) { leerHinweis(); return; }
-    karte = J.pinata({ satz: s.satz, intruso: ein.wort, intrusoDe: ein.aus }, opts());
+    karte = J.pinata({ satz: s.satz, tr: s.tr, intruso: ein.wort, intrusoDe: ein.aus }, opts());
   } else {
-    karte = J.globos({ satz: s.satz }, opts());
+    karte = J.globos({ satz: s.satz, tr: s.tr }, opts());
   }
   var c = document.createElement('div'); c.className = 'card'; c.appendChild(karte); inner.appendChild(c);
   aktiv = karte;

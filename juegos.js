@@ -149,6 +149,7 @@
     '.jg-mini-chip{font-size:.98rem;padding:.22rem .55rem;border-width:2px;border-radius:12px;box-shadow:2px 2px 0 var(--jg-ink)}',
     '.jg-chip.ok{background:var(--jg-ok2)}.jg-chip.no{background:var(--jg-warn2);border-color:var(--jg-warn);animation:jgWob .4s}',
     '.jg-phrase{font:600 clamp(1.3rem,5.6vw,1.75rem)/1.3 Lora,Georgia,serif;text-wrap:balance}',
+    '.jg-trans{font:italic 500 1rem/1.4 "DM Sans",sans-serif;color:var(--jg-mid);margin-top:-.4rem;text-wrap:balance}',
     '.jg-explain{background:var(--jg-acc2);border-radius:14px;padding:.65rem .85rem;font-size:.95rem;line-height:1.45;text-align:left;width:100%}',
     '.jg-say{display:inline-flex;align-items:center;gap:.35rem;background:var(--jg-acc);color:#fff;border:2.5px solid var(--jg-ink);border-radius:100px;box-shadow:2px 3px 0 var(--jg-ink);padding:.35rem .8rem;font-weight:800;font-size:.85rem;cursor:pointer}',
     '.jg-big{background:var(--jg-yel);color:var(--jg-ink);border:2.5px solid var(--jg-ink);border-radius:100px;box-shadow:3px 4px 0 var(--jg-ink);padding:.65rem 1.9rem;font-weight:800;font-size:1.25rem;cursor:pointer}',
@@ -324,6 +325,8 @@
     };
   }
 
+  // Leo 10.10.: nach jedem Wurf die Übersetzung in der Muttersprache — festigt oder klärt.
+  function uebersetzung(root, tr) { if (tr) root.appendChild(el('div', 'jg-trans jg-pop', tr)); }
   function wurzel() { ensureCss(); var r = el('div', 'jg'); r.stop = function () {}; return r; }
 
   // ── Piñata-Stern ──
@@ -433,7 +436,7 @@
       fertig = true; p.weg = true;
       setTimeout(function () {
         parts.forEach(function (q) { if (!q.konf && q !== p) { q.e.style.transition = 'opacity .4s'; q.e.style.opacity = '0'; } });
-        var ph = el('div', 'jg-phrase jg-pop', d.satz); root.appendChild(ph);
+        var ph = el('div', 'jg-phrase jg-pop', d.satz); root.appendChild(ph); uebersetzung(root, d.tr);
         var sk = sagKnopf(d.satz, opts); if (sk) root.appendChild(sk);
         if (d.intrusoDe) { var ex = el('div', 'jg-explain jg-pop'); ex.innerHTML = U.gehoertZu(esc(d.intruso), esc(d.intrusoDe)); root.appendChild(ex); }
         done(root, true);
@@ -469,7 +472,7 @@
       o.weg = true; o.e.style.transition = 'opacity .2s'; o.e.style.opacity = '0'; o.e.style.pointerEvents = 'none';
     }, function () {
       fertig = true; root.stop(); ton.dur();
-      var ph = el('div', 'jg-phrase jg-pop', d.satz); root.appendChild(ph);
+      var ph = el('div', 'jg-phrase jg-pop', d.satz); root.appendChild(ph); uebersetzung(root, d.tr);
       var sk = sagKnopf(d.satz, opts); if (sk) root.appendChild(sk);
       done(root, true);
     });

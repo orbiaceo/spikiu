@@ -20,6 +20,16 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · PIÑATA + GLOBOS MIT ÜBERSETZUNG (**Leo: „Los juegos piñata y ballons tienen que tener la traducción de la frase a la lengua materna al final de cada tiro. Es una forma de reforzar o de aclarar el ítem." — getestet auf Griechisch.**)
+
+`juegos.js`: `pinata()` und `globos()` nehmen `d.tr`; nach jedem Wurf steht unter dem Satz die Übersetzung in der Muttersprache (`.jg-trans`, kursiv, DM Sans). Helfer `uebersetzung()`.
+`wortschatz.js`: **NEU Feld `ts`** = Übersetzung des ganzen Beispielsatzes, für alle 62 Sätze (es 20 → de/en · de 20 → es/en · en 12 → de/es · el 10 → de/es/en); Ausgabe `ts` in der Muttersprache. **FRAGE AN LEO (Linguist): bitte die 62 Satzübersetzungen gegenlesen** — von Claude geschrieben, wörtlich nah, A1-Ton.
+`spiele.html`: Sätze tragen `tr` (Sprichwörter/Wendungen: `t[Muttersprache]`, Beispielsätze: `ts`); **nur Sätze MIT Übersetzung kommen in Piñata/Globos**. Bestand je Zielsprache: el 14 · es 35 · de 28 Sätze.
+`gefuehrt.html` `spielZumSchluss()`: Piñata-Satz nur aus Spikius Rollenspiel-Zeilen mit `spikiu.trans`. Diese Skript-Übersetzungen sind **nur Deutsch** (`szenen-dialog.js`, nur Ziel es) → bei Muttersprache ≠ de keine Piñata, dann Gemelos (Wörter haben eine Übersetzung). Lerner-Zeilen bleiben Quelle für Eindringlinge.
+Headless geprüft: el→es, el→de, es→de, de→en (Globos + Piñata zeigen Satz + Übersetzung); Szenenende es→de Piñata mit „Nehmen Sie Medikamente?", es→en Gemelos. Keine Fehler.
+**Offen:** `szenen-dialog.js` bräuchte `trans` auch auf Englisch/Spanisch, damit Englisch-Muttersprachler am Szenenende die Piñata bekommen.
+
+
 Stand: 10.10.2026 · ASSESSMENT: SPRACHWAHL ALS AUSWAHLLISTE (**Leo: „Sie sollten eher als Auswahlmenü"** — Vorbild: klassische Listbox mit Rollbalken, Screenshot „Welche Städte sind in OWL?")
 
 - Mutter- und Zielsprache sind jetzt eine **Listbox** (`type:'liste'`, CSS `.lb*`): fester Kasten mit **genau 3 sichtbaren Zeilen**, egal wie viele Sprachen; markierte Zeile cyan mit weißer Schrift.

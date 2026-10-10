@@ -440,18 +440,26 @@ button{font:inherit;cursor:pointer}
      Stoff für das eine, kommt das andere; fehlt beides, kein Angebot. ── */
   function spielZumSchluss() {
     var J = window.spikiuJuegos; if (!J) return null;
-    var saetze = [];
+    var saetze = [], mitTr = [];
+    /* Leo 10.10.: jeder Wurf endet mit der Übersetzung in der Muttersprache.
+       Die Skript-Übersetzungen (spikiu.trans) sind DEUTSCH → als Piñata-Satz
+       nur Spikius Zeilen, und nur wenn die Muttersprache Deutsch ist. Sonst
+       gibt es keine Übersetzung → dann Gemelos (Wörter haben eine). */
+    var trPasst = (MUT === 'de');
     if (RP && RP.schritte) RP.schritte.forEach(function (st) {
-      if (st.spikiu && st.spikiu.ziel) saetze.push(st.spikiu.ziel);
+      if (st.spikiu && st.spikiu.ziel) {
+        saetze.push(st.spikiu.ziel);
+        if (trPasst && st.spikiu.trans) mitTr.push({ satz: st.spikiu.ziel, tr: st.spikiu.trans });
+      }
       st.opts.forEach(function (o) { if (o.ok) saetze.push(o.text); });
     });
-    var passend = saetze.filter(function (x) { var n = J.woerterAus(x).length; return n >= 3 && n <= 8; });
+    var passend = mitTr.filter(function (x) { var n = J.woerterAus(x.satz).length; return n >= 3 && n <= 8; });
     var woerter = (HAP && HAP.wortschatz || []).filter(function (h) { return h.ziel && h.uebersetzung; });
     var pool = saetze.concat(woerter.map(function (h) { return h.ziel; }));
     var pinata = null;
-    J.mezcla(passend).some(function (satz) {
-      var ein = J.eindringling(satz, pool, ZIEL);
-      if (ein) pinata = { satz: satz, intruso: ein.wort, intrusoDe: ein.aus };
+    J.mezcla(passend).some(function (x) {
+      var ein = J.eindringling(x.satz, pool, ZIEL);
+      if (ein) pinata = { satz: x.satz, tr: x.tr, intruso: ein.wort, intrusoDe: ein.aus };
       return !!pinata;
     });
     var gemelos = woerter.length >= 4 ? J.mezcla(woerter).slice(0, 4).map(function (h) { return { z: h.ziel, na: h.uebersetzung }; }) : null;
