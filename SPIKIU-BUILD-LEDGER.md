@@ -20,6 +20,17 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · ASSESSMENT DREISPRACHIG + SPRACH-SCROLL-FENSTER (**Leo: „Si la persona elige español, el assessment tiene que ir en español"** · „cambia la elección de las lenguas a una ventana para hacer scroll")
+
+- Befund: `assessment.html` war fest auf Deutsch verdrahtet (Kommentar „Voll-i18n = spätere Etappe") und fragte die Muttersprache erst in Schritt 4.
+- **Neue Reihenfolge:** Muttersprache → Name → Zielsprache → Motivation → Level → Zeit → Deadline → Resümee.
+- **Startsprache** = `spikiu_lang` aus der Landing → sonst Browsersprache → sonst Deutsch. Muttersprache ist passend vorgemerkt; ab dem Klick spricht alles in dieser Sprache (Blasen, Optionen, Chips, Knöpfe, Placeholder, Resümee, `<title>`, `<html lang>`, Zurück-Knopf). Beim Zurückgehen und Umwählen wechselt alles live.
+- **Ein Register `LANGS`** (Code, Flagge, Eigenname, Namen je Oberfläche) + **Texte in `UI.de/es/en`**. Neue Zielsprache = eine Zeile in `LANGS` (+ `TARGET_CODE` in `finish()`); neue Muttersprache = zusätzlich ein `UI`-Block.
+- **Scroll-Fenster** für Mutter- und Zielsprache (`.lang-frame`/`.lang-window`, max. ~4 Zeilen sichtbar, Verlaufsschatten oben/unten zeigt „da ist mehr", gewählte Sprache wird beim Zurückkommen in die Mitte gescrollt).
+- **Vertrag unverändert:** `spikiu_user` (nativeLang 'Deutsch'/'Español'/'English', targetLang 'Spanish'/…, profile.muttersprache/zielsprache/koennen …), `spikiu_lang`, `spikiu_pfad` exakt wie zuvor.
+- Geprüft: Headless-Chromium (390 px) en → de-Ziel komplett durch, dann zurück und auf es umgewählt; Profil identisch, keine JS-Fehler.
+- Offen (unverändert): `haus.html` und `mein.html` noch einsprachig deutsch — der Lerner landet nach dem Assessment wieder im Deutschen.
+
 Stand: 09.10.2026 · ANGEBOT ÜBERALL ANGEGLICHEN (**Leo: „Alinea todo, mi cuate!!"**)
 
 - `index.html` Split-Kacheln (de/es/en): Free = Geführtes Gespräch · Lernweg · Lernroman · Wortschatz · Wendungen & Sprichwörter · Spiele; Premium = Freies Gespräch · Lese- & Schreibwerkstatt · Deine Lektionen · Spikiu antwortet dir; Preis €5,90 (Platzhalter) · „jederzeit kündbar" statt „1 Woche gratis". „4 Kapitel" und „Ganzer Lernroman" raus.

@@ -118,6 +118,16 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
 .btn-next.ghost,.btn-skip{background:#fff !important;color:var(--ink) !important;border:2px solid var(--ink) !important;box-shadow:2px 2px 0 var(--ink) !important}
 /* Zusammenfassung/Resümee-Karten */
 .summary,.resume,.card{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:24px !important;box-shadow:5px 6px 0 var(--ink) !important}
+/* ═══ Sprach-Scroll-Fenster (10.10.2026): Mutter- und Zielsprache. Wächst mit jeder
+   neuen Sprache; Schatten oben/unten zeigen, dass es mehr zu sehen gibt. ═══ */
+.lang-frame{position:relative;width:100%;background:#fff;border:2.5px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.lang-window{max-height:15.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:.7rem .8rem .9rem .7rem;scrollbar-width:thin;scrollbar-color:var(--cyan) transparent}
+.lang-window::-webkit-scrollbar{width:8px}
+.lang-window::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:999px}
+.lang-frame::before,.lang-frame::after{content:"";position:absolute;left:0;right:0;height:2.2rem;pointer-events:none;opacity:0;transition:opacity .2s;z-index:2}
+.lang-frame::before{top:0;background:linear-gradient(#fff,rgba(255,255,255,0))}
+.lang-frame::after{bottom:0;background:linear-gradient(rgba(255,255,255,0),#fff)}
+.lang-frame.more-above::before,.lang-frame.more-below::after{opacity:1}
 </style>
 </head>
 <body>
@@ -151,76 +161,162 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
 </main>
 
 <script>
-/* ── Spikiu-geführtes Assessment (Du-Form). Reihenfolge: Name → Zielsprache →
-   Motivation → Muttersprache → Level → Zeit → Deadline → Resümee. Einzelwahl
-   springt selbst weiter; Name + Motivation haben einen Weiter-Knopf. Beta-UI:
-   Deutsch (Spikiu spricht Deutsch). Voll-i18n der Blasen = spätere Etappe. ── */
+/* ── Spikiu-geführtes Assessment (Du-Form), DREISPRACHIG (10.10.2026).
+   Reihenfolge: Muttersprache → Name → Zielsprache → Motivation → Level → Zeit →
+   Deadline → Resümee. Die Muttersprache kommt ZUERST (Leo, 10.10.: „Si la persona
+   elige español, el assessment tiene que ir en español"). Startsprache der Oberfläche
+   = spikiu_lang aus der Landing → sonst Browsersprache → sonst Deutsch. Ab dem Klick
+   auf die Muttersprache spricht ALLES in dieser Sprache, auch beim Zurückgehen.
 
-var TGT = { Spanish:'Spanisch', German:'Deutsch', English:'Englisch', Greek:'Griechisch' };
-var MOT = { travel:'Reisen', work:'Arbeit', exam:'Prüfung', family:'Familie', study:'Studium', interest:'Interesse', daily:'Alltag' };
+   NEUE SPRACHE HINZUFÜGEN:
+   - als ZIELSPRACHE: eine Zeile in LANGS (+ Code in TARGET_CODE in finish()).
+   - als MUTTERSPRACHE: zusätzlich ein Block in UI (alle Texte) + Name in LANGS[x].n.
+   Beide Listen stehen in einem Scroll-Fenster — sie wachsen ohne Layout-Umbau.
+   Die gespeicherten Werte (nativeLang 'Deutsch'/'Español'/'English', targetLang
+   'Spanish'/…) bleiben exakt wie vorher — Vertrag mit haus/chat unverändert. ── */
 
-// Anzeige-Namen der Zielsprache je Muttersprache (inkl. Griechisch).
-var TARGET_NAMES = {
-  'Deutsch': { Spanish:'Spanisch', German:'Deutsch', English:'Englisch', Greek:'Griechisch' },
-  'Español': { Spanish:'Español',  German:'Alemán',  English:'Inglés',   Greek:'Griego' },
-  'English': { Spanish:'Spanish',  German:'German',  English:'English',  Greek:'Greek' }
+// Ein Register für alle Sprachen. v = gespeicherter Wert als Zielsprache,
+// native = gespeicherter Wert als Muttersprache, self = Eigenname, n = Name je Oberfläche.
+var LANGS = [
+  { code:'es', v:'Spanish', native:'Español', f:'🇪🇸', self:'Español', n:{ de:'Spanisch', es:'Español', en:'Spanish' } },
+  { code:'de', v:'German',  native:'Deutsch', f:'🇩🇪', self:'Deutsch', n:{ de:'Deutsch',  es:'Alemán',  en:'German'  } },
+  { code:'en', v:'English', native:'English', f:'🇬🇧', self:'English', n:{ de:'Englisch', es:'Inglés',  en:'English' } },
+  { code:'el', v:'Greek',   native:null,      f:'🇬🇷', self:'Ελληνικά', n:{ de:'Griechisch', es:'Griego', en:'Greek' } }
+];
+
+var UI = {
+  de: {
+    title:"Spikiu — Los geht's", back:'Ein Schritt zurück', next:'Weiter', firstName:'Vorname',
+    bNative:'Hallo, ich bin Spikiu, dein Sprachpartner in deinem Lernabenteuer. In welcher Sprache reden wir am besten miteinander?',
+    bName:'Schön! Und wie heißt du?',
+    bTarget:function(n){ return (n? 'Freut mich, '+n+'! ':'') + 'Welche Sprache möchtest du lernen?'; },
+    bMotiv:function(t){ return 'Was motiviert dich, <strong>'+t+'</strong> zu lernen?'; }, theLang:'die Sprache',
+    bLevel:'Wo stehst du gerade? Ganz ehrlich — kein richtig oder falsch.',
+    bTime:'Wie viel Zeit hast du pro Woche?', bDeadline:'Hast du ein Datum im Kopf?',
+    fits:'Was passt?', more:'Erzähl ruhig mehr.', opt:'(optional)',
+    ph:'z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren“',
+    chips:{ travel:'Reisen', work:'Arbeit', exam:'Prüfung', family:'Familie', study:'Studium', interest:'Interesse', daily:'Alltag' },
+    levels:{ A0:['Ganz von vorne','Ich fange bei Null an'], A1:['Ein paar Wörter','Hallo, Danke, ein paar Sätze'],
+      A2:['Einfache Gespräche','Vorstellen, einkaufen, fragen'], B1:['Ich komme durch','Verstehe das Meiste, mache noch Fehler'],
+      B2:['Ziemlich sicher','Ich folge Diskussionen und mache mit'] },
+    times:{ '<1':'Weniger als 1 Stunde', '1-3':'1–3 Stunden', '3-5':'3–5 Stunden', '5-10':'5–10 Stunden', '10+':'Mehr als 10 Stunden' },
+    deadlines:{ '3m':'In 3 Monaten', '6m':'In 6 Monaten', '1y':'In einem Jahr', 'none':'Kein festes Datum' },
+    summary:function(n,l,t,z){ return 'Du heißt <strong>'+n+'</strong>, sprichst <strong>'+l+'</strong> und möchtest <strong>'+t+'</strong> lernen — für <strong>'+z+'</strong>.'; },
+    open:'noch offen', okq:'Passt das so?', go:'Okay — los geht’s →', hint:'Möchtest du etwas ändern? Nutze den Pfeil oben links.'
+  },
+  es: {
+    title:'Spikiu — Empezamos', back:'Un paso atrás', next:'Siguiente', firstName:'Tu nombre',
+    bNative:'Hola, soy Spikiu, tu compañero en esta aventura de aprendizaje. ¿En qué idioma hablamos mejor tú y yo?',
+    bName:'¡Perfecto! ¿Y cómo te llamas?',
+    bTarget:function(n){ return (n? '¡Mucho gusto, '+n+'! ':'') + '¿Qué idioma quieres aprender?'; },
+    bMotiv:function(t){ return '¿Qué te motiva a aprender <strong>'+t+'</strong>?'; }, theLang:'el idioma',
+    bLevel:'¿Dónde estás ahora? Con toda sinceridad: aquí no hay respuestas buenas ni malas.',
+    bTime:'¿Cuánto tiempo tienes a la semana?', bDeadline:'¿Tienes una fecha en mente?',
+    fits:'¿Qué encaja contigo?', more:'Cuéntame más, si quieres.', opt:'(opcional)',
+    ph:'p. ej. «platicar con mi suegra sin hacer el ridículo»',
+    chips:{ travel:'Viajes', work:'Trabajo', exam:'Examen', family:'Familia', study:'Estudios', interest:'Curiosidad', daily:'Día a día' },
+    levels:{ A0:['Desde cero','Empiezo sin saber nada'], A1:['Unas cuantas palabras','Hola, gracias, alguna frase'],
+      A2:['Conversaciones sencillas','Presentarme, comprar, preguntar'], B1:['Me defiendo','Entiendo casi todo, todavía me equivoco'],
+      B2:['Bastante seguro','Sigo discusiones y participo'] },
+    times:{ '<1':'Menos de 1 hora', '1-3':'1–3 horas', '3-5':'3–5 horas', '5-10':'5–10 horas', '10+':'Más de 10 horas' },
+    deadlines:{ '3m':'En 3 meses', '6m':'En 6 meses', '1y':'En un año', 'none':'Sin fecha fija' },
+    summary:function(n,l,t,z){ return 'Te llamas <strong>'+n+'</strong>, hablas <strong>'+l+'</strong> y quieres aprender <strong>'+t+'</strong> — para <strong>'+z+'</strong>.'; },
+    open:'todavía por ver', okq:'¿Te parece bien así?', go:'¡Listo, vamos! →', hint:'¿Quieres cambiar algo? Usa la flecha de arriba a la izquierda.'
+  },
+  en: {
+    title:"Spikiu — Let's go", back:'One step back', next:'Next', firstName:'First name',
+    bNative:"Hi, I'm Spikiu, your language partner on this learning adventure. Which language should we talk in?",
+    bName:'Great! And what’s your name?',
+    bTarget:function(n){ return (n? 'Nice to meet you, '+n+'! ':'') + 'Which language would you like to learn?'; },
+    bMotiv:function(t){ return 'What makes you want to learn <strong>'+t+'</strong>?'; }, theLang:'the language',
+    bLevel:'Where are you right now? Be honest — there’s no right or wrong.',
+    bTime:'How much time do you have per week?', bDeadline:'Do you have a date in mind?',
+    fits:'What fits?', more:'Feel free to tell me more.', opt:'(optional)',
+    ph:'e.g. “chat with my mother-in-law without embarrassing myself”',
+    chips:{ travel:'Travel', work:'Work', exam:'Exam', family:'Family', study:'Studies', interest:'Curiosity', daily:'Everyday life' },
+    levels:{ A0:['From scratch','I’m starting at zero'], A1:['A few words','Hello, thanks, a few sentences'],
+      A2:['Simple conversations','Introducing myself, shopping, asking'], B1:['I get by','I understand most things, still make mistakes'],
+      B2:['Fairly confident','I follow discussions and join in'] },
+    times:{ '<1':'Less than 1 hour', '1-3':'1–3 hours', '3-5':'3–5 hours', '5-10':'5–10 hours', '10+':'More than 10 hours' },
+    deadlines:{ '3m':'In 3 months', '6m':'In 6 months', '1y':'In a year', 'none':'No fixed date' },
+    summary:function(n,l,t,z){ return 'Your name is <strong>'+n+'</strong>, you speak <strong>'+l+'</strong> and want to learn <strong>'+t+'</strong> — for <strong>'+z+'</strong>.'; },
+    open:'still open', okq:'Does that look right?', go:'Okay — let’s go →', hint:'Want to change something? Use the arrow at the top left.'
+  }
 };
 
-// Griechisch ist FEST eine der vier Zielsprachen (im Repo verankert).
-var TARGETS = [
-  { v:'Spanish', f:'🇪🇸', t:'Spanisch' },
-  { v:'German',  f:'🇩🇪', t:'Deutsch' },
-  { v:'English', f:'🇬🇧', t:'Englisch' },
-  { v:'Greek',   f:'🇬🇷', t:'Griechisch' }
-];
-var NATIVES = [
-  { v:'Deutsch', f:'🇩🇪', t:'Deutsch' },
-  { v:'Español', f:'🇪🇸', t:'Español' },
-  { v:'English', f:'🇬🇧', t:'English' }
-];
-var LEVELS = [
-  { v:'A0', t:'Ganz von vorne', s:'Ich fange bei Null an' },
-  { v:'A1', t:'Ein paar Wörter', s:'Hallo, Danke, ein paar Sätze' },
-  { v:'A2', t:'Einfache Gespräche', s:'Vorstellen, einkaufen, fragen' },
-  { v:'B1', t:'Ich komme durch', s:'Verstehe das Meiste, mache noch Fehler' },
-  { v:'B2', t:'Ziemlich sicher', s:'Ich folge Diskussionen und mache mit' }
-];
-var TIMES = [
-  { v:'<1', t:'Weniger als 1 Stunde' }, { v:'1-3', t:'1–3 Stunden' },
-  { v:'3-5', t:'3–5 Stunden' }, { v:'5-10', t:'5–10 Stunden' }, { v:'10+', t:'Mehr als 10 Stunden' }
-];
-var DEADLINES = [
-  { v:'3m', t:'In 3 Monaten' }, { v:'6m', t:'In 6 Monaten' },
-  { v:'1y', t:'In einem Jahr' }, { v:'none', t:'Kein festes Datum' }
-];
-var CHIPS = [
-  { v:'travel', t:'Reisen' }, { v:'work', t:'Arbeit' }, { v:'exam', t:'Prüfung' },
-  { v:'family', t:'Familie' }, { v:'study', t:'Studium' }, { v:'interest', t:'Interesse' }, { v:'daily', t:'Alltag' }
-];
+// Startsprache: Landing (spikiu_lang) → Browser → Deutsch.
+function startSprache(){
+  var l = null;
+  try { l = localStorage.getItem('spikiu_lang'); } catch(e){}
+  if (!UI[l]) { var b = (navigator.language||'').slice(0,2).toLowerCase(); l = UI[b] ? b : 'de'; }
+  return l;
+}
+var ui = startSprache();
+function T(){ return UI[ui]; }
+
+function langBy(key,val){ for (var i=0;i<LANGS.length;i++){ if (LANGS[i][key]===val) return LANGS[i]; } return null; }
+// Name einer Sprache in der aktuellen Oberfläche; im Fließtext auf Spanisch klein („aprender alemán").
+function tname(code, imSatz){
+  var L = langBy('code',code); if (!L) return '';
+  var s = L.n[ui] || L.self;
+  return (imSatz && ui==='es') ? s.toLowerCase() : s;
+}
+
+// Für finish(): Anzeige-Namen der Zielsprache je Muttersprache (aus dem Register erzeugt).
+var NATIVE_UI = {}; LANGS.forEach(function(L){ if (L.native) NATIVE_UI[L.native] = L.code; });
+var TARGET_NAMES = {};
+Object.keys(NATIVE_UI).forEach(function(nat){
+  var c = NATIVE_UI[nat]; TARGET_NAMES[nat] = {};
+  LANGS.forEach(function(L){ TARGET_NAMES[nat][L.v] = L.n[c] || L.self; });
+});
+
+function nativeOptions(){
+  return LANGS.filter(function(L){ return L.native && UI[L.code]; })
+              .map(function(L){ return { v:L.native, f:L.f, t:L.self }; });
+}
+function targetOptions(){
+  return LANGS.map(function(L){ return { v:L.v, f:L.f, t:(L.n[ui]||L.self) }; });
+}
+function levelOptions(){ return ['A0','A1','A2','B1','B2'].map(function(k){ return { v:k, t:T().levels[k][0], s:T().levels[k][1] }; }); }
+function timeOptions(){ return ['<1','1-3','3-5','5-10','10+'].map(function(k){ return { v:k, t:T().times[k] }; }); }
+function deadlineOptions(){ return ['3m','6m','1y','none'].map(function(k){ return { v:k, t:T().deadlines[k] }; }); }
+var CHIP_KEYS = ['travel','work','exam','family','study','interest','daily'];
 
 var STEPS = [
+  { id:'nativeLang', type:'select', field:'nativeLang', options:nativeOptions, flags:true, auto:true, scroll:true,
+    bubble:function(d){ return T().bNative; } },
   { id:'name', type:'name',
-    bubble:function(d){ return 'Hallo, ich bin Spikiu, dein Sprachpartner in deinem Lernabenteuer. Wie heißt du?'; } },
-  { id:'targetLang', type:'select', field:'targetLang', options:TARGETS, flags:true, auto:true,
-    bubble:function(d){ return (d.name? 'Schön, '+esc(d.name)+'! ':'') + 'Welche Sprache möchtest du lernen?'; } },
+    bubble:function(d){ return T().bName; } },
+  { id:'targetLang', type:'select', field:'targetLang', options:targetOptions, flags:true, auto:true, scroll:true,
+    bubble:function(d){ return T().bTarget(d.name? esc(d.name):''); } },
   { id:'motivation', type:'chips',
-    bubble:function(d){ return 'Was motiviert dich, <strong>'+ (TGT[d.targetLang]||'die Sprache') +'</strong> zu lernen?'; } },
-  { id:'nativeLang', type:'select', field:'nativeLang', options:NATIVES, flags:true, auto:true,
-    bubble:function(d){ return 'In welcher Sprache reden wir am besten miteinander?'; } },
-  { id:'level', type:'select', field:'level', options:LEVELS, sub:true, auto:true,
-    bubble:function(d){ return 'Wo stehst du gerade? Ganz ehrlich — kein richtig oder falsch.'; } },
-  { id:'weeklyTime', type:'select', field:'weeklyTime', options:TIMES, auto:true,
-    bubble:function(d){ return 'Wie viel Zeit hast du pro Woche?'; } },
-  { id:'deadline', type:'select', field:'deadline', options:DEADLINES, auto:true,
-    bubble:function(d){ return 'Hast du ein Datum im Kopf?'; } },
+    bubble:function(d){ var L=langBy('v',d.targetLang); return T().bMotiv(L? tname(L.code,true) : T().theLang); } },
+  { id:'level', type:'select', field:'level', options:levelOptions, sub:true, auto:true,
+    bubble:function(d){ return T().bLevel; } },
+  { id:'weeklyTime', type:'select', field:'weeklyTime', options:timeOptions, auto:true,
+    bubble:function(d){ return T().bTime; } },
+  { id:'deadline', type:'select', field:'deadline', options:deadlineOptions, auto:true,
+    bubble:function(d){ return T().bDeadline; } },
   { id:'summary', type:'summary',
     bubble:function(d){ return summaryText(d); } }
 ];
 
 var step = 0;
 var data = { motivation: [] };
+// Muttersprache vormerken, passend zur Startsprache (nur markiert, nicht weitergesprungen).
+(function(){ var L = langBy('code',ui); if (L && L.native) data.nativeLang = L.native; })();
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];}); }
+
+// Oberfläche auf eine Sprache stellen (Seitentitel, lang-Attribut, Zurück-Knopf).
+function setUi(code){
+  if (!UI[code]) return;
+  ui = code;
+  document.documentElement.lang = code;
+  document.title = T().title;
+  var bb = document.getElementById('btn-back');
+  bb.setAttribute('aria-label', T().back); bb.title = T().back;
+}
 
 function render(){
   var S = STEPS[step];
@@ -233,26 +329,27 @@ function render(){
 
   var okayq = document.getElementById('okayq');
   okayq.style.display = (S.type==='summary') ? 'block' : 'none';
-  okayq.textContent = (S.type==='summary') ? 'Passt das so?' : '';
+  okayq.textContent = (S.type==='summary') ? T().okq : '';
 
   var c = document.getElementById('content');
   c.innerHTML = '';
   c.classList.remove('fade'); void c.offsetWidth; c.classList.add('fade');
 
   if (S.type==='name'){
-    var inp = el('input'); inp.type='text'; inp.id='nameInput'; inp.placeholder='Vorname'; inp.value=data.name||''; inp.autocomplete='given-name';
+    var inp = el('input'); inp.type='text'; inp.id='nameInput'; inp.placeholder=T().firstName; inp.value=data.name||''; inp.autocomplete='given-name';
     inp.oninput = function(){ document.getElementById('nx').disabled = !inp.value.trim(); };
     inp.onkeydown = function(e){ if (e.key==='Enter' && inp.value.trim()){ data.name=inp.value.trim(); go(1); } };
     c.appendChild(inp);
     var act = el('div','actions');
-    var nx = btn('Weiter', function(){ if(!inp.value.trim()) return; data.name = inp.value.trim(); go(1); }, 'btn-next'); nx.id='nx'; nx.disabled = !inp.value.trim();
+    var nx = btn(T().next, function(){ if(!inp.value.trim()) return; data.name = inp.value.trim(); go(1); }, 'btn-next'); nx.id='nx'; nx.disabled = !inp.value.trim();
     act.appendChild(nx); c.appendChild(act);
     setTimeout(function(){ inp.focus(); }, 60);
   }
   else if (S.type==='select'){
     var box = el('div','options');
-    S.options.forEach(function(o){
-      var b = el('button','option'); if (data[S.field]===o.v) b.className+=' sel';
+    var gewaehlt = null;
+    S.options().forEach(function(o){
+      var b = el('button','option'); if (data[S.field]===o.v){ b.className+=' sel'; gewaehlt = b; }
       if (S.flags){ var fl=el('span','option-flag'); fl.textContent=o.f; b.appendChild(fl); }
       if (S.sub){ var w=el('span'); var t1=el('div'); t1.textContent=o.t; var t2=el('div','option-sub'); t2.textContent=o.s; w.appendChild(t1); w.appendChild(t2); b.appendChild(w); }
       else { var s=el('span'); s.textContent=o.t; b.appendChild(s); }
@@ -260,45 +357,65 @@ function render(){
         data[S.field]=o.v;
         box.querySelectorAll('.option').forEach(function(x){ x.classList.remove('sel'); });
         b.classList.add('sel');
+        if (S.field==='nativeLang'){ var L = langBy('native',o.v); if (L) setUi(L.code); }   // ab jetzt in seiner Sprache
         if (S.auto) setTimeout(function(){ go(1); }, 300);   // Ruhe-Atemzug, dann selbst weiter
       };
       box.appendChild(b);
     });
-    c.appendChild(box);
+    if (S.scroll){
+      // Scroll-Fenster: wächst mit jeder neuen Sprache, ohne die Seite zu sprengen.
+      var fenster = el('div','lang-window');
+      fenster.appendChild(box);
+      var rahmen = el('div','lang-frame'); rahmen.appendChild(fenster);
+      c.appendChild(rahmen);
+      var schatten = function(){
+        var mehrUnten = fenster.scrollTop + fenster.clientHeight < fenster.scrollHeight - 4;
+        var mehrOben  = fenster.scrollTop > 4;
+        rahmen.classList.toggle('more-below', mehrUnten);
+        rahmen.classList.toggle('more-above', mehrOben);
+      };
+      fenster.addEventListener('scroll', schatten);
+      setTimeout(function(){
+        if (gewaehlt) fenster.scrollTop = Math.max(0, gewaehlt.offsetTop - fenster.clientHeight/2 + gewaehlt.offsetHeight/2);
+        schatten();
+      }, 0);
+    } else {
+      c.appendChild(box);
+    }
   }
   else if (S.type==='chips'){
-    var lbl = el('div','field-label'); lbl.innerHTML='Was passt? <span class="opt">(optional)</span>'; c.appendChild(lbl);
+    var lbl = el('div','field-label'); lbl.innerHTML=esc(T().fits)+' <span class="opt">'+esc(T().opt)+'</span>'; c.appendChild(lbl);
     var ch = el('div','chips');
-    CHIPS.forEach(function(o){
-      var b=el('button','chip'); b.textContent=o.t; if (data.motivation.indexOf(o.v)>-1) b.className+=' sel';
+    CHIP_KEYS.forEach(function(k){
+      var b=el('button','chip'); b.textContent=T().chips[k]; if (data.motivation.indexOf(k)>-1) b.className+=' sel';
       b.onclick=function(){
-        var i=data.motivation.indexOf(o.v);
-        if (i>-1){ data.motivation.splice(i,1); b.classList.remove('sel'); } else { data.motivation.push(o.v); b.classList.add('sel'); }
+        var i=data.motivation.indexOf(k);
+        if (i>-1){ data.motivation.splice(i,1); b.classList.remove('sel'); } else { data.motivation.push(k); b.classList.add('sel'); }
       };
       ch.appendChild(b);
     });
     c.appendChild(ch);
-    var lbl2=el('div','field-label'); lbl2.innerHTML='Erzähl ruhig mehr. <span class="opt">(optional)</span>'; c.appendChild(lbl2);
-    var ta=el('textarea'); ta.id='driveText'; ta.placeholder='z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren“'; ta.value=data.driveText||''; c.appendChild(ta);
+    var lbl2=el('div','field-label'); lbl2.innerHTML=esc(T().more)+' <span class="opt">'+esc(T().opt)+'</span>'; c.appendChild(lbl2);
+    var ta=el('textarea'); ta.id='driveText'; ta.placeholder=T().ph; ta.value=data.driveText||''; c.appendChild(ta);
     var act=el('div','actions');
-    act.appendChild(btn('Weiter', function(){ data.driveText=ta.value.trim(); go(1); }, 'btn-next'));
+    act.appendChild(btn(T().next, function(){ data.driveText=ta.value.trim(); go(1); }, 'btn-next'));
     c.appendChild(act);
   }
   else if (S.type==='summary'){
     var act=el('div','actions');
-    act.appendChild(btn('Okay — los geht’s →', function(){ finish(); }, 'btn-next'));
+    act.appendChild(btn(T().go, function(){ finish(); }, 'btn-next'));
     var hinweis = el('p','summary-hint');
-    hinweis.textContent = 'Möchtest du etwas ändern? Nutze den Pfeil oben links.';
+    hinweis.textContent = T().hint;
     act.appendChild(hinweis);
     c.appendChild(act);
   }
 }
 
 function summaryText(d){
-  var ziele = (d.motivation||[]).map(function(m){ return MOT[m]||m; });
-  var zielText = ziele.length ? ziele.join(', ') : (d.driveText ? d.driveText : 'noch offen');
-  return 'Du heißt <strong>'+esc(d.name||'Freund')+'</strong>, sprichst <strong>'+esc(d.nativeLang||'—')+'</strong> '
-       + 'und möchtest <strong>'+esc(TGT[d.targetLang]||'—')+'</strong> lernen — für <strong>'+esc(zielText)+'</strong>.';
+  var ziele = (d.motivation||[]).map(function(m){ var c=T().chips[m]||m; return ui==='es'? c.toLowerCase() : c; });   // es: „para viajes“
+  var zielText = ziele.length ? ziele.join(', ') : (d.driveText ? d.driveText : T().open);
+  var nat = langBy('native', d.nativeLang), tgt = langBy('v', d.targetLang);
+  return T().summary(esc(d.name||'—'), nat? esc(tname(nat.code,true)) : '—', tgt? esc(tname(tgt.code,true)) : '—', esc(zielText));
 }
 
 function go(dir){ step += dir; if (step<0) step=0; if (step>STEPS.length-1) step=STEPS.length-1; render(); }
@@ -376,6 +493,7 @@ function finish(){
   window.location.href = 'haus.html';
 }
 
+setUi(ui);
 render();
 </script>
 </body>
