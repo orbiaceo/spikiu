@@ -20,6 +20,16 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · ASSESSMENT: SPRACHWAHL ALS AUSWAHLLISTE (**Leo: „Sie sollten eher als Auswahlmenü"** — Vorbild: klassische Listbox mit Rollbalken, Screenshot „Welche Städte sind in OWL?")
+
+- Mutter- und Zielsprache sind jetzt eine **Listbox** (`type:'liste'`, CSS `.lb*`): fester Kasten mit **genau 3 sichtbaren Zeilen**, egal wie viele Sprachen; markierte Zeile cyan mit weißer Schrift.
+- **Eigener, immer sichtbarer Rollbalken** rechts mit ▲ ▼ (rollen je eine Zeile), ziehbarem Griff, Klick in die Spur blättert. Nötig, weil Handy-Browser ihre Rollbalken ausblenden. Wischen in der Liste geht weiter, Zeilen rasten ein.
+- **Antippen markiert nur, „Weiter" bestätigt** (vorher sprang die Auswahl nach 300 ms selbst weiter). Weiter ist gesperrt, bis etwas markiert ist; die Muttersprache ist vorab markiert.
+- Muttersprache markieren → Seite wechselt sofort in diese Sprache (Blase, Liste, Knopf).
+- Tastatur: ↑ ↓ wählen, Enter bestätigt; `role="listbox"/"option"`, `aria-selected`.
+- Altes Scroll-Fenster (`.lang-frame`/`.lang-window`) entfernt.
+- Geprüft: Headless-Chromium 390 px mit Touch; es → en umgewählt, 50 simulierte Zielsprachen (nur Test), ▼ rollt, Weiter gesperrt bis Auswahl, keine JS-Fehler.
+
 Stand: 10.10.2026 · ASSESSMENT SPRACHLISTEN NACHGESCHÄRFT (**Leo: „Tienen que estar en la lengua elegida. Además deben estar dentro. Imagina que tenemos 50 lenguas"**)
 
 - Muttersprachen-Liste zeigt die Namen jetzt in der **gewählten Oberflächensprache** (en: Spanish/German/English · es: Español/Alemán/Inglés), nicht mehr jede im Eigennamen. Wechselt live mit.

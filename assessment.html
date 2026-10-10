@@ -118,26 +118,30 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
 .btn-next.ghost,.btn-skip{background:#fff !important;color:var(--ink) !important;border:2px solid var(--ink) !important;box-shadow:2px 2px 0 var(--ink) !important}
 /* Zusammenfassung/Resümee-Karten */
 .summary,.resume,.card{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:24px !important;box-shadow:5px 6px 0 var(--ink) !important}
-/* ═══ Sprach-Scroll-Fenster (10.10.2026): Mutter- und Zielsprache. Wächst mit jeder
-   neuen Sprache; Schatten oben/unten zeigen, dass es mehr zu sehen gibt. ═══ */
-.lang-frame{position:relative;width:100%;background:#fff;border:2.5px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
-.lang-window{max-height:15.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:.7rem .8rem .9rem .7rem;scrollbar-width:thin;scrollbar-color:var(--cyan) transparent}
-.lang-window::-webkit-scrollbar{width:8px}
-.lang-window::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:999px}
-.lang-frame::before,.lang-frame::after{content:"";position:absolute;left:0;right:0;height:2.2rem;pointer-events:none;opacity:0;transition:opacity .2s;z-index:2}
-.lang-frame::before{top:0;background:linear-gradient(#fff,rgba(255,255,255,0))}
-.lang-frame::after{bottom:0;background:linear-gradient(rgba(255,255,255,0),#fff)}
-.lang-frame.more-above::before,.lang-frame.more-below::after{opacity:1}
-/* Zeilen liegen INNEN im Fenster wie eine Liste — keine einzelnen Karten mit Schatten
-   (Leo, 10.10.: „deben estar dentro. Imagina que tenemos 50 lenguas"). */
-.lang-window{max-height:14.5rem !important;padding:.35rem !important}
-.lang-window .options{gap:0 !important}
-.lang-window .option{border:0 !important;border-bottom:1.5px solid var(--faint) !important;border-radius:0 !important;
-  box-shadow:none !important;padding:.75rem .9rem !important;font-size:1rem !important;min-height:3.1rem}
-.lang-window .option:last-child{border-bottom:0 !important}
-.lang-window .option:active{transform:none !important;box-shadow:none !important;background:var(--accent2) !important}
-.lang-window .option.sel{border-radius:12px !important;border-bottom-color:transparent !important;background:var(--sky) !important;box-shadow:inset 0 0 0 2px var(--ink) !important}
-.lang-window .option-flag{font-size:1.25rem}
+/* ═══ Sprach-AUSWAHLLISTE (10.10.2026, Leo: „eher als Auswahlmenü" — Vorbild: klassische
+   Listbox mit Rollbalken). Fester, kleiner Kasten: immer genau 3 Zeilen sichtbar, egal ob
+   3 oder 50 Sprachen. Eigener, IMMER sichtbarer Rollbalken mit ▲ ▼ (Handy-Browser blenden
+   ihre eigenen aus). Zeile antippen = markieren; „Weiter" bestätigt. ═══ */
+.lb{--row:3rem;display:flex;width:100%;background:#fff;border:2.5px solid var(--ink);border-radius:16px;
+  box-shadow:4px 4px 0 var(--ink);overflow:hidden;outline:none}
+.lb:focus-visible{box-shadow:4px 4px 0 var(--ink),0 0 0 3px var(--sky)}
+.lb-list{flex:1;height:calc(var(--row) * 3);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;scroll-snap-type:y mandatory}
+.lb-list::-webkit-scrollbar{display:none}
+.lb-row{height:var(--row);display:flex;align-items:center;gap:.75rem;padding:0 1rem;cursor:pointer;scroll-snap-align:start;
+  font:700 1.02rem 'DM Sans',sans-serif;color:var(--ink);border-bottom:1.5px solid var(--faint);user-select:none}
+.lb-row:last-child{border-bottom:0}
+.lb-row .fl{font-size:1.25rem;line-height:1}
+.lb-row.sel{background:var(--cyan);color:#fff;border-bottom-color:var(--cyan)}
+.lb-bar{flex:0 0 2.1rem;display:flex;flex-direction:column;border-left:2px solid var(--ink);background:var(--minz)}
+.lb-btn{flex:0 0 2.1rem;border:0;background:var(--sky);color:var(--ink);font-size:.8rem;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;padding:0}
+.lb-btn:first-child{border-bottom:2px solid var(--ink)}
+.lb-btn:last-child{border-top:2px solid var(--ink)}
+.lb-btn:disabled{color:#a9b8b0;cursor:default}
+.lb-track{flex:1;position:relative;touch-action:none}
+.lb-thumb{position:absolute;left:5px;right:5px;top:0;min-height:1.4rem;background:#fff;border:2px solid var(--ink);border-radius:999px;cursor:grab}
+.lb + .actions{margin-top:1.1rem}
 </style>
 </head>
 <body>
@@ -181,7 +185,7 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
    NEUE SPRACHE HINZUFÜGEN:
    - als ZIELSPRACHE: eine Zeile in LANGS (+ Code in TARGET_CODE in finish()).
    - als MUTTERSPRACHE: zusätzlich ein Block in UI (alle Texte) + Name in LANGS[x].n.
-   Beide Listen stehen in einem Scroll-Fenster — sie wachsen ohne Layout-Umbau.
+   Beide Listen sind eine Auswahlliste mit festem Kasten — sie wachsen ohne Layout-Umbau.
    Die gespeicherten Werte (nativeLang 'Deutsch'/'Español'/'English', targetLang
    'Spanish'/…) bleiben exakt wie vorher — Vertrag mit haus/chat unverändert. ── */
 
@@ -293,11 +297,11 @@ function deadlineOptions(){ return ['3m','6m','1y','none'].map(function(k){ retu
 var CHIP_KEYS = ['travel','work','exam','family','study','interest','daily'];
 
 var STEPS = [
-  { id:'nativeLang', type:'select', field:'nativeLang', options:nativeOptions, flags:true, auto:true, scroll:true,
+  { id:'nativeLang', type:'liste', field:'nativeLang', options:nativeOptions,
     bubble:function(d){ return T().bNative; } },
   { id:'name', type:'name',
     bubble:function(d){ return T().bName; } },
-  { id:'targetLang', type:'select', field:'targetLang', options:targetOptions, flags:true, auto:true, scroll:true,
+  { id:'targetLang', type:'liste', field:'targetLang', options:targetOptions,
     bubble:function(d){ return T().bTarget(d.name? esc(d.name):''); } },
   { id:'motivation', type:'chips',
     bubble:function(d){ var L=langBy('v',d.targetLang); return T().bMotiv(L? tname(L.code,true) : T().theLang); } },
@@ -367,31 +371,86 @@ function render(){
         data[S.field]=o.v;
         box.querySelectorAll('.option').forEach(function(x){ x.classList.remove('sel'); });
         b.classList.add('sel');
-        if (S.field==='nativeLang'){ var L = langBy('native',o.v); if (L) setUi(L.code); }   // ab jetzt in seiner Sprache
         if (S.auto) setTimeout(function(){ go(1); }, 300);   // Ruhe-Atemzug, dann selbst weiter
       };
       box.appendChild(b);
     });
-    if (S.scroll){
-      // Scroll-Fenster: wächst mit jeder neuen Sprache, ohne die Seite zu sprengen.
-      var fenster = el('div','lang-window');
-      fenster.appendChild(box);
-      var rahmen = el('div','lang-frame'); rahmen.appendChild(fenster);
-      c.appendChild(rahmen);
-      var schatten = function(){
-        var mehrUnten = fenster.scrollTop + fenster.clientHeight < fenster.scrollHeight - 4;
-        var mehrOben  = fenster.scrollTop > 4;
-        rahmen.classList.toggle('more-below', mehrUnten);
-        rahmen.classList.toggle('more-above', mehrOben);
-      };
-      fenster.addEventListener('scroll', schatten);
-      setTimeout(function(){
-        if (gewaehlt) fenster.scrollTop = Math.max(0, gewaehlt.offsetTop - fenster.clientHeight/2 + gewaehlt.offsetHeight/2);
-        schatten();
-      }, 0);
-    } else {
-      c.appendChild(box);
+    c.appendChild(box);
+  }
+  else if (S.type==='liste'){
+    /* Auswahlliste (Listbox). Antippen markiert nur; „Weiter" bestätigt.
+       Bei der Muttersprache wechselt die ganze Seite sofort in die markierte Sprache. */
+    var opts = S.options();
+    var lb = el('div','lb'); lb.setAttribute('role','listbox'); lb.tabIndex = 0;
+    var liste = el('div','lb-list');
+    var bar = el('div','lb-bar');
+    var hoch = el('button','lb-btn'); hoch.type='button'; hoch.textContent='▲'; hoch.setAttribute('aria-hidden','true'); hoch.tabIndex=-1;
+    var spur = el('div','lb-track'); var griff = el('div','lb-thumb'); spur.appendChild(griff);
+    var runter = el('button','lb-btn'); runter.type='button'; runter.textContent='▼'; runter.setAttribute('aria-hidden','true'); runter.tabIndex=-1;
+    bar.appendChild(hoch); bar.appendChild(spur); bar.appendChild(runter);
+    lb.appendChild(liste); lb.appendChild(bar);
+    var zeilen = [];
+    function waehle(i, bringIn){
+      var o = opts[i]; data[S.field] = o.v;
+      zeilen.forEach(function(z,k){ z.classList.toggle('sel', k===i); z.setAttribute('aria-selected', k===i?'true':'false'); });
+      if (bringIn) zeilen[i].scrollIntoView({block:'nearest'});
+      document.getElementById('nx').disabled = false;
+      if (S.field==='nativeLang'){
+        var L = langBy('native',o.v);
+        if (L && L.code!==ui){ setUi(L.code); render(); }   // ganze Seite in seiner Sprache
+      }
     }
+    opts.forEach(function(o,i){
+      var z = el('div','lb-row'); z.setAttribute('role','option');
+      var fl = el('span','fl'); fl.textContent = o.f; var t = el('span'); t.textContent = o.t;
+      z.appendChild(fl); z.appendChild(t);
+      if (data[S.field]===o.v){ z.classList.add('sel'); z.setAttribute('aria-selected','true'); }
+      z.onclick = function(){ waehle(i,false); };
+      zeilen.push(z); liste.appendChild(z);
+    });
+    c.appendChild(lb);
+    // Rollbalken: Griff folgt der Liste; ▲ ▼ rollen eine Zeile; Griff ziehbar.
+    function zeilenH(){ return zeilen.length ? zeilen[0].offsetHeight : 48; }
+    function balken(){
+      var sh = liste.scrollHeight, ch = liste.clientHeight, th = spur.clientHeight;
+      var gh = Math.max(22, th * Math.min(1, ch / sh));
+      var weg = sh - ch;
+      griff.style.height = gh + 'px';
+      griff.style.top = (weg > 0 ? (liste.scrollTop / weg) * (th - gh) : 0) + 'px';
+      hoch.disabled = liste.scrollTop <= 1;
+      runter.disabled = liste.scrollTop >= weg - 1;
+    }
+    liste.addEventListener('scroll', balken);
+    hoch.onclick = function(){ liste.scrollBy({top:-zeilenH(), behavior:'smooth'}); };
+    runter.onclick = function(){ liste.scrollBy({top:zeilenH(), behavior:'smooth'}); };
+    var ziehY = null, startTop = 0;
+    griff.addEventListener('pointerdown', function(e){ ziehY = e.clientY; startTop = liste.scrollTop; griff.setPointerCapture(e.pointerId); e.preventDefault(); });
+    griff.addEventListener('pointermove', function(e){
+      if (ziehY===null) return;
+      var th = spur.clientHeight, gh = griff.offsetHeight, weg = liste.scrollHeight - liste.clientHeight;
+      if (th - gh > 0) liste.scrollTop = startTop + (e.clientY - ziehY) * weg / (th - gh);
+    });
+    griff.addEventListener('pointerup', function(){ ziehY = null; });
+    spur.addEventListener('pointerdown', function(e){
+      if (e.target===griff) return;
+      var r = griff.getBoundingClientRect();
+      liste.scrollBy({top:(e.clientY < r.top ? -1 : 1) * liste.clientHeight, behavior:'smooth'});
+    });
+    // Tastatur: ↑ ↓ wählen, Enter bestätigt
+    lb.addEventListener('keydown', function(e){
+      var i = -1; opts.forEach(function(o,k){ if (data[S.field]===o.v) i = k; });
+      if (e.key==='ArrowDown'){ e.preventDefault(); waehle(Math.min(opts.length-1, i+1), true); }
+      else if (e.key==='ArrowUp'){ e.preventDefault(); waehle(Math.max(0, i-1), true); }
+      else if (e.key==='Enter' && i>-1){ e.preventDefault(); go(1); }
+    });
+    var act = el('div','actions');
+    var nx = btn(T().next, function(){ if (data[S.field]) go(1); }, 'btn-next'); nx.id='nx'; nx.disabled = !data[S.field];
+    act.appendChild(nx); c.appendChild(act);
+    setTimeout(function(){
+      var sel = liste.querySelector('.lb-row.sel');
+      if (sel) liste.scrollTop = Math.max(0, sel.offsetTop - liste.clientHeight/2 + sel.offsetHeight/2);
+      balken();
+    }, 0);
   }
   else if (S.type==='chips'){
     var lbl = el('div','field-label'); lbl.innerHTML=esc(T().fits)+' <span class="opt">'+esc(T().opt)+'</span>'; c.appendChild(lbl);
