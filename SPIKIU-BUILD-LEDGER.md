@@ -29,7 +29,8 @@ Stand: 10.10.2026 · SPIELKISTE ZWEI — PROTOTYP (**Leo: „Ahora sí está bie
 4. **Al mercado** — sechs Wörter in zwei Körbe sortieren: Comer y beber · Unterwegs (Oberkategorien aus `wortfelder.js`).
 5. **Memoria** — vier Paare Wort ↔ Bild.
 Klang: Dur bei Erfolg, Moll höchstens einmal pro Runde. Stimme im Prototyp = Sprachausgabe des Geräts (in der App später Piper).
-Headless geprüft: jedes Spiel eine Runde bis zum Ende, keine Fehler, kein horizontales Scrollen. **Wartet auf Leos Test.**
+Headless geprüft: jedes Spiel eine Runde bis zum Ende, keine Fehler, kein horizontales Scrollen.
+**ABGENOMMEN (Leo, 23:57): alle fünf, „tal como los has diseñado".** Encadenado-Beschreibung ergänzt: „Hängst du, hilft dir Spikiu Buchstabe für Buchstabe." Offen: Einbau ins Haus + Zugangsmodell (Vorschlag an Leo, s. Preismodell oben).
 
 
 Stand: 10.10.2026 · AKROSTICHON: OBERKATEGORIE ZÄHLT (**Leo, 22:59, zwei Screenshots: Thema Café, Wort BAR — „ajo" wurde orange abgewiesen. „Si la palabra pertenece a comida en general — restaurante, bar, desayuno — todas las palabras de esa categoría superior deben ser aceptadas. Sopa: sal, solo, silla, olivas u oliva, pagar, probar … Ahora está muy limitado."**)
