@@ -5,88 +5,47 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Spikiu Haus neu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:wght@500;600&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap">
 <style>
-/* Layout: Prototyp des Hauses (eine Handy-Säule, wie haus.html). Drei Türen nach Tätigkeit, innen nach Aufwand sortiert. Eine bewusste helle Optik wie die App. */
-:root{
-  --bg:#eef7f1; --card:#ffffff; --ink:#15163a; --mid:#5f7068; --acc:#ff6b5a; --sage:#9bd14a; --mustard:#ffd24a; --sky:#d3eef6;
-  --f-ui:'DM Sans',system-ui,sans-serif; --f-head:'Archivo Black','DM Sans',sans-serif; --f-mono:'DM Mono',ui-monospace,monospace;
-  --ow:2.5px; color-scheme:light;
-}
+/* Layout: Prototyp v3 — so nah wie möglich am echten haus.html (gleiche Kacheln, gleiche Ruhe). Nur die Ordnung ist neu. */
+:root{--bg:#eef7f1;--ink:#15163a;--acc:#ff6b5a;--muted:#5f7068;--ow:2.5px;color-scheme:light}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui)}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5}
 button{font-family:inherit;color:var(--ink)}
 button:focus-visible{outline:3px solid #1f93b0;outline-offset:2px}
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.9);border-bottom:var(--ow) solid var(--ink);padding:.5rem .5rem 0}
-.proto{font:500 .6rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:#1f93b0;text-align:center;margin:0 0 .2rem}
-.doors{display:flex;gap:.4rem}
-.door{flex:1;background:transparent;border:none;cursor:pointer;padding:.45rem .2rem .55rem;display:flex;flex-direction:column;align-items:center;gap:.22rem;position:relative;min-height:70px}
-.door .ic{width:40px;height:40px}
-.door .lb{font:800 .82rem/1 var(--f-ui);color:var(--mid)}
-.door .was{font:600 .62rem/1 var(--f-ui);color:var(--mid);opacity:.8}
+.app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:2.5px solid var(--ink);padding:calc(.5rem + env(safe-area-inset-top,0px)) .5rem 0}
+.doors{display:flex;gap:.4rem;max-width:560px;margin:0 auto}
+.door{flex:1;background:transparent;border:none;cursor:pointer;padding:.5rem .2rem .6rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;position:relative;min-height:72px}
+.door .ic{width:42px;height:42px;transition:transform .2s}
+.door .lb{font:800 .82rem/1 'DM Sans',system-ui,sans-serif;color:var(--muted)}
 .door.on .lb{color:var(--ink)}
+.door.on .ic{transform:translateY(-1px) scale(1.04)}
 .door.on:after{content:'';position:absolute;left:16%;right:16%;bottom:-2.5px;height:4px;border-radius:3px;background:var(--acc)}
-.sub{text-align:center;font-size:.82rem;line-height:1.3;color:var(--mid);padding:.5rem 1rem .7rem;font-weight:600;margin:0}
-.stage{padding:1rem 16px 2.4rem;display:flex;flex-direction:column;gap:1rem}
-.greet{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.35rem}
-.greet .cap{width:64px;height:64px;border-radius:50%;background:#fff;border:var(--ow) solid var(--ink);display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink)}
-.greet .cap svg{width:48px;height:48px}
-.greet h2{font:800 1.3rem/1.15 var(--f-ui);margin:0}
-.heute{display:inline-flex;align-items:center;gap:.45rem;background:var(--mustard);border:2px solid var(--ink);border-radius:999px;padding:.35rem .8rem;font:800 .85rem var(--f-ui);box-shadow:2px 2px 0 var(--ink);cursor:pointer}
-.heute small{font:500 .62rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
-.tile{position:relative;min-height:122px;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.7rem .5rem .6rem;gap:.15rem;background:#fff;min-width:0}
+.subbar{text-align:center;font-size:.8rem;line-height:1.3;color:var(--muted);padding:.4rem 1.1rem .6rem;font-weight:600;margin:.15rem 0 0}
+.stage{flex:1;padding:1.1rem 1.15rem 2.2rem;display:flex;flex-direction:column;min-height:calc(100vh - 140px)}
+.k-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.k-greet{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.3rem;padding:.2rem 0 .4rem}
+.k-greet h2{font:800 1.3rem/1.15 'DM Sans',sans-serif;margin:0}
+.k-greet .kr{color:var(--muted);font-weight:600;font-size:.88rem;line-height:1.3;max-width:28ch;margin:0}
+.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;width:100%;max-width:340px;margin:0 auto}
+.k-top{grid-column:1 / -1;max-width:55%;justify-self:center;width:100%}
+.tile{height:118px;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.6rem;gap:.12rem;background:#fff}
 .tile:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink)}
 .tile .em{font-size:1.85rem;line-height:1}
-.tile .tt{font:800 .95rem/1.08 var(--f-ui)}
-.tile .ss{font-size:.73rem;color:rgba(21,22,58,.72);line-height:1.2;font-weight:600}
-.tile .zeit{position:absolute;top:.45rem;left:.55rem;font:500 .62rem var(--f-mono);color:rgba(21,22,58,.75);letter-spacing:.04em}
-.tile .pill{position:absolute;top:.4rem;right:.45rem;font:800 .55rem var(--f-ui);border:2px solid var(--ink);border-radius:999px;padding:.05rem .38rem;background:var(--mustard)}
-.tile.wide{grid-column:1/-1;flex-direction:row;justify-content:flex-start;gap:.9rem;text-align:left;min-height:84px;padding:.8rem 1rem}
-.tile.wide .txt{display:flex;flex-direction:column;gap:.15rem}
-.tile.wide .zeit{position:static;order:3;margin-left:auto}
-.tile.klein{min-height:104px}
-.regal-wand{background:#f6eedd;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.7rem .7rem 0;overflow:hidden}
-.regal-kopf{display:flex;align-items:baseline;justify-content:space-between;margin:0 .1rem .55rem}
-.regal-kopf b{font:800 1rem var(--f-ui)}
-.regal-kopf span{font:500 .6rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
-.regal{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;align-items:end;padding:0 .15rem}
-.rbuch{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.25rem;border:2px solid var(--ink);border-bottom:none;border-radius:8px 8px 3px 3px;padding:.55rem .25rem .5rem;cursor:pointer;text-align:center;min-width:0;transform-origin:bottom center;transition:transform .15s}
-.rbuch:active{transform:translateY(-4px)}
-.rbuch:before{content:'';position:absolute;left:0;right:0;top:.35rem;height:3px;background:rgba(21,22,58,.25)}
-.rbuch:after{content:'';position:absolute;left:0;right:0;bottom:.4rem;height:3px;background:rgba(21,22,58,.18)}
-.rbuch .em{font-size:1.45rem;line-height:1;margin-top:.35rem}
-.rbuch b{font:800 .7rem/1.1 var(--f-ui);hyphens:manual;-webkit-hyphens:manual}
-.rbuch .n{font:500 .56rem/1.2 var(--f-mono);color:rgba(21,22,58,.7)}
-.rbuch .pill{position:absolute;top:-.55rem;right:-.3rem;font:800 .48rem var(--f-ui);border:1.5px solid var(--ink);border-radius:999px;padding:0 .3rem;background:var(--mustard)}
-.brett{height:14px;margin:0 -.7rem;background:#c9956a;border-top:var(--ow) solid var(--ink);box-shadow:inset 0 -4px 0 #b07d52}
-.faden{display:flex;align-items:center;gap:.8rem;background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.8rem .9rem;cursor:pointer;text-align:left;width:100%}
-.faden .cap{flex:none;width:52px;height:52px;border-radius:50%;background:var(--sky);border:2px solid var(--ink);display:grid;place-items:center}
-.faden .cap svg{width:40px;height:40px}
-.faden small{display:block;font:500 .6rem var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:#1f93b0}
-.faden b{display:block;font:800 1rem/1.2 var(--f-ui);margin:.1rem 0}
-.faden span.s{font-size:.78rem;color:var(--mid);font-weight:600;line-height:1.3}
-.faden .pf{margin-left:auto;font:800 1.3rem var(--f-ui)}
-.abschnitt{font:500 .62rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin:.3rem 0 -.45rem .2rem}
-.zustand{display:flex;gap:.3rem;justify-content:center;margin:.1rem 0 .3rem}
-.zustand button{font:700 .66rem var(--f-ui);border:1.5px solid var(--ink);border-radius:999px;background:#fff;padding:.2rem .55rem;cursor:pointer}
-.zustand button.on{background:var(--ink);color:#fff}
-.tile .quelle{font:500 .58rem/1.2 var(--f-mono);color:rgba(21,22,58,.68);margin-top:.15rem}
-.tile.wide .quelle{margin-top:.1rem}
+.tile .tt{font:800 .92rem/1.05 'DM Sans',sans-serif}
+.tile .ss{font-size:.72rem;color:rgba(21,22,58,.7);line-height:1.15;font-weight:600}
+.tile .pill{font:800 .56rem 'DM Sans',sans-serif;border:2px solid var(--ink);border-radius:999px;padding:.08rem .4rem;margin-top:.1rem}
 .toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:.6rem .95rem;font-size:.88rem;font-weight:600;max-width:90vw;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
-.legende{font-size:.74rem;color:var(--mid);line-height:1.45;border-top:1.5px dashed #cfdcd4;padding-top:.7rem;margin:.4rem 0 0}
 </style>
 
 </head>
 <body>
 <div class="app">
   <div class="nav">
-    <p class="proto">Prototyp · neue Ordnung · zum Testen:</p>
-    <div class="zustand" id="zustand"></div>
     <div class="doors" id="doors"></div>
-    <p class="sub" id="sub"></p>
+    <p class="subbar" id="sub"></p>
   </div>
   <main class="stage" id="stage"></main>
 </div>
@@ -97,116 +56,53 @@ function icoBook(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100
 function icoCard(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><rect x="9" y="14" width="30" height="21" rx="4" fill="#cdddb3"/><line x1="15" y1="23" x2="33" y2="23"/><line x1="15" y1="29" x2="27" y2="29"/></g></svg>';}
 function icoCompass(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><circle cx="24" cy="24" r="15" fill="#fbf8f0" stroke="#20271f" stroke-width="2.6"/><path d="M24 12 L27 24 L21 24 Z" fill="#1f93b0" stroke="#20271f" stroke-width="1.6" stroke-linejoin="round"/><path d="M24 36 L27 24 L21 24 Z" fill="#cfe3d8" stroke="#20271f" stroke-width="1.6" stroke-linejoin="round"/><circle cx="24" cy="24" r="2.4" fill="#20271f"/></svg>';}
 
-var CAPY='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
-
-/* Neue Ordnung (Leo, 11.10.): Türen nach Tätigkeit, innen nach Aufwand (≈ Minuten). */
-var TUEREN = [
- { id:'abenteuer', lb:'Abenteuer', was:'hören & sprechen', ic:icoCompass,
-   sub:'Hören und sprechen — erst das Gespräch, dann der Nachklang.',
-   oben:{em:'🎭', tt:'Geführtes Gespräch', ss:'Szenen betreten, Schritt für Schritt', zeit:10, bg:'#ffd24a'},
-   nachklang:[
-    {em:'👂', tt:'Oído fino', ss:'Hör ein Wort, tipp das Bild', zeit:2, bg:'#bfe6d5', spiel:true},
-    {em:'🥁', tt:'El golpe', ss:'Wo liegt der Schlag?', zeit:2, bg:'#f7bcd8', spiel:true}
-   ],
-   kacheln:[
-    {em:'💬', tt:'Freies Gespräch', ss:'Frei reden mit Spikiu', zeit:15, bg:'#c7e89a', pill:'Premium', wide:true}
-   ]},
- { id:'bibliothek', lb:'Bibliothek', was:'lesen & schreiben', ic:icoBook,
-   sub:'Lesen und schreiben. Und dein Regal wächst hier.',
-   regal:[
-    {em:'🌱', tt:'Mein Buch', n:'37 Wörter'},
-    {em:'📓', tt:'Deine Lek\u00adtio\u00adnen', n:'3 Lektionen', pill:'Premium'},
-    {em:'🌿', tt:'Dein Garten', n:'2 Beete'},
-    {em:'🔤', tt:'Deine Akros\u00adti\u00adcha', n:'4 Stück'}
-   ],
-   kacheln:[
-    {em:'📜', tt:'Wendungen & Sprichwörter', ss:'Mit Al pie de la letra und Gemelos', zeit:3, bg:'#bfe6d5'},
-    {em:'📖', tt:'Lernroman', ss:'Immersiv lesen', zeit:10, bg:'#d3eef6'},
-    {em:'🔎', tt:'Lesewerkstatt', ss:'Leseverstehen', zeit:10, bg:'#f7bcd8', pill:'Premium'},
-    {em:'✍️', tt:'Schreibwerkstatt', ss:'Schreiben mit Rückmeldung', zeit:15, bg:'#cdbdf2', pill:'Premium'}
-   ]},
- { id:'uebung', lb:'Übung', was:'Wörter & Spiel', ic:icoCard,
-   sub:'Wörter und Spiel — kurz und leicht.',
-   oben:{em:'🃏', tt:'Wortschatz', ss:'Dein Deck, mit Wiedersehen', zeit:5, bg:'#ffd0b0'},
-   kacheln:[
-    {em:'🪅', tt:'Piñata', spiel:true, ss:'Fang den Eindringling', zeit:1, bg:'#ffe0cc'},
-    {em:'🎈', tt:'Globos', spiel:true, ss:'Die richtige Reihenfolge', zeit:1, bg:'#d3eef6'},
-    {em:'🧺', tt:'Al mercado', spiel:true, ss:'Jedes Wort in seinen Korb', zeit:2, bg:'#e9dcc0'},
-    {em:'🃏', tt:'Memoria', spiel:true, ss:'Wort und Bild', zeit:2, bg:'#b7c9f2'},
-    {em:'🔗', tt:'Encadenado', spiel:true, ss:'Wortkette mit Spikiu', zeit:5, bg:'#ffe08a'},
-    {em:'🔤', tt:'Akrostichon', spiel:true, ss:'Zu jedem Buchstaben ein Wort', zeit:5, bg:'#cdbdf2'},
-    {em:'🌱', tt:'Spikius Garten', spiel:true, ss:'Von A bis Z pflanzen', zeit:5, bg:'#c7e89a'}
-   ]}
+/* Ordnung v3 (Leo, 11.10. 01:27: „klar und ruhig, so nah am Original wie möglich").
+   Abenteuer = sprechen (unverändert) · Bibliothek = lesen & schreiben + Regal · Übung = Wörter & Spiel.
+   Führung: EIN Satz unter dem Gruß (wie bisher „Letztes Mal …"). Oído fino / El golpe
+   kommen als Nachklang am Ende des Geführten Gesprächs — mit genau den Wörtern der Szene. */
+var TUEREN=[
+ {id:'abenteuer',lb:'Abenteuer',ic:icoCompass,sub:'Hören und sprechen — mit Spikiu, Schritt für Schritt.',
+  greet:{t:'¡Hola, Leo! 👋',kr:'Fang mit dem Geführten Gespräch an — dort triffst du deine ersten Wörter.'},
+  items:[
+   {em:'🎭',tt:'Geführtes<br>Gespräch',ss:'Szenen üben',pill:'gratis',pillBg:'#9bd14a',bg:'#ffd24a'},
+   {em:'💬',tt:'Freies<br>Gespräch',ss:'Frei reden',pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a'}
+  ]},
+ {id:'bibliothek',lb:'Bibliothek',ic:icoBook,sub:'Lesen und schreiben. Dein Regal wächst hier.',
+  items:[
+   {em:'🌱',tt:'Dein Regal',ss:'Dein Buch, deine Lektionen, dein Garten',bg:'#c7e89a',top:true},
+   {em:'📖',tt:'Lernroman',ss:'Immersiv lesen',bg:'#d3eef6'},
+   {em:'📜',tt:'Wendungen & Sprichwörter',ss:'Sprache & Kultur',bg:'#bfe6d5'},
+   {em:'🔎',tt:'Lese&shy;werkstatt',ss:'Leseverstehen',pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8'},
+   {em:'✍️',tt:'Schreib&shy;werkstatt',ss:'Schreiben',pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2'}
+  ]},
+ {id:'uebung',lb:'Übung',ic:icoCard,sub:'Ein paar Wörter, ganz in Ruhe.',
+  items:[
+   {em:'🃏',tt:'Wortschatz',ss:'Dein Deck',bg:'#ffd0b0'},
+   {em:'🪅',tt:'Spiele',ss:'Kurz und leicht',bg:'#ffe08a'}
+  ]}
 ];
-var HEUTE = {tt:'El golpe', tuer:'abenteuer'};   // Spiel des Tages (wechselt täglich)
-
-/* DER FADEN (Vorschlag 11.10.): geführt UND frei.
-   Spikiu schlägt EINEN nächsten Schritt vor (oben im Haus) — alles andere bleibt offen.
-   Spiele nehmen DEINE Wörter (aus Szenen + Wortschatz). Hast du noch keine, zeigt
-   Spikiu die Wörter zuerst (Bild + Übersetzung) — nie kalt ins Spiel. */
-var ZUSTAENDE = {
-  neu:   {lb:'Ganz neu', faden:{k:'Spikius Vorschlag', t:'Fang im Café an', s:'Dein erstes Gespräch — Spikiu führt dich.', ziel:'Geführtes Gespräch · Im Café'},
-          quelle:'Spikiu zeigt dir die Wörter zuerst'},
-  szene: {lb:'Nach der 1. Szene', faden:{k:'Spikius Vorschlag', t:'Die Café-Wörter klingen noch', s:'Oído fino — hör sie dir noch einmal an.', ziel:'Oído fino · mit den Café-Wörtern'},
-          quelle:'mit deinen Wörtern aus dem Café'},
-  woche: {lb:'Nach einer Woche', faden:{k:'Spikius Vorschlag', t:'Ein paar Wörter wollen dich wiedersehen', s:'Wortschatz — kurz, mit Wiedersehen.', ziel:'Wortschatz · Wiedersehen'},
-          quelle:'mit deinen Wörtern'}
+var HINWEIS={
+ 'Geführtes<br>Gespräch':'Geführtes Gespräch — am Ende klingt die Szene nach: Oído fino oder El golpe, mit genau ihren Wörtern.',
+ 'Dein Regal':'Dein Regal — dein Buch, deine Lektionen, dein Garten, deine Akrosticha. Alles, was du gesammelt hast.',
+ 'Spiele':'Spiele — das Spielzimmer wie bisher, mit dem Spiel des Tages. Die Spiele nehmen deine Wörter.'
 };
-var zustandId='neu';
-
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
-var toastT; function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},m.length>70?3600:1700);}
-function oeffnet(x){if(x.spiel&&zustandId==='neu'){toast(x.tt+': Spikiu zeigt dir zuerst die Wörter der ersten Szene — mit Bild und Übersetzung. Dann spielst du.');return;}toast('Im echten Spikiu öffnet sich hier: '+x.tt.replace(/<br>/g,' '));}
-function kachel(k,klasse){
-  var b=el('button','tile'+(klasse?' '+klasse:''));b.type='button';b.style.background=k.bg||'#fff';
-  b.innerHTML='<span class="zeit">≈ '+k.zeit+' Min.</span>'+(k.pill?'<span class="pill">'+k.pill+'</span>':'')+'<span class="em">'+k.em+'</span>'+(klasse==='wide'?'<span class="txt"><span class="tt"></span><span class="ss"></span></span>':'<span class="tt"></span><span class="ss"></span>');
-  b.querySelector('.tt').textContent=k.tt;b.querySelector('.ss').textContent=k.ss;if(k.spiel){var q=el('span','quelle',ZUSTAENDE[zustandId].quelle);(b.querySelector('.txt')||b).appendChild(q);}b.onclick=function(){oeffnet(k);};return b;
-}
+var toastT;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},m.length>60?3400:1700);}
+function tile(it){var b=el('button','tile'+(it.top?' k-top':''));b.type='button';b.style.background=it.bg;
+ b.innerHTML='<span class="em">'+it.em+'</span><span class="tt">'+it.tt+'</span>'+(it.ss?'<span class="ss">'+it.ss+'</span>':'')+(it.pill?'<span class="pill" style="background:'+it.pillBg+'">'+it.pill+'</span>':'');
+ b.onclick=function(){toast(HINWEIS[it.tt]||('Im echten Spikiu öffnet sich hier: '+it.tt.replace(/<br>|&shy;/g,' ').replace(/\s+/g,' ')));};return b;}
 function zeige(id){
-  aktuelleTuer=id;
-  var T=TUEREN.filter(function(x){return x.id===id;})[0];
-  document.querySelectorAll('.door').forEach(function(d){d.classList.toggle('on',d.dataset.id===id);});
-  document.getElementById('sub').textContent=T.sub;
-  var st=document.getElementById('stage');st.innerHTML='';
-  if(id==='abenteuer'){
-    var g=el('div','greet');g.innerHTML='<h2>¡Hola, Leo! 👋</h2>';
-    var h=el('button','heute');h.type='button';h.innerHTML='<small>Heute</small> 🥁 '+HEUTE.tt+' ›';h.onclick=function(){toast('Spiel des Tages: '+HEUTE.tt+' (immer frei)');};
-    g.appendChild(h);st.appendChild(g);
-  }
-  // Der Faden: in jeder Tür derselbe EINE Vorschlag ganz oben
-  var F=ZUSTAENDE[zustandId].faden, fb=el('button','faden');fb.type='button';
-  fb.innerHTML='<span class="cap">'+CAPY+'</span><span><small></small><b></b><span class="s"></span></span><span class="pf">›</span>';
-  fb.querySelector('small').textContent=F.k;fb.querySelector('b').textContent=F.t;fb.querySelector('.s').textContent=F.s;
-  fb.onclick=function(){toast('Spikiu öffnet: '+F.ziel);};st.appendChild(fb);
-  if(T.regal){
-    var wand=el('div','regal-wand');
-    var kopf=el('div','regal-kopf');kopf.appendChild(el('b',null,'Dein Regal'));kopf.appendChild(el('span',null,'was du gesammelt hast'));wand.appendChild(kopf);
-    var r=el('div','regal'), FARBEN=['#c7e89a','#ffd0b0','#bfe6d5','#cdbdf2'], HOEHE=[112,100,120,104];
-    T.regal.forEach(function(x,i){var b=el('button','rbuch');b.type='button';b.style.background=FARBEN[i%4];b.style.height=HOEHE[i%4]+'px';
-      b.innerHTML='<span class="em">'+x.em+'</span><b></b><span class="n"></span>';b.querySelector('b').textContent=x.tt;b.querySelector('.n').textContent=x.n;
-      if(x.pill){b.appendChild(el('span','pill',x.pill));}b.onclick=function(){oeffnet(x);};r.appendChild(b);});
-    wand.appendChild(r);wand.appendChild(el('div','brett'));st.appendChild(wand);
-  }
-  var grid=el('div','grid');
-  if(T.oben)grid.appendChild(kachel(T.oben,'wide'));
-  if(T.nachklang){
-    st.appendChild(grid);
-    st.appendChild(el('p','abschnitt','Nachklang · mit deinen Wörtern'));
-    grid=el('div','grid');T.nachklang.forEach(function(k){grid.appendChild(kachel(k));});st.appendChild(grid);
-    st.appendChild(el('p','abschnitt','Frei'));grid=el('div','grid');
-  }
-  T.kacheln.forEach(function(k){grid.appendChild(kachel(k,k.wide?'wide':(T.id==='uebung'?'klein':'')));});
-  st.appendChild(grid);
-  if(id==='uebung'){st.appendChild(el('p','legende','Jedes Spiel nimmt deine Wörter — aus deinen Szenen und deinem Wortschatz. Bist du ganz neu, zeigt Spikiu dir die Wörter zuerst, mit Bild und Übersetzung.'));}
-  if(id==='abenteuer'){st.appendChild(el('p','legende','Oben steht immer EIN Vorschlag von Spikiu — der Faden. Alles andere bleibt offen. Im Abenteuer gilt der Weg: erst das Gespräch, dann der Nachklang, dann frei. In Bibliothek und Übung: kurz zuerst. „≈ Min." ist nur eine Zeitschätzung.'));}
-  scrollTo(0,0);
+ var T=TUEREN.filter(function(x){return x.id===id;})[0];
+ document.querySelectorAll('.door').forEach(function(d){d.classList.toggle('on',d.dataset.id===id);});
+ document.getElementById('sub').textContent=T.sub;
+ var st=document.getElementById('stage');st.innerHTML='';
+ var w=el('div','k-wrap');
+ if(T.greet){var g=el('div','k-greet');g.appendChild(el('h2',null,T.greet.t));g.appendChild(el('p','kr',T.greet.kr));w.appendChild(g);}
+ var grid=el('div','k-grid');T.items.forEach(function(it){grid.appendChild(tile(it));});
+ w.appendChild(grid);st.appendChild(w);scrollTo(0,0);
 }
 var dw=document.getElementById('doors');
-TUEREN.forEach(function(T){var b=el('button','door');b.type='button';b.dataset.id=T.id;b.innerHTML='<span class="ic">'+T.ic()+'</span><span class="lb"></span><span class="was"></span>';b.querySelector('.lb').textContent=T.lb;b.querySelector('.was').textContent=T.was;b.onclick=function(){zeige(T.id);};dw.appendChild(b);});
-var aktuelleTuer='abenteuer';
-var zw=document.getElementById('zustand');
-Object.keys(ZUSTAENDE).forEach(function(k){var b=el('button',null,ZUSTAENDE[k].lb);b.type='button';b.dataset.z=k;b.onclick=function(){zustandId=k;zw.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.dataset.z===k);});zeige(aktuelleTuer);};zw.appendChild(b);});
-zw.querySelector('button').classList.add('on');
+TUEREN.forEach(function(T){var b=el('button','door');b.type='button';b.dataset.id=T.id;b.innerHTML='<span class="ic">'+T.ic()+'</span><span class="lb"></span>';b.querySelector('.lb').textContent=T.lb;b.onclick=function(){zeige(T.id);};dw.appendChild(b);});
 zeige('abenteuer');
 </script>
 
