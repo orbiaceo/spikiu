@@ -21,6 +21,12 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 11.10.2026 · ZWEI KORREKTUREN (**Leo, 00:48, zwei Screenshots: „Spikiu Capy ist nicht gut platziert. Und den Satz im Bezug auf Birkenbihl bitte weg."**)
+
+- `juegos.js` `encadenado()`: Spikius Hilfe-Knopf saß in der Eingabezeile, erbte den blauen Knopfstil und ragte rechts aus der Karte. Jetzt eigene Zeile **über** dem Feld: Buchstabenmuster („o _ _ _ _ _") + Spikiu-Knopf nebeneinander, darunter Feld + „dazu". Headless geprüft: alle Knöpfe innerhalb der Karte.
+- `spiele.html`: Fußnote „Garten und Akrostichon nach Ideen von Vera F. Birkenbihl" in allen drei Sprachen entfernt (Text + Anzeige). In sichtbaren Seiten steht der Name nirgends mehr (nur noch im Code-Kommentar von `juegos.js`).
+
+
 Stand: 11.10.2026 · SPIELZIMMER: NEUN SPIELE, SPIEL DES TAGES, ZUGANGSWACHE (**Leo, 23:57: alle fünf neuen Spiele „tal como los has diseñado“ abgenommen; 00:10: Organisation + Zugangsmodell „Es passt so! Einverstanden!“**)
 
 `juegos.js` **+5 Spiele** (UI de/es/en, null Token): `encadenado` (Wortkette, Erkennung wie Akrostichon über die Oberkategorie, Spikiu-Hilfe Buchstabe für Buchstabe, „vorletzter Buchstabe“ als Ausweg) · `oido` (hören → Bild) · `golpe` (Silben + Betonung per spanischer Regel, Klatschen per Web Audio, Tilde beim Raten versteckt) · `mercado` (zwei Körbe) · `memoria` (Wort ↔ Bild). Klang wie gehabt: Dur bei Erfolg, Moll max. 1× pro Runde.

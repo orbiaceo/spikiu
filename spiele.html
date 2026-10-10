@@ -92,7 +92,7 @@ var UI = {
        gesperrt:function(x){ return 'Das gehört zum Spielzimmer (1,50 € im Monat). Heute frei: ' + x + '.'; }, zumTages:'Zum Spiel des Tages', abo:'Spielzimmer ansehen',
        probe:function(n){ return 'Probezeit: alles frei, noch ' + n + (n === 1 ? ' Tag.' : ' Tage.'); }, schloss:'Spielzimmer',
        weiter:'noch eine ›', genug:'Genug für heute', themaWortschatz:'Wortschatz',
-       leer:'Für deine Zielsprache gibt es hier noch keine Sätze.', fuss:'Garten und Akrostichon nach Ideen von Vera F. Birkenbihl.' },
+       leer:'Für deine Zielsprache gibt es hier noch keine Sätze.' },
   es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Nueve juegos, cortos y ligeros. Elige uno.',
        pinata:['Piñata','¡Dale! Y atrapa al intruso.'], globos:['Globos','Revienta las palabras en el orden correcto.'],
        huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'], acrostico:['Acróstico','Una palabra, una idea por letra.'],
@@ -102,7 +102,7 @@ var UI = {
        gesperrt:function(x){ return 'Esto es del cuarto de juegos (1,50 € al mes). Hoy gratis: ' + x + '.'; }, zumTages:'Al juego del día', abo:'Ver el cuarto de juegos',
        probe:function(n){ return 'Prueba: todo gratis, ' + (n === 1 ? 'queda 1 día.' : 'quedan ' + n + ' días.'); }, schloss:'Cuarto de juegos',
        weiter:'otra ›', genug:'Basta por hoy', themaWortschatz:'Vocabulario',
-       leer:'Para tu idioma meta todavía no hay frases aquí.', fuss:'Huerto y acróstico según ideas de Vera F. Birkenbihl.' },
+       leer:'Para tu idioma meta todavía no hay frases aquí.' },
   en:{ titel:'Games', eyebrow:'Exercise', hallo:'Nine games, short and light. Pick one.',
        pinata:['Piñata','Swing and catch the intruder.'], globos:['Balloons','Pop the words in the right order.'],
        huerto:['Spikiu’s garden','From A to Z: plant your words.'], acrostico:['Acrostic','One word, one thought per letter.'],
@@ -112,7 +112,7 @@ var UI = {
        gesperrt:function(x){ return 'This is part of the games room (€1.50 a month). Free today: ' + x + '.'; }, zumTages:'Go to the game of the day', abo:'See the games room',
        probe:function(n){ return 'Trial: everything free, ' + n + (n === 1 ? ' day left.' : ' days left.'); }, schloss:'Games room',
        weiter:'another ›', genug:'Enough for today', themaWortschatz:'Vocabulary',
-       leer:'There are no sentences for your target language here yet.', fuss:'Garden and acrostic after ideas by Vera F. Birkenbihl.' }
+       leer:'There are no sentences for your target language here yet.' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
@@ -266,7 +266,6 @@ function tueren(){
     ids.forEach(function(id){ d.appendChild(tuer(id)); });
     inner.appendChild(d);
   });
-  var n = document.createElement('p'); n.className = 'note'; n.textContent = ui().fuss; inner.appendChild(n);
 }
 // Freundliche Sperre (nur wenn die Zugangswache aktiv ist und die Probezeit vorbei)
 function sperre(id){

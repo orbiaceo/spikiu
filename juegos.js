@@ -294,6 +294,7 @@
     '.jg-glied.spikiu{background:var(--jg-acc2)}.jg-glied.du{background:var(--jg-yel2)}',
     '.jg-link{color:var(--jg-mid);font-weight:800}',
     '.jg-muster{font:500 .95rem "DM Mono",monospace;color:var(--jg-mid);min-height:1.3em;letter-spacing:.08em}',
+    '.jg-hilfe{display:flex;align-items:center;justify-content:center;gap:.7rem;width:100%}',
     '.jg-hintbtn{width:2.75rem;height:2.75rem;border-radius:50%;border:2px solid var(--jg-ink);background:#fff;padding:0;display:grid;place-items:center;cursor:pointer;flex:none}',
     '.jg-hintbtn svg{width:1.9rem;height:1.9rem}',
     '.jg-bilder{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}',
@@ -984,10 +985,13 @@
     root.appendChild(spikiuSagt(esc(U.kIntro)));
     var k = el('div', 'jg-kette'); root.appendChild(k);
     var task = el('p', 'jg-task'); root.appendChild(task);
-    var muster = el('div', 'jg-muster'); root.appendChild(muster);
+    var muster = el('div', 'jg-muster');
+    // Leo 11.10.: Spikiu-Hilfe nicht in die Eingabezeile quetschen — eigene Zeile über dem Feld
+    var hilfe = el('div', 'jg-hilfe'), h = el('button', 'jg-hintbtn'); h.type = 'button'; h.innerHTML = SPIKIU; h.setAttribute('aria-label', U.gSow);
+    hilfe.appendChild(muster); hilfe.appendChild(h); root.appendChild(hilfe);
     var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-kette-in'; inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.spellcheck = false;
-    var go = el('button', null, U.kDazu), h = el('button', 'jg-hintbtn'); go.type = h.type = 'button'; h.innerHTML = SPIKIU; h.setAttribute('aria-label', U.gSow);
-    ir.appendChild(inp); ir.appendChild(go); ir.appendChild(h); root.appendChild(ir);
+    var go = el('button', null, U.kDazu); go.type = 'button';
+    ir.appendChild(inp); ir.appendChild(go); root.appendChild(ir);
     var fb = el('div', 'jg-fb'); root.appendChild(fb);
     function kand(B) { return E.feld.filter(function (x) { return anfang(x.z, ziel) === B && benutzt.indexOf(x.key) < 0 && /^[\p{L} ]+$/u.test(x.nackt); }); }
     function nah(v) { var n = v.filter(function (x) { return x.stufe <= stufe; }); return n.length ? n : v; }
