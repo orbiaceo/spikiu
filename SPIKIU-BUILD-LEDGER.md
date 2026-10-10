@@ -20,6 +20,21 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · AKROSTICHON MIT THEMA + WORTFELDER (**Leo: Das Akrostichon muss eingeschränkt werden — nur Wörter, die zum THEMA passen, auch über der Stufe des Lerners. „Para SOPA: sol, orar, pie, alto — no. Sal, olivo, probar, ajo — sí." Spikiu verrät nur Buchstabe für Buchstabe. „Schreibe es durch in allen 4 Sprachen. Fehler melde ich beim Testen."**)
+
+**NEU:** `wortfelder.js` (Root) — 10 Themen (IDs des Lernpfads) × **694 Begriffe**, jede Zeile ein Begriff in **es | de | en | el** (Übersetzungen damit gratis). Stufe je Begriff: 1 Samen · 2 Stamm · 3 Feld (passt zum Thema, liegt über der Stufe). API `spikiuWortfelder.feld(ziel, thema, mutter) → [{z, tr, stufe}]`. Spanien-Standard; Englisch ohne Artikel/„to"; Griechisch mit Artikel. **Entwurf von Claude — Leo prüft beim Testen.**
+**VORHER GEMESSEN:** Mit dem Lernpfad-Wortschatz (12/24 Wörter je Station) war im Spanischen auf Stufe Samen KEIN Wort lösbar. Jetzt je Thema und Stufe ≥ 1 lösbares Wort in allen vier Sprachen (meist 5–45).
+`juegos.js` `acrostico()` neu:
+- Themenleiste (10 Themen, Name in der Muttersprache); Spikius Beispiel wird aus dem Feld gebaut (keine Doppelungen).
+- Angeboten werden nur **lösbare** Wörter (3–7 Buchstaben; zu jedem Buchstaben gibt es ein anderes Feldwort), zuerst bis zur Stufe des Lerners (`SpikiuPfad.stufe()`, a1→1, a2→2). Eigene Wörter fallen weg.
+- Eine Zeile wird grün (+ Übersetzung) nur mit einem **Feldwort**; Wort mit richtigem Buchstaben, aber themenfremd → orange + „passt nicht zum Thema …". Beim Fertig bleiben themenfremde Zeilen draußen.
+- **Spikiu-Hilfe Buchstabe für Buchstabe:** 1. Tipp „a _ _ _", dann „ag _ _" … bis komplett (dann gestrichelt = gesät). Die Hilfe **folgt dem Anfang**, den der Lerner schon getippt hat; nimmt zuerst Wörter bis zu seiner Stufe; nie ein Wort, das schon in einer anderen Zeile steht.
+- Griechische Versalien ohne Tonos (ΤΡΩΩ statt ΤΡΏΩ).
+`spiele.html`: lädt `lernpfad.js` + `wortfelder.js`; Akrostichon-Thema wird je Zielsprache gemerkt (`spikiu_acro_thema`), Sitzung trägt das Thema. **Garten profitiert mit:** Beete bekommen die Feldwörter bis zur Stufe (mehr Samen), das ganze Feld zählt beim Erkennen; für Griechisch gibt es jetzt die 10 Themen statt nur „Wortschatz".
+Headless geprüft (es→de, de→es, el→de, en→es): Themen, Beispiel, Wortwahl, Hilfe Schritt für Schritt bis zum Wort mit Übersetzung, themenfremdes Wort abgewiesen, gespeicherte Karte; SOPA-Probe: sal/olivo/probar/ajo im Feld Restaurant, sol/orar/pie/alto nicht. Garten pflanzen/säen, Wiederkommen, keine Fehler.
+**FRAGE AN LEO:** „Comida" ist kein eigenes Thema — Essen steckt in Café + Restaurant (+ Einkaufen). Soll es ein eigenes Feld „Essen" geben?
+
+
 Stand: 10.10.2026 · PIÑATA + GLOBOS MIT ÜBERSETZUNG (**Leo: „Los juegos piñata y ballons tienen que tener la traducción de la frase a la lengua materna al final de cada tiro. Es una forma de reforzar o de aclarar el ítem." — getestet auf Griechisch.**)
 
 `juegos.js`: `pinata()` und `globos()` nehmen `d.tr`; nach jedem Wurf steht unter dem Satz die Übersetzung in der Muttersprache (`.jg-trans`, kursiv, DM Sans). Helfer `uebersetzung()`.

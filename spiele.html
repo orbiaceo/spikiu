@@ -91,11 +91,6 @@ var UI = {
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
-var BEISPIEL = {
-  es:{ wort:'MAR',  a:['Málaga','azul','ruido de olas'] },
-  de:{ wort:'MEER', a:['Möwe','Ebbe','endlos','Rauschen'] },
-  en:{ wort:'SUN',  a:['summer','umbrella','noon'] }
-};
 
 var GLYPH = {
   pinata:'<svg viewBox="0 0 44 44"><path d="M22 2v8" stroke="#15163a" stroke-width="2"/><circle cx="22" cy="24" r="10" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><path d="M22 14l-3-4h6zM32 24l4-3v6zM12 24l-4-3v6zM22 34l-3 4h6z" fill="#e0412f" stroke="#15163a" stroke-width="1.5"/></svg>',
@@ -136,11 +131,19 @@ function baueDaten(){
   SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return s.tr && n >= 3 && n <= 8; });
   var D = lernpfad();
   if (D){
-    D.themen.forEach(function(t){ woerterVonThema(t.id).forEach(function(x){ LEXIKON.push(x); }); });
+    D.themen.forEach(function(t){ woerterVonThemaLernpfad(t.id).forEach(function(x){ LEXIKON.push(x); }); });
   }
+  if (window.spikiuWortfelder) window.spikiuWortfelder.themen.forEach(function(id){ feldVon(id).forEach(function(x){ LEXIKON.push({ z:x.z, tr:x.tr }); }); });
 }
 function woerterVonThema(id){
+  var basis = woerterVonThemaLernpfad(id), st = stufeZahl(), seen = {};
+  basis.forEach(function(x){ seen[String(x.z).toLowerCase()] = 1; });
+  feldVon(id).forEach(function(x){ if (x.stufe <= st && !seen[String(x.z).toLowerCase()]) { seen[String(x.z).toLowerCase()] = 1; basis.push({ z:x.z, tr:x.tr }); } });
+  return basis;
+}
+function woerterVonThemaLernpfad(id){
   var D = lernpfad();
+  if (!D && id !== '_ws') return [];
   if (!D || id === '_ws'){
     var z = PROFILE.zielsprache;
     return (typeof window.spikiuWortschatz === 'function' && window.spikiuWortschatz.daten[z])
@@ -153,9 +156,25 @@ function woerterVonThema(id){
   });
   return out;
 }
+// ── Wortfelder (10.10.): thematische Felder in allen vier Zielsprachen ──
+function stufeZahl(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe() === 'a2' ? 2 : 1; } catch(e){} return 1; }
+function feldVon(id){ var W = window.spikiuWortfelder; return W ? W.feld(PROFILE.zielsprache, id, PROFILE.muttersprache) : []; }
+// Themennamen in der Muttersprache — aus irgendeiner geladenen Lernpfad-Datei
+function themenNamen(){
+  var m = {}, mu = PROFILE.muttersprache;
+  ['SpikiuLernpfadES','SpikiuLernpfadDE','SpikiuLernpfadEN','SpikiuLernpfad'].forEach(function(k){
+    var D = window[k]; if (!D || !D.themen) return;
+    D.themen.forEach(function(t){ var n = t.na && t.na[mu]; if (n && !m[t.id]) m[t.id] = (t.em ? t.em + ' ' : '') + n; });
+  });
+  return m;
+}
+function feldThemen(){
+  var W = window.spikiuWortfelder, N = themenNamen();
+  return W ? W.themen.map(function(id){ return { id:id, t: N[id] || id }; }) : [];
+}
 function themen(){
   var D = lernpfad();
-  if (!D) return [{ id:'_ws', t: ui().themaWortschatz }];
+  if (!D) { var ft = feldThemen(); return ft.length ? ft : [{ id:'_ws', t: ui().themaWortschatz }]; }
   return D.themen.filter(function(t){ return woerterVonThema(t.id).length; })
     .map(function(t){ return { id:t.id, t:(t.em ? t.em + ' ' : '') + trVon(t.na) }; });
 }
@@ -257,24 +276,20 @@ function garten(themaId){
   enden(null);
 }
 
-function akrostichon(entwurf){
+function akrostichon(entwurf, themaId){
   leeren(); kopf(ui().acrostico[0]); ansicht = 'acrostico';
-  var z = PROFILE.zielsprache;
-  sichereSitzung({ spiel: 'acrostico', entwurf: entwurf || null }, true);
-  // Wortwahl: kurze Einzelwörter aus dem Lexikon (ohne Artikel), groß geschrieben.
-  var seen = {}, kand = [];
-  LEXIKON.forEach(function(x){
-    var k = String(x.z).trim().replace(/^(el|la|los|las|un|una|der|die|das|ein|eine|the|a|an|ο|η|το|οι|τα)\s+/i, '');
-    if (!/^\p{L}{3,6}$/u.test(k)) return;
-    var K = k.toUpperCase(); if (seen[K]) return; seen[K] = 1; kand.push(K);
-  });
-  var woerter = window.spikiuJuegos.mezcla(kand).slice(0, 6);
+  var z = PROFILE.zielsprache, alle = feldThemen();
+  var thema = (entwurf && entwurf.thema) || themaId || lies('spikiu_acro_thema', {})[z] || 'restaurant';
+  if (!alle.some(function(t){ return t.id === thema; })) thema = alle[0] && alle[0].id;
+  var tz = lies('spikiu_acro_thema', {}); tz[z] = thema; schreib('spikiu_acro_thema', tz);
+  sichereSitzung({ spiel: 'acrostico', entwurf: entwurf || null, thema: thema }, true);
   var ansichtEl = window.spikiuJuegos.acrostico({
-    woerter: woerter, lexikon: LEXIKON, beispiel: BEISPIEL[z] || null,
+    themen: alle, thema: thema, feldVon: feldVon, stufe: stufeZahl(),
     lade: function(){ return (lies('spikiu_acrosticos', {})[z]) || []; },
     speichere: function(liste){ var a = lies('spikiu_acrosticos', {}); a[z] = liste; schreib('spikiu_acrosticos', a); },
     entwurf: entwurf || null,
-    beiEntwurf: function(e){ sichereSitzung({ spiel: 'acrostico', entwurf: e }, false); }
+    beiEntwurf: function(e){ sichereSitzung({ spiel: 'acrostico', entwurf: e, thema: thema }, false); },
+    beiThema: function(id){ akrostichon(null, id); }
   }, opts());
   inner.appendChild(ansichtEl); aktiv = ansichtEl;
   enden(null);
@@ -284,7 +299,7 @@ function oeffne(id, zustand){
   zustand = zustand || {};
   if (id === 'pinata' || id === 'globos') rundeKarte(id);
   else if (id === 'huerto') garten(zustand.thema);
-  else if (id === 'acrostico') akrostichon(zustand.entwurf);
+  else if (id === 'acrostico') akrostichon(zustand.entwurf, zustand.thema);
   else tueren();
 }
 
@@ -321,6 +336,8 @@ window.addEventListener('load', function(){
 <script src="lernpfad-daten-de.js" defer></script>
 <script src="lernpfad-daten-en.js" defer></script>
 <script src="lernpfad-sprache.js" defer></script>
+<script src="lernpfad.js" defer></script>
+<script src="wortfelder.js" defer></script>
 <script src="juegos.js" defer></script>
 </body>
 </html>

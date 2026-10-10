@@ -64,9 +64,11 @@
       gWrong: function (L) { return 'Das beginnt nicht mit ' + L + '. Gehört es in ein anderes Beet?'; },
       gNew: 'Beet neu anlegen', gNewSure: 'Wirklich umgraben? Tipp nochmal.', gRemove: 'Antippen zum Entfernen',
       // Akrostichon
-      aIntro: 'So sieht ein Akrostichon aus. Jeder Buchstabe öffnet eine Tür: Wörter, Orte, Gefühle, auch in deiner Sprache.',
-      aPick: 'Wähl ein Wort', aOwn: 'Eigenes Wort', aGo: 'Los',
-      aHint: 'Hängst du? Tipp auf Spikiu neben dem Buchstaben.', aDone: 'Fertig',
+      aIntro: 'So sieht ein Akrostichon aus. Zu jedem Buchstaben ein Wort, das zum Thema passt.',
+      aPick: 'Wähl ein Wort', aThema: 'Thema',
+      aHint: 'Jedes Wort muss zum Thema passen. Hängst du? Tipp auf Spikiu: Er verrät Buchstabe für Buchstabe.', aDone: 'Fertig',
+      aNichtFeld: function (x, th) { return '<em>' + x + '</em> passt nicht zum Thema „' + th + '". Such ein anderes.'; },
+      aRaus: 'Wörter, die nicht zum Thema passen, bleiben draußen.', aKeine: 'Für dieses Thema habe ich gerade kein Wort. Wähl ein anderes Thema.',
       aSaved: 'Deine Akrosticha', aYours: 'Dein Akrostichon', aNew: 'Neues Akrostichon', aSpikiu: 'Spikius Akrostichon'
     },
     es: {
@@ -92,9 +94,11 @@
       gNoSeed: 'En este bancal ya no me quedan semillas.',
       gWrong: function (L) { return 'No empieza por ' + L + '. ¿Va en otro bancal?'; },
       gNew: 'Empezar otro huerto', gNewSure: '¿Remover la tierra de verdad? Toca otra vez.', gRemove: 'Toca para quitar',
-      aIntro: 'Así es un acróstico. Cada letra abre una puerta: palabras, lugares, sensaciones, también en tu idioma.',
-      aPick: 'Elige una palabra', aOwn: 'Palabra propia', aGo: 'Vamos',
-      aHint: '¿Atascado? Toca a Spikiu junto a la letra.', aDone: 'Listo',
+      aIntro: 'Así es un acróstico. Para cada letra, una palabra que tenga que ver con el tema.',
+      aPick: 'Elige una palabra', aThema: 'Tema',
+      aHint: 'Cada palabra tiene que ser del tema. ¿Atascado? Toca a Spikiu: te da la palabra letra a letra.', aDone: 'Listo',
+      aNichtFeld: function (x, th) { return '<em>' + x + '</em> no tiene que ver con «' + th + '». Busca otra.'; },
+      aRaus: 'Las palabras que no son del tema se quedan fuera.', aKeine: 'Para este tema no tengo palabra ahora. Elige otro tema.',
       aSaved: 'Tus acrósticos', aYours: 'Tu acróstico', aNew: 'Nuevo acróstico', aSpikiu: 'El acróstico de Spikiu'
     },
     en: {
@@ -120,9 +124,11 @@
       gNoSeed: 'I have no seeds left for this bed.',
       gWrong: function (L) { return 'That doesn’t start with ' + L + '. Does it go in another bed?'; },
       gNew: 'Dig a new garden', gNewSure: 'Really dig it all up? Tap again.', gRemove: 'Tap to remove',
-      aIntro: 'This is an acrostic. Every letter opens a door: words, places, feelings, in your language too.',
-      aPick: 'Pick a word', aOwn: 'Your own word', aGo: 'Go',
-      aHint: 'Stuck? Tap Spikiu next to the letter.', aDone: 'Done',
+      aIntro: 'This is an acrostic. For each letter, a word that fits the topic.',
+      aPick: 'Pick a word', aThema: 'Topic',
+      aHint: 'Every word has to fit the topic. Stuck? Tap Spikiu: he reveals the word letter by letter.', aDone: 'Done',
+      aNichtFeld: function (x, th) { return '<em>' + x + '</em> doesn\u2019t fit \u201c' + th + '\u201d. Try another one.'; },
+      aRaus: 'Words that don\u2019t fit the topic stay out.', aKeine: 'I have no word for this topic right now. Pick another topic.',
       aSaved: 'Your acrostics', aYours: 'Your acrostic', aNew: 'New acrostic', aSpikiu: 'Spikiu’s acrostic'
     }
   };
@@ -222,6 +228,9 @@
     '.jg-kawa.lang{gap:.2rem}',
     '.jg-kl input{flex:1;min-width:0;border:none;border-bottom:2px solid var(--jg-faint);background:none;color:var(--jg-ink);padding:.25rem .15rem;font:500 1.05rem Lora,Georgia,serif}',
     '.jg-kl input:focus{outline:none;border-bottom-color:var(--jg-acc)}',
+    '.jg-kl.ok input{border-bottom-color:var(--jg-ok2)}.jg-kl.ok .jg-kb{background:var(--jg-ok)}',
+    '.jg-kl.aus input{border-bottom-color:var(--jg-warn);color:var(--jg-warn)}',
+    '.jg-kl.lent input{border-bottom-style:dashed}',
     '.jg-kl .tr{flex:none;font-size:.72rem;color:var(--jg-mid);max-width:28%;text-align:right;overflow-wrap:anywhere}',
     '.jg-kl .hint{flex:none;width:1.9rem;height:1.9rem;border-radius:50%;border:2px solid var(--jg-ink);background:#fff;cursor:pointer;display:grid;place-items:center;padding:0}',
     '.jg-kl .hint svg{width:1.35rem;height:1.35rem}',
@@ -673,12 +682,37 @@
     return root;
   }
 
-  /* ═══ 6. AKROSTICHON ═══
-     cfg = { woerter:['MAR',…], lexikon:[{z,tr}], beispiel:{wort,a:[…]}|null,
-             lade:function()→[{wort,a:[{z,tr}]}], speichere:function(liste),
-             entwurf:{wort, a:[…]}|null, beiEntwurf:function(entwurf|null) }   */
+  /* ═══ 6. AKROSTICHON (Umbau 10.10., Leo) ═══
+     Nur Wörter aus dem THEMA zählen (wortfelder.js), egal welche Stufe.
+     Spikiu bietet nur lösbare Wörter an (zu jedem Buchstaben gibt es ein
+     Feldwort) und hilft Buchstabe für Buchstabe: erst „s _ _", dann „sa _",
+     dann „sal". Hat der Lerner schon angefangen, folgt die Hilfe seinem
+     Anfang. Hilfen nehmen zuerst Wörter bis zur Stufe des Lerners.
+     cfg = { themen:[{id,t}], thema, feldVon:function(id)→[{z,tr,stufe}],
+             stufe:1|2, lade, speichere, entwurf:{thema,wort,a}|null,
+             beiEntwurf:function(e|null), beiThema:function(id) }          */
   function acrostico(cfg, opts) {
-    var U = T(opts), root = wurzel(), idx = lexIndex(cfg.lexikon), ziel = (opts && opts.zielLang) || 'es';
+    var U = T(opts), root = wurzel(), ziel = (opts && opts.zielLang) || 'es';
+    var stufe = cfg.stufe || 1;
+    var thema = (cfg.entwurf && cfg.entwurf.thema) || cfg.thema || (cfg.themen[0] && cfg.themen[0].id);
+    var themaTitel = (cfg.themen.filter(function (x) { return x.id === thema; })[0] || {}).t || thema;
+    themaTitel = String(themaTitel).replace(/^[^\p{L}]+/u, '');   // ohne Emoji im Fließtext
+    var feld = (cfg.feldVon(thema) || []).map(function (x) { return { z: x.z, tr: x.tr || '', stufe: x.stufe || 3, key: norm(ohneArtikel(x.z)), nackt: ohneArtikel(x.z) }; })
+      .filter(function (x) { return x.key; });
+    function buchstabe(L) { var c = String(L).toUpperCase(); return (ziel === 'es' && c === 'Ñ') ? 'Ñ' : c.normalize('NFD').charAt(0); }
+    function imFeld(wort) { var k = norm(ohneArtikel(wort)); for (var i = 0; i < feld.length; i++) if (feld[i].key === k) return feld[i]; return null; }
+    function mitBuchstabe(L, ohne) { var Lb = buchstabe(L); return feld.filter(function (x) { return anfang(x.z, ziel) === Lb && (!ohne || x.key !== ohne); }); }
+    // Hilfe-Vorrat: zuerst bis zur Stufe des Lerners, sonst das ganze Feld
+    function vorrat(L, ohne) { var alle = mitBuchstabe(L, ohne), nah = alle.filter(function (x) { return x.stufe <= stufe; }); return nah.length ? nah : alle; }
+    function loesbar(nackt) { var k = norm(nackt); return nackt.split('').every(function (L) { return mitBuchstabe(L, k).length > 0; }); }
+    function kandidaten() {
+      var gut = function (x) { return /^\p{L}{3,7}$/u.test(x.nackt) && loesbar(x.nackt); };
+      var nah = feld.filter(function (x) { return x.stufe <= stufe && gut(x); });
+      if (nah.length < 4) nah = feld.filter(gut);
+      var seen = {}; return mezcla(nah).filter(function (x) { var K = gross(x.nackt); if (seen[K]) return false; seen[K] = 1; return true; });
+    }
+    // Großschreibung: Griechisch ohne Tonos (Konvention für Versalien)
+    function gross(x) { var g = String(x).toUpperCase(); return ziel === 'el' ? g.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : g; }
     function karte(wort, a, ueber) {
       var c = el('div', 'jg-kc'); c.appendChild(el('h4', null, ueber));
       wort.split('').forEach(function (L, i) {
@@ -690,25 +724,47 @@
       return c;
     }
     function leeren() { while (root.firstChild) root.removeChild(root.firstChild); }
+    function themenLeiste() {
+      var th = el('div', 'jg-themes');
+      cfg.themen.forEach(function (x) {
+        var p = el('button', 'jg-pill' + (x.id === thema ? ' on' : ''), x.t); p.type = 'button';
+        p.addEventListener('click', function () { if (cfg.beiThema) cfg.beiThema(x.id); });
+        th.appendChild(p);
+      });
+      setTimeout(function () { var on = th.querySelector('.on'); if (on && on.scrollIntoView) try { on.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) {} }, 30);
+      return th;
+    }
     function uebersicht() {
       leeren(); if (cfg.beiEntwurf) cfg.beiEntwurf(null);
       root.appendChild(spikiuSagt(esc(U.aIntro)));
-      if (cfg.beispiel) root.appendChild(karte(cfg.beispiel.wort, cfg.beispiel.a.map(function (z) { return { z: z }; }), U.aSpikiu));
+      root.appendChild(el('p', 'jg-h', U.aThema));
+      root.appendChild(themenLeiste());
+      var kand = kandidaten();
+      if (!kand.length) { root.appendChild(el('div', 'jg-whisper', U.aKeine)); return; }
+      // Spikius Beispiel: ein lösbares Wort, gefüllt aus dem Feld (Stufe des Lerners zuerst)
+      var bsp = kand[0], benutzt = [bsp.key];
+      var bspA = bsp.nackt.split('').map(function (L) {
+        var v = vorrat(L, bsp.key).filter(function (x) { return benutzt.indexOf(x.key) < 0; });
+        if (!v.length) v = mitBuchstabe(L, bsp.key).filter(function (x) { return benutzt.indexOf(x.key) < 0; });
+        if (!v.length) v = mitBuchstabe(L, bsp.key);
+        var f = v[Math.floor(Math.random() * v.length)]; benutzt.push(f.key); return { z: f.z, tr: f.tr };
+      });
+      root.appendChild(karte(gross(bsp.nackt), bspA, U.aSpikiu + ' · ' + themaTitel));
       root.appendChild(el('p', 'jg-h', U.aPick));
       var ws = el('div', 'jg-words');
-      (cfg.woerter || []).forEach(function (x) { var p = el('button', 'jg-pill', x); p.type = 'button'; p.addEventListener('click', function () { bauen(x, []); }); ws.appendChild(p); });
+      kand.slice(1, 7).forEach(function (x) {
+        var p = el('button', 'jg-pill', gross(x.nackt)); p.type = 'button';
+        p.addEventListener('click', function () { bauen(gross(x.nackt), []); });
+        ws.appendChild(p);
+      });
       root.appendChild(ws);
-      var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-acro-own'; inp.placeholder = U.aOwn; inp.maxLength = 14;
-      var go = el('button', null, U.aGo); go.type = 'button'; ir.appendChild(inp); ir.appendChild(go); root.appendChild(ir);
-      var eigen = function () { var v = inp.value.replace(/[^\p{L}]/gu, '').toUpperCase(); if (v.length >= 2) bauen(v, []); };
-      go.addEventListener('click', eigen); inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') eigen(); });
       var alle = cfg.lade() || [];
       if (alle.length) {
         root.appendChild(el('p', 'jg-h', U.aSaved));
         var s = el('div', 'jg-words');
         alle.slice().reverse().forEach(function (k) {
           var m = el('button', 'jg-mini', k.wort); m.type = 'button';
-          m.addEventListener('click', function () { zeige(k.wort, k.a, U.aYours); });
+          m.addEventListener('click', function () { zeige(k.wort, k.a, U.aYours + (k.titel ? ' · ' + k.titel : '')); });
           s.appendChild(m);
         });
         root.appendChild(s);
@@ -722,36 +778,68 @@
     function bauen(wort, vorher) {
       leeren(); root.appendChild(spikiuSagt(esc(U.aHint)));
       var k = el('div', 'jg-kawa' + (wort.length > 7 ? ' lang' : '')), felder = [], whisper = el('div', 'jg-whisper');
-      function entwurf() {
-        if (cfg.beiEntwurf) cfg.beiEntwurf({ wort: wort, a: felder.map(function (x) { return x.inp.value; }) });
+      var wortKey = norm(wort);
+      function entwurf() { if (cfg.beiEntwurf) cfg.beiEntwurf({ thema: thema, wort: wort, a: felder.map(function (x) { return x.inp.value; }) }); }
+      function bewerte(fx, laut) {
+        var v = fx.inp.value.trim(); fx.line.classList.remove('ok', 'aus');
+        if (!v) { fx.tr.textContent = ''; return null; }
+        if (anfang(v, ziel) !== buchstabe(fx.L)) { fx.tr.textContent = ''; if (laut) whisper.innerHTML = esc(U.gWrong(fx.L)); return null; }
+        var f = imFeld(v);
+        if (f && f.key !== wortKey) { fx.line.classList.add('ok'); fx.tr.textContent = f.tr; return f; }
+        fx.line.classList.add('aus'); fx.tr.textContent = '';
+        if (laut) whisper.innerHTML = U.aNichtFeld(esc(v), esc(themaTitel));
+        return null;
       }
       wort.split('').forEach(function (L, ix) {
         var line = el('div', 'jg-kl'), big = el('div', 'jg-kb', L), inp = el('input'), tr = el('span', 'tr'), h = el('button', 'hint');
-        inp.id = 'jg-acro-' + ix; inp.setAttribute('autocomplete', 'off'); inp.spellcheck = false; inp.setAttribute('aria-label', L);
+        inp.id = 'jg-acro-' + ix; inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.spellcheck = false; inp.setAttribute('aria-label', L);
         inp.value = (vorher && vorher[ix]) || '';
-        var f0 = inp.value ? finde(inp.value, idx) : null; if (f0) tr.textContent = f0.tr;
+        var fx = { L: L, inp: inp, tr: tr, line: line, ziel: null, k: 0 };
         h.type = 'button'; h.innerHTML = SPIKIU; h.setAttribute('aria-label', U.gSow);
+        // Buchstabe für Buchstabe — folgt dem, was schon dasteht
         h.addEventListener('click', function () {
-          var schon = felder.map(function (f) { return norm(ohneArtikel(f.inp.value)); });
-          var Lb = anfang(L, ziel);
-          var kand = idx.filter(function (x) { return anfang(x.z, ziel) === Lb && schon.indexOf(x.key) < 0; });
-          if (!kand.length) { whisper.textContent = U.gNoSeed; return; }
-          var f = kand[Math.floor(Math.random() * kand.length)];
-          inp.value = f.z; tr.textContent = f.tr; whisper.innerHTML = U.gSowed(esc(f.z), esc(f.tr)); entwurf();
+          var getippt = norm(ohneArtikel(inp.value));
+          var schon = felder.filter(function (o) { return o !== fx; }).map(function (o) { return norm(ohneArtikel(o.inp.value)); });
+          var passt = function (x) { return norm(x.nackt).indexOf(getippt) === 0 && schon.indexOf(x.key) < 0; };
+          if (!fx.ziel || !passt(fx.ziel)) {
+            var v = vorrat(L, wortKey).filter(passt);
+            if (!v.length) v = mitBuchstabe(L, wortKey).filter(passt);
+            if (!v.length && getippt) { v = vorrat(L, wortKey).filter(function (x) { return schon.indexOf(x.key) < 0; }); getippt = ''; }
+            if (!v.length) { whisper.textContent = U.gNoSeed; return; }
+            fx.ziel = v[Math.floor(Math.random() * v.length)]; fx.k = 0;
+          }
+          var nackt = fx.ziel.nackt;
+          fx.k = Math.max(fx.k + 1, getippt.length + 1);
+          if (fx.k >= nackt.length) {
+            inp.value = nackt; fx.line.classList.add('lent'); bewerte(fx, false);
+            whisper.innerHTML = U.gSowed(esc(fx.ziel.z), esc(fx.ziel.tr));
+          } else {
+            inp.value = nackt.slice(0, fx.k);
+            tr.textContent = nackt.slice(0, fx.k) + ' ' + new Array(nackt.length - fx.k + 1).join('_ ').trim();
+            fx.line.classList.remove('ok', 'aus');
+            whisper.textContent = '';
+          }
+          entwurf();
+          try { inp.focus({ preventScroll: true }); } catch (x) { inp.focus(); }
         });
-        inp.addEventListener('input', function () { var f = finde(inp.value, idx); tr.textContent = f ? f.tr : ''; entwurf(); });
-        inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { var n = felder[ix + 1]; if (n) n.inp.focus(); else inp.blur(); } });
+        inp.addEventListener('input', function () { fx.line.classList.remove('lent'); bewerte(fx, false); entwurf(); });
+        inp.addEventListener('blur', function () { if (inp.value.trim()) bewerte(fx, true); });
+        inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { bewerte(fx, true); var n = felder[ix + 1]; if (n) n.inp.focus(); else inp.blur(); } });
         line.appendChild(big); line.appendChild(inp); line.appendChild(tr); line.appendChild(h); k.appendChild(line);
-        felder.push({ inp: inp });
+        felder.push(fx);
+        if (inp.value) bewerte(fx, false);
       });
       root.appendChild(k); root.appendChild(whisper);
       var foot = el('div', 'jg-foot'), fertig = el('button', 'jg-btn', U.aDone); fertig.type = 'button';
       fertig.addEventListener('click', function () {
-        var a = felder.map(function (x) { var v = x.inp.value.trim(); var fd = v ? finde(v, idx) : null; return { z: v, tr: fd ? fd.tr : '' }; });
-        if (!a.some(function (x) { return x.z; })) { felder[0].inp.focus(); return; }
-        var alle = cfg.lade() || []; alle.push({ wort: wort, a: a }); cfg.speichere(alle.slice(-40));
+        var raus = false;
+        var a = felder.map(function (x) { var f = bewerte(x, false); if (!f && x.inp.value.trim()) raus = true; return f ? { z: x.inp.value.trim(), tr: f.tr } : { z: '', tr: '' }; });
+        if (!a.some(function (x) { return x.z; })) { whisper.textContent = raus ? U.aRaus : ''; felder[0].inp.focus(); return; }
+        var alle = cfg.lade() || []; alle.push({ wort: wort, a: a, thema: thema, titel: themaTitel }); cfg.speichere(alle.slice(-40));
         if (cfg.beiEntwurf) cfg.beiEntwurf(null);
-        zeige(wort, a, U.aYours); done(root, true);
+        zeige(wort, a, U.aYours + ' · ' + themaTitel);
+        if (raus) root.insertBefore(el('div', 'jg-whisper', U.aRaus), root.lastChild);
+        done(root, true);
       });
       foot.appendChild(fertig); root.appendChild(foot);
       entwurf();
