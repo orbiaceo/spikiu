@@ -165,6 +165,7 @@ function themenNamen(){
   ['SpikiuLernpfadES','SpikiuLernpfadDE','SpikiuLernpfadEN','SpikiuLernpfad'].forEach(function(k){
     var D = window[k]; if (!D || !D.themen) return;
     D.themen.forEach(function(t){ var n = t.na && t.na[mu]; if (n && !m[t.id]) m[t.id] = (t.em ? t.em + ' ' : '') + n; });
+    (D.kategorien || []).forEach(function(t){ var n = t.na && t.na[mu]; if (n && t.id === 'essen' && !m.essen) m.essen = '🥘 ' + n; });
   });
   return m;
 }
@@ -175,8 +176,9 @@ function feldThemen(){
 function themen(){
   var D = lernpfad();
   if (!D) { var ft = feldThemen(); return ft.length ? ft : [{ id:'_ws', t: ui().themaWortschatz }]; }
-  return D.themen.filter(function(t){ return woerterVonThema(t.id).length; })
-    .map(function(t){ return { id:t.id, t:(t.em ? t.em + ' ' : '') + trVon(t.na) }; });
+  var essen = feldThemen().filter(function(t){ return t.id === 'essen'; });
+  return essen.concat(D.themen.filter(function(t){ return woerterVonThema(t.id).length; })
+    .map(function(t){ return { id:t.id, t:(t.em ? t.em + ' ' : '') + trVon(t.na) }; }));
 }
 
 // ── Speicher ──
@@ -279,7 +281,7 @@ function garten(themaId){
 function akrostichon(entwurf, themaId){
   leeren(); kopf(ui().acrostico[0]); ansicht = 'acrostico';
   var z = PROFILE.zielsprache, alle = feldThemen();
-  var thema = (entwurf && entwurf.thema) || themaId || lies('spikiu_acro_thema', {})[z] || 'restaurant';
+  var thema = (entwurf && entwurf.thema) || themaId || lies('spikiu_acro_thema', {})[z] || 'essen';
   if (!alle.some(function(t){ return t.id === thema; })) thema = alle[0] && alle[0].id;
   var tz = lies('spikiu_acro_thema', {}); tz[z] = thema; schreib('spikiu_acro_thema', tz);
   sichereSitzung({ spiel: 'acrostico', entwurf: entwurf || null, thema: thema }, true);

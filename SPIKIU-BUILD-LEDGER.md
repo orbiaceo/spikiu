@@ -32,7 +32,7 @@ Stand: 10.10.2026 · AKROSTICHON MIT THEMA + WORTFELDER (**Leo: Das Akrostichon 
 - Griechische Versalien ohne Tonos (ΤΡΩΩ statt ΤΡΏΩ).
 `spiele.html`: lädt `lernpfad.js` + `wortfelder.js`; Akrostichon-Thema wird je Zielsprache gemerkt (`spikiu_acro_thema`), Sitzung trägt das Thema. **Garten profitiert mit:** Beete bekommen die Feldwörter bis zur Stufe (mehr Samen), das ganze Feld zählt beim Erkennen; für Griechisch gibt es jetzt die 10 Themen statt nur „Wortschatz".
 Headless geprüft (es→de, de→es, el→de, en→es): Themen, Beispiel, Wortwahl, Hilfe Schritt für Schritt bis zum Wort mit Übersetzung, themenfremdes Wort abgewiesen, gespeicherte Karte; SOPA-Probe: sal/olivo/probar/ajo im Feld Restaurant, sol/orar/pie/alto nicht. Garten pflanzen/säen, Wiederkommen, keine Fehler.
-**FRAGE AN LEO:** „Comida" ist kein eigenes Thema — Essen steckt in Café + Restaurant (+ Einkaufen). Soll es ein eigenes Feld „Essen" geben?
+**ENTSCHIEDEN (Leo: „Nutze deine Superintelligenz, cuatecito"):** Ja — eigenes Feld **Essen & Trinken / Comer y beber / Food & Drink** (🥘), als ERSTES Thema in Akrostichon und Garten, Standard-Thema im Akrostichon. Kein neuer Datenblock: Dach über Café + Restaurant + Lebensmittel vom Einkaufen + 5 Ergänzungen (comida, bebida …), Dubletten fallen weg → ~148 Begriffe je Sprache. Name aus `KATEGORIEN.essen` des Lernpfads. Grund: Leos eigenes Beispiel SOPA ist „comida", nicht „Restaurant".
 
 
 Stand: 10.10.2026 · PIÑATA + GLOBOS MIT ÜBERSETZUNG (**Leo: „Los juegos piñata y ballons tienen que tener la traducción de la frase a la lengua materna al final de cada tiro. Es una forma de reforzar o de aclarar el ítem." — getestet auf Griechisch.**)

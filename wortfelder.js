@@ -746,6 +746,20 @@
     ]
   };
 
+  /* ESSEN & TRINKEN (Leo, 10.10.: SOPA ist „comida") — kein Lernpfad-Thema,
+     sondern das Dach über Café + Restaurant + den Lebensmitteln vom Einkaufen.
+     Dubletten fallen in feld() weg (niedrigste Stufe gewinnt). */
+  F.essen = F.cafe.concat(F.restaurant, F.einkaufen.filter(function (r) {
+    return /\|(el pan|la leche|la fruta|la verdura|el kilo|el litro|la docena|el gramo|el paquete|la panadería|la carnicería|la frutería|el supermercado|el mercado)\|/.test(r);
+  }), [
+    '1|la fruta|das Obst|fruit|το φρούτο',
+    '2|la comida|das Essen|food|το φαγητό',
+    '2|la bebida|das Getränk|drink|το ποτό',
+    '3|el hambre|der Hunger|hunger|η πείνα',
+    '3|el picnic|das Picknick|picnic|το πικνίκ'
+  ]);
+  var REIHE = ['essen'].concat(Object.keys(F).filter(function (k) { return k !== 'essen'; }));
+
   function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').trim(); }
 
   var CACHE = {};
@@ -766,5 +780,5 @@
     return out;
   }
 
-  w.spikiuWortfelder = { feld: feld, themen: Object.keys(F), roh: F };
+  w.spikiuWortfelder = { feld: feld, themen: REIHE, roh: F };
 })(window);
