@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spikiu Haus neu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:wght@500;600&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: Prototyp des Hauses (eine Handy-Säule, wie haus.html). Drei Türen nach Tätigkeit, innen nach Aufwand sortiert. Eine bewusste helle Optik wie die App. */
+:root{
+  --bg:#eef7f1; --card:#ffffff; --ink:#15163a; --mid:#5f7068; --acc:#ff6b5a; --sage:#9bd14a; --mustard:#ffd24a; --sky:#d3eef6;
+  --f-ui:'DM Sans',system-ui,sans-serif; --f-head:'Archivo Black','DM Sans',sans-serif; --f-mono:'DM Mono',ui-monospace,monospace;
+  --ow:2.5px; color-scheme:light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui)}
+button{font-family:inherit;color:var(--ink)}
+button:focus-visible{outline:3px solid #1f93b0;outline-offset:2px}
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.9);border-bottom:var(--ow) solid var(--ink);padding:.5rem .5rem 0}
+.proto{font:500 .6rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:#1f93b0;text-align:center;margin:0 0 .2rem}
+.doors{display:flex;gap:.4rem}
+.door{flex:1;background:transparent;border:none;cursor:pointer;padding:.45rem .2rem .55rem;display:flex;flex-direction:column;align-items:center;gap:.22rem;position:relative;min-height:70px}
+.door .ic{width:40px;height:40px}
+.door .lb{font:800 .82rem/1 var(--f-ui);color:var(--mid)}
+.door .was{font:600 .62rem/1 var(--f-ui);color:var(--mid);opacity:.8}
+.door.on .lb{color:var(--ink)}
+.door.on:after{content:'';position:absolute;left:16%;right:16%;bottom:-2.5px;height:4px;border-radius:3px;background:var(--acc)}
+.sub{text-align:center;font-size:.82rem;line-height:1.3;color:var(--mid);padding:.5rem 1rem .7rem;font-weight:600;margin:0}
+.stage{padding:1rem 16px 2.4rem;display:flex;flex-direction:column;gap:1rem}
+.greet{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.35rem}
+.greet .cap{width:64px;height:64px;border-radius:50%;background:#fff;border:var(--ow) solid var(--ink);display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink)}
+.greet .cap svg{width:48px;height:48px}
+.greet h2{font:800 1.3rem/1.15 var(--f-ui);margin:0}
+.heute{display:inline-flex;align-items:center;gap:.45rem;background:var(--mustard);border:2px solid var(--ink);border-radius:999px;padding:.35rem .8rem;font:800 .85rem var(--f-ui);box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.heute small{font:500 .62rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.tile{position:relative;min-height:122px;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.7rem .5rem .6rem;gap:.15rem;background:#fff;min-width:0}
+.tile:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink)}
+.tile .em{font-size:1.85rem;line-height:1}
+.tile .tt{font:800 .95rem/1.08 var(--f-ui)}
+.tile .ss{font-size:.73rem;color:rgba(21,22,58,.72);line-height:1.2;font-weight:600}
+.tile .zeit{position:absolute;top:.45rem;left:.55rem;font:500 .62rem var(--f-mono);color:rgba(21,22,58,.75);letter-spacing:.04em}
+.tile .pill{position:absolute;top:.4rem;right:.45rem;font:800 .55rem var(--f-ui);border:2px solid var(--ink);border-radius:999px;padding:.05rem .38rem;background:var(--mustard)}
+.tile.wide{grid-column:1/-1;flex-direction:row;justify-content:flex-start;gap:.9rem;text-align:left;min-height:84px;padding:.8rem 1rem}
+.tile.wide .txt{display:flex;flex-direction:column;gap:.15rem}
+.tile.wide .zeit{position:static;order:3;margin-left:auto}
+.tile.klein{min-height:104px}
+.regal-h{font:500 .62rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin:.2rem 0 -.4rem .2rem}
+.regal{display:flex;gap:.55rem;overflow-x:auto;padding:.2rem .1rem .6rem;scrollbar-width:none}
+.rbuch{flex:none;display:flex;align-items:center;gap:.5rem;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:2px 3px 0 var(--ink);padding:.5rem .75rem;cursor:pointer}
+.rbuch .em{font-size:1.3rem}
+.rbuch b{font-size:.85rem;display:block;line-height:1.1}
+.rbuch span.n{font:500 .62rem var(--f-mono);color:var(--mid)}
+.rbuch .pill{font:800 .5rem var(--f-ui);border:1.5px solid var(--ink);border-radius:999px;padding:0 .3rem;background:var(--mustard);margin-left:.2rem}
+.toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:.6rem .95rem;font-size:.88rem;font-weight:600;max-width:90vw;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+.legende{font-size:.74rem;color:var(--mid);line-height:1.45;border-top:1.5px dashed #cfdcd4;padding-top:.7rem;margin:.4rem 0 0}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <div class="nav">
+    <p class="proto">Prototyp · neue Ordnung</p>
+    <div class="doors" id="doors"></div>
+    <p class="sub" id="sub"></p>
+  </div>
+  <main class="stage" id="stage"></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+function icoBook(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round"><path d="M24 14 C20 11 13 11 9 13 L9 36 C13 34 20 34 24 37 C28 34 35 34 39 36 L39 13 C35 11 28 11 24 14 Z" fill="#e9cf93"/><path d="M24 14 L24 37" fill="none"/></g></svg>';}
+function icoCard(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><rect x="9" y="14" width="30" height="21" rx="4" fill="#cdddb3"/><line x1="15" y1="23" x2="33" y2="23"/><line x1="15" y1="29" x2="27" y2="29"/></g></svg>';}
+function icoCompass(){return '<svg viewBox="0 0 48 48" style="width:100%;height:100%"><circle cx="24" cy="24" r="15" fill="#fbf8f0" stroke="#20271f" stroke-width="2.6"/><path d="M24 12 L27 24 L21 24 Z" fill="#1f93b0" stroke="#20271f" stroke-width="1.6" stroke-linejoin="round"/><path d="M24 36 L27 24 L21 24 Z" fill="#cfe3d8" stroke="#20271f" stroke-width="1.6" stroke-linejoin="round"/><circle cx="24" cy="24" r="2.4" fill="#20271f"/></svg>';}
+
+var CAPY='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
+/* Neue Ordnung (Leo, 11.10.): Türen nach Tätigkeit, innen nach Aufwand (≈ Minuten). */
+var TUEREN = [
+ { id:'abenteuer', lb:'Abenteuer', was:'hören & sprechen', ic:icoCompass,
+   sub:'Hören und sprechen — im Gespräch mit Spikiu.',
+   kacheln:[
+    {em:'👂', tt:'Oído fino', ss:'Hör ein Wort, tipp das Bild', zeit:2, bg:'#bfe6d5'},
+    {em:'🥁', tt:'El golpe', ss:'Wo liegt der Schlag?', zeit:2, bg:'#f7bcd8'},
+    {em:'🎭', tt:'Geführtes Gespräch', ss:'Szenen üben, Schritt für Schritt', zeit:10, bg:'#ffd24a'},
+    {em:'💬', tt:'Freies Gespräch', ss:'Frei reden mit Spikiu', zeit:15, bg:'#c7e89a', pill:'Premium'}
+   ]},
+ { id:'bibliothek', lb:'Bibliothek', was:'lesen & schreiben', ic:icoBook,
+   sub:'Lesen und schreiben. Und dein Regal wächst hier.',
+   regal:[
+    {em:'🌱', tt:'Mein Buch', n:'37 Wörter'},
+    {em:'📓', tt:'Deine Lektionen', n:'3 Lektionen', pill:'Premium'},
+    {em:'🌿', tt:'Dein Garten', n:'2 Beete'},
+    {em:'🔤', tt:'Deine Akrosticha', n:'4 Stück'}
+   ],
+   kacheln:[
+    {em:'📜', tt:'Wendungen & Sprichwörter', ss:'Mit Al pie de la letra und Gemelos', zeit:3, bg:'#bfe6d5'},
+    {em:'📖', tt:'Lernroman', ss:'Immersiv lesen', zeit:10, bg:'#d3eef6'},
+    {em:'🔎', tt:'Lesewerkstatt', ss:'Leseverstehen', zeit:10, bg:'#f7bcd8', pill:'Premium'},
+    {em:'✍️', tt:'Schreibwerkstatt', ss:'Schreiben mit Rückmeldung', zeit:15, bg:'#cdbdf2', pill:'Premium'}
+   ]},
+ { id:'uebung', lb:'Übung', was:'Wörter & Spiel', ic:icoCard,
+   sub:'Wörter und Spiel — kurz und leicht.',
+   oben:{em:'🃏', tt:'Wortschatz', ss:'Dein Deck, mit Wiedersehen', zeit:5, bg:'#ffd0b0'},
+   kacheln:[
+    {em:'🪅', tt:'Piñata', ss:'Fang den Eindringling', zeit:1, bg:'#ffe0cc'},
+    {em:'🎈', tt:'Globos', ss:'Die richtige Reihenfolge', zeit:1, bg:'#d3eef6'},
+    {em:'🧺', tt:'Al mercado', ss:'Jedes Wort in seinen Korb', zeit:2, bg:'#e9dcc0'},
+    {em:'🃏', tt:'Memoria', ss:'Wort und Bild', zeit:2, bg:'#b7c9f2'},
+    {em:'🔗', tt:'Encadenado', ss:'Wortkette mit Spikiu', zeit:5, bg:'#ffe08a'},
+    {em:'🔤', tt:'Akrostichon', ss:'Zu jedem Buchstaben ein Wort', zeit:5, bg:'#cdbdf2'},
+    {em:'🌱', tt:'Spikius Garten', ss:'Von A bis Z pflanzen', zeit:5, bg:'#c7e89a'}
+   ]}
+];
+var HEUTE = {tt:'El golpe', tuer:'abenteuer'};   // Spiel des Tages (wechselt täglich)
+
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+var toastT; function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},1600);}
+function oeffnet(x){toast('Im echten Spikiu öffnet sich hier: '+x.tt.replace(/<br>/g,' '));}
+function kachel(k,klasse){
+  var b=el('button','tile'+(klasse?' '+klasse:''));b.type='button';b.style.background=k.bg||'#fff';
+  b.innerHTML='<span class="zeit">≈ '+k.zeit+' Min.</span>'+(k.pill?'<span class="pill">'+k.pill+'</span>':'')+'<span class="em">'+k.em+'</span>'+(klasse==='wide'?'<span class="txt"><span class="tt"></span><span class="ss"></span></span>':'<span class="tt"></span><span class="ss"></span>');
+  b.querySelector('.tt').textContent=k.tt;b.querySelector('.ss').textContent=k.ss;b.onclick=function(){oeffnet(k);};return b;
+}
+function zeige(id){
+  var T=TUEREN.filter(function(x){return x.id===id;})[0];
+  document.querySelectorAll('.door').forEach(function(d){d.classList.toggle('on',d.dataset.id===id);});
+  document.getElementById('sub').textContent=T.sub;
+  var st=document.getElementById('stage');st.innerHTML='';
+  if(id==='abenteuer'){
+    var g=el('div','greet');g.innerHTML='<div class="cap">'+CAPY+'</div><h2>¡Hola, Leo! 👋</h2>';
+    var h=el('button','heute');h.type='button';h.innerHTML='<small>Heute</small> 🥁 '+HEUTE.tt+' ›';h.onclick=function(){toast('Spiel des Tages: '+HEUTE.tt+' (immer frei)');};
+    g.appendChild(h);st.appendChild(g);
+  }
+  if(T.regal){
+    st.appendChild(el('p','regal-h','Dein Regal'));
+    var r=el('div','regal');T.regal.forEach(function(x){var b=el('button','rbuch');b.type='button';b.innerHTML='<span class="em">'+x.em+'</span><span><b></b><span class="n"></span></span>';b.querySelector('b').textContent=x.tt;b.querySelector('.n').textContent=x.n;if(x.pill){var p=el('span','pill',x.pill);b.querySelector('b').appendChild(p);}b.onclick=function(){oeffnet(x);};r.appendChild(b);});
+    st.appendChild(r);
+  }
+  var grid=el('div','grid');
+  if(T.oben)grid.appendChild(kachel(T.oben,'wide'));
+  T.kacheln.forEach(function(k){grid.appendChild(kachel(k,T.id==='uebung'?'klein':''));});
+  st.appendChild(grid);
+  if(id==='uebung'){st.appendChild(el('p','legende','Die sieben Wortspiele stehen hier direkt, ohne Extra-Tür. Hören-Spiele (Oído fino, El golpe) wohnen jetzt im Abenteuer, die Wendungen-Spiele in der Bibliothek.'));}
+  if(id==='abenteuer'){st.appendChild(el('p','legende','In jeder Tür: kurz zuerst, lang zuletzt. „≈ Min." zeigt, wie viel Zeit du ungefähr brauchst.'));}
+  scrollTo(0,0);
+}
+var dw=document.getElementById('doors');
+TUEREN.forEach(function(T){var b=el('button','door');b.type='button';b.dataset.id=T.id;b.innerHTML='<span class="ic">'+T.ic()+'</span><span class="lb"></span><span class="was"></span>';b.querySelector('.lb').textContent=T.lb;b.querySelector('.was').textContent=T.was;b.onclick=function(){zeige(T.id);};dw.appendChild(b);});
+zeige('abenteuer');
+</script>
+
+</body>
+</html>
