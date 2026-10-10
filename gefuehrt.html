@@ -78,6 +78,8 @@ button{font:inherit;cursor:pointer}
 <script src="lernpfad-daten-en.js"></script>
 <script src="lernpfad-sprache.js"></script>
 <script src="lernpfad.js"></script>
+<script src="wortfelder.js"></script>
+<script src="icon-db.js"></script>
 <script src="juegos.js"></script>
 <script type="module">
   import { speak, warm } from './audio.js';
@@ -115,7 +117,7 @@ button{font:inherit;cursor:pointer}
           quizQ:function(w){ return 'Was bedeutet „' + w + '"?'; },
           done:'Geschafft!', doneSub:'Du hast die ganze Szene gesprochen.',
           viewLesson:'Lektion ansehen', enough:'Genug für heute',
-          spielPinata:'🪅 Noch eine Piñata zum Schluss?', spielGemelos:'🧩 Noch Paare finden zum Schluss?',
+          spielPinata:'🪅 Noch eine Piñata zum Schluss?', spielGemelos:'🧩 Noch Paare finden zum Schluss?', spielOido:'👂 Die Wörter noch einmal hören?', spielGolpe:'🥁 Den Schlag der Wörter finden?',
           weiter:'Weiter', pruefen:'Prüfen', richtig:'Richtig!', fast:'Fast — schau dir die richtige Antwort an.' },
     es: { titel:'Conversación guiada', waehle:'Elige un tema', neu:'nuevo', wieder:'repasar',
           rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
@@ -128,7 +130,7 @@ button{font:inherit;cursor:pointer}
           quizQ:function(w){ return '¿Qué significa «' + w + '»?'; },
           done:'¡Listo!', doneSub:'Has hablado toda la escena.',
           viewLesson:'Ver la lección', enough:'Suficiente por hoy',
-          spielPinata:'🪅 ¿Una piñata para cerrar?', spielGemelos:'🧩 ¿Unas parejas para cerrar?',
+          spielPinata:'🪅 ¿Una piñata para cerrar?', spielGemelos:'🧩 ¿Unas parejas para cerrar?', spielOido:'👂 ¿Escuchar las palabras otra vez?', spielGolpe:'🥁 ¿Encontrar el golpe de las palabras?',
           weiter:'Seguir', pruefen:'Comprobar', richtig:'¡Correcto!', fast:'Casi — mira la respuesta correcta.' },
     en: { titel:'Guided conversation', waehle:'Choose a topic', neu:'new', wieder:'review',
           rail:['Topic','Words','Listen','Speak','Lesson'],
@@ -141,7 +143,7 @@ button{font:inherit;cursor:pointer}
           quizQ:function(w){ return 'What does "' + w + '" mean?'; },
           done:'Done!', doneSub:'You spoke the whole scene.',
           viewLesson:'View lesson', enough:'Enough for today',
-          spielPinata:'🪅 A piñata to finish?', spielGemelos:'🧩 Match some pairs to finish?',
+          spielPinata:'🪅 A piñata to finish?', spielGemelos:'🧩 Match some pairs to finish?', spielOido:'👂 Hear the words once more?', spielGolpe:'🥁 Find the beat of the words?',
           weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.' }
   };
   var U = T[MUT] || T.de;
@@ -436,7 +438,7 @@ button{font:inherit;cursor:pointer}
   /* ── SPIEL ZUM SCHLUSS (Leo, 01.10.): aus der Ernte DIESER Szene, null Token.
      ANGEBOTEN, nie verordnet — „Genug für heute" steht gleichwertig daneben.
      Sätze aus dem Rollenspiel → Piñata (Eindringling aus einem anderen Satz
-     derselben Szene). Wörter → Gemelos. Abwechselnd je Szene; fehlt der
+     derselben Szene). Wörter → Gemelos. Reihum je Szene (Gemelos · Piñata · Oído fino · El golpe, 11.10.); fehlt der
      Stoff für das eine, kommt das andere; fehlt beides, kein Angebot. ── */
   function spielZumSchluss() {
     var J = window.spikiuJuegos; if (!J) return null;
@@ -463,22 +465,48 @@ button{font:inherit;cursor:pointer}
       return !!pinata;
     });
     var gemelos = woerter.length >= 4 ? J.mezcla(woerter).slice(0, 4).map(function (h) { return { z: h.ziel, na: h.uebersetzung }; }) : null;
+    /* NACHKLANG (Leo, 11.10., Haus-neu v3): Oído fino und El golpe sind keine
+       Abenteuer-Kacheln mehr — sie klingen am Ende der Szene nach, mit den Wörtern
+       DIESES Themas (wortfelder.js, gleiche Themen-IDs wie die Szenen). Wörter, die
+       in der Szene selbst vorkamen, zuerst. El golpe nur für Spanisch. */
+    var szeneN = {}; (HAP && HAP.wortschatz || []).forEach(function (h) { if (h.ziel) szeneN[nachklangNorm(h.ziel)] = 1; });
+    var feldW = (window.spikiuWortfelder && TOPIC_ID) ? window.spikiuWortfelder.feld(ZIEL, TOPIC_ID, MUT) : [];
+    var zuerst = feldW.filter(function (x) { return szeneN[nachklangNorm(x.z)]; });
+    var feldSortiert = zuerst.concat(J.mezcla(feldW.filter(function (x) { return !szeneN[nachklangNorm(x.z)]; })));
+    var oido = null, I = window.spikiuIcon;
+    if (I) {
+      var bilder = [], gesehen = {};
+      feldSortiert.forEach(function (x) { var e = x.en ? I.konzept(x.en) : ''; var b = e ? I.datei(e) : ''; if (b && !gesehen[b]) { gesehen[b] = 1; bilder.push({ z: x.z, tr: x.tr, bild: b }); } });
+      if (bilder.length >= 4) oido = { bilder: bilder.slice(0, 8) };
+    }
+    var golpe = null;
+    if (ZIEL === 'es') {
+      var gw = feldSortiert.filter(function (x) {
+        var w = String(x.z).replace(/^(el|la|los|las)\s+/i, '');
+        if (!/^[\p{L}]+$/u.test(w)) return false;
+        var n = J.silabas(w).length; return n >= 2 && n <= 4;
+      });
+      if (gw.length >= 3) golpe = { woerter: gw };
+    }
     var zaehler = 0; try { zaehler = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').blaetter) || 0; } catch (e) {}
-    var willPinata = (zaehler % 2 === 1);
-    var art = (willPinata && pinata) ? 'pinata' : (gemelos ? 'gemelos' : (pinata ? 'pinata' : null));
-    if (!art) return null;
+    var daten = { gemelos: gemelos, pinata: pinata, oido: oido, golpe: golpe };
+    var reihe = ['gemelos', 'pinata', 'oido', 'golpe'].filter(function (a) { return !!daten[a]; });
+    if (!reihe.length) return null;
+    var art = reihe[zaehler % reihe.length];
+    var LABEL = { pinata: U.spielPinata, gemelos: U.spielGemelos, oido: U.spielOido, golpe: U.spielGolpe };
     return {
-      label: art === 'pinata' ? U.spielPinata : U.spielGemelos,
-      start: function () { zeigeSpiel(art, art === 'pinata' ? pinata : gemelos); }
+      label: LABEL[art],
+      start: function () { zeigeSpiel(art, daten[art]); }
     };
   }
+  function nachklangNorm(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/^(el|la|los|las|der|die|das|the|ο|η|το|οι|τα)\s+/, '').replace(/[^\p{L}\s]/gu, '').trim(); }
   function zeigeSpiel(art, daten) {
     var J = window.spikiuJuegos;
     var opts = { nativeLang: MUT, zielLang: ZIEL, sprich: function (t) { try { if (window.sprich) window.sprich(t, ZIEL); } catch (e) {} } };
     var blatt = document.createElement('div'); blatt.className = 'spiel-ende';
     var karte = document.createElement('div'); karte.className = 'karte';
     if (art === 'gemelos') opts.klang = true;   // Mini-Klang bei falschem Paar (Leo, 02.10.)
-    var spiel = (art === 'pinata') ? J.pinata(daten, opts) : J.gemelos(daten, opts);
+    var spiel = (art === 'pinata') ? J.pinata(daten, opts) : (art === 'oido') ? J.oido(daten, opts) : (art === 'golpe') ? J.golpe(daten, opts) : J.gemelos(daten, opts);
     karte.appendChild(spiel); blatt.appendChild(karte);
     document.getElementById('stage').appendChild(blatt);
     var fertig = false;

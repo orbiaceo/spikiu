@@ -234,6 +234,7 @@ function raeumeSitzung(){ clearTimeout(sitzTimer); sitzOffen = null; var S = SZ(
 var inner = document.getElementById('inner');
 var aktiv = null;   // laufende Spiel-Karte (für stop())
 var ansicht = 'tueren';
+var herkunftHaus = false;   // über ?spiel= aus dem Regal gekommen → Zurück führt ins Haus
 var letzterSatz = '';
 function leeren(){ if (aktiv && aktiv.stop) aktiv.stop(); aktiv = null; inner.innerHTML = ''; document.getElementById('stage').scrollTop = 0; }
 function kopf(titel){ document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = ui().eyebrow; }
@@ -408,7 +409,7 @@ function oeffne(id, zustand){
 
 document.getElementById('btnZurueck').onclick = function(){
   raeumeSitzung();
-  if (ansicht === 'tueren') location.href = 'haus.html'; else tueren();
+  if (ansicht === 'tueren' || herkunftHaus) location.href = 'haus.html'; else tueren();
 };
 
 window.addEventListener('load', function(){
@@ -416,6 +417,9 @@ window.addEventListener('load', function(){
   if (!window.spikiuJuegos){ inner.textContent = 'juegos.js fehlt.'; return; }
   baueDaten();
   try { window.spikiuJuegos.klang.vorladen(); } catch (e) {}   // Dur/Moll früh laden (Piñata, Globos)
+  // Direktweg aus dem Regal im Haus (11.10.): spiele.html?spiel=huerto | acrostico
+  var direkt = (/[?&]spiel=([a-z]+)/.exec(window.location.search) || [])[1];
+  if (direkt && UI.de[direkt]) { herkunftHaus = true; oeffne(direkt); return; }
   var S = SZ(), z = S ? S.lade('spiele') : null;
   if (z && z.spiel && UI.de[z.spiel]){
     tueren();
