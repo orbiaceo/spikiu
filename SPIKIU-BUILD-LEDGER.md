@@ -20,6 +20,12 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · ASSESSMENT SPRACHLISTEN NACHGESCHÄRFT (**Leo: „Tienen que estar en la lengua elegida. Además deben estar dentro. Imagina que tenemos 50 lenguas"**)
+
+- Muttersprachen-Liste zeigt die Namen jetzt in der **gewählten Oberflächensprache** (en: Spanish/German/English · es: Español/Alemán/Inglés), nicht mehr jede im Eigennamen. Wechselt live mit.
+- Beide Sprachlisten sind jetzt **kompakte Zeilen innen im Fenster** (keine einzelnen Karten mit Schatten), Trennlinien, Auswahl als Fläche; Fenster ≈ 4½ Zeilen hoch, die nächste Zeile blendet unten aus.
+- Geprüft mit 50 simulierten Sprachen (nur Test, nicht im Code): Fenster scrollt, Seite bleibt ruhig, keine JS-Fehler.
+
 Stand: 10.10.2026 · HAUS + MEIN + BOTTOM-NAV DREISPRACHIG (**Leo: „Ataca!! Claro!!"** — Folge des Assessments: wer es auf Englisch macht, landete danach im Deutschen)
 
 - **Regel für die Oberflächensprache** (gilt jetzt für `haus.html`, `mein.html`, `bottomnav.js`): `spikiu_user.profile.muttersprache` → sonst `spikiu_lang` → sonst `de`. Lerninhalte bleiben in der Zielsprache.

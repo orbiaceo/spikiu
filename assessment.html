@@ -128,6 +128,16 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
 .lang-frame::before{top:0;background:linear-gradient(#fff,rgba(255,255,255,0))}
 .lang-frame::after{bottom:0;background:linear-gradient(rgba(255,255,255,0),#fff)}
 .lang-frame.more-above::before,.lang-frame.more-below::after{opacity:1}
+/* Zeilen liegen INNEN im Fenster wie eine Liste — keine einzelnen Karten mit Schatten
+   (Leo, 10.10.: „deben estar dentro. Imagina que tenemos 50 lenguas"). */
+.lang-window{max-height:14.5rem !important;padding:.35rem !important}
+.lang-window .options{gap:0 !important}
+.lang-window .option{border:0 !important;border-bottom:1.5px solid var(--faint) !important;border-radius:0 !important;
+  box-shadow:none !important;padding:.75rem .9rem !important;font-size:1rem !important;min-height:3.1rem}
+.lang-window .option:last-child{border-bottom:0 !important}
+.lang-window .option:active{transform:none !important;box-shadow:none !important;background:var(--accent2) !important}
+.lang-window .option.sel{border-radius:12px !important;border-bottom-color:transparent !important;background:var(--sky) !important;box-shadow:inset 0 0 0 2px var(--ink) !important}
+.lang-window .option-flag{font-size:1.25rem}
 </style>
 </head>
 <body>
@@ -272,7 +282,7 @@ Object.keys(NATIVE_UI).forEach(function(nat){
 
 function nativeOptions(){
   return LANGS.filter(function(L){ return L.native && UI[L.code]; })
-              .map(function(L){ return { v:L.native, f:L.f, t:L.self }; });
+              .map(function(L){ return { v:L.native, f:L.f, t:(L.n[ui]||L.self) }; });   // in der gewählten Sprache (Leo, 10.10.)
 }
 function targetOptions(){
   return LANGS.map(function(L){ return { v:L.v, f:L.f, t:(L.n[ui]||L.self) }; });
