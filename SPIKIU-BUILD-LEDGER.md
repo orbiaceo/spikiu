@@ -20,6 +20,14 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · AKROSTICHON: OBERKATEGORIE ZÄHLT (**Leo, 22:59, zwei Screenshots: Thema Café, Wort BAR — „ajo" wurde orange abgewiesen. „Si la palabra pertenece a comida en general — restaurante, bar, desayuno — todas las palabras de esa categoría superior deben ser aceptadas. Sopa: sal, solo, silla, olivas u oliva, pagar, probar … Ahora está muy limitado."**)
+
+**URSACHE:** Akzeptiert wurde nur das gewählte Thema. *ajo* stand im Feld Restaurant, nicht Café → abgewiesen. *oliva/olivas* fehlten ganz (nur *aceituna*, *olivo*).
+`wortfelder.js`: **NEU `bereich(ziel, thema, mutter)`** = Vereinigung der Oberkategorie: Café · Restaurant · Essen → **Essen & Trinken**; Einkaufen → Einkaufen + Essen; Wegbeschreibung · Taxi · Bahnhof · Hotel → **Unterwegs**; Familie, Arzt, Wetter je für sich. Feld Essen um **88 Begriffe** erweitert (oliva, aceite de oliva, pera, cereza, pasta, salmón, desayunar, cortar, freír, perejil, nevera, delicioso …) → ~230 Begriffe je Sprache.
+`juegos.js` `acrostico()`: **zählt der Bereich**, Wortwahl und erste Hilfen kommen weiter aus dem gewählten Thema. **Formtoleranz**: Plural (es/en -s/-es, en -ies↔-y, de -e/-en/-n/-er/-s/-nen), es o↔a (fría/frío), el gleiche Endungsfamilie; Plural wird vor o/a geprüft (olivas → oliva, nicht olivo). Kein bloßes Stammabschneiden: „sol" ≠ „solo". Hinweis im Spiel nennt das Umfeld („auch aus dem Umfeld: Essen, Unterwegs …").
+Headless geprüft mit Leos Fällen: Café/BAR: ajo ✔ agua ✔ aceitunas ✔ · Essen/SOPA: sal ✔ solo ✔ silla ✔ oliva ✔ olivas ✔ pagar ✔ probar ✔ ajo ✔ — sol ✘ orar ✘ pie ✘ alto ✘ · de: Oliven ✔ Birnen ✔ Bus ✘ · en: apples ✔ avocados ✔ airport ✘ · el: σαλάτες ✔ πατάτες ✔ σπίτι ✘ πόλη ✘.
+
+
 Stand: 10.10.2026 · AKROSTICHON MIT THEMA + WORTFELDER (**Leo: Das Akrostichon muss eingeschränkt werden — nur Wörter, die zum THEMA passen, auch über der Stufe des Lerners. „Para SOPA: sol, orar, pie, alto — no. Sal, olivo, probar, ajo — sí." Spikiu verrät nur Buchstabe für Buchstabe. „Schreibe es durch in allen 4 Sprachen. Fehler melde ich beim Testen."**)
 
 **NEU:** `wortfelder.js` (Root) — 10 Themen (IDs des Lernpfads) × **694 Begriffe**, jede Zeile ein Begriff in **es | de | en | el** (Übersetzungen damit gratis). Stufe je Begriff: 1 Samen · 2 Stamm · 3 Feld (passt zum Thema, liegt über der Stufe). API `spikiuWortfelder.feld(ziel, thema, mutter) → [{z, tr, stufe}]`. Spanien-Standard; Englisch ohne Artikel/„to"; Griechisch mit Artikel. **Entwurf von Claude — Leo prüft beim Testen.**

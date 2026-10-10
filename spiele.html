@@ -159,6 +159,7 @@ function woerterVonThemaLernpfad(id){
 // ── Wortfelder (10.10.): thematische Felder in allen vier Zielsprachen ──
 function stufeZahl(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe() === 'a2' ? 2 : 1; } catch(e){} return 1; }
 function feldVon(id){ var W = window.spikiuWortfelder; return W ? W.feld(PROFILE.zielsprache, id, PROFILE.muttersprache) : []; }
+function bereichVon(id){ var W = window.spikiuWortfelder; return (W && W.bereich) ? W.bereich(PROFILE.zielsprache, id, PROFILE.muttersprache) : feldVon(id); }
 // Themennamen in der Muttersprache — aus irgendeiner geladenen Lernpfad-Datei
 function themenNamen(){
   var m = {}, mu = PROFILE.muttersprache;
@@ -286,7 +287,7 @@ function akrostichon(entwurf, themaId){
   var tz = lies('spikiu_acro_thema', {}); tz[z] = thema; schreib('spikiu_acro_thema', tz);
   sichereSitzung({ spiel: 'acrostico', entwurf: entwurf || null, thema: thema }, true);
   var ansichtEl = window.spikiuJuegos.acrostico({
-    themen: alle, thema: thema, feldVon: feldVon, stufe: stufeZahl(),
+    themen: alle, thema: thema, feldVon: feldVon, bereichVon: bereichVon, stufe: stufeZahl(),
     lade: function(){ return (lies('spikiu_acrosticos', {})[z]) || []; },
     speichere: function(liste){ var a = lies('spikiu_acrosticos', {}); a[z] = liste; schreib('spikiu_acrosticos', a); },
     entwurf: entwurf || null,

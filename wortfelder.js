@@ -749,15 +749,100 @@
   /* ESSEN & TRINKEN (Leo, 10.10.: SOPA ist „comida") — kein Lernpfad-Thema,
      sondern das Dach über Café + Restaurant + den Lebensmitteln vom Einkaufen.
      Dubletten fallen in feld() weg (niedrigste Stufe gewinnt). */
-  F.essen = F.cafe.concat(F.restaurant, F.einkaufen.filter(function (r) {
-    return /\|(el pan|la leche|la fruta|la verdura|el kilo|el litro|la docena|el gramo|el paquete|la panadería|la carnicería|la frutería|el supermercado|el mercado)\|/.test(r);
-  }), [
-    '1|la fruta|das Obst|fruit|το φρούτο',
+  // Mehr Essen & Trinken (10.10. abends): damit „alles, was mit Essen zu tun hat" zählt.
+  var MEHR_ESSEN = [
+    '2|la oliva|die Olive|olive|η ελιά',
+    '2|el aceite de oliva|das Olivenöl|olive oil|το ελαιόλαδο',
+    '2|la pera|die Birne|pear|το αχλάδι',
+    '2|la cereza|die Kirsche|cherry|το κεράσι',
+    '2|el melocotón|der Pfirsich|peach|το ροδάκινο',
+    '2|la piña|die Ananas|pineapple|ο ανανάς',
+    '2|el melón|die Melone|melon|το πεπόνι',
+    '2|la sandía|die Wassermelone|watermelon|το καρπούζι',
+    '2|la pasta|die Nudeln|pasta|τα ζυμαρικά',
+    '2|la pizza|die Pizza|pizza|η πίτσα',
+    '2|la hamburguesa|der Hamburger|hamburger|το χάμπουργκερ',
+    '2|el salmón|der Lachs|salmon|ο σολομός',
+    '2|la sardina|die Sardine|sardine|η σαρδέλα',
+    '2|la salchicha|das Würstchen|sausage|το λουκάνικο',
+    '2|el chorizo|die Paprikawurst|chorizo|το τσορίσο',
+    '2|la copa|das Weinglas|wine glass|το κολονάτο',
+    '2|la jarra|der Krug|jug|η κανάτα',
+    '2|el mantel|die Tischdecke|tablecloth|το τραπεζομάντιλο',
+    '2|el salero|der Salzstreuer|salt shaker|η αλατιέρα',
+    '2|desayunar|frühstücken|have breakfast|παίρνω πρωινό',
+    '2|almorzar|zu Mittag essen|have lunch|γευματίζω',
+    '2|merendar|Brotzeit machen|have a snack|τσιμπάω',
+    '2|la merienda|die Brotzeit|snack|το κολατσιό',
+    '2|servir|servieren|serve|σερβίρω',
+    '2|cortar|schneiden|cut|κόβω',
+    '2|freír|braten|fry|τηγανίζω',
+    '2|hervir|sieden|boil|βράζω',
+    '2|mezclar|mischen|mix|ανακατεύω',
+    '2|pelar|schälen|peel|ξεφλουδίζω',
+    '2|el agua con gas|das Sprudelwasser|sparkling water|το ανθρακούχο νερό',
+    '2|el café con leche|der Milchkaffee|white coffee|ο καφές με γάλα',
     '2|la comida|das Essen|food|το φαγητό',
     '2|la bebida|das Getränk|drink|το ποτό',
-    '3|el hambre|der Hunger|hunger|η πείνα',
+    '3|el calamar|der Tintenfisch|squid|το καλαμάρι',
+    '3|el mejillón|die Miesmuschel|mussel|το μύδι',
+    '3|la lenteja|die Linse|lentil|η φακή',
+    '3|el garbanzo|die Kichererbse|chickpea|το ρεβίθι',
+    '3|la judía|die Bohne|bean|το φασόλι',
+    '3|el pimiento|die Paprika|bell pepper|η πιπεριά',
+    '3|la berenjena|die Aubergine|aubergine|η μελιτζάνα',
+    '3|el calabacín|die Zucchini|courgette|το κολοκυθάκι',
+    '3|la seta|der Pilz|mushroom|το μανιτάρι',
+    '3|el perejil|die Petersilie|parsley|ο μαϊντανός',
+    '3|la albahaca|das Basilikum|basil|ο βασιλικός',
+    '3|el azafrán|der Safran|saffron|ο κρόκος',
+    '3|el bollo|das Brötchen|bun|το ψωμάκι',
+    '3|la empanada|die Teigtasche|pasty|η πίτα',
+    '3|el caldo|die Brühe|broth|ο ζωμός',
+    '3|el puré|das Püree|mash|ο πουρές',
+    '3|el bistec|das Beefsteak|beefsteak|το μπιφτέκι',
+    '3|el pavo|der Truthahn|turkey|η γαλοπούλα',
+    '3|el conejo|das Kaninchen|rabbit|το κουνέλι',
+    '3|el pulpo|der Oktopus|octopus|το χταπόδι',
+    '3|el bacalao|der Kabeljau|cod|ο μπακαλιάρος',
+    '3|el flan|der Pudding|custard|η κρέμα καραμελέ',
+    '3|el bizcocho|der Rührkuchen|sponge cake|το κέικ',
+    '3|el caramelo|das Bonbon|sweet|η καραμέλα',
+    '3|la vainilla|die Vanille|vanilla|η βανίλια',
+    '3|la sidra|der Apfelwein|cider|ο μηλίτης',
+    '3|el agua mineral|das Mineralwasser|mineral water|το μεταλλικό νερό',
+    '3|el licor|der Likör|liqueur|το λικέρ',
+    '3|el cava|der Sekt|sparkling wine|ο αφρώδης οίνος',
+    '3|el palillo|der Zahnstocher|toothpick|η οδοντογλυφίδα',
+    '3|la nevera|der Kühlschrank|fridge|το ψυγείο',
+    '3|el congelador|der Gefrierschrank|freezer|ο καταψύκτης',
+    '3|el microondas|die Mikrowelle|microwave|ο φούρνος μικροκυμάτων',
+    '3|el delantal|die Schürze|apron|η ποδιά',
+    '3|el vegetariano|der Vegetarier|vegetarian|ο χορτοφάγος',
+    '3|la dieta|die Diät|diet|η δίαιτα',
+    '3|la vitamina|das Vitamin|vitamin|η βιταμίνη',
+    '3|hambriento|hungrig|hungry|πεινασμένος',
+    '3|sediento|durstig|thirsty|διψασμένος',
+    '3|delicioso|köstlich|delicious|πεντανόστιμος',
+    '3|el plato del día|das Tagesgericht|dish of the day|το πιάτο της ημέρας',
+    '3|el primer plato|der erste Gang|starter|το πρώτο πιάτο',
+    '3|el segundo plato|das Hauptgericht|main course|το κυρίως πιάτο',
+    '3|la mostaza|der Senf|mustard|η μουστάρδα',
+    '3|el kétchup|der Ketchup|ketchup|η κέτσαπ',
+    '3|la mayonesa|die Mayonnaise|mayonnaise|η μαγιονέζα',
+    '3|el aguacate|die Avocado|avocado|το αβοκάντο',
+    '3|el maíz|der Mais|corn|το καλαμπόκι',
+    '3|el trigo|der Weizen|wheat|το σιτάρι',
+    '3|la avena|der Hafer|oats|η βρώμη',
+    '3|los cereales|das Müsli|cereal|τα δημητριακά',
+    '3|la tostadora|der Toaster|toaster|η φρυγανιέρα',
+    '3|el sacacorchos|der Korkenzieher|corkscrew|το τιρμπουσόν',
+    '3|el brindis|der Trinkspruch|toast|η πρόποση',
     '3|el picnic|das Picknick|picnic|το πικνίκ'
-  ]);
+  ];
+  F.essen = F.cafe.concat(F.restaurant, F.einkaufen.filter(function (r) {
+    return /\|(el pan|la leche|la fruta|la verdura|el kilo|el litro|la docena|el gramo|el paquete|la panadería|la carnicería|la frutería|el supermercado|el mercado)\|/.test(r);
+  }), MEHR_ESSEN);
   var REIHE = ['essen'].concat(Object.keys(F).filter(function (k) { return k !== 'essen'; }));
 
   function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').trim(); }
@@ -780,5 +865,27 @@
     return out;
   }
 
-  w.spikiuWortfelder = { feld: feld, themen: REIHE, roh: F };
+  /* OBERKATEGORIE (Leo, 10.10. abends): Im Akrostichon zählt jedes Wort aus
+     der übergeordneten Kategorie. Café, Restaurant, Frühstück … → alles Essen.
+     Wer im Café bei S an „sal" denkt, liegt richtig. */
+  var BEREICH = {
+    essen: ['essen'], cafe: ['essen'], restaurant: ['essen'],
+    einkaufen: ['einkaufen', 'essen'],
+    wegbeschreibung: ['wegbeschreibung', 'taxi', 'bahnhof', 'hotel'],
+    taxi: ['wegbeschreibung', 'taxi', 'bahnhof', 'hotel'],
+    bahnhof: ['wegbeschreibung', 'taxi', 'bahnhof', 'hotel'],
+    hotel: ['wegbeschreibung', 'taxi', 'bahnhof', 'hotel'],
+    familie: ['familie'], arzt: ['arzt'], wetter: ['wetter']
+  };
+  function bereich(ziel, thema, mutter) {
+    var k = 'B|' + ziel + '|' + thema + '|' + mutter;
+    if (CACHE[k]) return CACHE[k];
+    var seen = {}, out = [];
+    (BEREICH[thema] || [thema]).forEach(function (t) {
+      feld(ziel, t, mutter).forEach(function (x) { var n = norm(x.z); if (!seen[n]) { seen[n] = 1; out.push(x); } });
+    });
+    CACHE[k] = out; return out;
+  }
+
+  w.spikiuWortfelder = { feld: feld, bereich: bereich, themen: REIHE, roh: F };
 })(window);

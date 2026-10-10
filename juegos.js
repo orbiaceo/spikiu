@@ -66,7 +66,7 @@
       // Akrostichon
       aIntro: 'So sieht ein Akrostichon aus. Zu jedem Buchstaben ein Wort, das zum Thema passt.',
       aPick: 'Wähl ein Wort', aThema: 'Thema',
-      aHint: 'Jedes Wort muss zum Thema passen. Hängst du? Tipp auf Spikiu: Er verrät Buchstabe für Buchstabe.', aDone: 'Fertig',
+      aHint: 'Jedes Wort zählt, das zum Thema passt — auch aus dem Umfeld (Essen, Unterwegs …). Hängst du? Tipp auf Spikiu: Er verrät Buchstabe für Buchstabe.', aDone: 'Fertig',
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> passt nicht zum Thema „' + th + '". Such ein anderes.'; },
       aRaus: 'Wörter, die nicht zum Thema passen, bleiben draußen.', aKeine: 'Für dieses Thema habe ich gerade kein Wort. Wähl ein anderes Thema.',
       aSaved: 'Deine Akrosticha', aYours: 'Dein Akrostichon', aNew: 'Neues Akrostichon', aSpikiu: 'Spikius Akrostichon'
@@ -96,7 +96,7 @@
       gNew: 'Empezar otro huerto', gNewSure: '¿Remover la tierra de verdad? Toca otra vez.', gRemove: 'Toca para quitar',
       aIntro: 'Así es un acróstico. Para cada letra, una palabra que tenga que ver con el tema.',
       aPick: 'Elige una palabra', aThema: 'Tema',
-      aHint: 'Cada palabra tiene que ser del tema. ¿Atascado? Toca a Spikiu: te da la palabra letra a letra.', aDone: 'Listo',
+      aHint: 'Vale toda palabra que tenga que ver con el tema, también de su entorno (comida, viajes …). ¿Atascado? Toca a Spikiu: te da la palabra letra a letra.', aDone: 'Listo',
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> no tiene que ver con «' + th + '». Busca otra.'; },
       aRaus: 'Las palabras que no son del tema se quedan fuera.', aKeine: 'Para este tema no tengo palabra ahora. Elige otro tema.',
       aSaved: 'Tus acrósticos', aYours: 'Tu acróstico', aNew: 'Nuevo acróstico', aSpikiu: 'El acróstico de Spikiu'
@@ -126,7 +126,7 @@
       gNew: 'Dig a new garden', gNewSure: 'Really dig it all up? Tap again.', gRemove: 'Tap to remove',
       aIntro: 'This is an acrostic. For each letter, a word that fits the topic.',
       aPick: 'Pick a word', aThema: 'Topic',
-      aHint: 'Every word has to fit the topic. Stuck? Tap Spikiu: he reveals the word letter by letter.', aDone: 'Done',
+      aHint: 'Any word that fits the topic counts, its wider field too (food, travel …). Stuck? Tap Spikiu: he reveals the word letter by letter.', aDone: 'Done',
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> doesn\u2019t fit \u201c' + th + '\u201d. Try another one.'; },
       aRaus: 'Words that don\u2019t fit the topic stay out.', aKeine: 'I have no word for this topic right now. Pick another topic.',
       aSaved: 'Your acrostics', aYours: 'Your acrostic', aNew: 'New acrostic', aSpikiu: 'Spikiu’s acrostic'
@@ -697,18 +697,52 @@
     var thema = (cfg.entwurf && cfg.entwurf.thema) || cfg.thema || (cfg.themen[0] && cfg.themen[0].id);
     var themaTitel = (cfg.themen.filter(function (x) { return x.id === thema; })[0] || {}).t || thema;
     themaTitel = String(themaTitel).replace(/^[^\p{L}]+/u, '');   // ohne Emoji im Fließtext
-    var feld = (cfg.feldVon(thema) || []).map(function (x) { return { z: x.z, tr: x.tr || '', stufe: x.stufe || 3, key: norm(ohneArtikel(x.z)), nackt: ohneArtikel(x.z) }; })
-      .filter(function (x) { return x.key; });
+    var aufbereiten = function (liste) { return (liste || []).map(function (x) { return { z: x.z, tr: x.tr || '', stufe: x.stufe || 3, key: norm(ohneArtikel(x.z)), nackt: ohneArtikel(x.z) }; })
+      .filter(function (x) { return x.key; }); };
+    // feld = das gewählte Thema (Wortwahl, erste Hilfen) · bereich = die Oberkategorie (was ZÄHLT)
+    var themaFeld = aufbereiten(cfg.feldVon(thema));
+    var feld = cfg.bereichVon ? aufbereiten(cfg.bereichVon(thema)) : themaFeld;
+    // Formtoleranz (Leo 10.10.: „oliva o olivas"): Plural und o/a-Endung — aber
+    // NIE bloß ein abgeschnittener Stamm („sol" ist nicht „solo").
+    var ENDUNGEN = { es: ['s', 'es'], en: ['s', 'es'], de: ['e', 'en', 'n', 'er', 's', 'nen'], el: [] };
+    function gleicheForm(k, f, stufe2) {
+      if (k === f) return true;
+      var e = ENDUNGEN[ziel] || [], i;
+      if (!stufe2) {   // 1. Durchgang: Plural (olivas → oliva)
+        for (i = 0; i < e.length; i++) if (k === f + e[i] || f === k + e[i]) return true;
+        if (ziel === 'en' && (k.replace(/ies$/, 'y') === f || f.replace(/ies$/, 'y') === k)) return true;
+        return false;
+      }
+      if (ziel === 'es') {   // fría ↔ frío, frías ↔ fríos
+        var ks = k.replace(/s$/, ''), fs = f.replace(/s$/, '');
+        if (ks.length === fs.length && ks.length > 3 && ks.slice(0, -1) === fs.slice(0, -1) && /[oa]$/.test(ks) && /[oa]$/.test(fs)) return true;
+      }
+      if (ziel === 'el') {   // griechische Endungen: gleicher Stamm, höchstens 2 Zeichen Unterschied
+        var r = /(ους|ος|ου|οι|ων|ες|ας|ης|α|η|ο|ι|ε|ς)$/, ks2 = k.replace(r, ''), fs2 = f.replace(r, '');
+        if (ks2.length >= 3 && ks2 === fs2 && Math.abs(k.length - f.length) <= 2) return true;
+      }
+      return false;
+    }
     function buchstabe(L) { var c = String(L).toUpperCase(); return (ziel === 'es' && c === 'Ñ') ? 'Ñ' : c.normalize('NFD').charAt(0); }
-    function imFeld(wort) { var k = norm(ohneArtikel(wort)); for (var i = 0; i < feld.length; i++) if (feld[i].key === k) return feld[i]; return null; }
+    function imFeld(wort) {
+      var k = norm(ohneArtikel(wort)), i;
+      for (i = 0; i < feld.length; i++) if (feld[i].key === k) return feld[i];
+      for (i = 0; i < feld.length; i++) if (gleicheForm(k, feld[i].key, false)) return feld[i];
+      for (i = 0; i < feld.length; i++) if (gleicheForm(k, feld[i].key, true)) return feld[i];
+      return null;
+    }
     function mitBuchstabe(L, ohne) { var Lb = buchstabe(L); return feld.filter(function (x) { return anfang(x.z, ziel) === Lb && (!ohne || x.key !== ohne); }); }
-    // Hilfe-Vorrat: zuerst bis zur Stufe des Lerners, sonst das ganze Feld
-    function vorrat(L, ohne) { var alle = mitBuchstabe(L, ohne), nah = alle.filter(function (x) { return x.stufe <= stufe; }); return nah.length ? nah : alle; }
+    function vorrat(L, ohne) {
+      var Lb = buchstabe(L), imThema = themaFeld.filter(function (x) { return anfang(x.z, ziel) === Lb && (!ohne || x.key !== ohne); });
+      var stufig = function (a) { var n = a.filter(function (x) { return x.stufe <= stufe; }); return n; };
+      return stufig(imThema).length ? stufig(imThema) : (stufig(mitBuchstabe(L, ohne)).length ? stufig(mitBuchstabe(L, ohne)) : (imThema.length ? imThema : mitBuchstabe(L, ohne)));
+    }
     function loesbar(nackt) { var k = norm(nackt); return nackt.split('').every(function (L) { return mitBuchstabe(L, k).length > 0; }); }
     function kandidaten() {
       var gut = function (x) { return /^\p{L}{3,7}$/u.test(x.nackt) && loesbar(x.nackt); };
-      var nah = feld.filter(function (x) { return x.stufe <= stufe && gut(x); });
-      if (nah.length < 4) nah = feld.filter(gut);
+      var nah = themaFeld.filter(function (x) { return x.stufe <= stufe && gut(x); });
+      if (nah.length < 4) nah = themaFeld.filter(gut);
+      if (nah.length < 4) nah = feld.filter(function (x) { return x.stufe <= stufe && gut(x); });
       var seen = {}; return mezcla(nah).filter(function (x) { var K = gross(x.nackt); if (seen[K]) return false; seen[K] = 1; return true; });
     }
     // Großschreibung: Griechisch ohne Tonos (Konvention für Versalien)
