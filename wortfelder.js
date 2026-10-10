@@ -20,7 +20,7 @@
    KURATION: Entwurf von Claude, Leonardo prüft beim Testen.
 
      window.spikiuWortfelder.feld(ziel, thema, mutter)
-       → [{ z, tr, stufe }]      z = Zielsprache, tr = Muttersprache
+       → [{ z, tr, stufe, en }]  z = Zielsprache, tr = Muttersprache, en = Konzept (für icon-db)
      window.spikiuWortfelder.themen → ['cafe', …]
 =================================================================== */
 (function (w) {
@@ -859,7 +859,7 @@
       var key = norm(z);
       if (gesehen[key] != null) { if (stufe < out[gesehen[key]].stufe) out[gesehen[key]].stufe = stufe; return; }
       gesehen[key] = out.length;
-      out.push({ z: z, tr: (mutter === ziel) ? '' : (c[mi] || ''), stufe: stufe });
+      out.push({ z: z, tr: (mutter === ziel) ? '' : (c[mi] || ''), stufe: stufe, en: c[3], nomen: /^(el|la|los|las) /.test(c[1]) });
     });
     CACHE[k] = out;
     return out;

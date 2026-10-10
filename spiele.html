@@ -30,6 +30,16 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .door svg,.door img{width:2.9rem;height:2.9rem;}
 .door b{font:800 .98rem/1.1 'DM Sans',sans-serif;}
 .door span{font-size:.74rem;line-height:1.2;font-weight:600;color:rgba(21,22,58,.72);}
+.regal{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin:.6rem 0 -.4rem .2rem;}
+.door .emo{font-size:2.3rem;line-height:1;}
+.door.zu{opacity:.55;}
+.door .lock{position:absolute;top:.5rem;right:.6rem;font-size:.95rem;}
+.door{position:relative;}
+.tages{display:flex;align-items:center;gap:.9rem;text-align:left;width:100%;min-height:0;padding:1rem;flex-direction:row;justify-content:flex-start;}
+.tages .emo,.tages svg,.tages img{flex:none;}
+.tages .txt{display:flex;flex-direction:column;gap:.15rem;min-width:0;}
+.tages .k{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);opacity:.7;}
+.probe{font-size:.8rem;color:var(--mid);text-align:center;margin:0;}
 .note{font-size:.76rem;color:var(--mid);line-height:1.45;text-align:center;margin:.4rem 0 0;}
 .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;}
 .end{background:#fff;color:var(--ink);border:var(--ow) solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--ink);}
@@ -73,19 +83,34 @@ var PROFILE = {
 function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Kurz und leicht. Such dir eins aus.',
+  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Neun Spiele, kurz und leicht. Such dir eins aus.',
        pinata:['Piñata','Schlag zu und fang den Eindringling.'], globos:['Globos','Lass die Wörter in der richtigen Reihenfolge platzen.'],
        huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'], acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
+       encadenado:['Encadenado','Wortkette mit Spikiu. Hängst du, hilft er dir Buchstabe für Buchstabe.'], oido:['Oído fino','Hör ein Wort, tipp das Bild.'],
+       golpe:['El golpe','Wo liegt der Schlag? Tipp die starke Silbe.'], mercado:['Al mercado','Jedes Wort in den richtigen Korb.'], memoria:['Memoria','Finde die Paare: Wort und Bild.'],
+       regale:['Hören & Sprechen','Wörter finden','Schnell & leicht'], tages:'Spiel des Tages', tagesSub:'Heute schlägt Spikiu vor:',
+       gesperrt:function(x){ return 'Das gehört zum Spielzimmer (1,50 € im Monat). Heute frei: ' + x + '.'; }, zumTages:'Zum Spiel des Tages', abo:'Spielzimmer ansehen',
+       probe:function(n){ return 'Probezeit: alles frei, noch ' + n + (n === 1 ? ' Tag.' : ' Tage.'); }, schloss:'Spielzimmer',
        weiter:'noch eine ›', genug:'Genug für heute', themaWortschatz:'Wortschatz',
        leer:'Für deine Zielsprache gibt es hier noch keine Sätze.', fuss:'Garten und Akrostichon nach Ideen von Vera F. Birkenbihl.' },
-  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Cortos y ligeros. Elige uno.',
+  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Nueve juegos, cortos y ligeros. Elige uno.',
        pinata:['Piñata','¡Dale! Y atrapa al intruso.'], globos:['Globos','Revienta las palabras en el orden correcto.'],
        huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'], acrostico:['Acróstico','Una palabra, una idea por letra.'],
+       encadenado:['Encadenado','Cadena de palabras con Spikiu. Si te atascas, te ayuda letra a letra.'], oido:['Oído fino','Escucha una palabra, toca la imagen.'],
+       golpe:['El golpe','¿Dónde cae el golpe? Toca la sílaba fuerte.'], mercado:['Al mercado','Cada palabra en su cesta.'], memoria:['Memoria','Encuentra las parejas: palabra e imagen.'],
+       regale:['Escuchar y hablar','Encontrar palabras','Rápido y ligero'], tages:'Juego del día', tagesSub:'Hoy Spikiu te propone:',
+       gesperrt:function(x){ return 'Esto es del cuarto de juegos (1,50 € al mes). Hoy gratis: ' + x + '.'; }, zumTages:'Al juego del día', abo:'Ver el cuarto de juegos',
+       probe:function(n){ return 'Prueba: todo gratis, ' + (n === 1 ? 'queda 1 día.' : 'quedan ' + n + ' días.'); }, schloss:'Cuarto de juegos',
        weiter:'otra ›', genug:'Basta por hoy', themaWortschatz:'Vocabulario',
        leer:'Para tu idioma meta todavía no hay frases aquí.', fuss:'Huerto y acróstico según ideas de Vera F. Birkenbihl.' },
-  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Short and light. Pick one.',
+  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Nine games, short and light. Pick one.',
        pinata:['Piñata','Swing and catch the intruder.'], globos:['Balloons','Pop the words in the right order.'],
        huerto:['Spikiu’s garden','From A to Z: plant your words.'], acrostico:['Acrostic','One word, one thought per letter.'],
+       encadenado:['Word Chain','A word chain with Spikiu. Stuck? He helps letter by letter.'], oido:['Sharp Ear','Hear a word, tap the picture.'],
+       golpe:['The Beat','Where is the beat? Tap the strong syllable.'], mercado:['To Market','Every word in the right basket.'], memoria:['Memory','Find the pairs: word and picture.'],
+       regale:['Listen & speak','Find words','Quick & light'], tages:'Game of the day', tagesSub:'Today Spikiu suggests:',
+       gesperrt:function(x){ return 'This is part of the games room (€1.50 a month). Free today: ' + x + '.'; }, zumTages:'Go to the game of the day', abo:'See the games room',
+       probe:function(n){ return 'Trial: everything free, ' + n + (n === 1 ? ' day left.' : ' days left.'); }, schloss:'Games room',
        weiter:'another ›', genug:'Enough for today', themaWortschatz:'Vocabulary',
        leer:'There are no sentences for your target language here yet.', fuss:'Garden and acrostic after ideas by Vera F. Birkenbihl.' }
 };
@@ -98,7 +123,14 @@ var GLYPH = {
   huerto:'<img src="bilder/om-1F331.svg" alt="" aria-hidden="true">',
   acrostico:'<svg viewBox="0 0 44 44"><rect x="12" y="3" width="13" height="11" rx="3" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><rect x="12" y="17" width="13" height="11" rx="3" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><rect x="12" y="31" width="13" height="11" rx="3" fill="#ffd24a" stroke="#15163a" stroke-width="2"/><path d="M29 8h12M29 22h9M29 36h11" stroke="#15163a" stroke-width="2" stroke-linecap="round"/></svg>'
 };
-var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#cdbdf2' };
+GLYPH.encadenado = '<span class="emo">🔗</span>'; GLYPH.oido = '<span class="emo">👂</span>'; GLYPH.golpe = '<span class="emo">🥁</span>';
+GLYPH.mercado = '<span class="emo">🧺</span>'; GLYPH.memoria = '<span class="emo">🃏</span>';
+var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#cdbdf2',
+  encadenado:'#ffe08a', oido:'#bfe6d5', golpe:'#f7bcd8', mercado:'#ffd0b0', memoria:'#d3eef6' };
+// Drei Regale (Leo, 11.10.): nach dem, was ein Spiel trainiert
+var REGALE = [ ['oido','golpe'], ['encadenado','acrostico','huerto','memoria'], ['pinata','globos','mercado'] ];
+function spielListe(){ return [].concat.apply([], REGALE).filter(verfuegbar); }
+function verfuegbar(id){ return id !== 'golpe' || PROFILE.zielsprache === 'es'; }   // Silbenregeln gibt es (noch) nur fürs Spanische
 
 // ── Audio ──
 function sprich(text){
@@ -206,22 +238,47 @@ var letzterSatz = '';
 function leeren(){ if (aktiv && aktiv.stop) aktiv.stop(); aktiv = null; inner.innerHTML = ''; document.getElementById('stage').scrollTop = 0; }
 function kopf(titel){ document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = ui().eyebrow; }
 
+function tuer(id, klasse){
+  var Z = window.spikiuZugang, liste = spielListe(), frei = !Z || Z.darf(id, liste);
+  var b = document.createElement('button'); b.type = 'button'; b.className = 'door' + (klasse ? ' ' + klasse : '') + (frei ? '' : ' zu'); b.style.background = FARBE[id];
+  b.innerHTML = GLYPH[id] + (klasse === 'tages' ? '<span class="txt"><span class="k"></span><b></b><span class="d"></span></span>' : '<b></b><span class="d"></span>') + (frei ? '' : '<span class="lock" aria-hidden="true">🔒</span>');
+  b.querySelector('b').textContent = ui()[id][0]; b.querySelector('.d').textContent = ui()[id][1];
+  if (klasse === 'tages') b.querySelector('.k').textContent = ui().tages;
+  b.onclick = function(){ oeffne(id); };
+  return b;
+}
 function tueren(){
   ansicht = 'tueren'; leeren(); kopf(ui().titel);
   var J = window.spikiuJuegos; J.css();
   var hi = document.createElement('div'); hi.className = 'jg-spk';
   hi.innerHTML = J.spikiuSvg + '<div class="jg-bub"></div>'; hi.querySelector('.jg-bub').textContent = ui().hallo;
   var wrap = document.createElement('div'); wrap.className = 'jg'; wrap.appendChild(hi); inner.appendChild(wrap);
-  var d = document.createElement('div'); d.className = 'doors';
-  ['pinata','globos','huerto','acrostico'].forEach(function(id){
-    var b = document.createElement('button'); b.type = 'button'; b.className = 'door'; b.style.background = FARBE[id];
-    b.innerHTML = GLYPH[id] + '<b></b><span></span>';
-    b.querySelector('b').textContent = ui()[id][0]; b.querySelector('span').textContent = ui()[id][1];
-    b.onclick = function(){ oeffne(id); };
-    d.appendChild(b);
+  var Z = window.spikiuZugang, liste = spielListe();
+  // Spiel des Tages — für alle gleich, wechselt täglich, immer frei
+  var heute = Z ? Z.tagesSpiel(liste) : liste[0];
+  if (heute) inner.appendChild(tuer(heute, 'tages'));
+  var st = Z ? Z.status() : null;
+  if (st && st.aktiv && !st.abo && st.probeTage > 0) { var pr = document.createElement('p'); pr.className = 'probe'; pr.textContent = ui().probe(st.probeTage); inner.appendChild(pr); }
+  REGALE.forEach(function(regal, i){
+    var ids = regal.filter(verfuegbar); if (!ids.length) return;
+    var h = document.createElement('p'); h.className = 'regal'; h.textContent = ui().regale[i]; inner.appendChild(h);
+    var d = document.createElement('div'); d.className = 'doors';
+    ids.forEach(function(id){ d.appendChild(tuer(id)); });
+    inner.appendChild(d);
   });
-  inner.appendChild(d);
   var n = document.createElement('p'); n.className = 'note'; n.textContent = ui().fuss; inner.appendChild(n);
+}
+// Freundliche Sperre (nur wenn die Zugangswache aktiv ist und die Probezeit vorbei)
+function sperre(id){
+  leeren(); kopf(ui().schloss); ansicht = 'sperre';
+  var J = window.spikiuJuegos, heute = window.spikiuZugang.tagesSpiel(spielListe());
+  var wrap = document.createElement('div'); wrap.className = 'jg';
+  var hi = document.createElement('div'); hi.className = 'jg-spk'; hi.innerHTML = J.spikiuSvg + '<div class="jg-bub"></div>';
+  hi.querySelector('.jg-bub').textContent = ui().gesperrt(ui()[heute][0]); wrap.appendChild(hi); inner.appendChild(wrap);
+  var e = document.createElement('div'); e.className = 'ends';
+  var a = document.createElement('button'); a.className = 'end'; a.type = 'button'; a.textContent = ui().abo; a.onclick = function(){ location.href = 'spikiu-products.html#premium'; };
+  var t = document.createElement('button'); t.className = 'end primary'; t.type = 'button'; t.textContent = ui().zumTages; t.onclick = function(){ oeffne(heute); };
+  e.appendChild(a); e.appendChild(t); inner.appendChild(e);
 }
 
 function enden(nochmal){
@@ -298,9 +355,53 @@ function akrostichon(entwurf, themaId){
   enden(null);
 }
 
+// ── Spielzimmer II: Daten aus Wortfeldern + Bildern ──
+function bildVon(x){ var I = window.spikiuIcon; if (!I || !x.en) return ''; var e = I.konzept(x.en); return e ? I.datei(e) : ''; }
+function bilderAus(liste){ var seen = {}, out = []; liste.forEach(function(x){ var b = bildVon(x); if (b && !seen[b]) { seen[b] = 1; out.push({ z:x.z, tr:x.tr, bild:b }); } }); return out; }
+function bilderPool(){
+  var J = window.spikiuJuegos, W = window.spikiuWortfelder; if (!W) return [];
+  var bereiche = J.mezcla(['essen','essen','taxi','hotel','wetter','arzt','einkaufen']);
+  for (var i = 0; i < bereiche.length; i++){ var b = bilderAus(bereichVon(bereiche[i])); if (b.length >= 6) return b; }
+  return bilderAus(bereichVon('essen'));
+}
+function kategorieName(id){
+  var mu = PROFILE.muttersprache, n = '';
+  ['SpikiuLernpfadES','SpikiuLernpfadDE','SpikiuLernpfadEN'].forEach(function(k){ var D = window[k]; if (n || !D || !D.kategorien) return; D.kategorien.forEach(function(t){ if (t.id === id && t.na && t.na[mu]) n = t.na[mu]; }); });
+  return n || id;
+}
+function neueRunde(spiel){
+  leeren(); kopf(ui()[spiel][0]); ansicht = spiel;
+  sichereSitzung({ spiel: spiel }, true);
+  var J = window.spikiuJuegos, st = stufeZahl(), karte = null;
+  var einzel = function(x){ return /^[\p{L}]+$/u.test(String(x.z).replace(/^(el|la|los|las|der|die|das|the|ο|η|το|οι|τα)\s+/i,'')); };
+  if (spiel === 'encadenado') karte = J.encadenado({ feld: bereichVon('essen'), stufe: st }, opts());
+  else if (spiel === 'oido') { var p = bilderPool(); if (p.length >= 4) karte = J.oido({ bilder: p }, opts()); }
+  else if (spiel === 'memoria') { var m = J.mezcla(bilderPool()); if (m.length >= 4) karte = J.memoria({ paare: m.slice(0, 4) }, opts()); }
+  else if (spiel === 'golpe') {
+    var w = bereichVon('essen').concat(bereichVon('taxi')).filter(function(x){ var n = J.silabas(String(x.z).replace(/^(el|la|los|las)\s+/i,'')).length; return einzel(x) && x.stufe <= Math.max(st, 2) && n >= 2 && n <= 4; });
+    if (w.length) karte = J.golpe({ woerter: w }, opts());
+  }
+  else if (spiel === 'mercado') {
+    // Nur eindeutige Dinge (Nomen), keine Wörter, die auch in den anderen Korb oder zum Einkaufen passen (precio, tarjeta …)
+    var ess = bereichVon('essen'), andere = {};
+    ess.concat(bereichVon('einkaufen')).forEach(function(x){ andere[x.en] = 1; });
+    var weg = [].concat(feldVon('taxi'), feldVon('bahnhof'), feldVon('wegbeschreibung')).filter(function(x){ return !andere[x.en] && x.nomen && x.stufe <= 2 && einzel(x); });
+    ess = ess.filter(function(x){ return x.nomen && x.stufe <= Math.max(st, 1) && einzel(x); });
+    if (ess.length >= 3 && weg.length >= 3) karte = J.mercado({ koerbe: [ { titel: kategorieName('essen'), icon:'🥘', woerter: ess }, { titel: kategorieName('unterwegs'), icon:'🧳', woerter: weg } ] }, opts());
+  }
+  if (!karte) { leerHinweis(); return; }
+  var c = document.createElement('div'); c.className = 'card'; c.appendChild(karte); inner.appendChild(c);
+  aktiv = karte;
+  var e = null;
+  karte.addEventListener('jg-done', function(){ if (!e) e = enden(function(){ neueRunde(spiel); }); });
+}
+
 function oeffne(id, zustand){
   zustand = zustand || {};
+  var Z = window.spikiuZugang;
+  if (Z && id !== 'tueren' && UI.de[id] && !Z.darf(id, spielListe())) { sperre(id); return; }
   if (id === 'pinata' || id === 'globos') rundeKarte(id);
+  else if (['encadenado','oido','golpe','mercado','memoria'].indexOf(id) > -1) neueRunde(id);
   else if (id === 'huerto') garten(zustand.thema);
   else if (id === 'acrostico') akrostichon(zustand.entwurf, zustand.thema);
   else tueren();
@@ -341,6 +442,8 @@ window.addEventListener('load', function(){
 <script src="lernpfad-sprache.js" defer></script>
 <script src="lernpfad.js" defer></script>
 <script src="wortfelder.js" defer></script>
+<script src="icon-db.js" defer></script>
+<script src="zugang.js" defer></script>
 <script src="juegos.js" defer></script>
 </body>
 </html>

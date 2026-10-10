@@ -65,7 +65,9 @@
     'forecast':'🌤️', 'degree':'🌡️',
     // Nachgetragen: sichtbare Dinge aus den Stationen
     'square':'⛲', 'size':'📏', 'discount':'🏷️', 'stop':'🚏', 'detour':'🚧',
-    'cleaning':'🧹', 'prescription':'📝', 'antibiotic':'💊', 'appointment':'📅'
+    'cleaning':'🧹', 'prescription':'📝', 'antibiotic':'💊', 'appointment':'📅',
+    // Spielzimmer (11.10.): mehr sichtbare Dinge für Oído fino + Memoria (OpenMoji, self-hosted)
+    'banana':'🍌', 'grape':'🍇', 'pear':'🍐', 'cherry':'🍒', 'strawberry':'🍓', 'lemon':'🍋', 'orange':'🍊', 'peach':'🍑', 'pineapple':'🍍', 'melon':'🍈', 'watermelon':'🍉', 'carrot':'🥕', 'potato':'🥔', 'onion':'🧅', 'garlic':'🧄', 'egg':'🥚', 'rice':'🍚', 'pasta':'🍝', 'pizza':'🍕', 'hamburger':'🍔', 'ice cream':'🍨', 'cake':'🍰', 'cookie':'🍪', 'chocolate':'🍫', 'honey':'🍯', 'butter':'🧈', 'wine':'🍷', 'beer':'🍺', 'juice':'🧃', 'knife':'🔪', 'fork':'🍴', 'spoon':'🥄', 'bottle':'🍾', 'salt':'🧂', 'shrimp':'🦐', 'squid':'🦑', 'octopus':'🐙', 'avocado':'🥑', 'corn':'🌽', 'mushroom':'🍄', 'bell pepper':'🫑', 'cucumber':'🥒', 'olive':'🫒', 'sandwich':'🥪', 'croissant':'🥐', 'meat':'🍖', 'bus':'🚌', 'tram':'🚋', 'hotel':'🏨', 'bed':'🛏', 'ice':'🧊', 'sausage':'🌭', 'salmon':'🐟', 'cereal':'🥣'
   };
 
   var ARTIKEL = /^(el|la|los|las|un|una|unos|unas|der|die|das|den|dem|ein|eine|einen|the|a|an|to|some)\s+/;

@@ -64,6 +64,21 @@
       gWrong: function (L) { return 'Das beginnt nicht mit ' + L + '. Gehört es in ein anderes Beet?'; },
       gNew: 'Beet neu anlegen', gNewSure: 'Wirklich umgraben? Tipp nochmal.', gRemove: 'Antippen zum Entfernen',
       // Akrostichon
+      kIntro: 'Ich fange an. Dein Wort beginnt mit dem letzten Buchstaben von meinem und gehört zum Thema. Hängst du, hilft dir Spikiu Buchstabe für Buchstabe.',
+      kDein: function (L) { return 'Dein Wort mit <b>' + L + '</b> …'; }, kSpikiu: 'Spikiu ist dran …', kDazu: 'dazu',
+      kNichtL: function (L) { return 'Das beginnt nicht mit ' + L + '.'; },
+      kNichtFeld: function (x) { return '<em>' + x + '</em> passt nicht zum Thema. Noch eins?'; },
+      kSchon: function (x) { return '<em>' + x + '</em> hängt schon in der Kette.'; },
+      kGut: function (x, t) { return '¡Bien! <em>' + x + '</em> = ' + t; },
+      kEnde: function (L) { return 'Mit ' + L + ' fällt mir nichts ein. Die Kette gehört dir!'; },
+      kVorletzt: function (L, V) { return 'Mit <b>' + L + '</b> geht nichts, nimm den vorletzten: <b>' + V + '</b>'; },
+      oTask: 'Hör gut zu und tipp das richtige Bild.', oHoer: '🔊 Anhören',
+      oFalsch: function (x) { return 'Das ist <em>' + x + '</em>. Hör noch einmal.'; },
+      gTask: 'Wo liegt der Schlag? Hör zu und tipp die starke Silbe.', gKlatsch: '👏 Spikiu klatscht',
+      gFalsch: 'Nicht ganz. Hör noch einmal hin.', gTilde: ' · die Tilde zeigt den Schlag',
+      mTask: 'In welchen Korb gehört das Wort?', mFalsch: function (x) { return '<em>' + x + '</em> gehört in den anderen Korb.'; },
+      mFertig: 'Alle Wörter liegen im richtigen Korb.',
+      meTask: 'Deck zwei Karten auf: Wort und Bild gehören zusammen.', meFertig: 'Alle Paare gefunden.',
       aIntro: 'So sieht ein Akrostichon aus. Zu jedem Buchstaben ein Wort, das zum Thema passt.',
       aPick: 'Wähl ein Wort', aThema: 'Thema',
       aHint: 'Jedes Wort zählt, das zum Thema passt — auch aus dem Umfeld (Essen, Unterwegs …). Hängst du? Tipp auf Spikiu: Er verrät Buchstabe für Buchstabe.', aDone: 'Fertig',
@@ -94,6 +109,21 @@
       gNoSeed: 'En este bancal ya no me quedan semillas.',
       gWrong: function (L) { return 'No empieza por ' + L + '. ¿Va en otro bancal?'; },
       gNew: 'Empezar otro huerto', gNewSure: '¿Remover la tierra de verdad? Toca otra vez.', gRemove: 'Toca para quitar',
+      kIntro: 'Empiezo yo. Tu palabra empieza por la última letra de la mía y tiene que ver con el tema. Si te atascas, Spikiu te ayuda letra a letra.',
+      kDein: function (L) { return 'Tu palabra con <b>' + L + '</b> …'; }, kSpikiu: 'Le toca a Spikiu …', kDazu: 'añadir',
+      kNichtL: function (L) { return 'No empieza por ' + L + '.'; },
+      kNichtFeld: function (x) { return '<em>' + x + '</em> no tiene que ver con el tema. ¿Otra?'; },
+      kSchon: function (x) { return '<em>' + x + '</em> ya está en la cadena.'; },
+      kGut: function (x, t) { return '¡Bien! <em>' + x + '</em> = ' + t; },
+      kEnde: function (L) { return 'Con ' + L + ' no se me ocurre nada. ¡La cadena es tuya!'; },
+      kVorletzt: function (L, V) { return 'Con <b>' + L + '</b> no hay nada, toma la penúltima: <b>' + V + '</b>'; },
+      oTask: 'Escucha bien y toca la imagen correcta.', oHoer: '🔊 Escuchar',
+      oFalsch: function (x) { return 'Eso es <em>' + x + '</em>. Escucha otra vez.'; },
+      gTask: '¿Dónde cae el golpe? Escucha y toca la sílaba fuerte.', gKlatsch: '👏 Spikiu da palmas',
+      gFalsch: 'Casi. Escucha otra vez.', gTilde: ' · la tilde marca el golpe',
+      mTask: '¿En qué cesta va la palabra?', mFalsch: function (x) { return '<em>' + x + '</em> va en la otra cesta.'; },
+      mFertig: 'Todas las palabras están en su cesta.',
+      meTask: 'Destapa dos cartas: palabra e imagen van juntas.', meFertig: 'Todas las parejas encontradas.',
       aIntro: 'Así es un acróstico. Para cada letra, una palabra que tenga que ver con el tema.',
       aPick: 'Elige una palabra', aThema: 'Tema',
       aHint: 'Vale toda palabra que tenga que ver con el tema, también de su entorno (comida, viajes …). ¿Atascado? Toca a Spikiu: te da la palabra letra a letra.', aDone: 'Listo',
@@ -124,6 +154,21 @@
       gNoSeed: 'I have no seeds left for this bed.',
       gWrong: function (L) { return 'That doesn’t start with ' + L + '. Does it go in another bed?'; },
       gNew: 'Dig a new garden', gNewSure: 'Really dig it all up? Tap again.', gRemove: 'Tap to remove',
+      kIntro: 'I start. Your word begins with the last letter of mine and fits the topic. If you get stuck, Spikiu helps letter by letter.',
+      kDein: function (L) { return 'Your word with <b>' + L + '</b> …'; }, kSpikiu: 'Spikiu\u2019s turn …', kDazu: 'add',
+      kNichtL: function (L) { return 'That doesn\u2019t start with ' + L + '.'; },
+      kNichtFeld: function (x) { return '<em>' + x + '</em> doesn\u2019t fit the topic. Another one?'; },
+      kSchon: function (x) { return '<em>' + x + '</em> is already in the chain.'; },
+      kGut: function (x, t) { return 'Nice! <em>' + x + '</em> = ' + t; },
+      kEnde: function (L) { return 'I can\u2019t think of anything with ' + L + '. The chain is yours!'; },
+      kVorletzt: function (L, V) { return 'Nothing with <b>' + L + '</b>, take the one before: <b>' + V + '</b>'; },
+      oTask: 'Listen closely and tap the right picture.', oHoer: '🔊 Listen',
+      oFalsch: function (x) { return 'That\u2019s <em>' + x + '</em>. Listen again.'; },
+      gTask: 'Where is the beat? Listen and tap the strong syllable.', gKlatsch: '👏 Spikiu claps',
+      gFalsch: 'Not quite. Listen again.', gTilde: ' · the accent mark shows the beat',
+      mTask: 'Which basket does the word go in?', mFalsch: function (x) { return '<em>' + x + '</em> goes in the other basket.'; },
+      mFertig: 'Every word is in the right basket.',
+      meTask: 'Turn over two cards: word and picture belong together.', meFertig: 'All pairs found.',
       aIntro: 'This is an acrostic. For each letter, a word that fits the topic.',
       aPick: 'Pick a word', aThema: 'Topic',
       aHint: 'Any word that fits the topic counts, its wider field too (food, travel …). Stuck? Tap Spikiu: he reveals the word letter by letter.', aDone: 'Done',
@@ -242,6 +287,31 @@
     '.jg-words{display:flex;flex-wrap:wrap;gap:.45rem;width:100%}',
     '.jg-mini{border:2px solid var(--jg-ink);border-radius:12px;padding:.3rem .65rem;font:600 .95rem Lora,Georgia,serif;background:var(--jg-yel2);color:var(--jg-ink);cursor:pointer}',
     '.jg-foot{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;width:100%}',
+    /* Spielzimmer II (11.10.) */
+    '.jg-kette{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}',
+    '.jg-glied{border:2.5px solid var(--jg-ink);border-radius:14px;padding:.3rem .7rem;font:600 1.1rem/1.2 Lora,Georgia,serif;display:inline-flex;flex-direction:column;align-items:center;box-shadow:2px 3px 0 var(--jg-ink)}',
+    '.jg-glied small{font:500 .7rem "DM Sans",sans-serif;color:var(--jg-mid)}',
+    '.jg-glied.spikiu{background:var(--jg-acc2)}.jg-glied.du{background:var(--jg-yel2)}',
+    '.jg-link{color:var(--jg-mid);font-weight:800}',
+    '.jg-muster{font:500 .95rem "DM Mono",monospace;color:var(--jg-mid);min-height:1.3em;letter-spacing:.08em}',
+    '.jg-hintbtn{width:2.75rem;height:2.75rem;border-radius:50%;border:2px solid var(--jg-ink);background:#fff;padding:0;display:grid;place-items:center;cursor:pointer;flex:none}',
+    '.jg-hintbtn svg{width:1.9rem;height:1.9rem}',
+    '.jg-bilder{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}',
+    '.jg-bild2{background:#fff;border:2.5px solid var(--jg-ink);border-radius:18px;box-shadow:3px 4px 0 var(--jg-ink);padding:10px;cursor:pointer;aspect-ratio:1/1;display:grid;place-items:center;max-width:100%}',
+    '.jg-bild2 img{width:72%;height:auto}.jg-bild2.ok{background:var(--jg-ok)}.jg-bild2.no{background:var(--jg-warn2);border-color:var(--jg-warn);opacity:.6}',
+    '.jg-silben{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}',
+    '.jg-silbe{min-width:4rem;padding:.7rem .8rem;border:2.5px solid var(--jg-ink);border-radius:16px;background:#fff;box-shadow:3px 4px 0 var(--jg-ink);font:600 1.5rem Lora,Georgia,serif;cursor:pointer}',
+    '.jg-silbe.ok{background:var(--jg-yel);transform:translateY(-4px)}.jg-silbe.no{background:var(--jg-warn2);border-color:var(--jg-warn)}.jg-silbe.klopf{background:var(--jg-acc2)}',
+    '.jg-loesung{font:600 1.6rem Lora,Georgia,serif}.jg-loesung b{color:var(--jg-acc);font-weight:700;text-decoration:underline;text-underline-offset:.2em}',
+    '.jg-ware{font:600 1.9rem Lora,Georgia,serif;border:2.5px solid var(--jg-ink);border-radius:18px;padding:.7rem 1.2rem;background:var(--jg-yel2);box-shadow:3px 4px 0 var(--jg-ink)}',
+    '.jg-koerbe{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}',
+    '.jg-korb{background:#fff;border:2.5px solid var(--jg-ink);border-radius:14px 14px 28px 28px;box-shadow:3px 4px 0 var(--jg-ink);padding:10px 8px;cursor:pointer;min-height:8rem;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}',
+    '.jg-korb .inhalt{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}.jg-korb .inhalt span{font:500 .8rem Lora,Georgia,serif;background:var(--jg-ok);border-radius:8px;padding:1px 6px}',
+    '.jg-korb.no{border-color:var(--jg-warn);background:var(--jg-warn2)}',
+    '.jg-memo{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}',
+    '.jg-mk{aspect-ratio:3/4;border:2.5px solid var(--jg-ink);border-radius:12px;box-shadow:2px 3px 0 var(--jg-ink);background:var(--jg-acc);cursor:pointer;display:grid;place-items:center;padding:4px;font:600 .9rem/1.15 Lora,Georgia,serif;max-width:100%;overflow:hidden;overflow-wrap:anywhere}',
+    '.jg-mk .rueck{color:#fff;font:800 1.4rem "DM Sans",sans-serif}.jg-mk.auf{background:#fff}.jg-mk.paar{background:var(--jg-ok);cursor:default}.jg-mk img{width:80%}',
+    '.jg-wob{animation:jgWob .4s}',
     '@media (prefers-reduced-motion:reduce){.jg *{animation:none!important;transition:none!important}}'
   ].join('\n');
   function ensureCss() {
@@ -321,7 +391,7 @@
       }
       try { var a = new Audio(PFAD[k]); a.play().catch(function () {}); } catch (e) {}
     }
-    return { vorladen: vorladen, wecken: wecken, spiele: spiele };
+    return { vorladen: vorladen, wecken: wecken, spiele: spiele, kontext: kontext };
   })();
   // Pro Runde: Dur frei, Moll nur einmal.
   function rundenKlang() {
@@ -883,6 +953,198 @@
     return root;
   }
 
+  /* ═══════════ SPIELZIMMER II (Leo 10./11.10.: alle fünf abgenommen) ═══════════ */
+  function wobble(n) { n.classList.remove('jg-wob'); void n.offsetWidth; n.classList.add('jg-wob'); }
+  function sprichOpt(opts, t) { if (opts && typeof opts.sprich === 'function') { try { opts.sprich(t); } catch (e) {} } }
+  // Erkennung wie im Akrostichon: exakt, dann Plural, dann o/a bzw. griechische Endung
+  function erkenner(ziel, liste) {
+    var feld = (liste || []).map(function (x) { return { z: x.z, tr: x.tr || '', stufe: x.stufe || 3, key: norm(ohneArtikel(x.z)), nackt: ohneArtikel(x.z) }; }).filter(function (x) { return x.key; });
+    var END = { es: ['s', 'es'], en: ['s', 'es'], de: ['e', 'en', 'n', 'er', 's', 'nen'], el: [] }[ziel] || [];
+    function form(k, f, zwei) {
+      if (k === f) return true; var i;
+      if (!zwei) { for (i = 0; i < END.length; i++) if (k === f + END[i] || f === k + END[i]) return true;
+        return ziel === 'en' && (k.replace(/ies$/, 'y') === f || f.replace(/ies$/, 'y') === k); }
+      if (ziel === 'es') { var ks = k.replace(/s$/, ''), fs = f.replace(/s$/, ''); return ks.length === fs.length && ks.length > 3 && ks.slice(0, -1) === fs.slice(0, -1) && /[oa]$/.test(ks) && /[oa]$/.test(fs); }
+      if (ziel === 'el') { var r = /(ους|ος|ου|οι|ων|ες|ας|ης|α|η|ο|ι|ε|ς)$/, a = k.replace(r, ''), b = f.replace(r, ''); return a.length >= 3 && a === b && Math.abs(k.length - f.length) <= 2; }
+      return false;
+    }
+    return {
+      feld: feld,
+      finde: function (w) { var k = norm(ohneArtikel(w)), i; for (i = 0; i < feld.length; i++) if (feld[i].key === k) return feld[i];
+        for (i = 0; i < feld.length; i++) if (form(k, feld[i].key)) return feld[i]; for (i = 0; i < feld.length; i++) if (form(k, feld[i].key, true)) return feld[i]; return null; }
+    };
+  }
+  function letzter(w) { var k = norm(ohneArtikel(w)).replace(/[^\p{L}]/gu, ''); return k.charAt(k.length - 1).toUpperCase(); }
+
+  /* ── ENCADENADO: Wortkette mit Spikiu ──
+     cfg = { feld:[{z,tr,stufe}] (Oberkategorie des Themas), stufe:1|2, start:[…] } */
+  function encadenado(cfg, opts) {
+    var U = T(opts), root = wurzel(), ziel = (opts && opts.zielLang) || 'es', stufe = cfg.stufe || 1, ton = rundenKlang();
+    var E = erkenner(ziel, cfg.feld), benutzt = [], L = '', hz = null, hk = 0;
+    root.appendChild(spikiuSagt(esc(U.kIntro)));
+    var k = el('div', 'jg-kette'); root.appendChild(k);
+    var task = el('p', 'jg-task'); root.appendChild(task);
+    var muster = el('div', 'jg-muster'); root.appendChild(muster);
+    var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-kette-in'; inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.spellcheck = false;
+    var go = el('button', null, U.kDazu), h = el('button', 'jg-hintbtn'); go.type = h.type = 'button'; h.innerHTML = SPIKIU; h.setAttribute('aria-label', U.gSow);
+    ir.appendChild(inp); ir.appendChild(go); ir.appendChild(h); root.appendChild(ir);
+    var fb = el('div', 'jg-fb'); root.appendChild(fb);
+    function kand(B) { return E.feld.filter(function (x) { return anfang(x.z, ziel) === B && benutzt.indexOf(x.key) < 0 && /^[\p{L} ]+$/u.test(x.nackt); }); }
+    function nah(v) { var n = v.filter(function (x) { return x.stufe <= stufe; }); return n.length ? n : v; }
+    function glied(x, wer) { if (k.children.length) k.appendChild(el('span', 'jg-link', '→')); var g = el('span', 'jg-glied jg-pop ' + wer); g.appendChild(el('span', null, x.nackt)); if (x.tr) g.appendChild(el('small', null, x.tr)); k.appendChild(g); benutzt.push(x.key); }
+    function frage(x) {
+      L = letzter(x.z); hz = null; hk = 0; muster.textContent = ''; inp.value = '';
+      if (!kand(L).length) { var V = norm(x.nackt).replace(/[^\p{L}]/gu, ''); V = V.charAt(V.length - 2).toUpperCase(); task.innerHTML = U.kVorletzt(esc(letzter(x.z)), esc(V)); L = V; }
+      else task.innerHTML = U.kDein(esc(L));
+      try { inp.focus({ preventScroll: true }); } catch (e) {}
+    }
+    function spikiuZug(B) {
+      var v = nah(kand(B));
+      if (!v.length) { fb.className = 'jg-fb'; fb.textContent = U.kEnde(B); ton.dur(); inp.disabled = go.disabled = h.disabled = true; done(root, true); return; }
+      var x = v[Math.floor(Math.random() * v.length)]; glied(x, 'spikiu'); sprichOpt(opts, x.z); frage(x);
+    }
+    function pruefe() {
+      ton.wecken(); var v = inp.value.trim(); if (!v) return;
+      if (anfang(v, ziel) !== L) { ton.moll(); fb.className = 'jg-fb soft'; fb.textContent = U.kNichtL(L); wobble(inp); return; }
+      var f = E.finde(v);
+      if (!f) { ton.moll(); fb.className = 'jg-fb soft'; fb.innerHTML = U.kNichtFeld(esc(v)); wobble(inp); return; }
+      if (benutzt.indexOf(f.key) > -1) { fb.className = 'jg-fb soft'; fb.innerHTML = U.kSchon(esc(f.nackt)); return; }
+      ton.dur(); fb.className = 'jg-fb'; fb.innerHTML = U.kGut(esc(f.nackt), esc(f.tr)); glied(f, 'du');
+      task.textContent = U.kSpikiu; done(root, true);
+      setTimeout(function () { spikiuZug(letzter(f.z)); }, 900);
+    }
+    go.addEventListener('click', pruefe);
+    inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') pruefe(); });
+    h.addEventListener('click', function () {
+      var get = norm(ohneArtikel(inp.value));
+      if (!hz || norm(hz.nackt).indexOf(get) !== 0) { var v = kand(L).filter(function (x) { return norm(x.nackt).indexOf(get) === 0; }); if (!v.length) v = kand(L); v = nah(v); if (!v.length) { fb.textContent = U.gNoSeed; return; } hz = v[Math.floor(Math.random() * v.length)]; hk = 0; }
+      var w = hz.nackt; hk = Math.max(hk + 1, get.length + 1);
+      if (hk >= w.length) { inp.value = w; muster.textContent = hz.tr; } else { inp.value = w.slice(0, hk); muster.textContent = w.slice(0, hk) + ' ' + new Array(w.length - hk + 1).join('_ ').trim(); }
+      try { inp.focus({ preventScroll: true }); } catch (e) {}
+    });
+    var start = nah(E.feld.filter(function (x) { return /^\p{L}{3,9}$/u.test(x.nackt) && kand(letzter(x.z)).length > 2; }));
+    var s0 = start[Math.floor(Math.random() * start.length)] || E.feld[0];
+    if (s0) { glied(s0, 'spikiu'); setTimeout(function () { sprichOpt(opts, s0.z); }, 300); frage(s0); }
+    return root;
+  }
+
+  /* ── OÍDO FINO: hören, Bild tippen ── cfg = { bilder:[{z,tr,bild}] (≥4) } */
+  function oido(cfg, opts) {
+    var U = T(opts), root = wurzel(), ton = rundenKlang(), alle = mezcla(cfg.bilder || []);
+    var ziel = alle[0], wahl = mezcla(alle.slice(0, 4)), fertig = false;
+    root.appendChild(el('p', 'jg-task', U.oTask));
+    var hb = el('button', 'jg-big', U.oHoer); hb.type = 'button'; hb.addEventListener('click', function () { ton.wecken(); sprichOpt(opts, ziel.z); }); root.appendChild(hb);
+    var g = el('div', 'jg-bilder'); root.appendChild(g); var fb = el('div', 'jg-fb'); root.appendChild(fb);
+    wahl.forEach(function (x) {
+      var b = el('button', 'jg-bild2'); b.type = 'button'; b.innerHTML = '<img alt="" src="' + x.bild + '">'; g.appendChild(b);
+      b.addEventListener('click', function () {
+        if (fertig) return; ton.wecken();
+        if (x === ziel) { fertig = true; b.classList.add('ok'); ton.dur(); fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(x.z) + '</em> = ' + esc(x.tr); done(root, true); }
+        else { ton.moll(); b.classList.add('no'); b.disabled = true; fb.className = 'jg-fb soft'; fb.innerHTML = U.oFalsch(esc(x.z)); }
+      });
+    });
+    setTimeout(function () { sprichOpt(opts, ziel.z); }, 400);
+    return root;
+  }
+
+  /* ── EL GOLPE: Silbe mit dem Schlag (Spanisch, Regeln) ── cfg = { woerter:[{z,tr}] } */
+  function silabas(w) {
+    w = w.toLowerCase(); var V = 'aeiouáéíóúü', FU = 'aeoáéóíú', isV = function (c) { return V.indexOf(c) > -1; };
+    var INS = ['pl', 'pr', 'bl', 'br', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'tr', 'ch', 'll', 'rr', 'tl'], ch = Array.from(w), gr = [], i = 0, k;
+    while (i < ch.length) { var c = ch[i];
+      if (isV(c)) { var g = c; while (i + 1 < ch.length && isV(ch[i + 1])) { var a = g[g.length - 1], b = ch[i + 1]; if (FU.indexOf(a) > -1 && FU.indexOf(b) > -1) break; g += b; i++; } gr.push({ v: 1, t: g }); }
+      else { var g2 = c; while (i + 1 < ch.length && !isV(ch[i + 1])) { g2 += ch[i + 1]; i++; } gr.push({ v: 0, t: g2 }); }
+      i++; }
+    for (k = 0; k < gr.length - 1; k++) if (!gr[k].v && /[qg]$/.test(gr[k].t) && gr[k + 1].v && /^u[eiéí]/.test(gr[k + 1].t)) { gr[k].t += 'u'; gr[k + 1].t = gr[k + 1].t.slice(1); }
+    var sil = [], pre = '';
+    for (k = 0; k < gr.length; k++) { var x = gr[k];
+      if (!x.v) { if (!sil.length) { pre += x.t; continue; } if (!gr[k + 1]) { sil[sil.length - 1] += x.t; continue; }
+        var t = x.t, sp; if (/u$/.test(t)) sp = t.length - 2; else if (t.length === 1) sp = 0; else if (t.length === 2) sp = INS.indexOf(t) > -1 ? 0 : 1; else sp = INS.indexOf(t.slice(-2)) > -1 ? t.length - 2 : t.length - 1;
+        sil[sil.length - 1] += t.slice(0, sp); pre = t.slice(sp); }
+      else { sil.push(pre + x.t); pre = ''; } }
+    return sil;
+  }
+  function tonica(s) { for (var i = 0; i < s.length; i++) if (/[áéíóú]/.test(s[i])) return i; if (s.length === 1) return 0; return /[aeiouns]$/.test(s.join('')) ? s.length - 2 : s.length - 1; }
+  function klatsch(t, laut) {
+    var c = KLANG.kontext(); if (!c) return;
+    var n = Math.floor(c.sampleRate * 0.12), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, laut ? 3 : 5);
+    var s = c.createBufferSource(); s.buffer = b; var f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = laut ? 900 : 1600;
+    var g = c.createGain(); g.gain.value = laut ? 1.0 : 0.35; s.connect(f); f.connect(g); g.connect(c.destination); s.start(t);
+    if (laut) { var o = c.createOscillator(), og = c.createGain(); o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(60, t + 0.15);
+      og.gain.setValueAtTime(0.6, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.18); o.connect(og); og.connect(c.destination); o.start(t); o.stop(t + 0.2); }
+  }
+  function golpe(cfg, opts) {
+    var U = T(opts), root = wurzel(), ton = rundenKlang();
+    var x = mezcla(cfg.woerter || [])[0], w = ohneArtikel(x.z), s = silabas(w), t = tonica(s), fertig = false, tiles = [];
+    root.appendChild(el('p', 'jg-task', U.gTask));
+    var hb = el('button', 'jg-big', U.gKlatsch); hb.type = 'button'; root.appendChild(hb);
+    var r = el('div', 'jg-silben'); root.appendChild(r); var fb = el('div', 'jg-fb'); root.appendChild(fb);
+    s.forEach(function (sx, i) {   // Tilde beim Raten verstecken, sonst verrät sie die Lösung
+      var b = el('button', 'jg-silbe', sx.normalize('NFD').replace(/́/g, '').normalize('NFC')); b.type = 'button'; r.appendChild(b); tiles.push(b);
+      b.addEventListener('click', function () {
+        if (fertig) return; ton.wecken(); var c = KLANG.kontext(); if (c) klatsch(c.currentTime, i === t);
+        if (i === t) { fertig = true; b.classList.add('ok'); setTimeout(ton.dur, 250);
+          var l = el('div', 'jg-loesung jg-pop'); l.innerHTML = s.map(function (y, j) { return j === t ? '<b>' + esc(y) + '</b>' : esc(y); }).join('·'); root.insertBefore(l, fb);
+          fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(x.z) + '</em>' + (x.tr ? ' = ' + esc(x.tr) : '') + (/[áéíóú]/.test(w) ? esc(U.gTilde) : ''); done(root, true); }
+        else { ton.moll(); b.classList.add('no'); wobble(b); fb.className = 'jg-fb soft'; fb.textContent = U.gFalsch; }
+      });
+    });
+    hb.addEventListener('click', function () {
+      ton.wecken(); var c = KLANG.kontext(); if (!c) return; var t0 = c.currentTime + 0.1;
+      s.forEach(function (y, i) { klatsch(t0 + i * 0.42, i === t); setTimeout(function () { tiles[i].classList.add('klopf'); setTimeout(function () { tiles[i].classList.remove('klopf'); }, 300); }, 100 + i * 420); });
+      setTimeout(function () { sprichOpt(opts, x.z); }, 100 + s.length * 420 + 250);
+    });
+    return root;
+  }
+
+  /* ── AL MERCADO: in den richtigen Korb ── cfg = { koerbe:[{titel, icon, woerter:[{z,tr}]}, {…}] } */
+  function mercado(cfg, opts) {
+    var U = T(opts), root = wurzel(), ton = rundenKlang(), K = cfg.koerbe, liste = [];
+    K.forEach(function (kb, i) { mezcla(kb.woerter).slice(0, 3).forEach(function (x) { liste.push({ x: x, k: i }); }); });
+    liste = mezcla(liste); var n = 0;
+    root.appendChild(el('p', 'jg-task', U.mTask));
+    var ware = el('div', 'jg-ware'); root.appendChild(ware);
+    var kbx = el('div', 'jg-koerbe'); root.appendChild(kbx); var fb = el('div', 'jg-fb'); root.appendChild(fb);
+    var knoepfe = K.map(function (kb, i) { var b = el('button', 'jg-korb'); b.type = 'button'; b.innerHTML = '<span style="font-size:1.6rem">' + kb.icon + '</span><b></b><div class="inhalt"></div>'; b.querySelector('b').textContent = kb.titel; kbx.appendChild(b); b.addEventListener('click', function () { waehle(i, b); }); return b; });
+    function zeige() {
+      if (n >= liste.length) { ware.textContent = '✔'; ton.dur(); fb.className = 'jg-fb'; fb.textContent = U.mFertig; done(root, true); return; }
+      var x = liste[n].x; ware.textContent = ohneArtikel(x.z); ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); sprichOpt(opts, x.z);
+    }
+    function waehle(i, b) {
+      if (n >= liste.length) return; ton.wecken(); var it = liste[n];
+      if (it.k === i) { b.querySelector('.inhalt').appendChild(el('span', null, ohneArtikel(it.x.z))); fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(ohneArtikel(it.x.z)) + '</em> = ' + esc(it.x.tr); n++; setTimeout(zeige, 600); }
+      else { ton.moll(); b.classList.add('no'); wobble(b); setTimeout(function () { b.classList.remove('no'); }, 500); fb.className = 'jg-fb soft'; fb.innerHTML = U.mFalsch(esc(ohneArtikel(it.x.z))); }
+    }
+    zeige();
+    return root;
+  }
+
+  /* ── MEMORIA: Wort ↔ Bild ── cfg = { paare:[{z,tr,bild}] ×4 } */
+  function memoria(cfg, opts) {
+    var U = T(opts), root = wurzel(), ton = rundenKlang(), karten = [], offen = [], paare = 0, sperre = false;
+    var P = (cfg.paare || []).slice(0, 4);
+    P.forEach(function (x, i) { karten.push({ i: i, typ: 'bild', x: x }); karten.push({ i: i, typ: 'wort', x: x }); });
+    karten = mezcla(karten);
+    root.appendChild(el('p', 'jg-task', U.meTask));
+    var g = el('div', 'jg-memo'); root.appendChild(g); var fb = el('div', 'jg-fb'); root.appendChild(fb);
+    function zu(k) { k.auf = false; k.b.classList.remove('auf'); k.b.innerHTML = '<span class="rueck">?</span>'; }
+    karten.forEach(function (k) {
+      var b = el('button', 'jg-mk'); b.type = 'button'; b.innerHTML = '<span class="rueck">?</span>'; g.appendChild(b); k.b = b;
+      b.addEventListener('click', function () {
+        if (sperre || k.auf || k.paar) return; ton.wecken();
+        k.auf = true; b.classList.add('auf'); b.innerHTML = k.typ === 'bild' ? '<img alt="" src="' + k.x.bild + '">' : esc(ohneArtikel(k.x.z));
+        if (k.typ === 'wort') sprichOpt(opts, k.x.z);
+        offen.push(k);
+        if (offen.length === 2) { var a = offen[0], c = offen[1]; offen = [];
+          if (a.i === c.i && a.typ !== c.typ) { a.paar = c.paar = true; a.b.classList.add('paar'); c.b.classList.add('paar'); fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(a.x.z) + '</em> = ' + esc(a.x.tr);
+            if (++paare === P.length) { ton.dur(); fb.textContent = U.meFertig; done(root, true); } }
+          else { sperre = true; setTimeout(function () { zu(a); zu(c); sperre = false; }, 900); } }
+      });
+    });
+    return root;
+  }
+
   // ── Daten-Helfer für die Räume ──
   // Eindringling: Inhaltswort (≥4 Buchstaben) aus einem ANDEREN Satz derselben Zielsprache.
   function eindringling(satz, andere, ziel) {
@@ -902,6 +1164,7 @@
   w.spikiuJuegos = {
     pinata: pinata, globos: globos, literal: literal, gemelos: gemelos,
     huerto: huerto, acrostico: acrostico, klang: KLANG,
+    encadenado: encadenado, oido: oido, golpe: golpe, mercado: mercado, memoria: memoria, silabas: silabas, tonica: tonica,
     eindringling: eindringling, woerterAus: woerterAus, mezcla: mezcla, css: ensureCss,
     spikiuSvg: SPIKIU, ABC: ABC
   };
