@@ -47,13 +47,33 @@ button:focus-visible{outline:3px solid #1f93b0;outline-offset:2px}
 .tile.wide .txt{display:flex;flex-direction:column;gap:.15rem}
 .tile.wide .zeit{position:static;order:3;margin-left:auto}
 .tile.klein{min-height:104px}
-.regal-h{font:500 .62rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin:.2rem 0 -.4rem .2rem}
-.regal{display:flex;gap:.55rem;overflow-x:auto;padding:.2rem .1rem .6rem;scrollbar-width:none}
-.rbuch{flex:none;display:flex;align-items:center;gap:.5rem;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:2px 3px 0 var(--ink);padding:.5rem .75rem;cursor:pointer}
-.rbuch .em{font-size:1.3rem}
-.rbuch b{font-size:.85rem;display:block;line-height:1.1}
-.rbuch span.n{font:500 .62rem var(--f-mono);color:var(--mid)}
-.rbuch .pill{font:800 .5rem var(--f-ui);border:1.5px solid var(--ink);border-radius:999px;padding:0 .3rem;background:var(--mustard);margin-left:.2rem}
+.regal-wand{background:#f6eedd;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.7rem .7rem 0;overflow:hidden}
+.regal-kopf{display:flex;align-items:baseline;justify-content:space-between;margin:0 .1rem .55rem}
+.regal-kopf b{font:800 1rem var(--f-ui)}
+.regal-kopf span{font:500 .6rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
+.regal{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;align-items:end;padding:0 .15rem}
+.rbuch{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.25rem;border:2px solid var(--ink);border-bottom:none;border-radius:8px 8px 3px 3px;padding:.55rem .25rem .5rem;cursor:pointer;text-align:center;min-width:0;transform-origin:bottom center;transition:transform .15s}
+.rbuch:active{transform:translateY(-4px)}
+.rbuch:before{content:'';position:absolute;left:0;right:0;top:.35rem;height:3px;background:rgba(21,22,58,.25)}
+.rbuch:after{content:'';position:absolute;left:0;right:0;bottom:.4rem;height:3px;background:rgba(21,22,58,.18)}
+.rbuch .em{font-size:1.45rem;line-height:1;margin-top:.35rem}
+.rbuch b{font:800 .7rem/1.1 var(--f-ui);hyphens:manual;-webkit-hyphens:manual}
+.rbuch .n{font:500 .56rem/1.2 var(--f-mono);color:rgba(21,22,58,.7)}
+.rbuch .pill{position:absolute;top:-.55rem;right:-.3rem;font:800 .48rem var(--f-ui);border:1.5px solid var(--ink);border-radius:999px;padding:0 .3rem;background:var(--mustard)}
+.brett{height:14px;margin:0 -.7rem;background:#c9956a;border-top:var(--ow) solid var(--ink);box-shadow:inset 0 -4px 0 #b07d52}
+.faden{display:flex;align-items:center;gap:.8rem;background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.8rem .9rem;cursor:pointer;text-align:left;width:100%}
+.faden .cap{flex:none;width:52px;height:52px;border-radius:50%;background:var(--sky);border:2px solid var(--ink);display:grid;place-items:center}
+.faden .cap svg{width:40px;height:40px}
+.faden small{display:block;font:500 .6rem var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:#1f93b0}
+.faden b{display:block;font:800 1rem/1.2 var(--f-ui);margin:.1rem 0}
+.faden span.s{font-size:.78rem;color:var(--mid);font-weight:600;line-height:1.3}
+.faden .pf{margin-left:auto;font:800 1.3rem var(--f-ui)}
+.abschnitt{font:500 .62rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin:.3rem 0 -.45rem .2rem}
+.zustand{display:flex;gap:.3rem;justify-content:center;margin:.1rem 0 .3rem}
+.zustand button{font:700 .66rem var(--f-ui);border:1.5px solid var(--ink);border-radius:999px;background:#fff;padding:.2rem .55rem;cursor:pointer}
+.zustand button.on{background:var(--ink);color:#fff}
+.tile .quelle{font:500 .58rem/1.2 var(--f-mono);color:rgba(21,22,58,.68);margin-top:.15rem}
+.tile.wide .quelle{margin-top:.1rem}
 .toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:.6rem .95rem;font-size:.88rem;font-weight:600;max-width:90vw;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
 .legende{font-size:.74rem;color:var(--mid);line-height:1.45;border-top:1.5px dashed #cfdcd4;padding-top:.7rem;margin:.4rem 0 0}
@@ -63,7 +83,8 @@ button:focus-visible{outline:3px solid #1f93b0;outline-offset:2px}
 <body>
 <div class="app">
   <div class="nav">
-    <p class="proto">Prototyp · neue Ordnung</p>
+    <p class="proto">Prototyp · neue Ordnung · zum Testen:</p>
+    <div class="zustand" id="zustand"></div>
     <div class="doors" id="doors"></div>
     <p class="sub" id="sub"></p>
   </div>
@@ -81,20 +102,22 @@ var CAPY='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="4
 /* Neue Ordnung (Leo, 11.10.): Türen nach Tätigkeit, innen nach Aufwand (≈ Minuten). */
 var TUEREN = [
  { id:'abenteuer', lb:'Abenteuer', was:'hören & sprechen', ic:icoCompass,
-   sub:'Hören und sprechen — im Gespräch mit Spikiu.',
+   sub:'Hören und sprechen — erst das Gespräch, dann der Nachklang.',
+   oben:{em:'🎭', tt:'Geführtes Gespräch', ss:'Szenen betreten, Schritt für Schritt', zeit:10, bg:'#ffd24a'},
+   nachklang:[
+    {em:'👂', tt:'Oído fino', ss:'Hör ein Wort, tipp das Bild', zeit:2, bg:'#bfe6d5', spiel:true},
+    {em:'🥁', tt:'El golpe', ss:'Wo liegt der Schlag?', zeit:2, bg:'#f7bcd8', spiel:true}
+   ],
    kacheln:[
-    {em:'👂', tt:'Oído fino', ss:'Hör ein Wort, tipp das Bild', zeit:2, bg:'#bfe6d5'},
-    {em:'🥁', tt:'El golpe', ss:'Wo liegt der Schlag?', zeit:2, bg:'#f7bcd8'},
-    {em:'🎭', tt:'Geführtes Gespräch', ss:'Szenen üben, Schritt für Schritt', zeit:10, bg:'#ffd24a'},
-    {em:'💬', tt:'Freies Gespräch', ss:'Frei reden mit Spikiu', zeit:15, bg:'#c7e89a', pill:'Premium'}
+    {em:'💬', tt:'Freies Gespräch', ss:'Frei reden mit Spikiu', zeit:15, bg:'#c7e89a', pill:'Premium', wide:true}
    ]},
  { id:'bibliothek', lb:'Bibliothek', was:'lesen & schreiben', ic:icoBook,
    sub:'Lesen und schreiben. Und dein Regal wächst hier.',
    regal:[
     {em:'🌱', tt:'Mein Buch', n:'37 Wörter'},
-    {em:'📓', tt:'Deine Lektionen', n:'3 Lektionen', pill:'Premium'},
+    {em:'📓', tt:'Deine Lek\u00adtio\u00adnen', n:'3 Lektionen', pill:'Premium'},
     {em:'🌿', tt:'Dein Garten', n:'2 Beete'},
-    {em:'🔤', tt:'Deine Akrosticha', n:'4 Stück'}
+    {em:'🔤', tt:'Deine Akros\u00adti\u00adcha', n:'4 Stück'}
    ],
    kacheln:[
     {em:'📜', tt:'Wendungen & Sprichwörter', ss:'Mit Al pie de la letra und Gemelos', zeit:3, bg:'#bfe6d5'},
@@ -106,50 +129,84 @@ var TUEREN = [
    sub:'Wörter und Spiel — kurz und leicht.',
    oben:{em:'🃏', tt:'Wortschatz', ss:'Dein Deck, mit Wiedersehen', zeit:5, bg:'#ffd0b0'},
    kacheln:[
-    {em:'🪅', tt:'Piñata', ss:'Fang den Eindringling', zeit:1, bg:'#ffe0cc'},
-    {em:'🎈', tt:'Globos', ss:'Die richtige Reihenfolge', zeit:1, bg:'#d3eef6'},
-    {em:'🧺', tt:'Al mercado', ss:'Jedes Wort in seinen Korb', zeit:2, bg:'#e9dcc0'},
-    {em:'🃏', tt:'Memoria', ss:'Wort und Bild', zeit:2, bg:'#b7c9f2'},
-    {em:'🔗', tt:'Encadenado', ss:'Wortkette mit Spikiu', zeit:5, bg:'#ffe08a'},
-    {em:'🔤', tt:'Akrostichon', ss:'Zu jedem Buchstaben ein Wort', zeit:5, bg:'#cdbdf2'},
-    {em:'🌱', tt:'Spikius Garten', ss:'Von A bis Z pflanzen', zeit:5, bg:'#c7e89a'}
+    {em:'🪅', tt:'Piñata', spiel:true, ss:'Fang den Eindringling', zeit:1, bg:'#ffe0cc'},
+    {em:'🎈', tt:'Globos', spiel:true, ss:'Die richtige Reihenfolge', zeit:1, bg:'#d3eef6'},
+    {em:'🧺', tt:'Al mercado', spiel:true, ss:'Jedes Wort in seinen Korb', zeit:2, bg:'#e9dcc0'},
+    {em:'🃏', tt:'Memoria', spiel:true, ss:'Wort und Bild', zeit:2, bg:'#b7c9f2'},
+    {em:'🔗', tt:'Encadenado', spiel:true, ss:'Wortkette mit Spikiu', zeit:5, bg:'#ffe08a'},
+    {em:'🔤', tt:'Akrostichon', spiel:true, ss:'Zu jedem Buchstaben ein Wort', zeit:5, bg:'#cdbdf2'},
+    {em:'🌱', tt:'Spikius Garten', spiel:true, ss:'Von A bis Z pflanzen', zeit:5, bg:'#c7e89a'}
    ]}
 ];
 var HEUTE = {tt:'El golpe', tuer:'abenteuer'};   // Spiel des Tages (wechselt täglich)
 
+/* DER FADEN (Vorschlag 11.10.): geführt UND frei.
+   Spikiu schlägt EINEN nächsten Schritt vor (oben im Haus) — alles andere bleibt offen.
+   Spiele nehmen DEINE Wörter (aus Szenen + Wortschatz). Hast du noch keine, zeigt
+   Spikiu die Wörter zuerst (Bild + Übersetzung) — nie kalt ins Spiel. */
+var ZUSTAENDE = {
+  neu:   {lb:'Ganz neu', faden:{k:'Spikius Vorschlag', t:'Fang im Café an', s:'Dein erstes Gespräch — Spikiu führt dich.', ziel:'Geführtes Gespräch · Im Café'},
+          quelle:'Spikiu zeigt dir die Wörter zuerst'},
+  szene: {lb:'Nach der 1. Szene', faden:{k:'Spikius Vorschlag', t:'Die Café-Wörter klingen noch', s:'Oído fino — hör sie dir noch einmal an.', ziel:'Oído fino · mit den Café-Wörtern'},
+          quelle:'mit deinen Wörtern aus dem Café'},
+  woche: {lb:'Nach einer Woche', faden:{k:'Spikius Vorschlag', t:'Ein paar Wörter wollen dich wiedersehen', s:'Wortschatz — kurz, mit Wiedersehen.', ziel:'Wortschatz · Wiedersehen'},
+          quelle:'mit deinen Wörtern'}
+};
+var zustandId='neu';
+
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
-var toastT; function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},1600);}
-function oeffnet(x){toast('Im echten Spikiu öffnet sich hier: '+x.tt.replace(/<br>/g,' '));}
+var toastT; function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},m.length>70?3600:1700);}
+function oeffnet(x){if(x.spiel&&zustandId==='neu'){toast(x.tt+': Spikiu zeigt dir zuerst die Wörter der ersten Szene — mit Bild und Übersetzung. Dann spielst du.');return;}toast('Im echten Spikiu öffnet sich hier: '+x.tt.replace(/<br>/g,' '));}
 function kachel(k,klasse){
   var b=el('button','tile'+(klasse?' '+klasse:''));b.type='button';b.style.background=k.bg||'#fff';
   b.innerHTML='<span class="zeit">≈ '+k.zeit+' Min.</span>'+(k.pill?'<span class="pill">'+k.pill+'</span>':'')+'<span class="em">'+k.em+'</span>'+(klasse==='wide'?'<span class="txt"><span class="tt"></span><span class="ss"></span></span>':'<span class="tt"></span><span class="ss"></span>');
-  b.querySelector('.tt').textContent=k.tt;b.querySelector('.ss').textContent=k.ss;b.onclick=function(){oeffnet(k);};return b;
+  b.querySelector('.tt').textContent=k.tt;b.querySelector('.ss').textContent=k.ss;if(k.spiel){var q=el('span','quelle',ZUSTAENDE[zustandId].quelle);(b.querySelector('.txt')||b).appendChild(q);}b.onclick=function(){oeffnet(k);};return b;
 }
 function zeige(id){
+  aktuelleTuer=id;
   var T=TUEREN.filter(function(x){return x.id===id;})[0];
   document.querySelectorAll('.door').forEach(function(d){d.classList.toggle('on',d.dataset.id===id);});
   document.getElementById('sub').textContent=T.sub;
   var st=document.getElementById('stage');st.innerHTML='';
   if(id==='abenteuer'){
-    var g=el('div','greet');g.innerHTML='<div class="cap">'+CAPY+'</div><h2>¡Hola, Leo! 👋</h2>';
+    var g=el('div','greet');g.innerHTML='<h2>¡Hola, Leo! 👋</h2>';
     var h=el('button','heute');h.type='button';h.innerHTML='<small>Heute</small> 🥁 '+HEUTE.tt+' ›';h.onclick=function(){toast('Spiel des Tages: '+HEUTE.tt+' (immer frei)');};
     g.appendChild(h);st.appendChild(g);
   }
+  // Der Faden: in jeder Tür derselbe EINE Vorschlag ganz oben
+  var F=ZUSTAENDE[zustandId].faden, fb=el('button','faden');fb.type='button';
+  fb.innerHTML='<span class="cap">'+CAPY+'</span><span><small></small><b></b><span class="s"></span></span><span class="pf">›</span>';
+  fb.querySelector('small').textContent=F.k;fb.querySelector('b').textContent=F.t;fb.querySelector('.s').textContent=F.s;
+  fb.onclick=function(){toast('Spikiu öffnet: '+F.ziel);};st.appendChild(fb);
   if(T.regal){
-    st.appendChild(el('p','regal-h','Dein Regal'));
-    var r=el('div','regal');T.regal.forEach(function(x){var b=el('button','rbuch');b.type='button';b.innerHTML='<span class="em">'+x.em+'</span><span><b></b><span class="n"></span></span>';b.querySelector('b').textContent=x.tt;b.querySelector('.n').textContent=x.n;if(x.pill){var p=el('span','pill',x.pill);b.querySelector('b').appendChild(p);}b.onclick=function(){oeffnet(x);};r.appendChild(b);});
-    st.appendChild(r);
+    var wand=el('div','regal-wand');
+    var kopf=el('div','regal-kopf');kopf.appendChild(el('b',null,'Dein Regal'));kopf.appendChild(el('span',null,'was du gesammelt hast'));wand.appendChild(kopf);
+    var r=el('div','regal'), FARBEN=['#c7e89a','#ffd0b0','#bfe6d5','#cdbdf2'], HOEHE=[112,100,120,104];
+    T.regal.forEach(function(x,i){var b=el('button','rbuch');b.type='button';b.style.background=FARBEN[i%4];b.style.height=HOEHE[i%4]+'px';
+      b.innerHTML='<span class="em">'+x.em+'</span><b></b><span class="n"></span>';b.querySelector('b').textContent=x.tt;b.querySelector('.n').textContent=x.n;
+      if(x.pill){b.appendChild(el('span','pill',x.pill));}b.onclick=function(){oeffnet(x);};r.appendChild(b);});
+    wand.appendChild(r);wand.appendChild(el('div','brett'));st.appendChild(wand);
   }
   var grid=el('div','grid');
   if(T.oben)grid.appendChild(kachel(T.oben,'wide'));
-  T.kacheln.forEach(function(k){grid.appendChild(kachel(k,T.id==='uebung'?'klein':''));});
+  if(T.nachklang){
+    st.appendChild(grid);
+    st.appendChild(el('p','abschnitt','Nachklang · mit deinen Wörtern'));
+    grid=el('div','grid');T.nachklang.forEach(function(k){grid.appendChild(kachel(k));});st.appendChild(grid);
+    st.appendChild(el('p','abschnitt','Frei'));grid=el('div','grid');
+  }
+  T.kacheln.forEach(function(k){grid.appendChild(kachel(k,k.wide?'wide':(T.id==='uebung'?'klein':'')));});
   st.appendChild(grid);
-  if(id==='uebung'){st.appendChild(el('p','legende','Die sieben Wortspiele stehen hier direkt, ohne Extra-Tür. Hören-Spiele (Oído fino, El golpe) wohnen jetzt im Abenteuer, die Wendungen-Spiele in der Bibliothek.'));}
-  if(id==='abenteuer'){st.appendChild(el('p','legende','In jeder Tür: kurz zuerst, lang zuletzt. „≈ Min." zeigt, wie viel Zeit du ungefähr brauchst.'));}
+  if(id==='uebung'){st.appendChild(el('p','legende','Jedes Spiel nimmt deine Wörter — aus deinen Szenen und deinem Wortschatz. Bist du ganz neu, zeigt Spikiu dir die Wörter zuerst, mit Bild und Übersetzung.'));}
+  if(id==='abenteuer'){st.appendChild(el('p','legende','Oben steht immer EIN Vorschlag von Spikiu — der Faden. Alles andere bleibt offen. Im Abenteuer gilt der Weg: erst das Gespräch, dann der Nachklang, dann frei. In Bibliothek und Übung: kurz zuerst. „≈ Min." ist nur eine Zeitschätzung.'));}
   scrollTo(0,0);
 }
 var dw=document.getElementById('doors');
 TUEREN.forEach(function(T){var b=el('button','door');b.type='button';b.dataset.id=T.id;b.innerHTML='<span class="ic">'+T.ic()+'</span><span class="lb"></span><span class="was"></span>';b.querySelector('.lb').textContent=T.lb;b.querySelector('.was').textContent=T.was;b.onclick=function(){zeige(T.id);};dw.appendChild(b);});
+var aktuelleTuer='abenteuer';
+var zw=document.getElementById('zustand');
+Object.keys(ZUSTAENDE).forEach(function(k){var b=el('button',null,ZUSTAENDE[k].lb);b.type='button';b.dataset.z=k;b.onclick=function(){zustandId=k;zw.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.dataset.z===k);});zeige(aktuelleTuer);};zw.appendChild(b);});
+zw.querySelector('button').classList.add('on');
 zeige('abenteuer');
 </script>
 
