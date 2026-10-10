@@ -20,6 +20,17 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 > Noch offen: Token-freie Aktivitäten (Geführtes Gespräch, Gym, Wendungen & Sprichwörter, Lernweg, Lernroman, Spiele) entweder als
 > **sehr günstiges Abo** oder **gratis für begrenzte Zeit**. Erst Kosten prüfen, dann entscheidet Leo.
 
+Stand: 10.10.2026 · HAUS + MEIN + BOTTOM-NAV DREISPRACHIG (**Leo: „Ataca!! Claro!!"** — Folge des Assessments: wer es auf Englisch macht, landete danach im Deutschen)
+
+- **Regel für die Oberflächensprache** (gilt jetzt für `haus.html`, `mein.html`, `bottomnav.js`): `spikiu_user.profile.muttersprache` → sonst `spikiu_lang` → sonst `de`. Lerninhalte bleiben in der Zielsprache.
+- `haus.html`: Wörterbuch `HUI.de/es/en` + `H()`. Übersetzt: drei Türen + Untertitel, Abenteuer-Kacheln (Geführtes/Freies Gespräch, „gratis"), „Zuletzt …"/„N Wörter gesammelt", Bibliothek-Kacheln, Übungs-Kacheln, ganzes Buch-Overlay (Titel, Cover, Deine Wörter, leer, Streak-Seite, aria-Labels), `<html lang>`. Namen wie auf Abo-Seite/Landing (Giros y proverbios · Taller de lectura/escritura · Tus lecciones · Lernroman bleibt Lernroman).
+- Begrüßung „¡Hola, X! 👋" ist jetzt in der **Zielsprache** (¡Hola/Hallo/Hi/Γεια), passend zu Spikius Stimme unten — vorher immer Spanisch.
+- `bottomnav.js`: Hilfe/Mein → Ayuda/Perfil · Help/Profile.
+- `mein.html`: alle Zeilen, Toasts, Seitentitel dreisprachig (`data-t`-Attribute + `MT`-Wörterbuch).
+- **Bewusst NICHT übersetzt:** in `haus.html` die tote 7-Schritte-Kette (`advBegruessung` … `advAbschluss`), `readRoman`, `uebKarte` — von keiner Tür erreichbar, mit Hinweis im Code.
+- Geprüft: Headless-Chromium 390 px, Profile en→de, es→en, de→es: Haus (alle drei Türen), Buch bis zur letzten Seite, Bottom-Nav, Mein. Keine JS-Fehler; Node-Syntax aller Inline-Scripts + `bottomnav.js`.
+- **Offen:** Räume hinter den Kacheln (gefuehrt, szene, learnroman, proverbios, lektionen, gym, taller, schreibwerkstatt, spiele, dashboard#lernweg) noch nicht auf diese Sprachregel geprüft.
+
 Stand: 10.10.2026 · ASSESSMENT DREISPRACHIG + SPRACH-SCROLL-FENSTER (**Leo: „Si la persona elige español, el assessment tiene que ir en español"** · „cambia la elección de las lenguas a una ventana para hacer scroll")
 
 - Befund: `assessment.html` war fest auf Deutsch verdrahtet (Kommentar „Voll-i18n = spätere Etappe") und fragte die Muttersprache erst in Schritt 4.
@@ -29,7 +40,7 @@ Stand: 10.10.2026 · ASSESSMENT DREISPRACHIG + SPRACH-SCROLL-FENSTER (**Leo: „
 - **Scroll-Fenster** für Mutter- und Zielsprache (`.lang-frame`/`.lang-window`, max. ~4 Zeilen sichtbar, Verlaufsschatten oben/unten zeigt „da ist mehr", gewählte Sprache wird beim Zurückkommen in die Mitte gescrollt).
 - **Vertrag unverändert:** `spikiu_user` (nativeLang 'Deutsch'/'Español'/'English', targetLang 'Spanish'/…, profile.muttersprache/zielsprache/koennen …), `spikiu_lang`, `spikiu_pfad` exakt wie zuvor.
 - Geprüft: Headless-Chromium (390 px) en → de-Ziel komplett durch, dann zurück und auf es umgewählt; Profil identisch, keine JS-Fehler.
-- Offen (unverändert): `haus.html` und `mein.html` noch einsprachig deutsch — der Lerner landet nach dem Assessment wieder im Deutschen.
+- ~~Offen: `haus.html` und `mein.html` noch einsprachig deutsch~~ → erledigt, siehe Eintrag darüber.
 
 Stand: 09.10.2026 · ANGEBOT ÜBERALL ANGEGLICHEN (**Leo: „Alinea todo, mi cuate!!"**)
 

@@ -393,6 +393,47 @@ function icoHoer(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100
 function icoRolle(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><path d="M9 8 h14 v7 a7 9 0 0 1 -14 0 z" fill="#ffd2c2" stroke="#20271f" stroke-width="2.4" stroke-linejoin="round"/><circle cx="13" cy="13" r="1.4" fill="#20271f"/><circle cx="19" cy="13" r="1.4" fill="#20271f"/><path d="M12.5 17.5 q3.5 2.5 7 0" fill="none" stroke="#20271f" stroke-width="2" stroke-linecap="round"/></svg>';}
 function icoStar(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100%"><path d="M16 5 l3.1 6.4 7 .9 -5.1 4.9 1.3 7 -6.3 -3.5 -6.3 3.5 1.3 -7 -5.1 -4.9 7 -.9 z" fill="#ffd24a" stroke="#20271f" stroke-width="2.2" stroke-linejoin="round"/></svg>';}
 
+/* ===== Oberflächen-Sprache (10.10.2026) =====
+   Das Haus spricht die MUTTERSPRACHE des Lerners (profile.muttersprache aus dem
+   Assessment), sonst spikiu_lang, sonst Deutsch. Leo, 10.10.: Wer das Assessment
+   auf Englisch macht, darf danach nicht im Deutschen landen.
+   Neue Sprache = ein Block in HUI. Lerninhalte (Zielsprache) bleiben, wie sie sind. */
+function hausSprache(){
+ try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache;if(m==='de'||m==='es'||m==='en')return m;}catch(e){}
+ try{var l=localStorage.getItem('spikiu_lang');if(l==='de'||l==='es'||l==='en')return l;}catch(e){}
+ return 'de';}
+var HL=hausSprache();
+var HUI={
+ de:{d1:'Abenteuer',d1s:'Dein Sprachabenteuer mit Spikiu — Schritt für Schritt.',d2:'Bibliothek',d2s:'Lies mit mir. Und dein Buch wächst hier.',d3:'Übung',d3s:'Ein paar Wörter, ganz ruhig.',
+  gef:'Geführtes<br>Gespräch',gefs:'Szenen üben',frei:'Freies<br>Gespräch',freis:'Frei reden',gratis:'gratis',
+  zuletzt:function(t){return 'Zuletzt: «'+t+'» — weiter?';},gesammelt:function(n){return 'Du hast schon '+n+' '+(n===1?'Wort':'Wörter')+' gesammelt. 🍃';},
+  roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen & Sprichwörter',wends:'Sprache & Kultur',lek:'Deine<br>Lektionen',buch:'Mein Buch',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
+  wort:'Wortschatz',worts:'Dein Deck',lese:'Lesewerkstatt',leses:'Leseverstehen',schreib:'Schreib-<br>werkstatt',schreibs:'Schreiben',spiele:'Spiele',spieles:'Kurz und leicht',
+  zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n+'s Buch';},buchSub:'Was du betreten hast — Seite für Seite.',geschrieben:'geschrieben von Spikiu',
+  mitgenommen:'Mitgenommen',deineW:'Deine Wörter',leer:'Noch leer',leerSub:'Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.',
+  hook:'Kein Zertifikat.<br>Dein Buch.',hookSub:'Andere sammeln Streaks. Bei Spikiu wächst ein Buch, das nur dir gehört — Seite für Seite, in deinem Tempo.',druck:'Gedruckte Edition · bald'},
+ es:{d1:'Aventura',d1s:'Tu aventura de idiomas con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Lee conmigo. Y aquí crece tu libro.',d3:'Práctica',d3s:'Unas cuantas palabras, con calma.',
+  gef:'Conversación<br>guiada',gefs:'Practicar escenas',frei:'Conversación<br>libre',freis:'Hablar libremente',gratis:'gratis',
+  zuletzt:function(t){return 'Lo último: «'+t+'». ¿Seguimos?';},gesammelt:function(n){return 'Ya has juntado '+n+' '+(n===1?'palabra':'palabras')+'. 🍃';},
+  roman:'Lernroman',romans:'Lectura inmersiva',wend:'Giros y proverbios',wends:'Lengua y cultura',lek:'Tus<br>lecciones',buch:'Mi libro',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
+  wort:'Vocabulario',worts:'Tu mazo',lese:'Taller de lectura',leses:'Comprensión lectora',schreib:'Taller de<br>escritura',schreibs:'Escribir',spiele:'Juegos',spieles:'Cortos y ligeros',
+  zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return 'El libro de '+n;},buchSub:'Lo que has recorrido, página a página.',geschrieben:'escrito por Spikiu',
+  mitgenommen:'Lo que te llevas',deineW:'Tus palabras',leer:'Todavía vacío',leerSub:'Habla conmigo o practica unas palabras, y este libro se escribe solo.',
+  hook:'Sin certificado.<br>Tu libro.',hookSub:'Otros juntan rachas. En Spikiu crece un libro que es solo tuyo, página a página, a tu ritmo.',druck:'Edición impresa · pronto'},
+ en:{d1:'Adventure',d1s:'Your language adventure with Spikiu — step by step.',d2:'Library',d2s:'Read with me. Your book grows here.',d3:'Practice',d3s:'A few words, nice and calm.',
+  gef:'Guided<br>conversation',gefs:'Practice scenes',frei:'Free<br>conversation',freis:'Talk freely',gratis:'free',
+  zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(n){return 'You’ve already collected '+n+' '+(n===1?'word':'words')+'. 🍃';},
+  roman:'Lernroman',romans:'Immersive reading',wend:'Phrases & Proverbs',wends:'Language & culture',lek:'Your<br>lessons',buch:'My book',woerter:function(n){return n+' '+(n===1?'word':'words');},
+  wort:'Vocabulary',worts:'Your deck',lese:'Reading Workshop',leses:'Reading comprehension',schreib:'Writing<br>Workshop',schreibs:'Writing',spiele:'Games',spieles:'Short and light',
+  zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s book';},buchSub:'Where you’ve been — page by page.',geschrieben:'written by Spikiu',
+  mitgenommen:'Taken with you',deineW:'Your words',leer:'Still empty',leerSub:'Talk with me or practise a few words — and this book writes itself.',
+  hook:'No certificate.<br>Your book.',hookSub:'Others collect streaks. With Spikiu, a book grows that belongs only to you — page by page, at your pace.',druck:'Printed edition · soon'}
+};
+function H(){return HUI[HL];}
+/* Begrüßung in der ZIELsprache (wie Spikius Stimme unten), nicht immer Spanisch. */
+function hallo(){var zl='es';try{zl=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).zielsprache||'es';}catch(e){}
+ return ({es:'¡Hola',de:'Hallo',en:'Hi',el:'Γεια'})[zl]||'¡Hola';}
+
 /* ===== Zustand ===== */
 var NAME='',RED=matchMedia('(prefers-reduced-motion:reduce)').matches;
 var keptWords=[],pages=[],CUR='eintauchen';
@@ -420,9 +461,9 @@ function vorname(){try{var n=(JSON.parse(localStorage.getItem('spikiu_user')||'{
 function letzteAktivitaet(){
  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');
   var L=(u.lessons||[]).slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
-  if(L.length){var t=(L[0].lesson&&L[0].lesson.title)||L[0].topic||L[0].thema;if(t)return 'Zuletzt: «'+kEsc(t)+'» — weiter?';}
+  if(L.length){var t=(L[0].lesson&&L[0].lesson.title)||L[0].topic||L[0].thema;if(t)return H().zuletzt(kEsc(t));}
  }catch(e){}
- try{var b=JSON.parse(localStorage.getItem('spikiu_buch')||'[]');if(b.length)return 'Du hast schon '+b.length+' '+(b.length===1?'Wort':'Wörter')+' gesammelt. 🍃';}catch(e){}
+ try{var b=JSON.parse(localStorage.getItem('spikiu_buch')||'[]');if(b.length)return H().gesammelt(b.length);}catch(e){}
  return '';
 }
 function tileEl(it){var b=document.createElement('button');b.className='tile'+(it.cls?' '+it.cls:'');
@@ -464,9 +505,9 @@ function showPop(el,txt){var p=document.getElementById('pop');p.innerHTML='<b>'+
 
 /* ===== Navigation / Türen ===== */
 var DOORS=[
- {id:'eintauchen',ic:icoCompass,lb:'Abenteuer',sub:'Dein Sprachabenteuer mit Spikiu — Schritt für Schritt.'},
- {id:'bibliothek',ic:icoBook,lb:'Bibliothek',sub:'Lies mit mir. Und dein Buch wächst hier.'},
- {id:'uebung',ic:icoCard,lb:'Übung',sub:'Ein paar Wörter, ganz ruhig.'}
+ {id:'eintauchen',ic:icoCompass,lb:H().d1,sub:H().d1s},
+ {id:'bibliothek',ic:icoBook,lb:H().d2,sub:H().d2s},
+ {id:'uebung',ic:icoCard,lb:H().d3,sub:H().d3s}
 ];
 function buildNav(){var d=document.getElementById('doors');d.innerHTML='';
  DOORS.forEach(function(D){var b=document.createElement('button');b.className='door';b.id='door-'+D.id;
@@ -480,6 +521,9 @@ function loadRoom(id){CUR=id;try{sessionStorage.setItem('spk_haus_tuer',id);}cat
  if(id==='bibliothek')roomBibliothek();
  if(id==='uebung')roomUebung();}
 
+/* HINWEIS 10.10.2026: Die 7-Schritte-Kette (advBegruessung … advAbschluss), readRoman und
+   uebKarte sind von keiner Tür mehr erreichbar und wurden NICHT übersetzt (nur Deutsch).
+   Wer sie wiederbelebt, holt ihre Texte zuerst in HUI. */
 /* ===== RAUM: ABENTEUER — 7 Schritte (Begrüßung→Wörter→Aussprache→Sätze→Hören→Rollenspiel→Abschluss) ===== */
 var STEPS=[{ic:icoGreet,l:'Begrüßung'},{ic:icoWords,l:'Neue Wörter'},{ic:icoPron,l:'Aussprache'},{ic:icoSatz,l:'Sätze'},{ic:icoHoer,l:'Hörverständnis'},{ic:icoRolle,l:'Rollenspiel'},{ic:icoStar,l:'Abschluss'}];
 function stepsBar(idx){var w=document.createElement('div');w.className='steps';
@@ -516,13 +560,13 @@ var THEMES={
 };
 /* 0 · Begrüßung */
 function roomEintauchen(){
- kacheln({greet:{title:'¡Hola'+(vorname()?', '+vorname():'')+'! 👋',kr:letzteAktivitaet()},layout:'two',items:[
-  {em:'🎭',tt:'Geführtes<br>Gespräch',ss:'Szenen üben',pill:'gratis',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
+ kacheln({greet:{title:hallo()+(vorname()?', '+kEsc(vorname()):'')+'! 👋',kr:letzteAktivitaet()},layout:'two',items:[
+  {em:'🎭',tt:H().gef,ss:H().gefs,pill:H().gratis,pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
   /* 01.09.2026: von chat.html auf szene.html umgehängt. Die Szene ist der
      neue Raum — Aufgaben aus der Datenbank, null Token im Gespräch, ein
      Aufruf am Ende. chat.html bleibt vorerst liegen als Rückweg, bis alle
      drei Sprachen durchgetestet sind. */
-  {em:'💬',tt:'Freies<br>Gespräch',ss:'Frei reden',pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
+  {em:'💬',tt:H().frei,ss:H().freis,pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
  ]});
 }
 /* TOT — wird nirgends aufgerufen (geprüft 01.09.2026). Steht nur noch da,
@@ -616,10 +660,10 @@ function addPage(key){var p=THEMES[key].page;pages.push({ch:p.ch,title:p.title,b
 /* ===== RAUM: BIBLIOTHEK ===== */
 function roomBibliothek(){
  kacheln({layout:'four',items:[
-  {em:'📖',tt:'Lernroman',ss:'Immersiv lesen',bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
-  {em:'📜',tt:'Wendungen & Sprichwörter',ss:'Sprache & Kultur',bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
-  {em:'📓',tt:'Deine<br>Lektionen',pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
-  {em:'🌱',tt:'Mein Buch',ss:readBuch().length+' Wörter',bg:'#c7e89a',go:renderBook}
+  {em:'📖',tt:H().roman,ss:H().romans,bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
+  {em:'📜',tt:H().wend,ss:H().wends,bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
+  {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
+  {em:'🌱',tt:H().buch,ss:H().woerter(readBuch().length),bg:'#c7e89a',go:renderBook}
  ]});}
 function readRoman(){
  var c=document.createElement('div');c.className='tool read';
@@ -652,17 +696,17 @@ function bkChap(p,n,neu){var h='';if(neu)h+='<span class="bneu">✷ neu</span><b
  h+='<div class="beyebrow">'+p.ch+'</div><div class="bptitle">'+p.title+'</div>';
  h+='<div class="bpbody">'+p.body+'</div>'+bkPhrases(p.keep)+bkNote(p.note);
  h+='<div class="bpnum">Seite '+n+' · '+pages.length+'</div>';return h;}
-function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div><h2>'+NAME+'s Buch</h2>'+
- '<div class="bsub">Was du betreten hast — Seite für Seite.</div>'+
- '<div class="bby"><span class="bcap">'+capy()+'</span>geschrieben von Spikiu</div>'+
- '<div class="bspine">'+readBuch().length+' Wörter</div></div>';}
-function bkWords(){var W=readBuch().slice().reverse();var h='<div class="beyebrow">Mitgenommen</div><div class="bptitle">Deine Wörter</div><div class="bwords">';
- W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(bkTr(e)||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="Vorlesen">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
-function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">Noch leer</h2>'+
- '<div class="bsub">Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.</div></div>';}
-function bkHook(){return '<div class="bhook"><div class="bbig">Kein Zertifikat.<br>Dein Buch.</div>'+
- '<div class="bhsub">Andere sammeln Streaks. Bei Spikiu wächst ein Buch, das nur dir gehört — Seite für Seite, in deinem Tempo.</div>'+
- '<div class="bprint">Gedruckte Edition · bald</div></div>';}
+function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div><h2>'+H().buchVon(kEsc(vorname()||NAME))+'</h2>'+
+ '<div class="bsub">'+H().buchSub+'</div>'+
+ '<div class="bby"><span class="bcap">'+capy()+'</span>'+H().geschrieben+'</div>'+
+ '<div class="bspine">'+H().woerter(readBuch().length)+'</div></div>';}
+function bkWords(){var W=readBuch().slice().reverse();var h='<div class="beyebrow">'+H().mitgenommen+'</div><div class="bptitle">'+H().deineW+'</div><div class="bwords">';
+ W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(bkTr(e)||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="'+H().vorlesen+'">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
+function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">'+H().leer+'</h2>'+
+ '<div class="bsub">'+H().leerSub+'</div></div>';}
+function bkHook(){return '<div class="bhook"><div class="bbig">'+H().hook+'</div>'+
+ '<div class="bhsub">'+H().hookSub+'</div>'+
+ '<div class="bprint">'+H().druck+'</div></div>';}
 function bkInner(pg){if(pg.k==='cover')return bkCover();if(pg.k==='chap')return bkChap(pg.p,pg.n,pg.neu);
  if(pg.k==='words')return bkWords();if(pg.k==='empty')return bkEmpty();if(pg.k==='hook')return bkHook();return '';}
 function bookPage(dir){var P=bookPages();bookIdx=Math.max(0,Math.min(P.length-1,bookIdx));
@@ -673,11 +717,11 @@ function bookPage(dir){var P=bookPages();bookIdx=Math.max(0,Math.min(P.length-1,
  document.getElementById('bnext').disabled=bookIdx===P.length-1;
  pg.querySelectorAll('.spk').forEach(function(sp){sp.onclick=function(){say(sp.dataset.es);};});}
 function renderBook(){bookIdx=0;var ov=document.getElementById('bookov');
- ov.innerHTML='<div class="bkhead"><button class="bkx" id="bkx" aria-label="zurück">‹</button><span class="bktitle">Mein Buch</span></div>'+
+ ov.innerHTML='<div class="bkhead"><button class="bkx" id="bkx" aria-label="'+H().zurueck+'">‹</button><span class="bktitle">'+H().buch+'</span></div>'+
   '<div class="bkview"><div class="bpage" id="bpage"></div></div>'+
-  '<div class="bkflip"><button class="navc" id="bprev" aria-label="zurück">‹</button>'+
+  '<div class="bkflip"><button class="navc" id="bprev" aria-label="'+H().zurueck+'">‹</button>'+
   '<span class="bkcnt" id="bcnt"></span>'+
-  '<button class="navc" id="bnext" aria-label="weiter">›</button></div>';
+  '<button class="navc" id="bnext" aria-label="'+H().weiter+'">›</button></div>';
  ov.classList.add('open');bookPage(0);
  document.getElementById('bkx').onclick=closeBook;
  document.getElementById('bprev').onclick=function(){if(bookIdx>0){bookIdx--;bookPage(-1);}};
@@ -697,10 +741,10 @@ window.addEventListener('keydown',function(e){var ov=document.getElementById('bo
 var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
 function roomUebung(){
  kacheln({layout:'four',items:[
-  {em:'🃏',tt:'Wortschatz',ss:'Dein Deck',bg:'#ffd0b0',go:function(){location.href='gym.html';}},
-  {em:'📖',tt:'Lesewerkstatt',ss:'Leseverstehen',pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
-  {em:'✍️',tt:'Schreib-<br>werkstatt',ss:'Schreiben',pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}},
-  {em:'🪅',tt:'Spiele',ss:'Kurz und leicht',bg:'#ffe08a',go:function(){location.href='spiele.html';}}
+  {em:'🃏',tt:H().wort,ss:H().worts,bg:'#ffd0b0',go:function(){location.href='gym.html';}},
+  {em:'📖',tt:H().lese,ss:H().leses,pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
+  {em:'✍️',tt:H().schreib,ss:H().schreibs,pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}},
+  {em:'🪅',tt:H().spiele,ss:H().spieles,bg:'#ffe08a',go:function(){location.href='spiele.html';}}
  ]});}
 function uebKarte(i){
  if(i>=UWORDS.length){
@@ -741,6 +785,7 @@ function enterHouse(){document.getElementById('welcome').classList.remove('activ
 
 document.getElementById('wbig').innerHTML=capyBig();var _wc=document.querySelector('#wbig svg');if(_wc&&window.spkCapyAlive){window.spkCapyAlive(_wc,{tapTarget:document.getElementById('wbig')});}
 document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')submitName();});
+document.documentElement.lang=HL;
 (function boot(){
  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'null');
   if(u&&u.name){NAME=u.name;enterHouse();return;}}catch(e){}

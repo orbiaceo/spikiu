@@ -74,11 +74,19 @@
     }
 
     var active = (document.body.getAttribute('data-nav') || '');
+    /* Beschriftung in der Muttersprache (10.10.2026): profile.muttersprache → spikiu_lang → de. */
+    var ml = 'de';
+    try{ var mu = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile || {}).muttersprache;
+      var gl = localStorage.getItem('spikiu_lang');
+      ml = ['de','es','en'].indexOf(mu) > -1 ? mu : (['de','es','en'].indexOf(gl) > -1 ? gl : 'de'); }catch(e){}
+    var LB = { de:{ hilfe:'Hilfe', mein:'Mein', nav:'Hauptnavigation' },
+               es:{ hilfe:'Ayuda', mein:'Perfil', nav:'Navegación principal' },
+               en:{ hilfe:'Help',  mein:'Profile', nav:'Main navigation' } }[ml];
     slot.innerHTML =
-      '<nav class="spk-bnav" role="navigation" aria-label="Hauptnavigation">'
-      + '<button class="spk-tab' + (active==='hilfe'?' act':'') + '" data-go="hilfe"><span class="tic">❓</span><span>Hilfe</span></button>'
+      '<nav class="spk-bnav" role="navigation" aria-label="' + LB.nav + '">'
+      + '<button class="spk-tab' + (active==='hilfe'?' act':'') + '" data-go="hilfe"><span class="tic">❓</span><span>' + LB.hilfe + '</span></button>'
       + '<button class="spk-tab center" data-go="spikiu" aria-label="Spikiu"><span class="ball">' + CAPY + '</span><span class="lbl">Spikiu</span></button>'
-      + '<button class="spk-tab' + (active==='mein'?' act':'') + '" data-go="mein"><span class="tic">👤</span><span>Mein</span></button>'
+      + '<button class="spk-tab' + (active==='mein'?' act':'') + '" data-go="mein"><span class="tic">👤</span><span>' + LB.mein + '</span></button>'
       + '</nav>';
 
     var ZIEL = { hilfe:'faq.html', mein:'mein.html' };

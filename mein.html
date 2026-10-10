@@ -43,7 +43,7 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
 .rnav .rtitle{font:800 1.05rem 'DM Sans',sans-serif;color:#15163a}
 </style></head>
 <body>
-<header class="rnav"><button class="back" onclick="location.href='haus.html'" aria-label="zurück">‹</button><div class="rtitle">Mein</div></header>
+<header class="rnav"><button class="back" onclick="location.href='haus.html'" aria-label="zurück" data-ta="back">‹</button><div class="rtitle" data-t="title">Mein</div></header>
 <div class="frame">
   
   <div class="body">
@@ -53,27 +53,42 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
       <div class="uc-mail" id="umail">—</div>
     </div>
 
-    <div class="sec-lbl">Lernen</div>
+    <div class="sec-lbl" data-t="lernen">Lernen</div>
     <div class="rowcard">
-      <button class="row" data-go="dashboard.html#lernweg"><span class="ic" style="background:var(--sage)">🌱</span><span class="rl"><span class="rt">Lernweg</span><span class="rs">Dein Weg — was als Nächstes wächst</span></span><span class="chev">›</span></button>
+      <button class="row" data-go="dashboard.html#lernweg"><span class="ic" style="background:var(--sage)">🌱</span><span class="rl"><span class="rt" data-t="weg">Lernweg</span><span class="rs" data-t="wegs">Dein Weg — was als Nächstes wächst</span></span><span class="chev">›</span></button>
     </div>
 
-    <div class="sec-lbl">Konto</div>
+    <div class="sec-lbl" data-t="konto">Konto</div>
     <div class="rowcard">
-      <button class="row" data-go="spikiu-products.html"><span class="ic" style="background:var(--mustard)">✦</span><span class="rl"><span class="rt">Abonnement</span><span class="rs">Dein Spikiu-Abo verwalten</span></span><span class="tag">Aktiv</span></button>
-      <button class="row" data-soon="Einstellungen kommen bald"><span class="ic" style="background:#fff">⚙️</span><span class="rl"><span class="rt">Einstellungen</span><span class="rs">Sprache, Muttersprache, Ton, Datenschutz</span></span><span class="chev">›</span></button>
+      <button class="row" data-go="spikiu-products.html"><span class="ic" style="background:var(--mustard)">✦</span><span class="rl"><span class="rt" data-t="abo">Abonnement</span><span class="rs" data-t="abos">Dein Spikiu-Abo verwalten</span></span><span class="tag" data-t="aktiv">Aktiv</span></button>
+      <button class="row" data-soon="Einstellungen kommen bald" data-ts="einstSoon"><span class="ic" style="background:#fff">⚙️</span><span class="rl"><span class="rt" data-t="einst">Einstellungen</span><span class="rs" data-t="einsts">Sprache, Muttersprache, Ton, Datenschutz</span></span><span class="chev">›</span></button>
     </div>
 
-    <div class="sec-lbl">Mehr</div>
+    <div class="sec-lbl" data-t="mehr">Mehr</div>
     <div class="rowcard">
-      <button class="row" data-soon="Über Spikiu & Hilfe kommen bald"><span class="ic" style="background:#fff">🐾</span><span class="rl"><span class="rt">Über Spikiu & Hilfe</span></span><span class="chev">›</span></button>
-      <button class="row" id="logout"><span class="ic" style="background:#fff">↩︎</span><span class="rl"><span class="rt" style="color:var(--terra)">Abmelden</span></span></button>
+      <button class="row" data-soon="Über Spikiu & Hilfe kommen bald" data-ts="hilfeSoon"><span class="ic" style="background:#fff">🐾</span><span class="rl"><span class="rt" data-t="hilfe">Über Spikiu & Hilfe</span></span><span class="chev">›</span></button>
+      <button class="row" id="logout"><span class="ic" style="background:#fff">↩︎</span><span class="rl"><span class="rt" style="color:var(--terra)" data-t="abmelden">Abmelden</span></span></button>
     </div>
   </div>
   
 </div>
 <div class="toast" id="toast"></div>
 <script>
+/* ===== Sprache (10.10.2026): Muttersprache des Lerners → spikiu_lang → de ===== */
+var ML=(function(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache;if(['de','es','en'].indexOf(m)>-1)return m;}catch(e){}
+ try{var l=localStorage.getItem('spikiu_lang');if(['de','es','en'].indexOf(l)>-1)return l;}catch(e){}return 'de';})();
+var MT={
+ de:{doc:'Spikiu · Mein',title:'Mein',back:'zurück',lernen:'Lernen',weg:'Lernweg',wegs:'Dein Weg — was als Nächstes wächst',konto:'Konto',abo:'Abonnement',abos:'Dein Spikiu-Abo verwalten',aktiv:'Aktiv',
+  einst:'Einstellungen',einsts:'Sprache, Muttersprache, Ton, Datenschutz',einstSoon:'Einstellungen kommen bald',mehr:'Mehr',hilfe:'Über Spikiu & Hilfe',hilfeSoon:'Über Spikiu & Hilfe kommen bald',abmelden:'Abmelden',abmeldenSoon:'Abmelden — bald verfügbar',du:'Du'},
+ es:{doc:'Spikiu · Perfil',title:'Perfil',back:'atrás',lernen:'Aprender',weg:'Ruta de aprendizaje',wegs:'Tu camino: lo que crece después',konto:'Cuenta',abo:'Suscripción',abos:'Gestiona tu suscripción a Spikiu',aktiv:'Activa',
+  einst:'Ajustes',einsts:'Idioma, lengua materna, tono, privacidad',einstSoon:'Los ajustes llegan pronto',mehr:'Más',hilfe:'Sobre Spikiu y ayuda',hilfeSoon:'«Sobre Spikiu y ayuda» llega pronto',abmelden:'Cerrar sesión',abmeldenSoon:'Cerrar sesión: disponible pronto',du:'Tú'},
+ en:{doc:'Spikiu · Profile',title:'Profile',back:'back',lernen:'Learning',weg:'Learning path',wegs:'Your path — what grows next',konto:'Account',abo:'Subscription',abos:'Manage your Spikiu subscription',aktiv:'Active',
+  einst:'Settings',einsts:'Language, native language, tone, privacy',einstSoon:'Settings coming soon',mehr:'More',hilfe:'About Spikiu & help',hilfeSoon:'About Spikiu & help coming soon',abmelden:'Log out',abmeldenSoon:'Log out — coming soon',du:'You'}
+}[ML];
+document.documentElement.lang=ML; document.title=MT.doc;
+document.querySelectorAll('[data-t]').forEach(function(e){ e.textContent=MT[e.getAttribute('data-t')]; });
+document.querySelectorAll('[data-ta]').forEach(function(e){ e.setAttribute('aria-label',MT[e.getAttribute('data-ta')]); });
+document.querySelectorAll('[data-ts]').forEach(function(e){ e.setAttribute('data-soon',MT[e.getAttribute('data-ts')]); });
 var CAPY='<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="46" rx="24" ry="20" fill="#c9956a"/><ellipse cx="40" cy="30" rx="17" ry="15" fill="#c9956a"/><ellipse cx="28" cy="17" rx="5" ry="5" fill="#b8845a"/><ellipse cx="52" cy="17" rx="5" ry="5" fill="#b8845a"/><ellipse cx="40" cy="36" rx="9" ry="7" fill="#b8845a"/><ellipse cx="40" cy="34" rx="3.4" ry="2.4" fill="#8b5e3c"/><circle cx="36.3" cy="34.2" r="1.1" fill="#6b4226"/><circle cx="43.7" cy="34.2" r="1.1" fill="#6b4226"/><circle cx="32" cy="27" r="2.7" fill="#3d2b1f"/><circle cx="48" cy="27" r="2.7" fill="#3d2b1f"/><circle cx="33" cy="26.2" r=".9" fill="#fff"/><circle cx="49" cy="26.2" r=".9" fill="#fff"/><path d="M35 40 Q40 43 45 40" stroke="#8b5e3c" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="64" rx="4.5" ry="3" fill="#b8845a"/><ellipse cx="38" cy="66" rx="4.5" ry="3" fill="#b8845a"/><ellipse cx="50" cy="64" rx="4.5" ry="3" fill="#b8845a"/></svg>';
 function toast(t){var el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('on');},1600);}
 (function(){
@@ -83,14 +98,14 @@ function toast(t){var el=document.getElementById('toast');el.textContent=t;el.cl
     premium=(u.plan==='premium')||(u.abo==='premium')||(u.premium===true)||(p.plan==='premium');
   }catch(e){}
   document.getElementById('mono').textContent=(String(name).trim()[0]||'S');
-  document.getElementById('umail').textContent=email||name||'Du';
+  document.getElementById('umail').textContent=email||name||MT.du;
   var b=document.getElementById('aboBadge');
   b.textContent=premium?'Premium':'Free';
   b.classList.add(premium?'is-premium':'is-free');
 })();
 document.querySelectorAll('.row[data-go]').forEach(function(b){ b.onclick=function(){ location.href=b.getAttribute('data-go'); }; });
 document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=function(){ toast(b.getAttribute('data-soon')); }; });
-document.getElementById('logout').onclick=function(){ toast('Abmelden — bald verfügbar'); };
+document.getElementById('logout').onclick=function(){ toast(MT.abmeldenSoon); };
 </script>
 <script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 </body></html>
