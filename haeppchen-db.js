@@ -595,6 +595,101 @@
     }
   };
 
+  /* Übersetzung jedes Hörsatzes in die Muttersprachen (Leo, 12.10.: „die Lösung am Ende
+     in der Übersetzung — das Sehen des Satzes verstärkt den Lerneffekt").
+     Treu zum GEHÖRTEN Satz (nicht zur Parallelfassung der anderen Sprache). */
+  var HOER_UE = {
+    'Tengo una reserva.': { de: 'Ich habe eine Reservierung.', en: 'I have a reservation.' },
+    'Una habitación con desayuno para dos noches.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', en: 'A room with breakfast for two nights.' },
+    'Ich habe eine Reservierung.': { es: 'Tengo una reserva.', en: 'I have a reservation.' },
+    'Ein Zimmer mit Frühstück für zwei Nächte.': { es: 'Una habitación con desayuno para dos noches.', en: 'A room with breakfast for two nights.' },
+    'I have a reservation.': { de: 'Ich habe eine Reservierung.', es: 'Tengo una reserva.' },
+    'A room with breakfast for two nights.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', es: 'Una habitación con desayuno para dos noches.' },
+    'Έχω μια κράτηση.': { de: 'Ich habe eine Reservierung.', es: 'Tengo una reserva.', en: 'I have a reservation.' },
+    'Ένα δωμάτιο με πρωινό για δύο νύχτες.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', es: 'Una habitación con desayuno para dos noches.', en: 'A room with breakfast for two nights.' },
+
+    'Al aeropuerto, por favor.': { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.' },
+    '¿Cuánto es al centro con equipaje?': { de: 'Was kostet es ins Zentrum mit Gepäck?', en: 'How much is it to the center with luggage?' },
+    'Zum Flughafen, bitte.': { es: 'Al aeropuerto, por favor.', en: 'To the airport, please.' },
+    'Was kostet das ins Zentrum mit Gepäck?': { es: '¿Cuánto cuesta al centro con equipaje?', en: 'How much is it to the center with luggage?' },
+    'To the airport, please.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.' },
+    'How much to the center with luggage?': { de: 'Was kostet es ins Zentrum mit Gepäck?', es: '¿Cuánto es al centro con equipaje?' },
+    'Στο αεροδρόμιο, παρακαλώ.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.', en: 'To the airport, please.' },
+    'Πόσο κάνει στο κέντρο με αποσκευές;': { de: 'Was kostet es ins Zentrum mit Gepäck?', es: '¿Cuánto es al centro con equipaje?', en: 'How much is it to the center with luggage?' },
+
+    'La carta, por favor.': { de: 'Die Speisekarte, bitte.', en: 'The menu, please.' },
+    'Una mesa para dos y la carta, por favor.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', en: 'A table for two and the menu, please.' },
+    'Die Speisekarte, bitte.': { es: 'La carta, por favor.', en: 'The menu, please.' },
+    'Ein Tisch für zwei und die Speisekarte, bitte.': { es: 'Una mesa para dos y la carta, por favor.', en: 'A table for two and the menu, please.' },
+    'The menu, please.': { de: 'Die Speisekarte, bitte.', es: 'La carta, por favor.' },
+    'A table for two and the menu, please.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', es: 'Una mesa para dos y la carta, por favor.' },
+    'Το μενού, παρακαλώ.': { de: 'Die Speisekarte, bitte.', es: 'La carta, por favor.', en: 'The menu, please.' },
+    'Ένα τραπέζι για δύο και το μενού, παρακαλώ.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', es: 'Una mesa para dos y la carta, por favor.', en: 'A table for two and the menu, please.' },
+
+    'Un café con leche.': { de: 'Einen Milchkaffee.', en: 'A coffee with milk.' },
+    'Un té con azúcar para llevar.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', en: 'A tea with sugar to go.' },
+    'Ein Kaffee mit Milch.': { es: 'Un café con leche.', en: 'A coffee with milk.' },
+    'Ein Tee mit Zucker zum Mitnehmen.': { es: 'Un té con azúcar para llevar.', en: 'A tea with sugar to go.' },
+    'A coffee with milk.': { de: 'Einen Kaffee mit Milch.', es: 'Un café con leche.' },
+    'A tea with sugar to go.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', es: 'Un té con azúcar para llevar.' },
+    'Έναν καφέ με γάλα.': { de: 'Einen Kaffee mit Milch.', es: 'Un café con leche.', en: 'A coffee with milk.' },
+    'Ένα τσάι με ζάχαρη για έξω.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', es: 'Un té con azúcar para llevar.', en: 'A tea with sugar to go.' },
+
+    '¿Cuánto cuesta el pan?': { de: 'Was kostet das Brot?', en: 'How much is the bread?' },
+    'Un kilo de pan y una bolsa, por favor.': { de: 'Ein Kilo Brot und eine Tüte, bitte.', en: 'A kilo of bread and a bag, please.' },
+    'Was kostet das Brot?': { es: '¿Cuánto cuesta el pan?', en: 'How much is the bread?' },
+    'Ein Kilo Brot und eine Tüte, bitte.': { es: 'Un kilo de pan y una bolsa, por favor.', en: 'A kilo of bread and a bag, please.' },
+    'How much is the bread?': { de: 'Was kostet das Brot?', es: '¿Cuánto cuesta el pan?' },
+    'A kilo of bread and a bag, please.': { de: 'Ein Kilo Brot und eine Tüte, bitte.', es: 'Un kilo de pan y una bolsa, por favor.' },
+    'Πόσο κάνει το ψωμί;': { de: 'Was kostet das Brot?', es: '¿Cuánto cuesta el pan?', en: 'How much is the bread?' },
+    'Ένα κιλό ψωμί και μία σακούλα.': { de: 'Ein Kilo Brot und eine Tüte.', es: 'Un kilo de pan y una bolsa.', en: 'A kilo of bread and a bag.' },
+
+    'Está a la derecha.': { de: 'Es ist rechts.', en: 'It is on the right.' },
+    'Todo recto y después en la esquina.': { de: 'Geradeaus und dann an der Ecke.', en: 'Straight ahead and then at the corner.' },
+    'Es ist rechts.': { es: 'Está a la derecha.', en: 'It is on the right.' },
+    'Geradeaus und dann an der Ecke.': { es: 'Todo recto y después en la esquina.', en: 'Straight ahead and then at the corner.' },
+    'It is on the right.': { de: 'Es ist rechts.', es: 'Está a la derecha.' },
+    'Straight ahead and then at the corner.': { de: 'Geradeaus und dann an der Ecke.', es: 'Todo recto y después en la esquina.' },
+    'Είναι δεξιά.': { de: 'Es ist rechts.', es: 'Está a la derecha.', en: 'It is on the right.' },
+    'Ευθεία και μετά στη γωνία.': { de: 'Geradeaus und dann an der Ecke.', es: 'Todo recto y después en la esquina.', en: 'Straight ahead and then at the corner.' },
+
+    'Me duele la cabeza.': { de: 'Mir tut der Kopf weh.', en: 'My head hurts.' },
+    'Tengo una cita y necesito la receta.': { de: 'Ich habe einen Termin und brauche das Rezept.', en: 'I have an appointment and I need the prescription.' },
+    'Mir tut der Kopf weh.': { es: 'Me duele la cabeza.', en: 'My head hurts.' },
+    'Ich habe einen Termin und brauche das Rezept.': { es: 'Tengo una cita y necesito la receta.', en: 'I have an appointment and I need the prescription.' },
+    'My head hurts.': { de: 'Mir tut der Kopf weh.', es: 'Me duele la cabeza.' },
+    'I have an appointment and I need the prescription.': { de: 'Ich habe einen Termin und brauche das Rezept.', es: 'Tengo una cita y necesito la receta.' },
+    'Πονάει το κεφάλι μου.': { de: 'Mir tut der Kopf weh.', es: 'Me duele la cabeza.', en: 'My head hurts.' },
+    'Έχω ένα ραντεβού και θέλω τη συνταγή.': { de: 'Ich habe einen Termin und möchte das Rezept.', es: 'Tengo una cita y quiero la receta.', en: 'I have an appointment and I would like the prescription.' },
+
+    'Un billete de ida y vuelta.': { de: 'Eine Fahrkarte hin und zurück.', en: 'A return ticket.' },
+    'El próximo tren sale del andén cuatro.': { de: 'Der nächste Zug fährt von Gleis vier.', en: 'The next train leaves from platform four.' },
+    'Eine Fahrkarte hin und zurück.': { es: 'Un billete de ida y vuelta.', en: 'A return ticket.' },
+    'Der nächste Zug fährt von Gleis vier.': { es: 'El próximo tren sale del andén cuatro.', en: 'The next train leaves from platform four.' },
+    'A round trip ticket, please.': { de: 'Eine Fahrkarte hin und zurück, bitte.', es: 'Un billete de ida y vuelta, por favor.' },
+    'The next train leaves from platform four.': { de: 'Der nächste Zug fährt von Gleis vier.', es: 'El próximo tren sale del andén cuatro.' },
+    'Ένα εισιτήριο με επιστροφή.': { de: 'Eine Fahrkarte hin und zurück.', es: 'Un billete de ida y vuelta.', en: 'A return ticket.' },
+    'Το επόμενο τρένο φεύγει από την αποβάθρα τέσσερα.': { de: 'Der nächste Zug fährt von Gleis vier.', es: 'El próximo tren sale del andén cuatro.', en: 'The next train leaves from platform four.' },
+
+    'Hoy hace calor.': { de: 'Heute ist es warm.', en: 'It is hot today.' },
+    'Mañana está lloviendo, lleva el paraguas.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', en: 'Tomorrow it is raining, take the umbrella.' },
+    'Heute ist es warm.': { es: 'Hoy hace calor.', en: 'It is warm today.' },
+    'Morgen regnet es, nimm den Regenschirm.': { es: 'Mañana llueve, llévate el paraguas.', en: 'It is raining tomorrow, take the umbrella.' },
+    'Today it is hot.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.' },
+    'Tomorrow it is raining, take the umbrella.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.' },
+    'Σήμερα κάνει ζέστη.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.', en: 'It is hot today.' },
+    'Αύριο βρέχει, πάρε την ομπρέλα.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.', en: 'It is raining tomorrow, take the umbrella.' },
+
+    'Mi hermana vive en Madrid.': { de: 'Meine Schwester wohnt in Madrid.', en: 'My sister lives in Madrid.' },
+    'Mis padres viven aquí y mi hijo también.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', en: 'My parents live here and my son too.' },
+    'Meine Schwester wohnt in Berlin.': { es: 'Mi hermana vive en Berlín.', en: 'My sister lives in Berlin.' },
+    'Meine Eltern wohnen hier und mein Sohn auch.': { es: 'Mis padres viven aquí y mi hijo también.', en: 'My parents live here and my son too.' },
+    'My sister lives in London.': { de: 'Meine Schwester wohnt in London.', es: 'Mi hermana vive en Londres.' },
+    'My parents live here and my son too.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', es: 'Mis padres viven aquí y mi hijo también.' },
+    'Η αδελφή μου μένει στη Θεσσαλονίκη.': { de: 'Meine Schwester wohnt in Thessaloniki.', es: 'Mi hermana vive en Salónica.', en: 'My sister lives in Thessaloniki.' },
+    'Οι γονείς μου μένουν εδώ και ο γιος μου.': { de: 'Meine Eltern wohnen hier, und mein Sohn auch.', es: 'Mis padres viven aquí, y mi hijo también.', en: 'My parents live here, and so does my son.' }
+  };
+
   function pick(map, mutter) {
     if (!map) return '';
     return map[mutter] || map.de || map.en || map.es || '';
@@ -614,9 +709,9 @@
 
       var hoerverstehen = (set.hoer || []).map(function (it) {
         if (it.typ === 'woerter') {
-          return { typ: 'woerter', audio: it.audio, frage: Q_W[mutter], woerter: it.woerter.map(function (x) { return { text: x.text, gehoert: !!x.gehoert }; }) };
+          return { typ: 'woerter', audio: it.audio, uebersetzung: (HOER_UE[it.audio] || {})[mutter] || '', frage: Q_W[mutter], woerter: it.woerter.map(function (x) { return { text: x.text, gehoert: !!x.gehoert }; }) };
         }
-        return { typ: 'minimalpaar', audio: it.audio, frage: Q_MP[mutter], optionen: it.optionen.map(function (x) { return { text: x.text, richtig: !!x.richtig }; }) };
+        return { typ: 'minimalpaar', audio: it.audio, uebersetzung: (HOER_UE[it.audio] || {})[mutter] || '', frage: Q_MP[mutter], optionen: it.optionen.map(function (x) { return { text: x.text, richtig: !!x.richtig }; }) };
       });
 
       return { wortschatz: wortschatz, hoerverstehen: hoerverstehen };

@@ -50,6 +50,8 @@
     + 'display:flex;align-items:center;justify-content:center;cursor:pointer;align-self:center}'
     + '.spk-audio svg{width:22px;height:22px;flex:0 0 auto}'
     + '.spk-audio:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink,#15163a)}'
+    + '.spk-loesung{margin-top:.9rem;padding-top:.8rem;border-top:2px dashed rgba(21,22,58,.18);display:flex;flex-direction:column;gap:.35rem;align-items:center;text-align:center;animation:spkFromRight .35s ease}'
+    + '.spk-loesung .spk-ziel{font-size:1.35rem;line-height:1.25}'
     + '.spk-ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(2.3rem*var(--scale));line-height:1.26;color:var(--ink,#15163a)}'
     + '.spk-nativ{font-family:"DM Sans",sans-serif;font-weight:800;font-size:calc(1.55rem*var(--scale));line-height:1.24;color:var(--ink,#15163a)}'
     + '.spk-sub{font-family:"DM Sans",sans-serif;font-weight:600;font-size:calc(1.02rem*var(--scale));line-height:1.4;color:var(--muted,#5f7068)}'
@@ -258,7 +260,7 @@
       F.armNext(next);
     },
 
-    /* choice: { typ:'choice', eyebrow?, audio?, instr, options:[{text, ok}], multi?, optsZiel?, pruefen?, weiter? } */
+    /* choice: { typ:'choice', eyebrow?, audio?, instr, options:[{text, ok}], multi?, optsZiel?, pruefen?, weiter?, loesung?, loesungTr? } */
     choice: function (item, F, next) {
       if (item.eyebrow) F.body.appendChild(el('div', 'spk-eyebrow', '🎧 ' + esc(item.eyebrow)));
       if (item.audio) F.body.appendChild(audioBtn(item.audio));
@@ -295,6 +297,13 @@
           else if (chosen.indexOf(o) !== -1) b.classList.add('wrong');
           else b.classList.add('dim');
         });
+        /* Lösung sichtbar machen (Leo, 12.10.): der gehörte Satz + Übersetzung in der Muttersprache. */
+        if (item.loesung) {
+          var lw = el('div', 'spk-loesung');
+          lw.appendChild(textNode(item.loesung, true, false));
+          if (item.loesungTr) lw.appendChild(textNode(item.loesungTr, false, true));
+          F.body.appendChild(lw);
+        }
         F.feedback.textContent = ok ? (item.richtig || 'Richtig!') : (item.fast || 'Fast — schau dir die richtige Antwort an.');
         F.feedback.className = 'spk-feedback ' + (ok ? 'ok' : 'no');
         footButton(F, item.weiter || 'Weiter', '', next);

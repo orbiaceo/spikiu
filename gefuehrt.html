@@ -332,10 +332,12 @@ button{font:inherit;cursor:pointer}
       if (h.typ === 'woerter') {
         return { typ: 'choice', eyebrow: eyebrow, audio: h.audio, instr: h.frage, multi: true, optsZiel: true,
           options: h.woerter.map(function (x) { return { text: x.text, ok: !!x.gehoert }; }),
+          loesung: h.audio, loesungTr: h.uebersetzung || '',
           pruefen: U.pruefen, weiter: U.weiter, richtig: U.richtig, fast: U.fast };
       }
       return { typ: 'choice', eyebrow: eyebrow, audio: h.audio, instr: h.frage, multi: false, optsZiel: true,
         options: h.optionen.map(function (x) { return { text: x.text, ok: !!x.richtig }; }),
+          loesung: h.audio, loesungTr: h.uebersetzung || '',
         pruefen: U.pruefen, weiter: U.weiter, richtig: U.richtig, fast: U.fast };
     });
     SpikiuKarten.sequence(items, startDrill,
