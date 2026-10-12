@@ -110,8 +110,8 @@ button{font:inherit;cursor:pointer}
     de: { titel:'Geführtes Gespräch', waehle:'Wähle ein Thema', neu:'neu', wieder:'wiederholen',
           rail:['Thema','Wörter','Hören','Sprechen','Lektion'],
           wortEyebrow:'Wortschatz mit Audio', flipHint:'tippen zum Umdrehen',
-          drillEyebrow:'Sprechen üben', drillSag:'Sag es auf der Zielsprache — dann tippe zum Prüfen:',
-          rolle:{ Kellner:'Kellner', Rezeption:'Rezeption', Fahrer:'Fahrer' },
+          drillEyebrow:'Sprechen üben', hoerEyebrow:'Hörverständnis', rpEyebrow:'Rollenspiel', drillSag:'Sag es auf der Zielsprache — dann tippe zum Prüfen:',
+          rolle:{ Kellner:'Kellner', Rezeption:'Rezeption', Fahrer:'Fahrer', Bekannter:'Bekannter', Nachbarin:'Nachbarin', Passantin:'Passantin', Schalterbeamter:'Schalterbeamter', 'Verkäufer':'Verkäufer', 'Ärztin':'Ärztin' },
           lessonSubtitle:'Deine geführte Szene', goalLabel:'Ziel',
           goal:function(t){ return 'Du hast das Thema „' + t + '" geübt: Wörter, Aussprache und ein kurzes Rollenspiel.'; },
           vocabLabel:'Wortschatz', dialogueLabel:'Rollenspiel', quizLabel:'Quiz', you:'Du',
@@ -123,8 +123,8 @@ button{font:inherit;cursor:pointer}
     es: { titel:'Conversación guiada', waehle:'Elige un tema', neu:'nuevo', wieder:'repasar',
           rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
           wortEyebrow:'Vocabulario con audio', flipHint:'toca para girar',
-          drillEyebrow:'Practicar habla', drillSag:'Dilo en el idioma meta — luego toca para comprobar:',
-          rolle:{ Kellner:'Camarero', Rezeption:'Recepción', Fahrer:'Conductor' },
+          drillEyebrow:'Practicar habla', hoerEyebrow:'Comprensión auditiva', rpEyebrow:'Juego de roles', drillSag:'Dilo en el idioma meta — luego toca para comprobar:',
+          rolle:{ Kellner:'Camarero', Rezeption:'Recepción', Fahrer:'Conductor', Bekannter:'Conocido', Nachbarin:'Vecina', Passantin:'Transeúnte', Schalterbeamter:'Empleado de taquilla', 'Verkäufer':'Vendedor', 'Ärztin':'Doctora' },
           lessonSubtitle:'Tu escena guiada', goalLabel:'Objetivo',
           goal:function(t){ return 'Practicaste el tema «' + t + '»: vocabulario, pronunciación y un breve juego de roles.'; },
           vocabLabel:'Vocabulario', dialogueLabel:'Juego de roles', quizLabel:'Quiz', you:'Tú',
@@ -136,8 +136,8 @@ button{font:inherit;cursor:pointer}
     en: { titel:'Guided conversation', waehle:'Choose a topic', neu:'new', wieder:'review',
           rail:['Topic','Words','Listen','Speak','Lesson'],
           wortEyebrow:'Vocabulary with audio', flipHint:'tap to flip',
-          drillEyebrow:'Speaking practice', drillSag:'Say it in the target language — then tap to check:',
-          rolle:{ Kellner:'Waiter', Rezeption:'Reception', Fahrer:'Driver' },
+          drillEyebrow:'Speaking practice', hoerEyebrow:'Listening', rpEyebrow:'Role play', drillSag:'Say it in the target language — then tap to check:',
+          rolle:{ Kellner:'Waiter', Rezeption:'Reception', Fahrer:'Driver', Bekannter:'Acquaintance', Nachbarin:'Neighbour', Passantin:'Passer-by', Schalterbeamter:'Ticket clerk', 'Verkäufer':'Shop assistant', 'Ärztin':'Doctor' },
           lessonSubtitle:'Your guided scene', goalLabel:'Goal',
           goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, pronunciation and a short roleplay.'; },
           vocabLabel:'Vocabulary', dialogueLabel:'Roleplay', quizLabel:'Quiz', you:'You',
@@ -328,7 +328,7 @@ button{font:inherit;cursor:pointer}
     var hv = HAP.hoerverstehen || [];
     if (!hv.length) { startDrill(); return; }
     var items = hv.map(function (h, i) {
-      var eyebrow = 'Hörverständnis · ' + (i + 1) + ' / ' + hv.length;
+      var eyebrow = U.hoerEyebrow + ' · ' + (i + 1) + ' / ' + hv.length;
       if (h.typ === 'woerter') {
         return { typ: 'choice', eyebrow: eyebrow, audio: h.audio, instr: h.frage, multi: true, optsZiel: true,
           options: h.woerter.map(function (x) { return { text: x.text, ok: !!x.gehoert }; }),
@@ -368,7 +368,7 @@ button{font:inherit;cursor:pointer}
     var items = RP.schritte.map(function (st, i) {
       return {
         typ: 'roleplay',
-        eyebrow: 'Rollenspiel · ' + rolle + ' · ' + (i + 1) + ' / ' + RP.schritte.length,
+        eyebrow: U.rpEyebrow + ' · ' + rolle + ' · ' + (i + 1) + ' / ' + RP.schritte.length,
         ziel: st.spikiu.ziel, trans: st.spikiu.trans, tip: st.tip || null,
         options: st.opts.map(function (o) { return { text: o.text, ok: !!o.ok }; }),
         weiter: U.weiter

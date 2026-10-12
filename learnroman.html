@@ -207,19 +207,19 @@ var UI = {
        leerH:'Dieses Buch entsteht noch.',
        leerP:'Der Lernroman für diese Sprache ist noch nicht geschrieben. Spikiu schreibt ihn lieber gut als schnell.',
        leerZ:'Zurück in die Bibliothek' },
-  es:{ eyebrow:'Lernroman', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
+  es:{ eyebrow:'Novela para aprender', kap:'Capítulo', offen:'abierto', zu:'cerrado por ahora',
        lock:function(nm){ return '✦ se abre en la etapa ' + nm; },
        hint:'Toca una línea para ver la traducción.', ende:'— Fin del capítulo —',
        back:'atrás', hoeren:'Escuchar', devnote:'Tu etapa · conmutable para probar',
        leerH:'Este libro todavía se está escribiendo.',
-       leerP:'El Lernroman de este idioma aún no existe. Spikiu prefiere escribirlo bien antes que rápido.',
+       leerP:'La novela para aprender de este idioma aún no existe. Spikiu prefiere escribirlo bien antes que rápido.',
        leerZ:'Volver a la biblioteca' },
-  en:{ eyebrow:'Lernroman', kap:'Chapter', offen:'open', zu:'opens later',
+  en:{ eyebrow:'Learning Novel', kap:'Chapter', offen:'open', zu:'opens later',
        lock:function(nm){ return '✦ opens in the ' + nm + ' stage'; },
        hint:'Tap a line to see the translation.', ende:'— End of the chapter —',
        back:'back', hoeren:'Read aloud', devnote:'Your stage · switchable for testing',
        leerH:'This book is still being written.',
-       leerP:'The Lernroman for this language does not exist yet. Spikiu would rather write it well than fast.',
+       leerP:'The Learning Novel for this language does not exist yet. Spikiu would rather write it well than fast.',
        leerZ:'Back to the library' }
 };
 function uiLang(){ return UI[PROFILE.muttersprache] ? PROFILE.muttersprache : 'de'; }
@@ -423,7 +423,8 @@ function schliesseKapitel(){
 function start(){
   document.documentElement.lang = uiLang();
   document.getElementById('eyebrow').textContent = T.eyebrow;
-  document.getElementById('buchTitel').textContent = BUCH ? BUCH.titel : 'Lernroman';
+  document.getElementById('buchTitel').textContent = BUCH ? BUCH.titel : T.eyebrow;
+  document.title = 'Spikiu · ' + T.eyebrow;
   var zurueck = document.getElementById('rback');
   zurueck.setAttribute('aria-label', T.back);
   zurueck.onclick = schliesseKapitel;
