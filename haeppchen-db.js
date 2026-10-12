@@ -488,7 +488,7 @@
         wortschatz: [
           v('hace calor', null, 'es ist warm', 'hace calor', 'it is hot'),
           v('hace frío', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('llueve', null, 'es regnet', 'llueve', 'it is raining'),
+          v('llueve', null, 'es regnet', 'llueve', 'it rains'),
           v('el paraguas', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
           v('mañana', null, 'morgen', 'mañana', 'tomorrow')
         ],
@@ -514,7 +514,7 @@
         wortschatz: [
           v('it is hot', null, 'es ist warm', 'hace calor', 'it is hot'),
           v('it is cold', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('it is raining', null, 'es regnet', 'llueve', 'it is raining'),
+          v('it is raining', null, 'es regnet gerade', 'está lloviendo', 'it is raining'),
           v('the umbrella', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
           v('tomorrow', null, 'morgen', 'mañana', 'tomorrow')
         ],
