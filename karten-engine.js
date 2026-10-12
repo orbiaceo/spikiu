@@ -52,6 +52,7 @@
     + '.spk-audio:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink,#15163a)}'
     + '.spk-loesung{margin-top:.9rem;padding-top:.8rem;border-top:2px dashed rgba(21,22,58,.18);display:flex;flex-direction:column;gap:.35rem;align-items:center;text-align:center;animation:spkFromRight .35s ease}'
     + '.spk-loesung .spk-ziel{font-size:1.35rem;line-height:1.25}'
+    + '.spk-opt-tr{margin:-.25rem 0 .2rem;text-align:center;font:600 .95rem/1.3 "DM Sans",sans-serif;color:var(--muted,#5f7068);animation:spkFromRight .35s ease}'
     + '.spk-ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(2.3rem*var(--scale));line-height:1.26;color:var(--ink,#15163a)}'
     + '.spk-nativ{font-family:"DM Sans",sans-serif;font-weight:800;font-size:calc(1.55rem*var(--scale));line-height:1.24;color:var(--ink,#15163a)}'
     + '.spk-sub{font-family:"DM Sans",sans-serif;font-weight:600;font-size:calc(1.02rem*var(--scale));line-height:1.4;color:var(--muted,#5f7068)}'
@@ -298,7 +299,13 @@
           else b.classList.add('dim');
         });
         /* Lösung sichtbar machen (Leo, 12.10.): der gehörte Satz + Übersetzung in der Muttersprache. */
-        if (item.loesung) {
+        /* Ist die Lösung genau eine Antwort (Minimalpaar), steht die Übersetzung direkt
+           unter dieser Antwort — der Satz wird nicht ein zweites Mal gezeigt. */
+        var alsOption = null, kk = 0;
+        if (item.loesung && !item.multi) list.querySelectorAll('.spk-opt').forEach(function (b) { var o = item.options[kk++]; if (o.ok && String(o.text).trim() === String(item.loesung).trim()) alsOption = b; });
+        if (alsOption && item.loesungTr) {
+          alsOption.parentNode.insertBefore(el('div', 'spk-opt-tr', esc(item.loesungTr)), alsOption.nextSibling);
+        } else if (item.loesung) {
           var lw = el('div', 'spk-loesung');
           lw.appendChild(textNode(item.loesung, true, false));
           if (item.loesungTr) lw.appendChild(textNode(item.loesungTr, false, true));
