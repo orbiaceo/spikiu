@@ -7,6 +7,7 @@
        ebenso das Spiel am Ende des Geführten Gesprächs (gehört zur Lektion,
        läuft über gefuehrt.html und fragt hier gar nicht erst).
      · Mit Abo (1,50 €/Monat, Null-Token-Stufe): alle Spiele.
+     · Garten + Akrosticha bleiben IMMER offen (Leo, 12.10.: „ja, offen bleiben") — das eigene Regal.
      · KEINE Zähler, keine Runden-/Minutenlimits, keine Herzen.
    SCHALTER: AKTIV = false, solange es keine Konten/Zahlung gibt (Phase 2,
    Stripe + Supabase). Dann ist alles frei, und die Wache sagt immer ja.
@@ -51,7 +52,10 @@
     var d = new Date(), tag = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / TAG);
     return liste[tag % liste.length];
   }
+  // Leo, 12.10.: Garten und Akrosticha sind das eigene Gesammelte (Regal) → bleiben immer offen.
+  var IMMER_OFFEN = { huerto: 1, acrostico: 1 };
   function darf(id, liste) {
+    if (IMMER_OFFEN[id]) return true;
     if (!aktiv()) return true;
     if (abo()) return true;
     if (probeTage() > 0) return true;

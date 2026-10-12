@@ -75,7 +75,7 @@
       oTask: 'Hör gut zu und tipp das richtige Bild.', oHoer: '🔊 Anhören',
       oFalsch: function (x) { return 'Das ist <em>' + x + '</em>. Hör noch einmal.'; },
       gTask: 'Wo liegt der Schlag? Hör zu und tipp die starke Silbe.', gKlatsch: '👏 Spikiu klatscht',
-      gFalsch: 'Nicht ganz. Hör noch einmal hin.', gTilde: ' · die Tilde zeigt den Schlag',
+      gFalsch: 'Nicht ganz. Hör noch einmal hin.', gTilde: ' · die Tilde zeigt den Schlag', gTonos: ' · der Tonos (´) zeigt den Schlag',
       mTask: 'In welchen Korb gehört das Wort?', mFalsch: function (x) { return '<em>' + x + '</em> gehört in den anderen Korb.'; },
       mFertig: 'Alle Wörter liegen im richtigen Korb.',
       meTask: 'Deck zwei Karten auf: Wort und Bild gehören zusammen.', meFertig: 'Alle Paare gefunden.',
@@ -120,7 +120,7 @@
       oTask: 'Escucha bien y toca la imagen correcta.', oHoer: '🔊 Escuchar',
       oFalsch: function (x) { return 'Eso es <em>' + x + '</em>. Escucha otra vez.'; },
       gTask: '¿Dónde cae el golpe? Escucha y toca la sílaba fuerte.', gKlatsch: '👏 Spikiu da palmas',
-      gFalsch: 'Casi. Escucha otra vez.', gTilde: ' · la tilde marca el golpe',
+      gFalsch: 'Casi. Escucha otra vez.', gTilde: ' · la tilde marca el golpe', gTonos: ' · el tonos (´) marca el golpe',
       mTask: '¿En qué cesta va la palabra?', mFalsch: function (x) { return '<em>' + x + '</em> va en la otra cesta.'; },
       mFertig: 'Todas las palabras están en su cesta.',
       meTask: 'Destapa dos cartas: palabra e imagen van juntas.', meFertig: 'Todas las parejas encontradas.',
@@ -165,7 +165,7 @@
       oTask: 'Listen closely and tap the right picture.', oHoer: '🔊 Listen',
       oFalsch: function (x) { return 'That\u2019s <em>' + x + '</em>. Listen again.'; },
       gTask: 'Where is the beat? Listen and tap the strong syllable.', gKlatsch: '👏 Spikiu claps',
-      gFalsch: 'Not quite. Listen again.', gTilde: ' · the accent mark shows the beat',
+      gFalsch: 'Not quite. Listen again.', gTilde: ' · the accent mark shows the beat', gTonos: ' · the tonos (´) shows the beat',
       mTask: 'Which basket does the word go in?', mFalsch: function (x) { return '<em>' + x + '</em> goes in the other basket.'; },
       mFertig: 'Every word is in the right basket.',
       meTask: 'Turn over two cards: word and picture belong together.', meFertig: 'All pairs found.',
@@ -1051,7 +1051,7 @@
     return root;
   }
 
-  /* ── EL GOLPE: Silbe mit dem Schlag (Spanisch, Regeln) ── cfg = { woerter:[{z,tr}] } */
+  /* ── EL GOLPE / DER SCHLAG: Silbe mit dem Schlag (es/el Regeln, de/en silben.js) ── cfg = { woerter:[{z,tr}] }, Sprache = opts.zielLang */
   function silabas(w) {
     w = w.toLowerCase(); var V = 'aeiouáéíóúü', FU = 'aeoáéóíú', isV = function (c) { return V.indexOf(c) > -1; };
     var INS = ['pl', 'pr', 'bl', 'br', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'tr', 'ch', 'll', 'rr', 'tl'], ch = Array.from(w), gr = [], i = 0, k;
@@ -1069,6 +1069,60 @@
     return sil;
   }
   function tonica(s) { for (var i = 0; i < s.length; i++) if (/[áéíóú]/.test(s[i])) return i; if (s.length === 1) return 0; return /[aeiouns]$/.test(s.join('')) ? s.length - 2 : s.length - 1; }
+  /* ── Griechisch (12.10.): Silben nach Regel, Schlag = Silbe mit Tonos.
+     Vokal-Digraphen (αι ει οι υι ου αυ ευ ηυ) bilden einen Kern, außer der erste
+     Buchstabe trägt den Tonos oder der zweite ein Trema (τσά-ι, ρολό-ι).
+     Synizese nur vor BETONTEM Vokal, nach γ immer, und im Präfix δια-: unbetontes ι nach Konsonant verschmilzt (παι-διά, χω-ριό); sonst Schulsilben (κα-φε-τέ-ρι-α).
+     Konsonantengruppen gehen zur nächsten Silbe, wenn ein griechisches Wort so
+     anfangen kann (στρ, μπ, ντ, γκ, τσ …), sonst wird geteilt (λλ, ρτ …). */
+  var EL_V = 'αεηιουωάέήίόύώϊϋΐΰ', EL_TON = /[άέήίόύώΐΰ]/;
+  var EL_ON = ' βγ βδ βλ βρ γδ γκ γλ γν γρ δρ θλ θν θρ κλ κν κρ κτ μν μπ ντ πλ πν πρ πτ σβ σγ σθ σκ σλ σμ σν σπ στ σφ σχ τζ τμ τρ τσ φθ φλ φν φρ φτ χθ χλ χν χρ ζβ σκλ σκρ σπλ σπρ στρ σφρ σχρ μπλ μπρ ντρ γκρ γκλ τσπ ';
+  function silabasEl(w) {
+    w = String(w).toLowerCase(); var ch = Array.from(w), gr = [], i = 0, k, isV = function (c) { return EL_V.indexOf(c) > -1; };
+    var DI = { 'αι':1, 'ει':1, 'οι':1, 'υι':1, 'ου':1, 'αυ':1, 'ευ':1, 'ηυ':1, 'αί':1, 'εί':1, 'οί':1, 'υί':1, 'ού':1, 'αύ':1, 'εύ':1, 'ηύ':1 };
+    while (i < ch.length) { var c = ch[i];
+      if (isV(c)) { var g = c; while (i + 1 < ch.length && isV(ch[i + 1]) && DI[g.slice(-1) + ch[i + 1]] && g.length < 2) { g += ch[i + 1]; i++; } gr.push({ v: 1, t: g }); }
+      else { var g2 = c; while (i + 1 < ch.length && !isV(ch[i + 1])) { g2 += ch[i + 1]; i++; } gr.push({ v: 0, t: g2 }); }
+      i++; }
+    // Vokalgruppen: weitere Vokale ohne Digraph stehen als eigene Kerne nebeneinander → aufspalten schon erledigt; Synizese:
+    var kern = [];
+    for (k = 0; k < gr.length; k++) {
+      var x = gr[k];
+      if (x.v && kern.length && kern[kern.length - 1].v) {
+        var vor = kern[kern.length - 1], vork = kern[kern.length - 2];
+        if ((vor.t === 'ι' || vor.t === 'ει' || vor.t === 'οι' || vor.t === 'υ') && vork && !vork.v && !EL_TON.test(vor.t) && EL_TON.test(x.t)) { vor.t += x.t; continue; }
+        if ((vor.t === 'ι' || vor.t === 'υ') && vork && /γ$/.test(vork.t)) { vor.t += x.t; continue; }   // γι/γυ + Vokal = ein Laut [ʝ] (για-ούρ-τι, γυα-λιά)
+        if (vor.t === 'ι' && k === 2 && vork && vork.t === 'δ' && x.t === 'α') { vor.t += x.t; continue; }   // δια- (δια-δρο-μή)
+      }
+      kern.push({ v: x.v, t: x.t });
+    }
+    var sil = [], pre = '';
+    for (k = 0; k < kern.length; k++) { var y = kern[k];
+      if (!y.v) { if (!sil.length) { pre += y.t; continue; } if (!kern[k + 1]) { sil[sil.length - 1] += y.t; continue; }
+        var t = y.t, sp = t.length - 1;
+        for (var L = Math.min(3, t.length); L >= 2; L--) if (EL_ON.indexOf(' ' + t.slice(-L) + ' ') > -1) { sp = t.length - L; break; }
+        sil[sil.length - 1] += t.slice(0, sp); pre = t.slice(sp); }
+      else { sil.push(pre + y.t); pre = ''; } }
+    if (pre) { if (sil.length) sil[sil.length - 1] += pre; else sil.push(pre); }
+    return sil;
+  }
+  /* Silben + Schlag für jede Zielsprache → { s:[…], t:i } oder null (dann kommt das Wort im Spiel nicht vor).
+     es, el: Regeln · de, en: kuratierte Liste in silben.js (window.spikiuSilben). */
+  function silbenTon(wort, sprache) {
+    var w = ohneArtikel(wort); if (!w || !/^[\p{L}]+$/u.test(w)) return null;
+    var s, t;
+    if (sprache === 'es' || !sprache) { s = silabas(w); t = tonica(s); }
+    else if (sprache === 'el') { s = silabasEl(w); t = -1; for (var i = 0; i < s.length; i++) if (EL_TON.test(s[i])) { t = i; break; } if (t < 0) { if (s.length !== 1) return null; t = 0; } }
+    else {
+      var D = window.spikiuSilben && window.spikiuSilben[sprache]; if (!D) return null;
+      var e = D[w] || D[w.charAt(0).toUpperCase() + w.slice(1)] || D[w.toLowerCase()]; if (!e) return null;
+      s = e.split('·'); t = -1; s = s.map(function (y, j) { if (y.charAt(0) === 'ˈ') { t = j; return y.slice(1); } return y; }); if (t < 0) return null;
+      if (s.join('').toLowerCase() !== w.toLowerCase()) return null;
+      if (w !== s.join('')) { var pos = 0; s = s.map(function (y) { var o = w.substr(pos, y.length); pos += y.length; return o; }); }
+    }
+    if (!s.length) return null;
+    return { s: s, t: t };
+  }
   function klatsch(t, laut) {
     var c = KLANG.kontext(); if (!c) return;
     var n = Math.floor(c.sampleRate * 0.12), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
@@ -1080,7 +1134,10 @@
   }
   function golpe(cfg, opts) {
     var U = T(opts), root = wurzel(), ton = rundenKlang();
-    var x = mezcla(cfg.woerter || [])[0], w = ohneArtikel(x.z), s = silabas(w), t = tonica(s), fertig = false, tiles = [];
+    var spr = (opts && opts.zielLang) || 'es', x = null, st = null;
+    mezcla(cfg.woerter || []).some(function (k) { var r = silbenTon(k.z, spr); if (r && r.s.length >= 2) { x = k; st = r; return true; } return false; });
+    if (!x) { root.appendChild(el('p', 'jg-task', U.gTask)); return root; }
+    var w = ohneArtikel(x.z), s = st.s, t = st.t, fertig = false, tiles = [];
     root.appendChild(el('p', 'jg-task', U.gTask));
     var hb = el('button', 'jg-big', U.gKlatsch); hb.type = 'button'; root.appendChild(hb);
     var r = el('div', 'jg-silben'); root.appendChild(r); var fb = el('div', 'jg-fb'); root.appendChild(fb);
@@ -1090,7 +1147,7 @@
         if (fertig) return; ton.wecken(); var c = KLANG.kontext(); if (c) klatsch(c.currentTime, i === t);
         if (i === t) { fertig = true; b.classList.add('ok'); setTimeout(ton.dur, 250);
           var l = el('div', 'jg-loesung jg-pop'); l.innerHTML = s.map(function (y, j) { return j === t ? '<b>' + esc(y) + '</b>' : esc(y); }).join('·'); root.insertBefore(l, fb);
-          fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(x.z) + '</em>' + (x.tr ? ' = ' + esc(x.tr) : '') + (/[áéíóú]/.test(w) ? esc(U.gTilde) : ''); done(root, true); }
+          fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(x.z) + '</em>' + (x.tr ? ' = ' + esc(x.tr) : '') + (spr === 'es' && /[áéíóú]/.test(w) ? esc(U.gTilde) : (spr === 'el' ? esc(U.gTonos) : '')); done(root, true); }
         else { ton.moll(); b.classList.add('no'); wobble(b); fb.className = 'jg-fb soft'; fb.textContent = U.gFalsch; }
       });
     });
@@ -1168,7 +1225,7 @@
   w.spikiuJuegos = {
     pinata: pinata, globos: globos, literal: literal, gemelos: gemelos,
     huerto: huerto, acrostico: acrostico, klang: KLANG,
-    encadenado: encadenado, oido: oido, golpe: golpe, mercado: mercado, memoria: memoria, silabas: silabas, tonica: tonica,
+    encadenado: encadenado, oido: oido, golpe: golpe, mercado: mercado, memoria: memoria, silabas: silabas, tonica: tonica, silabasEl: silabasEl, silbenTon: silbenTon,
     eindringling: eindringling, woerterAus: woerterAus, mezcla: mezcla, css: ensureCss,
     spikiuSvg: SPIKIU, ABC: ABC
   };

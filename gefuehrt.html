@@ -79,6 +79,7 @@ button{font:inherit;cursor:pointer}
 <script src="lernpfad-sprache.js"></script>
 <script src="lernpfad.js"></script>
 <script src="wortfelder.js"></script>
+<script src="silben.js"></script>
 <script src="icon-db.js"></script>
 <script src="juegos.js"></script>
 <script type="module">
@@ -468,7 +469,7 @@ button{font:inherit;cursor:pointer}
     /* NACHKLANG (Leo, 11.10., Haus-neu v3): Oído fino und El golpe sind keine
        Abenteuer-Kacheln mehr — sie klingen am Ende der Szene nach, mit den Wörtern
        DIESES Themas (wortfelder.js, gleiche Themen-IDs wie die Szenen). Wörter, die
-       in der Szene selbst vorkamen, zuerst. El golpe nur für Spanisch. */
+       in der Szene selbst vorkamen, zuerst. Der Schlag seit 12.10. in es/de/en/el (silbenTon). */
     var szeneN = {}; (HAP && HAP.wortschatz || []).forEach(function (h) { if (h.ziel) szeneN[nachklangNorm(h.ziel)] = 1; });
     var feldW = (window.spikiuWortfelder && TOPIC_ID) ? window.spikiuWortfelder.feld(ZIEL, TOPIC_ID, MUT) : [];
     var zuerst = feldW.filter(function (x) { return szeneN[nachklangNorm(x.z)]; });
@@ -480,14 +481,8 @@ button{font:inherit;cursor:pointer}
       if (bilder.length >= 4) oido = { bilder: bilder.slice(0, 8) };
     }
     var golpe = null;
-    if (ZIEL === 'es') {
-      var gw = feldSortiert.filter(function (x) {
-        var w = String(x.z).replace(/^(el|la|los|las)\s+/i, '');
-        if (!/^[\p{L}]+$/u.test(w)) return false;
-        var n = J.silabas(w).length; return n >= 2 && n <= 4;
-      });
-      if (gw.length >= 3) golpe = { woerter: gw };
-    }
+    var gw = feldSortiert.filter(function (x) { var r = J.silbenTon(x.z, ZIEL); return r && r.s.length >= 2 && r.s.length <= 4; });
+    if (gw.length >= 3) golpe = { woerter: gw };
     var zaehler = 0; try { zaehler = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').blaetter) || 0; } catch (e) {}
     var daten = { gemelos: gemelos, pinata: pinata, oido: oido, golpe: golpe };
     var reihe = ['gemelos', 'pinata', 'oido', 'golpe'].filter(function (a) { return !!daten[a]; });

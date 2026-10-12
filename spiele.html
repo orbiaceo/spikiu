@@ -84,10 +84,10 @@ function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1)
 
 var UI = {
   de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Neun Spiele, kurz und leicht. Such dir eins aus.',
-       pinata:['Piñata','Schlag zu und fang den Eindringling.'], globos:['Globos','Lass die Wörter in der richtigen Reihenfolge platzen.'],
+       pinata:['Piñata','Schlag zu und fang den Eindringling.'], globos:['Luftballons','Lass die Wörter in der richtigen Reihenfolge platzen.'],
        huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'], acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
-       encadenado:['Encadenado','Wortkette mit Spikiu. Hängst du, hilft er dir Buchstabe für Buchstabe.'], oido:['Oído fino','Hör ein Wort, tipp das Bild.'],
-       golpe:['El golpe','Wo liegt der Schlag? Tipp die starke Silbe.'], mercado:['Al mercado','Jedes Wort in den richtigen Korb.'], memoria:['Memoria','Finde die Paare: Wort und Bild.'],
+       encadenado:['Wortkette','Wortkette mit Spikiu. Hängst du, hilft er dir Buchstabe für Buchstabe.'], oido:['Feines Ohr','Hör ein Wort, tipp das Bild.'],
+       golpe:['Der Schlag','Wo liegt der Schlag? Tipp die starke Silbe.'], mercado:['Auf dem Markt','Jedes Wort in den richtigen Korb.'], memoria:['Memory','Finde die Paare: Wort und Bild.'],
        regale:['Hören & Sprechen','Wörter finden','Schnell & leicht'], tages:'Spiel des Tages', tagesSub:'Heute schlägt Spikiu vor:',
        gesperrt:function(x){ return 'Das gehört zum Spielzimmer (1,50 € im Monat). Heute frei: ' + x + '.'; }, zumTages:'Zum Spiel des Tages', abo:'Spielzimmer ansehen',
        probe:function(n){ return 'Probezeit: alles frei, noch ' + n + (n === 1 ? ' Tag.' : ' Tage.'); }, schloss:'Spielzimmer',
@@ -107,7 +107,7 @@ var UI = {
        pinata:['Piñata','Swing and catch the intruder.'], globos:['Balloons','Pop the words in the right order.'],
        huerto:['Spikiu’s garden','From A to Z: plant your words.'], acrostico:['Acrostic','One word, one thought per letter.'],
        encadenado:['Word Chain','A word chain with Spikiu. Stuck? He helps letter by letter.'], oido:['Sharp Ear','Hear a word, tap the picture.'],
-       golpe:['The Beat','Where is the beat? Tap the strong syllable.'], mercado:['To Market','Every word in the right basket.'], memoria:['Memory','Find the pairs: word and picture.'],
+       golpe:['The Beat','Where is the beat? Tap the strong syllable.'], mercado:['At the Market','Every word in the right basket.'], memoria:['Memory','Find the pairs: word and picture.'],
        regale:['Listen & speak','Find words','Quick & light'], tages:'Game of the day', tagesSub:'Today Spikiu suggests:',
        gesperrt:function(x){ return 'This is part of the games room (€1.50 a month). Free today: ' + x + '.'; }, zumTages:'Go to the game of the day', abo:'See the games room',
        probe:function(n){ return 'Trial: everything free, ' + n + (n === 1 ? ' day left.' : ' days left.'); }, schloss:'Games room',
@@ -130,7 +130,7 @@ var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#
 // Drei Regale (Leo, 11.10.): nach dem, was ein Spiel trainiert
 var REGALE = [ ['oido','golpe'], ['encadenado','acrostico','huerto','memoria'], ['pinata','globos','mercado'] ];
 function spielListe(){ return [].concat.apply([], REGALE).filter(verfuegbar); }
-function verfuegbar(id){ return id !== 'golpe' || PROFILE.zielsprache === 'es'; }   // Silbenregeln gibt es (noch) nur fürs Spanische
+function verfuegbar(id){ return true; }   // 12.10.: alle neun Spiele in es/de/en/el (Der Schlag: es/el nach Regel, de/en über silben.js)
 
 // ── Audio ──
 function sprich(text){
@@ -378,7 +378,8 @@ function neueRunde(spiel){
   else if (spiel === 'oido') { var p = bilderPool(); if (p.length >= 4) karte = J.oido({ bilder: p }, opts()); }
   else if (spiel === 'memoria') { var m = J.mezcla(bilderPool()); if (m.length >= 4) karte = J.memoria({ paare: m.slice(0, 4) }, opts()); }
   else if (spiel === 'golpe') {
-    var w = bereichVon('essen').concat(bereichVon('taxi')).filter(function(x){ var n = J.silabas(String(x.z).replace(/^(el|la|los|las)\s+/i,'')).length; return einzel(x) && x.stufe <= Math.max(st, 2) && n >= 2 && n <= 4; });
+    var z = PROFILE.zielsprache;
+    var w = bereichVon('essen').concat(bereichVon('taxi')).filter(function(x){ var r = J.silbenTon(x.z, z); return r && einzel(x) && x.stufe <= Math.max(st, 2) && r.s.length >= 2 && r.s.length <= 4; });
     if (w.length) karte = J.golpe({ woerter: w }, opts());
   }
   else if (spiel === 'mercado') {
@@ -445,6 +446,7 @@ window.addEventListener('load', function(){
 <script src="lernpfad-sprache.js" defer></script>
 <script src="lernpfad.js" defer></script>
 <script src="wortfelder.js" defer></script>
+<script src="silben.js" defer></script>
 <script src="icon-db.js" defer></script>
 <script src="zugang.js" defer></script>
 <script src="juegos.js" defer></script>
