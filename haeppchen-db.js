@@ -488,20 +488,20 @@
         wortschatz: [
           v('hace calor', null, 'es ist warm', 'hace calor', 'it is hot'),
           v('hace frío', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('está lloviendo', null, 'es regnet', 'está lloviendo', 'it is raining'),
+          v('llueve', null, 'es regnet', 'llueve', 'it is raining'),
           v('el paraguas', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
           v('mañana', null, 'morgen', 'mañana', 'tomorrow')
         ],
         hoer: [
           mp('Hoy hace calor.', 'Hoy hace calor.', 'Hoy hace color.'),
-          wo('Mañana está lloviendo, lleva el paraguas.', [w('Mañana', true), w('lloviendo', true), w('paraguas', true), w('calor', false), w('frío', false)])
+          wo('Mañana llueve, llévate el paraguas.', [w('Mañana', true), w('llueve', true), w('paraguas', true), w('calor', false), w('frío', false)])
         ]
       },
       de: {
         wortschatz: [
           v('es ist warm', null, 'es ist warm', 'hace calor', 'it is hot'),
           v('es ist kalt', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('es regnet', null, 'es regnet', 'está lloviendo', 'it is raining'),
+          v('es regnet', null, 'es regnet', 'llueve', 'it is raining'),
           v('der Regenschirm', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
           v('morgen', null, 'morgen', 'mañana', 'tomorrow')
         ],
@@ -514,7 +514,7 @@
         wortschatz: [
           v('it is hot', null, 'es ist warm', 'hace calor', 'it is hot'),
           v('it is cold', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('it is raining', null, 'es regnet', 'está lloviendo', 'it is raining'),
+          v('it is raining', null, 'es regnet', 'llueve', 'it is raining'),
           v('the umbrella', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
           v('tomorrow', null, 'morgen', 'mañana', 'tomorrow')
         ],
@@ -527,7 +527,7 @@
         wortschatz: [
           v('κάνει ζέστη', 'káni zésti', 'es ist warm', 'hace calor', 'it is hot'),
           v('κάνει κρύο', 'káni krío', 'es ist kalt', 'hace frío', 'it is cold'),
-          v('βρέχει', 'vréchi', 'es regnet', 'está lloviendo', 'it is raining'),
+          v('βρέχει', 'vréchi', 'es regnet', 'llueve', 'it is raining'),
           v('η ομπρέλα', 'i ombréla', 'der Regenschirm', 'el paraguas', 'the umbrella'),
           v('αύριο', 'ávrio', 'morgen', 'mañana', 'tomorrow')
         ],
@@ -611,7 +611,7 @@
     'Al aeropuerto, por favor.': { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.' },
     '¿Cuánto es al centro con equipaje?': { de: 'Was kostet es ins Zentrum mit Gepäck?', en: 'How much is it to the center with luggage?' },
     'Zum Flughafen, bitte.': { es: 'Al aeropuerto, por favor.', en: 'To the airport, please.' },
-    'Was kostet das ins Zentrum mit Gepäck?': { es: '¿Cuánto cuesta al centro con equipaje?', en: 'How much is it to the center with luggage?' },
+    'Was kostet das ins Zentrum mit Gepäck?': { es: '¿Cuánto cuesta ir al centro con equipaje?', en: 'How much is it to the center with luggage?' },
     'To the airport, please.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.' },
     'How much to the center with luggage?': { de: 'Was kostet es ins Zentrum mit Gepäck?', es: '¿Cuánto es al centro con equipaje?' },
     'Στο αεροδρόμιο, παρακαλώ.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.', en: 'To the airport, please.' },
@@ -672,13 +672,13 @@
     'Το επόμενο τρένο φεύγει από την αποβάθρα τέσσερα.': { de: 'Der nächste Zug fährt von Gleis vier.', es: 'El próximo tren sale del andén cuatro.', en: 'The next train leaves from platform four.' },
 
     'Hoy hace calor.': { de: 'Heute ist es warm.', en: 'It is hot today.' },
-    'Mañana está lloviendo, lleva el paraguas.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', en: 'Tomorrow it is raining, take the umbrella.' },
+    'Mañana llueve, llévate el paraguas.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', en: 'It will rain tomorrow, take your umbrella.' },
     'Heute ist es warm.': { es: 'Hoy hace calor.', en: 'It is warm today.' },
-    'Morgen regnet es, nimm den Regenschirm.': { es: 'Mañana llueve, llévate el paraguas.', en: 'It is raining tomorrow, take the umbrella.' },
+    'Morgen regnet es, nimm den Regenschirm.': { es: 'Mañana llueve, llévate el paraguas.', en: 'It will rain tomorrow, take your umbrella.' },
     'Today it is hot.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.' },
     'Tomorrow it is raining, take the umbrella.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.' },
     'Σήμερα κάνει ζέστη.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.', en: 'It is hot today.' },
-    'Αύριο βρέχει, πάρε την ομπρέλα.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.', en: 'It is raining tomorrow, take the umbrella.' },
+    'Αύριο βρέχει, πάρε την ομπρέλα.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.', en: 'It will rain tomorrow, take your umbrella.' },
 
     'Mi hermana vive en Madrid.': { de: 'Meine Schwester wohnt in Madrid.', en: 'My sister lives in Madrid.' },
     'Mis padres viven aquí y mi hijo también.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', en: 'My parents live here and my son too.' },

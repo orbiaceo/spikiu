@@ -133,8 +133,8 @@
              [ ok('Sí, mucho calor.'), no('A la estación, por favor.'), no('Una habitación, por favor.') ],
              'Stimm ihr zu.'),
         step('¿Y mañana? ¿Sabe algo?', 'Und morgen? Wissen Sie was?',
-             [ ok('Mañana está lloviendo.'), no('Para dos noches.') ]),
-        step('Entonces llevo el paraguas.', 'Dann nehme ich den Regenschirm mit.',
+             [ ok('Mañana va a llover.'), no('Para dos noches.') ]),
+        step('Entonces me llevo el paraguas.', 'Dann nehme ich den Regenschirm mit.',
              [ ok('Buena idea.'), no('La cuenta, por favor.') ])
       ]
     },
