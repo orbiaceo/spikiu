@@ -1,6 +1,13 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Spikiu · Das Haus</title>
+<script>
+/* Kein Aufblitzen der Willkommensseite (Leo, 12.10.: beim Wechseln zwischen Räumen
+   erschien sekundenkurz „¡Hola! Yo soy Spikiu." mit rotem Knopf). Ursache: #welcome
+   ist im HTML „active" und wird gemalt, bevor boot() am Seitenende ins Haus wechselt.
+   Wer schon ein Profil hat, bekommt die Willkommensseite deshalb gar nicht erst zu sehen. */
+try{var _u=JSON.parse(localStorage.getItem('spikiu_user')||'null');if(_u&&_u.name)document.documentElement.classList.add('hat-profil');}catch(e){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -22,6 +29,7 @@ body.m5{--bg:#cfeee2;--bubS:#fff;--bubT:#fff;--you:#15163a;--youtx:#eef7f1;--acc
 .badge{position:fixed;top:calc(.5rem + env(safe-area-inset-top));right:.7rem;z-index:80;font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.08em;color:var(--ink);background:rgba(255,255,255,.92);border:2px solid var(--ink);padding:.3rem .55rem;border-radius:999px;box-shadow:2px 2px 0 var(--ink)}
 .view{display:none;background-color:var(--bg)}
 .view.active{display:flex;flex-direction:column;height:100dvh;width:100%;position:relative}
+.hat-profil #welcome{display:none!important}
 @media (min-width:700px) and (min-height:560px){
  html{font-size:17px}
  body{background:var(--back);background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px}
