@@ -145,6 +145,25 @@
     return '';
   }
 
+  /* Übersetzung genau des Satzes, den uebungsSatz() gewählt hat (Leo, 12.10.:
+     „nicht nur das Wort, sondern auch der Beispielsatz übersetzt"). Satz für Satz
+     ausgerichtet; passt die Satzzahl nicht, lieber nichts als etwas Falsches. */
+  function naText(na, mu) { if (!na) return ''; if (typeof na === 'string') return na; return na[mu] || ''; }
+  function teile(t) { return String(t || '').split(/(?<=[.!?])\s+/).map(function (x) { return x.trim(); }).filter(Boolean); }
+  function uebungsSatzTr(stufe, thema, satz, mu) {
+    var D = raum.SpikiuLernpfad; if (!D || !satz) return '';
+    var S = D.station(stufe, thema); if (!S) return '';
+    var quellen = S.dialog.zeilen.map(function (z) { return { z: z.z, na: z.na }; });
+    quellen.push({ z: S.lesetext.z, na: S.lesetext.na });
+    for (var i = 0; i < quellen.length; i++) {
+      var q = quellen[i], ziel = teile(q.z), tr = naText(q.na, mu); if (!tr) continue;
+      if (String(q.z).trim() === satz) return tr.trim();
+      var j = ziel.indexOf(satz); if (j < 0) continue;
+      var trs = teile(tr); if (trs.length === ziel.length) return trs[j];
+    }
+    return '';
+  }
+
   function ausStationen(zielsprache, muttersprache) {
     var D = raum.SpikiuLernpfad, P = raum.SpikiuPfad;
     if (!D || !P) return [];
@@ -160,6 +179,7 @@
                (27.09.: vorher blieb die Übersetzung für de/en-Lerner leer). */
             tr: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[mu] || w.na.de || w.na.en || w.na.es)) || ''),
             text: uebungsSatz(st, t.id, w.z),
+            ts: uebungsSatzTr(st, t.id, uebungsSatz(st, t.id, w.z), mu),
             station: st + '.' + t.id
           });
         });
