@@ -432,7 +432,7 @@ var HUI={
  en:{d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and write. Your shelf grows here.',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your book, your lessons, your garden',regalKr:'Everything you’ve gathered.',garten:'Your<br>garden',gartens:'From A to Z',akro:'Your<br>acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'A few words, nice and calm.',
   gef:'Guided<br>conversation',gefs:'Practice scenes',frei:'Free<br>conversation',freis:'Talk freely',gratis:'free',
   zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(n){return 'You’ve already collected '+n+' '+(n===1?'word':'words')+'. 🍃';},
-  roman:'Lernroman',romans:'Immersive reading',wend:'Phrases & Proverbs',wends:'Language & culture',lek:'Your<br>lessons',buch:'My book',woerter:function(n){return n+' '+(n===1?'word':'words');},
+  roman:'Learning Novel',romans:'Immersive reading',wend:'Phrases & Proverbs',wends:'Language & culture',lek:'Your<br>lessons',buch:'My book',woerter:function(n){return n+' '+(n===1?'word':'words');},
   wort:'Vocabulary',worts:'Your deck',lese:'Reading Workshop',leses:'Reading comprehension',schreib:'Writing<br>Workshop',schreibs:'Writing',spiele:'Games',spieles:'Short and light',
   zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s book';},buchSub:'Where you’ve been — page by page.',geschrieben:'written by Spikiu',
   mitgenommen:'Taken with you',deineW:'Your words',leer:'Still empty',leerSub:'Talk with me or practise a few words — and this book writes itself.',
@@ -570,12 +570,12 @@ var THEMES={
 /* 0 · Begrüßung */
 function roomEintauchen(){
  kacheln({greet:{title:hallo()+(vorname()?', '+kEsc(vorname()):'')+'! 👋',kr:letzteAktivitaet()||H().anfang},layout:'two',items:[
-  {em:'🎭',tt:H().gef,ss:H().gefs,pill:H().gratis,pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
+  {em:'🎭',tt:H().gef,pill:H().gratis,pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
   /* 01.09.2026: von chat.html auf szene.html umgehängt. Die Szene ist der
      neue Raum — Aufgaben aus der Datenbank, null Token im Gespräch, ein
      Aufruf am Ende. chat.html bleibt vorerst liegen als Rückweg, bis alle
      drei Sprachen durchgetestet sind. */
-  {em:'💬',tt:H().frei,ss:H().freis,pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
+  {em:'💬',tt:H().frei,pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
  ]});
 }
 /* TOT — wird nirgends aufgerufen (geprüft 01.09.2026). Steht nur noch da,
@@ -669,21 +669,22 @@ function addPage(key){var p=THEMES[key].page;pages.push({ch:p.ch,title:p.title,b
 /* ===== RAUM: BIBLIOTHEK ===== */
 /* Neue Ordnung (Leo, 11.10. 01:31 „Genehmigt!"): Bibliothek = lesen & schreiben + Regal.
    Oben mittig „Dein Regal" (tri-Layout), darunter Lesen und Schreiben. */
+/* 12.10. (Leo, 16:54): Text reduzieren, nur die Titel. Kacheln ohne Unterzeile; nur Dein Regal behält seine. */
 function roomBibliothek(){
  kacheln({layout:'tri',items:[
   {em:'🌱',tt:H().regal,ss:H().regals,bg:'#c7e89a',go:roomRegal},
-  {em:'📖',tt:H().roman,ss:H().romans,bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
-  {em:'📜',tt:H().wend,ss:H().wends,bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
-  {em:'🔎',tt:H().lese,ss:H().leses,pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
-  {em:'✍️',tt:H().schreib,ss:H().schreibs,pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}}
+  {em:'📖',tt:H().roman,bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
+  {em:'📜',tt:H().wend,bg:'#bfe6d5',go:function(){location.href='proverbios.html';}},
+  {em:'🔎',tt:H().lese,pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
+  {em:'✍️',tt:H().schreib,pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}}
  ]});}
 /* Dein Regal: was du gesammelt hast — Buch, Lektionen, Garten, Akrosticha. */
 function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0;
  kacheln({greet:{title:'🌱 '+H().regal,kr:H().regalKr},layout:'four',items:[
-  {em:'📗',tt:H().buch,ss:H().woerter(readBuch().length),bg:'#c7e89a',go:renderBook},
+  {em:'📗',tt:H().buch,bg:'#c7e89a',go:renderBook},
   {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
-  {em:'🌿',tt:H().garten,ss:H().gartens,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
-  {em:'🔤',tt:H().akro,ss:H().akros,bg:'#cdbdf2',go:function(){location.href='spiele.html?spiel=acrostico';}}
+  {em:'🌿',tt:H().garten,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
+  {em:'🔤',tt:H().akro,bg:'#cdbdf2',go:function(){location.href='spiele.html?spiel=acrostico';}}
  ]});
  var z=document.createElement('button');z.type='button';z.className='k-zurueck';z.innerHTML=H().zurBib;z.onclick=function(){loadRoom('bibliothek');};
  S.querySelector('.k-wrap').appendChild(z);}
@@ -764,8 +765,8 @@ var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'
 /* Neue Ordnung (11.10.): Übung = Wörter & Spiel. Lese-/Schreibwerkstatt wohnen jetzt in der Bibliothek. */
 function roomUebung(){
  kacheln({layout:'two',items:[
-  {em:'🃏',tt:H().wort,ss:H().worts,bg:'#ffd0b0',go:function(){location.href='gym.html';}},
-  {em:'🪅',tt:H().spiele,ss:H().spieles,bg:'#ffe08a',go:function(){location.href='spiele.html';}}
+  {em:'🃏',tt:H().wort,bg:'#ffd0b0',go:function(){location.href='gym.html';}},
+  {em:'🪅',tt:H().spiele,bg:'#ffe08a',go:function(){location.href='spiele.html';}}
  ]});}
 function uebKarte(i){
  if(i>=UWORDS.length){
