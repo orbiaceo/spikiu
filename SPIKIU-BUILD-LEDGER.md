@@ -23,6 +23,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 13.10.2026 · LESEN-KACHEL: EIGENE LESEBRILLE (**Leo, 13:15, Vorlage einer runden Linien-Brille: „Algo así mejor."**) — `haus.html`: statt Emoji 👓 jetzt eigene SVG-Zeichnung `BRILLE` (zwei runde Gläser, feiner Steg, Bügel nach hinten mit Bogen, kleine Glanzstriche; Strich 2.5 in Tinte #15163a, passt zu den Tür-Icons). Selbst gezeichnet, nicht die Vorlage kopiert.
+
 Stand: 13.10.2026 · LESEN-KACHEL: BRILLE STATT LUPE (**Leo, 13:13: „En Reading en vez de una lupa unas gafas de las antiguas finas para simbolizar lectura."**) — `haus.html`: Emoji der Kachel Lesen/Lectura/Reading 🔎 → 👓. Hinweis: das Emoji zeichnet das System des Geräts; eine bewusst „alte, feine" Lesebrille ginge nur als eigenes SVG.
 
 Stand: 13.10.2026 · LESEN / SCHREIBEN (**Leo, 13:11: „Solo el verbo y en español lectura y escritura."**) — Bibliotheks-Kacheln heißen jetzt de „Lesen" / „Schreiben", es „Lectura" / „Escritura", en „Reading" / „Writing" (vorher Lese-/Schreibwerkstatt, Taller de lectura/escritura, Reading/Writing Workshop). Grund (Claude, 13:08): „Leseübung/Reading Practice" hätte mit der Tür „Übung/Practice" kollidiert. Nur die Haus-Kacheln; Seitenköpfe von taller.html / schreibwerkstatt.html und Texte auf Startseite/FAQ/Produktseite tragen noch die alten Namen.
