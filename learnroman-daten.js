@@ -90,6 +90,11 @@
   //    Inhalt in learnroman-emma.js (15.10.2026). Zeilen tragen zusätzlich `lt` (Umschrift).
   var EMMA = (w.SPIKIU_LR_EMMA && w.SPIKIU_LR_EMMA.K) || [];
 
+  // ══ BUCH 5 · „La vuelta de Lotte" — Zielsprache es, KRONE (B1), Muttersprachen de + en + el ══
+  //    Inhalt in learnroman-lotte.js (15.10.2026). Lateinamerika, ganz auf Spanisch,
+  //    Brücken {de,en,el} direkt im Buch (keine eigene el-Datei nötig).
+  var LOTTE = (w.SPIKIU_LR_LOTTE && w.SPIKIU_LR_LOTTE.K) || [];
+
   // ── Die Bücher. Ein neues Sprachpaar = ein weiterer Eintrag.
   //    muttersprachen: für welche Lerner das Buch geschrieben ist. ──
   var BUECHER = [
@@ -124,7 +129,15 @@
                     en: 'One number, one city, one year. Every stop is a scene from Guided Conversation.' },
       einheit: 'station',
       teile: { fundament: 'Ο ΑΦΜ', aufbau: 'Πάσχα', anwendung: 'Θα τα πούμε' },
-      kapitel: EMMA }
+      kapitel: EMMA },
+    { buch: 'la-vuelta-de-lotte', zielsprache: 'es', muttersprachen: ['de', 'en', 'el'],
+      titel: 'La vuelta de Lotte',
+      untertitel: { de: 'Zehn Länder, zehn Wasser, ein Bildband. Lateinamerika, ganz auf Spanisch — jede Station ist eine Szene der Krone.',
+                    en: 'Ten countries, ten waters, one photo book. Latin America, all in Spanish — every stop is a scene from the Crown.',
+                    el: 'Δέκα χώρες, δέκα νερά, ένα φωτογραφικό λεύκωμα. Λατινική Αμερική, όλο στα ισπανικά — κάθε σταθμός είναι μια σκηνή της Φυλλωσιάς.' },
+      einheit: 'station',
+      teile: { anwendung: 'La vuelta' },
+      kapitel: LOTTE }
   ];
 
   // Ein Buch in EINER Muttersprache (zwischengespeichert, damit der Raum
@@ -157,22 +170,34 @@
   }
 
   // ── Öffentlich: Buch zum Sprachpaar oder null (nie werfen, nie erfinden). ──
-  w.spikiuLearnroman = function (zielsprache, muttersprache) {
-    var ziel = zielsprache || '', mutter = muttersprache || '';
+  // Seit 15.10.2026 kann ein Sprachpaar MEHRERE Bücher haben (Spanisch: Lukas +
+  // Lotte). Ohne buchId kommt das erste; mit buchId genau dieses, wenn es passt.
+  function passt(b, ziel, mutter) {
+    // Griechisch zählt als Muttersprache, sobald seine Brücken-Datei geladen ist.
+    var kann = b.muttersprachen.indexOf(mutter) > -1 || (mutter === 'el' && !!w[EL_QUELLE[b.buch]]);
+    return b.zielsprache === ziel && kann && b.kapitel.length > 0;
+  }
+  w.spikiuLearnroman = function (zielsprache, muttersprache, buchId) {
+    var ziel = zielsprache || '', mutter = muttersprache || '', erstes = null;
     for (var i = 0; i < BUECHER.length; i++) {
       var b = BUECHER[i];
-      // Griechisch zählt als Muttersprache, sobald seine Brücken-Datei geladen ist.
-      var kann = b.muttersprachen.indexOf(mutter) > -1 || (mutter === 'el' && !!w[EL_QUELLE[b.buch]]);
-      if (b.zielsprache === ziel && kann && b.kapitel.length) return fuer(b, mutter);
+      if (!passt(b, ziel, mutter)) continue;
+      if (!buchId || b.buch === buchId) return fuer(b, mutter);
+      if (!erstes) erstes = b;
     }
-    return null;
+    return erstes ? fuer(erstes, mutter) : null;
+  };
+  // Alle Bücher eines Sprachpaares (für den Wechsel im Raum).
+  w.spikiuLearnroman.alle = function (zielsprache, muttersprache) {
+    return BUECHER.filter(function (b) { return passt(b, zielsprache || '', muttersprache || ''); })
+      .map(function (b) { return { buch: b.buch, titel: b.titel, untertitel: lokal(b.untertitel, muttersprache) || '' }; });
   };
   // Reihenfolge/IDs der Etappen für die Freischaltung im Raum.
   w.spikiuLearnroman.etappenIds = ETAPPEN_IDS.slice();
   // Welche Sprachpaare gibt es überhaupt? (für einen ehrlichen leeren Zustand)
   w.spikiuLearnroman.paare = [];
   BUECHER.forEach(function (b) {
-    b.muttersprachen.concat(b.zielsprache === 'el' ? [] : ['el']).forEach(function (m) {
+    b.muttersprachen.concat((b.zielsprache === 'el' || b.muttersprachen.indexOf('el') > -1) ? [] : ['el']).forEach(function (m) {
       w.spikiuLearnroman.paare.push({ zielsprache: b.zielsprache, muttersprache: m, titel: b.titel });
     });
   });

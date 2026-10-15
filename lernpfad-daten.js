@@ -50,7 +50,8 @@
     { id:'wetter',          em:'🌤️', na:{ de:'Über das Wetter',     en:'About the weather', el:'Για τον καιρό' } }
   ];
 
-  var STUFEN = ['a1', 'a2'];
+  /* b1 = KRONE (15.10.2026): „La vuelta“, Lateinamerika, nur Zielsprache Spanisch. */
+  var STUFEN = ['a1', 'a2', 'b1'];
 
   /* ── Die Gruppen ──────────────────────────────────────────────────────
      Zwei Ebenen statt einer langen Liste. Bei 10 Stationen kostet das
@@ -1528,6 +1529,780 @@
     }
   };
 
+  /* ══════════════════════════════════════════════════════════════════
+     B1 · KRONE · „LA VUELTA“ (Leo, 15.10.2026: „Für LA wähle einige dieser
+     Orte … Puede ser un trotamundos que hace una vuelta por LA.“ · „Otro
+     personaje, el resto decídelo tú, pero nada de política.“)
+     Lotte de Vries, Fotografin aus Utrecht, reist für ihren Bildband «Agua»
+     durch Lateinamerika. Dieselben zehn Themen, neue Handlung, neuer Ort:
+     hotel CDMX · familie Oaxaca · wetter Monteverde · arzt Quito ·
+     einkaufen Otavalo · bahnhof Quitumbe→Tena · taxi Asunción ·
+     cafe Buenos Aires · restaurant El Calafate · wegbeschreibung Canaima.
+     SPRACHE: neutrales lateinamerikanisches Spanisch (ustedes, celular,
+     boleto), NIE voseo, keine Politik. Neue Felder: rollen (Rollenkarte der
+     Station, schlägt ROLLEN[thema]) und kultur (ein Satz zum Ort).
+     Der Roman dazu: learnroman-lotte.js „La vuelta de Lotte“.
+     ══════════════════════════════════════════════════════════════════ */
+var B1_LP_A = {
+
+  schritt: {
+    hotel:     { de:'Mexiko-Stadt: ein Zimmer für einen Monat', en:'Mexico City: a room for a month', el:'Πόλη του Μεξικού: ένα δωμάτιο για έναν μήνα' },
+    familie:   { de:'Oaxaca: von den Großeltern erzählen',      en:'Oaxaca: talking about grandparents', el:'Οαχάκα: μιλάς για τους παππούδες' },
+    wetter:    { de:'Monteverde: planen, wenn der Nebel kommt',  en:'Monteverde: planning around the mist', el:'Μοντεβέρδε: σχέδια όταν έρχεται η ομίχλη' },
+    arzt:      { de:'Quito: Rat in der Apotheke',                en:'Quito: advice at the pharmacy', el:'Κίτο: συμβουλές στο φαρμακείο' },
+    einkaufen: { de:'Otavalo: vergleichen und feilschen',        en:'Otavalo: comparing and bargaining', el:'Οταβάλο: συγκρίνεις και παζαρεύεις' }
+  },
+
+  aufgaben: {
+    'b1.hotel': [
+      { de:'Bejahe, sag, dass du das Zimmer sehen möchtest und etwas nahe der Metro suchst', es:'Di que sí, que querías ver el cuarto y que buscas algo que esté cerca del metro', en:'Say yes, that you would like to see the room and are looking for something near the metro', el:'Πες ναι, ότι θα ήθελες να δεις το δωμάτιο και ότι ψάχνεις κάτι κοντά στο μετρό' },
+      { de:'Frag, ob im Preis Strom und Internet enthalten sind', es:'Pregunta si el precio incluye la luz y el internet', en:'Ask whether the price includes electricity and internet', el:'Ρώτα αν η τιμή περιλαμβάνει ρεύμα και ίντερνετ' },
+      { de:'Sag, dass du ab Montag bleiben möchtest, wenn es ihr recht ist', es:'Di que querías quedarte desde el lunes, si le parece bien', en:'Say you would like to stay from Monday, if that suits her', el:'Πες ότι θα ήθελες να μείνεις από τη Δευτέρα, αν της είναι εντάξει' }
+    ],
+    'b1.familie': [
+      { de:'Bejahe, sag: ein Foto deines Großvaters, und dass er vor fünf Jahren gestorben ist', es:'Di que sí, una foto de tu abuelo, y que murió hace cinco años', en:'Say yes, a photo of your grandfather, and that he died five years ago', el:'Πες ναι, μια φωτογραφία του παππού σου, και ότι πέθανε πριν από πέντε χρόνια' },
+      { de:'Erzähle, dass er sehr ruhig war, ein Boot hatte und jeden Sonntag angeln ging', es:'Cuenta que era muy tranquilo, que tenía un barco y que pescaba todos los domingos', en:'Tell that he was very calm, had a boat and went fishing every Sunday', el:'Διηγήσου ότι ήταν πολύ ήρεμος, ότι είχε μια βάρκα και ψάρευε κάθε Κυριακή' },
+      { de:'Sag, dass deine Oma Fenna in Utrecht lebt und du ihr gestern eine Postkarte geschickt hast', es:'Di que tu abuela Fenna vive en Utrecht y que ayer le mandaste una postal', en:'Say your grandmother Fenna lives in Utrecht and you sent her a postcard yesterday', el:'Πες ότι η γιαγιά σου η Φένα ζει στην Ουτρέχτη και ότι χθες της έστειλες μια κάρτα' }
+    ],
+    'b1.wetter': [
+      { de:'Frag, wie das Wetter am Nachmittag wird, und sag, dass du den Wasserfall fotografieren willst', es:'Pregunta qué tiempo hará por la tarde y di que quieres sacar fotos de la catarata', en:'Ask what the weather will be like in the afternoon and say you want to photograph the waterfall', el:'Ρώτα τι καιρό θα κάνει το απόγευμα και πες ότι θέλεις να φωτογραφίσεις τον καταρράκτη' },
+      { de:'Sag: wenn es regnet, packst du die Kamera in den Rucksack — und schlag vor, lieber jetzt zu gehen', es:'Di que si llueve guardarás la cámara en la mochila y propón ir mejor ahora', en:'Say that if it rains you will put the camera in your backpack, and suggest going now instead', el:'Πες ότι, αν βρέξει, θα βάλεις τη φωτογραφική μηχανή στο σακίδιο, και πρότεινε να πάτε καλύτερα τώρα' },
+      { de:'Stimme zu und sag, dass du für alle Fälle die Regenjacke anziehst', es:'Di que de acuerdo y que te pondrás el impermeable por si acaso', en:'Agree and say you will put on your rain jacket just in case', el:'Συμφώνησε και πες ότι θα φορέσεις το αδιάβροχο για καλό και για κακό' }
+    ],
+    'b1.arzt': [
+      { de:'Sag, dass du gestern in Quito angekommen bist und starke Kopfschmerzen hast', es:'Di que llegaste ayer a Quito y que te duele mucho la cabeza', en:'Say you arrived in Quito yesterday and have a bad headache', el:'Πες ότι έφτασες χθες στο Κίτο και ότι σε πονάει πολύ το κεφάλι' },
+      { de:'Sag, dass dir etwas schwindelig ist und du schlecht geschlafen hast, und frag, was sie empfiehlt', es:'Di que tienes un poco de mareo y que dormiste mal, y pregunta qué te recomienda', en:'Say you feel a bit dizzy and slept badly, and ask what she recommends', el:'Πες ότι ζαλίζεσαι λίγο και ότι κοιμήθηκες άσχημα, και ρώτα τι σου συνιστά' },
+      { de:'Frag nach: alle acht Stunden, mit Essen? Und ob du Kaffee trinken darfst', es:'Pregunta si es cada ocho horas con comida y si puedes tomar café', en:'Check: every eight hours, with food? And ask whether you may drink coffee', el:'Ρώτα αν είναι κάθε οκτώ ώρες με φαγητό και αν μπορείς να πιεις καφέ' }
+    ],
+    'b1.einkaufen': [
+      { de:'Sag, dass sie wunderschön sind, und frag, was die Muster auf dem blauen Poncho dort drüben bedeuten', es:'Di que son preciosos y pregunta qué significan los dibujos de aquel poncho azul', en:'Say they are beautiful and ask what the patterns on that blue poncho over there mean', el:'Πες ότι είναι πανέμορφα και ρώτα τι σημαίνουν τα σχέδια σε εκείνο το μπλε πόντσο εκεί πέρα' },
+      { de:'Sag, dass er teurer ist als der rote, und frag, ob sie ihn dir für sechzig lässt', es:'Di que es más caro que el rojo y pregunta si te lo deja en sesenta', en:'Say it is more expensive than the red one and ask whether she will let you have it for sixty', el:'Πες ότι είναι πιο ακριβό από το κόκκινο και ρώτα αν σου το αφήνει στα εξήντα' },
+      { de:'Nimm ihn und frag, ob du mit einem Hundertdollarschein zahlen kannst', es:'Di que te lo llevas y pregunta si puedes pagar con un billete de cien', en:'Say you will take it and ask whether you can pay with a hundred-dollar note', el:'Πες ότι το παίρνεις και ρώτα αν μπορείς να πληρώσεις με χαρτονόμισμα των εκατό' }
+    ]
+  },
+
+  stationen: {
+
+    /* ── B1 · Ciudad de México — ein Zimmer für einen Monat ─────────── */
+    'b1.hotel': {
+      deineRolle: { de:'Du bist in Mexiko-Stadt und suchst für einen Monat ein möbliertes Zimmer, nah an der Metro. Einziehen möchtest du am Montag.', es:'Estás en la Ciudad de México y buscas un cuarto amueblado por un mes, cerca del metro. Quieres entrar el lunes.', en:'You are in Mexico City looking for a furnished room for one month, close to the metro. You would like to move in on Monday.', el:'Είσαι στην Πόλη του Μεξικού και ψάχνεις ένα επιπλωμένο δωμάτιο για έναν μήνα, κοντά στο μετρό. Θέλεις να μετακομίσεις τη Δευτέρα.' },
+      abrundung: { z:'¡Qué padre! Ahorita le hago una copia de la llave.', na:{ de:'Wie toll! Ich mache Ihnen gleich einen Zweitschlüssel.', en:'Great! I’ll get a copy of the key made for you right now.', el:'Τέλεια! Σας φτιάχνω αμέσως ένα αντίγραφο του κλειδιού.' } },
+      rollen: {
+        spikiu: { de:'die Vermieterin, Doña Lupita', es:'la casera, doña Lupita', en:'the landlady, Doña Lupita', el:'η σπιτονοικοκυρά, η ντόνια Λουπίτα' },
+        lerner: { de:'die Reisende auf Zimmersuche', es:'la viajera que busca cuarto', en:'the traveller looking for a room', el:'η ταξιδιώτισσα που ψάχνει δωμάτιο' },
+        ort:    { de:'in einem alten Haus in Coyoacán', es:'en una casa antigua de Coyoacán', en:'in an old house in Coyoacán', el:'σε ένα παλιό σπίτι στο Κογιοακάν' }
+      },
+      wortschatz: [
+        { z:'el departamento',      na:{ de:'die Wohnung',              en:'the flat', el:'το διαμέρισμα' } },
+        { z:'el cuarto amueblado',  na:{ de:'das möblierte Zimmer',     en:'the furnished room', el:'το επιπλωμένο δωμάτιο' } },
+        { z:'la renta',             na:{ de:'die Miete',                en:'the rent', el:'το ενοίκιο' } },
+        { z:'el depósito',          na:{ de:'die Kaution',              en:'the deposit', el:'η εγγύηση' } },
+        { z:'el contrato',          na:{ de:'der Vertrag',              en:'the contract', el:'το συμβόλαιο' } },
+        { z:'firmar',               na:{ de:'unterschreiben',           en:'to sign', el:'υπογράφω' } },
+        { z:'todo incluido',        na:{ de:'alles inklusive',          en:'everything included', el:'όλα μέσα' } },
+        { z:'la luz',               na:{ de:'der Strom',                en:'the electricity', el:'το ρεύμα' } },
+        { z:'la colonia',           na:{ de:'das Stadtviertel (Mexiko)',en:'the neighbourhood (Mexico)', el:'η γειτονιά (Μεξικό)' } },
+        { z:'quería ver …',         na:{ de:'ich würde gern … sehen',   en:'I’d like to see …', el:'θα ήθελα να δω …' } },
+        { z:'busco algo que esté …',na:{ de:'ich suche etwas, das … liegt', en:'I’m looking for something that is …', el:'ψάχνω κάτι που να είναι …' } },
+        { z:'ahorita',              na:{ de:'gleich, sofort (Mexiko)',  en:'right now, in a moment (Mexico)', el:'αμέσως, σε λίγο (Μεξικό)' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Vermieterin, Doña Lupita', en:'The landlady, Doña Lupita', el:'Η σπιτονοικοκυρά, η ντόνια Λουπίτα' },
+        zeilen: [
+          { wer:'spikiu', z:'Buenas tardes, pásele. ¿Usted es quien llamó por el cuarto?', na:{ de:'Guten Tag, kommen Sie rein. Sind Sie diejenige, die wegen des Zimmers angerufen hat?', en:'Good afternoon, come in. Are you the one who called about the room?', el:'Καλησπέρα, περάστε. Εσείς τηλεφωνήσατε για το δωμάτιο;' } },
+          { wer:'lerner', z:'Sí, soy yo. Quería ver el cuarto; busco algo que esté cerca del metro.', na:{ de:'Ja, das bin ich. Ich würde gern das Zimmer sehen; ich suche etwas, das nah an der Metro liegt.', en:'Yes, that’s me. I’d like to see the room; I’m looking for something close to the metro.', el:'Ναι, εγώ είμαι. Θα ήθελα να δω το δωμάτιο· ψάχνω κάτι που να είναι κοντά στο μετρό.' } },
+          { wer:'spikiu', z:'Está a cinco minutos de la estación. La renta son seis mil pesos al mes.', na:{ de:'Es ist fünf Minuten von der Station entfernt. Die Miete beträgt sechstausend Pesos im Monat.', en:'It’s five minutes from the station. The rent is six thousand pesos a month.', el:'Είναι πέντε λεπτά από τον σταθμό. Το ενοίκιο είναι έξι χιλιάδες πέσος τον μήνα.' } },
+          { wer:'lerner', z:'¿El precio incluye la luz y el internet?', na:{ de:'Sind Strom und Internet im Preis enthalten?', en:'Does the price include electricity and internet?', el:'Η τιμή περιλαμβάνει ρεύμα και ίντερνετ;' } },
+          { wer:'spikiu', z:'Sí, todo incluido. Solo le pido un mes de depósito y firmamos un contrato sencillo.', na:{ de:'Ja, alles inklusive. Ich bitte Sie nur um eine Monatsmiete Kaution, und wir unterschreiben einen einfachen Vertrag.', en:'Yes, everything included. I just ask for one month’s deposit and we sign a simple contract.', el:'Ναι, όλα μέσα. Σας ζητάω μόνο έναν μήνα εγγύηση και υπογράφουμε ένα απλό συμβόλαιο.' } },
+          { wer:'lerner', z:'Perfecto. Quería quedarme desde el lunes, si le parece bien.', na:{ de:'Perfekt. Ich würde gern ab Montag bleiben, wenn es Ihnen recht ist.', en:'Perfect. I’d like to stay from Monday, if that suits you.', el:'Τέλεια. Θα ήθελα να μείνω από τη Δευτέρα, αν σας είναι εντάξει.' } }
+        ]
+      },
+      lesetext: {
+        z:'Hoy llegué a Coyoacán y doña Lupita me rentó un cuarto con ventana al jardín. Cuando dije «vale», se rio y me explicó: «Aquí decimos “está bien”». Mañana voy a Xochimilco: la ciudad antes era un lago, y los canales son el agua que quedó.',
+        na:{ de:'Heute bin ich in Coyoacán angekommen, und Doña Lupita hat mir ein Zimmer mit Fenster zum Garten vermietet. Als ich „vale" sagte, lachte sie und erklärte mir: „Hier sagen wir ‚está bien‘." Morgen fahre ich nach Xochimilco: Die Stadt war früher ein See, und die Kanäle sind das Wasser, das geblieben ist.',
+             en:'Today I arrived in Coyoacán and Doña Lupita rented me a room with a window onto the garden. When I said “vale”, she laughed and explained: “Here we say ‘está bien’.” Tomorrow I’m going to Xochimilco: the city used to be a lake, and the canals are the water that remained.',
+             el:'Σήμερα έφτασα στο Κογιοακάν και η ντόνια Λουπίτα μού νοίκιασε ένα δωμάτιο με παράθυρο στον κήπο. Όταν είπα «vale», γέλασε και μου εξήγησε: «Εδώ λέμε “está bien”». Αύριο πάω στο Σοτσιμίλκο: η πόλη παλιά ήταν λίμνη, και τα κανάλια είναι το νερό που έμεινε.' },
+        frage:{ de:'Was sind die Kanäle von Xochimilco?', en:'What are the canals of Xochimilco?', el:'Τι είναι τα κανάλια του Σοτσιμίλκο;' },
+        optionen:[
+          { na:{ de:'Ein Rest des alten Sees',  en:'What is left of the old lake', el:'Ό,τι έμεινε από την παλιά λίμνη' }, richtig:true  },
+          { na:{ de:'Ein neuer Park am Fluss',  en:'A new park by the river', el:'Ένα καινούργιο πάρκο δίπλα στο ποτάμι' }, richtig:false },
+          { na:{ de:'Der Garten von Doña Lupita', en:'Doña Lupita’s garden', el:'Ο κήπος της ντόνια Λουπίτα' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib einer Vermieterin: Du suchst ein ruhiges Zimmer und möchtest wissen, ob WLAN im Preis enthalten ist. Zwei Sätze.',
+                  en:'Write to a landlady: you are looking for a quiet room and want to know whether wifi is included in the price. Two sentences.',
+                  el:'Γράψε σε μια σπιτονοικοκυρά: ψάχνεις ένα ήσυχο δωμάτιο και θέλεις να μάθεις αν το wifi περιλαμβάνεται στην τιμή. Δύο προτάσεις.' },
+        muster:'Buenas tardes, busco un cuarto que sea tranquilo. ¿El precio incluye el internet?'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„Quería" plus Infinitiv ist die höfliche Bitte: quería ver, quería quedarme — wie „ich hätte gern". Und wer etwas sucht, das er noch nicht kennt, nimmt den Subjuntivo: busco algo que esté cerca, que tenga ventana. In Spanien hieß die Wohnung piso, hier heißt sie departamento.',
+               en:'"Quería" plus infinitive is the polite request: quería ver, quería quedarme — like "I’d like to". And when you look for something you don’t know yet, use the subjunctive: busco algo que esté cerca, que tenga ventana. In Spain a flat was a piso; here it is a departamento.',
+               el:'Το «quería» + απαρέμφατο είναι το ευγενικό αίτημα: quería ver, quería quedarme — σαν το «θα ήθελα». Κι όταν ψάχνεις κάτι που δεν ξέρεις ακόμα, βάζεις υποτακτική: busco algo que esté cerca, que tenga ventana. Στην Ισπανία το διαμέρισμα ήταν piso· εδώ λέγεται departamento.' },
+        beispiele:[
+          { z:'Quería ver el cuarto.',            na:{ de:'Ich würde gern das Zimmer sehen.', en:'I’d like to see the room.', el:'Θα ήθελα να δω το δωμάτιο.' } },
+          { z:'Busco algo que esté cerca del metro.', na:{ de:'Ich suche etwas, das nah an der Metro liegt.', en:'I’m looking for something close to the metro.', el:'Ψάχνω κάτι που να είναι κοντά στο μετρό.' } }
+        ]
+      },
+      kultur:{ de:'Mexiko-Stadt steht auf dem Grund eines alten Sees — in Xochimilco fährt man noch heute auf bunten Booten durch die Kanäle. Wer etwas nicht verstanden hat, sagt hier höflich „¿Mande?".',
+               en:'Mexico City stands on the bed of an old lake — in Xochimilco people still glide through the canals on colourful boats. If you didn’t catch something, the polite Mexican way to ask is “¿Mande?”.',
+               el:'Η Πόλη του Μεξικού είναι χτισμένη στον βυθό μιας παλιάς λίμνης — στο Σοτσιμίλκο ακόμα και σήμερα διασχίζεις τα κανάλια με πολύχρωμες βάρκες. Αν δεν κατάλαβες κάτι, εδώ ρωτάς ευγενικά «¿Mande?».' }
+    },
+
+    /* ── B1 · Oaxaca — Día de Muertos ─────────────────────────────── */
+    'b1.familie': {
+      duzen: true,
+      deineRolle: { de:'Dein Großvater ist vor fünf Jahren gestorben. Er war sehr ruhig, hatte ein Boot und ging sonntags angeln. Deine Oma Fenna lebt in Utrecht; gestern hast du ihr eine Postkarte geschickt.', es:'Tu abuelo murió hace cinco años. Era muy tranquilo, tenía un barco y pescaba los domingos. Tu abuela Fenna vive en Utrecht; ayer le mandaste una postal.', en:'Your grandfather died five years ago. He was very calm, had a boat and went fishing on Sundays. Your grandmother Fenna lives in Utrecht; yesterday you sent her a postcard.', el:'Ο παππούς σου πέθανε πριν από πέντε χρόνια. Ήταν πολύ ήρεμος, είχε μια βάρκα και ψάρευε τις Κυριακές. Η γιαγιά σου η Φένα ζει στην Ουτρέχτη· χθες της έστειλες μια κάρτα.' },
+      abrundung: { z:'¡Qué bonito! Ven, vamos a poner las flores de cempasúchil.', na:{ de:'Wie schön! Komm, wir stellen die Cempasúchil-Blumen auf.', en:'How lovely! Come on, let’s put out the marigolds.', el:'Τι ωραία! Έλα, πάμε να βάλουμε τα λουλούδια σεμπασούτσιλ.' } },
+      rollen: {
+        spikiu: { de:'Toño, der Sohn von Doña Lupita', es:'Toño, el hijo de doña Lupita', en:'Toño, Doña Lupita’s son', el:'ο Τόνιο, ο γιος της ντόνια Λουπίτα' },
+        lerner: { de:'der Gast der Familie', es:'la invitada de la familia', en:'the family’s guest', el:'η καλεσμένη της οικογένειας' },
+        ort:    { de:'vor dem Totenaltar in Oaxaca', es:'frente a la ofrenda, en Oaxaca', en:'in front of the ofrenda in Oaxaca', el:'μπροστά στον βωμό των νεκρών στην Οαχάκα' }
+      },
+      wortschatz: [
+        { z:'el Día de Muertos',    na:{ de:'der Tag der Toten',        en:'the Day of the Dead', el:'η Ημέρα των Νεκρών' } },
+        { z:'la ofrenda',           na:{ de:'der Totenaltar',           en:'the altar for the dead', el:'ο βωμός για τους νεκρούς' } },
+        { z:'el cempasúchil',       na:{ de:'die Studentenblume (orange)', en:'the (orange) marigold', el:'ο κατιφές (πορτοκαλί)' } },
+        { z:'el pan de muerto',     na:{ de:'das Totenbrot',            en:'the bread of the dead', el:'το ψωμί των νεκρών' } },
+        { z:'la veladora',          na:{ de:'die Kerze',                en:'the candle', el:'το κερί' } },
+        { z:'el panteón',           na:{ de:'der Friedhof (Mexiko)',    en:'the cemetery (Mexico)', el:'το νεκροταφείο (Μεξικό)' } },
+        { z:'murió hace …',         na:{ de:'er/sie ist vor … gestorben', en:'he/she died … ago', el:'πέθανε πριν από …' } },
+        { z:'era muy tranquilo',    na:{ de:'er war sehr ruhig',        en:'he was very calm', el:'ήταν πολύ ήρεμος' } },
+        { z:'le encantaba',         na:{ de:'er/sie liebte (etwas)',    en:'he/she loved (something)', el:'του/της άρεσε πολύ' } },
+        { z:'pescar',               na:{ de:'angeln',                   en:'to fish', el:'ψαρεύω' } },
+        { z:'recordar',             na:{ de:'sich erinnern',            en:'to remember', el:'θυμάμαι' } },
+        { z:'mandar una postal',    na:{ de:'eine Postkarte schicken',  en:'to send a postcard', el:'στέλνω μια κάρτα' } }
+      ],
+      dialog: {
+        rolle: { de:'Toño, der Sohn der Vermieterin', en:'Toño, the landlady’s son', el:'Ο Τόνιο, ο γιος της σπιτονοικοκυράς' },
+        zeilen: [
+          { wer:'spikiu', z:'Este es mi abuelo Chucho; le encantaba el mezcal. ¿Quieres poner una foto de alguien tuyo?', na:{ de:'Das ist mein Opa Chucho; er liebte Mezcal. Möchtest du ein Foto von jemandem aus deiner Familie aufstellen?', en:'This is my grandad Chucho; he loved mezcal. Would you like to put up a photo of someone of yours?', el:'Αυτός είναι ο παππούς μου ο Τσούτσο· λάτρευε το μεσκάλ. Θέλεις να βάλεις μια φωτογραφία από κάποιον δικό σου;' } },
+          { wer:'lerner', z:'Sí, una foto de mi abuelo. Murió hace cinco años.', na:{ de:'Ja, ein Foto von meinem Großvater. Er ist vor fünf Jahren gestorben.', en:'Yes, a photo of my grandfather. He died five years ago.', el:'Ναι, μια φωτογραφία του παππού μου. Πέθανε πριν από πέντε χρόνια.' } },
+          { wer:'spikiu', z:'¿Y cómo era? ¿Qué le gustaba hacer?', na:{ de:'Und wie war er? Was hat er gern gemacht?', en:'And what was he like? What did he like doing?', el:'Και πώς ήταν; Τι του άρεσε να κάνει;' } },
+          { wer:'lerner', z:'Era muy tranquilo. Tenía un barco y pescaba todos los domingos.', na:{ de:'Er war sehr ruhig. Er hatte ein Boot und ging jeden Sonntag angeln.', en:'He was very calm. He had a boat and went fishing every Sunday.', el:'Ήταν πολύ ήρεμος. Είχε μια βάρκα και ψάρευε κάθε Κυριακή.' } },
+          { wer:'spikiu', z:'Entonces le ponemos un vaso de agua fresca. ¿Y tu abuela vive todavía?', na:{ de:'Dann stellen wir ihm ein Glas frisches Wasser hin. Und lebt deine Oma noch?', en:'Then we’ll put out a glass of fresh water for him. And is your grandmother still alive?', el:'Τότε θα του βάλουμε ένα ποτήρι δροσερό νερό. Και η γιαγιά σου ζει ακόμα;' } },
+          { wer:'lerner', z:'Sí, mi abuela Fenna vive en Utrecht. Ayer le mandé una postal.', na:{ de:'Ja, meine Oma Fenna lebt in Utrecht. Gestern habe ich ihr eine Postkarte geschickt.', en:'Yes, my grandmother Fenna lives in Utrecht. I sent her a postcard yesterday.', el:'Ναι, η γιαγιά μου η Φένα ζει στην Ουτρέχτη. Χθες της έστειλα μια κάρτα.' } }
+        ]
+      },
+      lesetext: {
+        z:'En el verano llovió mucho en Oaxaca, por eso los campos de cempasúchil están llenos de flores naranjas. Esta mañana fuimos al panteón y la familia lavó las tumbas con agua. Toño me contó que su abuelo siempre cantaba mientras trabajaba. Por la noche nadie estaba triste: comimos, cantamos y recordamos.',
+        na:{ de:'Im Sommer hat es in Oaxaca viel geregnet, deshalb sind die Cempasúchil-Felder voller orangefarbener Blumen. Heute Morgen sind wir zum Friedhof gegangen, und die Familie hat die Gräber mit Wasser gewaschen. Toño hat mir erzählt, dass sein Großvater beim Arbeiten immer sang. Am Abend war niemand traurig: Wir haben gegessen, gesungen und uns erinnert.',
+             en:'In summer it rained a lot in Oaxaca, so the marigold fields are full of orange flowers. This morning we went to the cemetery and the family washed the graves with water. Toño told me his grandfather always sang while he worked. In the evening nobody was sad: we ate, sang and remembered.',
+             el:'Το καλοκαίρι έβρεξε πολύ στην Οαχάκα, γι’ αυτό τα χωράφια με σεμπασούτσιλ είναι γεμάτα πορτοκαλί λουλούδια. Σήμερα το πρωί πήγαμε στο νεκροταφείο και η οικογένεια έπλυνε τους τάφους με νερό. Ο Τόνιο μού είπε ότι ο παππούς του τραγουδούσε πάντα όσο δούλευε. Το βράδυ κανείς δεν ήταν λυπημένος: φάγαμε, τραγουδήσαμε και θυμηθήκαμε.' },
+        frage:{ de:'Was machte die Familie am Morgen auf dem Friedhof?', en:'What did the family do at the cemetery in the morning?', el:'Τι έκανε η οικογένεια το πρωί στο νεκροταφείο;' },
+        optionen:[
+          { na:{ de:'Sie wusch die Gräber',      en:'They washed the graves', el:'Έπλυνε τους τάφους' }, richtig:true  },
+          { na:{ de:'Sie pflanzte Blumen',        en:'They planted flowers', el:'Φύτεψε λουλούδια' }, richtig:false },
+          { na:{ de:'Sie backte Totenbrot',       en:'They baked bread of the dead', el:'Έψησε ψωμί των νεκρών' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähle von einem Menschen, an den du dich gern erinnerst: wie er war und was ihr einmal zusammen gemacht habt. Zwei Sätze.',
+                  en:'Tell about someone you like to remember: what they were like and something you once did together. Two sentences.',
+                  el:'Μίλησε για έναν άνθρωπο που θυμάσαι με αγάπη: πώς ήταν και τι κάνατε κάποτε μαζί. Δύο προτάσεις.' },
+        muster:'Mi abuela era muy alegre y siempre cantaba en la cocina. Un día me enseñó a hacer pan.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Beim Erzählen arbeiten zwei Vergangenheiten zusammen: era, tenía, pescaba malen das Bild (wie jemand war, was er immer tat). Murió, mandé erzählen, was einmal passiert ist. In Lateinamerika nimmt man diese zweite Form auch für heute: hoy llegué — in Spanien hättest du hoy he llegado gesagt.',
+               en:'When telling a story, two pasts work together: era, tenía, pescaba paint the picture (what someone was like, what they always did). Murió, mandé tell what happened once. In Latin America this second form is used even for today: hoy llegué — in Spain you would have said hoy he llegado.',
+               el:'Όταν διηγείσαι, δουλεύουν μαζί δύο παρελθοντικοί χρόνοι: τα era, tenía, pescaba ζωγραφίζουν την εικόνα (πώς ήταν κάποιος, τι έκανε πάντα). Τα murió, mandé λένε τι έγινε μία φορά. Στη Λατινική Αμερική αυτός ο δεύτερος τύπος μπαίνει και για το σήμερα: hoy llegué — στην Ισπανία θα έλεγες hoy he llegado.' },
+        beispiele:[
+          { z:'Pescaba todos los domingos.', na:{ de:'Er ging jeden Sonntag angeln.', en:'He went fishing every Sunday.', el:'Ψάρευε κάθε Κυριακή.' } },
+          { z:'Murió hace cinco años.',      na:{ de:'Er ist vor fünf Jahren gestorben.', en:'He died five years ago.', el:'Πέθανε πριν από πέντε χρόνια.' } }
+        ]
+      },
+      kultur:{ de:'Am 1. und 2. November bauen Familien in Mexiko eine Ofrenda für ihre Verstorbenen — mit Fotos, ihrem Lieblingsessen und orangefarbenen Cempasúchil-Blumen, deren Farbe und Duft den Seelen den Weg nach Hause zeigen. Es ist ein Fest des Erinnerns, nicht der Trauer.',
+               en:'On 1 and 2 November, families in Mexico build an ofrenda for their dead — with photos, their favourite food and orange marigolds whose colour and scent show the souls the way home. It is a celebration of remembering, not of grief.',
+               el:'Την 1η και τη 2α Νοεμβρίου οι οικογένειες στο Μεξικό στήνουν μια ofrenda για τους νεκρούς τους — με φωτογραφίες, το αγαπημένο τους φαγητό και πορτοκαλί λουλούδια σεμπασούτσιλ, που με το χρώμα και το άρωμά τους δείχνουν στις ψυχές τον δρόμο για το σπίτι. Είναι γιορτή της μνήμης, όχι του πένθους.' }
+    },
+
+    /* ── B1 · Monteverde — Nebelwald ──────────────────────────────── */
+    'b1.wetter': {
+      duzen: true,
+      deineRolle: { de:'Du wanderst mit dem Guide Mauricio durch den Nebelwald. Du willst den Wasserfall fotografieren — deine Kamera darf nicht nass werden.', es:'Caminas con el guía Mauricio por el bosque nuboso. Quieres fotografiar la catarata, y tu cámara no se puede mojar.', en:'You are hiking through the cloud forest with the guide Mauricio. You want to photograph the waterfall — your camera must not get wet.', el:'Περπατάς με τον ξεναγό Μαουρίσιο στο δάσος των νεφών. Θέλεις να φωτογραφίσεις τον καταρράκτη — η μηχανή σου δεν πρέπει να βραχεί.' },
+      abrundung: { z:'¡Así me gusta! Vas a ver cómo el bosque se bebe las nubes. ¡Vamos!', na:{ de:'So gefällt mir das! Du wirst sehen, wie der Wald die Wolken trinkt. Los geht’s!', en:'That’s the spirit! You’ll see how the forest drinks the clouds. Let’s go!', el:'Έτσι μπράβο! Θα δεις πώς το δάσος πίνει τα σύννεφα. Πάμε!' } },
+      rollen: {
+        spikiu: { de:'der Guide Mauricio', es:'el guía Mauricio', en:'Mauricio, the guide', el:'ο ξεναγός Μαουρίσιο' },
+        lerner: { de:'die Fotografin', es:'la fotógrafa', en:'the photographer', el:'η φωτογράφος' },
+        ort:    { de:'im Nebelwald von Monteverde', es:'en el bosque nuboso de Monteverde', en:'in the Monteverde cloud forest', el:'στο δάσος των νεφών του Μοντεβέρδε' }
+      },
+      wortschatz: [
+        { z:'el bosque nuboso',     na:{ de:'der Nebelwald',            en:'the cloud forest', el:'το δάσος των νεφών' } },
+        { z:'la neblina',           na:{ de:'der Nebel',                en:'the mist', el:'η ομίχλη' } },
+        { z:'la llovizna',          na:{ de:'der Nieselregen',          en:'the drizzle', el:'το ψιχάλισμα' } },
+        { z:'el viento',            na:{ de:'der Wind',                 en:'the wind', el:'ο αέρας' } },
+        { z:'húmedo',               na:{ de:'feucht',                   en:'damp, humid', el:'υγρός' } },
+        { z:'¿qué tiempo hará?',    na:{ de:'wie wird das Wetter?',     en:'what will the weather be like?', el:'τι καιρό θα κάνει;' } },
+        { z:'la catarata',          na:{ de:'der Wasserfall',           en:'the waterfall', el:'ο καταρράκτης' } },
+        { z:'el sendero',           na:{ de:'der Wanderweg',            en:'the trail', el:'το μονοπάτι' } },
+        { z:'el puente colgante',   na:{ de:'die Hängebrücke',          en:'the suspension bridge', el:'η κρεμαστή γέφυρα' } },
+        { z:'el impermeable',       na:{ de:'die Regenjacke',           en:'the raincoat', el:'το αδιάβροχο' } },
+        { z:'¡pura vida!',          na:{ de:'hallo / alles gut! (Costa Rica)', en:'hi / all good! (Costa Rica)', el:'γεια / όλα καλά! (Κόστα Ρίκα)' } },
+        { z:'tuanis',               na:{ de:'super, cool (Costa Rica)', en:'great, cool (Costa Rica)', el:'τέλεια, κουλ (Κόστα Ρίκα)' } }
+      ],
+      dialog: {
+        rolle: { de:'Der Guide Mauricio', en:'Mauricio, the guide', el:'Ο ξεναγός Μαουρίσιο' },
+        zeilen: [
+          { wer:'spikiu', z:'¡Pura vida! La mañana está despejada, pero aquí el tiempo cambia muy rápido.', na:{ de:'Pura vida! Der Morgen ist klar, aber hier ändert sich das Wetter sehr schnell.', en:'Pura vida! The morning is clear, but the weather changes very fast here.', el:'Πούρα βίδα! Το πρωί είναι καθαρό, αλλά εδώ ο καιρός αλλάζει πολύ γρήγορα.' } },
+          { wer:'lerner', z:'¿Qué tiempo hará por la tarde? Quiero sacar fotos de la catarata.', na:{ de:'Wie wird das Wetter am Nachmittag? Ich will den Wasserfall fotografieren.', en:'What will the weather be like this afternoon? I want to take photos of the waterfall.', el:'Τι καιρό θα κάνει το απόγευμα; Θέλω να φωτογραφίσω τον καταρράκτη.' } },
+          { wer:'spikiu', z:'Después de las dos llegará la neblina, y casi siempre llueve un rato.', na:{ de:'Nach zwei Uhr kommt der Nebel, und fast immer regnet es eine Weile.', en:'After two the mist will come in, and it almost always rains for a while.', el:'Μετά τις δύο θα έρθει η ομίχλη, και σχεδόν πάντα βρέχει για λίγο.' } },
+          { wer:'lerner', z:'Si llueve, guardaré la cámara en la mochila. ¿Mejor vamos ahora?', na:{ de:'Wenn es regnet, packe ich die Kamera in den Rucksack. Gehen wir lieber jetzt?', en:'If it rains, I’ll put the camera in my backpack. Shall we go now instead?', el:'Αν βρέξει, θα βάλω τη μηχανή στο σακίδιο. Καλύτερα να πάμε τώρα;' } },
+          { wer:'spikiu', z:'Tuanis, buena idea. Si salimos ya, llegaremos antes de la lluvia.', na:{ de:'Super, gute Idee. Wenn wir jetzt losgehen, kommen wir vor dem Regen an.', en:'Cool, good idea. If we leave now, we’ll get there before the rain.', el:'Τέλεια, καλή ιδέα. Αν ξεκινήσουμε τώρα, θα φτάσουμε πριν από τη βροχή.' } },
+          { wer:'lerner', z:'De acuerdo. Me pondré el impermeable por si acaso.', na:{ de:'Einverstanden. Ich ziehe für alle Fälle die Regenjacke an.', en:'All right. I’ll put on my raincoat just in case.', el:'Εντάξει. Θα φορέσω το αδιάβροχο για καλό και για κακό.' } }
+        ]
+      },
+      lesetext: {
+        z:'Bienvenidos al bosque nuboso de Monteverde. Aquí los árboles toman el agua directamente de las nubes. En diciembre hay mucho viento por la mañana y neblina por la tarde. Si llueve, no salga del sendero y no se quede en los puentes colgantes.',
+        na:{ de:'Willkommen im Nebelwald von Monteverde. Hier nehmen die Bäume das Wasser direkt aus den Wolken. Im Dezember gibt es morgens viel Wind und nachmittags Nebel. Wenn es regnet, verlassen Sie den Weg nicht und bleiben Sie nicht auf den Hängebrücken stehen.',
+             en:'Welcome to the Monteverde cloud forest. Here the trees take their water straight from the clouds. In December there is a lot of wind in the morning and mist in the afternoon. If it rains, do not leave the trail and do not stay on the suspension bridges.',
+             el:'Καλώς ήρθατε στο δάσος των νεφών του Μοντεβέρδε. Εδώ τα δέντρα παίρνουν το νερό κατευθείαν από τα σύννεφα. Τον Δεκέμβριο έχει πολύ αέρα το πρωί και ομίχλη το απόγευμα. Αν βρέχει, μη βγαίνετε από το μονοπάτι και μη μένετε πάνω στις κρεμαστές γέφυρες.' },
+        frage:{ de:'Woher nehmen die Bäume hier ihr Wasser?', en:'Where do the trees here get their water from?', el:'Από πού παίρνουν το νερό τους τα δέντρα εδώ;' },
+        optionen:[
+          { na:{ de:'Direkt aus den Wolken',   en:'Straight from the clouds', el:'Κατευθείαν από τα σύννεφα' }, richtig:true  },
+          { na:{ de:'Aus einem großen See',    en:'From a big lake', el:'Από μια μεγάλη λίμνη' }, richtig:false },
+          { na:{ de:'Nur aus dem Wasserfall',  en:'Only from the waterfall', el:'Μόνο από τον καταρράκτη' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib, was du morgen machst — je nach Wetter. Zwei Sätze mit „si".',
+                  en:'Write what you will do tomorrow, depending on the weather. Two sentences with “si”.',
+                  el:'Γράψε τι θα κάνεις αύριο, ανάλογα με τον καιρό. Δύο προτάσεις με «si».' },
+        muster:'Si hace sol, iré al volcán. Si llueve, visitaré el museo.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Das Futur ist einfach: Infinitiv plus Endung — llegaré, lloverá, guardaremos. Ein paar Verben kürzen sich: hará, saldré, pondré. Nach „si" steht aber nie das Futur, sondern das Präsens: Si llueve, guardaré la cámara.',
+               en:'The future is easy: infinitive plus ending — llegaré, lloverá, guardaremos. A few verbs shorten: hará, saldré, pondré. But after “si” never use the future, use the present: Si llueve, guardaré la cámara.',
+               el:'Ο μέλλοντας είναι εύκολος: απαρέμφατο + κατάληξη — llegaré, lloverá, guardaremos. Μερικά ρήματα κονταίνουν: hará, saldré, pondré. Μετά το «si» όμως δεν μπαίνει ποτέ μέλλοντας αλλά ενεστώτας: Si llueve, guardaré la cámara.' },
+        beispiele:[
+          { z:'Si llueve, guardaré la cámara.', na:{ de:'Wenn es regnet, packe ich die Kamera weg.', en:'If it rains, I’ll put the camera away.', el:'Αν βρέξει, θα μαζέψω τη μηχανή.' } },
+          { z:'¿Qué tiempo hará mañana?',       na:{ de:'Wie wird das Wetter morgen?', en:'What will the weather be like tomorrow?', el:'Τι καιρό θα κάνει αύριο;' } }
+        ]
+      },
+      kultur:{ de:'In Costa Rica ist „¡pura vida!" Gruß, Dank und Lebensgefühl zugleich. Im Nebelwald von Monteverde kämmen Moose und Blätter das Wasser direkt aus den Wolken.',
+               en:'In Costa Rica, “¡pura vida!” is a greeting, a thank-you and a way of life all at once. In the Monteverde cloud forest, mosses and leaves comb the water straight out of the clouds.',
+               el:'Στην Κόστα Ρίκα το «¡pura vida!» είναι χαιρετισμός, ευχαριστώ και τρόπος ζωής μαζί. Στο δάσος των νεφών του Μοντεβέρδε τα βρύα και τα φύλλα «χτενίζουν» το νερό κατευθείαν από τα σύννεφα.' }
+    },
+
+    /* ── B1 · Quito — Soroche, Apotheke ───────────────────────────── */
+    'b1.arzt': {
+      deineRolle: { de:'Du bist gestern in Quito angekommen, auf 2.850 Metern. Du hast starke Kopfschmerzen, dir ist etwas schwindelig, und du hast schlecht geschlafen.', es:'Llegaste ayer a Quito, a 2.850 metros. Te duele mucho la cabeza, tienes un poco de mareo y dormiste mal.', en:'You arrived in Quito yesterday, at 2,850 metres. You have a bad headache, feel a bit dizzy and slept badly.', el:'Έφτασες χθες στο Κίτο, στα 2.850 μέτρα. Σε πονάει πολύ το κεφάλι, ζαλίζεσαι λίγο και κοιμήθηκες άσχημα.' },
+      eroeffnung: { z:'Buenos días. ¿En qué le puedo ayudar?', na:{ de:'Guten Morgen. Wie kann ich Ihnen helfen?', en:'Good morning. How can I help you?', el:'Καλημέρα. Πώς μπορώ να σας βοηθήσω;' } },
+      abrundung: { z:'Con eso mañana estará mejor. Y abríguese en la noche: ¡achachay, qué frío!', na:{ de:'Damit geht es Ihnen morgen besser. Und ziehen Sie sich abends warm an: brr, ist das kalt!', en:'With that you’ll feel better tomorrow. And wrap up warm at night: brr, it’s cold!', el:'Μ’ αυτό αύριο θα είστε καλύτερα. Και ντυθείτε ζεστά το βράδυ: μπρρ, τι κρύο!' } },
+      rollen: {
+        spikiu: { de:'die Apothekerin, Doña Carmen', es:'la farmacéutica, doña Carmen', en:'the pharmacist, Doña Carmen', el:'η φαρμακοποιός, η ντόνια Κάρμεν' },
+        lerner: { de:'die Reisende mit Höhenkrankheit', es:'la viajera con soroche', en:'the traveller with altitude sickness', el:'η ταξιδιώτισσα με νόσο του υψομέτρου' },
+        ort:    { de:'in einer Apotheke in Quito', es:'en una farmacia de Quito', en:'in a pharmacy in Quito', el:'σε ένα φαρμακείο στο Κίτο' }
+      },
+      wortschatz: [
+        { z:'el soroche',           na:{ de:'die Höhenkrankheit',       en:'altitude sickness', el:'η νόσος του υψομέτρου' } },
+        { z:'la altura',            na:{ de:'die Höhe',                 en:'the altitude', el:'το υψόμετρο' } },
+        { z:'el mareo',             na:{ de:'der Schwindel',            en:'dizziness', el:'η ζάλη' } },
+        { z:'el dolor de cabeza',   na:{ de:'die Kopfschmerzen',        en:'the headache', el:'ο πονοκέφαλος' } },
+        { z:'descansar',            na:{ de:'sich ausruhen',            en:'to rest', el:'ξεκουράζομαι' } },
+        { z:'la pastilla',          na:{ de:'die Tablette',             en:'the tablet', el:'το χάπι' } },
+        { z:'cada ocho horas',      na:{ de:'alle acht Stunden',        en:'every eight hours', el:'κάθε οκτώ ώρες' } },
+        { z:'en ayunas',            na:{ de:'auf nüchternen Magen',     en:'on an empty stomach', el:'με άδειο στομάχι' } },
+        { z:'le recomiendo que tome …', na:{ de:'ich empfehle Ihnen, … zu nehmen', en:'I recommend that you take …', el:'σας συνιστώ να πάρετε …' } },
+        { z:'abríguese',            na:{ de:'ziehen Sie sich warm an',  en:'wrap up warm', el:'ντυθείτε ζεστά' } },
+        { z:'la horchata lojana',   na:{ de:'der Kräutertee aus Loja',  en:'the herbal drink from Loja', el:'το ρόφημα από βότανα της Λόχα' } },
+        { z:'¡achachay!',           na:{ de:'brr, ist das kalt! (Ecuador)', en:'brr, it’s cold! (Ecuador)', el:'μπρρ, τι κρύο! (Ισημερινός)' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Apothekerin, Doña Carmen', en:'The pharmacist, Doña Carmen', el:'Η φαρμακοποιός, η ντόνια Κάρμεν' },
+        zeilen: [
+          { wer:'lerner', z:'Buenos días. Llegué ayer a Quito y me duele mucho la cabeza.', na:{ de:'Guten Morgen. Ich bin gestern in Quito angekommen und habe starke Kopfschmerzen.', en:'Good morning. I arrived in Quito yesterday and I have a bad headache.', el:'Καλημέρα. Έφτασα χθες στο Κίτο και με πονάει πολύ το κεφάλι.' } },
+          { wer:'spikiu', z:'Seguro es el soroche, por la altura. ¿Tiene mareos? ¿Duerme bien?', na:{ de:'Das ist bestimmt die Höhenkrankheit. Ist Ihnen schwindelig? Schlafen Sie gut?', en:'It’s surely altitude sickness. Do you feel dizzy? Are you sleeping well?', el:'Σίγουρα είναι η νόσος του υψομέτρου. Ζαλίζεστε; Κοιμάστε καλά;' } },
+          { wer:'lerner', z:'Sí, un poco de mareo, y anoche dormí muy mal. ¿Qué me recomienda?', na:{ de:'Ja, mir ist etwas schwindelig, und letzte Nacht habe ich sehr schlecht geschlafen. Was empfehlen Sie mir?', en:'Yes, a little dizzy, and I slept very badly last night. What do you recommend?', el:'Ναι, ζαλίζομαι λίγο, και χθες το βράδυ κοιμήθηκα πολύ άσχημα. Τι μου συνιστάτε;' } },
+          { wer:'spikiu', z:'Le recomiendo que tome mucha agua y que descanse hoy. Tome esta pastilla cada ocho horas.', na:{ de:'Ich empfehle Ihnen, viel Wasser zu trinken und sich heute auszuruhen. Nehmen Sie diese Tablette alle acht Stunden.', en:'I recommend that you drink plenty of water and rest today. Take this tablet every eight hours.', el:'Σας συνιστώ να πίνετε πολύ νερό και να ξεκουραστείτε σήμερα. Παίρνετε αυτό το χάπι κάθε οκτώ ώρες.' } },
+          { wer:'lerner', z:'¿Cada ocho horas, con comida? ¿Y puedo tomar café?', na:{ de:'Alle acht Stunden, mit Essen? Und darf ich Kaffee trinken?', en:'Every eight hours, with food? And can I drink coffee?', el:'Κάθε οκτώ ώρες, με φαγητό; Και μπορώ να πιω καφέ;' } },
+          { wer:'spikiu', z:'Sí, con comida. Mejor no tome café; pruebe una horchata lojana, es de hierbas.', na:{ de:'Ja, mit Essen. Trinken Sie lieber keinen Kaffee; probieren Sie eine Horchata aus Loja, das ist ein Kräutergetränk.', en:'Yes, with food. Better not drink coffee; try a horchata lojana, it’s made from herbs.', el:'Ναι, με φαγητό. Καλύτερα μην πιείτε καφέ· δοκιμάστε μια horchata lojana, είναι από βότανα.' } }
+        ]
+      },
+      lesetext: {
+        z:'Quito está a 2.850 metros, y el primer día no podía subir ni una escalera. Doña Carmen, la farmacéutica, me dijo: «Tome mucha agua y descanse». Hoy ya estoy mejor, y desde la terraza vi el Cotopaxi con su glaciar blanco. Dicen que de ese hielo viene parte del agua de la ciudad.',
+        na:{ de:'Quito liegt auf 2.850 Metern, und am ersten Tag konnte ich nicht einmal eine Treppe hinaufsteigen. Doña Carmen, die Apothekerin, sagte zu mir: „Trinken Sie viel Wasser und ruhen Sie sich aus." Heute geht es mir schon besser, und von der Terrasse aus habe ich den Cotopaxi mit seinem weißen Gletscher gesehen. Man sagt, ein Teil des Wassers der Stadt kommt aus diesem Eis.',
+             en:'Quito is at 2,850 metres, and on the first day I couldn’t even climb a flight of stairs. Doña Carmen, the pharmacist, told me: “Drink plenty of water and rest.” Today I’m already better, and from the terrace I saw Cotopaxi with its white glacier. They say part of the city’s water comes from that ice.',
+             el:'Το Κίτο βρίσκεται στα 2.850 μέτρα, και την πρώτη μέρα δεν μπορούσα να ανέβω ούτε μια σκάλα. Η ντόνια Κάρμεν, η φαρμακοποιός, μου είπε: «Πίνετε πολύ νερό και ξεκουραστείτε». Σήμερα είμαι ήδη καλύτερα, κι από τη βεράντα είδα το Κοτοπάξι με τον λευκό του παγετώνα. Λένε ότι από αυτόν τον πάγο έρχεται ένα μέρος από το νερό της πόλης.' },
+        frage:{ de:'Was hat Lotte heute von der Terrasse aus gesehen?', en:'What did Lotte see from the terrace today?', el:'Τι είδε σήμερα η Λότε από τη βεράντα;' },
+        optionen:[
+          { na:{ de:'Den Cotopaxi mit seinem Gletscher', en:'Cotopaxi with its glacier', el:'Το Κοτοπάξι με τον παγετώνα του' }, richtig:true  },
+          { na:{ de:'Das Meer',                          en:'The sea', el:'Τη θάλασσα' }, richtig:false },
+          { na:{ de:'Einen Wasserfall',                  en:'A waterfall', el:'Έναν καταρράκτη' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Gib einem Gast in deinem Hostel zwei Ratschläge gegen die Höhenkrankheit. Zwei Sätze, mit „usted".',
+                  en:'Give a guest at your hostel two pieces of advice against altitude sickness. Two sentences, using “usted”.',
+                  el:'Δώσε σε έναν επισκέπτη του ξενώνα σου δύο συμβουλές για τη νόσο του υψομέτρου. Δύο προτάσεις, με «usted».' },
+        muster:'Le recomiendo que tome mucha agua. No camine mucho el primer día.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Nach „le recomiendo que" kommt der Subjuntivo: Die Verben auf -ar bekommen ein -e (tome, descanse), die auf -er/-ir ein -a (beba, duerma). Praktisch: Genau dieselbe Form ist auch die Bitte mit usted — Tome esta pastilla. No tome café.',
+               en:'After “le recomiendo que” comes the subjunctive: -ar verbs take an -e (tome, descanse), -er/-ir verbs an -a (beba, duerma). Handy: exactly the same form is also the request with usted — Tome esta pastilla. No tome café.',
+               el:'Μετά το «le recomiendo que» μπαίνει υποτακτική: τα ρήματα σε -ar παίρνουν -e (tome, descanse), αυτά σε -er/-ir παίρνουν -a (beba, duerma). Πρακτικό: ακριβώς ο ίδιος τύπος είναι και η προστακτική με usted — Tome esta pastilla. No tome café.' },
+        beispiele:[
+          { z:'Le recomiendo que descanse.',    na:{ de:'Ich empfehle Ihnen, sich auszuruhen.', en:'I recommend that you rest.', el:'Σας συνιστώ να ξεκουραστείτε.' } },
+          { z:'Tome esta pastilla cada ocho horas.', na:{ de:'Nehmen Sie diese Tablette alle acht Stunden.', en:'Take this tablet every eight hours.', el:'Παίρνετε αυτό το χάπι κάθε οκτώ ώρες.' } }
+        ]
+      },
+      kultur:{ de:'Quito ist eine der höchstgelegenen Hauptstädte der Welt; gegen das Soroche helfen langsames Gehen, viel Wasser und Ruhe. Wenn es kalt wird, rufen die Leute „¡achachay!" — ein Wort aus dem Kichwa.',
+               en:'Quito is one of the highest capitals in the world; against soroche, walking slowly, drinking lots of water and resting help. When it gets cold, people say “¡achachay!” — a word from Kichwa.',
+               el:'Το Κίτο είναι μία από τις πιο ψηλές πρωτεύουσες του κόσμου· για το soroche βοηθούν το αργό περπάτημα, πολύ νερό και ξεκούραση. Όταν κάνει κρύο, ο κόσμος λέει «¡achachay!» — μια λέξη από τα κίτσουα.' }
+    },
+
+    /* ── B1 · Otavalo — Markt, feilschen ──────────────────────────── */
+    'b1.einkaufen': {
+      deineRolle: { de:'Du bist auf dem Markt von Otavalo. Dir gefällt ein blauer Poncho weiter hinten. Mehr als sechzig Dollar möchtest du eigentlich nicht zahlen; du hast einen Hundertdollarschein.', es:'Estás en el mercado de Otavalo. Te gusta un poncho azul que está más atrás. No quieres pagar más de sesenta dólares; tienes un billete de cien.', en:'You are at the Otavalo market. You like a blue poncho further back. You don’t really want to pay more than sixty dollars; you have a hundred-dollar note.', el:'Είσαι στην αγορά του Οταβάλο. Σου αρέσει ένα μπλε πόντσο πιο πίσω. Δεν θέλεις να πληρώσεις πάνω από εξήντα δολάρια· έχεις ένα χαρτονόμισμα των εκατό.' },
+      abrundung: { z:'Claro, aquí tiene treinta de vuelto. ¡Qué chévere que le guste! Que le vaya bien.', na:{ de:'Klar, hier sind dreißig zurück. Toll, dass er Ihnen gefällt! Alles Gute.', en:'Of course, here’s thirty in change. Great that you like it! All the best.', el:'Βεβαίως, ορίστε τριάντα ρέστα. Τέλεια που σας αρέσει! Να ’στε καλά.' } },
+      rollen: {
+        spikiu: { de:'die Weberin Doña Tránsito', es:'la tejedora doña Tránsito', en:'Doña Tránsito, the weaver', el:'η υφάντρα κυρία Τράνσιτο' },
+        lerner: { de:'die Kundin', es:'la clienta', en:'the customer', el:'η πελάτισσα' },
+        ort:    { de:'auf dem Markt von Otavalo', es:'en el mercado de Otavalo', en:'at the Otavalo market', el:'στην αγορά του Οταβάλο' }
+      },
+      wortschatz: [
+        { z:'el poncho',            na:{ de:'der Poncho',               en:'the poncho', el:'το πόντσο' } },
+        { z:'tejido a mano',        na:{ de:'handgewebt',               en:'hand-woven', el:'υφασμένο στο χέρι' } },
+        { z:'la lana de oveja',     na:{ de:'die Schafwolle',           en:'sheep’s wool', el:'το πρόβειο μαλλί' } },
+        { z:'el diseño',            na:{ de:'das Muster',               en:'the pattern', el:'το σχέδιο' } },
+        { z:'regatear',             na:{ de:'feilschen',                en:'to bargain', el:'παζαρεύω' } },
+        { z:'¿cuánto vale?',        na:{ de:'was kostet das?',          en:'how much is it?', el:'πόσο κάνει;' } },
+        { z:'¿me lo deja en …?',    na:{ de:'lassen Sie ihn mir für …?', en:'will you let me have it for …?', el:'μου το αφήνετε στα …;' } },
+        { z:'más barato que',       na:{ de:'billiger als',             en:'cheaper than', el:'πιο φτηνό από' } },
+        { z:'aquel',                na:{ de:'der dort drüben',          en:'that one over there', el:'εκείνο εκεί πέρα' } },
+        { z:'me lo llevo',          na:{ de:'ich nehme ihn',            en:'I’ll take it', el:'το παίρνω' } },
+        { z:'el vuelto',            na:{ de:'das Wechselgeld',          en:'the change', el:'τα ρέστα' } },
+        { z:'¡a la orden!',         na:{ de:'bitte schön, zu Diensten!', en:'at your service!', el:'στη διάθεσή σας!' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Weberin Doña Tránsito', en:'Doña Tránsito, the weaver', el:'Η υφάντρα κυρία Τράνσιτο' },
+        zeilen: [
+          { wer:'spikiu', z:'¡A la orden! Estos ponchos los tejemos en mi familia, con lana de oveja.', na:{ de:'Bitte schön! Diese Ponchos weben wir in meiner Familie, aus Schafwolle.', en:'At your service! We weave these ponchos in my family, from sheep’s wool.', el:'Στη διάθεσή σας! Αυτά τα πόντσο τα υφαίνουμε στην οικογένειά μου, με πρόβειο μαλλί.' } },
+          { wer:'lerner', z:'Son preciosos. ¿Qué significan los dibujos de aquel poncho azul?', na:{ de:'Sie sind wunderschön. Was bedeuten die Muster auf dem blauen Poncho dort drüben?', en:'They’re beautiful. What do the patterns on that blue poncho over there mean?', el:'Είναι πανέμορφα. Τι σημαίνουν τα σχέδια σε εκείνο το μπλε πόντσο;' } },
+          { wer:'spikiu', z:'Son el lago San Pablo y las montañas. Ese cuesta ochenta dólares.', na:{ de:'Das sind der San-Pablo-See und die Berge. Der kostet achtzig Dollar.', en:'They’re Lake San Pablo and the mountains. That one costs eighty dollars.', el:'Είναι η λίμνη Σαν Πάμπλο και τα βουνά. Αυτό κοστίζει ογδόντα δολάρια.' } },
+          { wer:'lerner', z:'Es más caro que el rojo, ¿no? ¿Me lo deja en sesenta?', na:{ de:'Er ist teurer als der rote, oder? Lassen Sie ihn mir für sechzig?', en:'It’s more expensive than the red one, isn’t it? Will you let me have it for sixty?', el:'Είναι πιο ακριβό από το κόκκινο, έτσι; Μου το αφήνετε στα εξήντα;' } },
+          { wer:'spikiu', z:'Sesenta es muy poco. Se lo dejo en setenta, es el mejor que tengo.', na:{ de:'Sechzig ist zu wenig. Ich lasse ihn Ihnen für siebzig, er ist der beste, den ich habe.', en:'Sixty is too little. I’ll let you have it for seventy, it’s the best one I have.', el:'Τα εξήντα είναι πολύ λίγα. Σας το αφήνω στα εβδομήντα, είναι το καλύτερο που έχω.' } },
+          { wer:'lerner', z:'Está bien, me lo llevo. ¿Puedo pagar con un billete de cien?', na:{ de:'In Ordnung, ich nehme ihn. Kann ich mit einem Hunderter zahlen?', en:'All right, I’ll take it. Can I pay with a hundred-dollar note?', el:'Εντάξει, το παίρνω. Μπορώ να πληρώσω με ένα κατοστάρικο;' } }
+        ]
+      },
+      lesetext: {
+        z:'El sábado el mercado de Otavalo es un mar de colores. Aprendí a regatear: siempre con una sonrisa y nunca demasiado. Aquí se paga en dólares, y en vez de «¿cuánto cuesta?» la gente dice «¿cuánto vale?». Por la tarde caminé hasta el lago San Pablo y saqué la foto del día: el volcán Imbabura dentro del agua.',
+        na:{ de:'Am Samstag ist der Markt von Otavalo ein Meer aus Farben. Ich habe feilschen gelernt: immer mit einem Lächeln und nie zu viel. Hier zahlt man in Dollar, und statt „¿cuánto cuesta?" sagen die Leute „¿cuánto vale?". Am Nachmittag bin ich bis zum San-Pablo-See gelaufen und habe das Foto des Tages gemacht: der Vulkan Imbabura im Wasser.',
+             en:'On Saturdays the Otavalo market is a sea of colours. I learnt to bargain: always with a smile and never too much. Here you pay in dollars, and instead of “¿cuánto cuesta?” people say “¿cuánto vale?”. In the afternoon I walked to Lake San Pablo and took the photo of the day: the Imbabura volcano reflected in the water.',
+             el:'Το Σάββατο η αγορά του Οταβάλο είναι μια θάλασσα από χρώματα. Έμαθα να παζαρεύω: πάντα με χαμόγελο και ποτέ υπερβολικά. Εδώ πληρώνεις σε δολάρια, και αντί για «¿cuánto cuesta?» ο κόσμος λέει «¿cuánto vale?». Το απόγευμα περπάτησα ως τη λίμνη Σαν Πάμπλο κι έβγαλα τη φωτογραφία της ημέρας: το ηφαίστειο Ιμπαμπούρα μέσα στο νερό.' },
+        frage:{ de:'Was ist Lottes Regel beim Feilschen?', en:'What is Lotte’s rule for bargaining?', el:'Ποιος είναι ο κανόνας της Λότε στο παζάρι;' },
+        optionen:[
+          { na:{ de:'Immer lächeln und nie zu viel', en:'Always smile and never too much', el:'Πάντα με χαμόγελο και ποτέ υπερβολικά' }, richtig:true  },
+          { na:{ de:'Zuerst den halben Preis nennen', en:'Offer half the price first', el:'Πρώτα λες τη μισή τιμή' }, richtig:false },
+          { na:{ de:'Nur mit großen Scheinen zahlen', en:'Only pay with big notes', el:'Πληρώνεις μόνο με μεγάλα χαρτονομίσματα' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Vergleiche zwei Dinge auf einem Markt und mach ein Angebot. Zwei Sätze.',
+                  en:'Compare two things at a market and make an offer. Two sentences.',
+                  el:'Σύγκρινε δύο πράγματα σε μια αγορά και κάνε μια προσφορά. Δύο προτάσεις.' },
+        muster:'Esta bufanda es más bonita que aquella. ¿Me la deja en quince dólares?'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Vergleichen geht mit más/menos + Adjektiv + que: más caro que el rojo. Das Beste ist el mejor, das Teuerste el más caro. Und zeigen: este (bei mir), ese (bei dir), aquel (dort drüben, weit von uns beiden).',
+               en:'To compare, use más/menos + adjective + que: más caro que el rojo. The best is el mejor, the most expensive el más caro. And for pointing: este (near me), ese (near you), aquel (over there, far from us both).',
+               el:'Για σύγκριση: más/menos + επίθετο + que: más caro que el rojo. Το καλύτερο είναι el mejor, το ακριβότερο el más caro. Και για να δείξεις: este (κοντά σε μένα), ese (κοντά σε σένα), aquel (εκεί πέρα, μακριά κι από τους δυο μας).' },
+        beispiele:[
+          { z:'Este es más caro que aquel.', na:{ de:'Dieser ist teurer als der dort drüben.', en:'This one is more expensive than that one over there.', el:'Αυτό είναι πιο ακριβό από εκείνο εκεί πέρα.' } },
+          { z:'¿Me lo deja en sesenta?',     na:{ de:'Lassen Sie ihn mir für sechzig?', en:'Will you let me have it for sixty?', el:'Μου το αφήνετε στα εξήντα;' } }
+        ]
+      },
+      kultur:{ de:'Der Samstagsmarkt von Otavalo gehört zu den größten Märkten Südamerikas; die Kichwa-Weber verkaufen dort seit Jahrhunderten ihre Stoffe. In Ecuador zahlt man mit US-Dollar.',
+               en:'The Saturday market in Otavalo is one of the largest in South America; Kichwa weavers have sold their textiles there for centuries. In Ecuador people pay in US dollars.',
+               el:'Η αγορά του Σαββάτου στο Οταβάλο είναι από τις μεγαλύτερες της Νότιας Αμερικής· οι υφαντές κίτσουα πουλούν εκεί τα υφάσματά τους εδώ και αιώνες. Στον Ισημερινό πληρώνεις με δολάρια ΗΠΑ.' }
+    }
+  }
+};
+
+var B1_LP_B = {
+
+  schritt: {
+    bahnhof:         { de:'Quito → Tena: der Bus ist schon weg', en:'Quito → Tena: the bus has already gone', el:'Κίτο → Τένα: το λεωφορείο έχει ήδη φύγει' },
+    taxi:            { de:'Asunción: plaudern, was wäre, wenn …', en:'Asunción: chatting about what if …', el:'Ασουνσιόν: κουβέντα για το «τι θα γινόταν αν …»' },
+    cafe:            { de:'Buenos Aires: Meinungen austauschen', en:'Buenos Aires: sharing opinions', el:'Μπουένος Άιρες: ανταλλάσσεις απόψεις' },
+    restaurant:      { de:'El Calafate: ein Vorstellungsgespräch', en:'El Calafate: a job interview', el:'Ελ Καλαφάτε: μια συνέντευξη για δουλειά' },
+    wegbeschreibung: { de:'Canaima: eine Route verstehen und weitergeben', en:'Canaima: understanding a route and passing it on', el:'Καναΐμα: καταλαβαίνεις μια διαδρομή και τη μεταφέρεις' }
+  },
+
+  aufgaben: {
+    'b1.bahnhof': [
+      { de:'Bitte höflich um ein Ticket nach Tena für den Bus um zehn', es:'Pide con cortesía un pasaje para Tena en el bus de las diez', en:'Politely ask for a ticket to Tena on the ten o\'clock bus', el:'Ζήτα ευγενικά ένα εισιτήριο για την Τένα με το λεωφορείο των δέκα' },
+      { de:'Sag, dass dein Taxi zu spät kam und der Bus schon weg war, und frag nach dem nächsten', es:'Di que tu taxi llegó tarde y que el bus ya había salido, y pregunta cuándo sale el siguiente', en:'Say your taxi was late and the bus had already left, and ask when the next one goes', el:'Πες ότι το ταξί σου άργησε και ότι το λεωφορείο είχε ήδη φύγει, και ρώτα πότε φεύγει το επόμενο' },
+      { de:'Sag, dass du einen großen Rucksack hast, die Kamera aber bei dir behältst', es:'Di que llevas una mochila grande, pero que la cámara la llevas contigo', en:'Say you have a big rucksack, but you will keep the camera with you', el:'Πες ότι έχεις ένα μεγάλο σακίδιο, αλλά ότι τη φωτογραφική μηχανή την κρατάς μαζί σου' }
+    ],
+    'b1.taxi': [
+      { de:'Sag, dass es sehr heiß ist und dass es in Holland jetzt kalt ist und ständig regnet', es:'Di que hace muchísimo calor y que en Holanda ahora hace frío y llueve todo el tiempo', en:'Say it is very hot, and that in Holland it is cold now and rains all the time', el:'Πες ότι κάνει πάρα πολλή ζέστη και ότι στην Ολλανδία τώρα κάνει κρύο και βρέχει συνέχεια' },
+      { de:'Sag, dass du ihn noch nicht probiert hast, es aber sehr gern würdest', es:'Di que todavía no lo probaste, pero que te encantaría probarlo', en:'Say you have not tried it yet, but you would love to', el:'Πες ότι δεν το έχεις δοκιμάσει ακόμα, αλλά ότι θα ήθελες πολύ' },
+      { de:'Sag, dass du eine Zeit lang bleiben würdest — am Fluss wohnen und fotografieren', es:'Di que te quedarías un tiempo: vivirías cerca del río y sacarías fotos', en:'Say you would stay for a while — live near the river and take photos', el:'Πες ότι θα έμενες για λίγο καιρό — θα ζούσες κοντά στο ποτάμι και θα έβγαζες φωτογραφίες' }
+    ],
+    'b1.cafe': [
+      { de:'Sag, dass du die Stadt liebst und sie elegant und etwas nostalgisch findest (mit „creo que")', es:'Di que te encanta la ciudad y que crees que es elegante y un poco nostálgica', en:'Say you love the city and think it is elegant and a little nostalgic (with "creo que")', el:'Πες ότι σου αρέσει πολύ η πόλη και ότι νομίζεις πως είναι κομψή και λίγο νοσταλγική (με «creo que»)' },
+      { de:'Sag, dass du Tango schön findest, aber nicht glaubst, dass du ihn tanzen kannst', es:'Di que el tango te parece bonito, pero que no crees que puedas bailarlo', en:'Say you find tango lovely, but you do not think you can dance it', el:'Πες ότι το τάνγκο σού φαίνεται όμορφο, αλλά δεν νομίζεις ότι μπορείς να το χορέψεις' },
+      { de:'Nimm die Einladung an und sag, dass du wohl mehr zuschauen als tanzen wirst', es:'Acepta la invitación y di que crees que vas a mirar más que bailar', en:'Accept the invitation and say you think you will watch more than dance', el:'Δέξου την πρόσκληση και πες ότι μάλλον θα κοιτάζεις περισσότερο απ\' ό,τι θα χορεύεις' }
+    ],
+    'b1.restaurant': [
+      { de:'Sag, dass du seit sechs Monaten durch Lateinamerika reist und Fotos für ein Buch machst', es:'Di que llevas seis meses viajando por Latinoamérica y que sacas fotos para un libro', en:'Say you have been travelling around Latin America for six months, taking photos for a book', el:'Πες ότι ταξιδεύεις εδώ και έξι μήνες στη Λατινική Αμερική και βγάζεις φωτογραφίες για ένα βιβλίο' },
+      { de:'Sag, dass du zwei Sommer lang als Kellnerin in einem Café in Utrecht gearbeitet hast', es:'Di que has trabajado dos veranos de mesera en un café de Utrecht', en:'Say you have worked two summers as a waitress in a café in Utrecht', el:'Πες ότι έχεις δουλέψει δύο καλοκαίρια σερβιτόρα σε ένα καφέ στην Ουτρέχτη' },
+      { de:'Sag gern zu und biete an, morgen anzufangen', es:'Acepta con gusto y ofrece empezar mañana', en:'Gladly accept and offer to start tomorrow', el:'Δέξου με χαρά και πρότεινε να ξεκινήσεις αύριο' }
+    ],
+    'b1.wegbeschreibung': [
+      { de:'Zeig deine Freude und frag, wie man zum Aussichtspunkt kommt', es:'Muestra tu emoción y pregunta cómo se llega al mirador', en:'Show your excitement and ask how to get to the viewpoint', el:'Δείξε τον ενθουσιασμό σου και ρώτα πώς πάει κανείς στο σημείο θέας' },
+      { de:'Fasse mit „dices que" zusammen: zuerst im Einbaum, dann eine Stunde zu Fuß', es:'Resume con «dices que»: primero en curiara y luego una hora a pie', en:'Sum up with "dices que": first by canoe, then an hour on foot', el:'Συνόψισε με «dices que»: πρώτα με κουριάρα και μετά μία ώρα με τα πόδια' },
+      { de:'Sag, dass du verstanden hast und den anderen ausrichtest, dass es um fünf losgeht', es:'Di que entendiste y que les dices a los demás que salen a las cinco', en:'Say you understand and that you will tell the others you leave at five', el:'Πες ότι κατάλαβες και ότι θα πεις στους άλλους πως φεύγετε στις πέντε' }
+    ]
+  },
+
+  stationen: {
+
+    /* ── B1 · Am Bahnhof · Terminal Quitumbe → Tena (Feb) ─────────────── */
+    'b1.bahnhof': {
+      deineRolle: { de:'Du bist Lotte. Du wolltest den Bus um zehn nach Tena nehmen, aber dein Taxi kam zu spät. Du hast einen großen Rucksack und deine Kamera.', es:'Eres Lotte. Querías tomar el bus de las diez a Tena, pero tu taxi llegó tarde. Llevas una mochila grande y tu cámara.', en:'You are Lotte. You wanted the ten o\'clock bus to Tena, but your taxi arrived late. You have a big rucksack and your camera.', el:'Είσαι η Λότε. Ήθελες να πάρεις το λεωφορείο των δέκα για την Τένα, αλλά το ταξί σου άργησε. Έχεις ένα μεγάλο σακίδιο και τη φωτογραφική σου μηχανή.' },
+      eroeffnung: { z:'Buenos días, señorita. Siguiente, por favor.', na:{ de:'Guten Morgen. Die Nächste, bitte.', en:'Good morning, miss. Next, please.', el:'Καλημέρα, δεσποινίς. Ο επόμενος, παρακαλώ.' } },
+      abrundung: { z:'Tranquila, igual llega a Tena antes de la noche. ¡Buen viaje!', na:{ de:'Keine Sorge, Sie kommen trotzdem vor der Nacht in Tena an. Gute Reise!', en:'Don\'t worry, you will still reach Tena before nightfall. Have a good trip!', el:'Μην ανησυχείτε, θα φτάσετε στην Τένα πριν νυχτώσει. Καλό ταξίδι!' } },
+      rollen: {
+        spikiu: { de:'die Frau an der Boletería', es:'la señora de la boletería', en:'the woman at the ticket office', el:'η υπάλληλος στο εκδοτήριο' },
+        lerner: { de:'Lotte, die Fotografin', es:'Lotte, la fotógrafa', en:'Lotte, the photographer', el:'η Λότε, η φωτογράφος' },
+        ort:    { de:'im Busterminal Quitumbe, Quito', es:'en la Terminal Quitumbe, Quito', en:'at Quitumbe bus terminal, Quito', el:'στον σταθμό λεωφορείων Κιτούμπε, στο Κίτο' }
+      },
+      wortschatz: [
+        { z:'el pasaje',        na:{ de:'die Fahrkarte',          en:'the ticket', el:'το εισιτήριο' } },
+        { z:'la boletería',     na:{ de:'der Ticketschalter',     en:'the ticket office', el:'το εκδοτήριο εισιτηρίων' } },
+        { z:'el andén',         na:{ de:'der Bussteig',           en:'the bay (platform)', el:'η αποβάθρα' } },
+        { z:'acaba de salir',   na:{ de:'er ist gerade abgefahren', en:'it has just left', el:'μόλις έφυγε' } },
+        { z:'ya había salido',  na:{ de:'er war schon abgefahren', en:'it had already left', el:'είχε ήδη φύγει' } },
+        { z:'el siguiente',     na:{ de:'der nächste',            en:'the next one', el:'το επόμενο' } },
+        { z:'el derrumbe',      na:{ de:'der Erdrutsch',          en:'the landslide', el:'η κατολίσθηση' } },
+        { z:'la carretera',     na:{ de:'die Landstraße',         en:'the road', el:'ο δρόμος' } },
+        { z:'demorarse',        na:{ de:'lange dauern, sich verspäten', en:'to take long, to be delayed', el:'αργώ, καθυστερώ' } },
+        { z:'el equipaje',      na:{ de:'das Gepäck',             en:'the luggage', el:'οι αποσκευές' } },
+        { z:'la bodega',        na:{ de:'der Gepäckraum (im Bus)', en:'the luggage hold', el:'ο χώρος αποσκευών' } },
+        { z:'el asiento de ventanilla', na:{ de:'der Fensterplatz', en:'the window seat', el:'η θέση στο παράθυρο' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Frau an der Boletería', en:'The woman at the ticket office', el:'Η υπάλληλος στο εκδοτήριο' },
+        zeilen: [
+          { wer:'lerner', z:'Buenos días. Quería un pasaje para Tena en el bus de las diez.', na:{ de:'Guten Morgen. Ich hätte gern eine Fahrkarte nach Tena für den Bus um zehn.', en:'Good morning. I would like a ticket to Tena on the ten o\'clock bus.', el:'Καλημέρα. Θα ήθελα ένα εισιτήριο για την Τένα με το λεωφορείο των δέκα.' } },
+          { wer:'spikiu', z:'Ay, lo siento. El bus de las diez acaba de salir, hace cinco minutos.', na:{ de:'Oh, das tut mir leid. Der Bus um zehn ist gerade abgefahren, vor fünf Minuten.', en:'Oh, I am sorry. The ten o\'clock bus has just left, five minutes ago.', el:'Α, λυπάμαι. Το λεωφορείο των δέκα μόλις έφυγε, πριν από πέντε λεπτά.' } },
+          { wer:'lerner', z:'¡Qué pena! Mi taxi llegó tarde y el bus ya había salido. ¿Cuándo sale el siguiente?', na:{ de:'Wie schade! Mein Taxi kam zu spät, und der Bus war schon abgefahren. Wann fährt der nächste?', en:'What a shame! My taxi was late and the bus had already left. When does the next one leave?', el:'Τι κρίμα! Το ταξί μου άργησε και το λεωφορείο είχε ήδη φύγει. Πότε φεύγει το επόμενο;' } },
+          { wer:'spikiu', z:'A las once y media. Pero ojo: hubo un derrumbe en la carretera y puede demorarse. ¿Lleva equipaje?', na:{ de:'Um halb zwölf. Aber Achtung: Auf der Straße gab es einen Erdrutsch, es kann länger dauern. Haben Sie Gepäck?', en:'At half past eleven. But watch out: there was a landslide on the road and it may take longer. Do you have any luggage?', el:'Στις έντεκα και μισή. Αλλά προσοχή: έγινε κατολίσθηση στον δρόμο και μπορεί να αργήσει. Έχετε αποσκευές;' } },
+          { wer:'lerner', z:'Sí, una mochila grande. Pero la cámara la llevo conmigo.', na:{ de:'Ja, einen großen Rucksack. Aber die Kamera behalte ich bei mir.', en:'Yes, a big rucksack. But I will keep the camera with me.', el:'Ναι, ένα μεγάλο σακίδιο. Αλλά τη φωτογραφική μηχανή την κρατάω μαζί μου.' } },
+          { wer:'spikiu', z:'Muy bien. La mochila va abajo, en la bodega. Andén siete, asiento doce.', na:{ de:'Sehr gut. Der Rucksack kommt nach unten in den Gepäckraum. Bussteig sieben, Platz zwölf.', en:'Very good. The rucksack goes underneath, in the hold. Bay seven, seat twelve.', el:'Πολύ καλά. Το σακίδιο μπαίνει κάτω, στον χώρο αποσκευών. Αποβάθρα επτά, θέση δώδεκα.' } }
+        ]
+      },
+      lesetext: {
+        z:'Cuando llegué a Quitumbe, el bus de las diez ya había salido. Tomé el de las once y media. En el camino hubo un derrumbe y esperamos casi una hora. Pero después la carretera bajó de los Andes a la selva, y en Tena vi por fin el río Napo.',
+        na:{ de:'Als ich in Quitumbe ankam, war der Bus um zehn schon abgefahren. Ich nahm den um halb zwölf. Unterwegs gab es einen Erdrutsch, und wir warteten fast eine Stunde. Aber dann führte die Straße von den Anden hinunter in den Regenwald, und in Tena sah ich endlich den Fluss Napo.',
+             en:'When I got to Quitumbe, the ten o\'clock bus had already left. I took the half past eleven. On the way there was a landslide and we waited almost an hour. But then the road went down from the Andes into the rainforest, and in Tena I finally saw the Napo river.',
+             el:'Όταν έφτασα στο Κιτούμπε, το λεωφορείο των δέκα είχε ήδη φύγει. Πήρα αυτό των έντεκα και μισή. Στον δρόμο έγινε μια κατολίσθηση και περιμέναμε σχεδόν μία ώρα. Μετά όμως ο δρόμος κατέβηκε από τις Άνδεις στη ζούγκλα, και στην Τένα είδα επιτέλους τον ποταμό Νάπο.' },
+        frage:{ de:'Warum warteten sie fast eine Stunde?', en:'Why did they wait almost an hour?', el:'Γιατί περίμεναν σχεδόν μία ώρα;' },
+        optionen:[
+          { na:{ de:'Wegen eines Erdrutsches',    en:'Because of a landslide', el:'Λόγω μιας κατολίσθησης' }, richtig:true  },
+          { na:{ de:'Weil der Bus kaputt war',    en:'Because the bus broke down', el:'Επειδή χάλασε το λεωφορείο' }, richtig:false },
+          { na:{ de:'Weil Lotte zu spät kam',     en:'Because Lotte was late', el:'Επειδή άργησε η Λότε' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähle, dass der Bus schon abgefahren war, als du ankamst, und was du dann gemacht hast. Zwei Sätze.',
+                  en:'Say the bus had already left when you arrived, and what you did then. Two sentences.', el:'Διηγήσου ότι το λεωφορείο είχε ήδη φύγει όταν έφτασες και τι έκανες μετά. Δύο προτάσεις.' },
+        muster:'Cuando llegué a la terminal, el bus ya había salido. Compré un pasaje para el siguiente y tomé un café.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„Había salido" ist die Vorvergangenheit: Etwas war schon passiert, bevor etwas anderes passierte. Bau: había + Partizip. „Acaba de salir" heißt „ist gerade eben abgefahren" — acabar de + Infinitiv. In Spanien hörst du oft „se ha ido"; in Lateinamerika sagt man meist „ya se fue".',
+               en:'"Había salido" is the past perfect: something had already happened before something else. Pattern: había + participle. "Acaba de salir" means "has just left" — acabar de + infinitive. In Spain you often hear "se ha ido"; in Latin America people usually say "ya se fue".',
+               el:'Το «había salido» είναι ο υπερσυντέλικος: κάτι είχε ήδη γίνει πριν από κάτι άλλο. Σχήμα: había + μετοχή — όπως το ελληνικό «είχε φύγει». Το «acaba de salir» σημαίνει «μόλις έφυγε»: acabar de + απαρέμφατο. Στην Ισπανία ακούς συχνά «se ha ido»· στη Λατινική Αμερική λένε συνήθως «ya se fue».' },
+        beispiele:[
+          { z:'El bus ya había salido.', na:{ de:'Der Bus war schon abgefahren.', en:'The bus had already left.', el:'Το λεωφορείο είχε ήδη φύγει.' } },
+          { z:'Acabo de llegar.',        na:{ de:'Ich bin gerade angekommen.',   en:'I have just arrived.', el:'Μόλις έφτασα.' } }
+        ]
+      },
+      kultur: { de:'Vom Terminal Quitumbe im Süden Quitos fahren die Busse hinunter ins Amazonas-Tiefland — von 2.850 auf rund 500 Meter. In Tena fließt der Napo, der weiter östlich in den Amazonas mündet.',
+                en:'From Quitumbe terminal in the south of Quito, buses head down to the Amazon lowlands — from 2,850 to about 500 metres. Tena lies on the Napo, which flows further east into the Amazon.',
+                el:'Από τον σταθμό Κιτούμπε, στο νότιο Κίτο, τα λεωφορεία κατεβαίνουν στις πεδιάδες του Αμαζονίου — από τα 2.850 στα περίπου 500 μέτρα. Η Τένα βρίσκεται στον ποταμό Νάπο, που πιο ανατολικά χύνεται στον Αμαζόνιο.' }
+    },
+
+    /* ── B1 · Im Taxi · Asunción, Don Rolando (Feb–Mär) ─────────────────── */
+    'b1.taxi': {
+      deineRolle: { de:'Du bist Lotte. In Asunción ist es sehr heiß; in Holland ist es jetzt kalt. Tereré hast du noch nie probiert. Du könntest dir vorstellen, eine Zeit lang am Fluss zu wohnen.', es:'Eres Lotte. En Asunción hace muchísimo calor; en Holanda ahora hace frío. Todavía no probaste el tereré. Te imaginas viviendo un tiempo cerca del río.', en:'You are Lotte. It is very hot in Asunción; in Holland it is cold right now. You have never tried tereré. You could imagine living by the river for a while.', el:'Είσαι η Λότε. Στην Ασουνσιόν κάνει πολλή ζέστη· στην Ολλανδία τώρα κάνει κρύο. Δεν έχεις δοκιμάσει ποτέ τερερέ. Θα μπορούσες να φανταστείς να ζεις για λίγο καιρό κοντά στο ποτάμι.' },
+      abrundung: { z:'¡Iporã! Eso en guaraní quiere decir «qué bien». Ya llegamos.', na:{ de:'Iporã! Das heißt auf Guaraní „wie schön". Wir sind da.', en:'Iporã! That is Guaraní for "how nice". Here we are.', el:'Iporã! Στα γκουαρανί σημαίνει «τι ωραία». Φτάσαμε.' } },
+      rollen: {
+        spikiu: { de:'Don Rolando, der Taxifahrer', es:'Don Rolando, el taxista', en:'Don Rolando, the taxi driver', el:'ο δον Ρολάντο, ο ταξιτζής' },
+        lerner: { de:'Lotte, der Fahrgast', es:'Lotte, la pasajera', en:'Lotte, the passenger', el:'η Λότε, η επιβάτισσα' },
+        ort:    { de:'in einem Taxi in Asunción', es:'en un taxi en Asunción', en:'in a taxi in Asunción', el:'σε ένα ταξί στην Ασουνσιόν' }
+      },
+      wortschatz: [
+        { z:'¡qué calor!',      na:{ de:'was für eine Hitze!',     en:'it is so hot!', el:'τι ζέστη!' } },
+        { z:'el tereré',        na:{ de:'kalter Mate-Tee',         en:'cold yerba mate', el:'το τερερέ (κρύο ματέ)' } },
+        { z:'la yerba mate',    na:{ de:'der Mate-Tee',            en:'yerba mate', el:'η γέρμπα ματέ' } },
+        { z:'la guampa',        na:{ de:'der Trinkbecher für Tereré', en:'the tereré cup', el:'το κύπελλο του τερερέ' } },
+        { z:'el guaraní',       na:{ de:'Guaraní (die zweite Landessprache)', en:'Guaraní (the second national language)', el:'τα γκουαρανί (η δεύτερη επίσημη γλώσσα)' } },
+        { z:'Mba\'éichapa',     na:{ de:'Wie geht\'s? (Guaraní)',  en:'How are you? (Guaraní)', el:'Τι κάνεις; (στα γκουαρανί)' } },
+        { z:'la costanera',     na:{ de:'die Uferpromenade',       en:'the riverside promenade', el:'ο παραποτάμιος περίπατος' } },
+        { z:'la tranquilidad',  na:{ de:'die Ruhe',                en:'the calm', el:'η ηρεμία' } },
+        { z:'me encantaría',    na:{ de:'ich würde sehr gern',     en:'I would love to', el:'θα ήθελα πολύ' } },
+        { z:'me quedaría',      na:{ de:'ich würde bleiben',       en:'I would stay', el:'θα έμενα' } },
+        { z:'viviría',          na:{ de:'ich würde wohnen',        en:'I would live', el:'θα ζούσα' } },
+        { z:'la siesta',        na:{ de:'die Mittagsruhe',         en:'the afternoon rest', el:'ο μεσημεριανός ύπνος' } }
+      ],
+      dialog: {
+        rolle: { de:'Don Rolando, der Taxifahrer', en:'Don Rolando, the taxi driver', el:'Ο δον Ρολάντο, ο ταξιτζής' },
+        zeilen: [
+          { wer:'spikiu', z:'Buenas tardes. ¡Mba\'éichapa! Así saludamos en guaraní. ¿Mucho calor, señorita?', na:{ de:'Guten Tag. Mba\'éichapa! So grüßen wir auf Guaraní. Sehr heiß, junge Frau?', en:'Good afternoon. Mba\'éichapa! That is how we say hello in Guaraní. Very hot, miss?', el:'Καλησπέρα. Mba\'éichapa! Έτσι χαιρετάμε στα γκουαρανί. Πολλή ζέστη, δεσποινίς;' } },
+          { wer:'lerner', z:'Sí, muchísimo. En Holanda ahora hace frío y llueve todo el tiempo.', na:{ de:'Ja, sehr. In Holland ist es jetzt kalt, und es regnet ständig.', en:'Yes, very. In Holland it is cold now and it rains all the time.', el:'Ναι, πάρα πολλή. Στην Ολλανδία τώρα κάνει κρύο και βρέχει συνέχεια.' } },
+          { wer:'spikiu', z:'Por eso aquí tomamos tereré: yerba mate con agua bien fría. ¿Ya lo probó?', na:{ de:'Deshalb trinken wir hier Tereré: Mate mit eiskaltem Wasser. Haben Sie ihn schon probiert?', en:'That is why we drink tereré here: yerba mate with ice-cold water. Have you tried it yet?', el:'Γι\' αυτό εδώ πίνουμε τερερέ: γέρμπα ματέ με παγωμένο νερό. Το έχετε δοκιμάσει;' } },
+          { wer:'lerner', z:'Todavía no, pero me encantaría probarlo.', na:{ de:'Noch nicht, aber ich würde ihn sehr gern probieren.', en:'Not yet, but I would love to try it.', el:'Όχι ακόμα, αλλά θα ήθελα πολύ να το δοκιμάσω.' } },
+          { wer:'spikiu', z:'Muchos europeos vienen a vivir aquí por la calma y el espacio. ¿Usted se quedaría?', na:{ de:'Viele Europäer ziehen hierher, wegen der Ruhe und des Platzes. Würden Sie bleiben?', en:'Lots of Europeans come to live here for the calm and the space. Would you stay?', el:'Πολλοί Ευρωπαίοι έρχονται να ζήσουν εδώ για την ηρεμία και τον χώρο. Εσείς θα μένατε;' } },
+          { wer:'lerner', z:'Me quedaría un tiempo, sí. Viviría cerca del río y sacaría fotos.', na:{ de:'Ich würde eine Zeit lang bleiben, ja. Ich würde am Fluss wohnen und fotografieren.', en:'I would stay for a while, yes. I would live near the river and take photos.', el:'Θα έμενα για λίγο καιρό, ναι. Θα ζούσα κοντά στο ποτάμι και θα έβγαζα φωτογραφίες.' } }
+        ]
+      },
+      lesetext: {
+        z:'El taxista se llamaba Don Rolando. Hablaba español y guaraní, a veces en la misma frase. Me contó que en verano todos toman tereré, hasta en la oficina. Palabra del lugar: tereré. Creo que me quedaría un mes más.',
+        na:{ de:'Der Taxifahrer hieß Don Rolando. Er sprach Spanisch und Guaraní, manchmal im selben Satz. Er erzählte mir, dass im Sommer alle Tereré trinken, sogar im Büro. Wort des Ortes: tereré. Ich glaube, ich würde noch einen Monat bleiben.',
+             en:'The taxi driver was called Don Rolando. He spoke Spanish and Guaraní, sometimes in the same sentence. He told me that in summer everyone drinks tereré, even at the office. Word of the place: tereré. I think I would stay one more month.',
+             el:'Ο ταξιτζής λεγόταν δον Ρολάντο. Μιλούσε ισπανικά και γκουαρανί, μερικές φορές στην ίδια πρόταση. Μου είπε ότι το καλοκαίρι όλοι πίνουν τερερέ, ακόμα και στο γραφείο. Λέξη του τόπου: tereré. Νομίζω ότι θα έμενα έναν μήνα ακόμα.' },
+        frage:{ de:'Was erzählte Don Rolando über den Tereré?', en:'What did Don Rolando say about tereré?', el:'Τι είπε ο δον Ρολάντο για το τερερέ;' },
+        optionen:[
+          { na:{ de:'Im Sommer trinken ihn alle, sogar im Büro', en:'In summer everyone drinks it, even at the office', el:'Το καλοκαίρι το πίνουν όλοι, ακόμα και στο γραφείο' }, richtig:true  },
+          { na:{ de:'Man trinkt ihn nur abends',                 en:'People only drink it in the evening', el:'Το πίνουν μόνο το βράδυ' }, richtig:false },
+          { na:{ de:'Nur Touristen trinken ihn',                 en:'Only tourists drink it', el:'Το πίνουν μόνο οι τουρίστες' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Stell dir vor, du lebst ein Jahr in einem anderen Land. Was würdest du tun? Zwei Sätze mit Konditional.',
+                  en:'Imagine you live in another country for a year. What would you do? Two sentences with the conditional.', el:'Φαντάσου ότι ζεις έναν χρόνο σε άλλη χώρα. Τι θα έκανες; Δύο προτάσεις με υποθετική έγκλιση.' },
+        muster:'Viviría cerca del mar. Aprendería a cocinar y tomaría tereré todas las tardes.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Das Konditional sagt „würde": me quedaría, viviría, sacaría. Bau: der ganze Infinitiv + -ía, -ías, -ía … — für alle drei Verbgruppen gleich. „Me encantaría" ist die freundlichste Art, Ja zu sagen. In Spanien und Lateinamerika ist das genau gleich.',
+               en:'The conditional says "would": me quedaría, viviría, sacaría. Pattern: the whole infinitive + -ía, -ías, -ía … — the same for all three verb groups. "Me encantaría" is the friendliest way to say yes. It works exactly the same in Spain and Latin America.',
+               el:'Η υποθετική λέει «θα …»: me quedaría (θα έμενα), viviría, sacaría. Σχήμα: ολόκληρο το απαρέμφατο + -ía, -ías, -ía … — ίδιο για όλες τις συζυγίες. Το «me encantaría» είναι ο πιο φιλικός τρόπος να πεις ναι. Στην Ισπανία και στη Λατινική Αμερική είναι ακριβώς το ίδιο.' },
+        beispiele:[
+          { z:'Me quedaría un tiempo.',   na:{ de:'Ich würde eine Zeit lang bleiben.', en:'I would stay for a while.', el:'Θα έμενα για λίγο καιρό.' } },
+          { z:'Me encantaría probarlo.',  na:{ de:'Ich würde es sehr gern probieren.', en:'I would love to try it.', el:'Θα ήθελα πολύ να το δοκιμάσω.' } }
+        ]
+      },
+      kultur: { de:'Paraguay ist zweisprachig: Fast alle sprechen Spanisch und Guaraní, oft gemischt im selben Satz. Tereré ist kalter Mate mit frischen Kräutern — bei 40 Grad trinkt man ihn den ganzen Tag, am liebsten im Schatten und in Gesellschaft.',
+                en:'Paraguay is bilingual: almost everyone speaks Spanish and Guaraní, often mixed in the same sentence. Tereré is cold mate with fresh herbs — at 40 degrees people drink it all day, ideally in the shade and in company.',
+                el:'Η Παραγουάη είναι δίγλωσση: σχεδόν όλοι μιλούν ισπανικά και γκουαρανί, συχνά ανακατεμένα στην ίδια πρόταση. Το τερερέ είναι κρύο ματέ με φρέσκα βότανα — στους 40 βαθμούς το πίνουν όλη μέρα, κατά προτίμηση στη σκιά και με παρέα.' }
+    },
+
+    /* ── B1 · Im Café · Buenos Aires, Don Aníbal (Mär) ──────────────────── */
+    'b1.cafe': {
+      deineRolle: { de:'Du bist Lotte und sitzt in einem alten Café in Buenos Aires. Du findest die Stadt elegant und etwas nostalgisch. Tango gefällt dir — tanzen traust du dir aber nicht zu.', es:'Eres Lotte y estás en un café antiguo de Buenos Aires. La ciudad te parece elegante y un poco nostálgica. Te gusta el tango, pero no te atreves a bailarlo.', en:'You are Lotte, sitting in an old café in Buenos Aires. You find the city elegant and a little nostalgic. You like tango — but you do not trust yourself to dance it.', el:'Είσαι η Λότε και κάθεσαι σε ένα παλιό καφέ στο Μπουένος Άιρες. Η πόλη σού φαίνεται κομψή και λίγο νοσταλγική. Σου αρέσει το τάνγκο, αλλά δεν τολμάς να το χορέψεις.' },
+      abrundung: { z:'Ya veremos. A las diez, en la esquina. ¡Y traiga zapatos cómodos!', na:{ de:'Das werden wir sehen. Um zehn, an der Ecke. Und bringen Sie bequeme Schuhe mit!', en:'We shall see. At ten, on the corner. And bring comfortable shoes!', el:'Θα δούμε. Στις δέκα, στη γωνία. Και φέρτε άνετα παπούτσια!' } },
+      rollen: {
+        spikiu: { de:'Don Aníbal, Tangolehrer im Ruhestand', es:'Don Aníbal, profesor de tango jubilado', en:'Don Aníbal, a retired tango teacher', el:'ο δον Ανίμπαλ, συνταξιούχος δάσκαλος τάνγκο' },
+        lerner: { de:'Lotte, am Nachbartisch', es:'Lotte, en la mesa de al lado', en:'Lotte, at the next table', el:'η Λότε, στο διπλανό τραπέζι' },
+        ort:    { de:'im Café La Esquina de Boedo, Buenos Aires', es:'en el Café La Esquina de Boedo, Buenos Aires', en:'at Café La Esquina de Boedo, Buenos Aires', el:'στο καφέ La Esquina de Boedo, στο Μπουένος Άιρες' }
+      },
+      wortschatz: [
+        { z:'el cortado',       na:{ de:'Espresso mit einem Schuss Milch', en:'espresso with a dash of milk', el:'εσπρέσο με λίγο γάλα' } },
+        { z:'las medialunas',   na:{ de:'kleine süße Croissants',  en:'small sweet croissants', el:'μικρά γλυκά κρουασάν' } },
+        { z:'el mozo',          na:{ de:'der Kellner (Argentinien)', en:'the waiter (Argentina)', el:'ο σερβιτόρος (Αργεντινή)' } },
+        { z:'la milonga',       na:{ de:'der Tango-Tanzabend',     en:'the tango dance night', el:'η βραδιά τάνγκο (μιλόνγκα)' } },
+        { z:'el bandoneón',     na:{ de:'das Bandoneon',           en:'the bandoneon', el:'το μπαντονεόν' } },
+        { z:'creo que …',       na:{ de:'ich glaube, dass …',      en:'I think that …', el:'νομίζω ότι …' } },
+        { z:'no creo que …',    na:{ de:'ich glaube nicht, dass …', en:'I do not think that …', el:'δεν νομίζω ότι …' } },
+        { z:'me parece que …',  na:{ de:'mir scheint, dass …',     en:'it seems to me that …', el:'μου φαίνεται ότι …' } },
+        { z:'en mi opinión',    na:{ de:'meiner Meinung nach',     en:'in my opinion', el:'κατά τη γνώμη μου' } },
+        { z:'nostálgico',       na:{ de:'nostalgisch',             en:'nostalgic', el:'νοσταλγικός' } },
+        { z:'a la vuelta',      na:{ de:'um die Ecke',             en:'round the corner', el:'στη γωνία' } },
+        { z:'porteño',          na:{ de:'aus Buenos Aires',        en:'from Buenos Aires', el:'από το Μπουένος Άιρες' } }
+      ],
+      dialog: {
+        rolle: { de:'Don Aníbal, ein Tangolehrer im Ruhestand', en:'Don Aníbal, a retired tango teacher', el:'Ο δον Ανίμπαλ, συνταξιούχος δάσκαλος τάνγκο' },
+        zeilen: [
+          { wer:'spikiu', z:'Perdone que la moleste. Veo que saca fotos del café. ¿Le gusta Buenos Aires?', na:{ de:'Verzeihen Sie die Störung. Ich sehe, Sie fotografieren das Café. Gefällt Ihnen Buenos Aires?', en:'Forgive me for disturbing you. I see you are taking photos of the café. Do you like Buenos Aires?', el:'Συγγνώμη που σας ενοχλώ. Βλέπω ότι φωτογραφίζετε το καφέ. Σας αρέσει το Μπουένος Άιρες;' } },
+          { wer:'lerner', z:'Me encanta. Creo que es una ciudad elegante y un poco nostálgica.', na:{ de:'Ich liebe sie. Ich finde, sie ist eine elegante und etwas nostalgische Stadt.', en:'I love it. I think it is an elegant city, and a little nostalgic.', el:'Μου αρέσει πολύ. Νομίζω ότι είναι μια κομψή και λίγο νοσταλγική πόλη.' } },
+          { wer:'spikiu', z:'Es el tango, señorita. Lo enseñé cuarenta años. ¿Y a usted le gusta?', na:{ de:'Das ist der Tango, junge Frau. Ich habe ihn vierzig Jahre lang unterrichtet. Und gefällt er Ihnen?', en:'That is the tango, miss. I taught it for forty years. And do you like it?', el:'Είναι το τάνγκο, δεσποινίς. Το δίδαξα σαράντα χρόνια. Κι εσάς σας αρέσει;' } },
+          { wer:'lerner', z:'Me parece muy bonito, pero no creo que yo pueda bailarlo.', na:{ de:'Ich finde ihn sehr schön, aber ich glaube nicht, dass ich ihn tanzen kann.', en:'I think it is lovely, but I do not think I could dance it.', el:'Μου φαίνεται πολύ όμορφο, αλλά δεν νομίζω ότι μπορώ να το χορέψω.' } },
+          { wer:'spikiu', z:'Todo el mundo puede. Esta noche hay una milonga aquí a la vuelta. ¿Por qué no viene?', na:{ de:'Jeder kann das. Heute Abend gibt es eine Milonga gleich um die Ecke. Warum kommen Sie nicht?', en:'Everyone can. Tonight there is a milonga just round the corner. Why don\'t you come?', el:'Όλοι μπορούν. Απόψε έχει μιλόνγκα εδώ στη γωνία. Γιατί δεν έρχεστε;' } },
+          { wer:'lerner', z:'Bueno, ¿por qué no? Pero creo que voy a mirar más que bailar.', na:{ de:'Na gut, warum nicht? Aber ich glaube, ich werde mehr zuschauen als tanzen.', en:'Well, why not? But I think I will watch more than dance.', el:'Εντάξει, γιατί όχι; Αλλά νομίζω ότι θα κοιτάζω περισσότερο απ\' ό,τι θα χορεύω.' } }
+        ]
+      },
+      lesetext: {
+        z:'Pedí un cortado con dos medialunas, como todos aquí. El mozo me trató de usted y me llamó «señorita». Don Aníbal me explicó que los porteños dicen «vos» entre amigos, pero usan «usted» con desconocidos. Palabra del lugar: medialuna.',
+        na:{ de:'Ich bestellte einen Cortado mit zwei Medialunas, wie alle hier. Der Kellner siezte mich und nannte mich „señorita". Don Aníbal erklärte mir, dass die Leute aus Buenos Aires unter Freunden „vos" sagen, mit Fremden aber „usted". Wort des Ortes: medialuna.',
+             en:'I ordered a cortado with two medialunas, like everyone here. The waiter called me "usted" and "señorita". Don Aníbal explained that people in Buenos Aires say "vos" among friends, but use "usted" with strangers. Word of the place: medialuna.',
+             el:'Παρήγγειλα έναν κορτάδο με δύο μεδιαλούνας, όπως όλοι εδώ. Ο σερβιτόρος μού μίλησε στον πληθυντικό και με είπε «señorita». Ο δον Ανίμπαλ μού εξήγησε ότι οι κάτοικοι του Μπουένος Άιρες λένε «vos» μεταξύ φίλων, αλλά «usted» στους αγνώστους. Λέξη του τόπου: medialuna.' },
+        frage:{ de:'Wann sagen die Leute in Buenos Aires „usted"?', en:'When do people in Buenos Aires say "usted"?', el:'Πότε λένε «usted» στο Μπουένος Άιρες;' },
+        optionen:[
+          { na:{ de:'Unter Freunden',   en:'Among friends', el:'Μεταξύ φίλων' }, richtig:false },
+          { na:{ de:'Mit Fremden',      en:'With strangers', el:'Στους αγνώστους' }, richtig:true  },
+          { na:{ de:'Nur im Café',      en:'Only in cafés', el:'Μόνο στο καφέ' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Sag deine Meinung über eine Stadt, die du kennst: einmal mit „creo que", einmal mit „no creo que". Zwei Sätze.',
+                  en:'Give your opinion of a city you know: once with "creo que", once with "no creo que". Two sentences.', el:'Πες τη γνώμη σου για μια πόλη που ξέρεις: μία φορά με «creo que» και μία με «no creo que». Δύο προτάσεις.' },
+        muster:'Creo que Lisboa es una ciudad muy alegre. No creo que sea muy tranquila.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Meinung sagen: „creo que" und „me parece que" + normale Form: creo que es bonito. Verneinst du, kippt das Verb in den Subjuntivo: no creo que pueda, no creo que sea. Zweifel bekommt eine eigene Form — in Spanien wie in Lateinamerika.',
+               en:'Giving an opinion: "creo que" and "me parece que" + the normal form: creo que es bonito. When you negate it, the verb switches to the subjunctive: no creo que pueda, no creo que sea. Doubt gets its own form — in Spain and Latin America alike.',
+               el:'Λες τη γνώμη σου: «creo que» και «me parece que» + κανονικός τύπος: creo que es bonito. Όταν το αρνείσαι, το ρήμα περνά σε υποτακτική: no creo que pueda, no creo que sea. Η αμφιβολία έχει δικό της τύπο — στην Ισπανία όπως και στη Λατινική Αμερική.' },
+        beispiele:[
+          { z:'Creo que es elegante.',        na:{ de:'Ich finde, sie ist elegant.', en:'I think it is elegant.', el:'Νομίζω ότι είναι κομψή.' } },
+          { z:'No creo que pueda bailarlo.',  na:{ de:'Ich glaube nicht, dass ich ihn tanzen kann.', en:'I do not think I can dance it.', el:'Δεν νομίζω ότι μπορώ να το χορέψω.' } }
+        ]
+      },
+      kultur: { de:'Buenos Aires schützt seine alten Kaffeehäuser als „bares notables" — viele sind über hundert Jahre alt. Der Río de la Plata ist hier so breit, dass man vom Ufer aus das andere Ufer nicht sieht.',
+                en:'Buenos Aires protects its old coffee houses as "bares notables" — many are over a hundred years old. The Río de la Plata is so wide here that you cannot see the other bank from the shore.',
+                el:'Το Μπουένος Άιρες προστατεύει τα παλιά του καφενεία ως «bares notables» — πολλά είναι πάνω από εκατό χρονών. Ο Ρίο ντε λα Πλάτα είναι τόσο πλατύς εδώ που από την όχθη δεν βλέπεις την απέναντι.' }
+    },
+
+    /* ── B1 · Im Restaurant · El Calafate, Doña Inés (Apr) ──────────────── */
+    'b1.restaurant': {
+      deineRolle: { de:'Du bist Lotte. Du reist seit sechs Monaten durch Lateinamerika und fotografierst für ein Buch. Du hast zwei Sommer lang als Kellnerin in einem Café in Utrecht gearbeitet und kannst morgen anfangen.', es:'Eres Lotte. Llevas seis meses viajando por Latinoamérica y sacas fotos para un libro. Trabajaste dos veranos de mesera en un café de Utrecht y puedes empezar mañana.', en:'You are Lotte. You have been travelling around Latin America for six months, taking photos for a book. You worked two summers as a waitress in a café in Utrecht and can start tomorrow.', el:'Είσαι η Λότε. Ταξιδεύεις εδώ και έξι μήνες στη Λατινική Αμερική και βγάζεις φωτογραφίες για ένα βιβλίο. Δούλεψες δύο καλοκαίρια σερβιτόρα σε ένα καφέ στην Ουτρέχτη και μπορείς να ξεκινήσεις αύριο.' },
+      abrundung: { z:'¡Trato hecho! Mañana a las once. Bienvenida al equipo.', na:{ de:'Abgemacht! Morgen um elf. Willkommen im Team.', en:'It is a deal! Tomorrow at eleven. Welcome to the team.', el:'Συμφωνήσαμε! Αύριο στις έντεκα. Καλώς ήρθατε στην ομάδα.' } },
+      rollen: {
+        spikiu: { de:'Doña Inés, die Chefin des Restaurants', es:'Doña Inés, la dueña del restaurante', en:'Doña Inés, the restaurant owner', el:'η δόνια Ινές, η ιδιοκτήτρια του εστιατορίου' },
+        lerner: { de:'Lotte, die Bewerberin', es:'Lotte, la candidata', en:'Lotte, the applicant', el:'η Λότε, η υποψήφια' },
+        ort:    { de:'in einem Restaurant in El Calafate, Patagonien', es:'en un restaurante de El Calafate, en la Patagonia', en:'in a restaurant in El Calafate, Patagonia', el:'σε ένα εστιατόριο στο Ελ Καλαφάτε, στην Παταγονία' }
+      },
+      wortschatz: [
+        { z:'la entrevista',    na:{ de:'das Vorstellungsgespräch', en:'the job interview', el:'η συνέντευξη' } },
+        { z:'la temporada',     na:{ de:'die Saison',              en:'the season', el:'η σεζόν' } },
+        { z:'el currículum',    na:{ de:'der Lebenslauf',          en:'the CV', el:'το βιογραφικό' } },
+        { z:'la experiencia',   na:{ de:'die Erfahrung',           en:'experience', el:'η εμπειρία' } },
+        { z:'la mesera',        na:{ de:'die Kellnerin (Lateinamerika)', en:'the waitress (Latin America)', el:'η σερβιτόρα (Λατινική Αμερική)' } },
+        { z:'la carta',         na:{ de:'die Speisekarte',         en:'the menu', el:'ο κατάλογος' } },
+        { z:'el cordero patagónico', na:{ de:'das patagonische Lamm', en:'Patagonian lamb', el:'το αρνί της Παταγονίας' } },
+        { z:'el turno',         na:{ de:'die Schicht',             en:'the shift', el:'η βάρδια' } },
+        { z:'el sueldo',        na:{ de:'der Lohn',                en:'the wage', el:'ο μισθός' } },
+        { z:'la propina',       na:{ de:'das Trinkgeld',           en:'the tip', el:'το φιλοδώρημα' } },
+        { z:'llevo seis meses viajando', na:{ de:'ich reise seit sechs Monaten', en:'I have been travelling for six months', el:'ταξιδεύω εδώ και έξι μήνες' } },
+        { z:'¿ha trabajado alguna vez …?', na:{ de:'haben Sie schon einmal … gearbeitet?', en:'have you ever worked …?', el:'έχετε δουλέψει ποτέ …;' } }
+      ],
+      dialog: {
+        rolle: { de:'Doña Inés, die Restaurantbesitzerin', en:'Doña Inés, the restaurant owner', el:'Η δόνια Ινές, η ιδιοκτήτρια του εστιατορίου' },
+        zeilen: [
+          { wer:'spikiu', z:'Buenas tardes, Lotte. Siéntese, por favor. Cuénteme, ¿qué la trae a El Calafate?', na:{ de:'Guten Tag, Lotte. Setzen Sie sich bitte. Erzählen Sie, was führt Sie nach El Calafate?', en:'Good afternoon, Lotte. Please sit down. Tell me, what brings you to El Calafate?', el:'Καλησπέρα, Λότε. Καθίστε, παρακαλώ. Πείτε μου, τι σας φέρνει στο Ελ Καλαφάτε;' } },
+          { wer:'lerner', z:'Llevo seis meses viajando por Latinoamérica y saco fotos para un libro.', na:{ de:'Ich reise seit sechs Monaten durch Lateinamerika und mache Fotos für ein Buch.', en:'I have been travelling around Latin America for six months, taking photos for a book.', el:'Ταξιδεύω εδώ και έξι μήνες στη Λατινική Αμερική και βγάζω φωτογραφίες για ένα βιβλίο.' } },
+          { wer:'spikiu', z:'Qué interesante. ¿Y ha trabajado alguna vez en un restaurante?', na:{ de:'Wie interessant. Und haben Sie schon einmal in einem Restaurant gearbeitet?', en:'How interesting. And have you ever worked in a restaurant?', el:'Τι ενδιαφέρον. Και έχετε δουλέψει ποτέ σε εστιατόριο;' } },
+          { wer:'lerner', z:'Sí, he trabajado dos veranos de mesera en un café de Utrecht.', na:{ de:'Ja, ich habe zwei Sommer lang als Kellnerin in einem Café in Utrecht gearbeitet.', en:'Yes, I have worked two summers as a waitress in a café in Utrecht.', el:'Ναι, έχω δουλέψει δύο καλοκαίρια σερβιτόρα σε ένα καφέ στην Ουτρέχτη.' } },
+          { wer:'spikiu', z:'Perfecto. Necesito a alguien hasta el fin de la temporada. ¿Podría además fotografiar los platos para la carta?', na:{ de:'Perfekt. Ich brauche jemanden bis zum Ende der Saison. Könnten Sie außerdem die Gerichte für die Speisekarte fotografieren?', en:'Perfect. I need someone until the end of the season. Could you also photograph the dishes for the menu?', el:'Τέλεια. Χρειάζομαι κάποιον ως το τέλος της σεζόν. Θα μπορούσατε επίσης να φωτογραφίσετε τα πιάτα για τον κατάλογο;' } },
+          { wer:'lerner', z:'Con gusto. Puedo empezar mañana, si le parece bien.', na:{ de:'Sehr gern. Ich kann morgen anfangen, wenn es Ihnen recht ist.', en:'With pleasure. I can start tomorrow, if that suits you.', el:'Με χαρά. Μπορώ να ξεκινήσω αύριο, αν σας βολεύει.' } }
+        ]
+      },
+      lesetext: {
+        z:'SE BUSCA mesero o mesera hasta el fin de temporada. Pedimos experiencia en atención al público y buen humor. Turno de noche, de seis a doce, con comida incluida. Preguntar por Doña Inés.',
+        na:{ de:'GESUCHT: Kellner oder Kellnerin bis zum Saisonende. Wir erwarten Erfahrung im Kundenkontakt und gute Laune. Abendschicht, von sechs bis zwölf, Essen inklusive. Fragen Sie nach Doña Inés.',
+             en:'WANTED: waiter or waitress until the end of the season. We ask for experience with customers and a good sense of humour. Evening shift, six to twelve, meals included. Ask for Doña Inés.',
+             el:'ΖΗΤΕΙΤΑΙ σερβιτόρος ή σερβιτόρα ως το τέλος της σεζόν. Ζητάμε εμπειρία στην εξυπηρέτηση πελατών και καλή διάθεση. Βραδινή βάρδια, από τις έξι ως τις δώδεκα, με φαγητό. Ρωτήστε για τη δόνια Ινές.' },
+        frage:{ de:'Wann ist die Schicht?', en:'When is the shift?', el:'Πότε είναι η βάρδια;' },
+        optionen:[
+          { na:{ de:'Morgens, von sechs bis zwölf', en:'In the morning, six to twelve', el:'Το πρωί, από τις έξι ως τις δώδεκα' }, richtig:false },
+          { na:{ de:'Abends, von sechs bis zwölf',  en:'In the evening, six to twelve', el:'Το βράδυ, από τις έξι ως τις δώδεκα' }, richtig:true  },
+          { na:{ de:'Den ganzen Tag',               en:'All day', el:'Όλη μέρα' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Stell dich kurz vor: Seit wann machst du etwas, und wo hast du schon gearbeitet? Zwei Sätze.',
+                  en:'Introduce yourself briefly: how long have you been doing something, and where have you worked? Two sentences.', el:'Σύστησε τον εαυτό σου σύντομα: από πότε κάνεις κάτι και πού έχεις δουλέψει; Δύο προτάσεις.' },
+        muster:'Llevo dos años estudiando español. He trabajado en una librería y en un hotel.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„Llevo seis meses viajando" heißt „ich reise seit sechs Monaten": llevar + Zeitraum + Gerundium, für etwas, das noch andauert. Für Lebenserfahrung nimmt man das Perfekt: ¿Ha trabajado alguna vez …? — He trabajado … Für „heute" sagt man in Lateinamerika aber lieber „hoy llegué" statt „hoy he llegado".',
+               en:'"Llevo seis meses viajando" means "I have been travelling for six months": llevar + time span + gerund, for something still going on. For life experience use the perfect: ¿Ha trabajado alguna vez …? — He trabajado … But for "today", Latin Americans prefer "hoy llegué" to "hoy he llegado".',
+               el:'Το «llevo seis meses viajando» σημαίνει «ταξιδεύω εδώ και έξι μήνες»: llevar + χρονικό διάστημα + γερούνδιο, για κάτι που συνεχίζεται. Για εμπειρίες ζωής χρησιμοποιείς τον παρακείμενο: ¿Ha trabajado alguna vez …? — He trabajado … Για το «σήμερα» όμως στη Λατινική Αμερική προτιμούν το «hoy llegué» από το «hoy he llegado».' },
+        beispiele:[
+          { z:'Llevo seis meses viajando.', na:{ de:'Ich reise seit sechs Monaten.', en:'I have been travelling for six months.', el:'Ταξιδεύω εδώ και έξι μήνες.' } },
+          { z:'He trabajado en un café.',   na:{ de:'Ich habe in einem Café gearbeitet.', en:'I have worked in a café.', el:'Έχω δουλέψει σε ένα καφέ.' } }
+        ]
+      },
+      kultur: { de:'El Calafate trägt den Namen eines Dornbuschs mit blauen Beeren. Die Legende sagt: Wer Calafate-Beeren isst, kommt nach Patagonien zurück. Ganz in der Nähe stürzen vom Perito-Moreno-Gletscher Eisblöcke donnernd in den Lago Argentino.',
+                en:'El Calafate is named after a thorny bush with blue berries. Legend says whoever eats calafate berries will come back to Patagonia. Nearby, blocks of ice crash thundering from the Perito Moreno glacier into Lago Argentino.',
+                el:'Το Ελ Καλαφάτε πήρε το όνομά του από έναν αγκαθωτό θάμνο με μπλε μούρα. Ο θρύλος λέει ότι όποιος φάει μούρα καλαφάτε θα ξαναγυρίσει στην Παταγονία. Κοντά, κομμάτια πάγου από τον παγετώνα Περίτο Μορένο πέφτουν με βρόντο στη λίμνη Αρχεντίνο.' }
+    },
+
+    /* ── B1 · Nach dem Weg fragen · Canaima, Ramón (Jun–Jul) ────────────── */
+    'b1.wegbeschreibung': {
+      duzen: true,
+      deineRolle: { de:'Du bist Lotte und reist in einer kleinen Gruppe. Morgen geht es zum Salto Ángel. Du gibst weiter, was der Guide sagt.', es:'Eres Lotte y viajas en un grupo pequeño. Mañana van al Salto Ángel. Les cuentas a los demás lo que dice el guía.', en:'You are Lotte, travelling in a small group. Tomorrow you are going to Angel Falls. You pass on what the guide says.', el:'Είσαι η Λότε και ταξιδεύεις με μια μικρή ομάδα. Αύριο πηγαίνετε στον καταρράκτη Σάλτο Άνχελ. Μεταφέρεις στους άλλους ό,τι λέει ο οδηγός.' },
+      abrundung: { z:'¡Chévere! Y diles que guarden las cámaras en bolsas secas: ¡el salto moja de lejos!', na:{ de:'Klasse! Und sag ihnen, sie sollen die Kameras in trockene Beutel packen: Der Wasserfall macht schon von Weitem nass!', en:'Great! And tell them to keep their cameras in dry bags: the falls soak you from far away!', el:'Τέλεια! Και πες τους να βάλουν τις μηχανές σε στεγανές σακούλες: ο καταρράκτης σε βρέχει από μακριά!' } },
+      rollen: {
+        spikiu: { de:'Ramón, der Pemón-Guide', es:'Ramón, el guía pemón', en:'Ramón, the Pemón guide', el:'ο Ραμόν, ο οδηγός Πεμόν' },
+        lerner: { de:'Lotte, aus der Reisegruppe', es:'Lotte, del grupo de viaje', en:'Lotte, from the travel group', el:'η Λότε, από την ομάδα' },
+        ort:    { de:'am Ufer der Lagune von Canaima', es:'a orillas de la laguna de Canaima', en:'on the shore of Canaima lagoon', el:'στην όχθη της λίμνης της Καναΐμα' }
+      },
+      wortschatz: [
+        { z:'la curiara',       na:{ de:'der Einbaum',             en:'the dugout canoe', el:'η κουριάρα (μονόξυλο)' } },
+        { z:'el tepuy',         na:{ de:'der Tafelberg',           en:'the table mountain', el:'το τεπούι (επίπεδο βουνό)' } },
+        { z:'el salto',         na:{ de:'der Wasserfall',          en:'the waterfall', el:'ο καταρράκτης' } },
+        { z:'el mirador',       na:{ de:'der Aussichtspunkt',      en:'the viewpoint', el:'το σημείο θέας' } },
+        { z:'la selva',         na:{ de:'der Regenwald',           en:'the rainforest', el:'η ζούγκλα' } },
+        { z:'río arriba',       na:{ de:'flussaufwärts',           en:'upriver', el:'αντίθετα στο ρεύμα' } },
+        { z:'el chaleco salvavidas', na:{ de:'die Schwimmweste',   en:'the life jacket', el:'το σωσίβιο' } },
+        { z:'la temporada de lluvias', na:{ de:'die Regenzeit',    en:'the rainy season', el:'η εποχή των βροχών' } },
+        { z:'el impermeable',   na:{ de:'die Regenjacke',          en:'the raincoat', el:'το αδιάβροχο' } },
+        { z:'¡chévere!',        na:{ de:'klasse!',                 en:'great!', el:'τέλεια!' } },
+        { z:'dice que …',       na:{ de:'er/sie sagt, dass …',     en:'he/she says that …', el:'λέει ότι …' } },
+        { z:'me dijo que …',    na:{ de:'er/sie hat mir gesagt, dass …', en:'he/she told me that …', el:'μου είπε ότι …' } }
+      ],
+      dialog: {
+        rolle: { de:'Ramón, der Pemón-Guide', en:'Ramón, the Pemón guide', el:'Ο Ραμόν, ο οδηγός από τον λαό Πεμόν' },
+        zeilen: [
+          { wer:'spikiu', z:'¡Bienvenida a Canaima! Soy Ramón. Mañana vamos al Kerepakupai Merú, el Salto Ángel.', na:{ de:'Willkommen in Canaima! Ich bin Ramón. Morgen fahren wir zum Kerepakupai Merú, dem Salto Ángel.', en:'Welcome to Canaima! I am Ramón. Tomorrow we are going to Kerepakupai Merú, Angel Falls.', el:'Καλώς ήρθες στην Καναΐμα! Είμαι ο Ραμόν. Αύριο πάμε στο Κερεπακουπάι Μερού, τον καταρράκτη Άνχελ.' } },
+          { wer:'lerner', z:'¡Qué emoción! ¿Y cómo se llega al mirador?', na:{ de:'Wie aufregend! Und wie kommt man zum Aussichtspunkt?', en:'How exciting! And how do you get to the viewpoint?', el:'Τι ωραία, ανυπομονώ! Και πώς πάει κανείς στο σημείο θέας;' } },
+          { wer:'spikiu', z:'Primero subimos el río en curiara, unas cuatro horas. Después caminamos una hora por la selva.', na:{ de:'Zuerst fahren wir im Einbaum den Fluss hinauf, etwa vier Stunden. Dann laufen wir eine Stunde durch den Regenwald.', en:'First we go up the river by dugout canoe, about four hours. Then we walk for an hour through the forest.', el:'Πρώτα ανεβαίνουμε το ποτάμι με κουριάρα, κάπου τέσσερις ώρες. Μετά περπατάμε μία ώρα μέσα στη ζούγκλα.' } },
+          { wer:'lerner', z:'O sea, dices que primero vamos en curiara y luego caminamos una hora.', na:{ de:'Du sagst also, dass wir zuerst mit dem Einbaum fahren und dann eine Stunde laufen.', en:'So you are saying we go by canoe first and then walk for an hour.', el:'Δηλαδή λες ότι πρώτα πάμε με την κουριάρα και μετά περπατάμε μία ώρα.' } },
+          { wer:'spikiu', z:'Exacto. Pero el río viene muy fuerte y tardamos más: salimos a las cinco, no a las ocho.', na:{ de:'Genau. Aber der Fluss ist sehr stark, wir brauchen länger: Wir fahren um fünf los, nicht um acht.', en:'Exactly. But the river is running very strong and it takes longer: we leave at five, not at eight.', el:'Ακριβώς. Αλλά το ποτάμι κατεβαίνει πολύ δυνατό και θα αργήσουμε περισσότερο: φεύγουμε στις πέντε, όχι στις οχτώ.' } },
+          { wer:'lerner', z:'Entendido. Les digo a los demás que salimos a las cinco.', na:{ de:'Verstanden. Ich sage den anderen, dass wir um fünf losfahren.', en:'Got it. I will tell the others we leave at five.', el:'Κατάλαβα. Θα πω στους άλλους ότι φεύγουμε στις πέντε.' } }
+        ]
+      },
+      lesetext: {
+        z:'Ramón nos dijo que el salto se llama Kerepakupai Merú en lengua pemón. Salimos a las cinco y subimos el río cuatro horas en curiara. En el mirador nadie hablaba: el agua caía desde casi mil metros. Palabra del lugar: tepuy.',
+        na:{ de:'Ramón sagte uns, dass der Wasserfall in der Sprache der Pemón Kerepakupai Merú heißt. Wir fuhren um fünf los und fuhren vier Stunden im Einbaum den Fluss hinauf. Am Aussichtspunkt sprach niemand: Das Wasser fiel aus fast tausend Metern herab. Wort des Ortes: tepuy.',
+             en:'Ramón told us that the falls are called Kerepakupai Merú in the Pemón language. We left at five and went up the river for four hours by canoe. At the viewpoint nobody spoke: the water fell from almost a thousand metres. Word of the place: tepuy.',
+             el:'Ο Ραμόν μάς είπε ότι ο καταρράκτης λέγεται Κερεπακουπάι Μερού στη γλώσσα των Πεμόν. Φύγαμε στις πέντε και ανεβήκαμε το ποτάμι τέσσερις ώρες με κουριάρα. Στο σημείο θέας κανείς δεν μιλούσε: το νερό έπεφτε από σχεδόν χίλια μέτρα. Λέξη του τόπου: tepuy.' },
+        frage:{ de:'Wie lange fuhren sie mit dem Einbaum?', en:'How long were they in the canoe?', el:'Πόση ώρα ταξίδεψαν με την κουριάρα;' },
+        optionen:[
+          { na:{ de:'Eine Stunde',     en:'One hour', el:'Μία ώρα' }, richtig:false },
+          { na:{ de:'Vier Stunden',    en:'Four hours', el:'Τέσσερις ώρες' }, richtig:true  },
+          { na:{ de:'Den ganzen Tag',  en:'All day', el:'Όλη μέρα' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähle jemandem, was dir ein Guide oder eine Freundin gesagt hat — mit „me dijo que" und „dice que". Zwei Sätze.',
+                  en:'Tell someone what a guide or a friend told you — with "me dijo que" and "dice que". Two sentences.', el:'Πες σε κάποιον τι σου είπε ένας οδηγός ή μια φίλη — με «me dijo que» και «dice que». Δύο προτάσεις.' },
+        muster:'Ramón me dijo que el río está muy fuerte. Dice que salimos a las cinco.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Weitergeben, was jemand sagt: „dice que" + dieselbe Zeit: Ramón dice que salimos a las cinco. Bitten an mehrere Leute gehen an ustedes: guarden, pónganse. In Spanien hast du vosotros gelernt (guardad); in Lateinamerika sagt man ustedes — zu Fremden wie zu Freunden.',
+               en:'Passing on what someone says: "dice que" + the same tense: Ramón dice que salimos a las cinco. Requests to several people go to ustedes: guarden, pónganse. In Spain you learnt vosotros (guardad); in Latin America people say ustedes — to strangers and friends alike.',
+               el:'Μεταφέρεις τι λέει κάποιος: «dice que» + ίδιος χρόνος: Ramón dice que salimos a las cinco. Τα αιτήματα σε πολλούς πάνε στο ustedes: guarden, pónganse. Στην Ισπανία έμαθες το vosotros (guardad)· στη Λατινική Αμερική λένε ustedes — σε αγνώστους και σε φίλους.' },
+        beispiele:[
+          { z:'Ramón dice que salimos a las cinco.', na:{ de:'Ramón sagt, dass wir um fünf losfahren.', en:'Ramón says we leave at five.', el:'Ο Ραμόν λέει ότι φεύγουμε στις πέντε.' } },
+          { z:'Pónganse el chaleco, por favor.',     na:{ de:'Zieht bitte die Schwimmweste an.', en:'Put on your life jackets, please.', el:'Φορέστε το σωσίβιο, παρακαλώ.' } }
+        ]
+      },
+      kultur: { de:'Der Salto Ángel ist mit fast 1.000 Metern der höchste Wasserfall der Welt; er stürzt vom Auyán-Tepui. Die Pemón nennen ihn Kerepakupai Merú. Erst in der Regenzeit führt der Fluss genug Wasser für die Fahrt im Einbaum.',
+                en:'At almost 1,000 metres, Angel Falls is the highest waterfall in the world; it drops from Auyán-tepui. The Pemón call it Kerepakupai Merú. Only in the rainy season does the river carry enough water for the canoe trip.',
+                el:'Με σχεδόν 1.000 μέτρα, ο Σάλτο Άνχελ είναι ο ψηλότερος καταρράκτης του κόσμου· πέφτει από το Αουγιάν-τεπούι. Οι Πεμόν τον λένε Κερεπακουπάι Μερού. Μόνο την εποχή των βροχών το ποτάμι έχει αρκετό νερό για το ταξίδι με την κουριάρα.' }
+    }
+  }
+};
+
+  [B1_LP_A, B1_LP_B].forEach(function (F) {
+    Object.keys(F.schritt).forEach(function (t) { if (SCHRITT[t]) SCHRITT[t].b1 = F.schritt[t]; });
+    Object.keys(F.aufgaben).forEach(function (k) { AUFGABEN[k] = F.aufgaben[k]; });
+    Object.keys(F.stationen).forEach(function (k) { STATIONEN[k] = F.stationen[k]; });
+  });
+
   /* ── Öffentliche Fläche ───────────────────────────────────────────── */
   raum.SpikiuLernpfad = {
     /* Diese Datei traegt EINE Zielsprache. Jeder Raum muss dagegen pruefen,
@@ -1581,7 +2356,23 @@
     },
 
     /* Die zwei Rollen und der Ort einer Szene. */
-    rolle: function (thema) { return ROLLEN[thema] || null; },
+    /* Seit B1 (15.10.2026) darf eine Station eigene Rollen tragen (die
+       Vermieterin in Mexiko statt der Empfangsdame). Ohne stufe gilt die
+       Stufe des Weges, wenn lernpfad.js geladen ist. */
+    rolle: function (thema, stufe) {
+      var st = stufe;
+      try { if (!st && raum.SpikiuPfad && raum.SpikiuPfad.stufe) st = raum.SpikiuPfad.stufe(); } catch (e) {}
+      var S = st ? STATIONEN[st + '.' + thema] : null;
+      return (S && S.rollen) || ROLLEN[thema] || null;
+    },
+
+    /* Ein Satz zum Ort der Station (nur B1), in der Muttersprache. */
+    kulturVon: function (stufe, thema, muttersprache) {
+      var S = STATIONEN[stufe + '.' + thema];
+      if (!S || !S.kultur) return '';
+      var mu = muttersprache || 'de';
+      return S.kultur[mu] || S.kultur.en || S.kultur.de || '';
+    },
 
     /* Ein Thema nach id. */
     thema: function (id) {

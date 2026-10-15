@@ -45,7 +45,13 @@
 
   /* ── Lesen ────────────────────────────────────────────────────────── */
 
-  function stufe() { return lade().stufe || 'a1'; }
+  /* Gibt es die gespeicherte Stufe in DIESER Sprache nicht (b1 nur Spanisch,
+     15.10.2026), gilt die höchste vorhandene — nie eine leere Wahl. */
+  function stufe() {
+    var s = lade().stufe || 'a1', D = daten();
+    if (D && D.stufen && D.stufen.indexOf(s) === -1) s = D.stufen[D.stufen.length - 1];
+    return s;
+  }
 
   function status(thema, welcheStufe) {
     var p = lade();
@@ -227,7 +233,12 @@
     + 'border-radius:100px;padding:.35rem .9rem;font:800 .78rem "DM Sans",sans-serif;'
     + 'color:var(--ink,#15163a);cursor:pointer;-webkit-tap-highlight-color:transparent}'
     + '.pf-stufe{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase;'
-    + 'color:var(--muted,#5f7068);opacity:.75}';
+    + 'color:var(--muted,#5f7068);opacity:.75}'
+    + '.pf-stufen{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap}'
+    + '.pf-stufe-btn{background:#fff;border:2px solid var(--ink,#15163a);border-radius:100px;'
+    + 'padding:.3rem .8rem;font:800 .8rem "DM Sans",sans-serif;color:var(--ink,#15163a);opacity:.55;'
+    + 'cursor:pointer;-webkit-tap-highlight-color:transparent}'
+    + '.pf-stufe-btn.an{opacity:1;background:#1b4f72;border-color:#1b4f72;color:#fff}';
 
   function css() {
     if (document.getElementById(CSS_ID)) return;
@@ -240,6 +251,14 @@
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
+
+  var BAUM = {
+    de: { a1:'Samen',   a2:'Stamm',   b1:'Krone' },
+    es: { a1:'Semilla', a2:'Tronco',  b1:'Copa' },
+    en: { a1:'Seed',    a2:'Trunk',   b1:'Crown' },
+    el: { a1:'Σπόρος',  a2:'Κορμός',  b1:'Φυλλωσιά' }
+  };
+  var BAUM_EM = { a1:'🌱', a2:'🌿', b1:'🌳' };
 
   function kachel(inhalt, extra) {
     var b = document.createElement('button');
@@ -264,9 +283,25 @@
       var kats = kategorien();
       wrap.innerHTML = '';
       if (!kats.length) return;
-      var st = document.createElement('div');
-      st.className = 'pf-stufe'; st.textContent = kats[0].stufe.toUpperCase();
-      wrap.appendChild(st);
+      /* Stufen als Baum statt „A1" (15.10.2026, B1 kam dazu): Samen · Stamm ·
+         Krone. Tippen wechselt die Stufe — Führung durch Vorschlag, kein Schloss. */
+      var D0 = daten(), aktiv = kats[0].stufe;
+      var stufenDa = ((D0 && D0.stufen) || ['a1', 'a2']).filter(function (s) {
+        return (D0.themen || []).some(function (t) { return D0.gefuellt(s, t.id); });
+      });
+      if (stufenDa.length > 1) {
+        var leiste = document.createElement('div'); leiste.className = 'pf-stufen';
+        stufenDa.forEach(function (s) {
+          var b = document.createElement('button'); b.type = 'button';
+          b.className = 'pf-stufe-btn' + (s === aktiv ? ' an' : '');
+          var nm = (BAUM[ui] || BAUM.en)[s] || s;
+          b.textContent = (BAUM_EM[s] || '') + ' ' + nm;
+          b.setAttribute('aria-pressed', s === aktiv ? 'true' : 'false');
+          b.onclick = function () { if (s !== aktiv) { setzeStufe(s); ebene1(); } };
+          leiste.appendChild(b);
+        });
+        wrap.appendChild(leiste);
+      }
       var g = document.createElement('div'); g.className = 'pf-raster';
       kats.forEach(function (K) {
         var perlen = K.perlen.map(function (s) {

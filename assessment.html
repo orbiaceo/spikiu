@@ -572,7 +572,8 @@ function finish(){
       if (!wegDa) {
         localStorage.setItem('spikiu_pfad', JSON.stringify({
           zielsprache: zielsprache,
-          stufe: (koennen === 'anfang') ? 'a1' : 'a2',
+          // b1 = Krone (15.10.2026): bisher nur Spanisch („La vuelta“, Lateinamerika).
+          stufe: (koennen === 'anfang') ? 'a1' : (((data.level === 'B1' || data.level === 'B2') && zielsprache === 'es') ? 'b1' : 'a2'),
           stationen: {}
         }));
       }

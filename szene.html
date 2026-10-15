@@ -416,7 +416,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       nichtsGeerntet:'Nothing collected yet',
       nichtsGeerntetText:'Next time this is where what you actually said will appear.',
       nachHause:'Home', woUeben:'Where would you like to practise?',
-      waehleThema:'Choose a topic', deineStufe:' · your level',
+      waehleThema:'Choose a topic', deineStufe:' · your stage',
       hilfeLabel:'Show me how to say it', zurueck:'Back', fehler:'Error',
       szene:'Scene', laedt:'loading …',
       nochLeer:'still empty',
@@ -477,7 +477,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     } catch (e) { return null; }
   }
   var STUFE = pfeil('stufe') || stufeAusWeg() || ausStand(PROFIL.koennen);
-  if (STUFE !== 'a1' && STUFE !== 'a2') STUFE = 'a1';
+  if (((window.SpikiuLernpfad && window.SpikiuLernpfad.stufen) || ['a1', 'a2']).indexOf(STUFE) === -1) STUFE = 'a1';
   var THEMA = pfeil('thema') || '';
   var ST = null, ROLLE = null, automat = null;
   var zielzeilen = [];
@@ -1191,11 +1191,16 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var k = karte();
     k.style.justifyContent = 'flex-start';
 
-    var reihenfolge = (STUFE === 'a2') ? ['a2', 'a1'] : ['a1', 'a2'];
+    // Alle Stufen der Daten (seit 15.10.2026 auch b1 = Krone), die eigene zuerst.
+    var alle = (LP.stufen || ['a1', 'a2']).slice();
+    var reihenfolge = [STUFE].concat(alle.filter(function (s) { return s !== STUFE; }))
+      .filter(function (s) { return alle.indexOf(s) !== -1; });
+    var BAUM = { de:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'}, es:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
+                 en:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'}, el:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'} };
     var h = '<div class="bue-titel" style="font-size:1.3rem">' + esc(T('woUeben')) + '</div>';
 
     reihenfolge.forEach(function (st, i) {
-      h += '<div class="e-kopf">' + esc(st.toUpperCase())
+      h += '<div class="e-kopf">' + esc((BAUM[MU] || BAUM.en)[st] || st)
         +  (i === 0 ? esc(T('deineStufe')) : '') + '</div><div class="wahl">';
       LP.themen.forEach(function (t) {
         var da = LP.gefuellt(st, t.id);
@@ -1243,7 +1248,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   if (!THEMA || !LP.gefuellt(STUFE, THEMA)) { waehler(); return; }
 
   ST = LP.station(STUFE, THEMA);
-  ROLLE = LP.rolle(THEMA);
+  ROLLE = LP.rolle(THEMA, STUFE);
   var aufgaben = LP.aufgabenVon(STUFE, THEMA);
   if (!ST || !aufgaben.length) {
     unter.textContent = T('nochLeer');
@@ -1273,7 +1278,10 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 
   var thema = LP.thema(THEMA);
   titel.firstChild.nodeValue = inSprache(thema && thema.na, MU) + ' ';
-  unter.textContent = STUFE.toUpperCase() + ' · ' + inSprache(ROLLE && ROLLE.ort, MU);
+  // Reifegrad nur als Baum, nie als Schulstufe (Seele; 15.10.2026 mit b1).
+  var BAUM_KOPF = { de:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'}, es:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
+                    en:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'}, el:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'} };
+  unter.textContent = ((BAUM_KOPF[MU] || BAUM_KOPF.en)[STUFE] || '') + ' · ' + inSprache(ROLLE && ROLLE.ort, MU);
 
   automat = window.SpikiuSzene.erzeuge({ aufgaben: aufgaben, maxZuege: ZUG_DECKEL });
   buehne();

@@ -112,7 +112,7 @@ button{font:inherit;cursor:pointer}
     de: { titel:'Geführtes Gespräch', waehle:'Wähle ein Thema', neu:'neu', wieder:'wiederholen',
           rail:['Thema','Wörter','Hören','Sprechen','Lektion'],
           wortEyebrow:'Wortschatz mit Audio', flipHint:'tippen zum Umdrehen',
-          drillEyebrow:'Sprechen üben', hoerEyebrow:'Hörverständnis', rpEyebrow:'Rollenspiel', drillSag:'Sag es auf der Zielsprache — dann tippe zum Prüfen:',
+          drillEyebrow:'Sprechen üben', hoerEyebrow:'Hörverständnis', hoerFrageB1:'Welchen Satz hörst du?', rpEyebrow:'Rollenspiel', drillSag:'Sag es auf der Zielsprache — dann tippe zum Prüfen:',
           rolle:{ Kellner:'Kellner', Rezeption:'Rezeption', Fahrer:'Fahrer', Bekannter:'Bekannter', Nachbarin:'Nachbarin', Passantin:'Passantin', Schalterbeamter:'Schalterbeamter', 'Verkäufer':'Verkäufer', 'Ärztin':'Ärztin' },
           lessonSubtitle:'Deine geführte Szene', goalLabel:'Ziel',
           goal:function(t){ return 'Du hast das Thema „' + t + '" geübt: Wörter, Aussprache und ein kurzes Rollenspiel.'; },
@@ -125,7 +125,7 @@ button{font:inherit;cursor:pointer}
     es: { titel:'Conversación guiada', waehle:'Elige un tema', neu:'nuevo', wieder:'repasar',
           rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
           wortEyebrow:'Vocabulario con audio', flipHint:'toca para girar',
-          drillEyebrow:'Practicar habla', hoerEyebrow:'Comprensión auditiva', rpEyebrow:'Juego de rol', drillSag:'Dilo en el idioma meta — luego toca para comprobar:',
+          drillEyebrow:'Practicar habla', hoerEyebrow:'Comprensión auditiva', hoerFrageB1:'¿Qué frase oyes?', rpEyebrow:'Juego de rol', drillSag:'Dilo en el idioma meta — luego toca para comprobar:',
           rolle:{ Kellner:'Camarero', Rezeption:'Recepción', Fahrer:'Conductor', Bekannter:'Conocido', Nachbarin:'Vecina', Passantin:'Transeúnte', Schalterbeamter:'Empleado de taquilla', 'Verkäufer':'Vendedor', 'Ärztin':'Doctora' },
           lessonSubtitle:'Tu escena guiada', goalLabel:'Objetivo',
           goal:function(t){ return 'Has practicado el tema «' + t + '»: vocabulario, pronunciación y un breve juego de rol.'; },
@@ -138,7 +138,7 @@ button{font:inherit;cursor:pointer}
     en: { titel:'Guided conversation', waehle:'Choose a topic', neu:'new', wieder:'review',
           rail:['Topic','Words','Listen','Speak','Lesson'],
           wortEyebrow:'Vocabulary with audio', flipHint:'tap to flip',
-          drillEyebrow:'Speaking practice', hoerEyebrow:'Listening', rpEyebrow:'Role play', drillSag:'Say it in the target language — then tap to check:',
+          drillEyebrow:'Speaking practice', hoerEyebrow:'Listening', hoerFrageB1:'Which sentence do you hear?', rpEyebrow:'Role play', drillSag:'Say it in the target language — then tap to check:',
           rolle:{ Kellner:'Waiter', Rezeption:'Reception', Fahrer:'Driver', Bekannter:'Acquaintance', Nachbarin:'Neighbour', Passantin:'Passer-by', Schalterbeamter:'Ticket clerk', 'Verkäufer':'Shop assistant', 'Ärztin':'Doctor' },
           lessonSubtitle:'Your guided scene', goalLabel:'Goal',
           goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, pronunciation and a short roleplay.'; },
@@ -151,7 +151,7 @@ button{font:inherit;cursor:pointer}
     el: { titel:'Καθοδηγούμενη συζήτηση', waehle:'Διάλεξε ένα θέμα', neu:'νέο', wieder:'επανάληψη',
           rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
           wortEyebrow:'Λεξιλόγιο με ήχο', flipHint:'πάτησε για να γυρίσει',
-          drillEyebrow:'Εξάσκηση στην ομιλία', hoerEyebrow:'Ακρόαση', rpEyebrow:'Παιχνίδι ρόλων', drillSag:'Πες το στη γλώσσα που μαθαίνεις — μετά πάτησε για έλεγχο:',
+          drillEyebrow:'Εξάσκηση στην ομιλία', hoerEyebrow:'Ακρόαση', hoerFrageB1:'Ποια πρόταση ακούς;', rpEyebrow:'Παιχνίδι ρόλων', drillSag:'Πες το στη γλώσσα που μαθαίνεις — μετά πάτησε για έλεγχο:',
           rolle:{ Kellner:'Σερβιτόρος', Rezeption:'Ρεσεψιόν', Fahrer:'Οδηγός', Bekannter:'Γνωστός', Nachbarin:'Γειτόνισσα', Passantin:'Περαστική', Schalterbeamter:'Υπάλληλος εκδοτηρίου', 'Verkäufer':'Πωλητής', 'Ärztin':'Γιατρός' },
           lessonSubtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος',
           goal:function(t){ return 'Εξασκήθηκες στο θέμα «' + t + '»: λεξιλόγιο, προφορά και ένα σύντομο παιχνίδι ρόλων.'; },
@@ -210,6 +210,9 @@ button{font:inherit;cursor:pointer}
       var P = window.SpikiuPfad, D = window.SpikiuLernpfad;
       if (P && D && P.existiert() && D.zielsprache === ZIEL) {
         var st = P.stufe();
+        // Direktweg aus dem Lernroman der Krone: &stufe=b1 (15.10.2026).
+        var su = (window.location.search || '').match(/[?&]stufe=(a1|a2|b1)\b/);
+        if (su && D.station(su[1], TOPIC_ID)) st = su[1];
         var S = D.station(st, TOPIC_ID);
         if (S && S.wortschatz && S.wortschatz.length) {
           h.wortschatz = S.wortschatz.map(function (w) {
@@ -337,10 +340,35 @@ button{font:inherit;cursor:pointer}
       { start: startIdx || 0, onStep: function (i) { sitzSetze('woerter', i); } });
   }
 
+  /* ── HÖREN auf B1 (15.10.2026): die Häppchen-Hörsätze sind Anfängerstoff aus
+        Spanien. Auf der Krone hört der Lerner Spikius Sätze aus SEINER Station
+        (Lateinamerika) und erkennt sie unter zwei Sätzen aus anderen Stationen. ── */
+  function hoerenAusPfad() {
+    try {
+      var D = window.SpikiuLernpfad;
+      if (!D || D.zielsprache !== ZIEL) return null;
+      var S = D.station('b1', TOPIC_ID);
+      if (!S || !S.dialog) return null;
+      var eigene = S.dialog.zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+      var fremd = [];
+      (D.themen || []).forEach(function (t) {
+        if (t.id === TOPIC_ID) return;
+        var X = D.station('b1', t.id);
+        ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer === 'spikiu') fremd.push(z.z); });
+      });
+      if (!eigene.length || fremd.length < 2) return null;
+      return eigene.map(function (z) {
+        var opts = [{ text: z.z, richtig: true }].concat(shuffle(fremd).slice(0, 2).map(function (f) { return { text: f, richtig: false }; }));
+        return { typ: 'satz', audio: z.z, frage: U.hoerFrageB1 || '', optionen: shuffle(opts),
+                 uebersetzung: (z.na && (z.na[MUT] || z.na.en || z.na.de)) || '' };
+      });
+    } catch (e) { return null; }
+  }
+
   /* ── HÖREN: aus hoerverstehen (minimalpaar → single, woerter → multi) ── */
   function startHoeren(startIdx) {
     setRail(2);
-    var hv = HAP.hoerverstehen || [];
+    var hv = (HAP.stufe === 'b1' && hoerenAusPfad()) || HAP.hoerverstehen || [];
     if (!hv.length) { startDrill(); return; }
     var items = hv.map(function (h, i) {
       var eyebrow = U.hoerEyebrow + ' · ' + (i + 1) + ' / ' + hv.length;
@@ -407,7 +435,7 @@ button{font:inherit;cursor:pointer}
         ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer !== 'spikiu' && z.z) fremd.push(z.z); });
       });
       var aufg = (D.aufgabenVon && D.aufgabenVon(st, TOPIC_ID)) || [];
-      var rl = D.rolle ? D.rolle(TOPIC_ID) : null;
+      var rl = D.rolle ? D.rolle(TOPIC_ID, st) : null;
       var rolleText = rl && rl.spikiu ? (rl.spikiu[MUT] || rl.spikiu.en || rl.spikiu.de || '') : '';
       if (rolleText) rolleText = rolleText.charAt(0).toUpperCase() + rolleText.slice(1);
       var schritte = paare.map(function (p, k) {
@@ -427,7 +455,8 @@ button{font:inherit;cursor:pointer}
   function startRollenspiel(startIdx) {
     RP = (window.spikiuSzenenDialog) ? window.spikiuSzenenDialog(TOPIC_ID, ZIEL) : null;
     // Das Skript trägt nur deutsche Übersetzungen → für andere Muttersprachen den Pfad nehmen.
-    if (!RP || !RP.schritte || !RP.schritte.length || MUT !== 'de') { var G = rollenspielAusPfad(); if (G) RP = G; }
+    // B1 (Krone, Lateinamerika) hat kein Skript → immer aus dem Pfad.
+    if (!RP || !RP.schritte || !RP.schritte.length || MUT !== 'de' || (HAP && HAP.stufe === 'b1')) { var G = rollenspielAusPfad(); if (G) RP = G; }
     if (!RP || !RP.schritte || !RP.schritte.length) { finishScene(); return; }
     var rolle = RP.rolleText || (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
     var items = RP.schritte.map(function (st, i) {
