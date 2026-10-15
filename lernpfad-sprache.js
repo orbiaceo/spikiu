@@ -7,6 +7,7 @@
      lernpfad-daten.js      → Spanisch  (window.SpikiuLernpfadES)
      lernpfad-daten-de.js   → Deutsch   (window.SpikiuLernpfadDE)
      lernpfad-daten-en.js   → Englisch  (window.SpikiuLernpfadEN)
+     lernpfad-daten-el.js   → Griechisch (window.SpikiuLernpfadEL, 15.10.2026)
    Diese Datei entscheidet, welche davon als window.SpikiuLernpfad gilt.
 
    Ein Raum fragt nie „welche Datei?", sondern nur SpikiuLernpfad. Damit
@@ -42,7 +43,8 @@
   var TAFEL = {
     es: 'SpikiuLernpfadES',
     de: 'SpikiuLernpfadDE',
-    en: 'SpikiuLernpfadEN'
+    en: 'SpikiuLernpfadEN',
+    el: 'SpikiuLernpfadEL'
   };
 
   /* Die Zielsprache steht im Profil, nicht im Dateinamen. Fehlt sie oder

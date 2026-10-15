@@ -126,6 +126,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .trk.on{background:var(--mustard) !important}
 .trk:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .gloss{font:italic 400 .9rem/1.45 'DM Sans',sans-serif;color:var(--gloss);margin-top:.3rem}
+.lt{font:500 .82rem/1.35 'DM Sans',sans-serif;color:var(--acc);letter-spacing:.01em;margin-top:.15rem}
 .zl.dlg .gloss{border-top:1.5px dashed rgba(21,22,58,.18);padding-top:.35rem}
 .gloss.hid{display:none}
 .prose{margin:0 0 1.2rem}
@@ -170,6 +171,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 <script src="learnroman-lukas.js"></script>
 <script src="learnroman-marta.js"></script>
 <script src="learnroman-sofia.js"></script>
+<script src="learnroman-emma.js"></script>
 <script>
 /* Griechische Brücken nur laden, wenn sie gebraucht werden (Muttersprache el) —
    ~180 KB, die alle anderen Lerner nicht mitschleppen sollen. document.write hält
@@ -454,10 +456,12 @@ function blockHTML(bl, bruecheZu){
     var trKnopf = (bl.tr && bruecheZu)
       ? '<button type="button" class="trk" aria-label="' + esc(T.tr) + '" aria-pressed="false">' + esc(uiLang()) + '</button>' : '';
     var gloss = bl.tr ? '<div class="gloss' + (bruecheZu ? ' hid' : '') + '">' + esc(bl.tr) + '</div>' : '';
+    // Umschrift (nur Griechisch): klein, direkt unter der Zeile, immer sichtbar — die Schrift ist die erste Hürde.
+    var lt = bl.lt ? '<div class="lt">' + esc(dlg ? String(bl.lt).replace(/^\s*—\s*/, '') : bl.lt) + '</div>' : '';
     // In der Sprechblase ist der einleitende Gedankenstrich doppelt — die Blase zeigt die Rede schon.
     var text = dlg ? bl.z.replace(/^\s*—\s*/, '') : bl.z;
     return '<div class="zl ' + (dlg ? 'dlg' : 'erz') + '"><div class="zrow"><span class="zt" lang="' + zs + '">' + esc(text) + '</span>'
-      + '<span class="zbtns">' + trKnopf + lautKnopf() + '</span></div>' + gloss + '</div>';
+      + '<span class="zbtns">' + trKnopf + lautKnopf() + '</span></div>' + lt + gloss + '</div>';
   }
   if (bl.p) return '<div class="prose"><div class="zrow"><span class="zt" lang="' + zs + '">' + esc(bl.p) + '</span>'
       + '<span class="zbtns">' + lautKnopf() + '</span></div></div>';

@@ -58,7 +58,49 @@
     },
     de: { anfang:[], mittel:[], fortgeschritten:[] },
     en: { anfang:[], mittel:[], fortgeschritten:[] },
-    el: { anfang:[], mittel:[], fortgeschritten:[] }
+    el: {
+      anfang: [
+        { id:'el-anf-kafeneio', thema:'kafeneio',
+          rahmen:{de:'Ein Zettel an der Tür eines Kafeneions.',es:'Un cartel en la puerta de un kafeneio, el café de toda la vida.',en:'A note on the door of a kafeneio.'},
+          texto:'Το καφενείο είναι κλειστό τη Δευτέρα. Ανοίγουμε Τρίτη στις 7 το πρωί.',
+          bruecke:[{w:'καφενείο',t:{de:'Kafeneion (traditionelles Café)',es:'café tradicional',en:'traditional café'}},{w:'κλειστό',t:{de:'geschlossen',es:'cerrado',en:'closed'}},{w:'ανοίγουμε',t:{de:'wir öffnen',es:'abrimos',en:'we open'}}],
+          lautschrift:'To kafenío íne klistó ti Deftéra. Anígume Tríti stis eftá to proí.',
+          aufgaben:[
+            {typ:'mc',frage:{de:'Wann ist das Kafeneion zu?',es:'¿Cuándo está cerrado el kafeneio?',en:'When is the kafeneio closed?'},optionen:['Τη Δευτέρα','Την Τρίτη','Την Κυριακή'],loesung:0,erklaerung:{de:'Im Text: «κλειστό τη Δευτέρα».',es:'En el texto: «κλειστό τη Δευτέρα».',en:'In the text: «κλειστό τη Δευτέρα».'}},
+            {typ:'orden',frage:{de:'Bring die Teile in die richtige Reihenfolge.',es:'Pon las piezas en el orden correcto.',en:'Put the pieces in the right order.'},teile:['στις 7','Ανοίγουμε','Τρίτη'],loesung:[1,2,0]},
+            {typ:'frei',frage:{de:'An welchem Tag gehst du gern ins Café? Schreib einen Satz auf Griechisch.',es:'¿Qué día te gusta ir a la cafetería? Escribe una frase en griego.',en:'Which day do you like going to a café? Write a sentence in Greek.'}}
+          ],
+          glossar:{'το':{de:'das',es:'el',en:'the'},'καφενείο':{de:'Kafeneion (traditionelles Café)',es:'café tradicional',en:'traditional café'},'είναι':{de:'ist',es:'está, es',en:'is'},'κλειστό':{de:'geschlossen',es:'cerrado',en:'closed'},'τη':{de:'am (die)',es:'el (día)',en:'on (the)'},'δευτέρα':{de:'Montag',es:'lunes',en:'Monday'},'ανοίγουμε':{de:'wir öffnen',es:'abrimos',en:'we open'},'τρίτη':{de:'Dienstag',es:'martes',en:'Tuesday'},'στις':{de:'um',es:'a las',en:'at'},'πρωί':{de:'Morgen',es:'mañana',en:'morning'}},
+          schluss:{de:'Ein Schild in fremder Schrift verstehen — schon eine kleine Eroberung.',es:'Entender un cartel en otro alfabeto: ya es una pequeña conquista.',en:'Understanding a sign in another alphabet — already a small conquest.'} }
+      ],
+      mittel: [
+        { id:'el-mit-spitonoikokyra', thema:'mensaje',
+          rahmen:{de:'Eine SMS von der Vermieterin.',es:'Un SMS de la casera.',en:'A text message from the landlady.'},
+          texto:'Καλημέρα Άννα μου! Αύριο το πρωί έρχεται ο υδραυλικός για τον θερμοσίφωνα, γύρω στις 10. Αν δεν είσαι σπίτι, αφήνω το κλειδί στην κυρία Ελένη στον πρώτο. Φιλιά, Κατερίνα',
+          bruecke:null,
+          lautschrift:'Kaliméra Ána mu! Ávrio to proí érchete o idravlikós ja ton thermosífona, yíro stis déka. An den íse spíti, afíno to klidí stin kiría Eléni ston próto. Filiá, Katerína',
+          aufgaben:[
+            {typ:'mc',frage:'Τι ώρα έρχεται ο υδραυλικός;',optionen:['Γύρω στις 10','Το απόγευμα','Μεθαύριο'],loesung:0,erklaerung:'«γύρω στις 10».'},
+            {typ:'orden',frage:{de:'Ordne den Satz.',es:'Ordena la frase.',en:'Put the sentence in order.'},teile:['το κλειδί','Αφήνω','στην κυρία Ελένη'],loesung:[1,0,2]},
+            {typ:'frei',frage:{de:'Antworte Katerina: Bist du morgen früh zu Hause? Schreib deine Antwort.',es:'Contesta a Katerina: ¿estarás en casa mañana por la mañana? Escribe tu respuesta.',en:'Reply to Katerina: will you be home tomorrow morning? Write your answer.'}}
+          ],
+          glossar:{'καλημέρα':{de:'Guten Morgen',es:'buenos días',en:'good morning'},'μου':{de:'mein(e) (liebe …)',es:'mía (cariñoso)',en:'my (dear)'},'αύριο':{de:'morgen',es:'mañana',en:'tomorrow'},'το':{de:'das / den',es:'el / lo',en:'the'},'πρωί':{de:'Morgen',es:'mañana (por la)',en:'morning'},'έρχεται':{de:'kommt',es:'viene',en:'is coming'},'ο':{de:'der',es:'el',en:'the'},'υδραυλικός':{de:'Klempner',es:'fontanero',en:'plumber'},'για':{de:'wegen, für',es:'por, para',en:'for'},'τον':{de:'den',es:'el',en:'the'},'θερμοσίφωνα':{de:'Boiler',es:'termo, calentador',en:'water heater'},'γύρω':{de:'gegen, ungefähr',es:'sobre, hacia',en:'around'},'στις':{de:'um',es:'a las',en:'at'},'αν':{de:'wenn',es:'si',en:'if'},'δεν':{de:'nicht',es:'no',en:'not'},'είσαι':{de:'du bist',es:'estás',en:'you are'},'σπίτι':{de:'zu Hause',es:'en casa',en:'at home'},'αφήνω':{de:'ich lasse, gebe ab',es:'dejo',en:'I leave'},'κλειδί':{de:'Schlüssel',es:'llave',en:'key'},'στην':{de:'bei der',es:'a la',en:'with the'},'κυρία':{de:'Frau',es:'señora',en:'Mrs'},'στον':{de:'im (Stock)',es:'en el (piso)',en:'on the (floor)'},'πρώτο':{de:'ersten (Stock)',es:'primero',en:'first (floor)'},'φιλιά':{de:'Küsschen',es:'besos',en:'kisses'}},
+          schluss:{de:'Eine echte Nachricht, mitten aus dem griechischen Alltag — verstanden.',es:'Un mensaje de verdad, del día a día griego, y lo has entendido.',en:'A real message from everyday Greek life — understood.'} }
+      ],
+      fortgeschritten: [
+        { id:'el-for-giorti', thema:'giorti',
+          rahmen:'Μια ανάρτηση στο Facebook για μια γιορτή.',
+          texto:'Χρόνια πολλά σε όλους τους Γιώργηδες και σε όλες τις Γεωργίες! Φέτος η γιορτή πέφτει πριν από το Πάσχα, οπότε τη γιορτάζουμε τη Δευτέρα του Πάσχα. Ο μπαμπάς μου, ο Γιώργος, δεν θέλει δώρα· λέει ότι του φτάνει να μαζευτούμε όλοι στο σπίτι στο χωριό. Η μαμά ψήνει κουλουράκια από χθες!',
+          bruecke:null, lautschrift:null,
+          aufgaben:[
+            {typ:'mc',frage:'Πότε γιορτάζουν φέτος οι Γιώργηδες;',optionen:['Τη Δευτέρα του Πάσχα','Στις 23 Απριλίου','Την Κυριακή του Πάσχα'],loesung:0,erklaerung:'«τη γιορτάζουμε τη Δευτέρα του Πάσχα».'},
+            {typ:'orden',frage:'Βάλε τη φράση σε σειρά.',teile:['κουλουράκια','Η μαμά ψήνει','από χθες'],loesung:[1,0,2]},
+            {typ:'frei',frage:'Πώς γιορτάζετε στη χώρα σου τα γενέθλια ή τη γιορτή; Γράψε δυο-τρεις προτάσεις.'}
+          ],
+          glossar:{'χρόνια':{de:'Jahre',es:'años',en:'years'},'πολλά':{de:'viele',es:'muchos',en:'many'},'σε':{de:'an, zu',es:'a',en:'to'},'όλους':{de:'alle',es:'todos',en:'all'},'τους':{de:'die',es:'los',en:'the'},'γιώργηδες':{de:'alle, die Giorgos heißen',es:'los Jorges',en:'all the Georges'},'και':{de:'und',es:'y',en:'and'},'όλες':{de:'alle',es:'todas',en:'all'},'τις':{de:'die',es:'las',en:'the'},'γεωργίες':{de:'alle, die Georgia heißen',es:'las Georgias',en:'all the Georgias'},'φέτος':{de:'dieses Jahr',es:'este año',en:'this year'},'η':{de:'die',es:'la',en:'the'},'γιορτή':{de:'Namenstag, Fest',es:'santo, fiesta',en:'name day, feast'},'πέφτει':{de:'fällt',es:'cae',en:'falls'},'πριν':{de:'vor',es:'antes',en:'before'},'από':{de:'von, seit',es:'de, desde',en:'from, since'},'το':{de:'das',es:'el',en:'the'},'πάσχα':{de:'Ostern',es:'Pascua',en:'Easter'},'οπότε':{de:'deshalb',es:'así que',en:'so'},'τη':{de:'sie / am',es:'la / el',en:'it / on'},'γιορτάζουμε':{de:'wir feiern',es:'celebramos',en:'we celebrate'},'δευτέρα':{de:'Montag',es:'lunes',en:'Monday'},'του':{de:'des / ihm',es:'de / le',en:'of / him'},'ο':{de:'der',es:'el',en:'the'},'μπαμπάς':{de:'Papa',es:'papá',en:'dad'},'μου':{de:'mein',es:'mi',en:'my'},'γιώργος':{de:'Giorgos (Georg)',es:'Yorgos (Jorge)',en:'Giorgos (George)'},'δεν':{de:'nicht',es:'no',en:'not'},'θέλει':{de:'will',es:'quiere',en:'wants'},'δώρα':{de:'Geschenke',es:'regalos',en:'presents'},'λέει':{de:'sagt',es:'dice',en:'says'},'ότι':{de:'dass',es:'que',en:'that'},'φτάνει':{de:'es reicht',es:'basta',en:'it\'s enough'},'να':{de:'dass, zu',es:'que',en:'to'},'μαζευτούμε':{de:'wir kommen zusammen',es:'nos juntemos',en:'we get together'},'όλοι':{de:'alle',es:'todos',en:'all'},'στο':{de:'im, ins',es:'en el',en:'in the'},'σπίτι':{de:'Haus',es:'casa',en:'house'},'χωριό':{de:'Dorf',es:'pueblo',en:'village'},'μαμά':{de:'Mama',es:'mamá',en:'mum'},'ψήνει':{de:'backt',es:'hornea',en:'is baking'},'κουλουράκια':{de:'Osterkringel (Gebäck)',es:'rosquillas de Pascua',en:'Easter biscuits'},'χθες':{de:'gestern',es:'ayer',en:'yesterday'}},
+          schluss:'Ένα ολόκληρο κείμενο, χωρίς γέφυρα. Αυτό πια είναι άλλη υπόθεση.' }
+      ]
+    }
   };
 
   function pick(ziel, koennen, seenIds){

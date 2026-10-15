@@ -70,6 +70,7 @@
     if (b.z  != null) o.z  = b.z;
     if (b.tr != null) o.tr = lokal(b.tr, mutter);
     if (b.p  != null) o.p  = b.p;
+    if (b.lt != null) o.lt = b.lt;   // Umschrift (Griechisch), sprachneutral
     return o;
   }
 
@@ -84,6 +85,10 @@
   // ══ BUCH 3 · „Sofía in London" — Zielsprache en, Muttersprachen es + de ═════
   //    Inhalt in learnroman-sofia.js (neutrales Englisch, britische Schreibung).
   var SOFIA = (w.SPIKIU_LR_SOFIA && w.SPIKIU_LR_SOFIA.K) || [];
+
+  // ══ BUCH 4 · „Η Έμμα στη Θεσσαλονίκη" — Zielsprache el, Muttersprachen de + es + en ══
+  //    Inhalt in learnroman-emma.js (15.10.2026). Zeilen tragen zusätzlich `lt` (Umschrift).
+  var EMMA = (w.SPIKIU_LR_EMMA && w.SPIKIU_LR_EMMA.K) || [];
 
   // ── Die Bücher. Ein neues Sprachpaar = ein weiterer Eintrag.
   //    muttersprachen: für welche Lerner das Buch geschrieben ist. ──
@@ -111,7 +116,15 @@
                     el: 'Ένα χαρτί, μια πόλη, ένας χειμώνας. Κάθε σταθμός είναι μια σκηνή από την Καθοδηγούμενη συζήτηση.' },
       einheit: 'station',
       teile: { fundament: 'The proof of address', aufbau: 'The visit', anwendung: 'Cheers' },
-      kapitel: SOFIA }
+      kapitel: SOFIA },
+    { buch: 'emma-thessaloniki', zielsprache: 'el', muttersprachen: ['de', 'es', 'en'],
+      titel: 'Η Έμμα στη Θεσσαλονίκη',
+      untertitel: { de: 'Eine Nummer, eine Stadt, ein Jahr. Jede Station ist eine Szene aus dem Geführten Gespräch.',
+                    es: 'Un número, una ciudad, un año. Cada estación es una escena de la conversación guiada.',
+                    en: 'One number, one city, one year. Every stop is a scene from Guided Conversation.' },
+      einheit: 'station',
+      teile: { fundament: 'Ο ΑΦΜ', aufbau: 'Πάσχα', anwendung: 'Θα τα πούμε' },
+      kapitel: EMMA }
   ];
 
   // Ein Buch in EINER Muttersprache (zwischengespeichert, damit der Raum
@@ -159,7 +172,7 @@
   // Welche Sprachpaare gibt es überhaupt? (für einen ehrlichen leeren Zustand)
   w.spikiuLearnroman.paare = [];
   BUECHER.forEach(function (b) {
-    b.muttersprachen.concat(['el']).forEach(function (m) {
+    b.muttersprachen.concat(b.zielsprache === 'el' ? [] : ['el']).forEach(function (m) {
       w.spikiuLearnroman.paare.push({ zielsprache: b.zielsprache, muttersprache: m, titel: b.titel });
     });
   });

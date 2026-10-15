@@ -111,6 +111,7 @@ pre{font:400 .72rem/1.4 ui-monospace,monospace;background:#f5f7f5;border:1px sol
 <script src="lernpfad-daten.js"></script>
 <script src="lernpfad-daten-de.js"></script>
 <script src="lernpfad-daten-en.js"></script>
+<script src="lernpfad-daten-el.js"></script>
 <script src="lernpfad-sprache.js"></script>
 <script>
 (function () {
@@ -189,7 +190,7 @@ pre{font:400 .72rem/1.4 ui-monospace,monospace;background:#f5f7f5;border:1px sol
     var mutter = feld('muttersprache', 'de');
     var koennen = feld('koennen', 'anfang');
 
-    knopfReihe('ziel', ['es', 'de', 'en'], NAME, ziel, function (w) {
+    knopfReihe('ziel', ['es', 'de', 'en', 'el'], NAME, ziel, function (w) {
       /* Ziel und Muttersprache dürfen nicht dieselbe sein — sonst gäbe es
          keine Brücke. Beim Wechsel weicht die Muttersprache automatisch aus. */
       if (w === feld('muttersprache', 'de')) {
