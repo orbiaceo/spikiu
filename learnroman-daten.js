@@ -1,14 +1,15 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   learnroman-daten.js — DER LEARNROMAN (fester Inhalt, kein API-Call).
+   learnroman-daten.js — DER LERNROMAN (fester Inhalt, kein API-Call).
    Root-Helfer wie haeppchen-db.js / wortschatz.js / sprichwort.js.
    KEIN vercel.json-Eintrag (statische Datei, keine Function).
 
      window.spikiuLearnroman(zielsprache, muttersprache) → Buch | null
 
-   Ein Buch:
-     { buch, zielsprache, muttersprache, titel,
+   Ein Buch (so, wie der Raum es bekommt — schon in SEINER Muttersprache):
+     { buch, zielsprache, muttersprache, titel, untertitel, einheit,
+       teile:{fundament,aufbau,anwendung},        // Teil-Titel (Zielsprache)
        etappen:[{id,nm}, …],                       // Anzeigenamen in der MUTTERSPRACHE
-       kapitel:[{level, n, title, teaser, body:[…]}] }
+       kapitel:[{level, n, thema, title, teaser, body:[…]}] }
 
    Block-Typen im body (Schlüssel SPRACHNEUTRAL — nie de:/es:, weil Deutsch mal
    Ziel- und mal Muttersprache ist):
@@ -16,13 +17,18 @@
      {z:'…', tr:'…'}   ZIELSPRACHE, eine Zeile/ein Zug · tr optional (Brücke) · 🔊
      {p:'…'}           fließende ZIELSPRACH-Prosa (nur Etappe Anwendung) · kein tr · 🔊
 
-   Heute zwei Bücher; en/el fehlen und werden schlicht nicht angezeigt (null),
-   statt Platzhalter zu erfinden. Sprache ist ein FELD, kein Datei-Schnitt —
-   ein drittes Buch ist ein weiterer Eintrag in BUECHER, sonst nichts.
+   EIN BUCH, MEHRERE MUTTERSPRACHEN (neu 15.10.2026): In einem Buch dürfen na,
+   tr und teaser Objekte {de, en, …} sein — wie in lernpfad-daten.js. Ein
+   spanischer Roman bedient so den deutschen UND den englischen Lerner. Beim
+   Nachschlagen wird die Muttersprache ausgewählt; der Raum sieht nur Strings.
 
-   Der Text stammt 1:1 aus den abgenommenen Prototypen
-   proto-learnroman-lukas.html / proto-learnroman-marta.html (Design 05.08.,
-   Leo). Nicht umformulieren, nicht kürzen, nicht ergänzen.
+   thema (neu): die Themen-ID des Geführten Gesprächs, zu der eine Station
+   gehört ('taxi', 'cafe', …) — der Raum verlinkt am Ende dorthin. null = keine.
+
+   Buch 1 „El año de Lukas" steht in learnroman-lukas.js (Leo, 15.10.2026:
+   jede Station = eine Szene des Geführten Gesprächs). Er ersetzt den alten
+   „Lukas in Madrid" (4 Kapitel, 05.08.) — der alte Text liegt in der Git-Historie.
+   Buch 2 „Marta en Berlín" ist unverändert.
    ────────────────────────────────────────────────────────────────────────── */
 (function (w) {
   if (w.spikiuLearnroman) return;
@@ -34,8 +40,7 @@
   var ETAPPEN_NAMEN = {
     de: { fundament: 'Fundament',   aufbau: 'Aufbau',      anwendung: 'Anwendung' },
     es: { fundament: 'Fundamentos', aufbau: 'Ampliación',  anwendung: 'En práctica' },
-    // en: VORSCHLAG aus dem Auftrag, von Leo noch NICHT bestätigt. Greift erst,
-    // wenn es ein Buch mit muttersprache 'en' gibt — heute gibt es keins.
+    // en: VORSCHLAG aus dem Auftrag, von Leo noch NICHT bestätigt.
     en: { fundament: 'Foundations', aufbau: 'Building up', anwendung: 'In practice' }
   };
   function etappenFuer(mutter) {
@@ -43,207 +48,23 @@
     return ETAPPEN_IDS.map(function (id) { return { id: id, nm: n[id] }; });
   }
 
-  // ══ BUCH 1 · „Lukas in Madrid" — Zielsprache es, Muttersprache de ══════════
-  // Ziel-Anteil je Kapitel: 30 / 40 / 43 / 100 % (gemessen, Auftrag §3).
-  var LUKAS = [
- {level:'fundament',n:1,title:'El aeropuerto',teaser:'Lukas landet in Madrid — und ein Taxifahrer nennt ihn alemán.',body:[
-   {na:'Dienstag, drei Uhr nachmittags. Das Flugzeug landet in Madrid-Barajas. Lukas sitzt am Fenster: viel Sonne, gelbliches Gras, kein einziges Wölkchen. Hamburg war heute früh grau.'},
-   {na:'Die Leute klatschen. Lukas dreht den Kopf. Klatschen die wirklich? Im Flugzeug? Eine ältere Frau neben ihm lacht.'},
-   {z:'Bienvenido a España. ¿Es tu primera vez aquí?',tr:'Willkommen in Spanien. Ist es dein erstes Mal hier?'},
-   {z:'Sí. Mi primera vez.'},
-   {z:'Madrid es una ciudad muy amable. Te va a gustar.',tr:'Madrid ist eine sehr freundliche Stadt. Sie wird dir gefallen.'},
-   {z:'Gracias.'},
-   {na:'Das Wort kommt heraus, ohne dass er nachdenken muss. Gutes Zeichen.'},
-   {na:'Im Terminal: Stimmen, Lautsprecher, Koffer auf Rollen. Band Nummer 12. Ein Koffer kommt. Nicht seiner. Noch einer. Wo ist meiner?'},
-   {na:'Dann — endlich — ein großer roter Koffer. Am Anhänger steht: Lukas Hoffmann. Hamburgo, Alemania. Sein Vater hatte ihn ausgefüllt. Auf Spanisch sogar.'},
-   {na:'Draußen: eine Reihe Taxis. Ein Mann mit grauem Haar und Sonnenbrille schaut ihn an.'},
-   {z:'Hola, buenas tardes. ¿A dónde vamos?',tr:'Hallo, guten Tag. Wohin fahren wir?'},
-   {z:'Calle del Tribulete, número 18. Lavapiés.'},
-   {z:'Muy bien. Suba, por favor. ¿La maleta roja es suya?',tr:'Steigen Sie ein, bitte. Ist der rote Koffer Ihrer?'},
-   {z:'Sí, es mía. Es muy grande.',tr:'Ja, er ist meiner. Er ist sehr groß.'},
-   {z:'Grande y roja. Así no se pierde.',tr:'Groß und rot. So geht er nicht verloren.'},
-   {na:'Sie fahren los. Madrid zum ersten Mal: lange Straßen, gelbe Häuser, ein riesiges Stierplakat. Wie im Klischee. Aber echt.'},
-   {z:'¿De dónde eres?',tr:'Woher kommst du?'},
-   {z:'De Alemania. De Hamburgo.'},
-   {z:'¡Ah, Alemania! ¿Te gusta el fútbol?',tr:'Magst du Fußball?'},
-   {z:'Un poco.'},
-   {z:'Bayern München. Muy buen equipo. Muy fuerte.',tr:'Sehr gute Mannschaft. Sehr stark.'},
-   {z:'Sí, sí. Bayern.'},
-   {na:'Ja sagen ist einfacher als erklären. Der Fahrer redet weiter. Schnell. Lukas versteht einzelne Wörter — calor, barrio, verano — den Rest hört er wie Musik.'},
-   {na:'Vierzig Minuten später hält das Taxi an.'},
-   {z:'Ya hemos llegado. Son veintiocho euros con cincuenta.',tr:'Wir sind da. Es sind 28,50 Euro.'},
-   {na:'Lukas zahlt mit einem Fünfzig-Euro-Schein.'},
-   {z:'Aquí tiene el cambio. Bienvenido a Madrid, alemán.',tr:'Hier ist Ihr Wechselgeld. Willkommen, Deutscher.'},
-   {na:'Alemán. Zum ersten Mal nennt ihn jemand so. Es klingt nicht hart — fast wie ein Spitzname.'},
-   {na:'Eine alte braune Tür, Nummer 18. Daneben viele Klingeln. Lukas sucht den Namen von María: Sánchez Vega — 4º derecha. Er atmet tief ein. Und drückt.'},
-   {z:'¿Sí?'},
-   {z:'Hola... soy Lukas.'},
-   {z:'¡¡¡Lukas!!! ¡Por fin! Sube, sube. Cuarto piso, a la derecha.',tr:'Endlich! Komm hoch. Vierter Stock, rechts.'},
-   {na:'Vier Stockwerke ohne Aufzug. Stufe für Stufe. Das Hemd klebt am Rücken. Mein erstes spanisches Workout.'},
-   {na:'Oben steht die Tür offen. Eine junge Frau mit kurzen schwarzen Haaren und einem Lächeln, als hätte sie den ganzen Tag gewartet.'},
-   {z:'¡Bienvenido, Lukas! Pasa, pasa. ¿Estás bien?',tr:'Komm rein. Geht es dir gut?'},
-   {z:'Sí. Estoy bien. Estoy muy cansado.',tr:'Ich bin sehr müde.'},
-   {z:'Normal. Cuatro pisos sin ascensor, con maleta. Ven, te enseño la casa.',tr:'Vier Stockwerke ohne Aufzug. Komm, ich zeige dir die Wohnung.'},
-   {z:'Gracias, María.'},
-   {z:'Aquí no se dice gracias. Esta es tu casa ahora.',tr:'Hier sagt man nicht danke. Das ist jetzt dein Zuhause.'},
-   {z:'¿Tienes hambre? Hay pan, hay queso, hay tomate.',tr:'Hast du Hunger? Es gibt Brot, Käse, Tomaten.'},
-   {z:'Sí. Tengo mucha hambre.',tr:'Ja. Ich habe großen Hunger.'},
-   {z:'Perfecto. Primero la maleta, luego la cena.',tr:'Perfekt. Erst der Koffer, dann das Abendessen.'},
-   {na:'Lukas stellt den Koffer ab. Enger Flur, Bilder, ein Fahrrad neben der Tür.'},
-   {na:'Er ist angekommen. Wirklich angekommen.'}]},
- {level:'fundament',n:2,title:'Mi nuevo piso',teaser:'Zwei Mitbewohner, eine Tortilla — und das Wort hostia.',body:[
-   {na:'Drinnen riecht es nach Knoblauch. Nach echtem Essen — etwas, das jemand gerade kocht.'},
-   {na:'María nimmt ihm den roten Koffer ab.'},
-   {z:'¡Qué pesada! ¿Has traído piedras de Hamburgo?',tr:'Wie schwer! Hast du Steine aus Hamburg mitgebracht?'},
-   {z:'Casi. Libros.',tr:'Fast. Bücher.'},
-   {z:'¡Un alemán con libros! Mi madre va a estar contenta.',tr:'Meine Mutter wird sich freuen.'},
-   {z:'Vale.'},
-   {na:'Vale. Ein Wort, das er heute zum dritten Mal hört. Es scheint alles zu bedeuten.'},
-   {z:'El pasillo es estrecho. Hay fotos en blanco y negro y un mapa de España.',tr:'Der Flur ist eng. Es gibt schwarz-weiße Fotos und eine Karte von Spanien.'},
-   {z:'Aquí está la cocina. Aquí el baño. Y aquí el salón.'},
-   {na:'An der Pfanne steht ein Mann. Lockige Haare, altes Bandshirt. Er dreht sich um und schreit fast:'},
-   {z:'¡QUIIIILLO! ¿Cómo va eso? Tú eres el alemán, ¿no?',tr:'Heeey! Wie läuft es? Du bist der Deutsche, oder?'},
-   {na:'Quillo? Was ist quillo? Aber er versteht alemán und nickt.'},
-   {z:'Sí. Soy Lukas.'},
-   {z:'¡Pablo! Andaluz, de Sevilla. Encantadísimo.'},
-   {na:'Pablo drückt ihm die Hand. Wirklich stark. In Deutschland drücken wir nicht so. Mental notiert.'},
-   {z:'Estoy haciendo una tortilla. ¿Tienes hambre?',tr:'Ich mache gerade eine Tortilla. Hast du Hunger?'},
-   {z:'Sí, mucha.'},
-   {na:'Mucha, nicht mucho. Hunger ist auf Spanisch weiblich. Kleiner Triumph.'},
-   {z:'¿Te gusta con cebolla o sin cebolla?',tr:'Magst du sie mit oder ohne Zwiebel?'},
-   {z:'No lo sé. Nunca la he probado.',tr:'Ich weiß nicht. Ich habe sie noch nie probiert.'},
-   {z:'¿Nunca? ¡Hostia! Pues hoy empieza tu vida.',tr:'Nie? Mensch! Dann fängt heute dein Leben an.'},
-   {z:'Aquí está tu habitación.',tr:'Hier ist dein Zimmer.'},
-   {na:'Klein. Ein Bett, ein Schreibtisch, ein Schrank, der nicht ganz schließt. Das Fenster geht auf einen Innenhof — gegenüber schläft eine Katze auf der Fensterbank.'},
-   {z:'Ese es Goyo. El gato de los vecinos. Está siempre allí.',tr:'Das ist Goyo. Die Katze der Nachbarn. Er ist immer dort.'},
-   {z:'¿Goyo?'},
-   {z:'Sí, como Goya, el pintor. Los vecinos son artistas.',tr:'Ja, wie Goya, der Maler. Die Nachbarn sind Künstler.'},
-   {na:'Eine Katze namens Goya. Madrid.'},
-   {z:'En el salón hay una mujer en el sofá. Lee un libro.',tr:'Im Wohnzimmer sitzt eine Frau auf dem Sofa. Sie liest ein Buch.'},
-   {na:'Kurze blonde Haare, eine zu große Brille.'},
-   {z:'Hola. Tú eres Lukas, ¿verdad? Yo soy Carmen.',tr:'Hallo. Du bist Lukas, oder? Ich bin Carmen.'},
-   {z:'Sí. Mucho gusto.'},
-   {z:'¿Y qué tal el viaje? ¿Muy largo?',tr:'Und wie war die Reise? Sehr lang?'},
-   {z:'Tres horas. Pero con la maleta, muy largo.',tr:'Drei Stunden. Aber mit dem Koffer sehr lang.'},
-   {z:'Carmen es así. No habla mucho, pero escucha todo.',tr:'Carmen ist so. Sie spricht wenig, aber hört alles.'},
-   {z:'¡La cena está lista! ¡A la mesa!'},
-   {z:'La tortilla está en la mesa: dorada, gruesa, un poco quemada.',tr:'Die Tortilla steht auf dem Tisch: golden, dick, ein bisschen verbrannt.'},
-   {z:'Hay pan, vino y cuatro vasos.',tr:'Es gibt Brot, Wein und vier Gläser.'},
-   {z:'Por Lukas. Bienvenido a la casa.',tr:'Auf Lukas. Willkommen im Haus.'},
-   {na:'Sie stoßen an. In Hamburg schaut man sich dabei in die Augen. Hier auch — aber länger.'},
-   {z:'¿Te gusta?'},
-   {z:'Muchísimo.',tr:'Sehr.'},
-   {z:'¡Hostia, qué bien! La tortilla de mi madre es mejor, pero la mía no está mal.',tr:'Die Tortilla meiner Mutter ist besser, aber meine ist auch nicht schlecht.'},
-   {na:'Hostia. Lukas merkt sich das Wort. Später fragt er María.'},
-   {z:'Aquí están las llaves del piso.'},
-   {z:'El agua caliente funciona... a veces. La caldera es muy vieja.',tr:'Das Warmwasser funktioniert... manchmal.'},
-   {z:'Y nunca, NUNCA, tires papel al WC. Las tuberías son antiguas.',tr:'Wirf niemals Papier ins WC. Die Rohre sind alt.'},
-   {z:'En la pared hay un cartel, escrito a mano con rotulador rojo:',tr:'An der Wand hängt ein Schild, handgeschrieben mit rotem Stift:'},
-   {z:'NO ARROJAR PAPEL AL WC. ¡GRACIAS!',tr:'Kein Papier ins WC werfen. Danke!'},
-   {na:'Mein erstes spanisches Schild. Auf einer Toilette. Sehr Madrid.'},
-   {z:'¿Y tú qué estudias?'},
-   {z:'Arquitectura. En la ETSAM.'},
-   {z:'¡Hostia, qué chulo!',tr:'Mensch, wie cool!'},
-   {z:'Yo soy ingeniera. Trabajo en una empresa de energías renovables.',tr:'Ich arbeite in einer Firma für erneuerbare Energien.'},
-   {z:'En Galicia me llaman la rara porque me gusta el silencio.',tr:'In Galicien nennen sie mich die Seltsame, weil ich die Stille mag.'},
-   {z:'Pablo es músico. Toca el cajón en los bares de Lavapiés.',tr:'Er spielt Cajón in den Bars von Lavapiés.'},
-   {z:'María es periodista. Vivió dos años en Berlín.',tr:'Sie hat zwei Jahre in Berlin gelebt.'},
-   {na:'Berlin. María kennt Berlin. Das merkt er sich.'},
-   {z:'A las once, Lukas cierra los ojos un segundo. En la mesa.',tr:'Um elf schließt Lukas eine Sekunde lang die Augen. Am Tisch.'},
-   {na:'María sieht es.'},
-   {z:'Lukas, vete a dormir. Mañana hay más Madrid.',tr:'Lukas, geh schlafen. Morgen gibt es mehr Madrid.'},
-   {z:'Buenas noches. Y gracias por la tortilla.',tr:'Und danke für die Tortilla.'},
-   {z:'De nada, quillo. Mañana hago otra.',tr:'Nichts zu danken. Morgen mache ich noch eine.'},
-   {na:'Er setzt sich aufs Bett. Es knarrt. Aus dem Koffer holt er ein gerahmtes Foto: seine Eltern vor der Haustür in Hamburg. Sein Vater hält einen Apfel, seine Mutter lacht.'},
-   {z:'Goyo todavía duerme en la ventana de enfrente.',tr:'Goyo schläft immer noch am Fenster gegenüber.'},
-   {na:'Egal, was in Madrid passiert, Goyo schläft.'},
-   {na:'Im Bett hört er Geschirr, Marías leise Stimme, Pablos Lachen, irgendwo eine Tür. Geräusche, die nicht seine waren — und doch schon ein bisschen seine sind.'},
-   {z:'Esto es mi casa. Por ahora.',tr:'Das ist mein Zuhause. Vorerst.'},
-   {na:'Sein erster Satz, der direkt auf Spanisch entsteht.'}]},
- {level:'aufbau',n:3,title:'La tertulia',teaser:'Vier reden gleichzeitig — und Lukas sagt einen Satz, über den alle lachen.',body:[
-   {na:'Eine Woche ist vergangen. Lukas kennt den Weg zum Bäcker und kann zwei Wörter verbinden, ohne im Kopf zu übersetzen.'},
-   {z:'María lo invitó a una tertulia.',tr:'María lud ihn zu einer Tertulia ein.'},
-   {na:'Eine Art Stammtisch unter Freunden. Immer dasselbe Café, einmal die Woche.'},
-   {z:'Vente, alemán. Es informal. Solo hablar y beber cerveza.',tr:'Komm mit, Deutscher. Es ist informell. Nur reden und Bier trinken.'},
-   {z:'Lukas dijo que sí. Delante del espejo, se preguntó por qué.',tr:'Lukas sagte ja. Vor dem Spiegel fragte er sich, warum.'},
-   {z:'A las nueve fueron al Café Comercial, en la Glorieta de Bilbao.',tr:'Um neun gingen sie zum Café Comercial.'},
-   {z:'El café existe desde 1887. Techos altos, espejos en las paredes, sillas de madera vieja.',tr:'Das Café gibt es seit 1887. Hohe Decken, Spiegel an den Wänden, alte Holzstühle.'},
-   {na:'Älter als Coca-Cola, denkt Lukas.'},
-   {z:'En una mesa redonda ya había tres personas.',tr:'An einem runden Tisch saßen schon drei Personen.'},
-   {z:'Lukas conocía a una: Diego, profesor de historia, amigo de María.',tr:'Eine kannte Lukas: Diego, Geschichtslehrer, ein Freund von María.'},
-   {z:'A los otros dos no los conocía.'},
-   {z:'Mirad, este es Lukas. Es alemán, de Hamburgo. Está aquí para estudiar arquitectura.',tr:'Schaut, das ist Lukas. Er ist Deutscher, aus Hamburg. Er ist hier, um Architektur zu studieren.'},
-   {z:'Tres hola a la vez. Tres voces distintas.',tr:'Drei Hallo gleichzeitig. Drei verschiedene Stimmen.'},
-   {z:'Yo soy Bea. Mucho gusto.'},
-   {na:'Ihre Augen sind hellgrün. Lukas merkt es, ohne es zu wollen.'},
-   {z:'Yo soy Andrés. Bienvenido.'},
-   {z:'En la mesa: cuatro botellas, un plato de aceitunas y otro de jamón.',tr:'Auf dem Tisch: vier Flaschen, ein Teller Oliven und einer mit Schinken.'},
-   {z:'¿Qué os pongo?',tr:'Was bringe ich euch?'},
-   {z:'Cuatro cañas más, por favor. Una para él.',tr:'Noch vier kleine Bier, bitte. Eines für ihn.'},
-   {na:'Caña — ein kleines Bier vom Fass. Das hatte María ihm zu Hause erklärt.'},
-   {z:'Brindaron. Lukas chocó demasiado flojo.',tr:'Sie stießen an. Lukas stieß zu schwach an.'},
-   {z:'Más fuerte, alemán. En España chocamos fuerte.',tr:'Stärker, Deutscher. In Spanien stoßen wir fest an.'},
-   {z:'Lukas repitió. Los vasos sonaron. Todos rieron.',tr:'Lukas wiederholte. Die Gläser klirrten. Alle lachten.'},
-   {z:'Y entonces empezó lo que más miedo le daba: la conversación.',tr:'Und dann begann, wovor er die meiste Angst hatte: das Gespräch.'},
-   {z:'Diego contaba algo. Bea lo interrumpía. Andrés comentaba y se reía. María contestaba.',tr:'Diego erzählte etwas. Bea unterbrach ihn. Andrés kommentierte und lachte. María antwortete.'},
-   {z:'Lukas entendía palabras sueltas: fútbol, Atlético, árbitro.',tr:'Lukas verstand einzelne Wörter: Fußball, Atlético, Schiedsrichter.'},
-   {na:'Alle reden gleichzeitig. In Hamburg redet immer nur einer. Hier drei, manchmal vier. Und niemand stört sich daran.'},
-   {z:'Entendía el veinte por ciento. Quizá menos.',tr:'Er verstand zwanzig Prozent. Vielleicht weniger.'},
-   {z:'Pero entendía una cosa: esta gente se quiere.',tr:'Aber eines verstand er: diese Leute mögen sich.'},
-   {z:'Y tú, Lukas, ¿qué haces aquí en Madrid?',tr:'Und du, Lukas, was machst du hier in Madrid?'},
-   {z:'Estudio arquitectura. Estoy aquí nueve meses. Empiezo el lunes.',tr:'Ich studiere Architektur. Ich bin neun Monate hier. Ich fange am Montag an.'},
-   {z:'Ah, qué bien. ¿Y vienes solo? ¿Sin novia?',tr:'Ah, schön. Und du kommst allein? Ohne Freundin?'},
-   {na:'Die Frage kommt direkter, als er erwartet hat.'},
-   {z:'Sí. Vengo solo.'},
-   {z:'Bea sonrió y no dijo nada más.',tr:'Bea lächelte und sagte nichts mehr.'},
-   {z:'¿Y qué piensas de España hasta ahora?',tr:'Und was hältst du bisher von Spanien?'},
-   {z:'Hay mucho ruido. Pero es bonito.',tr:'Es gibt viel Lärm. Aber es ist schön.'},
-   {z:'¡Te has resumido España en cinco palabras!',tr:'Du hast Spanien in fünf Wörtern zusammengefasst!'},
-   {na:'Alle lachen. Lukas lacht mit — und nicht aus Höflichkeit. Etwas, das er gesagt hat, war witzig. Sie lachen nicht über ihn.'},
-   {z:'¡Por el ruido y por lo bonito! ¡Por Lukas!',tr:'Auf den Lärm und auf das Schöne! Auf Lukas!'},
-   {z:'Brindaron otra vez. Lukas, esta vez, fuerte.',tr:'Sie stießen wieder an. Lukas diesmal fest.'},
-   {z:'A veces entendía, a veces no. A veces empezaba una frase y se quedaba a mitad de camino.',tr:'Mal verstand er, mal nicht. Manchmal fing er einen Satz an und blieb auf halbem Weg stehen.'},
-   {z:'María lo ayudaba en voz baja: sabes, no sabo. Tengo, no tieno.',tr:'María half ihm leise: sabes, nicht sabo. Tengo, nicht tieno.'},
-   {z:'A medianoche estaba cansado, pero despierto por dentro.',tr:'Um Mitternacht war er müde, aber innerlich wach.'},
-   {na:'Anders wach. Als hätte sein Gehirn vier Stunden lang Gewichte gehoben.'},
-   {z:'¿Vienes la semana que viene?',tr:'Kommst du nächste Woche?'},
-   {z:'Sí. Vengo.'},
-   {z:'En el taxi, María le dijo: has hablado mucho, Lukas. Más de lo que crees.',tr:'Im Taxi sagte María: du hast viel gesprochen, Lukas. Mehr, als du glaubst.'},
-   {z:'Las calles de Madrid estaban más vacías, pero nunca vacías del todo.',tr:'Die Straßen von Madrid waren leerer, aber nie ganz leer.'},
-   {na:'Heute Abend habe ich mehr Spanisch gesprochen als in meinem ganzen Leben. Vielleicht waren es dreißig Sätze. Aber sie waren meine.'},
-   {z:'En la cama, miró la ventana de enfrente. Goyo dormía. Como siempre.',tr:'Im Bett schaute er zum Fenster gegenüber. Goyo schlief. Wie immer.'},
-   {z:'Bea tiene los ojos verdes.'},
-   {na:'Sein erster spanischer Gedanke, der nichts mit Überleben zu tun hat.'}]},
- {level:'anwendung',n:4,title:'Un café en el barrio',teaser:'Allein an einer Theke — und die Frage, was ein cortado eigentlich ist.',body:[
-   {p:'Sábado por la mañana, las nueve y media. María y Carmen todavía dormían, y Pablo no había vuelto a casa: algo con una chica, había insinuado María el jueves, con un giro de ojos que lo explicaba todo.'},
-   {p:'Lukas tenía un plan pequeño pero importante: desayunar solo en un bar español. Sin María de traductora, sin Pablo repitiéndole el pedido tres veces. Solo él, una barra y su español.'},
-   {p:'En la calle del Tribulete ya había ruido: niños jugando, un hombre descargando una furgoneta, alguien que gritaba desde un balcón. En Hamburgo, un sábado a esa hora, todavía habría silencio.'},
-   {p:'Tres portales más allá, en la esquina, un cartel pequeño: BAR LOLA — DESDE 1972. Al lado, la foto descolorida de una mujer rubia con joyas de oro y una puerta con cortina de plástico. Lukas respiró hondo y entró.'},
-   {p:'Dentro, el bar era estrecho y largo: barra de madera a la derecha, tres mesas a la izquierda, un mostrador de mosaico de los años setenta. Tres hombres mayores leían el periódico con la taza delante, y en la tele de la esquina repetían un partido de 2018.'},
-   {p:'Detrás de la barra, la mujer de la foto —cincuenta años después, pero inconfundible— secaba vasos con un trapo. Pelo gris, labios rojos, gafas pequeñas sobre la nariz. Miró a Lukas sin sonreír.'},
-   {p:'—Buenos días. —Buenos días —contestó él, y se sentó a dos taburetes del último señor, con la mochila en el suelo.'},
-   {p:'Ella no preguntó nada más. Se quedó mirándolo con el trapo en la mano, esperando a que pidiera. Lukas había ensayado la frase en la cama, tres veces, tal como María se la había enseñado: no quiero, sino quería. Más suave. Más español.'},
-   {p:'—Quería un café, por favor. Ella levantó las cejas y siguió esperando. —¿Qué café?'},
-   {p:'Con eso no había contado. En Hamburgo hay café, y hay espresso. Aquí, por lo visto, había mucho más. La mujer señaló con la barbilla una pizarra en la pared: café solo, café con leche, cortado, americano, bombón, tostada con tomate, pincho de tortilla.'},
-   {p:'¿Qué demonios era un cortado? Cortar significaba cortar. ¿Un café partido por la mitad? Lukas eligió lo seguro: —Un café con leche, por favor.'},
-   {p:'Mientras la máquina soltaba vapor y todo el bar olía a café de verdad, el señor del Marca dijo, sin levantar la cabeza: —Lola, ¿me pones otro? —Que sí, hombre, que sí.'},
-   {p:'Así que la mujer de detrás de la barra se llamaba Lola. Como el bar.'},
-   {p:'Le puso delante una taza pequeña, un sobre de azúcar y una cucharilla. —¿Algo de comer? Tostada, pincho... —Una tostada con tomate, por favor. Y... ¿puedo preguntar una cosa?'},
-   {p:'Lola lo miró de verdad por primera vez. Detrás de las gafas tenía los ojos grises, cansados pero despiertos. —Claro. Dime. —¿Qué es un cortado?'},
-   {p:'Y entonces, por fin, sonrió. Poco, pero sonrió. —Un cortado es un café solo con un poquito de leche. Pequeño, como un espresso, pero cortado con leche. Por eso se llama así.'},
-   {p:'—La próxima vez quiero un cortado, entonces. —Vale, alemán. La próxima vez, cortado.'},
-   {p:'Alemán otra vez. Pero esta vez la palabra venía con un guiño.'},
-   {p:'Lola volvió de la cocina con una rebanada de pan caliente, tomate triturado por encima, un vasito de aceite de oliva y un salero. Hizo un gesto con la mano: aceite, sal, así. Lukas la imitó y mordió.'},
-   {p:'No era pan con tomate. Era otra cosa: caliente, salado, el aceite sabía a aceitunas de verdad y el tomate sabía a tomate. ¿Cómo había conseguido este país hacer tan bien algo tan sencillo?'},
-   {p:'Mientras comía, en la barra empezó una conversación que aquellos hombres debían de haber tenido cien veces: el del Marca defendía al Atlético, el del País protestaba, el tercero no decía nada y Lola metía comentarios entre vaso y vaso. Lukas entendía un tercio, pero entendía algo más importante: aquel bar era su segundo salón, y Lola era a la vez su hija, su madre y su hermana.'},
-   {p:'Cuando pidió la cuenta, Lola se acercó. —Café con leche y una tostada. Tres con cincuenta. Lukas le dio cinco euros, recogió el cambio y dejó cincuenta céntimos sobre la barra.'},
-   {p:'Lola levantó una ceja. —¿Qué es eso? —Eh... para usted. Y entonces se rió, una risa entera y de verdad. —Alemán, en España la propina no se deja así. Pero gracias. Eres muy amable.'},
-   {p:'Lukas se puso rojo. Los señores se rieron también, pero no de él, sino con él. El del Marca dijo, sin levantar la cabeza: —Es alemán. En Alemania son así. Y todos asintieron, como si eso lo explicara todo.'},
-   {p:'Al llegar a la puerta, Lukas se dio la vuelta. —Hasta luego, Lola. —Hasta mañana, alemán.'},
-   {p:'Hasta mañana. No hasta luego. Lola daba por hecho que volvería.'},
-   {p:'En la calle, al sol, Lukas sonrió. Tenía el estómago caliente, el español un poco más firme y, por primera vez, un sitio en Madrid donde alguien conocía su apodo.'},
-   {p:'Mañana, cortado.'}]}
-  ];
+  // ── Mehrsprachige Felder: String bleibt String, {de,en} → die Muttersprache. ──
+  function lokal(v, mutter) {
+    if (v == null || typeof v === 'string') return v;
+    return v[mutter] || v.de || v.en || v.es || '';
+  }
+  function blockFuer(b, mutter) {
+    var o = {};
+    if (b.na != null) o.na = lokal(b.na, mutter);
+    if (b.z  != null) o.z  = b.z;
+    if (b.tr != null) o.tr = lokal(b.tr, mutter);
+    if (b.p  != null) o.p  = b.p;
+    return o;
+  }
+
+  // ══ BUCH 1 · „El año de Lukas" — Zielsprache es, Muttersprachen de + en ═════
+  //    Inhalt in learnroman-lukas.js (muss VOR dieser Datei geladen sein).
+  var LUKAS = (w.SPIKIU_LR_LUKAS && w.SPIKIU_LR_LUKAS.K) || [];
 
   // ══ BUCH 2 · „Marta en Berlín" — Zielsprache de, Muttersprache es ══════════
   // Ziel-Anteil je Kapitel: 27 / 39 / 41 / 100 % (gemessen, Auftrag §3).
@@ -429,30 +250,57 @@
    {p:'An diesem Abend schrieb Marta vier Wörter in das Heft, in dem sie ihr neues Deutsch sammelte: Sesambrötchen, Mohnbrötchen, Roggenbrötchen, Käsebrötchen — Geschenk. Und darunter, auf Spanisch, eine persönliche Notiz: Frau Schultz se acuerda de mi cara.'}]}
   ];
 
-  // ── Die Bücher. Ein neues Sprachpaar = ein weiterer Eintrag. ──
+  // ── Die Bücher. Ein neues Sprachpaar = ein weiterer Eintrag.
+  //    muttersprachen: für welche Lerner das Buch geschrieben ist. ──
   var BUECHER = [
-    { buch: 'lukas-madrid', zielsprache: 'es', muttersprache: 'de',
-      titel: 'Lukas in Madrid', kapitel: LUKAS },
-    { buch: 'marta-berlin', zielsprache: 'de', muttersprache: 'es',
-      titel: 'Marta en Berlín', kapitel: MARTA }
-  ].map(function (b) {
-    b.etappen = etappenFuer(b.muttersprache);
-    return b;
-  });
+    { buch: 'el-ano-de-lukas', zielsprache: 'es', muttersprachen: ['de', 'en'],
+      titel: 'El año de Lukas',
+      untertitel: { de: 'Ein Papier, eine Stadt, neun Monate. Jede Station ist eine Szene aus dem Geführten Gespräch.',
+                    en: 'One document, one city, nine months. Every stop is a scene from Guided Conversation.' },
+      einheit: 'station',
+      teile: { fundament: 'Vecino de Madrid', aufbau: 'La visita', anwendung: 'Hasta luego' },
+      kapitel: LUKAS },
+    { buch: 'marta-berlin', zielsprache: 'de', muttersprachen: ['es'],
+      titel: 'Marta en Berlín', einheit: 'kapitel', kapitel: MARTA }
+  ];
+
+  // Ein Buch in EINER Muttersprache (zwischengespeichert, damit der Raum
+  // immer dasselbe Objekt bekommt).
+  var CACHE = {};
+  function fuer(b, mutter) {
+    var key = b.buch + ':' + mutter;
+    if (CACHE[key]) return CACHE[key];
+    CACHE[key] = {
+      buch: b.buch, zielsprache: b.zielsprache, muttersprache: mutter,
+      titel: b.titel, untertitel: lokal(b.untertitel, mutter) || '',
+      einheit: b.einheit || 'kapitel', teile: b.teile || {},
+      etappen: etappenFuer(mutter),
+      kapitel: b.kapitel.map(function (c) {
+        return { level: c.level, n: c.n, thema: c.thema || null, title: c.title,
+                 teaser: lokal(c.teaser, mutter),
+                 body: c.body.map(function (bl) { return blockFuer(bl, mutter); }) };
+      })
+    };
+    return CACHE[key];
+  }
 
   // ── Öffentlich: Buch zum Sprachpaar oder null (nie werfen, nie erfinden). ──
   w.spikiuLearnroman = function (zielsprache, muttersprache) {
     var ziel = zielsprache || '', mutter = muttersprache || '';
     for (var i = 0; i < BUECHER.length; i++) {
-      if (BUECHER[i].zielsprache === ziel && BUECHER[i].muttersprache === mutter) return BUECHER[i];
+      var b = BUECHER[i];
+      if (b.zielsprache === ziel && b.muttersprachen.indexOf(mutter) > -1 && b.kapitel.length) return fuer(b, mutter);
     }
     return null;
   };
   // Reihenfolge/IDs der Etappen für die Freischaltung im Raum.
   w.spikiuLearnroman.etappenIds = ETAPPEN_IDS.slice();
   // Welche Sprachpaare gibt es überhaupt? (für einen ehrlichen leeren Zustand)
-  w.spikiuLearnroman.paare = BUECHER.map(function (b) {
-    return { zielsprache: b.zielsprache, muttersprache: b.muttersprache, titel: b.titel };
+  w.spikiuLearnroman.paare = [];
+  BUECHER.forEach(function (b) {
+    b.muttersprachen.forEach(function (m) {
+      w.spikiuLearnroman.paare.push({ zielsprache: b.zielsprache, muttersprache: m, titel: b.titel });
+    });
   });
 
 })(window);

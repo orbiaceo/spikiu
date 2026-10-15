@@ -534,7 +534,34 @@ button{font:inherit;cursor:pointer}
     else if (sv.phase === 'rollenspiel'){ setRail(3); startRollenspiel(i); }
     else                                { setRail(1); startWoerter(i); }
   }
+  /* ── Direktweg ?thema=<id> (15.10.2026): der Lernroman verlinkt am Ende jeder
+        Station auf „ihre" Szene. Wer so kommt, will genau dieses Thema — keine
+        Palette, keine Wiederkommen-Frage. Mit &von=learnroman führt der
+        Zurück-Knopf wieder ins Buch. Unbekanntes Thema → normale Palette. ── */
+  function direktThema() {
+    var such = window.location.search || '';
+    var m = such.match(/[?&]thema=([a-z]+)/);
+    if (/[?&]von=learnroman\b/.test(such)) {
+      var zb = document.querySelector('.rnav .back');
+      if (zb) zb.onclick = function () { window.location.href = 'learnroman.html'; };
+    }
+    if (!m) return false;
+    var id = m[1];
+    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
+    if (db.indexOf(id) === -1) return false;
+    var sz = (window.spikiuSzenen || []).filter(function (x) { return x.id === id; })[0];
+    TOPIC_ID = id;
+    TOPIC_LABEL = sz ? (sz[MUT] || sz.de) : id;
+    HAP = ladeStoff();
+    if (!HAP) { TOPIC_ID = null; TOPIC_LABEL = ''; return false; }
+    sitzRaeumen();
+    markiereBesuch();
+    startWoerter();
+    return true;
+  }
+
   function eintritt() {
+    if (direktThema()) return;
     var sv = null;
     try { sv = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('gefuehrt') : null; } catch (e) { sv = null; }
     var angefangen = sv && sv.topicId && sv.phase && !(sv.phase === 'woerter' && !sv.index);
