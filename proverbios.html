@@ -38,7 +38,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 @keyframes provPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
 @keyframes provSpin{to{transform:rotate(360deg);}}
 .prov-text.has-lit{cursor:pointer;text-decoration:underline dotted rgba(21,22,58,.35);text-underline-offset:.28em;text-decoration-thickness:2px;}
-.prov-lit{font-family:'DM Sans',sans-serif;font-size:.98rem;line-height:1.4;color:var(--ink,#15163a);background:#fff6d6;border:2px dashed #e0c36a;border-radius:12px;padding:.45rem .75rem;max-width:20rem;}
+.prov-lit{font-family:'Lora',serif;font-size:1.25rem;line-height:1.4;color:var(--ink,#15163a);background:#fff6d6;border:2px dashed #e0c36a;border-radius:12px;padding:.5rem .8rem;max-width:20rem;}
 .prov-lit-k{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#a87b2e;margin-right:.3rem;}
 .prov-trans{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:var(--muted);max-width:20rem;}
 .prov-src{font:600 .78rem/1 'DM Mono',monospace;color:#8a8378;letter-spacing:.02em;}
@@ -91,10 +91,10 @@ var PROFILE = { zielsprache: zielC, muttersprache: mutterC, koennen: stored.koen
 function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ eyebrow:'Wendungen & Sprichwörter', woertlich:'wörtlich', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
-  es:{ eyebrow:'Giros & Proverbios', woertlich:'literalmente', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
-  en:{ eyebrow:'Phrases & Proverbs', woertlich:'literally', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' },
-  el:{ eyebrow:'Εκφράσεις & Παροιμίες', woertlich:'κατά λέξη', uebung:'Εξάσκηση', back:'Πίσω', fwd:'Συνέχεια', hintFwd:'← σύρε για να συνεχίσεις' }
+  de:{ eyebrow:'Wendungen & Sprichwörter', woertlich:'wörtlich', bedeutung:'Bedeutung', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
+  es:{ eyebrow:'Giros & Proverbios', woertlich:'literalmente', bedeutung:'significa', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
+  en:{ eyebrow:'Phrases & Proverbs', woertlich:'literally', bedeutung:'meaning', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' },
+  el:{ eyebrow:'Εκφράσεις & Παροιμίες', woertlich:'κατά λέξη', bedeutung:'σημαίνει', uebung:'Εξάσκηση', back:'Πίσω', fwd:'Συνέχεια', hintFwd:'← σύρε για να συνεχίσεις' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
@@ -178,12 +178,13 @@ function makeProverbCard(provI){
   var card = document.createElement('div'); card.className = 'card prov';
   card.innerHTML =
       iconHtml(prov.icon)
-    + (prov.woertlich
-        ? '<div class="prov-text has-lit" role="button" tabindex="0" aria-expanded="false">' + escPlain(prov.text) + '</div>'
-          + '<div class="prov-lit" hidden><span class="prov-lit-k">' + escPlain(ui().woertlich) + '</span> ' + escPlain(prov.woertlich) + '</div>'
-        : '<div class="prov-text">' + escPlain(prov.text) + '</div>')
+    /* Wörtliche Übersetzung IMMER sichtbar (Leo, 15.10.: „la última traducción no ayuda al
+       usuario que empieza — habíamos quedado en dar una traducción literal"): erst Wort für
+       Wort, was da steht — dann, kleiner, was es bedeutet. Fehlt w, steht nur die Bedeutung. */
+    + '<div class="prov-text">' + escPlain(prov.text) + '</div>'
     + '<button class="prov-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
-    + '<div class="prov-trans">' + escPlain(prov.translation) + '</div>'
+    + (prov.woertlich ? '<div class="prov-lit"><span class="prov-lit-k">' + escPlain(ui().woertlich) + '</span> ' + escPlain(prov.woertlich) + '</div>' : '')
+    + '<div class="prov-trans">' + (prov.woertlich ? '<span class="prov-lit-k">' + escPlain(ui().bedeutung) + '</span> ' : '') + escPlain(prov.translation) + '</div>'
     + '<div class="prov-src">' + (prov.src ? '— ' + escPlain(prov.src) : '') + '</div>'
     + '<div class="card-hint">' + escPlain(ui().hintFwd) + '</div>';
   var sb = card.querySelector('.prov-speak');

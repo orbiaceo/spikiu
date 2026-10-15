@@ -52,9 +52,13 @@
     + '.spk-audio:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink,#15163a)}'
     + '.spk-loesung{margin-top:.9rem;padding-top:.8rem;border-top:2px dashed rgba(21,22,58,.18);display:flex;flex-direction:column;gap:.35rem;align-items:center;text-align:center;animation:spkFromRight .35s ease}'
     + '.spk-loesung .spk-ziel{font-size:1.35rem;line-height:1.25}'
-    + '.spk-opt-tr{margin:-.25rem 0 .2rem;text-align:center;font:600 .95rem/1.3 "DM Sans",sans-serif;color:var(--muted,#5f7068);animation:spkFromRight .35s ease}'
+    + '.spk-opt-tr{margin:-.25rem 0 .2rem;text-align:center;font:600 1.15rem/1.3 "DM Sans",sans-serif;color:var(--muted,#5f7068);animation:spkFromRight .35s ease}'
     + '.spk-ziel{font-family:"Lora",serif;font-weight:600;font-size:calc(2.3rem*var(--scale));line-height:1.26;color:var(--ink,#15163a)}'
     + '.spk-nativ{font-family:"DM Sans",sans-serif;font-weight:800;font-size:calc(1.55rem*var(--scale));line-height:1.24;color:var(--ink,#15163a)}'
+    /* Übersetzung neben der Zielsprache (Leo, 15.10.: „demasiado pequeña … debe estar balanceado") —
+       eigene Klasse statt .spk-sub (das bleibt für Umschrift/Hinweise): gut 60 % der Zielzeile. */
+    + '.spk-trl{font-family:"DM Sans",sans-serif;font-weight:600;font-size:calc(1.4rem*var(--scale));line-height:1.3;color:var(--muted,#5f7068)}'
+    + '.spk-loesung .spk-trl{font-size:1.1rem}'
     + '.spk-sub{font-family:"DM Sans",sans-serif;font-weight:600;font-size:calc(1.02rem*var(--scale));line-height:1.4;color:var(--muted,#5f7068)}'
     + '.spk-instr{font-family:"DM Sans",sans-serif;font-weight:700;font-size:calc(1.05rem*var(--scale));line-height:1.35;color:var(--ink,#15163a);opacity:.75}'
     + '.spk-opts{display:flex;flex-direction:column;gap:.6rem;width:100%}'
@@ -322,7 +326,7 @@
         } else if (item.loesung) {
           var lw = el('div', 'spk-loesung');
           lw.appendChild(textNode(item.loesung, true, false));
-          if (item.loesungTr) lw.appendChild(textNode(item.loesungTr, false, true));
+          if (item.loesungTr) lw.appendChild(el('div', 'spk-trl', esc(item.loesungTr)));
           F.body.appendChild(lw);
         }
         F.feedback.textContent = ok ? (item.richtig || L('richtig')) : (item.fast || L('fast'));
@@ -338,7 +342,7 @@
       F.body.appendChild(el('div', 'spk-eyebrow', '🎭 ' + esc(item.eyebrow)));
       F.body.appendChild(audioBtn(item.ziel));
       F.body.appendChild(textNode(item.ziel, true, false));
-      if (item.trans) F.body.appendChild(textNode(item.trans, false, true));
+      if (item.trans) F.body.appendChild(el('div', 'spk-trl', esc(item.trans)));
       if (item.tip) F.body.appendChild(el('div', 'spk-instr', '💬 ' + esc(item.tip)));
       var list = el('div', 'spk-opts');
       var opts = shuffle(item.options);

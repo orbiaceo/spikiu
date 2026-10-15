@@ -212,7 +212,7 @@ button{font-family:inherit}
 
 <section class="view welcome active" id="welcome">
   <div class="big" id="wbig"></div>
-  <h1>¡Hola! Yo soy Spikiu.</h1>
+  <h1></h1>
   <p id="wsub"></p>
   <div class="namebox" id="namebox"><input id="nameIn" placeholder="dein Name…" autocomplete="off"><button class="go" onclick="submitName()">→</button></div>
   <div class="langrow" id="langrow" style="display:none"></div>
@@ -841,20 +841,26 @@ document.documentElement.lang=HL;
     Sprache: was wir wissen (spikiu_lang aus einer früheren Sitzung),
     sonst Deutsch — ein Profil gibt es an dieser Stelle noch nicht.
     ══════════════════════════════════════════════════════════════ */
- var lg='de'; try{ var gl=localStorage.getItem('spikiu_lang'); if(gl==='es'||gl==='en'||gl==='el') lg=gl; }catch(e){}
+ /* Sprache: was die Startseite gewählt hat (spikiu_lang) — sonst die Browsersprache, sonst Deutsch.
+    Leo, 15.10.: nach der Sprachwahl auf der Startseite erschien hier „¡Hola! Yo soy Spikiu." (fest
+    spanisch) mit deutschem Untertitel. Jetzt folgen Überschrift UND Text der gewählten Sprache. */
+ var lg='de'; try{ var gl=localStorage.getItem('spikiu_lang')||String(navigator.language||'').slice(0,2).toLowerCase(); if(gl==='es'||gl==='en'||gl==='el'||gl==='de') lg=gl; }catch(e){}
  var HEY={
-   de:{sub:'Schön, dass du da bist. Lass uns anfangen.', btn:"Los geht's →"},
-   es:{sub:'Me alegra que estés aquí. Vamos a empezar.', btn:'¡Empezamos! →'},
-   en:{sub:'Good to have you here. Let us get started.',  btn:"Let's go →"},
-   el:{sub:'Χαίρομαι που είσαι εδώ. Πάμε να ξεκινήσουμε.', btn:'Πάμε! →'}
+   de:{h:'Hallo! Ich bin Spikiu.', sub:'Schön, dass du da bist. Lass uns anfangen.', btn:"Los geht's →"},
+   es:{h:'¡Hola! Soy Spikiu.', sub:'Me alegra que estés aquí. Vamos a empezar.', btn:'¡Empezamos! →'},
+   en:{h:"Hi! I'm Spikiu.", sub:'Good to have you here. Let us get started.',  btn:"Let's go →"},
+   el:{h:'Γεια! Είμαι ο Spikiu.', sub:'Χαίρομαι που είσαι εδώ. Πάμε να ξεκινήσουμε.', btn:'Πάμε! →'}
  }[lg];
+ var wh=document.querySelector('#welcome h1'); if(wh) wh.textContent=HEY.h;
+ try{ document.documentElement.lang=lg; }catch(e){}
  var ws=document.getElementById('wsub'); if(ws) ws.textContent=HEY.sub;
  var nb=document.getElementById('namebox');
  if(nb){nb.innerHTML='';
   var b=document.createElement('button');b.className='go';
-  /* Hausfarbe, nicht Blau. Das Haus hat sein eigenes Korallenrot (--acc);
-     die Klasse .go trägt es bereits (Leo, 01.09.: „Das Haus bleibt so"). */
-  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;padding:.9rem 1rem';
+  /* Blau wie die Startseite (Leo, 15.10.: „el botón rojo no queda bien con el azul inicial de la
+     start site"). Diese Begrüßung ist die Brücke von der Startseite ins Assessment — sie trägt
+     deshalb deren Blau (#1f93b0), nicht das Korallenrot des Hauses. Das Haus selbst bleibt rot. */
+  b.style.cssText='flex:1;font-family:Archivo Black,sans-serif;font-size:1.05rem;padding:.9rem 1rem;background:#1f93b0;color:#fff';
   b.textContent=HEY.btn;
   b.onclick=function(){location.href='assessment.html';};
   nb.appendChild(b);}
