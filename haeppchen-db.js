@@ -189,7 +189,7 @@
       },
       el: {
         wortschatz: [
-          v('ένα τραπέζι για δύο', 'éna trapézi gia dío', 'ein Tisch für zwei', 'una mesa para dos', 'a table for two', 'ένα τραπέζι για δύο'),
+          v('ένα τραπέζι για δύο', 'éna trapézi ya dío', 'ein Tisch für zwei', 'una mesa para dos', 'a table for two', 'ένα τραπέζι για δύο'),
           v('το μενού', 'to menú', 'die Speisekarte', 'la carta', 'the menu', 'το μενού'),
           v('τον λογαριασμό', 'ton logariasmó', 'die Rechnung', 'la cuenta', 'the bill', 'τον λογαριασμό'),
           v('τι προτείνετε;', 'ti protínete?', 'was empfehlen Sie?', '¿qué me recomienda?', 'what do you recommend?', 'τι προτείνετε;'),
@@ -249,7 +249,7 @@
           v('με γάλα', 'me gála', 'mit Milch', 'con leche', 'with milk', 'με γάλα'),
           v('ένα τσάι', 'éna tsái', 'ein Tee', 'un té', 'a tea', 'ένα τσάι'),
           v('τη ζάχαρη', 'ti záchari', 'der Zucker', 'el azúcar', 'the sugar', 'τη ζάχαρη'),
-          v('για έξω', 'gia éxo', 'zum Mitnehmen', 'para llevar', 'to go', 'για έξω')
+          v('για έξω', 'ya éxo', 'zum Mitnehmen', 'para llevar', 'to go', 'για έξω')
         ],
         hoer: [
           mp('Έναν καφέ με γάλα.', 'Έναν καφέ με γάλα.', 'Έναν καφέ χωρίς γάλα.'),
@@ -582,7 +582,7 @@
       el: {
         wortschatz: [
           v('η αδελφή μου', 'i adelfí mou', 'meine Schwester', 'mi hermana', 'my sister', 'η αδελφή μου'),
-          v('ο γιος μου', 'o gios mou', 'mein Sohn', 'mi hijo', 'my son', 'ο γιος μου'),
+          v('ο γιος μου', 'o yos mou', 'mein Sohn', 'mi hijo', 'my son', 'ο γιος μου'),
           v('οι γονείς', 'i gonís', 'die Eltern', 'los padres', 'the parents', 'οι γονείς'),
           v('είναι παντρεμένος', 'íne pandreménos', 'ist verheiratet', 'está casado', 'is married', 'είναι παντρεμένος'),
           v('μένει στη', 'méni sti', 'wohnt in', 'vive en', 'lives in', 'μένει στη')

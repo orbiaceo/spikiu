@@ -436,8 +436,49 @@ window.lpQuizClick = function(btn, qIdx) {
 // ── Echter Lektions-PDF (jsPDF) — baut das ganze Dokument aus den Daten, Teil 58 ──
 // buildLessonPdf(L, fileName, JsPDF) — erzeugt einen sauberen, mehrseitigen Lektions-PDF
 // aus den Lektionsdaten (nicht aus dem Screen). JsPDF = Konstruktor (window.jspdf.jsPDF).
-function buildLessonPdf(L, fileName, JsPDF){
+// Schriften mit Griechisch (15.10.2026): jsPDFs eingebaute Helvetica/Times können nur
+// Latin-1 — griechische (und viele Latin-Ext-)Zeichen wurden zu Müll. Wir betten Noto Sans /
+// Noto Serif ein (fonts/pdf/, auf Latin + Latin-Ext + Griechisch reduziert, ~80 KB je
+// Schnitt, OFL). Geladen wird erst beim Klick auf PDF, einmal je Sitzung.
+var PDF_FONTS = [
+  { file:'NotoSans_400Regular.ttf',          fam:'SpkSans',  style:'normal' },
+  { file:'NotoSans_700Bold.ttf',             fam:'SpkSans',  style:'bold'   },
+  { file:'NotoSerif_700Bold.ttf',            fam:'SpkSerif', style:'bold'   },
+  { file:'NotoSerif_400Regular_Italic.ttf',  fam:'SpkSerif', style:'italic' }
+];
+var pdfFontCache = null;
+function ladePdfSchriften(){
+  if (pdfFontCache) return pdfFontCache;
+  pdfFontCache = Promise.all(PDF_FONTS.map(function(f){
+    return fetch('/fonts/pdf/' + f.file).then(function(r){ if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then(function(buf){
+        var b = new Uint8Array(buf), bin = '', CH = 0x8000;
+        for (var i = 0; i < b.length; i += CH) bin += String.fromCharCode.apply(null, b.subarray(i, i + CH));
+        return { f:f, b64: btoa(bin) };
+      });
+  })).catch(function(e){ pdfFontCache = null; throw e; });
+  return pdfFontCache;
+}
+// Ordnet die alten Namen (helvetica/times) den eingebetteten Schnitten zu.
+function pdfSchriftenAnmelden(doc, geladen){
+  geladen.forEach(function(x){ doc.addFileToVFS(x.f.file, x.b64); doc.addFont(x.f.file, x.f.fam, x.f.style); });
+  var orig = doc.setFont.bind(doc);
+  doc.setFont = function(fam, style){
+    style = style || 'normal';
+    if (fam === 'times') return orig('SpkSerif', style === 'italic' ? 'italic' : 'bold');
+    if (style === 'italic') return orig('SpkSerif', 'italic');
+    return orig('SpkSans', style === 'bold' ? 'bold' : 'normal');
+  };
+}
+var PDF_KOPF = {
+  de:function(a,b){ return 'Lektion ' + a + ' von ' + b; },
+  es:function(a,b){ return 'Lección ' + a + ' de ' + b; },
+  en:function(a,b){ return 'Lesson ' + a + ' of ' + b; },
+  el:function(a,b){ return 'Μάθημα ' + a + ' από ' + b; }
+};
+function buildLessonPdf(L, fileName, JsPDF, schriften){
   var doc = new JsPDF({ unit:'pt', format:'a4' });
+  if (schriften) pdfSchriftenAnmelden(doc, schriften);
   var M = 48, W = 595.28, Hh = 841.89, maxW = W - 2*M, y = M;
   var INK=[26,24,22], MID=[107,101,96], GREEN=[45,106,79], GOLD=[160,120,48];
 
@@ -469,7 +510,8 @@ function buildLessonPdf(L, fileName, JsPDF){
   doc.setFont('times','bold'); doc.setFontSize(20); setColor(INK);
   doc.text('Spikiu', M, y);
   doc.setFont('helvetica','normal'); doc.setFontSize(9); setColor(MID);
-  doc.text('Lektion ' + (L.lessonNumber||1) + ' von ' + (L.lessonOf||1), W-M, y-9, { align:'right' });
+  var kopf = PDF_KOPF[(typeof uiLang === 'function' && uiLang()) || 'de'] || PDF_KOPF.de;
+  doc.text(kopf(L.lessonNumber||1, L.lessonOf||1), W-M, y-9, { align:'right' });
   var sub = strip(L.date||''); var lvl = strip(L.level||''); if (lvl) sub += (sub?'   ':'') + lvl;
   if (sub) doc.text(sub, W-M, y+3, { align:'right' });
   y += 12; doc.setDrawColor(INK[0],INK[1],INK[2]); doc.setLineWidth(1.2); doc.line(M, y, W-M, y); y += 24;
@@ -549,10 +591,16 @@ var CURRENT_LESSON = null;
 function lessonToPdf(){
   var L = CURRENT_LESSON && CURRENT_LESSON.lesson;
   if (!L) return;
-  var nm = 'Spikiu-Lektion-' + String(L.title||'lektion').replace(/<[^>]*>/g,'').replace(/[^\w\u00C0-\u024F -]+/g,'').replace(/\s+/g,'-').slice(0,50) + '.pdf';
+  var nm = 'Spikiu-Lektion-' + String(L.title||'lektion').replace(/<[^>]*>/g,'').replace(/[^\w\u00C0-\u024F\u0370-\u03FF\u1F00-\u1FFF -]+/g,'').replace(/\s+/g,'-').slice(0,50) + '.pdf';
   if (window.jspdf && window.jspdf.jsPDF){
-    try { buildLessonPdf(L, nm, window.jspdf.jsPDF); return; } catch(e){ /* Fallback unten */ }
+    var J = window.jspdf.jsPDF;
+    ladePdfSchriften().then(function(sch){ buildLessonPdf(L, nm, J, sch); })
+      .catch(function(){ try { buildLessonPdf(L, nm, J, null); } catch(e){ druckFallback(); } });
+    return;
   }
+  druckFallback();
+}
+function druckFallback(){
   // Fallback: Druckdialog, falls jsPDF nicht geladen
   document.body.classList.add('printing-lesson');
   var done = function(){ document.body.classList.remove('printing-lesson'); window.removeEventListener('afterprint', done); };
