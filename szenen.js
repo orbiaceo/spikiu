@@ -5,16 +5,16 @@
    ═══════════════════════════════════════════════════════════════════ */
 (function(){
   window.spikiuSzenen = [
-    { id:'cafe',            emoji:'☕',  cefr:'a1', de:'Im Café',             es:'En el café',          en:'At the café' },
-    { id:'restaurant',      emoji:'🍽️', cefr:'a1', de:'Im Restaurant',       es:'En el restaurante',   en:'At the restaurant' },
-    { id:'taxi',            emoji:'🚕', cefr:'a1', de:'Im Taxi',             es:'En el taxi',          en:'In the taxi' },
-    { id:'hotel',           emoji:'🏨', cefr:'a2', de:'Im Hotel',            es:'En el hotel',         en:'At the hotel' },
-    { id:'einkaufen',       emoji:'🛒', cefr:'a1', de:'Einkaufen',           es:'De compras',          en:'Shopping' },
-    { id:'wegbeschreibung', emoji:'🧭', cefr:'a1', de:'Nach dem Weg fragen',  es:'Preguntar el camino', en:'Asking directions' },
-    { id:'arzt',            emoji:'🩺', cefr:'a2', de:'Beim Arzt',           es:'En el médico',        en:'At the doctor' },
-    { id:'bahnhof',         emoji:'🚉', cefr:'a2', de:'Am Bahnhof',          es:'En la estación',      en:'At the station' },
-    { id:'wetter',          emoji:'🌤️', cefr:'a2', de:'Über das Wetter',     es:'Sobre el tiempo',     en:'About the weather' },
-    { id:'familie',         emoji:'👪', cefr:'a1', de:'Über die Familie',    es:'Sobre la familia',    en:'About family' }
+    { id:'cafe',            emoji:'☕',  cefr:'a1', de:'Im Café',             es:'En el café',          en:'At the café', el:'Στο καφέ' },
+    { id:'restaurant',      emoji:'🍽️', cefr:'a1', de:'Im Restaurant',       es:'En el restaurante',   en:'At the restaurant', el:'Στο εστιατόριο' },
+    { id:'taxi',            emoji:'🚕', cefr:'a1', de:'Im Taxi',             es:'En el taxi',          en:'In the taxi', el:'Στο ταξί' },
+    { id:'hotel',           emoji:'🏨', cefr:'a2', de:'Im Hotel',            es:'En el hotel',         en:'At the hotel', el:'Στο ξενοδοχείο' },
+    { id:'einkaufen',       emoji:'🛒', cefr:'a1', de:'Einkaufen',           es:'De compras',          en:'Shopping', el:'Ψώνια' },
+    { id:'wegbeschreibung', emoji:'🧭', cefr:'a1', de:'Nach dem Weg fragen',  es:'Preguntar el camino', en:'Asking directions', el:'Ρωτώντας τον δρόμο' },
+    { id:'arzt',            emoji:'🩺', cefr:'a2', de:'Beim Arzt',           es:'En el médico',        en:'At the doctor', el:'Στον γιατρό' },
+    { id:'bahnhof',         emoji:'🚉', cefr:'a2', de:'Am Bahnhof',          es:'En la estación',      en:'At the station', el:'Στον σταθμό' },
+    { id:'wetter',          emoji:'🌤️', cefr:'a2', de:'Über das Wetter',     es:'Sobre el tiempo',     en:'About the weather', el:'Για τον καιρό' },
+    { id:'familie',         emoji:'👪', cefr:'a1', de:'Über die Familie',    es:'Sobre la familia',    en:'About family', el:'Για την οικογένεια' }
   ];
   /* Palette: 3 neue + 2 fällige. Platzhalter-Logik bis der FSRS-Scheduler
      (Etappe 2) kommt: erledigte = fällig (älteste zuerst), Rest = neu. */

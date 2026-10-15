@@ -170,6 +170,18 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 <script src="learnroman-lukas.js"></script>
 <script src="learnroman-marta.js"></script>
 <script src="learnroman-sofia.js"></script>
+<script>
+/* Griechische Brücken nur laden, wenn sie gebraucht werden (Muttersprache el) —
+   ~180 KB, die alle anderen Lerner nicht mitschleppen sollen. document.write hält
+   die Reihenfolge: die Dateien stehen VOR learnroman-daten.js bereit. */
+(function(){ try {
+  var pr = (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile) || {};
+  var m = String(pr.muttersprache || pr.nativeLang || '').toLowerCase();
+  if (m === 'el' || m.indexOf('griech') > -1 || m.indexOf('greek') > -1) {
+    ['lukas','marta','sofia'].forEach(function(b){ document.write('<script src="learnroman-' + b + '-el.js"><\/script>'); });
+  }
+} catch(e){} })();
+</script>
 <script src="learnroman-daten.js"></script>
 <script src="szenen.js"></script>
 <script src="sitzung.js"></script>
@@ -252,7 +264,18 @@ var UI = {
        devnote:'Your stage · switchable for testing',
        leerH:'This book is still being written.',
        leerP:'The Learning Novel for this language does not exist yet. Spikiu would rather write it well than fast.',
-       leerZ:'Back to the house' }
+       leerZ:'Back to the house' },
+  el:{ titel:'Μυθιστόρημα για να μαθαίνεις', station:'Σταθμός', epilog:'Επίλογος', kapitel:'Κεφάλαιο', teil:'Μέρος', offen:'ανοιχτό', zu:'ανοίγει αργότερα',
+       lock:function(nm){ return '✦ ανοίγει στο στάδιο ' + nm; },
+       hinweisZu:'Πάτα EL αν χρειάζεσαι τη μετάφραση.', jagd:'Πάτα μια λέξη για να την πάρεις στο βιβλίο σου.',
+       ende:'— Τέλος του σταθμού —', endeK:'— Τέλος του κεφαλαίου —', buchEnde:'— Τέλος του βιβλίου —',
+       szeneK:function(t){ return 'Αυτός ο σταθμός είναι η σκηνή «' + t + '»'; },
+       szeneS:'Παίξ’ την κι εσύ — στην Καθοδηγούμενη συζήτηση.', szeneGo:'Παίξε τη σκηνή ›',
+       naechste:'Συνέχεια', back:'πίσω', hoeren:'Άκου', tr:'Μετάφραση',
+       devnote:'Το στάδιό σου · αλλάζει για δοκιμή',
+       leerH:'Αυτό το βιβλίο γράφεται ακόμα.',
+       leerP:'Το μυθιστόρημα για αυτή τη γλώσσα δεν έχει γραφτεί ακόμα. Ο Spikiu προτιμά να το γράψει καλά παρά γρήγορα.',
+       leerZ:'Πίσω στο σπίτι' }
 };
 function uiLang(){ return UI[PROFIL.muttersprache] ? PROFIL.muttersprache : 'de'; }
 var T = UI[uiLang()];
