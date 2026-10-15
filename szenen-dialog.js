@@ -8,7 +8,7 @@
    } | null   (null → Thema × Zielsprache nicht im Skript → B überspringen)
 
    themaId ∈ 'cafe'|'restaurant'|'hotel'|'taxi'|'einkaufen'|'wegbeschreibung'|'arzt'|'bahnhof'|'wetter'|'familie'   ·   zielsprache ∈ 'es' (Start)
-   español NEUTRO (nie voseo). A1-Niveau. Genau EINE richtige Option je Schritt.
+   español de ESPAÑA (castellano peninsular, nie voseo). A1-Niveau. Genau EINE richtige Option je Schritt.
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
   if (window.spikiuSzenenDialog) return;
@@ -68,7 +68,7 @@
              'Nenne dein Ziel.'),
         step('¿Con equipaje?', 'Mit Gepäck?',
              [ ok('Sí, una maleta.'), no('Para dos noches.') ]),
-        step('Ya llegamos. Son ocho euros.', 'Wir sind da. Das macht acht Euro.',
+        step('Ya hemos llegado. Son ocho euros.', 'Wir sind da. Das macht acht Euro.',
              [ ok('Aquí tiene, gracias.'), no('¿A nombre de quién?') ])
       ]
     },

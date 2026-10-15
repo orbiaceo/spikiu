@@ -172,7 +172,7 @@
       { de:'Bedanke dich und frag, in welchem Stock das Zimmer ist', es:'Da las gracias y pregunta en qué planta está la habitación', en:'Say thanks and ask which floor the room is on' }
     ],
     'a1.restaurant': [
-      { de:'Sag, dass ihr zu zweit seid', es:'Di que son dos', en:'Say there are two of you' },
+      { de:'Sag, dass ihr zu zweit seid', es:'Di que sois dos', en:'Say there are two of you' },
       { de:'Bedanke dich und frag, was er empfiehlt', es:'Da las gracias y pregunta qué recomienda', en:'Say thanks and ask what he recommends' },
       { de:'Bestelle den Fisch und einen Salat', es:'Pide el pescado y una ensalada', en:'Order the fish and a salad' }
     ],
@@ -223,7 +223,7 @@
     ],
     'a2.restaurant': [
       { de:'Frag nach der Spezialität des Hauses', es:'Pregunta cuál es la especialidad de la casa', en:'Ask what the house speciality is' },
-      { de:'Frag nach etwas Leichterem und sag, dass ihr teilen wollt', es:'Pregunta si hay algo más ligero y di que quieren compartir', en:'Ask for something lighter and say you want to share' },
+      { de:'Frag nach etwas Leichterem und sag, dass ihr teilen wollt', es:'Pregunta si hay algo más ligero y di que queréis compartir', en:'Ask for something lighter and say you want to share' },
       { de:'Nimm den Fisch und bitte um getrennte Rechnungen', es:'Acepta el pescado y pide cuentas separadas', en:'Take the fish and ask for separate bills' }
     ],
     'a2.taxi': [
@@ -233,7 +233,7 @@
     ],
     'a2.wegbeschreibung': [
       { de:'Frag, wie du zum Museum kommst', es:'Pregunta cómo llegar al museo', en:'Ask how to get to the museum' },
-      { de:'Frag, wie es danach weitergeht', es:'Pregunta cómo sigues después', en:'Ask what comes after that' },
+      { de:'Frag, wie es danach weitergeht', es:'Pregunta por dónde se sigue después', en:'Ask what comes after that' },
       { de:'Frag, ob man zu Fuß hingehen kann', es:'Pregunta si se puede ir a pie', en:'Ask whether you can walk there' }
     ],
     'a2.wetter': [
@@ -320,7 +320,7 @@
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
-      deineRolle: { de:'Ihr seid zu zweit und habt nicht reserviert. Was ihr esst, wisst ihr noch nicht.', es:'Son dos y no tienen reserva. Todavía no saben qué van a comer.', en:'There are two of you and no reservation. You haven\'t decided what to eat.' },
+      deineRolle: { de:'Ihr seid zu zweit und habt nicht reserviert. Was ihr esst, wisst ihr noch nicht.', es:'Sois dos y no tenéis reserva. Todavía no sabéis qué vais a comer.', en:'There are two of you and no reservation. You haven\'t decided what to eat.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
          Ohne sie bricht die Szene mitten im Satz ab (R6). */
       abrundung: { z:'Excelente elección. Enseguida vuelvo.', na:{ de:'Ausgezeichnete Wahl. Ich komme gleich wieder.', en:'Excellent choice. I\'ll be right back.' } },
@@ -471,7 +471,7 @@
           { wer:'lerner', z:'¿Está lejos?', na:{ de:'Ist es weit?', en:'Is it far?' } },
           { wer:'spikiu', z:'No, cinco minutos.', na:{ de:'Nein, fünf Minuten.', en:'No, five minutes.' } },
           { wer:'lerner', z:'Muchas gracias.', na:{ de:'Vielen Dank.', en:'Thank you very much.' } },
-          { wer:'spikiu', z:'De nada. ¡Buen día!', na:{ de:'Gern geschehen. Schönen Tag!', en:'You are welcome. Have a good day!' } }
+          { wer:'spikiu', z:'De nada. ¡Que tenga un buen día!', na:{ de:'Gern geschehen. Schönen Tag!', en:'You are welcome. Have a good day!' } }
         ]
       },
       lesetext: {
@@ -848,7 +848,7 @@
         zeilen: [
           { wer:'spikiu', z:'¡Qué buen tiempo hace hoy!', na:{ de:'Was für ein schönes Wetter heute!', en:'What lovely weather today!' } },
           { wer:'lerner', z:'Sí, hace sol y calor.', na:{ de:'Ja, die Sonne scheint und es ist warm.', en:'Yes, it is sunny and hot.' } },
-          { wer:'spikiu', z:'¿Y mañana? ¿Sabes?', na:{ de:'Und morgen? Weißt du es?', en:'And tomorrow? Do you know?' } },
+          { wer:'spikiu', z:'¿Y mañana? ¿Sabes algo?', na:{ de:'Und morgen? Weißt du schon was?', en:'And tomorrow? Do you know anything?' } },
           { wer:'lerner', z:'Mañana llueve, creo.', na:{ de:'Morgen regnet es, glaube ich.', en:'Tomorrow it rains, I think.' } },
           { wer:'spikiu', z:'Entonces llevo el paraguas.', na:{ de:'Dann nehme ich den Regenschirm mit.', en:'Then I will take the umbrella.' } },
           { wer:'lerner', z:'Buena idea. Hasta mañana.', na:{ de:'Gute Idee. Bis morgen.', en:'Good idea. See you tomorrow.' } }
@@ -907,7 +907,7 @@
         { z:'lleva',            na:{ de:'es enthält',           en:'it contains' } },
         { z:'sin lactosa',      na:{ de:'ohne Laktose',         en:'lactose-free' } },
         { z:'soy alérgico',     na:{ de:'ich bin allergisch',   en:'I am allergic' } },
-        { z:'el frutos secos',  na:{ de:'die Nüsse',            en:'nuts' } },
+        { z:'los frutos secos', na:{ de:'die Nüsse',            en:'nuts' } },
         { z:'cambiar',          na:{ de:'tauschen',             en:'to change' } },
         { z:'otra vez',         na:{ de:'noch einmal',          en:'again' } },
         { z:'me lo trae',       na:{ de:'bringen Sie es mir',   en:'bring it to me' } },
@@ -957,7 +957,7 @@
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
-      deineRolle: { de:'Ihr seid zu zweit, wollt euch ein Gericht teilen und getrennt zahlen.', es:'Son dos, quieren compartir un plato y pagar por separado.', en:'There are two of you; you want to share a dish and pay separately.' },
+      deineRolle: { de:'Ihr seid zu zweit, wollt euch ein Gericht teilen und getrennt zahlen.', es:'Sois dos, queréis compartir un plato y pagar por separado.', en:'There are two of you; you want to share a dish and pay separately.' },
       /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
          Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
       eroeffnung: { z:'Buenas tardes. ¿Ya saben qué van a tomar?', na:{ de:'Guten Abend. Wissen Sie schon, was Sie nehmen?', en:'Good evening. Have you decided?' } },
@@ -984,7 +984,7 @@
           { wer:'lerner', z:'¿Cuál es la especialidad de la casa?', na:{ de:'Was ist die Spezialität des Hauses?', en:'What is the house speciality?' } },
           { wer:'spikiu', z:'El cochinillo asado. Es fuerte, pero está muy rico.', na:{ de:'Das Spanferkel aus dem Ofen. Kräftig, aber sehr gut.', en:'The roast suckling pig. Hearty, but very good.' } },
           { wer:'lerner', z:'¿Hay algo más ligero? Queremos compartir.', na:{ de:'Gibt es etwas Leichteres? Wir möchten teilen.', en:'Is there something lighter? We want to share.' } },
-          { wer:'spikiu', z:'Entonces el pescado con verduras. Alcanza para dos.', na:{ de:'Dann der Fisch mit Gemüse. Der reicht für zwei.', en:'Then the fish with vegetables. It is enough for two.' } },
+          { wer:'spikiu', z:'Entonces el pescado con verduras. Da para dos.', na:{ de:'Dann der Fisch mit Gemüse. Der reicht für zwei.', en:'Then the fish with vegetables. It is enough for two.' } },
           { wer:'lerner', z:'Perfecto. Y después, ¿nos trae la cuenta por separado?', na:{ de:'Perfekt. Und danach: Bringen Sie uns die Rechnung getrennt?', en:'Perfect. And afterwards, could you bring us separate bills?' } },
           { wer:'spikiu', z:'Claro que sí. ¿Pagan con tarjeta?', na:{ de:'Selbstverständlich. Zahlen Sie mit Karte?', en:'Of course. Are you paying by card?' } }
         ]
@@ -1104,7 +1104,7 @@
         { z:'al lado de',      na:{ de:'neben',              en:'next to' } },
         { z:'detrás de',       na:{ de:'hinter',             en:'behind' } },
         { z:'a pie',           na:{ de:'zu Fuß',             en:'on foot' } },
-        { z:'se pasa',         na:{ de:'man verpasst',       en:'you miss' } }
+        { z:'no tiene pérdida', na:{ de:'man kann es nicht verfehlen', en:'you can\'t miss it' } }
       ],
       dialog: {
         rolle: { de:'Ein älterer Herr', en:'An older gentleman' },
@@ -1114,7 +1114,7 @@
           { wer:'lerner', z:'¿Y después?', na:{ de:'Und dann?', en:'And then?' } },
           { wer:'spikiu', z:'En la rotonda gire a la derecha. Está enfrente del parque.', na:{ de:'Am Kreisverkehr biegen Sie rechts ab. Es liegt gegenüber vom Park.', en:'At the roundabout turn right. It is opposite the park.' } },
           { wer:'lerner', z:'¿Se puede ir a pie?', na:{ de:'Kann man zu Fuß gehen?', en:'Can I walk there?' } },
-          { wer:'spikiu', z:'Sí, quince minutos. No se pasa, es un edificio grande.', na:{ de:'Ja, fünfzehn Minuten. Sie verpassen es nicht, es ist ein großes Gebäude.', en:'Yes, fifteen minutes. You cannot miss it, it is a big building.' } }
+          { wer:'spikiu', z:'Sí, quince minutos. No tiene pérdida, es un edificio grande.', na:{ de:'Ja, fünfzehn Minuten. Sie können es nicht verfehlen, es ist ein großes Gebäude.', en:'Yes, fifteen minutes. You cannot miss it, it is a big building.' } }
         ]
       },
       lesetext: {
@@ -1342,7 +1342,7 @@
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
-      deineRolle: { de:'Dein Zug hat zwanzig Minuten Verspätung. Umsteigen musst du um Viertel nach drei.', es:'Tu tren lleva veinte minutos de retraso. Tienes el transbordo a las tres y cuarto.', en:'Your train is twenty minutes late. Your connection is at quarter past three.' },
+      deineRolle: { de:'Dein Zug hat zwanzig Minuten Verspätung. Umsteigen musst du um drei.', es:'Tu tren lleva veinte minutos de retraso. Tienes el transbordo a las tres.', en:'Your train is twenty minutes late. Your connection is at three.' },
       /* Eröffnung: Spikiu grüßt, ohne Aufgabe 1 vorwegzunehmen.
          Nötig, weil der Skript-Dialog hier mit dem Lerner beginnt. */
       eroeffnung: { z:'Buenos días. ¿Le ayudo con algo?', na:{ de:'Guten Tag. Kann ich Ihnen helfen?', en:'Morning. Can I help you with something?' } },
@@ -1471,10 +1471,10 @@
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
-      deineRolle: { de:'Ihr wollt am Samstag an den See. Du hast die Vorhersage noch nicht gesehen.', es:'Quieren ir al lago el sábado. Todavía no has visto el pronóstico.', en:'You want to go to the lake on Saturday. You haven\'t checked the forecast yet.' },
+      deineRolle: { de:'Ihr wollt am Samstag an den Strand. Du hast die Vorhersage noch nicht gesehen.', es:'Queréis ir a la playa el sábado. Todavía no has visto la previsión.', en:'You want to go to the beach on Saturday. You haven\'t checked the forecast yet.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe.
          Ohne sie bricht die Szene mitten im Satz ab (R6). */
-      abrundung: { z:'Buena idea. ¡Que lo pasen bien!', na:{ de:'Gute Idee. Viel Spaß euch!', en:'Good idea. Have fun!' } },
+      abrundung: { z:'Buena idea. ¡Nos vemos el sábado!', na:{ de:'Gute Idee. Bis Samstag!', en:'Good idea. See you on Saturday!' } },
       wortschatz: [
         { z:'la previsión',    na:{ de:'die Vorhersage',      en:'the forecast' } },
         { z:'va a llover',     na:{ de:'es wird regnen',      en:'it is going to rain' } },

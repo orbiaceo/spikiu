@@ -41,7 +41,7 @@ am Rand. Dagegen baust du: wenige, gut gewählte Häppchen zum Thema.
 
 - **4–6 Einträge**, alle zum Thema, alltagsnah — das, was man in genau dieser Szene
   wirklich sagt (Grundsatz 1: am konkreten Gebrauch, nicht am Lehrbuch).
-- Zielsprache = die Form, die zum Ziel des Lerners passt; español immer **neutro**,
+- Zielsprache = die Form, die zum Ziel des Lerners passt; español immer **castellano de España** (Formen aus Spanien, Leo 15.10.2026),
   nie voseo, nie Río-de-la-Plata (Seele, Niemals-Liste + Grundsatz 7).
 - Jede Übersetzung in der **Muttersprache** daneben (Grundsatz 6, die Brücke).
 - Plain language, keine Fachwörter, keine Eselsbrücken (Seele, Grundsatz 5).

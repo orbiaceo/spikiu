@@ -100,7 +100,7 @@ nichts danach. KEINE Markdown-Zäune (\`\`\`), KEIN Vorwort, KEINE Erklärung.
 Felder:
 - "thema": das Thema, wie es reinkam.
 - "wortschatz": 4–6 Einträge zum Thema, alltagsnah. "ziel" = Wort/Wendung in der
-  Zielsprache (${sprache}), español NEUTRO (nie voseo, keine Río-de-la-Plata-Form).
+  Zielsprache (${sprache}), español de ESPAÑA (castellano peninsular: móvil, ordenador, coche, billete, zumo, vosotros für den informellen Plural; nie voseo, keine lateinamerikanischen Formen).
   "uebersetzung" = Bedeutung in der Muttersprache (${mutter}). "lautschrift": ${schriftRegel}
 - "hoerverstehen": 2–3 Items, GEMISCHT. Jedes hat ein "typ"-Feld. "audio" = EIN kurzer Satz
   aus dem Themen-Wortschatz (Zielsprache). "frage" = in der Muttersprache (${mutter}).

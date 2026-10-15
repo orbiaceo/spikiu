@@ -112,7 +112,7 @@
     de: [
       { text: 'Stimmt so.', icon: '🪙', src: 'Deutsche Wendung',
         w: { es: 'Así está correcto.', en: 'It\u2019s right like that.' },
-        t: { es: 'Así está bien, quédese con el cambio.', en: 'Keep the change.' } },
+        t: { es: 'Así está bien, quédese con la vuelta.', en: 'Keep the change.' } },
       { text: 'Ich verstehe nur Bahnhof.', icon: '🚉', src: 'Deutsche Wendung',
         w: { es: 'Solo entiendo «estación de tren».', en: 'I only understand \u201ctrain station\u201d.' },
         t: { es: 'No entiendo nada.', en: 'It\u2019s all Greek to me.' } },
@@ -131,7 +131,7 @@
         w: { de: 'Es regnet Katzen und Hunde.', es: 'Llueven gatos y perros.' },
         t: { de: 'Es regnet in Strömen.', es: 'Llueve a cántaros.' } },
       { text: 'It\u2019s a piece of cake.', icon: '🍰', src: 'English phrase',
-        w: { de: 'Das ist ein Stück Kuchen.', es: 'Es un trozo de pastel.' },
+        w: { de: 'Das ist ein Stück Kuchen.', es: 'Es un trozo de tarta.' },
         t: { de: 'Das ist ein Kinderspiel.', es: 'Es pan comido.' } },
       { text: 'Break a leg!', icon: '🎭', src: 'English phrase',
         w: { de: 'Brich dir ein Bein!', es: '¡Rómpete una pierna!' },

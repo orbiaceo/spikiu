@@ -17,7 +17,7 @@
 
    Lautschrift: bei lateinischer Schrift (es/de/en) null; bei Griechisch (el) PFLICHT
    = konsistente lateinische Umschrift. Übersetzungen je Wort als {de,es,en}.
-   español NEUTRO (nie voseo). Hochdeutsch. US-neutrales Englisch.
+   español de ESPAÑA (castellano peninsular, nie voseo). Hochdeutsch. US-neutrales Englisch.
    ────────────────────────────────────────────────────────────────────────── */
 (function () {
   if (window.spikiuHaeppchen) return;
@@ -687,7 +687,7 @@
     'My sister lives in London.': { de: 'Meine Schwester wohnt in London.', es: 'Mi hermana vive en Londres.' },
     'My parents live here and my son too.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', es: 'Mis padres viven aquí y mi hijo también.' },
     'Η αδελφή μου μένει στη Θεσσαλονίκη.': { de: 'Meine Schwester wohnt in Thessaloniki.', es: 'Mi hermana vive en Salónica.', en: 'My sister lives in Thessaloniki.' },
-    'Οι γονείς μου μένουν εδώ και ο γιος μου.': { de: 'Meine Eltern wohnen hier, und mein Sohn auch.', es: 'Mis padres viven aquí, y mi hijo también.', en: 'My parents live here, and so does my son.' }
+    'Οι γονείς μου μένουν εδώ και ο γιος μου.': { de: 'Meine Eltern wohnen hier, und mein Sohn auch.', es: 'Mis padres viven aquí y mi hijo también.', en: 'My parents live here, and so does my son.' }
   };
 
   function pick(map, mutter) {

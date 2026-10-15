@@ -51,7 +51,8 @@
     es: [
       '¿cómo?', 'cómo', '¿qué?', 'qué', '¿perdón?', 'perdón', '¿disculpe?', 'disculpe',
       '¿mande?', 'otra vez', 'otra vez por favor', 'de nuevo', 'una vez más',
-      'no entiendo', 'no entendí', 'no comprendo', 'no sé', 'ni idea',
+      'no entiendo', 'no entendí', 'no lo he entendido', 'no te he entendido',
+      'no le he entendido', '¿qué has dicho?', '¿cómo has dicho?', 'no comprendo', 'no sé', 'ni idea',
       '¿puede repetir?', '¿puedes repetir?', 'repita por favor', 'repite por favor',
       '¿cómo dice?', '¿cómo dices?', 'más despacio', 'más despacio por favor',
       '¿perdón cómo?', '¿otra vez?'

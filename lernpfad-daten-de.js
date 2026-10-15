@@ -72,7 +72,7 @@
     arzt:            { a1:{ es:'dolor, desde cuándo', en:'pain, since when' },
                        a2:{ es:'qué pasó, alergias, cita', en:'what happened, allergies, appointment' } },
     wetter:          { a1:{ es:'hoy y mañana', en:'today and tomorrow' },
-                       a2:{ es:'pronóstico, proponer algo', en:'forecast, making a suggestion' } }
+                       a2:{ es:'previsión, proponer algo', en:'forecast, making a suggestion' } }
   };
 
   var ROLLEN = {
@@ -171,7 +171,7 @@
     ],
     'a2.cafe': [
       { de:'Sag höflich, dass dein Kaffee kalt ist', es:'Di con cortesía que tu café está frío', en:'Politely say your coffee is cold' },
-      { de:'Bedanke dich und frag, ob in dem Kuchen Nüsse sind', es:'Da las gracias y pregunta si el pastel lleva frutos secos', en:'Say thanks and ask whether the cake has nuts in it' },
+      { de:'Bedanke dich und frag, ob in dem Kuchen Nüsse sind', es:'Da las gracias y pregunta si la tarta lleva frutos secos', en:'Say thanks and ask whether the cake has nuts in it' },
       { de:'Sag, dass du allergisch bist, und nimm den Zitronenkuchen', es:'Di que eres alérgico y pide el de limón', en:'Say you are allergic and take the lemon cake' }
     ],
     'a2.einkaufen': [
@@ -205,7 +205,7 @@
       { de:'Frag, ob man zu Fuß hingehen kann', es:'Pregunta si se puede ir a pie', en:'Ask whether you can walk there' }
     ],
     'a2.wetter': [
-      { de:'Sag, es kommt aufs Wetter an, und frag nach der Vorhersage', es:'Di que depende del tiempo y pregunta por el pronóstico', en:'Say it depends on the weather and ask about the forecast' },
+      { de:'Sag, es kommt aufs Wetter an, und frag nach der Vorhersage', es:'Di que depende del tiempo y pregunta por la previsión', en:'Say it depends on the weather and ask about the forecast' },
       { de:'Frag, wie es am Nachmittag wird', es:'Pregunta qué tiempo hará por la tarde', en:'Ask what it will be like in the afternoon' },
       { de:'Schlag vor, nachmittags zu fahren, und sag, dass du eine Jacke mitnimmst', es:'Propón ir por la tarde y di que llevas una chaqueta', en:'Suggest going in the afternoon and say you will bring a jacket' }
     ]
@@ -333,7 +333,7 @@
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
       deineRolle: { de:'Du bist Gast im Café. Du möchtest einen Kaffee zum Hiertrinken und danach zahlen.', es:'Eres cliente en la cafetería. Quieres un café para tomar allí y después pagar.', en:'You\'re a customer at the café. You want a coffee for here and then to pay.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
-      abrundung: { z:'Das macht drei Euro zwanzig. Schönen Tag noch!', na:{ es:'Son tres euros veinte. ¡Que tenga buen día!', en:'That\'s three twenty. Have a nice day!' } },
+      abrundung: { z:'Das macht drei Euro zwanzig. Schönen Tag noch!', na:{ es:'Son tres euros veinte. ¡Que tenga un buen día!', en:'That\'s three twenty. Have a nice day!' } },
       wortschatz: [
         { z:'der Kaffee', na:{ es:'el café', en:'coffee' } },
         { z:'der Tee', na:{ es:'el té', en:'tea' } },
@@ -346,14 +346,14 @@
         { z:'zahlen', na:{ es:'pagar', en:'to pay' } },
         { z:'bitte', na:{ es:'por favor', en:'please' } },
         { z:'danke', na:{ es:'gracias', en:'thank you' } },
-        { z:'stimmt so', na:{ es:'quédese con el cambio', en:'keep the change' } }
+        { z:'stimmt so', na:{ es:'quédese con la vuelta', en:'keep the change' } }
       ],
       dialog: {
         rolle: { es:'el camarero', en:'the barista' },
         zeilen: [
           { wer:'spikiu', z:'Guten Tag! Was darf\'s sein?', na:{ es:'¡Buenos días! ¿Qué le pongo?', en:'Hello! What can I get you?' } },
           { wer:'lerner', z:'Einen Kaffee, bitte.', na:{ es:'Un café, por favor.', en:'A coffee, please.' } },
-          { wer:'spikiu', z:'Gerne. Zum Hiertrinken oder zum Mitnehmen?', na:{ es:'Con gusto. ¿Para tomar aquí o para llevar?', en:'Sure. For here or to go?' } },
+          { wer:'spikiu', z:'Gerne. Zum Hiertrinken oder zum Mitnehmen?', na:{ es:'Claro. ¿Para tomar aquí o para llevar?', en:'Sure. For here or to go?' } },
           { wer:'lerner', z:'Zum Hiertrinken, bitte.', na:{ es:'Para tomar aquí, por favor.', en:'For here, please.' } },
           { wer:'spikiu', z:'Kommt sofort. Sonst noch etwas?', na:{ es:'Enseguida. ¿Algo más?', en:'Coming right up. Anything else?' } },
           { wer:'lerner', z:'Nein danke. Was macht das?', na:{ es:'No, gracias. ¿Cuánto le debo?', en:'No thanks. How much do I owe you?' } }
@@ -389,7 +389,7 @@
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
       deineRolle: { de:'Auf dem Wochenmarkt kaufst du Äpfel und Käse. Du hast einen Zehn-Euro-Schein.', es:'En el mercado compras manzanas y queso. Llevas un billete de diez euros.', en:'At the market you buy apples and cheese. You have a ten-euro note.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
-      abrundung: { z:'Und eineinhalb zurück. Schönen Tag noch!', na:{ es:'Y uno cincuenta de cambio. ¡Que tenga buen día!', en:'And one fifty back. Have a nice day!' } },
+      abrundung: { z:'Und eineinhalb zurück. Schönen Tag noch!', na:{ es:'Y uno cincuenta de cambio. ¡Que tenga un buen día!', en:'And one fifty back. Have a nice day!' } },
       wortschatz: [
         { z:'das Kilo', na:{ es:'el kilo', en:'the kilo' } },
         { z:'das Pfund', na:{ es:'la libra (medio kilo)', en:'the pound (half a kilo)' } },
@@ -407,9 +407,9 @@
       dialog: {
         rolle: { es:'la vendedora', en:'the vendor' },
         zeilen: [
-          { wer:'spikiu', z:'Guten Morgen! Wer ist der Nächste?', na:{ es:'¡Buenos días! ¿Quién sigue?', en:'Good morning! Who is next?' } },
+          { wer:'spikiu', z:'Guten Morgen! Wer ist der Nächste?', na:{ es:'¡Buenos días! ¿A quién le toca?', en:'Good morning! Who is next?' } },
           { wer:'lerner', z:'Ich. Ein Kilo Äpfel, bitte.', na:{ es:'Yo. Un kilo de manzanas, por favor.', en:'Me. A kilo of apples, please.' } },
-          { wer:'spikiu', z:'Gerne. Sonst noch einen Wunsch?', na:{ es:'Con gusto. ¿Algo más?', en:'Of course. Anything else?' } },
+          { wer:'spikiu', z:'Gerne. Sonst noch einen Wunsch?', na:{ es:'Muy bien. ¿Algo más?', en:'Of course. Anything else?' } },
           { wer:'lerner', z:'Ein halbes Pfund Käse. Was kostet das?', na:{ es:'Un cuarto de kilo de queso. ¿Cuánto cuesta?', en:'Half a pound of cheese. How much is that?' } },
           { wer:'spikiu', z:'Zusammen acht Euro fünfzig.', na:{ es:'En total, ocho euros con cincuenta.', en:'Eight fifty altogether.' } },
           { wer:'lerner', z:'Hier sind zehn Euro.', na:{ es:'Aquí tiene diez euros.', en:'Here\'s ten euros.' } }
@@ -557,7 +557,7 @@
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
       deineRolle: { de:'Ihr seid zu zweit und habt nicht reserviert.', es:'Son dos y no tienen reserva.', en:'There are two of you and no reservation.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
-      abrundung: { z:'Sehr gerne. Ich bringe Ihnen erst mal die Getränkekarte.', na:{ es:'Con gusto. Primero les traigo la carta de bebidas.', en:'Certainly. I\'ll bring you the drinks menu first.' } },
+      abrundung: { z:'Sehr gerne. Ich bringe Ihnen erst mal die Getränkekarte.', na:{ es:'Muy bien. Primero les traigo la carta de bebidas.', en:'Certainly. I\'ll bring you the drinks menu first.' } },
       wortschatz: [
         { z:'die Speisekarte', na:{ es:'la carta', en:'the menu' } },
         { z:'reservieren', na:{ es:'reservar', en:'to book' } },
@@ -577,7 +577,7 @@
         zeilen: [
           { wer:'spikiu', z:'Guten Abend! Haben Sie reserviert?', na:{ es:'¡Buenas noches! ¿Tienen reserva?', en:'Good evening! Do you have a reservation?' } },
           { wer:'lerner', z:'Nein, für zwei Personen bitte.', na:{ es:'No, para dos personas, por favor.', en:'No, for two people please.' } },
-          { wer:'spikiu', z:'Gerne, der Tisch am Fenster. Möchten Sie schon bestellen?', na:{ es:'Con gusto, la mesa de la ventana. ¿Ya quieren pedir?', en:'Of course, the table by the window. Ready to order?' } },
+          { wer:'spikiu', z:'Gerne, der Tisch am Fenster. Möchten Sie schon bestellen?', na:{ es:'Claro, la mesa junto a la ventana. ¿Quieren pedir ya?', en:'Of course, the table by the window. Ready to order?' } },
           { wer:'lerner', z:'Was können Sie empfehlen?', na:{ es:'¿Qué nos recomienda?', en:'What do you recommend?' } },
           { wer:'spikiu', z:'Heute ist der Schweinebraten sehr gut.', na:{ es:'Hoy el asado de cerdo está muy bueno.', en:'The roast pork is very good today.' } },
           { wer:'lerner', z:'Dann nehme ich den Schweinebraten.', na:{ es:'Entonces yo tomo el asado de cerdo.', en:'Then I\'ll have the roast pork.' } }
@@ -615,7 +615,7 @@
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Guten Abend. Ja bitte?', na:{ es:'Buenas noches. ¿Sí?', en:'Good evening. Yes?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
-      abrundung: { z:'So, da wären wir. Das macht achtundzwanzig Euro. Guten Flug!', na:{ es:'Ya llegamos. Son veintiocho euros. ¡Buen vuelo!', en:'Here we are. That\'s twenty-eight euros. Have a good flight!' } },
+      abrundung: { z:'So, da wären wir. Das macht achtundzwanzig Euro. Guten Flug!', na:{ es:'Ya hemos llegado. Son veintiocho euros. ¡Buen vuelo!', en:'Here we are. That\'s twenty-eight euros. Have a good flight!' } },
       wortschatz: [
         { z:'das Taxi', na:{ es:'el taxi', en:'the cab' } },
         { z:'der Flughafen', na:{ es:'el aeropuerto', en:'the airport' } },
@@ -628,7 +628,7 @@
         { z:'halten', na:{ es:'parar', en:'to stop' } },
         { z:'schnell', na:{ es:'rápido', en:'fast' } },
         { z:'langsam', na:{ es:'despacio', en:'slow' } },
-        { z:'stimmt so', na:{ es:'quédese con el cambio', en:'keep the change' } }
+        { z:'stimmt so', na:{ es:'quédese con la vuelta', en:'keep the change' } }
       ],
       dialog: {
         rolle: { es:'el taxista', en:'the driver' },
@@ -807,7 +807,7 @@
       dialog: {
         rolle: { es:'el médico', en:'the doctor' },
         zeilen: [
-          { wer:'spikiu', z:'Erzählen Sie mal, was ist denn passiert?', na:{ es:'Cuénteme, ¿qué le pasó?', en:'Tell me, what happened?' } },
+          { wer:'spikiu', z:'Erzählen Sie mal, was ist denn passiert?', na:{ es:'Cuénteme, ¿qué le ha pasado?', en:'Tell me, what happened?' } },
           { wer:'lerner', z:'Ich bin letzte Woche gestürzt, und die Schulter ist schlimmer geworden.', na:{ es:'Me caí la semana pasada y el hombro ha empeorado.', en:'I fell last week, and the shoulder has got worse.' } },
           { wer:'spikiu', z:'Nehmen Sie zurzeit Medikamente?', na:{ es:'¿Toma alguna medicina actualmente?', en:'Are you taking any medication at the moment?' } },
           { wer:'lerner', z:'Nur Schmerztabletten. Gegen Penizillin bin ich allergisch.', na:{ es:'Solo analgésicos. Soy alérgica a la penicilina.', en:'Only painkillers. I\'m allergic to penicillin.' } },
@@ -847,7 +847,7 @@
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Der Nächste bitte. Was kann ich für Sie tun?', na:{ es:'El siguiente, por favor. ¿En qué le ayudo?', en:'Next please. How can I help you?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
-      abrundung: { z:'Dann gilt Ihre Fahrkarte im nächsten ICE — die Zugbindung ist aufgehoben. Gute Fahrt!', na:{ es:'Entonces su billete vale para el siguiente tren. Queda libre de horario. ¡Buen viaje!', en:'Then your ticket is valid on the next train — the restriction is lifted. Have a good trip!' } },
+      abrundung: { z:'Dann gilt Ihre Fahrkarte im nächsten ICE — die Zugbindung ist aufgehoben. Gute Fahrt!', na:{ es:'Entonces su billete vale para el siguiente tren: ya no está atado a ese horario. ¡Buen viaje!', en:'Then your ticket is valid on the next train — the restriction is lifted. Have a good trip!' } },
       wortschatz: [
         { z:'die Verspätung', na:{ es:'el retraso', en:'the delay' } },
         { z:'umsteigen', na:{ es:'hacer transbordo', en:'to change trains' } },
@@ -891,7 +891,7 @@
         titel:{ es:'Gramática, directo al grano', en:'Simple Grammar for you' },
         text:{ es:'En una frase con **wenn**, el verbo se va **al final**: „**Wenn** ich ihn **verpasse**, ..." Después de la coma la frase vuelve a empezar normal. Suena raro al principio y se pega rápido, porque se usa todo el día.', en:'In a **wenn** clause the verb goes **to the end**: "**Wenn** ich ihn **verpasse**, ..." After the comma the sentence starts normally again. It feels odd at first and sticks fast, because you need it every day.' },
         beispiele:[
-          { z:'Wenn ich ihn verpasse, nehme ich den nächsten.', na:{ es:'Si lo pierdo, tomo el siguiente.', en:'If I miss it, I\'ll take the next one.' } },
+          { z:'Wenn ich ihn verpasse, nehme ich den nächsten.', na:{ es:'Si lo pierdo, cojo el siguiente.', en:'If I miss it, I\'ll take the next one.' } },
           { z:'Wenn es regnet, bleibe ich hier.', na:{ es:'Si llueve, me quedo aquí.', en:'If it rains, I\'ll stay here.' } }
         ]
       }
@@ -963,7 +963,7 @@
       /* Eröffnung: grüßt, ohne Aufgabe 1 vorwegzunehmen. */
       eroeffnung: { z:'Guten Tag, kann ich Ihnen behilflich sein?', na:{ es:'Buenos días, ¿le puedo ayudar en algo?', en:'Hello, can I help you with anything?' } },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
-      abrundung: { z:'Gerne, die Kabine ist hinten links. Ich bringe Ihnen die Größe.', na:{ es:'Con gusto, el probador está al fondo a la izquierda. Le traigo la talla.', en:'Of course, the fitting room is at the back on the left. I\'ll bring you the size.' } },
+      abrundung: { z:'Gerne, die Kabine ist hinten links. Ich bringe Ihnen die Größe.', na:{ es:'Claro, el probador está al fondo a la izquierda. Le traigo la talla.', en:'Of course, the fitting room is at the back on the left. I\'ll bring you the size.' } },
       wortschatz: [
         { z:'das Hemd', na:{ es:'la camisa', en:'the shirt' } },
         { z:'die Größe', na:{ es:'la talla', en:'the size' } },
@@ -1149,7 +1149,7 @@
         { z:'der Knödel', na:{ es:'la bola de patata', en:'the dumpling' } },
         { z:'das Gemüse', na:{ es:'la verdura', en:'the vegetables' } },
         { z:'die Portion', na:{ es:'la ración', en:'the portion' } },
-        { z:'reichen', na:{ es:'alcanzar', en:'to be enough' } },
+        { z:'reichen', na:{ es:'dar para, llegar', en:'to be enough' } },
         { z:'empfehlen', na:{ es:'recomendar', en:'to recommend' } },
         { z:'könnten wir', na:{ es:'¿podríamos?', en:'could we' } },
         { z:'hinterher', na:{ es:'después', en:'afterwards' } }
@@ -1161,13 +1161,13 @@
           { wer:'lerner', z:'Noch nicht. Was ist denn Ihre Spezialität?', na:{ es:'Todavía no. ¿Cuál es su especialidad?', en:'Not yet. What is your speciality?' } },
           { wer:'spikiu', z:'Der Schweinebraten mit Knödeln. Sehr deftig, aber gut.', na:{ es:'El asado de cerdo con bolas de patata. Contundente, pero bueno.', en:'The roast pork with dumplings. Very hearty, but good.' } },
           { wer:'lerner', z:'Gibt es etwas Leichteres? Wir möchten teilen.', na:{ es:'¿Hay algo más ligero? Queremos compartir.', en:'Is there something lighter? We\'d like to share.' } },
-          { wer:'spikiu', z:'Dann den Fisch mit Gemüse. Der reicht für zwei.', na:{ es:'Entonces el pescado con verduras. Alcanza para dos.', en:'The fish with vegetables then. That\'s enough for two.' } },
+          { wer:'spikiu', z:'Dann den Fisch mit Gemüse. Der reicht für zwei.', na:{ es:'Entonces el pescado con verduras. Da para dos.', en:'The fish with vegetables then. That\'s enough for two.' } },
           { wer:'lerner', z:'Gut. Und könnten wir hinterher getrennt zahlen?', na:{ es:'Bien. ¿Y podríamos pagar por separado después?', en:'Good. And could we pay separately afterwards?' } }
         ]
       },
       lesetext: {
         z:'Zwei Gäste fragen nach der Spezialität des Hauses. Der Schweinebraten mit Knödeln ist sehr deftig, deshalb möchten sie lieber etwas Leichteres teilen. Die Kellnerin empfiehlt den Fisch mit Gemüse — der reicht für zwei. Am Ende zahlen sie getrennt.',
-        na:{ es:'Dos clientes preguntan por la especialidad de la casa. El asado de cerdo con bolas de patata es muy contundente, así que prefieren compartir algo más ligero. La camarera les recomienda el pescado con verduras, que alcanza para dos. Al final pagan por separado.', en:'Two guests ask about the house speciality. The roast pork with dumplings is very hearty, so they\'d rather share something lighter. The waitress recommends the fish with vegetables — enough for two. In the end they pay separately.' },
+        na:{ es:'Dos clientes preguntan por la especialidad de la casa. El asado de cerdo con bolas de patata es muy contundente, así que prefieren compartir algo más ligero. La camarera les recomienda el pescado con verduras, que da para dos. Al final pagan por separado.', en:'Two guests ask about the house speciality. The roast pork with dumplings is very hearty, so they\'d rather share something lighter. The waitress recommends the fish with vegetables — enough for two. In the end they pay separately.' },
         frage:{ es:'¿Qué piden los dos?', en:'What do the two order?' },
         optionen:[
           { na:{ es:'Pescado con verduras', en:'Fish with vegetables' }, richtig:true },
@@ -1225,7 +1225,7 @@
       },
       lesetext: {
         z:'Morgens im Berufsverkehr will ein Fahrgast schnell zum Flughafen. Auf der Autobahn ist Stau, deshalb schlägt die Fahrerin den Weg durch die Stadt vor — zehn Minuten weniger. Am Ende bekommt der Fahrgast eine Quittung.',
-        na:{ es:'Por la mañana, en hora punta, un pasajero quiere llegar rápido al aeropuerto. Hay atasco en la autopista, así que la taxista propone ir por el centro: diez minutos menos. Al final el pasajero recibe un recibo.', en:'In the morning rush a passenger wants to get to the airport fast. There\'s a jam on the motorway, so the driver suggests going through town — ten minutes less. At the end the passenger gets a receipt.' },
+        na:{ es:'Por la mañana, en hora punta, un pasajero quiere llegar rápido al aeropuerto. Hay atasco en la autopista, así que la taxista propone ir por el centro: diez minutos menos. Al final la taxista le da un recibo.', en:'In the morning rush a passenger wants to get to the airport fast. There\'s a jam on the motorway, so the driver suggests going through town — ten minutes less. At the end the passenger gets a receipt.' },
         frage:{ es:'¿Por qué van por el centro?', en:'Why do they go through town?' },
         optionen:[
           { na:{ es:'Hay atasco en la autopista', en:'There\'s a jam on the motorway' }, richtig:true },
@@ -1313,11 +1313,11 @@
       /* Deine Rolle: was in dieser Szene GILT. Steht auf der Bühne, bevor
          es losgeht. Ohne sie verlangten die Aufgaben Aussagen über das echte
          Leben des Lerners — wer keine Schwester hat, müsste lügen. */
-      deineRolle: { de:'Ihr wollt am Samstag an den See. Du hast die Vorhersage noch nicht gesehen.', es:'Quieren ir al lago el sábado. Todavía no has visto el pronóstico.', en:'You want to go to the lake on Saturday. You haven\'t checked the forecast yet.' },
+      deineRolle: { de:'Ihr wollt am Samstag an den See. Du hast die Vorhersage noch nicht gesehen.', es:'Queréis ir al lago el sábado. Todavía no has visto la previsión del tiempo.', en:'You want to go to the lake on Saturday. You haven\'t checked the forecast yet.' },
       /* Abrundung: Spikius Reaktion NACH der dritten Aufgabe (R6). */
       abrundung: { z:'Gute Idee. Ich hole dich um zwei ab — bis Samstag!', na:{ es:'Buena idea. Te recojo a las dos. ¡Hasta el sábado!', en:'Good idea. I\'ll pick you up at two — see you Saturday!' } },
       wortschatz: [
-        { z:'die Vorhersage', na:{ es:'el pronóstico', en:'the forecast' } },
+        { z:'die Vorhersage', na:{ es:'la previsión del tiempo', en:'the forecast' } },
         { z:'aufklaren', na:{ es:'despejar', en:'to clear up' } },
         { z:'sonnig', na:{ es:'soleado', en:'sunny' } },
         { z:'bewölkt', na:{ es:'nublado', en:'cloudy' } },
@@ -1334,7 +1334,7 @@
         rolle: { es:'una amiga', en:'a friend' },
         zeilen: [
           { wer:'spikiu', z:'Wollen wir am Samstag an den See fahren?', na:{ es:'¿Vamos al lago el sábado?', en:'Shall we go to the lake on Saturday?' } },
-          { wer:'lerner', z:'Kommt aufs Wetter an. Hast du die Vorhersage gesehen?', na:{ es:'Depende del tiempo. ¿Has visto el pronóstico?', en:'Depends on the weather. Have you seen the forecast?' } },
+          { wer:'lerner', z:'Kommt aufs Wetter an. Hast du die Vorhersage gesehen?', na:{ es:'Depende del tiempo. ¿Has visto la previsión?', en:'Depends on the weather. Have you seen the forecast?' } },
           { wer:'spikiu', z:'Vormittags soll es regnen.', na:{ es:'Dicen que va a llover por la mañana.', en:'They say it\'ll rain in the morning.' } },
           { wer:'lerner', z:'Und am Nachmittag?', na:{ es:'¿Y por la tarde?', en:'And in the afternoon?' } },
           { wer:'spikiu', z:'Da klart es wohl auf. Soll sonnig werden.', na:{ es:'Seguramente mejora. Estará despejado.', en:'It should clear up then. Supposed to be sunny.' } },
@@ -1343,7 +1343,7 @@
       },
       lesetext: {
         z:'Zwei Freundinnen wollen am Samstag an den See fahren. Vormittags soll es regnen, am Nachmittag klart es wohl auf. Deshalb fahren sie erst nachmittags und nehmen sicherheitshalber eine Jacke mit. Abgeholt wird um zwei.',
-        na:{ es:'Dos amigas quieren ir al lago el sábado. Por la mañana dicen que va a llover; por la tarde seguramente despeja. Por eso van por la tarde y se llevan una chaqueta por si acaso. La recogida es a las dos.', en:'Two friends want to go to the lake on Saturday. It\'s supposed to rain in the morning; in the afternoon it\'ll probably clear up. So they\'re going in the afternoon and taking a jacket just in case. Pick-up is at two.' },
+        na:{ es:'Dos amigas quieren ir al lago el sábado. Por la mañana dicen que va a llover; por la tarde seguramente despeja. Por eso van por la tarde y se llevan una chaqueta por si acaso. Una pasa a recoger a la otra a las dos.', en:'Two friends want to go to the lake on Saturday. It\'s supposed to rain in the morning; in the afternoon it\'ll probably clear up. So they\'re going in the afternoon and taking a jacket just in case. Pick-up is at two.' },
         frage:{ es:'¿Cuándo van?', en:'When are they going?' },
         optionen:[
           { na:{ es:'Por la tarde', en:'In the afternoon' }, richtig:true },
@@ -1352,7 +1352,7 @@
         ]
       },
       schreibaufgabe: {
-        auftrag:{ es:'Pregunta por el pronóstico y propón algo para la tarde. Dos frases.', en:'Ask about the forecast and suggest something for the afternoon. Two sentences.' },
+        auftrag:{ es:'Pregunta por la previsión y propón algo para la tarde. Dos frases.', en:'Ask about the forecast and suggest something for the afternoon. Two sentences.' },
         muster:'Hast du die Vorhersage gesehen? Dann fahren wir doch nachmittags.'
       },
       grammatik: {

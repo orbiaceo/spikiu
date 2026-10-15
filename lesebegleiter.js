@@ -26,7 +26,7 @@
   // ── UI-Texte in der Muttersprache ──────────────────────
   var T = {
     de: { hint: 'Wenn du was fragen willst — ich bin da. 🐾', intro: 'Hola. Frag mich ruhig was zur Geschichte oder zu einem Wort — ich halt mich kurz.', ph: 'Frag mich was zur Geschichte …', send: 'fragen', err: 'Hm, das hat gerade nicht geklappt. Versuch es gleich nochmal.' },
-    es: { hint: 'Si quieres preguntar algo — aquí estoy. 🐾', intro: 'Hola. Pregúntame lo que quieras sobre la historia o una palabra — seré breve.', ph: 'Pregúntame algo sobre la historia …', send: 'preguntar', err: 'Uy, ahora no funcionó. Inténtalo de nuevo en un momento.' },
+    es: { hint: 'Si quieres preguntar algo — aquí estoy. 🐾', intro: 'Hola. Pregúntame lo que quieras sobre la historia o una palabra — seré breve.', ph: 'Pregúntame algo sobre la historia …', send: 'preguntar', err: 'Uy, ahora no ha funcionado. Inténtalo de nuevo en un momento.' },
     en: { hint: "If you'd like to ask something — I'm here. 🐾", intro: "Hi. Ask me anything about the story or a word — I'll keep it short.", ph: 'Ask me about the story …', send: 'ask', err: "Hmm, that didn't work just now. Try again in a moment." }
   };
   var t = T[MUT] || T.de;

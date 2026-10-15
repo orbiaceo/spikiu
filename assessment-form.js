@@ -38,12 +38,12 @@ const FORM_LABELS = {
     goal: '¿Cuál es tu objetivo concreto?',
     goalPlaceholder: 'Ej. Hablar con la familia de mi pareja en Medellín',
     deadline: '¿Para cuándo quieres lograrlo?',
-    deadlinePlaceholder: 'Ej. Agosto 2026',
+    deadlinePlaceholder: 'Ej. agosto de 2026',
     time: '¿Cuánto tiempo tienes por semana?',
     times: ['1–2 horas', '3–4 horas', '5–6 horas', 'Más de 6 horas'],
     targets: ['Español', 'Alemán', 'Inglés'],
     btn: 'Crear mi camino →',
-    error: 'Por favor completa todos los campos'
+    error: 'Por favor, completa todos los campos'
   },
   'English': {
     title: 'Your Personal Learning Path',

@@ -35,7 +35,7 @@
       { wort:'la familia', text:'Mi familia es muy grande.', ts:{ de:'Meine Familie ist sehr groß.', en:'My family is very big.' },   t:{ de:'die Familie', en:'the family',  es:'la familia' } },
       { wort:'el dinero',  text:'Ahora no tengo dinero.', ts:{ de:'Gerade habe ich kein Geld.', en:'I don\'t have any money right now.' },      t:{ de:'das Geld',    en:'the money',   es:'el dinero' } },
       { wort:'la ciudad',  text:'La ciudad es muy bonita.', ts:{ de:'Die Stadt ist sehr schön.', en:'The city is very beautiful.' },    t:{ de:'die Stadt',   en:'the city',    es:'la ciudad' } },
-      { wort:'el nombre',  text:'¿Cuál es tu nombre?', ts:{ de:'Wie ist dein Name?', en:'What is your name?' },         t:{ de:'der Name',    en:'the name',    es:'el nombre' } },
+      { wort:'el nombre',  text:'Escribe aquí tu nombre.', ts:{ de:'Schreib hier deinen Namen hin.', en:'Write your name here.' },         t:{ de:'der Name',    en:'the name',    es:'el nombre' } },
       { wort:'la palabra', text:'Aprendo una palabra nueva.', ts:{ de:'Ich lerne ein neues Wort.', en:'I\'m learning a new word.' },  t:{ de:'das Wort',    en:'the word',    es:'la palabra' } }
     ],
     de: [
@@ -57,7 +57,7 @@
       { wort:'die Familie', text:'Meine Familie ist groß.', ts:{ es:'Mi familia es grande.', en:'My family is big.' },       t:{ es:'la familia', en:'the family', de:'die Familie' } },
       { wort:'das Geld',    text:'Ich habe kein Geld dabei.', ts:{ es:'No llevo dinero encima.', en:'I don\'t have any money on me.' },     t:{ es:'el dinero',  en:'the money',  de:'das Geld' } },
       { wort:'die Stadt',   text:'Die Stadt ist sehr schön.', ts:{ es:'La ciudad es muy bonita.', en:'The city is very beautiful.' },     t:{ es:'la ciudad',  en:'the city',   de:'die Stadt' } },
-      { wort:'der Name',    text:'Wie ist dein Name?', ts:{ es:'¿Cuál es tu nombre?', en:'What is your name?' },            t:{ es:'el nombre',  en:'the name',   de:'der Name' } },
+      { wort:'der Name',    text:'Wie ist dein Name?', ts:{ es:'¿Cómo te llamas?', en:'What is your name?' },            t:{ es:'el nombre',  en:'the name',   de:'der Name' } },
       { wort:'das Wort',    text:'Ich lerne ein neues Wort.', ts:{ es:'Aprendo una palabra nueva.', en:'I\'m learning a new word.' },     t:{ es:'la palabra', en:'the word',   de:'das Wort' } }
     ],
     en: [

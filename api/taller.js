@@ -88,7 +88,7 @@ Felder:
   lädt zum Lesen ein, ruhig. Kein Test-Ton, kein „Aufgabe 1 von 3".
 - "texto": der Lesetext in der Zielsprache (${sprache}). Kurz — ein Blick. Ein echter
   Gebrauchstext (Anzeige, Aushang, kurze Nachricht, Speisekarte, kurzer Artikel).
-  Neutrale Standardform, NIE regional/voseo.
+  Neutrale Standardform, NIE regional/voseo. Spanisch: castellano de España (móvil, billete, vosotros …).
 - "bruecke": ein paar Schlüsselwörter mit Übersetzung als EINE Zeile — oder null.
   Regler: ${reglerText(koennen)}
 - "lautschrift": ${schriftRegel}

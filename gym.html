@@ -298,7 +298,7 @@ function zeigeWiedersehen(frisch){
     return t ? (t.em + ' ' + (t.na[uiLang()] || t.na.de)) : '';
   }).filter(Boolean).join(' · ');
   if (!namen) return;
-  var TXT = { de:' sitzt jetzt.', es:' ya se quedó.', en:' has settled.' };
+  var TXT = { de:' sitzt jetzt.', es:' ya se te ha quedado.', en:' has settled.' };
   var box = document.createElement('div');
   box.id = 'pfWieder'; box.className = 'pf-wieder';
   box.textContent = namen + (TXT[uiLang()] || TXT.de);
