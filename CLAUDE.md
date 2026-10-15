@@ -22,7 +22,7 @@ ex-Langenscheidt; er editiert **nie** Code selbst. Du lieferst komplette Dateien
 er committet, testet, kritisiert.
 
 Spikiu ist ein KI-gestützter Lern-**Companion** (kein Kurs, kein Lehrer) für
-Spanisch (castellano de España — Formen aus Spanien: móvil, billete, vosotros …; NIE voseo/rioplatense; Leo, 15.10.2026) und Deutsch. Manifest:
+Spanisch und Deutsch. Spanisch (Leo, 15.10.2026): **geschriebene Lerninhalte** bis Etappe A2 in den Formen aus Spanien (móvil, billete, vosotros …); **Aussprache, Stimme und Spikius eigenes Sprechen** neutral lateinamerikanisch; B1-Inhalte dürfen in Lateinamerika spielen; NIE voseo/rioplatense. Manifest:
 „Sprache lernt man nicht. Man betritt sie." Maskottchen: ein Capybara, IMMER
 komplett (Ohren + 4 Beine), heißt nach außen IMMER „Spikiu", nie „Capy".
 
