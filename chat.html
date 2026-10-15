@@ -1464,7 +1464,7 @@ function appendSpikiuSlide(ziel, trans){
     + '<button class="speak-btn reel-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button></div>'
     + (trans ? '<div class="reel-trans">' + fmt(trans) + '</div>' : '')
     + '</div>'
-    + '<div class="reel-hint">' + escPlain(reelUI().swipe) + '</div>';
+    ;  /* „nach links wischen“ entfernt (Leo, 15.10.) */
   // Kopfzeile: Rolle links, Stift und Beenden rechts. Feste Höhe — sie wächst
   // nie mit dem Satz, egal wie lang er wird. Nur im freien Flur.
   if (!gefuehrt){
@@ -2947,7 +2947,7 @@ function renderWortschatz(){
       +     '<button class="hap-play" type="button">' + PLAY_SVG + '</button>'
       +   '</div>'
       + '</div></div>'
-      + '<div class="hap-swipe-hint">' + escPlain(reelUI().swipe) + '</div>';
+      /* Wischhinweis entfernt (Leo, 15.10.) */;
     mountWidget(w);                        // eine Flip-Karte pro Wort
     var flip = w.querySelector('.hap-flip');
     flip.addEventListener('click', function(e){
@@ -3105,7 +3105,7 @@ function startDrill(){
       +     '<div class="hap-ziel">' + escPlain(h.ziel) + '</div>' + phon
       +   '</div>'
       + '</div></div>'
-      + '<div class="hap-swipe-hint">' + escPlain(reelUI().swipe) + '</div>';
+      /* Wischhinweis entfernt (Leo, 15.10.) */;
     mountWidget(w);
     var flip = w.querySelector('.hap-flip');
     flip.addEventListener('click', function(e){

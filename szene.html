@@ -655,7 +655,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     +     esc(inSprache(ROLLE && ROLLE.lerner, MU)) + '</div></div>'
     + '</div>';
     k.insertAdjacentHTML('beforeend',
-      '<div class="wischhilfe">' + esc(T('wischhilfe')) + '</div>');
+      ''  /* Wischhilfe entfernt (Leo, 15.10.) */);
     var b = document.createElement('button');
     b.className = 'knopf';
     b.textContent = T('los');

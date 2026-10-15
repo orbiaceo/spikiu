@@ -44,7 +44,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .prov-src{font:600 .78rem/1 'DM Mono',monospace;color:#8a8378;letter-spacing:.02em;}
 .card.spiel-card{justify-content:flex-start;overflow-y:auto;padding-bottom:2.4rem;}
 .ueb-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--green);}
-.card-hint{position:absolute;left:0;right:0;bottom:.7rem;font:600 .72rem/1 'DM Mono',monospace;color:var(--warm);letter-spacing:.05em;animation:provNudge 1.8s ease-in-out infinite;}
+.card-hint{display:none!important;position:absolute;left:0;right:0;bottom:.7rem;font:600 .72rem/1 'DM Mono',monospace;color:var(--warm);letter-spacing:.05em;animation:provNudge 1.8s ease-in-out infinite;}
 @keyframes provNudge{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(-5px);opacity:1;}}
 .deck-nav{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.7rem 1rem calc(1rem + env(safe-area-inset-bottom));border-top:var(--ow) solid var(--ink);background:rgba(255,255,255,.7);}
 .deck-btn{background:#fff;border:var(--ow) solid var(--ink);color:var(--ink);border-radius:999px;padding:.6rem .9rem;font:800 .86rem/1 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--ink);white-space:nowrap;}
@@ -186,7 +186,7 @@ function makeProverbCard(provI){
     + (prov.woertlich ? '<div class="prov-lit"><span class="prov-lit-k">' + escPlain(ui().woertlich) + '</span> ' + escPlain(prov.woertlich) + '</div>' : '')
     + '<div class="prov-trans">' + (prov.woertlich ? '<span class="prov-lit-k">' + escPlain(ui().bedeutung) + '</span> ' : '') + escPlain(prov.translation) + '</div>'
     + '<div class="prov-src">' + (prov.src ? '— ' + escPlain(prov.src) : '') + '</div>'
-    + '<div class="card-hint">' + escPlain(ui().hintFwd) + '</div>';
+    ;  /* „weiter wischen“ entfernt (Leo, 15.10.: unnötig neben dem Weiter-Knopf, lag über dem Text) */
   var sb = card.querySelector('.prov-speak');
   if (sb) sb.onclick = function(){ playFrom(sb, prov.text); };
   // Antippen des Satzes klappt die wörtliche Übersetzung auf/zu (Leo, 28.09.).
@@ -214,8 +214,6 @@ function makeUebungCard(provI){
   var eb = document.createElement('div'); eb.className = 'ueb-eyebrow'; eb.textContent = ui().uebung;
   card.appendChild(eb);
   card.appendChild(window.spikiuUebung(item, type));
-  var hint = document.createElement('div'); hint.className = 'card-hint'; hint.textContent = ui().hintFwd;
-  card.appendChild(hint);
   return card;
 }
 
@@ -239,8 +237,6 @@ function makeSpielCard(provI, nr){
   var card = document.createElement('div'); card.className = 'card ueb-card spiel-card';
   var eb = document.createElement('div'); eb.className = 'ueb-eyebrow'; eb.textContent = ui().uebung;
   card.appendChild(eb); card.appendChild(spiel);
-  var hint = document.createElement('div'); hint.className = 'card-hint'; hint.textContent = ui().hintFwd;
-  card.appendChild(hint);
   return card;
 }
 

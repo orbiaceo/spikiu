@@ -54,7 +54,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .gym-ex{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:#8a8378;max-width:20rem;}
 .gym-ts{font-size:.9rem;color:#5f7068;max-width:20rem;margin-top:-.45rem;}   /* Übersetzung des Beispielsatzes (Leo, 12.10.) */
 .gym-src{font:700 .9rem/1 'DM Mono',monospace;color:var(--sage);}
-.card-hint{position:absolute;left:0;right:0;bottom:.7rem;font:600 .72rem/1 'DM Mono',monospace;color:var(--warm);letter-spacing:.05em;animation:gymNudge 1.8s ease-in-out infinite;}
+.card-hint{display:none!important;position:absolute;left:0;right:0;bottom:.7rem;font:600 .72rem/1 'DM Mono',monospace;color:var(--warm);letter-spacing:.05em;animation:gymNudge 1.8s ease-in-out infinite;}
 @keyframes gymNudge{0%,100%{transform:translateX(0);opacity:.7;}50%{transform:translateX(-5px);opacity:1;}}
 .deck-nav{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.7rem 1rem calc(1rem + env(safe-area-inset-bottom));border-top:var(--ow) solid var(--ink);background:rgba(255,255,255,.7);}
 .deck-btn{background:#fff;border:var(--ow) solid var(--ink);color:var(--ink);border-radius:999px;padding:.6rem .9rem;font:800 .86rem/1 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--ink);white-space:nowrap;}
@@ -248,7 +248,7 @@ function makeWordCard(wi){
     + (wd.text ? '<div class="gym-ex">' + escPlain(wd.text) + '</div>' : '')
     + (wd.text && wd.ts ? '<div class="gym-ts">' + escPlain(wd.ts) + '</div>' : '')
     + (wd.buch ? '<div class="gym-src">🍃</div>' : wd.own ? '<div class="gym-src">+</div>' : '')
-    + '<div class="card-hint">' + escPlain(ui().hintFwd) + '</div>';
+    ;  /* „weiter wischen“ entfernt (Leo, 15.10.) */
   var sb = card.querySelector('.gym-speak');
   if (sb) sb.onclick = function(){ playFrom(sb, wd.wort); };
   return card;
@@ -285,8 +285,6 @@ function makeUebungCard(wi){
       } catch(e){}
     });
   }
-  var hint = document.createElement('div'); hint.className = 'card-hint'; hint.textContent = ui().hintFwd;
-  card.appendChild(hint);
   return card;
 }
 
