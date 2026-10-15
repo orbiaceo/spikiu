@@ -72,7 +72,15 @@
       { wort:'the door',   text:'Please close the door.', ts:{ de:'Mach bitte die Tür zu.', es:'Cierra la puerta, por favor.', el:'Κλείσε την πόρτα, σε παρακαλώ.' },     t:{ de:'die Tür',    es:'la puerta',  en:'the door', el:'η πόρτα' } },
       { wort:'the car',    text:'The car is red.', ts:{ de:'Das Auto ist rot.', es:'El coche es rojo.', el:'Το αυτοκίνητο είναι κόκκινο.' },            t:{ de:'das Auto',   es:'el coche',   en:'the car', el:'το αυτοκίνητο' } },
       { wort:'the city',   text:'The city is very nice.', ts:{ de:'Die Stadt ist sehr schön.', es:'La ciudad es muy bonita.', el:'Η πόλη είναι πολύ ωραία.' },     t:{ de:'die Stadt',  es:'la ciudad',  en:'the city', el:'η πόλη' } },
-      { wort:'the word',   text:'I learn a new word.', ts:{ de:'Ich lerne ein neues Wort.', es:'Aprendo una palabra nueva.', el:'Μαθαίνω μια καινούρια λέξη.' },        t:{ de:'das Wort',   es:'la palabra', en:'the word', el:'η λέξη' } }
+      { wort:'the word',   text:'I learn a new word.', ts:{ de:'Ich lerne ein neues Wort.', es:'Aprendo una palabra nueva.', el:'Μαθαίνω μια καινούρια λέξη.' },        t:{ de:'das Wort',   es:'la palabra', en:'the word', el:'η λέξη' } },
+      {"wort":"the apple","text":"I eat an apple every morning.","ts":{"de":"Ich esse jeden Morgen einen Apfel.","es":"Me como una manzana todas las mañanas.","el":"Τρώω ένα μήλο κάθε πρωί."},"t":{"de":"der Apfel","es":"la manzana","en":"the apple","el":"το μήλο"}},
+      {"wort":"the bread","text":"The bread is still warm.","ts":{"de":"Das Brot ist noch warm.","es":"El pan todavía está caliente.","el":"Το ψωμί είναι ακόμα ζεστό."},"t":{"de":"das Brot","es":"el pan","en":"the bread","el":"το ψωμί"}},
+      {"wort":"the bed","text":"My bed is very comfortable.","ts":{"de":"Mein Bett ist sehr bequem.","es":"Mi cama es muy cómoda.","el":"Το κρεβάτι μου είναι πολύ άνετο."},"t":{"de":"das Bett","es":"la cama","en":"the bed","el":"το κρεβάτι"}},
+      {"wort":"the key","text":"I can’t find my key.","ts":{"de":"Ich finde meinen Schlüssel nicht.","es":"No encuentro mi llave.","el":"Δεν βρίσκω το κλειδί μου."},"t":{"de":"der Schlüssel","es":"la llave","en":"the key","el":"το κλειδί"}},
+      {"wort":"the bus","text":"The bus is late again.","ts":{"de":"Der Bus hat schon wieder Verspätung.","es":"El autobús llega tarde otra vez.","el":"Το λεωφορείο αργεί πάλι."},"t":{"de":"der Bus","es":"el autobús","en":"the bus","el":"το λεωφορείο"}},
+      {"wort":"the chair","text":"Please sit on this chair.","ts":{"de":"Setz dich bitte auf diesen Stuhl.","es":"Siéntate en esta silla, por favor.","el":"Κάθισε σε αυτή την καρέκλα, σε παρακαλώ."},"t":{"de":"der Stuhl","es":"la silla","en":"the chair","el":"η καρέκλα"}},
+      {"wort":"the dog","text":"Our dog loves the park.","ts":{"de":"Unser Hund liebt den Park.","es":"A nuestro perro le encanta el parque.","el":"Ο σκύλος μας λατρεύει το πάρκο."},"t":{"de":"der Hund","es":"el perro","en":"the dog","el":"ο σκύλος"}},
+      {"wort":"the coffee","text":"I drink my coffee black.","ts":{"de":"Ich trinke meinen Kaffee schwarz.","es":"Tomo el café solo.","el":"Πίνω τον καφέ μου σκέτο."},"t":{"de":"der Kaffee","es":"el café","en":"the coffee","el":"ο καφές"}}
     ],
     el: [
       { wort:'το σπίτι',  text:'Μένω σε ένα μικρό σπίτι.', ts:{ de:'Ich wohne in einem kleinen Haus.', es:'Vivo en una casa pequeña.', en:'I live in a small house.' },    t:{ de:'das Haus',   es:'la casa',   en:'the house' } },
@@ -84,7 +92,17 @@
       { wort:'το βιβλίο', text:'Διαβάζω ένα καλό βιβλίο.', ts:{ de:'Ich lese ein gutes Buch.', es:'Leo un buen libro.', en:'I\'m reading a good book.' },    t:{ de:'das Buch',   es:'el libro',  en:'the book' } },
       { wort:'η πόρτα',   text:'Κλείσε την πόρτα, παρακαλώ.', ts:{ de:'Mach bitte die Tür zu.', es:'Cierra la puerta, por favor.', en:'Close the door, please.' }, t:{ de:'die Tür',    es:'la puerta', en:'the door' } },
       { wort:'ο ήλιος',  text:'Σήμερα ο ήλιος λάμπει.', ts:{ de:'Heute scheint die Sonne.', es:'Hoy brilla el sol.', en:'The sun is shining today.' },      t:{ de:'die Sonne',  es:'el sol',    en:'the sun' } },
-      { wort:'η λέξη',    text:'Μαθαίνω μια νέα λέξη.', ts:{ de:'Ich lerne ein neues Wort.', es:'Aprendo una palabra nueva.', en:'I\'m learning a new word.' },       t:{ de:'das Wort',   es:'la palabra', en:'the word' } }
+      { wort:'η λέξη',    text:'Μαθαίνω μια νέα λέξη.', ts:{ de:'Ich lerne ein neues Wort.', es:'Aprendo una palabra nueva.', en:'I\'m learning a new word.' },       t:{ de:'das Wort',   es:'la palabra', en:'the word' } },
+      {"wort":"το ψωμί","text":"Αγοράζω φρέσκο ψωμί το πρωί.","ts":{"de":"Ich kaufe morgens frisches Brot.","es":"Compro pan del día por la mañana.","en":"I buy fresh bread in the morning."},"t":{"de":"das Brot","es":"el pan","en":"the bread"}},
+      {"wort":"ο καφές","text":"Ο καφές είναι πολύ ζεστός.","ts":{"de":"Der Kaffee ist sehr heiß.","es":"El café está muy caliente.","en":"The coffee is very hot."},"t":{"de":"der Kaffee","es":"el café","en":"the coffee"}},
+      {"wort":"η θάλασσα","text":"Το καλοκαίρι κολυμπάμε στη θάλασσα.","ts":{"de":"Im Sommer schwimmen wir im Meer.","es":"En verano nadamos en el mar.","en":"In summer we swim in the sea."},"t":{"de":"das Meer","es":"el mar","en":"the sea"}},
+      {"wort":"το τραπέζι","text":"Το τραπέζι είναι στην κουζίνα.","ts":{"de":"Der Tisch steht in der Küche.","es":"La mesa está en la cocina.","en":"The table is in the kitchen."},"t":{"de":"der Tisch","es":"la mesa","en":"the table"}},
+      {"wort":"το αυτοκίνητο","text":"Το αυτοκίνητο είναι κόκκινο.","ts":{"de":"Das Auto ist rot.","es":"El coche es rojo.","en":"The car is red."},"t":{"de":"das Auto","es":"el coche","en":"the car"}},
+      {"wort":"το λεωφορείο","text":"Το λεωφορείο έρχεται σε πέντε λεπτά.","ts":{"de":"Der Bus kommt in fünf Minuten.","es":"El autobús llega en cinco minutos.","en":"The bus comes in five minutes."},"t":{"de":"der Bus","es":"el autobús","en":"the bus"}},
+      {"wort":"το κλειδί","text":"Πού είναι το κλειδί μου;","ts":{"de":"Wo ist mein Schlüssel?","es":"¿Dónde está mi llave?","en":"Where is my key?"},"t":{"de":"der Schlüssel","es":"la llave","en":"the key"}},
+      {"wort":"η μητέρα","text":"Η μητέρα μου μένει στη Θεσσαλονίκη.","ts":{"de":"Meine Mutter wohnt in Thessaloniki.","es":"Mi madre vive en Salónica.","en":"My mother lives in Thessaloniki."},"t":{"de":"die Mutter","es":"la madre","en":"the mother"}},
+      {"wort":"το παιδί","text":"Το παιδί παίζει στην αυλή.","ts":{"de":"Das Kind spielt im Hof.","es":"El niño juega en el patio.","en":"The child is playing in the yard."},"t":{"de":"das Kind","es":"el niño","en":"the child"}},
+      {"wort":"η γάτα","text":"Η γάτα κοιμάται στον καναπέ.","ts":{"de":"Die Katze schläft auf dem Sofa.","es":"La gata duerme en el sofá.","en":"The cat is sleeping on the sofa."},"t":{"de":"die Katze","es":"el gato","en":"the cat"}}
     ]
   };
 
@@ -93,7 +111,8 @@
   var ICONMAP = {
     'the house':'🏠','the water':'💧','the food':'🍽️','the street':'🛣️','the night':'🌙',
     'the hand':'✋','the book':'📖','the door':'🚪','the car':'🚗','the sun':'☀️',
-    'the city':'🏙️','the money':'💶','the family':'👪'
+    'the city':'🏙️','the money':'💶','the family':'👪',
+    'the apple':'🍎','the bread':'🍞','the key':'🔑','the bus':'🚌','the chair':'🪑','the coffee':'☕','the sea':'🌊','the bed':'🛏'
   };
 
   w.spikiuWortschatz = function (zielsprache, muttersprache) {
