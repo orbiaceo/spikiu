@@ -375,11 +375,61 @@ button{font:inherit;cursor:pointer}
       { start: startIdx || 0, onStep: function (i) { sitzSetze('drill', i); } });
   }
 
-  /* ── SPRECHEN B: Skript-Rollenspiel (szenen-dialog.js) ── */
+  /* ── Rollenspiel aus dem Lernpfad-Dialog (15.10.2026, Leo: „zuerst vollständig") ──
+     Das Skript-Rollenspiel (szenen-dialog.js) gibt es nur für Spanisch und nur mit
+     DEUTSCHEN Übersetzungen. Für alle anderen Paare baut sich das Rollenspiel aus dem
+     Dialog der Station, die der Lerner gerade hat: Spikius Zeile → die richtige
+     Lernerzeile + zwei Lernerzeilen aus ANDEREN Szenen derselben Stufe als falsche
+     Wahl; Tipp = die Aufgabe in der Muttersprache; Übersetzung = na[Muttersprache].
+     Null Token, alle Sprachen, A1 und A2. */
+  function rollenspielAusPfad() {
+    try {
+      var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
+      if (!D || D.zielsprache !== ZIEL || !TOPIC_ID) return null;
+      var st = (HAP && HAP.stufe) || ((P && P.existiert && P.existiert()) ? P.stufe() : 'a1');
+      if (!D.station(st, TOPIC_ID)) st = 'a1';
+      var S = D.station(st, TOPIC_ID);
+      if (!S || !S.dialog || !S.dialog.zeilen) return null;
+      var na = function (o) { return o && o.na ? (o.na[MUT] || o.na.en || o.na.de || o.na.es || '') : ''; };
+      var zeilen = S.dialog.zeilen, paare = [], vor = null;
+      if (zeilen[0] && zeilen[0].wer !== 'spikiu') vor = D.eroeffnungVon ? D.eroeffnungVon(st, TOPIC_ID) : null;
+      zeilen.forEach(function (z) {
+        if (z.wer === 'spikiu') { vor = z; return; }
+        if (vor) paare.push({ sp: vor, le: z });
+        vor = null;
+      });
+      if (!paare.length) return null;
+      // Falsche Antworten: Lernerzeilen aus anderen Szenen derselben Stufe.
+      var fremd = [];
+      (D.themen || []).forEach(function (t) {
+        if (t.id === TOPIC_ID) return;
+        var X = D.station(st, t.id);
+        ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer !== 'spikiu' && z.z) fremd.push(z.z); });
+      });
+      var aufg = (D.aufgabenVon && D.aufgabenVon(st, TOPIC_ID)) || [];
+      var rl = D.rolle ? D.rolle(TOPIC_ID) : null;
+      var rolleText = rl && rl.spikiu ? (rl.spikiu[MUT] || rl.spikiu.en || rl.spikiu.de || '') : '';
+      if (rolleText) rolleText = rolleText.charAt(0).toUpperCase() + rolleText.slice(1);
+      var schritte = paare.map(function (p, k) {
+        var falsch = shuffle(fremd.filter(function (f) { return f !== p.le.z; })).slice(0, 2);
+        var a = aufg[k];
+        return {
+          spikiu: { ziel: p.sp.z, trans: (p.sp.tr ? p.sp.tr + ' — ' : '') + na(p.sp) },   // Griechisch: Umschrift vorneweg
+          tip: a ? (a[MUT] || a.en || a.de || null) : null,
+          opts: [{ text: p.le.z, ok: true }].concat(falsch.map(function (f) { return { text: f, ok: false }; }))
+        };
+      });
+      return { rolleText: rolleText, schritte: schritte, ausPfad: true };
+    } catch (e) { return null; }
+  }
+
+  /* ── SPRECHEN B: Skript-Rollenspiel (szenen-dialog.js) — sonst aus dem Lernpfad ── */
   function startRollenspiel(startIdx) {
     RP = (window.spikiuSzenenDialog) ? window.spikiuSzenenDialog(TOPIC_ID, ZIEL) : null;
+    // Das Skript trägt nur deutsche Übersetzungen → für andere Muttersprachen den Pfad nehmen.
+    if (!RP || !RP.schritte || !RP.schritte.length || MUT !== 'de') { var G = rollenspielAusPfad(); if (G) RP = G; }
     if (!RP || !RP.schritte || !RP.schritte.length) { finishScene(); return; }
-    var rolle = (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
+    var rolle = RP.rolleText || (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
     var items = RP.schritte.map(function (st, i) {
       return {
         typ: 'roleplay',
@@ -398,7 +448,7 @@ button{font:inherit;cursor:pointer}
     var vocab = HAP.wortschatz.map(function (h) { return { word: h.ziel, translation: h.uebersetzung || '' }; });
     var dialogue = [];
     if (RP && RP.schritte) {
-      var rolle = (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
+      var rolle = RP.rolleText || (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
       RP.schritte.forEach(function (st) {
         dialogue.push({ speaker: rolle, text: st.spikiu.ziel, translation: st.spikiu.trans });
         var ok = null; st.opts.forEach(function (o) { if (o.ok && !ok) ok = o; });
@@ -465,7 +515,7 @@ button{font:inherit;cursor:pointer}
        Die Skript-Übersetzungen (spikiu.trans) sind DEUTSCH → als Piñata-Satz
        nur Spikius Zeilen, und nur wenn die Muttersprache Deutsch ist. Sonst
        gibt es keine Übersetzung → dann Gemelos (Wörter haben eine). */
-    var trPasst = (MUT === 'de');
+    var trPasst = (MUT === 'de') || !!(RP && RP.ausPfad);   // Pfad-Rollenspiel trägt die Muttersprache
     if (RP && RP.schritte) RP.schritte.forEach(function (st) {
       if (st.spikiu && st.spikiu.ziel) {
         saetze.push(st.spikiu.ziel);
