@@ -113,15 +113,19 @@ button{font-family:inherit}
 
  function zielsprache(){return DEV?selLang.value:(stored.zielsprache||langCode(stored.targetLang)||'es');}
  function koennen(){return DEV?selKoennen.value:(stored.koennen||koennenFrom(stored.level)||'anfang');}
- function muttersprache(){var m=stored.muttersprache||langCode(stored.nativeLang)||'de';return ['de','es','en'].indexOf(m)>-1?m:'de';}
+ function muttersprache(){var m=stored.muttersprache||langCode(stored.nativeLang)||'de';return ['de','es','en','el'].indexOf(m)>-1?m:'de';}
 
- // ── i18n Chrome (UI = Muttersprache; el nie UI) ──
+ // ── i18n Chrome (UI = Muttersprache: de · es · en · el) ──
  var TXT={
   de:{k:'Übung',room:'Lesewerkstatt',again:'Noch ein Text',enough:'Genug für heute',prem:'Premium',premHint:'Schreib frei — Spikiu liest deinen Satz.',corr:'Richtig: ',empty:'Bald mehr Texte hier.'},
   es:{k:'Práctica',room:'Taller de lectura',again:'Otro texto',enough:'Ya está bien por hoy',prem:'Premium',premHint:'Escribe libremente — Spikiu lee tu frase.',corr:'Correcto: ',empty:'Pronto más textos aquí.'},
-  en:{k:'Practice',room:'Reading workshop',again:'Another text',enough:'Enough for today',prem:'Premium',premHint:'Write freely — Spikiu reads your sentence.',corr:'Correct: ',empty:'More texts here soon.'}
+  en:{k:'Practice',room:'Reading workshop',again:'Another text',enough:'Enough for today',prem:'Premium',premHint:'Write freely — Spikiu reads your sentence.',corr:'Correct: ',empty:'More texts here soon.'},
+  el:{k:'Εξάσκηση',room:'Εργαστήρι ανάγνωσης',again:'Άλλο ένα κείμενο',enough:'Αρκετά για σήμερα',prem:'Premium',premHint:'Γράψε ελεύθερα — ο Spikiu διαβάζει την πρότασή σου.',corr:'Σωστό: ',empty:'Σύντομα περισσότερα κείμενα εδώ.'}
  };
  var T=TXT[muttersprache()];
+ // Muttersprache-Feld: String (alt) ODER {de,es,en,el} → passende Sprache, Fallback de
+ function mt(v){if(v==null)return '';if(typeof v!=='object')return v;var m=muttersprache();return v[m]!=null?v[m]:(v.de!=null?v.de:'');}
+ if(muttersprache()==='el')document.documentElement.lang='el';
  document.getElementById('kRoom').textContent=T.room;
  document.getElementById('back').onclick=function(){location.href='haus.html';};
 
@@ -131,14 +135,14 @@ button{font-family:inherit}
 
  var B=document.getElementById('body'),F=document.getElementById('foot');
 
- function mcHTML(a,i){var h='<div class="task mc" data-i="'+i+'"><div class="q">'+esc(a.frage)+'</div>';
+ function mcHTML(a,i){var h='<div class="task mc" data-i="'+i+'"><div class="q">'+esc(mt(a.frage))+'</div>';
   a.optionen.forEach(function(o,k){h+='<button class="opt" data-k="'+k+'">'+esc(o)+'</button>';});
   return h+'<div class="expl" style="display:none"></div></div>';}
- function ordenHTML(a,i){var h='<div class="task orden" data-i="'+i+'"><div class="q">'+esc(a.frage)+'</div>';
+ function ordenHTML(a,i){var h='<div class="task orden" data-i="'+i+'"><div class="q">'+esc(mt(a.frage))+'</div>';
   h+='<div class="ans" data-ans></div><div class="pool" data-pool>';
   a.teile.forEach(function(p,k){h+='<button class="part" data-k="'+k+'">'+esc(p)+'</button>';});
   return h+'</div><div class="done" style="display:none"></div></div>';}
- function freiHTML(a){return '<div class="prem"><div class="lock">🔒</div><div class="pt">'+esc(a.frage)+'</div>'+
+ function freiHTML(a){return '<div class="prem"><div class="lock">🔒</div><div class="pt">'+esc(mt(a.frage))+'</div>'+
   '<div class="pq">'+esc(T.premHint)+'</div><div class="tag">'+esc(T.prem)+'</div></div>';}
 
  var CAPY_SMALL='<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
@@ -151,24 +155,24 @@ button{font-family:inherit}
   + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
   + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
   + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
- var JAGD={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.'};
- var VORLESEN={de:'Vorlesen',es:'Escuchar',en:'Read aloud'};
+ var JAGD={de:'Tipp ein Wort an, um es in dein Buch zu nehmen.',es:'Toca una palabra para llevarla a tu libro.',en:'Tap a word to take it to your book.',el:'Πάτησε μια λέξη για να την πάρεις στο βιβλίο σου.'};
+ var VORLESEN={de:'Vorlesen',es:'Escuchar',en:'Read aloud',el:'Άκου'};
  var CUR=null;
  function render(entry){
   CUR=entry;var ziel=zielsprache();
-  var h='<div class="rahmen">'+esc(entry.rahmen)+'</div>';
+  var h='<div class="rahmen">'+esc(mt(entry.rahmen))+'</div>';
   h+='<div class="wjhint" id="wjhint" hidden><div class="wjh-cap">'+CAPY_SMALL+'</div><div class="wjh-tx">'+(JAGD[muttersprache()]||JAGD.de)+'</div></div>';
   h+='<div class="texto"><div class="t">'+esc(entry.texto)+'</div>';
   if(entry.lautschrift)h+='<div class="lau">'+esc(entry.lautschrift)+'</div>';
-  if(entry.bruecke){h+='<div class="bruecke">';entry.bruecke.forEach(function(x){h+='<span class="bw"><b>'+esc(x.w)+'</b> · '+esc(x.t)+'</span>';});h+='</div>';}
+  if(entry.bruecke){h+='<div class="bruecke">';entry.bruecke.forEach(function(x){h+='<span class="bw"><b>'+esc(x.w)+'</b> · '+esc(mt(x.t))+'</span>';});h+='</div>';}
   h+='<div class="read-row"><button class="say" id="sayT" aria-label="Vorlesen">🔊 '+(VORLESEN[muttersprache()]||VORLESEN.de)+'</button></div>';
   h+='</div>';
   entry.aufgaben.forEach(function(a,i){if(a.typ==='mc')h+=mcHTML(a,i);else if(a.typ==='orden')h+=ordenHTML(a,i);else if(a.typ==='frei')h+=freiHTML(a);});
-  h+='<div class="schluss">'+esc(entry.schluss)+'</div>';
+  h+='<div class="schluss">'+esc(mt(entry.schluss))+'</div>';
   B.innerHTML=h;B.scrollTop=0;
   document.getElementById('sayT').onclick=function(){say(entry.texto,ziel);};
   var textoEl=B.querySelector('.texto .t');
-  if(textoEl && window.spikiuWortjag){var dict={};if(entry.glossar)Object.keys(entry.glossar).forEach(function(k){dict[k.toLowerCase()]=entry.glossar[k];});if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=x.t;});if(!window.spikiuWortjag.gestartet()){var hh=document.getElementById('wjhint');if(hh)hh.hidden=false;}window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict,onCollect:function(){var hh=document.getElementById('wjhint');if(hh)hh.hidden=true;}});}
+  if(textoEl && window.spikiuWortjag){var dict={};if(entry.glossar)Object.keys(entry.glossar).forEach(function(k){dict[k.toLowerCase()]=mt(entry.glossar[k]);});if(entry.bruecke)entry.bruecke.forEach(function(x){dict[String(x.w).toLowerCase()]=mt(x.t);});if(!window.spikiuWortjag.gestartet()){var hh=document.getElementById('wjhint');if(hh)hh.hidden=false;}window.spikiuWortjag.aktivieren(textoEl,{quelle:'lesewerkstatt',dict:dict,onCollect:function(){var hh=document.getElementById('wjhint');if(hh)hh.hidden=true;}});}
   wireMC();wireOrden();
   F.innerHTML='<button class="prim" id="again">'+esc(T.again)+'</button><button id="enough">'+esc(T.enough)+'</button>';
   document.getElementById('again').onclick=load;
@@ -184,7 +188,7 @@ button{font-family:inherit}
    if(t.dataset.done)return;t.dataset.done=1;var k=+o.dataset.k;
    if(k===a.loesung){o.classList.add('right');}else{o.classList.add('wrong');opts[a.loesung].classList.add('right');}
    [].forEach.call(opts,function(x){x.disabled=true;});
-   var e=t.querySelector('.expl');e.textContent=a.erklaerung||'';e.style.display='block';
+   var e=t.querySelector('.expl');e.textContent=mt(a.erklaerung);e.style.display='block';
   };});});}
  function wireOrden(){[].forEach.call(B.querySelectorAll('.task.orden'),function(t){
   var a=CUR.aufgaben[+t.dataset.i];var ans=t.querySelector('[data-ans]');var pool=t.querySelector('[data-pool]');var built=[];

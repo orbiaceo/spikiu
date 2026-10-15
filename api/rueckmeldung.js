@@ -44,7 +44,8 @@ const SPRACHE = { de: 'Deutsch', es: 'Spanisch', en: 'Englisch', el: 'Griechisch
 const WORTE = {
   de: { titel: 'Deine Sätze, berichtigt', sauber: 'Sehr gut!' },
   es: { titel: 'Tus frases, corregidas',  sauber: '¡Muy bien!' },
-  en: { titel: 'Your sentences, corrected', sauber: 'Well done!' }
+  en: { titel: 'Your sentences, corrected', sauber: 'Well done!' },
+  el: { titel: 'Οι προτάσεις σου, διορθωμένες', sauber: 'Πολύ καλά!' }
 };
 
 function systemPrompt(ziel, szene, stand) {

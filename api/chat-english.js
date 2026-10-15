@@ -110,9 +110,13 @@ Or do you have another topic in mind?"`,
     'Español':
 `"¡Hola ${name}! 🐾 ¿Qué quieres aprender?
 Podemos empezar con saludos — unas frases sencillas para el día a día.
-¿O tienes otro tema en mente?"`
+¿O tienes otro tema en mente?"`,
+    'Ελληνικά':
+`"Γεια σου ${name}! 🐾 Τι θέλεις να μάθεις;
+Θα μπορούσαμε να ξεκινήσουμε με χαιρετισμούς — μερικές απλές φράσεις για την καθημερινότητα.
+Ή έχεις κάποιο άλλο θέμα στο μυαλό σου;"`
   };
-  const firstContactExample = FIRST_CONTACT_EXAMPLES[nativeLang] || FIRST_CONTACT_EXAMPLES.English;
+  const firstContactExample = FIRST_CONTACT_EXAMPLES[nativeLang] || FIRST_CONTACT_EXAMPLES[{ Greek: 'Ελληνικά', Griechisch: 'Ελληνικά', 'Griego': 'Ελληνικά' }[nativeLang]] || FIRST_CONTACT_EXAMPLES.English;
 
   let beginnerModeBlock = '';
   if (isBeginner) {

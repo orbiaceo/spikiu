@@ -69,7 +69,7 @@
     try { u = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch (e) {}
     p = u.profile || {};
     var m = p.muttersprache || langCode(p.nativeLang) || 'de';
-    if (['de', 'es', 'en'].indexOf(m) < 0) m = 'de';
+    if (['de', 'es', 'en', 'el'].indexOf(m) < 0) m = 'de';
     return m;
   }
 
@@ -88,7 +88,12 @@
           weiter: 'Continue', neu: 'Start over', now: 'just now',
           min: function (n) { return n + ' minute' + (n === 1 ? '' : 's') + ' ago'; },
           hour: function (n) { return n + ' hour' + (n === 1 ? '' : 's') + ' ago'; },
-          day: function (n) { return n + ' day' + (n === 1 ? '' : 's') + ' ago'; } }
+          day: function (n) { return n + ' day' + (n === 1 ? '' : 's') + ' ago'; } },
+    el: { title: 'Συνεχίζουμε από εκεί που σταμάτησες;', sub: 'Το κείμενό σου είναι ακόμα εδώ. Να συνεχίσουμε;',
+          weiter: 'Συνέχεια', neu: 'Από την αρχή', now: 'μόλις τώρα',
+          min: function (n) { return 'πριν από ' + n + (n === 1 ? ' λεπτό' : ' λεπτά'); },
+          hour: function (n) { return 'πριν από ' + n + (n === 1 ? ' ώρα' : ' ώρες'); },
+          day: function (n) { return 'πριν από ' + n + (n === 1 ? ' μέρα' : ' μέρες'); } }
   };
 
   function relTime(ts, t) {

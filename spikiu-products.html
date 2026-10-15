@@ -81,7 +81,7 @@ h2 em{font-style:normal}
 <script>
 /* ── Sprache = Muttersprache des Lerners (Leo, 08.10.2026) ──
    Reihenfolge: Profil (spikiu_user) → Sprachschalter der Landing (spikiu_lang)
-   → Browser → Englisch. Nur de/es/en; alles andere fällt auf Englisch
+   → Browser → Englisch. Nur de/es/en/el (el seit 15.10.2026); alles andere fällt auf Englisch
    (Lingua franca). */
 (function(){
   var TX={
@@ -141,13 +141,33 @@ h2 em{font-style:normal}
       p4h:'Your lessons', p4p:'Your conversations become a lesson to keep.',
       cmpFree:'You practise on paths Spikiu has prepared for you.', cmpPrem:'Spikiu responds to everything you say and write.',
       note:'Includes everything in Free.', premPrice:'/ month · cancel anytime', premBtn:'Get Premium',
-      imp:'Imprint', dsg:'Privacy' }
+      imp:'Imprint', dsg:'Privacy' },
+    el:{ title:'Spikiu · Συνδρομή', back:'Πίσω',
+      freeH:'Όλα για να <em>μπεις</em> —<br>δωρεάν.',
+      f1h:'Καθοδηγούμενη συζήτηση', f1p:'Εξασκήσου σε σκηνές της καθημερινότητας μέσα από διάλογο, βήμα βήμα.',
+      f2h:'Η διαδρομή σου', f2p:'Το προσωπικό σου σχέδιο, φτιαγμένο από την πρώτη σας γνωριμία.',
+      f3h:'Μυθιστόρημα για να μαθαίνεις', f3p:'Μια ιστορία που μεγαλώνει μαζί με το στάδιό σου. Πάτα μια λέξη και πάρ’ την μαζί σου.',
+      f4h:'Λεξιλόγιο', f4p:'Οι λέξεις που μαζεύεις, σε μια ήρεμη τράπουλα.',
+      f5h:'Εκφράσεις &amp; Παροιμίες', f5p:'Πώς μιλάνε πραγματικά οι άνθρωποι — με τον πολιτισμό από πίσω.',
+      f6h:'Παιχνίδια', f6p:'Εννέα παιχνίδια στην αίθουσα παιχνιδιών: Λεπτό αυτί, Ο χτύπος, Αλυσίδα λέξεων, Ακροστιχίδα, Ο κήπος του Spikiu, Μνήμη, Πινιάτα, Μπαλόνια, Στην αγορά. Το παιχνίδι της ημέρας είναι πάντα δωρεάν, όπως και το παιχνίδι στο τέλος κάθε καθοδηγούμενης σκηνής· για 14 ημέρες, όλα.',
+      f7h:'Το βιβλίο σου', f7p:'Ό,τι ζεις εδώ γράφεται, σελίδα σελίδα, σε ένα βιβλίο μόνο δικό σου.',
+      freeNote:'Και μια μοναδική γεύση από το Premium: μίλα, διάβασε και γράψε ελεύθερα.',
+      freePrice:'χωρίς κάρτα', freeBtn:'Ξεκίνα',
+      premH:'Ο Spikiu σού <em>απαντά</em>.<br>Ελεύθερα.',
+      p1h:'Ελεύθερη συζήτηση', p1p:'Μίλα με τον Spikiu όποτε θέλεις και για ό,τι θέλεις.',
+      p2h:'Εργαστήρι ανάγνωσης', p2p:'Κείμενα στο στάδιό σου, με ερωτήσεις και σχόλια.',
+      p3h:'Εργαστήρι γραφής', p3p:'Εσύ γράφεις· ο Spikiu διαβάζει μαζί σου και σου δείχνει πώς ακούγεται.',
+      p4h:'Τα μαθήματά σου', p4p:'Από τις συζητήσεις σου γεννιέται ένα μάθημα για να το κρατήσεις.',
+      cmpFree:'Εξασκείσαι σε δρόμους που έχει ετοιμάσει ο Spikiu για σένα.', cmpPrem:'Ο Spikiu αντιδρά σε όλα όσα λες και γράφεις.',
+      note:'Περιλαμβάνει όλα όσα έχει το Free.', premPrice:'/ μήνα · ακύρωση οποτεδήποτε', premBtn:'Θέλω Premium',
+      imp:'Νομική σημείωση', dsg:'Απόρρητο' }
   };
   function kurz(v){
     v=String(v||'').toLowerCase();
     if(v.indexOf('es')===0||v.indexOf('span')>-1) return 'es';
     if(v.indexOf('de')===0||v.indexOf('deut')>-1||v.indexOf('germ')>-1) return 'de';
     if(v.indexOf('en')===0||v.indexOf('engl')>-1) return 'en';
+    if(v.indexOf('el')===0||v.indexOf('griech')>-1||v.indexOf('greek')>-1||v.indexOf('ελλην')>-1) return 'el';
     return '';
   }
   function sprache(){
@@ -167,7 +187,7 @@ h2 em{font-style:normal}
   document.getElementById('back').setAttribute('aria-label',T.back);
   var els=document.querySelectorAll('[data-t]');
   for(var i=0;i<els.length;i++){ var k=els[i].getAttribute('data-t'); if(T[k]!=null) els[i].innerHTML=T[k]; }
-  var subj={de:'Spikiu Premium',es:'Spikiu Premium',en:'Spikiu Premium'}[L];
+  var subj={de:'Spikiu Premium',es:'Spikiu Premium',en:'Spikiu Premium',el:'Spikiu Premium'}[L];
   document.getElementById('premBtn').href='mailto:spikiuapp@gmail.com?subject='+encodeURIComponent(subj);
 })();
 </script>

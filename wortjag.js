@@ -51,6 +51,13 @@
     toastEl.textContent=msg; toastEl.classList.add('on');
     clearTimeout(toastEl._t); toastEl._t=setTimeout(function(){ toastEl.classList.remove('on'); },1500);
   }
+  // Toast-Text in der Muttersprache (wie sitzung.js): profile.muttersprache → de.
+  var SCHON = { de:'schon in deinem Buch', es:'ya está en tu libro', en:'already in your book', el:'είναι ήδη στο βιβλίο σου' };
+  function mutterCode(){
+    var m='de';
+    try{ m=((JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile)||{}).muttersprache||'de'; }catch(e){}
+    return SCHON[m] ? m : 'de';
+  }
   function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
   // Text in el in antippbare Wörter zerlegen (nur Text-Knoten, HTML bleibt heil)
@@ -88,7 +95,7 @@
         var sp=ev.target.closest && ev.target.closest('.wj-wort'); if(!sp||!el.contains(sp)) return;
         var wort=sp.textContent;
         var tr = opts.dict ? (opts.dict[String(wort).toLowerCase()]||'') : '';
-        if(Buch.has(wort)){ toast('schon in deinem Buch'); return; }
+        if(Buch.has(wort)){ toast(SCHON[mutterCode()]); return; }
         Buch.add(wort,{tr:tr, quelle:opts.quelle||''});
         sp.classList.add('wj-got');sp.classList.add('wj-flash');setTimeout(function(){sp.classList.remove('wj-flash');},520);
         toast('🍃 «'+wort+'»'+(tr?' · '+tr:''));

@@ -548,6 +548,7 @@ nav > *{ min-width:0 }
       <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
       <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" data-lang="el" onclick="setLang('el')">ΕΛ</button>
     </div>
     <a href="assessment.html" class="btn-start" data-i18n="nav.cta">Start free →</a>
   </div>
@@ -716,6 +717,29 @@ const TRANSLATIONS = {
     'final.title': 'Solo habla.<br><em>Ahora. No esperes.</em>',
     'final.sub': 'Sin registro. Sin tarjeta. Solo abre el chat.',
     'final.cta': 'Empieza a hablar — es gratis →'
+  },
+  el: {
+    'nav.cta': 'Ξεκίνα δωρεάν →', 'nav.ctaBack': 'Συνέχισε →', 'hero.ctaBack': 'Συνέχισε →', 'final.ctaBack': 'Συνέχισε →',
+    'hero.tagline': 'Σε έναν κόσμο γεμάτο θόρυβο — ένα μέρος για να μιλάς και να μαθαίνεις με ηρεμία.',
+    'hero.title': 'Μην περιμένεις άλλο.<br><em>Ξεκίνα να μιλάς τώρα.</em>',
+    'hero.sub': 'Οι περισσότεροι μαθαίνουν γλώσσες για χρόνια και περιμένουν πολύ μέχρι να νιώσουν «έτοιμοι». Δεν μιλούν ποτέ.<br><br>Ο Spikiu δεν περιμένει τελειότητα. Μόνο το θάρρος να ξεκινήσεις.<br><br>Οι λέξεις είναι ήδη μέσα σου. Ο Spikiu σε βοηθά να τις φέρεις στη συζήτηση.',
+    'hero.cta': 'Ξεκίνα να μιλάς — είναι δωρεάν →',
+    'hero.note': 'Διαθέσιμο στα ισπανικά, γερμανικά, αγγλικά & ελληνικά · Χωρίς εγγραφή',
+    'split.freeTag': 'Δωρεάν',
+    'split.freeTitle': 'Ξεκίνα σήμερα',
+    'split.freeDesc': 'Καθοδηγούμενη συζήτηση · Η διαδρομή σου · Μυθιστόρημα για να μαθαίνεις · Λεξιλόγιο · Εκφράσεις &amp; Παροιμίες · Παιχνίδια',
+    'split.freePrice': 'χωρίς κάρτα',
+    'split.premiumTag': 'Premium',
+    'split.premiumTitle': 'Φτιαγμένο για σένα',
+    'split.premiumDesc': 'Ελεύθερη συζήτηση · Εργαστήρι ανάγνωσης & γραφής · Τα μαθήματά σου · Ο Spikiu σού απαντά',
+    'split.premiumPrice': '/ μήνα · ακύρωση οποτεδήποτε',
+    'split.included': 'Τι περιλαμβάνει →',
+    'split.included2': 'Τι περιλαμβάνει →',
+    'testimonial.quote': 'Μετά από 20 λεπτά με τον Spikiu μίλησα περισσότερα ισπανικά απ’ ό,τι σε τρία χρόνια με άλλες εφαρμογές. Δεν νιώθω ότι μαθαίνω. Νιώθω ότι κουβεντιάζω.',
+    'testimonial.location': 'Μόναχο, Γερμανία',
+    'final.title': 'Απλώς μίλα.<br><em>Τώρα. Μην περιμένεις.</em>',
+    'final.sub': 'Χωρίς εγγραφή. Χωρίς πιστωτική κάρτα. Απλώς άνοιξε τη συζήτηση.',
+    'final.cta': 'Ξεκίνα να μιλάς — είναι δωρεάν →'
   }
 };
 
@@ -774,7 +798,7 @@ function setLang(lang) {
   // 2. Detect browser language if no saved preference
   if (!lang) {
     const browserLang = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    if (['en', 'de', 'es'].includes(browserLang)) {
+    if (['en', 'de', 'es', 'el'].includes(browserLang)) {
       lang = browserLang;
     } else {
       lang = 'en';

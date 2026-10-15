@@ -24,7 +24,8 @@ const SPRACHE = { de: 'Deutsch', es: 'Spanisch', en: 'Englisch', el: 'Griechisch
 const WORTE = {
   de: { titel: 'Ein Blick auf deine Sätze', gut: 'Das saß.', besser: 'Natürlicher wäre' },
   es: { titel: 'Una mirada a tus frases',   gut: 'Bien dicho.', besser: 'Más natural sería' },
-  en: { titel: 'A look at your sentences',  gut: 'That worked.', besser: 'More natural would be' }
+  en: { titel: 'A look at your sentences',  gut: 'That worked.', besser: 'More natural would be' },
+  el: { titel: 'Μια ματιά στις προτάσεις σου', gut: 'Πέτυχε.', besser: 'Πιο φυσικό θα ήταν' }
 };
 
 function systemPrompt(ziel, mutter, duzen, koennen) {

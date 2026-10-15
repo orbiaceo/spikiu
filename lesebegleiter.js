@@ -17,6 +17,7 @@
     if (['de', 'deutsch', 'german', 'aleman', 'alemán'].indexOf(v) >= 0) return 'de';
     if (['es', 'espanol', 'español', 'spanish', 'spanisch'].indexOf(v) >= 0) return 'es';
     if (['en', 'english', 'englisch', 'ingles', 'inglés'].indexOf(v) >= 0) return 'en';
+    if (['el', 'greek', 'griechisch', 'griego', 'ελληνικά', 'ελληνικα'].indexOf(v) >= 0) return 'el';
     return '';
   }
   var u = readUser(), prof = u.profile || {};
@@ -27,7 +28,8 @@
   var T = {
     de: { hint: 'Wenn du was fragen willst — ich bin da. 🐾', intro: 'Hola. Frag mich ruhig was zur Geschichte oder zu einem Wort — ich halt mich kurz.', ph: 'Frag mich was zur Geschichte …', send: 'fragen', err: 'Hm, das hat gerade nicht geklappt. Versuch es gleich nochmal.' },
     es: { hint: 'Si quieres preguntar algo — aquí estoy. 🐾', intro: 'Hola. Pregúntame lo que quieras sobre la historia o una palabra — seré breve.', ph: 'Pregúntame algo sobre la historia …', send: 'preguntar', err: 'Uy, ahora no ha funcionado. Inténtalo de nuevo en un momento.' },
-    en: { hint: "If you'd like to ask something — I'm here. 🐾", intro: "Hi. Ask me anything about the story or a word — I'll keep it short.", ph: 'Ask me about the story …', send: 'ask', err: "Hmm, that didn't work just now. Try again in a moment." }
+    en: { hint: "If you'd like to ask something — I'm here. 🐾", intro: "Hi. Ask me anything about the story or a word — I'll keep it short.", ph: 'Ask me about the story …', send: 'ask', err: "Hmm, that didn't work just now. Try again in a moment." },
+    el: { hint: 'Αν θέλεις να ρωτήσεις κάτι — εδώ είμαι. 🐾', intro: 'Hola. Ρώτα με ό,τι θέλεις για την ιστορία ή για μια λέξη — θα είμαι σύντομος.', ph: 'Ρώτα με κάτι για την ιστορία …', send: 'ρώτα', err: 'Χμ, αυτό δεν πέτυχε τώρα. Δοκίμασε ξανά σε λίγο.' }
   };
   var t = T[MUT] || T.de;
 

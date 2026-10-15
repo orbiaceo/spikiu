@@ -12,22 +12,22 @@
    Form = exakt die Antwort von /api/haeppchen, damit loadHaeppchen nur die Quelle tauscht.
    themaId ∈ 'hotel' | 'taxi' | 'restaurant' | 'cafe' | 'einkaufen' |
                 'wegbeschreibung' | 'arzt' | 'bahnhof' | 'wetter' | 'familie'
-   zielsprache ∈ 'es' | 'de' | 'en' | 'el'             (el = Griechisch, nur Zielsprache)
-   muttersprache ∈ 'de' | 'es' | 'en'                  (UI-Sprachen)
+   zielsprache ∈ 'es' | 'de' | 'en' | 'el'             (el = Griechisch)
+   muttersprache ∈ 'de' | 'es' | 'en' | 'el'           (UI-Sprachen)
 
    Lautschrift: bei lateinischer Schrift (es/de/en) null; bei Griechisch (el) PFLICHT
-   = konsistente lateinische Umschrift. Übersetzungen je Wort als {de,es,en}.
+   = konsistente lateinische Umschrift. Übersetzungen je Wort als {de,es,en,el}.
    español de ESPAÑA (castellano peninsular, nie voseo). Hochdeutsch. US-neutrales Englisch.
    ────────────────────────────────────────────────────────────────────────── */
 (function () {
   if (window.spikiuHaeppchen) return;
 
-  // Geteilte Fragen je Hörverständnis-Typ (nur diese 2 × 3 Sprachen).
-  var Q_MP = { de: 'Welchen Satz hörst du?', es: '¿Qué frase oyes?', en: 'Which sentence do you hear?' };
-  var Q_W  = { de: 'Welche Wörter hörst du?', es: '¿Qué palabras oyes?', en: 'Which words do you hear?' };
+  // Geteilte Fragen je Hörverständnis-Typ (nur diese 2 × 4 Sprachen).
+  var Q_MP = { de: 'Welchen Satz hörst du?', es: '¿Qué frase oyes?', en: 'Which sentence do you hear?', el: 'Ποια πρόταση ακούς;' };
+  var Q_W  = { de: 'Welche Wörter hörst du?', es: '¿Qué palabras oyes?', en: 'Which words do you hear?', el: 'Ποιες λέξεις ακούς;' };
 
-  // Kurzformen: v(ziel, laut, de, es, en) Vokabel · mp/wo Höritems.
-  function v(ziel, laut, de, es, en) { return { ziel: ziel, lautschrift: laut, u: { de: de, es: es, en: en } }; }
+  // Kurzformen: v(ziel, laut, de, es, en, el) Vokabel · mp/wo Höritems.
+  function v(ziel, laut, de, es, en, el) { return { ziel: ziel, lautschrift: laut, u: { de: de, es: es, en: en, el: el } }; }
   function mp(audio, ok, falsch) { return { typ: 'minimalpaar', audio: audio, optionen: [{ text: ok, richtig: true }, { text: falsch, richtig: false }] }; }
   function wo(audio, woerter) { return { typ: 'woerter', audio: audio, woerter: woerter }; }
   function w(text, gehoert) { return { text: text, gehoert: gehoert }; }
@@ -38,11 +38,11 @@
     hotel: {
       es: {
         wortschatz: [
-          v('una reserva', null, 'eine Reservierung', 'una reserva', 'a reservation'),
-          v('la llave', null, 'der Schlüssel', 'la llave', 'the key'),
-          v('una habitación', null, 'ein Zimmer', 'una habitación', 'a room'),
-          v('dos noches', null, 'zwei Nächte', 'dos noches', 'two nights'),
-          v('el desayuno', null, 'das Frühstück', 'el desayuno', 'breakfast')
+          v('una reserva', null, 'eine Reservierung', 'una reserva', 'a reservation', 'μια κράτηση'),
+          v('la llave', null, 'der Schlüssel', 'la llave', 'the key', 'το κλειδί'),
+          v('una habitación', null, 'ein Zimmer', 'una habitación', 'a room', 'ένα δωμάτιο'),
+          v('dos noches', null, 'zwei Nächte', 'dos noches', 'two nights', 'δύο νύχτες'),
+          v('el desayuno', null, 'das Frühstück', 'el desayuno', 'breakfast', 'το πρωινό')
         ],
         hoer: [
           mp('Tengo una reserva.', 'Tengo una reserva.', 'Tengo una reseña.'),
@@ -51,11 +51,11 @@
       },
       de: {
         wortschatz: [
-          v('eine Reservierung', null, 'eine Reservierung', 'una reserva', 'a reservation'),
-          v('der Schlüssel', null, 'der Schlüssel', 'la llave', 'the key'),
-          v('ein Zimmer', null, 'ein Zimmer', 'una habitación', 'a room'),
-          v('zwei Nächte', null, 'zwei Nächte', 'dos noches', 'two nights'),
-          v('das Frühstück', null, 'das Frühstück', 'el desayuno', 'breakfast')
+          v('eine Reservierung', null, 'eine Reservierung', 'una reserva', 'a reservation', 'μια κράτηση'),
+          v('der Schlüssel', null, 'der Schlüssel', 'la llave', 'the key', 'το κλειδί'),
+          v('ein Zimmer', null, 'ein Zimmer', 'una habitación', 'a room', 'ένα δωμάτιο'),
+          v('zwei Nächte', null, 'zwei Nächte', 'dos noches', 'two nights', 'δύο νύχτες'),
+          v('das Frühstück', null, 'das Frühstück', 'el desayuno', 'breakfast', 'το πρωινό')
         ],
         hoer: [
           mp('Ich habe eine Reservierung.', 'Ich habe eine Reservierung.', 'Ich habe eine Verspätung.'),
@@ -64,11 +64,11 @@
       },
       en: {
         wortschatz: [
-          v('a reservation', null, 'eine Reservierung', 'una reserva', 'a reservation'),
-          v('the key', null, 'der Schlüssel', 'la llave', 'the key'),
-          v('a room', null, 'ein Zimmer', 'una habitación', 'a room'),
-          v('two nights', null, 'zwei Nächte', 'dos noches', 'two nights'),
-          v('breakfast', null, 'das Frühstück', 'el desayuno', 'breakfast')
+          v('a reservation', null, 'eine Reservierung', 'una reserva', 'a reservation', 'μια κράτηση'),
+          v('the key', null, 'der Schlüssel', 'la llave', 'the key', 'το κλειδί'),
+          v('a room', null, 'ein Zimmer', 'una habitación', 'a room', 'ένα δωμάτιο'),
+          v('two nights', null, 'zwei Nächte', 'dos noches', 'two nights', 'δύο νύχτες'),
+          v('breakfast', null, 'das Frühstück', 'el desayuno', 'breakfast', 'το πρωινό')
         ],
         hoer: [
           mp('I have a reservation.', 'I have a reservation.', 'I have a recommendation.'),
@@ -77,11 +77,11 @@
       },
       el: {
         wortschatz: [
-          v('μια κράτηση', 'mia krátisi', 'eine Reservierung', 'una reserva', 'a reservation'),
-          v('το κλειδί', 'to klidí', 'der Schlüssel', 'la llave', 'the key'),
-          v('ένα δωμάτιο', 'éna domátio', 'ein Zimmer', 'una habitación', 'a room'),
-          v('δύο νύχτες', 'dío níchtes', 'zwei Nächte', 'dos noches', 'two nights'),
-          v('το πρωινό', 'to proinó', 'das Frühstück', 'el desayuno', 'breakfast')
+          v('μια κράτηση', 'mia krátisi', 'eine Reservierung', 'una reserva', 'a reservation', 'μια κράτηση'),
+          v('το κλειδί', 'to klidí', 'der Schlüssel', 'la llave', 'the key', 'το κλειδί'),
+          v('ένα δωμάτιο', 'éna domátio', 'ein Zimmer', 'una habitación', 'a room', 'ένα δωμάτιο'),
+          v('δύο νύχτες', 'dío níchtes', 'zwei Nächte', 'dos noches', 'two nights', 'δύο νύχτες'),
+          v('το πρωινό', 'to proinó', 'das Frühstück', 'el desayuno', 'breakfast', 'το πρωινό')
         ],
         hoer: [
           mp('Έχω μια κράτηση.', 'Έχω μια κράτηση.', 'Έχω μια ερώτηση.'),
@@ -94,11 +94,11 @@
     taxi: {
       es: {
         wortschatz: [
-          v('al aeropuerto', null, 'zum Flughafen', 'al aeropuerto', 'to the airport'),
-          v('al centro', null, 'ins Zentrum', 'al centro', 'to the center'),
-          v('¿cuánto es?', null, 'wie viel kostet das?', '¿cuánto es?', 'how much is it?'),
-          v('pare aquí', null, 'halten Sie hier', 'pare aquí', 'stop here'),
-          v('el equipaje', null, 'das Gepäck', 'el equipaje', 'the luggage')
+          v('al aeropuerto', null, 'zum Flughafen', 'al aeropuerto', 'to the airport', 'στο αεροδρόμιο'),
+          v('al centro', null, 'ins Zentrum', 'al centro', 'to the center', 'στο κέντρο'),
+          v('¿cuánto es?', null, 'wie viel kostet das?', '¿cuánto es?', 'how much is it?', 'πόσο κάνει;'),
+          v('pare aquí', null, 'halten Sie hier', 'pare aquí', 'stop here', 'σταματήστε εδώ'),
+          v('el equipaje', null, 'das Gepäck', 'el equipaje', 'the luggage', 'οι αποσκευές')
         ],
         hoer: [
           mp('Al aeropuerto, por favor.', 'Al aeropuerto, por favor.', 'Al puerto, por favor.'),
@@ -107,11 +107,11 @@
       },
       de: {
         wortschatz: [
-          v('zum Flughafen', null, 'zum Flughafen', 'al aeropuerto', 'to the airport'),
-          v('ins Zentrum', null, 'ins Zentrum', 'al centro', 'to the center'),
-          v('was kostet das?', null, 'was kostet das?', '¿cuánto es?', 'how much is it?'),
-          v('halten Sie hier', null, 'halten Sie hier', 'pare aquí', 'stop here'),
-          v('das Gepäck', null, 'das Gepäck', 'el equipaje', 'the luggage')
+          v('zum Flughafen', null, 'zum Flughafen', 'al aeropuerto', 'to the airport', 'στο αεροδρόμιο'),
+          v('ins Zentrum', null, 'ins Zentrum', 'al centro', 'to the center', 'στο κέντρο'),
+          v('was kostet das?', null, 'was kostet das?', '¿cuánto es?', 'how much is it?', 'πόσο κάνει;'),
+          v('halten Sie hier', null, 'halten Sie hier', 'pare aquí', 'stop here', 'σταματήστε εδώ'),
+          v('das Gepäck', null, 'das Gepäck', 'el equipaje', 'the luggage', 'οι αποσκευές')
         ],
         hoer: [
           mp('Zum Flughafen, bitte.', 'Zum Flughafen, bitte.', 'Zum Hafen, bitte.'),
@@ -120,11 +120,11 @@
       },
       en: {
         wortschatz: [
-          v('to the airport', null, 'zum Flughafen', 'al aeropuerto', 'to the airport'),
-          v('to the center', null, 'ins Zentrum', 'al centro', 'to the center'),
-          v('how much is it?', null, 'wie viel kostet das?', '¿cuánto es?', 'how much is it?'),
-          v('stop here', null, 'halten Sie hier', 'pare aquí', 'stop here'),
-          v('the luggage', null, 'das Gepäck', 'el equipaje', 'the luggage')
+          v('to the airport', null, 'zum Flughafen', 'al aeropuerto', 'to the airport', 'στο αεροδρόμιο'),
+          v('to the center', null, 'ins Zentrum', 'al centro', 'to the center', 'στο κέντρο'),
+          v('how much is it?', null, 'wie viel kostet das?', '¿cuánto es?', 'how much is it?', 'πόσο κάνει;'),
+          v('stop here', null, 'halten Sie hier', 'pare aquí', 'stop here', 'σταματήστε εδώ'),
+          v('the luggage', null, 'das Gepäck', 'el equipaje', 'the luggage', 'οι αποσκευές')
         ],
         hoer: [
           mp('To the airport, please.', 'To the airport, please.', 'To the airline, please.'),
@@ -133,11 +133,11 @@
       },
       el: {
         wortschatz: [
-          v('στο αεροδρόμιο', 'sto aerodrómio', 'zum Flughafen', 'al aeropuerto', 'to the airport'),
-          v('στο κέντρο', 'sto kéntro', 'ins Zentrum', 'al centro', 'to the center'),
-          v('πόσο κάνει;', 'póso káni?', 'wie viel kostet das?', '¿cuánto es?', 'how much is it?'),
-          v('σταματήστε εδώ', 'stamatíste edó', 'halten Sie hier', 'pare aquí', 'stop here'),
-          v('οι αποσκευές', 'i aposkevés', 'das Gepäck', 'el equipaje', 'the luggage')
+          v('στο αεροδρόμιο', 'sto aerodrómio', 'zum Flughafen', 'al aeropuerto', 'to the airport', 'στο αεροδρόμιο'),
+          v('στο κέντρο', 'sto kéntro', 'ins Zentrum', 'al centro', 'to the center', 'στο κέντρο'),
+          v('πόσο κάνει;', 'póso káni?', 'wie viel kostet das?', '¿cuánto es?', 'how much is it?', 'πόσο κάνει;'),
+          v('σταματήστε εδώ', 'stamatíste edó', 'halten Sie hier', 'pare aquí', 'stop here', 'σταματήστε εδώ'),
+          v('οι αποσκευές', 'i aposkevés', 'das Gepäck', 'el equipaje', 'the luggage', 'οι αποσκευές')
         ],
         hoer: [
           mp('Στο αεροδρόμιο, παρακαλώ.', 'Στο αεροδρόμιο, παρακαλώ.', 'Στο λιμάνι, παρακαλώ.'),
@@ -150,11 +150,11 @@
     restaurant: {
       es: {
         wortschatz: [
-          v('una mesa para dos', null, 'ein Tisch für zwei', 'una mesa para dos', 'a table for two'),
-          v('la carta', null, 'die Speisekarte', 'la carta', 'the menu'),
-          v('la cuenta', null, 'die Rechnung', 'la cuenta', 'the bill'),
-          v('¿qué me recomienda?', null, 'was empfehlen Sie mir?', '¿qué me recomienda?', 'what do you recommend?'),
-          v('agua, por favor', null, 'Wasser, bitte', 'agua, por favor', 'water, please')
+          v('una mesa para dos', null, 'ein Tisch für zwei', 'una mesa para dos', 'a table for two', 'ένα τραπέζι για δύο'),
+          v('la carta', null, 'die Speisekarte', 'la carta', 'the menu', 'το μενού'),
+          v('la cuenta', null, 'die Rechnung', 'la cuenta', 'the bill', 'τον λογαριασμό'),
+          v('¿qué me recomienda?', null, 'was empfehlen Sie mir?', '¿qué me recomienda?', 'what do you recommend?', 'τι προτείνετε;'),
+          v('agua, por favor', null, 'Wasser, bitte', 'agua, por favor', 'water, please', 'νερό, παρακαλώ')
         ],
         hoer: [
           mp('La carta, por favor.', 'La carta, por favor.', 'La cuenta, por favor.'),
@@ -163,11 +163,11 @@
       },
       de: {
         wortschatz: [
-          v('ein Tisch für zwei', null, 'ein Tisch für zwei', 'una mesa para dos', 'a table for two'),
-          v('die Speisekarte', null, 'die Speisekarte', 'la carta', 'the menu'),
-          v('die Rechnung', null, 'die Rechnung', 'la cuenta', 'the bill'),
-          v('was empfehlen Sie?', null, 'was empfehlen Sie?', '¿qué me recomienda?', 'what do you recommend?'),
-          v('Wasser, bitte', null, 'Wasser, bitte', 'agua, por favor', 'water, please')
+          v('ein Tisch für zwei', null, 'ein Tisch für zwei', 'una mesa para dos', 'a table for two', 'ένα τραπέζι για δύο'),
+          v('die Speisekarte', null, 'die Speisekarte', 'la carta', 'the menu', 'το μενού'),
+          v('die Rechnung', null, 'die Rechnung', 'la cuenta', 'the bill', 'τον λογαριασμό'),
+          v('was empfehlen Sie?', null, 'was empfehlen Sie?', '¿qué me recomienda?', 'what do you recommend?', 'τι προτείνετε;'),
+          v('Wasser, bitte', null, 'Wasser, bitte', 'agua, por favor', 'water, please', 'νερό, παρακαλώ')
         ],
         hoer: [
           mp('Die Speisekarte, bitte.', 'Die Speisekarte, bitte.', 'Die Rechnung, bitte.'),
@@ -176,11 +176,11 @@
       },
       en: {
         wortschatz: [
-          v('a table for two', null, 'ein Tisch für zwei', 'una mesa para dos', 'a table for two'),
-          v('the menu', null, 'die Speisekarte', 'la carta', 'the menu'),
-          v('the bill', null, 'die Rechnung', 'la cuenta', 'the bill'),
-          v('what do you recommend?', null, 'was empfehlen Sie mir?', '¿qué me recomienda?', 'what do you recommend?'),
-          v('water, please', null, 'Wasser, bitte', 'agua, por favor', 'water, please')
+          v('a table for two', null, 'ein Tisch für zwei', 'una mesa para dos', 'a table for two', 'ένα τραπέζι για δύο'),
+          v('the menu', null, 'die Speisekarte', 'la carta', 'the menu', 'το μενού'),
+          v('the bill', null, 'die Rechnung', 'la cuenta', 'the bill', 'τον λογαριασμό'),
+          v('what do you recommend?', null, 'was empfehlen Sie mir?', '¿qué me recomienda?', 'what do you recommend?', 'τι προτείνετε;'),
+          v('water, please', null, 'Wasser, bitte', 'agua, por favor', 'water, please', 'νερό, παρακαλώ')
         ],
         hoer: [
           mp('The menu, please.', 'The menu, please.', 'The bill, please.'),
@@ -189,11 +189,11 @@
       },
       el: {
         wortschatz: [
-          v('ένα τραπέζι για δύο', 'éna trapézi gia dío', 'ein Tisch für zwei', 'una mesa para dos', 'a table for two'),
-          v('το μενού', 'to menú', 'die Speisekarte', 'la carta', 'the menu'),
-          v('τον λογαριασμό', 'ton logariasmó', 'die Rechnung', 'la cuenta', 'the bill'),
-          v('τι προτείνετε;', 'ti protínete?', 'was empfehlen Sie?', '¿qué me recomienda?', 'what do you recommend?'),
-          v('νερό, παρακαλώ', 'neró, parakaló', 'Wasser, bitte', 'agua, por favor', 'water, please')
+          v('ένα τραπέζι για δύο', 'éna trapézi gia dío', 'ein Tisch für zwei', 'una mesa para dos', 'a table for two', 'ένα τραπέζι για δύο'),
+          v('το μενού', 'to menú', 'die Speisekarte', 'la carta', 'the menu', 'το μενού'),
+          v('τον λογαριασμό', 'ton logariasmó', 'die Rechnung', 'la cuenta', 'the bill', 'τον λογαριασμό'),
+          v('τι προτείνετε;', 'ti protínete?', 'was empfehlen Sie?', '¿qué me recomienda?', 'what do you recommend?', 'τι προτείνετε;'),
+          v('νερό, παρακαλώ', 'neró, parakaló', 'Wasser, bitte', 'agua, por favor', 'water, please', 'νερό, παρακαλώ')
         ],
         hoer: [
           mp('Το μενού, παρακαλώ.', 'Το μενού, παρακαλώ.', 'Τον λογαριασμό, παρακαλώ.'),
@@ -206,11 +206,11 @@
     cafe: {
       es: {
         wortschatz: [
-          v('un café', null, 'ein Kaffee', 'un café', 'a coffee'),
-          v('con leche', null, 'mit Milch', 'con leche', 'with milk'),
-          v('un té', null, 'ein Tee', 'un té', 'a tea'),
-          v('el azúcar', null, 'der Zucker', 'el azúcar', 'the sugar'),
-          v('para llevar', null, 'zum Mitnehmen', 'para llevar', 'to go')
+          v('un café', null, 'ein Kaffee', 'un café', 'a coffee', 'έναν καφέ'),
+          v('con leche', null, 'mit Milch', 'con leche', 'with milk', 'με γάλα'),
+          v('un té', null, 'ein Tee', 'un té', 'a tea', 'ένα τσάι'),
+          v('el azúcar', null, 'der Zucker', 'el azúcar', 'the sugar', 'τη ζάχαρη'),
+          v('para llevar', null, 'zum Mitnehmen', 'para llevar', 'to go', 'για έξω')
         ],
         hoer: [
           mp('Un café con leche.', 'Un café con leche.', 'Un café sin leche.'),
@@ -219,11 +219,11 @@
       },
       de: {
         wortschatz: [
-          v('ein Kaffee', null, 'ein Kaffee', 'un café', 'a coffee'),
-          v('mit Milch', null, 'mit Milch', 'con leche', 'with milk'),
-          v('ein Tee', null, 'ein Tee', 'un té', 'a tea'),
-          v('der Zucker', null, 'der Zucker', 'el azúcar', 'the sugar'),
-          v('zum Mitnehmen', null, 'zum Mitnehmen', 'para llevar', 'to go')
+          v('ein Kaffee', null, 'ein Kaffee', 'un café', 'a coffee', 'έναν καφέ'),
+          v('mit Milch', null, 'mit Milch', 'con leche', 'with milk', 'με γάλα'),
+          v('ein Tee', null, 'ein Tee', 'un té', 'a tea', 'ένα τσάι'),
+          v('der Zucker', null, 'der Zucker', 'el azúcar', 'the sugar', 'τη ζάχαρη'),
+          v('zum Mitnehmen', null, 'zum Mitnehmen', 'para llevar', 'to go', 'για έξω')
         ],
         hoer: [
           mp('Ein Kaffee mit Milch.', 'Ein Kaffee mit Milch.', 'Ein Kaffee ohne Milch.'),
@@ -232,11 +232,11 @@
       },
       en: {
         wortschatz: [
-          v('a coffee', null, 'ein Kaffee', 'un café', 'a coffee'),
-          v('with milk', null, 'mit Milch', 'con leche', 'with milk'),
-          v('a tea', null, 'ein Tee', 'un té', 'a tea'),
-          v('the sugar', null, 'der Zucker', 'el azúcar', 'the sugar'),
-          v('to go', null, 'zum Mitnehmen', 'para llevar', 'to go')
+          v('a coffee', null, 'ein Kaffee', 'un café', 'a coffee', 'έναν καφέ'),
+          v('with milk', null, 'mit Milch', 'con leche', 'with milk', 'με γάλα'),
+          v('a tea', null, 'ein Tee', 'un té', 'a tea', 'ένα τσάι'),
+          v('the sugar', null, 'der Zucker', 'el azúcar', 'the sugar', 'τη ζάχαρη'),
+          v('to go', null, 'zum Mitnehmen', 'para llevar', 'to go', 'για έξω')
         ],
         hoer: [
           mp('A coffee with milk.', 'A coffee with milk.', 'A coffee without milk.'),
@@ -245,11 +245,11 @@
       },
       el: {
         wortschatz: [
-          v('έναν καφέ', 'énan kafé', 'ein Kaffee', 'un café', 'a coffee'),
-          v('με γάλα', 'me gála', 'mit Milch', 'con leche', 'with milk'),
-          v('ένα τσάι', 'éna tsái', 'ein Tee', 'un té', 'a tea'),
-          v('τη ζάχαρη', 'ti záchari', 'der Zucker', 'el azúcar', 'the sugar'),
-          v('για έξω', 'gia éxo', 'zum Mitnehmen', 'para llevar', 'to go')
+          v('έναν καφέ', 'énan kafé', 'ein Kaffee', 'un café', 'a coffee', 'έναν καφέ'),
+          v('με γάλα', 'me gála', 'mit Milch', 'con leche', 'with milk', 'με γάλα'),
+          v('ένα τσάι', 'éna tsái', 'ein Tee', 'un té', 'a tea', 'ένα τσάι'),
+          v('τη ζάχαρη', 'ti záchari', 'der Zucker', 'el azúcar', 'the sugar', 'τη ζάχαρη'),
+          v('για έξω', 'gia éxo', 'zum Mitnehmen', 'para llevar', 'to go', 'για έξω')
         ],
         hoer: [
           mp('Έναν καφέ με γάλα.', 'Έναν καφέ με γάλα.', 'Έναν καφέ χωρίς γάλα.'),
@@ -262,11 +262,11 @@
     einkaufen: {
       es: {
         wortschatz: [
-          v('el pan', null, 'das Brot', 'el pan', 'the bread'),
-          v('un kilo', null, 'ein Kilo', 'un kilo', 'a kilo'),
-          v('¿cuánto cuesta?', null, 'wie viel kostet das?', '¿cuánto cuesta?', 'how much is it?'),
-          v('la bolsa', null, 'die Tüte', 'la bolsa', 'the bag'),
-          v('en efectivo', null, 'in bar', 'en efectivo', 'in cash')
+          v('el pan', null, 'das Brot', 'el pan', 'the bread', 'το ψωμί'),
+          v('un kilo', null, 'ein Kilo', 'un kilo', 'a kilo', 'ένα κιλό'),
+          v('¿cuánto cuesta?', null, 'wie viel kostet das?', '¿cuánto cuesta?', 'how much is it?', 'πόσο κάνει;'),
+          v('la bolsa', null, 'die Tüte', 'la bolsa', 'the bag', 'η σακούλα'),
+          v('en efectivo', null, 'in bar', 'en efectivo', 'in cash', 'με μετρητά')
         ],
         hoer: [
           mp('¿Cuánto cuesta el pan?', '¿Cuánto cuesta el pan?', '¿Cuándo cuesta el pan?'),
@@ -275,11 +275,11 @@
       },
       de: {
         wortschatz: [
-          v('das Brot', null, 'das Brot', 'el pan', 'the bread'),
-          v('ein Kilo', null, 'ein Kilo', 'un kilo', 'a kilo'),
-          v('was kostet das?', null, 'was kostet das?', '¿cuánto cuesta?', 'how much is it?'),
-          v('die Tüte', null, 'die Tüte', 'la bolsa', 'the bag'),
-          v('in bar', null, 'in bar', 'en efectivo', 'in cash')
+          v('das Brot', null, 'das Brot', 'el pan', 'the bread', 'το ψωμί'),
+          v('ein Kilo', null, 'ein Kilo', 'un kilo', 'a kilo', 'ένα κιλό'),
+          v('was kostet das?', null, 'was kostet das?', '¿cuánto cuesta?', 'how much is it?', 'πόσο κάνει;'),
+          v('die Tüte', null, 'die Tüte', 'la bolsa', 'the bag', 'η σακούλα'),
+          v('in bar', null, 'in bar', 'en efectivo', 'in cash', 'με μετρητά')
         ],
         hoer: [
           mp('Was kostet das Brot?', 'Was kostet das Brot?', 'Was kostet das Boot?'),
@@ -288,11 +288,11 @@
       },
       en: {
         wortschatz: [
-          v('the bread', null, 'das Brot', 'el pan', 'the bread'),
-          v('a kilo', null, 'ein Kilo', 'un kilo', 'a kilo'),
-          v('how much is it?', null, 'wie viel kostet das?', '¿cuánto cuesta?', 'how much is it?'),
-          v('the bag', null, 'die Tüte', 'la bolsa', 'the bag'),
-          v('in cash', null, 'in bar', 'en efectivo', 'in cash')
+          v('the bread', null, 'das Brot', 'el pan', 'the bread', 'το ψωμί'),
+          v('a kilo', null, 'ein Kilo', 'un kilo', 'a kilo', 'ένα κιλό'),
+          v('how much is it?', null, 'wie viel kostet das?', '¿cuánto cuesta?', 'how much is it?', 'πόσο κάνει;'),
+          v('the bag', null, 'die Tüte', 'la bolsa', 'the bag', 'η σακούλα'),
+          v('in cash', null, 'in bar', 'en efectivo', 'in cash', 'με μετρητά')
         ],
         hoer: [
           mp('How much is the bread?', 'How much is the bread?', 'How much is the bed?'),
@@ -301,11 +301,11 @@
       },
       el: {
         wortschatz: [
-          v('το ψωμί', 'to psomí', 'das Brot', 'el pan', 'the bread'),
-          v('ένα κιλό', 'éna kiló', 'ein Kilo', 'un kilo', 'a kilo'),
-          v('πόσο κάνει;', 'póso káni?', 'wie viel kostet das?', '¿cuánto cuesta?', 'how much is it?'),
-          v('η σακούλα', 'i sakoúla', 'die Tüte', 'la bolsa', 'the bag'),
-          v('με μετρητά', 'me metritá', 'in bar', 'en efectivo', 'in cash')
+          v('το ψωμί', 'to psomí', 'das Brot', 'el pan', 'the bread', 'το ψωμί'),
+          v('ένα κιλό', 'éna kiló', 'ein Kilo', 'un kilo', 'a kilo', 'ένα κιλό'),
+          v('πόσο κάνει;', 'póso káni?', 'wie viel kostet das?', '¿cuánto cuesta?', 'how much is it?', 'πόσο κάνει;'),
+          v('η σακούλα', 'i sakoúla', 'die Tüte', 'la bolsa', 'the bag', 'η σακούλα'),
+          v('με μετρητά', 'me metritá', 'in bar', 'en efectivo', 'in cash', 'με μετρητά')
         ],
         hoer: [
           mp('Πόσο κάνει το ψωμί;', 'Πόσο κάνει το ψωμί;', 'Πόσο κάνει το κρασί;'),
@@ -318,11 +318,11 @@
     wegbeschreibung: {
       es: {
         wortschatz: [
-          v('¿dónde está?', null, 'wo ist?', '¿dónde está?', 'where is?'),
-          v('a la derecha', null, 'rechts', 'a la derecha', 'to the right'),
-          v('a la izquierda', null, 'links', 'a la izquierda', 'to the left'),
-          v('todo recto', null, 'geradeaus', 'todo recto', 'straight ahead'),
-          v('la esquina', null, 'die Ecke', 'la esquina', 'the corner')
+          v('¿dónde está?', null, 'wo ist?', '¿dónde está?', 'where is?', 'πού είναι;'),
+          v('a la derecha', null, 'rechts', 'a la derecha', 'to the right', 'δεξιά'),
+          v('a la izquierda', null, 'links', 'a la izquierda', 'to the left', 'αριστερά'),
+          v('todo recto', null, 'geradeaus', 'todo recto', 'straight ahead', 'ευθεία'),
+          v('la esquina', null, 'die Ecke', 'la esquina', 'the corner', 'η γωνία')
         ],
         hoer: [
           mp('Está a la derecha.', 'Está a la derecha.', 'Está a la izquierda.'),
@@ -331,11 +331,11 @@
       },
       de: {
         wortschatz: [
-          v('wo ist?', null, 'wo ist?', '¿dónde está?', 'where is?'),
-          v('rechts', null, 'rechts', 'a la derecha', 'to the right'),
-          v('links', null, 'links', 'a la izquierda', 'to the left'),
-          v('geradeaus', null, 'geradeaus', 'todo recto', 'straight ahead'),
-          v('die Ecke', null, 'die Ecke', 'la esquina', 'the corner')
+          v('wo ist?', null, 'wo ist?', '¿dónde está?', 'where is?', 'πού είναι;'),
+          v('rechts', null, 'rechts', 'a la derecha', 'to the right', 'δεξιά'),
+          v('links', null, 'links', 'a la izquierda', 'to the left', 'αριστερά'),
+          v('geradeaus', null, 'geradeaus', 'todo recto', 'straight ahead', 'ευθεία'),
+          v('die Ecke', null, 'die Ecke', 'la esquina', 'the corner', 'η γωνία')
         ],
         hoer: [
           mp('Es ist rechts.', 'Es ist rechts.', 'Es ist links.'),
@@ -344,11 +344,11 @@
       },
       en: {
         wortschatz: [
-          v('where is?', null, 'wo ist?', '¿dónde está?', 'where is?'),
-          v('to the right', null, 'rechts', 'a la derecha', 'to the right'),
-          v('to the left', null, 'links', 'a la izquierda', 'to the left'),
-          v('straight ahead', null, 'geradeaus', 'todo recto', 'straight ahead'),
-          v('the corner', null, 'die Ecke', 'la esquina', 'the corner')
+          v('where is?', null, 'wo ist?', '¿dónde está?', 'where is?', 'πού είναι;'),
+          v('to the right', null, 'rechts', 'a la derecha', 'to the right', 'δεξιά'),
+          v('to the left', null, 'links', 'a la izquierda', 'to the left', 'αριστερά'),
+          v('straight ahead', null, 'geradeaus', 'todo recto', 'straight ahead', 'ευθεία'),
+          v('the corner', null, 'die Ecke', 'la esquina', 'the corner', 'η γωνία')
         ],
         hoer: [
           mp('It is on the right.', 'It is on the right.', 'It is on the left.'),
@@ -357,11 +357,11 @@
       },
       el: {
         wortschatz: [
-          v('πού είναι;', 'poú íne?', 'wo ist?', '¿dónde está?', 'where is?'),
-          v('δεξιά', 'dexiá', 'rechts', 'a la derecha', 'to the right'),
-          v('αριστερά', 'aristerá', 'links', 'a la izquierda', 'to the left'),
-          v('ευθεία', 'efthía', 'geradeaus', 'todo recto', 'straight ahead'),
-          v('η γωνία', 'i gonía', 'die Ecke', 'la esquina', 'the corner')
+          v('πού είναι;', 'poú íne?', 'wo ist?', '¿dónde está?', 'where is?', 'πού είναι;'),
+          v('δεξιά', 'dexiá', 'rechts', 'a la derecha', 'to the right', 'δεξιά'),
+          v('αριστερά', 'aristerá', 'links', 'a la izquierda', 'to the left', 'αριστερά'),
+          v('ευθεία', 'efthía', 'geradeaus', 'todo recto', 'straight ahead', 'ευθεία'),
+          v('η γωνία', 'i gonía', 'die Ecke', 'la esquina', 'the corner', 'η γωνία')
         ],
         hoer: [
           mp('Είναι δεξιά.', 'Είναι δεξιά.', 'Είναι αριστερά.'),
@@ -374,11 +374,11 @@
     arzt: {
       es: {
         wortschatz: [
-          v('me duele', null, 'mir tut weh', 'me duele', 'it hurts'),
-          v('la cabeza', null, 'der Kopf', 'la cabeza', 'the head'),
-          v('desde ayer', null, 'seit gestern', 'desde ayer', 'since yesterday'),
-          v('una cita', null, 'ein Termin', 'una cita', 'an appointment'),
-          v('la receta', null, 'das Rezept', 'la receta', 'the prescription')
+          v('me duele', null, 'mir tut weh', 'me duele', 'it hurts', 'πονάω'),
+          v('la cabeza', null, 'der Kopf', 'la cabeza', 'the head', 'το κεφάλι'),
+          v('desde ayer', null, 'seit gestern', 'desde ayer', 'since yesterday', 'από χθες'),
+          v('una cita', null, 'ein Termin', 'una cita', 'an appointment', 'ένα ραντεβού'),
+          v('la receta', null, 'das Rezept', 'la receta', 'the prescription', 'η συνταγή')
         ],
         hoer: [
           mp('Me duele la cabeza.', 'Me duele la cabeza.', 'Me duele la cadera.'),
@@ -387,11 +387,11 @@
       },
       de: {
         wortschatz: [
-          v('mir tut weh', null, 'mir tut weh', 'me duele', 'it hurts'),
-          v('der Kopf', null, 'der Kopf', 'la cabeza', 'the head'),
-          v('seit gestern', null, 'seit gestern', 'desde ayer', 'since yesterday'),
-          v('ein Termin', null, 'ein Termin', 'una cita', 'an appointment'),
-          v('das Rezept', null, 'das Rezept', 'la receta', 'the prescription')
+          v('mir tut weh', null, 'mir tut weh', 'me duele', 'it hurts', 'πονάω'),
+          v('der Kopf', null, 'der Kopf', 'la cabeza', 'the head', 'το κεφάλι'),
+          v('seit gestern', null, 'seit gestern', 'desde ayer', 'since yesterday', 'από χθες'),
+          v('ein Termin', null, 'ein Termin', 'una cita', 'an appointment', 'ένα ραντεβού'),
+          v('das Rezept', null, 'das Rezept', 'la receta', 'the prescription', 'η συνταγή')
         ],
         hoer: [
           mp('Mir tut der Kopf weh.', 'Mir tut der Kopf weh.', 'Mir tut der Zopf weh.'),
@@ -400,11 +400,11 @@
       },
       en: {
         wortschatz: [
-          v('it hurts', null, 'mir tut weh', 'me duele', 'it hurts'),
-          v('the head', null, 'der Kopf', 'la cabeza', 'the head'),
-          v('since yesterday', null, 'seit gestern', 'desde ayer', 'since yesterday'),
-          v('an appointment', null, 'ein Termin', 'una cita', 'an appointment'),
-          v('the prescription', null, 'das Rezept', 'la receta', 'the prescription')
+          v('it hurts', null, 'mir tut weh', 'me duele', 'it hurts', 'πονάω'),
+          v('the head', null, 'der Kopf', 'la cabeza', 'the head', 'το κεφάλι'),
+          v('since yesterday', null, 'seit gestern', 'desde ayer', 'since yesterday', 'από χθες'),
+          v('an appointment', null, 'ein Termin', 'una cita', 'an appointment', 'ένα ραντεβού'),
+          v('the prescription', null, 'das Rezept', 'la receta', 'the prescription', 'η συνταγή')
         ],
         hoer: [
           mp('My head hurts.', 'My head hurts.', 'My hand hurts.'),
@@ -413,11 +413,11 @@
       },
       el: {
         wortschatz: [
-          v('πονάω', 'ponáo', 'mir tut weh', 'me duele', 'it hurts'),
-          v('το κεφάλι', 'to kefáli', 'der Kopf', 'la cabeza', 'the head'),
-          v('από χθες', 'apó chthes', 'seit gestern', 'desde ayer', 'since yesterday'),
-          v('ένα ραντεβού', 'éna randevoú', 'ein Termin', 'una cita', 'an appointment'),
-          v('η συνταγή', 'i syntagí', 'das Rezept', 'la receta', 'the prescription')
+          v('πονάω', 'ponáo', 'mir tut weh', 'me duele', 'it hurts', 'πονάω'),
+          v('το κεφάλι', 'to kefáli', 'der Kopf', 'la cabeza', 'the head', 'το κεφάλι'),
+          v('από χθες', 'apó chthes', 'seit gestern', 'desde ayer', 'since yesterday', 'από χθες'),
+          v('ένα ραντεβού', 'éna randevoú', 'ein Termin', 'una cita', 'an appointment', 'ένα ραντεβού'),
+          v('η συνταγή', 'i syntagí', 'das Rezept', 'la receta', 'the prescription', 'η συνταγή')
         ],
         hoer: [
           mp('Πονάει το κεφάλι μου.', 'Πονάει το κεφάλι μου.', 'Πονάει το πόδι μου.'),
@@ -430,11 +430,11 @@
     bahnhof: {
       es: {
         wortschatz: [
-          v('un billete', null, 'eine Fahrkarte', 'un billete', 'a ticket'),
-          v('el andén', null, 'das Gleis', 'el andén', 'the platform'),
-          v('el próximo tren', null, 'der nächste Zug', 'el próximo tren', 'the next train'),
-          v('ida y vuelta', null, 'hin und zurück', 'ida y vuelta', 'round trip'),
-          v('lleva retraso', null, 'hat Verspätung', 'lleva retraso', 'is delayed')
+          v('un billete', null, 'eine Fahrkarte', 'un billete', 'a ticket', 'ένα εισιτήριο'),
+          v('el andén', null, 'das Gleis', 'el andén', 'the platform', 'η αποβάθρα'),
+          v('el próximo tren', null, 'der nächste Zug', 'el próximo tren', 'the next train', 'το επόμενο τρένο'),
+          v('ida y vuelta', null, 'hin und zurück', 'ida y vuelta', 'round trip', 'με επιστροφή'),
+          v('lleva retraso', null, 'hat Verspätung', 'lleva retraso', 'is delayed', 'έχει καθυστέρηση')
         ],
         hoer: [
           mp('Un billete de ida y vuelta.', 'Un billete de ida y vuelta.', 'Un billete de ida y vuelto.'),
@@ -443,11 +443,11 @@
       },
       de: {
         wortschatz: [
-          v('eine Fahrkarte', null, 'eine Fahrkarte', 'un billete', 'a ticket'),
-          v('das Gleis', null, 'das Gleis', 'el andén', 'the platform'),
-          v('der nächste Zug', null, 'der nächste Zug', 'el próximo tren', 'the next train'),
-          v('hin und zurück', null, 'hin und zurück', 'ida y vuelta', 'round trip'),
-          v('hat Verspätung', null, 'hat Verspätung', 'lleva retraso', 'is delayed')
+          v('eine Fahrkarte', null, 'eine Fahrkarte', 'un billete', 'a ticket', 'ένα εισιτήριο'),
+          v('das Gleis', null, 'das Gleis', 'el andén', 'the platform', 'η αποβάθρα'),
+          v('der nächste Zug', null, 'der nächste Zug', 'el próximo tren', 'the next train', 'το επόμενο τρένο'),
+          v('hin und zurück', null, 'hin und zurück', 'ida y vuelta', 'round trip', 'με επιστροφή'),
+          v('hat Verspätung', null, 'hat Verspätung', 'lleva retraso', 'is delayed', 'έχει καθυστέρηση')
         ],
         hoer: [
           mp('Eine Fahrkarte hin und zurück.', 'Eine Fahrkarte hin und zurück.', 'Eine Fahrkarte hin und zur Brücke.'),
@@ -456,11 +456,11 @@
       },
       en: {
         wortschatz: [
-          v('a ticket', null, 'eine Fahrkarte', 'un billete', 'a ticket'),
-          v('the platform', null, 'das Gleis', 'el andén', 'the platform'),
-          v('the next train', null, 'der nächste Zug', 'el próximo tren', 'the next train'),
-          v('round trip', null, 'hin und zurück', 'ida y vuelta', 'round trip'),
-          v('is delayed', null, 'hat Verspätung', 'lleva retraso', 'is delayed')
+          v('a ticket', null, 'eine Fahrkarte', 'un billete', 'a ticket', 'ένα εισιτήριο'),
+          v('the platform', null, 'das Gleis', 'el andén', 'the platform', 'η αποβάθρα'),
+          v('the next train', null, 'der nächste Zug', 'el próximo tren', 'the next train', 'το επόμενο τρένο'),
+          v('round trip', null, 'hin und zurück', 'ida y vuelta', 'round trip', 'με επιστροφή'),
+          v('is delayed', null, 'hat Verspätung', 'lleva retraso', 'is delayed', 'έχει καθυστέρηση')
         ],
         hoer: [
           mp('A round trip ticket, please.', 'A round trip ticket, please.', 'A one way ticket, please.'),
@@ -469,11 +469,11 @@
       },
       el: {
         wortschatz: [
-          v('ένα εισιτήριο', 'éna isitírio', 'eine Fahrkarte', 'un billete', 'a ticket'),
-          v('η αποβάθρα', 'i apováthra', 'das Gleis', 'el andén', 'the platform'),
-          v('το επόμενο τρένο', 'to epómeno tréno', 'der nächste Zug', 'el próximo tren', 'the next train'),
-          v('με επιστροφή', 'me epistrofí', 'hin und zurück', 'ida y vuelta', 'round trip'),
-          v('έχει καθυστέρηση', 'échi kathystérisi', 'hat Verspätung', 'lleva retraso', 'is delayed')
+          v('ένα εισιτήριο', 'éna isitírio', 'eine Fahrkarte', 'un billete', 'a ticket', 'ένα εισιτήριο'),
+          v('η αποβάθρα', 'i apováthra', 'das Gleis', 'el andén', 'the platform', 'η αποβάθρα'),
+          v('το επόμενο τρένο', 'to epómeno tréno', 'der nächste Zug', 'el próximo tren', 'the next train', 'το επόμενο τρένο'),
+          v('με επιστροφή', 'me epistrofí', 'hin und zurück', 'ida y vuelta', 'round trip', 'με επιστροφή'),
+          v('έχει καθυστέρηση', 'échi kathystérisi', 'hat Verspätung', 'lleva retraso', 'is delayed', 'έχει καθυστέρηση')
         ],
         hoer: [
           mp('Ένα εισιτήριο με επιστροφή.', 'Ένα εισιτήριο με επιστροφή.', 'Ένα εισιτήριο χωρίς επιστροφή.'),
@@ -486,11 +486,11 @@
     wetter: {
       es: {
         wortschatz: [
-          v('hace calor', null, 'es ist warm', 'hace calor', 'it is hot'),
-          v('hace frío', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('llueve', null, 'es regnet', 'llueve', 'it rains'),
-          v('el paraguas', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
-          v('mañana', null, 'morgen', 'mañana', 'tomorrow')
+          v('hace calor', null, 'es ist warm', 'hace calor', 'it is hot', 'κάνει ζέστη'),
+          v('hace frío', null, 'es ist kalt', 'hace frío', 'it is cold', 'κάνει κρύο'),
+          v('llueve', null, 'es regnet', 'llueve', 'it rains', 'βρέχει'),
+          v('el paraguas', null, 'der Regenschirm', 'el paraguas', 'the umbrella', 'η ομπρέλα'),
+          v('mañana', null, 'morgen', 'mañana', 'tomorrow', 'αύριο')
         ],
         hoer: [
           mp('Hoy hace calor.', 'Hoy hace calor.', 'Hoy hace color.'),
@@ -499,11 +499,11 @@
       },
       de: {
         wortschatz: [
-          v('es ist warm', null, 'es ist warm', 'hace calor', 'it is hot'),
-          v('es ist kalt', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('es regnet', null, 'es regnet', 'llueve', 'it is raining'),
-          v('der Regenschirm', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
-          v('morgen', null, 'morgen', 'mañana', 'tomorrow')
+          v('es ist warm', null, 'es ist warm', 'hace calor', 'it is hot', 'κάνει ζέστη'),
+          v('es ist kalt', null, 'es ist kalt', 'hace frío', 'it is cold', 'κάνει κρύο'),
+          v('es regnet', null, 'es regnet', 'llueve', 'it is raining', 'βρέχει'),
+          v('der Regenschirm', null, 'der Regenschirm', 'el paraguas', 'the umbrella', 'η ομπρέλα'),
+          v('morgen', null, 'morgen', 'mañana', 'tomorrow', 'αύριο')
         ],
         hoer: [
           mp('Heute ist es warm.', 'Heute ist es warm.', 'Heute ist es wahr.'),
@@ -512,11 +512,11 @@
       },
       en: {
         wortschatz: [
-          v('it is hot', null, 'es ist warm', 'hace calor', 'it is hot'),
-          v('it is cold', null, 'es ist kalt', 'hace frío', 'it is cold'),
-          v('it is raining', null, 'es regnet gerade', 'está lloviendo', 'it is raining'),
-          v('the umbrella', null, 'der Regenschirm', 'el paraguas', 'the umbrella'),
-          v('tomorrow', null, 'morgen', 'mañana', 'tomorrow')
+          v('it is hot', null, 'es ist warm', 'hace calor', 'it is hot', 'κάνει ζέστη'),
+          v('it is cold', null, 'es ist kalt', 'hace frío', 'it is cold', 'κάνει κρύο'),
+          v('it is raining', null, 'es regnet gerade', 'está lloviendo', 'it is raining', 'βρέχει'),
+          v('the umbrella', null, 'der Regenschirm', 'el paraguas', 'the umbrella', 'η ομπρέλα'),
+          v('tomorrow', null, 'morgen', 'mañana', 'tomorrow', 'αύριο')
         ],
         hoer: [
           mp('Today it is hot.', 'Today it is hot.', 'Today it is not.'),
@@ -525,11 +525,11 @@
       },
       el: {
         wortschatz: [
-          v('κάνει ζέστη', 'káni zésti', 'es ist warm', 'hace calor', 'it is hot'),
-          v('κάνει κρύο', 'káni krío', 'es ist kalt', 'hace frío', 'it is cold'),
-          v('βρέχει', 'vréchi', 'es regnet', 'llueve', 'it is raining'),
-          v('η ομπρέλα', 'i ombréla', 'der Regenschirm', 'el paraguas', 'the umbrella'),
-          v('αύριο', 'ávrio', 'morgen', 'mañana', 'tomorrow')
+          v('κάνει ζέστη', 'káni zésti', 'es ist warm', 'hace calor', 'it is hot', 'κάνει ζέστη'),
+          v('κάνει κρύο', 'káni krío', 'es ist kalt', 'hace frío', 'it is cold', 'κάνει κρύο'),
+          v('βρέχει', 'vréchi', 'es regnet', 'llueve', 'it is raining', 'βρέχει'),
+          v('η ομπρέλα', 'i ombréla', 'der Regenschirm', 'el paraguas', 'the umbrella', 'η ομπρέλα'),
+          v('αύριο', 'ávrio', 'morgen', 'mañana', 'tomorrow', 'αύριο')
         ],
         hoer: [
           mp('Σήμερα κάνει ζέστη.', 'Σήμερα κάνει ζέστη.', 'Σήμερα κάνει κρύο.'),
@@ -542,11 +542,11 @@
     familie: {
       es: {
         wortschatz: [
-          v('mi hermana', null, 'meine Schwester', 'mi hermana', 'my sister'),
-          v('mi hijo', null, 'mein Sohn', 'mi hijo', 'my son'),
-          v('los padres', null, 'die Eltern', 'los padres', 'the parents'),
-          v('está casado', null, 'ist verheiratet', 'está casado', 'is married'),
-          v('vive en', null, 'wohnt in', 'vive en', 'lives in')
+          v('mi hermana', null, 'meine Schwester', 'mi hermana', 'my sister', 'η αδελφή μου'),
+          v('mi hijo', null, 'mein Sohn', 'mi hijo', 'my son', 'ο γιος μου'),
+          v('los padres', null, 'die Eltern', 'los padres', 'the parents', 'οι γονείς'),
+          v('está casado', null, 'ist verheiratet', 'está casado', 'is married', 'είναι παντρεμένος'),
+          v('vive en', null, 'wohnt in', 'vive en', 'lives in', 'μένει στη')
         ],
         hoer: [
           mp('Mi hermana vive en Madrid.', 'Mi hermana vive en Madrid.', 'Mi hermano vive en Madrid.'),
@@ -555,11 +555,11 @@
       },
       de: {
         wortschatz: [
-          v('meine Schwester', null, 'meine Schwester', 'mi hermana', 'my sister'),
-          v('mein Sohn', null, 'mein Sohn', 'mi hijo', 'my son'),
-          v('die Eltern', null, 'die Eltern', 'los padres', 'the parents'),
-          v('ist verheiratet', null, 'ist verheiratet', 'está casado', 'is married'),
-          v('wohnt in', null, 'wohnt in', 'vive en', 'lives in')
+          v('meine Schwester', null, 'meine Schwester', 'mi hermana', 'my sister', 'η αδελφή μου'),
+          v('mein Sohn', null, 'mein Sohn', 'mi hijo', 'my son', 'ο γιος μου'),
+          v('die Eltern', null, 'die Eltern', 'los padres', 'the parents', 'οι γονείς'),
+          v('ist verheiratet', null, 'ist verheiratet', 'está casado', 'is married', 'είναι παντρεμένος'),
+          v('wohnt in', null, 'wohnt in', 'vive en', 'lives in', 'μένει στη')
         ],
         hoer: [
           mp('Meine Schwester wohnt in Berlin.', 'Meine Schwester wohnt in Berlin.', 'Mein Schwager wohnt in Berlin.'),
@@ -568,11 +568,11 @@
       },
       en: {
         wortschatz: [
-          v('my sister', null, 'meine Schwester', 'mi hermana', 'my sister'),
-          v('my son', null, 'mein Sohn', 'mi hijo', 'my son'),
-          v('the parents', null, 'die Eltern', 'los padres', 'the parents'),
-          v('is married', null, 'ist verheiratet', 'está casado', 'is married'),
-          v('lives in', null, 'wohnt in', 'vive en', 'lives in')
+          v('my sister', null, 'meine Schwester', 'mi hermana', 'my sister', 'η αδελφή μου'),
+          v('my son', null, 'mein Sohn', 'mi hijo', 'my son', 'ο γιος μου'),
+          v('the parents', null, 'die Eltern', 'los padres', 'the parents', 'οι γονείς'),
+          v('is married', null, 'ist verheiratet', 'está casado', 'is married', 'είναι παντρεμένος'),
+          v('lives in', null, 'wohnt in', 'vive en', 'lives in', 'μένει στη')
         ],
         hoer: [
           mp('My sister lives in London.', 'My sister lives in London.', 'My sitter lives in London.'),
@@ -581,11 +581,11 @@
       },
       el: {
         wortschatz: [
-          v('η αδελφή μου', 'i adelfí mou', 'meine Schwester', 'mi hermana', 'my sister'),
-          v('ο γιος μου', 'o gios mou', 'mein Sohn', 'mi hijo', 'my son'),
-          v('οι γονείς', 'i gonís', 'die Eltern', 'los padres', 'the parents'),
-          v('είναι παντρεμένος', 'íne pandreménos', 'ist verheiratet', 'está casado', 'is married'),
-          v('μένει στη', 'méni sti', 'wohnt in', 'vive en', 'lives in')
+          v('η αδελφή μου', 'i adelfí mou', 'meine Schwester', 'mi hermana', 'my sister', 'η αδελφή μου'),
+          v('ο γιος μου', 'o gios mou', 'mein Sohn', 'mi hijo', 'my son', 'ο γιος μου'),
+          v('οι γονείς', 'i gonís', 'die Eltern', 'los padres', 'the parents', 'οι γονείς'),
+          v('είναι παντρεμένος', 'íne pandreménos', 'ist verheiratet', 'está casado', 'is married', 'είναι παντρεμένος'),
+          v('μένει στη', 'méni sti', 'wohnt in', 'vive en', 'lives in', 'μένει στη')
         ],
         hoer: [
           mp('Η αδελφή μου μένει στη Θεσσαλονίκη.', 'Η αδελφή μου μένει στη Θεσσαλονίκη.', 'Ο αδελφός μου μένει στη Θεσσαλονίκη.'),
@@ -599,93 +599,93 @@
      in der Übersetzung — das Sehen des Satzes verstärkt den Lerneffekt").
      Treu zum GEHÖRTEN Satz (nicht zur Parallelfassung der anderen Sprache). */
   var HOER_UE = {
-    'Tengo una reserva.': { de: 'Ich habe eine Reservierung.', en: 'I have a reservation.' },
-    'Una habitación con desayuno para dos noches.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', en: 'A room with breakfast for two nights.' },
-    'Ich habe eine Reservierung.': { es: 'Tengo una reserva.', en: 'I have a reservation.' },
-    'Ein Zimmer mit Frühstück für zwei Nächte.': { es: 'Una habitación con desayuno para dos noches.', en: 'A room with breakfast for two nights.' },
-    'I have a reservation.': { de: 'Ich habe eine Reservierung.', es: 'Tengo una reserva.' },
-    'A room with breakfast for two nights.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', es: 'Una habitación con desayuno para dos noches.' },
+    'Tengo una reserva.': { de: 'Ich habe eine Reservierung.', en: 'I have a reservation.', el: 'Έχω μια κράτηση.' },
+    'Una habitación con desayuno para dos noches.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', en: 'A room with breakfast for two nights.', el: 'Ένα δωμάτιο με πρωινό για δύο νύχτες.' },
+    'Ich habe eine Reservierung.': { es: 'Tengo una reserva.', en: 'I have a reservation.', el: 'Έχω μια κράτηση.' },
+    'Ein Zimmer mit Frühstück für zwei Nächte.': { es: 'Una habitación con desayuno para dos noches.', en: 'A room with breakfast for two nights.', el: 'Ένα δωμάτιο με πρωινό για δύο νύχτες.' },
+    'I have a reservation.': { de: 'Ich habe eine Reservierung.', es: 'Tengo una reserva.', el: 'Έχω μια κράτηση.' },
+    'A room with breakfast for two nights.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', es: 'Una habitación con desayuno para dos noches.', el: 'Ένα δωμάτιο με πρωινό για δύο νύχτες.' },
     'Έχω μια κράτηση.': { de: 'Ich habe eine Reservierung.', es: 'Tengo una reserva.', en: 'I have a reservation.' },
     'Ένα δωμάτιο με πρωινό για δύο νύχτες.': { de: 'Ein Zimmer mit Frühstück für zwei Nächte.', es: 'Una habitación con desayuno para dos noches.', en: 'A room with breakfast for two nights.' },
 
-    'Al aeropuerto, por favor.': { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.' },
-    '¿Cuánto es al centro con equipaje?': { de: 'Was kostet es ins Zentrum mit Gepäck?', en: 'How much is it to the center with luggage?' },
-    'Zum Flughafen, bitte.': { es: 'Al aeropuerto, por favor.', en: 'To the airport, please.' },
-    'Was kostet das ins Zentrum mit Gepäck?': { es: '¿Cuánto cuesta ir al centro con equipaje?', en: 'How much is it to the center with luggage?' },
-    'To the airport, please.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.' },
-    'How much to the center with luggage?': { de: 'Was kostet es ins Zentrum mit Gepäck?', es: '¿Cuánto es al centro con equipaje?' },
+    'Al aeropuerto, por favor.': { de: 'Zum Flughafen, bitte.', en: 'To the airport, please.', el: 'Στο αεροδρόμιο, παρακαλώ.' },
+    '¿Cuánto es al centro con equipaje?': { de: 'Was kostet es ins Zentrum mit Gepäck?', en: 'How much is it to the center with luggage?', el: 'Πόσο κάνει στο κέντρο με αποσκευές;' },
+    'Zum Flughafen, bitte.': { es: 'Al aeropuerto, por favor.', en: 'To the airport, please.', el: 'Στο αεροδρόμιο, παρακαλώ.' },
+    'Was kostet das ins Zentrum mit Gepäck?': { es: '¿Cuánto cuesta ir al centro con equipaje?', en: 'How much is it to the center with luggage?', el: 'Πόσο κάνει στο κέντρο με αποσκευές;' },
+    'To the airport, please.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.', el: 'Στο αεροδρόμιο, παρακαλώ.' },
+    'How much to the center with luggage?': { de: 'Was kostet es ins Zentrum mit Gepäck?', es: '¿Cuánto es al centro con equipaje?', el: 'Πόσο κάνει στο κέντρο με αποσκευές;' },
     'Στο αεροδρόμιο, παρακαλώ.': { de: 'Zum Flughafen, bitte.', es: 'Al aeropuerto, por favor.', en: 'To the airport, please.' },
     'Πόσο κάνει στο κέντρο με αποσκευές;': { de: 'Was kostet es ins Zentrum mit Gepäck?', es: '¿Cuánto es al centro con equipaje?', en: 'How much is it to the center with luggage?' },
 
-    'La carta, por favor.': { de: 'Die Speisekarte, bitte.', en: 'The menu, please.' },
-    'Una mesa para dos y la carta, por favor.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', en: 'A table for two and the menu, please.' },
-    'Die Speisekarte, bitte.': { es: 'La carta, por favor.', en: 'The menu, please.' },
-    'Ein Tisch für zwei und die Speisekarte, bitte.': { es: 'Una mesa para dos y la carta, por favor.', en: 'A table for two and the menu, please.' },
-    'The menu, please.': { de: 'Die Speisekarte, bitte.', es: 'La carta, por favor.' },
-    'A table for two and the menu, please.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', es: 'Una mesa para dos y la carta, por favor.' },
+    'La carta, por favor.': { de: 'Die Speisekarte, bitte.', en: 'The menu, please.', el: 'Το μενού, παρακαλώ.' },
+    'Una mesa para dos y la carta, por favor.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', en: 'A table for two and the menu, please.', el: 'Ένα τραπέζι για δύο και το μενού, παρακαλώ.' },
+    'Die Speisekarte, bitte.': { es: 'La carta, por favor.', en: 'The menu, please.', el: 'Το μενού, παρακαλώ.' },
+    'Ein Tisch für zwei und die Speisekarte, bitte.': { es: 'Una mesa para dos y la carta, por favor.', en: 'A table for two and the menu, please.', el: 'Ένα τραπέζι για δύο και το μενού, παρακαλώ.' },
+    'The menu, please.': { de: 'Die Speisekarte, bitte.', es: 'La carta, por favor.', el: 'Το μενού, παρακαλώ.' },
+    'A table for two and the menu, please.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', es: 'Una mesa para dos y la carta, por favor.', el: 'Ένα τραπέζι για δύο και το μενού, παρακαλώ.' },
     'Το μενού, παρακαλώ.': { de: 'Die Speisekarte, bitte.', es: 'La carta, por favor.', en: 'The menu, please.' },
     'Ένα τραπέζι για δύο και το μενού, παρακαλώ.': { de: 'Einen Tisch für zwei und die Speisekarte, bitte.', es: 'Una mesa para dos y la carta, por favor.', en: 'A table for two and the menu, please.' },
 
-    'Un café con leche.': { de: 'Einen Milchkaffee.', en: 'A coffee with milk.' },
-    'Un té con azúcar para llevar.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', en: 'A tea with sugar to go.' },
-    'Ein Kaffee mit Milch.': { es: 'Un café con leche.', en: 'A coffee with milk.' },
-    'Ein Tee mit Zucker zum Mitnehmen.': { es: 'Un té con azúcar para llevar.', en: 'A tea with sugar to go.' },
-    'A coffee with milk.': { de: 'Einen Kaffee mit Milch.', es: 'Un café con leche.' },
-    'A tea with sugar to go.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', es: 'Un té con azúcar para llevar.' },
+    'Un café con leche.': { de: 'Einen Milchkaffee.', en: 'A coffee with milk.', el: 'Έναν καφέ με γάλα.' },
+    'Un té con azúcar para llevar.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', en: 'A tea with sugar to go.', el: 'Ένα τσάι με ζάχαρη για έξω.' },
+    'Ein Kaffee mit Milch.': { es: 'Un café con leche.', en: 'A coffee with milk.', el: 'Ένας καφές με γάλα.' },
+    'Ein Tee mit Zucker zum Mitnehmen.': { es: 'Un té con azúcar para llevar.', en: 'A tea with sugar to go.', el: 'Ένα τσάι με ζάχαρη για έξω.' },
+    'A coffee with milk.': { de: 'Einen Kaffee mit Milch.', es: 'Un café con leche.', el: 'Ένας καφές με γάλα.' },
+    'A tea with sugar to go.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', es: 'Un té con azúcar para llevar.', el: 'Ένα τσάι με ζάχαρη για έξω.' },
     'Έναν καφέ με γάλα.': { de: 'Einen Kaffee mit Milch.', es: 'Un café con leche.', en: 'A coffee with milk.' },
     'Ένα τσάι με ζάχαρη για έξω.': { de: 'Einen Tee mit Zucker zum Mitnehmen.', es: 'Un té con azúcar para llevar.', en: 'A tea with sugar to go.' },
 
-    '¿Cuánto cuesta el pan?': { de: 'Was kostet das Brot?', en: 'How much is the bread?' },
-    'Un kilo de pan y una bolsa, por favor.': { de: 'Ein Kilo Brot und eine Tüte, bitte.', en: 'A kilo of bread and a bag, please.' },
-    'Was kostet das Brot?': { es: '¿Cuánto cuesta el pan?', en: 'How much is the bread?' },
-    'Ein Kilo Brot und eine Tüte, bitte.': { es: 'Un kilo de pan y una bolsa, por favor.', en: 'A kilo of bread and a bag, please.' },
-    'How much is the bread?': { de: 'Was kostet das Brot?', es: '¿Cuánto cuesta el pan?' },
-    'A kilo of bread and a bag, please.': { de: 'Ein Kilo Brot und eine Tüte, bitte.', es: 'Un kilo de pan y una bolsa, por favor.' },
+    '¿Cuánto cuesta el pan?': { de: 'Was kostet das Brot?', en: 'How much is the bread?', el: 'Πόσο κάνει το ψωμί;' },
+    'Un kilo de pan y una bolsa, por favor.': { de: 'Ein Kilo Brot und eine Tüte, bitte.', en: 'A kilo of bread and a bag, please.', el: 'Ένα κιλό ψωμί και μια σακούλα, παρακαλώ.' },
+    'Was kostet das Brot?': { es: '¿Cuánto cuesta el pan?', en: 'How much is the bread?', el: 'Πόσο κάνει το ψωμί;' },
+    'Ein Kilo Brot und eine Tüte, bitte.': { es: 'Un kilo de pan y una bolsa, por favor.', en: 'A kilo of bread and a bag, please.', el: 'Ένα κιλό ψωμί και μια σακούλα, παρακαλώ.' },
+    'How much is the bread?': { de: 'Was kostet das Brot?', es: '¿Cuánto cuesta el pan?', el: 'Πόσο κάνει το ψωμί;' },
+    'A kilo of bread and a bag, please.': { de: 'Ein Kilo Brot und eine Tüte, bitte.', es: 'Un kilo de pan y una bolsa, por favor.', el: 'Ένα κιλό ψωμί και μια σακούλα, παρακαλώ.' },
     'Πόσο κάνει το ψωμί;': { de: 'Was kostet das Brot?', es: '¿Cuánto cuesta el pan?', en: 'How much is the bread?' },
     'Ένα κιλό ψωμί και μία σακούλα.': { de: 'Ein Kilo Brot und eine Tüte.', es: 'Un kilo de pan y una bolsa.', en: 'A kilo of bread and a bag.' },
 
-    'Está a la derecha.': { de: 'Es ist rechts.', en: 'It is on the right.' },
-    'Todo recto y después en la esquina.': { de: 'Geradeaus und dann an der Ecke.', en: 'Straight ahead and then at the corner.' },
-    'Es ist rechts.': { es: 'Está a la derecha.', en: 'It is on the right.' },
-    'Geradeaus und dann an der Ecke.': { es: 'Todo recto y después en la esquina.', en: 'Straight ahead and then at the corner.' },
-    'It is on the right.': { de: 'Es ist rechts.', es: 'Está a la derecha.' },
-    'Straight ahead and then at the corner.': { de: 'Geradeaus und dann an der Ecke.', es: 'Todo recto y después en la esquina.' },
+    'Está a la derecha.': { de: 'Es ist rechts.', en: 'It is on the right.', el: 'Είναι δεξιά.' },
+    'Todo recto y después en la esquina.': { de: 'Geradeaus und dann an der Ecke.', en: 'Straight ahead and then at the corner.', el: 'Ευθεία και μετά στη γωνία.' },
+    'Es ist rechts.': { es: 'Está a la derecha.', en: 'It is on the right.', el: 'Είναι δεξιά.' },
+    'Geradeaus und dann an der Ecke.': { es: 'Todo recto y después en la esquina.', en: 'Straight ahead and then at the corner.', el: 'Ευθεία και μετά στη γωνία.' },
+    'It is on the right.': { de: 'Es ist rechts.', es: 'Está a la derecha.', el: 'Είναι δεξιά.' },
+    'Straight ahead and then at the corner.': { de: 'Geradeaus und dann an der Ecke.', es: 'Todo recto y después en la esquina.', el: 'Ευθεία και μετά στη γωνία.' },
     'Είναι δεξιά.': { de: 'Es ist rechts.', es: 'Está a la derecha.', en: 'It is on the right.' },
     'Ευθεία και μετά στη γωνία.': { de: 'Geradeaus und dann an der Ecke.', es: 'Todo recto y después en la esquina.', en: 'Straight ahead and then at the corner.' },
 
-    'Me duele la cabeza.': { de: 'Mir tut der Kopf weh.', en: 'My head hurts.' },
-    'Tengo una cita y necesito la receta.': { de: 'Ich habe einen Termin und brauche das Rezept.', en: 'I have an appointment and I need the prescription.' },
-    'Mir tut der Kopf weh.': { es: 'Me duele la cabeza.', en: 'My head hurts.' },
-    'Ich habe einen Termin und brauche das Rezept.': { es: 'Tengo una cita y necesito la receta.', en: 'I have an appointment and I need the prescription.' },
-    'My head hurts.': { de: 'Mir tut der Kopf weh.', es: 'Me duele la cabeza.' },
-    'I have an appointment and I need the prescription.': { de: 'Ich habe einen Termin und brauche das Rezept.', es: 'Tengo una cita y necesito la receta.' },
+    'Me duele la cabeza.': { de: 'Mir tut der Kopf weh.', en: 'My head hurts.', el: 'Πονάει το κεφάλι μου.' },
+    'Tengo una cita y necesito la receta.': { de: 'Ich habe einen Termin und brauche das Rezept.', en: 'I have an appointment and I need the prescription.', el: 'Έχω ραντεβού και χρειάζομαι τη συνταγή.' },
+    'Mir tut der Kopf weh.': { es: 'Me duele la cabeza.', en: 'My head hurts.', el: 'Πονάει το κεφάλι μου.' },
+    'Ich habe einen Termin und brauche das Rezept.': { es: 'Tengo una cita y necesito la receta.', en: 'I have an appointment and I need the prescription.', el: 'Έχω ραντεβού και χρειάζομαι τη συνταγή.' },
+    'My head hurts.': { de: 'Mir tut der Kopf weh.', es: 'Me duele la cabeza.', el: 'Πονάει το κεφάλι μου.' },
+    'I have an appointment and I need the prescription.': { de: 'Ich habe einen Termin und brauche das Rezept.', es: 'Tengo una cita y necesito la receta.', el: 'Έχω ραντεβού και χρειάζομαι τη συνταγή.' },
     'Πονάει το κεφάλι μου.': { de: 'Mir tut der Kopf weh.', es: 'Me duele la cabeza.', en: 'My head hurts.' },
     'Έχω ένα ραντεβού και θέλω τη συνταγή.': { de: 'Ich habe einen Termin und möchte das Rezept.', es: 'Tengo una cita y quiero la receta.', en: 'I have an appointment and I would like the prescription.' },
 
-    'Un billete de ida y vuelta.': { de: 'Eine Fahrkarte hin und zurück.', en: 'A return ticket.' },
-    'El próximo tren sale del andén cuatro.': { de: 'Der nächste Zug fährt von Gleis vier.', en: 'The next train leaves from platform four.' },
-    'Eine Fahrkarte hin und zurück.': { es: 'Un billete de ida y vuelta.', en: 'A return ticket.' },
-    'Der nächste Zug fährt von Gleis vier.': { es: 'El próximo tren sale del andén cuatro.', en: 'The next train leaves from platform four.' },
-    'A round trip ticket, please.': { de: 'Eine Fahrkarte hin und zurück, bitte.', es: 'Un billete de ida y vuelta, por favor.' },
-    'The next train leaves from platform four.': { de: 'Der nächste Zug fährt von Gleis vier.', es: 'El próximo tren sale del andén cuatro.' },
+    'Un billete de ida y vuelta.': { de: 'Eine Fahrkarte hin und zurück.', en: 'A return ticket.', el: 'Ένα εισιτήριο με επιστροφή.' },
+    'El próximo tren sale del andén cuatro.': { de: 'Der nächste Zug fährt von Gleis vier.', en: 'The next train leaves from platform four.', el: 'Το επόμενο τρένο φεύγει από την αποβάθρα τέσσερα.' },
+    'Eine Fahrkarte hin und zurück.': { es: 'Un billete de ida y vuelta.', en: 'A return ticket.', el: 'Ένα εισιτήριο με επιστροφή.' },
+    'Der nächste Zug fährt von Gleis vier.': { es: 'El próximo tren sale del andén cuatro.', en: 'The next train leaves from platform four.', el: 'Το επόμενο τρένο φεύγει από την αποβάθρα τέσσερα.' },
+    'A round trip ticket, please.': { de: 'Eine Fahrkarte hin und zurück, bitte.', es: 'Un billete de ida y vuelta, por favor.', el: 'Ένα εισιτήριο με επιστροφή, παρακαλώ.' },
+    'The next train leaves from platform four.': { de: 'Der nächste Zug fährt von Gleis vier.', es: 'El próximo tren sale del andén cuatro.', el: 'Το επόμενο τρένο φεύγει από την αποβάθρα τέσσερα.' },
     'Ένα εισιτήριο με επιστροφή.': { de: 'Eine Fahrkarte hin und zurück.', es: 'Un billete de ida y vuelta.', en: 'A return ticket.' },
     'Το επόμενο τρένο φεύγει από την αποβάθρα τέσσερα.': { de: 'Der nächste Zug fährt von Gleis vier.', es: 'El próximo tren sale del andén cuatro.', en: 'The next train leaves from platform four.' },
 
-    'Hoy hace calor.': { de: 'Heute ist es warm.', en: 'It is hot today.' },
-    'Mañana llueve, llévate el paraguas.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', en: 'It will rain tomorrow, take your umbrella.' },
-    'Heute ist es warm.': { es: 'Hoy hace calor.', en: 'It is warm today.' },
-    'Morgen regnet es, nimm den Regenschirm.': { es: 'Mañana llueve, llévate el paraguas.', en: 'It will rain tomorrow, take your umbrella.' },
-    'Today it is hot.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.' },
-    'Tomorrow it is raining, take the umbrella.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.' },
+    'Hoy hace calor.': { de: 'Heute ist es warm.', en: 'It is hot today.', el: 'Σήμερα κάνει ζέστη.' },
+    'Mañana llueve, llévate el paraguas.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', en: 'It will rain tomorrow, take your umbrella.', el: 'Αύριο βρέχει, πάρε την ομπρέλα.' },
+    'Heute ist es warm.': { es: 'Hoy hace calor.', en: 'It is warm today.', el: 'Σήμερα κάνει ζέστη.' },
+    'Morgen regnet es, nimm den Regenschirm.': { es: 'Mañana llueve, llévate el paraguas.', en: 'It will rain tomorrow, take your umbrella.', el: 'Αύριο βρέχει, πάρε την ομπρέλα.' },
+    'Today it is hot.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.', el: 'Σήμερα κάνει ζέστη.' },
+    'Tomorrow it is raining, take the umbrella.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.', el: 'Αύριο βρέχει, πάρε την ομπρέλα.' },
     'Σήμερα κάνει ζέστη.': { de: 'Heute ist es heiß.', es: 'Hoy hace calor.', en: 'It is hot today.' },
     'Αύριο βρέχει, πάρε την ομπρέλα.': { de: 'Morgen regnet es, nimm den Regenschirm mit.', es: 'Mañana llueve, llévate el paraguas.', en: 'It will rain tomorrow, take your umbrella.' },
 
-    'Mi hermana vive en Madrid.': { de: 'Meine Schwester wohnt in Madrid.', en: 'My sister lives in Madrid.' },
-    'Mis padres viven aquí y mi hijo también.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', en: 'My parents live here and my son too.' },
-    'Meine Schwester wohnt in Berlin.': { es: 'Mi hermana vive en Berlín.', en: 'My sister lives in Berlin.' },
-    'Meine Eltern wohnen hier und mein Sohn auch.': { es: 'Mis padres viven aquí y mi hijo también.', en: 'My parents live here and my son too.' },
-    'My sister lives in London.': { de: 'Meine Schwester wohnt in London.', es: 'Mi hermana vive en Londres.' },
-    'My parents live here and my son too.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', es: 'Mis padres viven aquí y mi hijo también.' },
+    'Mi hermana vive en Madrid.': { de: 'Meine Schwester wohnt in Madrid.', en: 'My sister lives in Madrid.', el: 'Η αδελφή μου μένει στη Μαδρίτη.' },
+    'Mis padres viven aquí y mi hijo también.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', en: 'My parents live here and my son too.', el: 'Οι γονείς μου μένουν εδώ, και ο γιος μου επίσης.' },
+    'Meine Schwester wohnt in Berlin.': { es: 'Mi hermana vive en Berlín.', en: 'My sister lives in Berlin.', el: 'Η αδελφή μου μένει στο Βερολίνο.' },
+    'Meine Eltern wohnen hier und mein Sohn auch.': { es: 'Mis padres viven aquí y mi hijo también.', en: 'My parents live here and my son too.', el: 'Οι γονείς μου μένουν εδώ, και ο γιος μου επίσης.' },
+    'My sister lives in London.': { de: 'Meine Schwester wohnt in London.', es: 'Mi hermana vive en Londres.', el: 'Η αδελφή μου μένει στο Λονδίνο.' },
+    'My parents live here and my son too.': { de: 'Meine Eltern wohnen hier und mein Sohn auch.', es: 'Mis padres viven aquí y mi hijo también.', el: 'Οι γονείς μου μένουν εδώ, και ο γιος μου επίσης.' },
     'Η αδελφή μου μένει στη Θεσσαλονίκη.': { de: 'Meine Schwester wohnt in Thessaloniki.', es: 'Mi hermana vive en Salónica.', en: 'My sister lives in Thessaloniki.' },
     'Οι γονείς μου μένουν εδώ και ο γιος μου.': { de: 'Meine Eltern wohnen hier, und mein Sohn auch.', es: 'Mis padres viven aquí y mi hijo también.', en: 'My parents live here, and so does my son.' }
   };
@@ -697,7 +697,7 @@
 
   window.spikiuHaeppchen = function (themaId, ziel, mutter) {
     try {
-      mutter = (['de', 'es', 'en'].indexOf(mutter) > -1) ? mutter : 'de';
+      mutter = (['de', 'es', 'en', 'el'].indexOf(mutter) > -1) ? mutter : 'de';
       var t = DB[themaId];
       if (!t) return null;
       var set = t[ziel];

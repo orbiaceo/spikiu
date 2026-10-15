@@ -623,7 +623,7 @@ function langCode(v){
   if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
   if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
   if(v.indexOf('engl')>-1) return 'en';
-  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1||v.indexOf('ελλην')>-1) return 'el';
   return null;
 }
 function koennenFrom(v){
@@ -771,10 +771,10 @@ function plainForSpeech(s){
 // einen sanften Knopf. Kein Auto-Sprung: der Lerner drückt. Profil reist via
 // localStorage (spikiu_user) automatisch in den Zielraum mit.
 var WECHSEL_ZIELE = {
-  schreibwerkstatt: { href:'schreibwerkstatt.html',  label:{ de:'Zur Schreibwerkstatt', es:'Al taller de escritura', en:'To the Writing Workshop' } },
-  lesewerkstatt:    { href:'taller.html',             label:{ de:'Zur Lesewerkstatt',    es:'Al taller de lectura',   en:'To the Reading Workshop' } },
-  buecher:          { href:'books.html',              label:{ de:'Zu meinen Büchern',    es:'A mis libros',           en:'To my Books' } },
-  lektionen:        { href:'dashboard.html#lektionen', label:{ de:'Zu den Lektionen',    es:'A las lecciones',        en:'To the Lessons' } }
+  schreibwerkstatt: { href:'schreibwerkstatt.html',  label:{ de:'Zur Schreibwerkstatt', es:'Al taller de escritura', en:'To the Writing Workshop', el:'Στο Εργαστήρι γραφής' } },
+  lesewerkstatt:    { href:'taller.html',             label:{ de:'Zur Lesewerkstatt',    es:'Al taller de lectura',   en:'To the Reading Workshop', el:'Στο Εργαστήρι ανάγνωσης' } },
+  buecher:          { href:'books.html',              label:{ de:'Zu meinen Büchern',    es:'A mis libros',           en:'To my Books', el:'Στα βιβλία μου' } },
+  lektionen:        { href:'dashboard.html#lektionen', label:{ de:'Zu den Lektionen',    es:'A las lecciones',        en:'To the Lessons', el:'Στα μαθήματα' } }
 };
 // Breit strippen, damit NIE ein Marker als Text leakt (auch ein vertippter Zielraum) —
 // Knopf aber nur bei gültigem Ziel rendern.
@@ -788,7 +788,7 @@ function extractWechsel(t){
 }
 function addDoorButton(ziel){
   var z = WECHSEL_ZIELE[ziel]; if(!z) return;
-  var uiLang = (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de';
+  var uiLang = (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de';
   var label = z.label[uiLang] || z.label.de;
   var row = document.createElement('div');
   row.className = 'door-row';
@@ -815,7 +815,10 @@ var P3_UI = {
        mismoSeed:'Sigamos practicando el mismo tema.', toLesson:'→ A la lección', lessonNote:'Tu lección te espera en el panel.' },
   en:{ kkEyebrow:'For next time', said:'You said', better:'Better',
        mismo:'🔁 Same topic — keep going', otro:'🔀 Another topic', terminar:'✓ Finish → Lesson',
-       mismoSeed:'Let’s keep practicing the same topic.', toLesson:'→ To the lesson', lessonNote:'Your lesson is waiting in the dashboard.' }
+       mismoSeed:'Let’s keep practicing the same topic.', toLesson:'→ To the lesson', lessonNote:'Your lesson is waiting in the dashboard.' },
+  el:{ kkEyebrow:'Για την επόμενη φορά', said:'Είπες', better:'Καλύτερα',
+       mismo:'🔁 Ίδιο θέμα — συνεχίζουμε', otro:'🔀 Άλλο θέμα', terminar:'✓ Τέλος → Μάθημα',
+       mismoSeed:'Ας συνεχίσουμε την εξάσκηση στο ίδιο θέμα.', toLesson:'→ Στο μάθημα', lessonNote:'Το μάθημά σου σε περιμένει στην αρχική σελίδα.' }
 };
 function p3(){ return P3_UI[uiLang()] || P3_UI.de; }
 
@@ -898,7 +901,9 @@ var ERK_UI = {
   es:{ braue:{wort:'Palabra', satz:'Frase', grammatik:'Por qué es así', ausdruck:'Así se dice'},
        glieder:'Parte por parte', zurueck:'Volver a la conversación' },
   en:{ braue:{wort:'Word', satz:'Sentence', grammatik:'Why it works this way', ausdruck:'How to say it'},
-       glieder:'Piece by piece', zurueck:'Back to the conversation' }
+       glieder:'Piece by piece', zurueck:'Back to the conversation' },
+  el:{ braue:{wort:'Λέξη', satz:'Πρόταση', grammatik:'Γιατί είναι έτσι', ausdruck:'Έτσι το λέμε'},
+       glieder:'Κομμάτι κομμάτι', zurueck:'Πίσω στη συζήτηση' }
 };
 function erkUI(){ return ERK_UI[uiLang()] || ERK_UI.de; }
 
@@ -1143,7 +1148,14 @@ var END_UI = {
        byeMade:'You’ll find it in the dashboard under My Lessons. See you soon! 🐾',
        err:'That didn’t work just now — try again in a moment.',
        bgSafe:'Spikiu will finish your lesson in the background — it won’t be lost. You’ll find it in your lessons shortly.',
-       retry:'Try again' }
+       retry:'Try again' },
+  el:{ endConvo:'Τέλος συζήτησης', offer:'Θέλεις ένα μάθημα από αυτή τη συζήτηση;',
+       yes:'Ναι, ευχαρίστως', no:'Όχι, ευχαριστώ', byeNo:'Εντάξει. Τα λέμε σύντομα! 🐾',
+       making:'Ο Spikiu ετοιμάζει το μάθημά σου …',
+       byeMade:'Θα το βρεις στην αρχική σελίδα, στα Μαθήματά σου. Τα λέμε σύντομα! 🐾',
+       err:'Κάτι δεν πήγε καλά μόλις τώρα — δοκίμασε ξανά σε λίγο.',
+       bgSafe:'Ο Spikiu θα ολοκληρώσει το μάθημά σου στο παρασκήνιο — δεν θα χαθεί. Θα το βρεις σε λίγο στα μαθήματά σου.',
+       retry:'Δοκίμασε ξανά' }
 };
 function endUI(){ return END_UI[uiLang()] || END_UI.de; }
 
@@ -1170,7 +1182,8 @@ var reelActive = false;
 var REEL_UI = {
   de:{ yourTurn:'Du bist dran', start:'Worüber möchtest du plaudern?', write:'Schreib etwas…', send:'Senden', swipe:'← nach links wischen', end:'Gespräch beenden', error:'Spikiu ist gerade nicht erreichbar.', retry:'Nochmal' , uebersetzung:'Übersetzung'},
   es:{ yourTurn:'Te toca', start:'¿De qué quieres charlar?', write:'Escribe algo…', send:'Enviar', swipe:'← desliza a la izquierda', end:'Terminar conversación', error:'Spikiu no está disponible ahora mismo.', retry:'Otra vez' , uebersetzung:'Traducción'},
-  en:{ yourTurn:'Your turn', start:'What would you like to chat about?', write:'Write something…', send:'Send', swipe:'← swipe left', end:'End conversation', error:'Spikiu is unavailable right now.', retry:'Again' , uebersetzung:'Translation'}
+  en:{ yourTurn:'Your turn', start:'What would you like to chat about?', write:'Write something…', send:'Send', swipe:'← swipe left', end:'End conversation', error:'Spikiu is unavailable right now.', retry:'Again' , uebersetzung:'Translation'},
+  el:{ yourTurn:'Σειρά σου', start:'Για τι θέλεις να κουβεντιάσουμε;', write:'Γράψε κάτι…', send:'Στείλε', swipe:'← σύρε προς τα αριστερά', end:'Τέλος συζήτησης', error:'Ο Spikiu δεν είναι διαθέσιμος αυτή τη στιγμή.', retry:'Ξανά' , uebersetzung:'Μετάφραση'}
 };
 function reelUI(){ return REEL_UI[uiLang()] || REEL_UI.de; }
 function reelEl(){ return document.getElementById('reel'); }
@@ -1375,7 +1388,8 @@ function szeneAufgabenLaden(){
 var SOUFF_UI = {
   de:{ leer:'Was soll ich tun?', kopf:'Deine Aufgabe' },
   es:{ leer:'¿Qué tengo que hacer?', kopf:'Tu tarea' },
-  en:{ leer:'What should I do?', kopf:'Your task' }
+  en:{ leer:'What should I do?', kopf:'Your task' },
+  el:{ leer:'Τι πρέπει να κάνω;', kopf:'Η αποστολή σου' }
 };
 function renderSouffleur(){
   if (!szeneAufgaben.length || szeneOffen >= szeneAufgaben.length) return null;
@@ -1405,7 +1419,7 @@ function renderSouffleur(){
 }
 
 // Die Aufgabe steht GANZ OBEN — sie sagt, worum es geht, bevor jemand redet.
-var AUFG_UI = { de:'Aufgabe %1 von %2', es:'Tarea %1 de %2', en:'Task %1 of %2' };
+var AUFG_UI = { de:'Aufgabe %1 von %2', es:'Tarea %1 de %2', en:'Task %1 of %2', el:'Αποστολή %1 από %2' };
 function renderAufgabeJetzt(){
   if (!szeneAufgaben.length) return null;
   var ui = uiLang();
@@ -1518,14 +1532,15 @@ function appendSpikiuSlide(ziel, trans){
 var EDIT_UI = {
   de:{ edit:'✎ Ändern', ok:'Neu senden', no:'Abbrechen' },
   es:{ edit:'✎ Cambiar', ok:'Enviar de nuevo', no:'Cancelar' },
-  en:{ edit:'✎ Edit',    ok:'Send again',     no:'Cancel' }
+  en:{ edit:'✎ Edit',    ok:'Send again',     no:'Cancel' },
+  el:{ edit:'✎ Αλλαγή',  ok:'Στείλε ξανά',    no:'Ακύρωση' }
 };
 function editUI(){ return EDIT_UI[uiLang()] || EDIT_UI.de; }
 
 // Die Bühnenkarte: Bild, „Ich bin X, du bist Y", ein Knopf.
 // Sie kostet nichts — Bild, Rollen und Ort stehen in der Datenbank.
 // Erst nach „Los!" geht der erste Zug an das Modell.
-var BUEHNE_UI = { de:{ los:'Los!' }, es:{ los:'¡Vamos!' }, en:{ los:'Let\u2019s go!' } };
+var BUEHNE_UI = { de:{ los:'Los!' }, es:{ los:'¡Vamos!' }, en:{ los:'Let\u2019s go!' }, el:{ los:'Πάμε!' } };
 
 function renderBuehne(themaId, weiter){
   var reel = reelEl(); if (!reel) return false;
@@ -1544,8 +1559,8 @@ function renderBuehne(themaId, weiter){
 
   var ro = document.createElement('div');
   ro.className = 'bu-rollen';
-  var ICH = { de:'Ich bin', es:'Yo soy', en:'I am' };
-  var DU  = { de:'du bist', es:'tú eres', en:'you are' };
+  var ICH = { de:'Ich bin', es:'Yo soy', en:'I am', el:'Εγώ είμαι' };
+  var DU  = { de:'du bist', es:'tú eres', en:'you are', el:'εσύ είσαι' };
   ro.innerHTML = escPlain(ICH[ui] || ICH.de) + ' <b>' + escPlain(R.spikiu[ui] || R.spikiu.de) + '</b>,<br>'
                + escPlain(DU[ui] || DU.de) + ' <b>' + escPlain(R.lerner[ui] || R.lerner.de) + '</b>.';
   slide.appendChild(ro);
@@ -1716,7 +1731,7 @@ function appendAntwortFeld(slide){
   // wo es bei jeder Karte gleich steht und nie mitwächst.
   // Der Ausgang erscheint erst, wenn die letzte Aufgabe läuft — nicht davor.
   var letzte = szeneAufgaben.length && szeneOffen === szeneAufgaben.length - 1;
-  var SCHLUSS = { de:'Senden & abschließen', es:'Enviar y terminar', en:'Send & finish' };
+  var SCHLUSS = { de:'Senden & abschließen', es:'Enviar y terminar', en:'Send & finish', el:'Στείλε & τέλος' };
   box.innerHTML = '<textarea id="reelInput" rows="2" placeholder="\u00b7\u00b7\u00b7"></textarea>'
     + '<button class="ra-send' + (letzte ? ' ausgang' : '') + '" type="button" id="reelSendBtn">'
     + escPlain(letzte ? (SCHLUSS[uiLang()] || SCHLUSS.de) : ui.send) + '</button>';
@@ -1787,7 +1802,8 @@ var ECHTE_KURZE = { si:1,'sí':1,no:1,ja:1,yes:1,ok:1,hola:1,pan:1,'café':1,caf
 var WARN_UI = {
   de:{ warn:'Sieht nach einem Vertipper aus. Nochmal senden schickt es trotzdem.', korr:'← Zug korrigieren' },
   es:{ warn:'Parece un error de tecleo. Pulsa enviar otra vez para mandarlo igual.', korr:'← Corregir mi mensaje' },
-  en:{ warn:'Looks like a typo. Press send again to send it anyway.', korr:'← Fix my message' }
+  en:{ warn:'Looks like a typo. Press send again to send it anyway.', korr:'← Fix my message' },
+  el:{ warn:'Μοιάζει με τυπογραφικό λάθος. Πάτα ξανά αποστολή για να το στείλεις έτσι κι αλλιώς.', korr:'← Διόρθωσε το μήνυμά μου' }
 };
 function warnUI(){ return WARN_UI[uiLang()] || WARN_UI.de; }
 
@@ -1883,7 +1899,8 @@ function renderReelSchluss(){
   var ERNTE_UI = {
     de:{ titel:'Das hast du geübt', sagen:'Das kannst du sagen', woerter:'Wörter', heim:'Nach Hause' },
     es:{ titel:'Esto has practicado', sagen:'Esto ya lo puedes decir', woerter:'Palabras', heim:'A casa' },
-    en:{ titel:'This is what you practised', sagen:'You can say this now', woerter:'Words', heim:'Home' }
+    en:{ titel:'This is what you practised', sagen:'You can say this now', woerter:'Words', heim:'Home' },
+    el:{ titel:'Αυτά εξασκήθηκες', sagen:'Αυτό μπορείς πια να το πεις', woerter:'Λέξεις', heim:'Αρχική' }
   };
   var eui = ERNTE_UI[uiLang()] || ERNTE_UI.de;
   var geerntet = [];
@@ -2159,7 +2176,7 @@ function hideLessonSpinner(){ var s = document.getElementById('lessonSpin'); if 
 // BEVOR das Netz läuft → ein Fehlschlag verliert NICHTS. Erfolg = Lektion speichern +
 // pending löschen. Fehler = pending BLEIBT (der nav.js-Finalizer macht sie auf der
 // nächsten Seite fertig), ehrliche beruhigende Nachricht + „Nochmal versuchen".
-var FREI_LESSON = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat' };
+var FREI_LESSON = { de:'Freies Gespräch', es:'Conversación libre', en:'Free chat', el:'Ελεύθερη συζήτηση' };
 
 async function makeLessonAndLeave(){
   // Spinner, Fehlermeldung und „Nochmal versuchen" leben im Blasen-Chat. Der ist
@@ -2187,7 +2204,7 @@ async function makeLessonAndLeave(){
       id: 'lesson_' + Date.now(),
       body: {
         name:                u.name,
-        nativeLang:          u.nativeLang,
+        nativeLang:          u.nativeLang || ({ de:'Deutsch', es:'Español', en:'English', el:'Ελληνικά' })[PROFILE.muttersprache] || 'Deutsch',
         profile:             u.profile,
         conversationHistory: buildConvoForLesson()
       },
@@ -2276,7 +2293,8 @@ function updateFreeExit(){
 var PALETTE_LABEL = {
   de:'Antworte mit dem gelernten Wortschatz',
   es:'Responde con el vocabulario aprendido',
-  en:'Answer with the vocabulary you learned'
+  en:'Answer with the vocabulary you learned',
+  el:'Απάντησε με το λεξιλόγιο που έμαθες'
 };
 function removeOptionen(){ var p = document.getElementById('antwortPalette'); if (p) p.remove(); }
 function renderOptionen(optionen){
@@ -2583,15 +2601,16 @@ function sendMessage(){
 var GAB = {
   de:{ chooseActivity:'Wähle eine Aktivität', chooseTopic:'Wähle ein Thema', free:'Einfach plaudern', orTopic:'…oder ein Thema üben', other:'Etwas anderes…', describe:'Beschreibe, was du üben willst', placeholder:'z. B. ein Zimmer reservieren…', seed:function(t){ return 'Ich möchte das Thema „'+t+'" üben.'; } },
   es:{ chooseActivity:'Elige una actividad', chooseTopic:'Elige un tema', free:'Charlar sin más', orTopic:'…o practicar un tema', other:'Otra cosa…', describe:'Describe lo que quieres practicar', placeholder:'p. ej. reservar una habitación…', seed:function(t){ return 'Quiero practicar el tema «'+t+'».'; } },
-  en:{ chooseActivity:'Choose an activity', chooseTopic:'Choose a topic', free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } }
+  en:{ chooseActivity:'Choose an activity', chooseTopic:'Choose a topic', free:'Just chat', orTopic:'…or practice a topic', other:'Something else…', describe:'Describe what you want to practice', placeholder:'e.g. booking a room…', seed:function(t){ return 'I would like to practice the topic "'+t+'".'; } },
+  el:{ chooseActivity:'Διάλεξε μια δραστηριότητα', chooseTopic:'Διάλεξε ένα θέμα', free:'Απλώς κουβέντα', orTopic:'…ή εξάσκηση σε ένα θέμα', other:'Κάτι άλλο…', describe:'Περιέγραψε τι θέλεις να εξασκήσεις', placeholder:'π.χ. κράτηση δωματίου…', seed:function(t){ return 'Θέλω να εξασκηθώ στο θέμα «'+t+'».'; } }
 };
 var TOPICS = [
-  { id:'hotel',      emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel' },
-  { id:'taxi',       emoji:'🚕', de:'Taxi',       es:'Taxi',        en:'Taxi' },
-  { id:'restaurant', emoji:'🍽️', de:'Restaurant', es:'Restaurante', en:'Restaurant' },
-  { id:'cafe',       emoji:'☕', de:'Im Café',    es:'En el café',  en:'At the café' }
+  { id:'hotel',      emoji:'🏨', de:'Hotel',      es:'Hotel',       en:'Hotel',       el:'Ξενοδοχείο' },
+  { id:'taxi',       emoji:'🚕', de:'Taxi',       es:'Taxi',        en:'Taxi',        el:'Ταξί' },
+  { id:'restaurant', emoji:'🍽️', de:'Restaurant', es:'Restaurante', en:'Restaurant',  el:'Εστιατόριο' },
+  { id:'cafe',       emoji:'☕', de:'Im Café',    es:'En el café',  en:'At the café', el:'Στο καφέ' }
 ];
-function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 function removeGabelung(){ var g = document.getElementById('gabelung'); if (g) g.remove(); }
 
 function showGabelung(){
@@ -2678,7 +2697,8 @@ function goFree(){ gefuehrt = false; sessionGezaehlt = false; setOpenerChrome(fa
 var WUNSCH = {
   de: function(t){ return 'Ich möchte das Thema „' + t + '" üben.'; },
   es: function(t){ return 'Quiero practicar el tema «' + t + '».'; },
-  en: function(t){ return 'I would like to practise the topic "' + t + '".'; }
+  en: function(t){ return 'I would like to practise the topic "' + t + '".'; },
+  el: function(t){ return 'Θέλω να εξασκηθώ στο θέμα «' + t + '».'; }
 };
 
 function pickTopic(label, id){
@@ -2751,12 +2771,14 @@ var PLAY_SVG    = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h
 var HAP_UI = {
   de:{ loading:'Spikiu bereitet die Häppchen vor…', vocab:'Wortschatz mit Audio', listen:'Hörverständnis', weiterVocab:'Verstanden — weiter', weiter:'Weiter', correct:'Richtig!', wrong:'Knapp — die grüne war es.', handover:'Stark. Jetzt üben wir das im Gespräch.', skip:'Wir steigen direkt ins Gespräch ein.', locked:'Erst die Häppchen…', listenHint:'Was hörst du?', wordspot:'Wörter tippen', wordHint:'Welche Wörter hörst du? Tippe sie an.', check:'Prüfen', wordPerfect:'Perfekt — gutes Ohr!', wordClose:'Fast — grün = richtig, gestrichelt = verpasst.', flip:'tippen zum Umdrehen', transLabel:'Übersetzung' },
   es:{ loading:'Spikiu prepara los bocados…', vocab:'Vocabulario con audio', listen:'Comprensión auditiva', weiterVocab:'Entendido — seguir', weiter:'Seguir', correct:'¡Correcto!', wrong:'Casi — era la verde.', handover:'¡Genial! Ahora lo practicamos hablando.', skip:'Entramos directo en la conversación.', locked:'Primero los bocados…', listenHint:'¿Qué oyes?', wordspot:'Toca las palabras', wordHint:'¿Qué palabras oyes? Tócalas.', check:'Comprobar', wordPerfect:'¡Perfecto, buen oído!', wordClose:'Casi — verde = correcto, punteado = te faltó.', flip:'toca para girar', transLabel:'Traducción' },
-  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?', wordspot:'Tap the words', wordHint:'Which words do you hear? Tap them.', check:'Check', wordPerfect:'Perfect — good ear!', wordClose:'Close — green = right, dashed = missed.', flip:'tap to flip', transLabel:'Translation' }
+  en:{ loading:'Spikiu is preparing the snacks…', vocab:'Vocabulary with audio', listen:'Listening', weiterVocab:'Got it — continue', weiter:'Continue', correct:'Correct!', wrong:'Close — the green one.', handover:'Great. Now let’s practice it in conversation.', skip:'Let’s jump straight into the conversation.', locked:'First the snacks…', listenHint:'What do you hear?', wordspot:'Tap the words', wordHint:'Which words do you hear? Tap them.', check:'Check', wordPerfect:'Perfect — good ear!', wordClose:'Close — green = right, dashed = missed.', flip:'tap to flip', transLabel:'Translation' },
+  el:{ loading:'Ο Spikiu ετοιμάζει τις μπουκιές…', vocab:'Λεξιλόγιο με ήχο', listen:'Ακρόαση', weiterVocab:'Το κατάλαβα — συνέχεια', weiter:'Συνέχεια', correct:'Σωστά!', wrong:'Παραλίγο — ήταν το πράσινο.', handover:'Τέλεια. Τώρα το εξασκούμε στη συζήτηση.', skip:'Μπαίνουμε κατευθείαν στη συζήτηση.', locked:'Πρώτα οι μπουκιές…', listenHint:'Τι ακούς;', wordspot:'Πάτα τις λέξεις', wordHint:'Ποιες λέξεις ακούς; Πάτα τες.', check:'Έλεγχος', wordPerfect:'Τέλεια — καλό αυτί!', wordClose:'Σχεδόν — πράσινο = σωστό, διακεκομμένο = σου ξέφυγε.', flip:'πάτα για να γυρίσει', transLabel:'Μετάφραση' }
 };
 var RAIL_LBL = {
   de:['Thema','Wörter','Hören','Sprechen','Lektion'],
   es:['Tema','Palabras','Escucha','Hablar','Lección'],
-  en:['Topic','Words','Listening','Speaking','Lesson']
+  en:['Topic','Words','Listening','Speaking','Lesson'],
+  el:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα']
 };
 
 function fillRail(){
@@ -3059,7 +3081,8 @@ function handover(){
 var DRILL_UI = {
   de:{ title:'Sprechen üben', say:'Sag auf der Zielsprache:', check:'tippen zum Prüfen', done:'Geschafft! 🎉', doneSub:'Du hast die ganze Szene gesprochen.', enough:'Genug für heute' },
   es:{ title:'Practicar habla', say:'Dilo en el idioma meta:', check:'toca para comprobar', done:'¡Listo! 🎉', doneSub:'Has hablado toda la escena.', enough:'Suficiente por hoy' },
-  en:{ title:'Speaking practice', say:'Say it in the target language:', check:'tap to check', done:'Done! 🎉', doneSub:'You spoke the whole scene.', enough:'Enough for today' }
+  en:{ title:'Speaking practice', say:'Say it in the target language:', check:'tap to check', done:'Done! 🎉', doneSub:'You spoke the whole scene.', enough:'Enough for today' },
+  el:{ title:'Εξάσκηση στην ομιλία', say:'Πες το στη γλώσσα που μαθαίνεις:', check:'πάτα για έλεγχο', done:'Τα κατάφερες! 🎉', doneSub:'Είπες ολόκληρη τη σκηνή.', enough:'Αρκετά για σήμερα' }
 };
 function startDrill(){
   var ui = uiLang(), U = DRILL_UI[ui] || DRILL_UI.de;
@@ -3111,7 +3134,11 @@ var LESSON_UI = {
   en:{ subtitle:'Your guided scene', goalLabel:'Goal',
        goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, pronunciation and a short roleplay.'; },
        vocabLabel:'Vocabulary', dialogueLabel:'Roleplay', quizLabel:'Quiz', you:'You',
-       quizQ:function(w){ return 'What does "' + w + '" mean?'; }, view:'View lesson' }
+       quizQ:function(w){ return 'What does "' + w + '" mean?'; }, view:'View lesson' },
+  el:{ subtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος',
+       goal:function(t){ return 'Εξασκήθηκες στο θέμα «' + t + '»: λεξιλόγιο, προφορά και ένα σύντομο παιχνίδι ρόλων.'; },
+       vocabLabel:'Λεξιλόγιο', dialogueLabel:'Παιχνίδι ρόλων', quizLabel:'Κουίζ', you:'Εσύ',
+       quizQ:function(w){ return 'Τι σημαίνει «' + w + '»;'; }, view:'Δες το μάθημα' }
 };
 function buildStaticLesson(){
   var ui = uiLang(), L = LESSON_UI[ui] || LESSON_UI.de;
@@ -3184,7 +3211,7 @@ function drillDone(){
 // ── B · SKRIPT-ROLLENSPIEL (0 Token) ─────────────────────────────────────────
 // Spikiu spielt die Rolle (feste Zeilen aus szenen-dialog.js), der User waehlt
 // seine Antwort aus Optionen (Multiple Choice). Richtig=gruen, falsch=orange.
-var RP_UI = { de:{ title:'Rollenspiel' }, es:{ title:'Juego de roles' }, en:{ title:'Roleplay' } };
+var RP_UI = { de:{ title:'Rollenspiel' }, es:{ title:'Juego de roles' }, en:{ title:'Roleplay' }, el:{ title:'Παιχνίδι ρόλων' } };
 var RP = null, RP_I = 0;
 function startRollenspiel(){
   var ziel = (typeof PROFILE !== 'undefined' && PROFILE && PROFILE.zielsprache) ? PROFILE.zielsprache : 'es';
@@ -3251,7 +3278,7 @@ var VOZ_GREET = {
   en: function(n){ return 'Hi' + (n ? ', ' + n : '') + '! Good to see you.'; },
   el: function(n){ return 'Γεια σου' + (n ? ', ' + n : '') + '! Χαίρομαι που σε βλέπω.'; }
 };
-var VOZ_HINT = { de:'tippen, um Spikiu zu hören', es:'toca para oír a Spikiu', en:'tap to hear Spikiu' };
+var VOZ_HINT = { de:'tippen, um Spikiu zu hören', es:'toca para oír a Spikiu', en:'tap to hear Spikiu', el:'πάτα για να ακούσεις τον Spikiu' };
 // Phase 1 (Teil 43): einladende Frage in der ZIELSPRACHE (wie der Gruß — „Man betritt sie").
 // Nur Präsentation; was Spikiu SPRICHT (VOZ_GREET) bleibt unverändert.
 var VOZ_INVITE = {
@@ -3379,7 +3406,7 @@ input.addEventListener('keydown', function(e){
 // ── Ausstiegs-Leiste (Teil 31 #1): dauerhaft erreichbar im geführten Rollenspiel ──
 // ⋯ über dem Eingabefeld öffnet dieselben Optionen wie das End-Menü (Anderes Thema /
 // Beenden → Lektion) — kein neues System, dieselben Handler otroTema/terminar.
-var EXIT_UI = { de:'⋯ Optionen', es:'⋯ Opciones', en:'⋯ Options' };
+var EXIT_UI = { de:'⋯ Optionen', es:'⋯ Opciones', en:'⋯ Options', el:'⋯ Επιλογές' };
 var exitBar = document.getElementById('exitBar');
 var exitMenu = document.getElementById('exitMenu');
 var exitToggle = document.getElementById('exitToggle');
@@ -3435,5 +3462,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- Voz primero (Paket 5): capy-vivo.js liefert den Sprech-Zustand (Mund + Aura) +
      Blinzeln/Blick für den Präsenz-Gruß. Idempotent (IIFE-Guard), nav.js lädt es ohnehin. -->
 <script src="capy-vivo.js" defer></script>
+<script>/* Seitensprache = Muttersprache (lang=el → Großbuchstaben ohne Tonos) */
+try{var _p=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile)||{};var _m=_p.muttersprache;if(['de','es','en','el'].indexOf(_m)>-1)document.documentElement.lang=_m;}catch(e){}</script>
 </body>
 </html>

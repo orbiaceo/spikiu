@@ -59,7 +59,10 @@ function vertragsAnweisung(sprache, mutter, koennen, fremde_schrift) {
 
   const schriftRegel = fremde_schrift
     ? `Die Zielsprache (${sprache}) nutzt eine fremde Schrift. "lautschrift" ist PFLICHT: eine Umschrift in lateinischen Buchstaben, EIN konsistentes System über alle Einträge (gleiche Mechanik wie der Reader). Nie mal so, mal anders.`
-    : `Die Zielsprache nutzt lateinische Schrift. "lautschrift" ist OPTIONAL: eine leichte Betonungs-/Aussprachehilfe, darf fehlen (dann null oder weglassen). Erfinde KEINE Phonetik — im Zweifel weglassen. Das echte Vorbild ist das Audio, nicht die Schrift.`;
+    : `Die Zielsprache nutzt lateinische Schrift. "lautschrift" ist OPTIONAL: eine leichte Betonungs-/Aussprachehilfe, darf fehlen (dann null oder weglassen). Erfinde KEINE Phonetik — im Zweifel weglassen. Das echte Vorbild ist das Audio, nicht die Schrift.`
+      + (mutter === 'Griechisch'
+        ? ` Muttersprache Griechisch: WENN du "lautschrift" gibst, dann in GRIECHISCHEN Buchstaben (monotonisch, Betonungsakzent), damit ein griechischer Lerner sie lesen kann. Spanisch immer neutral lateinamerikanisch (Seseo: c/z = σ): "gracias" → "γκράσιας", "buenos días" → "μπουένος δίας", "hola" → "όλα".`
+        : '');
 
   return `
 ═══════════════════════════════════════════════════════════

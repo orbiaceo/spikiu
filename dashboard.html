@@ -93,8 +93,8 @@ button{font:inherit;cursor:pointer}
   var u = {};
   try { u = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch (e) { u = {}; }
   var P = u.profile || {};
-  var MUT = (['de','es','en'].indexOf(P.muttersprache) > -1) ? P.muttersprache
-          : ({ 'Deutsch':'de', 'Español':'es', 'English':'en' }[u.nativeLang] || 'de');
+  var MUT = (['de','es','en','el'].indexOf(P.muttersprache) > -1) ? P.muttersprache
+          : ({ 'Deutsch':'de', 'Español':'es', 'English':'en', 'Ελληνικά':'el', 'Greek':'el', 'Griechisch':'el' }[u.nativeLang] || 'de');
 
   var T = {
     de: { titel:'Lernweg', etappen:{ samen:'🌱 Samen', stamm:'🌿 Stamm', krone:'🌳 Krone' },
@@ -108,7 +108,11 @@ button{font:inherit;cursor:pointer}
     en: { titel:'Path', etappen:{ samen:'🌱 Seed', stamm:'🌿 Trunk', krone:'🌳 Crown' },
           leaf:'Every scene grows a new leaf.', versp:'My promise', weg:'My path',
           szenen:'Practiced scenes',
-          leer:'No scene practiced yet. Start in the <a href="gefuehrt.html">Guided conversation</a>.' }
+          leer:'No scene practiced yet. Start in the <a href="gefuehrt.html">Guided conversation</a>.' },
+    el: { titel:'Η διαδρομή σου', etappen:{ samen:'🌱 Σπόρος', stamm:'🌿 Κορμός', krone:'🌳 Φυλλωσιά' },
+          leaf:'Κάθε σκηνή κάνει να φυτρώνει ένα φύλλο.', versp:'Η υπόσχεσή μου', weg:'Ο δρόμος μου',
+          szenen:'Σκηνές που εξασκήθηκες',
+          leer:'Δεν έχεις εξασκηθεί ακόμα σε καμία σκηνή. Ξεκίνα στην <a href="gefuehrt.html">Καθοδηγούμενη συζήτηση</a>.' }
   };
   var L = T[MUT] || T.de;
 
@@ -185,5 +189,7 @@ button{font:inherit;cursor:pointer}
   }
 })();
 </script>
+<script>/* Seitensprache = Muttersprache (lang=el → Großbuchstaben ohne Tonos) */
+try{var _p=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile)||{};var _m=_p.muttersprache;if(['de','es','en','el'].indexOf(_m)>-1)document.documentElement.lang=_m;}catch(e){}</script>
 </body>
 </html>

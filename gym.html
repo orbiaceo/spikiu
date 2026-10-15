@@ -118,13 +118,13 @@ function langCode(v){
   if(v.indexOf('deutsch')>-1||v.indexOf('german')>-1) return 'de';
   if(v.indexOf('span')>-1||v.indexOf('español')>-1) return 'es';
   if(v.indexOf('engl')>-1) return 'en';
-  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1) return 'el';
+  if(v.indexOf('griech')>-1||v.indexOf('greek')>-1||v.indexOf('ελλην')>-1) return 'el';
   return null;
 }
 var zielC = stored.zielsprache || langCode(stored.targetLang) || 'es';
 var mutterC = stored.muttersprache || langCode(stored.nativeLang) || 'de';
 var PROFILE = { zielsprache: zielC, muttersprache: mutterC };
-function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
   de:{ eyebrow:'Wortschatz', uebung:'Übung', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
@@ -132,7 +132,9 @@ var UI = {
   es:{ eyebrow:'Vocabulario', uebung:'Ejercicio', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
        addTitle:'Añadir palabra', phWort:'Palabra (idioma meta)', phTr:'Traducción', save:'Guardar', cancel:'Cancelar', added:'Añadido ✓' },
   en:{ eyebrow:'Vocabulary', uebung:'Exercise', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
-       addTitle:'Add a word', phWort:'Word (target language)', phTr:'Translation', save:'Save', cancel:'Cancel', added:'Added ✓' }
+       addTitle:'Add a word', phWort:'Word (target language)', phTr:'Translation', save:'Save', cancel:'Cancel', added:'Added ✓' },
+  el:{ eyebrow:'Λεξιλόγιο', uebung:'Εξάσκηση', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
+       addTitle:'Πρόσθεσε μια λέξη', phWort:'Λέξη (γλώσσα που μαθαίνεις)', phTr:'Μετάφραση', save:'Αποθήκευση', cancel:'Ακύρωση', added:'Προστέθηκε ✓' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
@@ -295,10 +297,10 @@ function zeigeWiedersehen(frisch){
   var alt = document.getElementById('pfWieder'); if (alt) alt.remove();
   var namen = frisch.map(function(x){
     var t = D.thema(x.thema);
-    return t ? (t.em + ' ' + (t.na[uiLang()] || t.na.de)) : '';
+    return t ? (t.em + ' ' + (t.na[uiLang()] || t.na.en || t.na.de)) : '';
   }).filter(Boolean).join(' · ');
   if (!namen) return;
-  var TXT = { de:' sitzt jetzt.', es:' ya se te ha quedado.', en:' has settled.' };
+  var TXT = { de:' sitzt jetzt.', es:' ya se te ha quedado.', en:' has settled.', el:' το έμαθες πια.' };
   var box = document.createElement('div');
   box.id = 'pfWieder'; box.className = 'pf-wieder';
   box.textContent = namen + (TXT[uiLang()] || TXT.de);
@@ -412,5 +414,7 @@ window.addEventListener('load', function(){
 <script src="lernpfad.js" defer></script>
 <script src="woerter.js" defer></script>
 <script src="icon-db.js" defer></script>
+<script>/* Seitensprache = Muttersprache (lang=el → Großbuchstaben ohne Tonos) */
+try{var _p=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile)||{};var _m=_p.muttersprache;if(['de','es','en','el'].indexOf(_m)>-1)document.documentElement.lang=_m;}catch(e){}</script>
 </body>
 </html>

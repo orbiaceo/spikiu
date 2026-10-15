@@ -116,7 +116,7 @@ pre{font:400 .72rem/1.4 ui-monospace,monospace;background:#f5f7f5;border:1px sol
 (function () {
   'use strict';
 
-  var NAME = { de: 'Deutsch', es: 'Español', en: 'English' };
+  var NAME = { de: 'Deutsch', es: 'Español', en: 'English', el: 'Ελληνικά' };
   var STAND = { anfang: 'Anfänger', mittel: 'Mittel', fortgeschritten: 'Fortgeschritten' };
 
   function lade() {
@@ -198,7 +198,7 @@ pre{font:400 .72rem/1.4 ui-monospace,monospace;background:#f5f7f5;border:1px sol
       setze('zielsprache', w);
     }, []);
 
-    knopfReihe('mutter', ['de', 'es', 'en'], NAME, mutter, function (w) {
+    knopfReihe('mutter', ['de', 'es', 'en', 'el'], NAME, mutter, function (w) {
       setze('muttersprache', w);
     }, [ziel]);
 

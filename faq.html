@@ -44,7 +44,7 @@ details[open] summary .pfeil{transform:rotate(90deg)}
   <div class="kontakt"><span id="kontakt">Noch Fragen? Schreib uns:</span> <a href="mailto:spikiuapp@gmail.com">spikiuapp@gmail.com</a></div>
 </div>
 <script>
-/* ── Dreisprachig nach Muttersprache (Leo, 09.10.2026) — gleiche Logik wie
+/* ── Dreisprachig nach Muttersprache (Leo, 09.10.2026), seit 15.10.2026 auch Griechisch (el) — gleiche Logik wie
    spikiu-products.html: Profil → spikiu_lang → Browser → Englisch. ── */
 (function(){
   var OM='<a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a>';
@@ -77,6 +77,15 @@ details[open] summary .pfeil{transform:rotate(90deg)}
         ['What is the difference between Free and Premium?','Free includes everything Spikiu has prepared for you: guided conversation, your path, the Learning Novel, vocabulary, phrases &amp; proverbs, the games and your book — plus a one-time taste of Premium. Premium opens everything where Spikiu answers you live: free conversation, the reading and writing workshops, and your lessons. '+ABO+'All the details →</a>'],
         ['Why doesn’t Spikiu speak?','The first time, the voice loads briefly in the background. Tap anywhere on the page once and try again — browsers only allow sound after a touch.'],
         ['Where do the card images come from?','The icons come from '+OM+' – the open-source emoji and icon project. Licence: '+CC+'. We host them on our own server, so they look the same on every device and no outside service is listening in.']
+      ]},
+    el:{ titel:'Βοήθεια', kopf:'Συχνές ερωτήσεις', back:'πίσω', seite:'Spikiu · Βοήθεια', kontakt:'Έχεις κι άλλες ερωτήσεις; Γράψε μας:',
+      fragen:[
+        ['Τι είναι η Καθοδηγούμενη συζήτηση;','Διαλέγεις ένα θέμα και εξασκείσαι σε μια σκηνή βήμα βήμα: λέξεις, ακρόαση, ομιλία και ένα σύντομο παιχνίδι ρόλων. Στο τέλος παίρνεις ένα μάθημα για να το ξαναδιαβάσεις — το βρίσκεις στη Βιβλιοθήκη, στα «Μαθήματα».'],
+        ['Πώς περνάω από κάρτα σε κάρτα;','Πάτα «Συνέχεια» — ή σύρε τον αντίχειρα προς τα αριστερά. Αν σύρεις προς τα δεξιά, γυρνάς μία κάρτα πίσω. Στις ασκήσεις προχωράς μόνο όταν έχεις απαντήσει.'],
+        ['Τι μαζεύει «Το βιβλίο μου»;','Τις λέξεις που μαζεύεις όταν διαβάζεις και εξασκείσαι. Επιστρέφουν αργότερα στην εξάσκηση λεξιλογίου σαν ξανασυνάντηση — τίποτα δεν χάνεται.'],
+        ['Ποια είναι η διαφορά ανάμεσα σε Free και Premium;','Το Free περιλαμβάνει ό,τι έχει ετοιμάσει ο Spikiu για σένα: Καθοδηγούμενη συζήτηση, τη διαδρομή σου, το Μυθιστόρημα για να μαθαίνεις, Λεξιλόγιο, Εκφράσεις &amp; Παροιμίες, τα Παιχνίδια και το βιβλίο σου — και μια μοναδική γεύση από το Premium. Το Premium ανοίγει όλα όσα σου απαντά ζωντανά ο Spikiu: Ελεύθερη συζήτηση, Εργαστήρι ανάγνωσης και γραφής και τα μαθήματά σου. '+ABO+'Όλες οι λεπτομέρειες →</a>'],
+        ['Γιατί δεν μιλάει ο Spikiu;','Την πρώτη φορά η φωνή φορτώνει για λίγο στο παρασκήνιο. Πάτα μία φορά οπουδήποτε στη σελίδα και δοκίμασε ξανά — οι φυλλομετρητές επιτρέπουν ήχο μόνο μετά από ένα άγγιγμα.'],
+        ['Από πού είναι οι εικόνες στις κάρτες;','Τα εικονίδια προέρχονται από το '+OM+' – the open-source emoji and icon project. Άδεια: '+CC+'. Τα φιλοξενούμε στον δικό μας διακομιστή, ώστε να φαίνονται ίδια σε κάθε συσκευή και να μην «κρυφακούει» καμία ξένη υπηρεσία.']
       ]}
   };
   function kurz(v){
@@ -84,6 +93,7 @@ details[open] summary .pfeil{transform:rotate(90deg)}
     if(v.indexOf('es')===0||v.indexOf('span')>-1) return 'es';
     if(v.indexOf('de')===0||v.indexOf('deut')>-1||v.indexOf('germ')>-1) return 'de';
     if(v.indexOf('en')===0||v.indexOf('engl')>-1) return 'en';
+    if(v.indexOf('el')===0||v.indexOf('griech')>-1||v.indexOf('greek')>-1||v.indexOf('ελλην')>-1) return 'el';
     return '';
   }
   function sprache(){

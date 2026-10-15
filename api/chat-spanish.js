@@ -110,9 +110,13 @@ Or do you have another topic in mind?"`,
     'Español':
 `"¡Hola ${name}! 🐾 ¿Qué quieres aprender?
 Podemos empezar con saludos — unas frases sencillas para el día a día.
-¿O tienes otro tema en mente?"`
+¿O tienes otro tema en mente?"`,
+    'Ελληνικά':
+`"Γεια σου ${name}! 🐾 Τι θέλεις να μάθεις;
+Θα μπορούσαμε να ξεκινήσουμε με χαιρετισμούς — μερικές απλές φράσεις για την καθημερινότητα.
+Ή έχεις κάποιο άλλο θέμα στο μυαλό σου;"`
   };
-  const firstContactExample = FIRST_CONTACT_EXAMPLES[nativeLang] || FIRST_CONTACT_EXAMPLES.English;
+  const firstContactExample = FIRST_CONTACT_EXAMPLES[nativeLang] || FIRST_CONTACT_EXAMPLES[{ Greek: 'Ελληνικά', Griechisch: 'Ελληνικά', 'Griego': 'Ελληνικά' }[nativeLang]] || FIRST_CONTACT_EXAMPLES.English;
 
   let beginnerModeBlock = '';
   if (isBeginner) {
@@ -259,6 +263,16 @@ Ejemplos por lengua materna:
   - Buenos días → "bwáy-noss dée-ass"
   - ¿Te apetece bailar? → "tay ah-pay-táy-say buy-lár"
   - Muchas gracias → "móo-chass gráh-syass"
+- Para hablantes de Ελληνικά (Greek): escribe la fonética en LETRAS GRIEGAS (alfabeto griego, monotónico),
+  pronunciación neutral latinoamericana (seseo: c/z = σ). g fuerte = γκ, b/v = μπ al inicio, j/ge/gi = χ,
+  ch = τσ, ll/y = γι, ñ = νι, h muda:
+  - Hola → "όλα"
+  - Gracias → "γκράσιας"
+  - ¿Cuánto cuesta? → "κουάντο κουέστα"
+  - Buenos días → "μπουένος δίας"
+  - Muchas gracias → "μούτσας γκράσιας"
+  - Quiero un café → "κιέρο ουν καφέ"
+  - La cerveza está fría → "λα σερβέσα εστά φρία"
 
 REGLAS:
 - Minúsculas (excepto nombres propios y inicio de frase).

@@ -347,6 +347,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     PROFIL = { muttersprache: 'de', zielsprache: 'es', koennen: 'anfang' };
   }
   var MU = PROFIL.muttersprache || 'de';
+  if (MU === 'el') document.documentElement.lang = 'el';   // griechische Versalien ohne Akzente (CSS uppercase)
   var ZS = PROFIL.zielsprache   || 'es';
   var LP = window.SpikiuLernpfad || null;
 
@@ -359,8 +360,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      01.09.). Das Assessment fragt ausdrücklich, in welcher Sprache man
      sich verständigen will; also gilt sie überall.
 
-     Nur drei Sprachen: de · es · en. Griechisch ist Zielsprache, nie
-     Oberfläche (Charta). Fehlt ein Eintrag, gilt Deutsch. */
+     Vier Sprachen: de · es · en · el (Griechisch auch als Oberfläche,
+     Leo 15.10.2026). Fehlt ein Eintrag, gilt Deutsch. */
   var WORT = {
     de: {
       deineRolle:'Deine Rolle', spikiuIst:'Spikiu ist', duBist:'Du bist',
@@ -378,6 +379,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       hilfeLabel:'Zeig mir, wie man es sagt', zurueck:'Zurück', fehler:'Fehler',
       szene:'Szene', laedt:'wird geladen …',
       nochLeer:'noch leer',
+      aendern:'Ändern', uebernehmen:'Übernehmen',
       keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. Prüfe die Script-Reihenfolge in szene.html.',
       keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.'
     },
@@ -397,6 +399,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       hilfeLabel:'Enséñame cómo se dice', zurueck:'Atrás', fehler:'Error',
       szene:'Escena', laedt:'cargando …',
       nochLeer:'aún vacío',
+      aendern:'Cambiar', uebernehmen:'Aceptar',
       keineDaten:'Los datos del camino o el guion de la escena no están cargados. Revisa el orden de los scripts en szene.html.',
       keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.'
     },
@@ -416,8 +419,29 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       hilfeLabel:'Show me how to say it', zurueck:'Back', fehler:'Error',
       szene:'Scene', laedt:'loading …',
       nochLeer:'still empty',
+      aendern:'Edit', uebernehmen:'Done',
       keineDaten:'The path data or the scene script is not loaded. Check the script order in szene.html.',
       keineAufgaben:'This station has no tasks yet. Choose another topic.'
+    },
+    el: {
+      deineRolle:'Ο ρόλος σου', spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι',
+      wischhilfe:'← σύρε για να προχωρήσεις →', los:'Πάμε!',
+      anhoeren:'Άκου', uebersetzung:'Μετάφραση',
+      aufgabe:'Εργασία', von:'από', deineAufgabe:'Η εργασία σου',
+      soKoenntest:'Έτσι θα μπορούσες να το πεις',
+      antworte:'Απάντησε …', senden:'Αποστολή', beenden:'Τέλος σκηνής',
+      weiter:'Συνέχεια', geuebt:'Αυτό εξασκήθηκες',
+      wendungen:'Εκφράσεις και προτάσεις', woerter:'Λέξεις',
+      nichtsGeerntet:'Δεν μάζεψες τίποτα ακόμα',
+      nichtsGeerntetText:'Την επόμενη φορά εδώ θα εμφανιστεί ό,τι είπατε πραγματικά.',
+      nachHause:'Στο σπίτι', woUeben:'Πού θέλεις να εξασκηθείς;',
+      waehleThema:'Διάλεξε ένα θέμα', deineStufe:' · το στάδιό σου',
+      hilfeLabel:'Δείξε μου πώς λέγεται', zurueck:'Πίσω', fehler:'Σφάλμα',
+      szene:'Σκηνή', laedt:'φορτώνει …',
+      nochLeer:'ακόμα άδειο',
+      aendern:'Αλλαγή', uebernehmen:'Εντάξει',
+      keineDaten:'Τα δεδομένα της διαδρομής ή το σενάριο της σκηνής δεν έχουν φορτωθεί. Έλεγξε τη σειρά των scripts στο szene.html.',
+      keineAufgaben:'Αυτός ο σταθμός δεν έχει ακόμα εργασίες. Διάλεξε άλλο θέμα.'
     }
   };
   function T(k) {
@@ -810,7 +834,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
     var k = karte('du');
 
     function ansicht() {
-      k.innerHTML = '<button class="stift" data-stift aria-label="Ändern">✎</button>'
+      k.innerHTML = '<button class="stift" data-stift aria-label="' + esc(T('aendern')) + '">✎</button>'
                   + '<div class="zug">' + esc(protokoll[nr].gesagt) + '</div>';
       k.querySelector('[data-stift]').onclick = bearbeiten;
     }
@@ -821,7 +845,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       f.value = alt;
       var fertig = document.createElement('button');
       fertig.className = 'knopf';
-      fertig.textContent = 'Übernehmen';
+      fertig.textContent = T('uebernehmen');
       fertig.onclick = function () {
         var neu = f.value.trim() || alt;
         /* Auch in der Ernte ersetzen — dort steht das, was er WIRKLICH
@@ -939,8 +963,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
         '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
       + '<div class="zug">' + esc(text) + '</div>'
       + '<div class="werkz">'
-      +   '<button class="ikon" data-hoer aria-label="Anhören">🔊</button>'
-      +   (bruecke ? '<button class="ikon" data-ueb aria-label="Übersetzung">'
+      +   '<button class="ikon" data-hoer aria-label="' + esc(T('anhoeren')) + '">🔊</button>'
+      +   (bruecke ? '<button class="ikon" data-ueb aria-label="' + esc(T('uebersetzung')) + '">'
                    + esc(MU.toUpperCase()) + '</button>' : '')
       + '</div>'
       + (bruecke ? '<div class="ueb">' + esc(bruecke) + '</div>' : '');

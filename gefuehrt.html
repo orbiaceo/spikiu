@@ -103,7 +103,8 @@ button{font:inherit;cursor:pointer}
   try { USER = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch (e) { USER = {}; }
   var P = USER.profile || {};
   var ZIEL = (['de','es','en','el'].indexOf(P.zielsprache) > -1) ? P.zielsprache : 'es';
-  var MUT  = (['de','es','en'].indexOf(P.muttersprache) > -1) ? P.muttersprache : 'de';
+  var MUT  = (['de','es','en','el'].indexOf(P.muttersprache) > -1) ? P.muttersprache : 'de';
+  try { document.documentElement.lang = MUT; } catch (e) {}  // lang=el → Großbuchstaben ohne Tonos
 
   /* ── UI-Texte (Muttersprache) ── */
   var T = {
@@ -145,7 +146,20 @@ button{font:inherit;cursor:pointer}
           done:'Done!', doneSub:'You spoke the whole scene.',
           viewLesson:'View lesson', enough:'Enough for today',
           spielPinata:'🪅 A piñata to finish?', spielGemelos:'🧩 Match some pairs to finish?', spielOido:'👂 Hear the words once more?', spielGolpe:'🥁 Find the beat of the words?',
-          weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.' }
+          weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.' },
+    el: { titel:'Καθοδηγούμενη συζήτηση', waehle:'Διάλεξε ένα θέμα', neu:'νέο', wieder:'επανάληψη',
+          rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
+          wortEyebrow:'Λεξιλόγιο με ήχο', flipHint:'πάτησε για να γυρίσει',
+          drillEyebrow:'Εξάσκηση στην ομιλία', hoerEyebrow:'Ακρόαση', rpEyebrow:'Παιχνίδι ρόλων', drillSag:'Πες το στη γλώσσα που μαθαίνεις — μετά πάτησε για έλεγχο:',
+          rolle:{ Kellner:'Σερβιτόρος', Rezeption:'Ρεσεψιόν', Fahrer:'Οδηγός', Bekannter:'Γνωστός', Nachbarin:'Γειτόνισσα', Passantin:'Περαστική', Schalterbeamter:'Υπάλληλος εκδοτηρίου', 'Verkäufer':'Πωλητής', 'Ärztin':'Γιατρός' },
+          lessonSubtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος',
+          goal:function(t){ return 'Εξασκήθηκες στο θέμα «' + t + '»: λεξιλόγιο, προφορά και ένα σύντομο παιχνίδι ρόλων.'; },
+          vocabLabel:'Λεξιλόγιο', dialogueLabel:'Παιχνίδι ρόλων', quizLabel:'Κουίζ', you:'Εσύ',
+          quizQ:function(w){ return 'Τι σημαίνει «' + w + '»;'; },
+          done:'Τα κατάφερες!', doneSub:'Είπες όλη τη σκηνή.',
+          viewLesson:'Δες το μάθημα', enough:'Αρκετά για σήμερα',
+          spielPinata:'🪅 Μια πινιάτα για το τέλος;', spielGemelos:'🧩 Να βρεις μερικά ζευγάρια για το τέλος;', spielOido:'👂 Να ακούσεις τις λέξεις ξανά;', spielGolpe:'🥁 Να βρεις τον ρυθμό των λέξεων;',
+          weiter:'Συνέχεια', pruefen:'Έλεγχος', richtig:'Σωστά!', fast:'Παραλίγο — δες τη σωστή απάντηση.' }
   };
   var U = T[MUT] || T.de;
 
@@ -198,7 +212,7 @@ button{font:inherit;cursor:pointer}
         var S = D.station(st, TOPIC_ID);
         if (S && S.wortschatz && S.wortschatz.length) {
           h.wortschatz = S.wortschatz.map(function (w) {
-            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[MUT] || w.na.de || w.na.en || w.na.es)) || '') };
+            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[MUT] || w.na.en || w.na.de || w.na.es)) || '') };
           });
           h.station = st + '.' + TOPIC_ID;
           h.stufe = st;
@@ -278,7 +292,7 @@ button{font:inherit;cursor:pointer}
       P.waehler(host, {
         ui: MUT,
         zurueck: U.waehle,
-        onWahl: function (id, stufe, x) { betrete(id, x.na[MUT] || x.na.de); }
+        onWahl: function (id, stufe, x) { betrete(id, x.na[MUT] || x.na.en || x.na.de); }
       });
       return;
     }

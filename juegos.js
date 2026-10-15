@@ -14,7 +14,7 @@
      spikiuJuegos.huerto(cfg, opts)      — Spikius Garten (ABC-Liste)
      spikiuJuegos.acrostico(cfg, opts)   — Akrostichon
 
-   opts = { nativeLang:'de'|'es'|'en', zielLang:'es'|'de'|'en'|'el',
+   opts = { nativeLang:'de'|'es'|'en'|'el', zielLang:'es'|'de'|'en'|'el',
             sprich: function(text){…} (optional, Vorlesen) }
 
    Seele: kein Punktestand, kein Timer-Zähler, kein „Game over".
@@ -175,6 +175,51 @@
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> doesn\u2019t fit \u201c' + th + '\u201d. Try another one.'; },
       aRaus: 'Words that don\u2019t fit the topic stay out.', aKeine: 'I have no word for this topic right now. Pick another topic.',
       aSaved: 'Your acrostics', aYours: 'Your acrostic', aNew: 'New acrostic', aSpikiu: 'Spikiu’s acrostic'
+    },
+    el: {
+      dale: 'Χτύπα!', pinataTask: 'Χτύπα! Πάτα τον παρείσακτο στον αέρα.',
+      pinataOk: function (x) { return 'Σωστά: το <em>' + x + '</em> δεν ταιριάζει.'; },
+      pinataCaught: function (x) { return 'Ο Spikiu τον έπιασε: ο παρείσακτος ήταν το <em>' + x + '</em>.'; },
+      pinataStay: 'Αυτή ταιριάζει. Ψάξε άλλη.',
+      gehoertZu: function (x, s) { return 'Το <em>' + x + '</em> ανήκει στο: «' + s + '»'; },
+      globosTask: 'Σκάσε τα μπαλόνια με τη σειρά της πρότασης.',
+      ordFirst: 'Ξεκίνα από την πρώτη λέξη.', ordNext: function (x) { return 'Σχεδόν. Τι έρχεται μετά το «' + x + '»;'; },
+      ordDone: 'Έτσι λέγεται!',
+      literalTask: 'Ο Spikiu το πήρε κατά λέξη. Τι σημαίνει στ’ αλήθεια;', woertlich: 'κατά λέξη',
+      literalOk: 'Ακριβώς!', literalNo: 'Αυτό σημαίνει κάτι άλλο. Δοκίμασε άλλο.',
+      gemelosTask: 'Ένωσε κάθε ζευγάρι.', gemelosNo: 'Δεν είναι ζευγάρι. Δοκίμασε άλλο.',
+      gemelosDone: 'Όλα τα ζευγάρια μαζί.', ziel: 'ΓΛΩΣΣΑ ΠΟΥ ΜΑΘΑΙΝΕΙΣ', mutter: 'Η ΓΛΩΣΣΑ ΣΟΥ',
+      hoeren: 'Άκου',
+      gIntro: 'Αυτός είναι ο κήπος μου. Κάθε γράμμα είναι ένα παρτέρι. Διάλεξε ένα θέμα, πάτα ένα παρτέρι και φύτεψε μια λέξη που σου έρχεται στο μυαλό. Δεν χρειάζεται να πας με τη σειρά.',
+      gWieder: 'Ο κήπος σου από την προηγούμενη φορά μεγαλώνει ακόμα. Συνέχισε να φυτεύεις.',
+      gWrite: 'Λέξη με', gPlant: 'φύτεψε', gSow: 'Ο Spikiu σπέρνει',
+      gKnown: 'την ξέρω', gYou: 'η λέξη σου', gLent: 'σπαρμένη από τον Spikiu',
+      gUnknown: 'Δεν την ξέρω ακόμα. Μένει στον κήπο σου.',
+      gSowed: function (x, t) { return 'Ο Spikiu σπέρνει: <em>' + x + '</em> (' + t + '). Σειρά σου.'; },
+      gNoSeed: 'Δεν μου έμειναν σπόροι γι’ αυτό το παρτέρι.',
+      gWrong: function (L) { return 'Δεν αρχίζει από ' + L + '. Μήπως πάει σε άλλο παρτέρι;'; },
+      gNew: 'Σκάψε καινούριο κήπο', gNewSure: 'Σίγουρα να τα σκάψεις όλα; Πάτα ξανά.', gRemove: 'Πάτα για να το βγάλεις',
+      kIntro: 'Ξεκινάω εγώ. Η λέξη σου αρχίζει από το τελευταίο γράμμα της δικής μου και ταιριάζει στο θέμα. Αν κολλήσεις, ο Spikiu σε βοηθάει γράμμα γράμμα.',
+      kDein: function (L) { return 'Η λέξη σου με <b>' + L + '</b> …'; }, kSpikiu: 'Σειρά του Spikiu …', kDazu: 'πρόσθεσε',
+      kNichtL: function (L) { return 'Δεν αρχίζει από ' + L + '.'; },
+      kNichtFeld: function (x) { return 'Το <em>' + x + '</em> δεν ταιριάζει στο θέμα. Άλλη;'; },
+      kSchon: function (x) { return 'Το <em>' + x + '</em> είναι ήδη στην αλυσίδα.'; },
+      kGut: function (x, t) { return 'Ωραία! <em>' + x + '</em> = ' + t; },
+      kEnde: function (L) { return 'Με ' + L + ' δεν μου έρχεται τίποτα. Η αλυσίδα είναι δική σου!'; },
+      kVorletzt: function (L, V) { return 'Με <b>' + L + '</b> δεν βγαίνει τίποτα, πάρε το προτελευταίο: <b>' + V + '</b>'; },
+      oTask: 'Άκου προσεκτικά και πάτα τη σωστή εικόνα.', oHoer: '🔊 Άκου',
+      oFalsch: function (x) { return 'Αυτό είναι <em>' + x + '</em>. Άκου ξανά.'; },
+      gTask: 'Πού πέφτει ο τόνος; Άκου και πάτα την τονισμένη συλλαβή.', gKlatsch: '👏 Ο Spikiu χτυπάει παλαμάκια',
+      gFalsch: 'Σχεδόν. Άκου ξανά.', gTilde: ' · το τονικό σημάδι δείχνει πού πέφτει ο τόνος', gTonos: ' · ο τόνος (´) δείχνει πού πέφτει',
+      mTask: 'Σε ποιο καλάθι πάει η λέξη;', mFalsch: function (x) { return 'Το <em>' + x + '</em> πάει στο άλλο καλάθι.'; },
+      mFertig: 'Όλες οι λέξεις είναι στο σωστό καλάθι.',
+      meTask: 'Γύρισε δύο κάρτες: η λέξη και η εικόνα πάνε μαζί.', meFertig: 'Βρήκες όλα τα ζευγάρια.',
+      aIntro: 'Αυτή είναι μια ακροστιχίδα. Για κάθε γράμμα, μια λέξη που ταιριάζει στο θέμα.',
+      aPick: 'Διάλεξε μια λέξη', aThema: 'Θέμα',
+      aHint: 'Μετράει κάθε λέξη που ταιριάζει στο θέμα, και από το ευρύτερο πεδίο του (φαγητό, ταξίδια …). Κόλλησες; Πάτα τον Spikiu: σου αποκαλύπτει τη λέξη γράμμα γράμμα.', aDone: 'Έτοιμο',
+      aNichtFeld: function (x, th) { return 'Το <em>' + x + '</em> δεν ταιριάζει στο «' + th + '». Δοκίμασε άλλη.'; },
+      aRaus: 'Οι λέξεις που δεν ταιριάζουν στο θέμα μένουν έξω.', aKeine: 'Δεν έχω λέξη γι’ αυτό το θέμα τώρα. Διάλεξε άλλο θέμα.',
+      aSaved: 'Οι ακροστιχίδες σου', aYours: 'Η ακροστιχίδα σου', aNew: 'Νέα ακροστιχίδα', aSpikiu: 'Η ακροστιχίδα του Spikiu'
     }
   };
   function T(opts) { var n = opts && opts.nativeLang; return UI[n] || UI.de; }

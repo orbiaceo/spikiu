@@ -177,7 +177,7 @@
             wort: w.z,
             /* es-Daten liefern na als Objekt, de/en-Daten schon aufgelöst als Text
                (27.09.: vorher blieb die Übersetzung für de/en-Lerner leer). */
-            tr: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[mu] || w.na.de || w.na.en || w.na.es)) || ''),
+            tr: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[mu] || w.na.en || w.na.de || w.na.es)) || ''),
             text: uebungsSatz(st, t.id, w.z),
             ts: uebungsSatzTr(st, t.id, uebungsSatz(st, t.id, w.z), mu),
             station: st + '.' + t.id

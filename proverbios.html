@@ -88,12 +88,13 @@ function langCode(v){
 var zielC = stored.zielsprache || langCode(stored.targetLang) || 'es';
 var mutterC = stored.muttersprache || langCode(stored.nativeLang) || 'de';
 var PROFILE = { zielsprache: zielC, muttersprache: mutterC, koennen: stored.koennen || 'anfang' };
-function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
   de:{ eyebrow:'Wendungen & Sprichwörter', woertlich:'wörtlich', uebung:'Übung', back:'zurück', fwd:'weiter', hintFwd:'← weiter wischen' },
   es:{ eyebrow:'Giros & Proverbios', woertlich:'literalmente', uebung:'Ejercicio', back:'atrás', fwd:'seguir', hintFwd:'← desliza para seguir' },
-  en:{ eyebrow:'Phrases & Proverbs', woertlich:'literally', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' }
+  en:{ eyebrow:'Phrases & Proverbs', woertlich:'literally', uebung:'Exercise', back:'back', fwd:'next', hintFwd:'← swipe to continue' },
+  el:{ eyebrow:'Εκφράσεις & Παροιμίες', woertlich:'κατά λέξη', uebung:'Εξάσκηση', back:'Πίσω', fwd:'Συνέχεια', hintFwd:'← σύρε για να συνεχίσεις' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
@@ -296,5 +297,7 @@ window.addEventListener('load', function(){
 <script src="sprichwort.js" defer></script>
 <script src="uebung.js" defer></script>
 <script src="juegos.js" defer></script>
+<script>/* Seitensprache = Muttersprache (lang=el → Großbuchstaben ohne Tonos) */
+try{var _p=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile)||{};var _m=_p.muttersprache;if(['de','es','en','el'].indexOf(_m)>-1)document.documentElement.lang=_m;}catch(e){}</script>
 </body>
 </html>

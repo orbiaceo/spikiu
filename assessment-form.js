@@ -62,6 +62,24 @@ const FORM_LABELS = {
     targets: ['Spanish', 'German', 'English'],
     btn: 'Create my learning path →',
     error: 'Please fill all fields'
+  },
+  'Ελληνικά': {
+    title: 'Η προσωπική σου διαδρομή',
+    name: 'Το όνομά σου',
+    target: 'Ποια γλώσσα θέλεις να μάθεις;',
+    reason: 'Γιατί μαθαίνεις αυτή τη γλώσσα;',
+    reasons: ['Δουλειά', 'Οικογένεια', 'Ταξίδια', 'Εξετάσεις', 'Άλλο'],
+    level: 'Πού βρίσκεσαι τώρα',
+    levels: ['Από το μηδέν — δεν ξέρω σχεδόν καμία λέξη', 'Τα βασικά — ξέρω μερικές φράσεις', 'Ενδιάμεσα — μπορώ να συνεννοηθώ'],
+    goal: 'Ποιος είναι ο συγκεκριμένος στόχος σου;',
+    goalPlaceholder: 'π.χ. Να μιλάω με την οικογένεια του/της συντρόφου μου στο Μεντεγίν',
+    deadline: 'Μέχρι πότε θέλεις να το πετύχεις;',
+    deadlinePlaceholder: 'π.χ. Αύγουστος 2026',
+    time: 'Πόσο χρόνο έχεις την εβδομάδα;',
+    times: ['1–2 ώρες', '3–4 ώρες', '5–6 ώρες', 'Πάνω από 6 ώρες'],
+    targets: ['Ισπανικά', 'Γερμανικά', 'Αγγλικά'],
+    btn: 'Φτιάξε τη διαδρομή μου →',
+    error: 'Συμπλήρωσε όλα τα πεδία, σε παρακαλώ'
   }
 };
 
@@ -70,7 +88,8 @@ function normalizeTarget(target) {
   const map = {
     'Spanisch': 'Spanish', 'Español': 'Spanish', 'Spanish': 'Spanish',
     'Deutsch':  'German',  'Alemán':  'German',  'German':  'German',
-    'Englisch': 'English', 'Inglés':  'English', 'English': 'English'
+    'Englisch': 'English', 'Inglés':  'English', 'English': 'English',
+    'Ισπανικά': 'Spanish', 'Γερμανικά': 'German',  'Αγγλικά': 'English'
   };
   return map[target] || 'Spanish';
 }

@@ -130,7 +130,7 @@ Return ONLY a JSON object with this exact structure:
 {
   "reply": "[your warm, short message to the user — in the user's mother language once you know it, otherwise in English]",
   "name": "[the user's name if known, otherwise null]",
-  "nativeLang": "[user's native language as one of: 'Deutsch', 'Español', 'English', 'Français', 'Italiano', 'Português', 'Nederlands', 'Polski', 'Türkçe', '中文', '日本語', '한국어', or null if unknown]",
+  "nativeLang": "[user's native language as one of: 'Deutsch', 'Español', 'English', 'Ελληνικά', 'Français', 'Italiano', 'Português', 'Nederlands', 'Polski', 'Türkçe', '中文', '日本語', '한국어', or null if unknown]",
   "ready": [true ONLY when name AND nativeLang are confirmed AND the user has agreed to start the assessment, otherwise false]
 }
 

@@ -96,13 +96,14 @@ export default async function handler(req, res) {
   }
 
   // ── Locale-Helfer ──────────────────────────────────────────────
-  const LOCALE = { Deutsch: 'de-DE', 'Español': 'es-ES', English: 'en-GB' }[nativeLang] || 'en-GB';
+  const LOCALE = { Deutsch: 'de-DE', 'Español': 'es-ES', English: 'en-GB', 'Ελληνικά': 'el-GR' }[nativeLang] || 'en-GB';
 
   // FESTE Etappen-Namen je Muttersprache
   const STAGE_NAMES = {
     Deutsch:  ['Fundament', 'Aufbau', 'Anwendung'],
     'Español':['Fundamento', 'Crecimiento', 'Aplicación'],
-    English:  ['Foundation', 'Growth', 'Application']
+    English:  ['Foundation', 'Growth', 'Application'],
+    'Ελληνικά':['Θεμέλιο', 'Ανάπτυξη', 'Εφαρμογή']
   }[nativeLang] || ['Fundament', 'Aufbau', 'Anwendung'];
 
   const STAGE_ICONS = ['🌰', '🌱', '🌿'];
@@ -124,7 +125,8 @@ export default async function handler(req, res) {
   const durationLabel = {
     Deutsch:  `~${stagePerMonths} Monate`,
     'Español':`~${stagePerMonths} meses`,
-    English:  `~${stagePerMonths} months`
+    English:  `~${stagePerMonths} months`,
+    'Ελληνικά':`~${stagePerMonths} μήνες`
   }[nativeLang] || `~${stagePerMonths} months`;
 
   const stageWindows = [
@@ -137,7 +139,8 @@ export default async function handler(req, res) {
   const TIME_LABELS = {
     Deutsch:  { '<1':'weniger als 1 Std./Woche','1-3':'1–3 Std./Woche','3-5':'3–5 Std./Woche','5-10':'5–10 Std./Woche','10+':'mehr als 10 Std./Woche' },
     'Español':{ '<1':'menos de 1 h/semana','1-3':'1–3 h/semana','3-5':'3–5 h/semana','5-10':'5–10 h/semana','10+':'más de 10 h/semana' },
-    English:  { '<1':'less than 1 h/week','1-3':'1–3 h/week','3-5':'3–5 h/week','5-10':'5–10 h/week','10+':'more than 10 h/week' }
+    English:  { '<1':'less than 1 h/week','1-3':'1–3 h/week','3-5':'3–5 h/week','5-10':'5–10 h/week','10+':'more than 10 h/week' },
+    'Ελληνικά':{ '<1':'λιγότερο από 1 ώρα/εβδομάδα','1-3':'1–3 ώρες/εβδομάδα','3-5':'3–5 ώρες/εβδομάδα','5-10':'5–10 ώρες/εβδομάδα','10+':'πάνω από 10 ώρες/εβδομάδα' }
   };
   const weeklyLabel = (TIME_LABELS[nativeLang] || TIME_LABELS.English)[profile.weeklyTime] || '';
 

@@ -12,7 +12,7 @@
      tr:         'Übersetzung (Muttersprache)',
      mean:       [richtig, falsch1, falsch2],   // Bedeutungen (für 'mc')
      lang:       'es'|'de'|'en'|'el',           // Zielsprache (Distraktor-Wörter)
-     nativeLang: 'de'|'es'|'en'                 // UI-Sprache (Anweisungen)
+     nativeLang: 'de'|'es'|'en'|'el'            // UI-Sprache (Anweisungen)
    }
    type ∈ 'reorder' | 'intruder' | 'mc' | 'gap'   (erweiterbar)
 =================================================================== */
@@ -30,7 +30,10 @@
           right:'¡Correcto!', wrong:'Casi — así es correcto:' },
     en: { reorder:'Put the words in the right order.', intruder:'Tap the word that does NOT belong.',
           mc:'What does this saying mean?', gap:'Which word is missing?',
-          right:'Correct!', wrong:'Not quite — here it is:' }
+          right:'Correct!', wrong:'Not quite — here it is:' },
+    el: { reorder:'Βάλε τις λέξεις στη σωστή σειρά.', intruder:'Πάτησε τη λέξη που ΔΕΝ ταιριάζει.',
+          mc:'Τι σημαίνει αυτή η φράση;', gap:'Ποια λέξη λείπει;',
+          right:'Σωστά!', wrong:'Όχι ακριβώς — έτσι είναι σωστά:' }
   };
   // ── Distraktor-Wörter je Zielsprache (für intruder/gap) ──
   var DISTR = {

@@ -275,7 +275,7 @@
         var k = kachel(
           (K.naechste ? '<span class="pf-punkt"></span>' : '')
           + '<span class="pf-em">' + K.em + '</span>'
-          + '<span class="pf-tt">' + esc(K.na[ui] || K.na.de) + '</span>'
+          + '<span class="pf-tt">' + esc(K.na[ui] || K.na.en || K.na.de) + '</span>'
           + '<span class="pf-perlen">' + perlen + '</span>',
           K.naechste ? ' pf-naechste' : '');
         k.onclick = function () { ebene2(K); };
@@ -290,12 +290,12 @@
       wrap.innerHTML = '';
       var zu = document.createElement('button');
       zu.type = 'button'; zu.className = 'pf-zurueck';
-      zu.textContent = '← ' + (opt.zurueck || 'Themen');
+      zu.textContent = '← ' + (opt.zurueck || ({ de:'Themen', es:'Temas', en:'Topics', el:'Θέματα' })[ui] || 'Themen');
       zu.onclick = ebene1;
       wrap.appendChild(zu);
       var kopf = document.createElement('div');
       kopf.className = 'pf-kopf';
-      kopf.innerHTML = '<span>' + K.em + '</span><span>' + esc(K.na[ui] || K.na.de) + '</span>';
+      kopf.innerHTML = '<span>' + K.em + '</span><span>' + esc(K.na[ui] || K.na.en || K.na.de) + '</span>';
       wrap.appendChild(kopf);
       var g = document.createElement('div'); g.className = 'pf-raster';
       liste.forEach(function (x) {
@@ -304,8 +304,8 @@
           (x.naechste ? '<span class="pf-punkt"></span>' : '')
           + '<span class="pf-ring' + ring + '"></span>'
           + '<span class="pf-em">' + x.em + '</span>'
-          + '<span class="pf-tt">' + esc(x.na[ui] || x.na.de) + '</span>'
-          + (x.schritt ? '<span class="pf-sub">' + esc(x.schritt[ui] || x.schritt.de) + '</span>' : ''),
+          + '<span class="pf-tt">' + esc(x.na[ui] || x.na.en || x.na.de) + '</span>'
+          + (x.schritt ? '<span class="pf-sub">' + esc(x.schritt[ui] || x.schritt.en || x.schritt.de) + '</span>' : ''),
           x.naechste ? ' pf-naechste' : '');
         k.onclick = function () {
           if (opt.onWahl) opt.onWahl(x.id, x.stufe, x);

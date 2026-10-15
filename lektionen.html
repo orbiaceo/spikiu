@@ -233,15 +233,17 @@ function langCode(v){
 }
 var ZIEL = stored.zielsprache || langCode(stored.targetLang) || 'es';
 var MUTTER = stored.muttersprache || langCode(USER.nativeLang) || langCode(stored.nativeLang) || 'de';
-function uiLang(){ return (['de','es','en'].indexOf(MUTTER) > -1) ? MUTTER : 'de'; }
+function uiLang(){ return (['de','es','en','el'].indexOf(MUTTER) > -1) ? MUTTER : 'de'; }
 
 var T = {
   de:{ title:'Lektionen', byTopic:'Nach Thema', byDate:'Nach Datum', other:'Sonstige', empty:'Noch keine Lektionen.', words:'Wörter', vocab:'Wortschatz', note:'Notiz', back:'← Zurück', pdf:'📄 Als PDF herunterladen' },
   es:{ title:'Lecciones', byTopic:'Por tema', byDate:'Por fecha', other:'Otros', empty:'Aún no hay lecciones.', words:'palabras', vocab:'Vocabulario', note:'Nota', back:'← Volver', pdf:'📄 Descargar como PDF' },
-  en:{ title:'Lessons', byTopic:'By topic', byDate:'By date', other:'Other', empty:'No lessons yet.', words:'words', vocab:'Vocabulary', note:'Note', back:'← Back', pdf:'📄 Download as PDF' }
+  en:{ title:'Lessons', byTopic:'By topic', byDate:'By date', other:'Other', empty:'No lessons yet.', words:'words', vocab:'Vocabulary', note:'Note', back:'← Back', pdf:'📄 Download as PDF' },
+  el:{ title:'Μαθήματα', byTopic:'Ανά θέμα', byDate:'Ανά ημερομηνία', other:'Άλλα', empty:'Δεν υπάρχουν ακόμα μαθήματα.', words:'λέξεις', vocab:'Λεξιλόγιο', note:'Σημείωση', back:'← Πίσω', pdf:'📄 Λήψη ως PDF', lessonOf:'Μάθημα {n} από {m}', answer:'Απάντηση:', goal:'Στόχος', grammar:'Γραμματική', dialogue:'Διάλογος', quiz:'Κουίζ' }
 };
 function t(){ return T[uiLang()] || T.de; }
-var LOCALE = { de:'de-DE', es:'es-ES', en:'en-US' }[uiLang()] || 'de-DE';
+if (uiLang() === 'el') document.documentElement.lang = 'el';   // griechische Versalien ohne Akzente (CSS uppercase)
+var LOCALE = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[uiLang()] || 'de-DE';
 
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function fmtDate(iso){ try { var d = new Date(iso); if (isNaN(d.getTime())) return ''; return d.toLocaleDateString(LOCALE, { day:'numeric', month:'short', year:'numeric' }); } catch(e){ return ''; } }
@@ -348,7 +350,7 @@ function renderLessonPoster(l) {
     <div class="lp-quiz-item" data-quiz-idx="${qIdx}">
       <div class="lp-quiz-question"><span class="lp-num">${qIdx+1}.</span>${q.question || ''}</div>
       <ul class="lp-quiz-options">${optionsButtons}</ul>
-      <div class="lp-quiz-answer" id="lp-answer-${qIdx}"><strong>Answer:</strong> ${q.answer || ''}</div>
+      <div class="lp-quiz-answer" id="lp-answer-${qIdx}"><strong>${t().answer || 'Answer:'}</strong> ${q.answer || ''}</div>
     </div>`;
   }).join('');
 
@@ -360,7 +362,7 @@ function renderLessonPoster(l) {
           <span class="lp-brand-name">Spi<em>k</em>iu</span>
         </div>
         <div class="lp-meta">
-          <strong>Lesson ${l.lessonNumber || 1} of ${l.lessonOf || 3}</strong><br>
+          <strong>${(t().lessonOf || 'Lesson {n} of {m}').replace('{n}', l.lessonNumber || 1).replace('{m}', l.lessonOf || 3)}</strong><br>
           ${l.date || ''}
           <div class="lp-level">${l.level || ''}</div>
         </div>
@@ -371,17 +373,17 @@ function renderLessonPoster(l) {
         <p class="lp-subtitle">${l.subtitle || ''}</p>
       </div>
       <div class="lp-goal">
-        <div class="lp-goal-label">🎯 ${l.goalLabel || 'Goal'}</div>
+        <div class="lp-goal-label">🎯 ${l.goalLabel || t().goal || 'Goal'}</div>
         <p class="lp-goal-text">${l.goal || ''}</p>
       </div>
       ${l.vocab && l.vocab.length ? `
         <div class="lp-section">
-          <div class="lp-section-label">📖 ${l.vocabLabel || 'Vocabulary'}</div>
+          <div class="lp-section-label">📖 ${l.vocabLabel || (uiLang()==='el' ? t().vocab : 'Vocabulary')}</div>
           <ul class="lp-vocab-list">${vocabHtml}</ul>
         </div>` : ''}
       ${l.grammar ? `
         <div class="lp-section">
-          <div class="lp-section-label">⚙ ${l.grammarLabel || 'Grammar'}</div>
+          <div class="lp-section-label">⚙ ${l.grammarLabel || t().grammar || 'Grammar'}</div>
           <div class="lp-grammar-card">
             <h4>${l.grammar.title || ''}</h4>
             <p>${l.grammar.explanation || ''}</p>
@@ -390,12 +392,12 @@ function renderLessonPoster(l) {
         </div>` : ''}
       ${l.dialogue && l.dialogue.length ? `
         <div class="lp-section">
-          <div class="lp-section-label">💬 ${l.dialogueLabel || 'Dialogue'}</div>
+          <div class="lp-section-label">💬 ${l.dialogueLabel || t().dialogue || 'Dialogue'}</div>
           <div class="lp-dialogue">${dialogueHtml}</div>
         </div>` : ''}
       ${l.quiz && l.quiz.length ? `
         <div class="lp-section">
-          <div class="lp-section-label">✓ ${l.quizLabel || 'Quiz'}</div>
+          <div class="lp-section-label">✓ ${l.quizLabel || t().quiz || 'Quiz'}</div>
           ${quizHtml}
         </div>` : ''}
       <div class="lp-footer">
@@ -677,7 +679,7 @@ function fertigeAusstehende(){
   try { localStorage.setItem('spikiu_pending_lesson', JSON.stringify(p)); } catch(e){}
   var hinweis = document.createElement('div');
   hinweis.className = 'lk-empty'; hinweis.id = 'lkWerdend';
-  hinweis.textContent = ({ de:'Spikiu baut gerade eine Lektion für dich …', es:'Spikiu está preparando una lección para ti…', en:'Spikiu is building a lesson for you…' })[uiLang()];
+  hinweis.textContent = ({ de:'Spikiu baut gerade eine Lektion für dich …', es:'Spikiu está preparando una lección para ti…', en:'Spikiu is building a lesson for you…', el:'Ο Spikiu ετοιμάζει ένα μάθημα για σένα…' })[uiLang()];
   var liste = document.getElementById('lkList'); if (liste) liste.insertBefore(hinweis, liste.firstChild);
   function loese(){
     try { var q = JSON.parse(localStorage.getItem('spikiu_pending_lesson') || 'null');

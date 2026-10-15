@@ -175,7 +175,7 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
 </main>
 
 <script>
-/* ── Spikiu-geführtes Assessment (Du-Form), DREISPRACHIG (10.10.2026).
+/* ── Spikiu-geführtes Assessment (Du-Form), DREISPRACHIG (10.10.2026), seit 15.10.2026 auch Griechisch (el) als Muttersprache.
    Reihenfolge: Muttersprache → Name → Zielsprache → Motivation → Level → Zeit →
    Deadline → Resümee. Die Muttersprache kommt ZUERST (Leo, 10.10.: „Si la persona
    elige español, el assessment tiene que ir en español"). Startsprache der Oberfläche
@@ -186,16 +186,16 @@ input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2p
    - als ZIELSPRACHE: eine Zeile in LANGS (+ Code in TARGET_CODE in finish()).
    - als MUTTERSPRACHE: zusätzlich ein Block in UI (alle Texte) + Name in LANGS[x].n.
    Beide Listen sind eine Auswahlliste mit festem Kasten — sie wachsen ohne Layout-Umbau.
-   Die gespeicherten Werte (nativeLang 'Deutsch'/'Español'/'English', targetLang
+   Die gespeicherten Werte (nativeLang 'Deutsch'/'Español'/'English'/'Ελληνικά', targetLang
    'Spanish'/…) bleiben exakt wie vorher — Vertrag mit haus/chat unverändert. ── */
 
 // Ein Register für alle Sprachen. v = gespeicherter Wert als Zielsprache,
 // native = gespeicherter Wert als Muttersprache, self = Eigenname, n = Name je Oberfläche.
 var LANGS = [
-  { code:'es', v:'Spanish', native:'Español', f:'🇪🇸', self:'Español', n:{ de:'Spanisch', es:'Español', en:'Spanish' } },
-  { code:'de', v:'German',  native:'Deutsch', f:'🇩🇪', self:'Deutsch', n:{ de:'Deutsch',  es:'Alemán',  en:'German'  } },
-  { code:'en', v:'English', native:'English', f:'🇬🇧', self:'English', n:{ de:'Englisch', es:'Inglés',  en:'English' } },
-  { code:'el', v:'Greek',   native:null,      f:'🇬🇷', self:'Ελληνικά', n:{ de:'Griechisch', es:'Griego', en:'Greek' } }
+  { code:'es', v:'Spanish', native:'Español', f:'🇪🇸', self:'Español', n:{ de:'Spanisch', es:'Español', en:'Spanish', el:'Ισπανικά' } },
+  { code:'de', v:'German',  native:'Deutsch', f:'🇩🇪', self:'Deutsch', n:{ de:'Deutsch',  es:'Alemán',  en:'German',  el:'Γερμανικά' } },
+  { code:'en', v:'English', native:'English', f:'🇬🇧', self:'English', n:{ de:'Englisch', es:'Inglés',  en:'English', el:'Αγγλικά' } },
+  { code:'el', v:'Greek',   native:'Ελληνικά', f:'🇬🇷', self:'Ελληνικά', n:{ de:'Griechisch', es:'Griego', en:'Greek', el:'Ελληνικά' } }
 ];
 
 var UI = {
@@ -255,6 +255,25 @@ var UI = {
     deadlines:{ '3m':'In 3 months', '6m':'In 6 months', '1y':'In a year', 'none':'No fixed date' },
     summary:function(n,l,t,z){ return 'Your name is <strong>'+n+'</strong>, you speak <strong>'+l+'</strong> and want to learn <strong>'+t+'</strong> — for <strong>'+z+'</strong>.'; },
     open:'still open', okq:'Does that look right?', go:'Okay — let’s go →', hint:'Want to change something? Use the arrow at the top left.'
+  },
+  el: {
+    title:'Spikiu — Ξεκινάμε', back:'Ένα βήμα πίσω', next:'Συνέχεια', firstName:'Μικρό όνομα',
+    bNative:'Γεια σου, είμαι ο Spikiu, ο σύντροφός σου σε αυτή τη μαθησιακή περιπέτεια. Σε ποια γλώσσα να μιλάμε οι δυο μας;',
+    bName:'Τέλεια! Και πώς σε λένε;',
+    bTarget:function(n){ return (n? 'Χάρηκα, '+n+'! ':'') + 'Ποια γλώσσα θέλεις να μάθεις;'; },
+    bMotiv:function(t){ return 'Τι σε κάνει να θέλεις να μάθεις <strong>'+t+'</strong>;'; }, theLang:'τη γλώσσα',
+    bLevel:'Πού βρίσκεσαι τώρα; Με ειλικρίνεια — δεν υπάρχει σωστό ή λάθος.',
+    bTime:'Πόσο χρόνο έχεις την εβδομάδα;', bDeadline:'Έχεις κάποια ημερομηνία στο μυαλό σου;',
+    fits:'Τι σου ταιριάζει;', more:'Πες μου κι άλλα, αν θέλεις.', opt:'(προαιρετικό)',
+    ph:'π.χ. «να κουβεντιάζω με την πεθερά μου χωρίς να γίνομαι ρεζίλι»',
+    chips:{ travel:'Ταξίδια', work:'Δουλειά', exam:'Εξετάσεις', family:'Οικογένεια', study:'Σπουδές', interest:'Περιέργεια', daily:'Καθημερινότητα' },
+    levels:{ A0:['Από το μηδέν','Ξεκινάω χωρίς να ξέρω τίποτα'], A1:['Λίγες λέξεις','Γεια, ευχαριστώ, μερικές φράσεις'],
+      A2:['Απλές συζητήσεις','Συστήνομαι, ψωνίζω, ρωτάω'], B1:['Τα βγάζω πέρα','Καταλαβαίνω τα περισσότερα, ακόμα κάνω λάθη'],
+      B2:['Αρκετά σίγουρος/η','Παρακολουθώ συζητήσεις και συμμετέχω'] },
+    times:{ '<1':'Λιγότερο από 1 ώρα', '1-3':'1–3 ώρες', '3-5':'3–5 ώρες', '5-10':'5–10 ώρες', '10+':'Πάνω από 10 ώρες' },
+    deadlines:{ '3m':'Σε 3 μήνες', '6m':'Σε 6 μήνες', '1y':'Σε έναν χρόνο', 'none':'Χωρίς σταθερή ημερομηνία' },
+    summary:function(n,l,t,z){ return 'Σε λένε <strong>'+n+'</strong>, μιλάς <strong>'+l+'</strong> και θέλεις να μάθεις <strong>'+t+'</strong> — για <strong>'+z+'</strong>.'; },
+    open:'ακόμα ανοιχτό', okq:'Σου φαίνεται σωστό;', go:'Εντάξει — πάμε! →', hint:'Θέλεις να αλλάξεις κάτι; Πάτα το βελάκι πάνω αριστερά.'
   }
 };
 
@@ -273,7 +292,7 @@ function langBy(key,val){ for (var i=0;i<LANGS.length;i++){ if (LANGS[i][key]===
 function tname(code, imSatz){
   var L = langBy('code',code); if (!L) return '';
   var s = L.n[ui] || L.self;
-  return (imSatz && ui==='es') ? s.toLowerCase() : s;
+  return (imSatz && (ui==='es' || ui==='el')) ? s.toLowerCase() : s;   // el: „μιλάς ελληνικά“
 }
 
 // Für finish(): Anzeige-Namen der Zielsprache je Muttersprache (aus dem Register erzeugt).
@@ -481,7 +500,7 @@ function render(){
 }
 
 function summaryText(d){
-  var ziele = (d.motivation||[]).map(function(m){ var c=T().chips[m]||m; return ui==='es'? c.toLowerCase() : c; });   // es: „para viajes“
+  var ziele = (d.motivation||[]).map(function(m){ var c=T().chips[m]||m; return (ui==='es' || ui==='el')? c.toLowerCase() : c; });   // es: „para viajes“, el: „για ταξίδια“
   var zielText = ziele.length ? ziele.join(', ') : (d.driveText ? d.driveText : T().open);
   var nat = langBy('native', d.nativeLang), tgt = langBy('v', d.targetLang);
   return T().summary(esc(d.name||'—'), nat? esc(tname(nat.code,true)) : '—', tgt? esc(tname(tgt.code,true)) : '—', esc(zielText));
@@ -499,7 +518,7 @@ function finish(){
   var names = TARGET_NAMES[data.nativeLang] || TARGET_NAMES['Deutsch'];
   var targetDisplay = names[data.targetLang] || data.targetLang;
 
-  var NATIVE_CODE = { 'Deutsch':'de', 'Español':'es', 'English':'en' };
+  var NATIVE_CODE = { 'Deutsch':'de', 'Español':'es', 'English':'en', 'Ελληνικά':'el' };
   var TARGET_CODE = { Spanish:'es', German:'de', English:'en', Greek:'el' };
   var muttersprache = NATIVE_CODE[data.nativeLang] || 'de';
   var zielsprache   = TARGET_CODE[data.targetLang] || 'es';

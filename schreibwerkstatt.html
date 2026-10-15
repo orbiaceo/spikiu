@@ -93,23 +93,23 @@
 <header class="bar">
   <button class="back" id="btnHaus" aria-label="zurück">‹</button>
   <div class="room">
-    <span class="room-name">Schreibwerkstatt</span>
+    <span class="room-name" id="roomName">Schreibwerkstatt</span>
     <!-- Dev-Schloss: nur mit ?dev=1 sichtbar. Im Produkt kommt die Sprache aus profile.zielsprache, Können aus profile.koennen. -->
     <div class="controls" id="devControls" hidden>
       <span class="dev-tag">dev</span>
-      <label>Sprache
+      <label><span id="lblSprache">Sprache</span>
         <select id="selLang">
-          <option value="es">Spanisch</option>
-          <option value="de">Deutsch</option>
-          <option value="en">Englisch</option>
-          <option value="el">Griechisch</option>
+          <option value="es" id="optEs">Spanisch</option>
+          <option value="de" id="optDe">Deutsch</option>
+          <option value="en" id="optEn">Englisch</option>
+          <option value="el" id="optEl">Griechisch</option>
         </select>
       </label>
-      <label>Können
+      <label><span id="lblKoennen">Können</span>
         <select id="selKoennen">
-          <option value="anfang">Anfang</option>
-          <option value="mittel">Mittel</option>
-          <option value="fortgeschritten">Fortgeschritten</option>
+          <option value="anfang" id="optAnfang">Anfang</option>
+          <option value="mittel" id="optMittel">Mittel</option>
+          <option value="fortgeschritten" id="optFort">Fortgeschritten</option>
         </select>
       </label>
     </div>
@@ -117,12 +117,12 @@
 </header>
 
 <main class="bench">
-  <p class="aufgabe-label">Deine Aufgabe</p>
+  <p class="aufgabe-label" id="aufgabeLabel">Deine Aufgabe</p>
   <div class="aufgabe-input" id="aufgabe">Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.</div>
 
   <div class="stage">
     <div>
-      <p class="werk-label" id="werkLabel" hidden>Dein Text <span class="ok">✓ fertig</span></p>
+      <p class="werk-label" id="werkLabel" hidden><span id="werkLabelTx">Dein Text</span> <span class="ok" id="werkFertig">✓ fertig</span></p>
       <article class="werkstueck empty" id="werk">Hier steht dein Text.</article>
     </div>
     <aside class="lektor" id="lektor" hidden>
@@ -135,7 +135,7 @@
   </div>
 
   <div class="hands" id="hands"><div>
-    <p class="hands-label">In deinen Händen</p>
+    <p class="hands-label" id="handsLabel">In deinen Händen</p>
     <textarea id="ta" spellcheck="false" placeholder="Schreib hier…"></textarea>
     <div class="hands-row">
       <button class="primary" id="primary">Hinlegen</button>
@@ -174,6 +174,82 @@
     if(/c[12]/.test(v)) return 'fortgeschritten';
     return null;
   }
+  // ── UI-Sprache = Muttersprache (de/es/en/el) — Lerninhalt bleibt in der Zielsprache ──
+  var UI={
+    de:{room:'Schreibwerkstatt',zurueck:'zurück',sprache:'Sprache',koennen:'Können',
+        lEs:'Spanisch',lDe:'Deutsch',lEn:'Englisch',lEl:'Griechisch',anfang:'Anfang',mittel:'Mittel',fort:'Fortgeschritten',
+        aufgabeLabel:'Deine Aufgabe',aufgabe:'Schreib eine kurze Nachricht: sag jemandem, dass du dich verspätest.',
+        deinText:'Dein Text',fertig:'✓ fertig',leer:'Hier steht dein Text.',liest:'Spikiu liest',haende:'In deinen Händen',
+        ph:'Schreib hier…',hinlegen:'Hinlegen',weiter:'Weiter',neuStart:'Neu starten',
+        hint1:'Schreib deinen ersten Versuch und leg ihn hin.',hint2:'Überarbeite die markierte Stelle und leg sie zurück.',
+        treffer:'Treffer.',geschafft:'Geschafft.',zielSinn:'Der Text tut, was er soll.',mkLesson:'Lektion daraus machen',
+        neuText:'Neuer Text',fast:'Fast.',take:'In meine Hände legen',baut:'Spikiu baut deine Lektion',
+        gehen:'Du kannst auch gehen. Die Lektion landet trotzdem in der Bibliothek.',
+        lekFail:'Die Lektion ist gerade nicht entstanden.',lekFail2:'Dein Text ist sicher. Versuch es gleich noch einmal.',
+        nochmal:'Nochmal',lektion:'Lektion',neueLektion:'Neue Lektion',deineLektion:'Deine Lektion',
+        ort:'📓 Liegt in der <b>Bibliothek</b> unter <b>Lektionen</b>.',oeffnen:'Lektion öffnen',
+        fehler:'Der Lektor ist gerade nicht erreichbar. Leg deinen Text gleich nochmal hin.'},
+    es:{room:'Escritura',zurueck:'atrás',sprache:'Idioma',koennen:'Soltura',
+        lEs:'Español',lDe:'Alemán',lEn:'Inglés',lEl:'Griego',anfang:'Inicio',mittel:'Medio',fort:'Avanzado',
+        aufgabeLabel:'Tu tarea',aufgabe:'Escribe un mensaje corto: dile a alguien que vas a llegar tarde.',
+        deinText:'Tu texto',fertig:'✓ listo',leer:'Aquí aparecerá tu texto.',liest:'Spikiu está leyendo',haende:'En tus manos',
+        ph:'Escribe aquí…',hinlegen:'Entregar',weiter:'Seguir',neuStart:'Empezar de nuevo',
+        hint1:'Escribe tu primer intento y entrégalo.',hint2:'Revisa la parte marcada y vuelve a entregarla.',
+        treffer:'¡Acertado!',geschafft:'¡Conseguido!',zielSinn:'El texto cumple su función.',mkLesson:'Hacer una lección con esto',
+        neuText:'Texto nuevo',fast:'Casi.',take:'Pasarlo a mis manos',baut:'Spikiu está preparando tu lección',
+        gehen:'Puedes irte si quieres. La lección llegará igualmente a la Biblioteca.',
+        lekFail:'La lección no ha salido esta vez.',lekFail2:'Tu texto está a salvo. Inténtalo de nuevo en un momento.',
+        nochmal:'Otra vez',lektion:'Lección',neueLektion:'Lección nueva',deineLektion:'Tu lección',
+        ort:'📓 Está en la <b>Biblioteca</b>, en <b>Lecciones</b>.',oeffnen:'Abrir la lección',
+        fehler:'Spikiu no está disponible ahora mismo. Vuelve a entregar tu texto en un momento.'},
+    en:{room:'Writing',zurueck:'back',sprache:'Language',koennen:'Ability',
+        lEs:'Spanish',lDe:'German',lEn:'English',lEl:'Greek',anfang:'Beginning',mittel:'Middle',fort:'Advanced',
+        aufgabeLabel:'Your task',aufgabe:"Write a short message: tell someone you're running late.",
+        deinText:'Your text',fertig:'✓ done',leer:'Your text will appear here.',liest:'Spikiu is reading',haende:'In your hands',
+        ph:'Write here…',hinlegen:'Hand it in',weiter:'Next',neuStart:'Start again',
+        hint1:'Write your first attempt and hand it in.',hint2:'Rework the marked passage and hand it back in.',
+        treffer:'Spot on.',geschafft:'You did it.',zielSinn:'The text does what it should.',mkLesson:'Turn it into a lesson',
+        neuText:'New text',fast:'Almost.',take:'Put it in my hands',baut:'Spikiu is building your lesson',
+        gehen:'You can leave if you like. The lesson will still land in the Library.',
+        lekFail:"The lesson didn't come together just now.",lekFail2:'Your text is safe. Try again in a moment.',
+        nochmal:'Try again',lektion:'Lesson',neueLektion:'New lesson',deineLektion:'Your lesson',
+        ort:"📓 It's in the <b>Library</b> under <b>Lessons</b>.",oeffnen:'Open lesson',
+        fehler:"Spikiu can't be reached right now. Hand your text in again in a moment."},
+    el:{room:'Γραφή',zurueck:'Πίσω',sprache:'Γλώσσα',koennen:'Δεξιότητα',
+        lEs:'Ισπανικά',lDe:'Γερμανικά',lEn:'Αγγλικά',lEl:'Ελληνικά',anfang:'Αρχή',mittel:'Μέση',fort:'Προχωρημένο',
+        aufgabeLabel:'Η εργασία σου',aufgabe:'Γράψε ένα σύντομο μήνυμα: πες σε κάποιον ότι θα αργήσεις.',
+        deinText:'Το κείμενό σου',fertig:'✓ έτοιμο',leer:'Εδώ θα εμφανιστεί το κείμενό σου.',liest:'Ο Spikiu διαβάζει',haende:'Στα χέρια σου',
+        ph:'Γράψε εδώ…',hinlegen:'Παράδωσέ το',weiter:'Συνέχεια',neuStart:'Ξεκίνα από την αρχή',
+        hint1:'Γράψε την πρώτη σου προσπάθεια και παράδωσέ την.',hint2:'Διόρθωσε το σημειωμένο σημείο και παράδωσέ το ξανά.',
+        treffer:'Εύστοχο.',geschafft:'Τα κατάφερες.',zielSinn:'Το κείμενο κάνει αυτό που πρέπει.',mkLesson:'Κάν’ το μάθημα',
+        neuText:'Νέο κείμενο',fast:'Σχεδόν.',take:'Βάλ’ το στα χέρια μου',baut:'Ο Spikiu φτιάχνει το μάθημά σου',
+        gehen:'Μπορείς και να φύγεις. Το μάθημα θα φτάσει έτσι κι αλλιώς στη Βιβλιοθήκη.',
+        lekFail:'Το μάθημα δεν βγήκε αυτή τη φορά.',lekFail2:'Το κείμενό σου είναι ασφαλές. Δοκίμασε ξανά σε λίγο.',
+        nochmal:'Ξανά',lektion:'Μάθημα',neueLektion:'Νέο μάθημα',deineLektion:'Το μάθημά σου',
+        ort:'📓 Θα το βρεις στη <b>Βιβλιοθήκη</b>, στα <b>Μαθήματα</b>.',oeffnen:'Άνοιξε το μάθημα',
+        fehler:'Ο Spikiu δεν είναι διαθέσιμος αυτή τη στιγμή. Παράδωσε ξανά το κείμενό σου σε λίγο.'}
+  };
+  function uiLang(){
+    var m=stored.muttersprache||langCode(stored.nativeLang);
+    if(!m){ try{ m=localStorage.getItem('spikiu_lang'); }catch(e){} }
+    m=langCode(m);
+    return ['de','es','en','el'].indexOf(m)>-1?m:'de';
+  }
+  var T=UI[uiLang()];
+  (function(){
+    document.documentElement.lang=uiLang();
+    document.title='Spikiu — '+T.room;
+    function setTx(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+    setTx('roomName',T.room); setTx('lblSprache',T.sprache); setTx('lblKoennen',T.koennen);
+    setTx('optEs',T.lEs); setTx('optDe',T.lDe); setTx('optEn',T.lEn); setTx('optEl',T.lEl);
+    setTx('optAnfang',T.anfang); setTx('optMittel',T.mittel); setTx('optFort',T.fort);
+    setTx('aufgabeLabel',T.aufgabeLabel); setTx('werkLabelTx',T.deinText); setTx('werkFertig',T.fertig);
+    setTx('lekName',T.liest); setTx('handsLabel',T.haende); setTx('primary',T.hinlegen);
+    setTx('restart',T.neuStart); setTx('hint',T.hint1);
+    werk.textContent=T.leer; aufgabeEl.textContent=T.aufgabe; ta.placeholder=T.ph;
+    var bh=document.getElementById('btnHaus'); if(bh) bh.setAttribute('aria-label',T.zurueck);
+  })();
+
   if(stored.aufgabe) aufgabeEl.textContent = stored.aufgabe;
   selLang.value = stored.zielsprache || langCode(stored.targetLang) || 'es';
   selKoennen.value = stored.koennen || koennenFrom(stored.level) || 'anfang';
@@ -226,7 +302,7 @@
   }
 
   function showThinking(){
-    document.getElementById('lekName').textContent='Spikiu liest';
+    document.getElementById('lekName').textContent=T.liest;
     lekBody.innerHTML='<p class="lek-sinn" style="color:var(--ink-soft)">…</p>';
     lektor.classList.remove('treffer'); lektor.hidden=false;
     requestAnimationFrame(function(){lektor.classList.add('show');});
@@ -236,21 +312,21 @@
     lektor.classList.toggle('treffer', l.status==='treffer'||l.status==='ziellinie');
     var html='';
     if(l.status==='treffer'){
-      html+='<p class="lek-status t">Treffer.</p>';
+      html+='<p class="lek-status t">'+T.treffer+'</p>';
       if(l.sinn) html+='<p class="lek-sinn" style="margin-top:.4rem">'+esc(l.sinn)+'</p>';
     } else if(l.status==='ziellinie'){
-      html+='<p class="lek-status t">Geschafft.</p>';
-      html+='<p class="lek-sinn" style="margin-top:.4rem">'+esc(l.sinn||'Der Text tut, was er soll.')+'</p>';
-      html+='<div class="lek-aktionen"><button class="lesson-btn" id="mklesson">Lektion daraus machen</button>'+
-            '<button class="btn-leise" id="neuText">Neuer Text</button></div>';
+      html+='<p class="lek-status t">'+T.geschafft+'</p>';
+      html+='<p class="lek-sinn" style="margin-top:.4rem">'+esc(l.sinn||T.zielSinn)+'</p>';
+      html+='<div class="lek-aktionen"><button class="lesson-btn" id="mklesson">'+T.mkLesson+'</button>'+
+            '<button class="btn-leise" id="neuText">'+T.neuText+'</button></div>';
     } else {
-      if(l.status==='beinah') html+='<p class="lek-status b" style="margin-bottom:.4rem">Fast.</p>';
+      if(l.status==='beinah') html+='<p class="lek-status b" style="margin-bottom:.4rem">'+T.fast+'</p>';
       if(l.sinn)  html+='<p class="lek-sinn">'+esc(l.sinn)+'</p>';
       if(l.sache) html+='<p class="lek-sache">'+esc(l.sache)+'</p>';
       if(l.form){
         html+='<p class="lek-form">'+esc(l.form)+'</p>';
         if(l.lautschrift) html+='<p class="lek-laut">['+esc(l.lautschrift)+']</p>';
-        html+='<button class="uebernehmen" id="take">In meine Hände legen</button>';
+        html+='<button class="uebernehmen" id="take">'+T.take+'</button>';
       }
     }
     lekBody.innerHTML=html;
@@ -314,8 +390,8 @@
              zielsprache:profile().zielsprache, createdAt:new Date().toISOString() };
     }
     lektorKarte('Spikiu',
-      '<p class="lek-sinn"><b>Spikiu baut deine Lektion</b> <span class="punkte" aria-hidden="true"><i></i><i></i><i></i></span></p>'+
-      (gesichert?'<p class="lek-leise">Du kannst auch gehen. Die Lektion landet trotzdem in der Bibliothek.</p>':''));
+      '<p class="lek-sinn"><b>'+T.baut+'</b> <span class="punkte" aria-hidden="true"><i></i><i></i><i></i></span></p>'+
+      (gesichert?'<p class="lek-leise">'+T.gehen+'</p>':''));
 
     var r=null, raw='', d=null;
     try{
@@ -328,10 +404,10 @@
     if(!r || !r.ok || !d || !d.lesson){
       console.error('generate-lesson '+(r?r.status:'netz'), (d&&(d.error||d.detail))||(raw||'').slice(0,300));
       lektorKarte('Spikiu',
-        '<p class="lek-status e">Die Lektion ist gerade nicht entstanden.</p>'+
-        '<p class="lek-sinn" style="margin-top:.35rem">Dein Text ist sicher. Versuch es gleich noch einmal.</p>'+
-        '<div class="lek-aktionen"><button class="lesson-btn" id="lekNochmal">Nochmal</button>'+
-        '<button class="btn-leise" id="neuText2">Neuer Text</button></div>');
+        '<p class="lek-status e">'+T.lekFail+'</p>'+
+        '<p class="lek-sinn" style="margin-top:.35rem">'+T.lekFail2+'</p>'+
+        '<div class="lek-aktionen"><button class="lesson-btn" id="lekNochmal">'+T.nochmal+'</button>'+
+        '<button class="btn-leise" id="neuText2">'+T.neuText+'</button></div>');
       document.getElementById('lekNochmal').onclick=baueLektion;
       document.getElementById('neuText2').onclick=neuerText;
       return;
@@ -340,7 +416,7 @@
     var u=leseNutzer();
     var arr=Array.isArray(u.lessons)?u.lessons.slice():[];
     if(!arr.some(function(x){ return x && x.id===pend.id; })) arr.push({
-      id:pend.id, topic:d.lesson.title||'Lektion', thema:pend.thema, fromConversation:true,
+      id:pend.id, topic:d.lesson.title||T.lektion, thema:pend.thema, fromConversation:true,
       lesson:d.lesson, createdAt:pend.createdAt, zielsprache:pend.zielsprache });
     arr.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
     u.lessons=arr.slice(0,14);
@@ -348,12 +424,12 @@
     if(gesichert){ var p2=lesePending(); if(p2 && p2.id===pend.id){ try{ localStorage.removeItem('spikiu_pending_lesson'); }catch(e){} } }
 
     var L=d.lesson;
-    lektorKarte('Neue Lektion',
-      '<p class="lek-titel">'+esc(L.title||'Deine Lektion')+'</p>'+
+    lektorKarte(T.neueLektion,
+      '<p class="lek-titel">'+esc(L.title||T.deineLektion)+'</p>'+
       ((L.subtitle||L.goal)?'<p class="lek-ziel">'+esc(L.subtitle||L.goal)+'</p>':'')+
-      '<p class="lek-ort">📓 Liegt in der <b>Bibliothek</b> unter <b>Lektionen</b>.</p>'+
-      '<div class="lek-aktionen"><button class="lesson-btn blau" id="lekOeffnen">Lektion öffnen</button>'+
-      '<button class="btn-leise" id="neuText3">Neuer Text</button></div>', 'bereit');
+      '<p class="lek-ort">'+T.ort+'</p>'+
+      '<div class="lek-aktionen"><button class="lesson-btn blau" id="lekOeffnen">'+T.oeffnen+'</button>'+
+      '<button class="btn-leise" id="neuText3">'+T.neuText+'</button></div>', 'bereit');
     document.getElementById('lekOeffnen').onclick=function(){ location.href='lektionen.html#last'; };
     document.getElementById('neuText3').onclick=neuerText;
   }
@@ -361,8 +437,8 @@
 
   function renderError(){
     document.getElementById('lekName').textContent='Spikiu';
-    lekBody.innerHTML='<p class="lek-error">Der Lektor ist gerade nicht erreichbar. Leg deinen Text gleich nochmal hin.</p>'+
-      '<button class="retry" id="retry">Nochmal</button>';
+    lekBody.innerHTML='<p class="lek-error">'+esc(T.fehler)+'</p>'+
+      '<button class="retry" id="retry">'+T.nochmal+'</button>';
     lektor.hidden=false; requestAnimationFrame(function(){lektor.classList.add('show');});
     document.getElementById('retry').onclick=function(){ submit(true); };
   }
@@ -407,8 +483,8 @@
         document.getElementById('hands').classList.add('zu');   // Hände weg — die Karte führt
         raeumeSitzung();   // Ziellinie erreicht → kein Zombie-Resume
       } else {
-        step='arbeit'; primary.textContent='Weiter';
-        hint.textContent='Überarbeite die markierte Stelle und leg sie zurück.';
+        step='arbeit'; primary.textContent=T.weiter;
+        hint.textContent=T.hint2;
         scheduleSave();    // kohärenter Stand nach abgeschlossenem Lektor-Zug
       }
     }catch(e){
@@ -423,12 +499,12 @@
   primary.onclick=function(){ submit(false); };
   function doRestart(){
     verlauf=[]; lastRaw=''; currentText=''; step='einstieg'; busy=false; lastLektor=null;
-    werk.className='werkstueck empty'; werk.textContent='Hier steht dein Text.';
+    werk.className='werkstueck empty'; werk.textContent=T.leer;
     lektor.hidden=true; lektor.classList.remove('show','treffer','bereit'); lekBody.innerHTML='';
     document.getElementById('werkLabel').hidden=true; document.getElementById('hands').classList.remove('zu');
-    document.getElementById('lekName').textContent='Spikiu liest'; lektionLaeuft=false;
-    ta.disabled=false; ta.value=''; primary.hidden=false; primary.disabled=false; primary.textContent='Hinlegen';
-    restart.hidden=true; hint.textContent='Schreib deinen ersten Versuch und leg ihn hin.';
+    document.getElementById('lekName').textContent=T.liest; lektionLaeuft=false;
+    ta.disabled=false; ta.value=''; primary.hidden=false; primary.disabled=false; primary.textContent=T.hinlegen;
+    restart.hidden=true; hint.textContent=T.hint1;
   }
   restart.onclick=function(){ raeumeSitzung(); doRestart(); };
   ta.addEventListener('keydown',function(e){
@@ -449,8 +525,8 @@
       if(lastLektor){
         renderLektor(lastLektor);
         lektor.hidden=false; lektor.classList.add('show');
-        step='arbeit'; primary.textContent='Weiter';
-        hint.textContent='Überarbeite die markierte Stelle und leg sie zurück.';
+        step='arbeit'; primary.textContent=T.weiter;
+        hint.textContent=T.hint2;
       }
     }
   }
@@ -466,7 +542,7 @@
     var saved=(window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('schreibwerkstatt') : null;
     if(resumable(saved)){
       window.spikiuSitzung.frageWiederkommen({
-        raum:'schreibwerkstatt', ts:saved.ts, wo:'Schreibwerkstatt',
+        raum:'schreibwerkstatt', ts:saved.ts, wo:T.room,
         beimWeiter:function(){ restoreState(saved); },
         beimNeu:function(){ raeumeSitzung(); doRestart(); }
       });

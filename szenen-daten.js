@@ -12,30 +12,31 @@
   var DB = {
     es: {
       cafe: {
-        titel:{de:'Im Café', es:'En el café', en:'At the café'},
+        titel:{de:'Im Café', es:'En el café', en:'At the café', el:'Στο καφέ'},
         rahmen:{de:'Üben wir im Café. Ich bin der Kellner, du bist der Gast.',
                 es:'Practiquemos en un café. Yo soy el camarero, tú el cliente.',
-                en:'Let us practice at a café. I am the waiter, you are the guest.'},
+                en:'Let us practice at a café. I am the waiter, you are the guest.',
+                el:'Ας κάνουμε εξάσκηση σε ένα καφέ. Εγώ είμαι ο σερβιτόρος, εσύ ο πελάτης.'},
         start:'n1',
         nodes:{
-          n1:{z:'Buenos días, ¿qué le pongo?', tr:{de:'Guten Tag, was darf ich Ihnen bringen?', en:'Good morning, what can I get you?'},
+          n1:{z:'Buenos días, ¿qué le pongo?', tr:{de:'Guten Tag, was darf ich Ihnen bringen?', en:'Good morning, what can I get you?', el:'Καλημέρα, τι να σας φέρω;'},
               opt:[{z:'Un café con leche, por favor.', to:'ok', keep:'café con leche'},
                    {z:'Quiero café.', to:'blunt', korr:['Quiero café.','Un café, por favor.']},
                    {z:'¿Qué tienen?', to:'menu'}]},
-          blunt:{z:'Claro. ¿Con leche o solo?', tr:{de:'Klar. Mit Milch oder schwarz?', en:'Sure. With milk or black?'},
+          blunt:{z:'Claro. ¿Con leche o solo?', tr:{de:'Klar. Mit Milch oder schwarz?', en:'Sure. With milk or black?', el:'Βεβαίως. Με γάλα ή σκέτο;'},
               opt:[{z:'Con leche, por favor.', to:'ok', keep:'café con leche'},
                    {z:'Solo, por favor.', to:'ok2', keep:'café solo'}]},
-          menu:{z:'Tenemos café, tostadas y zumo de naranja.', tr:{de:'Wir haben Kaffee, Toasts und Orangensaft.', en:'We have coffee, toast and orange juice.'},
+          menu:{z:'Tenemos café, tostadas y zumo de naranja.', tr:{de:'Wir haben Kaffee, Toasts und Orangensaft.', en:'We have coffee, toast and orange juice.', el:'Έχουμε καφέ, φρυγανιές και χυμό πορτοκάλι.'},
               opt:[{z:'Un café con leche, por favor.', to:'ok', keep:'café con leche'},
                    {z:'Un zumo de naranja.', to:'juice', keep:'zumo de naranja'}]},
-          ok:{z:'Marchando. ¿Algo para comer?', tr:{de:'Kommt sofort. Etwas zu essen?', en:'Coming right up. Anything to eat?'},
+          ok:{z:'Marchando. ¿Algo para comer?', tr:{de:'Kommt sofort. Etwas zu essen?', en:'Coming right up. Anything to eat?', el:'Έρχεται αμέσως. Κάτι να φάτε;'},
               opt:[{z:'Una tostada, gracias.', to:'food'},{z:'No, nada más.', to:'drink'}]},
-          ok2:{z:'Un café solo. ¿Algo más?', tr:{de:'Einen schwarzen Kaffee. Sonst noch was?', en:'A black coffee. Anything else?'},
+          ok2:{z:'Un café solo. ¿Algo más?', tr:{de:'Einen schwarzen Kaffee. Sonst noch was?', en:'A black coffee. Anything else?', el:'Ένας σκέτος καφές. Κάτι άλλο;'},
               opt:[{z:'Una tostada, por favor.', to:'food'},{z:'Nada más, gracias.', to:'drink'}]},
-          juice:{z:'Un zumo recién hecho. ¿Algo más?', tr:{de:'Ein frisch gepresster Saft. Sonst noch was?', en:'A freshly made juice. Anything else?'},
+          juice:{z:'Un zumo recién hecho. ¿Algo más?', tr:{de:'Ein frisch gepresster Saft. Sonst noch was?', en:'A freshly made juice. Anything else?', el:'Ένας φρεσκοστυμμένος χυμός. Κάτι άλλο;'},
               opt:[{z:'Una tostada también.', to:'food'},{z:'No, gracias.', to:'drink'}]},
-          food:{z:'Perfecto. Enseguida se lo traigo. ¡Que aproveche!', tr:{de:'Perfekt. Ich bring es sofort. Guten Appetit!', en:'Perfect. Right away. Enjoy your meal!'}, ende:true},
-          drink:{z:'Muy bien. Enseguida. ¡Que tenga un buen día!', tr:{de:'Sehr gut. Sofort. Einen schönen Tag noch!', en:'Very good. Right away. Have a good day!'}, ende:true}
+          food:{z:'Perfecto. Enseguida se lo traigo. ¡Que aproveche!', tr:{de:'Perfekt. Ich bring es sofort. Guten Appetit!', en:'Perfect. Right away. Enjoy your meal!', el:'Τέλεια. Σας τα φέρνω αμέσως. Καλή όρεξη!'}, ende:true},
+          drink:{z:'Muy bien. Enseguida. ¡Que tenga un buen día!', tr:{de:'Sehr gut. Sofort. Einen schönen Tag noch!', en:'Very good. Right away. Have a good day!', el:'Πολύ ωραία. Αμέσως. Καλή σας μέρα!'}, ende:true}
         }
       }
     },

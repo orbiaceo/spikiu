@@ -78,10 +78,11 @@
     var ml = 'de';
     try{ var mu = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile || {}).muttersprache;
       var gl = localStorage.getItem('spikiu_lang');
-      ml = ['de','es','en'].indexOf(mu) > -1 ? mu : (['de','es','en'].indexOf(gl) > -1 ? gl : 'de'); }catch(e){}
+      ml = ['de','es','en','el'].indexOf(mu) > -1 ? mu : (['de','es','en','el'].indexOf(gl) > -1 ? gl : 'de'); }catch(e){}
     var LB = { de:{ hilfe:'Hilfe', mein:'Mein', nav:'Hauptnavigation' },
                es:{ hilfe:'Ayuda', mein:'Perfil', nav:'Navegación principal' },
-               en:{ hilfe:'Help',  mein:'Profile', nav:'Main navigation' } }[ml];
+               en:{ hilfe:'Help',  mein:'Profile', nav:'Main navigation' },
+               el:{ hilfe:'Βοήθεια', mein:'Προφίλ', nav:'Κύρια πλοήγηση' } }[ml];
     slot.innerHTML =
       '<nav class="spk-bnav" role="navigation" aria-label="' + LB.nav + '">'
       + '<button class="spk-tab' + (active==='hilfe'?' act':'') + '" data-go="hilfe"><span class="tic">❓</span><span>' + LB.hilfe + '</span></button>'

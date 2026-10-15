@@ -80,7 +80,7 @@ var PROFILE = {
   zielsprache: stored.zielsprache || langCode(stored.targetLang) || 'es',
   muttersprache: stored.muttersprache || langCode(stored.nativeLang) || 'de'
 };
-function uiLang(){ return (['de','es','en'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
+function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
   de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Neun Spiele, kurz und leicht. Such dir eins aus.',
@@ -112,7 +112,17 @@ var UI = {
        gesperrt:function(x){ return 'This is part of the games room (€1.50 a month). Free today: ' + x + '.'; }, zumTages:'Go to the game of the day', abo:'See the games room',
        probe:function(n){ return 'Trial: everything free, ' + n + (n === 1 ? ' day left.' : ' days left.'); }, schloss:'Games room',
        weiter:'another ›', genug:'Enough for today', themaWortschatz:'Vocabulary',
-       leer:'There are no sentences for your target language here yet.' }
+       leer:'There are no sentences for your target language here yet.' },
+  el:{ titel:'Παιχνίδια', eyebrow:'Εξάσκηση', hallo:'Εννιά παιχνίδια, σύντομα και ανάλαφρα. Διάλεξε ένα.',
+       pinata:['Πινιάτα','Χτύπα και πιάσε τον παρείσακτο.'], globos:['Μπαλόνια','Σκάσε τις λέξεις με τη σωστή σειρά.'],
+       huerto:['Ο κήπος του Spikiu','Από το Α ως το Ω: φύτεψε τις λέξεις σου.'], acrostico:['Ακροστιχίδα','Μία λέξη, μία σκέψη για κάθε γράμμα.'],
+       encadenado:['Αλυσίδα λέξεων','Αλυσίδα λέξεων με τον Spikiu. Αν κολλήσεις, σε βοηθάει γράμμα γράμμα.'], oido:['Λεπτό αυτί','Άκου μια λέξη, πάτα την εικόνα.'],
+       golpe:['Ο τόνος','Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'], mercado:['Στην αγορά','Κάθε λέξη στο σωστό καλάθι.'], memoria:['Μνήμη','Βρες τα ζευγάρια: λέξη και εικόνα.'],
+       regale:['Ακρόαση & ομιλία','Βρες λέξεις','Γρήγορα & εύκολα'], tages:'Το παιχνίδι της ημέρας', tagesSub:'Σήμερα ο Spikiu σού προτείνει:',
+       gesperrt:function(x){ return 'Αυτό ανήκει στο δωμάτιο παιχνιδιών (1,50 € τον μήνα). Δωρεάν σήμερα: ' + x + '.'; }, zumTages:'Στο παιχνίδι της ημέρας', abo:'Δες το δωμάτιο παιχνιδιών',
+       probe:function(n){ return 'Δοκιμαστική περίοδος: όλα δωρεάν, ' + (n === 1 ? 'μένει 1 μέρα.' : 'μένουν ' + n + ' μέρες.'); }, schloss:'Δωμάτιο παιχνιδιών',
+       weiter:'άλλο ένα ›', genug:'Αρκετά για σήμερα', themaWortschatz:'Λεξιλόγιο',
+       leer:'Δεν υπάρχουν ακόμα προτάσεις εδώ για τη γλώσσα που μαθαίνεις.' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
 
@@ -147,12 +157,12 @@ function opts(){ return { nativeLang: uiLang(), zielLang: PROFILE.zielsprache, s
 var SAETZE = [];   // [{ satz, art }]
 var LEXIKON = [];  // [{ z, tr }]
 function lernpfad(){ var D = window.SpikiuLernpfad; return (D && D.zielsprache === PROFILE.zielsprache) ? D : null; }
-function trVon(na){ if(!na) return ''; return na[PROFILE.muttersprache] || na.de || na.es || na.en || ''; }
+function trVon(na){ if(!na) return ''; return na[PROFILE.muttersprache] || (PROFILE.muttersprache === 'el' ? na.en : '') || na.de || na.es || na.en || ''; }
 function baueDaten(){
   var z = PROFILE.zielsprache, SP = window.spikiuSprichwort, J = window.spikiuJuegos;
   SAETZE = [];
   if (SP && SP.daten){
-    var trP = function(p){ return (p.t && p.t[PROFILE.muttersprache]) || ''; };
+    var trP = function(p){ return (p.t && (p.t[PROFILE.muttersprache] || (PROFILE.muttersprache === 'el' ? p.t.en : ''))) || ''; };
     (SP.daten[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, tr:trP(p), art:'spruch' }); });
     ((SP.wendungen||{})[z] || []).forEach(function(p){ SAETZE.push({ satz:p.text, tr:trP(p), art:'wendung' }); });
   }
@@ -197,8 +207,8 @@ function themenNamen(){
   var m = {}, mu = PROFILE.muttersprache;
   ['SpikiuLernpfadES','SpikiuLernpfadDE','SpikiuLernpfadEN','SpikiuLernpfad'].forEach(function(k){
     var D = window[k]; if (!D || !D.themen) return;
-    D.themen.forEach(function(t){ var n = t.na && t.na[mu]; if (n && !m[t.id]) m[t.id] = (t.em ? t.em + ' ' : '') + n; });
-    (D.kategorien || []).forEach(function(t){ var n = t.na && t.na[mu]; if (n && t.id === 'essen' && !m.essen) m.essen = '🥘 ' + n; });
+    D.themen.forEach(function(t){ var n = t.na && (t.na[mu] || (mu === 'el' ? t.na.en : '')); if (n && !m[t.id]) m[t.id] = (t.em ? t.em + ' ' : '') + n; });
+    (D.kategorien || []).forEach(function(t){ var n = t.na && (t.na[mu] || (mu === 'el' ? t.na.en : '')); if (n && t.id === 'essen' && !m.essen) m.essen = '🥘 ' + n; });
   });
   return m;
 }
@@ -367,6 +377,7 @@ function bilderPool(){
 function kategorieName(id){
   var mu = PROFILE.muttersprache, n = '';
   ['SpikiuLernpfadES','SpikiuLernpfadDE','SpikiuLernpfadEN'].forEach(function(k){ var D = window[k]; if (n || !D || !D.kategorien) return; D.kategorien.forEach(function(t){ if (t.id === id && t.na && t.na[mu]) n = t.na[mu]; }); });
+  if (!n && mu === 'el') ['SpikiuLernpfadES','SpikiuLernpfadDE','SpikiuLernpfadEN'].forEach(function(k){ var D = window[k]; if (n || !D || !D.kategorien) return; D.kategorien.forEach(function(t){ if (t.id === id && t.na && t.na.en) n = t.na.en; }); });
   return n || id;
 }
 function neueRunde(spiel){

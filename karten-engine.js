@@ -148,6 +148,20 @@
   function el(tag, cls, html) { var d = document.createElement(tag); if (cls) d.className = cls; if (html != null) d.innerHTML = html; return d; }
 
   var CFG = { stage: null, zielsprache: 'es', sprich: null };
+
+  /* Ersatz-Texte, falls der Raum keine eigenen mitgibt — in der Muttersprache
+     aus dem Profil (de/es/en/el, 15.10.: Griechisch als Muttersprache). */
+  var STD = {
+    de: { anhoeren:'Anhören', hint:'tippen zum Umdrehen', weiter:'Weiter', pruefen:'Prüfen', richtig:'Richtig!', fast:'Fast — schau dir die richtige Antwort an.', ziel:'Ziel', wortschatz:'Wortschatz', dialog:'Dialog', quiz:'Quiz', glieder:'Stück für Stück' },
+    es: { anhoeren:'Escuchar', hint:'toca para girar', weiter:'Seguir', pruefen:'Comprobar', richtig:'¡Correcto!', fast:'Casi — mira la respuesta correcta.', ziel:'Objetivo', wortschatz:'Vocabulario', dialog:'Diálogo', quiz:'Quiz', glieder:'Pieza a pieza' },
+    en: { anhoeren:'Listen', hint:'tap to flip', weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.', ziel:'Goal', wortschatz:'Vocabulary', dialog:'Dialogue', quiz:'Quiz', glieder:'Piece by piece' },
+    el: { anhoeren:'Άκου', hint:'πάτησε για να γυρίσει', weiter:'Συνέχεια', pruefen:'Έλεγχος', richtig:'Σωστά!', fast:'Παραλίγο — δες τη σωστή απάντηση.', ziel:'Στόχος', wortschatz:'Λεξιλόγιο', dialog:'Διάλογος', quiz:'Κουίζ', glieder:'Κομμάτι κομμάτι' }
+  };
+  function L(k) {
+    var m = CFG.ui;
+    if (!m) { try { m = ((JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile) || {}).muttersprache; } catch (e) { m = null; } }
+    return (STD[m] || STD.de)[k];
+  }
   var CUR = null;
 
   /* ── Regel 1: Skala deckeln, nur bei Überlauf schrumpfen. ── */
@@ -176,7 +190,7 @@
   function audioBtn(text) {
     var b = el('button', 'spk-audio', SVG_PLAY);
     b.type = 'button';
-    b.setAttribute('aria-label', 'Anhören');
+    b.setAttribute('aria-label', L('anhoeren'));
     b.onclick = function (e) {
       e.stopPropagation();
       try {
@@ -246,7 +260,7 @@
         if (side.audio) f.appendChild(audioBtn(side.audioText || side.text));
         f.appendChild(textNode(side.text, side.ziel !== false, false));
         if (side.sub) f.appendChild(textNode(side.sub, false, true));
-        f.appendChild(el('div', 'spk-hint', esc(side.hint || 'tippen zum Umdrehen')));
+        f.appendChild(el('div', 'spk-hint', esc(side.hint || L('hint'))));
         return f;
       }
       inner.appendChild(face(item.front, ''));
@@ -257,7 +271,7 @@
         if (e.target.closest('.spk-audio')) return;
         zone.classList.toggle('flipped');
       });
-      footButton(F, item.weiter || 'Weiter', '', next);
+      footButton(F, item.weiter || L('weiter'), '', next);
       F.armNext(next);
     },
 
@@ -286,7 +300,7 @@
         list.appendChild(b);
       });
       F.body.appendChild(list);
-      footButton(F, item.pruefen || 'Prüfen', '', function () {
+      footButton(F, item.pruefen || L('pruefen'), '', function () {
         var okAll = item.options.filter(function (o) { return o.ok; });
         var ok = chosen.length === okAll.length && chosen.every(function (c) { return c.ok; });
         var k = 0;
@@ -311,9 +325,9 @@
           if (item.loesungTr) lw.appendChild(textNode(item.loesungTr, false, true));
           F.body.appendChild(lw);
         }
-        F.feedback.textContent = ok ? (item.richtig || 'Richtig!') : (item.fast || 'Fast — schau dir die richtige Antwort an.');
+        F.feedback.textContent = ok ? (item.richtig || L('richtig')) : (item.fast || L('fast'));
         F.feedback.className = 'spk-feedback ' + (ok ? 'ok' : 'no');
-        footButton(F, item.weiter || 'Weiter', '', next);
+        footButton(F, item.weiter || L('weiter'), '', next);
         F.armNext(next);
         fitCard(F.card);
       });
@@ -339,7 +353,7 @@
             b.classList.add('wrong');
             list.querySelectorAll('.spk-opt').forEach(function (x, j) { if (opts[j].ok) x.classList.add('correct'); });
           }
-          footButton(F, item.weiter || 'Weiter', '', next);
+          footButton(F, item.weiter || L('weiter'), '', next);
           F.armNext(next);
           fitCard(F.card);
         };
@@ -360,15 +374,15 @@
         }).join('') + '</div>';
       }).join('');
       d.innerHTML = '<div><h3>' + esc(item.title) + '</h3>' + (item.subtitle ? '<div class="spk-sub" style="text-align:left;margin-top:.15rem">' + esc(item.subtitle) + '</div>' : '') + '</div>'
-        + (item.goal ? '<div><div class="lbl">🎯 ' + esc(item.goalLabel || 'Ziel') + '</div><div class="spk-sub" style="text-align:left">' + esc(item.goal) + '</div></div>' : '')
-        + (vocabHtml ? '<div><div class="lbl">📖 ' + esc(item.vocabLabel || 'Wortschatz') + '</div>' + vocabHtml + '</div>' : '')
-        + (dialHtml ? '<div><div class="lbl">💬 ' + esc(item.dialogueLabel || 'Dialog') + '</div>' + dialHtml + '</div>' : '')
-        + (quizHtml ? '<div><div class="lbl">✓ ' + esc(item.quizLabel || 'Quiz') + '</div>' + quizHtml + '</div>' : '');
+        + (item.goal ? '<div><div class="lbl">🎯 ' + esc(item.goalLabel || L('ziel')) + '</div><div class="spk-sub" style="text-align:left">' + esc(item.goal) + '</div></div>' : '')
+        + (vocabHtml ? '<div><div class="lbl">📖 ' + esc(item.vocabLabel || L('wortschatz')) + '</div>' + vocabHtml + '</div>' : '')
+        + (dialHtml ? '<div><div class="lbl">💬 ' + esc(item.dialogueLabel || L('dialog')) + '</div>' + dialHtml + '</div>' : '')
+        + (quizHtml ? '<div><div class="lbl">✓ ' + esc(item.quizLabel || L('quiz')) + '</div>' + quizHtml + '</div>' : '');
       F.body.appendChild(d);
       d.querySelectorAll('.spk-opt').forEach(function (b) {
         b.onclick = function () { b.classList.add(b.getAttribute('data-a') ? 'correct' : 'wrong'); };
       });
-      footButton(F, item.weiter || 'Weiter', item.weiterGhost ? 'ghost' : '', next);
+      footButton(F, item.weiter || L('weiter'), item.weiterGhost ? 'ghost' : '', next);
       F.armNext(next);
     },
 
@@ -440,11 +454,11 @@
 
         if (hatZwei) {
           F.body.appendChild(punkte(0));
-          footButton(F, item.gliederLabel || 'Stück für Stück', 'ghost', function () { rueckseite(); });
+          footButton(F, item.gliederLabel || L('glieder'), 'ghost', function () { rueckseite(); });
           F.armNext(function () { rueckseite(); });      /* Wisch links = Folie 2 */
           F.swipe.backFn = zurueckAusRender;
         } else {
-          footButton(F, item.weiter || 'Weiter', '', next);
+          footButton(F, item.weiter || L('weiter'), '', next);
           F.armNext(next);
           F.swipe.backFn = zurueckAusRender;
         }
@@ -468,7 +482,7 @@
           F.body.appendChild(r);
         });
         F.body.appendChild(punkte(1));
-        footButton(F, item.weiter || 'Weiter', '', next);
+        footButton(F, item.weiter || L('weiter'), '', next);
         F.armNext(next);
         F.swipe.backFn = function () { vorderseite(); }; /* Wisch rechts = zurück */
         fitCard(F.card);
@@ -482,7 +496,7 @@
       if (item.emoji) F.body.appendChild(el('div', 'spk-note-emoji', esc(item.emoji)));
       F.body.appendChild(el('div', 'spk-note-title', esc(item.title)));
       if (item.sub) F.body.appendChild(el('div', 'spk-note-sub', esc(item.sub)));
-      var btns = item.buttons && item.buttons.length ? item.buttons : [{ label: 'Weiter', go: next }];
+      var btns = item.buttons && item.buttons.length ? item.buttons : [{ label: L('weiter'), go: next }];
       btns.forEach(function (bt, i) {
         var b = el('button', 'spk-btn' + (bt.ghost ? ' ghost' : ''), esc(bt.label));
         b.type = 'button'; b.style.marginTop = i === 0 ? '.6rem' : '0';
@@ -528,7 +542,7 @@
   window.addEventListener('resize', function () { if (CUR) fitCard(CUR); });
 
   window.SpikiuKarten = {
-    setup: function (opts) { opts = opts || {}; if (opts.stage) CFG.stage = opts.stage; if (opts.zielsprache) CFG.zielsprache = opts.zielsprache; if (opts.sprich) CFG.sprich = opts.sprich; injectCSS(); },
+    setup: function (opts) { opts = opts || {}; if (opts.stage) CFG.stage = opts.stage; if (opts.zielsprache) CFG.zielsprache = opts.zielsprache; if (opts.sprich) CFG.sprich = opts.sprich; if (opts.ui) CFG.ui = opts.ui; injectCSS(); },
     render: render,
     sequence: sequence,
     fitCard: fitCard

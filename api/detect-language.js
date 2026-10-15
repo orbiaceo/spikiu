@@ -97,13 +97,13 @@ export default async function handler(req, res) {
   const SUPPORTED = [
     'Deutsch', 'Español', 'English', 'Chinese', 'French',
     'Portuguese', 'Russian', 'Japanese', 'Arabic',
-    'Polish', 'Italian', 'Dutch'
+    'Polish', 'Italian', 'Dutch', 'Ελληνικά'
   ];
 
   const systemPrompt = `You identify the user's native language from their message.
 
 Reply ONLY with ONE word from this exact list:
-Deutsch, Español, English, Chinese, French, Portuguese, Russian, Japanese, Arabic, Polish, Italian, Dutch, Other
+Deutsch, Español, English, Chinese, French, Portuguese, Russian, Japanese, Arabic, Polish, Italian, Dutch, Ελληνικά, Other
 
 Rules:
 - "Deutsch", "German", "Alemán", "deutsch" → Deutsch
@@ -118,6 +118,7 @@ Rules:
 - "Polski", "Polish", "Polnisch" → Polish
 - "Italiano", "Italian", "Italienisch" → Italian
 - "Nederlands", "Dutch", "Niederländisch" → Dutch
+- "Ελληνικά", "Greek", "Griechisch", "Griego", "ελληνικά" → Ελληνικά
 - Any other language → Other
 - No explanation. Just one word.`;
 

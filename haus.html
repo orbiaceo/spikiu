@@ -408,8 +408,8 @@ function icoStar(){return '<svg viewBox="0 0 32 32" style="width:100%;height:100
    auf Englisch macht, darf danach nicht im Deutschen landen.
    Neue Sprache = ein Block in HUI. Lerninhalte (Zielsprache) bleiben, wie sie sind. */
 function hausSprache(){
- try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache;if(m==='de'||m==='es'||m==='en')return m;}catch(e){}
- try{var l=localStorage.getItem('spikiu_lang');if(l==='de'||l==='es'||l==='en')return l;}catch(e){}
+ try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache;if(m==='de'||m==='es'||m==='en'||m==='el')return m;}catch(e){}
+ try{var l=localStorage.getItem('spikiu_lang');if(l==='de'||l==='es'||l==='en'||l==='el')return l;}catch(e){}
  return 'de';}
 var HL=hausSprache();
 var HUI={
@@ -436,7 +436,15 @@ var HUI={
   wort:'Vocabulary',worts:'Your deck',lese:'Reading',leses:'Reading comprehension',schreib:'Writing',schreibs:'Writing',spiele:'Games',spieles:'Short and light',
   zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s book';},buchSub:'Where you’ve been — page by page.',geschrieben:'written by Spikiu',
   mitgenommen:'Taken with you',deineW:'Your words',leer:'Still empty',leerSub:'Talk with me or practise a few words — and this book writes itself.',
-  hook:'No certificate.<br>Your book.',hookSub:'Others collect streaks. With Spikiu, a book grows that belongs only to you — page by page, at your pace.',druck:'Printed edition · soon'}
+  hook:'No certificate.<br>Your book.',hookSub:'Others collect streaks. With Spikiu, a book grows that belongs only to you — page by page, at your pace.',druck:'Printed edition · soon'},
+ el:{d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και γράψε. Εδώ μεγαλώνει το ράφι σου.',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Το βιβλίο σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Όλα όσα έχεις μαζέψει.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Λίγες λέξεις, με την ησυχία σου.',
+  gef:'Καθοδηγούμενη συζήτηση',gefs:'Εξάσκηση σε σκηνές',frei:'Ελεύθερη συζήτηση',freis:'Μίλα ελεύθερα',gratis:'δωρεάν',
+  zuletzt:function(t){return 'Τελευταία φορά: «'+t+'» — συνεχίζουμε;';},gesammelt:function(n){return 'Έχεις ήδη μαζέψει '+n+' '+(n===1?'λέξη':'λέξεις')+'. 🍃';},
+  roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Το βιβλίο μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
+  wort:'Λεξιλόγιο',worts:'Η τράπουλά σου',lese:'Ανάγνωση',leses:'Κατανόηση κειμένου',schreib:'Γραφή',schreibs:'Γραφή',spiele:'Παιχνίδια',spieles:'Σύντομα κι ανάλαφρα',
+  zurueck:'πίσω',weiter:'συνέχεια',vorlesen:'Άκου',buchVon:function(n){return 'Το βιβλίο · '+n;},buchSub:'Όπου έχεις μπει — σελίδα σελίδα.',geschrieben:'γραμμένο από τον Spikiu',
+  mitgenommen:'Τα πήρες μαζί σου',deineW:'Οι λέξεις σου',leer:'Ακόμα άδειο',leerSub:'Μίλα μαζί μου ή εξασκήσου σε λίγες λέξεις — και αυτό το βιβλίο γράφεται μόνο του.',
+  hook:'Κανένα πιστοποιητικό.<br>Το βιβλίο σου.',hookSub:'Άλλοι μαζεύουν σερί. Στον Spikiu μεγαλώνει ένα βιβλίο που ανήκει μόνο σε σένα — σελίδα σελίδα, με τον δικό σου ρυθμό.',druck:'Έντυπη έκδοση · σύντομα'}
 };
 function H(){return HUI[HL];}
 /* Begrüßung in der ZIELsprache (wie Spikius Stimme unten), nicht immer Spanisch. */
@@ -716,7 +724,7 @@ function readRoman(){
 var bookIdx=0;
 function readBuch(){try{return JSON.parse(localStorage.getItem('spikiu_buch')||'[]');}catch(e){return [];}}
 function bkZiel(){try{return (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).zielsprache||'es';}catch(e){return 'es';}}
-function bkMutter(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache||'de';return ['de','es','en'].indexOf(m)>-1?m:'de';}catch(e){return 'de';}}
+function bkMutter(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache||'de';return ['de','es','en','el'].indexOf(m)>-1?m:'de';}catch(e){return 'de';}}
 function bkTr(e){if(e.tr)return e.tr;var w=(e.roh||e.wort);return (window.spikiuWoerterbuch&&window.spikiuWoerterbuch.tr(w,bkZiel(),bkMutter()))||'';}
 function bookPages(){
  var w=readBuch();var P=[{k:'cover'}];
@@ -833,11 +841,12 @@ document.documentElement.lang=HL;
     Sprache: was wir wissen (spikiu_lang aus einer früheren Sitzung),
     sonst Deutsch — ein Profil gibt es an dieser Stelle noch nicht.
     ══════════════════════════════════════════════════════════════ */
- var lg='de'; try{ var gl=localStorage.getItem('spikiu_lang'); if(gl==='es'||gl==='en') lg=gl; }catch(e){}
+ var lg='de'; try{ var gl=localStorage.getItem('spikiu_lang'); if(gl==='es'||gl==='en'||gl==='el') lg=gl; }catch(e){}
  var HEY={
    de:{sub:'Schön, dass du da bist. Lass uns anfangen.', btn:"Los geht's →"},
    es:{sub:'Me alegra que estés aquí. Vamos a empezar.', btn:'¡Empezamos! →'},
-   en:{sub:'Good to have you here. Let us get started.',  btn:"Let's go →"}
+   en:{sub:'Good to have you here. Let us get started.',  btn:"Let's go →"},
+   el:{sub:'Χαίρομαι που είσαι εδώ. Πάμε να ξεκινήσουμε.', btn:'Πάμε! →'}
  }[lg];
  var ws=document.getElementById('wsub'); if(ws) ws.textContent=HEY.sub;
  var nb=document.getElementById('namebox');
