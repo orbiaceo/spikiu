@@ -169,8 +169,23 @@ function baueDaten(){
   var WS = (typeof window.spikiuWortschatz === 'function' && window.spikiuWortschatz.daten && window.spikiuWortschatz.daten[z])
     ? window.spikiuWortschatz(z, PROFILE.muttersprache) : [];
   WS.forEach(function(x){ if (x.text) SAETZE.push({ satz:x.text, tr:x.ts || '', art:'beispiel' }); LEXIKON.push({ z:x.wort, tr:x.tr }); });
+  // Sätze aus den Stationen des Weges (16.10.2026): Dialogzeilen, Eröffnung und
+  // Abrundung jeder Stufe bis zur eigenen — Krone-Lerner spielen mit Krone-Sätzen.
+  var D0 = lernpfad();
+  if (D0){
+    stufenBis(D0).forEach(function(st){
+      D0.themen.forEach(function(t){
+        var S = D0.station(st, t.id); if (!S) return;
+        var zl = ((S.dialog && S.dialog.zeilen) || []).slice();
+        if (S.eroeffnung) zl.push(S.eroeffnung);
+        if (S.abrundung) zl.push(S.abrundung);
+        zl.forEach(function(x){ if (x && x.z) SAETZE.push({ satz:x.z, tr:naTr(x.na), art:'station', stufe:st }); });
+      });
+    });
+  }
   // Leo 10.10.: jeder Wurf endet mit der Übersetzung → nur Sätze, die eine haben.
-  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return s.tr && n >= 3 && n <= 8; });
+  // Krone-Sätze dürfen länger sein (bis 12 Wörter).
+  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return s.tr && n >= 3 && n <= (s.stufe === 'b1' ? 12 : 8); });
   var D = lernpfad();
   if (D){
     D.themen.forEach(function(t){ woerterVonThemaLernpfad(t.id).forEach(function(x){ LEXIKON.push(x); }); });
@@ -192,16 +207,54 @@ function woerterVonThemaLernpfad(id){
       ? window.spikiuWortschatz(z, PROFILE.muttersprache).map(function(x){ return { z:x.wort, tr:x.tr }; }) : [];
   }
   var out = [];
-  (D.stufen || ['a1','a2']).forEach(function(st){
+  stufenBis(D).forEach(function(st){
     // ES-Datei liefert na als Objekt, DE/EN als fertigen String — beides tragen.
     (D.woerter(st, id, PROFILE.muttersprache) || []).forEach(function(w){ out.push({ z:w.z, tr:(typeof w.na === 'string') ? w.na : trVon(w.na) }); });
   });
   return out;
 }
 // ── Wortfelder (10.10.): thematische Felder in allen vier Zielsprachen ──
-function stufeZahl(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe() === 'a2' ? 2 : 1; } catch(e){} return 1; }
-function feldVon(id){ var W = window.spikiuWortfelder; return W ? W.feld(PROFILE.zielsprache, id, PROFILE.muttersprache) : []; }
-function bereichVon(id){ var W = window.spikiuWortfelder; return (W && W.bereich) ? W.bereich(PROFILE.zielsprache, id, PROFILE.muttersprache) : feldVon(id); }
+// Stufe des Weges: a1 = 1 (Samen), a2 = 2 (Stamm), b1 = 3 (Krone). Bis 16.10.2026 fiel
+// die Krone hier auf 1 zurück — die Spiele zeigten Krone-Lernern nur Anfängerstoff (Leo).
+function aktStufe(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe(); } catch(e){} return 'a1'; }
+function stufeZahl(){ return ({ a1:1, a2:2, b1:3 })[aktStufe()] || 1; }
+// Stufen des Pfades bis zur eigenen — die eigene zuerst.
+function stufenBis(D){
+  var alle = (D && D.stufen) || ['a1','a2'], ich = aktStufe(), i = alle.indexOf(ich);
+  var bis = alle.slice(0, (i < 0 ? 0 : i) + 1);
+  return [bis[bis.length - 1]].concat(bis.slice(0, -1).reverse());
+}
+function naTr(na){ return (typeof na === 'string') ? na : trVon(na); }
+// Auf der Krone kommen die Wörter der b1-Stationen dazu (nur Einzelwörter, mit Konzept
+// für die Bilder) — sonst spielten Krone-Lerner nur mit dem festen Wortfeld.
+var ART_RE = /^(el|la|los|las|der|die|das|the|ο|η|το|οι|τα)\s+/i;
+var BEREICH_THEMEN = { essen:['cafe','restaurant'], cafe:['cafe','restaurant'], restaurant:['cafe','restaurant'],
+  einkaufen:['einkaufen','cafe','restaurant'], wegbeschreibung:['wegbeschreibung','taxi','bahnhof','hotel'],
+  taxi:['wegbeschreibung','taxi','bahnhof','hotel'], bahnhof:['wegbeschreibung','taxi','bahnhof','hotel'],
+  hotel:['wegbeschreibung','taxi','bahnhof','hotel'] };
+function kroneWoerter(themenIds){
+  var D = lernpfad(); if (!D || aktStufe() !== 'b1') return [];
+  var out = [];
+  themenIds.forEach(function(id){
+    var S = D.station('b1', id); if (!S) return;
+    (S.wortschatz || []).forEach(function(w){
+      var z = String(w.z || '').trim(), kern = z.replace(ART_RE, '');
+      if (!z || /[\s.,¿?¡!…]/.test(kern)) return;            // nur Einzelwörter
+      var en = (D.zielsprache === 'en') ? z.replace(ART_RE, '') : ((w.na && typeof w.na === 'object' && w.na.en) ? String(w.na.en).replace(ART_RE, '') : '');
+      out.push({ z:z, tr:naTr(w.na), stufe:3, en:en, nomen: ART_RE.test(z) });
+    });
+  });
+  return out;
+}
+function dazu(liste, mehr){
+  if (!mehr.length) return liste;
+  var seen = {}, out = liste.slice();
+  liste.forEach(function(x){ seen[String(x.z).toLowerCase()] = 1; });
+  mehr.forEach(function(x){ var k = String(x.z).toLowerCase(); if (!seen[k]) { seen[k] = 1; out.push(x); } });
+  return out;
+}
+function feldVon(id){ var W = window.spikiuWortfelder; return dazu(W ? W.feld(PROFILE.zielsprache, id, PROFILE.muttersprache) : [], kroneWoerter([id])); }
+function bereichVon(id){ var W = window.spikiuWortfelder; return (W && W.bereich) ? dazu(W.bereich(PROFILE.zielsprache, id, PROFILE.muttersprache), kroneWoerter(BEREICH_THEMEN[id] || [id])) : feldVon(id); }
 // Themennamen in der Muttersprache — aus irgendeiner geladenen Lernpfad-Datei
 function themenNamen(){
   var m = {}, mu = PROFILE.muttersprache;
@@ -303,6 +356,9 @@ function enden(nochmal){
 function zieheSatz(){
   if (!SAETZE.length) return null;
   var pool = SAETZE.filter(function(s){ return s.satz !== letzterSatz; });
+  // Zwei von drei Würfen aus der eigenen Stufe, wenn es dort Sätze gibt.
+  var ich = aktStufe(), eigen = pool.filter(function(s){ return s.stufe === ich; });
+  if (eigen.length >= 3 && Math.random() < 0.67) pool = eigen;
   if (!pool.length) pool = SAETZE;
   var s = pool[Math.floor(Math.random() * pool.length)]; letzterSatz = s.satz; return s;
 }
