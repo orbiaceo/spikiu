@@ -40,7 +40,7 @@
   // ── UI-Texte in der Muttersprache ──
   var UI = {
     de: {
-      dale: '¡Dale!', pinataTask: 'Schlag zu! Tipp den Eindringling in der Luft an.',
+      dale: 'Los!', pinataTask: 'Schlag zu! Tipp den Eindringling in der Luft an.',
       pinataOk: function (x) { return 'Richtig: <em>' + x + '</em> gehört nicht dazu.'; },
       pinataCaught: function (x) { return 'Spikiu hat ihn aufgefangen: der Eindringling war <em>' + x + '</em>.'; },
       pinataStay: 'Das gehört dazu. Such ein anderes.',
@@ -132,7 +132,7 @@
       aSaved: 'Tus acrósticos', aYours: 'Tu acróstico', aNew: 'Nuevo acróstico', aSpikiu: 'El acróstico de Spikiu'
     },
     en: {
-      dale: 'Go!', pinataTask: 'Swing! Tap the intruder in the air.',
+      dale: 'Let’s go!', pinataTask: 'Swing! Tap the intruder in the air.',
       pinataOk: function (x) { return 'Right: <em>' + x + '</em> doesn’t belong.'; },
       pinataCaught: function (x) { return 'Spikiu caught it: the intruder was <em>' + x + '</em>.'; },
       pinataStay: 'That one belongs. Look for another.',
