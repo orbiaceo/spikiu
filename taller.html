@@ -1,6 +1,6 @@
 <!doctype html><html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Spikiu · Lesewerkstatt</title>
+<title>Spikiu · Leseverstehen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -75,7 +75,7 @@ button{font-family:inherit}
 <div class="app">
   <div class="top">
     <button class="back" id="back" aria-label="zurück">‹</button>
-    <div class="tt-wrap"><h1 id="kRoom">Lesewerkstatt</h1></div>
+    <div class="tt-wrap"><h1 id="kRoom">Leseverstehen</h1></div>
     <div class="dev" id="dev">
       <select id="selLang"><option value="es">es</option><option value="de">de</option><option value="en">en</option><option value="el">el</option></select>
       <select id="selKoennen"><option value="anfang">anfang</option><option value="mittel">mittel</option><option value="fortgeschritten">fortgeschritten</option></select>
@@ -117,10 +117,10 @@ button{font-family:inherit}
 
  // ── i18n Chrome (UI = Muttersprache: de · es · en · el) ──
  var TXT={
-  de:{k:'Übung',room:'Lesewerkstatt',again:'Noch ein Text',enough:'Genug für heute',prem:'Premium',premHint:'Schreib frei — Spikiu liest deinen Satz.',corr:'Richtig: ',empty:'Bald mehr Texte hier.'},
-  es:{k:'Práctica',room:'Taller de lectura',again:'Otro texto',enough:'Ya está bien por hoy',prem:'Premium',premHint:'Escribe libremente — Spikiu lee tu frase.',corr:'Correcto: ',empty:'Pronto más textos aquí.'},
-  en:{k:'Practice',room:'Reading workshop',again:'Another text',enough:'Enough for today',prem:'Premium',premHint:'Write freely — Spikiu reads your sentence.',corr:'Correct: ',empty:'More texts here soon.'},
-  el:{k:'Εξάσκηση',room:'Εργαστήρι ανάγνωσης',again:'Άλλο ένα κείμενο',enough:'Αρκετά για σήμερα',prem:'Premium',premHint:'Γράψε ελεύθερα — ο Spikiu διαβάζει την πρότασή σου.',corr:'Σωστό: ',empty:'Σύντομα περισσότερα κείμενα εδώ.'}
+  de:{k:'Übung',room:'Leseverstehen',again:'Noch ein Text',enough:'Genug für heute',prem:'Premium',premHint:'Schreib frei — Spikiu liest deinen Satz.',corr:'Richtig: ',empty:'Bald mehr Texte hier.'},
+  es:{k:'Práctica',room:'Comprensión lectora',again:'Otro texto',enough:'Ya está bien por hoy',prem:'Premium',premHint:'Escribe libremente — Spikiu lee tu frase.',corr:'Correcto: ',empty:'Pronto más textos aquí.'},
+  en:{k:'Practice',room:'Reading comprehension',again:'Another text',enough:'Enough for today',prem:'Premium',premHint:'Write freely — Spikiu reads your sentence.',corr:'Correct: ',empty:'More texts here soon.'},
+  el:{k:'Εξάσκηση',room:'Κατανόηση κειμένου',again:'Άλλο ένα κείμενο',enough:'Αρκετά για σήμερα',prem:'Premium',premHint:'Γράψε ελεύθερα — ο Spikiu διαβάζει την πρότασή σου.',corr:'Σωστό: ',empty:'Σύντομα περισσότερα κείμενα εδώ.'}
  };
  var T=TXT[muttersprache()];
  // Muttersprache-Feld: String (alt) ODER {de,es,en,el} → passende Sprache, Fallback de

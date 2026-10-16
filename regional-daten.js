@@ -20,7 +20,7 @@
   if (w.spikiuRegional) return;
   w.spikiuRegional = {
     es: {
-      titel: {"de":"Regionales Spanisch","es":"Español regional","en":"Regional Spanish","el":"Τοπικά ισπανικά"},
+      titel: {"de":"Spanische Regionalismen","es":"Regionalismos del español","en":"Spanish regionalisms","el":"Ισπανικοί τοπικισμοί"},
       regionen: [
         {"id":"espana","name":{"de":"Spanien","es":"España","en":"Spain","el":"Ισπανία"},"kurz":"ES","farbe":"#F6C9B8","em":"🥘"},
         {"id":"mexico","name":{"de":"Mexiko","es":"México","en":"Mexico","el":"Μεξικό"},"kurz":"MX","farbe":"#C9E4C5","em":"🌮"},
@@ -75,7 +75,7 @@
       ]
     },
     de: {
-      titel: {"de":"Regionales Deutsch","es":"Alemán regional","en":"Regional German","el":"Τοπικά γερμανικά"},
+      titel: {"de":"Deutsche Regionalismen","es":"Regionalismos del alemán","en":"German regionalisms","el":"Γερμανικοί τοπικισμοί"},
       regionen: [
         {"id":"nord","name":{"de":"Norddeutschland (Hamburg, Hannover)","es":"Norte de Alemania (Hamburgo, Hannover)","en":"Northern Germany (Hamburg, Hanover)","el":"Βόρεια Γερμανία (Αμβούργο, Ανόβερο)"},"kurz":"HH","farbe":"#BFDDF2","em":"⚓"},
         {"id":"berlin","name":{"de":"Berlin & Brandenburg","es":"Berlín y Brandeburgo","en":"Berlin & Brandenburg","el":"Βερολίνο και Βρανδεμβούργο"},"kurz":"BLN","farbe":"#D9D2F0","em":"🐻"},
@@ -130,7 +130,7 @@
       ]
     },
     en: {
-      titel: {"de":"Regionales Englisch","es":"Inglés regional","en":"Regional English","el":"Τοπικά αγγλικά"},
+      titel: {"de":"Englische Regionalismen","es":"Regionalismos del inglés","en":"English regionalisms","el":"Αγγλικοί τοπικισμοί"},
       regionen: [
         {"id":"usa","name":{"de":"USA","es":"Estados Unidos","en":"United States","el":"ΗΠΑ"},"kurz":"US","farbe":"#BFD7F5","em":"🗽"},
         {"id":"uk","name":{"de":"England","es":"Inglaterra","en":"England","el":"Αγγλία"},"kurz":"UK","farbe":"#F5C6CB","em":"🫖"},
@@ -185,7 +185,7 @@
       ]
     },
     el: {
-      titel: {"de":"Regionales Griechisch","es":"Griego regional","en":"Regional Greek","el":"Τοπικά ελληνικά"},
+      titel: {"de":"Griechische Regionalismen","es":"Regionalismos del griego","en":"Greek regionalisms","el":"Ελληνικοί τοπικισμοί"},
       regionen: [
         {"id":"athen","name":{"de":"Athen (Standard)","es":"Atenas (estándar)","en":"Athens (standard)","el":"Αθήνα (κοινή)"},"kurz":"AT","farbe":"#cfe3f7","em":"🏛️"},
         {"id":"thessaloniki","name":{"de":"Thessaloniki & Nordgriechenland","es":"Salónica y norte de Grecia","en":"Thessaloniki & Northern Greece","el":"Θεσσαλονίκη & βόρεια Ελλάδα"},"kurz":"TH","farbe":"#f7dcc8","em":"🥯"},
