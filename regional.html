@@ -77,6 +77,13 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 <script src="icon-db.js"></script>
 <script src="regional-daten.js"></script>
 <script src="sitzung.js"></script>
+<!-- Audio: audio.js ist ein ES-Modul am Root, hier importiert und über window gebrückt (wie learnroman/proverbios). -->
+<script type="module">
+  import { speak, warm } from '/audio.js';
+  window.spkSpeak = speak;
+  window.spkWarm  = warm;
+  try { var pr = JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile || {}; warm(pr.zielsprache || 'es'); } catch (e) {}
+</script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
    SPIKIU · RAUM „REGIONAL" (16.10.2026)
@@ -86,8 +93,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
    Zwei Reiter: Wörter (ein Begriff = eine Karte, je Region die Variante, Bild,
    Spikius Witz) und Aussprache (je Erscheinung Beispiele je Region).
    Regionen-Chips heben eine Region hervor; Kategorie-Chips filtern die Wörter.
-   🔊 spielt NUR echte Aufnahmen (audio/regional/<ziel>/…mp3) — keine synthetische
-   Stimme (Leo). Fehlt die Datei: „Aufnahme folgt". NULL Token.
+   🔊 liest mit audio.js (Piper) vor wie alle Räume (Leo 16.10. 12:27: „Por ahora no
+   vamos a grabar nada"). Aufnahmelisten in audio/regional/ bleiben für später. NULL Token.
    Sitzungs-Persistenz über sitzung.js (Raum 'regional': Reiter, Region, Kategorie,
    Scroll). Verbotene Variablennamen (name, status, top …) vermieden.
    ══════════════════════════════════════════════════════════════════════ */
@@ -102,26 +109,22 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     de:{ rk:'Bibliothek', woerter:'Wörter', laut:'Aussprache', alle:'Alle',
          kat:{ alltag:'Alltag', essen:'Essen & Trinken', unterwegs:'Unterwegs', leute:'Leute', gruesse:'Grüße' },
          intro:'Eine Sprache, viele Gegenden. Hier siehst du, wie man dasselbe anderswo sagt — tipp eine Region an, dann leuchtet sie auf.',
-         introLaut:'So klingt es in den Regionen. Die Aufnahmen machen bald echte Menschen von dort.',
-         folgt:function(r){ return '🎙️ Aufnahme folgt — bald spricht hier jemand aus ' + r + '.'; },
+         introLaut:'So klingt es in den Regionen.',
          zurueck:'zurück', wo:function(t){ return t; } },
     es:{ rk:'Biblioteca', woerter:'Palabras', laut:'Pronunciación', alle:'Todas',
          kat:{ alltag:'Día a día', essen:'Comer y beber', unterwegs:'De viaje', leute:'Gente', gruesse:'Saludos' },
          intro:'Una lengua, muchos lugares. Aquí ves cómo se dice lo mismo en otras partes: toca una región y se ilumina.',
-         introLaut:'Así suena en cada región. Pronto lo grabarán personas de allí.',
-         folgt:function(r){ return '🎙️ Grabación pendiente: pronto hablará aquí alguien de ' + r + '.'; },
+         introLaut:'Así suena en cada región.',
          zurueck:'atrás', wo:function(t){ return t; } },
     en:{ rk:'Library', woerter:'Words', laut:'Pronunciation', alle:'All',
          kat:{ alltag:'Everyday', essen:'Food & drink', unterwegs:'Getting around', leute:'People', gruesse:'Greetings' },
          intro:'One language, many places. See how the same thing is said elsewhere — tap a region and it lights up.',
-         introLaut:'This is how it sounds in each region. Real people from there will record it soon.',
-         folgt:function(r){ return '🎙️ Recording coming — soon someone from ' + r + ' will speak here.'; },
+         introLaut:'This is how it sounds in each region.',
          zurueck:'back', wo:function(t){ return t; } },
     el:{ rk:'Βιβλιοθήκη', woerter:'Λέξεις', laut:'Προφορά', alle:'Όλες',
          kat:{ alltag:'Καθημερινά', essen:'Φαγητό & ποτό', unterwegs:'Μετακινήσεις', leute:'Άνθρωποι', gruesse:'Χαιρετισμοί' },
          intro:'Μία γλώσσα, πολλοί τόποι. Δες πώς λέγεται το ίδιο αλλού — πάτα μια περιοχή και φωτίζεται.',
-         introLaut:'Έτσι ακούγεται σε κάθε περιοχή. Σύντομα θα το ηχογραφήσουν άνθρωποι από εκεί.',
-         folgt:function(r){ return '🎙️ Η ηχογράφηση έρχεται — σύντομα θα μιλήσει εδώ κάποιος από εκεί (' + r + ').'; },
+         introLaut:'Έτσι ακούγεται σε κάθε περιοχή.',
          zurueck:'πίσω', wo:function(t){ return t; } }
   };
   var T = TXT[UI];
@@ -159,21 +162,24 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
   function regionVon(id) { for (var i = 0; i < DB.regionen.length; i++) if (DB.regionen[i].id === id) return DB.regionen[i]; return null; }
 
-  // ── Aufnahme abspielen (nur echte Dateien) ──
-  var player = null, toastTimer = null;
-  function toast(t) {
-    var el = document.getElementById('toast'); el.textContent = t; el.classList.add('zeig');
-    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('zeig'); }, 2600);
-  }
-  function spiele(datei, regionId, knopf) {
-    try { if (player) { player.pause(); } } catch (e) {}
-    var r = regionVon(regionId), rn = r ? inUi(r.name) : regionId;
-    var a = new Audio('audio/regional/' + ZIEL + '/' + datei + '.mp3');
-    player = a;
+  // ── Vorlesen mit dem Audio-System aller Räume (audio.js / Piper), Leo 16.10. 12:27:
+  //    „deja que se pronuncie con el sistema de audio que tenemos … Por ahora no vamos a
+  //    grabar nada." Fallback: Browser-Stimme. (Aufnahmelisten bleiben für später.)
+  function sprich(text, knopf) {
     knopf.classList.add('spielt');
-    a.onended = function () { knopf.classList.remove('spielt'); };
-    a.onerror = function () { knopf.classList.remove('spielt'); toast(T.folgt(rn)); };
-    var p = a.play(); if (p && p.catch) p.catch(function () { knopf.classList.remove('spielt'); toast(T.folgt(rn)); });
+    var fertig = function () { knopf.classList.remove('spielt'); };
+    try {
+      if (window.spkSpeak) { var p = window.spkSpeak(text, ZIEL); if (p && p.then) { p.then(fertig, fertig); return; } fertig(); return; }
+    } catch (e) {}
+    try {
+      var syn = window.speechSynthesis;
+      if (syn && typeof SpeechSynthesisUtterance !== 'undefined') {
+        var u = new SpeechSynthesisUtterance(String(text));
+        u.lang = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[ZIEL] || 'en-US';
+        u.onend = fertig; u.onerror = fertig; syn.cancel(); syn.speak(u); return;
+      }
+    } catch (e) {}
+    fertig();
   }
 
   function bildHtml(en, em) {
@@ -234,14 +240,14 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     var erste = g.regionen.slice().sort(function (a, b) { return idx(a) - idx(b); })[0];
     return '<div class="zeile gruppe' + (hervor ? ' hervor' : '') + '">'
       + '<span class="z-wort" lang="' + ZIEL + '">' + esc(g.wort) + '<span class="z-reg">' + chips + '</span></span>'
-      + '<button type="button" class="ton" aria-label="🔊" data-datei="' + esc(wortId + '-' + erste) + '" data-r="' + esc(erste) + '">' + TON + '</button></div>';
+      + '<button type="button" class="ton" aria-label="🔊" data-text="' + esc(g.wort) + '">' + TON + '</button></div>';
   }
   function zeileHtml(regionId, wort, laut, datei) {
     var r = regionVon(regionId); if (!r) return '';
     return '<div class="zeile' + (zustand.region === regionId ? ' hervor' : '') + '">'
       + '<span class="rk-chip" style="background:' + esc(r.farbe) + '" title="' + esc(inUi(r.name)) + '">' + esc(r.kurz) + '</span>'
       + '<span class="z-wort" lang="' + ZIEL + '">' + esc(wort) + (laut ? '<span class="z-laut">' + esc(laut) + '</span>' : '') + '</span>'
-      + '<button type="button" class="ton" aria-label="🔊" data-datei="' + esc(datei) + '" data-r="' + esc(regionId) + '">' + TON + '</button></div>';
+      + '<button type="button" class="ton" aria-label="🔊" data-text="' + esc(wort) + '">' + TON + '</button></div>';
   }
 
   function render() {
@@ -291,7 +297,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
       b.onclick = function () { zustand.kat = b.getAttribute('data-k'); render(); sichern(); };
     });
     [].forEach.call(buehne.querySelectorAll('.ton'), function (b) {
-      b.onclick = function () { spiele(b.getAttribute('data-datei'), b.getAttribute('data-r'), b); };
+      b.onclick = function () { sprich(b.getAttribute('data-text'), b); };
     });
   }
 
