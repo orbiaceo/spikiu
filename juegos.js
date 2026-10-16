@@ -1211,11 +1211,16 @@
     liste = mezcla(liste); var n = 0;
     root.appendChild(el('p', 'jg-task', U.mTask));
     var ware = el('div', 'jg-ware'); root.appendChild(ware);
+    /* Nochmal hören (Leo, 16.10.2026): Tippen auf das gesprochene Wort spricht es erneut. */
+    ware.setAttribute('role', 'button'); ware.setAttribute('tabindex', '0'); ware.style.cursor = 'pointer';
+    var nochmal = function () { if (n < liste.length) { ton.wecken(); sprichOpt(opts, liste[n].x.z); } };
+    ware.addEventListener('click', nochmal);
+    ware.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nochmal(); } });
     var kbx = el('div', 'jg-koerbe'); root.appendChild(kbx); var fb = el('div', 'jg-fb'); root.appendChild(fb);
     var knoepfe = K.map(function (kb, i) { var b = el('button', 'jg-korb'); b.type = 'button'; b.innerHTML = '<span style="font-size:1.6rem">' + kb.icon + '</span><b></b><div class="inhalt"></div>'; b.querySelector('b').textContent = kb.titel; kbx.appendChild(b); b.addEventListener('click', function () { waehle(i, b); }); return b; });
     function zeige() {
       if (n >= liste.length) { ware.textContent = '✔'; ton.dur(); fb.className = 'jg-fb'; fb.textContent = U.mFertig; done(root, true); return; }
-      var x = liste[n].x; ware.textContent = ohneArtikel(x.z); ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); sprichOpt(opts, x.z);
+      var x = liste[n].x; ware.textContent = ohneArtikel(x.z) + ' 🔊'; ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); sprichOpt(opts, x.z);
     }
     function waehle(i, b) {
       if (n >= liste.length) return; ton.wecken(); var it = liste[n];
