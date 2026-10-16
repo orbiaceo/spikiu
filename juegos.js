@@ -1220,12 +1220,13 @@
     var knoepfe = K.map(function (kb, i) { var b = el('button', 'jg-korb'); b.type = 'button'; b.innerHTML = '<span style="font-size:1.6rem">' + kb.icon + '</span><b></b><div class="inhalt"></div>'; b.querySelector('b').textContent = kb.titel; kbx.appendChild(b); b.addEventListener('click', function () { waehle(i, b); }); return b; });
     function zeige() {
       if (n >= liste.length) { ware.textContent = '✔'; ton.dur(); fb.className = 'jg-fb'; fb.textContent = U.mFertig; done(root, true); return; }
-      var x = liste[n].x; ware.textContent = ohneArtikel(x.z) + ' 🔊'; ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); sprichOpt(opts, x.z);
+      // Mit Artikel — so, wie es gesprochen wird (Leo, 16.10.: „η ζάχαρη" hören, „ζάχαρη" lesen passte nicht).
+      var x = liste[n].x; ware.textContent = x.z + ' 🔊'; ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); sprichOpt(opts, x.z);
     }
     function waehle(i, b) {
       if (n >= liste.length) return; ton.wecken(); var it = liste[n];
-      if (it.k === i) { b.querySelector('.inhalt').appendChild(el('span', null, ohneArtikel(it.x.z))); fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(ohneArtikel(it.x.z)) + '</em> = ' + esc(it.x.tr); n++; setTimeout(zeige, 600); }
-      else { ton.moll(); b.classList.add('no'); wobble(b); setTimeout(function () { b.classList.remove('no'); }, 500); fb.className = 'jg-fb soft'; fb.innerHTML = U.mFalsch(esc(ohneArtikel(it.x.z))); }
+      if (it.k === i) { b.querySelector('.inhalt').appendChild(el('span', null, it.x.z)); fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(it.x.z) + '</em> = ' + esc(it.x.tr); n++; setTimeout(zeige, 600); }
+      else { ton.moll(); b.classList.add('no'); wobble(b); setTimeout(function () { b.classList.remove('no'); }, 500); fb.className = 'jg-fb soft'; fb.innerHTML = U.mFalsch(esc(it.x.z)); }
     }
     zeige();
     return root;
