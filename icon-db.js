@@ -67,7 +67,17 @@
     'square':'⛲', 'size':'📏', 'discount':'🏷️', 'stop':'🚏', 'detour':'🚧',
     'cleaning':'🧹', 'prescription':'📝', 'antibiotic':'💊', 'appointment':'📅',
     // Spielzimmer (11.10.): mehr sichtbare Dinge für Oído fino + Memoria (OpenMoji, self-hosted)
-    'banana':'🍌', 'grape':'🍇', 'pear':'🍐', 'cherry':'🍒', 'strawberry':'🍓', 'lemon':'🍋', 'orange':'🍊', 'peach':'🍑', 'pineapple':'🍍', 'melon':'🍈', 'watermelon':'🍉', 'carrot':'🥕', 'potato':'🥔', 'onion':'🧅', 'garlic':'🧄', 'egg':'🥚', 'rice':'🍚', 'pasta':'🍝', 'pizza':'🍕', 'hamburger':'🍔', 'ice cream':'🍨', 'cake':'🍰', 'cookie':'🍪', 'chocolate':'🍫', 'honey':'🍯', 'butter':'🧈', 'wine':'🍷', 'beer':'🍺', 'juice':'🧃', 'knife':'🔪', 'fork':'🍴', 'spoon':'🥄', 'bottle':'🍾', 'salt':'🧂', 'shrimp':'🦐', 'squid':'🦑', 'octopus':'🐙', 'avocado':'🥑', 'corn':'🌽', 'mushroom':'🍄', 'bell pepper':'🫑', 'cucumber':'🥒', 'olive':'🫒', 'sandwich':'🥪', 'croissant':'🥐', 'meat':'🍖', 'bus':'🚌', 'tram':'🚋', 'hotel':'🏨', 'bed':'🛏', 'ice':'🧊', 'sausage':'🌭', 'salmon':'🐟', 'cereal':'🥣'
+    'banana':'🍌', 'grape':'🍇', 'pear':'🍐', 'cherry':'🍒', 'strawberry':'🍓', 'lemon':'🍋', 'orange':'🍊', 'peach':'🍑', 'pineapple':'🍍', 'melon':'🍈', 'watermelon':'🍉', 'carrot':'🥕', 'potato':'🥔', 'onion':'🧅', 'garlic':'🧄', 'egg':'🥚', 'rice':'🍚', 'pasta':'🍝', 'pizza':'🍕', 'hamburger':'🍔', 'ice cream':'🍨', 'cake':'🍰', 'cookie':'🍪', 'chocolate':'🍫', 'honey':'🍯', 'butter':'🧈', 'wine':'🍷', 'beer':'🍺', 'juice':'🧃', 'knife':'🔪', 'fork':'🍴', 'spoon':'🥄', 'bottle':'🍾', 'salt':'🧂', 'shrimp':'🦐', 'squid':'🦑', 'octopus':'🐙', 'avocado':'🥑', 'corn':'🌽', 'mushroom':'🍄', 'bell pepper':'🫑', 'cucumber':'🥒', 'olive':'🫒', 'sandwich':'🥪', 'croissant':'🥐', 'meat':'🍖', 'bus':'🚌', 'tram':'🚋', 'hotel':'🏨', 'bed':'🛏', 'ice':'🧊', 'sausage':'🌭', 'salmon':'🐟', 'cereal':'🥣',
+    // Krone (b1) · Lateinamerika (Leo, 16.10.2026): nur aus den vorhandenen
+    // OpenMoji-Bildern; was nicht trägt (Curiara, Cempasúchil, Kerze), bleibt leer.
+    'espresso with a dash of milk':'☕', 'small sweet croissants':'🥐', 'cv':'📝',
+    'patagonian lamb':'🍖', 'wage':'💵', 'poncho':'🧥', 'raincoat':'🧥',
+    'rainforest':'🏞', 'cloud forest':'🏞', 'rainy season':'🌧', 'drizzle':'🌧', 'mist':'☁',
+    'cold yerba mate':'🍵', 'tereré cup':'🍵', 'herbal drink from loja':'🍵',
+    'bread of the dead':'🍞', 'flat':'🏘', 'furnished room':'🛏', 'rent':'💵', 'deposit':'💰',
+    'contract':'📝', 'ticket office':'🎫', 'bay (platform)':'🚏', 'landslide':'🚧', 'road':'🛣',
+    'luggage':'🧳', 'luggage hold':'🧳', 'window seat':'💺', 'altitude sickness':'🤢',
+    'dizziness':'🤢', 'tablet':'💊'
   };
 
   var ARTIKEL = /^(el|la|los|las|un|una|unos|unas|der|die|das|den|dem|ein|eine|einen|the|a|an|to|some)\s+/;

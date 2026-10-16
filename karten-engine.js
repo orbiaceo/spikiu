@@ -379,6 +379,7 @@
       }).join('');
       d.innerHTML = '<div><h3>' + esc(item.title) + '</h3>' + (item.subtitle ? '<div class="spk-sub" style="text-align:left;margin-top:.15rem">' + esc(item.subtitle) + '</div>' : '') + '</div>'
         + (item.goal ? '<div><div class="lbl">🎯 ' + esc(item.goalLabel || L('ziel')) + '</div><div class="spk-sub" style="text-align:left">' + esc(item.goal) + '</div></div>' : '')
+        + (item.kultur ? '<div><div class="lbl">🗺️ ' + esc(item.kulturLabel || '') + '</div><div class="spk-sub" style="text-align:left">' + esc(item.kultur) + '</div></div>' : '')
         + (vocabHtml ? '<div><div class="lbl">📖 ' + esc(item.vocabLabel || L('wortschatz')) + '</div>' + vocabHtml + '</div>' : '')
         + (dialHtml ? '<div><div class="lbl">💬 ' + esc(item.dialogueLabel || L('dialog')) + '</div>' + dialHtml + '</div>' : '')
         + (quizHtml ? '<div><div class="lbl">✓ ' + esc(item.quizLabel || L('quiz')) + '</div>' + quizHtml + '</div>' : '');

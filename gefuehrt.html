@@ -114,7 +114,7 @@ button{font:inherit;cursor:pointer}
           wortEyebrow:'Wortschatz mit Audio', flipHint:'tippen zum Umdrehen',
           drillEyebrow:'Sprechen üben', hoerEyebrow:'Hörverständnis', hoerFrageB1:'Welchen Satz hörst du?', rpEyebrow:'Rollenspiel', drillSag:'Sag es auf der Zielsprache — dann tippe zum Prüfen:',
           rolle:{ Kellner:'Kellner', Rezeption:'Rezeption', Fahrer:'Fahrer', Bekannter:'Bekannter', Nachbarin:'Nachbarin', Passantin:'Passantin', Schalterbeamter:'Schalterbeamter', 'Verkäufer':'Verkäufer', 'Ärztin':'Ärztin' },
-          lessonSubtitle:'Deine geführte Szene', goalLabel:'Ziel',
+          lessonSubtitle:'Deine geführte Szene', goalLabel:'Ziel', kulturLabel:'Gut zu wissen',
           goal:function(t){ return 'Du hast das Thema „' + t + '" geübt: Wörter, Aussprache und ein kurzes Rollenspiel.'; },
           vocabLabel:'Wortschatz', dialogueLabel:'Rollenspiel', quizLabel:'Quiz', you:'Du',
           quizQ:function(w){ return 'Was bedeutet „' + w + '"?'; },
@@ -127,7 +127,7 @@ button{font:inherit;cursor:pointer}
           wortEyebrow:'Vocabulario con audio', flipHint:'toca para girar',
           drillEyebrow:'Practicar habla', hoerEyebrow:'Comprensión auditiva', hoerFrageB1:'¿Qué frase oyes?', rpEyebrow:'Juego de rol', drillSag:'Dilo en el idioma meta — luego toca para comprobar:',
           rolle:{ Kellner:'Camarero', Rezeption:'Recepción', Fahrer:'Conductor', Bekannter:'Conocido', Nachbarin:'Vecina', Passantin:'Transeúnte', Schalterbeamter:'Empleado de taquilla', 'Verkäufer':'Vendedor', 'Ärztin':'Doctora' },
-          lessonSubtitle:'Tu escena guiada', goalLabel:'Objetivo',
+          lessonSubtitle:'Tu escena guiada', goalLabel:'Objetivo', kulturLabel:'Bueno saberlo',
           goal:function(t){ return 'Has practicado el tema «' + t + '»: vocabulario, pronunciación y un breve juego de rol.'; },
           vocabLabel:'Vocabulario', dialogueLabel:'Juego de rol', quizLabel:'Quiz', you:'Tú',
           quizQ:function(w){ return '¿Qué significa «' + w + '»?'; },
@@ -140,7 +140,7 @@ button{font:inherit;cursor:pointer}
           wortEyebrow:'Vocabulary with audio', flipHint:'tap to flip',
           drillEyebrow:'Speaking practice', hoerEyebrow:'Listening', hoerFrageB1:'Which sentence do you hear?', rpEyebrow:'Role play', drillSag:'Say it in the target language — then tap to check:',
           rolle:{ Kellner:'Waiter', Rezeption:'Reception', Fahrer:'Driver', Bekannter:'Acquaintance', Nachbarin:'Neighbour', Passantin:'Passer-by', Schalterbeamter:'Ticket clerk', 'Verkäufer':'Shop assistant', 'Ärztin':'Doctor' },
-          lessonSubtitle:'Your guided scene', goalLabel:'Goal',
+          lessonSubtitle:'Your guided scene', goalLabel:'Goal', kulturLabel:'Good to know',
           goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, pronunciation and a short roleplay.'; },
           vocabLabel:'Vocabulary', dialogueLabel:'Roleplay', quizLabel:'Quiz', you:'You',
           quizQ:function(w){ return 'What does "' + w + '" mean?'; },
@@ -153,7 +153,7 @@ button{font:inherit;cursor:pointer}
           wortEyebrow:'Λεξιλόγιο με ήχο', flipHint:'πάτησε για να γυρίσει',
           drillEyebrow:'Εξάσκηση στην ομιλία', hoerEyebrow:'Ακρόαση', hoerFrageB1:'Ποια πρόταση ακούς;', rpEyebrow:'Παιχνίδι ρόλων', drillSag:'Πες το στη γλώσσα που μαθαίνεις — μετά πάτησε για έλεγχο:',
           rolle:{ Kellner:'Σερβιτόρος', Rezeption:'Ρεσεψιόν', Fahrer:'Οδηγός', Bekannter:'Γνωστός', Nachbarin:'Γειτόνισσα', Passantin:'Περαστική', Schalterbeamter:'Υπάλληλος εκδοτηρίου', 'Verkäufer':'Πωλητής', 'Ärztin':'Γιατρός' },
-          lessonSubtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος',
+          lessonSubtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος', kulturLabel:'Καλό να ξέρεις',
           goal:function(t){ return 'Εξασκήθηκες στο θέμα «' + t + '»: λεξιλόγιο, προφορά και ένα σύντομο παιχνίδι ρόλων.'; },
           vocabLabel:'Λεξιλόγιο', dialogueLabel:'Παιχνίδι ρόλων', quizLabel:'Κουίζ', you:'Εσύ',
           quizQ:function(w){ return 'Τι σημαίνει «' + w + '»;'; },
@@ -494,6 +494,10 @@ button{font:inherit;cursor:pointer}
     return {
       title: TOPIC_LABEL, subtitle: U.lessonSubtitle,
       goalLabel: U.goalLabel, goal: U.goal(TOPIC_LABEL),
+      // Krone (b1): „Gut zu wissen" — ein Satz zum Ort (Leo, 16.10.2026).
+      kulturLabel: U.kulturLabel, kultur: (function () {
+        try { var D = window.SpikiuLernpfad; return (D && D.kulturVon && HAP && HAP.stufe && D.zielsprache === ZIEL) ? D.kulturVon(HAP.stufe, TOPIC_ID, MUT) : ''; } catch (e) { return ''; }
+      })(),
       vocabLabel: U.vocabLabel, vocab: vocab,
       dialogueLabel: U.dialogueLabel, dialogue: dialogue,
       quizLabel: U.quizLabel, quiz: quiz

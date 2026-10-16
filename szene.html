@@ -108,6 +108,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 .fakten .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
   color:var(--ink);opacity:.6;margin-bottom:.3rem}
 .fakten .t{font:500 1.05rem/1.35 'DM Sans'}
+.kultur{border:2px dashed var(--ink);border-radius:.7rem;padding:.6rem .8rem;margin:.5rem 0;text-align:left}
+.kultur .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;opacity:.7;margin-bottom:.3rem}
+.kultur .t{font:500 .95rem/1.4 'DM Sans'}
 .rollen{display:flex;gap:.6rem;margin-bottom:1rem}
 .rolle{flex:1;background:var(--accent2);border:2px solid var(--ink);
   border-radius:.6rem;padding:.6rem}
@@ -365,7 +368,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
      Leo 15.10.2026). Fehlt ein Eintrag, gilt Deutsch. */
   var WORT = {
     de: {
-      deineRolle:'Deine Rolle', spikiuIst:'Spikiu ist', duBist:'Du bist',
+      deineRolle:'Deine Rolle', gutZuWissen:'Gut zu wissen', spikiuIst:'Spikiu ist', duBist:'Du bist',
       wischhilfe:'← wischen zum Weiterblättern →', los:'Los!',
       anhoeren:'Anhören', uebersetzung:'Übersetzung',
       aufgabe:'Aufgabe', von:'von', deineAufgabe:'Deine Aufgabe',
@@ -385,7 +388,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.'
     },
     es: {
-      deineRolle:'Tu papel', spikiuIst:'Spikiu es', duBist:'Tú eres',
+      deineRolle:'Tu papel', gutZuWissen:'Bueno saberlo', spikiuIst:'Spikiu es', duBist:'Tú eres',
       wischhilfe:'← desliza para avanzar →', los:'¡Empezamos!',
       anhoeren:'Escuchar', uebersetzung:'Traducción',
       aufgabe:'Tarea', von:'de', deineAufgabe:'Tu tarea',
@@ -405,7 +408,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.'
     },
     en: {
-      deineRolle:'Your role', spikiuIst:'Spikiu is', duBist:'You are',
+      deineRolle:'Your role', gutZuWissen:'Good to know', spikiuIst:'Spikiu is', duBist:'You are',
       wischhilfe:'← swipe to move on →', los:"Let's go!",
       anhoeren:'Listen', uebersetzung:'Translation',
       aufgabe:'Task', von:'of', deineAufgabe:'Your task',
@@ -425,7 +428,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
       keineAufgaben:'This station has no tasks yet. Choose another topic.'
     },
     el: {
-      deineRolle:'Ο ρόλος σου', spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι',
+      deineRolle:'Ο ρόλος σου', gutZuWissen:'Καλό να ξέρεις', spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι',
       wischhilfe:'← σύρε για να προχωρήσεις →', los:'Πάμε!',
       anhoeren:'Άκου', uebersetzung:'Μετάφραση',
       aufgabe:'Εργασία', von:'από', deineAufgabe:'Η εργασία σου',
@@ -636,6 +639,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   function buehne() {
     var thema = LP.thema(THEMA);
     var fakten = LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : '';
+    // Krone (b1): ein Satz zum Ort — „Gut zu wissen" (Leo, 16.10.2026).
+    var kultur = LP.kulturVon ? LP.kulturVon(STUFE, THEMA, MU) : '';
     var k = karte();
     k.innerHTML =
       '<div class="bue-bild">' + esc(thema ? thema.em : '🎭') + '</div>'
@@ -648,6 +653,8 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
        Gelb wie die Karten des Lerners — es gehört ihm. */
     + (fakten ? '<div class="fakten"><div class="l">' + esc(T('deineRolle')) + '</div>'
               + '<div class="t">' + esc(fakten) + '</div></div>' : '')
+    + (kultur ? '<div class="kultur"><div class="l">🗺️ ' + esc(T('gutZuWissen')) + '</div>'
+              + '<div class="t">' + esc(kultur) + '</div></div>' : '')
     + '<div class="rollen">'
     +   '<div class="rolle"><div class="l">' + esc(T('spikiuIst')) + '</div><div class="n">'
     +     esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div></div>'
