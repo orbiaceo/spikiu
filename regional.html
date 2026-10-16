@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Regional</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+<style>
+:root{--bg:#eef7f1;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--acc:#1f93b0;--ow:2.5px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;display:flex;justify-content:center}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px}
+ body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px;align-items:center}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
+}
+.app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden}
+.kopf{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem}
+.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
+.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.tt{flex:1;text-align:center;padding-right:36px}
+.tt .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase}
+.tt h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0}
+.buehne{flex:1;overflow-y:auto;padding:1rem 1rem 2.5rem;-webkit-overflow-scrolling:touch}
+.intro{display:flex;gap:.6rem;align-items:flex-end;margin-bottom:.9rem}
+.intro .capy{width:58px;height:58px;flex:0 0 auto}
+.blase{background:#fff;border:2px solid var(--ink);border-radius:16px 16px 16px 4px;padding:.55rem .8rem;font-size:.95rem;line-height:1.4;box-shadow:3px 3px 0 var(--ink)}
+.tabs{display:flex;gap:.4rem;margin:.2rem 0 .7rem}
+.tab{flex:1;background:#fff;border:var(--ow) solid var(--ink);border-radius:999px;padding:.5rem .6rem;font:800 .9rem/1.1 'DM Sans';color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.tab.an{background:var(--ink);color:#fff}
+.chips{display:flex;gap:.35rem;overflow-x:auto;padding:.1rem .1rem .55rem;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:2px solid var(--ink);border-radius:999px;padding:.3rem .7rem;font:700 .8rem/1.1 'DM Sans';background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.chip.an{box-shadow:inset 0 0 0 2px var(--ink);font-weight:800}
+.chip.klein{font-size:.74rem;padding:.25rem .6rem;opacity:.8}
+.chip.klein.an{opacity:1;background:var(--ink);color:#fff}
+.karte{background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.9rem .95rem .8rem;margin:0 0 1rem}
+.k-kopf{display:flex;align-items:center;gap:.7rem;margin-bottom:.55rem}
+.k-bild{width:54px;height:54px;flex:0 0 auto;border-radius:14px;background:#f3f6ee;display:flex;align-items:center;justify-content:center}
+.k-bild img{width:46px;height:46px}
+.k-bild span{font-size:1.9rem}
+.k-tt{font:800 1.08rem/1.25 'DM Sans'}
+.k-kat{font:600 .66rem/1 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+.zeile{display:flex;align-items:center;gap:.55rem;padding:.38rem .2rem;border-top:1px dashed rgba(21,22,58,.18)}
+.zeile:first-of-type{border-top:0}
+.zeile.hervor{background:#fff6d6;border-radius:10px;border-top-color:transparent}
+.rk-chip{flex:0 0 auto;min-width:2.6rem;text-align:center;border:2px solid var(--ink);border-radius:8px;font:800 .72rem/1.5 'DM Mono',monospace;padding:0 .3rem}
+.z-wort{flex:1;font:600 1.12rem/1.3 'Lora',serif;color:var(--read)}
+.z-laut{display:block;font:500 .78rem/1.3 'DM Mono',monospace;color:var(--muted)}
+.ton{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:2px solid var(--ink);background:var(--acc);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
+.ton svg{width:16px;height:16px}
+.ton.spielt{animation:puls 1s ease infinite}
+@keyframes puls{50%{transform:scale(1.1)}}
+.witz{display:flex;gap:.5rem;align-items:flex-start;margin-top:.6rem;background:#eef7f1;border-radius:14px;padding:.5rem .6rem}
+.witz .capy{width:34px;height:34px;flex:0 0 auto}
+.witz div{font-size:.92rem;line-height:1.4}
+.hinweis{margin-top:.45rem;font-size:.86rem;line-height:1.4;color:var(--muted)}
+.erkl{font-size:.97rem;line-height:1.45;margin:.1rem 0 .5rem}
+.toast{position:absolute;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:.6rem .9rem;font-size:.9rem;max-width:88%;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;z-index:5}
+.toast.zeig{opacity:1}
+.leer{text-align:center;padding:2rem 1rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.ton.spielt{animation:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="kopf"><button class="back" id="zurueck" type="button" aria-label="zurück">‹</button>
+    <div class="tt"><div class="rk" id="rk"></div><h1 id="titel">Regional</h1></div></div>
+  <div class="buehne" id="buehne"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="icon-db.js"></script>
+<script src="regional-daten.js"></script>
+<script src="sitzung.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   SPIKIU · RAUM „REGIONAL" (16.10.2026)
+   Leo, 15.10.: „ESPAÑOL REGIONAL … un glosario en forma divertida con cartoons
+   y con ejemplos de pronunciación que debemos grabar. Lo mismo para otras
+   lenguas." · 16.10.: „Empieza por español regional, luego alemán, inglés y griego."
+   Zwei Reiter: Wörter (ein Begriff = eine Karte, je Region die Variante, Bild,
+   Spikius Witz) und Aussprache (je Erscheinung Beispiele je Region).
+   Regionen-Chips heben eine Region hervor; Kategorie-Chips filtern die Wörter.
+   🔊 spielt NUR echte Aufnahmen (audio/regional/<ziel>/…mp3) — keine synthetische
+   Stimme (Leo). Fehlt die Datei: „Aufnahme folgt". NULL Token.
+   Sitzungs-Persistenz über sitzung.js (Raum 'regional': Reiter, Region, Kategorie,
+   Scroll). Verbotene Variablennamen (name, status, top …) vermieden.
+   ══════════════════════════════════════════════════════════════════════ */
+(function () {
+  var profil = {};
+  try { profil = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile) || {}; } catch (e) {}
+  var ZIEL = ['es','de','en','el'].indexOf(profil.zielsprache) > -1 ? profil.zielsprache : 'es';
+  var UI = ['de','es','en','el'].indexOf(profil.muttersprache) > -1 ? profil.muttersprache : 'de';
+  document.documentElement.lang = UI;
+
+  var TXT = {
+    de:{ rk:'Bibliothek', woerter:'Wörter', laut:'Aussprache', alle:'Alle',
+         kat:{ alltag:'Alltag', essen:'Essen & Trinken', unterwegs:'Unterwegs', leute:'Leute', gruesse:'Grüße' },
+         intro:'Eine Sprache, viele Gegenden. Hier siehst du, wie man dasselbe anderswo sagt — tipp eine Region an, dann leuchtet sie auf.',
+         introLaut:'So klingt es in den Regionen. Die Aufnahmen machen bald echte Menschen von dort.',
+         folgt:function(r){ return '🎙️ Aufnahme folgt — bald spricht hier jemand aus ' + r + '.'; },
+         zurueck:'zurück', wo:function(t){ return t; } },
+    es:{ rk:'Biblioteca', woerter:'Palabras', laut:'Pronunciación', alle:'Todas',
+         kat:{ alltag:'Día a día', essen:'Comer y beber', unterwegs:'De viaje', leute:'Gente', gruesse:'Saludos' },
+         intro:'Una lengua, muchos lugares. Aquí ves cómo se dice lo mismo en otras partes: toca una región y se ilumina.',
+         introLaut:'Así suena en cada región. Pronto lo grabarán personas de allí.',
+         folgt:function(r){ return '🎙️ Grabación pendiente: pronto hablará aquí alguien de ' + r + '.'; },
+         zurueck:'atrás', wo:function(t){ return t; } },
+    en:{ rk:'Library', woerter:'Words', laut:'Pronunciation', alle:'All',
+         kat:{ alltag:'Everyday', essen:'Food & drink', unterwegs:'Getting around', leute:'People', gruesse:'Greetings' },
+         intro:'One language, many places. See how the same thing is said elsewhere — tap a region and it lights up.',
+         introLaut:'This is how it sounds in each region. Real people from there will record it soon.',
+         folgt:function(r){ return '🎙️ Recording coming — soon someone from ' + r + ' will speak here.'; },
+         zurueck:'back', wo:function(t){ return t; } },
+    el:{ rk:'Βιβλιοθήκη', woerter:'Λέξεις', laut:'Προφορά', alle:'Όλες',
+         kat:{ alltag:'Καθημερινά', essen:'Φαγητό & ποτό', unterwegs:'Μετακινήσεις', leute:'Άνθρωποι', gruesse:'Χαιρετισμοί' },
+         intro:'Μία γλώσσα, πολλοί τόποι. Δες πώς λέγεται το ίδιο αλλού — πάτα μια περιοχή και φωτίζεται.',
+         introLaut:'Έτσι ακούγεται σε κάθε περιοχή. Σύντομα θα το ηχογραφήσουν άνθρωποι από εκεί.',
+         folgt:function(r){ return '🎙️ Η ηχογράφηση έρχεται — σύντομα θα μιλήσει εδώ κάποιος από εκεί (' + r + ').'; },
+         zurueck:'πίσω', wo:function(t){ return t; } }
+  };
+  var T = TXT[UI];
+  var DB = (window.spikiuRegional || {})[ZIEL];
+  var CAPY = '<svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">'
+    + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
+    + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
+    + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
+    + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
+    + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
+    + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
+    + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
+    + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  var TON = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="#fff"/>'
+    + '<path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+  function inUi(o) { if (!o) return ''; if (typeof o === 'string') return o; return o[UI] || o.en || o.de || o.es || ''; }
+
+  var buehne = document.getElementById('buehne');
+  document.getElementById('rk').textContent = T.rk;
+  document.getElementById('zurueck').setAttribute('aria-label', T.zurueck);
+  document.getElementById('zurueck').onclick = function () { window.location.href = 'haus.html'; };
+
+  // ── Zustand + Sitzungs-Persistenz ──
+  var zustand = { reiter: 'woerter', region: '', kat: '', y: 0 };
+  var sitzTimer = null;
+  function sichern() {
+    clearTimeout(sitzTimer);
+    sitzTimer = setTimeout(function () {
+      try { if (window.spikiuSitzung) window.spikiuSitzung.speichere('regional', { reiter: zustand.reiter, region: zustand.region, kat: zustand.kat, y: Math.round(buehne.scrollTop), ziel: ZIEL }); } catch (e) {}
+    }, 350);
+  }
+  buehne.addEventListener('scroll', sichern, { passive: true });
+
+  function regionVon(id) { for (var i = 0; i < DB.regionen.length; i++) if (DB.regionen[i].id === id) return DB.regionen[i]; return null; }
+
+  // ── Aufnahme abspielen (nur echte Dateien) ──
+  var player = null, toastTimer = null;
+  function toast(t) {
+    var el = document.getElementById('toast'); el.textContent = t; el.classList.add('zeig');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('zeig'); }, 2600);
+  }
+  function spiele(datei, regionId, knopf) {
+    try { if (player) { player.pause(); } } catch (e) {}
+    var r = regionVon(regionId), rn = r ? inUi(r.name) : regionId;
+    var a = new Audio('audio/regional/' + ZIEL + '/' + datei + '.mp3');
+    player = a;
+    knopf.classList.add('spielt');
+    a.onended = function () { knopf.classList.remove('spielt'); };
+    a.onerror = function () { knopf.classList.remove('spielt'); toast(T.folgt(rn)); };
+    var p = a.play(); if (p && p.catch) p.catch(function () { knopf.classList.remove('spielt'); toast(T.folgt(rn)); });
+  }
+
+  function bildHtml(en, em) {
+    var I = window.spikiuIcon, e = (I && en) ? I.konzept(en) : '';
+    if (e) return '<img src="' + esc(I.datei(e)) + '" alt="" loading="lazy">';
+    return em ? '<span aria-hidden="true">' + esc(em) + '</span>' : '';
+  }
+
+  function chipsRegionen() {
+    var h = '<div class="chips" id="chipsR"><button type="button" class="chip' + (zustand.region ? '' : ' an') + '" data-r="">' + esc(T.alle) + '</button>';
+    DB.regionen.forEach(function (r) {
+      var an = zustand.region === r.id;
+      h += '<button type="button" class="chip' + (an ? ' an' : '') + '" data-r="' + esc(r.id) + '" style="background:' + esc(r.farbe) + '">'
+        + esc(r.em || '') + ' ' + esc(inUi(r.name)) + '</button>';
+    });
+    return h + '</div>';
+  }
+  function chipsKat() {
+    var da = {}; DB.woerter.forEach(function (w) { da[w.kat] = 1; });
+    var h = '<div class="chips"><button type="button" class="chip klein' + (zustand.kat ? '' : ' an') + '" data-k="">' + esc(T.alle) + '</button>';
+    ['alltag','essen','unterwegs','leute','gruesse'].forEach(function (k) {
+      if (!da[k]) return;
+      h += '<button type="button" class="chip klein' + (zustand.kat === k ? ' an' : '') + '" data-k="' + k + '">' + esc(T.kat[k]) + '</button>';
+    });
+    return h + '</div>';
+  }
+  function reihenfolge() {
+    var ids = DB.regionen.map(function (r) { return r.id; });
+    if (zustand.region) ids = [zustand.region].concat(ids.filter(function (x) { return x !== zustand.region; }));
+    return ids;
+  }
+  function zeileHtml(regionId, wort, laut, datei) {
+    var r = regionVon(regionId); if (!r) return '';
+    return '<div class="zeile' + (zustand.region === regionId ? ' hervor' : '') + '">'
+      + '<span class="rk-chip" style="background:' + esc(r.farbe) + '" title="' + esc(inUi(r.name)) + '">' + esc(r.kurz) + '</span>'
+      + '<span class="z-wort" lang="' + ZIEL + '">' + esc(wort) + (laut ? '<span class="z-laut">' + esc(laut) + '</span>' : '') + '</span>'
+      + '<button type="button" class="ton" aria-label="🔊" data-datei="' + esc(datei) + '" data-r="' + esc(regionId) + '">' + TON + '</button></div>';
+  }
+
+  function render() {
+    if (!DB) { buehne.innerHTML = '<div class="leer">—</div>'; return; }
+    document.getElementById('titel').textContent = inUi(DB.titel);
+    document.title = 'Spikiu · ' + inUi(DB.titel);
+    var h = '<div class="intro">' + CAPY + '<div class="blase">' + esc(zustand.reiter === 'laut' ? T.introLaut : T.intro) + '</div></div>';
+    h += '<div class="tabs"><button type="button" class="tab' + (zustand.reiter === 'woerter' ? ' an' : '') + '" data-t="woerter">' + esc(T.woerter) + '</button>'
+       + '<button type="button" class="tab' + (zustand.reiter === 'laut' ? ' an' : '') + '" data-t="laut">' + esc(T.laut) + '</button></div>';
+    h += chipsRegionen();
+    if (zustand.reiter === 'woerter') {
+      h += chipsKat();
+      // Spannendes zuerst: Begriffe mit den meisten verschiedenen Formen oben (sonst
+      // begann Griechisch mit sechsmal demselben „Γεια σου!").
+      var vielfalt = function (w) { var u = {}; Object.keys(w.varianten).forEach(function (k) { u[String(w.varianten[k]).toLowerCase()] = 1; }); return Object.keys(u).length; };
+      DB.woerter.map(function (w, i) { return { w: w, i: i, v: vielfalt(w) }; })
+        .sort(function (x, y) { return (y.v - x.v) || (x.i - y.i); })
+        .map(function (x) { return x.w; })
+        .forEach(function (w) {
+        if (zustand.kat && w.kat !== zustand.kat) return;
+        var b = bildHtml(w.en, w.em);
+        h += '<div class="karte"><div class="k-kopf">' + (b ? '<div class="k-bild">' + b + '</div>' : '')
+          + '<div><div class="k-tt">' + esc(inUi(w.konzept)) + '</div><div class="k-kat">' + esc(T.kat[w.kat] || '') + '</div></div></div>';
+        reihenfolge().forEach(function (rid) { if (w.varianten[rid]) h += zeileHtml(rid, w.varianten[rid], '', w.id + '-' + rid); });
+        if (w.witz) h += '<div class="witz">' + CAPY + '<div>' + esc(inUi(w.witz)) + '</div></div>';
+        if (w.hinweis) h += '<div class="hinweis">💡 ' + esc(inUi(w.hinweis)) + '</div>';
+        h += '</div>';
+      });
+    } else {
+      DB.aussprache.forEach(function (a) {
+        var bsp = a.beispiele.slice();
+        if (zustand.region) bsp.sort(function (x, y) { return (x.region === zustand.region ? -1 : 0) - (y.region === zustand.region ? -1 : 0); });
+        h += '<div class="karte"><div class="k-tt" style="margin-bottom:.3rem">' + esc(inUi(a.titel)) + '</div>'
+          + '<div class="erkl">' + esc(inUi(a.erklaerung)) + '</div>';
+        bsp.forEach(function (x) { h += zeileHtml(x.region, x.wort, x.laut, 'laut-' + a.id + '-' + x.region); });
+        h += '</div>';
+      });
+    }
+    buehne.innerHTML = h;
+    [].forEach.call(buehne.querySelectorAll('[data-t]'), function (b) { b.onclick = function () { zustand.reiter = b.getAttribute('data-t'); buehne.scrollTop = 0; render(); sichern(); }; });
+    [].forEach.call(buehne.querySelectorAll('.chip[data-r]'), function (b) {
+      b.onclick = function () { var y = buehne.scrollTop; zustand.region = b.getAttribute('data-r'); render(); buehne.scrollTop = y; sichern(); };
+    });
+    [].forEach.call(buehne.querySelectorAll('.chip[data-k]'), function (b) {
+      b.onclick = function () { zustand.kat = b.getAttribute('data-k'); render(); sichern(); };
+    });
+    [].forEach.call(buehne.querySelectorAll('.ton'), function (b) {
+      b.onclick = function () { spiele(b.getAttribute('data-datei'), b.getAttribute('data-r'), b); };
+    });
+  }
+
+  // ── Eintritt: angefangene Sitzung anbieten (Wiederkommen-Karte) ──
+  var sv = null;
+  try { sv = window.spikiuSitzung ? window.spikiuSitzung.lade('regional') : null; } catch (e) { sv = null; }
+  if (sv && sv.ziel === ZIEL && (sv.y || 0) > 150 && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen) {
+    render();
+    window.spikiuSitzung.frageWiederkommen({
+      raum: 'regional', ts: sv.ts, wo: inUi(DB && DB.titel) + ' · ' + (sv.reiter === 'laut' ? T.laut : T.woerter),
+      beimWeiter: function () { zustand.reiter = sv.reiter || 'woerter'; zustand.region = sv.region || ''; zustand.kat = sv.kat || ''; render(); buehne.scrollTop = sv.y || 0; },
+      beimNeu: function () { try { window.spikiuSitzung.raeume('regional'); } catch (e) {} }
+    });
+  } else {
+    render();
+  }
+})();
+</script>
+</body>
+</html>
