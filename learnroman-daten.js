@@ -95,6 +95,12 @@
   //    Brücken {de,en,el} direkt im Buch (keine eigene el-Datei nötig).
   var LOTTE = (w.SPIKIU_LR_LOTTE && w.SPIKIU_LR_LOTTE.K) || [];
 
+  // ══ BÜCHER 6–8 · DIE KRONE (B1) für Deutsch, Englisch, Griechisch (16.10.2026) ══
+  //    learnroman-ines.js „Klang", learnroman-giulia.js „Bridges", learnroman-elli.js „Φως".
+  var INES   = (w.SPIKIU_LR_INES   && w.SPIKIU_LR_INES.K)   || [];
+  var GIULIA = (w.SPIKIU_LR_GIULIA && w.SPIKIU_LR_GIULIA.K) || [];
+  var ELLI   = (w.SPIKIU_LR_ELLI   && w.SPIKIU_LR_ELLI.K)   || [];
+
   // ── Die Bücher. Ein neues Sprachpaar = ein weiterer Eintrag.
   //    muttersprachen: für welche Lerner das Buch geschrieben ist. ──
   var BUECHER = [
@@ -137,7 +143,31 @@
                     el: 'Δέκα χώρες, δέκα νερά, ένα φωτογραφικό λεύκωμα. Λατινική Αμερική, όλο στα ισπανικά — κάθε σταθμός είναι μια σκηνή της Φυλλωσιάς.' },
       einheit: 'station',
       teile: { anwendung: 'La vuelta' },
-      kapitel: LOTTE }
+      kapitel: LOTTE },
+    { buch: 'klang', zielsprache: 'de', muttersprachen: ['es', 'en', 'el'],
+      titel: 'Klang',
+      untertitel: { es: 'Diez ciudades, diez sonidos, un álbum. Alemania, Suiza y Austria, todo en alemán: cada estación es una escena de la Copa.',
+                    en: 'Ten cities, ten sounds, one album. Germany, Switzerland and Austria, all in German — every stop is a scene from the Crown.',
+                    el: 'Δέκα πόλεις, δέκα ήχοι, ένα άλμπουμ. Γερμανία, Ελβετία και Αυστρία, όλο στα γερμανικά — κάθε σταθμός είναι μια σκηνή της Φυλλωσιάς.' },
+      einheit: 'station',
+      teile: { anwendung: 'Klang' },
+      kapitel: INES },
+    { buch: 'bridges', zielsprache: 'en', muttersprachen: ['de', 'es', 'el'],
+      titel: 'Bridges',
+      untertitel: { de: 'Zehn Brücken, ein Skizzenbuch, ein Jahr in Amerika — ganz auf Englisch. Jede Station ist eine Szene der Krone.',
+                    es: 'Diez puentes, un cuaderno de dibujo, un año en América, todo en inglés: cada estación es una escena de la Copa.',
+                    el: 'Δέκα γέφυρες, ένα σημειωματάριο, ένας χρόνος στην Αμερική — όλο στα αγγλικά. Κάθε σταθμός είναι μια σκηνή της Φυλλωσιάς.' },
+      einheit: 'station',
+      teile: { anwendung: 'Bridges' },
+      kapitel: GIULIA },
+    { buch: 'fos', zielsprache: 'el', muttersprachen: ['de', 'es', 'en'],
+      titel: 'Φως',
+      untertitel: { de: 'Zehn Orte, zehn Lichter, ein Roman. Griechenland und Zypern, ganz auf Griechisch — jede Station ist eine Szene der Krone.',
+                    es: 'Diez lugares, diez luces, una novela. Grecia y Chipre, todo en griego: cada estación es una escena de la Copa.',
+                    en: 'Ten places, ten lights, one novel. Greece and Cyprus, all in Greek — every stop is a scene from the Crown.' },
+      einheit: 'station',
+      teile: { anwendung: 'Φως' },
+      kapitel: ELLI }
   ];
 
   // Ein Buch in EINER Muttersprache (zwischengespeichert, damit der Raum

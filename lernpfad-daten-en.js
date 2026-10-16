@@ -34,7 +34,8 @@
     { id:'wetter',          em:'🌤️', na:{ de:'Über das Wetter',     es:'Sobre el tiempo', el:'Για τον καιρό' } }
   ];
 
-  var STUFEN = ['a1', 'a2'];
+  /* b1 = KRONE (16.10.2026), siehe unten „B1 · KRONE“. */
+  var STUFEN = ['a1', 'a2', 'b1'];
 
   var KATEGORIEN = [
     { id:'essen',     em:'🍽️', na:{ de:'Essen & Trinken', es:'Comer y beber', el:'Φαγητό & ποτό' },
@@ -1366,6 +1367,727 @@
 
   };
 
+  /* ══════════════════════════════════════════════════════════════════
+     B1 · KRONE · «BRIDGES» (Leo, 16.10.2026: „Aprobado … Dale con todos.“)
+     Giulia Ferri, Brückeningenieurin aus Turin, zeichnet für ihr Buch «Bridges» zehn Brücken: hotel New York · familie Pittsburgh (Thanksgiving) · cafe Chicago · restaurant New Orleans · wetter Austin · einkaufen Santa Fe · wegbeschreibung Grand Canyon · taxi San Francisco · arzt Seattle · bahnhof Seattle→Vancouver. Amerikanisch wie der ganze Pfad; britische Wörter nur, wo Giulia korrigiert wird.
+     Dieselben zehn Themen, neue Handlung, neuer Ort. Keine Politik.
+     Neue Felder wie im spanischen B1: rollen (Rollenkarte der Station) und
+     kultur (ein Satz zum Ort, „Gut zu wissen“). Roman dazu: learnroman-giulia.js „Bridges“.
+     ══════════════════════════════════════════════════════════════════ */
+var K_LP_A = {
+
+  schritt: {
+    hotel:      { de:'New York: ein Studio für einen Monat', es:'Nueva York: un estudio para un mes', el:'Νέα Υόρκη: ένα στούντιο για έναν μήνα' },
+    familie:    { de:'Pittsburgh: an Thanksgiving von früher erzählen', es:'Pittsburgh: contar el pasado en Acción de Gracias', el:'Πίτσμπουργκ: ιστορίες από τα παλιά την Ημέρα των Ευχαριστιών' },
+    cafe:       { de:'Chicago: Meinungen austauschen', es:'Chicago: dar tu opinión', el:'Σικάγο: λες τη γνώμη σου' },
+    restaurant: { de:'New Orleans: höflich reklamieren, Neues probieren', es:'Nueva Orleans: reclamar con educación, probar algo nuevo', el:'Νέα Ορλεάνη: ευγενικό παράπονο, κάτι καινούργιο' },
+    wetter:     { de:'Austin: Tornado-Warnung, Pläne ändern', es:'Austin: alerta de tornado, cambiar de planes', el:'Ώστιν: προειδοποίηση για ανεμοστρόβιλο, αλλαγή σχεδίων' }
+  },
+
+  aufgaben: {
+    'b1.hotel': [
+      { de:'Bejahe, sag, dass du es gern sehen möchtest und etwas nah an der U-Bahn suchst', es:'Di que sí, que te gustaría verlo y que buscas algo que esté cerca del metro', en:'Say yes, that you would like to see it and are looking for something close to the subway', el:'Πες ναι, ότι θα ήθελες να το δεις και ότι ψάχνεις κάτι κοντά στο μετρό' },
+      { de:'Frag höflich, ob die Nebenkosten in der Miete enthalten sind', es:'Pregunta con educación si los gastos están incluidos en el alquiler', en:'Ask politely whether utilities are included in the rent', el:'Ρώτα ευγενικά αν οι λογαριασμοί περιλαμβάνονται στο ενοίκιο' },
+      { de:'Sag, dass das fair klingt, und frag, ob du am Samstag einziehen könntest', es:'Di que te parece justo y pregunta si podrías entrar a vivir el sábado', en:'Say that sounds fair and ask whether you could move in on Saturday', el:'Πες ότι σου φαίνεται λογικό και ρώτα αν θα μπορούσες να μετακομίσεις το Σάββατο' }
+    ],
+    'b1.familie': [
+      { de:'Sag: deine Nonna Pina in Turin — und dass du früher jeden Sommer bei ihr verbracht hast', es:'Di que tu Nonna Pina, en Turín, y que antes pasabas todos los veranos en su casa', en:'Say: your Nonna Pina in Turin, and that you used to spend every summer at her house', el:'Πες: η Νόνα Πίνα σου στο Τορίνο, και ότι παλιά περνούσες κάθε καλοκαίρι στο σπίτι της' },
+      { de:'Erzähle, dass du ihr gerade in der Küche geholfen hast, als du deine erste Brücke gezeichnet hast', es:'Cuenta que estabas ayudándola en la cocina cuando dibujaste tu primer puente', en:'Tell that you were helping her in the kitchen when you drew your first bridge', el:'Διηγήσου ότι τη βοηθούσες στην κουζίνα όταν ζωγράφισες την πρώτη σου γέφυρα' },
+      { de:'Sag: nicht mehr, aber früher hat sie sonntags Pasta für zwanzig Leute gemacht', es:'Di que ya no, pero que antes hacía pasta para veinte personas los domingos', en:'Say not anymore, but she used to make pasta for twenty people on Sundays', el:'Πες όχι πια, αλλά ότι παλιά έφτιαχνε μακαρόνια για είκοσι άτομα τις Κυριακές' }
+    ],
+    'b1.cafe': [
+      { de:'Sag, dass du die Stadt schön findest und die Brücken über den Fluss deiner Meinung nach toll sind', es:'Di que te parece preciosa y que, en tu opinión, los puentes sobre el río son increíbles', en:'Say you think it is beautiful and that, in your opinion, the bridges over the river are amazing', el:'Πες ότι τη βρίσκεις όμορφη και ότι, κατά τη γνώμη σου, οι γέφυρες πάνω από το ποτάμι είναι καταπληκτικές' },
+      { de:'Stimme zu und sag, dass dieser Wind deiner Meinung nach kälter ist als der Winter in Turin', es:'Dale la razón y di que crees que este viento es más frío que el invierno de Turín', en:'Agree and say you believe this wind is colder than the winter in Turin', el:'Συμφώνησε και πες ότι πιστεύεις πως αυτός ο αέρας είναι πιο κρύος από τον χειμώνα στο Τορίνο' },
+      { de:'Widersprich höflich: Deep-Dish ist lecker, aber eher ein Kuchen', es:'Lleva la contraria con educación: la deep-dish está riquísima, pero es más bien una tarta', en:'Politely disagree: deep-dish is delicious, but it is more like a pie', el:'Διαφώνησε ευγενικά: η deep-dish είναι νοστιμότατη, αλλά μοιάζει περισσότερο με πίτα' }
+    ],
+    'b1.restaurant': [
+      { de:'Sag höflich, dass da ein Fehler passiert ist: Du hast das Gumbo bestellt', es:'Di con educación que ha habido un error: pediste el gumbo', en:'Politely say there has been a mistake: you ordered the gumbo', el:'Πες ευγενικά ότι έγινε λάθος: παρήγγειλες το γκάμπο' },
+      { de:'Sag: kein Problem — und dass du noch nie Beignets probiert hast; frag, was das genau ist', es:'Di que no pasa nada, que nunca has probado los beignets, y pregunta qué son exactamente', en:'Say no problem, and that you have never tried beignets; ask what they are exactly', el:'Πες κανένα πρόβλημα, ότι δεν έχεις δοκιμάσει ποτέ beignets, και ρώτα τι ακριβώς είναι' },
+      { de:'Bestelle zwei und frag, ob ihr getrennt zahlen könnt', es:'Pide dos y pregunta si podéis pagar por separado', en:'Order two and ask whether you can split the check', el:'Παράγγειλε δύο και ρώτα αν μπορείτε να πληρώσετε χωριστά' }
+    ],
+    'b1.wetter': [
+      { de:'Sag, dass du heute Abend die Fledermäuse anschauen willst, und frag, was eine Tornado-Vorwarnung genau bedeutet', es:'Di que esta noche vas a ver los murciélagos y pregunta qué significa exactamente un aviso de tornado', en:'Say you are going to watch the bats tonight and ask what a tornado watch means exactly', el:'Πες ότι απόψε θα δεις τις νυχτερίδες και ρώτα τι ακριβώς σημαίνει «tornado watch»' },
+      { de:'Sag: wenn daraus eine Warnung wird, gehst du sofort zurück ins Hotel', es:'Di que, si se convierte en alerta, volverás al hotel enseguida', en:'Say that if it turns into a warning, you will go back to your hotel right away', el:'Πες ότι, αν γίνει προειδοποίηση, θα γυρίσεις αμέσως στο ξενοδοχείο' },
+      { de:'Sag, dass du dann morgen Abend wiederkommst — du wirst sie nicht verpassen', es:'Di que entonces volverás mañana por la noche, que no te los vas a perder', en:'Say you will come back tomorrow night, then; you are not going to miss them', el:'Πες ότι τότε θα ξανάρθεις αύριο βράδυ — δεν πρόκειται να τις χάσεις' }
+    ]
+  },
+
+  stationen: {
+
+    /* ── B1 · New York (Brooklyn) — ein Studio für einen Monat ─────── */
+    'b1.hotel': {
+      deineRolle: { de:'Du bist in Brooklyn und suchst für einen Monat ein möbliertes Studio, nah an der U-Bahn. Einziehen möchtest du am Samstag.', es:'Estás en Brooklyn y buscas un estudio amueblado para un mes, cerca del metro. Quieres entrar a vivir el sábado.', en:'You are in Brooklyn looking for a furnished studio for one month, close to the subway. You would like to move in on Saturday.', el:'Είσαι στο Μπρούκλιν και ψάχνεις ένα επιπλωμένο στούντιο για έναν μήνα, κοντά στο μετρό. Θέλεις να μετακομίσεις το Σάββατο.' },
+      abrundung: { z:'Saturday works. I\'ll have the lease and the keys ready. Welcome to Brooklyn!', na:{ de:'Samstag passt. Ich lege den Mietvertrag und die Schlüssel bereit. Willkommen in Brooklyn!', es:'El sábado va bien. Le tendré preparados el contrato y las llaves. ¡Bienvenida a Brooklyn!', el:'Το Σάββατο είναι μια χαρά. Θα έχω έτοιμο το συμβόλαιο και τα κλειδιά. Καλώς ήρθατε στο Μπρούκλιν!' } },
+      rollen: {
+        spikiu: { de:'der Hausmeister und Vermieter, Mr. Delgado', es:'el encargado y casero, el señor Delgado', en:'the super and landlord, Mr. Delgado', el:'ο επιστάτης και ιδιοκτήτης, ο κύριος Ντελγκάδο' },
+        lerner: { de:'die Reisende auf Wohnungssuche', es:'la viajera que busca piso', en:'the traveler looking for an apartment', el:'η ταξιδιώτισσα που ψάχνει διαμέρισμα' },
+        ort:    { de:'in einem alten Backsteinhaus in Brooklyn', es:'en un viejo edificio de ladrillo en Brooklyn', en:'in an old brick walk-up in Brooklyn', el:'σε μια παλιά πολυκατοικία από τούβλα στο Μπρούκλιν' }
+      },
+      wortschatz: [
+        { z:'an apartment',                na:{ de:'die Wohnung', es:'el piso', el:'το διαμέρισμα' } },
+        { z:'a furnished studio',          na:{ de:'das möblierte Einzimmerapartment', es:'el estudio amueblado', el:'το επιπλωμένο στούντιο' } },
+        { z:'the rent',                    na:{ de:'die Miete', es:'el alquiler', el:'το ενοίκιο' } },
+        { z:'the security deposit',        na:{ de:'die Kaution', es:'la fianza', el:'η εγγύηση' } },
+        { z:'the lease',                   na:{ de:'der Mietvertrag', es:'el contrato de alquiler', el:'το συμβόλαιο ενοικίασης' } },
+        { z:'utilities',                   na:{ de:'die Nebenkosten (Strom, Wasser, Heizung)', es:'los gastos (luz, agua, calefacción)', el:'οι λογαριασμοί (ρεύμα, νερό, θέρμανση)' } },
+        { z:'the super',                   na:{ de:'der Hausmeister', es:'el encargado del edificio', el:'ο επιστάτης της πολυκατοικίας' } },
+        { z:'the elevator',                na:{ de:'der Aufzug', es:'el ascensor', el:'το ασανσέρ' } },
+        { z:'to move in',                  na:{ de:'einziehen', es:'entrar a vivir', el:'μετακομίζω (σε ένα σπίτι)' } },
+        { z:'I\'d like to …',              na:{ de:'ich würde gern …', es:'me gustaría …', el:'θα ήθελα να …' } },
+        { z:'I\'m looking for something that\'s …', na:{ de:'ich suche etwas, das … ist', es:'busco algo que esté …', el:'ψάχνω κάτι που να είναι …' } },
+        { z:'Could you tell me if …?',     na:{ de:'Könnten Sie mir sagen, ob …?', es:'¿Podría decirme si …?', el:'Θα μπορούσατε να μου πείτε αν …;' } }
+      ],
+      dialog: {
+        rolle: { de:'Der Hausmeister, Mr. Delgado', es:'El encargado del edificio, el señor Delgado', el:'Ο επιστάτης, ο κύριος Ντελγκάδο' },
+        zeilen: [
+          { wer:'spikiu', z:'Hi, come on in. You must be the one who called about the studio?', na:{ de:'Hallo, kommen Sie rein. Sie sind sicher diejenige, die wegen des Studios angerufen hat?', es:'Hola, pase. ¿Usted es la que llamó por el estudio?', el:'Γεια σας, περάστε. Εσείς πρέπει να είστε αυτή που τηλεφώνησε για το στούντιο;' } },
+          { wer:'lerner', z:'Yes, that\'s me. I\'d like to see it. I\'m looking for something close to the subway.', na:{ de:'Ja, das bin ich. Ich würde es gern sehen. Ich suche etwas nah an der U-Bahn.', es:'Sí, soy yo. Me gustaría verlo. Busco algo que esté cerca del metro.', el:'Ναι, εγώ είμαι. Θα ήθελα να το δω. Ψάχνω κάτι κοντά στο μετρό.' } },
+          { wer:'spikiu', z:'You\'re in luck. The F train is two blocks away. It\'s twenty-eight hundred a month.', na:{ de:'Da haben Sie Glück. Die Linie F ist zwei Straßen weiter. Es kostet achtundzwanzighundert im Monat.', es:'Está de suerte. La línea F está a dos manzanas. Son dos mil ochocientos al mes.', el:'Είστε τυχερή. Η γραμμή F είναι δύο τετράγωνα πιο κάτω. Κάνει δύο χιλιάδες οκτακόσια τον μήνα.' } },
+          { wer:'lerner', z:'Could you tell me if utilities are included in the rent?', na:{ de:'Könnten Sie mir sagen, ob die Nebenkosten in der Miete enthalten sind?', es:'¿Podría decirme si los gastos están incluidos en el alquiler?', el:'Θα μπορούσατε να μου πείτε αν οι λογαριασμοί περιλαμβάνονται στο ενοίκιο;' } },
+          { wer:'spikiu', z:'Heat and hot water, yes. Electricity is on you. And there\'s a one-month security deposit.', na:{ de:'Heizung und Warmwasser ja. Strom zahlen Sie selbst. Und es gibt eine Kaution von einer Monatsmiete.', es:'La calefacción y el agua caliente, sí. La luz corre de su cuenta. Y hay un mes de fianza.', el:'Θέρμανση και ζεστό νερό, ναι. Το ρεύμα το πληρώνετε εσείς. Και υπάρχει εγγύηση ενός μηνός.' } },
+          { wer:'lerner', z:'That sounds fair. Would it be possible to move in on Saturday?', na:{ de:'Das klingt fair. Wäre es möglich, am Samstag einzuziehen?', es:'Me parece justo. ¿Sería posible entrar a vivir el sábado?', el:'Μου φαίνεται λογικό. Θα ήταν δυνατόν να μετακομίσω το Σάββατο;' } }
+        ]
+      },
+      lesetext: {
+        z:'Today I found a small studio in Brooklyn, ten minutes from the bridge. When I asked Mr. Delgado where the lift was, he laughed: “Here we say elevator — and we don\'t have one!” Tomorrow morning I\'m going to walk across the Brooklyn Bridge and draw its cables.',
+        na:{ de:'Heute habe ich ein kleines Studio in Brooklyn gefunden, zehn Minuten von der Brücke. Als ich Mr. Delgado fragte, wo der „lift" sei, lachte er: „Hier sagen wir elevator — und wir haben gar keinen!" Morgen früh gehe ich zu Fuß über die Brooklyn Bridge und zeichne ihre Kabel.', es:'Hoy he encontrado un pequeño estudio en Brooklyn, a diez minutos del puente. Cuando le pregunté al señor Delgado dónde estaba el «lift», se rio: «Aquí decimos elevator… ¡y no tenemos!». Mañana por la mañana voy a cruzar a pie el puente de Brooklyn y a dibujar sus cables.', el:'Σήμερα βρήκα ένα μικρό στούντιο στο Μπρούκλιν, δέκα λεπτά από τη γέφυρα. Όταν ρώτησα τον κύριο Ντελγκάδο πού είναι το «lift», γέλασε: «Εδώ λέμε elevator — και δεν έχουμε καν!» Αύριο το πρωί θα περάσω με τα πόδια τη Γέφυρα του Μπρούκλιν και θα ζωγραφίσω τα καλώδιά της.' },
+        frage:{ de:'Warum lachte Mr. Delgado?', es:'¿Por qué se rio el señor Delgado?', el:'Γιατί γέλασε ο κύριος Ντελγκάδο;' },
+        optionen:[
+          { na:{ de:'Sie sagte „lift", und das Haus hat gar keinen Aufzug', es:'Ella dijo «lift», y el edificio ni siquiera tiene ascensor', el:'Είπε «lift», και το κτίριο δεν έχει καν ασανσέρ' }, richtig:true },
+          { na:{ de:'Sie wollte zu viel Miete zahlen', es:'Ella quería pagar demasiado alquiler', el:'Ήθελε να πληρώσει πολύ ενοίκιο' }, richtig:false },
+          { na:{ de:'Sie kannte die Brooklyn Bridge nicht', es:'Ella no conocía el puente de Brooklyn', el:'Δεν ήξερε τη Γέφυρα του Μπρούκλιν' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib einem Vermieter: Du suchst eine ruhige Wohnung und möchtest wissen, ob die Nebenkosten enthalten sind. Zwei Sätze.', es:'Escribe a un casero: buscas un piso tranquilo y quieres saber si los gastos están incluidos. Dos frases.', el:'Γράψε σε έναν ιδιοκτήτη: ψάχνεις ένα ήσυχο διαμέρισμα και θέλεις να μάθεις αν περιλαμβάνονται οι λογαριασμοί. Δύο προτάσεις.' },
+        muster:'Hi, I\'m looking for an apartment that\'s quiet. Could you tell me if utilities are included?'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'„I\'d like to" ist die höfliche Bitte — wie „ich würde gern". Noch höflicher wird eine Frage, wenn man sie einpackt: statt „Are utilities included?" sagt man „Could you tell me if utilities are included?" — und danach steht die normale Satzstellung, ohne Umstellung. Wer etwas sucht, sagt: „I\'m looking for something that\'s close to the subway."', es:'«I\'d like to» es la petición educada, como «me gustaría». Una pregunta suena aún más educada si la envuelves: en vez de «Are utilities included?», se dice «Could you tell me if utilities are included?», y después va el orden normal de la frase, sin invertir. Para buscar algo: «I\'m looking for something that\'s close to the subway». Fíjate: el inglés no necesita subjuntivo aquí (busco algo que esté).', el:'Το «I\'d like to» είναι το ευγενικό αίτημα, σαν το «θα ήθελα». Μια ερώτηση γίνεται ακόμα πιο ευγενική όταν την «τυλίγεις»: αντί για «Are utilities included?» λες «Could you tell me if utilities are included?» — και μετά ακολουθεί η κανονική σειρά της πρότασης, χωρίς αντιστροφή. Όταν ψάχνεις κάτι: «I\'m looking for something that\'s close to the subway».' },
+        beispiele:[
+          { z:'I\'d like to see the apartment.', na:{ de:'Ich würde gern die Wohnung sehen.', es:'Me gustaría ver el piso.', el:'Θα ήθελα να δω το διαμέρισμα.' } },
+          { z:'Could you tell me if the rent includes heat?', na:{ de:'Könnten Sie mir sagen, ob die Heizung in der Miete enthalten ist?', es:'¿Podría decirme si el alquiler incluye la calefacción?', el:'Θα μπορούσατε να μου πείτε αν το ενοίκιο περιλαμβάνει τη θέρμανση;' } }
+        ]
+      },
+      kultur:{ de:'Die Brooklyn Bridge wurde 1883 eröffnet und war damals die längste Hängebrücke der Welt. Emily Warren Roebling, die Frau des Chefingenieurs, hatte großen Anteil an ihrer Fertigstellung. Über den Autos verläuft ein hölzerner Fußweg — der schönste Spaziergang nach Manhattan.', es:'El puente de Brooklyn se inauguró en 1883 y entonces era el puente colgante más largo del mundo. Emily Warren Roebling, la mujer del ingeniero jefe, tuvo un papel clave en su construcción. Por encima de los coches pasa una pasarela de madera: el paseo más bonito hacia Manhattan.', el:'Η Γέφυρα του Μπρούκλιν εγκαινιάστηκε το 1883 και ήταν τότε η μεγαλύτερη κρεμαστή γέφυρα του κόσμου. Η Έμιλι Γουόρεν Ρέμπλινγκ, σύζυγος του επικεφαλής μηχανικού, έπαιξε καθοριστικό ρόλο στην ολοκλήρωσή της. Πάνω από τα αυτοκίνητα περνάει ένας ξύλινος πεζόδρομος — η ωραιότερη βόλτα προς το Μανχάταν.' }
+    },
+
+    /* ── B1 · Pittsburgh — Thanksgiving bei den Zielinskis ─────────── */
+    'b1.familie': {
+      duzen: true,
+      deineRolle: { de:'Du bist bei den Zielinskis zum Thanksgiving-Essen. Deine Nonna Pina lebt in Turin; als Kind hast du jeden Sommer bei ihr verbracht. Du hast ihr gerade in der Küche geholfen, als du deine erste Brücke gezeichnet hast. Heute kocht sie nicht mehr, aber früher machte sie sonntags Pasta für zwanzig Leute.', es:'Estás cenando con los Zielinski en Acción de Gracias. Tu Nonna Pina vive en Turín; de pequeña pasabas todos los veranos en su casa. Estabas ayudándola en la cocina cuando dibujaste tu primer puente. Ya no cocina, pero antes hacía pasta para veinte personas los domingos.', en:'You are at Thanksgiving dinner with the Zielinskis. Your Nonna Pina lives in Turin; as a child you used to spend every summer with her. You were helping her in the kitchen when you drew your first bridge. She doesn\'t cook anymore, but she used to make pasta for twenty people on Sundays.', el:'Είσαι στο τραπέζι της Ημέρας των Ευχαριστιών με τους Ζιελίνσκι. Η Νόνα Πίνα σου ζει στο Τορίνο· όταν ήσουν παιδί, περνούσες κάθε καλοκαίρι μαζί της. Τη βοηθούσες στην κουζίνα όταν ζωγράφισες την πρώτη σου γέφυρα. Δεν μαγειρεύει πια, αλλά παλιά έφτιαχνε μακαρόνια για είκοσι άτομα τις Κυριακές.' },
+      abrundung: { z:'Twenty! Just like my Helen. Now pass the stuffing, and tell her Pittsburgh says hi.', na:{ de:'Zwanzig! Genau wie meine Helen. Jetzt reich mir mal die Füllung — und grüß sie schön aus Pittsburgh.', es:'¡Veinte! Igual que mi Helen. Ahora pásame el relleno, y dale recuerdos de parte de Pittsburgh.', el:'Είκοσι! Όπως η Έλεν μου. Δώσε μου τώρα τη γέμιση — και πες της χαιρετίσματα από το Πίτσμπουργκ.' } },
+      rollen: {
+        spikiu: { de:'Opa Stan Zielinski', es:'el abuelo Stan Zielinski', en:'Grandpa Stan Zielinski', el:'ο παππούς Σταν Ζιελίνσκι' },
+        lerner: { de:'die Kollegin, zu Gast bei der Familie', es:'la compañera invitada a casa de la familia', en:'the colleague invited for dinner', el:'η συνάδελφος, καλεσμένη της οικογένειας' },
+        ort:    { de:'am Thanksgiving-Tisch in Pittsburgh', es:'en la mesa de Acción de Gracias, en Pittsburgh', en:'at the Thanksgiving table in Pittsburgh', el:'στο τραπέζι της Ημέρας των Ευχαριστιών στο Πίτσμπουργκ' }
+      },
+      wortschatz: [
+        { z:'Thanksgiving',         na:{ de:'Thanksgiving (Erntedankfest in den USA)', es:'el Día de Acción de Gracias', el:'η Ημέρα των Ευχαριστιών' } },
+        { z:'the turkey',           na:{ de:'der Truthahn', es:'el pavo', el:'η γαλοπούλα' } },
+        { z:'the stuffing',         na:{ de:'die Füllung', es:'el relleno', el:'η γέμιση' } },
+        { z:'mashed potatoes',      na:{ de:'der Kartoffelbrei', es:'el puré de patatas', el:'ο πουρές πατάτας' } },
+        { z:'pumpkin pie',          na:{ de:'der Kürbiskuchen', es:'la tarta de calabaza', el:'η γλυκιά κολοκυθόπιτα' } },
+        { z:'the steel mill',       na:{ de:'das Stahlwerk', es:'la acería', el:'το χαλυβουργείο' } },
+        { z:'used to …',            na:{ de:'früher (immer) …', es:'solía …', el:'συνήθιζα να … (παλιά)' } },
+        { z:'when I was a kid',     na:{ de:'als ich klein war', es:'cuando era pequeña', el:'όταν ήμουν παιδί' } },
+        { z:'to pass (the salt)',   na:{ de:'(das Salz) reichen', es:'pasar (la sal)', el:'δίνω (το αλάτι)' } },
+        { z:'grateful',             na:{ de:'dankbar', es:'agradecido', el:'ευγνώμων' } },
+        { z:'leftovers',            na:{ de:'die Reste', es:'las sobras', el:'τα περισσεύματα' } },
+        { z:'not anymore',          na:{ de:'nicht mehr', es:'ya no', el:'όχι πια' } }
+      ],
+      dialog: {
+        rolle: { de:'Opa Stan Zielinski', es:'El abuelo Stan Zielinski', el:'Ο παππούς Σταν Ζιελίνσκι' },
+        zeilen: [
+          { wer:'spikiu', z:'Forty years I worked at the steel mill. So, who\'s waiting for you back home?', na:{ de:'Vierzig Jahre habe ich im Stahlwerk gearbeitet. Und wer wartet zu Hause auf dich?', es:'Cuarenta años trabajé en la acería. Y a ti, ¿quién te espera en casa?', el:'Σαράντα χρόνια δούλεψα στο χαλυβουργείο. Εσένα ποιος σε περιμένει στο σπίτι;' } },
+          { wer:'lerner', z:'My Nonna Pina in Turin. I used to spend every summer at her house.', na:{ de:'Meine Nonna Pina in Turin. Früher habe ich jeden Sommer bei ihr verbracht.', es:'Mi Nonna Pina, en Turín. Antes pasaba todos los veranos en su casa.', el:'Η Νόνα Πίνα μου στο Τορίνο. Παλιά περνούσα κάθε καλοκαίρι στο σπίτι της.' } },
+          { wer:'spikiu', z:'Every summer! And what were you doing there all day, as a little girl?', na:{ de:'Jeden Sommer! Und was hast du dort als kleines Mädchen den ganzen Tag gemacht?', es:'¡Todos los veranos! ¿Y qué hacías allí todo el día, de pequeña?', el:'Κάθε καλοκαίρι! Και τι έκανες εκεί όλη μέρα, μικρό κορίτσι;' } },
+          { wer:'lerner', z:'I was helping her in the kitchen when I drew my first bridge.', na:{ de:'Ich habe ihr gerade in der Küche geholfen, als ich meine erste Brücke gezeichnet habe.', es:'Estaba ayudándola en la cocina cuando dibujé mi primer puente.', el:'Τη βοηθούσα στην κουζίνα όταν ζωγράφισα την πρώτη μου γέφυρα.' } },
+          { wer:'spikiu', z:'Ha! A born engineer. And does she still cook for the whole family?', na:{ de:'Ha! Eine geborene Ingenieurin. Und kocht sie immer noch für die ganze Familie?', es:'¡Ja! Ingeniera de nacimiento. ¿Y todavía cocina para toda la familia?', el:'Χα! Γεννημένη μηχανικός. Και μαγειρεύει ακόμα για όλη την οικογένεια;' } },
+          { wer:'lerner', z:'Not anymore, but she used to make pasta for twenty people on Sundays.', na:{ de:'Nicht mehr, aber früher hat sie sonntags Pasta für zwanzig Leute gemacht.', es:'Ya no, pero antes hacía pasta para veinte personas los domingos.', el:'Όχι πια, αλλά παλιά έφτιαχνε μακαρόνια για είκοσι άτομα τις Κυριακές.' } }
+        ]
+      },
+      lesetext: {
+        z:'Pittsburgh has more than four hundred bridges, and three famous “sisters” over the river are painted bright yellow. At dinner, Grandpa Stan told me he used to make steel for bridges like these. When I asked what was for pudding, everyone looked confused. Here dessert is dessert, and pudding is something soft in a cup!',
+        na:{ de:'Pittsburgh hat mehr als vierhundert Brücken, und drei berühmte „Schwestern" über dem Fluss sind leuchtend gelb gestrichen. Beim Essen hat mir Opa Stan erzählt, dass er früher Stahl für solche Brücken gemacht hat. Als ich fragte, was es als „pudding" gibt, schauten alle verwirrt. Hier heißt Nachtisch dessert, und pudding ist etwas Weiches im Becher!', es:'Pittsburgh tiene más de cuatrocientos puentes, y tres famosas «hermanas» sobre el río están pintadas de amarillo intenso. En la cena, el abuelo Stan me contó que antes fabricaba acero para puentes como estos. Cuando pregunté qué había de «pudding», todos pusieron cara de no entender. Aquí el postre es dessert, ¡y el pudding es algo blandito en un vasito!', el:'Το Πίτσμπουργκ έχει πάνω από τετρακόσιες γέφυρες, και τρεις διάσημες «αδερφές» πάνω από το ποτάμι είναι βαμμένες έντονο κίτρινο. Στο τραπέζι ο παππούς Σταν μού είπε ότι παλιά έφτιαχνε ατσάλι για τέτοιες γέφυρες. Όταν ρώτησα τι έχει για «pudding», όλοι με κοίταξαν μπερδεμένοι. Εδώ το επιδόρπιο λέγεται dessert, και pudding είναι κάτι μαλακό σε κυπελάκι!' },
+        frage:{ de:'Was hat Opa Stan früher gemacht?', es:'¿A qué se dedicaba antes el abuelo Stan?', el:'Τι έκανε παλιά ο παππούς Σταν;' },
+        optionen:[
+          { na:{ de:'Er hat Stahl für Brücken gemacht', es:'Fabricaba acero para puentes', el:'Έφτιαχνε ατσάλι για γέφυρες' }, richtig:true },
+          { na:{ de:'Er hat Brücken gelb gestrichen', es:'Pintaba puentes de amarillo', el:'Έβαφε γέφυρες κίτρινες' }, richtig:false },
+          { na:{ de:'Er hat Nachtisch gebacken', es:'Hacía postres', el:'Έφτιαχνε επιδόρπια' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähle, was du als Kind oft gemacht hast und was du gerade getan hast, als etwas Besonderes passiert ist. Zwei Sätze.', es:'Cuenta qué solías hacer de pequeño y qué estabas haciendo cuando pasó algo especial. Dos frases.', el:'Πες τι συνήθιζες να κάνεις όταν ήσουν παιδί και τι έκανες τη στιγμή που συνέβη κάτι ξεχωριστό. Δύο προτάσεις.' },
+        muster:'When I was a kid, I used to visit my grandparents every summer. I was reading in the garden when I saw my first shooting star.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Beim Erzählen arbeiten zwei Vergangenheiten zusammen: „I was helping" ist der laufende Hintergrund, „I drew" das Ereignis, das hineinplatzt — Deutsch braucht dafür ein „gerade". Und „used to" heißt: früher immer, heute nicht mehr. „She used to make pasta" — so war es damals.', es:'Al contar, trabajan juntos dos pasados: «I was helping» es el fondo que dura (estaba ayudando), «I drew» es lo que pasa de golpe (dibujé), igual que en español. Y «used to» es el imperfecto de costumbre: «She used to make pasta» = hacía pasta, solía hacer pasta, y ya no.', el:'Όταν διηγείσαι, δουλεύουν μαζί δύο παρελθοντικοί χρόνοι: το «I was helping» είναι το φόντο που διαρκεί (βοηθούσα), το «I drew» αυτό που γίνεται ξαφνικά (ζωγράφισα). Και το «used to» είναι ο παρατατικός της συνήθειας: «She used to make pasta» = έφτιαχνε μακαρόνια παλιά, όχι πια.' },
+        beispiele:[
+          { z:'I was helping her when I drew my first bridge.', na:{ de:'Ich habe ihr gerade geholfen, als ich meine erste Brücke gezeichnet habe.', es:'La estaba ayudando cuando dibujé mi primer puente.', el:'Τη βοηθούσα όταν ζωγράφισα την πρώτη μου γέφυρα.' } },
+          { z:'She used to cook for twenty people.', na:{ de:'Früher hat sie für zwanzig Leute gekocht.', es:'Antes cocinaba para veinte personas.', el:'Παλιά μαγείρευε για είκοσι άτομα.' } }
+        ]
+      },
+      kultur:{ de:'Thanksgiving ist am vierten Donnerstag im November: Familien kommen zusammen, es gibt Truthahn, Füllung und Kürbiskuchen, und viele sagen, wofür sie dankbar sind. Pittsburgh nennt sich „City of Bridges" — mit über 400 Brücken hat es mehr als fast jede andere Stadt der Welt.', es:'Acción de Gracias se celebra el cuarto jueves de noviembre: las familias se reúnen, hay pavo, relleno y tarta de calabaza, y muchos dicen en voz alta por qué están agradecidos. Pittsburgh se llama a sí misma «City of Bridges»: con más de 400 puentes, tiene más que casi cualquier otra ciudad del mundo.', el:'Η Ημέρα των Ευχαριστιών γιορτάζεται την τέταρτη Πέμπτη του Νοεμβρίου: οι οικογένειες μαζεύονται, τρώνε γαλοπούλα, γέμιση και κολοκυθόπιτα, και πολλοί λένε για τι είναι ευγνώμονες. Το Πίτσμπουργκ λέγεται «City of Bridges» — με πάνω από 400 γέφυρες έχει περισσότερες από σχεδόν κάθε άλλη πόλη του κόσμου.' }
+    },
+
+    /* ── B1 · Chicago — Meinungen im Coffee Shop ──────────────────── */
+    'b1.cafe': {
+      duzen: true,
+      deineRolle: { de:'Du sitzt im Dezember in einem Coffee Shop in Chicago. Du findest die Stadt schön und die Klappbrücken über den Fluss großartig. Der Wind ist für dich kälter als der Winter in Turin — und Deep-Dish ist für dich eher ein Kuchen als eine Pizza.', es:'Estás en una cafetería de Chicago en diciembre. La ciudad te parece preciosa y los puentes levadizos sobre el río, increíbles. Para ti el viento es más frío que el invierno de Turín, y la deep-dish es más una tarta que una pizza.', en:'You are in a coffee shop in Chicago in December. You find the city beautiful and the drawbridges over the river amazing. To you the wind is colder than the winter in Turin, and deep-dish is more like a pie than a pizza.', el:'Κάθεσαι σε ένα καφέ στο Σικάγο τον Δεκέμβριο. Βρίσκεις την πόλη όμορφη και τις κινητές γέφυρες πάνω από το ποτάμι καταπληκτικές. Για σένα ο αέρας είναι πιο κρύος από τον χειμώνα στο Τορίνο — και η deep-dish μοιάζει περισσότερο με πίτα παρά με πίτσα.' },
+      abrundung: { z:'A pie! Spoken like a true Italian. Okay, okay, the next coffee\'s on me.', na:{ de:'Ein Kuchen! Gesprochen wie eine echte Italienerin. Na gut, der nächste Kaffee geht auf mich.', es:'¡Una tarta! Hablas como una italiana de verdad. Vale, vale, el próximo café lo pago yo.', el:'Πίτα! Μίλησες σαν αληθινή Ιταλίδα. Καλά, καλά, τον επόμενο καφέ τον κερνάω εγώ.' } },
+      rollen: {
+        spikiu: { de:'Denise, Stammgast und Busfahrerin im Ruhestand', es:'Denise, clienta habitual y conductora de autobús jubilada', en:'Denise, a regular and retired bus driver', el:'η Ντενίζ, τακτική πελάτισσα και συνταξιούχος οδηγός λεωφορείου' },
+        lerner: { de:'die Reisende mit dem Skizzenbuch', es:'la viajera del cuaderno de dibujo', en:'the traveler with the sketchbook', el:'η ταξιδιώτισσα με το μπλοκ ζωγραφικής' },
+        ort:    { de:'in einem Coffee Shop am Chicago River', es:'en una cafetería junto al río Chicago', en:'in a coffee shop by the Chicago River', el:'σε ένα καφέ δίπλα στον ποταμό του Σικάγο' }
+      },
+      wortschatz: [
+        { z:'a coffee shop',        na:{ de:'das Café', es:'la cafetería', el:'το καφέ' } },
+        { z:'a regular',            na:{ de:'der Stammgast', es:'el cliente habitual', el:'ο τακτικός πελάτης' } },
+        { z:'a refill',             na:{ de:'das Nachschenken (oft gratis)', es:'otra taza (a menudo gratis)', el:'το ξαναγέμισμα του φλιτζανιού' } },
+        { z:'deep-dish pizza',      na:{ de:'die Pizza mit hohem Rand (Chicago)', es:'la pizza de masa alta (Chicago)', el:'η πίτσα σε βαθύ ταψί (Σικάγο)' } },
+        { z:'the wind chill',       na:{ de:'die gefühlte Temperatur', es:'la sensación térmica', el:'η αισθητή θερμοκρασία' } },
+        { z:'freezing',             na:{ de:'eiskalt', es:'helador', el:'παγωμένος' } },
+        { z:'a drawbridge',         na:{ de:'die Klappbrücke', es:'el puente levadizo', el:'η κινητή γέφυρα' } },
+        { z:'downtown',             na:{ de:'die Innenstadt', es:'el centro', el:'το κέντρο της πόλης' } },
+        { z:'in my opinion',        na:{ de:'meiner Meinung nach', es:'en mi opinión', el:'κατά τη γνώμη μου' } },
+        { z:'I believe that …',     na:{ de:'ich glaube, dass …', es:'creo que …', el:'πιστεύω ότι …' } },
+        { z:'I don\'t agree.',      na:{ de:'Da bin ich anderer Meinung.', es:'No estoy de acuerdo.', el:'Δεν συμφωνώ.' } },
+        { z:'It\'s on me.',         na:{ de:'Das geht auf mich.', es:'Invito yo.', el:'Κερνάω εγώ.' } }
+      ],
+      dialog: {
+        rolle: { de:'Denise, ein Stammgast', es:'Denise, una clienta habitual', el:'Η Ντενίζ, τακτική πελάτισσα' },
+        zeilen: [
+          { wer:'spikiu', z:'First winter in Chicago, huh? So what do you think of our city so far?', na:{ de:'Dein erster Winter in Chicago, was? Und, wie findest du unsere Stadt bis jetzt?', es:'Tu primer invierno en Chicago, ¿eh? ¿Y qué te parece nuestra ciudad hasta ahora?', el:'Πρώτος χειμώνας στο Σικάγο, ε; Λοιπόν, πώς σου φαίνεται η πόλη μας μέχρι τώρα;' } },
+          { wer:'lerner', z:'I think it\'s beautiful. In my opinion, the bridges over the river are amazing.', na:{ de:'Ich finde sie schön. Meiner Meinung nach sind die Brücken über den Fluss großartig.', es:'Me parece preciosa. En mi opinión, los puentes sobre el río son increíbles.', el:'Τη βρίσκω όμορφη. Κατά τη γνώμη μου, οι γέφυρες πάνω από το ποτάμι είναι καταπληκτικές.' } },
+          { wer:'spikiu', z:'They are! But that wind off the lake, doesn\'t it drive you crazy?', na:{ de:'Stimmt! Aber dieser Wind vom See — macht der dich nicht verrückt?', es:'¡Lo son! Pero ese viento del lago, ¿no te vuelve loca?', el:'Πράγματι! Αλλά αυτός ο αέρας από τη λίμνη, δεν σε τρελαίνει;' } },
+          { wer:'lerner', z:'Yes! Honestly, I believe this wind is colder than the winter in Turin.', na:{ de:'Ja! Ehrlich gesagt glaube ich, dass dieser Wind kälter ist als der Winter in Turin.', es:'¡Sí! La verdad, creo que este viento es más frío que el invierno de Turín.', el:'Ναι! Ειλικρινά, πιστεύω ότι αυτός ο αέρας είναι πιο κρύος από τον χειμώνα στο Τορίνο.' } },
+          { wer:'spikiu', z:'Ha! Well, deep-dish pizza fixes everything. Best pizza in the world, right?', na:{ de:'Ha! Na ja, Deep-Dish-Pizza macht alles wieder gut. Die beste Pizza der Welt, oder?', es:'¡Ja! Bueno, la pizza deep-dish lo arregla todo. La mejor pizza del mundo, ¿verdad?', el:'Χα! Ε, η πίτσα deep-dish τα φτιάχνει όλα. Η καλύτερη πίτσα του κόσμου, σωστά;' } },
+          { wer:'lerner', z:'Sorry, I don\'t agree. I think it\'s delicious, but it\'s more like a pie.', na:{ de:'Tut mir leid, da bin ich anderer Meinung. Ich finde sie lecker, aber sie ist eher ein Kuchen.', es:'Lo siento, no estoy de acuerdo. Me parece riquísima, pero es más bien una tarta.', el:'Συγγνώμη, δεν συμφωνώ. Τη βρίσκω νοστιμότατη, αλλά μοιάζει περισσότερο με πίτα.' } }
+        ]
+      },
+      lesetext: {
+        z:'Chicago has dozens of bridges that lift in the middle, like two hands opening. In spring and fall they go up so that sailboats can pass, and people stop to watch. When I asked for a “takeaway” coffee, the barista smiled: “You mean to go?”',
+        na:{ de:'Chicago hat Dutzende Brücken, die sich in der Mitte heben, wie zwei Hände, die sich öffnen. Im Frühling und im Herbst gehen sie hoch, damit Segelboote durchfahren können, und die Leute bleiben stehen und schauen zu. Als ich einen Kaffee „takeaway" bestellte, lächelte der Barista: „Du meinst to go?"', es:'Chicago tiene decenas de puentes que se levantan por el centro, como dos manos que se abren. En primavera y en otoño suben para que pasen los veleros, y la gente se para a mirar. Cuando pedí un café «takeaway», el barista sonrió: «¿Quieres decir to go?».', el:'Το Σικάγο έχει δεκάδες γέφυρες που σηκώνονται στη μέση, σαν δύο χέρια που ανοίγουν. Την άνοιξη και το φθινόπωρο ανεβαίνουν για να περάσουν τα ιστιοφόρα, και ο κόσμος σταματάει να κοιτάξει. Όταν ζήτησα έναν καφέ «takeaway», ο μπαρίστας χαμογέλασε: «Εννοείς to go;»' },
+        frage:{ de:'Warum gehen die Brücken hoch?', es:'¿Por qué se levantan los puentes?', el:'Γιατί σηκώνονται οι γέφυρες;' },
+        optionen:[
+          { na:{ de:'Damit Segelboote durchfahren können', es:'Para que pasen los veleros', el:'Για να περάσουν τα ιστιοφόρα' }, richtig:true },
+          { na:{ de:'Wegen des starken Windes', es:'Por el viento fuerte', el:'Εξαιτίας του δυνατού αέρα' }, richtig:false },
+          { na:{ de:'Für ein Fest in der Innenstadt', es:'Para una fiesta en el centro', el:'Για μια γιορτή στο κέντρο' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Sag deine Meinung über eine Stadt, die du kennst: etwas, das du liebst, und etwas, bei dem du anderer Meinung bist. Zwei Sätze.', es:'Da tu opinión sobre una ciudad que conoces: algo que te encanta y algo en lo que no estás de acuerdo. Dos frases.', el:'Πες τη γνώμη σου για μια πόλη που ξέρεις: κάτι που λατρεύεις και κάτι με το οποίο δεν συμφωνείς. Δύο προτάσεις.' },
+        muster:'In my opinion, Chicago is the most beautiful city on a lake. But I don\'t agree that deep-dish is the best pizza in the world.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'„I think", „I believe", „in my opinion" — und das „that" darfst du weglassen: „I think it\'s beautiful", ohne „dass". Beim Verneinen wandert das „not" nach vorn: „I don\'t think it\'s pizza" klingt natürlicher als „I think it isn\'t pizza" — wie „ich glaube nicht, dass". Höflich widersprechen: „Sorry, I don\'t agree."', es:'«I think», «I believe», «in my opinion»… y el «that» se puede omitir: «I think it\'s beautiful», sin «que». Al negar, el «not» se va delante: «I don\'t think it\'s pizza» suena más natural que «I think it isn\'t pizza», como «no creo que sea pizza», pero sin subjuntivo. Para llevar la contraria con educación: «Sorry, I don\'t agree».', el:'«I think», «I believe», «in my opinion» — και το «that» μπορεί να φύγει: «I think it\'s beautiful», χωρίς «ότι». Στην άρνηση το «not» πάει μπροστά: το «I don\'t think it\'s pizza» ακούγεται πιο φυσικό από το «I think it isn\'t pizza» — όπως το «δεν νομίζω ότι». Για να διαφωνήσεις ευγενικά: «Sorry, I don\'t agree».' },
+        beispiele:[
+          { z:'In my opinion, the bridges are amazing.', na:{ de:'Meiner Meinung nach sind die Brücken großartig.', es:'En mi opinión, los puentes son increíbles.', el:'Κατά τη γνώμη μου, οι γέφυρες είναι καταπληκτικές.' } },
+          { z:'I don\'t think it\'s really pizza.', na:{ de:'Ich glaube nicht, dass das wirklich Pizza ist.', es:'No creo que sea pizza de verdad.', el:'Δεν νομίζω ότι είναι πραγματικά πίτσα.' } }
+        ]
+      },
+      kultur:{ de:'Chicago hat mehr bewegliche Brücken als fast jede andere Stadt der Welt; im Frühling und Herbst werden sie für die Segelboote auf dem Weg zum Michigansee hochgeklappt. Die Deep-Dish-Pizza wird in einer tiefen Form gebacken — der Käse liegt unter der Tomatensoße.', es:'Chicago tiene más puentes móviles que casi cualquier otra ciudad del mundo; en primavera y en otoño se levantan para los veleros que van y vienen del lago Míchigan. La pizza deep-dish se hornea en un molde hondo, con el queso debajo de la salsa de tomate.', el:'Το Σικάγο έχει περισσότερες κινητές γέφυρες από σχεδόν κάθε άλλη πόλη του κόσμου· την άνοιξη και το φθινόπωρο σηκώνονται για τα ιστιοφόρα που πηγαινοέρχονται στη λίμνη Μίσιγκαν. Η πίτσα deep-dish ψήνεται σε βαθύ ταψί — το τυρί μπαίνει κάτω από τη σάλτσα ντομάτας.' }
+    },
+
+    /* ── B1 · New Orleans — Mardi Gras im kreolischen Restaurant ──── */
+    'b1.restaurant': {
+      deineRolle: { de:'Du isst während Mardi Gras mit einer Freundin in einem kreolischen Restaurant in New Orleans. Du hast das Gumbo bestellt, aber der Kellner bringt dir Jambalaya. Beignets hast du noch nie probiert. Am Ende wollt ihr getrennt zahlen.', es:'Estás comiendo con una amiga en un restaurante criollo de Nueva Orleans durante el Mardi Gras. Pediste el gumbo, pero el camarero te trae jambalaya. Nunca has probado los beignets. Al final queréis pagar por separado.', en:'You are eating with a friend at a Creole restaurant in New Orleans during Mardi Gras. You ordered the gumbo, but the server brings you jambalaya. You have never tried beignets. At the end you want to split the check.', el:'Τρως με μια φίλη σε ένα κρεολικό εστιατόριο στη Νέα Ορλεάνη την περίοδο του Mardi Gras. Παρήγγειλες γκάμπο, αλλά ο σερβιτόρος σού φέρνει τζαμπαλάγια. Δεν έχεις δοκιμάσει ποτέ beignets. Στο τέλος θέλετε να πληρώσετε χωριστά.' },
+      abrundung: { z:'Absolutely, two checks coming up. And watch out, that sugar gets everywhere!', na:{ de:'Selbstverständlich, zwei Rechnungen kommen sofort. Und Vorsicht, der Zucker landet überall!', es:'Por supuesto, dos cuentas enseguida. Y cuidado, ¡ese azúcar acaba por todas partes!', el:'Βεβαίως, δύο λογαριασμοί έρχονται. Και προσοχή, αυτή η ζάχαρη πάει παντού!' } },
+      rollen: {
+        spikiu: { de:'der Kellner Marcus', es:'el camarero, Marcus', en:'Marcus, the server', el:'ο σερβιτόρος, ο Μάρκους' },
+        lerner: { de:'der Gast mit dem falschen Teller', es:'la clienta a la que le traen otro plato', en:'the guest who got the wrong dish', el:'η πελάτισσα που πήρε λάθος πιάτο' },
+        ort:    { de:'in einem kreolischen Restaurant im French Quarter', es:'en un restaurante criollo del Barrio Francés', en:'in a Creole restaurant in the French Quarter', el:'σε ένα κρεολικό εστιατόριο στη Γαλλική Συνοικία' }
+      },
+      wortschatz: [
+        { z:'the server',           na:{ de:'der Kellner, die Bedienung', es:'el camarero', el:'ο σερβιτόρος' } },
+        { z:'gumbo',                na:{ de:'Gumbo (dicker Eintopf aus Louisiana)', es:'el gumbo (guiso espeso de Luisiana)', el:'το γκάμπο (πηχτό φαγητό της Λουιζιάνας)' } },
+        { z:'beignets',             na:{ de:'Beignets (Krapfen mit Puderzucker)', es:'los beignets (buñuelos con azúcar glas)', el:'τα beignets (τηγανητά ζυμαράκια με άχνη)' } },
+        { z:'powdered sugar',       na:{ de:'der Puderzucker', es:'el azúcar glas', el:'η ζάχαρη άχνη' } },
+        { z:'spicy',                na:{ de:'scharf', es:'picante', el:'πικάντικος' } },
+        { z:'a mistake',            na:{ de:'der Fehler, das Versehen', es:'el error, la equivocación', el:'το λάθος' } },
+        { z:'I ordered …',          na:{ de:'ich habe … bestellt', es:'pedí …', el:'παρήγγειλα …' } },
+        { z:'I\'ve never tried …',  na:{ de:'ich habe noch nie … probiert', es:'nunca he probado …', el:'δεν έχω δοκιμάσει ποτέ …' } },
+        { z:'to split the check',   na:{ de:'getrennt zahlen', es:'pagar por separado', el:'πληρώνουμε χωριστά' } },
+        { z:'the tip',              na:{ de:'das Trinkgeld', es:'la propina', el:'το φιλοδώρημα' } },
+        { z:'to fix',               na:{ de:'in Ordnung bringen', es:'arreglar', el:'διορθώνω' } },
+        { z:'my bad',               na:{ de:'mein Fehler (locker)', es:'culpa mía', el:'δικό μου λάθος' } }
+      ],
+      dialog: {
+        rolle: { de:'Der Kellner Marcus', es:'El camarero, Marcus', el:'Ο σερβιτόρος, ο Μάρκους' },
+        zeilen: [
+          { wer:'spikiu', z:'Here you go, one jambalaya, nice and hot. Can I get you anything else?', na:{ de:'Bitte schön, einmal Jambalaya, schön heiß. Darf ich Ihnen noch etwas bringen?', es:'Aquí tiene, una jambalaya bien calentita. ¿Le traigo algo más?', el:'Ορίστε, μία τζαμπαλάγια, ζεστή ζεστή. Να σας φέρω κάτι άλλο;' } },
+          { wer:'lerner', z:'I\'m sorry, but I think there\'s been a mistake. I ordered the gumbo.', na:{ de:'Entschuldigung, aber ich glaube, da ist ein Fehler passiert. Ich habe das Gumbo bestellt.', es:'Perdone, pero creo que ha habido un error. Pedí el gumbo.', el:'Συγγνώμη, αλλά νομίζω ότι έγινε λάθος. Παρήγγειλα το γκάμπο.' } },
+          { wer:'spikiu', z:'Oh, my bad! I\'ll fix that right away. Your gumbo will be out in five minutes.', na:{ de:'Oh, mein Fehler! Ich bringe das sofort in Ordnung. Ihr Gumbo kommt in fünf Minuten.', es:'¡Uy, culpa mía! Lo arreglo ahora mismo. Su gumbo sale en cinco minutos.', el:'Ωχ, δικό μου λάθος! Το διορθώνω αμέσως. Το γκάμπο σας έρχεται σε πέντε λεπτά.' } },
+          { wer:'lerner', z:'No problem. Oh, and I\'ve never tried beignets. What are they exactly?', na:{ de:'Kein Problem. Ach, und ich habe noch nie Beignets probiert. Was ist das genau?', es:'No pasa nada. Ah, y nunca he probado los beignets. ¿Qué son exactamente?', el:'Κανένα πρόβλημα. Α, και δεν έχω δοκιμάσει ποτέ beignets. Τι ακριβώς είναι;' } },
+          { wer:'spikiu', z:'Fried dough under a mountain of powdered sugar. Best with a café au lait.', na:{ de:'Frittierter Teig unter einem Berg Puderzucker. Am besten mit einem Milchkaffee.', es:'Masa frita bajo una montaña de azúcar glas. Lo mejor, con un café con leche.', el:'Τηγανητή ζύμη κάτω από ένα βουνό ζάχαρη άχνη. Ταιριάζει τέλεια με έναν καφέ με γάλα.' } },
+          { wer:'lerner', z:'Sounds perfect. We\'ll have two, and could we split the check, please?', na:{ de:'Klingt perfekt. Wir nehmen zwei, und könnten wir bitte getrennt zahlen?', es:'Suena perfecto. Tomaremos dos, y ¿podríamos pagar por separado, por favor?', el:'Τέλεια. Θα πάρουμε δύο, και θα μπορούσαμε να πληρώσουμε χωριστά, παρακαλώ;' } }
+        ]
+      },
+      lesetext: {
+        z:'New Orleans in February is pure music: brass bands, parades, and people catching colorful beads from the floats. Marcus explained that here you tip about twenty percent, because servers earn most of their money from tips. When I asked for “the bill”, he winked: “The check, you mean? Coming right up!”',
+        na:{ de:'New Orleans im Februar ist reine Musik: Blaskapellen, Umzüge und Menschen, die bunte Perlenketten von den Wagen fangen. Marcus hat mir erklärt, dass man hier etwa zwanzig Prozent Trinkgeld gibt, weil Kellner das meiste Geld durch Trinkgeld verdienen. Als ich nach „the bill" fragte, zwinkerte er: „Sie meinen the check? Kommt sofort!"', es:'Nueva Orleans en febrero es pura música: bandas de metales, desfiles y gente que atrapa collares de colores lanzados desde las carrozas. Marcus me explicó que aquí se deja un veinte por ciento de propina, porque los camareros ganan casi todo su dinero con las propinas. Cuando pedí «the bill», me guiñó un ojo: «¿Quiere decir the check? ¡Enseguida!».', el:'Η Νέα Ορλεάνη τον Φεβρουάριο είναι σκέτη μουσική: χάλκινες μπάντες, παρελάσεις και κόσμος που πιάνει πολύχρωμα κολιέ από τα άρματα. Ο Μάρκους μού εξήγησε ότι εδώ αφήνεις περίπου είκοσι τοις εκατό φιλοδώρημα, γιατί οι σερβιτόροι βγάζουν τα περισσότερα χρήματά τους από τα φιλοδωρήματα. Όταν ζήτησα «the bill», μου έκλεισε το μάτι: «Το check εννοείτε; Έρχεται αμέσως!»' },
+        frage:{ de:'Wie viel Trinkgeld gibt man hier ungefähr?', es:'¿Cuánta propina se suele dejar aquí?', el:'Πόσο φιλοδώρημα αφήνει κανείς εδώ περίπου;' },
+        optionen:[
+          { na:{ de:'Etwa zwanzig Prozent', es:'Alrededor del veinte por ciento', el:'Περίπου είκοσι τοις εκατό' }, richtig:true },
+          { na:{ de:'Gar keins, es ist schon im Preis', es:'Nada, ya está incluida en el precio', el:'Καθόλου, περιλαμβάνεται ήδη στην τιμή' }, richtig:false },
+          { na:{ de:'Immer genau fünf Dollar', es:'Siempre cinco dólares exactos', el:'Πάντα ακριβώς πέντε δολάρια' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Reklamiere höflich ein falsches Gericht und sag, was du noch nie probiert hast. Zwei Sätze.', es:'Reclama con educación un plato equivocado y di qué no has probado nunca. Dos frases.', el:'Κάνε ένα ευγενικό παράπονο για λάθος πιάτο και πες τι δεν έχεις δοκιμάσει ποτέ. Δύο προτάσεις.' },
+        muster:'Excuse me, I think there\'s been a mistake. I ordered the fish. I\'ve never tried gumbo, so I\'d love to taste it next time.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Für Lebenserfahrung ohne Zeitpunkt nimmt Englisch das Present Perfect: „I\'ve never tried beignets", „Have you ever been to New Orleans?". Sobald ein Zeitpunkt da ist oder ein abgeschlossener Moment, kommt das Simple Past: „I ordered the gumbo" (vorhin). Deutsch sagt beides mit „habe … bestellt". Höflich reklamieren: „I\'m sorry, but I think there\'s been a mistake" — das „I think" polstert.', es:'Para la experiencia vital sin momento concreto, el inglés usa el present perfect: «I\'ve never tried beignets», «Have you ever been to New Orleans?», igual que el «nunca he probado» de España. En cuanto hay un momento cerrado, va el pasado simple: «I ordered the gumbo» (hace un rato). Para reclamar con educación: «I\'m sorry, but I think there\'s been a mistake»; el «I think» suaviza.', el:'Για εμπειρίες ζωής χωρίς συγκεκριμένο χρόνο, τα αγγλικά βάζουν present perfect: «I\'ve never tried beignets», «Have you ever been to New Orleans?» — όπως το «δεν έχω δοκιμάσει ποτέ». Μόλις υπάρχει μια κλειστή στιγμή, μπαίνει ο απλός παρελθοντικός: «I ordered the gumbo» (πριν από λίγο). Για ευγενικό παράπονο: «I\'m sorry, but I think there\'s been a mistake» — το «I think» μαλακώνει.' },
+        beispiele:[
+          { z:'I\'ve never tried beignets.', na:{ de:'Ich habe noch nie Beignets probiert.', es:'Nunca he probado los beignets.', el:'Δεν έχω δοκιμάσει ποτέ beignets.' } },
+          { z:'I\'m sorry, but I think there\'s been a mistake.', na:{ de:'Entschuldigung, aber ich glaube, da ist ein Fehler passiert.', es:'Perdone, pero creo que ha habido un error.', el:'Συγγνώμη, αλλά νομίζω ότι έγινε λάθος.' } }
+        ]
+      },
+      kultur:{ de:'In den USA ist das Trinkgeld nicht im Preis enthalten: Im Restaurant gibt man meist 18 bis 20 Prozent, weil Kellner davon leben. Die Brücke Crescent City Connection überquert den Mississippi genau dort, wo der Fluss sich wie eine Mondsichel biegt — daher der Spitzname von New Orleans: „Crescent City".', es:'En Estados Unidos la propina no está incluida: en un restaurante se suele dejar entre el 18 y el 20 por ciento, porque los camareros viven de ella. El puente Crescent City Connection cruza el Misisipi justo donde el río se curva como una luna creciente; de ahí el apodo de Nueva Orleans: «Crescent City».', el:'Στις ΗΠΑ το φιλοδώρημα δεν περιλαμβάνεται στην τιμή: στο εστιατόριο αφήνεις συνήθως 18 με 20 τοις εκατό, γιατί οι σερβιτόροι ζουν από αυτό. Η γέφυρα Crescent City Connection διασχίζει τον Μισισιπή ακριβώς εκεί όπου το ποτάμι λυγίζει σαν μισοφέγγαρο — από εκεί και το παρατσούκλι της Νέας Ορλεάνης: «Crescent City».' }
+    },
+
+    /* ── B1 · Austin, Texas — Fledermäuse und Tornado-Vorwarnung ──── */
+    'b1.wetter': {
+      deineRolle: { de:'Du bist in Austin und willst heute Abend sehen, wie die Fledermäuse unter der Congress Avenue Bridge ausfliegen. Es gibt eine Tornado-Vorwarnung. Wenn daraus eine echte Warnung wird, gehst du sofort ins Hotel zurück — und kommst morgen Abend wieder.', es:'Estás en Austin y esta noche quieres ver cómo salen los murciélagos de debajo del puente de Congress Avenue. Hay un aviso de posibles tornados. Si se convierte en alerta, volverás enseguida al hotel, y vendrás de nuevo mañana por la noche.', en:'You are in Austin and want to watch the bats fly out from under the Congress Avenue Bridge tonight. There is a tornado watch. If it turns into a warning, you will go straight back to your hotel and come back tomorrow night.', el:'Είσαι στο Ώστιν και θέλεις απόψε να δεις τις νυχτερίδες να βγαίνουν κάτω από τη γέφυρα Congress Avenue. Υπάρχει προειδοποίηση πιθανότητας ανεμοστρόβιλου. Αν γίνει κανονική προειδοποίηση, θα γυρίσεις αμέσως στο ξενοδοχείο — και θα ξανάρθεις αύριο βράδυ.' },
+      abrundung: { z:'That\'s the spirit. Tomorrow at sunset, right here. Bring your sketchbook, and stay safe tonight!', na:{ de:'So gefällt mir das. Morgen bei Sonnenuntergang, genau hier. Bringen Sie Ihr Skizzenbuch mit — und passen Sie heute Nacht auf sich auf!', es:'¡Así me gusta! Mañana al atardecer, aquí mismo. Traiga su cuaderno de dibujo, ¡y cuídese esta noche!', el:'Έτσι μπράβο. Αύριο στο ηλιοβασίλεμα, ακριβώς εδώ. Φέρτε το μπλοκ σας — και να προσέχετε απόψε!' } },
+      rollen: {
+        spikiu: { de:'die Rangerin Becky', es:'Becky, la guarda del parque', en:'Becky, the park ranger', el:'η Μπέκι, η φύλακας του πάρκου' },
+        lerner: { de:'die Reisende, die die Fledermäuse sehen will', es:'la viajera que quiere ver los murciélagos', en:'the traveler who wants to see the bats', el:'η ταξιδιώτισσα που θέλει να δει τις νυχτερίδες' },
+        ort:    { de:'am Ufer des Lady Bird Lake, unter der Congress Avenue Bridge', es:'en la orilla del lago Lady Bird, bajo el puente de Congress Avenue', en:'on the shore of Lady Bird Lake, by the Congress Avenue Bridge', el:'στην όχθη της λίμνης Lady Bird, κάτω από τη γέφυρα Congress Avenue' }
+      },
+      wortschatz: [
+        { z:'a tornado watch',      na:{ de:'die Tornado-Vorwarnung (Tornados möglich)', es:'el aviso de posibles tornados', el:'η προειδοποίηση πιθανότητας ανεμοστρόβιλου' } },
+        { z:'a tornado warning',    na:{ de:'die Tornado-Warnung (akute Gefahr)', es:'la alerta de tornado (peligro inmediato)', el:'η προειδοποίηση για ανεμοστρόβιλο (άμεσος κίνδυνος)' } },
+        { z:'to take cover',        na:{ de:'Schutz suchen', es:'ponerse a cubierto', el:'βρίσκω καταφύγιο' } },
+        { z:'a thunderstorm',       na:{ de:'das Gewitter', es:'la tormenta', el:'η καταιγίδα' } },
+        { z:'hail',                 na:{ de:'der Hagel', es:'el granizo', el:'το χαλάζι' } },
+        { z:'the weather service',  na:{ de:'der Wetterdienst', es:'el servicio meteorológico', el:'η μετεωρολογική υπηρεσία' } },
+        { z:'a bat',                na:{ de:'die Fledermaus', es:'el murciélago', el:'η νυχτερίδα' } },
+        { z:'at sunset',            na:{ de:'bei Sonnenuntergang', es:'al atardecer', el:'στο ηλιοβασίλεμα' } },
+        { z:'if it turns into …',   na:{ de:'wenn daraus … wird', es:'si se convierte en …', el:'αν γίνει …' } },
+        { z:'I\'m going to …',      na:{ de:'ich habe vor, … / ich werde …', es:'voy a …', el:'σκοπεύω να … / θα …' } },
+        { z:'Stay safe!',           na:{ de:'Pass auf dich auf!', es:'¡Cuídate!', el:'Να προσέχεις!' } },
+        { z:'Heads up!',            na:{ de:'Achtung! / Nur zur Info!', es:'¡Ojo!', el:'Για να ξέρεις!' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Rangerin Becky', es:'Becky, la guarda del parque', el:'Η Μπέκι, η φύλακας του πάρκου' },
+        zeilen: [
+          { wer:'spikiu', z:'Evening! Heads up: the weather service just issued a tornado watch for tonight.', na:{ de:'Guten Abend! Nur zur Info: Der Wetterdienst hat gerade eine Tornado-Vorwarnung für heute Abend herausgegeben.', es:'¡Buenas tardes! Ojo: el servicio meteorológico acaba de emitir un aviso de posibles tornados para esta noche.', el:'Καλησπέρα! Για να ξέρετε: η μετεωρολογική υπηρεσία μόλις έβγαλε προειδοποίηση πιθανότητας ανεμοστρόβιλου για απόψε.' } },
+          { wer:'lerner', z:'I\'m going to watch the bats tonight. What exactly does a tornado watch mean?', na:{ de:'Ich will heute Abend die Fledermäuse anschauen. Was bedeutet eine Tornado-Vorwarnung genau?', es:'Esta noche voy a ver los murciélagos. ¿Qué significa exactamente un aviso de tornado?', el:'Απόψε θα δω τις νυχτερίδες. Τι ακριβώς σημαίνει «tornado watch»;' } },
+          { wer:'spikiu', z:'A watch means a tornado could form. A warning means one has been seen. Take cover!', na:{ de:'Eine Vorwarnung heißt: Ein Tornado könnte entstehen. Eine Warnung heißt: Einer wurde gesichtet. Dann Schutz suchen!', es:'Un aviso significa que se podría formar un tornado. Una alerta significa que ya se ha visto uno. ¡A cubierto!', el:'«Watch» σημαίνει ότι μπορεί να σχηματιστεί ανεμοστρόβιλος. «Warning» σημαίνει ότι έχει ήδη εμφανιστεί. Τότε βρείτε καταφύγιο!' } },
+          { wer:'lerner', z:'Okay. If it turns into a warning, I\'ll go back to my hotel right away.', na:{ de:'Okay. Wenn daraus eine Warnung wird, gehe ich sofort zurück ins Hotel.', es:'Vale. Si se convierte en alerta, volveré al hotel enseguida.', el:'Εντάξει. Αν γίνει «warning», θα γυρίσω αμέσως στο ξενοδοχείο μου.' } },
+          { wer:'spikiu', z:'Smart. And the bats will come out tomorrow too, all one and a half million of them.', na:{ de:'Klug. Und die Fledermäuse fliegen morgen auch aus — alle anderthalb Millionen.', es:'Muy bien pensado. Y los murciélagos saldrán también mañana, el millón y medio entero.', el:'Σωστά. Και οι νυχτερίδες θα βγουν και αύριο — και τα ενάμισι εκατομμύριο.' } },
+          { wer:'lerner', z:'Then I\'ll come back tomorrow night. I\'m not going to miss them!', na:{ de:'Dann komme ich morgen Abend wieder. Die lasse ich mir nicht entgehen!', es:'Entonces volveré mañana por la noche. ¡No me los voy a perder!', el:'Τότε θα ξανάρθω αύριο βράδυ. Δεν πρόκειται να τις χάσω!' } }
+        ]
+      },
+      lesetext: {
+        z:'From spring to fall, about one and a half million bats fly out from under the Congress Avenue Bridge every evening, like a river of smoke over the water. Becky says they eat tons of insects every night. When I said I would wait in the “car park”, she laughed: “The parking lot, hon! And not tonight, the weather\'s just nasty!”',
+        na:{ de:'Vom Frühling bis zum Herbst fliegen jeden Abend etwa anderthalb Millionen Fledermäuse unter der Congress Avenue Bridge hervor, wie ein Fluss aus Rauch über dem Wasser. Becky sagt, sie fressen jede Nacht tonnenweise Insekten. Als ich sagte, ich würde auf dem „car park" warten, lachte sie: „Auf dem parking lot, Schätzchen! Und nicht heute Abend — das Wetter ist einfach nasty!"', es:'De primavera a otoño, cada tarde alrededor de un millón y medio de murciélagos salen de debajo del puente de Congress Avenue, como un río de humo sobre el agua. Becky dice que cada noche se comen toneladas de insectos. Cuando dije que esperaría en el «car park», se rio: «¡En el parking lot, cariño! Y esta noche no: ¡el tiempo es simplemente nasty!».', el:'Από την άνοιξη ως το φθινόπωρο, κάθε βράδυ περίπου ενάμισι εκατομμύριο νυχτερίδες βγαίνουν κάτω από τη γέφυρα Congress Avenue, σαν ποτάμι από καπνό πάνω από το νερό. Η Μπέκι λέει ότι τρώνε τόνους έντομα κάθε νύχτα. Όταν είπα ότι θα περιμένω στο «car park», γέλασε: «Στο parking lot, χρυσό μου! Κι όχι απόψε — ο καιρός είναι απλώς nasty!»' },
+        frage:{ de:'Wie sehen die Fledermäuse aus, wenn sie ausfliegen?', es:'¿Cómo se ven los murciélagos cuando salen?', el:'Με τι μοιάζουν οι νυχτερίδες όταν βγαίνουν;' },
+        optionen:[
+          { na:{ de:'Wie ein Fluss aus Rauch', es:'Como un río de humo', el:'Σαν ποτάμι από καπνό' }, richtig:true },
+          { na:{ de:'Wie fallende Blätter', es:'Como hojas que caen', el:'Σαν φύλλα που πέφτουν' }, richtig:false },
+          { na:{ de:'Wie Vögel bei Sonnenaufgang', es:'Como pájaros al amanecer', el:'Σαν πουλιά την ανατολή' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib einer Freundin, was du morgen vorhast und was du machst, wenn es regnet. Zwei Sätze.', es:'Escribe a una amiga qué vas a hacer mañana y qué harás si llueve. Dos frases.', el:'Γράψε σε μια φίλη τι σκοπεύεις να κάνεις αύριο και τι θα κάνεις αν βρέξει. Δύο προτάσεις.' },
+        muster:'Tomorrow I\'m going to visit the bridge. If it rains, I\'ll go to a museum instead.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'„I\'m going to watch the bats" ist ein Plan, der schon steht. „I\'ll come back tomorrow" ist eine Entscheidung im Moment oder ein Versprechen. Im Wenn-Satz steht Präsens, nie „will": „If it turns into a warning, I\'ll go back" — genau wie im Deutschen: „Wenn es … wird, gehe ich".', es:'«I\'m going to watch the bats» es un plan ya decidido, como «voy a ver». «I\'ll come back tomorrow» es una decisión del momento o una promesa: «volveré». Después de «if» va presente, nunca «will»: «If it turns into a warning, I\'ll go back», igual que en español: «Si se convierte…, volveré».', el:'Το «I\'m going to watch the bats» είναι σχέδιο που έχει ήδη αποφασιστεί. Το «I\'ll come back tomorrow» είναι απόφαση της στιγμής ή υπόσχεση. Μετά το «if» μπαίνει ενεστώτας, ποτέ «will»: «If it turns into a warning, I\'ll go back» — όπως στα ελληνικά δεν λέμε «αν θα γίνει», αλλά «αν γίνει, θα γυρίσω».' },
+        beispiele:[
+          { z:'I\'m going to watch the bats tonight.', na:{ de:'Heute Abend schaue ich mir die Fledermäuse an.', es:'Esta noche voy a ver los murciélagos.', el:'Απόψε θα δω τις νυχτερίδες.' } },
+          { z:'If it rains, I\'ll stay at the hotel.', na:{ de:'Wenn es regnet, bleibe ich im Hotel.', es:'Si llueve, me quedaré en el hotel.', el:'Αν βρέξει, θα μείνω στο ξενοδοχείο.' } }
+        ]
+      },
+      kultur:{ de:'Unter der Congress Avenue Bridge in Austin lebt die größte Fledermauskolonie mitten in einer Stadt in Nordamerika: etwa anderthalb Millionen Mexikanische Bulldoggfledermäuse, von März bis Oktober. Im Frühling ändert sich das Wetter in Texas schnell: „watch" heißt „sei bereit", „warning" heißt „sofort Schutz suchen".', es:'Bajo el puente de Congress Avenue, en Austin, vive la mayor colonia urbana de murciélagos de Norteamérica: alrededor de un millón y medio de murciélagos de cola libre mexicanos, de marzo a octubre. En primavera el tiempo en Texas cambia muy rápido: «watch» significa «estate preparado», «warning» significa «ponte a cubierto ya».', el:'Κάτω από τη γέφυρα Congress Avenue στο Ώστιν ζει η μεγαλύτερη αστική αποικία νυχτερίδων στη Βόρεια Αμερική: περίπου ενάμισι εκατομμύριο μεξικανικές νυχτερίδες, από τον Μάρτιο ως τον Οκτώβριο. Την άνοιξη ο καιρός στο Τέξας αλλάζει γρήγορα: «watch» σημαίνει «να είσαι έτοιμος», «warning» σημαίνει «βρες αμέσως καταφύγιο».' }
+    }
+  }
+};
+
+var K_LP_B = {
+
+  schritt: {
+    einkaufen:       { de:'Santa Fe: vergleichen und nach dem Preis fragen', es:'Santa Fe: comparar y preguntar por el precio', el:'Σάντα Φε: συγκρίνεις και ρωτάς για την τιμή' },
+    wegbeschreibung: { de:'Grand Canyon: einen Rat verstehen und weitergeben', es:'Gran Cañón: entender un consejo y transmitirlo', el:'Γκραντ Κάνιον: καταλαβαίνεις μια συμβουλή και τη μεταφέρεις' },
+    taxi:            { de:'San Francisco: plaudern, was wäre, wenn …', es:'San Francisco: charlar sobre «¿y si…?»', el:'Σαν Φρανσίσκο: κουβέντα για το «τι θα γινόταν αν …»' },
+    arzt:            { de:'Seattle: seit wann, und was du tun sollst', es:'Seattle: desde cuándo y qué debes hacer', el:'Σιάτλ: από πότε, και τι πρέπει να κάνεις' },
+    bahnhof:         { de:'Seattle → Vancouver: der Zug ist schon weg', es:'Seattle → Vancouver: el tren ya se ha ido', el:'Σιάτλ → Βανκούβερ: το τρένο έχει ήδη φύγει' }
+  },
+
+  aufgaben: {
+    'b1.einkaufen': [
+      { de:'Sag, dass sie wunderschön sind, und frag, ob der Stein in diesem Armband echter Türkis ist', es:'Di que son preciosas y pregunta si la piedra de esta pulsera es turquesa auténtica', en:'Say they are beautiful and ask whether the stone in this bracelet is real turquoise', el:'Πες ότι είναι πανέμορφα και ρώτα αν η πέτρα σε αυτό το βραχιόλι είναι αληθινό τιρκουάζ' },
+      { de:'Sag, dass das Armband schöner ist als der Ring, dir aber ein bisschen zu teuer', es:'Di que la pulsera es más bonita que el anillo, pero un poco cara para ti', en:'Say the bracelet is nicer than the ring, but a little too expensive for you', el:'Πες ότι το βραχιόλι είναι πιο ωραίο από το δαχτυλίδι, αλλά λίγο ακριβό για σένα' },
+      { de:'Frag höflich, ob beim Preis Spielraum ist, und sag, dass du nur hundert Dollar in bar hast', es:'Pregunta con cortesía si hay margen en el precio y di que solo llevas cien dólares en efectivo', en:'Politely ask whether there is any flexibility on the price and say you only have a hundred in cash', el:'Ρώτα ευγενικά αν υπάρχει ευελιξία στην τιμή και πες ότι έχεις μόνο εκατό δολάρια μετρητά' }
+    ],
+    'b1.wegbeschreibung': [
+      { de:'Bejahe — der Bright Angel Trail — und frag, wie weit du an einem Tag hinuntergehen kannst', es:'Di que sí, el sendero Bright Angel, y pregunta hasta dónde puedes bajar en un día', en:'Say yes, the Bright Angel Trail, and ask how far down you can go in one day', el:'Πες ναι, το μονοπάτι Bright Angel, και ρώτα πόσο χαμηλά μπορείς να κατέβεις σε μία μέρα' },
+      { de:'Fasse mit „you said" zusammen: vor sieben losgehen und am Three-Mile umkehren', es:'Resume con «you said»: salir antes de las siete y darte la vuelta en el Three-Mile', en:'Sum up with "you said": start before seven and turn around at Three-Mile', el:'Συνόψισε με «you said»: ξεκίνημα πριν από τις εφτά και επιστροφή στο Three-Mile' },
+      { de:'Sag, dass du verstanden hast und deinem Lektor in Mailand erzählst, dass dir ein Ranger geraten hat, früh loszugehen', es:'Di que lo has entendido y que le contarás a tu editor de Milán que un guarda del parque te dijo que salieras temprano', en:'Say you understand and that you will tell your editor in Milan a ranger told you to start early', el:'Πες ότι κατάλαβες και ότι θα πεις στον εκδότη σου στο Μιλάνο ότι ένας δασοφύλακας σού είπε να ξεκινήσεις νωρίς' }
+    ],
+    'b1.taxi': [
+      { de:'Frag, wer Karl ist, und sag, dass du in diesem Nebel nichts siehst, nicht mal die Brücke', es:'Pregunta quién es Karl y di que no ves nada con esta niebla, ni siquiera el puente', en:'Ask who Karl is and say you can\'t see anything in this fog, not even the bridge', el:'Ρώτα ποιος είναι ο Καρλ και πες ότι δεν βλέπεις τίποτα μέσα σε αυτή την ομίχλη, ούτε καν τη γέφυρα' },
+      { de:'Sag: Wenn du mehr Zeit hättest, würdest du auf die Sonne warten und die Brücke zeichnen', es:'Di que, si tuvieras más tiempo, esperarías al sol y dibujarías el puente', en:'Say that if you had more time, you would wait for the sun and draw the bridge', el:'Πες ότι, αν είχες περισσότερο χρόνο, θα περίμενες τον ήλιο και θα σχεδίαζες τη γέφυρα' },
+      { de:'Sag: vielleicht — wenn du hier arbeiten würdest, würdest du am Wasser wohnen, mit oder ohne Nebel', es:'Di que quizá: si trabajaras aquí, vivirías cerca del agua, con niebla o sin ella', en:'Say maybe: if you worked here, you would live near the water, fog or no fog', el:'Πες ίσως: αν δούλευες εδώ, θα έμενες κοντά στο νερό, με ομίχλη ή χωρίς' }
+    ],
+    'b1.arzt': [
+      { de:'Sag, dass du auf einem Weg am Mount Rainier umgeknickt bist und der Knöchel seit Sonntag geschwollen ist', es:'Di que te lo torciste en un sendero del monte Rainier y que está hinchado desde el domingo', en:'Say you twisted it on a trail at Mount Rainier and it has been swollen since Sunday', el:'Πες ότι τον στραμπούληξες σε ένα μονοπάτι στο όρος Ρενιέ και ότι είναι πρησμένος από την Κυριακή' },
+      { de:'Sag, dass du ein bisschen gehen kannst, es aber wehtut, und dass du seit zwei Tagen Ibuprofen nimmst', es:'Di que puedes caminar un poco pero te duele, y que llevas dos días tomando ibuprofeno', en:'Say you can walk a little but it hurts, and that you have been taking ibuprofen for two days', el:'Πες ότι μπορείς να περπατήσεις λίγο αλλά πονάει, και ότι παίρνεις ιβουπροφαίνη εδώ και δύο μέρες' },
+      { de:'Frag, ob du den Fuß ganz schonen musst, und sag, dass du am Freitag einen Zug nach Vancouver hast', es:'Pregunta si tienes que dejar de apoyarlo del todo y di que el viernes tienes un tren a Vancouver', en:'Ask whether you have to stay off it completely and say you have a train to Vancouver on Friday', el:'Ρώτα αν πρέπει να μην πατάς καθόλου και πες ότι την Παρασκευή έχεις τρένο για το Βανκούβερ' }
+    ],
+    'b1.bahnhof': [
+      { de:'Sag, dass du mit deinem verletzten Knöchel zu langsam warst und der Zug schon abgefahren war', es:'Di que con el tobillo mal has ido demasiado lenta y que el tren ya había salido', en:'Say that with your bad ankle you were too slow, and the train had already left', el:'Πες ότι με τον χτυπημένο αστράγαλο ήσουν πολύ αργή και ότι το τρένο είχε ήδη φύγει' },
+      { de:'Sag, dass das in Ordnung ist, und frag, ob du den Pass im Zug brauchst oder nur an der Grenze', es:'Di que no pasa nada y pregunta si necesitas el pasaporte en el tren o solo en la frontera', en:'Say that is fine and ask whether you need your passport on the train or only at the border', el:'Πες ότι δεν πειράζει και ρώτα αν χρειάζεσαι το διαβατήριο στο τρένο ή μόνο στα σύνορα' },
+      { de:'Sag: nur einen Koffer — deine Skizzenbücher behältst du bei dir, sie sind dein ganzes Jahr', es:'Di que solo una maleta y que los cuadernos de dibujo van contigo, porque son todo tu año', en:'Say just one suitcase, and that your sketchbooks stay with you because they are your whole year', el:'Πες μόνο μία βαλίτσα, και ότι τα μπλοκ σχεδίου σου μένουν μαζί σου, γιατί είναι όλη σου η χρονιά' }
+    ]
+  },
+
+  stationen: {
+
+    /* ── B1 · Santa Fe, New Mexico — Türkis unter dem Portal (Apr) ───── */
+    'b1.einkaufen': {
+      deineRolle: { de:'Du bist Giulia. An der Plaza von Santa Fe verkauft ein Künstler aus einem Pueblo Silberschmuck mit Türkis. Das Armband gefällt dir besser als der Ring, ist dir aber etwas zu teuer. Du hast nur hundert Dollar in bar.', es:'Eres Giulia. En la plaza de Santa Fe, un artista de un pueblo indígena vende joyas de plata con turquesa. La pulsera te gusta más que el anillo, pero es un poco cara para ti. Solo llevas cien dólares en efectivo.', en:'You are Giulia. On the plaza in Santa Fe, a Pueblo artist sells silver jewelry with turquoise. You like the bracelet more than the ring, but it\'s a little too expensive. You only have a hundred dollars in cash.', el:'Είσαι η Τζούλια. Στην πλατεία της Σάντα Φε ένας καλλιτέχνης από ένα πουέμπλο πουλάει ασημένια κοσμήματα με τιρκουάζ. Το βραχιόλι σού αρέσει περισσότερο από το δαχτυλίδι, αλλά είναι λίγο ακριβό για σένα. Έχεις μόνο εκατό δολάρια μετρητά.' },
+      abrundung: { z:'For cash? Okay, a hundred. Let me put it in a little box for you.', na:{ de:'In bar? Na gut, hundert. Ich lege es Ihnen in ein kleines Kästchen.', es:'¿En efectivo? Vale, cien. Se la pongo en una cajita.', el:'Μετρητά; Εντάξει, εκατό. Να σας το βάλω σε ένα κουτάκι.' } },
+      rollen: {
+        spikiu: { de:'Mr. Naranjo, Silberschmied aus einem Pueblo', es:'el señor Naranjo, platero de un pueblo indígena', en:'Mr. Naranjo, a silversmith from a pueblo', el:'ο κύριος Ναράνχο, ασημουργός από ένα πουέμπλο' },
+        lerner: { de:'Giulia, die Ingenieurin', es:'Giulia, la ingeniera', en:'Giulia, the engineer', el:'η Τζούλια, η μηχανικός' },
+        ort:    { de:'unter dem Portal an der Plaza von Santa Fe', es:'bajo los soportales de la plaza de Santa Fe', en:'under the portal on the Santa Fe Plaza', el:'κάτω από τη στοά στην πλατεία της Σάντα Φε' }
+      },
+      wortschatz: [
+        { z:'turquoise', na:{ de:'der Türkis', es:'la turquesa', el:'το τιρκουάζ' } },
+        { z:'handmade', na:{ de:'handgemacht', es:'hecho a mano', el:'χειροποίητος' } },
+        { z:'silver', na:{ de:'das Silber', es:'la plata', el:'το ασήμι' } },
+        { z:'a bracelet', na:{ de:'das Armband', es:'la pulsera', el:'το βραχιόλι' } },
+        { z:'a ring', na:{ de:'der Ring', es:'el anillo', el:'το δαχτυλίδι' } },
+        { z:'nicer than', na:{ de:'schöner als', es:'más bonito que', el:'πιο ωραίος από' } },
+        { z:'too expensive', na:{ de:'zu teuer', es:'demasiado caro', el:'υπερβολικά ακριβός' } },
+        { z:'enough money', na:{ de:'genug Geld', es:'suficiente dinero', el:'αρκετά χρήματα' } },
+        { z:'this one — that one', na:{ de:'dieses hier — das dort', es:'este — aquel', el:'αυτό εδώ — εκείνο εκεί' } },
+        { z:'in cash', na:{ de:'in bar', es:'en efectivo', el:'σε μετρητά' } },
+        { z:'pricey', na:{ de:'ganz schön teuer (ugs.)', es:'carillo (coloquial)', el:'τσιμπημένος (για τιμή)' } },
+        { z:'Is there any flexibility on the price?', na:{ de:'Ist beim Preis noch Spielraum?', es:'¿Hay margen en el precio?', el:'Υπάρχει ευελιξία στην τιμή;' } }
+      ],
+      dialog: {
+        rolle: { de:'Mr. Naranjo, der Silberschmied', es:'el señor Naranjo, el platero', el:'ο κύριος Ναράνχο, ο ασημουργός' },
+        zeilen: [
+          { wer:'spikiu', z:'Good morning! Take your time — I made every piece on this blanket myself.', na:{ de:'Guten Morgen! Lassen Sie sich Zeit — jedes Stück auf dieser Decke habe ich selbst gemacht.', es:'¡Buenos días! Tómese su tiempo: todas las piezas de esta manta las he hecho yo.', el:'Καλημέρα! Με την ησυχία σας — κάθε κομμάτι πάνω σε αυτή την κουβέρτα το έφτιαξα μόνος μου.' } },
+          { wer:'lerner', z:'They\'re beautiful. Is the stone in this bracelet real turquoise?', na:{ de:'Sie sind wunderschön. Ist der Stein in diesem Armband echter Türkis?', es:'Son preciosas. ¿La piedra de esta pulsera es turquesa auténtica?', el:'Είναι πανέμορφα. Η πέτρα σε αυτό το βραχιόλι είναι αληθινό τιρκουάζ;' } },
+          { wer:'spikiu', z:'It is, from a mine in Nevada. This bracelet is one-twenty, and that ring is forty-five.', na:{ de:'Ja, aus einer Mine in Nevada. Dieses Armband kostet hundertzwanzig, der Ring dort fünfundvierzig.', es:'Sí, de una mina de Nevada. Esta pulsera cuesta ciento veinte, y aquel anillo, cuarenta y cinco.', el:'Ναι, από ένα ορυχείο στη Νεβάδα. Αυτό το βραχιόλι κάνει εκατόν είκοσι, κι εκείνο το δαχτυλίδι σαράντα πέντε.' } },
+          { wer:'lerner', z:'The bracelet is nicer than the ring, but it\'s a little too expensive for me.', na:{ de:'Das Armband ist schöner als der Ring, aber es ist mir ein bisschen zu teuer.', es:'La pulsera es más bonita que el anillo, pero es un poco cara para mí.', el:'Το βραχιόλι είναι πιο ωραίο από το δαχτυλίδι, αλλά είναι λίγο ακριβό για μένα.' } },
+          { wer:'spikiu', z:'I understand. But that\'s handmade silver — this bracelet took me three whole days.', na:{ de:'Verstehe. Aber das ist handgearbeitetes Silber — an diesem Armband habe ich drei ganze Tage gearbeitet.', es:'Lo entiendo. Pero es plata hecha a mano: esta pulsera me llevó tres días enteros.', el:'Καταλαβαίνω. Αλλά είναι χειροποίητο ασήμι — αυτό το βραχιόλι μού πήρε τρεις ολόκληρες μέρες.' } },
+          { wer:'lerner', z:'Is there any flexibility on the price? I only have a hundred in cash.', na:{ de:'Ist beim Preis noch etwas Spielraum? Ich habe nur hundert in bar.', es:'¿Hay algo de margen en el precio? Solo llevo cien en efectivo.', el:'Υπάρχει κάποια ευελιξία στην τιμή; Έχω μόνο εκατό μετρητά.' } }
+        ]
+      },
+      lesetext: {
+        z:'Under the old portal on the plaza, Pueblo artists sell jewelry they make themselves. I said the bracelet was "a bit dear", and Mr. Naranjo laughed: "Here we say pricey." In the end I paid a hundred dollars. Yesterday I drew the Rio Grande Gorge Bridge near Taos. Word of the place: Christmas, red and green chile on one plate.',
+        na:{ de:'Unter dem alten Portal an der Plaza verkaufen Künstler aus den Pueblos Schmuck, den sie selbst machen. Ich sagte, das Armband sei „a bit dear", und Mr. Naranjo lachte: „Hier sagen wir pricey." Am Ende habe ich hundert Dollar bezahlt. Gestern habe ich bei Taos die Rio Grande Gorge Bridge gezeichnet. Wort des Ortes: Christmas, rotes und grünes Chili auf einem Teller.',
+             es:'Bajo los viejos soportales de la plaza, artistas de los pueblos indígenas venden joyas hechas por ellos mismos. Dije que la pulsera era «a bit dear», y el señor Naranjo se rio: «Aquí decimos pricey». Al final pagué cien dólares. Ayer dibujé el puente Rio Grande Gorge, cerca de Taos. Palabra del lugar: Christmas, chile rojo y verde en el mismo plato.',
+             el:'Κάτω από την παλιά στοά της πλατείας, καλλιτέχνες από τα πουέμπλο πουλάνε κοσμήματα που φτιάχνουν μόνοι τους. Είπα ότι το βραχιόλι ήταν «a bit dear», κι ο κύριος Ναράνχο γέλασε: «Εδώ λέμε pricey». Στο τέλος πλήρωσα εκατό δολάρια. Χθες σχεδίασα τη γέφυρα Rio Grande Gorge κοντά στο Τάος. Λέξη του τόπου: Christmas, κόκκινο και πράσινο τσίλι στο ίδιο πιάτο.' },
+        frage:{ de:'Wie viel hat Giulia am Ende bezahlt?', es:'¿Cuánto pagó Giulia al final?', el:'Πόσα πλήρωσε τελικά η Τζούλια;' },
+        optionen:[
+          { na:{ de:'Hundert Dollar', es:'Cien dólares', el:'Εκατό δολάρια' }, richtig:true },
+          { na:{ de:'Hundertzwanzig Dollar', es:'Ciento veinte dólares', el:'Εκατόν είκοσι δολάρια' }, richtig:false },
+          { na:{ de:'Fünfundvierzig Dollar', es:'Cuarenta y cinco dólares', el:'Σαράντα πέντε δολάρια' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Vergleiche zwei Dinge, die du kaufen möchtest, und frag nach einem besseren Preis. Zwei Sätze.', es:'Compara dos cosas que quieres comprar y pregunta por un precio mejor. Dos frases.', el:'Σύγκρινε δύο πράγματα που θέλεις να αγοράσεις και ρώτα για μια καλύτερη τιμή. Δύο προτάσεις.' },
+        muster:'This scarf is softer than that one, but it\'s too expensive for me. Is there any flexibility on the price?'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Vergleichen: Kurze Adjektive bekommen -er + than (nicer than, cheaper than), lange bekommen more (more expensive than). „Too" heißt „zu": too expensive. „Enough" steht hinter dem Adjektiv (cheap enough), aber vor dem Nomen (enough money). Und: this/these = hier bei mir, that/those = dort drüben.',
+               es:'Comparar: los adjetivos cortos llevan -er + than (nicer than, cheaper than); los largos, more (more expensive than). «Too» es «demasiado»: too expensive. «Enough» va detrás del adjetivo (cheap enough), pero delante del sustantivo (enough money). Y: this/these = aquí, cerca de mí; that/those = allí, como «aquel».',
+               el:'Σύγκριση: τα σύντομα επίθετα παίρνουν -er + than (nicer than, cheaper than), τα μεγάλα παίρνουν more (more expensive than). Το «too» σημαίνει «υπερβολικά»: too expensive. Το «enough» μπαίνει μετά το επίθετο (cheap enough), αλλά πριν από το ουσιαστικό (enough money). Και: this/these = εδώ κοντά μου, that/those = εκεί πέρα.' },
+        beispiele:[
+          { z:'The bracelet is nicer than the ring.', na:{ de:'Das Armband ist schöner als der Ring.', es:'La pulsera es más bonita que el anillo.', el:'Το βραχιόλι είναι πιο ωραίο από το δαχτυλίδι.' } },
+          { z:'I don\'t have enough cash for that one.', na:{ de:'Für das dort habe ich nicht genug Bargeld.', es:'No llevo suficiente efectivo para aquel.', el:'Δεν έχω αρκετά μετρητά για εκείνο.' } }
+        ]
+      },
+      kultur: { de:'Unter dem Portal des Palace of the Governors in Santa Fe verkaufen Künstlerinnen und Künstler aus den Pueblos Schmuck und Keramik — jedes Stück haben sie selbst gemacht. Nördlich, bei Taos, spannt sich die Rio Grande Gorge Bridge hoch über die Schlucht des Rio Grande.',
+                es:'Bajo los soportales del Palace of the Governors de Santa Fe, artistas de los pueblos indígenas venden joyas y cerámica, y cada pieza la han hecho ellos mismos. Más al norte, cerca de Taos, el puente Rio Grande Gorge cruza muy alto sobre el cañón del río Grande.',
+                el:'Κάτω από τη στοά του Palace of the Governors στη Σάντα Φε, καλλιτέχνες από τα πουέμπλο πουλάνε κοσμήματα και κεραμικά — κάθε κομμάτι το έχουν φτιάξει οι ίδιοι. Πιο βόρεια, κοντά στο Τάος, η γέφυρα Rio Grande Gorge περνάει ψηλά πάνω από το φαράγγι του Ρίο Γκράντε.' }
+    },
+
+    /* ── B1 · Grand Canyon — Ranger Ortiz und der Bright Angel Trail (Mai) ─ */
+    'b1.wegbeschreibung': {
+      duzen: true,
+      deineRolle: { de:'Du bist Giulia. Am Grand Canyon willst du heute den Bright Angel Trail hinuntergehen. Was der Ranger sagt, gibst du an deinen Lektor Marco in Mailand weiter.', es:'Eres Giulia. En el Gran Cañón quieres bajar hoy por el sendero Bright Angel. Lo que te diga el guarda del parque se lo contarás a tu editor, Marco, en Milán.', en:'You are Giulia. At the Grand Canyon you want to hike down the Bright Angel Trail today. You pass on what the ranger says to your editor Marco in Milan.', el:'Είσαι η Τζούλια. Στο Γκραντ Κάνιον θέλεις σήμερα να κατέβεις το μονοπάτι Bright Angel. Ό,τι σου πει ο δασοφύλακας, θα το μεταφέρεις στον εκδότη σου, τον Μάρκο, στο Μιλάνο.' },
+      abrundung: { z:'Smart. And eat something salty on the way — in this heat, water alone isn\'t enough.', na:{ de:'Klug. Und iss unterwegs etwas Salziges — bei dieser Hitze reicht Wasser allein nicht.', es:'Bien pensado. Y come algo salado por el camino: con este calor, solo agua no basta.', el:'Έξυπνο. Και φάε κάτι αλμυρό στον δρόμο — με τέτοια ζέστη, μόνο νερό δεν φτάνει.' } },
+      rollen: {
+        spikiu: { de:'Ranger Ortiz, der Parkranger', es:'el guarda Ortiz, del parque nacional', en:'Ranger Ortiz, the park ranger', el:'ο Ορτίζ, δασοφύλακας του εθνικού πάρκου' },
+        lerner: { de:'Giulia, die Ingenieurin', es:'Giulia, la ingeniera', en:'Giulia, the engineer', el:'η Τζούλια, η μηχανικός' },
+        ort:    { de:'am Einstieg des Bright Angel Trail, am Südrand', es:'en el inicio del sendero Bright Angel, en el borde sur', en:'at the Bright Angel trailhead on the South Rim', el:'στην αφετηρία του μονοπατιού Bright Angel, στο νότιο χείλος' }
+      },
+      wortschatz: [
+        { z:'the trailhead', na:{ de:'der Einstieg (eines Wanderwegs)', es:'el inicio del sendero', el:'η αφετηρία του μονοπατιού' } },
+        { z:'the rim', na:{ de:'der Rand (des Canyons)', es:'el borde (del cañón)', el:'το χείλος (του φαραγγιού)' } },
+        { z:'to turn around', na:{ de:'umkehren', es:'darse la vuelta', el:'γυρίζω πίσω' } },
+        { z:'a resthouse', na:{ de:'die Schutzhütte', es:'el refugio', el:'το καταφύγιο' } },
+        { z:'at least', na:{ de:'mindestens', es:'por lo menos', el:'τουλάχιστον' } },
+        { z:'the heat', na:{ de:'die Hitze', es:'el calor', el:'η ζέστη' } },
+        { z:'something salty', na:{ de:'etwas Salziges', es:'algo salado', el:'κάτι αλμυρό' } },
+        { z:'optional', na:{ de:'freiwillig', es:'opcional', el:'προαιρετικός' } },
+        { z:'mandatory', na:{ de:'Pflicht', es:'obligatorio', el:'υποχρεωτικός' } },
+        { z:'twice as long', na:{ de:'doppelt so lange', es:'el doble de tiempo', el:'τον διπλάσιο χρόνο' } },
+        { z:'she said (that) …', na:{ de:'sie hat gesagt, dass …', es:'dijo que …', el:'είπε ότι …' } },
+        { z:'she told me to …', na:{ de:'sie hat mir gesagt, ich soll …', es:'me dijo que + subjuntivo', el:'μου είπε να …' } }
+      ],
+      dialog: {
+        rolle: { de:'Ranger Ortiz, der Parkranger', es:'el guarda Ortiz', el:'ο Ορτίζ, ο δασοφύλακας' },
+        zeilen: [
+          { wer:'spikiu', z:'Morning! Planning a hike today? It\'s going to be hot down there.', na:{ de:'Morgen! Hast du heute eine Wanderung vor? Da unten wird es heiß.', es:'¡Buenos días! ¿Vas a hacer una ruta hoy? Ahí abajo va a hacer calor.', el:'Καλημέρα! Σκοπεύεις να κάνεις πεζοπορία σήμερα; Εκεί κάτω θα κάνει ζέστη.' } },
+          { wer:'lerner', z:'Yes, the Bright Angel Trail. How far down can I go in one day?', na:{ de:'Ja, den Bright Angel Trail. Wie weit kann ich an einem Tag hinuntergehen?', es:'Sí, el sendero Bright Angel. ¿Hasta dónde puedo bajar en un día?', el:'Ναι, το μονοπάτι Bright Angel. Πόσο χαμηλά μπορώ να κατέβω σε μία μέρα;' } },
+          { wer:'spikiu', z:'Turn around at Three-Mile Resthouse. Start before seven and carry at least three liters of water.', na:{ de:'Kehr am Three-Mile Resthouse um. Geh vor sieben los und nimm mindestens drei Liter Wasser mit.', es:'Date la vuelta en el refugio Three-Mile. Sal antes de las siete y lleva por lo menos tres litros de agua.', el:'Γύρνα πίσω στο καταφύγιο Three-Mile. Ξεκίνα πριν από τις εφτά και πάρε τουλάχιστον τρία λίτρα νερό.' } },
+          { wer:'lerner', z:'So you said I should start before seven and turn around at Three-Mile.', na:{ de:'Du hast also gesagt, ich soll vor sieben losgehen und am Three-Mile umkehren.', es:'O sea, has dicho que salga antes de las siete y que me dé la vuelta en el Three-Mile.', el:'Δηλαδή είπες ότι πρέπει να ξεκινήσω πριν από τις εφτά και να γυρίσω πίσω στο Three-Mile.' } },
+          { wer:'spikiu', z:'Exactly. Remember: going down is optional, coming back up is mandatory. Up takes twice as long.', na:{ de:'Genau. Denk dran: Runtergehen ist freiwillig, Wiederhochkommen ist Pflicht. Hoch dauert doppelt so lange.', es:'Exacto. Recuerda: bajar es opcional, volver a subir es obligatorio. La subida lleva el doble de tiempo.', el:'Ακριβώς. Θυμήσου: το κατέβασμα είναι προαιρετικό, το ανέβασμα υποχρεωτικό. Η ανάβαση παίρνει τον διπλάσιο χρόνο.' } },
+          { wer:'lerner', z:'Got it. I\'ll tell my editor in Milan that a ranger told me to start early.', na:{ de:'Verstanden. Ich erzähle meinem Lektor in Mailand, dass mir ein Ranger geraten hat, früh loszugehen.', es:'Entendido. Le contaré a mi editor de Milán que un guarda del parque me dijo que saliera temprano.', el:'Κατάλαβα. Θα πω στον εκδότη μου στο Μιλάνο ότι ένας δασοφύλακας μού είπε να ξεκινήσω νωρίς.' } }
+        ]
+      },
+      lesetext: {
+        z:'Ranger Ortiz told me to start before seven, and he was right: by ten it was already hot. At Three-Mile Resthouse I turned around. When I said I would bring a torch, he laughed: "A flashlight, I hope!" The day before, I had stopped at the Navajo Bridge and seen a condor on the railing. Word of the place: switchbacks.',
+        na:{ de:'Ranger Ortiz hat mir gesagt, ich solle vor sieben losgehen, und er hatte recht: Um zehn war es schon heiß. Am Three-Mile Resthouse bin ich umgekehrt. Als ich sagte, ich würde eine „torch" mitnehmen, lachte er: „Eine Taschenlampe, hoffe ich!" Am Tag davor hatte ich an der Navajo Bridge gehalten und einen Kondor auf dem Geländer gesehen. Wort des Ortes: switchbacks.',
+             es:'El guarda Ortiz me dijo que saliera antes de las siete, y tenía razón: a las diez ya hacía calor. En el refugio Three-Mile me di la vuelta. Cuando dije que llevaría una «torch», se rio: «¡Una linterna, espero!». El día anterior había parado en el puente Navajo y había visto un cóndor en la barandilla. Palabra del lugar: switchbacks.',
+             el:'Ο δασοφύλακας Ορτίζ μού είπε να ξεκινήσω πριν από τις εφτά, και είχε δίκιο: στις δέκα έκανε ήδη ζέστη. Στο καταφύγιο Three-Mile γύρισα πίσω. Όταν είπα ότι θα πάρω μια «torch», γέλασε: «Φακό, ελπίζω!» Την προηγούμενη μέρα είχα σταματήσει στη γέφυρα Navajo και είχα δει έναν κόνδορα στο κάγκελο. Λέξη του τόπου: switchbacks.' },
+        frage:{ de:'Wo ist Giulia umgekehrt?', es:'¿Dónde se dio la vuelta Giulia?', el:'Πού γύρισε πίσω η Τζούλια;' },
+        optionen:[
+          { na:{ de:'Am Three-Mile Resthouse', es:'En el refugio Three-Mile', el:'Στο καταφύγιο Three-Mile' }, richtig:true },
+          { na:{ de:'Unten am Fluss', es:'Abajo, en el río', el:'Κάτω στο ποτάμι' }, richtig:false },
+          { na:{ de:'An der Navajo Bridge', es:'En el puente Navajo', el:'Στη γέφυρα Navajo' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähl jemandem, was dir eine Person geraten hat — mit „she said that" und „she told me to". Zwei Sätze.', es:'Cuéntale a alguien lo que te aconsejó una persona, con «she said that» y «she told me to». Dos frases.', el:'Πες σε κάποιον τι σου συμβούλεψε ένα πρόσωπο — με «she said that» και «she told me to». Δύο προτάσεις.' },
+        muster:'The ranger said that the trail was very hot in the afternoon. He told me to carry three liters of water.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Weitergeben, was jemand gesagt hat: „she said (that)" + Aussage — oft rückt die Zeit eine Stufe zurück: "It is hot" → she said it was hot. Für Rat und Bitten: „she told me to" + Grundform: she told me to start early. Und die Befehlsform ist einfach die Grundform: Start before seven! Turn around!',
+               es:'Transmitir lo que alguien dijo: «she said (that)» + frase, y a menudo el tiempo retrocede un paso: "It is hot" → she said it was hot. Para consejos y peticiones: «she told me to» + infinitivo, donde el español usa subjuntivo: she told me to start early = me dijo que saliera temprano. Y el imperativo es simplemente el infinitivo sin to: Start before seven! Turn around!',
+               el:'Μεταφέρεις τι είπε κάποιος: «she said (that)» + πρόταση — συχνά ο χρόνος πάει ένα βήμα πίσω: "It is hot" → she said it was hot. Για συμβουλές και παρακλήσεις: «she told me to» + απαρέμφατο, όπως το ελληνικό «μου είπε να…»: she told me to start early. Και η προστακτική είναι απλώς ο βασικός τύπος: Start before seven! Turn around!' },
+        beispiele:[
+          { z:'He said that the way up takes twice as long.', na:{ de:'Er hat gesagt, dass der Weg nach oben doppelt so lange dauert.', es:'Dijo que la subida lleva el doble de tiempo.', el:'Είπε ότι ο δρόμος προς τα πάνω παίρνει τον διπλάσιο χρόνο.' } },
+          { z:'He told me to start before seven.', na:{ de:'Er hat mir gesagt, ich soll vor sieben losgehen.', es:'Me dijo que saliera antes de las siete.', el:'Μου είπε να ξεκινήσω πριν από τις εφτά.' } }
+        ]
+      },
+      kultur: { de:'Der Grand Canyon ist an vielen Stellen über anderthalb Kilometer tief; ganz unten fließt der Colorado. Weiter östlich überquert die Navajo Bridge den Marble Canyon: Die alte Brücke von 1929 gehört heute den Fußgängern — und oft sitzen Kalifornische Kondore auf dem Geländer.',
+                es:'En muchos puntos, el Gran Cañón tiene más de kilómetro y medio de profundidad; abajo del todo corre el río Colorado. Más al este, el puente Navajo cruza el Marble Canyon: el puente viejo, de 1929, es hoy solo para peatones, y a menudo hay cóndores de California posados en la barandilla.',
+                el:'Σε πολλά σημεία το Γκραντ Κάνιον έχει βάθος πάνω από ενάμισι χιλιόμετρο· στον πάτο κυλάει ο ποταμός Κολοράντο. Πιο ανατολικά, η γέφυρα Navajo περνάει πάνω από το Marble Canyon: η παλιά γέφυρα του 1929 είναι σήμερα για πεζούς — και συχνά κάθονται στο κάγκελο κόνδορες της Καλιφόρνιας.' }
+    },
+
+    /* ── B1 · San Francisco — Leo Tran und Karl the Fog (Jun) ────────── */
+    'b1.taxi': {
+      deineRolle: { de:'Du bist Giulia. In San Francisco ist der Nebel so dicht, dass du die Golden Gate Bridge nicht siehst. Hättest du mehr Zeit, würdest du auf die Sonne warten und sie zeichnen. Würdest du hier arbeiten, würdest du am Wasser wohnen.', es:'Eres Giulia. En San Francisco la niebla es tan espesa que no ves el Golden Gate. Si tuvieras más tiempo, esperarías al sol para dibujarlo. Si trabajaras aquí, vivirías cerca del agua.', en:'You are Giulia. In San Francisco the fog is so thick that you can\'t see the Golden Gate Bridge. If you had more time, you would wait for the sun and draw it. If you worked here, you would live near the water.', el:'Είσαι η Τζούλια. Στο Σαν Φρανσίσκο η ομίχλη είναι τόσο πυκνή που δεν βλέπεις τη γέφυρα Γκόλντεν Γκέιτ. Αν είχες περισσότερο χρόνο, θα περίμενες τον ήλιο για να τη σχεδιάσεις. Αν δούλευες εδώ, θα έμενες κοντά στο νερό.' },
+      abrundung: { z:'Fog or no fog — now you sound like a real San Franciscan! Look, there\'s the bridge.', na:{ de:'Mit oder ohne Nebel — jetzt klingen Sie wie eine echte San Franciscanerin! Schauen Sie, da ist die Brücke.', es:'Con niebla o sin ella: ¡ya habla como una auténtica vecina de San Francisco! Mire, ahí está el puente.', el:'Με ομίχλη ή χωρίς — τώρα μιλάτε σαν αληθινή κάτοικος του Σαν Φρανσίσκο! Κοιτάξτε, να η γέφυρα.' } },
+      rollen: {
+        spikiu: { de:'Leo Tran, der Taxifahrer', es:'Leo Tran, el taxista', en:'Leo Tran, the cab driver', el:'ο Λίο Τραν, ο ταξιτζής' },
+        lerner: { de:'Giulia, die Ingenieurin', es:'Giulia, la ingeniera', en:'Giulia, the engineer', el:'η Τζούλια, η μηχανικός' },
+        ort:    { de:'im Taxi auf dem Weg zur Golden Gate Bridge', es:'en el taxi, camino del Golden Gate', en:'in a cab on the way to the Golden Gate Bridge', el:'σε ένα ταξί προς τη γέφυρα Γκόλντεν Γκέιτ' }
+      },
+      wortschatz: [
+        { z:'a cab', na:{ de:'das Taxi', es:'el taxi', el:'το ταξί' } },
+        { z:'hop in', na:{ de:'steig ein', es:'sube', el:'ανέβα' } },
+        { z:'the trunk', na:{ de:'der Kofferraum', es:'el maletero', el:'το πορτμπαγκάζ' } },
+        { z:'the fog', na:{ de:'der Nebel', es:'la niebla', el:'η ομίχλη' } },
+        { z:'thick', na:{ de:'dicht', es:'espeso', el:'πυκνός' } },
+        { z:'to clear up', na:{ de:'aufklaren', es:'despejarse', el:'καθαρίζει (ο καιρός)' } },
+        { z:'a viewpoint', na:{ de:'der Aussichtspunkt', es:'el mirador', el:'το σημείο θέας' } },
+        { z:'the rent', na:{ de:'die Miete', es:'el alquiler', el:'το ενοίκιο' } },
+        { z:'a local', na:{ de:'ein Einheimischer', es:'un vecino de aquí', el:'ένας ντόπιος' } },
+        { z:'if I were you', na:{ de:'an deiner Stelle', es:'yo que tú', el:'αν ήμουν στη θέση σου' } },
+        { z:'I would …', na:{ de:'ich würde …', es:'yo + condicional (iría, viviría)', el:'θα + παρατατικός (θα πήγαινα)' } },
+        { z:'fog or no fog', na:{ de:'mit oder ohne Nebel', es:'con niebla o sin ella', el:'με ομίχλη ή χωρίς' } }
+      ],
+      dialog: {
+        rolle: { de:'Leo Tran, der Taxifahrer', es:'Leo Tran, el taxista', el:'ο Λίο Τραν, ο ταξιτζής' },
+        zeilen: [
+          { wer:'spikiu', z:'Hop in! Golden Gate viewpoint, right? I hope Karl lets you see something today.', na:{ de:'Steigen Sie ein! Zum Aussichtspunkt an der Golden Gate, richtig? Hoffentlich lässt Karl Sie heute etwas sehen.', es:'¡Suba! Al mirador del Golden Gate, ¿verdad? Espero que Karl le deje ver algo hoy.', el:'Ανεβείτε! Στο σημείο θέας της Γκόλντεν Γκέιτ, σωστά; Ελπίζω ο Καρλ να σας αφήσει να δείτε κάτι σήμερα.' } },
+          { wer:'lerner', z:'Who\'s Karl? I can\'t see anything in this fog — not even the bridge.', na:{ de:'Wer ist Karl? Ich sehe in diesem Nebel gar nichts — nicht mal die Brücke.', es:'¿Quién es Karl? No veo nada con esta niebla, ni siquiera el puente.', el:'Ποιος είναι ο Καρλ; Δεν βλέπω τίποτα μέσα σε αυτή την ομίχλη — ούτε καν τη γέφυρα.' } },
+          { wer:'spikiu', z:'Karl is the fog! Everybody here calls him that. If you lived here, you\'d know him well.', na:{ de:'Karl ist der Nebel! Alle hier nennen ihn so. Wenn Sie hier wohnen würden, würden Sie ihn gut kennen.', es:'¡Karl es la niebla! Aquí todo el mundo la llama así. Si viviera aquí, lo conocería bien.', el:'Ο Καρλ είναι η ομίχλη! Όλοι εδώ έτσι τον λένε. Αν μένατε εδώ, θα τον ξέρατε καλά.' } },
+          { wer:'lerner', z:'If I had more time, I would wait for the sun and draw the bridge.', na:{ de:'Wenn ich mehr Zeit hätte, würde ich auf die Sonne warten und die Brücke zeichnen.', es:'Si tuviera más tiempo, esperaría al sol y dibujaría el puente.', el:'Αν είχα περισσότερο χρόνο, θα περίμενα τον ήλιο και θα σχεδίαζα τη γέφυρα.' } },
+          { wer:'spikiu', z:'Good plan — Karl usually leaves around noon. So tell me: would you ever live here?', na:{ de:'Guter Plan — Karl verschwindet meistens gegen Mittag. Also sagen Sie mal: Würden Sie jemals hier leben?', es:'Buen plan: Karl suele irse hacia el mediodía. Y dígame, ¿viviría aquí alguna vez?', el:'Καλό σχέδιο — ο Καρλ συνήθως φεύγει κατά το μεσημέρι. Πείτε μου λοιπόν: θα ζούσατε ποτέ εδώ;' } },
+          { wer:'lerner', z:'Maybe. If I worked here, I would live near the water — fog or no fog.', na:{ de:'Vielleicht. Wenn ich hier arbeiten würde, würde ich am Wasser wohnen — mit oder ohne Nebel.', es:'Quizá. Si trabajara aquí, viviría cerca del agua, con niebla o sin ella.', el:'Ίσως. Αν δούλευα εδώ, θα έμενα κοντά στο νερό — με ομίχλη ή χωρίς.' } }
+        ]
+      },
+      lesetext: {
+        z:'In the cab I asked the driver to put my bag in the boot. Leo laughed: "The trunk, you mean!" Then he told me that the fog has a name: Karl. At the viewpoint Karl opened for one minute, and the top of the bridge appeared, bright orange above the white. If I lived here, I would draw it every day. Word of the place: hella.',
+        na:{ de:'Im Taxi bat ich den Fahrer, meine Tasche in den „boot" zu legen. Leo lachte: „Den trunk, meinst du!" Dann erzählte er mir, dass der Nebel einen Namen hat: Karl. Am Aussichtspunkt öffnete sich Karl für eine Minute, und die Spitze der Brücke erschien, leuchtend orange über dem Weiß. Wenn ich hier leben würde, würde ich sie jeden Tag zeichnen. Wort des Ortes: hella.',
+             es:'En el taxi le pedí al conductor que pusiera mi bolsa en el «boot». Leo se rio: «¡El trunk, querrás decir!». Luego me contó que la niebla tiene nombre: Karl. En el mirador, Karl se abrió durante un minuto y apareció la parte de arriba del puente, de un naranja brillante sobre el blanco. Si viviera aquí, lo dibujaría todos los días. Palabra del lugar: hella.',
+             el:'Στο ταξί ζήτησα από τον οδηγό να βάλει την τσάντα μου στο «boot». Ο Λίο γέλασε: «Στο trunk, εννοείς!» Μετά μου είπε ότι η ομίχλη έχει όνομα: Καρλ. Στο σημείο θέας ο Καρλ άνοιξε για ένα λεπτό και φάνηκε η κορυφή της γέφυρας, έντονα πορτοκαλί πάνω από το άσπρο. Αν ζούσα εδώ, θα τη σχεδίαζα κάθε μέρα. Λέξη του τόπου: hella.' },
+        frage:{ de:'Was passierte am Aussichtspunkt?', es:'¿Qué pasó en el mirador?', el:'Τι έγινε στο σημείο θέας;' },
+        optionen:[
+          { na:{ de:'Der Nebel öffnete sich kurz', es:'La niebla se abrió un momento', el:'Η ομίχλη άνοιξε για λίγο' }, richtig:true },
+          { na:{ de:'Es fing an zu regnen', es:'Empezó a llover', el:'Άρχισε να βρέχει' }, richtig:false },
+          { na:{ de:'Leo fuhr nach Hause', es:'Leo se fue a casa', el:'Ο Λίο πήγε σπίτι του' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib, was du tun würdest, wenn du in einer anderen Stadt leben würdest. Zwei Sätze mit „if" und „would".', es:'Escribe qué harías si vivieras en otra ciudad. Dos frases con «if» y «would».', el:'Γράψε τι θα έκανες αν ζούσες σε μια άλλη πόλη. Δύο προτάσεις με «if» και «would».' },
+        muster:'If I lived in San Francisco, I would buy a warm jacket. I would walk across the bridge every Sunday.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Träumen und Vorstellen: if + Vergangenheitsform, dann would + Grundform: If I had more time, I would wait. Das „would" steht nie im if-Teil! Bei „to be" sagt man gern „if I were": If I were you, I would wait for noon. Gesprochen wird aus „I would" fast immer „I\'d".',
+               es:'Soñar e imaginar: if + pasado, y luego would + infinitivo: If I had more time, I would wait = si tuviera más tiempo, esperaría. ¡El «would» nunca va en la parte del if! Con «to be» se dice «if I were»: If I were you, I would wait for noon = yo que tú, esperaría al mediodía. Al hablar, «I would» casi siempre suena «I\'d».',
+               el:'Όνειρα και υποθέσεις: if + αόριστος, και μετά would + βασικός τύπος: If I had more time, I would wait = αν είχα περισσότερο χρόνο, θα περίμενα. Το «would» δεν μπαίνει ποτέ στο κομμάτι με το if! Με το «to be» λέμε «if I were»: If I were you, I would wait for noon = στη θέση σου, θα περίμενα ως το μεσημέρι. Στον προφορικό λόγο, το «I would» γίνεται σχεδόν πάντα «I\'d».' },
+        beispiele:[
+          { z:'If I had more time, I would wait for the sun.', na:{ de:'Wenn ich mehr Zeit hätte, würde ich auf die Sonne warten.', es:'Si tuviera más tiempo, esperaría al sol.', el:'Αν είχα περισσότερο χρόνο, θα περίμενα τον ήλιο.' } },
+          { z:'If I were you, I\'d bring a jacket.', na:{ de:'An deiner Stelle würde ich eine Jacke mitnehmen.', es:'Yo que tú, me llevaría una chaqueta.', el:'Στη θέση σου, θα έπαιρνα ένα μπουφάν.' } }
+        ]
+      },
+      kultur: { de:'Im Sommer zieht vom Pazifik oft kühler Nebel durch das Golden Gate — die Einheimischen nennen ihn liebevoll „Karl". Die Brücke ist übrigens nicht rot, sondern „International Orange": eine Farbe, die man auch im Nebel gut sieht.',
+                es:'En verano, una niebla fresca entra a menudo desde el Pacífico por el Golden Gate; los vecinos la llaman con cariño «Karl». Por cierto, el puente no es rojo, sino «International Orange», un color que se ve bien incluso con niebla.',
+                el:'Το καλοκαίρι, δροσερή ομίχλη από τον Ειρηνικό περνάει συχνά μέσα από το Golden Gate — οι ντόπιοι τη λένε χαϊδευτικά «Καρλ». Η γέφυρα, παρεμπιπτόντως, δεν είναι κόκκινη αλλά «International Orange»: ένα χρώμα που φαίνεται καλά ακόμα και μέσα στην ομίχλη.' }
+    },
+
+    /* ── B1 · Seattle — Urgent Care bei Dr. Nakamura (Jun) ───────────── */
+    'b1.arzt': {
+      deineRolle: { de:'Du bist Giulia. Am Sonntag bist du auf einem Weg am Mount Rainier umgeknickt; seitdem ist der Knöchel geschwollen. Du kannst ein bisschen gehen und nimmst seit zwei Tagen Ibuprofen. Am Freitag hast du einen Zug nach Vancouver.', es:'Eres Giulia. El domingo te torciste el tobillo en un sendero del monte Rainier y desde entonces está hinchado. Puedes caminar un poco y llevas dos días tomando ibuprofeno. El viernes tienes un tren a Vancouver.', en:'You are Giulia. On Sunday you twisted your ankle on a trail at Mount Rainier, and it has been swollen since then. You can walk a little and have been taking ibuprofen for two days. On Friday you have a train to Vancouver.', el:'Είσαι η Τζούλια. Την Κυριακή στραμπούληξες τον αστράγαλο σε ένα μονοπάτι στο όρος Ρενιέ, κι από τότε είναι πρησμένος. Μπορείς να περπατήσεις λίγο και παίρνεις ιβουπροφαίνη εδώ και δύο μέρες. Την Παρασκευή έχεις τρένο για το Βανκούβερ.' },
+      abrundung: { z:'Not completely. Wear the brace and walk short distances — you should be fine by Friday.', na:{ de:'Nicht komplett. Tragen Sie die Schiene und gehen Sie kurze Strecken — bis Freitag sollte es wieder gehen.', es:'Del todo no. Lleve la tobillera y camine distancias cortas: para el viernes debería estar bien.', el:'Όχι εντελώς. Φοράτε τον νάρθηκα και περπατάτε μικρές αποστάσεις — ως την Παρασκευή θα είστε εντάξει.' } },
+      rollen: {
+        spikiu: { de:'Dr. Nakamura, die Ärztin', es:'la doctora Nakamura', en:'Dr. Nakamura, the doctor', el:'η γιατρός Νακαμούρα' },
+        lerner: { de:'Giulia, die Ingenieurin', es:'Giulia, la ingeniera', en:'Giulia, the engineer', el:'η Τζούλια, η μηχανικός' },
+        ort:    { de:'in einer Urgent-Care-Klinik in Seattle', es:'en una clínica de urgencias de Seattle', en:'at an urgent care clinic in Seattle', el:'σε μια κλινική επειγόντων στο Σιάτλ' }
+      },
+      wortschatz: [
+        { z:'urgent care', na:{ de:'die Notfallpraxis (ohne Termin)', es:'la clínica de urgencias (sin cita)', el:'η κλινική επειγόντων (χωρίς ραντεβού)' } },
+        { z:'the insurance card', na:{ de:'die Versichertenkarte', es:'la tarjeta del seguro', el:'η κάρτα ασφάλισης' } },
+        { z:'the ankle', na:{ de:'der Knöchel', es:'el tobillo', el:'ο αστράγαλος' } },
+        { z:'to twist', na:{ de:'umknicken, verdrehen', es:'torcerse', el:'στραμπουλάω' } },
+        { z:'swollen', na:{ de:'geschwollen', es:'hinchado', el:'πρησμένος' } },
+        { z:'a sprain', na:{ de:'die Verstauchung', es:'el esguince', el:'το διάστρεμμα' } },
+        { z:'an X-ray', na:{ de:'das Röntgenbild', es:'la radiografía', el:'η ακτινογραφία' } },
+        { z:'a brace', na:{ de:'die Schiene, die Bandage', es:'la tobillera, la férula', el:'ο νάρθηκας' } },
+        { z:'to keep it up', na:{ de:'hochlegen', es:'tenerlo en alto', el:'το κρατάω ψηλά' } },
+        { z:'to stay off it', na:{ de:'den Fuß nicht belasten', es:'no apoyar el pie', el:'δεν πατάω πάνω του' } },
+        { z:'since Sunday', na:{ de:'seit Sonntag', es:'desde el domingo', el:'από την Κυριακή' } },
+        { z:'for two days', na:{ de:'seit zwei Tagen', es:'desde hace dos días', el:'εδώ και δύο μέρες' } }
+      ],
+      dialog: {
+        rolle: { de:'Dr. Nakamura, die Ärztin', es:'la doctora Nakamura', el:'η γιατρός Νακαμούρα' },
+        zeilen: [
+          { wer:'spikiu', z:'Hi, I\'m Dr. Nakamura. I see you\'ve hurt your ankle — what happened?', na:{ de:'Hallo, ich bin Dr. Nakamura. Wie ich sehe, haben Sie sich am Knöchel verletzt — was ist passiert?', es:'Hola, soy la doctora Nakamura. Veo que se ha hecho daño en el tobillo. ¿Qué ha pasado?', el:'Γεια σας, είμαι η γιατρός Νακαμούρα. Βλέπω ότι χτυπήσατε τον αστράγαλο — τι έγινε;' } },
+          { wer:'lerner', z:'I twisted it on a trail at Mount Rainier. It\'s been swollen since Sunday.', na:{ de:'Ich bin auf einem Weg am Mount Rainier umgeknickt. Seit Sonntag ist er geschwollen.', es:'Me lo torcí en un sendero del monte Rainier. Está hinchado desde el domingo.', el:'Τον στραμπούληξα σε ένα μονοπάτι στο όρος Ρενιέ. Είναι πρησμένος από την Κυριακή.' } },
+          { wer:'spikiu', z:'Okay, let\'s have a look. Can you walk on it? Have you taken anything for the pain?', na:{ de:'Gut, schauen wir mal. Können Sie damit gehen? Haben Sie etwas gegen die Schmerzen genommen?', es:'Bien, vamos a verlo. ¿Puede caminar? ¿Ha tomado algo para el dolor?', el:'Εντάξει, ας ρίξουμε μια ματιά. Μπορείτε να περπατήσετε; Πήρατε κάτι για τον πόνο;' } },
+          { wer:'lerner', z:'I can walk a little, but it hurts. I\'ve been taking ibuprofen for two days.', na:{ de:'Ich kann ein bisschen gehen, aber es tut weh. Ich nehme seit zwei Tagen Ibuprofen.', es:'Puedo caminar un poco, pero me duele. Llevo dos días tomando ibuprofeno.', el:'Μπορώ να περπατήσω λίγο, αλλά πονάει. Παίρνω ιβουπροφαίνη εδώ και δύο μέρες.' } },
+          { wer:'spikiu', z:'The X-ray looks fine — it\'s just a sprain. You should rest it and keep it up.', na:{ de:'Das Röntgenbild sieht gut aus — es ist nur eine Verstauchung. Sie sollten den Fuß schonen und hochlegen.', es:'La radiografía está bien: es solo un esguince. Debería guardar reposo y tener el pie en alto.', el:'Η ακτινογραφία είναι εντάξει — είναι απλώς διάστρεμμα. Πρέπει να τον ξεκουράσετε και να τον έχετε ψηλά.' } },
+          { wer:'lerner', z:'Do I have to stay off it completely? I have a train to Vancouver on Friday.', na:{ de:'Muss ich den Fuß komplett schonen? Ich habe am Freitag einen Zug nach Vancouver.', es:'¿Tengo que dejar de apoyarlo del todo? El viernes tengo un tren a Vancouver.', el:'Πρέπει να μην πατάω καθόλου; Την Παρασκευή έχω τρένο για το Βανκούβερ.' } }
+        ]
+      },
+      lesetext: {
+        z:'At the front desk they asked for my insurance card. I said I wanted to go to "casualty", and the nurse smiled: "Here we say the ER — but urgent care is quicker." Dr. Nakamura says it\'s just a sprain. Afterwards I limped to Fremont to draw the bridge and the big troll under the Aurora Bridge. Word of the place: urgent care.',
+        na:{ de:'Am Empfang wollten sie meine Versichertenkarte sehen. Ich sagte, ich wolle zur „casualty", und die Krankenschwester lächelte: „Hier sagen wir ER — aber Urgent Care geht schneller." Dr. Nakamura sagt, es ist nur eine Verstauchung. Danach humpelte ich nach Fremont, um die Brücke zu zeichnen und den großen Troll unter der Aurora Bridge. Wort des Ortes: urgent care.',
+             es:'En recepción me pidieron la tarjeta del seguro. Dije que quería ir a «casualty», y la enfermera sonrió: «Aquí decimos the ER, pero urgent care es más rápido». La doctora Nakamura dice que es solo un esguince. Después fui cojeando a Fremont para dibujar el puente y el gran trol que hay bajo el Aurora Bridge. Palabra del lugar: urgent care.',
+             el:'Στη ρεσεψιόν μού ζήτησαν την κάρτα ασφάλισης. Είπα ότι ήθελα να πάω στο «casualty», κι η νοσηλεύτρια χαμογέλασε: «Εδώ λέμε the ER — αλλά το urgent care είναι πιο γρήγορο». Η γιατρός Νακαμούρα λέει ότι είναι απλώς διάστρεμμα. Μετά πήγα κουτσαίνοντας στο Φρίμοντ να σχεδιάσω τη γέφυρα και το μεγάλο τρολ κάτω από τη γέφυρα Aurora. Λέξη του τόπου: urgent care.' },
+        frage:{ de:'Was wollte man am Empfang sehen?', es:'¿Qué le pidieron en recepción?', el:'Τι της ζήτησαν στη ρεσεψιόν;' },
+        optionen:[
+          { na:{ de:'Ihre Versichertenkarte', es:'La tarjeta del seguro', el:'Την κάρτα ασφάλισης' }, richtig:true },
+          { na:{ de:'Ihren Reisepass', es:'El pasaporte', el:'Το διαβατήριο' }, richtig:false },
+          { na:{ de:'Ein Röntgenbild', es:'Una radiografía', el:'Μια ακτινογραφία' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Beschreib einer Ärztin ein Problem: seit wann und wie lange schon. Zwei Sätze mit „since" und „for".', es:'Descríbele un problema a una médica: desde cuándo y cuánto tiempo. Dos frases con «since» y «for».', el:'Περίγραψε σε μια γιατρό ένα πρόβλημα: από πότε και πόσο καιρό. Δύο προτάσεις με «since» και «for».' },
+        muster:'My knee has hurt since Monday. I\'ve been taking painkillers for three days.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Seit wann? Englisch nimmt dafür das Present Perfect, nicht die Gegenwart: It has been swollen since Sunday — nicht „it is swollen since". „Since" + Zeitpunkt (since Sunday), „for" + Zeitraum (for two days). Und Rat oder Pflicht: „should" ist ein Rat (you should rest it), „have to" ist ein Muss (do I have to stay off it?).',
+               es:'¿Desde cuándo? El inglés usa el present perfect, no el presente: It has been swollen since Sunday, aunque en español digamos «está hinchado desde el domingo». «Since» + momento (since Sunday), «for» + duración (for two days). Y consejo u obligación: «should» es un consejo (you should rest it), «have to» una obligación (do I have to stay off it?).',
+               el:'Από πότε; Τα αγγλικά βάζουν εδώ present perfect, όχι ενεστώτα: It has been swollen since Sunday — ενώ στα ελληνικά λέμε «είναι πρησμένος από την Κυριακή». «Since» + χρονικό σημείο (since Sunday), «for» + διάρκεια (for two days). Και συμβουλή ή υποχρέωση: το «should» είναι συμβουλή (you should rest it), το «have to» υποχρέωση (do I have to stay off it?).' },
+        beispiele:[
+          { z:'It\'s been swollen since Sunday.', na:{ de:'Er ist seit Sonntag geschwollen.', es:'Está hinchado desde el domingo.', el:'Είναι πρησμένος από την Κυριακή.' } },
+          { z:'You should rest it for a few days.', na:{ de:'Sie sollten ihn ein paar Tage schonen.', es:'Debería guardar reposo unos días.', el:'Πρέπει να τον ξεκουράσετε για λίγες μέρες.' } }
+        ]
+      },
+      kultur: { de:'Mit kleineren Verletzungen geht man in den USA ohne Termin in eine Urgent-Care-Klinik — schneller und günstiger als die Notaufnahme. Die Versichertenkarte (oder die Reiseversicherung) zeigt man gleich am Empfang. In Seattle wohnt im Viertel Fremont ein riesiger Troll aus Beton unter der Aurora Bridge; in der Hand hält er einen echten VW Käfer.',
+                es:'En Estados Unidos, con una lesión leve se va sin cita a una clínica de urgent care: es más rápido y más barato que urgencias del hospital. La tarjeta del seguro (o el seguro de viaje) se enseña nada más llegar, en recepción. En Seattle, en el barrio de Fremont, vive bajo el Aurora Bridge un enorme trol de hormigón que sujeta un Volkswagen Escarabajo de verdad.',
+                el:'Στις ΗΠΑ, για έναν μικρό τραυματισμό πας χωρίς ραντεβού σε μια κλινική urgent care — πιο γρήγορα και πιο φθηνά από τα επείγοντα του νοσοκομείου. Την κάρτα ασφάλισης (ή την ταξιδιωτική ασφάλιση) τη δείχνεις αμέσως στη ρεσεψιόν. Στο Σιάτλ, στη γειτονιά Φρίμοντ, κάτω από τη γέφυρα Aurora, ζει ένα τεράστιο τσιμεντένιο τρολ που κρατάει στο χέρι έναν αληθινό Σκαραβαίο της Volkswagen.' }
+    },
+
+    /* ── B1 · Seattle → Vancouver mit dem Amtrak Cascades (Jul) ──────── */
+    'b1.bahnhof': {
+      deineRolle: { de:'Du bist Giulia. Mit deinem verletzten Knöchel warst du zu langsam, und der Morgenzug nach Vancouver war schon abgefahren. Du hast einen Koffer und deine Skizzenbücher.', es:'Eres Giulia. Con el tobillo mal has ido demasiado lenta y el tren de la mañana a Vancouver ya había salido. Llevas una maleta y tus cuadernos de dibujo.', en:'You are Giulia. With your bad ankle you were too slow, and the morning train to Vancouver had already left. You have one suitcase and your sketchbooks.', el:'Είσαι η Τζούλια. Με τον χτυπημένο αστράγαλο ήσουν πολύ αργή, και το πρωινό τρένο για το Βανκούβερ είχε ήδη φύγει. Έχεις μία βαλίτσα και τα μπλοκ σχεδίου σου.' },
+      eroeffnung: { z:'Good morning. Next in line, please!', na:{ de:'Guten Morgen. Der Nächste, bitte!', es:'Buenos días. ¡El siguiente de la fila, por favor!', el:'Καλημέρα. Ο επόμενος στη σειρά, παρακαλώ!' } },
+      abrundung: { z:'Got it. Your suitcase is checked through to Vancouver. Sit on the left — the train runs along the water.', na:{ de:'Alles klar. Ihr Koffer ist bis Vancouver aufgegeben. Setzen Sie sich links — der Zug fährt am Wasser entlang.', es:'Perfecto. Su maleta va facturada hasta Vancouver. Siéntese a la izquierda: el tren va junto al agua.', el:'Έγινε. Η βαλίτσα σας είναι παραδομένη μέχρι το Βανκούβερ. Καθίστε αριστερά — το τρένο περνάει δίπλα στο νερό.' } },
+      rollen: {
+        spikiu: { de:'der Mitarbeiter am Amtrak-Schalter', es:'el empleado de la taquilla de Amtrak', en:'the agent at the Amtrak counter', el:'ο υπάλληλος στο γκισέ της Amtrak' },
+        lerner: { de:'Giulia, die Ingenieurin', es:'Giulia, la ingeniera', en:'Giulia, the engineer', el:'η Τζούλια, η μηχανικός' },
+        ort:    { de:'in der King Street Station, Seattle', es:'en la estación King Street de Seattle', en:'at King Street Station, Seattle', el:'στον σταθμό King Street στο Σιάτλ' }
+      },
+      wortschatz: [
+        { z:'the line', na:{ de:'die Schlange', es:'la fila, la cola', el:'η ουρά' } },
+        { z:'to rebook', na:{ de:'umbuchen', es:'cambiar la reserva', el:'αλλάζω την κράτηση' } },
+        { z:'had already left', na:{ de:'war schon abgefahren', es:'ya había salido', el:'είχε ήδη φύγει' } },
+        { z:'has been delayed', na:{ de:'hat Verspätung', es:'lleva retraso', el:'έχει καθυστέρηση' } },
+        { z:'the passport', na:{ de:'der Reisepass', es:'el pasaporte', el:'το διαβατήριο' } },
+        { z:'the border', na:{ de:'die Grenze', es:'la frontera', el:'τα σύνορα' } },
+        { z:'to check a bag', na:{ de:'Gepäck aufgeben', es:'facturar una maleta', el:'παραδίδω αποσκευή' } },
+        { z:'checked through to …', na:{ de:'durchgehend aufgegeben bis …', es:'facturado hasta …', el:'παραδομένη μέχρι …' } },
+        { z:'a carry-on', na:{ de:'das Handgepäck', es:'el equipaje de mano', el:'η χειραποσκευή' } },
+        { z:'the track', na:{ de:'das Gleis', es:'la vía, el andén', el:'η γραμμή, η αποβάθρα' } },
+        { z:'a sketchbook', na:{ de:'das Skizzenbuch', es:'el cuaderno de dibujo', el:'το μπλοκ σχεδίου' } },
+        { z:'All aboard!', na:{ de:'Alles einsteigen!', es:'¡Pasajeros al tren!', el:'Επιβιβαστείτε!' } }
+      ],
+      dialog: {
+        rolle: { de:'der Mitarbeiter am Amtrak-Schalter', es:'el empleado de la taquilla', el:'ο υπάλληλος στο γκισέ' },
+        zeilen: [
+          { wer:'lerner', z:'Good morning. With my bad ankle I was too slow, and the train had already left.', na:{ de:'Guten Morgen. Mit meinem verletzten Knöchel war ich zu langsam, und der Zug war schon abgefahren.', es:'Buenos días. Con el tobillo mal he ido demasiado lenta y el tren ya había salido.', el:'Καλημέρα. Με τον χτυπημένο μου αστράγαλο ήμουν πολύ αργή, και το τρένο είχε ήδη φύγει.' } },
+          { wer:'spikiu', z:'Sorry about that. I can move you to the afternoon train, but it has been delayed thirty minutes.', na:{ de:'Das tut mir leid. Ich kann Sie auf den Nachmittagszug umbuchen, aber der hat dreißig Minuten Verspätung.', es:'Lo siento. Puedo cambiarla al tren de la tarde, pero lleva treinta minutos de retraso.', el:'Λυπάμαι. Μπορώ να σας μεταφέρω στο απογευματινό τρένο, αλλά έχει καθυστέρηση τριάντα λεπτά.' } },
+          { wer:'lerner', z:'That\'s fine. Do I need my passport on the train, or only at the border?', na:{ de:'Kein Problem. Brauche ich meinen Pass im Zug oder nur an der Grenze?', es:'No pasa nada. ¿Necesito el pasaporte en el tren o solo en la frontera?', el:'Δεν πειράζει. Χρειάζομαι το διαβατήριο στο τρένο ή μόνο στα σύνορα;' } },
+          { wer:'spikiu', z:'Keep it with you. Passports are checked when you arrive in Vancouver. Any bags to check?', na:{ de:'Behalten Sie ihn bei sich. Die Pässe werden bei der Ankunft in Vancouver kontrolliert. Möchten Sie Gepäck aufgeben?', es:'Llévelo encima. Los pasaportes se revisan al llegar a Vancouver. ¿Va a facturar equipaje?', el:'Κρατήστε το μαζί σας. Τα διαβατήρια ελέγχονται όταν φτάνετε στο Βανκούβερ. Έχετε αποσκευές να παραδώσετε;' } },
+          { wer:'lerner', z:'Just one suitcase. My sketchbooks stay with me — they\'re my whole year.', na:{ de:'Nur einen Koffer. Meine Skizzenbücher bleiben bei mir — sie sind mein ganzes Jahr.', es:'Solo una maleta. Los cuadernos de dibujo van conmigo: son todo mi año.', el:'Μόνο μία βαλίτσα. Τα μπλοκ σχεδίου μου μένουν μαζί μου — είναι όλη μου η χρονιά.' } },
+          { wer:'spikiu', z:'Understood. Your suitcase goes underneath, and the train leaves from track four.', na:{ de:'Verstanden. Ihr Koffer kommt in den Gepäckwagen, und der Zug fährt von Gleis vier.', es:'Entendido. Su maleta va en el vagón de equipajes, y el tren sale de la vía cuatro.', el:'Κατανοητό. Η βαλίτσα σας πάει στο βαγόνι αποσκευών, και το τρένο φεύγει από τη γραμμή τέσσερα.' } }
+        ]
+      },
+      lesetext: {
+        z:'I asked the man at the counter for a timetable. He smiled: "You mean a schedule? It\'s on the board!" The afternoon train had been delayed, but nobody minded: the tracks ran right along the water. In Vancouver my passport was checked, and in the evening I drew the Lions Gate Bridge, all lit up. Word of the place: washroom (Canada).',
+        na:{ de:'Ich fragte den Mann am Schalter nach einem „timetable". Er lächelte: „Du meinst einen schedule? Der steht auf der Tafel!" Der Nachmittagszug hatte Verspätung, aber das störte niemanden: Die Gleise führten direkt am Wasser entlang. In Vancouver wurde mein Pass kontrolliert, und am Abend zeichnete ich die beleuchtete Lions Gate Bridge. Wort des Ortes: washroom (Kanada).',
+             es:'Le pedí al hombre de la taquilla un «timetable». Sonrió: «¿Quieres decir un schedule? ¡Está en el panel!». El tren de la tarde llevaba retraso, pero a nadie le importó: las vías iban junto al agua. En Vancouver me revisaron el pasaporte, y por la noche dibujé el Lions Gate Bridge, todo iluminado. Palabra del lugar: washroom (Canadá).',
+             el:'Ζήτησα από τον άντρα στο γκισέ ένα «timetable». Χαμογέλασε: «Εννοείς schedule; Είναι στον πίνακα!» Το απογευματινό τρένο είχε καθυστέρηση, αλλά κανείς δεν νοιάστηκε: οι γραμμές περνούσαν ακριβώς δίπλα στο νερό. Στο Βανκούβερ μού έλεγξαν το διαβατήριο, και το βράδυ σχεδίασα τη γέφυρα Lions Gate, φωταγωγημένη. Λέξη του τόπου: washroom (Καναδάς).' },
+        frage:{ de:'Was hat Giulia am Abend gezeichnet?', es:'¿Qué dibujó Giulia por la noche?', el:'Τι σχεδίασε η Τζούλια το βράδυ;' },
+        optionen:[
+          { na:{ de:'Die Lions Gate Bridge', es:'El Lions Gate Bridge', el:'Τη γέφυρα Lions Gate' }, richtig:true },
+          { na:{ de:'Den Bahnhof in Seattle', es:'La estación de Seattle', el:'Τον σταθμό του Σιάτλ' }, richtig:false },
+          { na:{ de:'Den Zug am Wasser', es:'El tren junto al agua', el:'Το τρένο δίπλα στο νερό' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähl, was schon passiert war, als du ankamst — und was dann mit deiner Fahrkarte gemacht wurde. Zwei Sätze.', es:'Cuenta qué había pasado ya cuando llegaste y qué se hizo luego con tu billete. Dos frases.', el:'Διηγήσου τι είχε ήδη γίνει όταν έφτασες — και τι έγινε μετά με το εισιτήριό σου. Δύο προτάσεις.' },
+        muster:'When I got to the station, my train had already left. My ticket was changed to the next train.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', el:'Γραμματική χωρίς περιστροφές' },
+        text:{ de:'Vorvergangenheit: had + Partizip — etwas war schon passiert, bevor etwas anderes kam: When I arrived, the train had already left. Und das Passiv, wenn nicht wichtig ist, wer etwas tut: Passports are checked in Vancouver. The train has been delayed. Am Bahnhof hörst du beides ständig.',
+               es:'Pluscuamperfecto: had + participio, algo ya había pasado antes de otra cosa: When I arrived, the train had already left = cuando llegué, el tren ya había salido. Y la pasiva, cuando no importa quién lo hace: Passports are checked in Vancouver = los pasaportes se revisan en Vancouver. The train has been delayed. En la estación oirás las dos cosas todo el rato.',
+               el:'Υπερσυντέλικος: had + μετοχή — κάτι είχε ήδη γίνει πριν από κάτι άλλο: When I arrived, the train had already left = όταν έφτασα, το τρένο είχε ήδη φύγει. Και η παθητική φωνή, όταν δεν έχει σημασία ποιος κάνει κάτι: Passports are checked in Vancouver = τα διαβατήρια ελέγχονται στο Βανκούβερ. The train has been delayed. Στον σταθμό θα τα ακούς και τα δύο συνέχεια.' },
+        beispiele:[
+          { z:'The train had already left.', na:{ de:'Der Zug war schon abgefahren.', es:'El tren ya había salido.', el:'Το τρένο είχε ήδη φύγει.' } },
+          { z:'Passports are checked in Vancouver.', na:{ de:'Die Pässe werden in Vancouver kontrolliert.', es:'Los pasaportes se revisan en Vancouver.', el:'Τα διαβατήρια ελέγχονται στο Βανκούβερ.' } }
+        ]
+      },
+      kultur: { de:'Der Amtrak Cascades fährt von Seattle nach Vancouver lange Strecken direkt an der Küste entlang. Die Passkontrolle ist erst bei der Ankunft im Bahnhof Pacific Central. In Vancouver verbindet die Lions Gate Bridge (1938) den Stanley Park mit dem Nordufer; nachts leuchtet sie über dem Wasser.',
+                es:'El Amtrak Cascades va de Seattle a Vancouver y durante largos tramos circula pegado a la costa. El control de pasaportes es al llegar a la estación Pacific Central. En Vancouver, el Lions Gate Bridge (1938) une el parque Stanley con la orilla norte; de noche brilla sobre el agua.',
+                el:'Το Amtrak Cascades πηγαίνει από το Σιάτλ στο Βανκούβερ και για μεγάλα κομμάτια κινείται ακριβώς δίπλα στην ακτή. Ο έλεγχος διαβατηρίων γίνεται μόλις φτάσεις στον σταθμό Pacific Central. Στο Βανκούβερ, η γέφυρα Lions Gate (1938) ενώνει το πάρκο Στάνλεϊ με τη βόρεια όχθη· τη νύχτα λάμπει πάνω από το νερό.' }
+    }
+  }
+};
+
+  [K_LP_A, K_LP_B].forEach(function (F) {
+    Object.keys(F.schritt).forEach(function (t) { if (SCHRITT[t]) SCHRITT[t].b1 = F.schritt[t]; });
+    Object.keys(F.aufgaben).forEach(function (k) { AUFGABEN[k] = F.aufgaben[k]; });
+    Object.keys(F.stationen).forEach(function (k) { STATIONEN[k] = F.stationen[k]; });
+  });
+
   raum.SpikiuLernpfadEN = {
     zielsprache: 'en',
     themen: THEMEN,
@@ -1377,7 +2099,23 @@
     stationen: STATIONEN,
 
     aufgabenVon: function (stufe, thema) { return AUFGABEN[stufe + '.' + thema] || []; },
-    rolle: function (thema) { return ROLLEN[thema] || null; },
+    /* Seit B1 (15.10.2026) darf eine Station eigene Rollen tragen (die
+       Vermieterin in Mexiko statt der Empfangsdame). Ohne stufe gilt die
+       Stufe des Weges, wenn lernpfad.js geladen ist. */
+    rolle: function (thema, stufe) {
+      var st = stufe;
+      try { if (!st && raum.SpikiuPfad && raum.SpikiuPfad.stufe) st = raum.SpikiuPfad.stufe(); } catch (e) {}
+      var S = st ? STATIONEN[st + '.' + thema] : null;
+      return (S && S.rollen) || ROLLEN[thema] || null;
+    },
+
+    /* Ein Satz zum Ort der Station (nur B1), in der Muttersprache. */
+    kulturVon: function (stufe, thema, muttersprache) {
+      var S = STATIONEN[stufe + '.' + thema];
+      if (!S || !S.kultur) return '';
+      var mu = muttersprache || 'de';
+      return S.kultur[mu] || S.kultur.en || S.kultur.de || '';
+    },
     thema: function (id) {
       for (var i = 0; i < THEMEN.length; i++) if (THEMEN[i].id === id) return THEMEN[i];
       return null;

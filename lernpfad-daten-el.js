@@ -47,7 +47,8 @@
     { id:'wetter',          em:'🌤️', na:{ de:'Über das Wetter',     es:'Sobre el tiempo',     en:'About the weather',  el:'Για τον καιρό' } }
   ];
 
-  var STUFEN = ['a1', 'a2'];
+  /* b1 = KRONE (16.10.2026), siehe unten „B1 · KRONE“. */
+  var STUFEN = ['a1', 'a2', 'b1'];
 
   var KATEGORIEN = [
     { id:'essen',     em:'🍽️', na:{ de:'Essen & Trinken', es:'Comer y beber', en:'Food & Drink',   el:'Φαγητό και ποτό' },
@@ -1335,6 +1336,895 @@
 
   };
 
+  /* ══════════════════════════════════════════════════════════════════
+     B1 · KRONE · «ΦΩΣ» (Leo, 16.10.2026: „Aprobado … Dale con todos.“)
+     Elli Hartmann, Schriftstellerin aus Hamburg (Leo, 16.10.2026: „Elli, escritora alemana“), schreibt einen Roman über das Licht Griechenlands: hotel Athen · wegbeschreibung Meteora · wetter Pilion · cafe Korfu · familie Ikaria · arzt Chania · einkaufen Rhodos · restaurant Santorini · bahnhof Athen→Thessaloniki · taxi Zypern (ohne Politik). Umschrift tr wie in A1/A2.
+     Dieselben zehn Themen, neue Handlung, neuer Ort. Keine Politik.
+     Neue Felder wie im spanischen B1: rollen (Rollenkarte der Station) und
+     kultur (ein Satz zum Ort, „Gut zu wissen“). Roman dazu: learnroman-elli.js „Φως“.
+     ══════════════════════════════════════════════════════════════════ */
+var K_LP_A = {
+  schritt: {
+    hotel: { de:'Athen: eine kleine Wohnung für einen Monat', es:'Atenas: un pisito para un mes', en:'Athens: a small flat for a month', el:'Αθήνα: ένα μικρό διαμέρισμα για έναν μήνα' },
+    wegbeschreibung: { de:'Meteora: einen Weg verstehen und weitersagen', es:'Meteora: entender un camino y contarlo', en:'Meteora: following directions and passing them on', el:'Μετέωρα: καταλαβαίνεις τον δρόμο και τον μεταφέρεις' },
+    wetter: { de:'Pilion: planen, wenn der Regen kommt', es:'Pelión: hacer planes cuando llega la lluvia', en:'Pelion: planning when the rain is coming', el:'Πήλιο: σχέδια όταν έρχεται η βροχή' },
+    cafe: { de:'Korfu: Meinungen unter den Arkaden', es:'Corfú: opiniones bajo los soportales', en:'Corfu: opinions under the arcades', el:'Κέρκυρα: γνώμες κάτω από τις καμάρες' },
+    familie: { de:'Ikaria: von früher erzählen — einmal und immer wieder', es:'Icaria: contar el pasado, una vez y una y otra vez', en:'Ikaria: telling the past — once, and over and over', el:'Ικαρία: αφηγείσαι το παρελθόν' }
+  },
+  aufgaben: {
+    'b1.hotel': [
+      { de:'Bejahe, sag, dass du die Wohnung gern sehen würdest und etwas Ruhiges suchst', es:'Di que sí, que te gustaría ver el piso y que buscas algo que sea tranquilo', en:'Say yes, that you’d like to see the flat and are looking for something quiet', el:'Πες ναι, ότι θα ήθελες να δεις το διαμέρισμα και ότι ψάχνεις κάτι ήσυχο' },
+      { de:'Frag, ob die Nebenkosten (κοινόχρηστα) und der Strom in der Miete enthalten sind', es:'Pregunta si los gastos de comunidad (κοινόχρηστα) y la luz están incluidos en el alquiler', en:'Ask whether the shared building costs (κοινόχρηστα) and the electricity are included in the rent', el:'Ρώτα αν τα κοινόχρηστα και το ρεύμα περιλαμβάνονται στο ενοίκιο' },
+      { de:'Stimme zu und sag, dass du am Donnerstag einziehen möchtest, wenn es ihr passt', es:'Di que de acuerdo y que te gustaría mudarte el jueves, si le viene bien', en:'Agree and say you’d like to move in on Thursday, if that suits her', el:'Συμφώνησε και πες ότι θα ήθελες να μετακομίσεις την Πέμπτη, αν της βολεύει' }
+    ],
+    'b1.wegbeschreibung': [
+      { de:'Grüß den Mönch, sag, dass du zu Fuß nach Varlaam gehen möchtest, und frag nach dem Weg', es:'Saluda al monje, di que te gustaría ir a pie a Varlaam y pregunta por dónde se va', en:'Greet the monk, say you’d like to walk to Varlaam and ask which way to go', el:'Χαιρέτησε τον μοναχό, πες ότι θα ήθελες να πας με τα πόδια στο Βαρλαάμ και ρώτα από πού πας' },
+      { de:'Frag, ob du einen Rock tragen musst — man hat dir von einer Kleiderregel erzählt', es:'Pregunta si tienes que llevar falda: te dijeron que hay una norma para la ropa', en:'Ask whether you have to wear a skirt — you were told there is a dress code', el:'Ρώτα αν πρέπει να φορέσεις φούστα· σου είπαν ότι υπάρχει κανόνας για τα ρούχα' },
+      { de:'Fass zusammen, was er gesagt hat: Du musst vor drei dort sein — und bedank dich', es:'Resume lo que te ha dicho: tienes que estar allí antes de las tres, y dale las gracias', en:'Sum up what he told you: you have to be there before three — and thank him', el:'Επανάλαβε αυτό που σου είπε: πρέπει να είσαι εκεί πριν από τις τρεις — και ευχαρίστησέ τον' }
+    ],
+    'b1.wetter': [
+      { de:'Frag Thanasis, ob du es schaffst, den Steinweg hinunterzugehen, bevor es regnet', es:'Pregúntale a Thanasis si te dará tiempo a bajar el camino empedrado antes de que llueva', en:'Ask Thanasis whether you’ll make it down the stone path before it rains', el:'Ρώτα τον Θανάση αν θα προλάβεις να κατέβεις το καλντερίμι πριν βρέξει' },
+      { de:'Stimme zu und sag: Wenn es regnet, fährst du mit dem Bus von Ano Volos zurück', es:'Di que vale y que, si llueve, volverás en autobús desde Ano Volos', en:'Agree and say that if it’s raining, you’ll come back by bus from Ano Volos', el:'Συμφώνησε και πες ότι, αν βρέχει, θα γυρίσεις με το λεωφορείο από τον Άνω Βόλο' },
+      { de:'Sag, dass du vor der Dunkelheit zurück bist und am Kamin schreiben wirst', es:'Di que volverás antes de que oscurezca y que escribirás junto a la chimenea', en:'Say you’ll be back before dark and will write by the fire', el:'Πες ότι θα γυρίσεις πριν σκοτεινιάσει και ότι θα γράψεις δίπλα στο τζάκι' }
+    ],
+    'b1.cafe': [
+      { de:'Sag, dass es dir sehr gefällt und dass du glaubst, hier unter den Arkaden besser zu schreiben', es:'Di que te gusta muchísimo y que crees que aquí, bajo los soportales, escribes mejor', en:'Say you like it very much and that you think you write better here under the arcades', el:'Πες ότι σου αρέσει πάρα πολύ και ότι νομίζεις πως εδώ, κάτω από τις καμάρες, γράφεις καλύτερα' },
+      { de:'Sag: ein bisschen — du glaubst nicht, dass du sie gut kennst, und frag, was er empfiehlt', es:'Di que un poco, que no crees que la conozcas bien, y pregunta qué te recomienda', en:'Say a little — you don’t think you know it well — and ask what he recommends', el:'Πες «λίγο», ότι δεν νομίζεις ότι την ξέρεις καλά, και ρώτα τι σου προτείνει' },
+      { de:'Sag, deiner Meinung nach sind Likör und Kantada eine perfekte Kombination, und biete an, ihn einzuladen', es:'Di que, en tu opinión, licor y kantada son la combinación perfecta, y ofrécete a invitarle', en:'Say that in your opinion liqueur and a kantada are the perfect combination, and offer to treat him', el:'Πες ότι, κατά τη γνώμη σου, το λικέρ με την καντάδα είναι τέλειος συνδυασμός, και πρότεινε να τον κεράσεις' }
+    ],
+    'b1.familie': [
+      { de:'Bejahe: deine Freundin Margarete ist 82 und lebt in Hamburg', es:'Di que sí: tu amiga Margarete tiene 82 años y vive en Hamburgo', en:'Say yes: your friend Margarete is 82 and lives in Hamburg', el:'Πες ναι: η φίλη σου η Μαργκαρέτε είναι 82 χρονών και μένει στο Αμβούργο' },
+      { de:'Erzähl, dass du sie in der Schule kennengelernt hast: Sie war deine Lehrerin und hat dir eine alte griechische Schallplatte geschenkt', es:'Cuenta que la conociste en el colegio: era tu profesora y te regaló un disco griego antiguo', en:'Tell how you met her at school: she was your teacher and gave you an old Greek record', el:'Διηγήσου ότι τη γνώρισες στο σχολείο: ήταν η δασκάλα σου και σου χάρισε έναν παλιό ελληνικό δίσκο' },
+      { de:'Sag „ständig!“: Als du klein warst, hat sie dir Karten aus Griechenland geschickt', es:'Di «¡todo el rato!»: cuando eras pequeña, ella te mandaba postales desde Grecia', en:'Say “all the time!”: when you were little, she used to send you postcards from Greece', el:'Πες «συνέχεια!»: όταν ήσουν μικρή, σου έστελνε εκείνη κάρτες από την Ελλάδα' }
+    ]
+  },
+  stationen: {
+    'b1.hotel': {
+      deineRolle: { de:'Du bist in Athen und suchst für einen Monat eine kleine möblierte Wohnung — ruhig soll sie sein. Einziehen möchtest du am Donnerstag.', es:'Estás en Atenas y buscas un pisito amueblado para un mes; tiene que ser tranquilo. Te gustaría entrar a vivir el jueves.', en:'You are in Athens looking for a small furnished flat for one month — it should be quiet. You would like to move in on Thursday.' },
+      abrundung: {
+        z: 'Με βολεύει μια χαρά! Ορίστε τα κλειδιά — και απόψε βγείτε στο μπαλκόνι να δείτε το φως.',
+        tr: 'Me volévi mia chará! Oríste ta klidiá — ke apópse vyíte sto balkóni na díte to fos.',
+        na: { de:'Passt mir wunderbar! Hier sind die Schlüssel — und heute Abend gehen Sie auf den Balkon und schauen sich das Licht an.', es:'¡Me viene de maravilla! Aquí tiene las llaves, y esta noche salga al balcón a ver la luz.', en:'That suits me perfectly! Here are the keys — and tonight, step out onto the balcony and look at the light.' }
+      },
+      rollen: {
+        spikiu: { de:'die Vermieterin, Frau Evanthia', es:'la casera, la señora Evanthía', en:'the landlady, Mrs Evanthia', el:'η σπιτονοικοκυρά, η κυρία Ευανθία' },
+        lerner: { de:'die Schriftstellerin auf Wohnungssuche', es:'la escritora que busca piso', en:'the writer looking for a flat', el:'η συγγραφέας που ψάχνει σπίτι' },
+        ort: { de:'in einem alten Wohnhaus in Koukaki, mit Blick auf die Akropolis', es:'en un edificio antiguo de Kukaki, con vistas a la Acrópolis', en:'in an old apartment building in Koukaki, with a view of the Acropolis', el:'σε μια παλιά πολυκατοικία στο Κουκάκι, με θέα στην Ακρόπολη' }
+      },
+      wortschatz: [
+        { z:'το διαμέρισμα', tr:'to diamérisma', na:{ de:'die Wohnung', es:'el piso', en:'the flat' } },
+        { z:'επιπλωμένο', tr:'epiploméno', na:{ de:'möbliert', es:'amueblado', en:'furnished' } },
+        { z:'το ενοίκιο', tr:'to eníkio', na:{ de:'die Miete', es:'el alquiler', en:'the rent' } },
+        { z:'η εγγύηση', tr:'i engíisi', na:{ de:'die Kaution', es:'la fianza', en:'the deposit' } },
+        { z:'τα κοινόχρηστα', tr:'ta kinóchrista', na:{ de:'die Nebenkosten des Hauses', es:'los gastos de comunidad', en:'the building’s shared costs' } },
+        { z:'το συμβόλαιο', tr:'to simvóleo', na:{ de:'der Vertrag', es:'el contrato', en:'the contract' } },
+        { z:'υπογράφω', tr:'ipográfo', na:{ de:'unterschreiben', es:'firmar', en:'to sign' } },
+        { z:'το ρεύμα', tr:'to révma', na:{ de:'der Strom', es:'la luz (electricidad)', en:'the electricity' } },
+        { z:'η σπιτονοικοκυρά', tr:'i spitonikokirá', na:{ de:'die Vermieterin', es:'la casera', en:'the landlady' } },
+        { z:'θα ήθελα να …', tr:'tha íthela na …', na:{ de:'ich würde gern …', es:'me gustaría …', en:'I’d like to …' } },
+        { z:'ψάχνω κάτι που να …', tr:'psáchno káti pou na …', na:{ de:'ich suche etwas, das …', es:'busco algo que …', en:'I’m looking for something that …' } },
+        { z:'με βολεύει', tr:'me volévi', na:{ de:'das passt mir', es:'me viene bien', en:'it suits me' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Vermieterin, Frau Evanthia', es:'La casera, la señora Evanthía', en:'The landlady, Mrs Evanthia' },
+        zeilen: [
+          {
+            wer: 'spikiu',
+            z: 'Καλησπέρα, περάστε! Εσείς μου τηλεφωνήσατε χθες για το διαμέρισμα;',
+            tr: 'Kalispéra, peráste! Esís mou tilefonísate chthes ya to diamérisma?',
+            na: { de:'Guten Abend, kommen Sie herein! Haben Sie mich gestern wegen der Wohnung angerufen?', es:'¡Buenas tardes, pase! ¿Es usted quien me llamó ayer por el piso?', en:'Good evening, come in! Was it you who called me yesterday about the flat?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Ναι, εγώ. Θα ήθελα να το δω· ψάχνω κάτι που να είναι ήσυχο.',
+            tr: 'Ne, egó. Tha íthela na to do; psáchno káti pou na íne ísicho.',
+            na: { de:'Ja, ich. Ich würde sie gern sehen; ich suche etwas, das ruhig ist.', es:'Sí, yo. Me gustaría verlo; busco algo que sea tranquilo.', en:'Yes, me. I’d like to see it; I’m looking for something quiet.' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Είναι πολύ ήσυχο, και από το μπαλκόνι φαίνεται η Ακρόπολη. Το ενοίκιο είναι εξακόσια ευρώ.',
+            tr: 'Íne polí ísicho, ke apó to balkóni fénete i Akrópoli. To eníkio íne exakósia evró.',
+            na: { de:'Sie ist sehr ruhig, und vom Balkon aus sieht man die Akropolis. Die Miete beträgt sechshundert Euro.', es:'Es muy tranquilo, y desde el balcón se ve la Acrópolis. El alquiler son seiscientos euros.', en:'It’s very quiet, and you can see the Acropolis from the balcony. The rent is six hundred euros.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Τα κοινόχρηστα και το ρεύμα περιλαμβάνονται στο ενοίκιο;',
+            tr: 'Ta kinóchrista ke to révma perilamvánonde sto eníkio?',
+            na: { de:'Sind die Nebenkosten und der Strom in der Miete enthalten?', es:'¿Los gastos de comunidad y la luz están incluidos en el alquiler?', en:'Are the shared building costs and the electricity included in the rent?' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Τα κοινόχρηστα ναι, το ρεύμα όχι. Ζητάω ένα ενοίκιο εγγύηση και κάνουμε ένα απλό συμβόλαιο.',
+            tr: 'Ta kinóchrista ne, to révma óchi. Zitáo éna eníkio engíisi ke kánoume éna apló simvóleo.',
+            na: { de:'Die Nebenkosten ja, den Strom nicht. Ich bitte um eine Monatsmiete Kaution, und wir machen einen einfachen Vertrag.', es:'Los gastos de comunidad sí, la luz no. Le pido un mes de fianza y hacemos un contrato sencillo.', en:'The shared costs yes, the electricity no. I ask for one month’s rent as a deposit, and we make a simple contract.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Εντάξει. Θα ήθελα να μετακομίσω την Πέμπτη, αν σας βολεύει.',
+            tr: 'Endáxi. Tha íthela na metakomíso tin Pémpti, an sas volévi.',
+            na: { de:'In Ordnung. Ich würde gern am Donnerstag einziehen, wenn es Ihnen passt.', es:'De acuerdo. Me gustaría mudarme el jueves, si le viene bien.', en:'All right. I’d like to move in on Thursday, if that suits you.' }
+          }
+        ]
+      },
+      lesetext: {
+        z: 'Σήμερα νοίκιασα ένα μικρό διαμέρισμα στο Κουκάκι. Όταν είπα ότι ψάχνω μια ήσυχη «οικία», η κυρία Ευανθία γέλασε: «Εδώ λέμε απλώς σπίτι!» Το έγραψα στην τελευταία σελίδα του σημειωματάριου. Το βράδυ, από το μπαλκόνι, η Ακρόπολη έγινε πρώτα χρυσή και μετά ροζ.',
+        tr: 'Símera níkiasa éna mikró diamérisma sto Koukáki. Ótan ípa óti psáchno mia ísichi «ikía», i kiría Evanthía yélase: «Edó léme aplós spíti!» To égrapsa stin teleftéa selída tou simiomatáriou. To vrádi, apó to balkóni, i Akrópoli éyine próta chrisí ke metá roz.',
+        na: { de:'Heute habe ich eine kleine Wohnung in Koukaki gemietet. Als ich sagte, ich suche eine ruhige „οικία“ (Behausung, sehr gehoben), lachte Frau Evanthia: „Hier sagen wir einfach σπίτι!“ Ich habe es auf die letzte Seite meines Notizbuchs geschrieben. Am Abend wurde die Akropolis, vom Balkon aus gesehen, erst golden und dann rosa.', es:'Hoy he alquilado un pisito en Kukaki. Cuando dije que buscaba una «οικία» (morada, palabra muy culta) tranquila, la señora Evanthía se rio: «¡Aquí decimos simplemente σπίτι!». Lo apunté en la última página del cuaderno. Por la noche, desde el balcón, la Acrópolis se volvió primero dorada y luego rosa.', en:'Today I rented a small flat in Koukaki. When I said I was looking for a quiet “οικία” (dwelling, a very bookish word), Mrs Evanthia laughed: “Here we just say σπίτι!” I wrote it on the last page of my notebook. In the evening, from the balcony, the Acropolis turned first golden and then pink.' },
+        frage: { de:'Welche Farbe hatte die Akropolis zuerst?', es:'¿De qué color se volvió primero la Acrópolis?', en:'What colour did the Acropolis turn first?' },
+        optionen: [
+          { na:{ de:'Golden', es:'Dorada', en:'Golden' }, richtig:true },
+          { na:{ de:'Rosa', es:'Rosa', en:'Pink' }, richtig:false },
+          { na:{ de:'Weiß', es:'Blanca', en:'White' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag: { de:'Schreib einer Vermieterin: Du suchst etwas mit Balkon und möchtest wissen, ob die Nebenkosten in der Miete enthalten sind. Zwei Sätze.', es:'Escríbele a una casera: buscas algo que tenga balcón y quieres saber si los gastos de comunidad están incluidos en el alquiler. Dos frases.', en:'Write to a landlady: you are looking for something with a balcony and want to know whether the shared costs are included in the rent. Two sentences.' },
+        muster: 'Καλησπέρα σας, ψάχνω κάτι που να έχει μπαλκόνι. Τα κοινόχρηστα περιλαμβάνονται στο ενοίκιο;'
+      },
+      grammatik: {
+        titel: { de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text: { de:'Die höfliche Bitte heißt «θα ήθελα να» + Verb: θα ήθελα να δω, θα ήθελα να μετακομίσω — „ich würde gern …“. Und wer etwas sucht, das er noch nicht gefunden hat, sagt «ψάχνω κάτι που να» …: ψάχνω κάτι που «να» είναι ήσυχο. Das kleine να zeigt: Es ist ein Wunsch, noch keine Wirklichkeit. «Τα κοινόχρηστα» sind die gemeinsamen Kosten des Hauses — Aufzug, Treppenhaus, oft auch die Heizung.', es:'La petición cortés es «θα ήθελα να» + verbo: θα ήθελα να δω, θα ήθελα να μετακομίσω — «me gustaría…». Y cuando buscas algo que aún no has encontrado, dices «ψάχνω κάτι που να» …: ψάχνω κάτι που «να» είναι ήσυχο, igual que el subjuntivo de «busco algo que sea tranquilo». «Τα κοινόχρηστα» son los gastos de comunidad: ascensor, escalera y a menudo la calefacción.', en:'The polite request is «θα ήθελα να» + verb: θα ήθελα να δω, θα ήθελα να μετακομίσω — “I’d like to …”. And when you look for something you haven’t found yet, say «ψάχνω κάτι που να» …: ψάχνω κάτι που «να» είναι ήσυχο. That little να shows it’s a wish, not yet reality. «Τα κοινόχρηστα» are the building’s shared costs — lift, stairwell, often the heating too.' },
+        beispiele: [
+          { z:'Θα ήθελα να δω το διαμέρισμα.', tr:'Tha íthela na do to diamérisma.', na:{ de:'Ich würde gern die Wohnung sehen.', es:'Me gustaría ver el piso.', en:'I’d like to see the flat.' } },
+          { z:'Ψάχνω κάτι που να είναι ήσυχο.', tr:'Psáchno káti pou na íne ísicho.', na:{ de:'Ich suche etwas, das ruhig ist.', es:'Busco algo que sea tranquilo.', en:'I’m looking for something quiet.' } }
+        ]
+      },
+      kultur: { de:'Die meisten Athener wohnen in einer πολυκατοικία, einem Wohnhaus mit Balkonen auf jeder Seite — im Sommer ist der Balkon das zweite Wohnzimmer. Von Koukaki aus sieht man abends, wie das Licht den Marmor der Akropolis erst golden, dann rosa färbt.', es:'La mayoría de los atenienses vive en una πολυκατοικία, un bloque con balcones por todos lados; en verano el balcón es el segundo salón. Desde Kukaki se ve al atardecer cómo la luz tiñe el mármol de la Acrópolis primero de dorado y luego de rosa.', en:'Most Athenians live in a πολυκατοικία, an apartment block with balconies on every side — in summer the balcony is the second living room. From Koukaki you can watch the evening light turn the marble of the Acropolis first golden, then pink.' }
+    },
+    'b1.wegbeschreibung': {
+      deineRolle: { de:'Du bist in Meteora, und es ist neblig. Du möchtest zu Fuß zum Kloster Varlaam gehen und hast gehört, dass es dort eine Kleiderregel gibt.', es:'Estás en Meteora y hay niebla. Te gustaría ir a pie al monasterio de Varlaam y te han dicho que allí hay una norma sobre la ropa.', en:'You are in Meteora and it is foggy. You would like to walk to Varlaam Monastery and have heard there is a dress code.' },
+      abrundung: {
+        z: 'Ακριβώς! Και μη βιάζεστε· οι βράχοι περιμένουν εδώ εκατομμύρια χρόνια, θα περιμένουν και εσάς.',
+        tr: 'Akrivós! Ke mi viázeste; i vráchi periménoun edó ekatomíria chrónia, tha periménoun ke esás.',
+        na: { de:'Genau! Und keine Eile — die Felsen warten hier seit Millionen Jahren, da warten sie auch auf Sie.', es:'¡Exacto! Y no tenga prisa: las rocas llevan millones de años esperando aquí; también la esperarán a usted.', en:'Exactly! And don’t hurry — the rocks have been waiting here for millions of years; they’ll wait for you too.' }
+      },
+      rollen: {
+        spikiu: { de:'Pater Nikodimos, ein Mönch mit Humor', es:'el padre Nikódimos, un monje con sentido del humor', en:'Father Nikodimos, a monk with a sense of humour', el:'ο πατήρ Νικόδημος, ένας μοναχός με χιούμορ' },
+        lerner: { de:'die Wanderin im Nebel', es:'la caminante en la niebla', en:'the walker in the fog', el:'η πεζοπόρος μέσα στην ομίχλη' },
+        ort: { de:'auf dem Pfad zwischen den Klöstern von Meteora', es:'en el sendero entre los monasterios de Meteora', en:'on the path between the monasteries of Meteora', el:'στο μονοπάτι ανάμεσα στα μοναστήρια των Μετεώρων' }
+      },
+      wortschatz: [
+        { z:'το μονοπάτι', tr:'to monopáti', na:{ de:'der Pfad', es:'el sendero', en:'the path' } },
+        { z:'τα σκαλιά', tr:'ta skaliá', na:{ de:'die Stufen', es:'los escalones', en:'the steps' } },
+        { z:'ανεβαίνω', tr:'anevéno', na:{ de:'hinaufsteigen', es:'subir', en:'to go up' } },
+        { z:'γλιστράει', tr:'glistrái', na:{ de:'es ist rutschig', es:'resbala', en:'it’s slippery' } },
+        { z:'Προσέξτε!', tr:'Proséxte!', na:{ de:'Passen Sie auf!', es:'¡Tenga cuidado!', en:'Be careful!' } },
+        { z:'η ομίχλη', tr:'i omíchli', na:{ de:'der Nebel', es:'la niebla', en:'the fog' } },
+        { z:'ο βράχος', tr:'o vráchos', na:{ de:'der Felsen', es:'la roca', en:'the rock' } },
+        { z:'η μονή', tr:'i moní', na:{ de:'das Kloster', es:'el monasterio', en:'the monastery' } },
+        { z:'η φούστα', tr:'i foústa', na:{ de:'der Rock', es:'la falda', en:'the skirt' } },
+        { z:'το ωράριο', tr:'to orário', na:{ de:'die Öffnungszeiten', es:'el horario', en:'the opening hours' } },
+        { z:'μου είπε ότι …', tr:'mou ípe óti …', na:{ de:'er/sie hat mir gesagt, dass …', es:'me dijo que …', en:'he/she told me that …' } },
+        { z:'δηλαδή', tr:'diladí', na:{ de:'das heißt, also', es:'o sea', en:'so, that is' } }
+      ],
+      dialog: {
+        rolle: { de:'Pater Nikodimos, ein Mönch', es:'El padre Nikódimos, un monje', en:'Father Nikodimos, a monk' },
+        zeilen: [
+          {
+            wer: 'spikiu',
+            z: 'Καλημέρα! Σας βλέπω λίγο χαμένη μέσα στην ομίχλη. Μπορώ να βοηθήσω;',
+            tr: 'Kaliméra! Sas vlépo lígo chaméni mésa stin omíchli. Boró na voithíso?',
+            na: { de:'Guten Morgen! Sie sehen im Nebel ein bisschen verloren aus. Kann ich helfen?', es:'¡Buenos días! La veo un poco perdida en la niebla. ¿Puedo ayudarla?', en:'Good morning! You look a little lost in the fog. Can I help?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Καλημέρα, πάτερ. Θα ήθελα να πάω στο Βαρλαάμ με τα πόδια. Από πού πάω;',
+            tr: 'Kaliméra, páter. Tha íthela na páo sto Varlaám me ta pódia. Apó poú páo?',
+            na: { de:'Guten Morgen, Pater. Ich würde gern zu Fuß nach Varlaam gehen. Wie komme ich dahin?', es:'Buenos días, padre. Me gustaría ir a pie a Varlaam. ¿Por dónde voy?', en:'Good morning, Father. I’d like to walk to Varlaam. Which way do I go?' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Πάρτε το μονοπάτι δίπλα στον δρόμο, ανεβείτε τα σκαλιά και προσέξτε: η πέτρα γλιστράει.',
+            tr: 'Párte to monopáti dípla ston drómo, anevíte ta skaliá ke proséxte: i pétra glistrái.',
+            na: { de:'Nehmen Sie den Pfad neben der Straße, steigen Sie die Stufen hinauf und passen Sie auf: Der Stein ist rutschig.', es:'Coja el sendero junto a la carretera, suba los escalones y tenga cuidado: la piedra resbala.', en:'Take the path next to the road, go up the steps and be careful: the stone is slippery.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Πρέπει να φορέσω φούστα; Μου είπαν ότι υπάρχει κανόνας για τα ρούχα.',
+            tr: 'Prépi na foréso foústa? Mou ípan óti ipárchi kanónas ya ta roúcha.',
+            na: { de:'Muss ich einen Rock tragen? Man hat mir gesagt, dass es eine Kleiderregel gibt.', es:'¿Tengo que llevar falda? Me dijeron que hay una norma para la ropa.', en:'Do I have to wear a skirt? I was told there’s a dress code.' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Ναι, φούστα. Μην ανησυχείτε όμως: στην είσοδο σας δίνουμε μία. Σήμερα κλείνουμε στις τρεις.',
+            tr: 'Ne, foústa. Min anisichíte ómos: stin ísodo sas dínoume mía. Símera klínoume stis tris.',
+            na: { de:'Ja, einen Rock. Aber keine Sorge: Am Eingang geben wir Ihnen einen. Heute schließen wir um drei.', es:'Sí, falda. Pero no se preocupe: en la entrada le damos una. Hoy cerramos a las tres.', en:'Yes, a skirt. But don’t worry: we’ll give you one at the entrance. Today we close at three.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Δηλαδή μου λέτε ότι πρέπει να είμαι εκεί πριν από τις τρεις. Ευχαριστώ πολύ!',
+            tr: 'Diladí mou léte óti prépi na íme ekí prin apó tis tris. Efcharistó polí!',
+            na: { de:'Sie sagen mir also, dass ich vor drei dort sein muss. Vielen Dank!', es:'O sea, que me dice que tengo que estar allí antes de las tres. ¡Muchas gracias!', en:'So you’re telling me I have to be there before three. Thank you very much!' }
+          }
+        ]
+      },
+      lesetext: {
+        z: 'Γιόνας, σου στέλνω φωνητικό από τα Μετέωρα. Ο πατήρ Νικόδημος μου είπε ότι το μονοπάτι γλιστράει και ότι πρέπει να φορέσω φούστα. Όταν τον ρώτησα αν γνωρίζει την «οδόν», γέλασε: «Εδώ λέμε δρόμος!» Το πρωί η ομίχλη σκέπαζε τα πάντα· μετά βγήκαν οι βράχοι, ένας ένας, σαν να άναβε κάποιος το φως.',
+        tr: 'Yónas, sou stélno fonitikó apó ta Metéora. O patír Nikódimos mou ípe óti to monopáti glistrái ke óti prépi na foréso foústa. Ótan ton rótisa an gnorízi tin «odón», yélase: «Edó léme drómos!» To proí i omíchli sképaze ta pánda; metá vyíkan i vráchi, énas énas, san na ánave kápios to fos.',
+        na: { de:'Jonas, ich schicke dir eine Sprachnachricht aus Meteora. Pater Nikodimos hat mir gesagt, dass der Pfad rutschig ist und dass ich einen Rock tragen muss. Als ich ihn fragte, ob er die „οδόν“ (den Weg, auf Altgriechisch) kenne, lachte er: „Hier sagen wir δρόμος!“ Am Morgen bedeckte der Nebel alles; dann tauchten die Felsen auf, einer nach dem anderen, als würde jemand das Licht anmachen.', es:'Jonas, te mando un audio desde Meteora. El padre Nikódimos me dijo que el sendero resbala y que tengo que llevar falda. Cuando le pregunté si conocía la «οδόν» (el camino, en griego antiguo), se rio: «¡Aquí decimos δρόμος!». Por la mañana la niebla lo cubría todo; luego aparecieron las rocas, una a una, como si alguien encendiera la luz.', en:'Jonas, I’m sending you a voice message from Meteora. Father Nikodimos told me the path is slippery and that I have to wear a skirt. When I asked him if he knew the “οδόν” (the way, in Ancient Greek), he laughed: “Here we say δρόμος!” In the morning the fog covered everything; then the rocks appeared one by one, as if someone were switching on the light.' },
+        frage: { de:'Wie sagt man im Alltag „Weg“?', es:'¿Cómo se dice «camino» en el día a día?', en:'What is the everyday word for “way”?' },
+        optionen: [
+          { na:{ de:'ο δρόμος', es:'ο δρόμος', en:'ο δρόμος' }, richtig:true },
+          { na:{ de:'η οδός', es:'η οδός', en:'η οδός' }, richtig:false },
+          { na:{ de:'η ομίχλη', es:'η ομίχλη', en:'η ομίχλη' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag: { de:'Erzähl einem Freund, was dir jemand gesagt hat: Der Weg ist rutschig, und du sollst gute Schuhe anziehen. Zwei Sätze.', es:'Cuéntale a un amigo lo que te dijo alguien: el camino resbala y tienes que ponerte buen calzado. Dos frases.', en:'Tell a friend what someone told you: the path is slippery and you should wear good shoes. Two sentences.' },
+        muster: 'Ο οδηγός μου είπε ότι το μονοπάτι γλιστράει. Μου είπε επίσης να φορέσω καλά παπούτσια.'
+      },
+      grammatik: {
+        titel: { de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text: { de:'Was jemand gesagt hat, gibst du mit «μου είπε ότι» weiter — und die Zeit bleibt einfach, wie sie war: «Η πέτρα γλιστράει» → μου είπε ότι η πέτρα «γλιστράει». Kein Konjunktiv wie im Deutschen! Bitten gibst du mit «να» weiter: μου είπε «να» φορέσω φούστα. Höfliche Aufforderungen enden auf -τε: «πάρτε», «ανεβείτε», «προσέξτε».', es:'Lo que alguien te dijo lo cuentas con «μου είπε ότι», y el tiempo verbal no cambia: «Η πέτρα γλιστράει» → μου είπε ότι η πέτρα «γλιστράει». Las peticiones se transmiten con «να»: μου είπε «να» φορέσω φούστα (me dijo que me pusiera falda). El imperativo de usted acaba en -τε: «πάρτε», «ανεβείτε», «προσέξτε».', en:'To pass on what someone said, use «μου είπε ότι» — and the tense simply stays as it was: «Η πέτρα γλιστράει» → μου είπε ότι η πέτρα «γλιστράει». Requests are passed on with «να»: μου είπε «να» φορέσω φούστα (he told me to wear a skirt). Polite commands end in -τε: «πάρτε», «ανεβείτε», «προσέξτε».' },
+        beispiele: [
+          { z:'Μου είπε ότι το μονοπάτι γλιστράει.', tr:'Mou ípe óti to monopáti glistrái.', na:{ de:'Er hat mir gesagt, dass der Pfad rutschig ist.', es:'Me dijo que el sendero resbala.', en:'He told me the path is slippery.' } },
+          { z:'Πάρτε το μονοπάτι και ανεβείτε τα σκαλιά.', tr:'Párte to monopáti ke anevíte ta skaliá.', na:{ de:'Nehmen Sie den Pfad und steigen Sie die Stufen hinauf.', es:'Coja el sendero y suba los escalones.', en:'Take the path and go up the steps.' } }
+        ]
+      },
+      kultur: { de:'Μετέωρα heißt „in der Luft schwebend“: Die Klöster stehen hoch oben auf riesigen Felssäulen. Früher kam man nur in Netzen oder über Strickleitern hinauf, heute über Stufen, die in den Fels gehauen sind. Besucher kleiden sich schlicht — Röcke und Tücher werden am Eingang ausgeliehen.', es:'Μετέωρα significa «suspendido en el aire»: los monasterios están en lo alto de enormes columnas de roca. Antes solo se subía en redes o por escalas de cuerda; hoy hay escalones tallados en la roca. Los visitantes van con ropa sencilla, y en la entrada prestan faldas y pañuelos.', en:'Μετέωρα means “suspended in the air”: the monasteries sit high up on huge pillars of rock. Once you could only get up in nets or on rope ladders; today there are steps cut into the rock. Visitors dress modestly — skirts and wraps are lent at the entrance.' }
+    },
+    'b1.wetter': {
+      duzen: true,
+      deineRolle: { de:'Du übernachtest in Makrinitsa und willst heute den alten Steinweg hinunter nach Volos wandern. Wenn es regnet, fährst du mit dem Bus von Ano Volos zurück. Am Abend möchtest du am Kamin schreiben.', es:'Duermes en Makrinitsa y hoy quieres bajar a pie por el viejo camino empedrado hasta Volos. Si llueve, volverás en autobús desde Ano Volos. Por la noche quieres escribir junto a la chimenea.', en:'You are staying in Makrinitsa and want to walk down the old stone path to Volos today. If it rains, you will come back by bus from Ano Volos. In the evening you want to write by the fire.' },
+      abrundung: {
+        z: 'Σε περιμένω με ρακόμελο. Και πρόσεχε: στο Πήλιο ο καιρός αλλάζει πιο γρήγορα από τη γνώμη μου!',
+        tr: 'Se periméno me rakómelo. Ke próseche: sto Pílio o kerós alázi pio grígora apó ti gnómi mou!',
+        na: { de:'Ich warte mit Rakomelo auf dich. Und pass auf: Auf dem Pilion ändert sich das Wetter schneller als meine Meinung!', es:'Te espero con rakómelo. Y ojo: en el Pelión el tiempo cambia más rápido que mi opinión.', en:'I’ll be waiting with rakomelo. And watch out: on Pelion the weather changes faster than my mind does!' }
+      },
+      rollen: {
+        spikiu: { de:'Thanasis, der Wirt der Pension', es:'Thanasis, el dueño de la casa rural', en:'Thanasis, the innkeeper', el:'ο Θανάσης, ο ιδιοκτήτης του ξενώνα' },
+        lerner: { de:'der Gast, der wandern will', es:'la huésped que quiere salir a caminar', en:'the guest who wants to go walking', el:'η επισκέπτρια που θέλει να περπατήσει' },
+        ort: { de:'in einer Steinpension in Makrinitsa, auf dem Pilion', es:'en una casa de piedra en Makrinitsa, en el Pelión', en:'in a stone guesthouse in Makrinitsa, on Mount Pelion', el:'σε έναν πέτρινο ξενώνα στη Μακρινίτσα, στο Πήλιο' }
+      },
+      wortschatz: [
+        { z:'βρέχει', tr:'vréchi', na:{ de:'es regnet', es:'llueve', en:'it’s raining' } },
+        { z:'θα χιονίσει', tr:'tha chionísi', na:{ de:'es wird schneien', es:'nevará', en:'it will snow' } },
+        { z:'η πρόγνωση', tr:'i prógnosi', na:{ de:'die Vorhersage', es:'la previsión', en:'the forecast' } },
+        { z:'το καλντερίμι', tr:'to kalderími', na:{ de:'der alte gepflasterte Saumpfad', es:'el camino empedrado', en:'the old cobbled mule path' } },
+        { z:'η κατηφόρα', tr:'i katifóra', na:{ de:'der Weg bergab', es:'la bajada', en:'the way downhill' } },
+        { z:'γλιστερός', tr:'glisterós', na:{ de:'rutschig', es:'resbaladizo', en:'slippery' } },
+        { z:'προλαβαίνω', tr:'prolavéno', na:{ de:'es rechtzeitig schaffen', es:'llegar a tiempo, dar tiempo', en:'to make it in time' } },
+        { z:'πριν σκοτεινιάσει', tr:'prin skotiniási', na:{ de:'bevor es dunkel wird', es:'antes de que oscurezca', en:'before it gets dark' } },
+        { z:'το τζάκι', tr:'to tzáki', na:{ de:'der Kamin', es:'la chimenea', en:'the fireplace' } },
+        { z:'ανάβω', tr:'anávo', na:{ de:'anzünden', es:'encender', en:'to light' } },
+        { z:'το μπαστούνι', tr:'to bastoúni', na:{ de:'der Wanderstock', es:'el bastón', en:'the walking stick' } },
+        { z:'το ρακόμελο', tr:'to rakómelo', na:{ de:'heißer Tsipouro mit Honig', es:'aguardiente caliente con miel', en:'hot tsipouro with honey' } }
+      ],
+      dialog: {
+        rolle: { de:'Thanasis, der Wirt', es:'Thanasis, el dueño de la casa rural', en:'Thanasis, the innkeeper' },
+        zeilen: [
+          {
+            wer: 'spikiu',
+            z: 'Καλημέρα! Είδες την ομίχλη; Η πρόγνωση λέει ότι το απόγευμα θα βρέξει.',
+            tr: 'Kaliméra! Ídes tin omíchli? I prógnosi léi óti to apóyevma tha vréxi.',
+            na: { de:'Guten Morgen! Hast du den Nebel gesehen? Die Vorhersage sagt, dass es am Nachmittag regnen wird.', es:'¡Buenos días! ¿Has visto la niebla? La previsión dice que por la tarde lloverá.', en:'Good morning! Did you see the fog? The forecast says it will rain this afternoon.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Τι λες, θα προλάβω να κατέβω το καλντερίμι πριν βρέξει;',
+            tr: 'Ti les, tha prolávo na katévo to kalderími prin vréxi?',
+            na: { de:'Was meinst du, schaffe ich es noch, den Steinweg hinunterzugehen, bevor es regnet?', es:'¿Tú qué crees, me dará tiempo a bajar el camino empedrado antes de que llueva?', en:'What do you think, will I make it down the stone path before it rains?' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Αν φύγεις τώρα, θα προλάβεις. Αλλά πρόσεχε, οι πέτρες είναι γλιστερές.',
+            tr: 'An fíyis tóra, tha prolávis. Alá próseche, i pétres íne glisterés.',
+            na: { de:'Wenn du jetzt losgehst, schaffst du es. Aber pass auf, die Steine sind rutschig.', es:'Si sales ahora, te da tiempo. Pero ten cuidado, las piedras resbalan.', en:'If you leave now, you’ll make it. But be careful, the stones are slippery.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Εντάξει. Αν βρέχει, θα γυρίσω με το λεωφορείο από τον Άνω Βόλο.',
+            tr: 'Endáxi. An vréchi, tha yiríso me to leoforío apó ton Áno Vólo.',
+            na: { de:'In Ordnung. Wenn es regnet, fahre ich mit dem Bus von Ano Volos zurück.', es:'Vale. Si llueve, volveré en autobús desde Ano Volos.', en:'OK. If it’s raining, I’ll come back by bus from Ano Volos.' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Σωστά. Πάρε και το μπαστούνι μου. Το βράδυ θα ανάψω το τζάκι.',
+            tr: 'Sostá. Páre ke to bastoúni mou. To vrádi tha anápso to tzáki.',
+            na: { de:'Richtig. Nimm auch meinen Wanderstock mit. Am Abend zünde ich den Kamin an.', es:'Bien pensado. Llévate también mi bastón. Por la noche encenderé la chimenea.', en:'Good idea. Take my walking stick too. Tonight I’ll light the fire.' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Τέλεια! Θα γυρίσω πριν σκοτεινιάσει και θα γράψω δίπλα στο τζάκι.',
+            tr: 'Télia! Tha yiríso prin skotiniási ke tha grápso dípla sto tzáki.',
+            na: { de:'Perfekt! Ich bin zurück, bevor es dunkel wird, und schreibe am Kamin.', es:'¡Perfecto! Volveré antes de que oscurezca y escribiré junto a la chimenea.', en:'Perfect! I’ll be back before dark and write by the fire.' }
+          }
+        ]
+      },
+      lesetext: {
+        z: 'Χθες το βράδυ ρώτησα τον Θανάση αν αναμένεται «υετός». Γέλασε τόσο, που ξύπνησε ο σκύλος: «Βροχή λέμε, βροχή!» Σήμερα κατέβηκα το καλντερίμι μέσα στην ομίχλη. Στον Άνω Βόλο άρχισε να βρέχει, και γύρισα με το λεωφορείο. Το βράδυ το μόνο φως στο δωμάτιο ήταν το τζάκι.',
+        tr: 'Chthes to vrádi rótisa ton Thanási an anaménete «ietós». Yélase tóso, pou xípnise o skílos: «Vrochí léme, vrochí!» Símera katévika to kalderími mésa stin omíchli. Ston Áno Vólo árchise na vréchi, ke yírisa me to leoforío. To vrádi to móno fos sto domátio ítan to tzáki.',
+        na: { de:'Gestern Abend fragte ich Thanasis, ob „υετός“ (Niederschlag, altes Amtsgriechisch) zu erwarten sei. Er lachte so sehr, dass der Hund aufwachte: „Βροχή sagen wir, βροχή!“ Heute ging ich den Steinweg im Nebel hinunter. In Ano Volos fing es an zu regnen, und ich fuhr mit dem Bus zurück. Am Abend war das einzige Licht im Zimmer der Kamin.', es:'Anoche le pregunté a Thanasis si se esperaba «υετός» (precipitación, palabra muy antigua). Se rio tanto que se despertó el perro: «¡Βροχή, decimos, βροχή!». Hoy he bajado el camino empedrado entre la niebla. En Ano Volos empezó a llover y volví en autobús. Por la noche, la única luz de la habitación era la chimenea.', en:'Last night I asked Thanasis whether “υετός” (precipitation, an old official word) was expected. He laughed so hard that the dog woke up: “Βροχή, we say, βροχή!” Today I walked down the stone path in the fog. In Ano Volos it started to rain, and I came back by bus. In the evening the only light in the room was the fire.' },
+        frage: { de:'Wie ist Elli zurückgekommen?', es:'¿Cómo volvió Elli?', en:'How did Elli get back?' },
+        optionen: [
+          { na:{ de:'Mit dem Bus', es:'En autobús', en:'By bus' }, richtig:true },
+          { na:{ de:'Zu Fuß über den Steinweg', es:'A pie por el camino empedrado', en:'On foot along the stone path' }, richtig:false },
+          { na:{ de:'Mit dem Auto von Thanasis', es:'En el coche de Thanasis', en:'In Thanasis’s car' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag: { de:'Schreib einer Freundin deinen Plan für morgen: Was machst du, wenn es regnet? Zwei Sätze.', es:'Escríbele a una amiga tu plan para mañana: ¿qué harás si llueve? Dos frases.', en:'Write to a friend about your plan for tomorrow: what will you do if it rains? Two sentences.' },
+        muster: 'Αύριο θα περπατήσω στο βουνό. Αν βρέχει, θα μείνω στο σπίτι και θα διαβάσω.'
+      },
+      grammatik: {
+        titel: { de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text: { de:'Die Zukunft ist kurz: «θα» + Verb. «Θα βρέξει» (es wird regnen — einmal, irgendwann) und «θα βρέχει» (es wird die ganze Zeit regnen): Die Form verrät, ob es ein Moment ist oder etwas, das andauert. Bedingungen baust du wie im Deutschen: «αν» βρέχει, «θα» γυρίσω με το λεωφορείο — wenn es regnet, fahre ich mit dem Bus zurück.', es:'El futuro es corto: «θα» + verbo. «Θα βρέξει» (lloverá, en un momento dado) y «θα βρέχει» (estará lloviendo todo el rato): la forma dice si es un momento o algo que dura. Las condiciones se construyen como en español: «αν» βρέχει, «θα» γυρίσω με το λεωφορείο — si llueve, volveré en autobús.', en:'The future is short: «θα» + verb. «Θα βρέξει» (it will rain, at some point) and «θα βρέχει» (it will be raining, all along): the form tells you whether it’s a moment or something ongoing. Conditions work as in English: «αν» βρέχει, «θα» γυρίσω με το λεωφορείο — if it rains, I’ll come back by bus.' },
+        beispiele: [
+          { z:'Αν βρέχει, θα πάρω το λεωφορείο.', tr:'An vréchi, tha páro to leoforío.', na:{ de:'Wenn es regnet, nehme ich den Bus.', es:'Si llueve, cogeré el autobús.', en:'If it rains, I’ll take the bus.' } },
+          { z:'Το απόγευμα θα χιονίσει στο βουνό.', tr:'To apóyevma tha chionísi sto vounó.', na:{ de:'Am Nachmittag wird es auf dem Berg schneien.', es:'Por la tarde nevará en la montaña.', en:'This afternoon it will snow on the mountain.' } }
+        ]
+      },
+      kultur: { de:'In der Sage ist der Pilion der Berg der Kentauren. Seine Dörfer verbinden alte gepflasterte Saumpfade, die καλντερίμια. Makrinitsa nennt man „den Balkon des Pilion“: Von dort blickt man über Volos und den ganzen Golf. Im Winter wärmt man sich mit ρακόμελο — heißem Tsipouro mit Honig.', es:'En la mitología, el Pelión es la montaña de los centauros. Sus pueblos están unidos por antiguos caminos empedrados, los καλντερίμια. A Makrinitsa la llaman «el balcón del Pelión»: desde allí se ve Volos y todo el golfo. En invierno uno se calienta con ρακόμελο, tsípuro caliente con miel.', en:'In myth, Pelion is the mountain of the centaurs. Its villages are linked by old cobbled mule paths, the καλντερίμια. Makrinitsa is called “the balcony of Pelion”: from there you look out over Volos and the whole gulf. In winter people warm up with ρακόμελο — hot tsipouro with honey.' }
+    },
+    'b1.cafe': {
+      deineRolle: { de:'Du sitzt in einem Café unter den Arkaden des Liston auf Korfu. Du findest, dass du hier besser schreibst. Griechische Musik kennst du noch nicht gut — und du lädst gern jemanden ein.', es:'Estás en un café bajo los soportales del Liston, en Corfú. Te parece que aquí escribes mejor. La música griega todavía no la conoces bien, y te gusta invitar.', en:'You are sitting in a café under the arcades of the Liston in Corfu. You feel you write better here. You don’t know Greek music well yet — and you like to treat people.' },
+      abrundung: {
+        z: 'Με μεγάλη χαρά! Αλλά προσοχή: μετά το δεύτερο ποτηράκι αρχίζω να τραγουδάω κι εγώ.',
+        tr: 'Me megáli chará! Alá prosochí: metá to déftero potiráki archízo na tragoudáo ki egó.',
+        na: { de:'Mit großer Freude! Aber Vorsicht: Nach dem zweiten Gläschen fange ich auch an zu singen.', es:'¡Con mucho gusto! Pero cuidado: después de la segunda copita yo también me pongo a cantar.', en:'With great pleasure! But be warned: after the second little glass I start singing too.' }
+      },
+      rollen: {
+        spikiu: { de:'Herr Spyros, ein alter Musiklehrer aus Korfu', es:'el señor Spyros, un viejo profesor de música de Corfú', en:'Mr Spyros, an old music teacher from Corfu', el:'ο κύριος Σπύρος, ένας ηλικιωμένος δάσκαλος μουσικής από την Κέρκυρα' },
+        lerner: { de:'der Gast am Nebentisch', es:'la clienta de la mesa de al lado', en:'the guest at the next table', el:'η πελάτισσα στο διπλανό τραπέζι' },
+        ort: { de:'in einem Café unter den Arkaden des Liston', es:'en un café bajo los soportales del Liston', en:'at a café under the arcades of the Liston', el:'σε ένα καφέ κάτω από τις καμάρες του Λιστόν' }
+      },
+      wortschatz: [
+        { z:'οι καμάρες', tr:'i kamáres', na:{ de:'die Arkaden, die Bögen', es:'los soportales, los arcos', en:'the arcades' } },
+        { z:'το γκαρσόνι', tr:'to garsóni', na:{ de:'der Kellner (altmodisch)', es:'el camarero (anticuado)', en:'the waiter (old-fashioned)' } },
+        { z:'νομίζω ότι …', tr:'nomízo óti …', na:{ de:'ich glaube, dass …', es:'creo que …', en:'I think that …' } },
+        { z:'δεν νομίζω ότι …', tr:'den nomízo óti …', na:{ de:'ich glaube nicht, dass …', es:'no creo que …', en:'I don’t think that …' } },
+        { z:'κατά τη γνώμη μου', tr:'katá ti gnómi mou', na:{ de:'meiner Meinung nach', es:'en mi opinión', en:'in my opinion' } },
+        { z:'έχετε δίκιο', tr:'échete díkio', na:{ de:'Sie haben recht', es:'tiene razón', en:'you’re right' } },
+        { z:'προτείνω', tr:'protíno', na:{ de:'empfehlen, vorschlagen', es:'recomendar, proponer', en:'to recommend, to suggest' } },
+        { z:'η καντάδα', tr:'i kandáda', na:{ de:'das Ständchen (Serenade)', es:'la serenata', en:'the serenade' } },
+        { z:'η φιλαρμονική', tr:'i filarmonikí', na:{ de:'die Blaskapelle des Ortes', es:'la banda de música', en:'the town band' } },
+        { z:'το κουμκουάτ', tr:'to koumkouát', na:{ de:'die Kumquat', es:'el kumquat', en:'the kumquat' } },
+        { z:'κερνάω', tr:'kernáo', na:{ de:'einladen, ausgeben', es:'invitar (a algo)', en:'to treat (someone)' } },
+        { z:'Να σας κεράσω;', tr:'Na sas keráso?', na:{ de:'Darf ich Sie einladen?', es:'¿Le invito?', en:'May I treat you?' } }
+      ],
+      dialog: {
+        rolle: { de:'Herr Spyros, ein alter Musiklehrer', es:'El señor Spyros, un viejo profesor de música', en:'Mr Spyros, an old music teacher' },
+        zeilen: [
+          {
+            wer: 'spikiu',
+            z: 'Συγγνώμη, κυρία μου, σας άκουσα να μιλάτε με το γκαρσόνι. Σας αρέσει η Κέρκυρα;',
+            tr: 'Signómi, kiría mou, sas ákousa na miláte me to garsóni. Sas arési i Kérkira?',
+            na: { de:'Entschuldigung, gnädige Frau, ich habe Sie mit dem Kellner sprechen hören. Gefällt Ihnen Korfu?', es:'Perdone, señora, la he oído hablar con el camarero. ¿Le gusta Corfú?', en:'Excuse me, madam, I heard you talking to the waiter. Do you like Corfu?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Πάρα πολύ! Νομίζω ότι εδώ, κάτω από τις καμάρες, γράφω καλύτερα.',
+            tr: 'Pára polí! Nomízo óti edó, káto apó tis kamáres, gráfo kalítera.',
+            na: { de:'Sehr! Ich glaube, dass ich hier unter den Arkaden besser schreibe.', es:'¡Muchísimo! Creo que aquí, bajo los soportales, escribo mejor.', en:'Very much! I think I write better here, under the arcades.' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Έχετε δίκιο. Κι εδώ η μουσική είναι παντού. Εσείς ξέρετε ελληνική μουσική;',
+            tr: 'Échete díkio. Ki edó i mousikí íne pandoú. Esís xérete elinikí mousikí?',
+            na: { de:'Sie haben recht. Und hier ist die Musik überall. Kennen Sie griechische Musik?', es:'Tiene razón. Y aquí la música está en todas partes. ¿Usted conoce la música griega?', en:'You’re right. And here, music is everywhere. Do you know Greek music?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Λίγο. Δεν νομίζω ότι την ξέρω καλά. Τι μου προτείνετε;',
+            tr: 'Lígo. Den nomízo óti tin xéro kalá. Ti mou protínete?',
+            na: { de:'Ein bisschen. Ich glaube nicht, dass ich sie gut kenne. Was empfehlen Sie mir?', es:'Un poco. No creo que la conozca bien. ¿Qué me recomienda?', en:'A little. I don’t think I know it well. What do you recommend?' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Κατά τη γνώμη μου, πρέπει να ακούσετε μια καντάδα. Και να δοκιμάσετε λικέρ κουμκουάτ!',
+            tr: 'Katá ti gnómi mou, prépi na akoúsete mia kandáda. Ke na dokimásete likér koumkouát!',
+            na: { de:'Meiner Meinung nach müssen Sie eine Kantada hören. Und Kumquat-Likör probieren!', es:'En mi opinión, tiene que escuchar una kantada. ¡Y probar el licor de kumquat!', en:'In my opinion, you must hear a kantada. And try kumquat liqueur!' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Κατά τη γνώμη μου, το λικέρ με την καντάδα είναι τέλειος συνδυασμός. Να σας κεράσω;',
+            tr: 'Katá ti gnómi mou, to likér me tin kandáda íne télios sindiasmós. Na sas keráso?',
+            na: { de:'Meiner Meinung nach sind Likör und Kantada eine perfekte Kombination. Darf ich Sie einladen?', es:'En mi opinión, el licor con la kantada es la combinación perfecta. ¿Le invito?', en:'In my opinion, liqueur and a kantada are the perfect combination. May I treat you?' }
+          }
+        ]
+      },
+      lesetext: {
+        z: 'Σήμερα στο Λιστόν άρχισα μια φράση με «φρονώ ότι…». Ο κύριος Σπύρος, στο διπλανό τραπέζι, έβαλε το χέρι στην καρδιά: «Νομίζω, κυρία μου! Έτσι μιλούσε ο δάσκαλός μου το 1960.» Μετά μου μίλησε για τις καντάδες και τις φιλαρμονικές του νησιού. Όταν έδυσε ο ήλιος, οι καμάρες έγιναν πορτοκαλί, σαν το λικέρ κουμκουάτ.',
+        tr: 'Símera sto Listón árchisa mia frási me «fronó óti…». O kírios Spíros, sto diplanó trapézi, évale to chéri stin kardiá: «Nomízo, kiría mou! Étsi miloúse o dáskalós mou to 1960.» Metá mou mílise ya tis kandádes ke tis filarmonikés tou nisioú. Ótan édise o ílios, i kamáres éyinan portokalí, san to likér koumkouát.',
+        na: { de:'Heute habe ich im Liston einen Satz mit „φρονώ ότι …“ (ich erachte, dass …, sehr altmodisch) angefangen. Herr Spyros am Nebentisch legte die Hand aufs Herz: „Νομίζω, gnädige Frau! So hat mein Lehrer 1960 geredet.“ Dann erzählte er mir von den Kantades und den Blaskapellen der Insel. Als die Sonne unterging, wurden die Arkaden orange wie der Kumquat-Likör.', es:'Hoy en el Liston empecé una frase con «φρονώ ότι…» (estimo que…, muy anticuado). El señor Spyros, en la mesa de al lado, se llevó la mano al corazón: «¡Νομίζω, señora! Así hablaba mi maestro en 1960». Luego me habló de las kantadas y de las bandas de música de la isla. Cuando se puso el sol, los soportales se volvieron naranjas, como el licor de kumquat.', en:'Today at the Liston I began a sentence with “φρονώ ότι…” (I deem that…, very old-fashioned). Mr Spyros at the next table put his hand on his heart: “Νομίζω, madam! That’s how my teacher talked in 1960.” Then he told me about the kantades and the island’s town bands. When the sun set, the arcades turned orange, like the kumquat liqueur.' },
+        frage: { de:'Was sagt man im Alltag statt φρονώ?', es:'¿Qué se dice en el día a día en vez de φρονώ?', en:'What do people say every day instead of φρονώ?' },
+        optionen: [
+          { na:{ de:'νομίζω', es:'νομίζω', en:'νομίζω' }, richtig:true },
+          { na:{ de:'η καντάδα', es:'η καντάδα', en:'η καντάδα' }, richtig:false },
+          { na:{ de:'το κουμκουάτ', es:'το κουμκουάτ', en:'το κουμκουάτ' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag: { de:'Schreib deine Meinung über eine Stadt, die du liebst: Was glaubst du, und was glaubst du nicht? Zwei Sätze.', es:'Escribe tu opinión sobre una ciudad que te encanta: ¿qué crees y qué no crees? Dos frases.', en:'Write your opinion about a city you love: what do you think, and what don’t you think? Two sentences.' },
+        muster: 'Νομίζω ότι η Κέρκυρα είναι πολύ όμορφη τον χειμώνα. Δεν νομίζω ότι θα φύγω γρήγορα.'
+      },
+      grammatik: {
+        titel: { de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text: { de:'Meinung sagen ist einfach: «νομίζω ότι» + ein ganz normaler Satz — νομίζω ότι εδώ γράφω καλύτερα. Verneint: «δεν νομίζω ότι» … — und auch danach bleibt der Satz ganz normal. Etwas förmlicher: «κατά τη γνώμη μου» (meiner Meinung nach). Und wer zustimmt, sagt «έχετε δίκιο» — Sie haben recht.', es:'Dar tu opinión es fácil: «νομίζω ότι» + frase — νομίζω ότι εδώ γράφω καλύτερα. En negativo: «δεν νομίζω ότι» … y, a diferencia de «no creo que…», en griego no cambia nada: la frase sigue igual. Algo más formal: «κατά τη γνώμη μου» (en mi opinión). Y para dar la razón: «έχετε δίκιο».', en:'Giving your opinion is easy: «νομίζω ότι» + a normal sentence — νομίζω ότι εδώ γράφω καλύτερα. Negative: «δεν νομίζω ότι» … A bit more formal: «κατά τη γνώμη μου» (in my opinion). And to agree: «έχετε δίκιο» — you’re right.' },
+        beispiele: [
+          { z:'Νομίζω ότι εδώ γράφω καλύτερα.', tr:'Nomízo óti edó gráfo kalítera.', na:{ de:'Ich glaube, dass ich hier besser schreibe.', es:'Creo que aquí escribo mejor.', en:'I think I write better here.' } },
+          { z:'Δεν νομίζω ότι την ξέρω καλά.', tr:'Den nomízo óti tin xéro kalá.', na:{ de:'Ich glaube nicht, dass ich sie gut kenne.', es:'No creo que la conozca bien.', en:'I don’t think I know it well.' } }
+        ]
+      },
+      kultur: { de:'Die Arkaden des Liston in Korfu-Stadt wurden Anfang des 19. Jahrhunderts nach dem Vorbild der Pariser Rue de Rivoli gebaut. Korfu ist eine Musikinsel: Es gibt viele Blaskapellen, die φιλαρμονικές, und die καντάδα, ein Ständchen mit Gitarre und Mandoline, klingt fast italienisch. Dazu trinkt man Likör aus Kumquats, die auf der Insel wachsen.', es:'Los soportales del Liston, en la ciudad de Corfú, se construyeron a principios del siglo XIX siguiendo el modelo de la rue de Rivoli de París. Corfú es una isla de música: tiene muchas bandas, las φιλαρμονικές, y la καντάδα, una serenata con guitarra y mandolina, suena casi italiana. Se acompaña con licor de kumquat, que crece en la isla.', en:'The arcades of the Liston in Corfu Town were built in the early 19th century, modelled on the Rue de Rivoli in Paris. Corfu is an island of music: it has many town bands, the φιλαρμονικές, and the καντάδα, a serenade with guitar and mandolin, sounds almost Italian. With it comes liqueur made from kumquats grown on the island.' }
+    },
+    'b1.familie': {
+      duzen: true,
+      deineRolle: { de:'Deine Freundin Margarete ist 82 und lebt in Hamburg. Du hast sie in der Schule kennengelernt: Sie war deine Lehrerin und hat dir eine alte griechische Schallplatte geschenkt. Als du klein warst, hat sie dir Karten aus Griechenland geschickt — jetzt schreibst du ihr.', es:'Tu amiga Margarete tiene 82 años y vive en Hamburgo. La conociste en el colegio: era tu profesora y te regaló un disco griego antiguo. Cuando eras pequeña, ella te mandaba postales desde Grecia; ahora le escribes tú.', en:'Your friend Margarete is 82 and lives in Hamburg. You met her at school: she was your teacher and gave you an old Greek record. When you were little, she used to send you postcards from Greece — now you write to her.' },
+      abrundung: {
+        z: 'Τώρα γράψε της και για μας! Το μυστικό μας; Δεν βιαζόμαστε ποτέ. Έλα, ο καφές θέλει την ώρα του.',
+        tr: 'Tóra grápse tis ke ya mas! To mistikó mas? Den viazómaste poté. Éla, o kafés théli tin óra tou.',
+        na: { de:'Dann schreib ihr jetzt auch von uns! Unser Geheimnis? Wir haben es nie eilig. Komm, der Kaffee braucht seine Zeit.', es:'¡Pues ahora escríbele también sobre nosotros! ¿Nuestro secreto? Nunca tenemos prisa. Ven, el café necesita su tiempo.', en:'Then write to her about us too! Our secret? We’re never in a hurry. Come on, coffee takes its time.' }
+      },
+      rollen: {
+        spikiu: { de:'Oma Asimina, 96 Jahre alt', es:'la abuela Asimina, de 96 años', en:'Grandma Asimina, 96 years old', el:'η γιαγιά Ασημίνα, 96 χρονών' },
+        lerner: { de:'der Gast der Familie', es:'la invitada de la familia', en:'the family’s guest', el:'η φιλοξενούμενη της οικογένειας' },
+        ort: { de:'im Hof eines alten Hauses auf Ikaria', es:'en el patio de una casa antigua de Icaria', en:'in the courtyard of an old house on Ikaria', el:'στην αυλή ενός παλιού σπιτιού στην Ικαρία' }
+      },
+      wortschatz: [
+        { z:'όταν ήμουν νέα', tr:'ótan ímoun néa', na:{ de:'als ich jung war', es:'cuando era joven', en:'when I was young' } },
+        { z:'το πανηγύρι', tr:'to paniyíri', na:{ de:'das Dorffest mit Musik und Tanz', es:'la fiesta del pueblo', en:'the village festival' } },
+        { z:'χορεύαμε', tr:'chorévame', na:{ de:'wir tanzten (immer wieder)', es:'bailábamos', en:'we used to dance' } },
+        { z:'γνώρισα', tr:'gnórisa', na:{ de:'ich habe kennengelernt', es:'conocí', en:'I met' } },
+        { z:'η δασκάλα', tr:'i daskála', na:{ de:'die Lehrerin', es:'la maestra', en:'the (female) teacher' } },
+        { z:'μου χάρισε', tr:'mou chárise', na:{ de:'sie hat mir geschenkt', es:'me regaló', en:'she gave me (as a present)' } },
+        { z:'ο δίσκος', tr:'o dískos', na:{ de:'die Schallplatte', es:'el disco', en:'the record' } },
+        { z:'η συγγραφέας', tr:'i singraféas', na:{ de:'die Schriftstellerin', es:'la escritora', en:'the (female) writer' } },
+        { z:'η μακροζωία', tr:'i makrozoía', na:{ de:'das lange Leben', es:'la longevidad', en:'long life' } },
+        { z:'ο μεσημεριανός ύπνος', tr:'o mesimerianós ípnos', na:{ de:'der Mittagsschlaf', es:'la siesta', en:'the afternoon nap' } },
+        { z:'δεν βιαζόμαστε', tr:'den viazómaste', na:{ de:'wir haben es nicht eilig', es:'no tenemos prisa', en:'we’re not in a hurry' } },
+        { z:'κόρη μου', tr:'kóri mou', na:{ de:'mein Kind (liebevoll, wörtlich: meine Tochter)', es:'hija mía (cariñoso)', en:'my dear (literally: my daughter)' } }
+      ],
+      dialog: {
+        rolle: { de:'Oma Asimina', es:'La abuela Asimina', en:'Grandma Asimina' },
+        zeilen: [
+          {
+            wer: 'spikiu',
+            z: 'Όταν ήμουν νέα, χορεύαμε στα πανηγύρια ως το πρωί! Εσύ, κόρη μου, έχεις καμιά φίλη στην ηλικία μου;',
+            tr: 'Ótan ímoun néa, chorévame sta paniyíria os to proí! Esí, kóri mou, échis kamiá fíli stin ilikía mou?',
+            na: { de:'Als ich jung war, haben wir auf den Festen bis zum Morgen getanzt! Und du, mein Kind, hast du eine Freundin in meinem Alter?', es:'¡Cuando era joven, bailábamos en las fiestas hasta la mañana! Y tú, hija mía, ¿tienes alguna amiga de mi edad?', en:'When I was young, we danced at the festivals till morning! And you, my dear, do you have a friend my age?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Ναι, τη Μαργκαρέτε. Είναι ογδόντα δύο χρονών και μένει στο Αμβούργο.',
+            tr: 'Ne, ti Margaréte. Íne ogdónda dío chronón ke méni sto Amvoúrgo.',
+            na: { de:'Ja, Margarete. Sie ist zweiundachtzig und wohnt in Hamburg.', es:'Sí, a Margarete. Tiene ochenta y dos años y vive en Hamburgo.', en:'Yes, Margarete. She’s eighty-two and lives in Hamburg.' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Ογδόντα δύο; Μικρούλα ακόμα! Και πώς τη γνώρισες;',
+            tr: 'Ogdónda dío? Mikroúla akóma! Ke pós ti gnórises?',
+            na: { de:'Zweiundachtzig? Noch ein junges Ding! Und wie hast du sie kennengelernt?', es:'¿Ochenta y dos? ¡Si es una chiquilla! ¿Y cómo la conociste?', en:'Eighty-two? Just a youngster! And how did you meet her?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Τη γνώρισα στο σχολείο· ήταν η δασκάλα μου και μου χάρισε έναν παλιό ελληνικό δίσκο.',
+            tr: 'Ti gnórisa sto scholío; ítan i daskála mou ke mou chárise énan palió elinikó dísko.',
+            na: { de:'Ich habe sie in der Schule kennengelernt; sie war meine Lehrerin und hat mir eine alte griechische Schallplatte geschenkt.', es:'La conocí en el colegio; era mi profesora y me regaló un disco griego antiguo.', en:'I met her at school; she was my teacher and gave me an old Greek record.' }
+          },
+          {
+            wer: 'spikiu',
+            z: 'Α, έτσι έμαθες ελληνικά! Και της γράφεις από την Ελλάδα;',
+            tr: 'A, étsi émathes eliniká! Ke tis gráfis apó tin Eláda?',
+            na: { de:'Ach, so hast du Griechisch gelernt! Und schreibst du ihr aus Griechenland?', es:'¡Ah, así aprendiste griego! ¿Y le escribes desde Grecia?', en:'Ah, so that’s how you learnt Greek! And do you write to her from Greece?' }
+          },
+          {
+            wer: 'lerner',
+            z: 'Συνέχεια! Όταν ήμουν μικρή, μου έστελνε εκείνη κάρτες από την Ελλάδα.',
+            tr: 'Sinéchia! Ótan ímoun mikrí, mou éstelne ekíni kártes apó tin Eláda.',
+            na: { de:'Ständig! Als ich klein war, hat sie mir Karten aus Griechenland geschickt.', es:'¡Todo el rato! Cuando yo era pequeña, ella me mandaba postales desde Grecia.', en:'All the time! When I was little, she used to send me postcards from Greece.' }
+          }
+        ]
+      },
+      lesetext: {
+        z: 'Ρώτησα τη γιαγιά Ασημίνα ποιο είναι το μυστικό της «μακροβιότητος». Δεν κατάλαβε τίποτα. Η εγγονή της μου εξήγησε: «Λέμε μακροζωία». Η γιαγιά γέλασε: «Εγώ δεν ξέρω από λέξεις. Κοιμόμουν το μεσημέρι, δούλευα στον κήπο και χόρευα στα πανηγύρια. Μια φορά χόρεψα τρεις μέρες συνέχεια!»',
+        tr: 'Rótisa ti yayá Asimína pio íne to mistikó tis «makroviótitos». Den katálave típota. I engoní tis mou exíyise: «Léme makrozoía». I yayá yélase: «Egó den xéro apó léxis. Kimómoun to mesiméri, doúleva ston kípo ke chóreva sta paniyíria. Mia forá chórepsa tris méres sinéchia!»',
+        na: { de:'Ich habe Oma Asimina gefragt, was das Geheimnis ihrer „μακροβιότης“ (Langlebigkeit, sehr altmodisch) ist. Sie verstand kein Wort. Ihre Enkelin erklärte mir: „Wir sagen μακροζωία.“ Die Oma lachte: „Von Wörtern verstehe ich nichts. Ich habe mittags geschlafen, im Garten gearbeitet und auf den Festen getanzt. Einmal habe ich drei Tage am Stück getanzt!“', es:'Le pregunté a la abuela Asimina cuál es el secreto de su «μακροβιότης» (longevidad, palabra muy anticuada). No entendió nada. Su nieta me explicó: «Decimos μακροζωία». La abuela se rio: «Yo de palabras no sé. Dormía la siesta, trabajaba en el huerto y bailaba en las fiestas. ¡Una vez bailé tres días seguidos!».', en:'I asked Grandma Asimina what the secret of her “μακροβιότης” (longevity, a very old-fashioned word) is. She didn’t understand a thing. Her granddaughter explained: “We say μακροζωία.” Grandma laughed: “I don’t know about words. I napped at midday, worked in the garden and danced at the festivals. Once I danced for three days straight!”' },
+        frage: { de:'Was hat Oma Asimina einmal gemacht?', es:'¿Qué hizo una vez la abuela Asimina?', en:'What did Grandma Asimina do once?' },
+        optionen: [
+          { na:{ de:'Sie hat drei Tage am Stück getanzt', es:'Bailó tres días seguidos', en:'She danced for three days straight' }, richtig:true },
+          { na:{ de:'Sie hat drei Tage geschlafen', es:'Durmió tres días', en:'She slept for three days' }, richtig:false },
+          { na:{ de:'Sie ist nach Hamburg gereist', es:'Viajó a Hamburgo', en:'She travelled to Hamburg' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag: { de:'Erzähl von einem Menschen aus deiner Kindheit: Was hat er oder sie immer gemacht, und was ist einmal passiert? Zwei Sätze.', es:'Habla de una persona de tu infancia: ¿qué hacía siempre y qué pasó una vez? Dos frases.', en:'Tell about a person from your childhood: what did he or she always do, and what happened once? Two sentences.' },
+        muster: 'Ο παππούς μου κάθε βράδυ μου έλεγε ιστορίες. Μια φορά με πήγε με τη βάρκα του στο νησί.'
+      },
+      grammatik: {
+        titel: { de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text: { de:'Griechisch hat zwei Vergangenheiten, und der Unterschied ist ein Bild. Der «παρατατικός» erzählt, was immer wieder geschah oder gerade lief: χόρευα, έστελνε, κοιμόμουν. Der «αόριστος» erzählt ein abgeschlossenes Ereignis: τη γνώρισα, μου χάρισε, χόρεψα τρεις μέρες. Das eine ist ein Film, das andere ein Foto.', es:'El griego tiene dos pasados, igual que el español. El «παρατατικός» es como el imperfecto: lo que pasaba una y otra vez — χόρευα (bailaba), έστελνε (mandaba). El «αόριστος» es como el indefinido: algo terminado — τη γνώρισα (la conocí), μου χάρισε (me regaló). Uno es una película; el otro, una foto.', en:'Greek has two past tenses, and the difference is a picture. The «παρατατικός» (imperfect) tells what kept happening or was going on — χόρευα, έστελνε, κοιμόμουν, like English “used to”. The «αόριστος» (aorist) tells one completed event — τη γνώρισα, μου χάρισε, χόρεψα τρεις μέρες. One is a film, the other a photo.' },
+        beispiele: [
+          { z:'Κάθε καλοκαίρι μου έστελνε κάρτες από την Ελλάδα.', tr:'Káthe kalokéri mou éstelne kártes apó tin Eláda.', na:{ de:'Jeden Sommer schickte sie mir Karten aus Griechenland.', es:'Cada verano me mandaba postales desde Grecia.', en:'Every summer she used to send me postcards from Greece.' } },
+          { z:'Μια φορά χόρεψα τρεις μέρες συνέχεια.', tr:'Mia forá chórepsa tris méres sinéchia.', na:{ de:'Einmal habe ich drei Tage am Stück getanzt.', es:'Una vez bailé tres días seguidos.', en:'Once I danced for three days straight.' } }
+        ]
+      },
+      kultur: { de:'Ikaria gehört zu den Orten der Welt, an denen besonders viele Menschen über neunzig werden. Man erzählt von Gemüse aus dem eigenen Garten, Kräutertee, Mittagsschlaf — und von den πανηγύρια, Festen, bei denen das ganze Dorf zusammen isst und bis zum Morgen den ikariotikos tanzt. Die Uhren gehen hier, sagt man, etwas langsamer.', es:'Icaria es uno de los lugares del mundo donde más gente pasa de los noventa años. Se habla de las verduras del propio huerto, las infusiones, la siesta… y de los πανηγύρια, fiestas en las que todo el pueblo come junto y baila el ikariótikos hasta el amanecer. Dicen que aquí los relojes van un poco más despacio.', en:'Ikaria is one of the places in the world where especially many people live past ninety. People talk about vegetables from their own garden, herbal tea, the afternoon nap — and the πανηγύρια, festivals where the whole village eats together and dances the ikariotikos until dawn. They say the clocks run a little slower here.' }
+    }
+  }
+};
+
+var K_LP_B = {
+
+  schritt: {
+    arzt:       { de:'Chania: ein verstauchter Knöchel und der Rat der Ärztin', es:'Chania: un esguince y los consejos de la doctora', en:'Chania: a sprained ankle and the doctor’s advice', el:'Χανιά: ένα στραμπούληγμα και οι συμβουλές της γιατρού' },
+    einkaufen:  { de:'Rhodos: vergleichen und um einen besseren Preis bitten', es:'Rodas: comparar y pedir un precio mejor', en:'Rhodes: comparing and asking for a better price', el:'Ρόδος: συγκρίνεις και ζητάς καλύτερη τιμή' },
+    restaurant: { de:'Santorini: ein Gespräch über Arbeit und Erfahrung', es:'Santorini: una conversación sobre trabajo y experiencia', en:'Santorini: a talk about work and experience', el:'Σαντορίνη: μια κουβέντα για δουλειά και εμπειρία' },
+    bahnhof:    { de:'Athen → Thessaloniki: der Zug war schon weg', es:'Atenas → Salónica: el tren ya se había ido', en:'Athens → Thessaloniki: the train had already gone', el:'Αθήνα → Θεσσαλονίκη: το τρένο είχε ήδη φύγει' },
+    taxi:       { de:'Zypern: plaudern, was wäre, wenn …', es:'Chipre: charlar sobre qué pasaría si …', en:'Cyprus: chatting about what if …', el:'Κύπρος: κουβέντα για το «τι θα γινόταν αν …»' }
+  },
+
+  aufgaben: {
+    'b1.arzt': [
+      { de:'Erzähle, dass du dir gestern auf einem Wanderweg den Knöchel verstaucht hast und er heute sehr geschwollen ist', es:'Cuenta que ayer te torciste el tobillo en un sendero y que hoy está muy hinchado', en:'Say you sprained your ankle on a path yesterday and today it is very swollen', el:'Πες ότι χθες στραμπούληξες τον αστράγαλο σε ένα μονοπάτι και ότι σήμερα είναι πολύ πρησμένος' },
+      { de:'Sag, dass du keine AMKA hast, aber die Europäische Krankenversicherungskarte, und reich sie ihr', es:'Di que no tienes AMKA, pero sí la tarjeta sanitaria europea, y dásela', en:'Say you have no AMKA number but you do have the European Health Insurance Card, and hand it over', el:'Πες ότι δεν έχεις ΑΜΚΑ, αλλά έχεις την ευρωπαϊκή κάρτα ασφάλισης υγείας, και δώσε της την κάρτα' },
+      { de:'Frag, ob du das Medikament mit Essen nehmen musst und wann du wieder normal gehen kannst', es:'Pregunta si tienes que tomar el medicamento con comida y cuándo podrás volver a caminar con normalidad', en:'Ask whether you have to take the medicine with food and when you can walk normally again', el:'Ρώτα αν πρέπει να παίρνεις το φάρμακο με φαγητό και πότε μπορείς να περπατήσεις πάλι κανονικά' }
+    ],
+    'b1.einkaufen': [
+      { de:'Sag, dass die Teller wunderschön sind, und frag, ob er sie selbst bemalt und was diese Blumen bedeuten', es:'Di que los platos son preciosos y pregunta si los pinta él y qué significan esas flores', en:'Say the plates are beautiful and ask whether he paints them himself and what these flowers mean', el:'Πες ότι τα πιάτα είναι πανέμορφα και ρώτα αν τα ζωγραφίζει ο ίδιος και τι σημαίνουν αυτά τα λουλούδια' },
+      { de:'Sag, dass der große schöner ist als der kleine, und frag nach einem besseren Preis', es:'Di que el grande es más bonito que el pequeño y pide un precio mejor', en:'Say the big one is prettier than the small one and ask for a better price', el:'Πες ότι το μεγάλο είναι πιο όμορφο από το μικρό και ζήτα μια καλύτερη τιμή' },
+      { de:'Nimm diesen hier und frag, ob er ihn gut einpacken kann, weil du viel reist', es:'Di que te llevas este y pregunta si te lo puede envolver bien, porque viajas mucho', en:'Say you will take this one and ask whether he can wrap it well, because you travel a lot', el:'Πες ότι παίρνεις αυτό εδώ και ρώτα αν μπορεί να το τυλίξει καλά, γιατί ταξιδεύεις πολύ' }
+    ],
+    'b1.restaurant': [
+      { de:'Sag, dass du seit sieben Monaten in Griechenland bist und einen Roman über das Licht schreibst', es:'Di que llevas siete meses en Grecia y que escribes una novela sobre la luz', en:'Say you have been in Greece for seven months and are writing a novel about light', el:'Πες ότι είσαι στην Ελλάδα εδώ και εφτά μήνες και γράφεις ένα μυθιστόρημα για το φως' },
+      { de:'Sag, dass du noch nie in einer Taverne gearbeitet, aber viele Texte auf Englisch geschrieben hast', es:'Di que nunca has trabajado en una taberna, pero que has escrito muchos textos en inglés', en:'Say you have never worked in a taverna, but you have written lots of texts in English', el:'Πες ότι δεν έχεις δουλέψει σε ταβέρνα, αλλά ότι έχεις γράψει πολλά κείμενα στα αγγλικά' },
+      { de:'Sag gern zu und biete an, morgen früh anzufangen, wenn es ihr recht ist', es:'Acepta con gusto y ofrece empezar mañana por la mañana, si a ella le va bien', en:'Gladly accept and offer to start tomorrow morning, if that suits her', el:'Δέξου με χαρά και πρότεινε να ξεκινήσεις αύριο το πρωί, αν της είναι εντάξει' }
+    ],
+    'b1.bahnhof': [
+      { de:'Sag, dass du in der Metro deine Haltestelle verpasst hast und dein Zug schon abgefahren war, als du ankamst', es:'Di que te pasaste de parada en el metro y que, cuando llegaste, tu tren ya había salido', en:'Say you missed your stop on the metro and your train had already left when you arrived', el:'Πες ότι έχασες τη στάση στο μετρό και ότι, όταν έφτασες, το τρένο σου είχε ήδη φύγει' },
+      { de:'Bitte um einen Fensterplatz auf der linken Seite, weil du den Olymp sehen willst', es:'Pide un asiento de ventanilla a la izquierda, porque quieres ver el Olimpo', en:'Ask for a window seat on the left, because you want to see Mount Olympus', el:'Ζήτα μια θέση στο παράθυρο, αριστερά, γιατί θέλεις να δεις τον Όλυμπο' },
+      { de:'Frag, ob du dann den Bus nach Chalkidiki um fünf noch erreichst', es:'Pregunta si así llegarás a tiempo al autobús de las cinco a Calcídica', en:'Ask whether you will then still make the five o’clock bus to Halkidiki', el:'Ρώτα αν θα προλάβεις τότε το λεωφορείο των πέντε για τη Χαλκιδική' }
+    ],
+    'b1.taxi': [
+      { de:'Sag, dass es sehr heiß ist und dass es in Hamburg zwanzig Grad hat und natürlich regnet', es:'Di que hace mucho calor y que en Hamburgo hace veinte grados y, claro, llueve', en:'Say it is very hot, and that in Hamburg it is twenty degrees and raining, of course', el:'Πες ότι κάνει πολλή ζέστη και ότι στο Αμβούργο έχει είκοσι βαθμούς και βρέχει, φυσικά' },
+      { de:'Sag, dass du Halloumi bisher nur in Deutschland gegessen hast und dass es hier sicher besser schmeckt', es:'Di que solo has comido halloumi en Alemania y que aquí seguro que está más rico', en:'Say you have only eaten halloumi in Germany and that it is surely tastier here', el:'Πες ότι έχεις φάει χαλλούμι μόνο στη Γερμανία και ότι εδώ σίγουρα είναι πιο νόστιμο' },
+      { de:'Sag, dass du einen Sommer lang bleiben würdest: Du würdest in den Bergen leben und jeden Morgen schreiben', es:'Di que te quedarías un verano: vivirías en las montañas y escribirías cada mañana', en:'Say you would stay for a summer: you would live in the mountains and write every morning', el:'Πες ότι θα έμενες ένα καλοκαίρι: θα ζούσες στα βουνά και θα έγραφες κάθε πρωί' }
+    ]
+  },
+
+  stationen: {
+
+    // ── B1 · Beim Arzt · Chania, Kreta (Mär) — das Licht der Samaria-Schlucht ──
+    'b1.arzt': {
+      deineRolle: { de:'Du bist Elli. Gestern hast du dir auf einem Wanderweg bei Chania den Knöchel verstaucht; heute ist er stark geschwollen. Eine AMKA hast du nicht, aber die Europäische Krankenversicherungskarte.', es:'Eres Elli. Ayer te torciste el tobillo en un sendero cerca de Chania; hoy está muy hinchado. No tienes AMKA, pero sí la tarjeta sanitaria europea.', en:'You are Elli. Yesterday you sprained your ankle on a path near Chania; today it is very swollen. You have no AMKA number, but you do have the European Health Insurance Card.', el:'Είσαι η Έλλη. Χθες στραμπούληξες τον αστράγαλο σε ένα μονοπάτι κοντά στα Χανιά· σήμερα είναι πολύ πρησμένος. ΑΜΚΑ δεν έχεις, έχεις όμως την ευρωπαϊκή κάρτα ασφάλισης υγείας.' },
+      abrundung: { z:'Ναι, πάντα μετά το φαγητό. Σε μια εβδομάδα — αλλά με κλειστά παπούτσια, όχι με σανδάλια! Περαστικά!', tr:'Ne, pánda metá to fayitó. Se mia evdomáda — alá me klistá papoútsia, óchi me sandália! Perastiká!', na:{ de:'Ja, immer nach dem Essen. In einer Woche — aber mit geschlossenen Schuhen, nicht mit Sandalen! Gute Besserung!', es:'Sí, siempre después de comer. Dentro de una semana, pero con zapato cerrado, ¡no con sandalias! ¡Que se mejore!', en:'Yes, always after food. In a week — but in closed shoes, not sandals! Get well soon!' } },
+      rollen: {
+        spikiu: { de:'die Ärztin, Dr. Maria Papadaki', es:'la doctora María Papadaki', en:'the doctor, Dr Maria Papadaki', el:'η γιατρός, η Μαρία Παπαδάκη' },
+        lerner: { de:'Elli, die Schriftstellerin', es:'Elli, la escritora', en:'Elli, the novelist', el:'η Έλλη, η συγγραφέας' },
+        ort:    { de:'im Gesundheitszentrum bei Chania, Kreta', es:'en el centro de salud cerca de Chania, Creta', en:'at the health centre near Chania, Crete', el:'στο κέντρο υγείας κοντά στα Χανιά, στην Κρήτη' }
+      },
+      wortschatz: [
+        { z:'ο αστράγαλος', tr:'o astrágalos', na:{ de:'der Knöchel', es:'el tobillo', en:'the ankle' } },
+        { z:'στραμπούληξα', tr:'stramboúlixa', na:{ de:'ich habe mir verstaucht', es:'me torcí (un esguince)', en:'I sprained' } },
+        { z:'πρησμένος', tr:'prisménos', na:{ de:'geschwollen', es:'hinchado', en:'swollen' } },
+        { z:'ο πάγος', tr:'o págos', na:{ de:'das Eis (zum Kühlen)', es:'el hielo', en:'ice' } },
+        { z:'ο επίδεσμος', tr:'o epídesmos', na:{ de:'der Verband', es:'la venda', en:'the bandage' } },
+        { z:'το αντιφλεγμονώδες', tr:'to andiflegmonódes', na:{ de:'der Entzündungshemmer', es:'el antiinflamatorio', en:'the anti-inflammatory' } },
+        { z:'η αλοιφή', tr:'i alifí', na:{ de:'die Salbe', es:'la pomada', en:'the ointment' } },
+        { z:'η ευρωπαϊκή κάρτα ασφάλισης υγείας', tr:'i evropaikí kárta asfálisis iyías', na:{ de:'die Europäische Krankenversicherungskarte', es:'la tarjeta sanitaria europea', en:'the European Health Insurance Card' } },
+        { z:'πατάω', tr:'patáo', na:{ de:'auftreten', es:'apoyar el pie, pisar', en:'to put weight on, to step' } },
+        { z:'ξεκουράζομαι', tr:'xekourázome', na:{ de:'sich ausruhen', es:'descansar', en:'to rest' } },
+        { z:'σας συνιστώ να …', tr:'sas sinistó na …', na:{ de:'ich empfehle Ihnen, …', es:'le recomiendo que …', en:'I recommend that you …' } },
+        { z:'πρέπει να …', tr:'prépi na …', na:{ de:'man muss …, ich muss …', es:'hay que …, tengo que …', en:'you must …, I have to …' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Ärztin, Dr. Maria Papadaki', es:'La doctora María Papadaki', en:'The doctor, Dr Maria Papadaki' },
+        zeilen: [
+          { wer:'spikiu', z:'Καλημέρα, περάστε. Βλέπω ότι κουτσαίνετε — τι σας συνέβη;', tr:'Kaliméra, peráste. Vlépo óti koutsénete — ti sas sinévi?', na:{ de:'Guten Morgen, kommen Sie herein. Ich sehe, Sie hinken — was ist Ihnen passiert?', es:'Buenos días, pase. Veo que cojea, ¿qué le ha pasado?', en:'Good morning, come in. I see you’re limping — what happened to you?' } },
+          { wer:'lerner', z:'Χθες στραμπούληξα τον αστράγαλο σε ένα μονοπάτι και σήμερα είναι πολύ πρησμένος.', tr:'Chthes stramboúlixa ton astrágalo se éna monopáti ke símera íne polí prisménos.', na:{ de:'Gestern habe ich mir auf einem Wanderweg den Knöchel verstaucht, und heute ist er sehr geschwollen.', es:'Ayer me torcí el tobillo en un sendero y hoy está muy hinchado.', en:'Yesterday I sprained my ankle on a path, and today it’s very swollen.' } },
+          { wer:'spikiu', z:'Για να δούμε… Δεν μοιάζει σπασμένος. Έχετε ΑΜΚΑ ή ευρωπαϊκή κάρτα;', tr:'Ya na doúme… Den miázi spasménos. Échete ámka i evropaikí kárta?', na:{ de:'Mal sehen … Er sieht nicht gebrochen aus. Haben Sie eine AMKA oder die europäische Karte?', es:'A ver… No parece roto. ¿Tiene AMKA o la tarjeta europea?', en:'Let’s see … It doesn’t look broken. Do you have an AMKA number or the European card?' } },
+          { wer:'lerner', z:'Δεν έχω ΑΜΚΑ, αλλά έχω την ευρωπαϊκή κάρτα ασφάλισης υγείας. Ορίστε.', tr:'Den écho ámka, alá écho tin evropaikí kárta asfálisis iyías. Oríste.', na:{ de:'Ich habe keine AMKA, aber ich habe die Europäische Krankenversicherungskarte. Bitte schön.', es:'No tengo AMKA, pero tengo la tarjeta sanitaria europea. Aquí tiene.', en:'I don’t have an AMKA number, but I have the European Health Insurance Card. Here you are.' } },
+          { wer:'spikiu', z:'Ωραία. Σας συνιστώ να βάζετε πάγο τρεις φορές τη μέρα και να ξεκουράζεστε. Θα σας γράψω κι ένα αντιφλεγμονώδες.', tr:'Oréa. Sas sinistó na vázete págo tris forés ti méra ke na xekourázeste. Tha sas grápso ki éna andiflegmonódes.', na:{ de:'Gut. Ich empfehle Ihnen, dreimal am Tag Eis aufzulegen und sich auszuruhen. Ich verschreibe Ihnen auch einen Entzündungshemmer.', es:'Bien. Le recomiendo que se ponga hielo tres veces al día y que descanse. También le voy a recetar un antiinflamatorio.', en:'Good. I recommend you put ice on it three times a day and rest. I’ll also prescribe you an anti-inflammatory.' } },
+          { wer:'lerner', z:'Πρέπει να το παίρνω με φαγητό; Και πότε μπορώ να περπατήσω πάλι κανονικά;', tr:'Prépi na to pérno me fayitó? Ke póte boró na perpatíso páli kanoniká?', na:{ de:'Muss ich es mit Essen nehmen? Und wann kann ich wieder normal gehen?', es:'¿Tengo que tomarlo con comida? ¿Y cuándo podré volver a caminar con normalidad?', en:'Do I have to take it with food? And when can I walk normally again?' } }
+        ]
+      },
+      lesetext: {
+        z:'Ήθελα να δω το φως στο φαράγγι της Σαμαριάς, αλλά τον Μάρτιο είναι ακόμα κλειστό. Περπάτησα σε ένα μικρότερο φαράγγι και στραμπούληξα τον αστράγαλο. Στο κέντρο υγείας είπα: «Καλημέρα, κυρία ιατρέ». Η γιατρός γέλασε: «Ιατρός γράφει η πινακίδα. Εμείς λέμε γιατρός!» Η λέξη του τόπου: «Περαστικά».',
+        tr:'Íthela na do to fos sto farángi tis Samariás, alá ton Mártio íne akóma klistó. Perpátisa se éna mikrótero farángi ke stramboúlixa ton astrágalo. Sto kéndro iyías ípa: «Kaliméra, kiría iatré». I yatrós yélase: «Iatrós gráfi i pinakída. Emís léme yatrós!» I léxi tou tópou: «Perastiká».',
+        na:{ de:'Ich wollte das Licht in der Samaria-Schlucht sehen, aber im März ist sie noch geschlossen. Ich bin durch eine kleinere Schlucht gewandert und habe mir den Knöchel verstaucht. Im Gesundheitszentrum sagte ich: „Guten Morgen, Frau Iatros." Die Ärztin lachte: „Iatros steht auf dem Schild. Wir sagen Giatros!" Das Wort des Ortes: „Perastiká" — gute Besserung.',
+             es:'Quería ver la luz en la garganta de Samaria, pero en marzo todavía está cerrada. Caminé por una garganta más pequeña y me torcí el tobillo. En el centro de salud dije: «Buenos días, señora iatrós». La doctora se rio: «Iatrós lo pone en el cartel. ¡Nosotros decimos yatrós!». La palabra del lugar: «Perastiká», que se mejore.',
+             en:'I wanted to see the light in the Samaria Gorge, but in March it is still closed. I walked through a smaller gorge and sprained my ankle. At the health centre I said, “Good morning, Madam Iatros.” The doctor laughed: “Iatros is what the sign says. We say yatros!” The word of the place: “Perastiká” — get well soon.' },
+        frage:{ de:'Warum ist Elli nicht durch die Samaria-Schlucht gewandert?', es:'¿Por qué Elli no recorrió la garganta de Samaria?', en:'Why didn’t Elli walk through the Samaria Gorge?' },
+        optionen:[
+          { na:{ de:'Im März ist sie noch geschlossen', es:'En marzo todavía está cerrada', en:'In March it is still closed' }, richtig:true  },
+          { na:{ de:'Sie hatte sich schon den Knöchel verstaucht', es:'Ya se había torcido el tobillo', en:'She had already sprained her ankle' }, richtig:false },
+          { na:{ de:'Es hat den ganzen Tag geregnet', es:'Llovió todo el día', en:'It rained all day' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähl, was dir passiert ist, und frag, was du jetzt tun musst (mit „πρέπει να"). Zwei Sätze.', es:'Cuenta qué te ha pasado y pregunta qué tienes que hacer ahora (con «πρέπει να»). Dos frases.', en:'Say what happened to you and ask what you have to do now (with “πρέπει να”). Two sentences.' },
+        muster:'Χθες έπεσα από το ποδήλατο και με πονάει πολύ ο καρπός. Πρέπει να κάνω ακτινογραφία;'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text:{ de:'„Πρέπει να" + Verb heißt „man muss / ich muss": πρέπει να ξεκουραστείτε. Das Verb nach να steht in derselben Form wie nach θα. Ein Rat klingt höflicher mit „σας συνιστώ να …" (ich empfehle Ihnen, …), verneint mit „να μην": σας συνιστώ να μην περπατάτε πολύ. Soll man etwas immer wieder tun, nimmt man die Dauerform: να βάζετε πάγο (regelmäßig) — να βάλετε πάγο (einmal).',
+               es:'«Πρέπει να» + verbo significa «hay que / tengo que»: πρέπει να ξεκουραστείτε. El verbo después de να va en la misma forma que después de θα. Un consejo suena más amable con «σας συνιστώ να…» (le recomiendo que…), y en negativo con «να μην»: σας συνιστώ να μην περπατάτε πολύ. Si algo se hace una y otra vez, se usa la forma continua: να βάζετε πάγο (a menudo) — να βάλετε πάγο (una vez).',
+               en:'“Πρέπει να” + verb means “you must / I have to”: πρέπει να ξεκουραστείτε. The verb after να takes the same form as after θα. Advice sounds more polite with “σας συνιστώ να …” (I recommend that you …), and the negative is “να μην”: σας συνιστώ να μην περπατάτε πολύ. If something is to be done again and again, use the continuous form: να βάζετε πάγο (regularly) — να βάλετε πάγο (once).' },
+        beispiele:[
+          { z:'Πρέπει να βάζετε πάγο τρεις φορές τη μέρα.', tr:'Prépi na vázete págo tris forés ti méra.', na:{ de:'Sie müssen dreimal am Tag Eis auflegen.', es:'Tiene que ponerse hielo tres veces al día.', en:'You have to put ice on it three times a day.' } },
+          { z:'Σας συνιστώ να μην περπατάτε πολύ.', tr:'Sas sinistó na min perpatáte polí.', na:{ de:'Ich empfehle Ihnen, nicht viel zu gehen.', es:'Le recomiendo que no camine mucho.', en:'I recommend that you don’t walk much.' } }
+        ]
+      },
+      kultur:{ de:'Die Samaria-Schlucht in den Weißen Bergen (Λευκά Όρη) ist rund 16 km lang und meist nur von Mai bis Oktober geöffnet. Wer krank ist, hört auf Kreta — und in ganz Griechenland — „Περαστικά!": „Möge es vorübergehen."',
+               es:'La garganta de Samaria, en las Montañas Blancas (Λευκά Όρη), mide unos 16 km y suele abrir solo de mayo a octubre. A quien está enfermo, en Creta —y en toda Grecia— se le dice «Περαστικά!»: «que se te pase».',
+               en:'The Samaria Gorge in the White Mountains (Λευκά Όρη) is about 16 km long and is usually open only from May to October. If you are ill, people in Crete — and all over Greece — say “Περαστικά!”: “may it pass.”' }
+    },
+
+    // ── B1 · Einkaufen · Altstadt von Rhodos (Apr, Ostern) — Kerzenlicht der Ανάσταση ──
+    'b1.einkaufen': {
+      deineRolle: { de:'Du bist Elli. Es ist Karsamstag in der Altstadt von Rhodos. Du suchst einen handbemalten Teller für deine Freundin Margarete. Der große gefällt dir besser, aber du möchtest einen besseren Preis. Du reist noch viel.', es:'Eres Elli. Es Sábado Santo en el casco antiguo de Rodas. Buscas un plato pintado a mano para tu amiga Margarete. El grande te gusta más, pero quieres un precio mejor. Todavía vas a viajar mucho.', en:'You are Elli. It is Holy Saturday in the old town of Rhodes. You are looking for a hand-painted plate for your friend Margarete. You like the big one better, but you would like a better price. You still have a lot of travelling ahead.', el:'Είσαι η Έλλη. Είναι Μεγάλο Σάββατο στην παλιά πόλη της Ρόδου. Ψάχνεις ένα πιάτο ζωγραφισμένο στο χέρι για τη φίλη σου τη Μαργκαρέτε. Το μεγάλο σού αρέσει περισσότερο, αλλά θέλεις καλύτερη τιμή. Θα ταξιδέψεις ακόμα πολύ.' },
+      abrundung: { z:'Με χαρτί και με αγάπη! Κι απόψε, στην Ανάσταση, ελάτε με λαμπάδα. Θα δείτε τι φως!', tr:'Me chartí ke me agápi! Ki apópse, stin Anástasi, eláte me lambáda. Tha díte ti fos!', na:{ de:'Mit Papier und mit Liebe! Und heute Nacht, zur Auferstehungsfeier, kommen Sie mit einer Osterkerze. Sie werden sehen, was für ein Licht!', es:'¡Con papel y con cariño! Y esta noche, en la Resurrección, venga con una vela. ¡Ya verá qué luz!', en:'With paper and with love! And tonight, at the Resurrection, come with an Easter candle. You’ll see what light!' } },
+      rollen: {
+        spikiu: { de:'Kyr Manolis, der Keramik verkauft', es:'el señor Manolis, que vende cerámica', en:'Kyr Manolis, who sells ceramics', el:'ο κυρ-Μανώλης, που πουλάει κεραμικά' },
+        lerner: { de:'Elli, die Schriftstellerin', es:'Elli, la escritora', en:'Elli, the novelist', el:'η Έλλη, η συγγραφέας' },
+        ort:    { de:'in einem kleinen Laden in der Altstadt von Rhodos', es:'en una tiendecita del casco antiguo de Rodas', en:'in a little shop in the old town of Rhodes', el:'σε ένα μαγαζάκι στην παλιά πόλη της Ρόδου' }
+      },
+      wortschatz: [
+        { z:'τα κεραμικά', tr:'ta keramiká', na:{ de:'die Keramik', es:'la cerámica', en:'ceramics, pottery' } },
+        { z:'ζωγραφισμένος στο χέρι', tr:'zografisménos sto chéri', na:{ de:'handbemalt', es:'pintado a mano', en:'hand-painted' } },
+        { z:'το σχέδιο', tr:'to schédio', na:{ de:'das Muster', es:'el dibujo, el motivo', en:'the pattern, the design' } },
+        { z:'πιο … από', tr:'pio … apó', na:{ de:'…er als', es:'más … que', en:'more … than' } },
+        { z:'πιο φτηνός', tr:'pio ftinós', na:{ de:'billiger', es:'más barato', en:'cheaper' } },
+        { z:'Μου κάνετε μια καλύτερη τιμή;', tr:'Mou kánete mia kalíteri timí?', na:{ de:'Machen Sie mir einen besseren Preis?', es:'¿Me hace un precio mejor?', en:'Can you give me a better price?' } },
+        { z:'αυτό εδώ', tr:'aftó edó', na:{ de:'dieses hier', es:'este de aquí', en:'this one here' } },
+        { z:'εκείνο εκεί', tr:'ekíno ekí', na:{ de:'jenes dort', es:'aquel de allí', en:'that one there' } },
+        { z:'τυλίγω', tr:'tilígo', na:{ de:'einpacken, einwickeln', es:'envolver', en:'to wrap' } },
+        { z:'χαρίζω', tr:'charízo', na:{ de:'schenken', es:'regalar', en:'to give as a gift' } },
+        { z:'το σφουγγάρι', tr:'to sfoungári', na:{ de:'der Schwamm', es:'la esponja', en:'the sponge' } },
+        { z:'η λαμπάδα', tr:'i lambáda', na:{ de:'die (Oster-)Kerze', es:'el cirio (de Pascua)', en:'the (Easter) candle' } }
+      ],
+      dialog: {
+        rolle: { de:'Kyr Manolis, der Keramik verkauft', es:'El señor Manolis, que vende cerámica', en:'Kyr Manolis, who sells ceramics' },
+        zeilen: [
+          { wer:'spikiu', z:'Καλώς τη! Ελάτε, κοιτάξτε ελεύθερα. Όλα τα πιάτα είναι ζωγραφισμένα στο χέρι.', tr:'Kalós ti! Eláte, kitáxte eléfthera. Óla ta piáta íne zografisména sto chéri.', na:{ de:'Willkommen! Kommen Sie, schauen Sie sich ruhig um. Alle Teller sind handbemalt.', es:'¡Bienvenida! Pase, mire con tranquilidad. Todos los platos están pintados a mano.', en:'Welcome! Come in, have a look around. All the plates are hand-painted.' } },
+          { wer:'lerner', z:'Είναι πανέμορφα! Τα ζωγραφίζετε εσείς; Και τι σημαίνουν αυτά τα λουλούδια;', tr:'Íne panémorfa! Ta zografízete esís? Ke ti siménoun aftá ta louloúdia?', na:{ de:'Sie sind wunderschön! Bemalen Sie sie selbst? Und was bedeuten diese Blumen?', es:'¡Son preciosos! ¿Los pinta usted? ¿Y qué significan estas flores?', en:'They’re beautiful! Do you paint them yourself? And what do these flowers mean?' } },
+          { wer:'spikiu', z:'Τα πουλιά τα ζωγραφίζω εγώ, τα λουλούδια η γυναίκα μου. Είναι λινδιακά σχέδια: τουλίπες και γαρίφαλα, όπως παλιά στη Λίνδο. Το μεγάλο κάνει σαράντα, το μικρό είκοσι πέντε.', tr:'Ta pouliá ta zografízo egó, ta louloúdia i yinéka mou. Íne lindiaká schédia: toulípes ke garífala, ópos paliá sti Líndo. To megálo káni saránda, to mikró íkosi pénde.', na:{ de:'Die Vögel male ich, die Blumen meine Frau. Das sind Lindos-Muster: Tulpen und Nelken, wie früher in Lindos. Der große kostet vierzig, der kleine fünfundzwanzig.', es:'Los pájaros los pinto yo; las flores, mi mujer. Son motivos de Lindos: tulipanes y claveles, como antes en Lindos. El grande cuesta cuarenta; el pequeño, veinticinco.', en:'I paint the birds, my wife the flowers. They’re Lindos designs: tulips and carnations, like in Lindos long ago. The big one is forty, the small one twenty-five.' } },
+          { wer:'lerner', z:'Το μεγάλο είναι πιο όμορφο από το μικρό. Μου κάνετε μια καλύτερη τιμή;', tr:'To megálo íne pio ómorfo apó to mikró. Mou kánete mia kalíteri timí?', na:{ de:'Der große ist schöner als der kleine. Machen Sie mir einen besseren Preis?', es:'El grande es más bonito que el pequeño. ¿Me hace un precio mejor?', en:'The big one is prettier than the small one. Can you give me a better price?' } },
+          { wer:'spikiu', z:'Για σας, τριάντα πέντε. Και σας χαρίζω κι ένα σφουγγάρι από τη Σύμη — για το Πάσχα!', tr:'Ya sas, triánda pénde. Ke sas charízo ki éna sfoungári apó ti Sími — ya to Páscha!', na:{ de:'Für Sie fünfunddreißig. Und ich schenke Ihnen noch einen Schwamm aus Symi — zu Ostern!', es:'Para usted, treinta y cinco. ¡Y le regalo una esponja de Simi, por Pascua!', en:'For you, thirty-five. And I’ll give you a sponge from Symi as well — for Easter!' } },
+          { wer:'lerner', z:'Τότε παίρνω αυτό εδώ. Μπορείτε να το τυλίξετε καλά; Ταξιδεύω πολύ.', tr:'Tóte pérno aftó edó. Boríte na to tilíxete kalá? Taxidévo polí.', na:{ de:'Dann nehme ich diesen hier. Können Sie ihn gut einpacken? Ich reise viel.', es:'Entonces me llevo este. ¿Me lo puede envolver bien? Viajo mucho.', en:'Then I’ll take this one. Could you wrap it well? I travel a lot.' } }
+        ]
+      },
+      lesetext: {
+        z:'Το Μεγάλο Σάββατο αγόρασα από τον κυρ-Μανώλη ένα πιάτο με τουλίπες για τη Μαργκαρέτε. Όταν ζήτησα «έναν σπόγγο», η εγγονή του γέλασε, και ο κυρ-Μανώλης είπε: «Σπόγγος; Εμείς λέμε σφουγγάρι.» Στο τέλος μου χάρισε κι ένα. Τα μεσάνυχτα όλη η παλιά πόλη κρατούσε λαμπάδες, και το φως περνούσε από χέρι σε χέρι.',
+        tr:'To Megálo Sávato agórasa apó ton kir-Manóli éna piáto me toulípes ya ti Margaréte. Ótan zítisa «énan spóngo», i engoní tou yélase, ke o kir-Manólis ípe: «Spóngos? Emís léme sfoungári.» Sto télos mou chárise ki éna. Ta mesánichta óli i paliá póli kratoúse lambádes, ke to fos pernoúse apó chéri se chéri.',
+        na:{ de:'Am Karsamstag habe ich bei Kyr Manolis einen Teller mit Tulpen für Margarete gekauft. Als ich nach „einem Spongos“ fragte, lachte seine Enkelin, und Kyr Manolis sagte: „Spongos? Wir sagen Sfoungari.“ Am Ende hat er mir einen geschenkt. Um Mitternacht hielt die ganze Altstadt Kerzen, und das Licht ging von Hand zu Hand.',
+             es:'El Sábado Santo le compré al señor Manolis un plato con tulipanes para Margarete. Cuando pedí «un spóngos», su nieta se rio, y el señor Manolis dijo: «¿Spóngos? Nosotros decimos sfungári». Al final me regaló una. A medianoche todo el casco antiguo sostenía velas, y la luz pasaba de mano en mano.',
+             en:'On Holy Saturday I bought a plate with tulips from Kyr Manolis for Margarete. When I asked for “a spongos”, his granddaughter laughed, and Kyr Manolis said: “Spongos? We say sfoungari.” In the end he gave me one. At midnight the whole old town held candles, and the light passed from hand to hand.' },
+        frage:{ de:'Wie sagt man im Alltag zu einem Schwamm?', es:'¿Cómo se dice «esponja» en el día a día?', en:'What is the everyday word for a sponge?' },
+        optionen:[
+          { na:{ de:'το σφουγγάρι', es:'το σφουγγάρι', en:'το σφουγγάρι' }, richtig:true  },
+          { na:{ de:'ο σπόγγος', es:'ο σπόγγος', en:'ο σπόγγος' }, richtig:false },
+          { na:{ de:'η λαμπάδα', es:'η λαμπάδα', en:'η λαμπάδα' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Vergleiche zwei Dinge in einem Laden und bitte um einen besseren Preis. Zwei Sätze.', es:'Compara dos cosas en una tienda y pide un precio mejor. Dos frases.', en:'Compare two things in a shop and ask for a better price. Two sentences.' },
+        muster:'Αυτή η τσάντα είναι πιο ωραία από εκείνη. Μου κάνετε μια καλύτερη τιμή;'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text:{ de:'Vergleichen geht mit πιο + Adjektiv + από: πιο όμορφο από το μικρό (schöner als der kleine). Nach από steht der Akkusativ: από το μικρό, από τον άλλο. Ein paar Wörter haben eine eigene Form: καλός → καλύτερος. Und Achtung: Demonstrativa behalten im Griechischen den Artikel — αυτό το πιάτο (dieser Teller), εκείνο το βάζο (jene Vase dort).',
+               es:'Para comparar se usa πιο + adjetivo + από: πιο όμορφο από το μικρό (más bonito que el pequeño). Después de από va el acusativo: από το μικρό, από τον άλλο. Algunas palabras tienen forma propia: καλός → καλύτερος. Y ojo: en griego el demostrativo conserva el artículo — αυτό το πιάτο (este plato), εκείνο το βάζο (aquel jarrón).',
+               en:'To compare, use πιο + adjective + από: πιο όμορφο από το μικρό (prettier than the small one). After από comes the accusative: από το μικρό, από τον άλλο. A few words have their own form: καλός → καλύτερος. And note: in Greek, demonstratives keep the article — αυτό το πιάτο (this plate), εκείνο το βάζο (that vase over there).' },
+        beispiele:[
+          { z:'Το μεγάλο είναι πιο όμορφο από το μικρό.', tr:'To megálo íne pio ómorfo apó to mikró.', na:{ de:'Der große ist schöner als der kleine.', es:'El grande es más bonito que el pequeño.', en:'The big one is prettier than the small one.' } },
+          { z:'Παίρνω αυτό το πιάτο, όχι εκείνο.', tr:'Pérno aftó to piáto, óchi ekíno.', na:{ de:'Ich nehme diesen Teller, nicht jenen.', es:'Me llevo este plato, no aquel.', en:'I’ll take this plate, not that one.' } }
+        ]
+      },
+      kultur:{ de:'Die mittelalterliche Altstadt von Rhodos ist UNESCO-Welterbe. In der Osternacht wird um Mitternacht das Licht von Kerze zu Kerze weitergegeben; die Osterkerze heißt λαμπάδα. Die Schwämme kommen traditionell von den Nachbarinseln Symi und Kalymnos.',
+               es:'El casco antiguo medieval de Rodas es Patrimonio de la Humanidad de la UNESCO. En la noche de Pascua, a medianoche, la luz pasa de vela en vela; el cirio de Pascua se llama λαμπάδα. Las esponjas vienen tradicionalmente de las islas vecinas de Simi y Kálimnos.',
+               en:'The medieval old town of Rhodes is a UNESCO World Heritage Site. On Easter night, at midnight, the light is passed from candle to candle; the Easter candle is called a λαμπάδα. The sponges traditionally come from the neighbouring islands of Symi and Kalymnos.' }
+    },
+
+    // ── B1 · In der Taverne · Oia, Santorini (Mai) — der berühmte Sonnenuntergang ──
+    'b1.restaurant': {
+      duzen: true,
+      deineRolle: { de:'Du bist Elli. Du bist seit sieben Monaten in Griechenland und schreibst einen Roman über das Licht. In einer Taverne hast du noch nie gearbeitet, aber du hast viele Texte auf Englisch geschrieben. Du könntest morgen früh anfangen.', es:'Eres Elli. Llevas siete meses en Grecia y escribes una novela sobre la luz. Nunca has trabajado en una taberna, pero has escrito muchos textos en inglés. Podrías empezar mañana por la mañana.', en:'You are Elli. You have been in Greece for seven months and are writing a novel about light. You have never worked in a taverna, but you have written lots of texts in English. You could start tomorrow morning.', el:'Είσαι η Έλλη. Είσαι στην Ελλάδα εδώ και εφτά μήνες και γράφεις ένα μυθιστόρημα για το φως. Δεν έχεις δουλέψει ποτέ σε ταβέρνα, αλλά έχεις γράψει πολλά κείμενα στα αγγλικά. Θα μπορούσες να ξεκινήσεις αύριο το πρωί.' },
+      abrundung: { z:'Αύριο στις δέκα, λοιπόν. Και το βράδυ κάθεσαι στην ταράτσα — το ηλιοβασίλεμα το κερνάει το σπίτι!', tr:'Ávrio stis déka, lipón. Ke to vrádi káthese stin tarátsa — to iliovasílema to kernái to spíti!', na:{ de:'Also morgen um zehn. Und abends setzt du dich auf die Terrasse — der Sonnenuntergang geht aufs Haus!', es:'Mañana a las diez, entonces. Y por la tarde te sientas en la terraza: ¡la puesta de sol corre a cuenta de la casa!', en:'Tomorrow at ten, then. And in the evening you sit on the terrace — the sunset is on the house!' } },
+      rollen: {
+        spikiu: { de:'Despina, die Wirtin der Taverne', es:'Déspina, la dueña de la taberna', en:'Despina, the taverna owner', el:'η κυρία Δέσποινα, η ιδιοκτήτρια της ταβέρνας' },
+        lerner: { de:'Elli, die Schriftstellerin', es:'Elli, la escritora', en:'Elli, the novelist', el:'η Έλλη, η συγγραφέας' },
+        ort:    { de:'auf der Terrasse einer Familientaverne in Oia, Santorini', es:'en la terraza de una taberna familiar en Oia, Santorini', en:'on the terrace of a family taverna in Oia, Santorini', el:'στην ταράτσα μιας οικογενειακής ταβέρνας στην Οία της Σαντορίνης' }
+      },
+      wortschatz: [
+        { z:'ο κατάλογος', tr:'o katálogos', na:{ de:'die Speisekarte', es:'la carta', en:'the menu' } },
+        { z:'η συνέντευξη', tr:'i sinéndefxi', na:{ de:'das (Vorstellungs-)Gespräch', es:'la entrevista', en:'the interview' } },
+        { z:'η εμπειρία', tr:'i embiría', na:{ de:'die Erfahrung', es:'la experiencia', en:'experience' } },
+        { z:'έχω δουλέψει', tr:'écho doulépsi', na:{ de:'ich habe gearbeitet', es:'he trabajado', en:'I have worked' } },
+        { z:'εδώ και …', tr:'edó ke …', na:{ de:'seit …', es:'desde hace …', en:'for … (up to now)' } },
+        { z:'το μυθιστόρημα', tr:'to mithistórima', na:{ de:'der Roman', es:'la novela', en:'the novel' } },
+        { z:'το ωράριο', tr:'to orário', na:{ de:'die Arbeitszeiten', es:'el horario', en:'the working hours' } },
+        { z:'η βάρδια', tr:'i várdia', na:{ de:'die Schicht', es:'el turno', en:'the shift' } },
+        { z:'η ταράτσα', tr:'i tarátsa', na:{ de:'die Dachterrasse', es:'la azotea, la terraza', en:'the roof terrace' } },
+        { z:'το ηλιοβασίλεμα', tr:'to iliovasílema', na:{ de:'der Sonnenuntergang', es:'la puesta de sol', en:'the sunset' } },
+        { z:'η καλντέρα', tr:'i kaldéra', na:{ de:'die Caldera (Vulkankessel)', es:'la caldera (volcánica)', en:'the caldera' } },
+        { z:'κερνάει το σπίτι', tr:'kernái to spíti', na:{ de:'das geht aufs Haus', es:'invita la casa', en:'it’s on the house' } }
+      ],
+      dialog: {
+        rolle: { de:'Despina, die Wirtin der Taverne', es:'Déspina, la dueña de la taberna', en:'Despina, the taverna owner' },
+        zeilen: [
+          { wer:'spikiu', z:'Καλώς ήρθες! Δέσποινα — και μιλάμε στον ενικό, ε; Λοιπόν, πόσο καιρό είσαι στην Ελλάδα;', tr:'Kalós írthes! Déspina — ke miláme ston enikó, e? Lipón, póso keró íse stin Eláda?', na:{ de:'Willkommen! Despina — und wir duzen uns, ja? Also, wie lange bist du schon in Griechenland?', es:'¡Bienvenida! Déspina, y nos tuteamos, ¿eh? Bueno, ¿cuánto tiempo llevas en Grecia?', en:'Welcome! I’m Despina — and let’s keep it informal, OK? So, how long have you been in Greece?' } },
+          { wer:'lerner', z:'Είμαι στην Ελλάδα εδώ και εφτά μήνες. Γράφω ένα μυθιστόρημα για το φως.', tr:'Íme stin Eláda edó ke eftá mínes. Gráfo éna mithistórima ya to fos.', na:{ de:'Ich bin seit sieben Monaten in Griechenland. Ich schreibe einen Roman über das Licht.', es:'Llevo siete meses en Grecia. Estoy escribiendo una novela sobre la luz.', en:'I’ve been in Greece for seven months. I’m writing a novel about light.' } },
+          { wer:'spikiu', z:'Μυθιστόρημα! Ωραία. Κι έχεις δουλέψει ποτέ σε ταβέρνα ή σε κουζίνα;', tr:'Mithistórima! Oréa. Ki échis doulépsi poté se tavérna i se kouzína?', na:{ de:'Ein Roman! Schön. Und hast du schon mal in einer Taverne oder in einer Küche gearbeitet?', es:'¡Una novela! Qué bien. ¿Y has trabajado alguna vez en una taberna o en una cocina?', en:'A novel! Lovely. And have you ever worked in a taverna or a kitchen?' } },
+          { wer:'lerner', z:'Δεν έχω δουλέψει σε ταβέρνα, αλλά έχω γράψει πολλά κείμενα στα αγγλικά.', tr:'Den écho doulépsi se tavérna, alá écho grápsi polá kímena sta angliká.', na:{ de:'Ich habe noch nie in einer Taverne gearbeitet, aber ich habe viele Texte auf Englisch geschrieben.', es:'No he trabajado en una taberna, pero he escrito muchos textos en inglés.', en:'I haven’t worked in a taverna, but I’ve written lots of texts in English.' } },
+          { wer:'spikiu', z:'Αυτό ακριβώς θέλω! Ο κατάλογός μας γράφει «fried sea» αντί για «fried fish». Θα τον ξαναγράψεις; Πέντε ώρες τη μέρα, για μια εβδομάδα — με φαγητό.', tr:'Aftó akrivós thélo! O katálogós mas gráfi «fried sea» andí ya «fried fish». Tha ton xanagrápsis? Pénde óres ti méra, ya mia evdomáda — me fayitó.', na:{ de:'Genau das will ich! Auf unserer Karte steht „fried sea" statt „fried fish". Schreibst du sie neu? Fünf Stunden am Tag, eine Woche lang — mit Essen.', es:'¡Justo eso quiero! Nuestra carta pone «fried sea» en vez de «fried fish». ¿La vuelves a escribir? Cinco horas al día, durante una semana, con comida incluida.', en:'That’s exactly what I want! Our menu says “fried sea” instead of “fried fish”. Will you rewrite it? Five hours a day, for a week — meals included.' } },
+          { wer:'lerner', z:'Με μεγάλη χαρά! Μπορώ να ξεκινήσω αύριο το πρωί, αν σου είναι εντάξει.', tr:'Me megáli chará! Boró na xekiníso ávrio to proí, an sou íne endáxi.', na:{ de:'Sehr gern! Ich kann morgen früh anfangen, wenn es dir recht ist.', es:'¡Con mucho gusto! Puedo empezar mañana por la mañana, si te va bien.', en:'With great pleasure! I can start tomorrow morning, if that’s OK with you.' } }
+        ]
+      },
+      lesetext: {
+        z:'Εδώ και μια εβδομάδα βοηθάω στην ταβέρνα της Δέσποινας στην Οία. Γράφω τον κατάλογο στα αγγλικά. Την πρώτη μέρα έγραψα «ιχθύς» και ο Νίκος, ο γιος της, γέλασε: «Ιχθύς στα αρχαία! Εδώ λέμε ψάρι.» Κάθε βράδυ ο ήλιος πέφτει στη θάλασσα και όλοι στην ταράτσα τον χειροκροτούν.',
+        tr:'Edó ke mia evdomáda voitháo stin tavérna tis Déspinas stin Ía. Gráfo ton katálogo sta angliká. Tin próti méra égrapsa «ichthís» ke o Níkos, o yos tis, yélase: «Ichthís sta archéa! Edó léme psári.» Káthe vrádi o ílios péfti sti thálasa ke óli stin tarátsa ton chirokrotoún.',
+        na:{ de:'Seit einer Woche helfe ich in Despinas Taverne in Oia. Ich schreibe die Speisekarte auf Englisch. Am ersten Tag schrieb ich „ichthys“, und Nikos, ihr Sohn, lachte: „Ichthys ist Altgriechisch! Hier sagen wir psari.“ Jeden Abend fällt die Sonne ins Meer, und alle auf der Terrasse klatschen ihr Beifall.',
+             es:'Desde hace una semana ayudo en la taberna de Déspina en Oia. Escribo la carta en inglés. El primer día escribí «ichthýs» y Nikos, su hijo, se rio: «¡Ichthýs es griego antiguo! Aquí decimos psári». Cada tarde el sol cae en el mar y todos en la terraza le aplauden.',
+             en:'For a week now I have been helping at Despina’s taverna in Oia. I am writing the menu in English. On the first day I wrote “ichthys” and Nikos, her son, laughed: “Ichthys is Ancient Greek! Here we say psari.” Every evening the sun drops into the sea and everyone on the terrace applauds it.' },
+        frage:{ de:'Was macht Elli in der Taverne?', es:'¿Qué hace Elli en la taberna?', en:'What does Elli do at the taverna?' },
+        optionen:[
+          { na:{ de:'Sie schreibt die Speisekarte auf Englisch', es:'Escribe la carta en inglés', en:'She writes the menu in English' }, richtig:true  },
+          { na:{ de:'Sie brät Fisch in der Küche', es:'Fríe pescado en la cocina', en:'She fries fish in the kitchen' }, richtig:false },
+          { na:{ de:'Sie bedient auf der Terrasse', es:'Sirve las mesas en la terraza', en:'She waits tables on the terrace' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib, seit wann du etwas machst (mit „εδώ και") und was du schon einmal gemacht hast (mit „έχω …"). Zwei Sätze.', es:'Escribe desde cuándo haces algo (con «εδώ και») y qué has hecho alguna vez (con «έχω…»). Dos frases.', en:'Write how long you have been doing something (with “εδώ και”) and something you have done before (with “έχω …”). Two sentences.' },
+        muster:'Μαθαίνω ελληνικά εδώ και ένα χρόνο. Έχω πάει δύο φορές στην Κρήτη.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text:{ de:'Das Perfekt bildet man mit έχω + einer festen Form auf -ει: έχω δουλέψει, έχω γράψει, δεν έχω δουλέψει ποτέ. Es erzählt Erfahrungen, ohne Datum. „Seit" heißt εδώ και — mit Präsens, weil es ja noch andauert: είμαι στην Ελλάδα εδώ και εφτά μήνες (ich bin seit sieben Monaten in Griechenland). Ganz wie im Deutschen.',
+               es:'El perfecto se forma con έχω + una forma fija en -ει: έχω δουλέψει, έχω γράψει, δεν έχω δουλέψει ποτέ. Sirve para contar experiencias, sin fecha. «Desde hace» es εδώ και, con presente, porque todavía dura: είμαι στην Ελλάδα εδώ και εφτά μήνες (llevo siete meses en Grecia).',
+               en:'The perfect is έχω + a fixed form ending in -ει: έχω δουλέψει, έχω γράψει, δεν έχω δουλέψει ποτέ. It tells about experiences, with no date. “For (up to now)” is εδώ και — with the present tense, because it is still going on: είμαι στην Ελλάδα εδώ και εφτά μήνες (I have been in Greece for seven months). Greek says “I am”, not “I have been”.' },
+        beispiele:[
+          { z:'Έχω δουλέψει σε ένα καφέ.', tr:'Écho doulépsi se éna kafé.', na:{ de:'Ich habe in einem Café gearbeitet.', es:'He trabajado en una cafetería.', en:'I have worked in a café.' } },
+          { z:'Γράφω το βιβλίο εδώ και δύο χρόνια.', tr:'Gráfo to vivlío edó ke dío chrónia.', na:{ de:'Ich schreibe seit zwei Jahren an dem Buch.', es:'Llevo dos años escribiendo el libro.', en:'I have been writing the book for two years.' } }
+        ]
+      },
+      kultur:{ de:'Oia liegt an der Nordspitze Santorinis, hoch über der Caldera, die ein Vulkanausbruch vor rund 3.600 Jahren geformt hat. Im Mai ist es noch ruhig. Typisch für die Insel: Fava (ein gelbes Hülsenfrüchte-Püree), ντοματοκεφτέδες (Tomatenbällchen) und der Weißwein Assyrtiko.',
+               es:'Oia está en la punta norte de Santorini, en lo alto de la caldera que formó una erupción volcánica hace unos 3600 años. En mayo todavía está tranquila. Típicos de la isla: la fava (un puré de legumbre amarilla), los ντοματοκεφτέδες (buñuelos de tomate) y el vino blanco Assyrtiko.',
+               en:'Oia sits at the northern tip of Santorini, high above the caldera formed by a volcanic eruption about 3,600 years ago. In May it is still quiet. Typical of the island: fava (a yellow split-pea purée), ντοματοκεφτέδες (tomato fritters) and the white wine Assyrtiko.' }
+    },
+
+    // ── B1 · Am Bahnhof · Athen → Thessaloniki (Jun) — Sommerlicht über der thessalischen Ebene ──
+    'b1.bahnhof': {
+      deineRolle: { de:'Du bist Elli. In der Metro hast du beim Schreiben deine Haltestelle verpasst; als du am Bahnhof ankamst, war dein Zug nach Thessaloniki schon weg. Du möchtest einen Fensterplatz links, um den Olymp zu sehen. In Thessaloniki willst du um fünf den Bus nach Chalkidiki nehmen.', es:'Eres Elli. En el metro te pasaste de parada por ir escribiendo; cuando llegaste a la estación, tu tren a Salónica ya se había ido. Quieres un asiento de ventanilla a la izquierda para ver el Olimpo. En Salónica quieres coger el autobús de las cinco a Calcídica.', en:'You are Elli. Writing on the metro, you missed your stop; when you got to the station, your train to Thessaloniki had already gone. You want a window seat on the left to see Mount Olympus. In Thessaloniki you want to catch the five o’clock bus to Halkidiki.', el:'Είσαι η Έλλη. Στο μετρό έγραφες και έχασες τη στάση· όταν έφτασες στον σταθμό, το τρένο σου για τη Θεσσαλονίκη είχε ήδη φύγει. Θέλεις μια θέση στο παράθυρο, αριστερά, για να δεις τον Όλυμπο. Στη Θεσσαλονίκη θέλεις να πάρεις το λεωφορείο των πέντε για τη Χαλκιδική.' },
+      eroeffnung: { z:'Καλημέρα. Ο επόμενος, παρακαλώ!', tr:'Kaliméra. O epómenos, parakaló!', na:{ de:'Guten Morgen. Der Nächste, bitte!', es:'Buenos días. ¡El siguiente, por favor!', en:'Good morning. Next, please!' } },
+      abrundung: { z:'Προλαβαίνετε άνετα. Καλό ταξίδι — και καθίστε αριστερά: ο Όλυμπος σάς περιμένει!', tr:'Prolavénete áneta. Kaló taxídi — ke kathíste aristerá: o Ólimbos sas periméni!', na:{ de:'Das schaffen Sie bequem. Gute Reise — und setzen Sie sich links: Der Olymp wartet auf Sie!', es:'Le da tiempo de sobra. Buen viaje, y siéntese a la izquierda: ¡el Olimpo le espera!', en:'You’ll make it easily. Have a good trip — and sit on the left: Olympus is waiting for you!' } },
+      rollen: {
+        spikiu: { de:'Stelios, der Mann am Fahrkartenschalter', es:'Stelios, el empleado de la taquilla', en:'Stelios, the ticket clerk', el:'ο Στέλιος, ο υπάλληλος στο εκδοτήριο' },
+        lerner: { de:'Elli, die Schriftstellerin', es:'Elli, la escritora', en:'Elli, the novelist', el:'η Έλλη, η συγγραφέας' },
+        ort:    { de:'am Larissa-Bahnhof in Athen', es:'en la estación de Larisa, en Atenas', en:'at Larissa Station in Athens', el:'στον Σταθμό Λαρίσης στην Αθήνα' }
+      },
+      wortschatz: [
+        { z:'είχε ήδη φύγει', tr:'íche ídi fíyi', na:{ de:'er war schon abgefahren', es:'ya había salido', en:'it had already left' } },
+        { z:'μόλις έφυγε', tr:'mólis éfiye', na:{ de:'er ist gerade abgefahren', es:'acaba de salir', en:'it has just left' } },
+        { z:'αλλάζω το εισιτήριο', tr:'alázo to isitírio', na:{ de:'die Fahrkarte umbuchen', es:'cambiar el billete', en:'to change the ticket' } },
+        { z:'η θέση', tr:'i thési', na:{ de:'der Sitzplatz', es:'el asiento, la plaza', en:'the seat' } },
+        { z:'το βαγόνι', tr:'to vagóni', na:{ de:'der Wagen', es:'el vagón', en:'the carriage' } },
+        { z:'στο παράθυρο', tr:'sto paráthiro', na:{ de:'am Fenster', es:'de ventanilla', en:'by the window' } },
+        { z:'η κράτηση θέσης', tr:'i krátisi thésis', na:{ de:'die Sitzplatzreservierung', es:'la reserva de asiento', en:'the seat reservation' } },
+        { z:'προλαβαίνω', tr:'prolavéno', na:{ de:'es rechtzeitig schaffen', es:'llegar a tiempo', en:'to make it in time' } },
+        { z:'θα προλάβω', tr:'tha prolávo', na:{ de:'ich werde es schaffen', es:'llegaré a tiempo', en:'I’ll make it' } },
+        { z:'η αμαξοστοιχία', tr:'i amaxostichía', na:{ de:'der Zug (Amtssprache)', es:'el tren (lenguaje oficial)', en:'the train (official word)' } },
+        { z:'ο κάμπος', tr:'o kámbos', na:{ de:'die Ebene', es:'la llanura', en:'the plain' } },
+        { z:'το ΚΤΕΛ', tr:'to ktel', na:{ de:'der Überlandbus', es:'el autobús interurbano', en:'the intercity bus' } }
+      ],
+      dialog: {
+        rolle: { de:'Stelios, der Mann am Fahrkartenschalter', es:'Stelios, el empleado de la taquilla', en:'Stelios, the ticket clerk' },
+        zeilen: [
+          { wer:'lerner', z:'Καλημέρα. Έχασα τη στάση στο μετρό, και όταν έφτασα, το τρένο μου είχε ήδη φύγει.', tr:'Kaliméra. Échasa ti stási sto metró, ke ótan éftasa, to tréno mou íche ídi fíyi.', na:{ de:'Guten Morgen. Ich habe in der Metro meine Haltestelle verpasst, und als ich ankam, war mein Zug schon abgefahren.', es:'Buenos días. Me pasé de parada en el metro y, cuando llegué, mi tren ya había salido.', en:'Good morning. I missed my stop on the metro, and when I arrived, my train had already left.' } },
+          { wer:'spikiu', z:'Ναι, το τρένο των εννιά μόλις έφυγε. Μπορώ να σας αλλάξω το εισιτήριο για το επόμενο, στις έντεκα.', tr:'Ne, to tréno ton eniá mólis éfiye. Boró na sas aláxo to isitírio ya to epómeno, stis éndeka.', na:{ de:'Ja, der Zug um neun ist gerade abgefahren. Ich kann Ihnen die Fahrkarte auf den nächsten umbuchen, um elf.', es:'Sí, el tren de las nueve acaba de salir. Puedo cambiarle el billete para el siguiente, a las once.', en:'Yes, the nine o’clock train has just left. I can change your ticket to the next one, at eleven.' } },
+          { wer:'lerner', z:'Ναι, παρακαλώ. Έχετε θέση στο παράθυρο, αριστερά; Θέλω να δω τον Όλυμπο.', tr:'Ne, parakaló. Échete thési sto paráthiro, aristerá? Thélo na do ton Ólimbo.', na:{ de:'Ja, bitte. Haben Sie einen Fensterplatz, links? Ich möchte den Olymp sehen.', es:'Sí, por favor. ¿Tiene un asiento de ventanilla, a la izquierda? Quiero ver el Olimpo.', en:'Yes, please. Do you have a window seat, on the left? I want to see Mount Olympus.' } },
+          { wer:'spikiu', z:'Βεβαίως: βαγόνι τέσσερα, θέση δεκαοχτώ. Μόνο που το επόμενο έχει ήδη είκοσι λεπτά καθυστέρηση.', tr:'Vevéos: vagóni tésera, thési dekaochtó. Móno pou to epómeno échi ídi íkosi leptá kathistérisi.', na:{ de:'Selbstverständlich: Wagen vier, Platz achtzehn. Nur hat der nächste schon zwanzig Minuten Verspätung.', es:'Por supuesto: vagón cuatro, asiento dieciocho. Lo que pasa es que el siguiente ya lleva veinte minutos de retraso.', en:'Certainly: carriage four, seat eighteen. Only the next one is already twenty minutes late.' } },
+          { wer:'lerner', z:'Θα προλάβω τότε το λεωφορείο για τη Χαλκιδική, που φεύγει στις πέντε;', tr:'Tha prolávo tóte to leoforío ya ti Chalkidikí, pou févyi stis pénde?', na:{ de:'Schaffe ich dann noch den Bus nach Chalkidiki, der um fünf fährt?', es:'¿Llegaré entonces a tiempo al autobús de Calcídica, que sale a las cinco?', en:'Will I still make the bus to Halkidiki then, the one that leaves at five?' } },
+          { wer:'spikiu', z:'Ναι, θα φτάσετε γύρω στις τέσσερις. Το ΚΤΕΛ Χαλκιδικής είναι δέκα λεπτά με ταξί από τον σταθμό.', tr:'Ne, tha ftásete yíro stis téseris. To ktel Chalkidikís íne déka leptá me taxí apó ton stathmó.', na:{ de:'Ja, Sie kommen gegen vier an. Der Busbahnhof für Chalkidiki ist zehn Minuten mit dem Taxi vom Bahnhof entfernt.', es:'Sí, llegará hacia las cuatro. La estación de autobuses de Calcídica está a diez minutos en taxi de la estación de tren.', en:'Yes, you’ll arrive around four. The Halkidiki bus station is ten minutes by taxi from the train station.' } }
+        ]
+      },
+      lesetext: {
+        z:'Όταν έφτασα στον Σταθμό Λαρίσης, το τρένο μου είχε ήδη φύγει. Στο εκδοτήριο είπα: «Η αμαξοστοιχία μου έχει ήδη αναχωρήσει.» Ο υπάλληλος χαμογέλασε: «Θέλετε να πείτε ότι χάσατε το τρένο!» Μετά όμως άκουσα στο μεγάφωνο: «Η αμαξοστοιχία προς Χαλκίδα…» Επιτέλους, μια λέξη μου ήταν σωστή! Από το παράθυρο ο θεσσαλικός κάμπος έλαμπε σαν χρυσάφι.',
+        tr:'Ótan éftasa ston Stathmó Larísis, to tréno mou íche ídi fíyi. Sto ekdotírio ípa: «I amaxostichía mou échi ídi anachorísi.» O ipálilos chamoyélase: «Thélete na píte óti chásate to tréno!» Metá ómos ákousa sto megáfono: «I amaxostichía pros Chalkída…» Epitélous, mia léxi mou ítan sostí! Apó to paráthiro o thesalikós kámbos élambe san chrisáfi.',
+        na:{ de:'Als ich am Larissa-Bahnhof ankam, war mein Zug schon abgefahren. Am Schalter sagte ich: „Meine Amaxostichia ist bereits abgefahren.“ Der Mann am Schalter lächelte: „Sie meinen, Sie haben den Zug verpasst!“ Doch dann hörte ich im Lautsprecher: „Die Amaxostichia nach Chalkida …“ Endlich war eins meiner Wörter richtig! Vor dem Fenster leuchtete die thessalische Ebene wie Gold.',
+             es:'Cuando llegué a la estación de Larisa, mi tren ya había salido. En la taquilla dije: «Mi amaxostichía ya ha partido». El empleado sonrió: «¡Querrá decir que ha perdido el tren!». Pero luego oí por megafonía: «La amaxostichía con destino a Calcis…». ¡Por fin una palabra mía era correcta! Por la ventanilla, la llanura de Tesalia brillaba como el oro.',
+             en:'When I got to Larissa Station, my train had already left. At the ticket office I said, “My amaxostichia has already departed.” The clerk smiled: “You mean you missed the train!” But then I heard over the loudspeaker: “The amaxostichia to Chalkida …” At last one of my words was right! Outside the window, the Thessalian plain shone like gold.' },
+        frage:{ de:'Wo hört Elli ihr Wort „αμαξοστοιχία" doch noch?', es:'¿Dónde oye Elli por fin su palabra «αμαξοστοιχία»?', en:'Where does Elli hear her word “αμαξοστοιχία” after all?' },
+        optionen:[
+          { na:{ de:'In der Lautsprecherdurchsage', es:'Por megafonía', en:'In the loudspeaker announcement' }, richtig:true  },
+          { na:{ de:'Vom Mann am Schalter', es:'Del empleado de la taquilla', en:'From the ticket clerk' }, richtig:false },
+          { na:{ de:'In der Metro', es:'En el metro', en:'On the metro' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähl, dass etwas schon passiert war, als du ankamst, und was du dann gemacht hast. Zwei Sätze.', es:'Cuenta que algo ya había pasado cuando llegaste y qué hiciste después. Dos frases.', en:'Say that something had already happened when you arrived, and what you did then. Two sentences.' },
+        muster:'Όταν έφτασα στο λιμάνι, το πλοίο είχε ήδη φύγει. Πήρα εισιτήριο για το επόμενο και ήπια έναν καφέ.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text:{ de:'Die Vorvergangenheit: είχα + dieselbe feste Form wie im Perfekt — είχε ήδη φύγει (er war schon abgefahren). Etwas geschah vor etwas anderem in der Vergangenheit. Und μόλις + Aorist heißt „gerade eben": μόλις έφυγε (er ist gerade abgefahren). Achtung: μόλις mit der Form nach θα/να heißt „sobald": μόλις φτάσω, θα σου γράψω (sobald ich ankomme, schreibe ich dir).',
+               es:'El pluscuamperfecto: είχα + la misma forma fija que en el perfecto — είχε ήδη φύγει (ya había salido). Algo pasó antes que otra cosa en el pasado. Y μόλις + aoristo significa «acabar de»: μόλις έφυγε (acaba de salir). Ojo: μόλις con la forma que va después de θα/να significa «en cuanto»: μόλις φτάσω, θα σου γράψω (en cuanto llegue, te escribo).',
+               en:'The past perfect: είχα + the same fixed form as in the perfect — είχε ήδη φύγει (it had already left). Something happened before something else in the past. And μόλις + simple past means “just”: μόλις έφυγε (it has just left). Careful: μόλις with the form used after θα/να means “as soon as”: μόλις φτάσω, θα σου γράψω (as soon as I arrive, I’ll write to you).' },
+        beispiele:[
+          { z:'Όταν έφτασα, το τρένο είχε ήδη φύγει.', tr:'Ótan éftasa, to tréno íche ídi fíyi.', na:{ de:'Als ich ankam, war der Zug schon abgefahren.', es:'Cuando llegué, el tren ya había salido.', en:'When I arrived, the train had already left.' } },
+          { z:'Το τρένο μόλις έφυγε.', tr:'To tréno mólis éfiye.', na:{ de:'Der Zug ist gerade abgefahren.', es:'El tren acaba de salir.', en:'The train has just left.' } }
+        ]
+      },
+      kultur:{ de:'Der Athener Hauptbahnhof heißt Σταθμός Λαρίσης — nach der Stadt Larisa, zu der die Strecke einst führte. Unterwegs durchquert der Zug die thessalische Ebene; auf der linken Seite zeigt sich bei klarem Wetter der Olymp (2.918 m), der höchste Berg Griechenlands. Im Lautsprecher heißt der Zug bis heute αμαξοστοιχία.',
+               es:'La estación central de Atenas se llama Σταθμός Λαρίσης, por la ciudad de Larisa, adonde iba antiguamente la línea. Por el camino el tren cruza la llanura de Tesalia; a la izquierda, si el día está claro, aparece el Olimpo (2918 m), la montaña más alta de Grecia. Por megafonía, el tren sigue llamándose αμαξοστοιχία.',
+               en:'Athens’ main station is called Σταθμός Λαρίσης, after the city of Larissa, where the line once led. On the way the train crosses the Thessalian plain; on the left, on a clear day, you can see Mount Olympus (2,918 m), the highest mountain in Greece. Over the loudspeaker, the train is still called an αμαξοστοιχία.' }
+    },
+
+    // ── B1 · Im Taxi · Zypern, Paphos → Troodos (Jul) — Licht auf dem Meer bei Petra tou Romiou ──
+    'b1.taxi': {
+      duzen: true,
+      deineRolle: { de:'Du bist Elli. Es ist Juli auf Zypern, fast vierzig Grad; in Hamburg sind es zwanzig und es regnet. Halloumi hast du bisher nur in Deutschland gegessen. Einen Sommer lang würdest du gern hier in den Bergen leben und schreiben.', es:'Eres Elli. Es julio en Chipre y hace casi cuarenta grados; en Hamburgo hace veinte y llueve. Solo has comido halloumi en Alemania. Te quedarías encantada un verano aquí, viviendo en las montañas y escribiendo.', en:'You are Elli. It is July in Cyprus, almost forty degrees; in Hamburg it is twenty and raining. You have only ever eaten halloumi in Germany. You would love to spend a summer here, living in the mountains and writing.', el:'Είσαι η Έλλη. Είναι Ιούλιος στην Κύπρο, σχεδόν σαράντα βαθμοί· στο Αμβούργο έχει είκοσι και βρέχει. Χαλλούμι έχεις φάει μόνο στη Γερμανία. Θα ήθελες να ζήσεις ένα καλοκαίρι εδώ στα βουνά και να γράφεις.' },
+      abrundung: { z:'Τότε σε περιμένουμε! Αλλά στο Τρόοδος, το βράδυ, θα χρειαστείς ζακέτα — εκεί πάνω κάνει δροσιά!', tr:'Tóte se periménoume! Alá sto Tróodos, to vrádi, tha chriastís zakéta — ekí páno káni drosiá!', na:{ de:'Dann erwarten wir dich! Aber im Troodos brauchst du abends eine Strickjacke — da oben ist es frisch!', es:'¡Pues te esperamos! Pero en el Troodos, por la noche, te hará falta una chaqueta: ¡allí arriba refresca!', en:'Then we’ll be expecting you! But up in Troodos you’ll need a cardigan in the evening — it’s cool up there!' } },
+      rollen: {
+        spikiu: { de:'Kyriakos, der Taxifahrer', es:'Kyriakos, el taxista', en:'Kyriakos, the taxi driver', el:'ο Κυριάκος, ο ταξιτζής' },
+        lerner: { de:'Elli, die Schriftstellerin', es:'Elli, la escritora', en:'Elli, the novelist', el:'η Έλλη, η συγγραφέας' },
+        ort:    { de:'auf der Küstenstraße von Paphos hinauf ins Troodos-Gebirge', es:'en la carretera de la costa, de Pafos hacia los montes Troodos', en:'on the coast road from Paphos up to the Troodos mountains', el:'στον παραλιακό δρόμο από την Πάφο προς το Τρόοδος' }
+      },
+      wortschatz: [
+        { z:'η ζέστη', tr:'i zésti', na:{ de:'die Hitze', es:'el calor', en:'the heat' } },
+        { z:'οι βαθμοί', tr:'i vathmí', na:{ de:'die Grad', es:'los grados', en:'the degrees' } },
+        { z:'το χαλλούμι', tr:'to chaloúmi', na:{ de:'der Halloumi (zyprischer Käse)', es:'el halloumi (queso chipriota)', en:'halloumi (Cypriot cheese)' } },
+        { z:'στη σχάρα', tr:'sti schára', na:{ de:'vom Grill', es:'a la parrilla', en:'grilled' } },
+        { z:'νόστιμος', tr:'nóstimos', na:{ de:'lecker', es:'rico, sabroso', en:'tasty' } },
+        { z:'θα έμενα', tr:'tha émena', na:{ de:'ich würde bleiben', es:'me quedaría', en:'I would stay' } },
+        { z:'θα ζούσα', tr:'tha zoúsa', na:{ de:'ich würde leben', es:'viviría', en:'I would live' } },
+        { z:'θα έγραφα', tr:'tha égrafa', na:{ de:'ich würde schreiben', es:'escribiría', en:'I would write' } },
+        { z:'η δροσιά', tr:'i drosiá', na:{ de:'die Frische, die Kühle', es:'el fresco', en:'the coolness' } },
+        { z:'η ζακέτα', tr:'i zakéta', na:{ de:'die Strickjacke', es:'la chaqueta de punto', en:'the cardigan' } },
+        { z:'τζαι', tr:'tze', na:{ de:'und (zypriotisch für και)', es:'y (chipriota, por και)', en:'and (Cypriot for και)' } },
+        { z:'μιλούμεν', tr:'miloúmen', na:{ de:'wir sprechen (zypriotisch für μιλάμε)', es:'hablamos (chipriota, por μιλάμε)', en:'we speak (Cypriot for μιλάμε)' } }
+      ],
+      dialog: {
+        rolle: { de:'Kyriakos, der Taxifahrer', es:'Kyriakos, el taxista', en:'Kyriakos, the taxi driver' },
+        zeilen: [
+          { wer:'spikiu', z:'Λοιπόν, πάμε από την παραλία, να δεις την Πέτρα του Ρωμιού. Ζέστη, ε; Σαράντα βαθμοί σήμερα!', tr:'Lipón, páme apó tin paralía, na dis tin Pétra tou Romioú. Zésti, e? Saránda vathmí símera!', na:{ de:'Also, wir fahren an der Küste entlang, damit du den Felsen Petra tou Romiou siehst. Heiß, was? Vierzig Grad heute!', es:'Bueno, vamos por la costa para que veas la Petra tou Romiou. Hace calor, ¿eh? ¡Cuarenta grados hoy!', en:'Right, we’ll go along the coast so you can see Petra tou Romiou. Hot, eh? Forty degrees today!' } },
+          { wer:'lerner', z:'Πολλή ζέστη! Στο Αμβούργο τώρα έχει είκοσι βαθμούς και βρέχει, φυσικά.', tr:'Polí zésti! Sto Amvoúrgo tóra échi íkosi vathmoús ke vréchi, fisiká.', na:{ de:'Sehr heiß! In Hamburg sind es jetzt zwanzig Grad, und es regnet natürlich.', es:'¡Mucho calor! En Hamburgo ahora hace veinte grados y llueve, claro.', en:'Very hot! In Hamburg it’s twenty degrees right now, and raining, of course.' } },
+          { wer:'spikiu', z:'Χαχά! Εδώ λέμε «τζαι» αντί για «και» — έτσι μιλούμεν! Πες μου, έχεις φάει χαλλούμι στη σχάρα;', tr:'Chachá! Edó léme «tze» andí ya «ke» — étsi miloúmen! Pes mou, échis fái chaloúmi sti schára?', na:{ de:'Haha! Hier sagen wir „tze" statt „ke" — so reden wir! Sag mal, hast du schon gegrillten Halloumi gegessen?', es:'¡Jaja! Aquí decimos «tze» en vez de «ke»: ¡así hablamos! Dime, ¿has comido halloumi a la parrilla?', en:'Ha ha! Here we say “tze” instead of “ke” — that’s how we talk! Tell me, have you had grilled halloumi?' } },
+          { wer:'lerner', z:'Το έχω φάει μόνο στη Γερμανία. Εδώ σίγουρα είναι πιο νόστιμο!', tr:'To écho fái móno sti Yermanía. Edó sígoura íne pio nóstimo!', na:{ de:'Ich habe ihn nur in Deutschland gegessen. Hier schmeckt er bestimmt besser!', es:'Solo lo he comido en Alemania. ¡Aquí seguro que está más rico!', en:'I’ve only had it in Germany. It’s surely tastier here!' } },
+          { wer:'spikiu', z:'Σίγουρα! Και πες μου: εσύ θα έμενες εδώ; Θάλασσα, βουνά, ήλιος…', tr:'Sígoura! Ke pes mou: esí tha émenes edó? Thálasa, vouná, ílios…', na:{ de:'Ganz bestimmt! Und sag mal: Würdest du hier bleiben? Meer, Berge, Sonne …', es:'¡Seguro! Y dime: ¿tú te quedarías aquí? Mar, montañas, sol…', en:'Sure! And tell me: would you stay here? Sea, mountains, sun …' } },
+          { wer:'lerner', z:'Ναι, θα έμενα ένα καλοκαίρι. Θα ζούσα στα βουνά και θα έγραφα κάθε πρωί.', tr:'Ne, tha émena éna kalokéri. Tha zoúsa sta vouná ke tha égrafa káthe proí.', na:{ de:'Ja, ich würde einen Sommer bleiben. Ich würde in den Bergen leben und jeden Morgen schreiben.', es:'Sí, me quedaría un verano. Viviría en las montañas y escribiría cada mañana.', en:'Yes, I’d stay for a summer. I’d live in the mountains and write every morning.' } }
+        ]
+      },
+      lesetext: {
+        z:'Ο Κυριάκος μιλούσε όλη την ώρα, κι εγώ έγραφα στο σημειωματάριο. «Τζαι» σημαίνει «και» — έτσι μιλούν στην Κύπρο. Στην Πέτρα του Ρωμιού το φως πάνω στη θάλασσα ήταν τόσο δυνατό που έκλεισα τα μάτια. Στο Τρόοδος, στα χίλια επτακόσια μέτρα, φόρεσα ζακέτα — τον Ιούλιο! Η λέξη του τόπου: «τζαι».',
+        tr:'O Kiriákos miloúse óli tin óra, ki egó égrafa sto simiomatário. «Tze» siméni «ke» — étsi miloún stin Kípro. Stin Pétra tou Romioú to fos páno sti thálasa ítan tóso dinató pou éklisa ta mátia. Sto Tróodos, sta chília eptakósia métra, fóresa zakéta — ton Ioúlio! I léxi tou tópou: «tze».',
+        na:{ de:'Kyriakos redete die ganze Zeit, und ich schrieb in mein Notizbuch. „Tze" heißt „und" — so spricht man auf Zypern. Bei Petra tou Romiou war das Licht auf dem Meer so stark, dass ich die Augen schloss. Im Troodos, auf siebzehnhundert Metern, zog ich eine Strickjacke an — im Juli! Das Wort des Ortes: „tze".',
+             es:'Kyriakos hablaba todo el rato y yo escribía en mi cuaderno. «Tze» significa «y»: así se habla en Chipre. En la Petra tou Romiou la luz sobre el mar era tan fuerte que cerré los ojos. En el Troodos, a mil setecientos metros, me puse una chaqueta… ¡en julio! La palabra del lugar: «tze».',
+             en:'Kyriakos talked the whole time, and I wrote in my notebook. “Tze” means “and” — that’s how people speak in Cyprus. At Petra tou Romiou the light on the sea was so strong that I closed my eyes. In Troodos, at seventeen hundred metres, I put on a cardigan — in July! The word of the place: “tze”.' },
+        frage:{ de:'Was zieht Elli im Troodos-Gebirge an?', es:'¿Qué se pone Elli en los montes Troodos?', en:'What does Elli put on in the Troodos mountains?' },
+        optionen:[
+          { na:{ de:'Eine Strickjacke', es:'Una chaqueta de punto', en:'A cardigan' }, richtig:true  },
+          { na:{ de:'Einen Badeanzug', es:'Un bañador', en:'A swimsuit' }, richtig:false },
+          { na:{ de:'Einen Regenmantel', es:'Un impermeable', en:'A raincoat' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib, wo du gern ein Jahr leben würdest und was du dort machen würdest. Zwei Sätze.', es:'Escribe dónde te gustaría vivir un año y qué harías allí. Dos frases.', en:'Write where you would like to live for a year and what you would do there. Two sentences.' },
+        muster:'Θα ζούσα ένα χρόνο στην Κρήτη. Θα έμενα κοντά στη θάλασσα και θα μάθαινα να μαγειρεύω.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', es:'Gramática, directo al grano', en:'Simple Grammar for you' },
+        text:{ de:'„Was wäre, wenn …" heißt auf Griechisch θα + Imperfekt (die Dauerform der Vergangenheit): θα έμενα (ich würde bleiben), θα ζούσα (ich würde leben), θα έγραφα (ich würde schreiben). Ohne θα erzählt dieselbe Form „früher": έμενα = ich wohnte. Das θα macht daraus einen Wunsch. Mit αν: αν είχα χρόνο, θα έμενα (wenn ich Zeit hätte, würde ich bleiben).',
+               es:'«Qué pasaría si…» en griego es θα + imperfecto (la forma continua del pasado): θα έμενα (me quedaría), θα ζούσα (viviría), θα έγραφα (escribiría). Sin θα, la misma forma cuenta el pasado: έμενα = vivía. El θα lo convierte en un deseo. Con αν: αν είχα χρόνο, θα έμενα (si tuviera tiempo, me quedaría).',
+               en:'“What if …” in Greek is θα + imperfect (the continuous past form): θα έμενα (I would stay), θα ζούσα (I would live), θα έγραφα (I would write). Without θα, the same form talks about the past: έμενα = I used to live. The θα turns it into a wish. With αν: αν είχα χρόνο, θα έμενα (if I had time, I would stay).' },
+        beispiele:[
+          { z:'Θα έμενα εδώ ένα καλοκαίρι.', tr:'Tha émena edó éna kalokéri.', na:{ de:'Ich würde einen Sommer hierbleiben.', es:'Me quedaría aquí un verano.', en:'I would stay here for a summer.' } },
+          { z:'Αν είχα χρόνο, θα ζούσα στα βουνά.', tr:'An ícha chróno, tha zoúsa sta vouná.', na:{ de:'Wenn ich Zeit hätte, würde ich in den Bergen leben.', es:'Si tuviera tiempo, viviría en las montañas.', en:'If I had time, I would live in the mountains.' } }
+        ]
+      },
+      kultur:{ de:'An der Petra tou Romiou, zwischen Paphos und Limassol, soll der Sage nach Aphrodite aus dem Meer gestiegen sein. Halloumi ist Zyperns berühmter Käse — gegrillt quietscht er leicht zwischen den Zähnen. Im Troodos-Gebirge ist es auch im Sommer angenehm kühl. Auf Zypern hörst du „τζαι" statt „και" und „μιλούμεν" statt „μιλάμε".',
+               es:'En la Petra tou Romiou, entre Pafos y Limasol, según la leyenda Afrodita salió del mar. El halloumi es el famoso queso de Chipre: a la parrilla, chirría un poco entre los dientes. En los montes Troodos hace fresco incluso en verano. En Chipre oirás «τζαι» en vez de «και» y «μιλούμεν» en vez de «μιλάμε».',
+               en:'At Petra tou Romiou, between Paphos and Limassol, legend says Aphrodite rose from the sea. Halloumi is Cyprus’s famous cheese — grilled, it squeaks a little between your teeth. The Troodos mountains stay pleasantly cool even in summer. In Cyprus you will hear “τζαι” instead of “και” and “μιλούμεν” instead of “μιλάμε”.' }
+    }
+  }
+};
+
+  [K_LP_A, K_LP_B].forEach(function (F) {
+    Object.keys(F.schritt).forEach(function (t) { if (SCHRITT[t]) SCHRITT[t].b1 = F.schritt[t]; });
+    Object.keys(F.aufgaben).forEach(function (k) { AUFGABEN[k] = F.aufgaben[k]; });
+    Object.keys(F.stationen).forEach(function (k) { STATIONEN[k] = F.stationen[k]; });
+  });
+
   raum.SpikiuLernpfadEL = {
     zielsprache: 'el',
     themen: THEMEN,
@@ -1346,7 +2236,23 @@
     stationen: STATIONEN,
 
     aufgabenVon: function (stufe, thema) { return AUFGABEN[stufe + '.' + thema] || []; },
-    rolle: function (thema) { return ROLLEN[thema] || null; },
+    /* Seit B1 (15.10.2026) darf eine Station eigene Rollen tragen (die
+       Vermieterin in Mexiko statt der Empfangsdame). Ohne stufe gilt die
+       Stufe des Weges, wenn lernpfad.js geladen ist. */
+    rolle: function (thema, stufe) {
+      var st = stufe;
+      try { if (!st && raum.SpikiuPfad && raum.SpikiuPfad.stufe) st = raum.SpikiuPfad.stufe(); } catch (e) {}
+      var S = st ? STATIONEN[st + '.' + thema] : null;
+      return (S && S.rollen) || ROLLEN[thema] || null;
+    },
+
+    /* Ein Satz zum Ort der Station (nur B1), in der Muttersprache. */
+    kulturVon: function (stufe, thema, muttersprache) {
+      var S = STATIONEN[stufe + '.' + thema];
+      if (!S || !S.kultur) return '';
+      var mu = muttersprache || 'de';
+      return S.kultur[mu] || S.kultur.en || S.kultur.de || '';
+    },
     thema: function (id) {
       for (var i = 0; i < THEMEN.length; i++) if (THEMEN[i].id === id) return THEMEN[i];
       return null;
