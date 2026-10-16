@@ -265,7 +265,8 @@
     '.jg-pin{position:absolute;left:50%;top:30px;width:110px;margin-left:-55px;transform-origin:50% -30px;animation:jgSwing 2.4s ease-in-out infinite}',
     '.jg-go{position:absolute;left:50%;bottom:48px;transform:translateX(-50%)}',
     '.jg-conf{position:absolute;width:9px;height:14px;border-radius:2px;pointer-events:none}',
-    '.jg-catch{position:absolute;bottom:18px;width:60px;transition:left .5s ease}',
+    '.jg-buehne{position:relative;width:100%;padding-bottom:64px}',
+    '.jg-catch{position:absolute;bottom:0;width:56px;transition:left .5s ease}',
     '.jg-ans{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;min-height:2.6rem;width:100%;padding:.4rem;border:2px dashed var(--jg-faint);border-radius:14px}',
     '.jg-ans span{font:600 1.1rem Lora,Georgia,serif}',
     '.jg-bal{display:flex;flex-direction:column;align-items:center;cursor:pointer;background:none;border:none;padding:0}',
@@ -479,11 +480,14 @@
     var U = T(opts), root = wurzel(), raf = 0, fertig = false, last = 0, parts = [], spaltenBoden = [], ton = rundenKlang();
     var woerter = woerterAus(d.satz);
     root.appendChild(el('p', 'jg-task', U.pinataTask));
-    var f = el('div', 'jg-field'); root.appendChild(f);
+    /* Spikiu steht UNTER dem Spielfeld, nicht auf dessen Boden — sonst fallen ihm die Wörter
+       auf den Kopf (Leo, 16.10.2026: „no le queremos hacer daño a este osito cariñoso"). */
+    var buehne = el('div', 'jg-buehne'); root.appendChild(buehne);
+    var f = el('div', 'jg-field'); buehne.appendChild(f);
     f.appendChild(el('div', 'jg-floor'));
     var rope = el('div', 'jg-rope'), pin = el('div', 'jg-pin'); pin.innerHTML = pinataSvg();
     f.appendChild(rope); f.appendChild(pin);
-    var catcher = el('div', 'jg-catch'); catcher.innerHTML = SPIKIU; catcher.style.left = 'calc(100% - 66px)'; f.appendChild(catcher);
+    var catcher = el('div', 'jg-catch'); catcher.innerHTML = SPIKIU; catcher.style.left = 'calc(100% - 66px)'; buehne.appendChild(catcher);
     var go = el('button', 'jg-big jg-go', U.dale); go.type = 'button'; f.appendChild(go);
     var fb = el('div', 'jg-fb'); root.appendChild(fb);
 
