@@ -14,6 +14,6 @@ Sobald die Datei im Repo liegt, spielt der 🔊-Knopf sie ab — kein Code nöti
 - Sprecher: aufgewachsen in der Region; Einverständnis zur Nutzung schriftlich festhalten.
 
 ## Umfang
-Je Sprache 32 Wörter × 5–6 Regionen + 8 Aussprache-Erscheinungen × 2–4 Beispiele
-(genaue Zahl in der jeweiligen `aufnahmeliste.csv`). Doppelte Wörter (dieselbe Form in
-mehreren Regionen) können von einem Sprecher je Region aufgenommen werden.
+Je Sprache die verschiedenen Formen der Begriffe + 8 Aussprache-Erscheinungen × 2–4 Beispiele
+(genaue Zahl in der jeweiligen `aufnahmeliste.csv`). Jedes Wort nur EINMAL je Karte (Leo 16.10.:
+Kontrast statt Wiederholung) — eine Aufnahme je verschiedener Form, Sprecher aus der ersten genannten Region.

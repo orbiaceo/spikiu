@@ -45,6 +45,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .zeile{display:flex;align-items:center;gap:.55rem;padding:.38rem .2rem;border-top:1px dashed rgba(21,22,58,.18)}
 .zeile:first-of-type{border-top:0}
 .zeile.hervor{background:#fff6d6;border-radius:10px;border-top-color:transparent}
+.z-reg{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.25rem}
+.z-reg .rk-chip{min-width:2.2rem;font-size:.66rem}
+.zeile.gruppe{padding:.5rem .3rem}
 .rk-chip{flex:0 0 auto;min-width:2.6rem;text-align:center;border:2px solid var(--ink);border-radius:8px;font:800 .72rem/1.5 'DM Mono',monospace;padding:0 .3rem}
 .z-wort{flex:1;font:600 1.12rem/1.3 'Lora',serif;color:var(--read)}
 .z-laut{display:block;font:500 .78rem/1.3 'DM Mono',monospace;color:var(--muted)}
@@ -184,7 +187,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     DB.regionen.forEach(function (r) {
       var an = zustand.region === r.id;
       h += '<button type="button" class="chip' + (an ? ' an' : '') + '" data-r="' + esc(r.id) + '" style="background:' + esc(r.farbe) + '">'
-        + esc(r.em || '') + ' ' + esc(inUi(r.name)) + '</button>';
+        + esc(r.em || '') + ' ' + esc(String(inUi(r.name)).replace(/\s*\(.*$/, '')) + '</button>';
     });
     return h + '</div>';
   }
@@ -201,6 +204,37 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     var ids = DB.regionen.map(function (r) { return r.id; });
     if (zustand.region) ids = [zustand.region].concat(ids.filter(function (x) { return x !== zustand.region; }));
     return ids;
+  }
+  /* KONTRAST STATT WIEDERHOLUNG (Leo, 16.10. 12:24: „Has puesto en una tarjeta 5 veces
+     la palabra … Eso no sirve para nada … contrastar las diferentes palabras … in Bayern
+     sagt man Semmel und in Bremen Brötchen" · „Zu viel des Guten!"): Jede Karte zeigt
+     jedes WORT nur einmal, daneben alle Regionen, die es sagen. „fegen / kehren" zählt
+     für beide Wörter. Karten mit nur einem Wort für alle fallen weg. */
+  function gruppen(w) {
+    var map = {}, liste = [];
+    reihenfolge().forEach(function (rid) {
+      var v = w.varianten[rid]; if (!v) return;
+      String(v).split(/\s*[\/·]\s*/).forEach(function (teil) {
+        teil = teil.trim(); if (!teil) return;
+        var k = teil.toLowerCase();
+        if (!map[k]) { map[k] = { wort: teil, regionen: [] }; liste.push(map[k]); }
+        if (map[k].regionen.indexOf(rid) === -1) map[k].regionen.push(rid);
+      });
+    });
+    return liste;
+  }
+  function gruppeHtml(g, wortId) {
+    var chips = g.regionen.map(function (rid) {
+      var r = regionVon(rid); if (!r) return '';
+      return '<span class="rk-chip" style="background:' + esc(r.farbe) + '" title="' + esc(inUi(r.name)) + '">' + esc(r.kurz) + '</span>';
+    }).join('');
+    var hervor = zustand.region && g.regionen.indexOf(zustand.region) > -1;
+    // Dateiname stabil: die erste Region in DATEN-Reihenfolge (nicht die hervorgehobene).
+    var idx = function (rid) { for (var i = 0; i < DB.regionen.length; i++) if (DB.regionen[i].id === rid) return i; return 99; };
+    var erste = g.regionen.slice().sort(function (a, b) { return idx(a) - idx(b); })[0];
+    return '<div class="zeile gruppe' + (hervor ? ' hervor' : '') + '">'
+      + '<span class="z-wort" lang="' + ZIEL + '">' + esc(g.wort) + '<span class="z-reg">' + chips + '</span></span>'
+      + '<button type="button" class="ton" aria-label="🔊" data-datei="' + esc(wortId + '-' + erste) + '" data-r="' + esc(erste) + '">' + TON + '</button></div>';
   }
   function zeileHtml(regionId, wort, laut, datei) {
     var r = regionVon(regionId); if (!r) return '';
@@ -222,16 +256,18 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
       h += chipsKat();
       // Spannendes zuerst: Begriffe mit den meisten verschiedenen Formen oben (sonst
       // begann Griechisch mit sechsmal demselben „Γεια σου!").
-      var vielfalt = function (w) { var u = {}; Object.keys(w.varianten).forEach(function (k) { u[String(w.varianten[k]).toLowerCase()] = 1; }); return Object.keys(u).length; };
+      var vielfalt = function (w) { return gruppen(w).length; };
       DB.woerter.map(function (w, i) { return { w: w, i: i, v: vielfalt(w) }; })
         .sort(function (x, y) { return (y.v - x.v) || (x.i - y.i); })
         .map(function (x) { return x.w; })
         .forEach(function (w) {
         if (zustand.kat && w.kat !== zustand.kat) return;
+        var gr = gruppen(w);
+        if (gr.length < 2) return;   // kein Kontrast → keine Karte (Leo 16.10.)
         var b = bildHtml(w.en, w.em);
         h += '<div class="karte"><div class="k-kopf">' + (b ? '<div class="k-bild">' + b + '</div>' : '')
           + '<div><div class="k-tt">' + esc(inUi(w.konzept)) + '</div><div class="k-kat">' + esc(T.kat[w.kat] || '') + '</div></div></div>';
-        reihenfolge().forEach(function (rid) { if (w.varianten[rid]) h += zeileHtml(rid, w.varianten[rid], '', w.id + '-' + rid); });
+        gr.forEach(function (g) { h += gruppeHtml(g, w.id); });
         if (w.witz) h += '<div class="witz">' + CAPY + '<div>' + esc(inUi(w.witz)) + '</div></div>';
         if (w.hinweis) h += '<div class="hinweis">💡 ' + esc(inUi(w.hinweis)) + '</div>';
         h += '</div>';
