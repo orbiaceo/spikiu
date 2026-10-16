@@ -73,6 +73,21 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .add-cancel{background:#fff;color:var(--ink);}
 .gym-toast{position:absolute;left:50%;bottom:5.5rem;transform:translateX(-50%);background:var(--ink);color:#fff;padding:.55rem 1rem;border-radius:999px;font-weight:700;font-size:.85rem;z-index:130;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:3px 3px 0 rgba(0,0,0,.3);}
 .gym-toast.show{opacity:1;}
+/* ── Wörter UND Wendungen in einem Deck (Leo, 16.10.2026: „fusionar vocabulary and expressions
+   en una sola unidad" · „Perfecto") — die Ausdrucks-Karte sieht bewusst anders aus. ── */
+.filter{flex:0 0 auto;display:flex;gap:.4rem;justify-content:center;padding:.55rem .8rem 0}
+.filter button{border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);font:800 .78rem/1 'DM Sans';padding:.42rem .8rem;cursor:pointer}
+.filter button.an{background:var(--ink);color:#fff}
+.card.ausdruck{background:#fffaf0;justify-content:flex-start;overflow-y:auto;padding-top:1.4rem}
+.aus-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.aus-icon{display:block;width:84px;height:84px;flex:0 0 auto;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12))}
+.aus-text{font-family:'Lora',serif;font-weight:600;font-size:clamp(1.45rem,5.8vw,1.95rem);line-height:1.35;color:var(--read);max-width:21rem}
+.aus-lit{font-family:'Lora',serif;font-size:1.12rem;line-height:1.4;background:#fff6d6;border:2px dashed #e0c36a;border-radius:12px;padding:.5rem .75rem;max-width:21rem}
+.aus-k{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-right:.3rem}
+.aus-mean{font-size:1.02rem;color:var(--muted);font-weight:600;max-width:21rem}
+.aus-src{font:600 .76rem/1 'DM Mono',monospace;color:#8a8378}
+.aus-buch{border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);font:800 .82rem/1 'DM Sans';padding:.45rem .85rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.aus-buch.drin{background:#dff2e5;box-shadow:none;cursor:default}
 @media (prefers-reduced-motion:reduce){.card-hint{animation:none;}}
 </style>
 </head>
@@ -80,6 +95,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
 <div class="app">
   <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><h1 id="roomTitle">Wortschatz</h1></div><div style="width:36px"></div></div>
+  <div class="filter" id="filter"></div>
   <div class="deck" id="deck"></div>
   <div class="deck-nav">
     <button class="deck-btn" type="button" id="btnBack">‹ <span id="btnBackLbl">zurück</span></button>
@@ -127,13 +143,13 @@ var PROFILE = { zielsprache: zielC, muttersprache: mutterC };
 function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ eyebrow:'Wortschatz', uebung:'Übung', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
+  de:{ eyebrow:'Wortschatz', uebung:'Übung', fAlle:'Alles', fWort:'Wörter', fAus:'Wendungen', ausEb:'Wendung', lit:'wörtlich', mean:'bedeutet', insBuch:'➕ in mein Buch', imBuch:'🍃 in deinem Buch', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
        addTitle:'Wort hinzufügen', phWort:'Wort (Zielsprache)', phTr:'Übersetzung', save:'Speichern', cancel:'Abbrechen', added:'Hinzugefügt ✓' },
-  es:{ eyebrow:'Vocabulario', uebung:'Ejercicio', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
+  es:{ eyebrow:'Vocabulario', uebung:'Ejercicio', fAlle:'Todo', fWort:'Palabras', fAus:'Expresiones', ausEb:'Expresión', lit:'literalmente', mean:'significa', insBuch:'➕ a mi libro', imBuch:'🍃 en tu libro', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
        addTitle:'Añadir palabra', phWort:'Palabra (idioma meta)', phTr:'Traducción', save:'Guardar', cancel:'Cancelar', added:'Añadido ✓' },
-  en:{ eyebrow:'Vocabulary', uebung:'Exercise', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
+  en:{ eyebrow:'Vocabulary', uebung:'Exercise', fAlle:'All', fWort:'Words', fAus:'Expressions', ausEb:'Expression', lit:'literally', mean:'means', insBuch:'➕ to my book', imBuch:'🍃 in your book', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
        addTitle:'Add a word', phWort:'Word (target language)', phTr:'Translation', save:'Save', cancel:'Cancel', added:'Added ✓' },
-  el:{ eyebrow:'Λεξιλόγιο', uebung:'Εξάσκηση', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
+  el:{ eyebrow:'Λεξιλόγιο', uebung:'Εξάσκηση', fAlle:'Όλα', fWort:'Λέξεις', fAus:'Εκφράσεις', ausEb:'Έκφραση', lit:'κατά λέξη', mean:'σημαίνει', insBuch:'➕ στο βιβλίο μου', imBuch:'🍃 στο βιβλίο σου', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
        addTitle:'Πρόσθεσε μια λέξη', phWort:'Λέξη (γλώσσα που μαθαίνεις)', phTr:'Μετάφραση', save:'Αποθήκευση', cancel:'Ακύρωση', added:'Προστέθηκε ✓' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
@@ -199,7 +215,7 @@ function buildWords(){
   loadOwn().forEach(function(it){ if (it && it.wort) out.push({ wort:it.wort, tr:it.tr||'', text:it.text||'', own:true }); });
   var seen = {}; out.forEach(function(w){ seen[String(w.wort).trim().toLowerCase()] = 1; });
   loadBuch().forEach(function(e){
-    if (!e || !e.wort) return;
+    if (!e || !e.wort || e.quelle === 'ausdruck') return;   // Wendungen laufen im eigenen Strang
     var key = String(e.roh||e.wort).trim().toLowerCase(); if (seen[key]) return; seen[key]=1;
     out.push({ wort:(e.roh||e.wort), tr:(e.tr || (window.spikiuWoerterbuch && window.spikiuWoerterbuch.tr(e.roh||e.wort, PROFILE.zielsprache, PROFILE.muttersprache)) || ''), text:'', own:false, buch:true, icon:'' });
   });
@@ -212,6 +228,116 @@ function buildWords(){
     gesehen[k] = 1; sauber.push(w);
   });
   return sauber;
+}
+
+// ── WENDUNGEN im selben Deck (16.10.2026) ────────────────────────────────
+//  Samen: kurze feste Wendungen (kurzsaetze a1) · Stamm: + Giros (sprichwort.js
+//  Wendungen, kurzsaetze a2) · Krone: + Sprichwörter und Redewendungen (kurzsaetze b1).
+//  Jede n-te Einheit ist eine Wendung (Samen 6, Stamm 5, Krone 4). Wendungen aus
+//  „Mein Buch" kommen zuerst wieder (Wiedersehen statt Wiederholung).
+var AUS = [];      // [{ text, lit, mean, icon, src }]
+var FILTER = 'alle';
+function aktStufe(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe(); } catch(e){} return 'a1'; }
+function mtVon(o){ if (!o) return ''; var m = PROFILE.muttersprache; return o[m] || (m === 'el' ? o.en : '') || o.de || o.en || o.es || ''; }
+function buildAusdruecke(){
+  var z = PROFILE.zielsprache, st = aktStufe(), out = [];
+  var KS = (window.spikiuKurzsaetze || {})[z] || {}, SP = window.spikiuSprichwort || {};
+  var dazu = function(text, lit, mean, icon, src, k){ if (text && mean) out.push({ text:text, lit:lit || '', mean:mean, icon:icon || '', src:src || '', stufe:k }); };
+  var stufen = st === 'b1' ? ['b1','a2','a1'] : (st === 'a2' ? ['a2','a1'] : ['a1']);
+  stufen.forEach(function(k){
+    (KS[k] || []).forEach(function(x){ if (k === 'a1' || x.art !== 'satz') dazu(x.z, '', mtVon(x.t), '', '', k); });
+    if (k === 'a2') ((SP.wendungen || {})[z] || []).forEach(function(p){ dazu(p.text, mtVon(p.w), mtVon(p.t), p.icon, p.src, k); });
+    if (k === 'b1') ((SP.daten || {})[z] || []).forEach(function(p){ dazu(p.text, mtVon(p.w), mtVon(p.t), p.icon, p.src, k); });
+  });
+  // Doppelte raus; Wendungen aus dem Buch nach vorn.
+  var imBuch = {}; loadBuch().forEach(function(e){ if (e && e.quelle === 'ausdruck') imBuch[String(e.roh || e.wort).trim().toLowerCase()] = 1; });
+  var seen = {}, sauber = [];
+  out.forEach(function(a){ var k = a.text.trim().toLowerCase(); if (seen[k]) return; seen[k] = 1; sauber.push(a); });
+  var vorn = sauber.filter(function(a){ return imBuch[a.text.trim().toLowerCase()]; });
+  // Danach die eigene Stufe zuerst (Krone: echte Sprichwörter und Redewendungen), je Stufe gemischt.
+  var rest = [];
+  stufen.forEach(function(k){
+    var g = sauber.filter(function(a){ return a.stufe === k && !imBuch[a.text.trim().toLowerCase()]; });
+    if (window.spikiuUebung && window.spikiuUebung.shuffle) window.spikiuUebung.shuffle(g);
+    rest = rest.concat(g);
+  });
+  return vorn.concat(rest);
+}
+var UNITS = [];    // [{ typ:'wort'|'aus', i }]
+function buildUnits(){
+  var u = [], st = aktStufe(), alle = ({ a1:6, a2:5, b1:4 })[st] || 6;
+  if (FILTER === 'wort') { WORDS.forEach(function(w, i){ u.push({ typ:'wort', i:i }); }); return u; }
+  if (FILTER === 'aus')  { AUS.forEach(function(a, i){ u.push({ typ:'aus', i:i }); }); return u; }
+  var wi = 0, ai = 0, n = Math.max(WORDS.length, 1) + Math.ceil(WORDS.length / (alle - 1));
+  for (var k = 0; k < n; k++){
+    if (AUS.length && (k + 1) % alle === 0) { u.push({ typ:'aus', i: ai % AUS.length }); ai++; }
+    else if (WORDS.length) { u.push({ typ:'wort', i: wi % WORDS.length }); wi++; }
+  }
+  return u;
+}
+function ausIcon(e){
+  if (!e) return '';
+  var src = (window.spikiuIcon && window.spikiuIcon.datei) ? window.spikiuIcon.datei(e) : '';
+  return src ? '<img class="aus-icon" src="' + src + '" alt="" aria-hidden="true" width="84" height="84">' : '';
+}
+function istImBuch(text){ var k = String(text).trim().toLowerCase(); return loadBuch().some(function(e){ return e && e.quelle === 'ausdruck' && String(e.roh || e.wort).trim().toLowerCase() === k; }); }
+function insBuch(a){
+  try { var b = loadBuch(); if (istImBuch(a.text)) return;
+        b.push({ wort: String(a.text).trim().toLowerCase(), roh: a.text, tr: a.mean, quelle: 'ausdruck', t: Date.now() });
+        localStorage.setItem('spikiu_buch', JSON.stringify(b)); } catch(e){}
+}
+function makeAusdruckCard(ai){
+  var a = AUS[ai] || { text:'', lit:'', mean:'' }, u = ui();
+  var card = document.createElement('div'); card.className = 'card ausdruck';
+  var drin = istImBuch(a.text);
+  card.innerHTML = '<div class="aus-eyebrow">' + escPlain(u.ausEb) + '</div>'
+    + ausIcon(a.icon)
+    + '<div class="aus-text">' + escPlain(a.text) + '</div>'
+    + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
+    + (a.lit && a.lit !== a.mean ? '<div class="aus-lit"><span class="aus-k">' + escPlain(u.lit) + '</span>' + escPlain(a.lit) + '</div>' : '')
+    + '<div class="aus-mean"><span class="aus-k">' + escPlain(u.mean) + '</span>' + escPlain(a.mean) + '</div>'
+    + (a.src ? '<div class="aus-src">— ' + escPlain(a.src) + '</div>' : '')
+    + '<button class="aus-buch' + (drin ? ' drin' : '') + '" type="button">' + escPlain(drin ? u.imBuch : u.insBuch) + '</button>';
+  var sb = card.querySelector('.gym-speak'); if (sb) sb.onclick = function(){ playFrom(sb, a.text); };
+  var bb = card.querySelector('.aus-buch');
+  bb.onclick = function(){ if (bb.classList.contains('drin')) return; insBuch(a); bb.classList.add('drin'); bb.textContent = u.imBuch; };
+  return card;
+}
+function makeAusdruckUebung(ai){
+  var a = AUS[ai] || { text:'', mean:'' };
+  var others = []; AUS.forEach(function(x, k){ if (k !== ai && x.mean && x.mean !== a.mean) others.push(x.mean); });
+  window.spikiuUebung.shuffle(others);
+  var mean = [a.mean, others[0] || '', others[1] || ''].filter(Boolean);
+  var item = { text: a.text, tr: a.mean, mean: mean, lang: PROFILE.zielsprache, nativeLang: uiLang() };
+  var type = (wordCount(a.text) >= 3) ? window.spikiuUebung.types[Math.floor(Math.random() * window.spikiuUebung.types.length)] : 'mc';
+  var card = document.createElement('div'); card.className = 'card ueb-card';
+  var eb = document.createElement('div'); eb.className = 'gym-eyebrow ueb'; eb.textContent = ui().uebung;
+  card.appendChild(eb);
+  var uebEl = window.spikiuUebung(item, type); card.appendChild(uebEl);
+  if (window.SpikiuWoerter) uebEl.addEventListener('ueb-done', function(ev){ try { window.SpikiuWoerter.melde(PROFILE.zielsprache, a.text, !!(ev.detail && ev.detail.ok), null); } catch(e){} });
+  return card;
+}
+function baueFilter(){
+  var f = document.getElementById('filter'), u = ui(); if (!f) return;
+  if (!AUS.length) { f.innerHTML = ''; return; }
+  f.innerHTML = [['alle', u.fAlle], ['wort', u.fWort], ['aus', u.fAus]].map(function(x){
+    return '<button type="button" data-f="' + x[0] + '"' + (FILTER === x[0] ? ' class="an"' : '') + '>' + escPlain(x[1]) + '</button>';
+  }).join('');
+  [].forEach.call(f.querySelectorAll('button'), function(b){
+    b.onclick = function(){ FILTER = b.getAttribute('data-f'); baueFilter(); neuStart(0); sitzSichern(); };
+  });
+}
+function neuStart(p){
+  stepEls.forEach(function(c){ if (c && c.parentNode) c.parentNode.removeChild(c); });
+  stepEls = []; forced = {}; UNITS = buildUnits(); pointer = 0;
+  for (var k = 0; k <= (p || 0); k++) ensureStep(k);
+  pointer = p || 0; deckLayout();
+}
+// Sitzungs-Persistenz (Pflicht je Raum): Filter + Kartenstand, entprellt.
+var sitzT = null;
+function sitzSichern(){
+  clearTimeout(sitzT);
+  sitzT = setTimeout(function(){ try { if (window.spikiuSitzung) window.spikiuSitzung.speichere('gym', { filter: FILTER, pointer: pointer, ziel: PROFILE.zielsprache }); } catch(e){} }, 350);
 }
 
 // ── Deck mit echtem Verlauf ──
@@ -308,21 +434,17 @@ function zeigeWiedersehen(frisch){
 }
 
 function ensureStep(i){
-  if (i < 0 || !WORDS.length) return null;
+  if (i < 0 || !UNITS.length) return null;
   if (stepEls[i]) return stepEls[i];
-  var card;
-  if (i % 2 === 0){
-    var wi = (typeof forced[i] === 'number') ? forced[i] : (Math.floor(i / 2) % WORDS.length);
-    card = makeWordCard(wi);
-  } else {
-    var wj = (typeof forced[i-1] === 'number') ? forced[i-1] : (Math.floor(i / 2) % WORDS.length);
-    card = makeUebungCard(wj);
-  }
+  var card, unit = UNITS[Math.floor(i / 2) % UNITS.length];
+  if (typeof forced[i - (i % 2)] === 'number') unit = { typ:'wort', i: forced[i - (i % 2)] };
+  if (unit.typ === 'aus') card = (i % 2 === 0) ? makeAusdruckCard(unit.i) : makeAusdruckUebung(unit.i);
+  else card = (i % 2 === 0) ? makeWordCard(unit.i) : makeUebungCard(unit.i);
   stepEls[i] = card; deck.appendChild(card); deckLayout();
   return card;
 }
-function forward(){ pointer++; ensureStep(pointer); deckLayout(); }
-function back(){ if (pointer > 0){ pointer--; deckLayout(); } }
+function forward(){ pointer++; ensureStep(pointer); deckLayout(); sitzSichern(); }
+function back(){ if (pointer > 0){ pointer--; deckLayout(); sitzSichern(); } }
 
 // ── Daumen: links = weiter, rechts = zurück ──
 function bindSwipe(){
@@ -390,9 +512,21 @@ window.addEventListener('load', function(){
   document.getElementById('roomTitle').textContent = u.eyebrow;
   document.getElementById('btnHaus').onclick = function(){ location.href='haus.html'; };
   WORDS = buildWords();
+  AUS = buildAusdruecke();
   bindSwipe();
   warmVoice();
-  pointer = 0; ensureStep(0); deckLayout();
+  // Wiederkommen: nur bei einer wirklich angefangenen Runde.
+  var sv = null; try { sv = window.spikiuSitzung ? window.spikiuSitzung.lade('gym') : null; } catch(e){ sv = null; }
+  if (sv && sv.ziel === PROFILE.zielsprache && sv.filter) FILTER = sv.filter;
+  baueFilter();
+  if (sv && sv.ziel === PROFILE.zielsprache && (sv.pointer || 0) >= 2 && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen){
+    neuStart(0);
+    window.spikiuSitzung.frageWiederkommen({ raum:'gym', ts: sv.ts, wo: u.eyebrow,
+      beimWeiter: function(){ neuStart(sv.pointer); },
+      beimNeu: function(){ try { window.spikiuSitzung.raeume('gym'); } catch(e){} FILTER = 'alle'; baueFilter(); neuStart(0); } });
+  } else {
+    neuStart(0);
+  }
 });
 </script>
 <script type="module">
@@ -402,6 +536,9 @@ window.addEventListener('load', function(){
 </script>
 <script src="woerterbuch.js" defer></script>
 <script src="wortschatz.js" defer></script>
+<script src="sprichwort.js" defer></script>
+<script src="kurzsaetze.js" defer></script>
+<script src="sitzung.js" defer></script>
 <script src="uebung.js" defer></script>
 <script src="lernpfad-daten.js" defer></script>
 <!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher lud das Gym nur Spanisch,
