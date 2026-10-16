@@ -169,23 +169,18 @@ function baueDaten(){
   var WS = (typeof window.spikiuWortschatz === 'function' && window.spikiuWortschatz.daten && window.spikiuWortschatz.daten[z])
     ? window.spikiuWortschatz(z, PROFILE.muttersprache) : [];
   WS.forEach(function(x){ if (x.text) SAETZE.push({ satz:x.text, tr:x.ts || '', art:'beispiel' }); LEXIKON.push({ z:x.wort, tr:x.tr }); });
-  // Sätze aus den Stationen des Weges (16.10.2026): Dialogzeilen, Eröffnung und
-  // Abrundung jeder Stufe bis zur eigenen — Krone-Lerner spielen mit Krone-Sätzen.
-  var D0 = lernpfad();
-  if (D0){
-    stufenBis(D0).forEach(function(st){
-      D0.themen.forEach(function(t){
-        var S = D0.station(st, t.id); if (!S) return;
-        var zl = ((S.dialog && S.dialog.zeilen) || []).slice();
-        if (S.eroeffnung) zl.push(S.eroeffnung);
-        if (S.abrundung) zl.push(S.abrundung);
-        zl.forEach(function(x){ if (x && x.z) SAETZE.push({ satz:x.z, tr:naTr(x.na), art:'station', stufe:st }); });
-      });
+  // Kurze Sätze je Stufe (kurzsaetze.js, 16.10.2026, Leo 11:03): Dichos, Giros,
+  // feste Wendungen — NICHT die Dialogzeilen des Geführten Gesprächs (zu lang fürs
+  // Spielfeld). Alle Stufen bis zur eigenen, mit Stufen-Etikett.
+  var KS = window.spikiuKurzsaetze && window.spikiuKurzsaetze[z], D0 = lernpfad();
+  if (KS){
+    stufenBis(D0 || { stufen: ['a1','a2','b1'] }).forEach(function(st){
+      (KS[st] || []).forEach(function(x){ SAETZE.push({ satz:x.z, tr:(x.t && (x.t[PROFILE.muttersprache] || (PROFILE.muttersprache === 'el' ? x.t.en : ''))) || '', art:x.art || 'satz', stufe:st }); });
     });
   }
   // Leo 10.10.: jeder Wurf endet mit der Übersetzung → nur Sätze, die eine haben.
-  // Krone-Sätze dürfen länger sein (bis 12 Wörter).
-  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return s.tr && n >= 3 && n <= (s.stufe === 'b1' ? 12 : 8); });
+  // Leo 16.10.: höchstens 6 Wörter, sonst überdecken sich die Wörter auf dem Feld.
+  SAETZE = SAETZE.filter(function(s){ var n = J.woerterAus(s.satz).length; return s.tr && n >= 3 && n <= 6; });
   var D = lernpfad();
   if (D){
     D.themen.forEach(function(t){ woerterVonThemaLernpfad(t.id).forEach(function(x){ LEXIKON.push(x); }); });
@@ -514,6 +509,7 @@ window.addEventListener('load', function(){
 <script src="lernpfad-sprache.js" defer></script>
 <script src="lernpfad.js" defer></script>
 <script src="wortfelder.js" defer></script>
+<script src="kurzsaetze.js" defer></script>
 <script src="silben.js" defer></script>
 <script src="icon-db.js" defer></script>
 <script src="zugang.js" defer></script>
