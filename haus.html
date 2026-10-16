@@ -612,7 +612,7 @@ var THEMES={
 /* 0 · Begrüßung */
 function roomEintauchen(){
  kacheln({greet:{title:hallo()+(vorname()?', '+kEsc(vorname()):'')+'! 👋',kr:letzteAktivitaet()||H().anfang},layout:'two',items:[
-  {em:'🎭',tt:H().gef,pill:H().gratis,pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
+  {em:'🎭',tt:H().gef,bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
   /* 01.09.2026: von chat.html auf szene.html umgehängt. Die Szene ist der
      neue Raum — Aufgaben aus der Datenbank, null Token im Gespräch, ein
      Aufruf am Ende. chat.html bleibt vorerst liegen als Rückweg, bis alle
@@ -809,7 +809,7 @@ var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'
 function roomUebung(){
  /* Praxis (16.10.): Begrüßung wie früher im Abenteuer, dann zwei Gruppen. */
  kacheln({label:H().gHablar,layout:'two',kompakt:true,items:[
-  {em:'🎭',tt:H().gef,pill:H().gratis,pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
+  {em:'🎭',tt:H().gef,bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
   {em:'💬',tt:H().frei,pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
  ]});
  kacheln({label:H().gTrain,layout:'tri',kompakt:true,items:[
