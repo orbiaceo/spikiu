@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════
-   bottomnav.js — Spikiu Pop-Bottom-Nav (Hilfe · Spikiu · Mein)
+   bottomnav.js — Spikiu Pop-Bottom-Nav (Mein Regal · Spikiu · Mein) — seit 16.10.2026, vorher Hilfe · Spikiu · Mein
    Self-mounting in <div id="spk-bnav-slot"></div>.
    Aktiver Tab aus <body data-nav="hilfe|mein">.
 
@@ -74,23 +74,38 @@
     }
 
     var active = (document.body.getAttribute('data-nav') || '');
+    try { if (active === 'haus' && sessionStorage.getItem('spk_haus_tuer') === 'regal') active = 'regal'; } catch(e){}
+    // Im Haus wechselt der Raum ohne Seitenwechsel → Markierung nachziehen.
+    document.addEventListener('spk-haus-raum', function(ev){
+      var b = document.querySelector('.spk-tab[data-go="regal"]');
+      if (b) b.classList.toggle('act', !!(ev && ev.detail === 'regal'));
+    });
     /* Beschriftung in der Muttersprache (10.10.2026): profile.muttersprache → spikiu_lang → de. */
     var ml = 'de';
     try{ var mu = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile || {}).muttersprache;
       var gl = localStorage.getItem('spikiu_lang');
       ml = ['de','es','en','el'].indexOf(mu) > -1 ? mu : (['de','es','en','el'].indexOf(gl) > -1 ? gl : 'de'); }catch(e){}
-    var LB = { de:{ hilfe:'Hilfe', mein:'Mein', nav:'Hauptnavigation' },
-               es:{ hilfe:'Ayuda', mein:'Perfil', nav:'Navegación principal' },
-               en:{ hilfe:'Help',  mein:'Profile', nav:'Main navigation' },
-               el:{ hilfe:'Βοήθεια', mein:'Προφίλ', nav:'Κύρια πλοήγηση' } }[ml];
+    var LB = { de:{ regal:'Mein Regal', mein:'Mein', nav:'Hauptnavigation' },
+               es:{ regal:'Mi estante', mein:'Perfil', nav:'Navegación principal' },
+               en:{ regal:'My shelf',  mein:'Profile', nav:'Main navigation' },
+               el:{ regal:'Το ράφι μου', mein:'Προφίλ', nav:'Κύρια πλοήγηση' } }[ml];
+    /* Regal-Symbol (Leo, 16.10.2026: „un icono especial que sea elocuente"): ein kleines
+       Regal mit drei Büchern und einer Pflanze, die wächst — dein Regal wächst. */
+    var REGAL = '<svg viewBox="0 0 32 32" width="26" height="26" fill="none" aria-hidden="true">'
+      + '<g stroke="#15163a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">'
+      + '<rect x="4" y="11" width="4" height="12" rx="1" fill="#ffd24a"/><rect x="8.5" y="9" width="4" height="14" rx="1" fill="#1f93b0"/>'
+      + '<rect x="13" y="12" width="3.6" height="11" rx="1" fill="#f7bcd8" transform="rotate(-8 14.8 17.5)"/>'
+      + '<path d="M22 23 v-5" /><path d="M22 18 c-3 0-4-2-4-4 c2 0 4 1 4 4z" fill="#9bd14a"/><path d="M22 19 c2.5 0 3.6-1.8 3.6-3.6 c-1.8 0-3.6 1-3.6 3.6z" fill="#9bd14a"/>'
+      + '<path d="M19.5 23 h5 l-.6 3 h-3.8z" fill="#c9956a"/>'
+      + '<path d="M2.5 23.5 h27" stroke-width="2.2"/></g></svg>';
     slot.innerHTML =
       '<nav class="spk-bnav" role="navigation" aria-label="' + LB.nav + '">'
-      + '<button class="spk-tab' + (active==='hilfe'?' act':'') + '" data-go="hilfe"><span class="tic">❓</span><span>' + LB.hilfe + '</span></button>'
+      + '<button class="spk-tab' + (active==='regal'?' act':'') + '" data-go="regal"><span class="tic">' + REGAL + '</span><span>' + LB.regal + '</span></button>'
       + '<button class="spk-tab center" data-go="spikiu" aria-label="Spikiu"><span class="ball">' + CAPY + '</span><span class="lbl">Spikiu</span></button>'
       + '<button class="spk-tab' + (active==='mein'?' act':'') + '" data-go="mein"><span class="tic">👤</span><span>' + LB.mein + '</span></button>'
       + '</nav>';
 
-    var ZIEL = { hilfe:'faq.html', mein:'mein.html' };
+    var ZIEL = { regal:'haus.html?tuer=regal', mein:'mein.html' };   // Hilfe: „?" oben im Haus + in Mein (16.10.)
     slot.querySelectorAll('.spk-tab').forEach(function(b){
       b.addEventListener('click', function(){
         var go = b.getAttribute('data-go');
@@ -99,6 +114,7 @@
           else standardGruss();
           return;                                   // Spikiu navigiert nicht — er spricht
         }
+        if(go === 'regal' && typeof window.spikiuZumRegal === 'function'){ window.spikiuZumRegal(); return; }
         if(go === active) return;                   // schon hier
         if(ZIEL[go]) location.href = ZIEL[go];
       });
