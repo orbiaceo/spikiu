@@ -16,7 +16,7 @@
      🥁 Der Schlag  → spiele.html?spiel=golpe&von=wortschatz
      🔤 Akrostichon, 🌿 Spikius Garten → spiele.html?spiel=acrostico|huerto&von=wortschatz
         (Leo, 17:13: „Akrostichon und Spikius Garten auch da rein als letzte Aufgaben ganz unten
-         und versuch, dass alles ausbalanciert ist.") Raster 1 breit + 2×2, füllt die Höhe.
+         und versuch, dass alles ausbalanciert ist.") Raster: Karten mittig oben (gleich groß wie die anderen, Leo 17:22) + 2×2, füllt die Höhe.
   Reine Auswahl ohne eigenen Arbeitsstand → keine Sitzung nötig; die Karten sichern selbst.
 -->
 <style>
@@ -42,7 +42,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .doors{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:.85rem;min-height:24rem;max-height:46rem;margin:auto 0;}
 .door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;text-align:center;min-height:0;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
 .door:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink);}
-.door.breit{grid-column:1 / -1;}
+.door.breit{grid-column:1 / -1;justify-self:center;width:calc(50% - .425rem);}   /* Leo, 17:22: Karten gleich groß wie die anderen, mittig */
 .door .emo{font-size:2.6rem;line-height:1;}
 .door b{font:800 .98rem/1.1 'DM Sans',sans-serif;}
 .door span.d{font-size:.74rem;line-height:1.2;font-weight:600;color:rgba(21,22,58,.72);}
