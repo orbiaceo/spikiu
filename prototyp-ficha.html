@@ -1,0 +1,212 @@
+<title>Spikiu Ficha</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: eine Spalte wie im Handy — Cofre-Liste nach Art, darunter die offene Ficha, ganz unten das Datenformat. Spikiu-Look (hell, harte Schatten), bewusst nur hell wie die App. */
+:root{
+  --bg:#eef7f1; --ink:#15163a; --card:#ffffff; --muted:#5d6079; --line:#d9e3dc;
+  --sage:#9bd14a; --mustard:#ffd24a; --terra:#ff6b5a; --pink:#ff4f9a; --plum:#cdbdf2; --sky:#d3eef6;
+  --f-display:'Archivo Black',Impact,sans-serif; --f-body:'DM Sans',system-ui,sans-serif;
+  --f-target:'Lora',Georgia,serif; --f-mono:'DM Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:30rem;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font:500 .66rem/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-size:1.6rem;line-height:1.1;margin:.3rem 0 .2rem;text-wrap:balance}
+.lead{color:var(--muted);margin:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:700 .85rem var(--f-body);border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chip:focus-visible,.entry:focus-visible,.spk:focus-visible,summary:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+/* Cofre */
+.cofre{background:var(--card);border:2px solid var(--ink);border-radius:16px;box-shadow:4px 5px 0 var(--ink);padding:14px 14px 6px}
+.cofre h2{font-family:var(--f-display);font-size:1.05rem;margin:0 0 10px}
+.fach{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.fach-h{display:flex;align-items:baseline;justify-content:space-between;font-weight:800;font-size:.82rem;padding:2px 2px 4px;border-bottom:1px solid var(--line)}
+.fach-h small{font:500 .7rem var(--f-mono);color:var(--muted)}
+.entries{display:flex;flex-wrap:wrap;gap:6px;padding-top:4px}
+.entry{font:600 1rem var(--f-target);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:.3rem .65rem;cursor:pointer;color:var(--ink)}
+.entry[aria-current="true"]{border-color:var(--ink);background:var(--mustard)}
+
+/* Ficha */
+.ficha{background:var(--card);border:2px solid var(--ink);border-radius:18px;box-shadow:5px 6px 0 var(--ink);overflow:hidden}
+.f-top{padding:16px 16px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:start}
+.f-art{grid-column:1/-1;display:inline-flex;gap:6px;align-items:center;font-weight:800;font-size:.75rem;letter-spacing:.04em}
+.f-art span{border-radius:999px;padding:.15rem .55rem;border:1.5px solid var(--ink)}
+.lemma{font:600 1.9rem/1.15 var(--f-target);margin:2px 0 0;min-width:0;word-break:break-word}
+.spk{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:1.1rem;cursor:pointer;box-shadow:2px 3px 0 var(--ink)}
+.tr{grid-column:1/-1;font-size:1.05rem;color:var(--muted)}
+.formen{grid-column:1/-1;font:500 .78rem var(--f-mono);color:var(--muted)}
+.getippt{grid-column:1/-1;font-size:.82rem;color:var(--muted)}
+.getippt b{font-family:var(--f-target);color:var(--ink);font-weight:600}
+.f-sec{border-top:2px dashed var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.f-sec .eyebrow{color:var(--ink)}
+.muster{font:600 1.15rem/1.4 var(--f-target);background:var(--sky);border-radius:10px;padding:.5rem .7rem}
+.muster .slot{font-family:var(--f-body);font-size:.85rem;font-weight:700;background:var(--card);border:1.5px solid var(--ink);border-radius:6px;padding:.05rem .35rem;margin:0 .1rem;white-space:nowrap}
+.bsp{font:400 1.08rem var(--f-target)}
+.bsp mark{background:var(--mustard);border-radius:3px;padding:0 .15rem;color:var(--ink)}
+.bsp-tr{font-size:.92rem;color:var(--muted);font-style:italic}
+.ojo{background:#fff1ee;border:1.5px solid var(--terra);border-radius:10px;padding:.55rem .7rem;font-size:.92rem}
+.ojo b{color:var(--terra)}
+
+details{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+summary{cursor:pointer;font-weight:700}
+pre{margin:10px 0 0;overflow-x:auto;font:500 .74rem/1.5 var(--f-mono);background:var(--ink);color:#eef7f1;border-radius:8px;padding:10px}
+.note{font-size:.85rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.ficha{animation:auf .18s ease-out}@keyframes auf{from{transform:translateY(4px)}to{transform:none}}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Prototipo · la ficha del cofre</div>
+    <h1>Una palabra, todo lo que necesitas</h1>
+    <p class="lead">Elige el idioma que se aprende, toca algo en el cofre y mira su ficha. Cero tokens: todo viene de un léxico fijo.</p>
+  </header>
+
+  <div class="chips" role="group" aria-label="Idioma que se aprende">
+    <button class="chip" id="z-el" data-z="el" aria-pressed="true">Griego</button>
+    <button class="chip" id="z-de" data-z="de" aria-pressed="false">Alemán</button>
+    <button class="chip" id="z-es" data-z="es" aria-pressed="false">Español</button>
+    <button class="chip" id="z-en" data-z="en" aria-pressed="false">Inglés</button>
+  </div>
+
+  <section class="cofre" aria-label="Cofre">
+    <h2 id="cofre-t">💎 Mi cofre</h2>
+    <div id="faecher"></div>
+  </section>
+
+  <article class="ficha" id="ficha" aria-live="polite"></article>
+
+  <details>
+    <summary>Así se guarda la ficha (formato de datos)</summary>
+    <pre id="json"></pre>
+    <p class="note">Una ficha por <em>lema</em>; cada forma tocada (σταθμό, wartet, dormía) apunta a ella. «art» decide el cajón, «valenz» solo existe donde aporta.</p>
+  </details>
+</div>
+
+<script>
+/* UI in der Muttersprache: es für el/de/en, de für es */
+var UI={
+  es:{cofre:'💎 Mi cofre',art:{ding:'Cosas',tun:'Acciones',wie:'Cómo es',klein:'Palabritas'},getippt:'Tocaste',muster:'Cómo se usa',bsp:'Ejemplo',ojo:'Ojo',formen:'Formas',spk:'Escuchar'},
+  de:{cofre:'💎 Meine Schatzkiste',art:{ding:'Dinge',tun:'Tätigkeiten',wie:'Eigenschaften',klein:'Kleine Wörter'},getippt:'Getippt',muster:'So benutzt man es',bsp:'Beispiel',ojo:'Achtung',formen:'Formen',spk:'Anhören'}
+};
+var FARBE={ding:'var(--sage)',tun:'var(--mustard)',wie:'var(--plum)',klein:'var(--sky)'};
+var BCP={el:'el-GR',de:'de-DE',es:'es-ES',en:'en-US'};
+
+var LEX={
+ el:[
+  {lemma:'ο σταθμός',art:'ding',getippt:'σταθμό',formen:'οι σταθμοί',tr:'la estación',
+   bsp:'Ο <mark>σταθμός</mark> είναι κοντά.',bspTr:'La estación está cerca.'},
+  {lemma:'περιμένω',art:'tun',getippt:'περιμένω',tr:'esperar',
+   valenz:{muster:'περιμένω [τον · την · το …]',bsp:'Περιμένω <mark>τη</mark> Μαρία.',bspTr:'Espero a María.',
+   ojo:'Sin «a» y sin preposición, ni siquiera con personas.'}},
+  {lemma:'αρέσω',art:'tun',getippt:'αρέσει',tr:'gustar',
+   valenz:{muster:'[μου · σου · του] αρέσει [ο · η · το …]',bsp:'<mark>Μου αρέσει</mark> ο καφές.',bspTr:'Me gusta el café.',
+   ojo:'Funciona igual que «gustar»: lo que gusta es quien «hace» el verbo.'}},
+  {lemma:'ζεστός',art:'wie',getippt:'ζεστή',formen:'ζεστός · ζεστή · ζεστό',tr:'caliente',
+   bsp:'Η σούπα είναι <mark>ζεστή</mark>.',bspTr:'La sopa está caliente.'},
+  {lemma:'πολύ',art:'klein',getippt:'πολύ',tr:'muy · mucho',
+   bsp:'<mark>Πολύ</mark> ωραία!',bspTr:'¡Muy bien!'}
+ ],
+ de:[
+  {lemma:'der Bahnhof',art:'ding',getippt:'Bahnhof',formen:'die Bahnhöfe',tr:'la estación',
+   bsp:'Der <mark>Bahnhof</mark> ist nah.',bspTr:'La estación está cerca.'},
+  {lemma:'warten',art:'tun',getippt:'wartet',tr:'esperar',
+   valenz:{muster:'warten auf [den · die · das …]',bsp:'Sie wartet <mark>auf den</mark> Bus.',bspTr:'Ella espera el autobús.',
+   ojo:'Siempre con «auf», nunca «für».'}},
+  {lemma:'helfen',art:'tun',getippt:'hilft',tr:'ayudar',
+   valenz:{muster:'helfen [dem · der · dem …]',bsp:'Er hilft <mark>dem</mark> Kind.',bspTr:'Ayuda al niño.',
+   ojo:'Con «helfen» el artículo cambia: dem Kind, no das Kind.'}},
+  {lemma:'müde',art:'wie',getippt:'müde',tr:'cansado · cansada',
+   bsp:'Ich bin <mark>müde</mark>.',bspTr:'Estoy cansado.'},
+  {lemma:'gern',art:'klein',getippt:'gern',tr:'con gusto',
+   bsp:'Ich trinke <mark>gern</mark> Kaffee.',bspTr:'Me gusta tomar café.'}
+ ],
+ es:[
+  {lemma:'la estación',art:'ding',getippt:'estación',formen:'las estaciones',tr:'der Bahnhof',
+   bsp:'La <mark>estación</mark> está cerca.',bspTr:'Der Bahnhof ist nah.'},
+  {lemma:'dormir',art:'tun',getippt:'dormía',tr:'schlafen',
+   bsp:'La ciudad aún <mark>dormía</mark>.',bspTr:'Die Stadt schlief noch.'},
+  {lemma:'esperar',art:'tun',getippt:'espero',tr:'warten',
+   valenz:{muster:'esperar [a] [alguien] · esperar [algo]',bsp:'Espero <mark>a</mark> Lucía.',bspTr:'Ich warte auf Lucía.',
+   ojo:'Bei Personen steht «a»: Espero a Lucía. Aber: Espero el autobús.'}},
+  {lemma:'gustar',art:'tun',getippt:'gustan',tr:'gefallen',
+   valenz:{muster:'[me · te · le] gusta(n) [el · la · los …]',bsp:'Me <mark>gustan</mark> los gatos.',bspTr:'Ich mag Katzen.',
+   ojo:'Was gefällt, bestimmt das Verb: los gatos → gustan.'}},
+  {lemma:'cansado',art:'wie',getippt:'cansada',formen:'cansado · cansada · cansados · cansadas',tr:'müde',
+   bsp:'Estoy <mark>cansada</mark>.',bspTr:'Ich bin müde.'}
+ ],
+ en:[
+  {lemma:'the station',art:'ding',getippt:'station',formen:'stations',tr:'la estación',
+   bsp:'The <mark>station</mark> is close.',bspTr:'La estación está cerca.'},
+  {lemma:'wait',art:'tun',getippt:'waiting',tr:'esperar',
+   valenz:{muster:'wait [for] [someone · something]',bsp:'I’m waiting <mark>for</mark> the bus.',bspTr:'Estoy esperando el autobús.',
+   ojo:'En inglés hace falta «for»: no «I wait the bus».'}},
+  {lemma:'depend',art:'tun',getippt:'depends',tr:'depender',
+   valenz:{muster:'depend [on] [something]',bsp:'It depends <mark>on</mark> the weather.',bspTr:'Depende del tiempo.',
+   ojo:'Con «on», no con «of».'}},
+  {lemma:'tired',art:'wie',getippt:'tired',tr:'cansado · cansada',
+   bsp:'I’m <mark>tired</mark>.',bspTr:'Estoy cansado.'},
+  {lemma:'always',art:'klein',getippt:'always',tr:'siempre',
+   bsp:'She <mark>always</mark> walks.',bspTr:'Ella siempre va a pie.'}
+ ]
+};
+
+var Z='el', SEL=0;
+function ui(){return UI[Z==='es'?'de':'es'];}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function plain(s){return s.replace(/<[^>]+>/g,'');}
+function musterHtml(m){return esc(m).replace(/\[([^\]]+)\]/g,'<span class="slot">$1</span>');}
+
+function renderCofre(){
+  var u=ui(); document.getElementById('cofre-t').textContent=u.cofre;
+  var h=''; ['ding','tun','wie','klein'].forEach(function(a){
+    var items=LEX[Z].map(function(e,i){return {e:e,i:i};}).filter(function(x){return x.e.art===a;});
+    if(!items.length) return;
+    h+='<div class="fach"><div class="fach-h"><span>'+u.art[a]+'</span><small>'+items.length+'</small></div><div class="entries">';
+    items.forEach(function(x){h+='<button class="entry" id="e-'+x.i+'" data-i="'+x.i+'" aria-current="'+(x.i===SEL)+'">'+esc(x.e.lemma)+'</button>';});
+    h+='</div></div>';
+  });
+  var f=document.getElementById('faecher'); f.innerHTML=h;
+  f.querySelectorAll('.entry').forEach(function(b){b.onclick=function(){SEL=+b.dataset.i;render();};});
+}
+
+function renderFicha(){
+  var u=ui(), e=LEX[Z][SEL], v=e.valenz;
+  var h='<div class="f-top">'+
+    '<div class="f-art"><span style="background:'+FARBE[e.art]+'">'+u.art[e.art]+'</span></div>'+
+    '<div class="lemma" lang="'+Z+'">'+esc(e.lemma)+'</div>'+
+    '<button class="spk" id="spk" aria-label="'+u.spk+'">🔊</button>'+
+    '<div class="tr">'+esc(e.tr)+'</div>'+
+    (e.formen?'<div class="formen">'+u.formen+': '+esc(e.formen)+'</div>':'')+
+    (e.getippt&&e.getippt!==e.lemma?'<div class="getippt">'+u.getippt+': <b lang="'+Z+'">'+esc(e.getippt)+'</b></div>':'')+
+  '</div>';
+  if(v){
+    h+='<div class="f-sec"><div class="eyebrow">'+u.muster+'</div><div class="muster" lang="'+Z+'">'+musterHtml(v.muster)+'</div>'+
+       '<div class="bsp" lang="'+Z+'">'+v.bsp+'</div><div class="bsp-tr">'+esc(v.bspTr)+'</div>'+
+       '<div class="ojo"><b>'+u.ojo+':</b> '+esc(v.ojo)+'</div></div>';
+  } else {
+    h+='<div class="f-sec"><div class="eyebrow">'+u.bsp+'</div><div class="bsp" lang="'+Z+'">'+e.bsp+'</div><div class="bsp-tr">'+esc(e.bspTr)+'</div></div>';
+  }
+  var f=document.getElementById('ficha'); f.innerHTML=h;
+  document.getElementById('spk').onclick=function(){
+    try{var s=speechSynthesis;s.cancel();var t=plain(v?v.bsp:e.bsp);
+      var a=new SpeechSynthesisUtterance(e.lemma.replace(/^(the|der|die|das|la|el|ο|η|το) /,'')+'. '+t);a.lang=BCP[Z];a.rate=.92;s.speak(a);}catch(err){}
+  };
+  /* Datenformat zeigen, so wie es im Léxico stünde */
+  var d={forma:e.getippt,lemma:e.lemma,art:e.art,formen:e.formen||undefined,tr:e.tr};
+  if(v) d.valenz={muster:v.muster,beispiel:plain(v.bsp),tr:v.bspTr,ojo:v.ojo};
+  else d.beispiel={text:plain(e.bsp),tr:e.bspTr};
+  document.getElementById('json').textContent=JSON.stringify(d,null,2);
+}
+
+function render(){renderCofre();renderFicha();}
+document.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){
+  Z=c.dataset.z;SEL=Z==='el'?1:1;
+  document.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed',String(x===c));});render();};});
+SEL=1; render();
+</script>
