@@ -77,8 +77,13 @@
     'bread of the dead':'🍞', 'flat':'🏘', 'furnished room':'🛏', 'rent':'💵', 'deposit':'💰',
     'contract':'📝', 'ticket office':'🎫', 'bay (platform)':'🚏', 'landslide':'🚧', 'road':'🛣',
     'luggage':'🧳', 'luggage hold':'🧳', 'window seat':'💺', 'altitude sickness':'🤢',
-    'dizziness':'🤢', 'tablet':'💊'
+    'dizziness':'🤢', 'tablet':'💊',
+    // Buchen/Reservieren (Leo, 17.10.2026: „ein besseres Icon für buchen, reservieren" — vorher 📚):
+    'reserve':'📅', 'reservation':'📅', 'booking':'📅'
   };
+  /* Verben („to book") sind abstrakt und bekommen KEIN Nomen-Bild („book" → 📚 war falsch).
+     Nur ausdrücklich gelistete Verben haben ein eigenes Bild. */
+  var VERB = { 'to book':'📅', 'to reserve':'📅', 'to book (a room)':'📅' };
 
   var ARTIKEL = /^(el|la|los|las|un|una|unos|unas|der|die|das|den|dem|ein|eine|einen|the|a|an|to|some)\s+/;
   function norm(s) {
@@ -87,6 +92,12 @@
 
   var index = null;
   function merke(wort, konzept) {
+    var roh = String(konzept || '').toLowerCase().trim();
+    if (/^to\s/.test(roh)) {                     // Verb: nur aus der Verb-Liste
+      var vb = VERB[roh.replace(/[¿?¡!.,]/g, '')]; var wv = norm(wort);
+      if (wort && vb && wv && !index[wv]) index[wv] = vb;
+      return;
+    }
     var k = norm(konzept);
     if (!wort || !KONZEPT[k]) return;
     var w = norm(wort);

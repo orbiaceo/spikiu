@@ -507,7 +507,7 @@
       '2|el recepcionista|der Rezeptionist|receptionist|ο υπάλληλος υποδοχής',
       '2|la tarjeta|die Karte|card|η κάρτα',
       '2|la factura|die Rechnung|invoice|το τιμολόγιο',
-      '2|reservar|buchen|book|κλείνω',
+      '2|reservar|buchen|reserve|κλείνω',   // en „reserve" statt „book" — sonst zeigte das Bild Bücher (Leo, 17.10.)
       '2|dormir|schlafen|sleep|κοιμάμαι',
       '2|tranquilo|ruhig|quiet|ήσυχος',
       '2|ruidoso|laut|noisy|θορυβώδης',
