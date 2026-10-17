@@ -91,8 +91,8 @@ pre{margin:10px 0 0;overflow-x:auto;font:500 .74rem/1.5 var(--f-mono);background
 <script>
 /* UI in der Muttersprache: es für el/de/en, de für es */
 var UI={
-  es:{cofre:'💎 Mi cofre',art:{ding:'Cosas',tun:'Acciones',wie:'Cómo es',klein:'Palabritas'},getippt:'Tocaste',muster:'Cómo se usa',bsp:'Ejemplo',ojo:'Ojo',formen:'Formas',spk:'Escuchar'},
-  de:{cofre:'💎 Meine Schatzkiste',art:{ding:'Dinge',tun:'Tätigkeiten',wie:'Eigenschaften',klein:'Kleine Wörter'},getippt:'Getippt',muster:'So benutzt man es',bsp:'Beispiel',ojo:'Achtung',formen:'Formen',spk:'Anhören'}
+  es:{cofre:'💎 Mi cofre',art:{ding:'Cosas',tun:'Acciones',wie:'Cómo es · cómo se hace',klein:'Palabritas'},wieIst:'Cómo es',wieTut:'Cómo se hace',getippt:'Tocaste',muster:'Cómo se usa',bsp:'Ejemplo',ojo:'Ojo',formen:'Formas',spk:'Escuchar'},
+  de:{cofre:'💎 Meine Schatzkiste',art:{ding:'Dinge',tun:'Tätigkeiten',wie:'Wie etwas ist · wie es geschieht',klein:'Kleine Wörter'},wieIst:'Wie etwas ist',wieTut:'Wie es geschieht',getippt:'Getippt',muster:'So benutzt man es',bsp:'Beispiel',ojo:'Achtung',formen:'Formen',spk:'Anhören'}
 };
 var FARBE={ding:'var(--sage)',tun:'var(--mustard)',wie:'var(--plum)',klein:'var(--sky)'};
 var BCP={el:'el-GR',de:'de-DE',es:'es-ES',en:'en-US'};
@@ -107,6 +107,9 @@ var LEX={
   {lemma:'αρέσω',art:'tun',getippt:'αρέσει',tr:'gustar',
    valenz:{muster:'[μου · σου · του] αρέσει [ο · η · το …]',bsp:'<mark>Μου αρέσει</mark> ο καφές.',bspTr:'Me gusta el café.',
    ojo:'Funciona igual que «gustar»: lo que gusta es quien «hace» el verbo.'}},
+  {lemma:'γρήγορος',art:'wie',getippt:'γρήγορα',formen:'γρήγορος · γρήγορη · γρήγορο',tr:'rápido',
+   bsp:'Το τρένο είναι <mark>γρήγορο</mark>.',bspTr:'El tren es rápido.',
+   adv:{form:'γρήγορα',bsp:'Μιλάει <mark>γρήγορα</mark>.',bspTr:'Habla rápido.',hinweis:'Para «cómo se hace» suele terminar en -α: γρήγορος → γρήγορα.'}},
   {lemma:'ζεστός',art:'wie',getippt:'ζεστή',formen:'ζεστός · ζεστή · ζεστό',tr:'caliente',
    bsp:'Η σούπα είναι <mark>ζεστή</mark>.',bspTr:'La sopa está caliente.'},
   {lemma:'πολύ',art:'klein',getippt:'πολύ',tr:'muy · mucho',
@@ -121,6 +124,9 @@ var LEX={
   {lemma:'helfen',art:'tun',getippt:'hilft',tr:'ayudar',
    valenz:{muster:'helfen [dem · der · dem …]',bsp:'Er hilft <mark>dem</mark> Kind.',bspTr:'Ayuda al niño.',
    ojo:'Con «helfen» el artículo cambia: dem Kind, no das Kind.'}},
+  {lemma:'schnell',art:'wie',getippt:'schnell',tr:'rápido · rápidamente',
+   bsp:'Das Auto ist <mark>schnell</mark>.',bspTr:'El coche es rápido.',
+   adv:{form:'schnell',bsp:'Er fährt <mark>schnell</mark>.',bspTr:'Conduce rápido.',hinweis:'En alemán es la misma palabra para los dos usos.'}},
   {lemma:'müde',art:'wie',getippt:'müde',tr:'cansado · cansada',
    bsp:'Ich bin <mark>müde</mark>.',bspTr:'Estoy cansado.'},
   {lemma:'gern',art:'klein',getippt:'gern',tr:'con gusto',
@@ -137,6 +143,9 @@ var LEX={
   {lemma:'gustar',art:'tun',getippt:'gustan',tr:'gefallen',
    valenz:{muster:'[me · te · le] gusta(n) [el · la · los …]',bsp:'Me <mark>gustan</mark> los gatos.',bspTr:'Ich mag Katzen.',
    ojo:'Was gefällt, bestimmt das Verb: los gatos → gustan.'}},
+  {lemma:'tranquilo',art:'wie',getippt:'tranquilamente',formen:'tranquilo · tranquila · tranquilos · tranquilas',tr:'ruhig',
+   bsp:'La calle es <mark>tranquila</mark>.',bspTr:'Die Straße ist ruhig.',
+   adv:{form:'tranquilamente',bsp:'Comemos <mark>tranquilamente</mark>.',bspTr:'Wir essen in aller Ruhe.',hinweis:'Weibliche Form + -mente: tranquila → tranquilamente.'}},
   {lemma:'cansado',art:'wie',getippt:'cansada',formen:'cansado · cansada · cansados · cansadas',tr:'müde',
    bsp:'Estoy <mark>cansada</mark>.',bspTr:'Ich bin müde.'}
  ],
@@ -149,6 +158,9 @@ var LEX={
   {lemma:'depend',art:'tun',getippt:'depends',tr:'depender',
    valenz:{muster:'depend [on] [something]',bsp:'It depends <mark>on</mark> the weather.',bspTr:'Depende del tiempo.',
    ojo:'Con «on», no con «of».'}},
+  {lemma:'quick',art:'wie',getippt:'quickly',tr:'rápido · rápidamente',
+   bsp:'The train is <mark>quick</mark>.',bspTr:'El tren es rápido.',
+   adv:{form:'quickly',bsp:'She speaks <mark>quickly</mark>.',bspTr:'Habla rápido.',hinweis:'Para «cómo se hace», casi siempre con -ly: quick → quickly.'}},
   {lemma:'tired',art:'wie',getippt:'tired',tr:'cansado · cansada',
    bsp:'I’m <mark>tired</mark>.',bspTr:'Estoy cansado.'},
   {lemma:'always',art:'klein',getippt:'always',tr:'siempre',
@@ -189,18 +201,23 @@ function renderFicha(){
     h+='<div class="f-sec"><div class="eyebrow">'+u.muster+'</div><div class="muster" lang="'+Z+'">'+musterHtml(v.muster)+'</div>'+
        '<div class="bsp" lang="'+Z+'">'+v.bsp+'</div><div class="bsp-tr">'+esc(v.bspTr)+'</div>'+
        '<div class="ojo"><b>'+u.ojo+':</b> '+esc(v.ojo)+'</div></div>';
+  } else if(e.adv){
+    h+='<div class="f-sec"><div class="eyebrow">'+u.wieIst+'</div><div class="bsp" lang="'+Z+'">'+e.bsp+'</div><div class="bsp-tr">'+esc(e.bspTr)+'</div></div>'+
+       '<div class="f-sec"><div class="eyebrow">'+u.wieTut+' · <span lang="'+Z+'" style="font-family:var(--f-target);text-transform:none;letter-spacing:0;font-size:.95rem">'+esc(e.adv.form)+'</span></div><div class="bsp" lang="'+Z+'">'+e.adv.bsp+'</div><div class="bsp-tr">'+esc(e.adv.bspTr)+'</div>'+
+       '<div class="ojo" style="background:var(--sky);border-color:var(--ink)">'+esc(e.adv.hinweis)+'</div></div>';
   } else {
     h+='<div class="f-sec"><div class="eyebrow">'+u.bsp+'</div><div class="bsp" lang="'+Z+'">'+e.bsp+'</div><div class="bsp-tr">'+esc(e.bspTr)+'</div></div>';
   }
   var f=document.getElementById('ficha'); f.innerHTML=h;
   document.getElementById('spk').onclick=function(){
-    try{var s=speechSynthesis;s.cancel();var t=plain(v?v.bsp:e.bsp);
+    try{var s=speechSynthesis;s.cancel();var t=plain(v?v.bsp:e.bsp)+(e.adv?'. '+plain(e.adv.bsp):'');
       var a=new SpeechSynthesisUtterance(e.lemma.replace(/^(the|der|die|das|la|el|ο|η|το) /,'')+'. '+t);a.lang=BCP[Z];a.rate=.92;s.speak(a);}catch(err){}
   };
   /* Datenformat zeigen, so wie es im Léxico stünde */
   var d={forma:e.getippt,lemma:e.lemma,art:e.art,formen:e.formen||undefined,tr:e.tr};
   if(v) d.valenz={muster:v.muster,beispiel:plain(v.bsp),tr:v.bspTr,ojo:v.ojo};
   else d.beispiel={text:plain(e.bsp),tr:e.bspTr};
+  if(e.adv) d.wieTut={form:e.adv.form,beispiel:plain(e.adv.bsp),tr:e.adv.bspTr,hinweis:e.adv.hinweis};
   document.getElementById('json').textContent=JSON.stringify(d,null,2);
 }
 
