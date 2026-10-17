@@ -470,7 +470,12 @@ function hallo(){var zl='es';try{zl=(JSON.parse(localStorage.getItem('spikiu_use
 var NAME='',RED=matchMedia('(prefers-reduced-motion:reduce)').matches;
 var keptWords=[],pages=[],CUR='eintauchen';
 var S; // aktuelle Bühne
-function say(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
+/* 17.10. (Leo): Mein Buch las griechische Wörter mit spanischer Stimme vor — say() war fest auf es-ES
+   und ging an audio.js vorbei. Jetzt: Zielsprache aus dem Profil (oder ausdrücklich übergeben) über
+   audio.js (Piper; Griechisch/iOS → Geräte-Stimme); Notbremse Browser-Stimme in der richtigen Sprache. */
+function say(t,lang){lang=lang||bkZiel();
+ if(window.sprich){try{window.sprich(t,lang);return;}catch(e){}}
+ try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=({de:'de-DE',es:'es-ES',en:'en-US',el:'el-GR'})[lang]||'es-ES';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
 function scrollEnd(){var st=document.getElementById('stage');requestAnimationFrame(function(){if(st)st.scrollTo({top:st.scrollHeight,behavior:RED?'auto':'smooth'});});}
 
 /* ===== Bühnen-Bausteine ===== */
@@ -483,7 +488,7 @@ function spikiu(text,cb){var t=document.createElement('div');t.className='turn';
 function youSaid(t){var d=document.createElement('div');d.className='you';d.innerHTML='<span>'+t+'</span>';S.appendChild(d);scrollEnd();}
 function esLine(es,de){var t=document.createElement('div');t.className='turn';
  t.innerHTML='<div class="av">'+capy()+'</div><div class="says target"><div class="es-row"><span class="es">'+es+'</span><button class="spk" aria-label="Vorlesen">🔊</button></div><div class="de-box">'+de+'</div></div>';
- t.querySelector('.spk').onclick=function(){say(es);};S.appendChild(t);scrollEnd();}
+ t.querySelector('.spk').onclick=function(){say(es,'es');};S.appendChild(t);scrollEnd();}
 function bigcards(items){var w=document.createElement('div');w.className='bigcards';
  items.forEach(function(it){var b=document.createElement('button');b.className='bigcard';
   b.innerHTML='<span class="em">'+it.em+'</span><span class="bc-txt"><span class="tt">'+it.tt+'</span><span class="ss">'+(it.ss||'')+'</span></span><span class="bc-chev">›</span>';
@@ -650,7 +655,7 @@ function renderDeck(key){var words=THEMES[key].words;var idx=0,last=words.length
  words.forEach(function(){var dt=document.createElement('span');dt.className='dot';dots.appendChild(dt);});
  function show(){var wd=words[idx];
   card.innerHTML='<div class="es">'+wd.es+'</div><div class="de">'+wd.de+'</div><button class="spk" aria-label="Vorlesen">🔊</button>';
-  card.querySelector('.spk').onclick=function(e){e.stopPropagation();say(wd.es);};
+  card.querySelector('.spk').onclick=function(e){e.stopPropagation();say(wd.es,'es');};
   prev.disabled=idx===0;next.disabled=idx===last;
   [].forEach.call(dots.children,function(d,i){d.classList.toggle('on',i===idx);});}
  function move(d){idx=Math.max(0,Math.min(last,idx+d));show();}
@@ -666,8 +671,8 @@ function advAussprache(key){newStep(2);var p=THEMES[key].pron;
  spikiu('Ein Wort sprichst du mir nach. Ich bewerte nichts — ich hör nur gern zu.',function(){
   var c=document.createElement('div');c.className='tool';
   c.innerHTML='<div class="eyebrow">Aussprache</div><div style="display:flex;align-items:center;gap:.7rem"><div style="flex:1;font-family:Lora,serif;font-size:1.9rem">'+p.es+'</div><button class="spk">🔊</button></div><div style="font-size:.86rem;color:var(--soft);margin-top:.3rem">'+p.de+'</div>';
-  c.querySelector('.spk').onclick=function(){say(p.es);};S.appendChild(c);say(p.es);scrollEnd();
-  ends([{t:'🔊 Nochmal hören',go:function(){say(p.es);advAussprache(key);}},
+  c.querySelector('.spk').onclick=function(){say(p.es,'es');};S.appendChild(c);say(p.es,'es');scrollEnd();
+  ends([{t:'🔊 Nochmal hören',go:function(){say(p.es,'es');advAussprache(key);}},
         {t:'Ich hab’s gesagt ✓',primary:true,go:function(){spikiu('Schön. Klingt schon spanisch.',function(){advSaetze(key);});}}]);});}
 /* 3 · Sätze */
 function advSaetze(key){newStep(3);var ss=THEMES[key].saetze;
@@ -679,12 +684,12 @@ function advHoeren(key){newStep(4);var h=THEMES[key].hoer;
  spikiu('Jetzt nur hören. Ich sage etwas — du sagst mir, was du verstanden hast.',function(){
   var c=document.createElement('div');c.className='tool';
   c.innerHTML='<div class="eyebrow">Hörverständnis</div><button class="end primary" style="margin:0 0 .3rem">🔊 Abspielen</button><div style="margin-top:.6rem;font-weight:600">'+h.q+'</div>';
-  c.querySelector('.end').onclick=function(){say(h.play);};S.appendChild(c);say(h.play);scrollEnd();
+  c.querySelector('.end').onclick=function(){say(h.play,'es');};S.appendChild(c);say(h.play,'es');scrollEnd();
   var e=document.createElement('div');e.className='ends';
   h.opts.forEach(function(o){var b=document.createElement('button');b.className='end';b.textContent=o.t;
    b.onclick=function(){e.remove();
     if(o.ok){spikiu('Gutes Ohr! Genau das war es.',function(){advRollenspiel(key);});}
-    else{spikiu('Fast. Hör nochmal — kein Stress, das Ohr lernt langsam.',function(){say(h.play);
+    else{spikiu('Fast. Hör nochmal — kein Stress, das Ohr lernt langsam.',function(){say(h.play,'es');
      ends([{t:'Nochmal versuchen',primary:true,go:function(){advHoeren(key);}}]);});}};
    e.appendChild(b);});
   S.appendChild(e);scrollEnd();});}
@@ -739,7 +744,7 @@ function readRoman(){
   '<div class="es">Solo el café estaba <span class="fr" data-de="wach">despierto</span>.</div>'+
   '<button class="end" style="margin-top:.9rem">🔊 Vorlesen</button>';
  c.querySelectorAll('.fr').forEach(function(fr){fr.onclick=function(e){showPop(e.target,fr.dataset.de);};});
- c.querySelector('.end').onclick=function(){say('Era la madrugada. La ciudad aún dormía. Solo el café estaba despierto.');};
+ c.querySelector('.end').onclick=function(){say('Era la madrugada. La ciudad aún dormía. Solo el café estaba despierto.','es');};
  S.appendChild(c);scrollEnd();
  spikiu('Tipp ein unterstrichenes Wort an, wenn du’s nicht kennst. Kein Stress.',function(){
   ends([{t:'Weiter lesen',primary:true,go:function(){spikiu('Im echten Spikiu geht die Geschichte hier weiter — Kapitel für Kapitel.',function(){ends([{t:'Zurück',go:function(){S.innerHTML='';roomBibliothek();}}]);});}},
