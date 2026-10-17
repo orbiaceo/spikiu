@@ -14,6 +14,9 @@
      🃏 Karten      → gym.html (Wörter › Sätze › Wendungen)
      👂 Feines Ohr  → spiele.html?spiel=oido&von=wortschatz  (Motor: juegos.js)
      🥁 Der Schlag  → spiele.html?spiel=golpe&von=wortschatz
+     🔤 Akrostichon, 🌿 Spikius Garten → spiele.html?spiel=acrostico|huerto&von=wortschatz
+        (Leo, 17:13: „Akrostichon und Spikius Garten auch da rein als letzte Aufgaben ganz unten
+         und versuch, dass alles ausbalanciert ist.") Raster 1 breit + 2×2, füllt die Höhe.
   Reine Auswahl ohne eigenen Arbeitsstand → keine Sitzung nötig; die Karten sichern selbst.
 -->
 <style>
@@ -33,13 +36,14 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .tt-wrap{flex:1;text-align:center;min-width:0;}
 .tt-wrap .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--green);text-transform:uppercase;}
 .tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
-.stage{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.2rem 1rem calc(1.4rem + env(safe-area-inset-bottom));}
-.inner{max-width:30rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
-.doors{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
-.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;text-align:center;min-height:9.2rem;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
+.stage{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.1rem 1rem calc(1.2rem + env(safe-area-inset-bottom));display:flex;}
+.inner{width:100%;max-width:30rem;margin:0 auto;display:flex;flex-direction:column;}
+/* Drei gleich hohe Reihen teilen sich die Höhe (gesamt 24–46rem) → ausbalanciert auf jedem Telefon */
+.doors{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:.85rem;min-height:24rem;max-height:46rem;margin:auto 0;}
+.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;text-align:center;min-height:0;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
 .door:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink);}
 .door.breit{grid-column:1 / -1;}
-.door .emo{font-size:2.3rem;line-height:1;}
+.door .emo{font-size:2.6rem;line-height:1;}
 .door b{font:800 .98rem/1.1 'DM Sans',sans-serif;}
 .door span.d{font-size:.74rem;line-height:1.2;font-weight:600;color:rgba(21,22,58,.72);}
 </style>
@@ -61,25 +65,35 @@ var UI = {
   de:{ eyebrow:'Übung', titel:'Wortschatz',
        karten:['Karten','Wörter, Sätze, Wendungen: Schritt für Schritt.'],
        oido:['Feines Ohr','Hör ein Wort, tipp das Bild.'],
-       golpe:['Der Schlag','Wo liegt der Schlag? Tipp die starke Silbe.'] },
+       golpe:['Der Schlag','Wo liegt der Schlag? Tipp die starke Silbe.'],
+       acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
+       huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'] },
   es:{ eyebrow:'Práctica', titel:'Vocabulario',
        karten:['Tarjetas','Palabras, frases, expresiones: paso a paso.'],
        oido:['Oído fino','Escucha una palabra, toca la imagen.'],
-       golpe:['El golpe','¿Dónde cae el golpe? Toca la sílaba fuerte.'] },
+       golpe:['El golpe','¿Dónde cae el golpe? Toca la sílaba fuerte.'],
+       acrostico:['Acróstico','Una palabra, una idea por letra.'],
+       huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'] },
   en:{ eyebrow:'Practice', titel:'Vocabulary',
        karten:['Cards','Words, sentences, expressions: step by step.'],
        oido:['Sharp Ear','Hear a word, tap the picture.'],
-       golpe:['The Beat','Where is the beat? Tap the strong syllable.'] },
+       golpe:['The Beat','Where is the beat? Tap the strong syllable.'],
+       acrostico:['Acrostic','One word, one thought per letter.'],
+       huerto:['Spikiu’s garden','From A to Z: plant your words.'] },
   el:{ eyebrow:'Εξάσκηση', titel:'Λεξιλόγιο',
        karten:['Κάρτες','Λέξεις, προτάσεις, εκφράσεις: βήμα βήμα.'],
        oido:['Λεπτό αυτί','Άκου μια λέξη, πάτα την εικόνα.'],
-       golpe:['Ο τόνος','Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'] }
+       golpe:['Ο τόνος','Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'],
+       acrostico:['Ακροστιχίδα','Μία λέξη, μία σκέψη για κάθε γράμμα.'],
+       huerto:['Ο κήπος του Spikiu','Από το Α ως το Ω: φύτεψε τις λέξεις σου.'] }
 };
 var u = UI[sprache] || UI.de;
 var KASTEN = [
   { id:'karten', em:'🃏', bg:'#ffd0b0', ziel:'gym.html', breit:true },
   { id:'oido',   em:'👂', bg:'#bfe6d5', ziel:'spiele.html?spiel=oido&von=wortschatz' },
-  { id:'golpe',  em:'🥁', bg:'#f7bcd8', ziel:'spiele.html?spiel=golpe&von=wortschatz' }
+  { id:'golpe',  em:'🥁', bg:'#f7bcd8', ziel:'spiele.html?spiel=golpe&von=wortschatz' },
+  { id:'acrostico', em:'🔤', bg:'#cdbdf2', ziel:'spiele.html?spiel=acrostico&von=wortschatz' },
+  { id:'huerto', em:'🌿', bg:'#c7e89a', ziel:'spiele.html?spiel=huerto&von=wortschatz' }
 ];
 
 document.getElementById('roomEyebrow').textContent = u.eyebrow;

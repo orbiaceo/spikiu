@@ -83,7 +83,7 @@ var PROFILE = {
 function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Sieben Spiele, kurz und leicht. Such dir eins aus.',
+  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Fünf Spiele, kurz und leicht. Such dir eins aus.',
        pinata:['Piñata','Schlag zu und fang den Eindringling.'], globos:['Luftballons','Lass die Wörter in der richtigen Reihenfolge platzen.'],
        huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'], acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
        encadenado:['Wortkette','Wortkette mit Spikiu. Hängst du, hilft er dir Buchstabe für Buchstabe.'], oido:['Feines Ohr','Hör ein Wort, tipp das Bild.'],
@@ -93,7 +93,7 @@ var UI = {
        probe:function(n){ return 'Probezeit: alles frei, noch ' + n + (n === 1 ? ' Tag.' : ' Tage.'); }, schloss:'Spielzimmer',
        weiter:'noch eine ›', genug:'Genug für heute', themaWortschatz:'Wortschatz',
        leer:'Für deine Zielsprache gibt es hier noch keine Sätze.' },
-  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Siete juegos, cortos y ligeros. Elige uno.',
+  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Cinco juegos, cortos y ligeros. Elige uno.',
        pinata:['Piñata','¡Dale! Y atrapa al intruso.'], globos:['Globos','Revienta las palabras en el orden correcto.'],
        huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'], acrostico:['Acróstico','Una palabra, una idea por letra.'],
        encadenado:['Encadenado','Cadena de palabras con Spikiu. Si te atascas, te ayuda letra a letra.'], oido:['Oído fino','Escucha una palabra, toca la imagen.'],
@@ -103,7 +103,7 @@ var UI = {
        probe:function(n){ return 'Prueba: todo gratis, ' + (n === 1 ? 'queda 1 día.' : 'quedan ' + n + ' días.'); }, schloss:'Cuarto de juegos',
        weiter:'otra ›', genug:'Ya está bien por hoy', themaWortschatz:'Vocabulario',
        leer:'Para tu idioma meta todavía no hay frases aquí.' },
-  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Seven games, short and light. Pick one.',
+  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Five games, short and light. Pick one.',
        pinata:['Piñata','Swing and catch the intruder.'], globos:['Balloons','Pop the words in the right order.'],
        huerto:['Spikiu’s garden','From A to Z: plant your words.'], acrostico:['Acrostic','One word, one thought per letter.'],
        encadenado:['Word Chain','A word chain with Spikiu. Stuck? He helps letter by letter.'], oido:['Sharp Ear','Hear a word, tap the picture.'],
@@ -113,7 +113,7 @@ var UI = {
        probe:function(n){ return 'Trial: everything free, ' + n + (n === 1 ? ' day left.' : ' days left.'); }, schloss:'Games room',
        weiter:'another ›', genug:'Enough for today', themaWortschatz:'Vocabulary',
        leer:'There are no sentences for your target language here yet.' },
-  el:{ titel:'Παιχνίδια', eyebrow:'Εξάσκηση', hallo:'Εφτά παιχνίδια, σύντομα και ανάλαφρα. Διάλεξε ένα.',
+  el:{ titel:'Παιχνίδια', eyebrow:'Εξάσκηση', hallo:'Πέντε παιχνίδια, σύντομα και ανάλαφρα. Διάλεξε ένα.',
        pinata:['Πινιάτα','Χτύπα και πιάσε τον παρείσακτο.'], globos:['Μπαλόνια','Σκάσε τις λέξεις με τη σωστή σειρά.'],
        huerto:['Ο κήπος του Spikiu','Από το Α ως το Ω: φύτεψε τις λέξεις σου.'], acrostico:['Ακροστιχίδα','Μία λέξη, μία σκέψη για κάθε γράμμα.'],
        encadenado:['Αλυσίδα λέξεων','Αλυσίδα λέξεων με τον Spikiu. Αν κολλήσεις, σε βοηθάει γράμμα γράμμα.'], oido:['Λεπτό αυτί','Άκου μια λέξη, πάτα την εικόνα.'],
@@ -140,7 +140,9 @@ var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#
 // Drei Regale (Leo, 11.10.): nach dem, was ein Spiel trainiert
 // 17.10.2026 (Leo): Feines Ohr und Der Schlag sind Wortschatztraining, keine Spiele → Raum „Wortschatz“
 //   (wortschatz.html, eigener Kasten). Ihr Motor bleibt hier und läuft über ?spiel=oido|golpe&von=wortschatz.
-var REGALE = [ ['encadenado','acrostico','huerto','memoria'], ['pinata','globos','mercado'] ];
+//   Ebenso Akrostichon und Spikius Garten (Leo, 17:13) — im Haus-Regal bleiben sie zusätzlich erreichbar.
+var REGALE = [ ['encadenado','memoria'], ['pinata','globos','mercado'] ];
+var WS_AKT = { oido:1, golpe:1, acrostico:1, huerto:1 };
 var VON_WS = /[?&]von=wortschatz\b/.test(window.location.search);
 function spielListe(){ return [].concat.apply([], REGALE).filter(verfuegbar); }
 function verfuegbar(id){ return true; }   // 12.10.: alle neun Spiele in es/de/en/el (Der Schlag: es/el nach Regel, de/en über silben.js)
@@ -281,7 +283,8 @@ function schreib(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catc
 function SZ(){ return window.spikiuSitzung || null; }
 var sitzTimer = 0, sitzOffen = null;
 function sichereSitzung(zustand, sofort){
-  var S = SZ(); if (!S || VON_WS) return;   // Feines Ohr/Der Schlag: jede Runde ist in sich fertig, nichts geht verloren
+  var S = SZ(); if (!S) return;
+  if (zustand && (zustand.spiel === 'oido' || zustand.spiel === 'golpe')) return;   // jede Runde ist in sich fertig, nichts geht verloren
   clearTimeout(sitzTimer); sitzOffen = null;
   if (sofort) { S.speichere('spiele', zustand); return; }
   sitzOffen = zustand;
@@ -488,12 +491,14 @@ window.addEventListener('load', function(){
   try { window.spikiuJuegos.klang.vorladen(); } catch (e) {}   // Dur/Moll früh laden (Piñata, Globos)
   // Direktweg aus dem Regal im Haus (11.10.): spiele.html?spiel=huerto | acrostico
   var direkt = (/[?&]spiel=([a-z]+)/.exec(window.location.search) || [])[1];
-  if (VON_WS && (direkt === 'oido' || direkt === 'golpe')) {
-    oeffne(direkt); return;
+  if (VON_WS && WS_AKT[direkt]) {
+    // Akrostichon-Entwurf / Garten-Thema still wiederherstellen (Sicherheitsnetz, kein Popup)
+    var S0 = SZ(), z0 = S0 ? S0.lade('spiele') : null;
+    oeffne(direkt, (z0 && z0.spiel === direkt) ? z0 : null); return;
   }
   if (direkt && UI.de[direkt]) { herkunftHaus = true; oeffne(direkt); return; }
   var S = SZ(), z = S ? S.lade('spiele') : null;
-  if (z && z.spiel && UI.de[z.spiel] && z.spiel !== 'oido' && z.spiel !== 'golpe'){
+  if (z && z.spiel && UI.de[z.spiel] && !WS_AKT[z.spiel]){
     tueren();
     S.frageWiederkommen({ raum:'spiele', ts:z.ts, wo: ui()[z.spiel][0],
       beimWeiter: function(){ oeffne(z.spiel, z); },
