@@ -1203,7 +1203,8 @@
     hb.addEventListener('click', function () {
       ton.wecken(); var c = KLANG.kontext(); if (!c) return; var t0 = c.currentTime + 0.1;
       s.forEach(function (y, i) { klatsch(t0 + i * 0.42, i === t); setTimeout(function () { tiles[i].classList.add('klopf'); setTimeout(function () { tiles[i].classList.remove('klopf'); }, 300); }, 100 + i * 420); });
-      setTimeout(function () { sprichOpt(opts, x.z); }, 100 + s.length * 420 + 250);
+      // Nur das Wort, ohne Artikel — sonst hört man eine Silbe mehr, als man sieht (Leo, 17.10.2026).
+      setTimeout(function () { sprichOpt(opts, w); }, 100 + s.length * 420 + 250);
     });
     return root;
   }
