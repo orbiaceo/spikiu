@@ -487,6 +487,9 @@ textarea::placeholder { color:var(--mid); font-style:italic; }
 .reel-note { justify-content:center; }
 .reel-note .scene-note { align-self:center; }
 .reel-spikiu .hap-spin { margin-bottom:0.2rem; }
+/* Ohne Wisch-Kinetik (Leo, 17.10.2026: „eliminar ese efecto … simplemente hacer aparecer la siguiente tarjeta, sea con el botón o como en Reel“): Karten erscheinen ohne Gleiten. */
+.reel-slide,.reel-slide.reel-next,.reel-slide.reel-past{transform:none!important;transition:none!important}
+.reel-slide.reel-next,.reel-slide.reel-past{visibility:hidden}
 </style>
 </head>
 <body>

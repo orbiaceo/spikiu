@@ -232,6 +232,9 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
   box-shadow:3px 3px 0 var(--ink);color:var(--ink)}
 .wahl button:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
 .wahl button.leer{opacity:.4}
+/* Ohne Wisch-Kinetik (Leo, 17.10.2026: „eliminar ese efecto … simplemente hacer aparecer la siguiente tarjeta, sea con el botón o como en Reel“): Karten erscheinen ohne Gleiten. */
+.karte,.karte.kommt,.karte.war{transform:none!important;transition:none!important}
+.karte.kommt,.karte.war{visibility:hidden}
 </style>
 </head>
 <body>

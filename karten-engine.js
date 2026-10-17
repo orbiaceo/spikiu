@@ -134,8 +134,8 @@
     + '.spk-punkt.an{opacity:1}'
     + '@keyframes spkFromRight{from{transform:translateX(60%);opacity:0}to{transform:none;opacity:1}}'
     + '@keyframes spkFromLeft{from{transform:translateX(-60%);opacity:0}to{transform:none;opacity:1}}'
-    + '.spk-card.from-right{animation:spkFromRight .32s cubic-bezier(.4,0,.2,1)}'
-    + '.spk-card.from-left{animation:spkFromLeft .32s cubic-bezier(.4,0,.2,1)}';
+    /* Ohne Wisch-Kinetik (Leo, 17.10.2026): die nächste Karte erscheint einfach. */
+    + '.spk-card.from-right,.spk-card.from-left{animation:none}';
 
   function injectCSS() {
     if (document.getElementById('spkKartenCSS')) return;

@@ -89,6 +89,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .aus-buch{border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);font:800 .82rem/1 'DM Sans';padding:.45rem .85rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
 .aus-buch.drin{background:#dff2e5;box-shadow:none;cursor:default}
 @media (prefers-reduced-motion:reduce){.card-hint{animation:none;}}
+/* Ohne Wisch-Kinetik (Leo, 17.10.2026: „eliminar ese efecto … simplemente hacer aparecer la siguiente tarjeta, sea con el botón o como en Reel“): Karten erscheinen ohne Gleiten. */
+.card,.card.deck-current,.card.deck-next,.card.deck-past{transform:none!important;transition:none!important}
+.card.deck-next,.card.deck-past{visibility:hidden}
 </style>
 </head>
 <body>
