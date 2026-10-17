@@ -52,7 +52,7 @@
     clearTimeout(toastEl._t); toastEl._t=setTimeout(function(){ toastEl.classList.remove('on'); },1500);
   }
   // Toast-Text in der Muttersprache (wie sitzung.js): profile.muttersprache → de.
-  var SCHON = { de:'schon in deinem Buch', es:'ya está en tu libro', en:'already in your book', el:'είναι ήδη στο βιβλίο σου' };
+  var SCHON = { de:'schon in deiner Schatzkiste', es:'ya está en tu cofre', en:'already in your treasure chest', el:'είναι ήδη στον θησαυρό σου' };
   function mutterCode(){
     var m='de';
     try{ m=((JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile)||{}).muttersprache||'de'; }catch(e){}

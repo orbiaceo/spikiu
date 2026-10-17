@@ -428,38 +428,38 @@ function hausSprache(){
  return 'de';}
 var HL=hausSprache();
 var HUI={
- de:{d1:'Abenteuer',d1s:'Hören und sprechen — mit Spikiu, Schritt für Schritt.',d2:'Bibliothek',d2s:'Lesen und entdecken.',gHablar:'Sprechen',gTrain:'Trainieren',hilfe:'Hilfe',anfang:'Fang mit dem Geführten Gespräch an — dort triffst du deine ersten Wörter.',regal:'Dein Regal',regals:'Dein Buch, deine Lektionen, dein Garten',regalKr:'Alles, was du gesammelt hast.',garten:'Dein Garten',gartens:'Von A bis Z',akro:'Deine Akrosticha',akros:'Zu jedem Buchstaben ein Wort',zurBib:'‹ zurück zur Bibliothek',d3:'Übung',d3s:'Sprechen und trainieren.',
+ de:{d1:'Abenteuer',d1s:'Hören und sprechen — mit Spikiu, Schritt für Schritt.',d2:'Bibliothek',d2s:'Lesen und entdecken.',gHablar:'Sprechen',gTrain:'Trainieren',hilfe:'Hilfe',anfang:'Fang mit dem Geführten Gespräch an — dort triffst du deine ersten Wörter.',regal:'Dein Regal',regals:'Deine Schatzkiste, deine Lektionen, dein Garten',regalKr:'Alles, was du gesammelt hast.',garten:'Dein Garten',gartens:'Von A bis Z',akro:'Deine Akrosticha',akros:'Zu jedem Buchstaben ein Wort',zurBib:'‹ zurück zur Bibliothek',d3:'Übung',d3s:'Sprechen und trainieren.',
   gef:'Geführtes Gespräch',gefs:'Szenen üben',frei:'Freies Gespräch',freis:'Frei reden',gratis:'gratis',
-  zuletzt:function(t){return 'Zuletzt: «'+t+'» — weiter?';},gesammelt:function(n){return 'Du hast schon '+n+' '+(n===1?'Wort':'Wörter')+' gesammelt. 🍃';},
-  roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen',regio:'Regionalismen',wends:'Sprache & Kultur',lek:'Deine Lektionen',buch:'Mein Buch',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
+  zuletzt:function(t){return 'Zuletzt: «'+t+'» — weiter?';},gesammelt:function(z){return 'Du hast schon '+z+' gesammelt. 🍃';},
+  roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen',regio:'Regionalismen',wends:'Sprache & Kultur',lek:'Deine Lektionen',buch:'Meine Schatzkiste',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
   wort:'Wortschatz',worts:'Dein Deck',lese:'Leseverstehen',leses:'Leseverstehen',schreib:'Schreiben',schreibs:'Schreiben',spiele:'Spiele',spieles:'Kurz und leicht',
-  zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n+'s Buch';},buchSub:'Was du betreten hast — Seite für Seite.',geschrieben:'geschrieben von Spikiu',
-  mitgenommen:'Mitgenommen',deineW:'Deine Wörter',leer:'Noch leer',leerSub:'Sprich mit mir oder üb ein paar Wörter — dann schreibt sich dieses Buch von selbst.',
-  hook:'Kein Zertifikat.<br>Dein Buch.',hookSub:'Andere sammeln Streaks. Bei Spikiu wächst ein Buch, das nur dir gehört — Seite für Seite, in deinem Tempo.',druck:'Gedruckte Edition · bald'},
- es:{d1:'Aventura',d1s:'Escuchar y hablar — con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Leer y descubrir.',gHablar:'Hablar',gTrain:'Entrenar',hilfe:'Ayuda',anfang:'Empieza con la Conversación guiada — ahí conoces tus primeras palabras.',regal:'Tu estante',regals:'Tu libro, tus lecciones, tu huerto',regalKr:'Todo lo que has reunido.',garten:'Tu huerto',gartens:'De la A a la Z',akro:'Tus acrósticos',akros:'Una palabra por letra',zurBib:'‹ volver a la biblioteca',d3:'Práctica',d3s:'Hablar y entrenar.',
+  zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n+'s Schatzkiste';},buchSub:'Was du gefunden hast — Stück für Stück.',geschrieben:'gehütet von Spikiu',
+  mitgenommen:'Mitgenommen',deineW:'Deine Wörter',deineA:'Deine Wendungen',wendungen:function(n){return n+' '+(n===1?'Wendung':'Wendungen');},leer:'Noch leer',leerSub:'Sprich mit mir oder üb ein paar Wörter — dann füllt sich diese Kiste von selbst.',
+  hook:'Kein Zertifikat.<br>Dein Schatz.',hookSub:'Andere sammeln Streaks. Bei Spikiu wächst ein Schatz, der nur dir gehört — Stück für Stück, in deinem Tempo.',druck:'Gedruckte Edition · bald'},
+ es:{d1:'Aventura',d1s:'Escuchar y hablar — con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Leer y descubrir.',gHablar:'Hablar',gTrain:'Entrenar',hilfe:'Ayuda',anfang:'Empieza con la Conversación guiada — ahí conoces tus primeras palabras.',regal:'Tu estante',regals:'Tu cofre, tus lecciones, tu huerto',regalKr:'Todo lo que has reunido.',garten:'Tu huerto',gartens:'De la A a la Z',akro:'Tus acrósticos',akros:'Una palabra por letra',zurBib:'‹ volver a la biblioteca',d3:'Práctica',d3s:'Hablar y entrenar.',
   gef:'Conversación guiada',gefs:'Practicar escenas',frei:'Conversación libre',freis:'Hablar libremente',gratis:'gratis',
-  zuletzt:function(t){return 'Lo último: «'+t+'». ¿Seguimos?';},gesammelt:function(n){return 'Ya has reunido '+n+' '+(n===1?'palabra':'palabras')+'. 🍃';},
-  roman:'Novela para aprender',romans:'Lectura inmersiva',wend:'Giros',regio:'Regionalismos',wends:'Lengua y cultura',lek:'Tus lecciones',buch:'Mi libro',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
+  zuletzt:function(t){return 'Lo último: «'+t+'». ¿Seguimos?';},gesammelt:function(z){return 'Ya has reunido '+z+'. 🍃';},
+  roman:'Novela para aprender',romans:'Lectura inmersiva',wend:'Giros',regio:'Regionalismos',wends:'Lengua y cultura',lek:'Tus lecciones',buch:'Mi cofre',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
   wort:'Vocabulario',worts:'Tu mazo',lese:'Comprensión lectora',leses:'Comprensión lectora',schreib:'Escritura',schreibs:'Escribir',spiele:'Juegos',spieles:'Cortos y ligeros',
-  zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return 'El libro de '+n;},buchSub:'Lo que has recorrido, página a página.',geschrieben:'escrito por Spikiu',
-  mitgenommen:'Lo que te llevas',deineW:'Tus palabras',leer:'Todavía vacío',leerSub:'Habla conmigo o practica unas palabras, y este libro se escribe solo.',
-  hook:'Sin certificado.<br>Tu libro.',hookSub:'Otros acumulan rachas. En Spikiu crece un libro que es solo tuyo, página a página, a tu ritmo.',druck:'Edición impresa · pronto'},
- en:{d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and discover.',gHablar:'Speak',gTrain:'Train',hilfe:'Help',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your book, your lessons, your garden',regalKr:'Everything you’ve gathered.',garten:'Your garden',gartens:'From A to Z',akro:'Your acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'Speak and train.',
+  zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return 'El cofre de '+n;},buchSub:'Lo que has encontrado, pieza a pieza.',geschrieben:'guardado por Spikiu',
+  mitgenommen:'Lo que te llevas',deineW:'Tus palabras',deineA:'Tus expresiones',wendungen:function(n){return n+' '+(n===1?'expresión':'expresiones');},leer:'Todavía vacío',leerSub:'Habla conmigo o practica unas palabras, y este cofre se llena solo.',
+  hook:'Sin certificado.<br>Tu tesoro.',hookSub:'Otros acumulan rachas. En Spikiu crece un tesoro que es solo tuyo, pieza a pieza, a tu ritmo.',druck:'Edición impresa · pronto'},
+ en:{d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and discover.',gHablar:'Speak',gTrain:'Train',hilfe:'Help',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your treasure chest, your lessons, your garden',regalKr:'Everything you’ve gathered.',garten:'Your garden',gartens:'From A to Z',akro:'Your acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'Speak and train.',
   gef:'Guided conversation',gefs:'Practice scenes',frei:'Free conversation',freis:'Talk freely',gratis:'free',
-  zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(n){return 'You’ve already collected '+n+' '+(n===1?'word':'words')+'. 🍃';},
-  roman:'Learning Novel',romans:'Immersive reading',wend:'Expressions',regio:'Regionalisms',wends:'Language & culture',lek:'Your lessons',buch:'My book',woerter:function(n){return n+' '+(n===1?'word':'words');},
+  zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(z){return 'You’ve already collected '+z+'. 🍃';},
+  roman:'Learning Novel',romans:'Immersive reading',wend:'Expressions',regio:'Regionalisms',wends:'Language & culture',lek:'Your lessons',buch:'My treasure chest',woerter:function(n){return n+' '+(n===1?'word':'words');},
   wort:'Vocabulary',worts:'Your deck',lese:'Reading comprehension',leses:'Reading comprehension',schreib:'Writing',schreibs:'Writing',spiele:'Games',spieles:'Short and light',
-  zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s book';},buchSub:'Where you’ve been — page by page.',geschrieben:'written by Spikiu',
-  mitgenommen:'Taken with you',deineW:'Your words',leer:'Still empty',leerSub:'Talk with me or practise a few words — and this book writes itself.',
-  hook:'No certificate.<br>Your book.',hookSub:'Others collect streaks. With Spikiu, a book grows that belongs only to you — page by page, at your pace.',druck:'Printed edition · soon'},
- el:{d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και ανακάλυψε.',gHablar:'Μίλα',gTrain:'Προπόνηση',hilfe:'Βοήθεια',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Το βιβλίο σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Όλα όσα έχεις μαζέψει.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Μίλα και προπονήσου.',
+  zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s treasure chest';},buchSub:'What you’ve found — piece by piece.',geschrieben:'kept by Spikiu',
+  mitgenommen:'Taken with you',deineW:'Your words',deineA:'Your phrases',wendungen:function(n){return n+' '+(n===1?'phrase':'phrases');},leer:'Still empty',leerSub:'Talk with me or practise a few words — and this chest fills itself.',
+  hook:'No certificate.<br>Your treasure.',hookSub:'Others collect streaks. With Spikiu, a treasure grows that belongs only to you — piece by piece, at your pace.',druck:'Printed edition · soon'},
+ el:{d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και ανακάλυψε.',gHablar:'Μίλα',gTrain:'Προπόνηση',hilfe:'Βοήθεια',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Ο θησαυρός σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Όλα όσα έχεις μαζέψει.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Μίλα και προπονήσου.',
   gef:'Καθοδηγούμενη συζήτηση',gefs:'Εξάσκηση σε σκηνές',frei:'Ελεύθερη συζήτηση',freis:'Μίλα ελεύθερα',gratis:'δωρεάν',
-  zuletzt:function(t){return 'Τελευταία φορά: «'+t+'» — συνεχίζουμε;';},gesammelt:function(n){return 'Έχεις ήδη μαζέψει '+n+' '+(n===1?'λέξη':'λέξεις')+'. 🍃';},
-  roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',regio:'Τοπικισμοί',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Το βιβλίο μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
+  zuletzt:function(t){return 'Τελευταία φορά: «'+t+'» — συνεχίζουμε;';},gesammelt:function(z){return 'Έχεις ήδη μαζέψει '+z+'. 🍃';},
+  roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',regio:'Τοπικισμοί',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Ο θησαυρός μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
   wort:'Λεξιλόγιο',worts:'Η τράπουλά σου',lese:'Κατανόηση κειμένου',leses:'Κατανόηση κειμένου',schreib:'Γραφή',schreibs:'Γραφή',spiele:'Παιχνίδια',spieles:'Σύντομα κι ανάλαφρα',
-  zurueck:'πίσω',weiter:'συνέχεια',vorlesen:'Άκου',buchVon:function(n){return 'Το βιβλίο · '+n;},buchSub:'Όπου έχεις μπει — σελίδα σελίδα.',geschrieben:'γραμμένο από τον Spikiu',
-  mitgenommen:'Τα πήρες μαζί σου',deineW:'Οι λέξεις σου',leer:'Ακόμα άδειο',leerSub:'Μίλα μαζί μου ή εξασκήσου σε λίγες λέξεις — και αυτό το βιβλίο γράφεται μόνο του.',
-  hook:'Κανένα πιστοποιητικό.<br>Το βιβλίο σου.',hookSub:'Άλλοι μαζεύουν σερί. Στον Spikiu μεγαλώνει ένα βιβλίο που ανήκει μόνο σε σένα — σελίδα σελίδα, με τον δικό σου ρυθμό.',druck:'Έντυπη έκδοση · σύντομα'}
+  zurueck:'πίσω',weiter:'συνέχεια',vorlesen:'Άκου',buchVon:function(n){return 'Ο θησαυρός · '+n;},buchSub:'Ό,τι βρήκες — κομμάτι κομμάτι.',geschrieben:'φυλαγμένος από τον Spikiu',
+  mitgenommen:'Τα πήρες μαζί σου',deineW:'Οι λέξεις σου',deineA:'Οι φράσεις σου',wendungen:function(n){return n+' '+(n===1?'φράση':'φράσεις');},leer:'Ακόμα άδειος',leerSub:'Μίλα μαζί μου ή εξασκήσου σε λίγες λέξεις — και ο θησαυρός σου μεγαλώνει μόνος του.',
+  hook:'Κανένα πιστοποιητικό.<br>Ο θησαυρός σου.',hookSub:'Άλλοι μαζεύουν σερί. Στον Spikiu μεγαλώνει ένας θησαυρός που ανήκει μόνο σε σένα — κομμάτι κομμάτι, με τον δικό σου ρυθμό.',druck:'Έντυπη έκδοση · σύντομα'}
 };
 function H(){return HUI[HL];}
 /* Begrüßung in der ZIELsprache (wie Spikius Stimme unten), nicht immer Spanisch. */
@@ -500,7 +500,7 @@ function letzteAktivitaet(){
   var L=(u.lessons||[]).slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
   if(L.length){var t=(L[0].lesson&&L[0].lesson.title)||L[0].topic||L[0].thema;if(t)return H().zuletzt(kEsc(t));}
  }catch(e){}
- try{var b=JSON.parse(localStorage.getItem('spikiu_buch')||'[]');if(b.length)return H().gesammelt(b.length);}catch(e){}
+ try{var b=JSON.parse(localStorage.getItem('spikiu_buch')||'[]');if(b.length)return H().gesammelt(bkZaehl());}catch(e){}
  return '';
 }
 function tileEl(it){var b=document.createElement('button');b.className='tile'+(it.cls?' '+it.cls:'');
@@ -730,7 +730,7 @@ function roomBibliothek(){
 /* Dein Regal: was du gesammelt hast — Buch, Lektionen, Garten, Akrosticha. */
 function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0;
  kacheln({greet:{title:'🌱 '+H().regal},layout:'four',items:[
-  {em:'📗',tt:H().buch,bg:'#c7e89a',go:renderBook},
+  {em:'💎',tt:H().buch,bg:'#c7e89a',go:renderBook},
   {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
   {em:'🌿',tt:H().garten,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
   {em:'🔤',tt:H().akro,bg:'#cdbdf2',go:function(){location.href='spiele.html?spiel=acrostico';}}
@@ -754,9 +754,13 @@ function readBuch(){try{return JSON.parse(localStorage.getItem('spikiu_buch')||'
 function bkZiel(){try{return (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).zielsprache||'es';}catch(e){return 'es';}}
 function bkMutter(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache||'de';return ['de','es','en','el'].indexOf(m)>-1?m:'de';}catch(e){return 'de';}}
 function bkTr(e){if(e.tr)return e.tr;var w=(e.roh||e.wort);return (window.spikiuWoerterbuch&&window.spikiuWoerterbuch.tr(w,bkZiel(),bkMutter()))||'';}
+/* 17.10. (Leo): „Mein Buch" → „Meine Schatzkiste", in zwei Fächern: Wörter · Wendungen (quelle 'ausdruck'). */
+function bkIstAus(e){return !!e&&e.quelle==='ausdruck';}
+function bkTeile(){var b=readBuch();return {w:b.filter(function(e){return !bkIstAus(e);}),a:b.filter(bkIstAus)};}
+function bkZaehl(){var t=bkTeile(),z=[];if(t.w.length||!t.a.length)z.push(H().woerter(t.w.length));if(t.a.length)z.push(H().wendungen(t.a.length));return z.join(' · ');}
 function bookPages(){
- var w=readBuch();var P=[{k:'cover'}];
- if(w.length)P.push({k:'words'});else P.push({k:'empty'});
+ var t=bkTeile();var P=[{k:'cover'}];
+ if(t.w.length)P.push({k:'words'});if(t.a.length)P.push({k:'aus'});if(!t.w.length&&!t.a.length)P.push({k:'empty'});
  P.push({k:'hook'});return P;}
 function bkPhrases(keep){if(!keep||!keep.length)return '';
  var h='<div class="bsaid"><div class="blbl">Das hast du gesagt</div>';
@@ -770,8 +774,8 @@ function bkChap(p,n,neu){var h='';if(neu)h+='<span class="bneu">✷ neu</span><b
 function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div><h2>'+H().buchVon(kEsc(vorname()||NAME))+'</h2>'+
  '<div class="bsub">'+H().buchSub+'</div>'+
  '<div class="bby"><span class="bcap">'+capy()+'</span>'+H().geschrieben+'</div>'+
- '<div class="bspine">'+H().woerter(readBuch().length)+'</div></div>';}
-function bkWords(){var W=readBuch().slice().reverse();var h='<div class="beyebrow">'+H().mitgenommen+'</div><div class="bptitle">'+H().deineW+'</div><div class="bwords">';
+ '<div class="bspine">'+bkZaehl()+'</div></div>';}
+function bkWords(aus){var t=bkTeile();var W=(aus?t.a:t.w).slice().reverse();var h='<div class="beyebrow">'+H().mitgenommen+'</div><div class="bptitle">'+(aus?H().deineA:H().deineW)+'</div><div class="bwords">';
  W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(bkTr(e)||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="'+H().vorlesen+'">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
 function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">'+H().leer+'</h2>'+
  '<div class="bsub">'+H().leerSub+'</div></div>';}
@@ -779,7 +783,7 @@ function bkHook(){return '<div class="bhook"><div class="bbig">'+H().hook+'</div
  '<div class="bhsub">'+H().hookSub+'</div>'+
  '<div class="bprint">'+H().druck+'</div></div>';}
 function bkInner(pg){if(pg.k==='cover')return bkCover();if(pg.k==='chap')return bkChap(pg.p,pg.n,pg.neu);
- if(pg.k==='words')return bkWords();if(pg.k==='empty')return bkEmpty();if(pg.k==='hook')return bkHook();return '';}
+ if(pg.k==='words')return bkWords(false);if(pg.k==='aus')return bkWords(true);if(pg.k==='empty')return bkEmpty();if(pg.k==='hook')return bkHook();return '';}
 function bookPage(dir){var P=bookPages();bookIdx=Math.max(0,Math.min(P.length-1,bookIdx));
  var pg=document.getElementById('bpage');pg.className='bpage'+(dir>0?' inR':dir<0?' inL':'');
  pg.innerHTML=bkInner(P[bookIdx]);
