@@ -99,8 +99,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 <body>
 
 <div class="app">
-  <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><h1 id="roomTitle">Wortschatz</h1></div><div style="width:36px"></div></div>
-  <div id="reiter"></div>
+  <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><div class="rk" id="roomEyebrow"></div><h1 id="roomTitle">Karten</h1></div><div style="width:36px"></div></div>
   <div class="filter" id="filter"></div>
   <div class="deck" id="deck"></div>
   <div class="deck-nav">
@@ -149,13 +148,13 @@ var PROFILE = { zielsprache: zielC, muttersprache: mutterC };
 function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ eyebrow:'Wortschatz', uebung:'Übung', fWort:'Wörter', fSatz:'Sätze', fAus:'Wendungen', ausEb:'Wendung', satzEb:'Satz', qWort:'Was bedeutet dieses Wort?', qRueck:'Wie sagt man das?', qSatz:'Was bedeutet dieser Satz?', lit:'wörtlich', mean:'bedeutet', insBuch:'➕ in mein Buch', imBuch:'🍃 in deinem Buch', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
+  de:{ eyebrow:'Wortschatz', karten:'Karten', uebung:'Übung', fWort:'Wörter', fSatz:'Sätze', fAus:'Wendungen', ausEb:'Wendung', satzEb:'Satz', qWort:'Was bedeutet dieses Wort?', qRueck:'Wie sagt man das?', qSatz:'Was bedeutet dieser Satz?', lit:'wörtlich', mean:'bedeutet', insBuch:'➕ in mein Buch', imBuch:'🍃 in deinem Buch', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
        addTitle:'Wort hinzufügen', phWort:'Wort (Zielsprache)', phTr:'Übersetzung', save:'Speichern', cancel:'Abbrechen', added:'Hinzugefügt ✓' },
-  es:{ eyebrow:'Vocabulario', uebung:'Ejercicio', fWort:'Palabras', fSatz:'Frases', fAus:'Expresiones', ausEb:'Expresión', satzEb:'Frase', qWort:'¿Qué significa esta palabra?', qRueck:'¿Cómo se dice?', qSatz:'¿Qué significa esta frase?', lit:'literalmente', mean:'significa', insBuch:'➕ a mi libro', imBuch:'🍃 en tu libro', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
+  es:{ eyebrow:'Vocabulario', karten:'Tarjetas', uebung:'Ejercicio', fWort:'Palabras', fSatz:'Frases', fAus:'Expresiones', ausEb:'Expresión', satzEb:'Frase', qWort:'¿Qué significa esta palabra?', qRueck:'¿Cómo se dice?', qSatz:'¿Qué significa esta frase?', lit:'literalmente', mean:'significa', insBuch:'➕ a mi libro', imBuch:'🍃 en tu libro', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
        addTitle:'Añadir palabra', phWort:'Palabra (idioma meta)', phTr:'Traducción', save:'Guardar', cancel:'Cancelar', added:'Añadido ✓' },
-  en:{ eyebrow:'Vocabulary', uebung:'Exercise', fWort:'Words', fSatz:'Sentences', fAus:'Expressions', ausEb:'Expression', satzEb:'Sentence', qWort:'What does this word mean?', qRueck:'How do you say it?', qSatz:'What does this sentence mean?', lit:'literally', mean:'means', insBuch:'➕ to my book', imBuch:'🍃 in your book', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
+  en:{ eyebrow:'Vocabulary', karten:'Cards', uebung:'Exercise', fWort:'Words', fSatz:'Sentences', fAus:'Expressions', ausEb:'Expression', satzEb:'Sentence', qWort:'What does this word mean?', qRueck:'How do you say it?', qSatz:'What does this sentence mean?', lit:'literally', mean:'means', insBuch:'➕ to my book', imBuch:'🍃 in your book', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
        addTitle:'Add a word', phWort:'Word (target language)', phTr:'Translation', save:'Save', cancel:'Cancel', added:'Added ✓' },
-  el:{ eyebrow:'Λεξιλόγιο', uebung:'Εξάσκηση', fWort:'Λέξεις', fSatz:'Προτάσεις', fAus:'Εκφράσεις', ausEb:'Έκφραση', satzEb:'Πρόταση', qWort:'Τι σημαίνει αυτή η λέξη;', qRueck:'Πώς λέγεται;', qSatz:'Τι σημαίνει αυτή η πρόταση;', lit:'κατά λέξη', mean:'σημαίνει', insBuch:'➕ στο βιβλίο μου', imBuch:'🍃 στο βιβλίο σου', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
+  el:{ eyebrow:'Λεξιλόγιο', karten:'Κάρτες', uebung:'Εξάσκηση', fWort:'Λέξεις', fSatz:'Προτάσεις', fAus:'Εκφράσεις', ausEb:'Έκφραση', satzEb:'Πρόταση', qWort:'Τι σημαίνει αυτή η λέξη;', qRueck:'Πώς λέγεται;', qSatz:'Τι σημαίνει αυτή η πρόταση;', lit:'κατά λέξη', mean:'σημαίνει', insBuch:'➕ στο βιβλίο μου', imBuch:'🍃 στο βιβλίο σου', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
        addTitle:'Πρόσθεσε μια λέξη', phWort:'Λέξη (γλώσσα που μαθαίνεις)', phTr:'Μετάφραση', save:'Αποθήκευση', cancel:'Ακύρωση', added:'Προστέθηκε ✓' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
@@ -570,10 +569,10 @@ window.addEventListener('load', function(){
   document.getElementById('addTr').setAttribute('placeholder', u.phTr);
   document.getElementById('addSave').textContent = u.save;
   document.getElementById('addCancel').textContent = u.cancel;
-  document.getElementById('roomTitle').textContent = u.eyebrow;
-  // Raum Wortschatz = Karten · Feines Ohr · Der Schlag (Leo, 17.10.2026)
-  try { if (window.spikiuWortschatzReiter) document.getElementById('reiter').appendChild(window.spikiuWortschatzReiter.leiste('karten', uiLang())); } catch(e){}
-  document.getElementById('btnHaus').onclick = function(){ location.href='haus.html'; };
+  // Raum Wortschatz (wortschatz.html) → Kasten „Karten" (Leo, 17.10.2026)
+  document.getElementById('roomEyebrow').textContent = u.eyebrow;
+  document.getElementById('roomTitle').textContent = u.karten;
+  document.getElementById('btnHaus').onclick = function(){ location.href='wortschatz.html'; };
   WORDS = buildWords();
   AUS = buildAusdruecke();
   SAETZE = buildSaetze();
@@ -603,7 +602,6 @@ window.addEventListener('load', function(){
 <script src="sprichwort.js" defer></script>
 <script src="kurzsaetze.js" defer></script>
 <script src="sitzung.js" defer></script>
-<script src="wortschatz-reiter.js" defer></script>
 <script src="uebung.js" defer></script>
 <script src="lernpfad-daten.js" defer></script>
 <!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher lud das Gym nur Spanisch,

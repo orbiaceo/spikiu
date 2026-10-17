@@ -139,7 +139,7 @@ var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#
   encadenado:'#ffe08a', oido:'#bfe6d5', golpe:'#f7bcd8', mercado:'#e9dcc0', memoria:'#b7c9f2' };   // Farben je Spiel (Leo, 11.10.); oido/golpe laufen seit 17.10. im Raum Wortschatz
 // Drei Regale (Leo, 11.10.): nach dem, was ein Spiel trainiert
 // 17.10.2026 (Leo): Feines Ohr und Der Schlag sind Wortschatztraining, keine Spiele → Raum „Wortschatz“
-//   (wortschatz-reiter.js). Ihr Motor bleibt hier und läuft über ?spiel=oido|golpe&von=wortschatz.
+//   (wortschatz.html, eigener Kasten). Ihr Motor bleibt hier und läuft über ?spiel=oido|golpe&von=wortschatz.
 var REGALE = [ ['encadenado','acrostico','huerto','memoria'], ['pinata','globos','mercado'] ];
 var VON_WS = /[?&]von=wortschatz\b/.test(window.location.search);
 function spielListe(){ return [].concat.apply([], REGALE).filter(verfuegbar); }
@@ -299,8 +299,7 @@ var herkunftHaus = false;   // über ?spiel= aus dem Regal gekommen → Zurück 
 var letzterSatz = '';
 function leeren(){ if (aktiv && aktiv.stop) aktiv.stop(); aktiv = null; inner.innerHTML = ''; document.getElementById('stage').scrollTop = 0; }
 function kopf(titel){
-  if (VON_WS && window.spikiuWortschatzReiter) titel = window.spikiuWortschatzReiter.titel(uiLang());   // im Raum Wortschatz
-  document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = VON_WS ? '' : ui().eyebrow;
+  document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = VON_WS ? ({ de:'Wortschatz', es:'Vocabulario', en:'Vocabulary', el:'Λεξιλόγιο' })[uiLang()] || 'Wortschatz' : ui().eyebrow;   // im Raum Wortschatz
 }
 
 function tuer(id, klasse){
@@ -478,7 +477,7 @@ function oeffne(id, zustand){
 
 document.getElementById('btnZurueck').onclick = function(){
   raeumeSitzung();
-  if (VON_WS) { location.href = 'gym.html'; return; }
+  if (VON_WS) { location.href = 'wortschatz.html'; return; }
   if (ansicht === 'tueren' || herkunftHaus) location.href = 'haus.html'; else tueren();
 };
 
@@ -490,7 +489,6 @@ window.addEventListener('load', function(){
   // Direktweg aus dem Regal im Haus (11.10.): spiele.html?spiel=huerto | acrostico
   var direkt = (/[?&]spiel=([a-z]+)/.exec(window.location.search) || [])[1];
   if (VON_WS && (direkt === 'oido' || direkt === 'golpe')) {
-    try { var st = document.getElementById('stage'); st.parentNode.insertBefore(window.spikiuWortschatzReiter.leiste(direkt, uiLang()), st); } catch (e) {}
     oeffne(direkt); return;
   }
   if (direkt && UI.de[direkt]) { herkunftHaus = true; oeffne(direkt); return; }
@@ -524,7 +522,6 @@ window.addEventListener('load', function(){
 <script src="silben.js" defer></script>
 <script src="icon-db.js" defer></script>
 <script src="zugang.js" defer></script>
-<script src="wortschatz-reiter.js" defer></script>
 <script src="juegos.js" defer></script>
 </body>
 </html>

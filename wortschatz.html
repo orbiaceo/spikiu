@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Wortschatz</title>
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
+<!--
+  RAUM „WORTSCHATZ" (Übung → Trainieren → Wortschatz) · Leo, 17.10.2026
+  „Diese drei Aktivitäten als Unteraktivitäten von einer Kachel, die wir Wortschatz nennen.
+   Wenn wir auf Wortschatz klicken, dann haben wir einen Kasten Karten, Feines Ohr und der
+   Schlag. So wie beim Spiel." — Feines Ohr und Der Schlag sind Wortschatztraining
+   (Hören, Betonung, Gedächtnis), keine Spiele.
+     🃏 Karten      → gym.html (Wörter › Sätze › Wendungen)
+     👂 Feines Ohr  → spiele.html?spiel=oido&von=wortschatz  (Motor: juegos.js)
+     🥁 Der Schlag  → spiele.html?spiel=golpe&von=wortschatz
+  Reine Auswahl ohne eigenen Arbeitsstand → keine Sitzung nötig; die Karten sichern selbst.
+-->
+<style>
+:root{--bg:#eef7f1;--ink:#15163a;--mid:#5f7068;--green:#1f93b0;--ow:2.5px;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;height:100%;}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;display:flex;align-items:center;justify-content:center;min-height:100dvh;-webkit-font-smoothing:antialiased;}
+@media (min-width:700px) and (min-height:560px){
+ html{font-size:17px;}
+ body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px;}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink);}
+}
+.app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden;}
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem;}
+.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink);}
+.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink);}
+.tt-wrap{flex:1;text-align:center;min-width:0;}
+.tt-wrap .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--green);text-transform:uppercase;}
+.tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
+.stage{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.2rem 1rem calc(1.4rem + env(safe-area-inset-bottom));}
+.inner{max-width:30rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;text-align:center;min-height:9.2rem;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
+.door:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink);}
+.door.breit{grid-column:1 / -1;}
+.door .emo{font-size:2.3rem;line-height:1;}
+.door b{font:800 .98rem/1.1 'DM Sans',sans-serif;}
+.door span.d{font-size:.74rem;line-height:1.2;font-weight:600;color:rgba(21,22,58,.72);}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="top"><button class="back" id="btnZurueck" aria-label="zurück">‹</button><div class="tt-wrap"><div class="rk" id="roomEyebrow"></div><h1 id="roomTitle">Wortschatz</h1></div><div style="width:36px"></div></div>
+  <div class="stage"><div class="inner"><div class="doors" id="doors"></div></div></div>
+</div>
+
+<script>
+var profil = {};
+try { profil = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile) || {}; } catch (e) { profil = {}; }
+var sprache = (['de','es','en','el'].indexOf(profil.muttersprache) > -1) ? profil.muttersprache : 'de';
+document.documentElement.lang = sprache;
+
+var UI = {
+  de:{ eyebrow:'Übung', titel:'Wortschatz',
+       karten:['Karten','Wörter, Sätze, Wendungen: Schritt für Schritt.'],
+       oido:['Feines Ohr','Hör ein Wort, tipp das Bild.'],
+       golpe:['Der Schlag','Wo liegt der Schlag? Tipp die starke Silbe.'] },
+  es:{ eyebrow:'Práctica', titel:'Vocabulario',
+       karten:['Tarjetas','Palabras, frases, expresiones: paso a paso.'],
+       oido:['Oído fino','Escucha una palabra, toca la imagen.'],
+       golpe:['El golpe','¿Dónde cae el golpe? Toca la sílaba fuerte.'] },
+  en:{ eyebrow:'Practice', titel:'Vocabulary',
+       karten:['Cards','Words, sentences, expressions: step by step.'],
+       oido:['Sharp Ear','Hear a word, tap the picture.'],
+       golpe:['The Beat','Where is the beat? Tap the strong syllable.'] },
+  el:{ eyebrow:'Εξάσκηση', titel:'Λεξιλόγιο',
+       karten:['Κάρτες','Λέξεις, προτάσεις, εκφράσεις: βήμα βήμα.'],
+       oido:['Λεπτό αυτί','Άκου μια λέξη, πάτα την εικόνα.'],
+       golpe:['Ο τόνος','Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'] }
+};
+var u = UI[sprache] || UI.de;
+var KASTEN = [
+  { id:'karten', em:'🃏', bg:'#ffd0b0', ziel:'gym.html', breit:true },
+  { id:'oido',   em:'👂', bg:'#bfe6d5', ziel:'spiele.html?spiel=oido&von=wortschatz' },
+  { id:'golpe',  em:'🥁', bg:'#f7bcd8', ziel:'spiele.html?spiel=golpe&von=wortschatz' }
+];
+
+document.getElementById('roomEyebrow').textContent = u.eyebrow;
+document.getElementById('roomTitle').textContent = u.titel;
+var doors = document.getElementById('doors');
+KASTEN.forEach(function (k) {
+  var b = document.createElement('button');
+  b.type = 'button'; b.className = 'door' + (k.breit ? ' breit' : ''); b.style.background = k.bg;
+  var em = document.createElement('span'); em.className = 'emo'; em.setAttribute('aria-hidden', 'true'); em.textContent = k.em;
+  var t = document.createElement('b'); t.textContent = u[k.id][0];
+  var d = document.createElement('span'); d.className = 'd'; d.textContent = u[k.id][1];
+  b.appendChild(em); b.appendChild(t); b.appendChild(d);
+  b.onclick = function () { window.location.href = k.ziel; };
+  doors.appendChild(b);
+});
+document.getElementById('btnZurueck').onclick = function () { window.location.href = 'haus.html?tuer=uebung'; };
+</script>
+</body>
+</html>
