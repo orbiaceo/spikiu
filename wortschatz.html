@@ -37,9 +37,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .tt-wrap .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--green);text-transform:uppercase;}
 .tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
 .stage{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.1rem 1rem calc(1.2rem + env(safe-area-inset-bottom));display:flex;}
-.inner{width:100%;max-width:30rem;margin:0 auto;display:flex;flex-direction:column;}
+.inner{width:100%;max-width:30rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
+#gruss{flex:0 0 auto;}   /* Spikiu führt ein, wie im Spiele-Raum (Leo, 17:27) */
 /* Drei gleich hohe Reihen teilen sich die Höhe (gesamt 24–46rem) → ausbalanciert auf jedem Telefon */
-.doors{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:.85rem;min-height:24rem;max-height:46rem;margin:auto 0;}
+.doors{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:.85rem;min-height:24rem;max-height:42rem;margin:0 0 auto;}
 .door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;text-align:center;min-height:0;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
 .door:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink);}
 .door.breit{grid-column:1 / -1;justify-self:center;width:calc(50% - .425rem);}   /* Leo, 17:22: Karten gleich groß wie die anderen, mittig */
@@ -52,9 +53,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
 <div class="app">
   <div class="top"><button class="back" id="btnZurueck" aria-label="zurück">‹</button><div class="tt-wrap"><div class="rk" id="roomEyebrow"></div><h1 id="roomTitle">Wortschatz</h1></div><div style="width:36px"></div></div>
-  <div class="stage"><div class="inner"><div class="doors" id="doors"></div></div></div>
+  <div class="stage"><div class="inner"><div id="gruss"></div><div class="doors" id="doors"></div></div></div>
 </div>
 
+<script src="juegos.js"></script>
 <script>
 var profil = {};
 try { profil = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').profile) || {}; } catch (e) { profil = {}; }
@@ -62,25 +64,25 @@ var sprache = (['de','es','en','el'].indexOf(profil.muttersprache) > -1) ? profi
 document.documentElement.lang = sprache;
 
 var UI = {
-  de:{ eyebrow:'Übung', titel:'Wortschatz',
+  de:{ eyebrow:'Übung', titel:'Wortschatz', hallo:'Fünf Wege zu deinen Wörtern. Fang mit den Karten an, dann spitz die Ohren.',
        karten:['Karten','Wörter, Sätze, Wendungen: Schritt für Schritt.'],
        oido:['Feines Ohr','Hör ein Wort, tipp das Bild.'],
        golpe:['Der Schlag','Wo liegt der Schlag? Tipp die starke Silbe.'],
        acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
        huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'] },
-  es:{ eyebrow:'Práctica', titel:'Vocabulario',
+  es:{ eyebrow:'Práctica', titel:'Vocabulario', hallo:'Cinco caminos hacia tus palabras. Empieza por las tarjetas y luego afina el oído.',
        karten:['Tarjetas','Palabras, frases, expresiones: paso a paso.'],
        oido:['Oído fino','Escucha una palabra, toca la imagen.'],
        golpe:['El golpe','¿Dónde cae el golpe? Toca la sílaba fuerte.'],
        acrostico:['Acróstico','Una palabra, una idea por letra.'],
        huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'] },
-  en:{ eyebrow:'Practice', titel:'Vocabulary',
+  en:{ eyebrow:'Practice', titel:'Vocabulary', hallo:'Five ways to your words. Start with the cards, then prick up your ears.',
        karten:['Cards','Words, sentences, expressions: step by step.'],
        oido:['Sharp Ear','Hear a word, tap the picture.'],
        golpe:['The Beat','Where is the beat? Tap the strong syllable.'],
        acrostico:['Acrostic','One word, one thought per letter.'],
        huerto:['Spikiu’s garden','From A to Z: plant your words.'] },
-  el:{ eyebrow:'Εξάσκηση', titel:'Λεξιλόγιο',
+  el:{ eyebrow:'Εξάσκηση', titel:'Λεξιλόγιο', hallo:'Πέντε δρόμοι προς τις λέξεις σου. Ξεκίνα με τις κάρτες και μετά τέντωσε τ’ αυτιά σου.',
        karten:['Κάρτες','Λέξεις, προτάσεις, εκφράσεις: βήμα βήμα.'],
        oido:['Λεπτό αυτί','Άκου μια λέξη, πάτα την εικόνα.'],
        golpe:['Ο τόνος','Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'],
@@ -98,6 +100,14 @@ var KASTEN = [
 
 document.getElementById('roomEyebrow').textContent = u.eyebrow;
 document.getElementById('roomTitle').textContent = u.titel;
+// Spikiu führt ein — dieselbe Figur und Sprechblase wie im Spiele-Raum (juegos.js)
+try {
+  var J = window.spikiuJuegos; J.css();
+  var hi = document.createElement('div'); hi.className = 'jg-spk';
+  hi.innerHTML = J.spikiuSvg + '<div class="jg-bub"></div>'; hi.querySelector('.jg-bub').textContent = u.hallo;
+  var gw = document.createElement('div'); gw.className = 'jg'; gw.appendChild(hi);
+  document.getElementById('gruss').appendChild(gw);
+} catch (e) {}
 var doors = document.getElementById('doors');
 KASTEN.forEach(function (k) {
   var b = document.createElement('button');
