@@ -78,7 +78,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .filter{flex:0 0 auto;display:flex;gap:.4rem;justify-content:center;padding:.55rem .8rem 0}
 .filter button{border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);font:800 .78rem/1 'DM Sans';padding:.42rem .8rem;cursor:pointer}
 .filter button.an{background:var(--ink);color:#fff}
+.filter .f-pfeil{align-self:center;font:800 .8rem/1 'DM Sans';color:var(--muted)}
 .card.ausdruck{background:#fffaf0;justify-content:flex-start;overflow-y:auto;padding-top:1.4rem}
+.card.ausdruck.satz{background:#fff;justify-content:center;padding-top:0}
 .aus-eyebrow{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
 .aus-icon{display:block;width:84px;height:84px;flex:0 0 auto;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12))}
 .aus-text{font-family:'Lora',serif;font-weight:600;font-size:clamp(1.45rem,5.8vw,1.95rem);line-height:1.35;color:var(--read);max-width:21rem}
@@ -146,13 +148,13 @@ var PROFILE = { zielsprache: zielC, muttersprache: mutterC };
 function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ eyebrow:'Wortschatz', uebung:'Übung', fAlle:'Alles', fWort:'Wörter', fAus:'Wendungen', ausEb:'Wendung', lit:'wörtlich', mean:'bedeutet', insBuch:'➕ in mein Buch', imBuch:'🍃 in deinem Buch', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
+  de:{ eyebrow:'Wortschatz', uebung:'Übung', fWort:'Wörter', fSatz:'Sätze', fAus:'Wendungen', ausEb:'Wendung', satzEb:'Satz', qWort:'Was bedeutet dieses Wort?', qRueck:'Wie sagt man das?', qSatz:'Was bedeutet dieser Satz?', lit:'wörtlich', mean:'bedeutet', insBuch:'➕ in mein Buch', imBuch:'🍃 in deinem Buch', back:'zurück', fwd:'weiter', add:'Wort', hintFwd:'← weiter wischen',
        addTitle:'Wort hinzufügen', phWort:'Wort (Zielsprache)', phTr:'Übersetzung', save:'Speichern', cancel:'Abbrechen', added:'Hinzugefügt ✓' },
-  es:{ eyebrow:'Vocabulario', uebung:'Ejercicio', fAlle:'Todo', fWort:'Palabras', fAus:'Expresiones', ausEb:'Expresión', lit:'literalmente', mean:'significa', insBuch:'➕ a mi libro', imBuch:'🍃 en tu libro', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
+  es:{ eyebrow:'Vocabulario', uebung:'Ejercicio', fWort:'Palabras', fSatz:'Frases', fAus:'Expresiones', ausEb:'Expresión', satzEb:'Frase', qWort:'¿Qué significa esta palabra?', qRueck:'¿Cómo se dice?', qSatz:'¿Qué significa esta frase?', lit:'literalmente', mean:'significa', insBuch:'➕ a mi libro', imBuch:'🍃 en tu libro', back:'atrás', fwd:'seguir', add:'Palabra', hintFwd:'← desliza para seguir',
        addTitle:'Añadir palabra', phWort:'Palabra (idioma meta)', phTr:'Traducción', save:'Guardar', cancel:'Cancelar', added:'Añadido ✓' },
-  en:{ eyebrow:'Vocabulary', uebung:'Exercise', fAlle:'All', fWort:'Words', fAus:'Expressions', ausEb:'Expression', lit:'literally', mean:'means', insBuch:'➕ to my book', imBuch:'🍃 in your book', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
+  en:{ eyebrow:'Vocabulary', uebung:'Exercise', fWort:'Words', fSatz:'Sentences', fAus:'Expressions', ausEb:'Expression', satzEb:'Sentence', qWort:'What does this word mean?', qRueck:'How do you say it?', qSatz:'What does this sentence mean?', lit:'literally', mean:'means', insBuch:'➕ to my book', imBuch:'🍃 in your book', back:'back', fwd:'next', add:'Word', hintFwd:'← swipe to continue',
        addTitle:'Add a word', phWort:'Word (target language)', phTr:'Translation', save:'Save', cancel:'Cancel', added:'Added ✓' },
-  el:{ eyebrow:'Λεξιλόγιο', uebung:'Εξάσκηση', fAlle:'Όλα', fWort:'Λέξεις', fAus:'Εκφράσεις', ausEb:'Έκφραση', lit:'κατά λέξη', mean:'σημαίνει', insBuch:'➕ στο βιβλίο μου', imBuch:'🍃 στο βιβλίο σου', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
+  el:{ eyebrow:'Λεξιλόγιο', uebung:'Εξάσκηση', fWort:'Λέξεις', fSatz:'Προτάσεις', fAus:'Εκφράσεις', ausEb:'Έκφραση', satzEb:'Πρόταση', qWort:'Τι σημαίνει αυτή η λέξη;', qRueck:'Πώς λέγεται;', qSatz:'Τι σημαίνει αυτή η πρόταση;', lit:'κατά λέξη', mean:'σημαίνει', insBuch:'➕ στο βιβλίο μου', imBuch:'🍃 στο βιβλίο σου', back:'πίσω', fwd:'συνέχεια', add:'Λέξη', hintFwd:'← σύρε για να συνεχίσεις',
        addTitle:'Πρόσθεσε μια λέξη', phWort:'Λέξη (γλώσσα που μαθαίνεις)', phTr:'Μετάφραση', save:'Αποθήκευση', cancel:'Ακύρωση', added:'Προστέθηκε ✓' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
@@ -233,22 +235,32 @@ function buildWords(){
   return sauber;
 }
 
-// ── WENDUNGEN im selben Deck (16.10.2026) ────────────────────────────────
-//  Samen: kurze feste Wendungen (kurzsaetze a1) · Stamm: + Giros (sprichwort.js
-//  Wendungen, kurzsaetze a2) · Krone: + Sprichwörter und Redewendungen (kurzsaetze b1).
-//  Jede n-te Einheit ist eine Wendung (Samen 6, Stamm 5, Krone 4). Wendungen aus
-//  „Mein Buch" kommen zuerst wieder (Wiedersehen statt Wiederholung).
+// ── DREI STUFEN: Wörter → Sätze → Wendungen (Leo, 17.10.2026) ─────────────
+//  „Zuerst mit Wörtern beginnen, dann Sätze und dann Wendungen." Kein gemischtes
+//  „Alles" mehr: ein Anfänger kennt die Wörter des Satzes noch nicht und kann so
+//  weder den Eindringling noch die Lücke finden. Erst die Wörter, dann erkennt er
+//  sie in Sätzen und Wendungen wieder.
+//   Wörter    — nur Einzelwörter; Übung: Bedeutung wählen oder umgekehrt.
+//   Sätze     — Beispielsätze der Stationswörter + kurze Alltagssätze (kurzsaetze,
+//               art 'satz', bis zur eigenen Stufe); Übung: Eindringling, Lücke,
+//               Reihenfolge, Bedeutung.
+//   Wendungen — nur Wendungen, Giros, Sprichwörter (Samen/Stamm: Stamm-Wendungen,
+//               Krone: + Redewendungen und Sprichwörter). Aus „Mein Buch" zuerst.
 var AUS = [];      // [{ text, lit, mean, icon, src }]
-var FILTER = 'alle';
+var SAETZE = [];   // [{ text, mean, stufe }]
+var FILTER = 'wort';
 function aktStufe(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe(); } catch(e){} return 'a1'; }
 function mtVon(o){ if (!o) return ''; var m = PROFILE.muttersprache; return o[m] || (m === 'el' ? o.en : '') || o.de || o.en || o.es || ''; }
+function stufenBis(st){ return st === 'b1' ? ['b1','a2','a1'] : (st === 'a2' ? ['a2','a1'] : ['a1']); }
+function mische(a){ if (window.spikiuUebung && window.spikiuUebung.shuffle) window.spikiuUebung.shuffle(a); return a; }
 function buildAusdruecke(){
   var z = PROFILE.zielsprache, st = aktStufe(), out = [];
   var KS = (window.spikiuKurzsaetze || {})[z] || {}, SP = window.spikiuSprichwort || {};
   var dazu = function(text, lit, mean, icon, src, k){ if (text && mean) out.push({ text:text, lit:lit || '', mean:mean, icon:icon || '', src:src || '', stufe:k }); };
-  var stufen = st === 'b1' ? ['b1','a2','a1'] : (st === 'a2' ? ['a2','a1'] : ['a1']);
+  // Wer Wendungen wählt, will die Schwierigkeit steigern: auch im Samen gibt es die Stamm-Wendungen.
+  var stufen = st === 'b1' ? ['b1','a2','a1'] : ['a2','a1'];
   stufen.forEach(function(k){
-    (KS[k] || []).forEach(function(x){ if (k === 'a1' || x.art !== 'satz') dazu(x.z, '', mtVon(x.t), '', '', k); });
+    (KS[k] || []).forEach(function(x){ if (x.art !== 'satz') dazu(x.z, '', mtVon(x.t), '', '', k); });
     if (k === 'a2') ((SP.wendungen || {})[z] || []).forEach(function(p){ dazu(p.text, mtVon(p.w), mtVon(p.t), p.icon, p.src, k); });
     if (k === 'b1') ((SP.daten || {})[z] || []).forEach(function(p){ dazu(p.text, mtVon(p.w), mtVon(p.t), p.icon, p.src, k); });
   });
@@ -257,25 +269,42 @@ function buildAusdruecke(){
   var seen = {}, sauber = [];
   out.forEach(function(a){ var k = a.text.trim().toLowerCase(); if (seen[k]) return; seen[k] = 1; sauber.push(a); });
   var vorn = sauber.filter(function(a){ return imBuch[a.text.trim().toLowerCase()]; });
-  // Danach die eigene Stufe zuerst (Krone: echte Sprichwörter und Redewendungen), je Stufe gemischt.
+  // Danach die höchste Stufe zuerst (Krone: echte Sprichwörter und Redewendungen), je Stufe gemischt.
   var rest = [];
   stufen.forEach(function(k){
-    var g = sauber.filter(function(a){ return a.stufe === k && !imBuch[a.text.trim().toLowerCase()]; });
-    if (window.spikiuUebung && window.spikiuUebung.shuffle) window.spikiuUebung.shuffle(g);
-    rest = rest.concat(g);
+    rest = rest.concat(mische(sauber.filter(function(a){ return a.stufe === k && !imBuch[a.text.trim().toLowerCase()]; })));
   });
   return vorn.concat(rest);
 }
-var UNITS = [];    // [{ typ:'wort'|'aus', i }]
-function buildUnits(){
-  var u = [], st = aktStufe(), alle = ({ a1:6, a2:5, b1:4 })[st] || 6;
-  if (FILTER === 'wort') { WORDS.forEach(function(w, i){ u.push({ typ:'wort', i:i }); }); return u; }
-  if (FILTER === 'aus')  { AUS.forEach(function(a, i){ u.push({ typ:'aus', i:i }); }); return u; }
-  var wi = 0, ai = 0, n = Math.max(WORDS.length, 1) + Math.ceil(WORDS.length / (alle - 1));
-  for (var k = 0; k < n; k++){
-    if (AUS.length && (k + 1) % alle === 0) { u.push({ typ:'aus', i: ai % AUS.length }); ai++; }
-    else if (WORDS.length) { u.push({ typ:'wort', i: wi % WORDS.length }); wi++; }
+function buildSaetze(){
+  var z = PROFILE.zielsprache, st = aktStufe(), out = [], seen = {};
+  var dazu = function(text, mean){
+    text = String(text || '').trim(); if (!text || !mean || wordCount(text) < 3) return;
+    var k = text.toLowerCase(); if (seen[k]) return; seen[k] = 1; out.push({ text:text, mean:mean });
+  };
+  // 1. Beispielsätze der geübten Wörter (Lernpfad zuerst): dieselben Wörter, jetzt im Satz.
+  var ausWoertern = [];
+  WORDS.forEach(function(w){ if (w.text && w.ts) ausWoertern.push([w.text, w.ts]); });
+  // 2. Kurze Alltagssätze bis zur eigenen Stufe.
+  var KS = (window.spikiuKurzsaetze || {})[z] || {}, kurz = [];
+  stufenBis(st).slice().reverse().forEach(function(k){
+    (KS[k] || []).forEach(function(x){ if (x.art === 'satz') kurz.push([x.z, mtVon(x.t)]); });
+  });
+  // Abwechselnd, damit beide Quellen früh vorkommen.
+  mische(kurz);
+  var n = Math.max(ausWoertern.length, kurz.length);
+  for (var i = 0; i < n; i++){
+    if (ausWoertern[i]) dazu(ausWoertern[i][0], ausWoertern[i][1]);
+    if (kurz[i]) dazu(kurz[i][0], kurz[i][1]);
   }
+  return out;
+}
+var UNITS = [];    // [{ typ:'wort'|'satz'|'aus', i }]
+function buildUnits(){
+  var u = [];
+  if (FILTER === 'aus' && AUS.length)     { AUS.forEach(function(a, i){ u.push({ typ:'aus', i:i }); }); return u; }
+  if (FILTER === 'satz' && SAETZE.length) { SAETZE.forEach(function(a, i){ u.push({ typ:'satz', i:i }); }); return u; }
+  WORDS.forEach(function(w, i){ u.push({ typ:'wort', i:i }); });
   return u;
 }
 function ausIcon(e){
@@ -320,12 +349,37 @@ function makeAusdruckUebung(ai){
   if (window.SpikiuWoerter) uebEl.addEventListener('ueb-done', function(ev){ try { window.SpikiuWoerter.melde(PROFILE.zielsprache, a.text, !!(ev.detail && ev.detail.ok), null); } catch(e){} });
   return card;
 }
+function makeSatzCard(si){
+  var a = SAETZE[si] || { text:'', mean:'' }, u = ui();
+  var card = document.createElement('div'); card.className = 'card ausdruck satz';
+  card.innerHTML = '<div class="aus-eyebrow">' + escPlain(u.satzEb) + '</div>'
+    + '<div class="aus-text">' + escPlain(a.text) + '</div>'
+    + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
+    + '<div class="aus-mean">' + escPlain(a.mean) + '</div>';
+  var sb = card.querySelector('.gym-speak'); if (sb) sb.onclick = function(){ playFrom(sb, a.text); };
+  return card;
+}
+function makeSatzUebung(si){
+  var a = SAETZE[si] || { text:'', mean:'' }, U = window.spikiuUebung;
+  var others = []; SAETZE.forEach(function(x, k){ if (k !== si && x.mean && x.mean !== a.mean) others.push(x.mean); });
+  U.shuffle(others);
+  var mean = [a.mean, others[0] || '', others[1] || ''].filter(Boolean);
+  var item = { text: a.text, tr: a.mean, mean: mean, lang: PROFILE.zielsprache, nativeLang: uiLang(), frage: ui().qSatz };
+  var type = U.types[Math.floor(Math.random() * U.types.length)];
+  var card = document.createElement('div'); card.className = 'card ueb-card';
+  var eb = document.createElement('div'); eb.className = 'gym-eyebrow ueb'; eb.textContent = ui().uebung;
+  card.appendChild(eb); card.appendChild(U(item, type));
+  return card;
+}
 function baueFilter(){
   var f = document.getElementById('filter'), u = ui(); if (!f) return;
-  if (!AUS.length) { f.innerHTML = ''; return; }
-  f.innerHTML = [['alle', u.fAlle], ['wort', u.fWort], ['aus', u.fAus]].map(function(x){
+  var stufen = [['wort', u.fWort]];
+  if (SAETZE.length) stufen.push(['satz', u.fSatz]);
+  if (AUS.length) stufen.push(['aus', u.fAus]);
+  if (stufen.length < 2) { f.innerHTML = ''; return; }
+  f.innerHTML = stufen.map(function(x){
     return '<button type="button" data-f="' + x[0] + '"' + (FILTER === x[0] ? ' class="an"' : '') + '>' + escPlain(x[1]) + '</button>';
-  }).join('');
+  }).join('<span class="f-pfeil" aria-hidden="true">›</span>');
   [].forEach.call(f.querySelectorAll('button'), function(b){
     b.onclick = function(){ FILTER = b.getAttribute('data-f'); baueFilter(); neuStart(0); sitzSichern(); };
   });
@@ -374,8 +428,6 @@ function makeWordCard(wi){
     + '<div class="gym-wort">' + escPlain(wd.wort) + '</div>'
     + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="gym-tr">' + escPlain(wd.tr) + '</div>'
-    + (wd.text ? '<div class="gym-ex">' + escPlain(wd.text) + '</div>' : '')
-    + (wd.text && wd.ts ? '<div class="gym-ts">' + escPlain(wd.ts) + '</div>' : '')
     + (wd.buch ? '<div class="gym-src">🍃</div>' : wd.own ? '<div class="gym-src">+</div>' : '')
     ;  /* „weiter wischen“ entfernt (Leo, 15.10.) */
   var sb = card.querySelector('.gym-speak');
@@ -385,17 +437,21 @@ function makeWordCard(wi){
 
 function makeUebungCard(wi){
   var wd = WORDS[wi] || { wort:'', tr:'', text:'' };
-  // mean = richtige Übersetzung + 2 fremde Übersetzungen (datengetrieben aus dem Wortschatz)
-  var others = [];
-  for (var k=0;k<WORDS.length;k++){ if (k !== wi && WORDS[k].tr) others.push(WORDS[k].tr); }
-  window.spikiuUebung.shuffle(others);
-  var mean = [wd.tr, others[0] || '', others[1] || ''].filter(Boolean);
-  var exText = (wordCount(wd.text) >= 3) ? wd.text : wd.wort;   // ohne Beispielsatz → Wort als Basis
-  var item = { text: exText, tr: wd.tr, mean: mean, lang: PROFILE.zielsprache, nativeLang: uiLang() };
-  // Typ: mit Beispielsatz alle vier; ohne → 'mc' (Bedeutung)
-  var type = (wordCount(wd.text) >= 3)
-    ? window.spikiuUebung.types[Math.floor(Math.random() * window.spikiuUebung.types.length)]
-    : 'mc';
+  // Nur das Wort selbst — keine Satzübung (Sätze haben ihre eigene Stufe).
+  // Abwechselnd: Wort → Bedeutung wählen, oder Bedeutung → Wort wählen.
+  var rueck = !!wd.tr && Math.random() < 0.5;
+  var andere = [];
+  for (var k=0;k<WORDS.length;k++){
+    if (k === wi) continue;
+    var v = rueck ? WORDS[k].wort : WORDS[k].tr;
+    if (v && v !== (rueck ? wd.wort : wd.tr) && andere.indexOf(v) < 0) andere.push(v);
+  }
+  window.spikiuUebung.shuffle(andere);
+  var richtig = rueck ? wd.wort : wd.tr;
+  var mean = [richtig, andere[0] || '', andere[1] || ''].filter(Boolean);
+  var item = { text: rueck ? wd.tr : wd.wort, tr: richtig, mean: mean, lang: PROFILE.zielsprache, nativeLang: uiLang(),
+               frage: rueck ? ui().qRueck : ui().qWort };
+  var type = 'mc';
 
   var card = document.createElement('div'); card.className = 'card ueb-card';
   var eb = document.createElement('div'); eb.className = 'gym-eyebrow ueb'; eb.textContent = ui().uebung;
@@ -442,6 +498,7 @@ function ensureStep(i){
   var card, unit = UNITS[Math.floor(i / 2) % UNITS.length];
   if (typeof forced[i - (i % 2)] === 'number') unit = { typ:'wort', i: forced[i - (i % 2)] };
   if (unit.typ === 'aus') card = (i % 2 === 0) ? makeAusdruckCard(unit.i) : makeAusdruckUebung(unit.i);
+  else if (unit.typ === 'satz') card = (i % 2 === 0) ? makeSatzCard(unit.i) : makeSatzUebung(unit.i);
   else card = (i % 2 === 0) ? makeWordCard(unit.i) : makeUebungCard(unit.i);
   stepEls[i] = card; deck.appendChild(card); deckLayout();
   return card;
@@ -516,17 +573,18 @@ window.addEventListener('load', function(){
   document.getElementById('btnHaus').onclick = function(){ location.href='haus.html'; };
   WORDS = buildWords();
   AUS = buildAusdruecke();
+  SAETZE = buildSaetze();
   bindSwipe();
   warmVoice();
   // Wiederkommen: nur bei einer wirklich angefangenen Runde.
   var sv = null; try { sv = window.spikiuSitzung ? window.spikiuSitzung.lade('gym') : null; } catch(e){ sv = null; }
-  if (sv && sv.ziel === PROFILE.zielsprache && sv.filter) FILTER = sv.filter;
+  if (sv && sv.ziel === PROFILE.zielsprache && ['wort','satz','aus'].indexOf(sv.filter) > -1) FILTER = sv.filter;   // altes 'alle' → Wörter
   baueFilter();
   if (sv && sv.ziel === PROFILE.zielsprache && (sv.pointer || 0) >= 2 && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen){
     neuStart(0);
     window.spikiuSitzung.frageWiederkommen({ raum:'gym', ts: sv.ts, wo: u.eyebrow,
       beimWeiter: function(){ neuStart(sv.pointer); },
-      beimNeu: function(){ try { window.spikiuSitzung.raeume('gym'); } catch(e){} FILTER = 'alle'; baueFilter(); neuStart(0); } });
+      beimNeu: function(){ try { window.spikiuSitzung.raeume('gym'); } catch(e){} FILTER = 'wort'; baueFilter(); neuStart(0); } });
   } else {
     neuStart(0);
   }

@@ -106,7 +106,7 @@
     var L = uiOf(item);
     var correct = (item.mean||[])[0] || item.tr || '';
     var opts = shuffle((item.mean||[]).slice()).filter(Boolean);
-    card.appendChild(mk('div','ueb-q',L.mc));
+    card.appendChild(mk('div','ueb-q',item.frage || L.mc));   // frage: eigene Frage (Wort/Satz statt Spruch)
     card.appendChild(mk('div','ueb-saying',item.text||''));
     if (opts.length < 2){ card.appendChild(mk('div','ueb-fb good', item.tr||'')); return; }
     var box = mk('div','ueb-opts'), fb = mk('div','ueb-fb');
