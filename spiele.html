@@ -83,42 +83,42 @@ var PROFILE = {
 function uiLang(){ return (['de','es','en','el'].indexOf(PROFILE.muttersprache) > -1) ? PROFILE.muttersprache : 'de'; }
 
 var UI = {
-  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Neun Spiele, kurz und leicht. Such dir eins aus.',
+  de:{ titel:'Spiele', eyebrow:'Übung', hallo:'Sieben Spiele, kurz und leicht. Such dir eins aus.',
        pinata:['Piñata','Schlag zu und fang den Eindringling.'], globos:['Luftballons','Lass die Wörter in der richtigen Reihenfolge platzen.'],
        huerto:['Spikius Garten','Von A bis Z: pflanz deine Wörter.'], acrostico:['Akrostichon','Ein Wort, zu jedem Buchstaben ein Gedanke.'],
        encadenado:['Wortkette','Wortkette mit Spikiu. Hängst du, hilft er dir Buchstabe für Buchstabe.'], oido:['Feines Ohr','Hör ein Wort, tipp das Bild.'],
        golpe:['Der Schlag','Wo liegt der Schlag? Tipp die starke Silbe.'], mercado:['Auf dem Markt','Jedes Wort in den richtigen Korb.'], memoria:['Memory','Finde die Paare: Wort und Bild.'],
-       regale:['Hören & Sprechen','Wörter finden','Schnell & leicht'], tages:'Spiel des Tages', tagesSub:'Heute schlägt Spikiu vor:',
+       regale:['Wörter finden','Schnell & leicht'], tages:'Spiel des Tages', tagesSub:'Heute schlägt Spikiu vor:',
        gesperrt:function(x){ return 'Das gehört zum Spielzimmer (1,50 € im Monat). Heute frei: ' + x + '.'; }, zumTages:'Zum Spiel des Tages', abo:'Spielzimmer ansehen',
        probe:function(n){ return 'Probezeit: alles frei, noch ' + n + (n === 1 ? ' Tag.' : ' Tage.'); }, schloss:'Spielzimmer',
        weiter:'noch eine ›', genug:'Genug für heute', themaWortschatz:'Wortschatz',
        leer:'Für deine Zielsprache gibt es hier noch keine Sätze.' },
-  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Nueve juegos, cortos y ligeros. Elige uno.',
+  es:{ titel:'Juegos', eyebrow:'Ejercicio', hallo:'Siete juegos, cortos y ligeros. Elige uno.',
        pinata:['Piñata','¡Dale! Y atrapa al intruso.'], globos:['Globos','Revienta las palabras en el orden correcto.'],
        huerto:['El huerto de Spikiu','De la A a la Z: planta tus palabras.'], acrostico:['Acróstico','Una palabra, una idea por letra.'],
        encadenado:['Encadenado','Cadena de palabras con Spikiu. Si te atascas, te ayuda letra a letra.'], oido:['Oído fino','Escucha una palabra, toca la imagen.'],
        golpe:['El golpe','¿Dónde cae el golpe? Toca la sílaba fuerte.'], mercado:['Al mercado','Cada palabra en su cesta.'], memoria:['Memoria','Encuentra las parejas: palabra e imagen.'],
-       regale:['Escuchar y hablar','Encontrar palabras','Rápido y ligero'], tages:'Juego del día', tagesSub:'Hoy Spikiu te propone:',
+       regale:['Encontrar palabras','Rápido y ligero'], tages:'Juego del día', tagesSub:'Hoy Spikiu te propone:',
        gesperrt:function(x){ return 'Esto es del cuarto de juegos (1,50 € al mes). Hoy gratis: ' + x + '.'; }, zumTages:'Al juego del día', abo:'Ver el cuarto de juegos',
        probe:function(n){ return 'Prueba: todo gratis, ' + (n === 1 ? 'queda 1 día.' : 'quedan ' + n + ' días.'); }, schloss:'Cuarto de juegos',
        weiter:'otra ›', genug:'Ya está bien por hoy', themaWortschatz:'Vocabulario',
        leer:'Para tu idioma meta todavía no hay frases aquí.' },
-  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Nine games, short and light. Pick one.',
+  en:{ titel:'Games', eyebrow:'Exercise', hallo:'Seven games, short and light. Pick one.',
        pinata:['Piñata','Swing and catch the intruder.'], globos:['Balloons','Pop the words in the right order.'],
        huerto:['Spikiu’s garden','From A to Z: plant your words.'], acrostico:['Acrostic','One word, one thought per letter.'],
        encadenado:['Word Chain','A word chain with Spikiu. Stuck? He helps letter by letter.'], oido:['Sharp Ear','Hear a word, tap the picture.'],
        golpe:['The Beat','Where is the beat? Tap the strong syllable.'], mercado:['At the Market','Every word in the right basket.'], memoria:['Memory','Find the pairs: word and picture.'],
-       regale:['Listen & speak','Find words','Quick & light'], tages:'Game of the day', tagesSub:'Today Spikiu suggests:',
+       regale:['Find words','Quick & light'], tages:'Game of the day', tagesSub:'Today Spikiu suggests:',
        gesperrt:function(x){ return 'This is part of the games room (€1.50 a month). Free today: ' + x + '.'; }, zumTages:'Go to the game of the day', abo:'See the games room',
        probe:function(n){ return 'Trial: everything free, ' + n + (n === 1 ? ' day left.' : ' days left.'); }, schloss:'Games room',
        weiter:'another ›', genug:'Enough for today', themaWortschatz:'Vocabulary',
        leer:'There are no sentences for your target language here yet.' },
-  el:{ titel:'Παιχνίδια', eyebrow:'Εξάσκηση', hallo:'Εννιά παιχνίδια, σύντομα και ανάλαφρα. Διάλεξε ένα.',
+  el:{ titel:'Παιχνίδια', eyebrow:'Εξάσκηση', hallo:'Εφτά παιχνίδια, σύντομα και ανάλαφρα. Διάλεξε ένα.',
        pinata:['Πινιάτα','Χτύπα και πιάσε τον παρείσακτο.'], globos:['Μπαλόνια','Σκάσε τις λέξεις με τη σωστή σειρά.'],
        huerto:['Ο κήπος του Spikiu','Από το Α ως το Ω: φύτεψε τις λέξεις σου.'], acrostico:['Ακροστιχίδα','Μία λέξη, μία σκέψη για κάθε γράμμα.'],
        encadenado:['Αλυσίδα λέξεων','Αλυσίδα λέξεων με τον Spikiu. Αν κολλήσεις, σε βοηθάει γράμμα γράμμα.'], oido:['Λεπτό αυτί','Άκου μια λέξη, πάτα την εικόνα.'],
        golpe:['Ο τόνος','Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'], mercado:['Στην αγορά','Κάθε λέξη στο σωστό καλάθι.'], memoria:['Μνήμη','Βρες τα ζευγάρια: λέξη και εικόνα.'],
-       regale:['Ακρόαση & ομιλία','Βρες λέξεις','Γρήγορα & εύκολα'], tages:'Το παιχνίδι της ημέρας', tagesSub:'Σήμερα ο Spikiu σού προτείνει:',
+       regale:['Βρες λέξεις','Γρήγορα & εύκολα'], tages:'Το παιχνίδι της ημέρας', tagesSub:'Σήμερα ο Spikiu σού προτείνει:',
        gesperrt:function(x){ return 'Αυτό ανήκει στο δωμάτιο παιχνιδιών (1,50 € τον μήνα). Δωρεάν σήμερα: ' + x + '.'; }, zumTages:'Στο παιχνίδι της ημέρας', abo:'Δες το δωμάτιο παιχνιδιών',
        probe:function(n){ return 'Δοκιμαστική περίοδος: όλα δωρεάν, ' + (n === 1 ? 'μένει 1 μέρα.' : 'μένουν ' + n + ' μέρες.'); }, schloss:'Δωμάτιο παιχνιδιών',
        weiter:'άλλο ένα ›', genug:'Αρκετά για σήμερα', themaWortschatz:'Λεξιλόγιο',
@@ -136,9 +136,12 @@ var GLYPH = {
 GLYPH.encadenado = '<span class="emo">🔗</span>'; GLYPH.oido = '<span class="emo">👂</span>'; GLYPH.golpe = '<span class="emo">🥁</span>';
 GLYPH.mercado = '<span class="emo">🧺</span>'; GLYPH.memoria = '<span class="emo">🃏</span>';
 var FARBE = { pinata:'#ffd0b0', globos:'#d3eef6', huerto:'#c7e89a', acrostico:'#cdbdf2',
-  encadenado:'#ffe08a', oido:'#bfe6d5', golpe:'#f7bcd8', mercado:'#e9dcc0', memoria:'#b7c9f2' };   // neun Kacheln, neun Farben (Leo, 11.10.)
+  encadenado:'#ffe08a', oido:'#bfe6d5', golpe:'#f7bcd8', mercado:'#e9dcc0', memoria:'#b7c9f2' };   // Farben je Spiel (Leo, 11.10.); oido/golpe laufen seit 17.10. im Raum Wortschatz
 // Drei Regale (Leo, 11.10.): nach dem, was ein Spiel trainiert
-var REGALE = [ ['oido','golpe'], ['encadenado','acrostico','huerto','memoria'], ['pinata','globos','mercado'] ];
+// 17.10.2026 (Leo): Feines Ohr und Der Schlag sind Wortschatztraining, keine Spiele → Raum „Wortschatz“
+//   (wortschatz-reiter.js). Ihr Motor bleibt hier und läuft über ?spiel=oido|golpe&von=wortschatz.
+var REGALE = [ ['encadenado','acrostico','huerto','memoria'], ['pinata','globos','mercado'] ];
+var VON_WS = /[?&]von=wortschatz\b/.test(window.location.search);
 function spielListe(){ return [].concat.apply([], REGALE).filter(verfuegbar); }
 function verfuegbar(id){ return true; }   // 12.10.: alle neun Spiele in es/de/en/el (Der Schlag: es/el nach Regel, de/en über silben.js)
 
@@ -278,7 +281,7 @@ function schreib(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catc
 function SZ(){ return window.spikiuSitzung || null; }
 var sitzTimer = 0, sitzOffen = null;
 function sichereSitzung(zustand, sofort){
-  var S = SZ(); if (!S) return;
+  var S = SZ(); if (!S || VON_WS) return;   // Feines Ohr/Der Schlag: jede Runde ist in sich fertig, nichts geht verloren
   clearTimeout(sitzTimer); sitzOffen = null;
   if (sofort) { S.speichere('spiele', zustand); return; }
   sitzOffen = zustand;
@@ -295,7 +298,10 @@ var ansicht = 'tueren';
 var herkunftHaus = false;   // über ?spiel= aus dem Regal gekommen → Zurück führt ins Haus
 var letzterSatz = '';
 function leeren(){ if (aktiv && aktiv.stop) aktiv.stop(); aktiv = null; inner.innerHTML = ''; document.getElementById('stage').scrollTop = 0; }
-function kopf(titel){ document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = ui().eyebrow; }
+function kopf(titel){
+  if (VON_WS && window.spikiuWortschatzReiter) titel = window.spikiuWortschatzReiter.titel(uiLang());   // im Raum Wortschatz
+  document.getElementById('roomTitle').textContent = titel; document.getElementById('roomEyebrow').textContent = VON_WS ? '' : ui().eyebrow;
+}
 
 function tuer(id, klasse){
   var Z = window.spikiuZugang, liste = spielListe(), frei = !Z || Z.darf(id, liste);
@@ -462,7 +468,7 @@ function neueRunde(spiel){
 function oeffne(id, zustand){
   zustand = zustand || {};
   var Z = window.spikiuZugang;
-  if (Z && id !== 'tueren' && UI.de[id] && !Z.darf(id, spielListe())) { sperre(id); return; }
+  if (Z && !VON_WS && id !== 'tueren' && UI.de[id] && !Z.darf(id, spielListe())) { sperre(id); return; }
   if (id === 'pinata' || id === 'globos') rundeKarte(id);
   else if (['encadenado','oido','golpe','mercado','memoria'].indexOf(id) > -1) neueRunde(id);
   else if (id === 'huerto') garten(zustand.thema);
@@ -472,6 +478,7 @@ function oeffne(id, zustand){
 
 document.getElementById('btnZurueck').onclick = function(){
   raeumeSitzung();
+  if (VON_WS) { location.href = 'gym.html'; return; }
   if (ansicht === 'tueren' || herkunftHaus) location.href = 'haus.html'; else tueren();
 };
 
@@ -482,9 +489,13 @@ window.addEventListener('load', function(){
   try { window.spikiuJuegos.klang.vorladen(); } catch (e) {}   // Dur/Moll früh laden (Piñata, Globos)
   // Direktweg aus dem Regal im Haus (11.10.): spiele.html?spiel=huerto | acrostico
   var direkt = (/[?&]spiel=([a-z]+)/.exec(window.location.search) || [])[1];
+  if (VON_WS && (direkt === 'oido' || direkt === 'golpe')) {
+    try { var st = document.getElementById('stage'); st.parentNode.insertBefore(window.spikiuWortschatzReiter.leiste(direkt, uiLang()), st); } catch (e) {}
+    oeffne(direkt); return;
+  }
   if (direkt && UI.de[direkt]) { herkunftHaus = true; oeffne(direkt); return; }
   var S = SZ(), z = S ? S.lade('spiele') : null;
-  if (z && z.spiel && UI.de[z.spiel]){
+  if (z && z.spiel && UI.de[z.spiel] && z.spiel !== 'oido' && z.spiel !== 'golpe'){
     tueren();
     S.frageWiederkommen({ raum:'spiele', ts:z.ts, wo: ui()[z.spiel][0],
       beimWeiter: function(){ oeffne(z.spiel, z); },
@@ -513,6 +524,7 @@ window.addEventListener('load', function(){
 <script src="silben.js" defer></script>
 <script src="icon-db.js" defer></script>
 <script src="zugang.js" defer></script>
+<script src="wortschatz-reiter.js" defer></script>
 <script src="juegos.js" defer></script>
 </body>
 </html>

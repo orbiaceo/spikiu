@@ -100,6 +100,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
 <div class="app">
   <div class="top"><button class="back" id="btnHaus" aria-label="zurück">‹</button><div class="tt-wrap"><h1 id="roomTitle">Wortschatz</h1></div><div style="width:36px"></div></div>
+  <div id="reiter"></div>
   <div class="filter" id="filter"></div>
   <div class="deck" id="deck"></div>
   <div class="deck-nav">
@@ -570,6 +571,8 @@ window.addEventListener('load', function(){
   document.getElementById('addSave').textContent = u.save;
   document.getElementById('addCancel').textContent = u.cancel;
   document.getElementById('roomTitle').textContent = u.eyebrow;
+  // Raum Wortschatz = Karten · Feines Ohr · Der Schlag (Leo, 17.10.2026)
+  try { if (window.spikiuWortschatzReiter) document.getElementById('reiter').appendChild(window.spikiuWortschatzReiter.leiste('karten', uiLang())); } catch(e){}
   document.getElementById('btnHaus').onclick = function(){ location.href='haus.html'; };
   WORDS = buildWords();
   AUS = buildAusdruecke();
@@ -600,6 +603,7 @@ window.addEventListener('load', function(){
 <script src="sprichwort.js" defer></script>
 <script src="kurzsaetze.js" defer></script>
 <script src="sitzung.js" defer></script>
+<script src="wortschatz-reiter.js" defer></script>
 <script src="uebung.js" defer></script>
 <script src="lernpfad-daten.js" defer></script>
 <!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher lud das Gym nur Spanisch,
