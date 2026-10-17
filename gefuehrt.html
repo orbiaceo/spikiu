@@ -40,9 +40,11 @@ button{font:inherit;cursor:pointer}
 /* Themen-Palette (kein Karten-Inhalt → gehört zur Seite, nicht zur Engine) */
 .palette{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:1.1rem;padding:1.2rem 1.1rem;text-align:center}
-.palette .cap{width:60px;height:60px;border-radius:999px;background:#fff;border:2.5px solid var(--ink);
-  display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink)}
-.palette .cap svg{width:46px;height:46px}
+/* Spikiu schwebt frei, ohne Kreis (Leo, 17.10.2026, 17:39) — dasselbe sanfte Schweben wie im Spiele-Raum */
+.palette .cap{display:flex;align-items:center;justify-content:center;background:none;border:0;box-shadow:none}
+.palette .cap svg{width:72px;height:72px;animation:capSchweben 4s ease-in-out infinite}
+@keyframes capSchweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.palette .cap svg{animation:none}}
 .palette h2{font:800 1.25rem 'DM Sans',sans-serif;color:var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:360px}
 .chips .chip{font:700 .95rem 'DM Sans',sans-serif;color:var(--ink);background:#fff;
