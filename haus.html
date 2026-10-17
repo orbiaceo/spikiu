@@ -200,6 +200,37 @@ button{font-family:inherit}
 .bspine{margin-top:1rem;font:700 .7rem/1 'DM Mono',monospace;color:var(--muted)}
 .bwords .bleaf{display:grid;grid-template-columns:1fr 1fr 30px;align-items:center;column-gap:.7rem;row-gap:.12rem;padding:.5rem .1rem;border-bottom:1px solid #e6dec9;font-family:'Lora',serif;margin:0}.bl-z{font-weight:600;font-size:1.14rem;color:var(--ink);word-break:break-word}.bl-m{font-size:1rem;color:var(--muted);word-break:break-word}.bleaf .spk.bl-spk{width:28px;height:28px;font-size:.76rem;box-shadow:1px 1px 0 var(--ink);justify-self:end}.bl-lau{grid-column:1 / -1;font-family:'DM Mono',monospace;font-size:.76rem;color:var(--muted);font-style:italic;margin-top:.05rem}
 .blf{color:var(--sage)}
+/* ===== Schatzkiste · Fächer + Ficha (Léxico, 18.10.) ===== */
+.tile .em svg,.schatz-ic svg{width:1.45em;height:1.27em;display:inline-block;vertical-align:middle}
+.bfach{margin:1rem 0 .2rem;display:flex;align-items:center;gap:.45rem;font:800 .78rem/1.2 'DM Sans';color:var(--ink)}
+.bfach:first-of-type{margin-top:.2rem}
+.bfach i{width:.75rem;height:.75rem;border-radius:50%;border:2px solid var(--ink);flex:0 0 auto}
+.bfach small{font:700 .66rem/1 'DM Mono',monospace;color:var(--muted);margin-left:auto}
+.bwords .bleaf.lx{cursor:pointer}
+.bwords .bleaf.lx:active{background:#fff6d6}
+.lxov{position:fixed;inset:0;z-index:90;background:rgba(21,22,58,.35);display:flex;align-items:flex-end;justify-content:center}
+.lxs{width:100%;max-width:560px;max-height:86%;overflow:auto;background:#fff;border:var(--ow) solid var(--ink);border-bottom:0;border-radius:22px 22px 0 0;box-shadow:0 -4px 0 var(--ink);padding:1rem 1.1rem calc(1.2rem + env(safe-area-inset-bottom))}
+.lxtop{display:grid;grid-template-columns:1fr auto auto;gap:.3rem .6rem;align-items:start}
+.lxfach{grid-column:1/-1;justify-self:start;font:800 .72rem/1 'DM Sans';border:2px solid var(--ink);border-radius:999px;padding:.25rem .6rem}
+.lxlem{font:600 1.75rem/1.15 'Lora',serif;min-width:0;word-break:break-word}
+.lxlt{font:700 .78rem/1.2 'DM Mono',monospace;color:var(--muted)}
+.lxtr{grid-column:1/-1;font-size:1.08rem;color:var(--muted);font-weight:600}
+.lxmini{grid-column:1/-1;font:700 .72rem/1.4 'DM Mono',monospace;color:var(--muted)}
+.lxmini b{font-family:'Lora',serif;color:var(--ink);font-size:.92rem}
+.lxsec{border-top:2px dashed #e6dec9;margin-top:.9rem;padding-top:.8rem;display:flex;flex-direction:column;gap:.4rem}
+.lxeb{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+.lxeb span{font-family:'Lora',serif;letter-spacing:0;text-transform:none;font-size:.95rem}
+.lxbsp{display:flex;gap:.5rem;align-items:center;font:400 1.12rem/1.4 'Lora',serif}
+.lxbsp span{flex:1}
+.lxbt{font-size:.95rem;color:var(--muted);font-style:italic}
+.lxmust{font:600 1.12rem/1.45 'Lora',serif;background:var(--sky);border-radius:12px;padding:.5rem .7rem}
+.lxmust .slot{font:700 .82rem 'DM Sans';background:#fff;border:1.5px solid var(--ink);border-radius:6px;padding:.05rem .35rem;margin:0 .1rem;white-space:nowrap}
+.lxojo{background:#fff1ee;border:2px solid var(--terra);border-radius:12px;padding:.5rem .7rem;font-size:.98rem}
+.lxojo b{color:var(--terra)}
+.lxhin{background:var(--sky);border:2px solid var(--ink);border-radius:12px;padding:.5rem .7rem;font-size:.98rem}
+.lxzu{display:block;margin:1.1rem auto 0;font:800 .9rem/1 'DM Sans';background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:999px;padding:.65rem 1.4rem;box-shadow:3px 3px 0 var(--ink);cursor:pointer;color:var(--ink)}
+.lxs .spk,.lxzu{flex:0 0 auto}
+
 .bhook{text-align:center;padding-top:.4rem}
 .bbig{font-family:'Archivo Black',sans-serif;font-size:1.45rem;line-height:1.2;margin:.3rem 0}
 .bhsub{color:var(--muted);font-size:.98rem;margin-top:.5rem;line-height:1.5}
@@ -245,6 +276,7 @@ button{font-family:inherit}
 <div class="pop" id="pop"></div>
 
 <script src="woerterbuch.js"></script>
+<script src="lexikon.js"></script>
 <script>
 /* ── SPIKIU · CAPY VIVO (wiederverwendbarer Helfer) ──────────────────
    Macht ein bereits gerendertes Capy-<svg> lebendig — ohne Abhängigkeiten,
@@ -730,7 +762,7 @@ function roomBibliothek(){
 /* Dein Regal: was du gesammelt hast — Buch, Lektionen, Garten, Akrosticha. */
 function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0;
  kacheln({greet:{title:'🌱 '+H().regal},layout:'four',items:[
-  {em:'💎',tt:H().buch,bg:'#c7e89a',go:renderBook},
+  {em:SCHATZ_SVG,tt:H().buch,bg:'#c7e89a',go:renderBook},
   {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
   {em:'🌿',tt:H().garten,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
   {em:'🔤',tt:H().akro,bg:'#cdbdf2',go:function(){location.href='spiele.html?spiel=acrostico';}}
@@ -757,7 +789,54 @@ function bkTr(e){if(e.tr)return e.tr;var w=(e.roh||e.wort);return (window.spikiu
 /* 17.10. (Leo): „Mein Buch" → „Meine Schatzkiste", in zwei Fächern: Wörter · Wendungen (quelle 'ausdruck'). */
 function bkIstAus(e){return !!e&&e.quelle==='ausdruck';}
 function bkTeile(){var b=readBuch();return {w:b.filter(function(e){return !bkIstAus(e);}),a:b.filter(bkIstAus)};}
-function bkZaehl(){var t=bkTeile(),z=[];if(t.w.length||!t.a.length)z.push(H().woerter(t.w.length));if(t.a.length)z.push(H().wendungen(t.a.length));return z.join(' · ');}
+/* 18.10. (Leo: „Conéctalo"): Léxico in der Schatzkiste. Gespeichert bleibt die getippte Form
+   (nichts geht verloren); angezeigt wird je LEMMA einmal, sortiert in vier Fächer, Antippen öffnet die Ficha.
+   Ohne Léxico (lädt noch / fehlt) bleibt die alte Liste — nie leer. */
+var SCHATZ_SVG='<svg viewBox="0 0 48 42" aria-hidden="true"><path d="M5 19 Q5 5 24 5 Q43 5 43 19 Z" fill="#d79b5a" stroke="#15163a" stroke-width="2.6" stroke-linejoin="round"/><rect x="5" y="19" width="38" height="19" rx="2.5" fill="#b8763a" stroke="#15163a" stroke-width="2.6"/><path d="M11 8.6 V38 M37 8.6 V38" stroke="#ffd24a" stroke-width="4.2"/><rect x="19.5" y="15" width="9" height="10" rx="2" fill="#ffd24a" stroke="#15163a" stroke-width="2.2"/><circle cx="24" cy="19.3" r="1.4" fill="#15163a"/><path d="M24 20.5 V22.6" stroke="#15163a" stroke-width="1.6" stroke-linecap="round"/><path d="M41 2.5 l1 2.4 2.4 1 -2.4 1 -1 2.4 -1 -2.4 -2.4 -1 2.4 -1z" fill="#ff4f9a"/></svg>';
+var LX_UI={
+ de:{f:{ding:'Dinge',tun:'Tätigkeiten',wie:'Wie etwas ist · wie es geschieht',klein:'Kleine Wörter'},ist:'Wie etwas ist',tut:'Wie es geschieht',bsp:'Beispiel',must:'So benutzt man es',ojo:'Achtung',formen:'Formen',pl:'Mehrzahl',ges:'Gesammelt',zu:'Schließen'},
+ es:{f:{ding:'Cosas',tun:'Acciones',wie:'Cómo es · cómo se hace',klein:'Palabritas'},ist:'Cómo es',tut:'Cómo se hace',bsp:'Ejemplo',must:'Cómo se usa',ojo:'Ojo',formen:'Formas',pl:'Plural',ges:'Guardaste',zu:'Cerrar'},
+ en:{f:{ding:'Things',tun:'Actions',wie:'What it’s like · how it’s done',klein:'Little words'},ist:'What it’s like',tut:'How it’s done',bsp:'Example',must:'How to use it',ojo:'Watch out',formen:'Forms',pl:'Plural',ges:'You saved',zu:'Close'},
+ el:{f:{ding:'Πράγματα',tun:'Ενέργειες',wie:'Πώς είναι · πώς γίνεται',klein:'Μικρές λέξεις'},ist:'Πώς είναι',tut:'Πώς γίνεται',bsp:'Παράδειγμα',must:'Πώς χρησιμοποιείται',ojo:'Προσοχή',formen:'Τύποι',pl:'Πληθυντικός',ges:'Το κράτησες',zu:'Κλείσιμο'}};
+var LX_FARBE={ding:'var(--sage)',tun:'var(--mustard)',wie:'#cdbdf2',klein:'var(--sky)'};
+function lxA(x){return kEsc(x).replace(/"/g,'&quot;');}
+function lxUI(){return LX_UI[bkMutter()]||LX_UI.de;}
+function lxBereit(){return !!(window.spikiuLexikon&&window.spikiuLexikon.bereit(bkZiel()));}
+function lxFicha(w){return lxBereit()?window.spikiuLexikon.ficha(bkZiel(),w):null;}
+function lxKopf(f){return (f.g?f.g+' ':'')+f.l;}
+/* Wörter je Lemma zusammenfassen → {ding:[…],tun:[…],wie:[…],klein:[…]}; jüngste zuerst */
+function lxGruppen(){var t=bkTeile(),G={ding:[],tun:[],wie:[],klein:[]},seen={};
+ t.w.slice().reverse().forEach(function(e){var w=e.roh||e.wort,f=lxFicha(w);
+  var key=f?f.l+'|'+f.a:'~'+String(w).toLowerCase(); if(seen[key])return; seen[key]=1;
+  var fach=f&&G[f.a]?f.a:'klein';
+  G[fach].push({w:w,f:f,e:e});});
+ return G;}
+function bkWortZahl(){if(!lxBereit())return bkTeile().w.length;var G=lxGruppen();return G.ding.length+G.tun.length+G.wie.length+G.klein.length;}
+function lxMuster(m){return kEsc(m).replace(/\[([^\]]+)\]/g,'<span class="slot">$1</span>');}
+function lxBsp(b,bt){if(!b)return '';var m=bkMutter();
+ return '<div class="lxbsp"><span lang="'+bkZiel()+'">'+kEsc(b)+'</span><button class="spk" data-es="'+lxA(b)+'" aria-label="'+H().vorlesen+'">🔊</button></div>'+(bt&&bt[m]?'<div class="lxbt">'+kEsc(bt[m])+'</div>':'');}
+function lxOeffne(w){var f=lxFicha(w);if(!f)return;var U=lxUI(),m=bkMutter(),z=bkZiel();
+ var h='<div class="lxtop"><span class="lxfach" style="background:'+(LX_FARBE[f.a]||'#fff')+'">'+(U.f[f.a]||U.f.klein)+'</span>'+
+  '<div><div class="lxlem" lang="'+z+'">'+kEsc(lxKopf(f))+'</div>'+(f.lt?'<div class="lxlt">'+kEsc(f.lt)+'</div>':'')+'</div>'+
+  '<button class="spk" data-es="'+lxA(lxKopf(f))+'" aria-label="'+H().vorlesen+'">🔊</button><span></span>'+
+  (f.tr&&f.tr[m]?'<div class="lxtr">'+kEsc(f.tr[m])+'</div>':'')+
+  (f.pl?'<div class="lxmini">'+U.pl+': <b lang="'+z+'">'+kEsc(f.pl)+'</b></div>':'')+
+  (f.fo?'<div class="lxmini">'+U.formen+': <b lang="'+z+'">'+kEsc(f.fo)+'</b></div>':'')+
+  (f.forma&&f.forma!==f.l.toLowerCase()?'<div class="lxmini">'+U.ges+': <b lang="'+z+'">'+kEsc(w)+'</b></div>':'')+'</div>';
+ if(f.a==='wie'&&f.adv){
+  h+='<div class="lxsec"><div class="lxeb">'+U.ist+'</div>'+lxBsp(f.b,f.bt)+'</div>';
+  h+='<div class="lxsec"><div class="lxeb">'+U.tut+' · <span lang="'+z+'">'+kEsc(f.adv.f)+'</span></div>'+lxBsp(f.adv.b,f.adv.bt)+(f.adv.h&&f.adv.h[m]?'<div class="lxhin">'+kEsc(f.adv.h[m])+'</div>':'')+'</div>';
+ } else if(f.b){ h+='<div class="lxsec"><div class="lxeb">'+U.bsp+'</div>'+lxBsp(f.b,f.bt)+'</div>'; }
+ if(f.v){ h+='<div class="lxsec"><div class="lxeb">'+U.must+'</div><div class="lxmust" lang="'+z+'">'+lxMuster(f.v.m)+'</div>'+lxBsp(f.v.b,f.v.bt)+(f.v.o&&f.v.o[m]?'<div class="lxojo"><b>'+U.ojo+':</b> '+kEsc(f.v.o[m])+'</div>':'')+'</div>'; }
+ h+='<button class="lxzu" id="lxzu">'+U.zu+'</button>';
+ var ov=document.createElement('div');ov.className='lxov';ov.id='lxov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');
+ ov.innerHTML='<div class="lxs">'+h+'</div>';document.body.appendChild(ov);
+ function zu(){if(ov.parentNode)ov.parentNode.removeChild(ov);}
+ ov.addEventListener('click',function(ev){if(ev.target===ov)zu();});
+ ov.querySelector('#lxzu').onclick=zu;
+ ov.querySelectorAll('.spk').forEach(function(sp){sp.onclick=function(){say(sp.dataset.es);};});}
+function lxSchliessen(){var o=document.getElementById('lxov');if(o&&o.parentNode){o.parentNode.removeChild(o);return true;}return false;}
+function bkZaehl(){var t=bkTeile(),z=[];if(t.w.length||!t.a.length)z.push(H().woerter(bkWortZahl()));if(t.a.length)z.push(H().wendungen(t.a.length));return z.join(' · ');}
 function bookPages(){
  var t=bkTeile();var P=[{k:'cover'}];
  if(t.w.length)P.push({k:'words'});if(t.a.length)P.push({k:'aus'});if(!t.w.length&&!t.a.length)P.push({k:'empty'});
@@ -775,7 +854,15 @@ function bkCover(){return '<div class="bcover"><div class="bol">'+olivo()+'</div
  '<div class="bsub">'+H().buchSub+'</div>'+
  '<div class="bby"><span class="bcap">'+capy()+'</span>'+H().geschrieben+'</div>'+
  '<div class="bspine">'+bkZaehl()+'</div></div>';}
-function bkWords(aus){var t=bkTeile();var W=(aus?t.a:t.w).slice().reverse();var h='<div class="beyebrow">'+H().mitgenommen+'</div><div class="bptitle">'+(aus?H().deineA:H().deineW)+'</div><div class="bwords">';
+function bkWordsLx(){var G=lxGruppen(),U=lxUI(),m=bkMutter(),z=bkZiel();
+ var h='<div class="beyebrow">'+H().mitgenommen+'</div><div class="bptitle">'+H().deineW+'</div><div class="bwords">';
+ ['ding','tun','wie','klein'].forEach(function(k){var L=G[k];if(!L.length)return;
+  h+='<div class="bfach"><i style="background:'+LX_FARBE[k]+'"></i>'+U.f[k]+'<small>'+L.length+'</small></div>';
+  L.forEach(function(x){var f=x.f,kopf=f?lxKopf(f):x.w,tr=f&&f.tr&&f.tr[m]?f.tr[m]:(bkTr(x.e)||'—');
+   h+='<div class="bleaf'+(f?' lx':'')+'"'+(f?' data-lx="'+lxA(x.w)+'" role="button" tabindex="0"':'')+'><span class="bl-z" lang="'+z+'">'+kEsc(kopf)+'</span><span class="bl-m">'+kEsc(tr)+'</span><button class="spk bl-spk" data-es="'+lxA(kopf)+'" aria-label="'+H().vorlesen+'">🔊</button>'+(f&&f.lt?'<span class="bl-lau">'+kEsc(f.lt)+'</span>':(x.e.lautschrift?'<span class="bl-lau">'+x.e.lautschrift+'</span>':''))+'</div>';});
+ });
+ return h+'</div>';}
+function bkWords(aus){if(!aus&&lxBereit())return bkWordsLx();var t=bkTeile();var W=(aus?t.a:t.w).slice().reverse();var h='<div class="beyebrow">'+H().mitgenommen+'</div><div class="bptitle">'+(aus?H().deineA:H().deineW)+'</div><div class="bwords">';
  W.forEach(function(e){var d=e.roh||e.wort;h+='<div class="bleaf"><span class="bl-z">'+d+'</span><span class="bl-m">'+(bkTr(e)||'—')+'</span><button class="spk bl-spk" data-es="'+d+'" aria-label="'+H().vorlesen+'">🔊</button>'+(e.lautschrift?'<span class="bl-lau">'+e.lautschrift+'</span>':'')+'</div>';});return h+'</div>';}
 function bkEmpty(){return '<div class="bcover"><div class="bol">'+capy()+'</div><h2 style="font-size:1.5rem">'+H().leer+'</h2>'+
  '<div class="bsub">'+H().leerSub+'</div></div>';}
@@ -790,7 +877,8 @@ function bookPage(dir){var P=bookPages();bookIdx=Math.max(0,Math.min(P.length-1,
  document.getElementById('bcnt').textContent=(bookIdx+1)+' / '+P.length;
  document.getElementById('bprev').disabled=bookIdx===0;
  document.getElementById('bnext').disabled=bookIdx===P.length-1;
- pg.querySelectorAll('.spk').forEach(function(sp){sp.onclick=function(){say(sp.dataset.es);};});}
+ pg.querySelectorAll('.spk').forEach(function(sp){sp.onclick=function(ev){ev.stopPropagation();say(sp.dataset.es);};});
+ pg.querySelectorAll('[data-lx]').forEach(function(r){r.onclick=function(){lxOeffne(r.dataset.lx);};r.onkeydown=function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();lxOeffne(r.dataset.lx);}};});}
 function renderBook(){bookIdx=0;var ov=document.getElementById('bookov');
  ov.innerHTML='<div class="bkhead"><button class="bkx" id="bkx" aria-label="'+H().zurueck+'">‹</button><span class="bktitle">'+H().buch+'</span></div>'+
   '<div class="bkview"><div class="bpage" id="bpage"></div></div>'+
@@ -798,6 +886,7 @@ function renderBook(){bookIdx=0;var ov=document.getElementById('bookov');
   '<span class="bkcnt" id="bcnt"></span>'+
   '<button class="navc" id="bnext" aria-label="'+H().weiter+'">›</button></div>';
  ov.classList.add('open');bookPage(0);
+ try{if(window.spikiuLexikon&&!lxBereit())window.spikiuLexikon.laden(bkZiel()).then(function(){var o=document.getElementById('bookov');if(o&&o.classList.contains('open'))bookPage(0);},function(){});}catch(e){}
  document.getElementById('bkx').onclick=closeBook;
  document.getElementById('bprev').onclick=function(){if(bookIdx>0){bookIdx--;bookPage(-1);}};
  document.getElementById('bnext').onclick=function(){var P=bookPages();if(bookIdx<P.length-1){bookIdx++;bookPage(1);}};
@@ -805,12 +894,12 @@ function renderBook(){bookIdx=0;var ov=document.getElementById('bookov');
  view.addEventListener('pointerdown',function(e){x0=e.clientX;});
  view.addEventListener('pointerup',function(e){if(x0==null)return;var dx=e.clientX-x0;x0=null;var P=bookPages();
   if(dx<-45&&bookIdx<P.length-1){bookIdx++;bookPage(1);}else if(dx>45&&bookIdx>0){bookIdx--;bookPage(-1);}});}
-function closeBook(){var ov=document.getElementById('bookov');ov.classList.remove('open');ov.innerHTML='';}
+function closeBook(){lxSchliessen();var ov=document.getElementById('bookov');ov.classList.remove('open');ov.innerHTML='';}
 window.addEventListener('keydown',function(e){var ov=document.getElementById('bookov');
  if(!ov||!ov.classList.contains('open'))return;var P=bookPages();
  if(e.key==='ArrowRight'&&bookIdx<P.length-1){bookIdx++;bookPage(1);}
  if(e.key==='ArrowLeft'&&bookIdx>0){bookIdx--;bookPage(-1);}
- if(e.key==='Escape')closeBook();});
+ if(e.key==='Escape'){if(!lxSchliessen())closeBook();}});
 
 /* ===== RAUM: ÜBUNG ===== */
 var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
