@@ -1,0 +1,200 @@
+{"l":"Kasse","a":"ding","g":"die","fo":["kasse"],"ex":"die Kasse"}
+{"l":"geöffnet","a":"wie","g":null,"fo":["geöffnet"],"ex":"geöffnet"}
+{"l":"Bargeld","a":"ding","g":"das","fo":["bargeld"],"ex":"das Bargeld"}
+{"l":"Schlussverkauf","a":"ding","g":"der","fo":["schlussverkauf"],"ex":"der Schlussverkauf"}
+{"l":"Rock","a":"ding","g":"der","fo":["rock"],"ex":"der Rock"}
+{"l":"Farbe","a":"ding","g":"die","fo":["farbe"],"ex":"die Farbe"}
+{"l":"Kunde","a":"ding","g":"der","fo":["kunde"],"ex":"der Kunde"}
+{"l":"Einkaufswagen","a":"ding","g":"der","fo":["einkaufswagen"],"ex":"der Einkaufswagen"}
+{"l":"Korb","a":"ding","g":"der","fo":["korb"],"ex":"der Korb"}
+{"l":"Schaufenster","a":"ding","g":"das","fo":["schaufenster"],"ex":"das Schaufenster"}
+{"l":"Einkaufszentrum","a":"ding","g":"das","fo":["einkaufszentrum"],"ex":"das Einkaufszentrum"}
+{"l":"Marke","a":"ding","g":"die","fo":["marke"],"ex":"die Marke"}
+{"l":"Rabatt","a":"ding","g":"der","fo":["rabatt"],"ex":"der Rabatt"}
+{"l":"Etikett","a":"ding","g":"das","fo":["etikett"],"ex":"das Etikett"}
+{"l":"Öffnungszeit","a":"ding","g":"die","fo":["öffnungszeiten"],"ex":"die Öffnungszeiten"}
+{"l":"Einkaufsliste","a":"ding","g":"die","fo":["einkaufsliste"],"ex":"die Einkaufsliste"}
+{"l":"Münze","a":"ding","g":"die","fo":["münze"],"ex":"die Münze"}
+{"l":"Geldschein","a":"ding","g":"der","fo":["geldschein"],"ex":"der Geldschein"}
+{"l":"Handtasche","a":"ding","g":"die","fo":["handtasche"],"ex":"die Handtasche"}
+{"l":"kostenlos","a":"wie","g":null,"fo":["kostenlos"],"ex":"kostenlos"}
+{"l":"Pullover","a":"ding","g":"der","fo":["pullover"],"ex":"der Pullover"}
+{"l":"verkaufen","a":"tun","g":null,"fo":["verkaufen"],"ex":"verkaufen"}
+{"l":"aussuchen","a":"tun","g":null,"fo":["aussuchen"],"ex":"aussuchen"}
+{"l":"Touristeninformation","a":"ding","g":"die","fo":["touristeninformation"],"ex":"die Touristeninformation"}
+{"l":"Norden","a":"ding","g":"der","fo":["norden"],"ex":"der Norden"}
+{"l":"Süden","a":"ding","g":"der","fo":["süden"],"ex":"der Süden"}
+{"l":"Osten","a":"ding","g":"der","fo":["osten"],"ex":"der Osten"}
+{"l":"Westen","a":"ding","g":"der","fo":["westen"],"ex":"der Westen"}
+{"l":"verirren","a":"tun","g":null,"fo":["verirrt"],"ex":"verirrt"}
+{"l":"Denkmal","a":"ding","g":"das","fo":["denkmal"],"ex":"das Denkmal"}
+{"l":"Brunnen","a":"ding","g":"der","fo":["brunnen"],"ex":"der Brunnen"}
+{"l":"Burg","a":"ding","g":"die","fo":["burg"],"ex":"die Burg"}
+{"l":"Palast","a":"ding","g":"der","fo":["palast"],"ex":"der Palast"}
+{"l":"Gehweg","a":"ding","g":"der","fo":["gehweg"],"ex":"der Gehweg"}
+{"l":"Zebrastreifen","a":"ding","g":"der","fo":["zebrastreifen"],"ex":"der Zebrastreifen"}
+{"l":"Steigung","a":"ding","g":"die","fo":["steigung"],"ex":"die Steigung"}
+{"l":"Gasse","a":"ding","g":"die","fo":["gasse"],"ex":"die Gasse"}
+{"l":"Reiseführer","a":"ding","g":"der","fo":["reiseführer"],"ex":"der Reiseführer"}
+{"l":"Bibliothek","a":"ding","g":"die","fo":["bibliothek"],"ex":"die Bibliothek"}
+{"l":"Kino","a":"ding","g":"das","fo":["kino"],"ex":"das Kino"}
+{"l":"Universität","a":"ding","g":"die","fo":["universität"],"ex":"die Universität"}
+{"l":"Gurt","a":"ding","g":"der","fo":["gurt"],"ex":"der Gurt"}
+{"l":"Taxameter","a":"ding","g":"das","fo":["taxameter"],"ex":"das Taxameter"}
+{"l":"Tarif","a":"ding","g":"der","fo":["tarif"],"ex":"der Tarif"}
+{"l":"Taxistand","a":"ding","g":"der","fo":["taxistand"],"ex":"der Taxistand"}
+{"l":"Kilometer","a":"ding","g":"der","fo":["kilometer"],"ex":"der Kilometer"}
+{"l":"Benzin","a":"ding","g":"das","fo":["benzin"],"ex":"das Benzin"}
+{"l":"Lenkrad","a":"ding","g":"das","fo":["lenkrad"],"ex":"das Lenkrad"}
+{"l":"Route","a":"ding","g":"die","fo":["route"],"ex":"die Route"}
+{"l":"Kurve","a":"ding","g":"die","fo":["kurve"],"ex":"die Kurve"}
+{"l":"Maut","a":"ding","g":"die","fo":["maut"],"ex":"die Maut"}
+{"l":"Geschwindigkeit","a":"ding","g":"die","fo":["geschwindigkeit"],"ex":"die Geschwindigkeit"}
+{"l":"Tankstelle","a":"ding","g":"die","fo":["tankstelle"],"ex":"die Tankstelle"}
+{"l":"Cousine","a":"ding","g":"die","fo":["cousine"],"ex":"die Cousine"}
+{"l":"Neffe","a":"ding","g":"der","fo":["neffe"],"ex":"der Neffe"}
+{"l":"Enkel","a":"ding","g":"der","fo":["enkel"],"ex":"der Enkel"}
+{"l":"Enkelin","a":"ding","g":"die","fo":["enkelin"],"ex":"die Enkelin"}
+{"l":"Ehemann","a":"ding","g":"der","fo":["ehemann"],"ex":"der Ehemann"}
+{"l":"Ehefrau","a":"ding","g":"die","fo":["ehefrau"],"ex":"die Ehefrau"}
+{"l":"Partner","a":"ding","g":"der","fo":["partner"],"ex":"der Partner"}
+{"l":"Partnerin","a":"ding","g":"die","fo":["partnerin"],"ex":"die Partnerin"}
+{"l":"ledig","a":"wie","g":null,"fo":["ledig"],"ex":"ledig"}
+{"l":"Schwiegervater","a":"ding","g":"der","fo":["schwiegervater"],"ex":"der Schwiegervater"}
+{"l":"Schwiegermutter","a":"ding","g":"die","fo":["schwiegermutter"],"ex":"die Schwiegermutter"}
+{"l":"Schwager","a":"ding","g":"der","fo":["schwager"],"ex":"der Schwager"}
+{"l":"Zwilling","a":"ding","g":"der","fo":["zwilling"],"ex":"der Zwilling"}
+{"l":"Pate","a":"ding","g":"der","fo":["pate"],"ex":"der Pate"}
+{"l":"Patin","a":"ding","g":"die","fo":["patin"],"ex":"die Patin"}
+{"l":"Zuhause","a":"ding","g":"das","fo":["zuhause"],"ex":"das Zuhause"}
+{"l":"Scheidung","a":"ding","g":"die","fo":["scheidung"],"ex":"die Scheidung"}
+{"l":"kümmern","a":"tun","g":null,"fo":["kümmern"],"ex":"kümmern"}
+{"l":"Nachname","a":"ding","g":"der","fo":["nachname"],"ex":"der Nachname"}
+{"l":"Kindheit","a":"ding","g":"die","fo":["kindheit"],"ex":"die Kindheit"}
+{"l":"Haustier","a":"ding","g":"das","fo":["haustier"],"ex":"das Haustier"}
+{"l":"Kuss","a":"ding","g":"der","fo":["kuss"],"ex":"der Kuss"}
+{"l":"Umarmung","a":"ding","g":"die","fo":["umarmung"],"ex":"die Umarmung"}
+{"l":"Stammbaum","a":"ding","g":"der","fo":["stammbaum"],"ex":"der Stammbaum"}
+{"l":"Dusche","a":"ding","g":"die","fo":["dusche"],"ex":"die Dusche"}
+{"l":"einzeln","a":"wie","g":null,"fo":["einzeln"],"ex":"einzeln"}
+{"l":"Kopfkissen","a":"ding","g":"das","fo":["kopfkissen"],"ex":"das Kopfkissen"}
+{"l":"Laken","a":"ding","g":"das","fo":["laken"],"ex":"das Laken"}
+{"l":"Balkon","a":"ding","g":"der","fo":["balkon"],"ex":"der Balkon"}
+{"l":"Aussicht","a":"ding","g":"die","fo":["aussicht"],"ex":"die Aussicht"}
+{"l":"Passwort","a":"ding","g":"das","fo":["passwort"],"ex":"das Passwort"}
+{"l":"Seife","a":"ding","g":"die","fo":["seife"],"ex":"die Seife"}
+{"l":"Shampoo","a":"ding","g":"das","fo":["shampoo"],"ex":"das Shampoo"}
+{"l":"Schwimmbad","a":"ding","g":"das","fo":["schwimmbad"],"ex":"das Schwimmbad"}
+{"l":"Rezeptionist","a":"ding","g":"der","fo":["rezeptionist"],"ex":"der Rezeptionist"}
+{"l":"inklusive","a":"klein","g":null,"fo":["inklusive"],"ex":"inklusive"}
+{"l":"Abreise","a":"ding","g":"die","fo":["abreise"],"ex":"die Abreise"}
+{"l":"Suite","a":"ding","g":"die","fo":["suite"],"ex":"die Suite"}
+{"l":"Herberge","a":"ding","g":"die","fo":["herberge"],"ex":"die Herberge"}
+{"l":"Lobby","a":"ding","g":"die","fo":["lobby"],"ex":"die Lobby"}
+{"l":"Treppe","a":"ding","g":"die","fo":["treppe"],"ex":"die Treppe"}
+{"l":"Safe","a":"ding","g":"der","fo":["safe"],"ex":"der Safe"}
+{"l":"Minibar","a":"ding","g":"die","fo":["minibar"],"ex":"die Minibar"}
+{"l":"Kleiderbügel","a":"ding","g":"der","fo":["kleiderbügel"],"ex":"der Kleiderbügel"}
+{"l":"Reinigung","a":"ding","g":"die","fo":["reinigung"],"ex":"die Reinigung"}
+{"l":"Beschwerde","a":"ding","g":"die","fo":["beschwerde"],"ex":"die Beschwerde"}
+{"l":"Urlaub","a":"ding","g":"der","fo":["urlaub"],"ex":"der Urlaub"}
+{"l":"bequem","a":"wie","g":null,"fo":["bequem"],"ex":"bequem"}
+{"l":"stornieren","a":"tun","g":null,"fo":["stornieren"],"ex":"stornieren"}
+{"l":"Fitnessstudio","a":"ding","g":"das","fo":["fitnessstudio"],"ex":"das Fitnessstudio"}
+{"l":"Lampe","a":"ding","g":"die","fo":["lampe"],"ex":"die Lampe"}
+{"l":"Uhrzeit","a":"ding","g":"die","fo":["uhrzeit"],"ex":"die Uhrzeit"}
+{"l":"Hinfahrt","a":"ding","g":"die","fo":["hinfahrt"],"ex":"die Hinfahrt"}
+{"l":"Rückfahrt","a":"ding","g":"die","fo":["rückfahrt"],"ex":"die Rückfahrt"}
+{"l":"Sitzplatz","a":"ding","g":"der","fo":["sitzplatz"],"ex":"der Sitzplatz"}
+{"l":"Fahrkartenschalter","a":"ding","g":"der","fo":["fahrkartenschalter"],"ex":"der Fahrkartenschalter"}
+{"l":"Wagen","a":"ding","g":"der","fo":["wagen"],"ex":"der Wagen"}
+{"l":"Schaffner","a":"ding","g":"der","fo":["schaffner"],"ex":"der Schaffner"}
+{"l":"Gepäckaufbewahrung","a":"ding","g":"die","fo":["gepäckaufbewahrung"],"ex":"die Gepäckaufbewahrung"}
+{"l":"entwerten","a":"tun","g":null,"fo":["entwerten"],"ex":"entwerten"}
+{"l":"Lokomotive","a":"ding","g":"die","fo":["lokomotive"],"ex":"die Lokomotive"}
+{"l":"Schlafwagen","a":"ding","g":"der","fo":["schlafwagen"],"ex":"der Schlafwagen"}
+{"l":"Grenze","a":"ding","g":"die","fo":["grenze"],"ex":"die Grenze"}
+{"l":"Landschaft","a":"ding","g":"die","fo":["landschaft"],"ex":"die Landschaft"}
+{"l":"Bahnhofscafé","a":"ding","g":"das","fo":["bahnhofscafé"],"ex":"das Bahnhofscafé"}
+{"l":"Wartesaal","a":"ding","g":"der","fo":["wartesaal"],"ex":"der Wartesaal"}
+{"l":"Monatskarte","a":"ding","g":"die","fo":["monatskarte"],"ex":"die Monatskarte"}
+{"l":"Ermäßigung","a":"ding","g":"die","fo":["ermäßigung"],"ex":"die Ermäßigung"}
+{"l":"Pfeife","a":"ding","g":"die","fo":["pfeife"],"ex":"die Pfeife"}
+{"l":"Magen","a":"ding","g":"der","fo":["magen"],"ex":"der Magen"}
+{"l":"Zahn","a":"ding","g":"der","fo":["zahn"],"ex":"der Zahn"}
+{"l":"Rücken","a":"ding","g":"der","fo":["rücken"],"ex":"der Rücken"}
+{"l":"Grippe","a":"ding","g":"die","fo":["grippe"],"ex":"die Grippe"}
+{"l":"Allergie","a":"ding","g":"die","fo":["allergie"],"ex":"die Allergie"}
+{"l":"Blut","a":"ding","g":"das","fo":["blut"],"ex":"das Blut"}
+{"l":"Wunde","a":"ding","g":"die","fo":["wunde"],"ex":"die Wunde"}
+{"l":"Versicherung","a":"ding","g":"die","fo":["versicherung"],"ex":"die Versicherung"}
+{"l":"ausruhen","a":"tun","g":null,"fo":["ausruhen"],"ex":"ausruhen"}
+{"l":"Hustensaft","a":"ding","g":"der","fo":["hustensaft"],"ex":"der Hustensaft"}
+{"l":"Krankenwagen","a":"ding","g":"der","fo":["krankenwagen"],"ex":"der Krankenwagen"}
+{"l":"Spritze","a":"ding","g":"die","fo":["spritze"],"ex":"die Spritze"}
+{"l":"Pflaster","a":"ding","g":"das","fo":["pflaster"],"ex":"das Pflaster"}
+{"l":"Lunge","a":"ding","g":"die","fo":["lunge"],"ex":"die Lunge"}
+{"l":"Haut","a":"ding","g":"die","fo":["haut"],"ex":"die Haut"}
+{"l":"Nacken","a":"ding","g":"der","fo":["nacken"],"ex":"der Nacken"}
+{"l":"Knöchel","a":"ding","g":"der","fo":["knöchel"],"ex":"der Knöchel"}
+{"l":"Zahnarzt","a":"ding","g":"der","fo":["zahnarzt"],"ex":"der Zahnarzt"}
+{"l":"Impfung","a":"ding","g":"die","fo":["impfung"],"ex":"die Impfung"}
+{"l":"Untersuchung","a":"ding","g":"die","fo":["untersuchung"],"ex":"die Untersuchung"}
+{"l":"schwindlig","a":"wie","g":null,"fo":["schwindlig"],"ex":"schwindlig"}
+{"l":"Gesundheit","a":"ding","g":"die","fo":["gesundheit"],"ex":"die Gesundheit"}
+{"l":"Schlaf","a":"ding","g":"der","fo":["schlaf"],"ex":"der Schlaf"}
+{"l":"erbrechen","a":"tun","g":null,"fo":["erbrechen"],"ex":"erbrechen"}
+{"l":"Blutdruck","a":"ding","g":"der","fo":["blutdruck"],"ex":"der Blutdruck"}
+{"l":"Operation","a":"ding","g":"die","fo":["operation"],"ex":"die Operation"}
+{"l":"Backenzahn","a":"ding","g":"der","fo":["backenzahn"],"ex":"der Backenzahn"}
+{"l":"heilen","a":"tun","g":null,"fo":["heilen"],"ex":"heilen"}
+{"l":"Hitze","a":"ding","g":"die","fo":["hitze"],"ex":"die Hitze"}
+{"l":"Frühling","a":"ding","g":"der","fo":["frühling"],"ex":"der Frühling"}
+{"l":"Herbst","a":"ding","g":"der","fo":["herbst"],"ex":"der Herbst"}
+{"l":"schneien","a":"tun","g":null,"fo":["schneien"],"ex":"schneien"}
+{"l":"Donner","a":"ding","g":"der","fo":["donner"],"ex":"der Donner"}
+{"l":"Blitz","a":"ding","g":"der","fo":["blitz"],"ex":"der Blitz"}
+{"l":"Temperatur","a":"ding","g":"die","fo":["temperatur"],"ex":"die Temperatur"}
+{"l":"feucht","a":"wie","g":null,"fo":["feucht"],"ex":"feucht"}
+{"l":"Jahreszeit","a":"ding","g":"die","fo":["jahreszeit"],"ex":"die Jahreszeit"}
+{"l":"kühl","a":"wie","g":null,"fo":["kühl"],"ex":"kühl"}
+{"l":"Regenbogen","a":"ding","g":"der","fo":["regenbogen"],"ex":"der Regenbogen"}
+{"l":"Hitzewelle","a":"ding","g":"die","fo":["hitzewelle"],"ex":"die Hitzewelle"}
+{"l":"Hagel","a":"ding","g":"der","fo":["hagel"],"ex":"der Hagel"}
+{"l":"Brise","a":"ding","g":"die","fo":["brise"],"ex":"die Brise"}
+{"l":"Orkan","a":"ding","g":"der","fo":["orkan"],"ex":"der Orkan"}
+{"l":"Dürre","a":"ding","g":"die","fo":["dürre"],"ex":"die Dürre"}
+{"l":"Frost","a":"ding","g":"der","fo":["frost"],"ex":"der Frost"}
+{"l":"Klima","a":"ding","g":"das","fo":["klima"],"ex":"das Klima"}
+{"l":"Sonnenaufgang","a":"ding","g":"der","fo":["sonnenaufgang"],"ex":"der Sonnenaufgang"}
+{"l":"Sonnenuntergang","a":"ding","g":"der","fo":["sonnenuntergang"],"ex":"der Sonnenuntergang"}
+{"l":"Mond","a":"ding","g":"der","fo":["mond"],"ex":"der Mond"}
+{"l":"Pfütze","a":"ding","g":"die","fo":["pfütze"],"ex":"die Pfütze"}
+{"l":"Regenschauer","a":"ding","g":"der","fo":["regenschauer"],"ex":"der Regenschauer"}
+{"l":"regnerisch","a":"wie","g":null,"fo":["regnerisch"],"ex":"regnerisch"}
+{"l":"Schatten","a":"ding","g":"der","fo":["schatten"],"ex":"der Schatten"}
+{"l":"Überschwemmung","a":"ding","g":"die","fo":["überschwemmung"],"ex":"die Überschwemmung"}
+{"l":"Olivenöl","a":"ding","g":"das","fo":["olivenöl"],"ex":"das Olivenöl"}
+{"l":"Birne","a":"ding","g":"die","fo":["birne"],"ex":"die Birne"}
+{"l":"Kirsche","a":"ding","g":"die","fo":["kirsche"],"ex":"die Kirsche"}
+{"l":"Pfirsich","a":"ding","g":"der","fo":["pfirsich"],"ex":"der Pfirsich"}
+{"l":"Ananas","a":"ding","g":"die","fo":["ananas"],"ex":"die Ananas"}
+{"l":"Melone","a":"ding","g":"die","fo":["melone"],"ex":"die Melone"}
+{"l":"Wassermelone","a":"ding","g":"die","fo":["wassermelone"],"ex":"die Wassermelone"}
+{"l":"Nudel","a":"ding","g":"die","fo":["nudeln"],"ex":"die Nudeln"}
+{"l":"Pizza","a":"ding","g":"die","fo":["pizza"],"ex":"die Pizza"}
+{"l":"Hamburger","a":"ding","g":"der","fo":["hamburger"],"ex":"der Hamburger"}
+{"l":"Lachs","a":"ding","g":"der","fo":["lachs"],"ex":"der Lachs"}
+{"l":"Würstchen","a":"ding","g":"das","fo":["würstchen"],"ex":"das Würstchen"}
+{"l":"Paprikawurst","a":"ding","g":"die","fo":["paprikawurst"],"ex":"die Paprikawurst"}
+{"l":"Weinglas","a":"ding","g":"das","fo":["weinglas"],"ex":"das Weinglas"}
+{"l":"Krug","a":"ding","g":"der","fo":["krug"],"ex":"der Krug"}
+{"l":"Tischdecke","a":"ding","g":"die","fo":["tischdecke"],"ex":"die Tischdecke"}
+{"l":"Salzstreuer","a":"ding","g":"der","fo":["salzstreuer"],"ex":"der Salzstreuer"}
+{"l":"servieren","a":"tun","g":null,"fo":["servieren"],"ex":"servieren"}
+{"l":"sieden","a":"tun","g":null,"fo":["sieden"],"ex":"sieden"}
+{"l":"mischen","a":"tun","g":null,"fo":["mischen"],"ex":"mischen"}
+{"l":"schälen","a":"tun","g":null,"fo":["schälen"],"ex":"schälen"}
+{"l":"Sprudelwasser","a":"ding","g":"das","fo":["sprudelwasser"],"ex":"das Sprudelwasser"}
+{"l":"Tintenfisch","a":"ding","g":"der","fo":["tintenfisch"],"ex":"der Tintenfisch"}
+{"l":"Miesmuschel","a":"ding","g":"die","fo":["miesmuschel"],"ex":"die Miesmuschel"}

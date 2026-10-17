@@ -1,0 +1,176 @@
+<meta charset="utf-8">
+<title>Spikiu Léxico</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: eine Spalte (Handy) — Sprache, Suche, Fächer, Liste nach Häufigkeit, offene Ficha. Werkzeug für Leos Durchsicht, Spikiu-Look, nur hell wie die App. */
+:root{
+  --bg:#eef7f1; --ink:#15163a; --card:#ffffff; --muted:#5d6079; --line:#d9e3dc;
+  --sage:#9bd14a; --mustard:#ffd24a; --terra:#ff6b5a; --pink:#ff4f9a; --plum:#cdbdf2; --sky:#d3eef6; --grau:#e6e3dc;
+  --f-display:'Archivo Black',Impact,sans-serif; --f-body:'DM Sans',system-ui,sans-serif;
+  --f-target:'Lora',Georgia,serif; --f-mono:'DM Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:32rem;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font:500 .66rem/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-size:1.6rem;line-height:1.1;margin:.3rem 0 .2rem}
+.lead{color:var(--muted);margin:0;font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:700 .82rem var(--f-body);border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;padding:.3rem .7rem;cursor:pointer;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chip small{font-weight:500;opacity:.7}
+input[type=search]{width:100%;font:500 1.05rem var(--f-target);border:2px solid var(--ink);border-radius:12px;padding:.55rem .8rem;background:var(--card);color:var(--ink)}
+.chip:focus-visible,.row:focus-visible,.spk:focus-visible,input:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.liste{background:var(--card);border:2px solid var(--ink);border-radius:16px;box-shadow:4px 5px 0 var(--ink);overflow:hidden}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;padding:.55rem .8rem;cursor:pointer;color:var(--ink);font:inherit}
+.row:last-child{border-bottom:0}
+.row[aria-current="true"]{background:#fff6d6}
+.row .w{font:600 1.05rem var(--f-target);min-width:0;word-break:break-word}
+.row .t{grid-column:1/-1;font-size:.85rem;color:var(--muted)}
+.dot{width:.7rem;height:.7rem;border-radius:50%;border:1.5px solid var(--ink);align-self:center}
+.mehr{padding:.6rem .8rem;font-size:.85rem;color:var(--muted)}
+
+.ficha{background:var(--card);border:2px solid var(--ink);border-radius:18px;box-shadow:5px 6px 0 var(--ink);overflow:hidden}
+.f-top{padding:16px 16px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:start}
+.f-art{grid-column:1/-1}
+.f-art span{display:inline-block;font-weight:800;font-size:.75rem;border-radius:999px;padding:.15rem .55rem;border:1.5px solid var(--ink)}
+.lemma{font:600 1.85rem/1.15 var(--f-target);margin:2px 0 0;min-width:0;word-break:break-word}
+.lt{font:500 .85rem var(--f-mono);color:var(--muted)}
+.spk{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:var(--pink);color:#fff;font-size:1.1rem;cursor:pointer;box-shadow:2px 3px 0 var(--ink)}
+.full{grid-column:1/-1}
+.tr{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:.98rem}
+.tr b{font:500 .7rem var(--f-mono);color:var(--muted);text-transform:uppercase;padding-top:.25rem}
+.formen{font:500 .78rem var(--f-mono);color:var(--muted)}
+.getippt{font-size:.82rem;color:var(--muted)}
+.f-sec{border-top:2px dashed var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.f-sec .eyebrow{color:var(--ink)}
+.muster{font:600 1.1rem/1.4 var(--f-target);background:var(--sky);border-radius:10px;padding:.5rem .7rem}
+.muster .slot{font-family:var(--f-body);font-size:.85rem;font-weight:700;background:var(--card);border:1.5px solid var(--ink);border-radius:6px;padding:.05rem .35rem;margin:0 .1rem;white-space:nowrap}
+.bsp{font:400 1.05rem var(--f-target)}
+.bsp-tr{font-size:.88rem;color:var(--muted);font-style:italic}
+.ojo{background:#fff1ee;border:1.5px solid var(--terra);border-radius:10px;padding:.5rem .7rem;font-size:.9rem}
+.hin{background:var(--sky);border:1.5px solid var(--ink);border-radius:10px;padding:.5rem .7rem;font-size:.9rem}
+.ojo b,.hin b{font:500 .7rem var(--f-mono);text-transform:uppercase;margin-right:.3rem}
+.leer{padding:16px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Herramienta · revisión del léxico</div>
+    <h1>El léxico de Spikiu</h1>
+    <p class="lead" id="stat">Cargando…</p>
+  </header>
+
+  <div class="chips" role="group" aria-label="Idioma meta">
+    <button class="chip" id="z-el" data-z="el" aria-pressed="true">Griego</button>
+    <button class="chip" id="z-de" data-z="de" aria-pressed="false">Alemán</button>
+    <button class="chip" id="z-es" data-z="es" aria-pressed="false">Español</button>
+    <button class="chip" id="z-en" data-z="en" aria-pressed="false">Inglés</button>
+  </div>
+
+  <input type="search" id="suche" placeholder="Busca cualquier forma: σταθμό, wartet, dormía…" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <div class="chips" id="faecher" role="group" aria-label="Cajón"></div>
+
+  <article class="ficha" id="ficha" aria-live="polite"></article>
+  <section class="liste" id="liste" aria-label="Resultados"></section>
+</div>
+
+<script src="lexikon.js"></script>
+<script>
+var FACH={ding:['Cosas','var(--sage)'],tun:['Acciones','var(--mustard)'],wie:['Cómo es · cómo se hace','var(--plum)'],klein:['Palabritas','var(--sky)'],name:['Nombres','var(--grau)']};
+var NAME={de:'DE',es:'ES',en:'EN',el:'EL'};
+var BCP={el:'el-GR',de:'de-DE',es:'es-ES',en:'en-US'};
+var Z='el', F='alle', SEL=null, Q='';
+var X=window.spikiuLexikon;
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function musterHtml(m){return esc(m).replace(/\[([^\]]+)\]/g,'<span class="slot">$1</span>');}
+function daten(){return window.__lexDaten&&window.__lexDaten[Z];}
+function sprachObj(o,cls,label){ if(!o) return ''; var h=''; Object.keys(o).forEach(function(k){h+='<div class="'+cls+'"><b>'+NAME[k]+'</b>'+esc(o[k])+'</div>';}); return h; }
+function trBlock(o){ if(!o) return ''; var h='<div class="tr full">'; Object.keys(o).forEach(function(k){h+='<b>'+NAME[k]+'</b><span>'+esc(o[k])+'</span>';}); return h+'</div>'; }
+function bspBlock(b,bt){ if(!b) return ''; var h='<div class="bsp" lang="'+Z+'">'+esc(b)+'</div>'; if(bt) Object.keys(bt).forEach(function(k){h+='<div class="bsp-tr">'+NAME[k]+' · '+esc(bt[k])+'</div>';}); return h; }
+
+function renderFicha(){
+  var el=document.getElementById('ficha'); var d=daten();
+  if(SEL==null||!d){el.innerHTML='<div class="leer">Toca una palabra de la lista para ver su ficha.</div>';return;}
+  var e=d.L[SEL]; var f=FACH[e.a]||['?','#fff'];
+  var kopf=(e.g?e.g+' ':'')+e.l;
+  var h='<div class="f-top"><div class="f-art"><span style="background:'+f[1]+'">'+f[0]+'</span></div>'+
+    '<div><div class="lemma" lang="'+Z+'">'+esc(kopf)+'</div>'+(e.lt?'<div class="lt">'+esc(e.lt)+'</div>':'')+'</div>'+
+    '<button class="spk" id="spk" aria-label="Escuchar">🔊</button>'+trBlock(e.tr)+
+    (e.pl?'<div class="formen full">Plural: '+esc(e.pl)+'</div>':'')+
+    (e.fo?'<div class="formen full">Formas: '+esc(e.fo)+'</div>':'')+
+    (Q&&X.norm(Q)!==e.l.toLowerCase()&&X.lemma(Z,Q)===e.l?'<div class="getippt full">Buscaste: <b lang="'+Z+'">'+esc(Q)+'</b></div>':'')+
+    '</div>';
+  if(e.a==='wie'&&e.adv){
+    h+='<div class="f-sec"><div class="eyebrow">Cómo es</div>'+bspBlock(e.b,e.bt)+'</div>';
+    h+='<div class="f-sec"><div class="eyebrow">Cómo se hace · <span lang="'+Z+'" style="font-family:var(--f-target);text-transform:none;letter-spacing:0">'+esc(e.adv.f)+'</span></div>'+bspBlock(e.adv.b,e.adv.bt)+sprachObj(e.adv.h,'hin')+'</div>';
+  } else if(e.b){
+    h+='<div class="f-sec"><div class="eyebrow">Ejemplo</div>'+bspBlock(e.b,e.bt)+'</div>';
+  }
+  if(e.v){
+    h+='<div class="f-sec"><div class="eyebrow">Cómo se usa</div><div class="muster" lang="'+Z+'">'+musterHtml(e.v.m)+'</div>'+bspBlock(e.v.b,e.v.bt)+sprachObj(e.v.o,'ojo')+'</div>';
+  }
+  el.innerHTML=h;
+  document.getElementById('spk').onclick=function(){
+    try{var s=speechSynthesis;s.cancel();var u=new SpeechSynthesisUtterance(e.l+(e.b?'. '+e.b:''));u.lang=BCP[Z];u.rate=.92;s.speak(u);}catch(err){}
+  };
+}
+
+function treffer(){
+  var d=daten(); if(!d) return [];
+  var q=X.norm(Q), out=[];
+  if(q){
+    var exakt=d.F[q]; if(exakt!==undefined) out.push(exakt);
+    for(var i=0;i<d.L.length&&out.length<80;i++){ var e=d.L[i]; if(i===exakt) continue;
+      if(F!=='alle'&&e.a!==F) continue;
+      var hay=(e.l+' '+(e.tr?Object.values(e.tr).join(' '):'')).toLowerCase();
+      if(hay.indexOf(q)>-1) out.push(i); }
+    if(exakt!==undefined&&F!=='alle'&&d.L[exakt].a!==F) out.shift();
+  } else {
+    for(var j=0;j<d.L.length&&out.length<60;j++){ if(F==='alle'||d.L[j].a===F) out.push(j); }
+  }
+  return out;
+}
+
+function renderListe(){
+  var d=daten(), el=document.getElementById('liste');
+  if(!d){el.innerHTML='<div class="mehr">No se pudo cargar este léxico.</div>';return;}
+  var t=treffer(); var h='';
+  t.forEach(function(i){var e=d.L[i];var trs=e.tr?Object.values(e.tr).slice(0,2).join(' · '):'';
+    h+='<button class="row" id="r-'+i+'" data-i="'+i+'" aria-current="'+(i===SEL)+'"><span class="w" lang="'+Z+'">'+esc((e.g?e.g+' ':'')+e.l)+'</span><span class="dot" style="background:'+(FACH[e.a]||['',''])[1]+'" aria-hidden="true"></span>'+(trs?'<span class="t">'+esc(trs)+'</span>':'')+'</button>';});
+  if(!t.length) h='<div class="mehr">Nada encontrado. Prueba otra forma o quita el filtro.</div>';
+  else if(!Q) h+='<div class="mehr">Ordenado por frecuencia en los textos. Busca para ver más.</div>';
+  el.innerHTML=h;
+  el.querySelectorAll('.row').forEach(function(b){b.onclick=function(){SEL=+b.dataset.i;renderFicha();renderListe();document.getElementById('ficha').scrollIntoView({behavior:'smooth',block:'start'});};});
+}
+
+function renderFaecher(){
+  var d=daten(), c={alle:d?d.L.length:0};
+  if(d) d.L.forEach(function(e){c[e.a]=(c[e.a]||0)+1;});
+  var h='<button class="chip" data-f="alle" aria-pressed="'+(F==='alle')+'">Todo <small>'+c.alle+'</small></button>';
+  ['ding','tun','wie','klein','name'].forEach(function(k){h+='<button class="chip" data-f="'+k+'" aria-pressed="'+(F===k)+'">'+FACH[k][0]+' <small>'+(c[k]||0)+'</small></button>';});
+  var el=document.getElementById('faecher'); el.innerHTML=h;
+  el.querySelectorAll('.chip').forEach(function(b){b.onclick=function(){F=b.dataset.f;renderFaecher();renderListe();};});
+  if(d){var v=d.L.filter(function(e){return e.v;}).length, a=d.L.filter(function(e){return e.adv;}).length;
+    document.getElementById('stat').textContent=d.L.length+' fichas · '+Object.keys(d.F).length+' formas · '+v+' verbos con molde · '+a+' con «cómo se hace»';}
+}
+
+function wechsle(z){
+  Z=z; SEL=null;
+  document.querySelectorAll('[data-z]').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.z===z));});
+  document.getElementById('stat').textContent='Cargando…';
+  X.laden(z).then(function(){ var d=daten(); SEL=d&&Q&&d.F[X.norm(Q)]!==undefined?d.F[X.norm(Q)]:(d?Math.min(1,d.L.length-1):null); render(); },
+                 function(){ document.getElementById('stat').textContent='No se pudo cargar el léxico.'; render(); });
+}
+function render(){renderFaecher();renderListe();renderFicha();}
+
+/* Rohdaten für die Liste mitschneiden (der Kern gibt nur Einzelabfragen heraus) */
+(function(){var add=X.add;window.__lexDaten={};X.add=function(z,d){window.__lexDaten[z]=d;add(z,d);};})();
+document.querySelectorAll('[data-z]').forEach(function(c){c.onclick=function(){wechsle(c.dataset.z);};});
+var tm; document.getElementById('suche').addEventListener('input',function(ev){clearTimeout(tm);var v=ev.target.value;tm=setTimeout(function(){Q=v.trim();var d=daten();if(d&&Q){var i=d.F[X.norm(Q)];if(i!==undefined)SEL=i;}renderListe();renderFicha();},150);});
+wechsle('el');
+</script>

@@ -1,0 +1,101 @@
+{"l":"jarabe","a":"ding","g":"el","fo":["jarabe"],"ex":"el jarabe"}
+{"l":"ambulancia","a":"ding","g":"la","fo":["ambulancia"],"ex":"la ambulancia"}
+{"l":"inyección","a":"ding","g":"la","fo":["inyección"],"ex":"la inyección"}
+{"l":"tirita","a":"ding","g":"la","fo":["tirita"],"ex":"la tirita"}
+{"l":"venda","a":"ding","g":"la","fo":["venda"],"ex":"la venda"}
+{"l":"pulmón","a":"ding","g":"el","fo":["pulmón"],"ex":"el pulmón"}
+{"l":"hueso","a":"ding","g":"el","fo":["hueso"],"ex":"el hueso"}
+{"l":"piel","a":"ding","g":"la","fo":["piel"],"ex":"la piel"}
+{"l":"tobillo","a":"ding","g":"el","fo":["tobillo"],"ex":"el tobillo"}
+{"l":"vacuna","a":"ding","g":"la","fo":["vacuna"],"ex":"la vacuna"}
+{"l":"análisis","a":"ding","g":"el","fo":["análisis"],"ex":"el análisis"}
+{"l":"mareado","a":"wie","g":null,"fo":["mareado"],"ex":"mareado"}
+{"l":"salud","a":"ding","g":"la","fo":["salud"],"ex":"la salud"}
+{"l":"sueño","a":"ding","g":"el","fo":["sueño"],"ex":"el sueño"}
+{"l":"vomitar","a":"tun","g":null,"fo":["vomitar"],"ex":"vomitar"}
+{"l":"presión","a":"ding","g":"la","fo":["presión"],"ex":"la presión"}
+{"l":"muela","a":"ding","g":"la","fo":["muela"],"ex":"la muela"}
+{"l":"primavera","a":"ding","g":"la","fo":["primavera"],"ex":"la primavera"}
+{"l":"rayo","a":"ding","g":"el","fo":["rayo"],"ex":"el rayo"}
+{"l":"temperatura","a":"ding","g":"la","fo":["temperatura"],"ex":"la temperatura"}
+{"l":"soleado","a":"wie","g":null,"fo":["soleado"],"ex":"soleado"}
+{"l":"pronóstico","a":"ding","g":"el","fo":["pronóstico"],"ex":"el pronóstico"}
+{"l":"templado","a":"wie","g":null,"fo":["templado"],"ex":"templado"}
+{"l":"arcoíris","a":"ding","g":"el","fo":["arcoíris"],"ex":"el arcoíris"}
+{"l":"ola","a":"ding","g":"la","fo":["ola"],"ex":"la ola de calor"}
+{"l":"granizo","a":"ding","g":"el","fo":["granizo"],"ex":"el granizo"}
+{"l":"brisa","a":"ding","g":"la","fo":["brisa"],"ex":"la brisa"}
+{"l":"huracán","a":"ding","g":"el","fo":["huracán"],"ex":"el huracán"}
+{"l":"sequía","a":"ding","g":"la","fo":["sequía"],"ex":"la sequía"}
+{"l":"helada","a":"ding","g":"la","fo":["helada"],"ex":"la helada"}
+{"l":"clima","a":"ding","g":"la","fo":["clima"],"ex":"el clima"}
+{"l":"chubasco","a":"ding","g":"el","fo":["chubasco"],"ex":"el chubasco"}
+{"l":"caluroso","a":"wie","g":null,"fo":["caluroso"],"ex":"caluroso"}
+{"l":"ventoso","a":"wie","g":null,"fo":["ventoso"],"ex":"ventoso"}
+{"l":"lluvioso","a":"wie","g":null,"fo":["lluvioso"],"ex":"lluvioso"}
+{"l":"pera","a":"ding","g":"la","fo":["pera"],"ex":"la pera"}
+{"l":"piña","a":"ding","g":"la","fo":["piña"],"ex":"la piña"}
+{"l":"melón","a":"ding","g":"el","fo":["melón"],"ex":"el melón"}
+{"l":"sandía","a":"ding","g":"la","fo":["sandía"],"ex":"la sandía"}
+{"l":"pizza","a":"ding","g":"la","fo":["pizza"],"ex":"la pizza"}
+{"l":"hamburguesa","a":"ding","g":"la","fo":["hamburguesa"],"ex":"la hamburguesa"}
+{"l":"salmón","a":"ding","g":"el","fo":["salmón"],"ex":"el salmón"}
+{"l":"sardina","a":"ding","g":"la","fo":["sardina"],"ex":"la sardina"}
+{"l":"salchicha","a":"ding","g":"la","fo":["salchicha"],"ex":"la salchicha"}
+{"l":"chorizo","a":"ding","g":"el","fo":["chorizo"],"ex":"el chorizo"}
+{"l":"jarra","a":"ding","g":"la","fo":["jarra"],"ex":"la jarra"}
+{"l":"mantel","a":"ding","g":"el","fo":["mantel"],"ex":"el mantel"}
+{"l":"salero","a":"ding","g":"la","fo":["salero"],"ex":"el salero"}
+{"l":"desayunar","a":"tun","g":null,"fo":["desayunar"],"ex":"desayunar"}
+{"l":"almorzar","a":"tun","g":null,"fo":["almorzar"],"ex":"almorzar"}
+{"l":"merendar","a":"tun","g":null,"fo":["merendar"],"ex":"merendar"}
+{"l":"merienda","a":"ding","g":"la","fo":["merienda"],"ex":"la merienda"}
+{"l":"freír","a":"tun","g":null,"fo":["freír"],"ex":"freír"}
+{"l":"hervir","a":"tun","g":null,"fo":["hervir"],"ex":"hervir"}
+{"l":"mezclar","a":"tun","g":null,"fo":["mezclar"],"ex":"mezclar"}
+{"l":"pelar","a":"tun","g":null,"fo":["pelar"],"ex":"pelar"}
+{"l":"calamar","a":"ding","g":"el","fo":["calamar"],"ex":"el calamar"}
+{"l":"mejillón","a":"ding","g":"el","fo":["mejillón"],"ex":"el mejillón"}
+{"l":"lenteja","a":"ding","g":"la","fo":["lenteja"],"ex":"la lenteja"}
+{"l":"garbanzo","a":"ding","g":"el","fo":["garbanzo"],"ex":"el garbanzo"}
+{"l":"pimiento","a":"ding","g":"el","fo":["pimiento"],"ex":"el pimiento"}
+{"l":"berenjena","a":"ding","g":"la","fo":["berenjena"],"ex":"la berenjena"}
+{"l":"calabacín","a":"ding","g":"el","fo":["calabacín"],"ex":"el calabacín"}
+{"l":"seta","a":"ding","g":"la","fo":["seta"],"ex":"la seta"}
+{"l":"perejil","a":"ding","g":"el","fo":["perejil"],"ex":"el perejil"}
+{"l":"albahaca","a":"ding","g":"la","fo":["albahaca"],"ex":"la albahaca"}
+{"l":"azafrán","a":"ding","g":"el","fo":["azafrán"],"ex":"el azafrán"}
+{"l":"panecillo","a":"ding","g":"el","fo":["panecillo"],"ex":"el panecillo"}
+{"l":"empanada","a":"ding","g":"la","fo":["empanada"],"ex":"la empanada"}
+{"l":"caldo","a":"ding","g":"el","fo":["caldo"],"ex":"el caldo"}
+{"l":"puré","a":"ding","g":"el","fo":["puré"],"ex":"el puré"}
+{"l":"bistec","a":"ding","g":"el","fo":["bistec"],"ex":"el bistec"}
+{"l":"pavo","a":"ding","g":"el","fo":["pavo"],"ex":"el pavo"}
+{"l":"conejo","a":"ding","g":"el","fo":["conejo"],"ex":"el conejo"}
+{"l":"pulpo","a":"ding","g":"el","fo":["pulpo"],"ex":"el pulpo"}
+{"l":"bacalao","a":"ding","g":"el","fo":["bacalao"],"ex":"el bacalao"}
+{"l":"caramelo","a":"ding","g":"el","fo":["caramelo"],"ex":"el caramelo"}
+{"l":"vainilla","a":"ding","g":"la","fo":["vainilla"],"ex":"la vainilla"}
+{"l":"sidra","a":"ding","g":"el","fo":["sidra"],"ex":"la sidra"}
+{"l":"mineral","a":"wie","g":null,"fo":["mineral"],"ex":"el agua mineral"}
+{"l":"licor","a":"ding","g":"el","fo":["licor"],"ex":"el licor"}
+{"l":"cava","a":"ding","g":"el","fo":["cava"],"ex":"el cava"}
+{"l":"nevera","a":"ding","g":"la","fo":["nevera"],"ex":"la nevera"}
+{"l":"congelador","a":"ding","g":"el","fo":["congelador"],"ex":"el congelador"}
+{"l":"microondas","a":"ding","g":"el","fo":["microondas"],"ex":"el microondas"}
+{"l":"vegetariano","a":"wie","g":null,"fo":["vegetariano"],"ex":"el vegetariano"}
+{"l":"dieta","a":"ding","g":"la","fo":["dieta"],"ex":"la dieta"}
+{"l":"vitamina","a":"ding","g":"la","fo":["vitamina"],"ex":"la vitamina"}
+{"l":"hambriento","a":"wie","g":null,"fo":["hambriento"],"ex":"hambriento"}
+{"l":"sediento","a":"wie","g":null,"fo":["sediento"],"ex":"sediento"}
+{"l":"delicioso","a":"wie","g":null,"fo":["delicioso"],"ex":"delicioso"}
+{"l":"mostaza","a":"ding","g":"la","fo":["mostaza"],"ex":"la mostaza"}
+{"l":"kétchup","a":"ding","g":"el","fo":["kétchup"],"ex":"el kétchup"}
+{"l":"mayonesa","a":"ding","g":"la","fo":["mayonesa"],"ex":"la mayonesa"}
+{"l":"trigo","a":"ding","g":"el","fo":["trigo"],"ex":"el trigo"}
+{"l":"avena","a":"ding","g":"la","fo":["avena"],"ex":"la avena"}
+{"l":"cereal","a":"ding","g":"el","fo":["cereales"],"ex":"los cereales"}
+{"l":"tostadora","a":"ding","g":"la","fo":["tostadora"],"ex":"la tostadora"}
+{"l":"sacacorchos","a":"ding","g":"el","fo":["sacacorchos"],"ex":"el sacacorchos"}
+{"l":"brindis","a":"ding","g":"el","fo":["brindis"],"ex":"el brindis"}
+{"l":"picnic","a":"ding","g":"el","fo":["picnic"],"ex":"el picnic"}

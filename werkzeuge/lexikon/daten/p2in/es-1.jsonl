@@ -1,0 +1,200 @@
+{"l":"el","a":"klein","g":null,"fo":["la","el","las","los"],"ex":"la camarera"}
+{"l":"de","a":"klein","g":null,"fo":["de"],"ex":"Está de viaje"}
+{"l":"y","a":"klein","g":null,"fo":["y"],"ex":"—¿Y la firma?"}
+{"l":"un","a":"klein","g":null,"fo":["un","una","unos"],"ex":"—Sí… un poco."}
+{"l":"en","a":"klein","g":null,"fo":["en"],"ex":"en el mercado"}
+{"l":"a","a":"klein","g":null,"fo":["a"],"ex":"a la izquierda"}
+{"l":"ser","a":"tun","g":null,"fo":["es","era","son","soy","fue","sea","ser","eres"],"ex":"es"}
+{"l":"que","a":"klein","g":null,"fo":["que"],"ex":"no creo que …"}
+{"l":"no","a":"klein","g":null,"fo":["no"],"ex":"no creo que …"}
+{"l":"por","a":"klein","g":null,"fo":["por"],"ex":"Por la lluvia"}
+{"l":"estar","a":"tun","g":null,"fo":["está","estaba","estoy","estás","estar","están","estaban","esté"],"ex":"—¿Está lejos?"}
+{"l":"con","a":"klein","g":null,"fo":["con"],"ex":"el agua con gas"}
+{"l":"se","a":"klein","g":null,"fo":["se"],"ex":"Se recomienda"}
+{"l":"decir","a":"tun","g":null,"fo":["di","dijo","dice","decir","decimos","dicho","dicen","dices"],"ex":"Di que sois dos"}
+{"l":"haber","a":"tun","g":null,"fo":["hay","había","ha","he","has","han","hubo","haber"],"ex":"—¿Hay ascensor?"}
+{"l":"le","a":"klein","g":null,"fo":["le","les"],"ex":"—¿Cuánto le debo?"}
+{"l":"tener","a":"tun","g":null,"fo":["tiene","tengo","tenía","tienen","tienes","tenga","tenían","tenemos"],"ex":"—¿Tiene fiebre?"}
+{"l":"del","a":"klein","g":null,"fo":["del"],"ex":"el plato del día"}
+{"l":"al","a":"klein","g":null,"fo":["al"],"ex":"al aeropuerto"}
+{"l":"qué","a":"klein","g":null,"fo":["qué"],"ex":"¿Qué hora es?"}
+{"l":"agua","a":"ding","g":"el","fo":["agua"],"ex":"La última agua"}
+{"l":"aquí","a":"klein","g":null,"fo":["aquí"],"ex":"aquí está bien"}
+{"l":"lo","a":"klein","g":null,"fo":["lo"],"ex":"lo arreglamos"}
+{"l":"hacer","a":"tun","g":null,"fo":["hace","hacer","hacía","hizo","hecho","hará","haciendo","hacemos"],"ex":"—¿Y qué hacemos?"}
+{"l":"me","a":"klein","g":null,"fo":["me"],"ex":"me queda bien"}
+{"l":"bueno","a":"wie","g":null,"fo":["buenos","buenas","bueno","buen","buena","buenísimo","buenísima","buenísimas"],"ex":"¡Qué buena idea!"}
+{"l":"ir","a":"tun","g":null,"fo":["va","vamos","ir","voy","vas","vaya","van","iba"],"ex":"—¿A dónde vamos?"}
+{"l":"para","a":"klein","g":null,"fo":["para"],"ex":"Mesa para dos"}
+{"l":"sí","a":"klein","g":null,"fo":["sí"],"ex":"—Sí… un poco."}
+{"l":"mi","a":"klein","g":null,"fo":["mi","mis"],"ex":"en mi opinión"}
+{"l":"más","a":"klein","g":null,"fo":["más"],"ex":"es más rápido"}
+{"l":"su","a":"klein","g":null,"fo":["su","sus"],"ex":"Cada loco con su tema."}
+{"l":"pero","a":"klein","g":null,"fo":["pero"],"ex":"—No. Pero seguro."}
+{"l":"muy","a":"klein","g":null,"fo":["muy"],"ex":"era muy tranquilo"}
+{"l":"todo","a":"klein","g":null,"fo":["todo","todos","toda","todas"],"ex":"todo incluido"}
+{"l":"mucho","a":"klein","g":null,"fo":["mucho","mucha","muchas","muchos","muchísimo","muchísimas"],"ex":"Me gusta mucho."}
+{"l":"día","a":"ding","g":"el","fo":["días","día"],"ex":"el plato del día"}
+{"l":"llegar","a":"tun","g":null,"fo":["llega","llegó","llegué","llegar","llego","llegaron","llegan","llegamos"],"ex":"Acabo de llegar."}
+{"l":"si","a":"klein","g":null,"fo":["si"],"ex":"Por si acaso."}
+{"l":"llevar","a":"tun","g":null,"fo":["lleva","llevo","llevaba","llevar","llevas","lléveme","lleven","llevó"],"ex":"lleva retraso"}
+{"l":"mañana","a":"klein","g":null,"fo":["mañana"],"ex":"Mañana llueve"}
+{"l":"preguntar","a":"tun","g":null,"fo":["pregunta","preguntó","preguntar","preguntan","preguntaba","preguntaban"],"ex":"Pregunta si está lejos"}
+{"l":"dos","a":"klein","g":null,"fo":["dos"],"ex":"Mesa para dos"}
+{"l":"ya","a":"klein","g":null,"fo":["ya"],"ex":"ya había salido"}
+{"l":"foto","a":"ding","g":"la","fo":["fotos","foto"],"ex":"—¿No vas a hacer más fotos? —preguntó Ramón."}
+{"l":"tarde","a":"ding","g":"la","fo":["tarde","tardes"],"ex":"¿Y por la tarde?"}
+{"l":"querer","a":"tun","g":null,"fo":["quiere","quiero","quería","querer","quieres","quiso","querías","queremos"],"ex":"Querer es poder."}
+{"l":"bien","a":"wie","g":null,"fo":["bien"],"ex":"me queda bien"}
+{"l":"como","a":"klein","g":null,"fo":["como"],"ex":"Dormir como un tronco."}
+{"l":"salir","a":"tun","g":null,"fo":["sale","salimos","salido","salía","salió","salir","sal","salen"],"ex":"—¿De qué vía sale?"}
+{"l":"café","a":"ding","g":"el","fo":["café"],"ex":"tomando café"}
+{"l":"ver","a":"tun","g":null,"fo":["ver","ve","vemos","veo","visto","vi","vio","veremos"],"ex":"Buena idea. ¡Nos vemos el sábado!"}
+{"l":"tomar","a":"tun","g":null,"fo":["tome","tomar","toma","tomando","tomas","tomamos","tomó","tomaba"],"ex":"¿Toma alguna medicina?"}
+{"l":"dar","a":"tun","g":null,"fo":["da","dio","doy","dale","dar","daba","darle","dieron"],"ex":"Da las gracias"}
+{"l":"después","a":"klein","g":null,"fo":["después"],"ex":"Después, la calle se quedó vacía."}
+{"l":"hora","a":"ding","g":"la","fo":["hora","horas"],"ex":"¿Qué hora es?"}
+{"l":"favor","a":"ding","g":"el","fo":["favor"],"ex":"por favor"}
+{"l":"este","a":"klein","g":null,"fo":["esta","este","estos"],"ex":"Esta misma tarde"}
+{"l":"poder","a":"tun","g":null,"fo":["puedo","puede","puedes","podía","podría","puedas","pueda","poder"],"ex":"Querer es poder."}
+{"l":"valer","a":"tun","g":null,"fo":["vale","valía"],"ex":"¿cuánto vale?"}
+{"l":"usted","a":"klein","g":null,"fo":["usted","ustedes"],"ex":"—¿Vive usted solo?"}
+{"l":"desde","a":"klein","g":null,"fo":["desde"],"ex":"¿Desde cuándo?"}
+{"l":"río","a":"ding","g":"el","fo":["río","ríos"],"ex":"Río de la Plata"}
+{"l":"doña","a":"klein","g":null,"fo":["doña"],"ex":"la casera, doña Lupita"}
+{"l":"noche","a":"ding","g":"la","fo":["noche","noches"],"ex":"una noche"}
+{"l":"hoy","a":"klein","g":null,"fo":["hoy"],"ex":"Hoy es un buen día."}
+{"l":"llover","a":"tun","g":null,"fo":["llueve","llover","llovió","llovido","lloviendo"],"ex":"Mañana llueve"}
+{"l":"vivir","a":"tun","g":null,"fo":["vive","vivo","vivíamos","viviría","vivir","vivías","viven","vivíais"],"ex":"—¿Vive usted solo?"}
+{"l":"año","a":"ding","g":"el","fo":["años","año"],"ex":"Tiene doce años."}
+{"l":"cinco","a":"klein","g":null,"fo":["cinco"],"ex":"—Cinco minutos."}
+{"l":"padre","a":"ding","g":"el","fo":["padre","padres"],"ex":"el padre"}
+{"l":"otro","a":"klein","g":null,"fo":["otra","otro","otros","otras"],"ex":"—¿Necesito otra cita?"}
+{"l":"nada","a":"klein","g":null,"fo":["nada"],"ex":"nada más"}
+{"l":"gracias","a":"ding","g":"la","fo":["gracias"],"ex":"Da las gracias"}
+{"l":"mirar","a":"tun","g":null,"fo":["mira","miró","mirar","mire","miraba","miran","miro","miramos"],"ex":"—¡Mire, señorita! ¡Su bus!"}
+{"l":"tres","a":"klein","g":null,"fo":["tres"],"ex":"tres veces al día"}
+{"l":"pasar","a":"tun","g":null,"fo":["pasa","pásele","pasado","pasar","pasaba","pasaron","pasó","pasan"],"ex":"No pasa nada."}
+{"l":"diez","a":"klein","g":null,"fo":["diez"],"ex":"—No, no. Diez minutos."}
+{"l":"yo","a":"klein","g":null,"fo":["yo"],"ex":"—Espere, señora. Yo la ayudo."}
+{"l":"casa","a":"ding","g":"la","fo":["casa","casas"],"ex":"quedarse en casa"}
+{"l":"tiempo","a":"ding","g":"el","fo":["tiempo"],"ex":"¿qué tiempo hará?"}
+{"l":"vez","a":"ding","g":"la","fo":["vez","veces"],"ex":"otra vez"}
+{"l":"hasta","a":"klein","g":null,"fo":["hasta"],"ex":"¡Hasta luego!"}
+{"l":"cuando","a":"klein","g":null,"fo":["cuando"],"ex":"cuando era niño"}
+{"l":"familia","a":"ding","g":"la","fo":["familia","familias"],"ex":"la familia"}
+{"l":"poco","a":"klein","g":null,"fo":["poco","poquito"],"ex":"—Sí… un poco."}
+{"l":"ese","a":"klein","g":null,"fo":["esa","ese","esas"],"ex":"—¿Y ese vaso de agua? —pregunta Lotte."}
+{"l":"llamarse","a":"tun","g":null,"fo":["llama","llamo","llamaba","llamaban"],"ex":"¿Cómo se llama?"}
+{"l":"solo","a":"klein","g":null,"fo":["solo"],"ex":"Solo los lunes"}
+{"l":"contar","a":"tun","g":null,"fo":["cuenta","cuénteme","contaba","contó","contando"],"ex":"cuenta una historia"}
+{"l":"primero","a":"klein","g":null,"fo":["primero","primera","primer"],"ex":"—Sí, incluido. De siete a diez, en la primera planta."}
+{"l":"esperar","a":"tun","g":null,"fo":["esperar","esperaba","espero","esperando","esperaban","esperó","esperamos","esperaron"],"ex":"esperar"}
+{"l":"don","a":"klein","g":null,"fo":["don"],"ex":"Don Rolando, el taxista"}
+{"l":"pedir","a":"tun","g":null,"fo":["pide","pidió","pedir","pido","pedí","pedimos","pidieron","pedía"],"ex":"Pide un café"}
+{"l":"venir","a":"tun","g":null,"fo":["viene","vienen","venga","venido","ven","venía","venir","vengo"],"ex":"¡Menos mal que viniste!"}
+{"l":"frío","a":"ding","g":"el","fo":["frío"],"ex":"Hoy hace mucho frío."}
+{"l":"o","a":"klein","g":null,"fo":["o"],"ex":"¿Con leche o solo?"}
+{"l":"pequeño","a":"wie","g":null,"fo":["pequeño","pequeña","pequeños","pequeñas"],"ex":"Vivo en una casa pequeña."}
+{"l":"menos","a":"klein","g":null,"fo":["menos"],"ex":"echar de menos"}
+{"l":"azul","a":"wie","g":null,"fo":["azul"],"ex":"—Cómo no, mija. Es la puerta azul. Aquí la espero."}
+{"l":"siempre","a":"klein","g":null,"fo":["siempre"],"ex":"Mañana, paraguas. Siempre."}
+{"l":"calle","a":"ding","g":"la","fo":["calle","calles"],"ex":"en la calle"}
+{"l":"abuelo","a":"ding","g":"el","fo":["abuelo","abuela","abuelos"],"ex":"Sí, una foto de mi abuelo. Murió hace cinco años."}
+{"l":"dónde","a":"klein","g":null,"fo":["dónde"],"ex":"¿De dónde eres?"}
+{"l":"sin","a":"klein","g":null,"fo":["sin"],"ex":"sin lactosa"}
+{"l":"grande","a":"wie","g":null,"fo":["grande","grandes","gran"],"ex":"me queda grande"}
+{"l":"cuánto","a":"klein","g":null,"fo":["cuánto","cuántos"],"ex":"¿cuánto vale?"}
+{"l":"pagar","a":"tun","g":null,"fo":["pagar","paga","pagan","pagó","pagué","pago"],"ex":"—¿Paga en efectivo?"}
+{"l":"te","a":"klein","g":null,"fo":["te"],"ex":"¿Cómo te llamas?"}
+{"l":"mano","a":"ding","g":"la","fo":["mano","manos"],"ex":"Echar una mano."}
+{"l":"bus","a":"ding","g":"el","fo":["bus","buses"],"ex":"El bus ya había salido"}
+{"l":"mesa","a":"ding","g":"la","fo":["mesa","mesas"],"ex":"la mesa"}
+{"l":"lluvia","a":"ding","g":"la","fo":["lluvia","lluvias"],"ex":"la lluvia"}
+{"l":"nube","a":"ding","g":"la","fo":["nubes","nube"],"ex":"Estar en las nubes."}
+{"l":"subir","a":"tun","g":null,"fo":["sube","suba","subimos","subir","suben","subido","subió","subieron"],"ex":"—Sí, claro. Suba, suba."}
+{"l":"cómo","a":"klein","g":null,"fo":["cómo"],"ex":"¿Qué? / ¿Cómo?"}
+{"l":"cuatro","a":"klein","g":null,"fo":["cuatro"],"ex":"antes de las cuatro"}
+{"l":"minuto","a":"ding","g":"el","fo":["minutos","minuto"],"ex":"—Cinco minutos."}
+{"l":"hermano","a":"ding","g":"el","fo":["hermana","hermano","hermanos"],"ex":"¿Tienes hermanos?"}
+{"l":"creer","a":"tun","g":null,"fo":["creo","nostálgica","creer","créame"],"ex":"no creo que …"}
+{"l":"rojo","a":"wie","g":null,"fo":["rojo","roja","rojos"],"ex":"El coche es rojo."}
+{"l":"seguir","a":"tun","g":null,"fo":["sigue","siga","seguía","seguir","sigo","sigan","siguen"],"ex":"—¿Y siguen allí?"}
+{"l":"sol","a":"ding","g":"el","fo":["sol"],"ex":"las gafas de sol"}
+{"l":"ahora","a":"klein","g":null,"fo":["ahora"],"ex":"Ahora no tengo dinero."}
+{"l":"casi","a":"klein","g":null,"fo":["casi"],"ex":"—No. En diciembre, por la tarde, casi siempre cae pelo de gato."}
+{"l":"habitación","a":"ding","g":"la","fo":["habitación","habitaciones"],"ex":"la habitación"}
+{"l":"doler","a":"tun","g":null,"fo":["duele","dolía","dolió","doler"],"ex":"Me duele la cabeza"}
+{"l":"medio","a":"wie","g":null,"fo":["media","medio"],"ex":"Llevo media hora esperando."}
+{"l":"metro","a":"ding","g":"el","fo":["metro","metros"],"ex":"y cerca del metro"}
+{"l":"poner","a":"tun","g":null,"fo":["pone","puso","poner","pongo","ponemos","pusimos"],"ex":"¡Buenos días! ¿Qué le pongo?"}
+{"l":"mejor","a":"wie","g":null,"fo":["mejor"],"ex":"—¿Ya está mejor, mijita?"}
+{"l":"tren","a":"ding","g":"el","fo":["tren","trenes"],"ex":"perder el tren"}
+{"l":"blanco","a":"wie","g":null,"fo":["blanco","blanca","blancos","blancas"],"ex":"El médico era un hombre mayor, con barba blanca y manos grandes."}
+{"l":"quedarse","a":"tun","g":null,"fo":["quedaría","quédese","quedó","quedado","quedarse","quedarme","quedarte","quedarías"],"ex":"me quedaría"}
+{"l":"hablar","a":"tun","g":null,"fo":["hablaba","habla","hablan","hablar","hablas","habló","hablamos","hablando"],"ex":"Hablar por los codos."}
+{"l":"mandar","a":"tun","g":null,"fo":["manda","mande","mandé","mándame","mandó","mando","mandaste","mandar"],"ex":"mandar una postal"}
+{"l":"cerca","a":"klein","g":null,"fo":["cerca"],"ex":"y cerca del metro"}
+{"l":"palabra","a":"ding","g":"la","fo":["palabra"],"ex":"Aprendo una palabra nueva."}
+{"l":"ciudad","a":"ding","g":"la","fo":["ciudad","ciudades"],"ex":"La ciudad es muy bonita."}
+{"l":"taxi","a":"ding","g":"el","fo":["taxi","taxis"],"ex":"taxi"}
+{"l":"mes","a":"ding","g":"el","fo":["meses","mes"],"ex":"llevo seis meses viajando"}
+{"l":"mercado","a":"ding","g":"el","fo":["mercado"],"ex":"en el mercado"}
+{"l":"cabeza","a":"ding","g":"la","fo":["cabeza"],"ex":"el dolor de cabeza"}
+{"l":"ayer","a":"klein","g":null,"fo":["ayer"],"ex":"Ayer fui al cine."}
+{"l":"leche","a":"ding","g":"la","fo":["leche"],"ex":"Un café con leche"}
+{"l":"seis","a":"klein","g":null,"fo":["seis"],"ex":"Son seis euros en total."}
+{"l":"entonces","a":"klein","g":null,"fo":["entonces"],"ex":"—Entonces, ¿se lo queda?"}
+{"l":"lado","a":"ding","g":"el","fo":["lado","lados"],"ex":"al lado de"}
+{"l":"caer","a":"tun","g":null,"fo":["caí","caía","cae","cayó","caían","caer","cayendo","caen"],"ex":"me caí"}
+{"l":"volver","a":"tun","g":null,"fo":["vuelve","volvemos","vuelva","volvió","vuelvo","vuelven","volvía","volví"],"ex":"Un vaso de agua para los que vuelven"}
+{"l":"calor","a":"ding","g":"el","fo":["calor"],"ex":"la ola de calor"}
+{"l":"algo","a":"klein","g":null,"fo":["algo"],"ex":"Algo para beber"}
+{"l":"ocho","a":"klein","g":null,"fo":["ocho"],"ex":"cada ocho horas"}
+{"l":"claro","a":"klein","g":null,"fo":["claro"],"ex":"—Claro. ¿Por qué?"}
+{"l":"señora","a":"ding","g":"la","fo":["señora"],"ex":"—¿Y para la señora?"}
+{"l":"vuelta","a":"ding","g":"la","fo":["vuelta","vueltas"],"ex":"dar la vuelta"}
+{"l":"lugar","a":"ding","g":"el","fo":["lugar","lugares"],"ex":"Palabra del lugar: achachay."}
+{"l":"euro","a":"ding","g":"el","fo":["euros","euro"],"ex":"—Veinte euros el kilo."}
+{"l":"vaso","a":"ding","g":"el","fo":["vaso","vasos"],"ex":"un vaso"}
+{"l":"puerta","a":"ding","g":"la","fo":["puerta","puertas"],"ex":"en la puerta"}
+{"l":"hijo","a":"ding","g":"el","fo":["hijo","hija","hijos"],"ex":"el hijo"}
+{"l":"cambiar","a":"tun","g":null,"fo":["cambiar","cambiarla","cambia","cambió","cambiarlo","cambiaron","cambiamos"],"ex":"cambiar de habitación"}
+{"l":"comer","a":"tun","g":null,"fo":["come","comer","comido","comen","comían","comíamos","comía","comimos"],"ex":"—Pues hoy come usted las manzanas de Rosario. Un kilo, ¿no?"}
+{"l":"pescado","a":"ding","g":"el","fo":["pescado"],"ex":"El pescado está muy rico hoy."}
+{"l":"centro","a":"ding","g":"el","fo":["centro"],"ex":"el centro comercial"}
+{"l":"cada","a":"klein","g":null,"fo":["cada"],"ex":"cada ocho horas"}
+{"l":"allí","a":"klein","g":null,"fo":["allí"],"ex":"allí"}
+{"l":"kilo","a":"ding","g":"el","fo":["kilo","kilos"],"ex":"Un kilo de manzanas"}
+{"l":"uno","a":"klein","g":null,"fo":["uno","unas"],"ex":"—¿Agua? ¿Como la que uno toma?"}
+{"l":"poncho","a":"ding","g":"el","fo":["poncho","ponchos"],"ex":"Lotte miró aquel poncho con amor y su billetera con tristeza."}
+{"l":"cuarto","a":"ding","g":"el","fo":["cuarto"],"ex":"el cuarto amueblado"}
+{"l":"nunca","a":"klein","g":null,"fo":["nunca"],"ex":"Nunca he estado allí."}
+{"l":"también","a":"klein","g":null,"fo":["también"],"ex":"—Pero su padre también es muy padre, ¿eh?"}
+{"l":"lago","a":"ding","g":"el","fo":["lago","lagos"],"ex":"Son el lago San Pablo y las montañas. Ese cuesta ochenta dólares."}
+{"l":"parecer","a":"tun","g":null,"fo":["parece","parecía","parecer","parecen"],"ex":"me parece que …"}
+{"l":"necesitar","a":"tun","g":null,"fo":["necesito","necesita","necesitas","necesitarías","necesitar"],"ex":"¿Necesita ayuda?"}
+{"l":"gustar","a":"tun","g":null,"fo":["gusta","gustaba","gustar","guste","gustó","gustas","gustado","gustaría"],"ex":"Me gusta mucho."}
+{"l":"sacar","a":"tun","g":null,"fo":["saca","sacar","sacaría","saco","sacó","sacarías","sacas","saqué"],"ex":"Me saca de quicio."}
+{"l":"comprar","a":"tun","g":null,"fo":["compré","compra","compró","compraste","compraron","compras","compraba","comprado"],"ex":"lo compré"}
+{"l":"queso","a":"ding","g":"el","fo":["queso"],"ex":"—¿Y queso? ¿Tiene queso?"}
+{"l":"cita","a":"ding","g":"la","fo":["cita"],"ex":"—¿Necesito otra cita?"}
+{"l":"carta","a":"ding","g":"la","fo":["carta"],"ex":"la carta"}
+{"l":"pan","a":"ding","g":"el","fo":["pan"],"ex":"el pan"}
+{"l":"viaje","a":"ding","g":"el","fo":["viaje"],"ex":"Está de viaje"}
+{"l":"nos","a":"klein","g":null,"fo":["nos"],"ex":"nos trae"}
+{"l":"porque","a":"klein","g":null,"fo":["porque"],"ex":"Porque ya no llueve"}
+{"l":"así","a":"klein","g":null,"fo":["así"],"ex":"—Sí, sí. Así está bien."}
+{"l":"piso","a":"ding","g":"el","fo":["piso","pisos"],"ex":"—No. Vivo con tres compañeros de piso."}
+{"l":"manzana","a":"ding","g":"la","fo":["manzanas","manzana"],"ex":"Un kilo de manzanas"}
+{"l":"mismo","a":"klein","g":null,"fo":["mismo","misma"],"ex":"tú mismo"}
+{"l":"quedar","a":"tun","g":null,"fo":["queda","quedamos","quedar","quede","quedaba","quedaban"],"ex":"me queda bien"}
+{"l":"dejar","a":"tun","g":null,"fo":["deja","dejo","dejó","dejamos","dejé","dejes","déjala"],"ex":"¿me lo deja en …?"}
+{"l":"billete","a":"ding","g":"el","fo":["billete"],"ex":"Compra un billete para Madrid"}
+{"l":"tu","a":"klein","g":null,"fo":["tu"],"ex":"Escribe aquí tu nombre."}
+{"l":"comida","a":"ding","g":"la","fo":["comida"],"ex":"La comida está lista."}
+{"l":"nueve","a":"klein","g":null,"fo":["nueve"],"ex":"El próximo sale a las nueve."}
+{"l":"antes","a":"klein","g":null,"fo":["antes"],"ex":"antes"}
+{"l":"eso","a":"klein","g":null,"fo":["eso"],"ex":"—Guarde eso. Aquí paga el mayor."}
+{"l":"sobre","a":"klein","g":null,"fo":["sobre"],"ex":"Su padre se cayó de lado, sobre el hombro derecho."}
+{"l":"alemán","a":"ding","g":"el","fo":["alemán","alemanes"],"ex":"—Hoy no es nada, alemán."}

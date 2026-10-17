@@ -1,0 +1,200 @@
+{"l":"der","a":"klein","g":null,"fo":["die","der","das","den","dem","des","det","deren"],"ex":"die Schmerzen"}
+{"l":"ein","a":"klein","g":null,"fo":["ein","eine","einen","einem","einer","eines","nem"],"ex":"—Nur ein Papier?"}
+{"l":"sein","a":"tun","g":null,"fo":["ist","war","sind","bin","bist","wäre","is","seid"],"ex":"Ist das weit?"}
+{"l":"sie","a":"klein","g":null,"fo":["sie","ihr","ihnen"],"ex":"Sie ist zwölf."}
+{"l":"und","a":"klein","g":null,"fo":["und","un"],"ex":"— Und danach?"}
+{"l":"ich","a":"klein","g":null,"fo":["ich","mir","mich","ick"],"ex":"könnte ich …?"}
+{"l":"haben","a":"tun","g":null,"fo":["hat","habe","haben","hatte","hast","hätte","hatten","habt"],"ex":"hat Verspätung"}
+{"l":"in","a":"klein","g":null,"fo":["in"],"ex":"In der Tram 19"}
+{"l":"es","a":"klein","g":null,"fo":["es","et"],"ex":"Morgen regnet es"}
+{"l":"sagen","a":"tun","g":null,"fo":["sagt","sag","sagte","sagen","gesagt","sage","sagst","sagten"],"ex":"er sagt, ich solle …"}
+{"l":"am","a":"klein","g":null,"fo":["am"],"ex":"Und am Nachmittag?"}
+{"l":"mit","a":"klein","g":null,"fo":["mit"],"ex":"—Klara mit K?"}
+{"l":"auf","a":"klein","g":null,"fo":["auf","uf"],"ex":"Stau auf der A9"}
+{"l":"er","a":"klein","g":null,"fo":["er","ihn","ihm"],"ex":"er sagt, ich solle …"}
+{"l":"du","a":"klein","g":null,"fo":["du","dir","dich","di"],"ex":"Wie heißt du?"}
+{"l":"im","a":"klein","g":null,"fo":["im"],"ex":"Im Krankenhaus"}
+{"l":"gut","a":"wie","g":null,"fo":["guten","gut","gute","besten","beste","besser","gutes","guter"],"ex":"Mir geht es gut."}
+{"l":"nicht","a":"klein","g":null,"fo":["nicht","ned"],"ex":"Ich verstehe das nicht."}
+{"l":"wie","a":"klein","g":null,"fo":["wie","wia"],"ex":"Wie heißt du?"}
+{"l":"hier","a":"klein","g":null,"fo":["hier"],"ex":"halten Sie hier"}
+{"l":"dann","a":"klein","g":null,"fo":["dann"],"ex":"—Dann ist das ja zusammen."}
+{"l":"gehen","a":"tun","g":null,"fo":["geht","gehen","ging","gingen","gehe","gaht","gehst","ginge"],"ex":"Wie geht es dir?"}
+{"l":"dass","a":"klein","g":null,"fo":["dass"],"ex":"ich finde, dass …"}
+{"l":"zu","a":"klein","g":null,"fo":["zu"],"ex":"zu Abend essen"}
+{"l":"Lerner","a":"ding","g":"der","fo":["lerner"],"ex":"lerner"}
+{"l":"wir","a":"klein","g":null,"fo":["wir","uns"],"ex":"—Und was machen wir?"}
+{"l":"nach","a":"klein","g":null,"fo":["nach"],"ex":"meiner Meinung nach"}
+{"l":"an","a":"klein","g":null,"fo":["an"],"ex":"sich erinnern an"}
+{"l":"aus","a":"klein","g":null,"fo":["aus"],"ex":"—Aus Sevilla."}
+{"l":"werden","a":"tun","g":null,"fo":["wird","würde","werden","geworden","werde","würden","würdest","wurde"],"ex":"ich würde lieber"}
+{"l":"mein","a":"klein","g":null,"fo":["meine","mein","meiner","meinem"],"ex":"meine Schwester"}
+{"l":"kommen","a":"tun","g":null,"fo":["kommt","kommen","kam","komme","komm","kommst","kamen"],"ex":"—Woher kommen Sie?"}
+{"l":"aber","a":"klein","g":null,"fo":["aber"],"ex":"— Aber ich habe nichts bestellt!"}
+{"l":"Frau","a":"ding","g":"die","fo":["frau","frauen"],"ex":"Danke, Frau Doktor."}
+{"l":"für","a":"klein","g":null,"fo":["für"],"ex":"ein Tisch für zwei"}
+{"l":"bitte","a":"klein","g":null,"fo":["bitte"],"ex":"Wasser, bitte"}
+{"l":"um","a":"klein","g":null,"fo":["um"],"ex":"Moin um acht Uhr abends"}
+{"l":"morgen","a":"klein","g":null,"fo":["morgen"],"ex":"Morgen regnet es"}
+{"l":"von","a":"klein","g":null,"fo":["von"],"ex":"Und von welchem Gleis?"}
+{"l":"nur","a":"klein","g":null,"fo":["nur"],"ex":"—Nur ein Papier?"}
+{"l":"klein","a":"wie","g":null,"fo":["kleinen","kleine","kleiner","klein","kleines","kleineres","kleinste","kleinerem"],"ex":"Das kleine Beisl"}
+{"l":"ja","a":"klein","g":null,"fo":["ja"],"ex":"Ja, einen Koffer."}
+{"l":"was","a":"klein","g":null,"fo":["was","wat"],"ex":"Was kostet das?"}
+{"l":"zum","a":"klein","g":null,"fo":["zum"],"ex":"zum Mitnehmen"}
+{"l":"ihr","a":"klein","g":null,"fo":["ihre","ihren","ihrer","ihrem","euch","ihres"],"ex":"Ihre Hochzeit"}
+{"l":"stehen","a":"tun","g":null,"fo":["stand","steht","stehen","standen"],"ex":"Ihr Vater stand auf. Er holte tief Luft."}
+{"l":"schon","a":"klein","g":null,"fo":["schon","scho"],"ex":"—Passt schon."}
+{"l":"man","a":"klein","g":null,"fo":["man"],"ex":"Kann man zu Fuß hingehen?"}
+{"l":"zwei","a":"klein","g":null,"fo":["zwei","zweit"],"ex":"—Zwei Brötchen."}
+{"l":"fragen","a":"tun","g":null,"fo":["frag","fragt","fragen","fragte","gefragt","fragten"],"ex":"Frag, ob es weit ist"}
+{"l":"können","a":"tun","g":null,"fo":["kann","können","könnten","kannst","könnte","konnte","könnt","könntest"],"ex":"Kann ich dir helfen?"}
+{"l":"nehmen","a":"tun","g":null,"fo":["nehmen","nehme","nimmt","nahm","nimm","nimmst"],"ex":"—Hier! Nimm den Schirm mit!"}
+{"l":"kein","a":"klein","g":null,"fo":["kein","keine","keinen","keins","keene"],"ex":"Ich habe keine Zeit."}
+{"l":"all","a":"klein","g":null,"fo":["alle","alles","allen","allem","aller"],"ex":"Ende gut, alles gut."}
+{"l":"heute","a":"klein","g":null,"fo":["heute"],"ex":"Heute regnet es viel."}
+{"l":"noch","a":"klein","g":null,"fo":["noch"],"ex":"Ich war noch nie dort."}
+{"l":"geben","a":"tun","g":null,"fo":["gibt","gab","geben","gebe","gib","gegeben"],"ex":"Gib ihr zehn Euro"}
+{"l":"machen","a":"tun","g":null,"fo":["macht","machen","gemacht","machte","mache","mach","machst","machten"],"ex":"Das macht Spaß!"}
+{"l":"Tag","a":"ding","g":"der","fo":["tag","tage","tages","tagen"],"ex":"Guten Tag. Bitte sehr?"}
+{"l":"als","a":"klein","g":null,"fo":["als"],"ex":"als ich … war"}
+{"l":"so","a":"klein","g":null,"fo":["so"],"ex":"stimmt so"}
+{"l":"Herr","a":"ding","g":"der","fo":["herr","herrn"],"ex":"—Guten Abend, Herr Brandl."}
+{"l":"bei","a":"klein","g":null,"fo":["bei"],"ex":"Bei der Polizei"}
+{"l":"sehr","a":"klein","g":null,"fo":["sehr"],"ex":"—Sehr lecker."}
+{"l":"jeder","a":"klein","g":null,"fo":["jeden","jedes","jede","jeder","jedem"],"ex":"—Jedes Jahr. Seit vierzig Jahren."}
+{"l":"fahren","a":"tun","g":null,"fo":["fährt","fahren","fuhr","gefahren","fahre"],"ex":"—Wann fährt der Zug?"}
+{"l":"wenn","a":"klein","g":null,"fo":["wenn"],"ex":"Wenn ich hier leben würde"}
+{"l":"Wort","a":"ding","g":"das","fo":["wort","wörter","wörtern"],"ex":"Ich lerne ein neues Wort."}
+{"l":"sollen","a":"tun","g":null,"fo":["soll","solle","sollen","sollte","sollst","sollest"],"ex":"er sagt, ich solle …"}
+{"l":"groß","a":"wie","g":null,"fo":["groß","große","größer","großes","großer","großen"],"ex":"Meine Familie ist groß."}
+{"l":"Minute","a":"ding","g":"die","fo":["minuten","minute"],"ex":"Nein, fünf Minuten zu Fuß."}
+{"l":"hören","a":"tun","g":null,"fo":["hört","gehört","hören","hörte","hörst"],"ex":"Inês muss lächeln. Das hat sie in Berlin schon einmal gehört."}
+{"l":"Abend","a":"ding","g":"der","fo":["abend"],"ex":"zu Abend essen"}
+{"l":"Uhr","a":"ding","g":"die","fo":["uhr"],"ex":"Moin um acht Uhr abends"}
+{"l":"heißen","a":"tun","g":null,"fo":["heißt","heißen","hieß"],"ex":"Wie heißt du?"}
+{"l":"schön","a":"wie","g":null,"fo":["schön","schönste","schönen","schöner","schönsten","schönes","schöne"],"ex":"Das Wetter ist schön."}
+{"l":"essen","a":"tun","g":null,"fo":["essen","gegessen","iss","isst","aß"],"ex":"zu Abend essen"}
+{"l":"immer","a":"klein","g":null,"fo":["immer"],"ex":"Aylin war wie immer die Praktische."}
+{"l":"Zug","a":"ding","g":"der","fo":["zug","zügen"],"ex":"der nächste Zug"}
+{"l":"Cello","a":"ding","g":"das","fo":["cello","cellos","celli"],"ex":"Inês, mit Cello"}
+{"l":"viel","a":"klein","g":null,"fo":["viel","viele","vielen","vieles","meisten"],"ex":"Viel Spaß dabei!"}
+{"l":"sein","a":"klein","g":null,"fo":["sein","seine","seinem","seiner","seinen"],"ex":"Jonas sah auf sein Handy."}
+{"l":"sich","a":"klein","g":null,"fo":["sich"],"ex":"sich vorstellen"}
+{"l":"sehen","a":"tun","g":null,"fo":["sieht","sah","gesehen","siehst","sehen","seht"],"ex":"Wir sehen uns morgen."}
+{"l":"vor","a":"klein","g":null,"fo":["vor"],"ex":"vor dem Musikverein in Wien"}
+{"l":"Euro","a":"ding","g":"der","fo":["euro"],"ex":"Gib ihr zehn Euro"}
+{"l":"bis","a":"klein","g":null,"fo":["bis"],"ex":"Gute Idee. Bis morgen!"}
+{"l":"ganz","a":"klein","g":null,"fo":["ganz"],"ex":"Ich bin ganz Ohr."}
+{"l":"Hand","a":"ding","g":"die","fo":["hand","hände","händen"],"ex":"Wasch dir bitte die Hände."}
+{"l":"spielen","a":"tun","g":null,"fo":["spielt","spielen","spielte","gespielt","spielst","spiele"],"ex":"Wird die Hand geröntgt? Ich bin Cellistin und muss bald wieder spielen."}
+{"l":"jetzt","a":"klein","g":null,"fo":["jetzt"],"ex":"Ich muss jetzt gehen."}
+{"l":"zehn","a":"klein","g":null,"fo":["zehn"],"ex":"Gib ihr zehn Euro"}
+{"l":"wieder","a":"klein","g":null,"fo":["wieder"],"ex":"Ich bin gleich wieder da."}
+{"l":"wohnen","a":"tun","g":null,"fo":["gewohnt","wohnt","wohne","wohnten","wohnst","wohnen","wohnte"],"ex":"Ich wohne in Berlin."}
+{"l":"da","a":"klein","g":null,"fo":["da"],"ex":"Da hast du recht."}
+{"l":"Doktor","a":"ding","g":"der","fo":["doktor","dr"],"ex":"Danke, Frau Doktor."}
+{"l":"gern","a":"wie","g":null,"fo":["gern","lieber","gerne"],"ex":"ich hätte gern …"}
+{"l":"Zimmer","a":"ding","g":"das","fo":["zimmer"],"ex":"Danke. In welchem Stock ist das Zimmer?"}
+{"l":"Tisch","a":"ding","g":"der","fo":["tisch"],"ex":"ein Tisch für zwei"}
+{"l":"nein","a":"klein","g":null,"fo":["nein"],"ex":"—Nein, danke."}
+{"l":"seit","a":"klein","g":null,"fo":["seit"],"ex":"Seit wann denn?"}
+{"l":"etwas","a":"klein","g":null,"fo":["etwas"],"ex":"Etwas Leichteres"}
+{"l":"ab","a":"klein","g":null,"fo":["ab"],"ex":"Wann fährt der Zug ab?"}
+{"l":"Klang","a":"ding","g":"der","fo":["klang","klänge"],"ex":"Ein Klang, bevor er Wörter hat"}
+{"l":"nächster","a":"wie","g":null,"fo":["nächste","nächsten"],"ex":"der nächste Zug"}
+{"l":"singen","a":"tun","g":null,"fo":["sang","singen","singt","sangen","gesungen","singst"],"ex":"ich sang (singen)"}
+{"l":"sitzen","a":"tun","g":null,"fo":["sitzt","saß","sitzen","saßen","sitze","gesessen"],"ex":"Marta geht zum Schalter. Am Schalter sitzt eine Frau."}
+{"l":"wollen","a":"tun","g":null,"fo":["will","wollen","wollte","willst","wollt","wolln"],"ex":"Die Stadt will"}
+{"l":"dieser","a":"klein","g":null,"fo":["dieser","diesem","dieses","diesen","diese"],"ex":"—Zu dieser Adresse, bitte. Wörthstraße zwölf."}
+{"l":"alt","a":"wie","g":null,"fo":["alt","alten","alte","altes","ältesten","älterer","ältere","älteren"],"ex":"»Aus alten Brötchen«, sagte Marta."}
+{"l":"auch","a":"klein","g":null,"fo":["auch"],"ex":"—Meine Schwester auch."}
+{"l":"Servus","a":"klein","g":null,"fo":["servus"],"ex":"Baba / Servus"}
+{"l":"warm","a":"wie","g":null,"fo":["warm","warmes","warme","warmen","warmem","warmer"],"ex":"—In Sevilla ist es warm."}
+{"l":"dein","a":"klein","g":null,"fo":["dein","deine","deinen","deiner"],"ex":"Wie ist dein Name?"}
+{"l":"Kaffee","a":"ding","g":"der","fo":["kaffee"],"ex":"Einen Kaffee, bitte."}
+{"l":"Wasser","a":"ding","g":"das","fo":["wasser"],"ex":"warmes Wasser"}
+{"l":"moin","a":"klein","g":null,"fo":["moin"],"ex":"Moin! (Hamburg)"}
+{"l":"schreiben","a":"tun","g":null,"fo":["schreibe","schreibt","schrieb","geschrieben","schreib","schreibst","schreiben"],"ex":"—Dann schreibe ich ihr eine E-Mail."}
+{"l":"kalt","a":"wie","g":null,"fo":["kalt"],"ex":"Der Kaffee ist leider kalt"}
+{"l":"zur","a":"klein","g":null,"fo":["zur"],"ex":"Ich gehe heute zur Arbeit."}
+{"l":"Ort","a":"ding","g":"der","fo":["ortes","ort"],"ex":"Wort des Ortes: nu. Ein Wort, das „ja“ heißt und dabei noch viel mehr sagt."}
+{"l":"dürfen","a":"tun","g":null,"fo":["darf","durfte","dürfen","darfst","durften"],"ex":"—Grüß Gott. Was darf's sein?"}
+{"l":"zwölf","a":"klein","g":null,"fo":["zwölf"],"ex":"Sie ist zwölf."}
+{"l":"drei","a":"klein","g":null,"fo":["drei"],"ex":"—Eine Jacke? Ich nehme drei."}
+{"l":"Vater","a":"ding","g":"der","fo":["vater"],"ex":"der Vater"}
+{"l":"grüßen","a":"tun","g":null,"fo":["grüß","grüßen","grüßt"],"ex":"Servus / Grüß Gott"}
+{"l":"brauchen","a":"tun","g":null,"fo":["brauchen","braucht","brauchst","brauche","gebraucht"],"ex":"—Okay. Du brauchst drei Dinge."}
+{"l":"Stadt","a":"ding","g":"die","fo":["stadt"],"ex":"Die Stadt will"}
+{"l":"sieben","a":"klein","g":null,"fo":["sieben"],"ex":"Auf Wolke sieben schweben."}
+{"l":"oder","a":"klein","g":null,"fo":["oder"],"ex":"—Zusammen oder getrennt?"}
+{"l":"über","a":"klein","g":null,"fo":["über"],"ex":"—Soll ich durch die Stadt fahren und dann über die Dörfer?"}
+{"l":"regnen","a":"tun","g":null,"fo":["regnet","regnen","regnete"],"ex":"Morgen regnet es"}
+{"l":"mögen","a":"tun","g":null,"fo":["möchte","möchten","möchtest","mag","mögen"],"ex":"Sie mögen keine Radfahrer"}
+{"l":"also","a":"klein","g":null,"fo":["also"],"ex":"—Also. Auf der Autobahn ist Stau. Die A9 ist heute ein Parkplatz."}
+{"l":"denn","a":"klein","g":null,"fo":["denn"],"ex":"Seit wann denn?"}
+{"l":"acht","a":"klein","g":null,"fo":["acht"],"ex":"Moin um acht Uhr abends"}
+{"l":"links","a":"klein","g":null,"fo":["links"],"ex":"links"}
+{"l":"dort","a":"klein","g":null,"fo":["dort"],"ex":"Ich war noch nie dort."}
+{"l":"finden","a":"tun","g":null,"fo":["finde","findest","gefunden","findet","finden"],"ex":"ich finde, dass …"}
+{"l":"lachen","a":"tun","g":null,"fo":["lachte","lacht","lachen","lache"],"ex":"»Passt schon«, sagte Jonas und lachte."}
+{"l":"bleiben","a":"tun","g":null,"fo":["bleibt","bleiben","blieb","geblieben"],"ex":"Nehmen Sie eine Tablette und bleiben Sie im Bett."}
+{"l":"Bahnhof","a":"ding","g":"der","fo":["bahnhof"],"ex":"bahnhof"}
+{"l":"gestern","a":"klein","g":null,"fo":["gestern"],"ex":"Das ist Schnee von gestern."}
+{"l":"fünf","a":"klein","g":null,"fo":["fünf"],"ex":"Nein, fünf Minuten zu Fuß."}
+{"l":"mehr","a":"klein","g":null,"fo":["mehr"],"ex":"Sie wollen mehr Parkplätze"}
+{"l":"bisschen","a":"klein","g":null,"fo":["bisschen"],"ex":"—Ein bisschen. Ist das der Föhn?"}
+{"l":"danke","a":"klein","g":null,"fo":["danke"],"ex":"—Nein, danke."}
+{"l":"lange","a":"klein","g":null,"fo":["lange"],"ex":"—Wie lange dauert der Termin?"}
+{"l":"Leute","a":"ding","g":"die","fo":["leute","leuten"],"ex":"—Ich weiß. Sehr heiß. Die armen Leute."}
+{"l":"wissen","a":"tun","g":null,"fo":["weiß","wissen","weißt","wusste"],"ex":"—Woher weißt du das?"}
+{"l":"kaufen","a":"tun","g":null,"fo":["gekauft","kauft","kaufen","kaufe","kaufte"],"ex":"Die Katze im Sack kaufen."}
+{"l":"Jahr","a":"ding","g":"das","fo":["jahr","jahre","jahren"],"ex":"—Jedes Jahr. Seit vierzig Jahren."}
+{"l":"rot","a":"wie","g":null,"fo":["rote","roten","rot","roter","rotes"],"ex":"Das Auto ist rot."}
+{"l":"Familie","a":"ding","g":"die","fo":["familie"],"ex":"familie"}
+{"l":"Bahn","a":"ding","g":"die","fo":["bahn"],"ex":"Straßenbahn / Bahn"}
+{"l":"geradeaus","a":"klein","g":null,"fo":["geradeaus"],"ex":"geradeaus"}
+{"l":"Opa","a":"ding","g":"der","fo":["opa"],"ex":"Opa Heinz, der Großvater der Gastfamilie"}
+{"l":"Fahrkarte","a":"ding","g":"die","fo":["fahrkarte","fahrkarten"],"ex":"die Fahrkarte"}
+{"l":"müssen","a":"tun","g":null,"fo":["muss","müssen","musste","musst"],"ex":"Ich muss jetzt gehen."}
+{"l":"bringen","a":"tun","g":null,"fo":["bringe","bringen","bringt","gebracht","bring"],"ex":"Guten Morgen. Wohin darf ich Sie bringen?"}
+{"l":"bestellen","a":"tun","g":null,"fo":["bestellen","bestellt","bestelle","bestellte"],"ex":"bestellen"}
+{"l":"ob","a":"klein","g":null,"fo":["ob"],"ex":"Frag, ob es weit ist"}
+{"l":"fast","a":"klein","g":null,"fo":["fast"],"ex":"Ja! Als ich sieben war, bekam ich mein erstes Cello. Es war fast größer als ich."}
+{"l":"mal","a":"klein","g":null,"fo":["mal"],"ex":"Erzählen Sie mal, was ist denn passiert?"}
+{"l":"Mann","a":"ding","g":"der","fo":["mann","männer"],"ex":"Es ist wieder kalt. Ein Mann mit Hut und einer Tüte Brot schaut Marta an."}
+{"l":"langsam","a":"wie","g":null,"fo":["langsam","langsame","langsamer"],"ex":"langsam"}
+{"l":"glauben","a":"tun","g":null,"fo":["glaube","glaubt","glaubst","glaub"],"ex":"ich glaube, dass …"}
+{"l":"Semmel","a":"ding","g":"die","fo":["semmeln","semmel"],"ex":"Frische Semmeln"}
+{"l":"erster","a":"klein","g":null,"fo":["ersten","erste"],"ex":"—Im ersten Stock. Der Aufzug ist gleich rechts."}
+{"l":"lang","a":"wie","g":null,"fo":["lang","länger","längste","langen","langer"],"ex":"lang"}
+{"l":"erzählen","a":"tun","g":null,"fo":["erzähle","erzählen","erzählt","erzählte"],"ex":"Erzählen Sie mal, was ist denn passiert?"}
+{"l":"bekommen","a":"tun","g":null,"fo":["bekomme","bekommt","bekommen","bekam","bekamst","bekommst","bekamen"],"ex":"ich bekam (bekommen)"}
+{"l":"zurück","a":"klein","g":null,"fo":["zurück"],"ex":"hin und zurück"}
+{"l":"Samstag","a":"ding","g":"der","fo":["samstag"],"ex":"—Noch nicht. Am Samstag."}
+{"l":"ohne","a":"klein","g":null,"fo":["ohne"],"ex":"die Sprecherin einer Gruppe ohne Reservierung"}
+{"l":"Gott","a":"ding","g":"der","fo":["gott"],"ex":"Servus / Grüß Gott"}
+{"l":"Handy","a":"ding","g":"das","fo":["handy"],"ex":"Handy / Natel"}
+{"l":"Gleis","a":"ding","g":"das","fo":["gleis","gleise"],"ex":"Und von welchem Gleis?"}
+{"l":"Straße","a":"ding","g":"die","fo":["straße","straßen"],"ex":"Die Straße ist sehr lang."}
+{"l":"kosten","a":"tun","g":null,"fo":["kostet","kosten"],"ex":"Was kostet das?"}
+{"l":"laut","a":"wie","g":null,"fo":["laut","laute","lautesten"],"ex":"laut"}
+{"l":"Junge","a":"ding","g":"der","fo":["junge","jungen"],"ex":"Als Junge sang ich im Thomanerchor, weißt du. Hast du als Kind auch Musik gemacht?"}
+{"l":"halten","a":"tun","g":null,"fo":["hält","hielt","halten","hielten"],"ex":"Das Taxi hält. Die Häuser sind alt und hoch."}
+{"l":"Wetter","a":"ding","g":"das","fo":["wetter"],"ex":"wetter"}
+{"l":"Termin","a":"ding","g":"der","fo":["termin"],"ex":"—Wie lange dauert der Termin?"}
+{"l":"leider","a":"klein","g":null,"fo":["leider"],"ex":"Der Kaffee ist leider kalt"}
+{"l":"oben","a":"klein","g":null,"fo":["oben"],"ex":"Im Bad ist Wasser. Viel Wasser. Es kommt von oben, aus der Decke."}
+{"l":"gleich","a":"klein","g":null,"fo":["gleich"],"ex":"Ich bin gleich wieder da."}
+{"l":"zusammen","a":"klein","g":null,"fo":["zusammen"],"ex":"—Zusammen oder getrennt?"}
+{"l":"genau","a":"wie","g":null,"fo":["genau"],"ex":"Genau. Ist das Frühstück dabei?"}
+{"l":"Regen","a":"ding","g":"der","fo":["regen"],"ex":"der Regen"}
+{"l":"vom","a":"klein","g":null,"fo":["vom"],"ex":"—Das Handy hat das vom Barometer."}
+{"l":"Fenster","a":"ding","g":"das","fo":["fenster","fenstern"],"ex":"Später, am Fenster, fragte Aylin leise:"}
+{"l":"passen","a":"tun","g":null,"fo":["passt","passen"],"ex":"—Passt schon."}
+{"l":"liegen","a":"tun","g":null,"fo":["liegt","lag","liegen","lagen"],"ex":"Am Kreisverkehr rechts. Es liegt gegenüber vom Park."}
+{"l":"erst","a":"klein","g":null,"fo":["erst","erstes"],"ex":"—Dann fahren wir erst mittags. Kannst du uns abholen?"}
+{"l":"tun","a":"tun","g":null,"fo":["tut","tun"],"ex":"Das tut mir leid. Seit wann denn?"}
+{"l":"Nacht","a":"ding","g":"die","fo":["nacht","nächte"],"ex":"Die Nacht ist ganz ruhig."}
+{"l":"Woche","a":"ding","g":"die","fo":["wochen","woche"],"ex":"Die Wochen vergingen. Es wurde Dezember."}
+{"l":"warten","a":"tun","g":null,"fo":["wartet","warten","wartete"],"ex":"Das wird knapp. Der Anschluss wartet nicht."}

@@ -1,0 +1,200 @@
+{"l":"alubia","a":"ding","g":"la","fo":["alubias"],"ex":"alubias / judías"}
+{"l":"habichuela","a":"ding","g":"la","fo":["habichuelas"],"ex":"habichuelas / frijoles / caraotas"}
+{"l":"caraota","a":"ding","g":"la","fo":["caraotas"],"ex":"habichuelas / frijoles / caraotas"}
+{"l":"fríjol","a":"ding","g":"el","fo":["fríjoles"],"ex":"fríjoles / frejoles"}
+{"l":"frejol","a":"ding","g":"el","fo":["frejoles"],"ex":"fríjoles / frejoles"}
+{"l":"cotufa","a":"ding","g":"la","fo":["cotufas"],"ex":"cotufas / palomitas"}
+{"l":"crispeta","a":"ding","g":"la","fo":["crispetas"],"ex":"crispetas / canguil / canchita"}
+{"l":"canguil","a":"ding","g":"el","fo":["canguil"],"ex":"crispetas / canguil / canchita"}
+{"l":"canchita","a":"ding","g":"la","fo":["canchita"],"ex":"crispetas / canguil / canchita"}
+{"l":"pochoclo","a":"ding","g":"el","fo":["pochoclo"],"ex":"pochoclo / pop"}
+{"l":"pop","a":"ding","g":"el","fo":["pop"],"ex":"pochoclo / pop"}
+{"l":"cabritas","a":"ding","g":"la","fo":["cabritas"],"ex":"cabritas"}
+{"l":"popote","a":"ding","g":"el","fo":["popote"],"ex":"popote"}
+{"l":"sorbeto","a":"ding","g":"el","fo":["sorbeto"],"ex":"pitillo / sorbeto"}
+{"l":"ponqué","a":"ding","g":"el","fo":["ponqué"],"ex":"torta / ponqué"}
+{"l":"cambur","a":"ding","g":"el","fo":["cambur"],"ex":"guineo / cambur"}
+{"l":"banano","a":"ding","g":"el","fo":["banano"],"ex":"banano / guineo"}
+{"l":"banana","a":"ding","g":"la","fo":["banana"],"ex":"banana"}
+{"l":"buseta","a":"ding","g":"la","fo":["buseta"],"ex":"bus / buseta"}
+{"l":"colectivo","a":"ding","g":"el","fo":["colectivo"],"ex":"colectivo / ómnibus"}
+{"l":"ómnibus","a":"ding","g":"el","fo":["ómnibus"],"ex":"colectivo / ómnibus"}
+{"l":"micro","a":"ding","g":"el","fo":["micro"],"ex":"micro"}
+{"l":"tiquete","a":"ding","g":"el","fo":["tiquete"],"ex":"pasaje / tiquete"}
+{"l":"tapón","a":"ding","g":"el","fo":["tapón"],"ex":"tapón / cola"}
+{"l":"trancón","a":"ding","g":"el","fo":["trancón"],"ex":"trancón / tráfico"}
+{"l":"taco","a":"ding","g":"el","fo":["taco"],"ex":"taco"}
+{"l":"subte","a":"ding","g":"el","fo":["subte"],"ex":"subte"}
+{"l":"crío","a":"ding","g":"el","fo":["crío"],"ex":"crío / chaval"}
+{"l":"chaval","a":"ding","g":"el","fo":["chaval"],"ex":"crío / chaval"}
+{"l":"chamaco","a":"ding","g":"el","fo":["chamaco"],"ex":"chamaco"}
+{"l":"chamo","a":"ding","g":"el","fo":["chamo"],"ex":"chamo / nene"}
+{"l":"pelado","a":"ding","g":"el","fo":["pelado"],"ex":"pelado / guagua"}
+{"l":"pibe","a":"ding","g":"el","fo":["pibe"],"ex":"pibe / nene"}
+{"l":"cabro","a":"ding","g":"el","fo":["cabro"],"ex":"cabro chico"}
+{"l":"enamorado","a":"wie","g":null,"fo":["enamorado"],"ex":"novio / enamorado"}
+{"l":"pololo","a":"ding","g":"el","fo":["pololo"],"ex":"pololo (polola)"}
+{"l":"polola","a":"ding","g":"la","fo":["polola"],"ex":"pololo (polola)"}
+{"l":"colega","a":"ding","g":"el","fo":["colega"],"ex":"colega / tío"}
+{"l":"cuate","a":"ding","g":"el","fo":["cuate"],"ex":"cuate / carnal"}
+{"l":"carnal","a":"ding","g":"el","fo":["carnal"],"ex":"cuate / carnal"}
+{"l":"asere","a":"ding","g":"el","fo":["asere"],"ex":"pana / asere"}
+{"l":"parce","a":"ding","g":"el","fo":["parce"],"ex":"parce / pana / pata"}
+{"l":"chabón","a":"ding","g":"el","fo":["chabón"],"ex":"amigo / chabón"}
+{"l":"compadre","a":"ding","g":"el","fo":["compadre"],"ex":"compadre"}
+{"l":"mesonero","a":"ding","g":"el","fo":["mesonero"],"ex":"mesonero / mesero"}
+{"l":"garzón","a":"ding","g":"el","fo":["garzón"],"ex":"garzón"}
+{"l":"guay","a":"wie","g":null,"fo":["guay"],"ex":"guay"}
+{"l":"chido","a":"wie","g":null,"fo":["chido"],"ex":"padre / chido"}
+{"l":"copado","a":"wie","g":null,"fo":["copado"],"ex":"copado / bárbaro"}
+{"l":"bárbaro","a":"wie","g":null,"fo":["bárbaro"],"ex":"copado / bárbaro"}
+{"l":"quiubo","a":"klein","g":null,"fo":["quiubo"],"ex":"¿Quiubo? / ¿Qué fue?"}
+{"l":"órale","a":"klein","g":null,"fo":["órale"],"ex":"órale / sale"}
+{"l":"chau","a":"klein","g":null,"fo":["chau"],"ex":"¡Chau!"}
+{"l":"timbre","a":"ding","g":"el","fo":["timbre"],"ex":"Farmacia de guardia: abierta las 24 horas. Llame al timbre."}
+{"l":"provisional","a":"wie","g":null,"fo":["provisional"],"ex":"Por obras, esta parada está fuera de servicio. Parada provisional: plaza Mayor."}
+{"l":"alquilar","a":"tun","g":null,"fo":["alquila"],"ex":"Se alquila piso pequeño en el centro de Valencia, con dos habitaciones y balcón. Muy luminoso y cerca del metro. Interesados, llamar por las"}
+{"l":"interesado","a":"ding","g":"el","fo":["interesados"],"ex":"Se alquila piso pequeño en el centro de Valencia, con dos habitaciones y balcón. Muy luminoso y cerca del metro. Interesados, llamar por las"}
+{"l":"afueras","a":"ding","g":"la","fo":["afueras"],"ex":"En las afueras"}
+{"l":"nacional","a":"wie","g":null,"fo":["nacional"],"ex":"Parque Nacional Manuel Antonio: por favor, no alimenten a los monos. Lleven agua y regresen al sendero antes de las cuatro de la tarde. ¡Pur"}
+{"l":"decepcionar","a":"tun","g":null,"fo":["decepcionó"],"ex":"Fuimos a cenar a este bar de tapas de Sevilla por recomendación de unos amigos y no nos decepcionó. Las croquetas caseras estaban buenísimas"}
+{"l":"casero","a":"wie","g":null,"fo":["caseras"],"ex":"Fuimos a cenar a este bar de tapas de Sevilla por recomendación de unos amigos y no nos decepcionó. Las croquetas caseras estaban buenísimas"}
+{"l":"agencia","a":"ding","g":"la","fo":["agencia"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"estatal","a":"wie","g":null,"fo":["estatal"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"meteorología","a":"ding","g":"la","fo":["meteorología"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"activar","a":"tun","g":null,"fo":["activado"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"aviso","a":"ding","g":"el","fo":["aviso"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"intenso","a":"wie","g":null,"fo":["intensas"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"desplazamiento","a":"ding","g":"el","fo":["desplazamientos"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"innecesario","a":"wie","g":null,"fo":["innecesarios"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"temporal","a":"ding","g":"el","fo":["temporal"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"remitir","a":"tun","g":null,"fo":["remita"],"ex":"La Agencia Estatal de Meteorología ha activado el aviso amarillo por lluvias intensas en la costa de Málaga. Se recomienda evitar los despla"}
+{"l":"lucir","a":"tun","g":null,"fo":["luce"],"ex":"Con la llegada de la temporada de lluvias, el Salto Ángel luce más imponente que nunca. Los guías del parque Canaima informan que el río Car"}
+{"l":"imponente","a":"wie","g":null,"fo":["imponente"],"ex":"Con la llegada de la temporada de lluvias, el Salto Ángel luce más imponente que nunca. Los guías del parque Canaima informan que el río Car"}
+{"l":"informar","a":"tun","g":null,"fo":["informan"],"ex":"Con la llegada de la temporada de lluvias, el Salto Ángel luce más imponente que nunca. Los guías del parque Canaima informan que el río Car"}
+{"l":"visitante","a":"ding","g":"el","fo":["visitantes"],"ex":"Con la llegada de la temporada de lluvias, el Salto Ángel luce más imponente que nunca. Los guías del parque Canaima informan que el río Car"}
+{"l":"amanecer","a":"tun","g":null,"fo":["amanece"],"ex":"No por mucho madrugar amanece más temprano."}
+{"l":"arriesgar","a":"tun","g":null,"fo":["arriesga"],"ex":"El que no arriesga, no gana."}
+{"l":"herrero","a":"ding","g":"el","fo":["herrero"],"ex":"En casa del herrero, cuchillo de palo."}
+{"l":"palo","a":"ding","g":"el","fo":["palo"],"ex":"En casa del herrero, cuchillo de palo."}
+{"l":"camarón","a":"ding","g":"el","fo":["camarón"],"ex":"Camarón que se duerme se lo lleva la corriente."}
+{"l":"corriente","a":"ding","g":"la","fo":["corriente"],"ex":"Camarón que se duerme se lo lleva la corriente."}
+{"l":"pa","a":"klein","g":null,"fo":["pa"],"ex":"El que nace pa’ tamal, del cielo le caen las hojas."}
+{"l":"tigre","a":"ding","g":"el","fo":["tigre"],"ex":"Hijo de tigre sale pintado."}
+{"l":"codo","a":"ding","g":"el","fo":["codos"],"ex":"Hablar por los codos."}
+{"l":"lavarse","a":"tun","g":null,"fo":["lávate"],"ex":"Lávate las manos, por favor."}
+{"l":"madrugada","a":"ding","g":"la","fo":["madrugada"],"ex":"madrugada"}
+{"l":"amiga","a":"ding","g":"la","fo":["amiga"],"ex":"amiga"}
+{"l":"maduro","a":"wie","g":null,"fo":["maduro"],"ex":"maduro"}
+{"l":"feliz","a":"wie","g":null,"fo":["feliz"],"ex":"feliz"}
+{"l":"contento","a":"wie","g":null,"fo":["contento"],"ex":"contento"}
+{"l":"recién","a":"klein","g":null,"fo":["recién"],"ex":"recién"}
+{"l":"responder","a":"tun","g":null,"fo":["responder"],"ex":"responder"}
+{"l":"oreja","a":"ding","g":"la","fo":["oreja"],"ex":"oreja"}
+{"l":"fuego","a":"ding","g":"el","fo":["fuego"],"ex":"fuego"}
+{"l":"escuela","a":"ding","g":"la","fo":["escuela"],"ex":"escuela"}
+{"l":"estudiante","a":"ding","g":"el","fo":["estudiante"],"ex":"estudiante"}
+{"l":"débil","a":"wie","g":null,"fo":["débil"],"ex":"débil"}
+{"l":"sucio","a":"wie","g":null,"fo":["sucio"],"ex":"sucio"}
+{"l":"salón","a":"ding","g":"el","fo":["salón"],"ex":"salón"}
+{"l":"vestido","a":"ding","g":"el","fo":["vestido"],"ex":"el vestido"}
+{"l":"dependiente","a":"ding","g":"el","fo":["dependiente"],"ex":"el dependiente"}
+{"l":"cesta","a":"ding","g":"la","fo":["cesta"],"ex":"la cesta"}
+{"l":"escaparate","a":"ding","g":"el","fo":["escaparate"],"ex":"el escaparate"}
+{"l":"comercial","a":"wie","g":null,"fo":["comercial"],"ex":"el centro comercial"}
+{"l":"banco","a":"ding","g":"el","fo":["banco"],"ex":"el banco"}
+{"l":"catedral","a":"ding","g":"la","fo":["catedral"],"ex":"la catedral"}
+{"l":"turismo","a":"ding","g":"el","fo":["turismo"],"ex":"la oficina de turismo"}
+{"l":"norte","a":"ding","g":"el","fo":["norte"],"ex":"el norte"}
+{"l":"oeste","a":"ding","g":"el","fo":["oeste"],"ex":"el oeste"}
+{"l":"monumento","a":"ding","g":"el","fo":["monumento"],"ex":"el monumento"}
+{"l":"torre","a":"ding","g":"el","fo":["torre"],"ex":"la torre"}
+{"l":"castillo","a":"ding","g":"el","fo":["castillo"],"ex":"el castillo"}
+{"l":"palacio","a":"ding","g":"el","fo":["palacio"],"ex":"el palacio"}
+{"l":"acera","a":"ding","g":"la","fo":["acera"],"ex":"la acera"}
+{"l":"cebra","a":"ding","g":"la","fo":["cebra"],"ex":"el paso de cebra"}
+{"l":"callejón","a":"ding","g":"el","fo":["callejón"],"ex":"el callejón"}
+{"l":"peatón","a":"ding","g":"el","fo":["peatón"],"ex":"el peatón"}
+{"l":"conductor","a":"ding","g":"el","fo":["conductor"],"ex":"el conductor"}
+{"l":"cinturón","a":"ding","g":"el","fo":["cinturón"],"ex":"el cinturón"}
+{"l":"tarifa","a":"ding","g":"la","fo":["tarifa"],"ex":"la tarifa"}
+{"l":"kilómetro","a":"ding","g":"el","fo":["kilómetro"],"ex":"el kilómetro"}
+{"l":"gasolina","a":"ding","g":"la","fo":["gasolina"],"ex":"la gasolina"}
+{"l":"rueda","a":"ding","g":"la","fo":["rueda"],"ex":"la rueda"}
+{"l":"volante","a":"ding","g":"el","fo":["volante"],"ex":"el volante"}
+{"l":"ruta","a":"ding","g":"la","fo":["ruta"],"ex":"la ruta"}
+{"l":"peaje","a":"ding","g":"el","fo":["peaje"],"ex":"el peaje"}
+{"l":"accidente","a":"ding","g":"el","fo":["accidente"],"ex":"el accidente"}
+{"l":"velocidad","a":"ding","g":"la","fo":["velocidad"],"ex":"la velocidad"}
+{"l":"radio","a":"ding","g":"la","fo":["radio"],"ex":"la radio"}
+{"l":"gasolinera","a":"ding","g":"la","fo":["gasolinera"],"ex":"la gasolinera"}
+{"l":"claxon","a":"ding","g":"el","fo":["claxon"],"ex":"el claxon"}
+{"l":"mamá","a":"ding","g":"la","fo":["mamá"],"ex":"mamá"}
+{"l":"prima","a":"ding","g":"la","fo":["prima"],"ex":"la prima"}
+{"l":"sobrino","a":"ding","g":"el","fo":["sobrino"],"ex":"el sobrino"}
+{"l":"sobrina","a":"ding","g":"la","fo":["sobrina"],"ex":"la sobrina"}
+{"l":"marido","a":"ding","g":"el","fo":["marido"],"ex":"el marido"}
+{"l":"soltero","a":"wie","g":null,"fo":["soltero"],"ex":"soltero"}
+{"l":"suegro","a":"ding","g":"el","fo":["suegro"],"ex":"el suegro"}
+{"l":"suegra","a":"ding","g":"la","fo":["suegra"],"ex":"la suegra"}
+{"l":"cuñado","a":"ding","g":"el","fo":["cuñado"],"ex":"el cuñado"}
+{"l":"cuñada","a":"ding","g":"la","fo":["cuñada"],"ex":"la cuñada"}
+{"l":"gemelo","a":"ding","g":"el","fo":["gemelo"],"ex":"el gemelo"}
+{"l":"padrino","a":"ding","g":"el","fo":["padrino"],"ex":"el padrino"}
+{"l":"madrina","a":"ding","g":"la","fo":["madrina"],"ex":"la madrina"}
+{"l":"hogar","a":"ding","g":"el","fo":["hogar"],"ex":"el hogar"}
+{"l":"divorcio","a":"ding","g":"el","fo":["divorcio"],"ex":"el divorcio"}
+{"l":"apellido","a":"ding","g":"el","fo":["apellido"],"ex":"el apellido"}
+{"l":"infancia","a":"ding","g":"la","fo":["infancia"],"ex":"la infancia"}
+{"l":"mascota","a":"ding","g":"la","fo":["mascota"],"ex":"la mascota"}
+{"l":"navidad","a":"ding","g":"la","fo":["navidad"],"ex":"la Navidad"}
+{"l":"unido","a":"wie","g":null,"fo":["unido"],"ex":"unido"}
+{"l":"genealógico","a":"wie","g":null,"fo":["genealógico"],"ex":"el árbol genealógico"}
+{"l":"doble","a":"wie","g":null,"fo":["doble"],"ex":"doble"}
+{"l":"manta","a":"ding","g":"la","fo":["manta"],"ex":"la manta"}
+{"l":"sábana","a":"ding","g":"la","fo":["sábana"],"ex":"la sábana"}
+{"l":"armario","a":"ding","g":"el","fo":["armario"],"ex":"el armario"}
+{"l":"contraseña","a":"ding","g":"la","fo":["contraseña"],"ex":"la contraseña"}
+{"l":"jabón","a":"ding","g":"el","fo":["jabón"],"ex":"el jabón"}
+{"l":"champú","a":"ding","g":"el","fo":["champú"],"ex":"el champú"}
+{"l":"piscina","a":"ding","g":"la","fo":["piscina"],"ex":"la piscina"}
+{"l":"factura","a":"ding","g":"la","fo":["factura"],"ex":"la factura"}
+{"l":"ruidoso","a":"wie","g":null,"fo":["ruidoso"],"ex":"ruidoso"}
+{"l":"suite","a":"ding","g":"la","fo":["suite"],"ex":"la suite"}
+{"l":"albergue","a":"ding","g":"el","fo":["albergue"],"ex":"el albergue"}
+{"l":"pensión","a":"ding","g":"la","fo":["pensión"],"ex":"la pensión"}
+{"l":"vestíbulo","a":"ding","g":"el","fo":["vestíbulo"],"ex":"el vestíbulo"}
+{"l":"minibar","a":"ding","g":"el","fo":["minibar"],"ex":"el minibar"}
+{"l":"secador","a":"ding","g":"el","fo":["secador"],"ex":"el secador"}
+{"l":"percha","a":"ding","g":"la","fo":["percha"],"ex":"la percha"}
+{"l":"despertador","a":"ding","g":"el","fo":["despertador"],"ex":"el despertador"}
+{"l":"cancelar","a":"tun","g":null,"fo":["cancelar"],"ex":"cancelar"}
+{"l":"gimnasio","a":"ding","g":"el","fo":["gimnasio"],"ex":"el gimnasio"}
+{"l":"lámpara","a":"ding","g":"la","fo":["lámpara"],"ex":"la lámpara"}
+{"l":"destino","a":"ding","g":"el","fo":["destino"],"ex":"el destino"}
+{"l":"consigna","a":"ding","g":"la","fo":["consigna"],"ex":"la consigna"}
+{"l":"tranvía","a":"ding","g":"el","fo":["tranvía"],"ex":"el tranvía"}
+{"l":"validar","a":"tun","g":null,"fo":["validar"],"ex":"validar"}
+{"l":"aseo","a":"ding","g":"el","fo":["aseo"],"ex":"el aseo"}
+{"l":"locomotora","a":"ding","g":"la","fo":["locomotora"],"ex":"la locomotora"}
+{"l":"cercanías","a":"ding","g":"el","fo":["cercanías"],"ex":"el cercanías"}
+{"l":"frontera","a":"ding","g":"la","fo":["frontera"],"ex":"la frontera"}
+{"l":"paisaje","a":"ding","g":"el","fo":["paisaje"],"ex":"el paisaje"}
+{"l":"cafetería","a":"ding","g":"la","fo":["cafetería"],"ex":"la cafetería"}
+{"l":"sala","a":"ding","g":"la","fo":["sala"],"ex":"la sala de espera"}
+{"l":"abono","a":"ding","g":"el","fo":["abono"],"ex":"el abono"}
+{"l":"altavoz","a":"ding","g":"el","fo":["altavoz"],"ex":"el altavoz"}
+{"l":"anuncio","a":"ding","g":"el","fo":["anuncio"],"ex":"el anuncio"}
+{"l":"trayecto","a":"ding","g":"el","fo":["trayecto"],"ex":"el trayecto"}
+{"l":"silbato","a":"ding","g":"el","fo":["silbato"],"ex":"el silbato"}
+{"l":"diente","a":"ding","g":"el","fo":["diente"],"ex":"el diente"}
+{"l":"oído","a":"ding","g":"el","fo":["oído"],"ex":"el oído"}
+{"l":"sano","a":"wie","g":null,"fo":["sano"],"ex":"sano"}
+{"l":"medicamento","a":"ding","g":"el","fo":["medicamento"],"ex":"el medicamento"}
+{"l":"tos","a":"ding","g":"la","fo":["tos"],"ex":"la tos"}
+{"l":"gripe","a":"ding","g":"la","fo":["gripe"],"ex":"la gripe"}
+{"l":"enfermera","a":"ding","g":"la","fo":["enfermera"],"ex":"la enfermera"}
+{"l":"sangre","a":"ding","g":"la","fo":["sangre"],"ex":"la sangre"}
+{"l":"dedo","a":"ding","g":"el","fo":["dedo"],"ex":"el dedo"}
+{"l":"herida","a":"ding","g":"la","fo":["herida"],"ex":"la herida"}
+{"l":"toser","a":"tun","g":null,"fo":["toser"],"ex":"toser"}
