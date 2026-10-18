@@ -704,7 +704,7 @@
       if (!set || !Array.isArray(set.wortschatz) || !set.wortschatz.length) return null;
 
       var wortschatz = set.wortschatz.map(function (it) {
-        return { ziel: it.ziel, lautschrift: it.lautschrift || null, uebersetzung: pick(it.u, mutter) };
+        return { ziel: it.ziel, lautschrift: it.lautschrift || null, uebersetzung: pick(it.u, mutter), en: (it.u && it.u.en) || (ziel === 'en' ? it.ziel : '') };
       });
 
       var hoerverstehen = (set.hoer || []).map(function (it) {

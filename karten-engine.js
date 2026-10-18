@@ -19,7 +19,7 @@
      SpikiuKarten.setup({ stage: HTMLElement, zielsprache: 'es', sprich: fn })
      SpikiuKarten.render(item, next)          → eine Karte zeigen
      SpikiuKarten.sequence(items, onDone)     → Karten nacheinander
-     Item-Typen: 'flip' · 'choice' · 'roleplay' · 'lesson' · 'note' · 'erklaerung'
+     Item-Typen: 'wort' · 'flip' · 'choice' · 'roleplay' · 'lesson' · 'note' · 'erklaerung'
 
    AUDIO-GESETZ (17.08.2026, nach dem Piper-Mischmasch-Bug):
    Eine Zeile trägt genau EINE Sprache. audioBtn() bekommt ausschliesslich
@@ -95,6 +95,15 @@
     + 'border-radius:100px;padding:.85rem 2rem;font:700 1rem "DM Sans",sans-serif;cursor:pointer}'
     + '.spk-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink,#15163a)}'
     + '.spk-btn.ghost{background:#fff;color:var(--ink,#15163a)}'
+    /* Wort-Karte wie im Wortschatz (Leo, 18.10.): Bild · Wort · runder Lautsprecher · Übersetzung,
+       unten zurück | weiter nebeneinander. */
+    + '.spk-wort{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;width:100%;flex:1 1 auto}'
+    + '.spk-wicon{display:block;width:calc(96px*var(--scale));height:calc(96px*var(--scale));flex:0 0 auto;filter:drop-shadow(2px 3px 0 rgba(21,22,58,.12))}'
+    + '.spk-wort .spk-ziel{font-size:calc(2.5rem*var(--scale))}'
+    + '.spk-wlt{font:600 .9rem "DM Mono",ui-monospace,monospace;color:var(--muted,#5f7068);margin-top:-.55rem}'
+    + '.spk-foot.zwei{flex-direction:row;justify-content:space-between;gap:.8rem}'
+    + '.spk-foot.zwei .spk-btn{width:auto;flex:0 1 auto;max-width:none;padding:.75rem 1.3rem;font-weight:800}'
+    + '.spk-foot.zwei .spk-btn.ghost[disabled]{opacity:.4;box-shadow:none;cursor:default;border-color:#b9bcc8;color:#9a9db0}'
     + '.spk-doc{width:100%;text-align:left;display:flex;flex-direction:column;gap:1rem}'
     + '.spk-doc h3{font:800 1.3rem "DM Sans",sans-serif;color:var(--ink,#15163a)}'
     + '.spk-doc .lbl{font:800 .68rem "DM Sans",sans-serif;letter-spacing:.04em;text-transform:uppercase;'
@@ -156,10 +165,10 @@
   /* Ersatz-Texte, falls der Raum keine eigenen mitgibt — in der Muttersprache
      aus dem Profil (de/es/en/el, 15.10.: Griechisch als Muttersprache). */
   var STD = {
-    de: { anhoeren:'Anhören', hint:'tippen zum Umdrehen', weiter:'Weiter', pruefen:'Prüfen', richtig:'Richtig!', fast:'Fast — schau dir die richtige Antwort an.', ziel:'Ziel', wortschatz:'Wortschatz', dialog:'Dialog', quiz:'Quiz', glieder:'Stück für Stück' },
-    es: { anhoeren:'Escuchar', hint:'toca para girar', weiter:'Seguir', pruefen:'Comprobar', richtig:'¡Correcto!', fast:'Casi — mira la respuesta correcta.', ziel:'Objetivo', wortschatz:'Vocabulario', dialog:'Diálogo', quiz:'Quiz', glieder:'Pieza a pieza' },
-    en: { anhoeren:'Listen', hint:'tap to flip', weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.', ziel:'Goal', wortschatz:'Vocabulary', dialog:'Dialogue', quiz:'Quiz', glieder:'Piece by piece' },
-    el: { anhoeren:'Άκου', hint:'πάτησε για να γυρίσει', weiter:'Συνέχεια', pruefen:'Έλεγχος', richtig:'Σωστά!', fast:'Παραλίγο — δες τη σωστή απάντηση.', ziel:'Στόχος', wortschatz:'Λεξιλόγιο', dialog:'Διάλογος', quiz:'Κουίζ', glieder:'Κομμάτι κομμάτι' }
+    de: { zurueck:'‹ zurück', vor:'weiter ›', anhoeren:'Anhören', hint:'tippen zum Umdrehen', weiter:'Weiter', pruefen:'Prüfen', richtig:'Richtig!', fast:'Fast — schau dir die richtige Antwort an.', ziel:'Ziel', wortschatz:'Wortschatz', dialog:'Dialog', quiz:'Quiz', glieder:'Stück für Stück' },
+    es: { zurueck:'‹ atrás', vor:'seguir ›', anhoeren:'Escuchar', hint:'toca para girar', weiter:'Seguir', pruefen:'Comprobar', richtig:'¡Correcto!', fast:'Casi — mira la respuesta correcta.', ziel:'Objetivo', wortschatz:'Vocabulario', dialog:'Diálogo', quiz:'Quiz', glieder:'Pieza a pieza' },
+    en: { zurueck:'‹ back', vor:'next ›', anhoeren:'Listen', hint:'tap to flip', weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.', ziel:'Goal', wortschatz:'Vocabulary', dialog:'Dialogue', quiz:'Quiz', glieder:'Piece by piece' },
+    el: { zurueck:'‹ πίσω', vor:'συνέχεια ›', anhoeren:'Άκου', hint:'πάτησε για να γυρίσει', weiter:'Συνέχεια', pruefen:'Έλεγχος', richtig:'Σωστά!', fast:'Παραλίγο — δες τη σωστή απάντηση.', ziel:'Στόχος', wortschatz:'Λεξιλόγιο', dialog:'Διάλογος', quiz:'Κουίζ', glieder:'Κομμάτι κομμάτι' }
   };
   function L(k) {
     var m = CFG.ui;
@@ -254,6 +263,35 @@
   /* ── Renderer pro Typ ─────────────────────────────────────────────── */
   var RENDER = {
 
+    /* wort: { typ:'wort', eyebrow?, ziel, tr, lt?, icon? (Bildpfad) } — keine Drehkarte:
+       alles auf einen Blick, wie die Karten im Wortschatz. Unten ‹ zurück | weiter ›. */
+    wort: function (item, F, next) {
+      if (item.eyebrow) F.body.appendChild(el('div', 'spk-eyebrow', esc(item.eyebrow)));
+      var w = el('div', 'spk-wort');
+      if (item.icon) {
+        var img = el('img', 'spk-wicon');
+        img.src = item.icon; img.alt = ''; img.setAttribute('aria-hidden', 'true');
+        img.width = 96; img.height = 96;
+        img.onerror = function () { if (img.parentNode) img.parentNode.removeChild(img); };
+        w.appendChild(img);
+      }
+      w.appendChild(textNode(item.ziel, true, false));
+      if (item.lt) w.appendChild(el('div', 'spk-wlt', esc(item.lt)));
+      w.appendChild(audioBtn(item.ziel));
+      if (item.tr) w.appendChild(el('div', 'spk-trl', esc(item.tr)));
+      F.body.appendChild(w);
+      F.foot.classList.add('zwei');
+      var fb = F.foot.querySelector('.spk-feedback'); if (fb) fb.remove();
+      var zb = el('button', 'spk-btn ghost spk-zurueck', esc(item.zurueck || L('zurueck')));
+      zb.type = 'button';
+      if (F.swipe.backFn) zb.onclick = F.swipe.backFn; else zb.disabled = true;
+      F.foot.appendChild(zb);
+      var vb = el('button', 'spk-btn spk-vor', esc(item.weiter || L('vor')));
+      vb.type = 'button'; vb.onclick = next;
+      F.foot.appendChild(vb);
+      F.armNext(next);
+    },
+
     /* flip: { typ:'flip', eyebrow?, front:{text, ziel?, audio?, hint?}, back:{text, ziel?, audio?, sub?} } */
     flip: function (item, F, next) {
       if (item.eyebrow) F.body.appendChild(el('div', 'spk-eyebrow', esc(item.eyebrow)));
@@ -261,6 +299,7 @@
       var inner = el('div', 'spk-flip-in');
       function face(side, cls) {
         var f = el('div', 'spk-face' + (cls ? ' ' + cls : ''));
+        if (side.icon) { var im = el('img', 'spk-wicon'); im.src = side.icon; im.alt = ''; im.setAttribute('aria-hidden', 'true'); im.onerror = function () { if (im.parentNode) im.parentNode.removeChild(im); }; f.appendChild(im); }
         if (side.audio) f.appendChild(audioBtn(side.audioText || side.text));
         f.appendChild(textNode(side.text, side.ziel !== false, false));
         if (side.sub) f.appendChild(textNode(side.sub, false, true));

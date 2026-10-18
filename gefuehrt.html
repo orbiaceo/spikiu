@@ -218,7 +218,7 @@ button{font:inherit;cursor:pointer}
         var S = D.station(st, TOPIC_ID);
         if (S && S.wortschatz && S.wortschatz.length) {
           h.wortschatz = S.wortschatz.map(function (w) {
-            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[MUT] || w.na.en || w.na.de || w.na.es)) || '') };
+            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[MUT] || w.na.en || w.na.de || w.na.es)) || ''), en: (w.na && typeof w.na === 'object' && w.na.en) || '' };
           });
           h.station = st + '.' + TOPIC_ID;
           h.stufe = st;
@@ -326,16 +326,28 @@ button{font:inherit;cursor:pointer}
     });
   }
 
-  /* ── WÖRTER: Erkennungs-Flips (Ziel vorne + Audio, Übersetzung hinten) ── */
+  /* Bild zum Wort, wie im Wortschatz (Leo, 18.10.): Konzept = englischer Begriff (na.en;
+     bei Zielsprache Englisch das Wort selbst), sonst Suche übers Zielwort. Nur was man
+     sehen kann, hat ein Bild — sonst bleibt die Karte ohne. */
+  function wortIcon(h) {
+    try {
+      var I = window.spikiuIcon; if (!I || !I.datei) return '';
+      var en = String(h.en || '').replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+      var e = (en && I.konzept(en)) || (ZIEL === 'en' && I.konzept(String(h.ziel).replace(/\s*\([^)]*\)\s*/g, ' ').trim())) || I(h.ziel) || '';
+      return e ? I.datei(e) : '';
+    } catch (err) { return ''; }
+  }
+
+  /* ── WÖRTER: Wort-Karten wie im Wortschatz (18.10.2026, Leo, Screenshot Karten:
+        „Aussehen, Layout so gestalten wie Karten im Wortschatz … auch mit Icons").
+        Vorher Drehkarten (Ziel vorne, Übersetzung hinten). ── */
   function startWoerter(startIdx) {
     setRail(1);
     var items = HAP.wortschatz.map(function (h, i) {
       return {
-        typ: 'flip',
+        typ: 'wort',
         eyebrow: '📖 ' + U.wortEyebrow + ' · ' + (i + 1) + ' / ' + HAP.wortschatz.length,
-        front: { text: h.ziel, ziel: true, audio: true, hint: U.flipHint },
-        back:  { text: h.uebersetzung, ziel: false, sub: h.lautschrift || null, hint: U.flipHint },
-        weiter: U.weiter
+        ziel: h.ziel, lt: h.lautschrift || null, tr: h.uebersetzung, icon: wortIcon(h)
       };
     });
     SpikiuKarten.sequence(items, startHoeren,
@@ -396,7 +408,7 @@ button{font:inherit;cursor:pointer}
       return {
         typ: 'flip',
         eyebrow: '🗣️ ' + U.drillEyebrow + ' · ' + (i + 1) + ' / ' + HAP.wortschatz.length,
-        front: { text: h.uebersetzung, ziel: false, hint: U.drillSag },
+        front: { text: h.uebersetzung, ziel: false, hint: U.drillSag, icon: wortIcon(h) },
         back:  { text: h.ziel, ziel: true, audio: true, sub: h.lautschrift || null, hint: U.flipHint },
         weiter: U.weiter
       };
