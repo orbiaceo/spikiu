@@ -99,6 +99,10 @@ footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:12px;padding
     <button id="m-gef" aria-pressed="true">Geführtes Gespräch</button>
     <button id="m-frei" aria-pressed="false">Freies Gespräch</button>
   </div>
+  <div class="proto" role="group" aria-label="Zielsprache" style="padding-top:0"><span>Ich lerne</span>
+    <button id="z-es" aria-pressed="true">Spanisch</button>
+    <button id="z-el" aria-pressed="false">Griechisch</button>
+  </div>
   <header>
     <button class="back" id="back" aria-label="zurück">‹</button>
     <div class="kopf"><div class="eb" id="eb">Geführtes Gespräch</div><div class="ttl" id="ttl">Thema</div></div>
@@ -113,76 +117,155 @@ footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:12px;padding
 /* ── Inhalt: Station „Im Café", Griechisch, Samen (lernpfad-daten-el.js a1.cafe + haeppchen-db.js) ── */
 var CAPY='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round"/></svg>';
 
-var WOERTER=[
- {z:'ο καφές',lt:'o kafés',de:'der Kaffee',bild:'bilder/om-2615.svg'},
- {z:'ο φραπές',lt:'o frapés',de:'der Frappé'},
- {z:'ο ελληνικός καφές',lt:'o elinikós kafés',de:'der griechische Mokka'},
- {z:'σκέτο',lt:'skéto',de:'ohne Zucker'},
- {z:'μέτριο',lt:'métrio',de:'mittelsüß'},
- {z:'γλυκό',lt:'glikó',de:'süß'},
- {z:'το γάλα',lt:'to gála',de:'die Milch',bild:'bilder/om-1F95B.svg'},
- {z:'το νερό',lt:'to neró',de:'das Wasser',bild:'bilder/sp-wasser.svg'},
- {z:'για εδώ',lt:'ya edó',de:'zum Hiertrinken'},
- {z:'πακέτο',lt:'pakéto',de:'zum Mitnehmen'},
- {z:'παρακαλώ',lt:'parakaló',de:'bitte'},
- {z:'ευχαριστώ',lt:'efcharistó',de:'danke'}
-];
-var HOEREN=[
- {z:'Έναν καφέ με γάλα.',de:'Einen Kaffee mit Milch.',falsch:['Έναν καφέ χωρίς γάλα.','Ένα τσάι με γάλα.','Ένα νερό, παρακαλώ.']},
- {z:'Για εδώ ή πακέτο;',de:'Zum Hiertrinken oder zum Mitnehmen?',falsch:['Σκέτο ή γλυκό;','Τι θα πάρετε;','Πόσο κάνει;']},
- {z:'Σκέτο, μέτριο ή γλυκό;',de:'Ohne Zucker, mittelsüß oder süß?',falsch:['Για εδώ ή πακέτο;','Μέτριο, με γάλα.','Καλημέρα!']},
- {z:'Πόσο κάνει;',de:'Was kostet das?',falsch:['Πού είναι;','Τι θα πάρετε;','Για εδώ.']}
-];
-var ROLLE=[
- {sp:'Καλημέρα! Τι θα πάρετε;',spDe:'Guten Morgen! Was darf’s sein?',z:'Έναν φραπέ, παρακαλώ.',de:'Einen Frappé, bitte.',
-  falsch:[['Σκέτο ή γλυκό;','Ohne Zucker oder süß?'],['Για εδώ. Πόσο κάνει;','Zum Hiertrinken. Was kostet das?'],['Ευχαριστώ, γεια σας!','Danke, auf Wiedersehen!']]},
- {sp:'Σκέτο, μέτριο ή γλυκό;',spDe:'Ohne Zucker, mittelsüß oder süß?',z:'Μέτριο, με γάλα.',de:'Mittelsüß, mit Milch.',
-  falsch:[['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Πόσο κάνει;','Was kostet das?'],['Καλημέρα!','Guten Morgen!']]},
- {sp:'Για εδώ ή πακέτο;',spDe:'Zum Hiertrinken oder zum Mitnehmen?',z:'Για εδώ. Πόσο κάνει;',de:'Zum Hiertrinken. Was kostet das?',
-  falsch:[['Μέτριο, με γάλα.','Mittelsüß, mit Milch.'],['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Καλημέρα!','Guten Morgen!']]},
- {sp:'Δυόμισι ευρώ. Και το νεράκι σας — καλή σας μέρα!',spDe:'Zweieinhalb Euro. Und Ihr Wasser dazu — einen schönen Tag!',z:'Ευχαριστώ! Καλή σας μέρα!',de:'Danke! Ihnen auch einen schönen Tag!',
-  falsch:[['Σκέτο, μέτριο ή γλυκό;','Ohne Zucker, mittelsüß oder süß?'],['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Για εδώ ή πακέτο;','Zum Hiertrinken oder zum Mitnehmen?']]}
-];
-var LEKTION={regel:'Bestellen frisst das -ς.',regelSub:'ο καφές (der Kaffee) → έναν καφέ, παρακαλώ — wie „der Kaffee → einen Kaffee".',
+/* Inhalt je Zielsprache: Station „Im Café", Samen (lernpfad-daten*.js a1.cafe + haeppchen-db.js).
+   Spanisch: geschriebene Lerninhalte in den Formen aus Spanien; Klang und Spikius freies Sprechen neutral
+   lateinamerikanisch (Leo, 15.10.) — darum es-US-Stimme zuerst. */
+var L={
+ el:{
+ WOERTER:[
+  {z:'ο καφές',lt:'o kafés',de:'der Kaffee',bild:'bilder/om-2615.svg'},
+  {z:'ο φραπές',lt:'o frapés',de:'der Frappé'},
+  {z:'ο ελληνικός καφές',lt:'o elinikós kafés',de:'der griechische Mokka'},
+  {z:'σκέτο',lt:'skéto',de:'ohne Zucker'},
+  {z:'μέτριο',lt:'métrio',de:'mittelsüß'},
+  {z:'γλυκό',lt:'glikó',de:'süß'},
+  {z:'το γάλα',lt:'to gála',de:'die Milch',bild:'bilder/om-1F95B.svg'},
+  {z:'το νερό',lt:'to neró',de:'das Wasser',bild:'bilder/sp-wasser.svg'},
+  {z:'για εδώ',lt:'ya edó',de:'zum Hiertrinken'},
+  {z:'πακέτο',lt:'pakéto',de:'zum Mitnehmen'},
+  {z:'παρακαλώ',lt:'parakaló',de:'bitte'},
+  {z:'ευχαριστώ',lt:'efcharistó',de:'danke'}
+ ],
+ HOEREN:[
+  {z:'Έναν καφέ με γάλα.',de:'Einen Kaffee mit Milch.',falsch:['Έναν καφέ χωρίς γάλα.','Ένα τσάι με γάλα.','Ένα νερό, παρακαλώ.']},
+  {z:'Για εδώ ή πακέτο;',de:'Zum Hiertrinken oder zum Mitnehmen?',falsch:['Σκέτο ή γλυκό;','Τι θα πάρετε;','Πόσο κάνει;']},
+  {z:'Σκέτο, μέτριο ή γλυκό;',de:'Ohne Zucker, mittelsüß oder süß?',falsch:['Για εδώ ή πακέτο;','Μέτριο, με γάλα.','Καλημέρα!']},
+  {z:'Πόσο κάνει;',de:'Was kostet das?',falsch:['Πού είναι;','Τι θα πάρετε;','Για εδώ.']}
+ ],
+ ROLLE:[
+  {sp:'Καλημέρα! Τι θα πάρετε;',spDe:'Guten Morgen! Was darf’s sein?',z:'Έναν φραπέ, παρακαλώ.',de:'Einen Frappé, bitte.',
+   falsch:[['Σκέτο ή γλυκό;','Ohne Zucker oder süß?'],['Για εδώ. Πόσο κάνει;','Zum Hiertrinken. Was kostet das?'],['Ευχαριστώ, γεια σας!','Danke, auf Wiedersehen!']]},
+  {sp:'Σκέτο, μέτριο ή γλυκό;',spDe:'Ohne Zucker, mittelsüß oder süß?',z:'Μέτριο, με γάλα.',de:'Mittelsüß, mit Milch.',
+   falsch:[['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Πόσο κάνει;','Was kostet das?'],['Καλημέρα!','Guten Morgen!']]},
+  {sp:'Για εδώ ή πακέτο;',spDe:'Zum Hiertrinken oder zum Mitnehmen?',z:'Για εδώ. Πόσο κάνει;',de:'Zum Hiertrinken. Was kostet das?',
+   falsch:[['Μέτριο, με γάλα.','Mittelsüß, mit Milch.'],['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Καλημέρα!','Guten Morgen!']]},
+  {sp:'Δυόμισι ευρώ. Και το νεράκι σας — καλή σας μέρα!',spDe:'Zweieinhalb Euro. Und Ihr Wasser dazu — einen schönen Tag!',z:'Ευχαριστώ! Καλή σας μέρα!',de:'Danke! Ihnen auch einen schönen Tag!',
+   falsch:[['Σκέτο, μέτριο ή γλυκό;','Ohne Zucker, mittelsüß oder süß?'],['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Για εδώ ή πακέτο;','Zum Hiertrinken oder zum Mitnehmen?']]}
+ ],
+ LEKTION:{regel:'Bestellen frisst das -ς.',regelSub:'ο καφές (der Kaffee) → έναν καφέ, παρακαλώ — wie „der Kaffee → einen Kaffee".',
+  items:[
+   {hoer:'Έναν καφέ, παρακαλώ.',z:'Έναν καφέ',falsch:['Έναν καφές','Ο καφές','Ένας καφέ'],de:'Einen Kaffee, bitte.'},
+   {hoer:'Έναν φραπέ, παρακαλώ.',z:'Έναν φραπέ',falsch:['Έναν φραπές','Ο φραπές','Ένας φραπέ'],de:'Einen Frappé, bitte.'},
+   {hoer:'Έναν ελληνικό καφέ, παρακαλώ.',z:'Έναν ελληνικό καφέ',falsch:['Έναν ελληνικός καφές','Ο ελληνικός καφές','Ένας ελληνικό καφέ'],de:'Einen griechischen Mokka, bitte.'}
+  ]},
+ /* Freies Gespräch: im Prototyp ein festes Skript. In der App schreibt Spikiu (Token) jede Zeile und
+    die vier Vorschläge selbst — passend zu dem, was der Lerner sagt. */
+ FREI:[
+  {sp:'Γεια σας! Πρώτη φορά στην Ελλάδα;',de:'Hallo! Zum ersten Mal in Griechenland?',opts:[
+   {z:'Ναι, πρώτη φορά!',de:'Ja, zum ersten Mal!',r:'Καλώς ήρθατε!',rDe:'Willkommen!'},
+   {z:'Όχι, δεύτερη φορά.',de:'Nein, zum zweiten Mal.',r:'Α, ωραία! Καλώς ήρθατε ξανά!',rDe:'Ah, schön! Willkommen zurück!'},
+   {z:'Ναι, είμαι από τη Γερμανία.',de:'Ja, ich bin aus Deutschland.',r:'Από τη Γερμανία! Καλώς ήρθατε!',rDe:'Aus Deutschland! Willkommen!'},
+   {z:'Συγγνώμη, δεν καταλαβαίνω.',de:'Entschuldigung, ich verstehe nicht.',hilfe:true,r:'Κανένα πρόβλημα! Πρώτη φορά = zum ersten Mal.',rDe:'Kein Problem! „Πρώτη φορά" heißt „zum ersten Mal".'}]},
+  {sp:'Τι θα πιείτε σήμερα;',de:'Was trinken Sie heute?',opts:[
+   {z:'Έναν φραπέ, παρακαλώ.',de:'Einen Frappé, bitte.',r:'Τέλεια! Ο φραπές είναι πολύ ελληνικός.',rDe:'Perfekt! Der Frappé ist sehr griechisch.'},
+   {z:'Ένα τσάι, παρακαλώ.',de:'Einen Tee, bitte.',r:'Ένα τσάι, βεβαίως.',rDe:'Einen Tee, natürlich.'},
+   {z:'Τι μου προτείνετε;',de:'Was empfehlen Sie mir?',r:'Δοκιμάστε έναν ελληνικό καφέ!',rDe:'Probieren Sie einen griechischen Mokka!'},
+   {z:'Ένα νερό μόνο.',de:'Nur ein Wasser.',r:'Βεβαίως, ένα νερό.',rDe:'Natürlich, ein Wasser.'}]},
+  {sp:'Θέλετε και κάτι να φάτε;',de:'Möchten Sie auch etwas essen?',opts:[
+   {z:'Ναι, ένα κέικ.',de:'Ja, einen Kuchen.',r:'Έχουμε κέικ πορτοκάλι — πολύ ωραίο!',rDe:'Wir haben Orangenkuchen — sehr gut!'},
+   {z:'Όχι, ευχαριστώ.',de:'Nein, danke.',r:'Εντάξει!',rDe:'In Ordnung!'},
+   {z:'Τι έχετε;',de:'Was haben Sie?',r:'Έχουμε κέικ, τοστ και κουλούρι.',rDe:'Wir haben Kuchen, Toast und Sesamkringel.'},
+   {z:'Αργότερα, ίσως.',de:'Später vielleicht.',r:'Κανένα πρόβλημα.',rDe:'Kein Problem.'}]},
+  {sp:'Πόσες μέρες μένετε;',de:'Wie viele Tage bleiben Sie?',opts:[
+   {z:'Μία εβδομάδα.',de:'Eine Woche.',r:'Ωραία, έχετε χρόνο!',rDe:'Schön, Sie haben Zeit!'},
+   {z:'Τρεις μέρες.',de:'Drei Tage.',r:'Λίγες, αλλά καλές!',rDe:'Wenige, aber gute!'},
+   {z:'Δεν ξέρω ακόμα.',de:'Ich weiß es noch nicht.',r:'Μείνετε πολύ!',rDe:'Bleiben Sie lange!'},
+   {z:'Συγγνώμη, πιο αργά;',de:'Entschuldigung, langsamer?',hilfe:true,r:'Βεβαίως: Πόσες… μέρες… μένετε;',rDe:'Natürlich: Wie viele … Tage … bleiben Sie?'}]}
+ ],
+ FREI_ENDE:{sp:'Ήταν ωραία η κουβέντα μας. Καλή σας μέρα!',de:'Das war ein schönes Gespräch. Einen schönen Tag!'},
+
+ ENDE:{sp:'Μπράβο! Τα λέμε αύριο.',de:'Bravo! Bis morgen.'},
+ ORT2:['In der Taverne','ein Tisch, die Empfehlung'], LEKT_KURZ:'Bestellen frisst das -ς', SPRACHE:'Griechisch', BESTELLT:'Frappé, Tee …',
+ STIMMEN:['el-GR'], LANG:'el-GR'
+ },
+ es:{
+ WOERTER:[
+ {z:'el café',de:'der Kaffee',bild:'bilder/om-2615.svg'},
+ {z:'el té',de:'der Tee',bild:'bilder/om-1F375.svg'},
+ {z:'el agua',de:'das Wasser',bild:'bilder/sp-wasser.svg'},
+ {z:'la leche',de:'die Milch',bild:'bilder/om-1F95B.svg'},
+ {z:'el azúcar',de:'der Zucker'},
+ {z:'un vaso',de:'ein Glas',bild:'bilder/om-1F943.svg'},
+ {z:'la taza',de:'die Tasse',bild:'bilder/om-2615.svg'},
+ {z:'la cuenta',de:'die Rechnung',bild:'bilder/om-1F9FE.svg'},
+ {z:'por favor',de:'bitte'},
+ {z:'gracias',de:'danke'},
+ {z:'quiero',de:'ich möchte'},
+ {z:'¿cuánto es?',de:'was kostet das?'}
+ ],
+ HOEREN:[
+ {z:'Un café con leche.',de:'Einen Milchkaffee.',falsch:['Un café sin leche.','Un té con leche.','Un vaso de agua.']},
+ {z:'¿Con leche o solo?',de:'Mit Milch oder schwarz?',falsch:['¿Algo más?','¿Qué le pongo?','¿Cuánto es?']},
+ {z:'¿Algo más?',de:'Sonst noch etwas?',falsch:['¿Con leche o solo?','La cuenta, por favor.','¡Buenos días!']},
+ {z:'¿Cuánto es?',de:'Was kostet das?',falsch:['¿Dónde está?','¿Qué le pongo?','Con leche.']}
+ ],
+ ROLLE:[
+ {sp:'¡Buenos días! ¿Qué le pongo?',spDe:'Guten Tag! Was darf ich Ihnen bringen?',z:'Un café, por favor.',de:'Einen Kaffee, bitte.',
+  falsch:[['¿Con leche o solo?','Mit Milch oder schwarz?'],['La cuenta, por favor.','Die Rechnung, bitte.'],['Gracias, adiós.','Danke, auf Wiedersehen.']]},
+ {sp:'¿Con leche o solo?',spDe:'Mit Milch oder schwarz?',z:'Con leche, gracias.',de:'Mit Milch, danke.',
+  falsch:[['Un café, por favor.','Einen Kaffee, bitte.'],['¿Cuánto es?','Was kostet das?'],['¡Buenos días!','Guten Tag!']]},
+ {sp:'Enseguida. ¿Algo más?',spDe:'Sofort. Sonst noch etwas?',z:'No, gracias. La cuenta, por favor.',de:'Nein, danke. Die Rechnung, bitte.',
+  falsch:[['¿Qué le pongo?','Was darf ich Ihnen bringen?'],['¿Con leche o solo?','Mit Milch oder schwarz?'],['¡Buenos días!','Guten Tag!']]},
+ {sp:'Son dos euros con veinte.',spDe:'Das macht zwei Euro zwanzig.',z:'Aquí tiene. ¡Gracias!',de:'Bitte schön. Danke!',
+  falsch:[['Un café, por favor.','Einen Kaffee, bitte.'],['¿Con leche o solo?','Mit Milch oder schwarz?'],['¿Algo más?','Sonst noch etwas?']]}
+ ],
+ LEKTION:{regel:'„Un" oder „una" — das hängt am Wort.',regelSub:'un café, una taza: Man lernt es mit dem Wort zusammen, nicht als Regel.',
  items:[
-  {hoer:'Έναν καφέ, παρακαλώ.',z:'Έναν καφέ',falsch:['Έναν καφές','Ο καφές','Ένας καφέ'],de:'Einen Kaffee, bitte.'},
-  {hoer:'Έναν φραπέ, παρακαλώ.',z:'Έναν φραπέ',falsch:['Έναν φραπές','Ο φραπές','Ένας φραπέ'],de:'Einen Frappé, bitte.'},
-  {hoer:'Έναν ελληνικό καφέ, παρακαλώ.',z:'Έναν ελληνικό καφέ',falsch:['Έναν ελληνικός καφές','Ο ελληνικός καφές','Ένας ελληνικό καφέ'],de:'Einen griechischen Mokka, bitte.'}
- ]};
-/* Freies Gespräch: im Prototyp ein festes Skript. In der App schreibt Spikiu (Token) jede Zeile und
-   die vier Vorschläge selbst — passend zu dem, was der Lerner sagt. */
-var FREI=[
- {sp:'Γεια σας! Πρώτη φορά στην Ελλάδα;',de:'Hallo! Zum ersten Mal in Griechenland?',opts:[
-  {z:'Ναι, πρώτη φορά!',de:'Ja, zum ersten Mal!',r:'Καλώς ήρθατε!',rDe:'Willkommen!'},
-  {z:'Όχι, δεύτερη φορά.',de:'Nein, zum zweiten Mal.',r:'Α, ωραία! Καλώς ήρθατε ξανά!',rDe:'Ah, schön! Willkommen zurück!'},
-  {z:'Ναι, είμαι από τη Γερμανία.',de:'Ja, ich bin aus Deutschland.',r:'Από τη Γερμανία! Καλώς ήρθατε!',rDe:'Aus Deutschland! Willkommen!'},
-  {z:'Συγγνώμη, δεν καταλαβαίνω.',de:'Entschuldigung, ich verstehe nicht.',hilfe:true,r:'Κανένα πρόβλημα! Πρώτη φορά = zum ersten Mal.',rDe:'Kein Problem! „Πρώτη φορά" heißt „zum ersten Mal".'}]},
- {sp:'Τι θα πιείτε σήμερα;',de:'Was trinken Sie heute?',opts:[
-  {z:'Έναν φραπέ, παρακαλώ.',de:'Einen Frappé, bitte.',r:'Τέλεια! Ο φραπές είναι πολύ ελληνικός.',rDe:'Perfekt! Der Frappé ist sehr griechisch.'},
-  {z:'Ένα τσάι, παρακαλώ.',de:'Einen Tee, bitte.',r:'Ένα τσάι, βεβαίως.',rDe:'Einen Tee, natürlich.'},
-  {z:'Τι μου προτείνετε;',de:'Was empfehlen Sie mir?',r:'Δοκιμάστε έναν ελληνικό καφέ!',rDe:'Probieren Sie einen griechischen Mokka!'},
-  {z:'Ένα νερό μόνο.',de:'Nur ein Wasser.',r:'Βεβαίως, ένα νερό.',rDe:'Natürlich, ein Wasser.'}]},
- {sp:'Θέλετε και κάτι να φάτε;',de:'Möchten Sie auch etwas essen?',opts:[
-  {z:'Ναι, ένα κέικ.',de:'Ja, einen Kuchen.',r:'Έχουμε κέικ πορτοκάλι — πολύ ωραίο!',rDe:'Wir haben Orangenkuchen — sehr gut!'},
-  {z:'Όχι, ευχαριστώ.',de:'Nein, danke.',r:'Εντάξει!',rDe:'In Ordnung!'},
-  {z:'Τι έχετε;',de:'Was haben Sie?',r:'Έχουμε κέικ, τοστ και κουλούρι.',rDe:'Wir haben Kuchen, Toast und Sesamkringel.'},
-  {z:'Αργότερα, ίσως.',de:'Später vielleicht.',r:'Κανένα πρόβλημα.',rDe:'Kein Problem.'}]},
- {sp:'Πόσες μέρες μένετε;',de:'Wie viele Tage bleiben Sie?',opts:[
-  {z:'Μία εβδομάδα.',de:'Eine Woche.',r:'Ωραία, έχετε χρόνο!',rDe:'Schön, Sie haben Zeit!'},
-  {z:'Τρεις μέρες.',de:'Drei Tage.',r:'Λίγες, αλλά καλές!',rDe:'Wenige, aber gute!'},
-  {z:'Δεν ξέρω ακόμα.',de:'Ich weiß es noch nicht.',r:'Μείνετε πολύ!',rDe:'Bleiben Sie lange!'},
-  {z:'Συγγνώμη, πιο αργά;',de:'Entschuldigung, langsamer?',hilfe:true,r:'Βεβαίως: Πόσες… μέρες… μένετε;',rDe:'Natürlich: Wie viele … Tage … bleiben Sie?'}]}
-];
-var FREI_ENDE={sp:'Ήταν ωραία η κουβέντα μας. Καλή σας μέρα!',de:'Das war ein schönes Gespräch. Einen schönen Tag!'};
+  {hoer:'Un café, por favor.',z:'Un café',falsch:['Una café','Uno café','Unos café'],de:'Einen Kaffee, bitte.'},
+  {hoer:'Una taza de té, por favor.',z:'Una taza',falsch:['Un taza','Uno taza','Unas taza'],de:'Eine Tasse Tee, bitte.'},
+  {hoer:'Un vaso de agua, por favor.',z:'Un vaso',falsch:['Una vaso','Uno vaso','Unos vaso'],de:'Ein Glas Wasser, bitte.'}
+ ]},
+ FREI:[
+ {sp:'¡Hola! ¿Es su primera vez aquí?',de:'Hallo! Sind Sie zum ersten Mal hier?',opts:[
+  {z:'Sí, es mi primera vez.',de:'Ja, zum ersten Mal.',r:'¡Qué bien! Le va a gustar.',rDe:'Wie schön! Es wird Ihnen gefallen.'},
+  {z:'No, vengo a menudo.',de:'Nein, ich komme oft.',r:'¡Ah, claro! Ya me parecía.',rDe:'Ah, klar! Das dachte ich mir.'},
+  {z:'Sí, soy de Alemania.',de:'Ja, ich bin aus Deutschland.',r:'¡De Alemania! Qué bien.',rDe:'Aus Deutschland! Wie schön.'},
+  {z:'Perdón, no entiendo.',de:'Entschuldigung, ich verstehe nicht.',hilfe:true,r:'No pasa nada. „Primera vez" = zum ersten Mal.',rDe:'Kein Problem. „Primera vez" heißt „zum ersten Mal".'}]},
+ {sp:'¿Qué desea tomar?',de:'Was möchten Sie trinken?',opts:[
+  {z:'Un café con leche, por favor.',de:'Einen Milchkaffee, bitte.',r:'Muy bien, un café con leche.',rDe:'Sehr gut, ein Milchkaffee.'},
+  {z:'Un té, por favor.',de:'Einen Tee, bitte.',r:'Claro, un té.',rDe:'Gern, ein Tee.'},
+  {z:'¿Qué me recomienda?',de:'Was empfehlen Sie mir?',r:'Pruebe el chocolate caliente. ¡Está riquísimo!',rDe:'Probieren Sie die heiße Schokolade. Sie ist köstlich!'},
+  {z:'Solo agua, gracias.',de:'Nur Wasser, danke.',r:'Perfecto, un vaso de agua.',rDe:'Perfekt, ein Glas Wasser.'}]},
+ {sp:'¿Quiere algo de comer también?',de:'Möchten Sie auch etwas essen?',opts:[
+  {z:'Sí, un cruasán.',de:'Ja, ein Croissant.',r:'Los cruasanes están recién hechos.',rDe:'Die Croissants sind ganz frisch.'},
+  {z:'No, gracias.',de:'Nein, danke.',r:'De acuerdo.',rDe:'In Ordnung.'},
+  {z:'¿Qué tienen?',de:'Was haben Sie?',r:'Tenemos cruasanes, tostadas y pastel.',rDe:'Wir haben Croissants, Toast und Kuchen.'},
+  {z:'Más tarde, quizás.',de:'Später vielleicht.',r:'Sin problema.',rDe:'Kein Problem.'}]},
+ {sp:'¿Cuántos días se queda?',de:'Wie viele Tage bleiben Sie?',opts:[
+  {z:'Una semana.',de:'Eine Woche.',r:'¡Qué bien, tiene tiempo!',rDe:'Schön, Sie haben Zeit!'},
+  {z:'Tres días.',de:'Drei Tage.',r:'Pocos, pero buenos.',rDe:'Wenige, aber gute.'},
+  {z:'Todavía no lo sé.',de:'Ich weiß es noch nicht.',r:'¡Quédese mucho tiempo!',rDe:'Bleiben Sie lange!'},
+  {z:'Perdón, ¿más despacio?',de:'Entschuldigung, langsamer?',hilfe:true,r:'Claro: ¿Cuántos… días… se queda?',rDe:'Natürlich: Wie viele … Tage … bleiben Sie?'}]}
+ ],
+ FREI_ENDE:{sp:'¡Qué buena conversación! Que tenga un buen día.',de:'Was für ein schönes Gespräch! Einen schönen Tag noch.'},
+ ENDE:{sp:'¡Muy bien! Hasta mañana.',de:'Sehr gut! Bis morgen.'},
+ ORT2:['In der Bar','Tapas, die Empfehlung'], LEKT_KURZ:'un café · una taza', SPRACHE:'Spanisch', BESTELLT:'Milchkaffee, Tee …',
+ STIMMEN:['es-US','es-419','es-MX','es-ES'], LANG:'es-US'
+ }
+};
+var Z='el',WOERTER,HOEREN,ROLLE,LEKTION,FREI,FREI_ENDE,SP;
+function setzeSprache(z){Z=z;SP=L[z];WOERTER=SP.WOERTER;HOEREN=SP.HOEREN;ROLLE=SP.ROLLE;LEKTION=SP.LEKTION;FREI=SP.FREI;FREI_ENDE=SP.FREI_ENDE;stimme();}
 
 /* ── Werkzeug ── */
 function $(id){return document.getElementById(id);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function mischen(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
 var STIMME=null;
-function stimme(){try{var v=speechSynthesis.getVoices();STIMME=v.filter(function(x){return /^el/i.test(x.lang);})[0]||null;}catch(e){}}
+function stimme(){try{var v=speechSynthesis.getVoices();STIMME=null;var W=(SP&&SP.STIMMEN)||['el-GR'];
+ for(var i=0;i<W.length&&!STIMME;i++){STIMME=v.filter(function(x){return x.lang.replace('_','-').toLowerCase()===W[i].toLowerCase();})[0]||null;}
+ if(!STIMME)STIMME=v.filter(function(x){return x.lang.slice(0,2)===Z;})[0]||null;}catch(e){}}
 try{stimme();speechSynthesis.onvoiceschanged=stimme;}catch(e){}
-function sprich(t){try{var s=speechSynthesis;s.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='el-GR';if(STIMME)u.voice=STIMME;u.rate=.9;s.speak(u);}catch(e){}}
+function sprich(t){try{var s=speechSynthesis;s.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=(SP&&SP.LANG)||'el-GR';if(STIMME)u.voice=STIMME;u.rate=.9;s.speak(u);}catch(e){}}
 var KL=null;function klang(ok){try{KL=KL||new (window.AudioContext||window.webkitAudioContext)();var t=KL.currentTime,f=ok?[523.25,659.25,783.99]:[392,466.16];
  f.forEach(function(fr,i){var o=KL.createOscillator(),g=KL.createGain();o.type='sine';o.frequency.value=fr;g.gain.setValueAtTime(0,t+i*.07);g.gain.linearRampToValueAtTime(.12,t+i*.07+.02);g.gain.exponentialRampToValueAtTime(.001,t+i*.07+.35);o.connect(g);g.connect(KL.destination);o.start(t+i*.07);o.stop(t+i*.07+.4);});}catch(e){}}
 
@@ -226,7 +309,7 @@ function thema(unter){
   st.innerHTML='<button class="btn" style="padding:.35rem .8rem;font-size:.85rem;background:var(--ink);color:#fff" aria-pressed="true">🌱 Samen</button><button class="btn" style="padding:.35rem .8rem;font-size:.85rem">🌿 Stamm</button><button class="btn" style="padding:.35rem .8rem;font-size:.85rem">🌳 Krone</button>';
   k.appendChild(st);
   var g=el('div','grid');k.appendChild(g);
-  [['bilder/om-1F37D.svg','Essen & Trinken','Café · Taverne',true],['bilder/om-1F9F3.svg','Unterwegs','Taxi · Bahnhof · Weg · Hotel'],['bilder/om-1F6D2.svg','Alltag','Einkaufen · Wetter'],[null,'Menschen','Familie · Arzt','👥']].forEach(function(x,n){
+  [['bilder/om-1F37D.svg','Essen & Trinken','Café · '+SP.ORT2[0].replace(/^In der /,''),true],['bilder/om-1F9F3.svg','Unterwegs','Taxi · Bahnhof · Weg · Hotel'],['bilder/om-1F6D2.svg','Alltag','Einkaufen · Wetter'],[null,'Menschen','Familie · Arzt','👥']].forEach(function(x,n){
    var b=el('button','tile',(x[0]?'<img src="'+x[0]+'" alt="">':'<span class="te">'+x[3]+'</span>')+'<span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>');
    b.id='th-'+n;b.onclick=x[3]===true?function(){thema(true);}:function(){$('fbt').textContent='Im Prototyp ist nur „Essen & Trinken" gefüllt.';};g.appendChild(b);});
   var fb=el('div','fb soft');fb.id='fbt';k.appendChild(fb);
@@ -234,7 +317,7 @@ function thema(unter){
  } else {
   k.appendChild(el('p','task','Essen & Trinken — wohin gehst du?'));
   var g2=el('div','grid eins');k.appendChild(g2);
-  [['bilder/om-2615.svg','Im Café','bestellen, zahlen',true],['bilder/om-1F37D.svg','In der Taverne','ein Tisch, die Empfehlung']].forEach(function(x,n){
+  [['bilder/om-2615.svg','Im Café','bestellen, zahlen',true],['bilder/om-1F37D.svg',SP.ORT2[0],SP.ORT2[1]]].forEach(function(x,n){
    var b=el('button','tile','<img src="'+x[0]+'" alt="" style="max-height:48%"><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>');b.id='ort-'+n;
    b.onclick=x[3]?function(){geheZu(1);}:function(){$('fbt2').textContent='Im Prototyp ist nur „Im Café" gefüllt.';};g2.appendChild(b);});
   var fb2=el('div','fb soft');fb2.id='fbt2';k.appendChild(fb2);
@@ -249,20 +332,20 @@ function woerter(){
  if(!WS){WS={stapel:mischen(WOERTER.map(function(_,i){return i;})),punkte:WOERTER.map(function(){return 0;}),runde:0};}
  rail(1);kopf('Geführtes Gespräch','Wörter');
  if(!WS.stapel.length){
-  var k0=karte();k0.appendChild(el('p','task','Alle zwölf Wörter sitzen.<small>Jedes kam mindestens zweimal — die schweren öfter.</small>'));
+  var k0=karte();k0.appendChild(el('p','task','Alle '+WOERTER.length+' Wörter sitzen.<small>Jedes kam mindestens zweimal — die schweren öfter.</small>'));
   var g0=el('div','grid');k0.appendChild(g0);
-  [['bilder/om-2615.svg','ο καφές'],['bilder/om-1F95B.svg','το γάλα'],['bilder/sp-wasser.svg','το νερό'],[null,'παρακαλώ']].forEach(function(x){g0.appendChild(el('div','tile ok',(x[0]?'<img src="'+x[0]+'" alt="" style="max-height:55%">':'')+'<span class="tz">'+x[1]+'</span>'));});
-  k0.appendChild(el('div','fb','12 von 12 ✓'));
+  WOERTER.filter(function(w){return w.bild;}).slice(0,3).concat(WOERTER.filter(function(w){return !w.bild;}).slice(-1)).map(function(w){return [w.bild||null,w.z];}).forEach(function(x){g0.appendChild(el('div','tile ok',(x[0]?'<img src="'+x[0]+'" alt="" style="max-height:55%">':'')+'<span class="tz">'+x[1]+'</span>'));});
+  k0.appendChild(el('div','fb',WOERTER.length+' von '+WOERTER.length+' ✓'));
   fuss({t:'nochmal',go:function(){WS=null;woerter();}},{t:'Hören ›',pri:true,go:function(){geheZu(2);}});return;}
  var i=WS.stapel[0], w=WOERTER[i], k=karte();
  k.appendChild(el('p','task','Hör gut zu und tipp, was es bedeutet.'));
  var p=el('div','punkte');p.innerHTML=WS.punkte.map(function(n){return '<i class="'+(n>=2?'v':n===1?'h':'')+'"></i>';}).join('');k.appendChild(p);
  bigKnopf(k,'Anhören',function(){sprich(w.z);});
- var andere=mischen(WOERTER.map(function(_,j){return j;}).filter(function(j){return j!==i;})).slice(0,3);
+ var andere=mischen(WOERTER.map(function(_,j){return j;}).filter(function(j){return j!==i&&!(w.bild&&WOERTER[j].bild===w.bild);})).slice(0,3);
  function kachel(j){var x=WOERTER[j];return x.bild?'<img src="'+x.bild+'" alt="'+esc(x.de)+'">':'<span class="tn">'+esc(x.de)+'</span>';}
  var R=runde({karte:k,auto:w.z,
   kacheln:[{ok:true,html:kachel(i)}].concat(andere.map(function(j){var x=WOERTER[j];return {html:kachel(j),falschText:'Das wäre <em>'+esc(x.z)+'</em> — hör nochmal.'};})),
-  richtig:'<span><em>'+esc(w.z)+'</em> = '+esc(w.de)+'<span class="lt">'+esc(w.lt)+'</span></span>',
+  richtig:'<span><em>'+esc(w.z)+'</em> = '+esc(w.de)+(w.lt?'<span class="lt">'+esc(w.lt)+'</span>':'')+'</span>',
   fertig:function(sauber){
    WS.stapel.shift();
    if(sauber){WS.punkte[i]++; if(WS.punkte[i]<2) WS.stapel.splice(Math.min(WS.stapel.length,4+Math.floor(Math.random()*3)),0,i);}
@@ -295,7 +378,7 @@ function sprechen(){
  rail(3);kopf('Geführtes Gespräch','Sprechen');
  if(RS>=ROLLE.length){RS=0;geheZu(4);return;}
  var r=ROLLE[RS],k=karte();
- var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el">'+esc(r.sp)+'</div><div class="uebs"><button type="button" id="ueb">Übersetzung</button></div></div>');
+ var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'">'+esc(r.sp)+'</div><div class="uebs"><button type="button" id="ueb">Übersetzung</button></div></div>');
  k.appendChild(z);
  z.querySelector('#ueb').onclick=function(){this.parentNode.textContent=r.spDe;};
  bigKnopf(k,'Kellner anhören',function(){sprich(r.sp);});
@@ -324,10 +407,10 @@ function lektion(){
 function ende(){
  rail(5);kopf('Geführtes Gespräch','Im Café');
  var k=karte();
- k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el">Μπράβο! Τα λέμε αύριο.</div><div class="uebs">Bravo! Bis morgen.</div></div>'));
+ k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'">'+esc(SP.ENDE.sp)+'</div><div class="uebs">'+esc(SP.ENDE.de)+'</div></div>'));
  var gelernt=WS?WS.punkte.filter(function(n){return n>=2;}).length:0;
  var g=el('div','grid');k.appendChild(g);
- [['📖','Wörter',gelernt+' von 12 sitzen'],['🎧','Hören','4 Sätze erkannt'],['🗣️','Sprechen','4 Antworten gesagt'],['✏️','Lektion','Bestellen frisst das -ς']].forEach(function(x){g.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
+ [['📖','Wörter',gelernt+' von '+WOERTER.length+' sitzen'],['🎧','Hören','4 Sätze erkannt'],['🗣️','Sprechen','4 Antworten gesagt'],['✏️','Lektion',SP.LEKT_KURZ]].forEach(function(x){g.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
  k.appendChild(el('div','fb','Deine Wörter liegen in der Schatzkiste.'));
  fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){WS=null;HS=null;RS=0;LS=0;geheZu(0);}});
 }
@@ -338,14 +421,14 @@ function frei(){
  kopf('Freies Gespräch','Im Café');rail(-1);
  var k=karte();
  if(FZ>=FREI.length){
-  k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el">'+esc(FREI_ENDE.sp)+'</div><div class="uebs">'+esc(FREI_ENDE.de)+'</div></div>'));
+  k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'">'+esc(FREI_ENDE.sp)+'</div><div class="uebs">'+esc(FREI_ENDE.de)+'</div></div>'));
   var g0=el('div','grid');k.appendChild(g0);
-  [['💬','4 Wechsel','ganz auf Griechisch'],['🎧','Gehört','Spikiu als Kellner'],['☕','Bestellt','Frappé, Tee …'],['🌱','Samen','nächstes Mal: freier']].forEach(function(x){g0.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
+  [['💬','4 Wechsel','ganz auf '+SP.SPRACHE],['🎧','Gehört','Spikiu als Kellner'],['☕','Bestellt',SP.BESTELLT],['🌱','Samen','nächstes Mal: freier']].forEach(function(x){g0.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
   k.appendChild(el('div','fb',''));
   sprich(FREI_ENDE.sp);
   fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){FZ=0;frei();}});return;}
  var q=FREI[FZ];
- var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el" id="spz">'+esc(q.sp)+'</div><div class="uebs" id="spu"><button type="button" id="ueb">Übersetzung</button></div></div><button class="mini" id="spk-mini" type="button" aria-label="Spikiu anhören">🔊</button>');
+ var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'" id="spz">'+esc(q.sp)+'</div><div class="uebs" id="spu"><button type="button" id="ueb">Übersetzung</button></div></div><button class="mini" id="spk-mini" type="button" aria-label="Spikiu anhören">🔊</button>');
  k.appendChild(z);
  var aktuell={z:q.sp,de:q.de};
  function uebKnopf(){var u=$('ueb');if(u)u.onclick=function(){$('spu').textContent=aktuell.de;};}
@@ -376,5 +459,10 @@ function modus(m){MODUS=m;$('m-gef').setAttribute('aria-pressed',String(m==='gef
 $('m-gef').onclick=function(){modus('gef');};
 $('m-frei').onclick=function(){modus('frei');};
 $('back').onclick=function(){if(MODUS==='gef'&&SCHRITT>0)geheZu(SCHRITT-1);};
+function sprache(z){setzeSprache(z);$('z-es').setAttribute('aria-pressed',String(z==='es'));$('z-el').setAttribute('aria-pressed',String(z==='el'));
+ WS=null;HS=null;RS=0;LS=0;FZ=0;if(MODUS==='gef'){SCHRITT=0;thema(false);}else frei();}
+$('z-es').onclick=function(){sprache('es');};
+$('z-el').onclick=function(){sprache('el');};
+setzeSprache('es');
 thema(false);
 </script>
