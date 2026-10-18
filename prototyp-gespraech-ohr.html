@@ -431,7 +431,6 @@ function woerter(){
   var items=BILD.slice(WS.lot*4,WS.lot*4+4);
   k.appendChild(el('p','task','Tipp jedes Bild an: hören, sehen, verstehen.<small>'+(WS.lot?'Neue Wörter — die alten kommen gleich wieder.':'Lass dir Zeit. Du kannst jedes Bild so oft antippen, wie du willst.')+'</small>'));
   k.appendChild(lotLeiste());
-  bigKnopf(k,'Alle anhören',function(){alleAnhoeren(items);});
   entdecken(k,items,'Alle vier gehört. Jetzt erkennst du sie wieder.');
   fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'Erkennen ›',pri:true,aus:true,go:function(){WS.phase='r';WS.stapel=erkennenStapel();WS.runden=WS.stapel.length;WS.runde=0;woerter();}});
   return;
@@ -460,7 +459,6 @@ function woerter(){
  kopf('Geführtes Gespräch','Sätze für den Tisch');
  k.appendChild(el('p','task','Die kleinen Wörter lernst du am besten im Satz.<small>Tipp jeden Satz an.</small>'));
  k.appendChild(lotLeiste());
- bigKnopf(k,'Alle anhören',function(){alleAnhoeren(FRASEN);});
  entdecken(k,FRASEN,'Gut. Diese Sätze hörst du gleich im Café.');
  fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'Hören ›',pri:true,aus:true,go:function(){geheZu(2);}});
 }
@@ -533,7 +531,6 @@ function frei(){
   /* Bevor es frei losgeht, deckt Spikiu den Tisch: vier Wörter, die gleich vorkommen. */
   var items=SP.TISCH.map(function(j){return BILD[j];});
   k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z">Bevor wir reden, decke ich den Tisch.</div><div class="uebs">Vier Wörter, die gleich vorkommen.</div></div>'));
-  bigKnopf(k,'Alle anhören',function(){alleAnhoeren(items);});
   entdecken(k,items,'Der Tisch ist gedeckt.');
   fuss({t:'Genug für heute',go:function(){FZ=FREI.length;TISCH_OK=true;frei();}},{t:'Los geht’s ›',pri:true,aus:true,go:function(){TISCH_OK=true;frei();}});
   return;
