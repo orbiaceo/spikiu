@@ -1,249 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Spikiu · Szene</title>
+<title>Spikiu · Freies Gespräch</title>
+<meta name="description" content="Freies Gespräch — eine Szene, in der du selbst sagst, was du sagen willst.">
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <!--
   ══════════════════════════════════════════════════════════════════════
-  SPIKIU — DIE SZENE
+  SPIKIU — DIE SZENE (Freies Gespräch) · im „Feines Ohr"-Design seit 19.10.2026
 
-  WAS DER LERNER HIER TUT (Leos Worte, 30.08.):
-  „Der User bekommt ganz konkrete Aufgaben. Es ist so eine Art
-   Übersetzungsaufgabe, wo er seinen Wortschatz und seine Fähigkeit zu
-   formulieren trainiert."
-  Er weiß WAS er sagen soll und muss es SELBST BAUEN. Das kann er weder im
-  geführten Gespräch (dort wählt er) noch im Gym (dort erkennt er).
+  Leo, 19.10.: „Lasst uns geführt und freies Gespräch nach diesem Prototyp
+  reformieren." Vorlage: prototyp-gespraech-ohr.html, Bausteine: ohr-karten.js.
+  Eine Karte füllt den Schirm: Spikius Satz in der Blase · die Aufgabe ·
+  der große gelbe Knopf „Selbst sagen" · vier Vorschläge · Rückmeldezeile ·
+  zwei Knöpfe unten.
 
-  WARUM SPIKIU AUS DER DATENBANK ANTWORTET
-  Erster Versuch (30.08.): Haiku antwortete frei, mit der Skriptzeile als Ziel.
-  Am Gerät fragte der Taxifahrer „¿Cuántas maletas tienes?", die Szene driftete,
-  nach drei Zügen war sie vorbei ohne dass etwas geübt worden wäre. Leo: „Das
-  bringt gar nichts." Jetzt ist Spikius Zeile IMMER die nächste Skriptzeile.
-  Die Szene kann nicht entgleisen, weil nichts zu entgleisen ist.
+  WAS BLEIBT (die Logik von vorher, nur neu angezogen):
+  - Der Lerner bekommt konkrete Aufgaben und BAUT den Satz SELBST (Leo, 30.08.).
+    Abgeschickt wird nur, was er selbst schreibt oder diktiert. Ein Vorschlag
+    antippen heißt hören und verstehen (Ohr-Runde, richtig/nicht ganz) — das
+    richtige Vorbild bleibt dann über dem Feld stehen und wird von Hand
+    nachgebaut (Entscheid 24.09.: „wer den Satz nur antippt, lernt nichts").
+  - NULL TOKEN während der Szene. Spikius Zeile ist IMMER die nächste
+    Skriptzeile — die Szene kann nicht entgleisen.
+  - ES WIRD NICHTS GEPRÜFT (31.08.): jede offene Antwort rückt die Aufgabe vor;
+    nur eine Rückfrage („¿Cómo?") nicht (Sieb, R13). Beurteilt wird EINMAL am
+    Ende von /api/rueckmeldung — nur die frei gebauten Sätze.
+  - Vor der Rückmeldung kann er jeden eigenen Satz noch ändern (Stift, 30.08.).
+  - Die Ernte zeigt nur, was vorkam. Sitzung über sitzung.js ('szene').
 
-  **NULL TOKEN. Kein fetch, kein Modell, kein Netz.** Die Szene läuft offline.
-  Das Modell kommt später für EINEN Aufruf am Ende — die Rückmeldung auf das,
-  was der Lerner wirklich geschrieben hat. Eigener Schritt, noch nicht gebaut.
-
-  ES WIRD NICHTS GEPRÜFT (Entscheid 31.08.)
-  Der Versuch, die Antwort mit der Skriptzeile zu vergleichen, war Raten ohne
-  Verstehen — „12" statt „doce" fiel durch, „Sí." statt „Sí, tengo una hermana."
-  wäre ebenso durchgefallen. Eine Aufgabe hat unendlich viele richtige
-  Formulierungen. Deshalb rückt JEDE Antwort die Aufgabe vor. Beurteilt wird
-  einmal am Ende, von einem Modell, das wirklich versteht.
-
-  DER SOUFFLEUR (Entscheid 30.08., neu gefasst 24.09.)
-  Unter Spikius Satz steht nur der Capy. Erster Tipp: die Aufgabe blendet
-  ein — und wieder aus, sobald er ins Feld tippt. Er soll sie im Kopf haben,
-  nicht abschreiben. Nur beim allerersten Zug der Sitzung steht sie von
-  selbst da, damit niemand fragt „Was soll ich tun?" (31.08.).
-  Zweiter Tipp: der fertige Satz — zum Anhören und mit Übersetzung, aber
-  OHNE „Einsetzen" (Entscheid 24.09., nach Test mit einem Schüler): wer den
-  Satz nur antippt, lernt nichts. Er bleibt sichtbar stehen und muss von
-  Hand abgeschrieben werden. Das Tippen ist die Übung.
-
+  Neu: „Den Tisch decken" — vier Bildwörter der Station zum Antippen, bevor es
+  losgeht (Prototyp 18.10.).
   Kein Bottom-Nav: das hier ist ein Raum, nur haus.html trägt die Navi.
   ══════════════════════════════════════════════════════════════════════
 -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#eef7f1;--white:#fff;--ink:#15163a;--mid:#5f7068;--accent:#1f93b0;
-  --accent2:#e8f5ee;--du:#ffd24a;--faint:#dfe6e0;--ow:2.5px;
-  --trans-bg:#f1eee8;--trans-ink:#8a847d;--trans-border:#e2ddd4;
-}
-html,body{height:100%;background:var(--bg);color:var(--ink);
-  font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.app{display:flex;flex-direction:column;height:100dvh;max-width:680px;margin:0 auto}
+:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0; --faint:#dfe6e0; --ow:2.5px; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;overflow:hidden}
+button{font:inherit;cursor:pointer}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:560px;margin:0 auto;background:var(--minz)}
 
-.kopf{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;
-  border-bottom:var(--ow) solid var(--ink);background:var(--bg);flex:0 0 auto}
-.back{width:38px;height:38px;border-radius:999px;border:2.5px solid var(--ink);
-  background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 var(--ink);
-  cursor:pointer;flex:0 0 auto}
-.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
-.kopf .titel{font:600 .95rem/1.2 'DM Sans'}
-.kopf .titel span{display:block;font-weight:400;font-size:.75rem;color:var(--mid)}
+.kopf{flex:0 0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px;
+  padding:calc(.55rem + env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) .55rem max(14px,env(safe-area-inset-left));
+  border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.55)}
+.kopf .back{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;box-shadow:2px 3px 0 var(--ink);
+  font-size:1.15rem;display:grid;place-items:center;color:var(--ink)}
+.kopf .back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+.kopf .mitte{text-align:center;min-width:0}
+.kopf .eb{font:600 .64rem/1 'DM Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+.kopf .ttl{font:900 1.3rem/1.15 'Archivo Black','DM Sans',sans-serif;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* ── Horizontales Deck: EINE Karte pro Bildschirm ─────────────────────────
-   Übernommen aus chat.html, weil es sich am Gerät bewährt hat: die Karten
-   liegen absolut übereinander, die aktuelle steht in der Mitte, die alten
-   links, die kommenden rechts. Kein Scrollen, um an „Senden" zu kommen. */
-.deck{flex:1;position:relative;overflow:hidden;background:var(--bg)}
-.karte{position:absolute;inset:1rem .9rem;box-sizing:border-box;display:flex;
-  flex-direction:column;justify-content:safe center;overflow-y:auto;
-  background:var(--white);border:var(--ow) solid var(--ink);border-radius:22px;
-  box-shadow:5px 6px 0 var(--ink);padding:1.3rem 1.2rem;
-  transform:translateX(118%);opacity:0;pointer-events:none;
-  transition:transform .38s cubic-bezier(.4,0,.2,1),opacity .38s ease;
-  will-change:transform,opacity;backface-visibility:hidden}
-/* „safe center" zentriert nur, solange der Inhalt passt. Wird die Karte zu
-   klein — etwa weil die Tastatur aufgeht —, rutscht der Inhalt nach oben
-   statt oben abgeschnitten zu werden. Sonst verschwindet Spikius Satz. */
-.karte.jetzt{transform:translateX(0) rotate(0);opacity:1;pointer-events:auto;z-index:2}
-.karte.kommt{transform:translateX(114%) rotate(1.5deg);opacity:0;z-index:1}
-.karte.war  {transform:translateX(-114%) rotate(-1.5deg);opacity:0;z-index:1}
-@media (prefers-reduced-motion:reduce){.karte{transition:none}}
+.rail{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:8px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+.rail .step{display:flex;flex-direction:column;gap:4px}
+.rail .step i{display:block;height:5px;border-radius:9px;background:var(--faint)}
+.rail .step b{font:700 .58rem/1 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#9aa49f;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .step.done i,.rail .step.on i{background:var(--acc)}
+.rail .step.on b{color:var(--acc)} .rail .step.done b{color:var(--ink)}
 
-/* Wisch-Hinweis: nur auf der ersten Karte, verschwindet nach dem ersten Wisch */
-.wischhilfe{text-align:center;font:600 .78rem/1 'DM Sans';color:var(--mid);
-  margin-top:.9rem;opacity:.75}
+main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;
+  padding:12px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+#fuss{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
 
-/* Der Änderungs-Stift auf den gelben Lerner-Karten */
-.stift{position:absolute;top:.7rem;right:.8rem;width:34px;height:34px;
-  border-radius:999px;border:2px solid var(--ink);background:#fff;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:.95rem;
-  box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
-.stift:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+/* Selbst sagen: das Feld nimmt den Platz der Vorschläge ein */
+.fz-selbst{flex:1 1 0;min-height:150px;width:100%;display:flex;flex-direction:column;gap:9px}
+.fz-vorbild{flex:0 0 auto;border:2px dashed var(--acc);border-radius:14px;padding:7px 11px;text-align:left;background:#f4fbfd}
+.fz-vorbild .l{font:700 .64rem/1 'DM Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.fz-vorbild .s{font:600 1.05rem/1.3 'Lora',Georgia,serif;margin-top:4px}
+.fz-vorbild .u{font:600 .8rem/1.3 'DM Sans',sans-serif;color:var(--muted);margin-top:2px}
+.fz-feld{flex:1 1 0;min-height:70px;width:100%;resize:none;border:2.5px solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);
+  padding:10px 12px;font:600 1.12rem/1.35 'Lora',Georgia,serif;color:var(--ink);background:#fff}
+.fz-feld:focus{outline:3px solid var(--acc);outline-offset:2px}
+.fz-reihe{flex:0 0 auto;display:flex;gap:8px;white-space:nowrap;justify-content:space-between;align-items:center}
+.fz-klein{border:2px solid var(--ink);border-radius:100px;background:#fff;color:var(--ink);box-shadow:2px 3px 0 var(--ink);padding:.5rem .8rem;font:800 .88rem 'DM Sans',sans-serif;white-space:nowrap}
+.fz-klein.pri{background:var(--acc);color:#fff}
+.fz-klein[disabled]{opacity:.38;box-shadow:none;cursor:default}
+.fz-klein.an{background:#ffd24a}
+.fz-link{border:0;background:none;color:var(--acc);font:700 .85rem 'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;padding:.3rem 0;white-space:nowrap}
 
-.bue-bild{height:130px;border-radius:.7rem;border:2px solid var(--ink);
-  background:linear-gradient(145deg,#cfe6db,#a9cfc0);display:flex;align-items:center;
-  justify-content:center;font-size:3rem;margin-bottom:.9rem}
-.bue-titel{font:600 1.6rem/1.15 'Cormorant Garamond',serif;margin-bottom:.4rem}
-.bue-ort{font:400 .85rem/1.4 'DM Sans';color:var(--mid);margin-bottom:.9rem}
-.fakten{background:var(--du);border:2px solid var(--ink);border-radius:.7rem;
-  padding:.75rem .85rem;margin-bottom:.9rem;box-shadow:3px 3px 0 var(--ink)}
-.fakten .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
-  color:var(--ink);opacity:.6;margin-bottom:.3rem}
-.fakten .t{font:500 1.05rem/1.35 'DM Sans'}
-.kultur{border:2px dashed var(--ink);border-radius:.7rem;padding:.6rem .8rem;margin:.5rem 0;text-align:left}
-.kultur .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;opacity:.7;margin-bottom:.3rem}
-.kultur .t{font:500 .95rem/1.4 'DM Sans'}
-.rollen{display:flex;gap:.6rem;margin-bottom:1rem}
-.rolle{flex:1;background:var(--accent2);border:2px solid var(--ink);
-  border-radius:.6rem;padding:.6rem}
-.rolle .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
-  color:var(--mid);margin-bottom:.25rem}
-.rolle .n{font:600 .95rem/1.2 'DM Sans'}
-
-.k-rolle{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
-  color:var(--mid);margin-bottom:.85rem}
-.zug{font:400 1.55rem/1.35 'Cormorant Garamond',serif;text-align:center;margin-bottom:.7rem}
-.werkz{display:flex;gap:.55rem;justify-content:center;margin-bottom:.2rem}
-.ikon{height:42px;min-width:42px;padding:0 .75rem;border-radius:999px;
-  border:2px solid var(--ink);background:var(--accent2);display:flex;
-  align-items:center;justify-content:center;cursor:pointer;
-  font:700 .78rem/1 'DM Sans';color:var(--ink)}
-.ikon:active{transform:translate(1px,1px)}
-.ueb{font:italic 400 .88rem/1.45 'DM Sans';color:var(--trans-ink);background:var(--trans-bg);
-  border:1px solid var(--trans-border);border-radius:.5rem;padding:.5rem .7rem;
-  margin-top:.7rem;display:none}
-.ueb.an{display:block}
-
-.trenn{height:1px;background:var(--faint);margin:1rem 0}
-.schritte{display:flex;gap:.4rem;justify-content:center;margin-bottom:1rem}
-.st{width:34px;height:5px;border-radius:99px;background:var(--faint)}
-.st.jetzt{background:var(--accent)}
-.st.fertig{background:var(--ink)}
-.aufg{display:flex;gap:.7rem;align-items:center;min-height:44px}
-.capy{width:42px;height:42px;flex:0 0 auto;border-radius:50%;border:2.5px solid var(--ink);
-  background:#fff;box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;
-  justify-content:center;cursor:pointer;position:relative;
-  animation:schweben 4s ease-in-out infinite}
-@keyframes schweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@media (prefers-reduced-motion:reduce){.capy{animation:none}}
-.capy svg{width:27px;height:27px}
-.capy .punkt{position:absolute;top:-3px;right:-3px;width:14px;height:14px;
-  border-radius:50%;background:var(--accent);border:2px solid var(--ink)}
-.aufg .txt{flex:1;transition:opacity .35s ease}
-.aufg .txt.weg{opacity:0}
-.hinweis{margin-top:.8rem;background:var(--accent2);border:2px solid var(--ink);
-  border-radius:.7rem;padding:.7rem .8rem;display:none}
-.hinweis.an{display:block}
-.hinweis .l{font:700 .6rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
-  color:var(--mid);margin-bottom:.3rem}
-.hinweis .s{font:500 1.15rem/1.3 'Cormorant Garamond',serif;margin-bottom:.5rem}
-.hinweis .kn{display:flex;gap:.5rem}
-.hinweis button{flex:1;padding:.5rem;border:2px solid var(--ink);border-radius:.5rem;
-  background:#fff;font:600 .8rem/1 'DM Sans';cursor:pointer;color:var(--ink)}
-.hinweis .kn .ikon{flex:0 0 auto;border-radius:999px;background:var(--accent2)}
-.hinweis .ueb{margin-top:.5rem}
-.aufg .txt .l{font:700 .62rem/1 'DM Sans';letter-spacing:.09em;text-transform:uppercase;
-  color:var(--mid);margin-bottom:.2rem}
-.aufg .txt .t{font:600 1.15rem/1.25 'Cormorant Garamond',serif}
-
-.feld{width:100%;min-height:74px;border:var(--ow) solid var(--ink);border-radius:.8rem;
-  padding:.8rem;font:400 1.05rem/1.4 'DM Sans';text-align:center;resize:none;
-  background:#fff;margin-top:1rem;color:var(--ink)}
-.feld:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px #d3eef6}
-/* Die Karte selbst darf nicht scrollen, wenn die Tastatur aufgeht — sonst
-   rutscht der Inhalt unter dem Finger weg. Passt der Text nicht, verkleinert
-   ihn anpassen(). */
-.karte{overscroll-behavior:contain}
-.knopf{width:100%;margin-top:.7rem;padding:.85rem;border:var(--ow) solid var(--ink);
-  border-radius:999px;background:var(--accent);color:#fff;font:700 1rem/1 'DM Sans';
-  box-shadow:4px 4px 0 var(--ink);cursor:pointer}
-.knopf:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-.knopf.gelb{background:var(--du);color:var(--ink)}
-.knopf.stumm{background:#fff;color:var(--ink)}
-.knopf[disabled]{opacity:.45;cursor:default}
-
-.karte.du{background:var(--du)}
-.karte.du .zug{padding-top:1.4rem}
-.karte.du .zug{font-family:'DM Sans',sans-serif;font-size:1.15rem;font-weight:500;
-  text-align:right;margin:0}
-
-.k-erklaer{background:var(--accent2)}
-.k-erklaer .w{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:.3rem}
-.k-erklaer .b{font:400 .95rem/1.45 'DM Sans';color:var(--mid)}
-
-/* ── Rückmeldung ── */
-/* Zwei Zeilen, keine Erklärung: was du schriebst, und dasselbe berichtigt.
-   Kein Wort mehr — die erklärende Fassung erfand Grammatik (31.08.). */
-.r-titel{font:600 1.35rem/1.2 'Cormorant Garamond',serif;margin-bottom:1rem}
-.r-block{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--faint)}
-.r-block:last-of-type{border-bottom:none}
-.r-falsch{font:400 1.05rem/1.35 'DM Sans';color:#b4534b;
-  text-decoration:line-through;text-decoration-thickness:1px;margin-bottom:.4rem}
-.r-richtig{display:flex;gap:.55rem;align-items:center}
-.r-richtig .t{flex:1;font:500 1.2rem/1.3 'Cormorant Garamond',serif;font-style:italic}
-/* Der Gruß bei fehlerfreier Szene. Steht ÜBER der Wortliste, nicht auf einer
-   eigenen Karte — „Alles saß" allein auf einer Karte ist keine Rückmeldung
-   (Leo, 31.08.). */
-.r-sauber{font:600 1.5rem/1.2 'Cormorant Garamond',serif;color:var(--accent);
-  margin-bottom:.6rem}
-.e-kopf{font:700 .65rem/1 'DM Sans';letter-spacing:.1em;text-transform:uppercase;
-  color:var(--mid);margin:1.1rem 0 .5rem}
-.e-z{display:flex;gap:.6rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--faint)}
-.e-a{width:32px;height:32px;flex:0 0 auto;border-radius:999px;border:none;
-  background:var(--accent2);color:var(--accent);cursor:pointer;font-size:.85rem}
-.e-w{flex:1;font:500 1.15rem/1.25 'Cormorant Garamond',serif}
-.e-t{font:400 .82rem/1.25 'DM Sans';color:var(--mid);text-align:right}
-
-/* WENDUNGEN brauchen die ganze Breite. In zwei Spalten brach „¡Qué buen
-   tiempo hace hoy!" auf fünf Zeilen um und war nicht mehr lesbar (Leo,
-   31.08.). Also: Satz oben über die volle Zeile, Übersetzung darunter.
-   Die WÖRTER bleiben zweispaltig — dort passt es. */
-.e-z.wendung{display:block;padding:.7rem 0}
-.e-z.wendung .kopf{display:flex;gap:.6rem;align-items:flex-start}
-.e-z.wendung .e-w{font-size:1.2rem;line-height:1.3;text-align:left}
-.e-z.wendung .e-t{display:block;text-align:left;margin-top:.3rem;padding-left:2.6rem;
-  font-size:.88rem;line-height:1.35}
-
-.punkte{text-align:center;font-size:1.6rem;letter-spacing:.2em;color:var(--faint);padding:1.4rem 0}
-.fehlerkarte{border-color:#b4534b;box-shadow:5px 6px 0 #b4534b}
-.fehlerkarte .zug{font-family:'DM Sans',sans-serif;font-size:1rem;color:#b4534b}
-
-.wahl{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
-.wahl button{flex:1 1 44%;padding:.7rem .5rem;border:2px solid var(--ink);
-  border-radius:.7rem;background:#fff;font:600 .9rem/1.2 'DM Sans';cursor:pointer;
-  box-shadow:3px 3px 0 var(--ink);color:var(--ink)}
-.wahl button:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
-.wahl button.leer{opacity:.4}
-/* Ohne Wisch-Kinetik (Leo, 17.10.2026: „eliminar ese efecto … simplemente hacer aparecer la siguiente tarjeta, sea con el botón o como en Reel“): Karten erscheinen ohne Gleiten. */
-.karte,.karte.kommt,.karte.war{transform:none!important;transition:none!important}
-.karte.kommt,.karte.war{visibility:hidden}
+/* Lesekarten (Rückmeldung, Ernte): lang, werden gelesen — rollen innen */
+.fz-liste{flex:1 1 0;min-height:120px;width:100%;overflow-y:auto;display:flex;flex-direction:column;gap:9px;padding:2px 4px 6px 2px}
+.fz-kopf{font:700 .68rem/1 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);text-align:left;margin-top:4px}
+.fz-zeile{flex:0 0 auto;display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:16px;
+  box-shadow:3px 4px 0 var(--ink);padding:8px 12px;color:var(--ink);width:100%}
+.fz-zeile .a{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);background:var(--acc);color:#fff;display:grid;place-items:center;font-size:.8rem}
+.fz-zeile .t{flex:1;min-width:0}
+.fz-zeile .w{display:block;font:600 1.04rem/1.3 'Lora',Georgia,serif}
+.fz-zeile .lt{display:block;font:500 .74rem/1.3 'DM Mono',ui-monospace,monospace;color:var(--muted)}
+.fz-zeile .u{display:block;font:600 .82rem/1.3 'DM Sans',sans-serif;color:var(--muted)}
+.fz-zeile .x{display:block;font:600 .9rem/1.3 'DM Sans',sans-serif;color:#c67a1e;text-decoration:line-through;text-decoration-thickness:1.5px}
+.fz-zeile .stift{flex:0 0 auto;font-size:1rem;color:var(--muted)}
+.fz-zeile:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.oh-karte.dicht{gap:7px;padding-top:10px}
+.oh-karte.dicht .oh-blase .oh-lt{display:none}
+.oh-karte.dicht .oh-blase .oh-z{font-size:.95rem;line-height:1.25}
+.oh-karte.dicht .oh-zeile .oh-cap{flex-basis:32px;height:32px}
+.oh-karte.dicht .oh-task{font-size:.93rem;line-height:1.28}
+.oh-karte.dicht .oh-big{padding:.4rem 1.3rem;font-size:1rem}
+.oh-karte.dicht .oh-fb{min-height:2em;font-size:.88rem}
+.fz-lbl{font:700 .66rem/1 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.fz-leer{font:600 .95rem/1.4 'DM Sans',sans-serif;color:var(--muted);text-align:center;margin:auto 0}
+.fz-punkte{font:800 1.6rem 'DM Sans',sans-serif;color:var(--muted);letter-spacing:.3em;margin:auto 0}
+@media (max-height:720px){.kopf .ttl{font-size:1.12rem}.kopf .back{width:36px;height:36px}.fz-selbst{min-height:130px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="kopf">
-    <button class="back" id="zurueck" aria-label="">‹</button>
-    <div class="titel" id="kopfTitel"><span id="kopfUnter"></span></div>
-  </div>
-  <div class="deck" id="deck"></div>
+  <header class="kopf">
+    <button class="back" id="back" aria-label="zurück">‹</button>
+    <div class="mitte"><div class="eb" id="eb"></div><div class="ttl" id="ttl"></div></div>
+    <span></span>
+  </header>
+  <nav class="rail" id="rail" aria-label="Schritte"></nav>
+  <main class="stage" id="stage"></main>
+  <footer id="fuss"></footer>
 </div>
 
 <script src="lernpfad-daten.js"></script>
@@ -251,1061 +124,719 @@ html,body{height:100%;background:var(--bg);color:var(--ink);
 <script src="lernpfad-daten-en.js"></script>
 <script src="lernpfad-daten-el.js"></script>
 <script src="lernpfad-sprache.js"></script>
+<script src="lernpfad.js"></script>
 <script src="szene.js"></script>
 <script src="frage-sieb.js"></script>
 <script src="sitzung.js"></script>
+<script src="wortfelder.js"></script>
+<script src="icon-db.js"></script>
+<script src="bilder-da.js"></script>
+<script src="lexikon.js"></script>
+<script src="ohr-karten.js"></script>
+<!-- audio.js ist ein ES-Modul: importiert und über window durchgereicht (wie gefuehrt.html). -->
+<script type="module">
+  import { speak, warm } from './audio.js';
+  window.sprich = speak;
+  if (typeof warm === 'function') try { warm(); } catch (e) {}
+</script>
 <script>
 (function () {
   'use strict';
+  var O = window.OhrKarten;
+  var esc = O.esc, mischen = O.mischen;
 
-  /* Die Decke ist hier KEINE Kostenbremse mehr — die Szene kostet nichts.
-     Sie sorgt nur dafür, dass eine Szene endet: drei Aufgaben mal höchstens
-     zwei Versuche plus ein paar Rückfragen. */
-  var ZUG_DECKEL  = 9;   // reicht für drei Aufgaben plus Rückfragen
+  /* Die Decke sorgt nur dafür, dass eine Szene endet: Aufgaben plus ein paar Rückfragen. */
+  var ZUG_DECKEL = 9;
 
-  var deck  = document.getElementById('deck');
-  var titel = document.getElementById('kopfTitel');
-  var unter = document.getElementById('kopfUnter');
-
-  /* Kanonischer Spikiu. Nie neu erfinden, immer diese Form. */
-  var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-hidden="true">'
-  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>'
-  + '<ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
-  + '<ellipse cx="26" cy="17" rx="5" ry="5" fill="#b8845a"/>'
-  + '<ellipse cx="54" cy="17" rx="5" ry="5" fill="#b8845a"/>'
-  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>'
-  + '<ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
-  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
-  + '<circle cx="33" cy="26" r="2.4" fill="#3d2b1f"/><circle cx="47" cy="26" r="2.4" fill="#3d2b1f"/>'
-  + '<circle cx="33.8" cy="25.2" r=".8" fill="#fff"/><circle cx="47.8" cy="25.2" r=".8" fill="#fff"/>'
-  + '<path d="M35 40 Q40 43 45 40" stroke="#8b5e3c" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
-  + '<ellipse cx="26" cy="66" rx="5" ry="4" fill="#b8845a"/>'
-  + '<ellipse cx="36" cy="68" rx="5" ry="4" fill="#b8845a"/>'
-  + '<ellipse cx="46" cy="68" rx="5" ry="4" fill="#b8845a"/>'
-  + '<ellipse cx="56" cy="66" rx="5" ry="4" fill="#b8845a"/></svg>';
-
-  /* Die Figur bleibt in der Rolle, wenn sie nicht versteht — sie schimpft
-     nicht und erklärt nicht. Dieselbe Zeile für alle Stationen, deshalb hier
-     und nicht in den Datendateien. */
-  /* ── Werkzeug ─────────────────────────────────────────────── */
-  function esc(t) {
-    return String(t == null ? '' : t)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-  function pfeil(name) {
-    try { return new URLSearchParams(location.search).get(name) || ''; }
-    catch (e) { return ''; }
-  }
-  function mitPunkt(t) {
-    t = String(t || '').trim();
-    return (!t || /[.!?…:;]$/.test(t)) ? t : t + '.';
-  }
-  function inSprache(o, mu) { return o ? (o[mu] || o.de || o.en || o.es || '') : ''; }
-
-  /* Akzente weg, Satzzeichen weg, klein. Wird nur noch für die ERNTE
-     gebraucht — um zu sehen, welche Wörter im Gespräch vorkamen. */
-  function flach(t) {
-    return String(t || '')
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-zäöüß0-9\s]/gi, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     WARUM HIER NICHTS MEHR GEPRÜFT WIRD (Leo, 31.08.)
-
-     Bis eben verglich die Szene die Antwort mit der Skriptzeile. Das war
-     der Versuch, ohne Verstehen zu urteilen — also Raten. Und Raten liegt
-     daneben: „12" statt „doce" wurde abgelehnt. Danach: „Sí." statt
-     „Sí, tengo una hermana." wäre ebenso abgelehnt worden, und „Mucho",
-     „A veces", „Depende" auch. Eine Aufgabe hat unendlich viele richtige
-     Formulierungen; keine Tabelle fängt sie ein.
-
-     Deshalb prüft die Szene NICHTS. Jede Antwort rückt die Aufgabe vor,
-     Spikiu antwortet mit der nächsten Skriptzeile, die Szene läuft glatt
-     durch. Beurteilt wird EINMAL AM ENDE, von einem Modell, das wirklich
-     versteht — ein Aufruf statt sechs.
-
-     Nur das Sieb bleibt: eine Rückfrage („¿Cómo?") ist keine Antwort und
-     rückt die Aufgabe nicht vor (R13). Das ist keine Beurteilung, sondern
-     eine Formsache, und dafür reicht eine feste Liste.
-     ══════════════════════════════════════════════════════════ */
-
-  /* ── Profil ───────────────────────────────────────────────── */
-  /* Das Profil liegt VERSCHACHTELT: spikiu_user.profile — so liest es
-     chat.html, haus.html und pruefung.html. Die Oberfläche wird zusätzlich
-     durchsucht, weil ältere Profile die Felder dort tragen. Wer nur oben
-     nachsah, fiel still auf Spanisch zurück und merkte es nie (31.08.). */
+  /* ── Profil (verschachtelt: spikiu_user.profile; ältere Profile tragen die Felder oben) ── */
   var PROFIL = {};
   try {
     var roh = JSON.parse(localStorage.getItem('spikiu_user') || '{}') || {};
-    var p = roh.profile || {};
+    var p0 = roh.profile || {};
     PROFIL = {
-      name:           p.name           || roh.name           || '',
-      muttersprache:  p.muttersprache  || roh.muttersprache  || 'de',
-      zielsprache:    p.zielsprache    || roh.zielsprache    || 'es',
-      koennen:        p.koennen        || roh.koennen        || 'anfang',
-      etappe:         p.etappe         || roh.etappe         || 'samen'
+      muttersprache: p0.muttersprache || roh.muttersprache || 'de',
+      zielsprache:   p0.zielsprache   || roh.zielsprache   || 'es',
+      koennen:       p0.koennen       || roh.koennen       || 'anfang'
     };
-  } catch (e) {
-    PROFIL = { muttersprache: 'de', zielsprache: 'es', koennen: 'anfang' };
-  }
-  var MU = PROFIL.muttersprache || 'de';
-  if (MU === 'el') document.documentElement.lang = 'el';   // griechische Versalien ohne Akzente (CSS uppercase)
-  var ZS = PROFIL.zielsprache   || 'es';
+  } catch (e) { PROFIL = { muttersprache: 'de', zielsprache: 'es', koennen: 'anfang' }; }
+  var MU = (['de','es','en','el'].indexOf(PROFIL.muttersprache) > -1) ? PROFIL.muttersprache : 'de';
+  var ZS = PROFIL.zielsprache || 'es';
+  try { document.documentElement.lang = MU; } catch (e) {}
   var LP = window.SpikiuLernpfad || null;
 
-
-  /* ══════════════════════════════════════════════════════════
-     DIE OBERFLÄCHE SPRICHT DIE MUTTERSPRACHE
-
-     Bis heute stand jeder Knopf und jede Überschrift fest auf Deutsch —
-     ein Mexikaner, der Englisch lernt, las „Wo möchtest du üben?" (Leo,
-     01.09.). Das Assessment fragt ausdrücklich, in welcher Sprache man
-     sich verständigen will; also gilt sie überall.
-
-     Vier Sprachen: de · es · en · el (Griechisch auch als Oberfläche,
-     Leo 15.10.2026). Fehlt ein Eintrag, gilt Deutsch. */
+  /* ── Oberfläche in der Muttersprache (de · es · en · el) ── */
   var WORT = {
-    de: {
-      deineRolle:'Deine Rolle', gutZuWissen:'Gut zu wissen', spikiuIst:'Spikiu ist', duBist:'Du bist',
-      wischhilfe:'← wischen zum Weiterblättern →', los:'Los!',
-      anhoeren:'Anhören', uebersetzung:'Übersetzung',
-      aufgabe:'Aufgabe', von:'von', deineAufgabe:'Deine Aufgabe',
-      soKoenntest:'So könntest du es sagen',
-      antworte:'Antworte …', senden:'Senden', beenden:'Szene beenden',
-      weiter:'Weiter', geuebt:'Das hast du geübt',
-      wendungen:'Wendungen und Sätze', woerter:'Wörter',
-      nichtsGeerntet:'Noch nichts eingesammelt',
-      nichtsGeerntetText:'Beim nächsten Mal steht hier, was ihr wirklich gesagt habt.',
-      nachHause:'Nach Hause', woUeben:'Wo möchtest du üben?',
-      waehleThema:'Wähle ein Thema', deineStufe:' · deine Stufe',
-      hilfeLabel:'Zeig mir, wie man es sagt', zurueck:'Zurück', fehler:'Fehler',
-      szene:'Szene', laedt:'wird geladen …',
-      nochLeer:'noch leer',
-      aendern:'Ändern', uebernehmen:'Übernehmen',
-      keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen. Prüfe die Script-Reihenfolge in szene.html.',
-      keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.'
-    },
-    es: {
-      deineRolle:'Tu papel', gutZuWissen:'Bueno saberlo', spikiuIst:'Spikiu es', duBist:'Tú eres',
-      wischhilfe:'← desliza para avanzar →', los:'¡Empezamos!',
-      anhoeren:'Escuchar', uebersetzung:'Traducción',
-      aufgabe:'Tarea', von:'de', deineAufgabe:'Tu tarea',
-      soKoenntest:'Así lo podrías decir',
-      antworte:'Responde …', senden:'Enviar', beenden:'Terminar la escena',
-      weiter:'Seguir', geuebt:'Esto has practicado',
-      wendungen:'Frases', woerter:'Palabras',
-      nichtsGeerntet:'Todavía nada recogido',
-      nichtsGeerntetText:'La próxima vez aparecerá aquí lo que de verdad hayáis dicho.',
-      nachHause:'A casa', woUeben:'¿Dónde quieres practicar?',
-      waehleThema:'Elige un tema', deineStufe:' · tu etapa',
-      hilfeLabel:'Enséñame cómo se dice', zurueck:'Atrás', fehler:'Error',
-      szene:'Escena', laedt:'cargando …',
-      nochLeer:'aún vacío',
-      aendern:'Cambiar', uebernehmen:'Aceptar',
-      keineDaten:'Los datos del camino o el guion de la escena no están cargados. Revisa el orden de los scripts en szene.html.',
-      keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.'
-    },
-    en: {
-      deineRolle:'Your role', gutZuWissen:'Good to know', spikiuIst:'Spikiu is', duBist:'You are',
-      wischhilfe:'← swipe to move on →', los:"Let's go!",
-      anhoeren:'Listen', uebersetzung:'Translation',
-      aufgabe:'Task', von:'of', deineAufgabe:'Your task',
-      soKoenntest:'You could say it like this',
-      antworte:'Answer …', senden:'Send', beenden:'End the scene',
-      weiter:'Continue', geuebt:'This is what you practised',
-      wendungen:'Phrases and sentences', woerter:'Words',
-      nichtsGeerntet:'Nothing collected yet',
-      nichtsGeerntetText:'Next time this is where what you actually said will appear.',
-      nachHause:'Home', woUeben:'Where would you like to practise?',
-      waehleThema:'Choose a topic', deineStufe:' · your stage',
-      hilfeLabel:'Show me how to say it', zurueck:'Back', fehler:'Error',
-      szene:'Scene', laedt:'loading …',
-      nochLeer:'still empty',
-      aendern:'Edit', uebernehmen:'Done',
-      keineDaten:'The path data or the scene script is not loaded. Check the script order in szene.html.',
-      keineAufgaben:'This station has no tasks yet. Choose another topic.'
-    },
-    el: {
-      deineRolle:'Ο ρόλος σου', gutZuWissen:'Καλό να ξέρεις', spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι',
-      wischhilfe:'← σύρε για να προχωρήσεις →', los:'Πάμε!',
-      anhoeren:'Άκου', uebersetzung:'Μετάφραση',
-      aufgabe:'Εργασία', von:'από', deineAufgabe:'Η εργασία σου',
-      soKoenntest:'Έτσι θα μπορούσες να το πεις',
-      antworte:'Απάντησε …', senden:'Αποστολή', beenden:'Τέλος σκηνής',
-      weiter:'Συνέχεια', geuebt:'Αυτό εξασκήθηκες',
-      wendungen:'Εκφράσεις και προτάσεις', woerter:'Λέξεις',
-      nichtsGeerntet:'Δεν μάζεψες τίποτα ακόμα',
-      nichtsGeerntetText:'Την επόμενη φορά εδώ θα εμφανιστεί ό,τι είπατε πραγματικά.',
-      nachHause:'Στο σπίτι', woUeben:'Πού θέλεις να εξασκηθείς;',
-      waehleThema:'Διάλεξε ένα θέμα', deineStufe:' · το στάδιό σου',
-      hilfeLabel:'Δείξε μου πώς λέγεται', zurueck:'Πίσω', fehler:'Σφάλμα',
-      szene:'Σκηνή', laedt:'φορτώνει …',
-      nochLeer:'ακόμα άδειο',
-      aendern:'Αλλαγή', uebernehmen:'Εντάξει',
-      keineDaten:'Τα δεδομένα της διαδρομής ή το σενάριο της σκηνής δεν έχουν φορτωθεί. Έλεγξε τη σειρά των scripts στο szene.html.',
-      keineAufgaben:'Αυτός ο σταθμός δεν έχει ακόμα εργασίες. Διάλεξε άλλο θέμα.'
-    }
+    de: { titel:'Freies Gespräch', rail:['Rolle','Tisch','Gespräch','Rückblick','Ernte'],
+      themaTask:'Wo möchtest du üben?', wohin:function(k){ return k + ' — wohin gehst du?'; }, themen:'‹ Themen', haus:'‹ Haus',
+      baum:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'},
+      spikiuIst:'Spikiu ist', duBist:'Du bist', deineRolle:'Deine Rolle', gutZuWissen:'Gut zu wissen', los:'Los ›',
+      tischSag:'Bevor wir reden, decke ich den Tisch.', tischUeb:'Vier Wörter, die gleich vorkommen. Tipp jedes Bild an.',
+      entZaehler:function(n,g){ return n + ' von ' + g + ' entdeckt'; }, tischFertig:'Der Tisch ist gedeckt.', losGehts:'Los geht’s ›',
+      ueb:'Übersetzung', anhoeren:'Anhören', aufgabeVon:function(i,n){ return 'Aufgabe ' + i + ' von ' + n; },
+      selbst:'🎤 Selbst sagen', hinweis:'Sag es selbst — oder hör dir die Vorschläge an.', nurSelbst:'Sag es selbst.',
+      vorbild:'Dein Vorbild', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Jetzt sag es selbst ↑</span>'; },
+      falsch:function(u){ return '„' + u + '" — passt hier noch nicht.'; },
+      feldPh:'Schreib oder diktiere …', diktieren:'🎙️ Diktieren', hoertZu:'🎙️ Ich höre …', senden:'Senden ›', vorschlaege:'‹ Vorschläge',
+      du:function(z){ return 'Du: <em>' + z + '</em>'; }, nochmalSp:'Spikiu sagt es noch einmal.',
+      weiter:'weiter ›', genug:'Genug für heute',
+      deineSaetze:'Deine Sätze', deineSaetzeKlein:'Tipp einen an, um ihn noch zu ändern.', uebernehmen:'Übernehmen ›', zurueck:'‹ Zurück',
+      rueckmeldung:'Rückmeldung ›', warte:'Spikiu liest deine Sätze …', korrTitel:'Deine Sätze, berichtigt', sauber:'Sehr gut!',
+      geuebt:'Das hast du geübt', wendungen:'Wendungen und Sätze', woerter:'Wörter',
+      nichtsGeerntet:'Noch nichts eingesammelt.', nichtsGeerntetText:'Beim nächsten Mal steht hier, was ihr wirklich gesagt habt.',
+      nachHause:'Nach Hause ›', nochmal:'‹ Nochmal',
+      keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen.', keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.' },
+    es: { titel:'Conversación libre', rail:['Papel','Mesa','Conversación','Repaso','Cosecha'],
+      themaTask:'¿Dónde quieres practicar?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
+      baum:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
+      spikiuIst:'Spikiu es', duBist:'Tú eres', deineRolle:'Tu papel', gutZuWissen:'Bueno saberlo', los:'¡Vamos! ›',
+      tischSag:'Antes de hablar, pongo la mesa.', tischUeb:'Cuatro palabras que van a salir enseguida. Toca cada imagen.',
+      entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, tischFertig:'La mesa está puesta.', losGehts:'¡Empezamos! ›',
+      ueb:'Traducción', anhoeren:'Escuchar', aufgabeVon:function(i,n){ return 'Tarea ' + i + ' de ' + n; },
+      selbst:'🎤 Dilo tú', hinweis:'Dilo tú, o escucha antes las propuestas.', nurSelbst:'Dilo tú.',
+      vorbild:'Tu modelo', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Ahora dilo tú ↑</span>'; },
+      falsch:function(u){ return '«' + u + '»: aquí todavía no encaja.'; },
+      feldPh:'Escribe o dicta …', diktieren:'🎙️ Dictar', hoertZu:'🎙️ Te escucho …', senden:'Enviar ›', vorschlaege:'‹ Propuestas',
+      du:function(z){ return 'Tú: <em>' + z + '</em>'; }, nochmalSp:'Spikiu lo repite.',
+      weiter:'seguir ›', genug:'Ya está bien por hoy',
+      deineSaetze:'Tus frases', deineSaetzeKlein:'Toca una para cambiarla todavía.', uebernehmen:'Aceptar ›', zurueck:'‹ Atrás',
+      rueckmeldung:'Comentarios ›', warte:'Spikiu lee tus frases …', korrTitel:'Tus frases, corregidas', sauber:'¡Muy bien!',
+      geuebt:'Esto has practicado', wendungen:'Frases', woerter:'Palabras',
+      nichtsGeerntet:'Todavía nada recogido.', nichtsGeerntetText:'La próxima vez aparecerá aquí lo que de verdad hayáis dicho.',
+      nachHause:'A casa ›', nochmal:'‹ Otra vez',
+      keineDaten:'Los datos del camino o el guion de la escena no están cargados.', keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.' },
+    en: { titel:'Free conversation', rail:['Role','Table','Talk','Review','Harvest'],
+      themaTask:'Where would you like to practise?', wohin:function(k){ return k + ': where are you going?'; }, themen:'‹ Topics', haus:'‹ Home',
+      baum:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'},
+      spikiuIst:'Spikiu is', duBist:'You are', deineRolle:'Your role', gutZuWissen:'Good to know', los:'Let’s go ›',
+      tischSag:'Before we talk, I’ll set the table.', tischUeb:'Four words you’ll hear in a moment. Tap each picture.',
+      entZaehler:function(n,g){ return n + ' of ' + g + ' discovered'; }, tischFertig:'The table is set.', losGehts:'Let’s start ›',
+      ueb:'Translation', anhoeren:'Listen', aufgabeVon:function(i,n){ return 'Task ' + i + ' of ' + n; },
+      selbst:'🎤 Say it yourself', hinweis:'Say it yourself, or listen to the suggestions first.', nurSelbst:'Say it yourself.',
+      vorbild:'Your model', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Now say it yourself ↑</span>'; },
+      falsch:function(u){ return '“' + u + '”: doesn’t fit here yet.'; },
+      feldPh:'Type or dictate …', diktieren:'🎙️ Dictate', hoertZu:'🎙️ Listening …', senden:'Send ›', vorschlaege:'‹ Suggestions',
+      du:function(z){ return 'You: <em>' + z + '</em>'; }, nochmalSp:'Spikiu says it again.',
+      weiter:'next ›', genug:'Enough for today',
+      deineSaetze:'Your sentences', deineSaetzeKlein:'Tap one to change it.', uebernehmen:'Done ›', zurueck:'‹ Back',
+      rueckmeldung:'Feedback ›', warte:'Spikiu is reading your sentences …', korrTitel:'Your sentences, corrected', sauber:'Very good!',
+      geuebt:'This is what you practised', wendungen:'Phrases and sentences', woerter:'Words',
+      nichtsGeerntet:'Nothing collected yet.', nichtsGeerntetText:'Next time this is where what you actually said will appear.',
+      nachHause:'Home ›', nochmal:'‹ Again',
+      keineDaten:'The path data or the scene script is not loaded.', keineAufgaben:'This station has no tasks yet. Choose another topic.' },
+    el: { titel:'Ελεύθερη συζήτηση', rail:['Ρόλος','Τραπέζι','Συζήτηση','Ανασκόπηση','Σοδειά'],
+      themaTask:'Πού θέλεις να εξασκηθείς;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
+      baum:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'},
+      spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι', deineRolle:'Ο ρόλος σου', gutZuWissen:'Καλό να ξέρεις', los:'Πάμε ›',
+      tischSag:'Πριν μιλήσουμε, στρώνω το τραπέζι.', tischUeb:'Τέσσερις λέξεις που θα ακούσεις σε λίγο. Πάτα κάθε εικόνα.',
+      entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, tischFertig:'Το τραπέζι είναι στρωμένο.', losGehts:'Ξεκινάμε ›',
+      ueb:'Μετάφραση', anhoeren:'Άκου', aufgabeVon:function(i,n){ return 'Εργασία ' + i + ' από ' + n; },
+      selbst:'🎤 Πες το εσύ', hinweis:'Πες το εσύ ή άκου πρώτα τις προτάσεις.', nurSelbst:'Πες το εσύ.',
+      vorbild:'Το πρότυπό σου', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Τώρα πες το εσύ ↑</span>'; },
+      falsch:function(u){ return '«' + u + '»: δεν ταιριάζει ακόμα εδώ.'; },
+      feldPh:'Γράψε ή υπαγόρευσε …', diktieren:'🎙️ Υπαγόρευση', hoertZu:'🎙️ Σε ακούω …', senden:'Αποστολή ›', vorschlaege:'‹ Προτάσεις',
+      du:function(z){ return 'Εσύ: <em>' + z + '</em>'; }, nochmalSp:'Ο Spikiu το ξαναλέει.',
+      weiter:'συνέχεια ›', genug:'Αρκετά για σήμερα',
+      deineSaetze:'Οι φράσεις σου', deineSaetzeKlein:'Πάτα μία για να την αλλάξεις.', uebernehmen:'Εντάξει ›', zurueck:'‹ Πίσω',
+      rueckmeldung:'Σχόλια ›', warte:'Ο Spikiu διαβάζει τις φράσεις σου …', korrTitel:'Οι φράσεις σου, διορθωμένες', sauber:'Πολύ καλά!',
+      geuebt:'Αυτό εξασκήθηκες', wendungen:'Εκφράσεις και προτάσεις', woerter:'Λέξεις',
+      nichtsGeerntet:'Δεν μάζεψες τίποτα ακόμα.', nichtsGeerntetText:'Την επόμενη φορά εδώ θα εμφανιστεί ό,τι είπατε πραγματικά.',
+      nachHause:'Στο σπίτι ›', nochmal:'‹ Ξανά',
+      keineDaten:'Τα δεδομένα της διαδρομής ή το σενάριο της σκηνής δεν έχουν φορτωθεί.', keineAufgaben:'Αυτός ο σταθμός δεν έχει ακόμα εργασίες. Διάλεξε άλλο θέμα.' }
   };
-  function T(k) {
-    var t = WORT[MU] || WORT.de;
-    return t[k] || WORT.de[k] || '';
+  var U = WORT[MU] || WORT.de;
+
+  var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
+  var stage = document.getElementById('stage'), fussEl = document.getElementById('fuss');
+  function sprich(t) { if (!t) return; try { if (window.sprich) window.sprich(t, ZS); } catch (e) {} }
+  function stumm() { try { if (window.spikiuAudioStop) window.spikiuAudioStop(); } catch (e) {} }
+  function inSprache(o) { if (!o) return ''; if (typeof o === 'string') return o; return o[MU] || o.de || o.en || o.es || ''; }
+  function mitPunkt(t) { t = String(t || '').trim(); return (!t || /[.!?…:;]$/.test(t)) ? t : t + '.'; }
+  function gross(t) { t = String(t || ''); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function pfeil(k) { try { return new URLSearchParams(window.location.search).get(k) || ''; } catch (e) { return ''; } }
+  /* Für die ERNTE: Akzente und Satzzeichen weg, klein. */
+  function flach(t) {
+    return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-zäöüß0-9Ͱ-Ͽ\s]/gi, ' ').replace(/\s+/g, ' ').trim();
   }
 
-  /* ── Zustand dieser Seite ─────────────────────────────────── */
-  /* ══════════════════════════════════════════════════════════
-     WELCHE STUFE GILT?
-
-     Drei Quellen, in dieser Reihenfolge:
-     1. der Parameter in der Adresse — wer ausdrücklich wählt, bekommt das
-     2. der WEG (spikiu_pfad.stufe) — wo der Lerner wirklich steht
-     3. der Stand aus dem Assessment (koennen) — für den, der neu ist
-
-     Bis heute stand hier fest 'a1'. Egal wie sich jemand einstufte, er
-     landete in A1 — das Assessment war mit der Szene gar nicht verbunden
-     (Leo, 01.09.). Das Bindeglied gehört eigentlich ins Assessment: es
-     müsste beim Abschluss spikiu_pfad.stufe setzen. Bis dahin schließt
-     diese Ableitung die Lücke, ohne dass ein zweiter Datenhalter entsteht —
-     sie LIEST nur. */
-  function ausStand(k) {
-    return (k === 'mittel' || k === 'fortgeschritten') ? 'a2' : 'a1';
+  /* Wird die Karte zu voll (Krone, kleines Handy), rückt alles enger zusammen und die Umschrift
+     in Spikius Blase fällt weg — erst dann darf die Karte innen rollen. */
+  function dichtBeobachten(k) {
+    function pruefe() { if (!k.isConnected) return; k.classList.remove('dicht'); if (k.scrollHeight > k.clientHeight + 1) k.classList.add('dicht'); }
+    requestAnimationFrame(pruefe);
+    if (window.ResizeObserver) { var h = null; new ResizeObserver(function () { if (h) return; h = requestAnimationFrame(function () { h = null; pruefe(); }); }).observe(k); }
+    k.__dicht = pruefe;
+    if (window.MutationObserver) new MutationObserver(function () { requestAnimationFrame(pruefe); }).observe(k, { childList: true, subtree: true, characterData: true });
   }
-  function stufeAusWeg() {
-    /* Nur benutzen, wenn der Weg WIRKLICH gespeichert ist. Ein leerer Weg
-       liefert 'a1' als Vorgabe — das wäre wieder die alte Falle. */
-    try {
-      var r = JSON.parse(localStorage.getItem('spikiu_pfad') || 'null');
-      return (r && r.stufe) ? r.stufe : null;
-    } catch (e) { return null; }
+
+  /* ── Kopf + Leiste ── */
+  document.getElementById('eb').textContent = U.titel;
+  var railEl = document.getElementById('rail');
+  railEl.innerHTML = U.rail.map(function (s) { return '<div class="step"><i></i><b>' + esc(s) + '</b></div>'; }).join('');
+  function kopf(ttl, idx) {
+    stumm();
+    document.getElementById('ttl').textContent = ttl || U.titel;
+    railEl.querySelectorAll('.step').forEach(function (s, i) { s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx); });
   }
+  document.getElementById('back').onclick = function () { window.location.href = 'haus.html'; };
+
+  /* ── Zustand ── */
+  function ausStand(k) { return (k === 'mittel' || k === 'fortgeschritten') ? 'a2' : 'a1'; }
+  function stufeAusWeg() { try { var r = JSON.parse(localStorage.getItem('spikiu_pfad') || 'null'); return (r && r.stufe) ? r.stufe : null; } catch (e) { return null; } }
   var STUFE = pfeil('stufe') || stufeAusWeg() || ausStand(PROFIL.koennen);
-  if (((window.SpikiuLernpfad && window.SpikiuLernpfad.stufen) || ['a1', 'a2']).indexOf(STUFE) === -1) STUFE = 'a1';
+  if (((LP && LP.stufen) || ['a1', 'a2']).indexOf(STUFE) === -1) STUFE = 'a1';
   var THEMA = pfeil('thema') || '';
-  var ST = null, ROLLE = null, automat = null;
-  var zielzeilen = [];
-  var lernerZeilen = [];
-  var abrundungIstZiel = false;
+  var ST = null, ROLLE = null, AUFG = [], automat = null, THEMA_NA = '';
+  var zielzeilen = [], lernerZeilen = [], abrundungIstZiel = false;
   var geerntet = { gesagt: [], gehoert: [] };
-  var protokoll = [];        // für die spätere Rückmeldung am Ende
-  var busy = false;
-  var letzteSpikiuZeile = '';   // worauf der Lerner gerade antwortet
+  var protokoll = [];          // {aufgabe, gesagt, erwartet, auftrag, vorher}
+  var letzteSpikiu = null;     // {z, tr, na} — worauf der Lerner gerade antwortet
+  var PHASE = 'buehne';
 
-  /* ══════════════════════════════════════════════════════════
-     KARTEN
-     ══════════════════════════════════════════════════════════ */
-  /* ══════════════════════════════════════════════════════════
-     DAS HORIZONTALE DECK
-     Eine Karte pro Bildschirm. Wischen nach links = weiter (nur auf
-     Spikiu-Karten), nach rechts = zurückblättern. Zurückblättern ist immer
-     erlaubt — es ist Lesen, nicht Spielen.
-     ══════════════════════════════════════════════════════════ */
-  var reelIndex = 0;
-  function slides() { return deck.querySelectorAll('.karte'); }
-
-  /* Passt den Haupttext an, bis die Karte ohne Scrollen hineinpasst. Eine
-     Regel an einem Ort statt fester Größen pro Element (aus chat.html). */
-  function anpassen(s) {
-    if (!s || s.__angepasst) return;
-    s.__angepasst = true;
-    var haupt = s.querySelectorAll('.zug');
-    if (!haupt.length) return;
-    var px = Math.min(30, Math.max(19, Math.round((s.clientWidth || 340) * 0.075)));
-    var schutz = 0;
-    function setze(v) {
-      for (var i = 0; i < haupt.length; i++) haupt[i].style.fontSize = v + 'px';
-    }
-    setze(px);
-    while (s.scrollHeight > s.clientHeight - 4 && px > 15 && schutz < 40) {
-      px -= 1; setze(px); schutz++;
-    }
-  }
-
-  /* Nur die Karten anfassen, deren Zustand sich WIRKLICH ändert. Vorher wurde
-     bei jedem Schritt das className aller Karten neu zusammengesetzt — der
-     Browser startete dadurch sämtliche Übergänge neu, und auf dem Gerät sah
-     es aus wie ein Super-8-Film mit sichtbaren Schnitten (Leo, 31.08.). */
-  function anordnen() {
-    var l = slides();
-    if (!l.length) return;
-    if (reelIndex > l.length - 1) reelIndex = l.length - 1;
-    if (reelIndex < 0) reelIndex = 0;
-    for (var i = 0; i < l.length; i++) {
-      var soll = (i < reelIndex) ? 'war' : (i === reelIndex) ? 'jetzt' : 'kommt';
-      var el = l[i];
-      if (el.classList.contains(soll)) continue;      // schon richtig → nicht anfassen
-      el.classList.remove('war', 'jetzt', 'kommt');
-      el.classList.add(soll);
-    }
-  }
-  function zeige(i) { reelIndex = i; anordnen(); }
-  function vor()  { if (reelIndex < slides().length - 1) { reelIndex++; anordnen(); } }
-  function rueck() { if (reelIndex > 0) { reelIndex--; anordnen(); } }
-
-  (function gesten() {
-    /* Die Tastatur ändert auf dem Handy nur die HÖHE. Würden wir darauf neu
-       anordnen, wackelte das Deck bei jedem Tastendruck. Nur die Breite zählt. */
-    var letzteBreite = window.innerWidth;
-    window.addEventListener('resize', function () {
-      if (window.innerWidth === letzteBreite) return;
-      letzteBreite = window.innerWidth;
-      var l = slides();
-      for (var i = 0; i < l.length; i++) l[i].__angepasst = false;
-      if (l.length) { anpassen(l[reelIndex]); anordnen(); }
-    });
-    var x0 = null, y0 = null;
-    deck.addEventListener('touchstart', function (e) {
-      var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY;
-    }, { passive: true });
-    deck.addEventListener('touchend', function (e) {
-      if (x0 == null) return;
-      var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
-      x0 = null;
-      if (Math.abs(dx) < 45 || Math.abs(dy) > Math.abs(dx)) return;   // nur klar horizontal
-      if (dx < 0) {
-        /* Vorwärts nur, solange die Karte nichts von dir will. Eine Karte mit
-           offenem Eingabefeld darf man nicht wegwischen — sonst verliert der
-           Lerner sein Feld und weiß nicht, wohin. */
-        var cur = slides()[reelIndex];
-        if (cur && cur.querySelector('.feld:not([disabled])')) return;
-        vor();
-      } else rueck();
-    }, { passive: true });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowLeft') rueck();
-      else if (e.key === 'ArrowRight') {
-        var cur = slides()[reelIndex];
-        if (cur && cur.querySelector('.feld:not([disabled])')) return;
-        vor();
-      }
-    });
-  })();
-
-  /* stehenbleiben = true legt die Karte an, springt aber NICHT hin.
-     Wird derzeit nirgends gebraucht — der Schluss steht seit dem 31.08. auf
-     EINER Karte. Bleibt, weil jede Karte, die still im Hintergrund entstehen
-     soll, genau das braucht. */
-  function karte(klasse, stehenbleiben) {
-    var d = document.createElement('div');
-    d.className = 'karte' + (klasse ? ' ' + klasse : '') + ' kommt';
-    deck.appendChild(d);
-    /* Der Inhalt wird gleich nach diesem Aufruf gesetzt. Erst im nächsten
-       Bild messen und schieben — sonst misst anpassen() eine leere Karte und
-       der Text springt beim Erscheinen von groß auf klein. */
-    /* Die eigene Position JETZT merken, nicht später „die letzte" suchen.
-       Am Schluss entstehen drei Karten in derselben Runde (letzte Antwort,
-       Abrundung, Ausgang). Wer erst im nächsten Bild „ans Ende" springt,
-       landet auf der dritten — und die Abrundung wurde übersprungen, bis
-       man zurückwischte (Leo, 31.08., zweimal gemeldet). */
-    var meinPlatz = slides().length - 1;
-    requestAnimationFrame(function () {
-      anpassen(d);                 // einmal, solange die Karte noch rechts steht
-      void d.offsetWidth;          // Reflow: der Browser kennt jetzt „kommt"
-      requestAnimationFrame(function () {
-        if (stehenbleiben) anordnen();
-        else zeige(meinPlatz);     // genau hierher, nicht „ans Ende"
-      });
-    });
-    return d;
-  }
-
-  /* Eine kurze Pause vor Spikius Antwort. Die Zeile steht sofort bereit —
-     ohne Pause wirkt es wie ein Automat, nicht wie ein Gegenüber. */
-  function nachDenkpause(fn) {
-    var k = karte();
-    k.innerHTML = '<div class="punkte">• • •</div>';
-    setTimeout(function () {
-      if (k.parentNode) k.parentNode.removeChild(k);
-      if (reelIndex >= slides().length) reelIndex = slides().length - 1;
-      fn();
-    }, 700);
-  }
-
-  function sprich(text) {
-    if (window.spkSpeak) { try { return window.spkSpeak(text, ZS); } catch (e) {} }
+  /* ── Bilder (wie gefuehrt.html): nur Dateien, die es gibt ── */
+  function da(pfad) { var L = window.SPIKIU_BILDER_DA; if (!pfad) return ''; if (!L) return pfad; return L[String(pfad).replace(/^bilder\//, '')] ? pfad : ''; }
+  function bildVon(z, en) {
     try {
-      var s = window.speechSynthesis;
-      if (s && typeof SpeechSynthesisUtterance !== 'undefined') {
-        var u = new SpeechSynthesisUtterance(String(text));
-        u.lang = { de: 'de-DE', es: 'es-ES', en: 'en-US', el: 'el-GR' }[ZS] || 'en-US';
-        s.cancel(); s.speak(u);
-      }
+      var I = window.spikiuIcon; if (!I || !I.datei) return '';
+      en = String(en || '').replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+      var e = (en && I.konzept(en)) || (ZS === 'en' && I.konzept(String(z).replace(/\s*\([^)]*\)\s*/g, ' ').trim())) || I(z) || '';
+      return e ? da(I.datei(e)) : '';
+    } catch (err) { return ''; }
+  }
+  function emBild(em) { var I = window.spikiuIcon; var s = (I && I.datei) ? da(I.datei(em)) : ''; return s ? '<img src="' + s + '" alt="" data-em="' + esc(em) + '">' : '<span class="oh-te">' + esc(em) + '</span>'; }
+  function emFallback(g) { g.querySelectorAll('img[data-em]').forEach(function (im) { im.onerror = function () { var s = document.createElement('span'); s.className = 'oh-te'; s.textContent = im.getAttribute('data-em'); im.replaceWith(s); }; }); }
+  var ART_LT = { 'ο':'o', 'η':'i', 'το':'to', 'οι':'i', 'τα':'ta' };
+  function ltEl(z) {
+    if (ZS !== 'el') return '';
+    try {
+      var X = window.spikiuLexikon; if (!X || !X.bereit('el')) return '';
+      var t = String(z).trim().split(/\s+/), art = ART_LT[t[0].toLowerCase()], wort = art ? t.slice(1).join(' ') : z;
+      var f = X.ficha('el', wort); if (!f || !f.lt) return '';
+      return (art ? art + ' ' : '') + f.lt;
+    } catch (e) { return ''; }
+  }
+  function lexikonDann(fn) {
+    if (ZS !== 'el' || !window.spikiuLexikon) { fn(); return; }
+    var fertig = false, los = function () { if (!fertig) { fertig = true; fn(); } };
+    try { window.spikiuLexikon.laden('el').then(los, los); } catch (e) { los(); }
+    setTimeout(los, 2500);
+  }
+  /* Vier Bildwörter für den Tisch: Station zuerst, dann das Wortfeld des Themas. */
+  function tischWoerter() {
+    var out = [], gesehen = {}, schon = {};
+    function nimm(x) { if (!x.bild || gesehen[x.bild] || schon[String(x.z).toLowerCase()]) return; gesehen[x.bild] = 1; schon[String(x.z).toLowerCase()] = 1; out.push(x); }
+    ((ST && ST.wortschatz) || []).forEach(function (w) { if (out.length < 4) nimm({ z: w.z, lt: w.tr || '', tr: inSprache(w.na), bild: bildVon(w.z, w.na && w.na.en) }); });
+    try {
+      var F = (window.spikiuWortfelder && THEMA) ? window.spikiuWortfelder.feld(ZS, THEMA, MU) : [];
+      var ord = STUFE === 'a1' ? [1, 2, 3] : STUFE === 'a2' ? [2, 1, 3] : [2, 3, 1];
+      ord.forEach(function (s) {
+        F.forEach(function (x) {
+          if (out.length >= 4 || x.stufe !== s) return;
+          var I = window.spikiuIcon, e = (x.en && I && I.konzept) ? I.konzept(x.en) : '';
+          if (e) nimm({ z: x.z, lt: ltEl(x.z), tr: x.tr, bild: da(I.datei(e)) });
+        });
+      });
     } catch (e) {}
+    return out.length === 4 ? out : [];
   }
 
-  /* ══════════════════════════════════════════════════════════
-     1 · BÜHNE
-     ══════════════════════════════════════════════════════════ */
-  function buehne() {
-    var thema = LP.thema(THEMA);
-    var fakten = LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : '';
-    // Krone (b1): ein Satz zum Ort — „Gut zu wissen" (Leo, 16.10.2026).
-    var kultur = LP.kulturVon ? LP.kulturVon(STUFE, THEMA, MU) : '';
-    var k = karte();
-    k.innerHTML =
-      '<div class="bue-bild">' + esc(thema ? thema.em : '🎭') + '</div>'
-    + '<div class="bue-titel">' + esc(inSprache(thema && thema.na, MU)) + '</div>'
-    + '<div class="bue-ort">' + esc(inSprache(ROLLE && ROLLE.ort, MU)) + '</div>'
-    /* WAS IN DIESER SZENE GILT. Ohne diesen Kasten verlangten die Aufgaben
-       Aussagen über das echte Leben des Lerners — wer keine Schwester hat,
-       müsste lügen, und die KI müsste den Bruch auffangen. Mit ihm ist es
-       ein Theaterstück: „Sí, una hermana" ist die Rolle, keine Behauptung.
-       Gelb wie die Karten des Lerners — es gehört ihm. */
-    + (fakten ? '<div class="fakten"><div class="l">' + esc(T('deineRolle')) + '</div>'
-              + '<div class="t">' + esc(fakten) + '</div></div>' : '')
-    + (kultur ? '<div class="kultur"><div class="l">🗺️ ' + esc(T('gutZuWissen')) + '</div>'
-              + '<div class="t">' + esc(kultur) + '</div></div>' : '')
-    + '<div class="rollen">'
-    +   '<div class="rolle"><div class="l">' + esc(T('spikiuIst')) + '</div><div class="n">'
-    +     esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div></div>'
-    +   '<div class="rolle"><div class="l">' + esc(T('duBist')) + '</div><div class="n">'
-    +     esc(inSprache(ROLLE && ROLLE.lerner, MU)) + '</div></div>'
-    + '</div>';
-    k.insertAdjacentHTML('beforeend',
-      ''  /* Wischhilfe entfernt (Leo, 15.10.) */);
-    var b = document.createElement('button');
-    b.className = 'knopf';
-    b.textContent = T('los');
-    b.onclick = function () {
-      b.disabled = true;
-      automat.los();
-      var e = LP.eroeffnungVon(STUFE, THEMA);
-      spikiuSagt((e && e.z) || '', (e && e.na) ? inSprache(e.na, MU) : '', true);
-    };
-    k.appendChild(b);
+  /* ── Sitzung (sitzung.js, Schlüssel spikiu_sitzung:szene) ── */
+  var sitzT = null;
+  function speichern() {
+    clearTimeout(sitzT);
+    sitzT = setTimeout(function () {
+      try {
+        if (!window.spikiuSitzung || !THEMA || PHASE === 'ernte') return;
+        window.spikiuSitzung.speichere('szene', { stufe: STUFE, thema: THEMA, themaNa: THEMA_NA, phase: PHASE, geerntet: geerntet, protokoll: protokoll });
+      } catch (e) {}
+    }, 350);
   }
+  function raeumen() { clearTimeout(sitzT); try { if (window.spikiuSitzung) window.spikiuSitzung.raeume('szene'); } catch (e) {} }
 
   /* ══════════════════════════════════════════════════════════
-     2 · SPIKIU SAGT — immer aus der Datenbank
+     THEMENWAHL — wie im Geführten Gespräch (lernpfad.js)
      ══════════════════════════════════════════════════════════ */
-  function spikiuSagt(text, bruecke, mitFeld, stehenbleiben) {
-    automat.spikiuAntwortet(text);
-    letzteSpikiuZeile = text;
-    geerntet.gehoert.push(text);
-    speichern();
-
-    var z = automat.zustand();
-    var aufgaben = automat.aufgabenListe();
-    var k = karte(null, stehenbleiben);
-
-    var h = '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
-          + '<div class="zug">' + esc(text) + '</div>'
-          + '<div class="werkz">'
-          +   '<button class="ikon" data-hoer aria-label="' + esc(T('anhoeren')) + '">🔊</button>'
-          +   (bruecke ? '<button class="ikon" data-ueb aria-label="' + esc(T('uebersetzung')) + '">'
-                       + esc(MU.toUpperCase()) + '</button>' : '')
-          + '</div>'
-          + (bruecke ? '<div class="ueb">' + esc(bruecke) + '</div>' : '');
-
-    var zeigeAufgabe = mitFeld && z.aufgabeIndex < aufgaben.length;
-    if (zeigeAufgabe) {
-      h += '<div class="trenn"></div><div class="schritte">';
-      for (var i = 0; i < aufgaben.length; i++) {
-        h += '<div class="st' + (i < z.aufgabeIndex ? ' fertig'
-                               : i === z.aufgabeIndex ? ' jetzt' : '') + '"></div>';
+  function waehler(katId) {
+    kopf(U.titel, 0);
+    var P = window.SpikiuPfad, D = LP;
+    var k = O.karte(stage);
+    if (!(P && D && P.kategorien && P.kategorien().length)) { einfacheWahl(k); return; }
+    if (!katId) {
+      O.task(k, U.themaTask);
+      var stufen = (D.stufen || ['a1']).filter(function (s) { return (D.themen || []).some(function (t) { return D.gefuellt(s, t.id); }); });
+      var aktiv = P.stufe();
+      if (stufen.length > 1) {
+        var ch = O.el('div', 'oh-chips');
+        stufen.forEach(function (s) {
+          var b = O.el('button', 'oh-chip', esc(U.baum[s] || s)); b.type = 'button'; b.setAttribute('aria-pressed', String(s === aktiv));
+          b.onclick = function () { if (s !== aktiv) { P.setzeStufe(s); waehler(); } }; ch.appendChild(b);
+        });
+        k.appendChild(ch);
       }
-      h += '</div>'
-        +  '<div class="aufg">'
-        +    '<div class="capy" data-capy role="button" tabindex="0" '
-        +      'aria-label="' + esc(T('hilfeLabel')) + '">'
-        +      '<span class="punkt" data-punkt></span>' + CAPY + '</div>'
-        +    '<div class="txt"><div class="l" data-lbl>' + esc(T('deineAufgabe')) + '</div>'
-        +    '<div class="t" data-aufg>' + esc(inSprache(aufgaben[z.aufgabeIndex], MU))
-        +    '</div></div>'
-        +  '</div>'
-        +  '<div class="hinweis" data-hinweis>'
-        +    '<div class="l">' + esc(T('soKoenntest')) + '</div>'
-        +    '<div class="s" data-satz></div>'
-        +    '<div class="kn"><button class="ikon" data-hsprich aria-label="' + esc(T('anhoeren')) + '">🔊</button>'
-        +      '<button class="ikon" data-hueb aria-label="' + esc(T('uebersetzung')) + '">'
-        +        esc(MU.toUpperCase()) + '</button></div>'
-        +    '<div class="ueb" data-huebtext></div>'
-        +  '</div>'
-        +  '<textarea class="feld" placeholder="' + esc(T('antworte')) + '"></textarea>';
+      var kats = P.kategorien();
+      var g = O.raster(k, kats.length <= 2 ? 'zwei' : kats.length === 3 ? 'drei' : kats.length === 4 ? 'bilder' : 'liste');
+      kats.forEach(function (K, n) {
+        var b = O.el('button', 'oh-tile' + (K.naechste ? ' oh-vor' : ''), emBild(K.em) + '<span class="oh-tn">' + esc(inSprache(K.na)) + '</span>');
+        b.type = 'button'; b.id = 'kat-' + n; b.onclick = function () { waehler(K.id); }; g.appendChild(b);
+      });
+      emFallback(g);
+      O.fb(k, '');
+      O.fuss(fussEl, { t: U.haus, go: function () { window.location.href = 'haus.html'; } }, null);
+      return;
     }
-    k.innerHTML = h;
-
-    var hb = k.querySelector('[data-hoer]'); if (hb) hb.onclick = function () { sprich(text); };
-    var ub = k.querySelector('[data-ueb]');
-    if (ub) ub.onclick = function () { k.querySelector('.ueb').classList.toggle('an'); };
-
-    if (zeigeAufgabe) bauSouffleur(k, z.aufgabeIndex, aufgaben);
+    var K0 = P.kategorien().filter(function (x) { return x.id === katId; })[0];
+    var liste = P.themenIn(katId);
+    if (!K0 || !liste.length) { waehler(); return; }
+    O.task(k, U.wohin(inSprache(K0.na)));
+    var g2 = O.raster(k, liste.length <= 2 ? 'zwei' : liste.length === 3 ? 'drei' : liste.length === 4 ? 'bilder' : 'liste');
+    liste.forEach(function (x, n) {
+      var b = O.el('button', 'oh-tile' + (x.naechste ? ' oh-vor' : ''), emBild(x.em) + '<span class="oh-tn">' + esc(inSprache(x.na)) + '</span>');
+      b.type = 'button'; b.id = 'ort-' + n; b.onclick = function () { STUFE = P.stufe(); THEMA = x.id; start(); }; g2.appendChild(b);
+    });
+    emFallback(g2);
+    O.fb(k, '');
+    O.fuss(fussEl, { t: U.themen, go: function () { waehler(); } }, null);
+  }
+  /* Ohne lernpfad.js: alle gefüllten Themen der Stufe als Liste. */
+  function einfacheWahl(k) {
+    O.task(k, U.themaTask);
+    var liste = ((LP && LP.themen) || []).filter(function (t) { return LP.gefuellt(STUFE, t.id); }).slice(0, 4);
+    var g = O.raster(k, 'liste');
+    liste.forEach(function (t, n) {
+      var b = O.el('button', 'oh-tile', '<span class="oh-tn">' + esc(t.em) + ' ' + esc(inSprache(t.na)) + '</span>');
+      b.type = 'button'; b.id = 'ort-' + n; b.onclick = function () { THEMA = t.id; start(); }; g.appendChild(b);
+    });
+    O.fb(k, '');
+    O.fuss(fussEl, { t: U.haus, go: function () { window.location.href = 'haus.html'; } }, null);
+  }
+  function hinweis(t) {
+    kopf(U.titel, 0);
+    var k = O.karte(stage); O.task(k, t); O.fb(k, '');
+    O.fuss(fussEl, { t: U.haus, go: function () { window.location.href = 'haus.html'; } }, { t: U.themen.replace('‹ ', '') + ' ›', go: function () { THEMA = ''; waehler(); } });
   }
 
   /* ══════════════════════════════════════════════════════════
-     3 · DER SOUFFLEUR — der Capy hält beides (Leo, 24.09.)
-     Erster Tipp: die Aufgabe blendet ein. Sie blendet aus, sobald er ins
-     Feld tippt — im Moment des Schreibens muss er sie im Kopf haben.
-     Zweiter Tipp: das Beispiel. Es bleibt bis „Senden".
-     Jeder weitere Tipp holt die Aufgabe noch einmal kurz zurück.
-     Der Platz der Aufgabe bleibt reserviert (nur unsichtbar), damit Feld
-     und Knopf nicht springen.
-     Der blaue Punkt sagt „hier gibt es noch mehr" und verschwindet, wenn
-     das Beispiel steht.
+     START EINER SZENE — Daten aus dem Lernpfad, 0 Token
      ══════════════════════════════════════════════════════════ */
-  var aufgabeSchonGezeigt = false;   // nur der allererste Zug zeigt sie von selbst
-  function bauSouffleur(k, index, aufgaben) {
-    var tipps  = 0;
-    var capy   = k.querySelector('[data-capy]');
-    var punkt  = k.querySelector('[data-punkt]');
-    var lbl    = k.querySelector('[data-lbl]');
-    var txt    = k.querySelector('[data-aufg]');
-    var aufgBox  = txt.parentNode;              // .txt — Überschrift + Aufgabe
-    var hin    = k.querySelector('[data-hinweis]');
-    var satzEl = k.querySelector('[data-satz]');
-    var feld   = k.querySelector('.feld');
-
-    /* Der Satz zum Abschreiben ist die LERNERZEILE aus dem Skript — sie steht
-       in der Datenbank, der Hinweis kostet nichts. */
-    var satz = lernerZeilen[index] ? lernerZeilen[index].z : '';
-    satzEl.textContent = satz;
-    lbl.textContent = T('deineAufgabe');
-    /* Satzzeichen setzt der Code, nicht die Datenbank (24.09.): alle 180
-       Aufgaben dort enden ohne Punkt. Ein Punkt nur, wo keiner steht —
-       ein „?" oder „!" in künftigen Daten bleibt unangetastet. */
-    txt.textContent = mitPunkt(inSprache(aufgaben[index], MU));
-
-    function aufgabeZeigen(an) {
-      aufgBox.classList.toggle('weg', !an);
-      aufgBox.setAttribute('aria-hidden', an ? 'false' : 'true');
-    }
-    function beispielDa() { return tipps >= 2 && !!satz; }
-    function zeichne() {
-      hin.classList.toggle('an', beispielDa());
-      /* Punkt weg, sobald nichts mehr zu holen ist: nach dem Beispiel —
-         oder, wenn es keinen Satz gibt, nach dem ersten Tipp. */
-      punkt.style.display = (beispielDa() || (!satz && tipps >= 1)) ? 'none' : 'block';
-    }
-
-    aufgabeZeigen(!aufgabeSchonGezeigt);
-    aufgabeSchonGezeigt = true;
-
-    capy.onclick = function () {
-      tipps++;
-      aufgabeZeigen(tipps === 1 || tipps >= 3 || !satz);
-      zeichne();
-    };
-    capy.onkeydown = function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); capy.click(); }
-    };
-    /* Sobald er schreiben will, ist die Aufgabe weg. Das Beispiel bleibt. */
-    feld.addEventListener('focus', function () { aufgabeZeigen(false); });
-    zeichne();
-
-    k.querySelector('[data-hsprich]').onclick = function () { sprich(satz); };
-    /* Kein „Einsetzen" mehr (24.09.): der Satz bleibt stehen, abgeschrieben
-       wird von Hand. Dafür der runde Muttersprach-Knopf wie bei Spikius Zeile —
-       die Übersetzung steht in der Datenbank (na), kostet nichts. */
-    var hueb = k.querySelector('[data-hueb]');
-    var huebText = k.querySelector('[data-huebtext]');
-    var satzNa = lernerZeilen[index] && lernerZeilen[index].na
-      ? inSprache(lernerZeilen[index].na, MU) : '';
-    if (satzNa) {
-      huebText.textContent = satzNa;
-      hueb.onclick = function () { huebText.classList.toggle('an'); };
-    } else {
-      hueb.remove(); huebText.remove();
-    }
-
-    var b = document.createElement('button');
-    b.className = 'knopf';
-    b.textContent = T('senden');
-    b.disabled = true;
-    feld.addEventListener('input', function () { b.disabled = !feld.value.trim(); });
-    feld.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); if (!b.disabled) b.click(); }
-    });
-    b.onclick = function () {
-      var t = feld.value.trim();
-      if (!t || busy) return;                     // R4 · Doppelklick prallt ab
-      b.disabled = true; feld.disabled = true; capy.onclick = null;
-      senden(t, index);
-    };
-    k.appendChild(b);
-    /* KEIN automatischer Fokus. Auf dem Handy sprang sonst die Tastatur auf
-       und verdeckte Spikius Satz und die Aufgabe — der erste fremde Tester
-       fragte wörtlich „Was soll ich tun?" (31.08.). Die Karte gehört erst
-       gelesen; die Tastatur kommt, wenn er das Feld antippt. */
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     DIE GELBE KARTE DES LERNERS — mit Änderungs-Stift
-
-     Zurückblättern und ändern (Leo, 30.08.). Geändert wird NUR der Text:
-     die Karte, die Ernte und die spätere Rückmeldung rechnen mit der neuen
-     Fassung. Die Szene spult NICHT zurück — Spikius Zeilen kommen aus der
-     Datenbank, hinter der Korrektur käme also dieselbe Antwort wieder. Ein
-     Rückspulen ließe den Lerner seine Arbeit wegwerfen, ohne dass sich etwas
-     ändert (Entscheid A).
-     ══════════════════════════════════════════════════════════ */
-  function lernerKarte(text, nr) {
-    var k = karte('du');
-
-    function ansicht() {
-      k.innerHTML = '<button class="stift" data-stift aria-label="' + esc(T('aendern')) + '">✎</button>'
-                  + '<div class="zug">' + esc(protokoll[nr].gesagt) + '</div>';
-      k.querySelector('[data-stift]').onclick = bearbeiten;
-    }
-    function bearbeiten() {
-      var alt = protokoll[nr].gesagt;
-      k.innerHTML = '<textarea class="feld" style="margin-top:0"></textarea>';
-      var f = k.querySelector('.feld');
-      f.value = alt;
-      var fertig = document.createElement('button');
-      fertig.className = 'knopf';
-      fertig.textContent = T('uebernehmen');
-      fertig.onclick = function () {
-        var neu = f.value.trim() || alt;
-        /* Auch in der Ernte ersetzen — dort steht das, was er WIRKLICH
-           gesagt hat, und das ist jetzt die neue Fassung. */
-        var i = geerntet.gesagt.indexOf(alt);
-        if (i > -1) geerntet.gesagt[i] = neu;
-        protokoll[nr].gesagt = neu;
-        protokoll[nr].geaendert = true;
-        speichern();
-        ansicht();
-        k.__angepasst = false; anpassen(k);
-      };
-      k.appendChild(fertig);
-      /* Hier ist der Fokus gewollt: er hat den Stift angetippt, um zu ändern. */
-      setTimeout(function () { try { f.focus(); } catch (e) {} }, 60);
-    }
-    ansicht();
-    return k;
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     4 · DER ZUG DES LERNERS
-     ══════════════════════════════════════════════════════════ */
-  function senden(text, index) {
-    var art = 'offen';
-    try { if (window.SpikiuSieb) art = window.SpikiuSieb.art(text, ZS, MU); } catch (e) {}
-
-    var erwartet = lernerZeilen[index] ? lernerZeilen[index].z : '';
-
-    /* JEDE offene Antwort rückt die Aufgabe vor. Nur eine Rückfrage nicht —
-       das ist eine Formsache, keine Beurteilung (R13). */
-    var z = automat.antworte(text, art === 'offen' ? 'offen' : 'rolle');
-    if (z.abgelehnt) return;
-
-    busy = true;
-    /* Das Protokoll ist die Grundlage der Rückmeldung am Ende: was er sagen
-       sollte, was er gesagt hat. Beurteilt wird dort, nicht hier. */
-    /* `vorher` ist Spikius Zeile, auf die er gerade antwortet — sie gibt der
-       Rückmeldung den Zusammenhang. `aufgabe` ist die Anweisung in seiner
-       Sprache. Beides zusammen legt den Sinn fest, ohne eine Lösung
-       vorzuschreiben (die Musterzeile geht bewusst NICHT mit). */
-    protokoll.push({
-      aufgabe:  index,
-      gesagt:   text,
-      erwartet: erwartet,
-      auftrag:  inSprache(automat.aufgabenListe()[index], MU),
-      vorher:   letzteSpikiuZeile
-    });
-    lernerKarte(text, protokoll.length - 1);
-
-    if (art === 'offen') geerntet.gesagt.push(text);
-    speichern();
-
-    nachDenkpause(function () {
-      busy = false;
-      var neu = automat.zustand();
-
-      if (art !== 'offen') {
-        /* Rückfrage oder Meta-Frage: die Figur wiederholt ihre Zeile,
-           die Aufgabe bleibt stehen. */
-        spikiuSagt(zielzeilen[index] || '', brueckeZu(index), true);
-        return;
-      }
-      if (neu.ausgangOffen || neu.zug >= ZUG_DECKEL) {
-        /* Kein eigener Zug mehr: die letzte Antwort, die Abrundung und der
-           Ausgang stehen zusammen auf EINER Karte. */
-        schluss(zielzeilen[index] || '', brueckeZu(index));
-        return;
-      }
-      spikiuSagt(zielzeilen[index] || '', brueckeZu(index), true);
-    });
-  }
-
-  /* Die Brücke zu Spikius Zeile — aus der Datenbank, nicht erfunden. */
-  function brueckeZu(index) {
+  function vorbereiten() {
+    ST = LP.station(STUFE, THEMA);
+    ROLLE = LP.rolle(THEMA, STUFE);
+    AUFG = LP.aufgabenVon(STUFE, THEMA) || [];
+    if (!ST || !AUFG.length) return false;
+    var th = LP.thema(THEMA); THEMA_NA = inSprache(th && th.na);
+    zielzeilen = []; abrundungIstZiel = false;
+    /* Spikius Zeilen der Reihe nach. Beginnt der Dialog mit ihm, ist seine erste Zeile die
+       Eröffnung und zählt nicht mit. Ist die Liste erschöpft, übernimmt die Abrundung. */
     var zeilen = (ST.dialog && ST.dialog.zeilen) || [];
     var sp = zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+    lernerZeilen = zeilen.filter(function (z) { return z.wer === 'lerner'; });
     var versatz = (zeilen[0] && zeilen[0].wer === 'spikiu') ? 1 : 0;
-    var z = sp[index + versatz];
-    if (z && z.na) return inSprache(z.na, MU);
-    var a = LP.abrundungVon(STUFE, THEMA);
-    return (a && a.na) ? inSprache(a.na, MU) : '';
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     5 · DER RUNDE ABSCHLUSS
-     ══════════════════════════════════════════════════════════ */
-  /* Eine Karte, nicht drei (Leo, 31.08.: „verlorener Raum und Zeit durch
-     Wischen"). Spikius letzte Antwort und die Abrundung gehören zusammen —
-     ein Taxifahrer sagt „Perfecto. Son veinte euros. Aquí estamos. ¡Buen
-     viaje!" in einem Atemzug. Darunter gleich der Ausgang. */
-  function schluss(letzteZeile, letzteBruecke) {
-    var teile = [], bruecken = [];
-    if (letzteZeile) { teile.push(letzteZeile); if (letzteBruecke) bruecken.push(letzteBruecke); }
-
-    /* Die Abrundung nur, wenn sie nicht schon die letzte Antwort WAR
-       (bei Stationen, deren Skript vorher ausgeht). */
-    if (!abrundungIstZiel) {
-      var a = LP.abrundungVon(STUFE, THEMA);
-      if (a && a.z) {
-        teile.push(a.z);
-        if (a.na) bruecken.push(inSprache(a.na, MU));
+    var abr = LP.abrundungVon(STUFE, THEMA);
+    for (var i = 0; i < AUFG.length; i++) {
+      var z = sp[i + versatz];
+      if (z) zielzeilen.push({ z: z.z, tr: z.tr || '', na: inSprache(z.na) });
+      else {
+        zielzeilen.push(abr ? { z: abr.z, tr: abr.tr || '', na: inSprache(abr.na) } : { z: '', tr: '', na: '' });
+        if (i === AUFG.length - 1) abrundungIstZiel = true;
       }
     }
-
-    var text    = teile.join(' ');
-    var bruecke = bruecken.join(' ');
-
-    automat.spikiuAntwortet(text);
-    geerntet.gehoert.push(text);
-    speichern();
-
-    var k = karte();
-    k.innerHTML =
-        '<div class="k-rolle">' + esc(inSprache(ROLLE && ROLLE.spikiu, MU)) + '</div>'
-      + '<div class="zug">' + esc(text) + '</div>'
-      + '<div class="werkz">'
-      +   '<button class="ikon" data-hoer aria-label="' + esc(T('anhoeren')) + '">🔊</button>'
-      +   (bruecke ? '<button class="ikon" data-ueb aria-label="' + esc(T('uebersetzung')) + '">'
-                   + esc(MU.toUpperCase()) + '</button>' : '')
-      + '</div>'
-      + (bruecke ? '<div class="ueb">' + esc(bruecke) + '</div>' : '');
-
-    k.querySelector('[data-hoer]').onclick = function () { sprich(text); };
-    var ub = k.querySelector('[data-ueb]');
-    if (ub) ub.onclick = function () { k.querySelector('.ueb').classList.toggle('an'); };
-
-    var b = document.createElement('button');
-    b.className = 'knopf gelb';
-    b.style.marginTop = '1.3rem';
-    b.textContent = T('beenden');
-    b.onclick = function () { b.disabled = true; automat.abbrechen(); rueckmeldung(); };
-    k.appendChild(b);
+    automat = window.SpikiuSzene.erzeuge({ aufgaben: AUFG, maxZuege: ZUG_DECKEL });
+    geerntet = { gesagt: [], gehoert: [] }; protokoll = []; letzteSpikiu = null; SCHLUSS = null;
+    return true;
+  }
+  function eroeffnung() { var e = LP.eroeffnungVon(STUFE, THEMA); return { z: (e && e.z) || '', tr: (e && e.tr) || '', na: e ? inSprache(e.na) : '' }; }
+  function start() {
+    if (!THEMA || !LP.gefuellt(STUFE, THEMA)) { waehler(); return; }
+    if (!vorbereiten()) { hinweis(U.keineAufgaben); return; }
+    try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) P.beruehre(THEMA, STUFE); } catch (e) {}
+    lexikonDann(buehne);
   }
 
   /* ══════════════════════════════════════════════════════════
-     DIE RÜCKMELDUNG — der EINZIGE Modellaufruf einer Szene
-
-     Während des Gesprächs wird nichts geprüft (siehe oben). Verstanden wird
-     hier, einmal: drei Paare aus Musterzeile und dem, was der Lerner wirklich
-     geschrieben hat.
-
-     Sie nennt NUR, wo es natürlicher geht (Leos Entscheid A, 31.08.). Was saß,
-     bleibt unerwähnt — Lob für Selbstverständliches nutzt sich ab. Saß alles,
-     kommt ein einzelner Satz, damit die Karte nicht leer wirkt.
-
-     Fällt der Aufruf aus, geht es ohne ihn weiter. Eine kaputte Leitung darf
-     dem Lerner nicht seine Ernte wegnehmen.
+     1 · BÜHNE — wer ist wer, was gilt
      ══════════════════════════════════════════════════════════ */
-  async function rueckmeldung() {
-    /* NUR die Zeilen des Lerners. Die Musterzeile bleibt hier — schickten wir
-       sie mit, wurde jede Abweichung davon zum „Fehler", und die völlig
-       gültige Antwort „2" wurde zu „Para dos, por favor." berichtigt
-       (Leo, 31.08.). */
-    var zuege = protokoll
-      .filter(function (p) { return p.gesagt && p.gesagt.trim(); })
-      .map(function (p) {
-        return {
-          gesagt:  p.gesagt,
-          aufgabe: p.auftrag || '',
-          vorher:  p.vorher || '',
-          /* Die Skriptzeile — als „so sagt man es hier", NICHT als Lösung.
-             Ohne sie hielt Haiku beim Bezahlen im Supermarkt „Por favor."
-             für die Café-Formel „La cuenta, por favor" (Leo, 31.08.). */
-          ueblich: p.erwartet || ''
+  function buehne() {
+    PHASE = 'buehne';
+    kopf(THEMA_NA, 0);
+    var th = LP.thema(THEMA);
+    var fakten = LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : '';
+    var kultur = LP.kulturVon ? LP.kulturVon(STUFE, THEMA, MU) : '';
+    var k = O.karte(stage);
+    O.task(k, ((th && th.em) ? th.em + ' ' : '') + THEMA_NA, ((U.baum[STUFE] || '') + ' · ' + inSprache(ROLLE && ROLLE.ort)).replace(/ · $/, ''));
+    /* WAS IN DIESER SZENE GILT: ohne „Deine Rolle" verlangten die Aufgaben Aussagen über das
+       echte Leben — mit ihr ist es ein Theaterstück. */
+    var g = O.raster(k, fakten ? 'drei' : 'zwei');
+    g.innerHTML = '<div class="oh-tile" id="b-spikiu"><span class="fz-lbl">' + esc(U.spikiuIst) + '</span><span class="oh-tn">' + esc(gross(inSprache(ROLLE && ROLLE.spikiu))) + '</span></div>'
+      + '<div class="oh-tile" id="b-du"><span class="fz-lbl">' + esc(U.duBist) + '</span><span class="oh-tn">' + esc(gross(inSprache(ROLLE && ROLLE.lerner))) + '</span></div>'
+      + (fakten ? '<div class="oh-tile gew" id="b-rolle"><span class="fz-lbl">' + esc(U.deineRolle) + '</span><span class="oh-tu" style="color:var(--ink)">' + esc(fakten) + '</span></div>' : '');
+    O.fit(g);
+    O.fb(k, kultur ? '<span class="oh-leise">🗺️ ' + esc(U.gutZuWissen) + ': ' + esc(kultur) + '</span>' : '');
+    var tisch = tischWoerter();
+    O.fuss(fussEl, { t: U.themen, go: function () { raeumen(); THEMA = ''; waehler(); } },
+      { t: U.los, pri: true, go: function () {
+        automat.los();
+        letzteSpikiu = eroeffnung();
+        if (tisch.length) tischDecken(tisch); else ersterZug();
+      } });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     2 · DEN TISCH DECKEN — vier Bildwörter antippen (Prototyp 18.10.)
+     ══════════════════════════════════════════════════════════ */
+  function tischDecken(items) {
+    PHASE = 'tisch'; speichern();
+    kopf(THEMA_NA, 1);
+    var k = O.karte(stage);
+    O.blase(k, { capy: CAPY, z: U.tischSag, tr: U.tischUeb, trOffen: true });
+    O.entdecken(k, items, { lang: ZS, sprich: sprich, zaehler: U.entZaehler,
+      alleGehoert: function () {
+        var f = k.querySelector('.oh-fb'); if (f) f.innerHTML = '<span>' + f.innerHTML + '<br><span class="oh-leise">' + esc(U.tischFertig) + '</span></span>';
+        var r = document.getElementById('oh-rechts'); if (r) r.disabled = false;
+      } });
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.losGehts, pri: true, aus: true, go: ersterZug });
+  }
+  function ersterZug() {
+    var s = automat.spikiuAntwortet(letzteSpikiu.z);
+    geerntet.gehoert.push(letzteSpikiu.z);
+    zug();
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3 · EIN ZUG — Spikius Satz · Aufgabe · Selbst sagen · Vorschläge
+     ══════════════════════════════════════════════════════════ */
+  /* Vier Vorschläge: die Lernerzeile des Skripts + 3 Ablenker (1 aus diesem Dialog,
+     2 aus anderen Stationen derselben Stufe). Antippen = hören und verstehen. */
+  function vorschlaege(index) {
+    var ok = lernerZeilen[index];
+    if (!ok || !ok.z) return [];
+    var eigen = mischen(lernerZeilen.filter(function (z, i) { return i !== index && z.z && z.z !== ok.z; })).slice(0, 1);
+    var fremd = [];
+    (LP.themen || []).forEach(function (t) {
+      if (t.id === THEMA) return; var X = LP.station(STUFE, t.id);
+      ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer === 'lerner' && z.z && z.z !== ok.z) fremd.push(z); });
+    });
+    var andere = mischen(fremd.filter(function (f) { return !eigen.some(function (e) { return e.z === f.z; }); })).slice(0, 3 - eigen.length);
+    return [{ ok: true, z: ok.z, tr: ok.tr || '', na: inSprache(ok.na) }].concat(eigen.concat(andere).map(function (z) { return { ok: false, z: z.z, tr: z.tr || '', na: inSprache(z.na) }; }));
+  }
+
+  function zug() {
+    PHASE = 'zug'; speichern();
+    var zst = automat.zustand();
+    var index = zst.aufgabeIndex;
+    if (zst.ausgangOffen || zst.phase === 'ernte' || index >= AUFG.length) { schluss(); return; }
+    kopf(THEMA_NA, 2);
+    var spz = letzteSpikiu || { z: '' };
+    var k = O.karte(stage);
+    dichtBeobachten(k);
+    O.blase(k, { capy: CAPY, z: spz.z, lang: ZS, lt: spz.tr, tr: spz.na, trLabel: U.ueb, mini: { label: U.anhoeren, fn: function () { sprich(spz.z); } } });
+    O.task(k, mitPunkt(inSprache(AUFG[index])), U.aufgabeVon(index + 1, AUFG.length));
+    var big = O.big(k, U.selbst, function () { selbstSagen(); });
+    var vs = vorschlaege(index);
+    var vorbild = null, beantwortet = false;
+
+    /* Platz für Vorschläge ODER das eigene Feld — nie beides */
+    var g = null, selbstBox = null;
+    if (vs.length) {
+      g = O.raster(k, 'liste');
+      mischen(vs).forEach(function (x, n) {
+        var b = O.el('button', 'oh-tile', '<span class="oh-tz" lang="' + esc(ZS) + '">' + esc(x.z) + '</span>' + (x.tr ? '<span class="oh-tl">' + esc(x.tr) + '</span>' : ''));
+        b.type = 'button'; b.id = 'oh-t-' + n; if (x.ok) b.dataset.r = '1'; g.appendChild(b);
+        b.onclick = function () {
+          if (beantwortet) return;
+          sprich(x.z);
+          if (x.ok) {
+            vorbild = x; b.classList.add('ok'); O.klang(true);
+            fb.className = 'oh-fb'; fb.innerHTML = '<span>' + U.richtig(esc(x.z), esc(x.na)) + '</span>';
+            big.classList.add('oh-pop');
+          } else {
+            O.klang(false); b.classList.add('no'); b.disabled = true;
+            fb.className = 'oh-fb soft'; fb.innerHTML = esc(U.falsch(x.na || x.z));
+          }
         };
       });
-    var zeilen = zuege.map(function (z) { return z.gesagt; });
+    }
+    var fb = O.fb(k, '<span class="oh-leise">' + esc(vs.length ? U.hinweis : U.nurSelbst) + '</span>');
+    if (!vs.length) selbstSagen();
 
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.weiter, pri: true, aus: true, go: function () { naechster(index); } });
+
+    function selbstSagen() {
+      if (beantwortet) return;
+      if (selbstBox) { var f0 = selbstBox.querySelector('textarea'); try { f0.focus(); } catch (e) {} return; }
+      if (g) g.hidden = true;
+      big.hidden = true;
+      selbstBox = O.el('div', 'fz-selbst');
+      selbstBox.innerHTML = (vorbild ? '<div class="fz-vorbild"><div class="l">' + esc(U.vorbild) + '</div><div class="s" lang="' + esc(ZS) + '">' + esc(vorbild.z) + '</div>' + (vorbild.na ? '<div class="u">' + esc(vorbild.na) + '</div>' : '') + '</div>' : '')
+        + '<textarea class="fz-feld" id="fz-feld" rows="2" placeholder="' + esc(U.feldPh) + '" lang="' + esc(ZS) + '"></textarea>'
+        + '<div class="fz-reihe">'
+        + (vs.length ? '<button type="button" class="fz-link" id="fz-zurueck">' + esc(U.vorschlaege) + '</button>' : '<span></span>')
+        + '<span style="display:flex;gap:8px">' + (diktatDa() ? '<button type="button" class="fz-klein" id="fz-dikt">' + esc(U.diktieren) + '</button>' : '')
+        + '<button type="button" class="fz-klein pri" id="fz-senden" disabled>' + esc(U.senden) + '</button></span></div>';
+      k.insertBefore(selbstBox, fb);
+      fb.className = 'oh-fb'; fb.innerHTML = '';
+      var feld = selbstBox.querySelector('#fz-feld'), sb = selbstBox.querySelector('#fz-senden');
+      feld.addEventListener('input', function () { sb.disabled = !feld.value.trim(); });
+      feld.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); if (!sb.disabled) sb.click(); } });
+      var zb = selbstBox.querySelector('#fz-zurueck');
+      if (zb) zb.onclick = function () { selbstBox.remove(); selbstBox = null; g.hidden = false; big.hidden = false; O.fit(g); fb.className = 'oh-fb'; fb.innerHTML = vorbild ? '<span>' + U.richtig(esc(vorbild.z), esc(vorbild.na)) + '</span>' : '<span class="oh-leise">' + esc(U.hinweis) + '</span>'; };
+      var db = selbstBox.querySelector('#fz-dikt');
+      if (db) db.onclick = function () { diktat(feld, db, function () { sb.disabled = !feld.value.trim(); }); };
+      sb.onclick = function () {
+        var t = feld.value.trim(); if (!t) return;
+        var art = 'offen';
+        try { if (window.SpikiuSieb) art = window.SpikiuSieb.art(t, ZS, MU); } catch (e) {}
+        var z = automat.antworte(t, art === 'offen' ? 'offen' : 'rolle');
+        if (z.abgelehnt) { schluss(); return; }
+        if (art !== 'offen') {
+          /* Rückfrage: die Figur wiederholt ihre Zeile, die Aufgabe bleibt stehen (R13). */
+          automat.spikiuAntwortet(spz.z);
+          if (automat.zustand().phase === 'ernte') { schluss(); return; }
+          feld.value = ''; sb.disabled = true;
+          fb.className = 'oh-fb soft'; fb.innerHTML = esc(U.nochmalSp);
+          setTimeout(function () { sprich(spz.z); }, 300);
+          return;
+        }
+        beantwortet = true;
+        protokoll.push({ aufgabe: index, gesagt: t, erwartet: lernerZeilen[index] ? lernerZeilen[index].z : '', auftrag: inSprache(AUFG[index]), vorher: spz.z });
+        geerntet.gesagt.push(t);
+        speichern();
+        feld.disabled = true; sb.disabled = true; if (db) db.disabled = true; if (zb) zb.hidden = true;
+        fb.className = 'oh-fb'; fb.innerHTML = '<span>' + U.du(esc(t)) + '</span>';
+        O.klang(true);
+        var r = document.getElementById('oh-rechts'); if (r) r.disabled = false;
+      };
+      if (!vs.length) return;             // ohne Vorschläge: Feld steht, Tastatur erst auf Tippen
+      setTimeout(function () { try { feld.focus(); } catch (e) {} }, 60);
+    }
+    setTimeout(function () { sprich(spz.z); }, 380);
+  }
+  /* Nach der Antwort: Spikius nächste Skriptzeile — oder der Schluss. */
+  function naechster(index) {
+    var zst = automat.zustand();
+    var antwort = zielzeilen[index] || { z: '' };
+    if (zst.ausgangOffen || zst.zug >= ZUG_DECKEL) { schluss(antwort); return; }
+    automat.spikiuAntwortet(antwort.z);
+    geerntet.gehoert.push(antwort.z);
+    letzteSpikiu = antwort;
+    zug();
+  }
+
+  /* Diktieren: Spracherkennung des Geräts, wenn es sie gibt (0 Token). */
+  var REK_LANG = { es:'es-ES', de:'de-DE', en:'en-GB', el:'el-GR' };
+  function diktatDa() { return !!(window.SpeechRecognition || window.webkitSpeechRecognition); }
+  var rek = null;
+  function diktat(feld, knopf, dann) {
+    var R = window.SpeechRecognition || window.webkitSpeechRecognition; if (!R) return;
+    if (rek) { try { rek.stop(); } catch (e) {} return; }
+    stumm();
+    try {
+      rek = new R(); rek.lang = REK_LANG[ZS] || ZS; rek.interimResults = true; rek.maxAlternatives = 1;
+      var vorher = feld.value ? feld.value.replace(/\s*$/, ' ') : '';
+      knopf.classList.add('an'); knopf.textContent = U.hoertZu;
+      rek.onresult = function (ev) { var s = ''; for (var i = 0; i < ev.results.length; i++) s += ev.results[i][0].transcript; feld.value = vorher + s; dann(); };
+      rek.onend = rek.onerror = function () { rek = null; knopf.classList.remove('an'); knopf.textContent = U.diktieren; dann(); };
+      rek.start();
+    } catch (e) { rek = null; knopf.classList.remove('an'); knopf.textContent = U.diktieren; }
+  }
+
+  /* „Genug für heute": was er gesagt hat, geht nicht verloren — Rückblick, sonst nach Hause. */
+  function genug() {
+    if (protokoll.length) { try { automat.abbrechen(); } catch (e) {} schluss(null, true); return; }
+    raeumen(); window.location.href = 'haus.html';
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     4 · DER RUNDE ABSCHLUSS + DEINE SÄTZE (mit Stift)
+     Spikius letzte Antwort und die Abrundung in EINER Blase (31.08.).
+     Darunter seine eigenen Sätze: antippen = ändern (30.08.). Die Szene
+     spult nicht zurück — Spikius Zeilen kämen ohnehin gleich.
+     ══════════════════════════════════════════════════════════ */
+  var SCHLUSS = null;
+  function schluss(letzte, abgebrochen) {
+    if (!SCHLUSS) {
+      var teile = [], lts = [], nas = [];
+      if (letzte && letzte.z) { teile.push(letzte.z); if (letzte.tr) lts.push(letzte.tr); if (letzte.na) nas.push(letzte.na); }
+      if (!abrundungIstZiel || abgebrochen) {
+        var a = LP.abrundungVon(STUFE, THEMA);
+        if (a && a.z && teile.indexOf(a.z) < 0) { teile.push(a.z); if (a.tr) lts.push(a.tr); if (a.na) nas.push(inSprache(a.na)); }
+      }
+      SCHLUSS = { z: teile.join(' '), tr: lts.join(' '), na: nas.join(' ') };
+      try { if (automat.zustand().phase !== 'ernte') { automat.spikiuAntwortet(SCHLUSS.z); } } catch (e) {}
+      geerntet.gehoert.push(SCHLUSS.z);
+    }
+    PHASE = 'schluss'; speichern();
+    kopf(THEMA_NA, 3);
+    var k = O.karte(stage);
+    if (SCHLUSS.z) O.blase(k, { capy: CAPY, z: SCHLUSS.z, lang: ZS, lt: SCHLUSS.tr, tr: SCHLUSS.na, trLabel: U.ueb, mini: { label: U.anhoeren, fn: function () { sprich(SCHLUSS.z); } } });
+    O.task(k, U.deineSaetze, U.deineSaetzeKlein);
+    var liste = O.el('div', 'fz-liste'); k.appendChild(liste);
+    protokoll.forEach(function (p, i) {
+      var b = O.el('button', 'fz-zeile', '<span class="t"><span class="w" lang="' + esc(ZS) + '">' + esc(p.gesagt) + '</span><span class="u">' + esc(mitPunkt(p.auftrag)) + '</span></span><span class="stift" aria-hidden="true">✎</span>');
+      b.type = 'button'; b.id = 'satz-' + i; b.onclick = function () { aendern(i); }; liste.appendChild(b);
+    });
+    if (!protokoll.length) liste.innerHTML = '<p class="fz-leer">' + esc(U.nichtsGeerntet) + '</p>';
+    O.fb(k, '');
+    O.fuss(fussEl, null, { t: U.rueckmeldung, pri: true, go: function () { try { automat.abbrechen(); } catch (e) {} rueckmeldung(); } });
+    if (SCHLUSS.z) setTimeout(function () { sprich(SCHLUSS.z); }, 380);
+  }
+  function aendern(i) {
+    kopf(THEMA_NA, 3);
+    var p = protokoll[i];
+    var k = O.karte(stage);
+    O.task(k, mitPunkt(p.auftrag));
+    var box = O.el('div', 'fz-selbst');
+    box.innerHTML = '<textarea class="fz-feld" id="fz-feld" lang="' + esc(ZS) + '"></textarea>';
+    k.appendChild(box); O.fb(k, '');
+    var f = box.querySelector('textarea'); f.value = p.gesagt;
+    O.fuss(fussEl, { t: U.zurueck, go: function () { schluss(); } }, { t: U.uebernehmen, pri: true, go: function () {
+      var alt = p.gesagt, neu = f.value.trim() || alt;
+      var j = geerntet.gesagt.indexOf(alt); if (j > -1) geerntet.gesagt[j] = neu;
+      p.gesagt = neu; if (neu !== alt) p.geaendert = true;
+      speichern(); schluss();
+    } });
+    setTimeout(function () { try { f.focus(); } catch (e) {} }, 60);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     5 · DIE RÜCKMELDUNG — der EINZIGE Modellaufruf einer Szene
+     Nur seine Zeilen (die Musterzeile geht als „üblich" mit, nicht als
+     Lösung, 31.08.). Nennt NUR, wo es natürlicher geht. Fällt der Aufruf
+     aus, geht es ohne ihn weiter — die Ernte bleibt ihm.
+     ══════════════════════════════════════════════════════════ */
+  async function rueckmeldung() {
+    var zuege = protokoll.filter(function (p) { return p.gesagt && p.gesagt.trim(); })
+      .map(function (p) { return { gesagt: p.gesagt, aufgabe: p.auftrag || '', vorher: p.vorher || '', ueblich: p.erwartet || '' }; });
+    var zeilen = zuege.map(function (z) { return z.gesagt; });
     if (!zuege.length) { ernte(); return; }
 
-    var wartet = karte();
-    wartet.innerHTML = '<div class="punkte">• • •</div>';
+    kopf(THEMA_NA, 3);
+    var k = O.karte(stage);
+    O.task(k, U.warte);
+    k.appendChild(O.el('div', 'fz-punkte', '• • •'));
+    O.fuss(fussEl, null, null);
 
     var d = null;
     try {
       var r = await fetch('/api/rueckmeldung', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          zielsprache:   ZS,
-          muttersprache: MU,
-          /* Der Stand bremst die Korrektur: von einem Anfänger wird keine
-             gehobenere Fassung verlangt, wenn seine einfache richtig ist. */
-          koennen:       PROFIL.koennen || 'anfang',
-          /* BEIDE Rollen, nicht nur Spikius. Ohne „du bist der Kunde" kann
-             niemand wissen, ob „¿Teno manzanas?" zu „¿Tengo…?" oder zu
-             „¿Tiene…?" gehört — der Satz ist grammatisch in beide Richtungen
-             reparierbar, nur eine passt zur Lage (Leo, 31.08.). Dazu die
-             Rollenfakten, die auf der Bühne stehen. */
+          zielsprache: ZS, muttersprache: MU, koennen: PROFIL.koennen || 'anfang',
+          /* BEIDE Rollen und die Rollenfakten — sonst ist „¿Teno manzanas?" in zwei Richtungen reparierbar (31.08.). */
           szene: [
-            inSprache((LP.thema(THEMA) || {}).na, MU) + ' — ' + inSprache(ROLLE && ROLLE.ort, MU),
-            'Spikiu spielt: ' + inSprache(ROLLE && ROLLE.spikiu, MU),
-            'Der Lerner ist: ' + inSprache(ROLLE && ROLLE.lerner, MU),
+            THEMA_NA + ' — ' + inSprache(ROLLE && ROLLE.ort),
+            'Spikiu spielt: ' + inSprache(ROLLE && ROLLE.spikiu),
+            'Der Lerner ist: ' + inSprache(ROLLE && ROLLE.lerner),
             LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : ''
           ].filter(Boolean).join(' · '),
-          zuege:         zuege
+          zuege: zuege
         })
       });
       d = await r.json();
       if (!r.ok) { console.error('rueckmeldung ' + r.status, d); d = null; }
-      /* Bleibt die Liste leer, obwohl etwas falsch war, steht hier, was Haiku
-         wirklich zurückgab. Ohne das rätselt man (31.08.). */
-      else if (d && (!d.korrekturen || !d.korrekturen.length)) {
-        console.log('[Rückmeldung] keine Korrektur. Antwort:', d.roh);
-      }
-    } catch (e) {
-      console.error('rueckmeldung', e);
-      d = null;
-    }
+      else if (d && (!d.korrekturen || !d.korrekturen.length)) console.log('[Rückmeldung] keine Korrektur. Antwort:', d.roh);
+    } catch (e) { console.error('rueckmeldung', e); d = null; }
 
-    if (wartet.parentNode) wartet.parentNode.removeChild(wartet);
-    if (reelIndex >= slides().length) reelIndex = slides().length - 1;
-
-    if (!d) { ernte(); return; }      // Leitung tot → die Ernte bleibt ihm
-
-    var w = d.worte || { titel: 'Deine Sätze, berichtigt', sauber: 'Sehr gut!' };
+    if (!d) { ernte(); return; }
+    var w = d.worte || { titel: U.korrTitel, sauber: U.sauber };
     var liste = d.korrekturen || [];
+    /* Nichts zu berichtigen: KEINE eigene Karte — der Gruß steht über der Ernte (31.08.). */
+    if (!liste.length) { ernte(w.sauber || U.sauber); return; }
 
-    /* Nichts zu berichtigen: KEINE eigene Karte. Der Gruß wandert als
-       Überschrift auf die Wortliste. Eine Karte, auf der nur „Alles saß"
-       steht, ist keine Rückmeldung (Leo, 31.08.). */
-    if (!liste.length) { ernte(w.sauber); return; }
-
-    var k = karte();
-    k.style.justifyContent = 'flex-start';
-
-    var h = '<div class="r-titel">' + esc(w.titel) + '</div>';
-    liste.forEach(function (kor) {
+    k = O.karte(stage);
+    O.task(k, w.titel || U.korrTitel);
+    var L = O.el('div', 'fz-liste'); k.appendChild(L);
+    liste.forEach(function (kor, i) {
       var meins = zeilen[kor.nr - 1] || '';
-      h += '<div class="r-block">'
-        +    (meins ? '<div class="r-falsch">' + esc(meins) + '</div>' : '')
-        +    '<div class="r-richtig">'
-        +      '<button class="e-a" data-sag="' + esc(kor.richtig) + '">🔊</button>'
-        +      '<span class="t">' + esc(kor.richtig) + '</span>'
-        +    '</div>'
-        +  '</div>';
+      var b = O.el('button', 'fz-zeile', '<span class="a" aria-hidden="true">🔊</span><span class="t">' + (meins ? '<span class="x">' + esc(meins) + '</span>' : '') + '<span class="w" lang="' + esc(ZS) + '">' + esc(kor.richtig) + '</span></span>');
+      b.type = 'button'; b.id = 'kor-' + i; b.onclick = function () { sprich(kor.richtig); }; L.appendChild(b);
     });
-    k.innerHTML = h;
-
-    Array.prototype.forEach.call(k.querySelectorAll('[data-sag]'), function (btn) {
-      btn.onclick = function () { sprich(btn.getAttribute('data-sag')); };
-    });
-
-    var b = document.createElement('button');
-    b.className = 'knopf';
-    b.style.marginTop = '1.3rem';
-    b.textContent = T('weiter');
-    b.onclick = function () { b.disabled = true; ernte(); };
-    k.appendChild(b);
+    O.fb(k, '');
+    O.fuss(fussEl, null, { t: U.weiter, pri: true, go: function () { ernte(); } });
   }
 
   /* ══════════════════════════════════════════════════════════
      6 · DIE ERNTE — nur was vorkam
      ══════════════════════════════════════════════════════════ */
   function ernte(gruss) {
+    PHASE = 'ernte'; raeumen();
+    kopf(THEMA_NA, 4);
     var alles = ' ' + flach(geerntet.gesagt.join(' ') + ' ' + geerntet.gehoert.join(' ')) + ' ';
     var lager = LP.ernte(STUFE, THEMA, MU) || [];
-
-    var da = lager.filter(function (x) {
-      var n = flach(x.z);
-      if (!n) return false;
+    var drin = lager.filter(function (x) {
+      var n = flach(x.z); if (!n) return false;
       if (alles.indexOf(' ' + n + ' ') > -1) return true;
-      var w = n.split(' ').filter(function (s) { return s.length > 3; });
-      if (!w.length) return false;
-      return w.every(function (s) { return alles.indexOf(' ' + s) > -1; });
+      var ws = n.split(' ').filter(function (s) { return s.length > 3; });
+      return ws.length > 0 && ws.every(function (s) { return alles.indexOf(' ' + s) > -1; });
     });
-
-    var thema = LP.thema(THEMA);
-    var k = karte();
-    /* Die Ernte ist lang und wird gelesen, nicht betrachtet: oben anfangen. */
-    k.style.justifyContent = 'flex-start';
-    var h = (gruss ? '<div class="r-sauber">' + esc(gruss) + '</div>' : '')
-          + '<div class="bue-titel" style="font-size:1.35rem;margin-bottom:.2rem">' + esc(T('geuebt')) + '</div>'
-          + '<div class="bue-ort">' + esc(inSprache(thema && thema.na, MU)) + '</div>';
-
-    /* Wendungen untereinander (Satz, dann Übersetzung), Wörter nebeneinander. */
-    function gruppe(ueber, liste, alsWendung) {
-      if (!liste.length) return '';
-      var s = '<div class="e-kopf">' + ueber + '</div>';
-      liste.forEach(function (x) {
-        if (alsWendung) {
-          s += '<div class="e-z wendung">'
-            +    '<div class="kopf">'
-            +      '<button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
-            +      '<span class="e-w">' + esc(x.z) + '</span>'
-            +    '</div>'
-            +    '<span class="e-t">' + esc(x.na) + '</span>'
-            +  '</div>';
-        } else {
-          s += '<div class="e-z"><button class="e-a" data-sag="' + esc(x.z) + '">🔊</button>'
-            +  '<span class="e-w">' + esc(x.z) + '</span>'
-            +  '<span class="e-t">' + esc(x.na) + '</span></div>';
-        }
+    var k = O.karte(stage);
+    O.task(k, (gruss ? gruss + ' ' : '') + U.geuebt, THEMA_NA);
+    var L = O.el('div', 'fz-liste'); k.appendChild(L);
+    /* Nicht „Das kannst du sagen": auch Spikius Zeilen stehen hier — die muss man VERSTEHEN (31.08.). */
+    function gruppe(ueber, eintraege) {
+      if (!eintraege.length) return;
+      L.appendChild(O.el('div', 'fz-kopf', esc(ueber)));
+      eintraege.forEach(function (x) {
+        var b = O.el('button', 'fz-zeile', '<span class="a" aria-hidden="true">🔊</span><span class="t"><span class="w" lang="' + esc(ZS) + '">' + esc(x.z) + '</span><span class="u">' + esc(x.na) + '</span></span>');
+        b.type = 'button'; b.onclick = function () { sprich(x.z); }; L.appendChild(b);
       });
-      return s;
     }
-    /* Nicht „Das kannst du sagen": in der Liste stehen auch die Zeilen des
-       Kellners, und die muss man VERSTEHEN, nicht sprechen (Leo, 31.08.). */
-    h += gruppe(esc(T('wendungen')), da.filter(function (x) { return x.art === 'wendung'; }), true);
-    h += gruppe(esc(T('woerter')), da.filter(function (x) { return x.art === 'wort'; }), false);
-    if (!da.length) {
-      h += '<div class="e-kopf">' + esc(T('nichtsGeerntet')) + '</div>'
-        +  '<div class="bue-ort" style="margin:0">' + esc(T('nichtsGeerntetText')) + '</div>';
-    }
-    k.innerHTML = h;
-
-    Array.prototype.forEach.call(k.querySelectorAll('[data-sag]'), function (b) {
-      b.onclick = function () { sprich(b.getAttribute('data-sag')); };
-    });
-
-    var b = document.createElement('button');
-    b.className = 'knopf';
-    b.textContent = T('nachHause');
-    b.onclick = function () { raeumen(); location.href = 'haus.html'; };
-    k.appendChild(b);
-
-    raeumen();
-  }
-
-  /* ── Sitzung ──────────────────────────────────────────────── */
-  function speichern() {
-    try {
-      if (!window.spikiuSitzung || !automat) return;
-      var z = automat.zustand();
-      if (z.vorbei || z.phase === 'ernte') return;
-      window.spikiuSitzung.speichere('szene', {
-        stufe: STUFE, thema: THEMA, geerntet: geerntet, protokoll: protokoll
-      });
-    } catch (e) {}
-  }
-  function raeumen() {
-    try { if (window.spikiuSitzung) window.spikiuSitzung.raeume('szene'); } catch (e) {}
-  }
-
-  /* ── Themenwahl ohne Parameter ────────────────────────────── */
-  /* Beide Stufen anbieten. Die eigene ist zuerst und trägt einen Hinweis —
-     aber niemand ist eingesperrt: wer weiter will, tippt einfach unten. */
-  function waehler() {
-    titel.firstChild.nodeValue = T('szene') + ' ';
-    unter.textContent = T('waehleThema');
-    var k = karte();
-    k.style.justifyContent = 'flex-start';
-
-    // Alle Stufen der Daten (seit 15.10.2026 auch b1 = Krone), die eigene zuerst.
-    var alle = (LP.stufen || ['a1', 'a2']).slice();
-    var reihenfolge = [STUFE].concat(alle.filter(function (s) { return s !== STUFE; }))
-      .filter(function (s) { return alle.indexOf(s) !== -1; });
-    var BAUM = { de:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'}, es:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
-                 en:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'}, el:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'} };
-    var h = '<div class="bue-titel" style="font-size:1.3rem">' + esc(T('woUeben')) + '</div>';
-
-    reihenfolge.forEach(function (st, i) {
-      h += '<div class="e-kopf">' + esc((BAUM[MU] || BAUM.en)[st] || st)
-        +  (i === 0 ? esc(T('deineStufe')) : '') + '</div><div class="wahl">';
-      LP.themen.forEach(function (t) {
-        var da = LP.gefuellt(st, t.id);
-        h += '<button data-stufe="' + esc(st) + '" data-thema="' + esc(t.id) + '"'
-          +  (da ? '' : ' class="leer" disabled') + '>'
-          +  esc(t.em) + ' ' + esc(inSprache(t.na, MU)) + '</button>';
-      });
-      h += '</div>';
-    });
-    k.innerHTML = h;
-
-    Array.prototype.forEach.call(k.querySelectorAll('[data-thema]'), function (b) {
-      b.onclick = function () {
-        location.href = 'szene.html?stufe=' + encodeURIComponent(b.getAttribute('data-stufe'))
-                      + '&thema=' + encodeURIComponent(b.getAttribute('data-thema'));
-      };
-    });
-  }
-  function hinweisKarte(t) {
-    karte().innerHTML = '<div class="zug" style="font-family:\'DM Sans\',sans-serif;font-size:1rem">'
-                      + esc(t) + '</div>';
+    gruppe(U.wendungen, drin.filter(function (x) { return x.art === 'wendung'; }));
+    gruppe(U.woerter, drin.filter(function (x) { return x.art === 'wort'; }));
+    if (!drin.length) L.innerHTML = '<p class="fz-leer">' + esc(U.nichtsGeerntet) + '<br>' + esc(U.nichtsGeerntetText) + '</p>';
+    O.fb(k, '');
+    try { automat.nachHause(); } catch (e) {}
+    O.fuss(fussEl, { t: U.nochmal, go: function () { SCHLUSS = null; start(); } }, { t: U.nachHause, pri: true, go: function () { raeumen(); window.location.href = 'haus.html'; } });
   }
 
   /* ══════════════════════════════════════════════════════════
-     START
+     WIEDERKOMMEN — die Sitzung nachspielen (0 Token: alles aus dem Skript)
      ══════════════════════════════════════════════════════════ */
-  /* Kopfzeile SOFORT in der Muttersprache setzen. Stand sie fest im HTML,
-     las ein Mexikaner „Szene" über „Elige un tema" (Leo, 01.09.). */
-  titel.insertBefore(document.createTextNode(T('szene') + ' '), unter);
-  unter.textContent = T('laedt');
-
-  var zurueckBtn = document.getElementById('zurueck');
-  zurueckBtn.setAttribute('aria-label', T('zurueck'));
-  zurueckBtn.onclick = function () { location.href = 'haus.html'; };
-
-  if (!LP || !window.SpikiuSzene) {
-    unter.textContent = T('fehler');
-    hinweisKarte(T('keineDaten'));
-    return;
-  }
-  if (LP.zielsprache !== ZS) {
-    console.warn('[Szene] Profil will "' + ZS + '", geladen ist "' + LP.zielsprache + '".');
-    ZS = LP.zielsprache;
-  }
-  if (!THEMA || !LP.gefuellt(STUFE, THEMA)) { waehler(); return; }
-
-  ST = LP.station(STUFE, THEMA);
-  ROLLE = LP.rolle(THEMA, STUFE);
-  var aufgaben = LP.aufgabenVon(STUFE, THEMA);
-  if (!ST || !aufgaben.length) {
-    unter.textContent = T('nochLeer');
-    hinweisKarte(T('keineAufgaben'));
-    return;
-  }
-
-  /* Spikius Zeilen der Reihe nach. Beginnt der Dialog mit ihm, ist seine erste
-     Zeile bereits die Eröffnung und zählt nicht mit. Ist die Liste erschöpft,
-     übernimmt die Abrundung — dann antwortet Spikiu auf die letzte Aufgabe UND
-     schließt in einem Zug, ohne dass sich etwas doppelt. */
-  (function () {
-    var zeilen = (ST.dialog && ST.dialog.zeilen) || [];
-    var sp = zeilen.filter(function (z) { return z.wer === 'spikiu'; });
-    lernerZeilen = zeilen.filter(function (z) { return z.wer === 'lerner'; });
-    var versatz = (zeilen[0] && zeilen[0].wer === 'spikiu') ? 1 : 0;
-    var abr = LP.abrundungVon(STUFE, THEMA);
-    for (var i = 0; i < aufgaben.length; i++) {
-      var z = sp[i + versatz];
-      if (z) zielzeilen.push(z.z);
-      else {
-        zielzeilen.push(abr ? abr.z : '');
-        if (i === aufgaben.length - 1) abrundungIstZiel = true;
+  function wiederherstellen(sv) {
+    STUFE = sv.stufe || STUFE; THEMA = sv.thema;
+    if (!LP.gefuellt(STUFE, THEMA) || !vorbereiten()) { raeumen(); waehler(); return; }
+    lexikonDann(function () {
+      var alt = sv.protokoll || [];
+      if (sv.phase === 'buehne' || (sv.phase === 'tisch' && !alt.length)) { buehne(); return; }
+      automat.los();
+      letzteSpikiu = eroeffnung();
+      automat.spikiuAntwortet(letzteSpikiu.z); geerntet.gehoert.push(letzteSpikiu.z);
+      alt.forEach(function (p) {
+        automat.antworte(p.gesagt, 'offen');
+        protokoll.push(p); geerntet.gesagt.push(p.gesagt);
+        var a = zielzeilen[p.aufgabe] || { z: '' };
+        var zs = automat.zustand();
+        if (!(zs.ausgangOffen || zs.zug >= ZUG_DECKEL)) { automat.spikiuAntwortet(a.z); geerntet.gehoert.push(a.z); letzteSpikiu = a; }
+        else letzteSpikiu = a;
+      });
+      var z = automat.zustand();
+      if (sv.phase === 'schluss' || z.ausgangOffen || z.zug >= ZUG_DECKEL) {
+        var letzte = alt.length ? zielzeilen[alt[alt.length - 1].aufgabe] : null;
+        schluss(z.ausgangOffen ? letzte : null, !z.ausgangOffen);
+        return;
       }
+      zug();
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     EINTRITT
+     ══════════════════════════════════════════════════════════ */
+  if (!LP || !window.SpikiuSzene) { hinweis(U.keineDaten); return; }
+  if (LP.zielsprache && LP.zielsprache !== ZS) { console.warn('[Szene] Profil will "' + ZS + '", geladen ist "' + LP.zielsprache + '".'); ZS = LP.zielsprache; }
+  (function eintritt() {
+    var sv = null;
+    try { sv = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('szene') : null; } catch (e) { sv = null; }
+    var passt = sv && sv.thema && sv.phase && (!THEMA || sv.thema === THEMA) && LP.gefuellt(sv.stufe || STUFE, sv.thema);
+    if (passt && window.spikiuSitzung.frageWiederkommen) {
+      window.spikiuSitzung.frageWiederkommen({ raum: 'szene', ts: sv.ts, wo: sv.themaNa || '',
+        beimWeiter: function () { wiederherstellen(sv); },
+        beimNeu: function () { raeumen(); if (THEMA) start(); else waehler(); } });
+      return;
     }
+    if (THEMA) start(); else waehler();
   })();
-
-  var thema = LP.thema(THEMA);
-  titel.firstChild.nodeValue = inSprache(thema && thema.na, MU) + ' ';
-  // Reifegrad nur als Baum, nie als Schulstufe (Seele; 15.10.2026 mit b1).
-  var BAUM_KOPF = { de:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'}, es:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
-                    en:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'}, el:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'} };
-  unter.textContent = ((BAUM_KOPF[MU] || BAUM_KOPF.en)[STUFE] || '') + ' · ' + inSprache(ROLLE && ROLLE.ort, MU);
-
-  automat = window.SpikiuSzene.erzeuge({ aufgaben: aufgaben, maxZuege: ZUG_DECKEL });
-  buehne();
-
 })();
-</script>
-<!-- Audio: audio.js ist ein ES-Modul am Root und lässt sich NICHT als klassisches
-     <script src> laden. Es wird hier importiert und via window an das Haupt-Script
-     durchgereicht — dasselbe Muster wie in chat.html. Der Browser-Fallback steckt
-     bereits in audio.js. -->
-<script type="module">
-  import { speak, warm } from '/audio.js';
-  window.spkSpeak = speak;
-  window.spkWarm  = warm;
 </script>
 </body>
 </html>
