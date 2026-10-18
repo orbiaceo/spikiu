@@ -1,0 +1,380 @@
+<meta charset="utf-8">
+<title>Gespräch im Ohr-Design</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@500;600;700;800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: wie „Feines Ohr" — eine Spalte über die ganze Höhe: Kopf · Aufgabe · großer gelber Knopf ·
+   2×2-Kacheln (füllen den Rest) · Rückmeldezeile · zwei Knöpfe unten. Ein Look (hell), wie die App. */
+:root{
+  --bg:#eef7f1; --ink:#15163a; --card:#ffffff; --mid:#5f7068; --faint:#dfe6e0;
+  --acc:#1f93b0; --yel:#ffd24a; --ok:#c7e89a; --okInk:#2f6b3a; --warn:#c67a1e; --warn2:#fbf0e0; --sky:#d3eef6;
+  --f-display:'Archivo Black',Impact,sans-serif; --f-ui:'DM Sans',system-ui,sans-serif;
+  --f-z:'Lora',Georgia,serif; --f-mono:'DM Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui);-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+.app{height:100%;max-width:30rem;margin:0 auto;display:flex;flex-direction:column}
+.proto{flex:0 0 auto;display:flex;gap:6px;justify-content:center;padding:8px max(16px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px));font:700 .72rem var(--f-ui)}
+.proto span{align-self:center;color:var(--mid);font:500 .62rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;margin-right:2px}
+.proto button{border:2px solid var(--ink);background:var(--card);border-radius:999px;padding:.28rem .7rem;cursor:pointer}
+.proto button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+header{flex:0 0 auto;display:grid;grid-template-columns:48px 1fr 48px;align-items:center;padding:6px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));border-bottom:2.5px solid var(--ink);background:rgba(255,255,255,.55)}
+.back{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);background:var(--card);box-shadow:2px 3px 0 var(--ink);font-size:1.2rem;cursor:pointer;display:grid;place-items:center}
+.kopf{text-align:center}
+.eb{font:500 .7rem/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+.ttl{font-family:var(--f-display);font-size:1.45rem;line-height:1.15;margin-top:4px}
+
+.rail{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:8px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.rail button{border:0;background:none;padding:0;cursor:pointer;display:flex;flex-direction:column;gap:4px;align-items:stretch}
+.rail i{display:block;height:5px;border-radius:9px;background:var(--faint)}
+.rail b{font:700 .6rem var(--f-ui);letter-spacing:.06em;text-transform:uppercase;color:#9aa49f;text-align:center}
+.rail .done i{background:var(--acc)} .rail .on i{background:var(--acc)} .rail .on b{color:var(--acc)} .rail .done b{color:var(--ink)}
+
+main{flex:1 1 auto;min-height:0;padding:12px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));display:flex}
+.karte{flex:1;min-height:0;background:var(--card);border:2.5px solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:16px 14px 12px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.task{font:500 1.12rem/1.35 var(--f-z);margin:0;text-wrap:balance;max-width:24rem}
+.task small{display:block;font:600 .82rem/1.3 var(--f-ui);color:var(--mid);margin-top:4px}
+.spk-zeile{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%}
+.spk-zeile .cap{flex:0 0 42px;height:42px}
+.spk-zeile .cap svg{width:100%;height:100%}
+.blase{flex:1;min-width:0;background:var(--sky);border:2px solid var(--ink);border-radius:4px 16px 16px 16px;padding:8px 11px}
+.blase .z{font:600 1.12rem/1.3 var(--f-z)}
+.blase .uebs{font:600 .82rem/1.3 var(--f-ui);color:var(--mid);margin-top:3px}
+.blase .uebs button{border:0;background:none;padding:0;font:700 .78rem var(--f-ui);color:var(--acc);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.big{flex:0 0 auto;background:var(--yel);border:2.5px solid var(--ink);border-radius:100px;box-shadow:3px 4px 0 var(--ink);padding:.6rem 1.8rem;font:800 1.2rem var(--f-ui);cursor:pointer}
+.big:active,.tile:active,.btn:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.punkte{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:-4px}
+.punkte i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);background:#fff}
+.punkte i.h{background:linear-gradient(90deg,var(--okInk) 50%,#fff 50%)} .punkte i.v{background:var(--okInk)}
+
+.grid{flex:1 1 auto;min-height:0;width:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px}
+.grid.eins{grid-template-columns:1fr;grid-template-rows:repeat(2,1fr)}
+.tile{min-height:0;min-width:0;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;overflow:hidden}
+.tile img{max-width:70%;max-height:72%;width:auto;height:auto;flex:0 1 auto;min-height:0}
+.tile .tz{font:600 clamp(1rem,4.6vw,1.3rem)/1.25 var(--f-z);text-wrap:balance}
+.tile .tn{font:800 clamp(1rem,4.4vw,1.25rem)/1.2 var(--f-ui);text-wrap:balance}
+.tile .ts{font:600 .82rem/1.25 var(--f-ui);color:var(--mid)}
+.tile .te{font-size:clamp(2rem,10vw,3rem);line-height:1}
+.tile.ok{background:var(--ok)}
+.tile.no{background:var(--warn2);border-color:var(--warn);opacity:.62;box-shadow:none}
+.tile.gew{background:#fff6d6}
+.tile[disabled]{cursor:default}
+.fb{flex:0 0 auto;min-height:2.6em;display:flex;align-items:center;justify-content:center;font:700 1.02rem/1.3 var(--f-ui);color:var(--okInk);text-wrap:balance}
+.fb em{font:600 1.08rem var(--f-z);font-style:normal}
+.fb.soft{color:var(--warn)}
+.fb .lt{font:500 .78rem var(--f-mono);color:var(--mid);margin-left:6px}
+
+footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:12px;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.btn{border:2.5px solid var(--ink);border-radius:100px;box-shadow:3px 4px 0 var(--ink);padding:.7rem 1.25rem;font:800 1rem var(--f-ui);background:var(--card);cursor:pointer;white-space:nowrap}
+.btn.pri{background:var(--acc);color:#fff}
+.btn[disabled]{opacity:.38;box-shadow:none;cursor:default}
+.btn.mic{background:var(--yel)}
+.blase{position:relative}
+.mini{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:var(--acc);color:#fff;box-shadow:2px 2px 0 var(--ink);cursor:pointer;display:grid;place-items:center;font-size:.95rem;align-self:center}
+.big.mic{display:flex;align-items:center;gap:.45rem}
+@media (max-height:720px){
+ .karte{gap:9px;padding:12px 12px 8px}
+ .tile .ts{display:none}
+ .tile .te{font-size:2rem}
+ .tile img{max-height:62%}
+ .task{font-size:1.02rem}
+ .task small{font-size:.76rem}
+ .big{padding:.5rem 1.5rem;font-size:1.08rem}
+ .fb{min-height:2.3em;font-size:.95rem}
+ .ttl{font-size:1.25rem}
+ .blase .z{font-size:1.02rem}
+}
+@media (prefers-reduced-motion:no-preference){.pop{animation:pop .3s ease-out both}@keyframes pop{0%{transform:scale(.94)}60%{transform:scale(1.03)}100%{transform:none}}}
+</style>
+
+<div class="app">
+  <div class="proto" role="group" aria-label="Prototyp"><span>Prototyp</span>
+    <button id="m-gef" aria-pressed="true">Geführtes Gespräch</button>
+    <button id="m-frei" aria-pressed="false">Freies Gespräch</button>
+  </div>
+  <header>
+    <button class="back" id="back" aria-label="zurück">‹</button>
+    <div class="kopf"><div class="eb" id="eb">Geführtes Gespräch</div><div class="ttl" id="ttl">Thema</div></div>
+    <span></span>
+  </header>
+  <nav class="rail" id="rail" aria-label="Schritte"></nav>
+  <main><section class="karte" id="karte" aria-live="polite"></section></main>
+  <footer id="fuss"></footer>
+</div>
+
+<script>
+/* ── Inhalt: Station „Im Café", Griechisch, Samen (lernpfad-daten-el.js a1.cafe + haeppchen-db.js) ── */
+var CAPY='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round"/></svg>';
+
+var WOERTER=[
+ {z:'ο καφές',lt:'o kafés',de:'der Kaffee',bild:'bilder/om-2615.svg'},
+ {z:'ο φραπές',lt:'o frapés',de:'der Frappé'},
+ {z:'ο ελληνικός καφές',lt:'o elinikós kafés',de:'der griechische Mokka'},
+ {z:'σκέτο',lt:'skéto',de:'ohne Zucker'},
+ {z:'μέτριο',lt:'métrio',de:'mittelsüß'},
+ {z:'γλυκό',lt:'glikó',de:'süß'},
+ {z:'το γάλα',lt:'to gála',de:'die Milch',bild:'bilder/om-1F95B.svg'},
+ {z:'το νερό',lt:'to neró',de:'das Wasser',bild:'bilder/sp-wasser.svg'},
+ {z:'για εδώ',lt:'ya edó',de:'zum Hiertrinken'},
+ {z:'πακέτο',lt:'pakéto',de:'zum Mitnehmen'},
+ {z:'παρακαλώ',lt:'parakaló',de:'bitte'},
+ {z:'ευχαριστώ',lt:'efcharistó',de:'danke'}
+];
+var HOEREN=[
+ {z:'Έναν καφέ με γάλα.',de:'Einen Kaffee mit Milch.',falsch:['Έναν καφέ χωρίς γάλα.','Ένα τσάι με γάλα.','Ένα νερό, παρακαλώ.']},
+ {z:'Για εδώ ή πακέτο;',de:'Zum Hiertrinken oder zum Mitnehmen?',falsch:['Σκέτο ή γλυκό;','Τι θα πάρετε;','Πόσο κάνει;']},
+ {z:'Σκέτο, μέτριο ή γλυκό;',de:'Ohne Zucker, mittelsüß oder süß?',falsch:['Για εδώ ή πακέτο;','Μέτριο, με γάλα.','Καλημέρα!']},
+ {z:'Πόσο κάνει;',de:'Was kostet das?',falsch:['Πού είναι;','Τι θα πάρετε;','Για εδώ.']}
+];
+var ROLLE=[
+ {sp:'Καλημέρα! Τι θα πάρετε;',spDe:'Guten Morgen! Was darf’s sein?',z:'Έναν φραπέ, παρακαλώ.',de:'Einen Frappé, bitte.',
+  falsch:[['Σκέτο ή γλυκό;','Ohne Zucker oder süß?'],['Για εδώ. Πόσο κάνει;','Zum Hiertrinken. Was kostet das?'],['Ευχαριστώ, γεια σας!','Danke, auf Wiedersehen!']]},
+ {sp:'Σκέτο, μέτριο ή γλυκό;',spDe:'Ohne Zucker, mittelsüß oder süß?',z:'Μέτριο, με γάλα.',de:'Mittelsüß, mit Milch.',
+  falsch:[['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Πόσο κάνει;','Was kostet das?'],['Καλημέρα!','Guten Morgen!']]},
+ {sp:'Για εδώ ή πακέτο;',spDe:'Zum Hiertrinken oder zum Mitnehmen?',z:'Για εδώ. Πόσο κάνει;',de:'Zum Hiertrinken. Was kostet das?',
+  falsch:[['Μέτριο, με γάλα.','Mittelsüß, mit Milch.'],['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Καλημέρα!','Guten Morgen!']]},
+ {sp:'Δυόμισι ευρώ. Και το νεράκι σας — καλή σας μέρα!',spDe:'Zweieinhalb Euro. Und Ihr Wasser dazu — einen schönen Tag!',z:'Ευχαριστώ! Καλή σας μέρα!',de:'Danke! Ihnen auch einen schönen Tag!',
+  falsch:[['Σκέτο, μέτριο ή γλυκό;','Ohne Zucker, mittelsüß oder süß?'],['Έναν φραπέ, παρακαλώ.','Einen Frappé, bitte.'],['Για εδώ ή πακέτο;','Zum Hiertrinken oder zum Mitnehmen?']]}
+];
+var LEKTION={regel:'Bestellen frisst das -ς.',regelSub:'ο καφές (der Kaffee) → έναν καφέ, παρακαλώ — wie „der Kaffee → einen Kaffee".',
+ items:[
+  {hoer:'Έναν καφέ, παρακαλώ.',z:'Έναν καφέ',falsch:['Έναν καφές','Ο καφές','Ένας καφέ'],de:'Einen Kaffee, bitte.'},
+  {hoer:'Έναν φραπέ, παρακαλώ.',z:'Έναν φραπέ',falsch:['Έναν φραπές','Ο φραπές','Ένας φραπέ'],de:'Einen Frappé, bitte.'},
+  {hoer:'Έναν ελληνικό καφέ, παρακαλώ.',z:'Έναν ελληνικό καφέ',falsch:['Έναν ελληνικός καφές','Ο ελληνικός καφές','Ένας ελληνικό καφέ'],de:'Einen griechischen Mokka, bitte.'}
+ ]};
+/* Freies Gespräch: im Prototyp ein festes Skript. In der App schreibt Spikiu (Token) jede Zeile und
+   die vier Vorschläge selbst — passend zu dem, was der Lerner sagt. */
+var FREI=[
+ {sp:'Γεια σας! Πρώτη φορά στην Ελλάδα;',de:'Hallo! Zum ersten Mal in Griechenland?',opts:[
+  {z:'Ναι, πρώτη φορά!',de:'Ja, zum ersten Mal!',r:'Καλώς ήρθατε!',rDe:'Willkommen!'},
+  {z:'Όχι, δεύτερη φορά.',de:'Nein, zum zweiten Mal.',r:'Α, ωραία! Καλώς ήρθατε ξανά!',rDe:'Ah, schön! Willkommen zurück!'},
+  {z:'Ναι, είμαι από τη Γερμανία.',de:'Ja, ich bin aus Deutschland.',r:'Από τη Γερμανία! Καλώς ήρθατε!',rDe:'Aus Deutschland! Willkommen!'},
+  {z:'Συγγνώμη, δεν καταλαβαίνω.',de:'Entschuldigung, ich verstehe nicht.',hilfe:true,r:'Κανένα πρόβλημα! Πρώτη φορά = zum ersten Mal.',rDe:'Kein Problem! „Πρώτη φορά" heißt „zum ersten Mal".'}]},
+ {sp:'Τι θα πιείτε σήμερα;',de:'Was trinken Sie heute?',opts:[
+  {z:'Έναν φραπέ, παρακαλώ.',de:'Einen Frappé, bitte.',r:'Τέλεια! Ο φραπές είναι πολύ ελληνικός.',rDe:'Perfekt! Der Frappé ist sehr griechisch.'},
+  {z:'Ένα τσάι, παρακαλώ.',de:'Einen Tee, bitte.',r:'Ένα τσάι, βεβαίως.',rDe:'Einen Tee, natürlich.'},
+  {z:'Τι μου προτείνετε;',de:'Was empfehlen Sie mir?',r:'Δοκιμάστε έναν ελληνικό καφέ!',rDe:'Probieren Sie einen griechischen Mokka!'},
+  {z:'Ένα νερό μόνο.',de:'Nur ein Wasser.',r:'Βεβαίως, ένα νερό.',rDe:'Natürlich, ein Wasser.'}]},
+ {sp:'Θέλετε και κάτι να φάτε;',de:'Möchten Sie auch etwas essen?',opts:[
+  {z:'Ναι, ένα κέικ.',de:'Ja, einen Kuchen.',r:'Έχουμε κέικ πορτοκάλι — πολύ ωραίο!',rDe:'Wir haben Orangenkuchen — sehr gut!'},
+  {z:'Όχι, ευχαριστώ.',de:'Nein, danke.',r:'Εντάξει!',rDe:'In Ordnung!'},
+  {z:'Τι έχετε;',de:'Was haben Sie?',r:'Έχουμε κέικ, τοστ και κουλούρι.',rDe:'Wir haben Kuchen, Toast und Sesamkringel.'},
+  {z:'Αργότερα, ίσως.',de:'Später vielleicht.',r:'Κανένα πρόβλημα.',rDe:'Kein Problem.'}]},
+ {sp:'Πόσες μέρες μένετε;',de:'Wie viele Tage bleiben Sie?',opts:[
+  {z:'Μία εβδομάδα.',de:'Eine Woche.',r:'Ωραία, έχετε χρόνο!',rDe:'Schön, Sie haben Zeit!'},
+  {z:'Τρεις μέρες.',de:'Drei Tage.',r:'Λίγες, αλλά καλές!',rDe:'Wenige, aber gute!'},
+  {z:'Δεν ξέρω ακόμα.',de:'Ich weiß es noch nicht.',r:'Μείνετε πολύ!',rDe:'Bleiben Sie lange!'},
+  {z:'Συγγνώμη, πιο αργά;',de:'Entschuldigung, langsamer?',hilfe:true,r:'Βεβαίως: Πόσες… μέρες… μένετε;',rDe:'Natürlich: Wie viele … Tage … bleiben Sie?'}]}
+];
+var FREI_ENDE={sp:'Ήταν ωραία η κουβέντα μας. Καλή σας μέρα!',de:'Das war ein schönes Gespräch. Einen schönen Tag!'};
+
+/* ── Werkzeug ── */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function mischen(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var STIMME=null;
+function stimme(){try{var v=speechSynthesis.getVoices();STIMME=v.filter(function(x){return /^el/i.test(x.lang);})[0]||null;}catch(e){}}
+try{stimme();speechSynthesis.onvoiceschanged=stimme;}catch(e){}
+function sprich(t){try{var s=speechSynthesis;s.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='el-GR';if(STIMME)u.voice=STIMME;u.rate=.9;s.speak(u);}catch(e){}}
+var KL=null;function klang(ok){try{KL=KL||new (window.AudioContext||window.webkitAudioContext)();var t=KL.currentTime,f=ok?[523.25,659.25,783.99]:[392,466.16];
+ f.forEach(function(fr,i){var o=KL.createOscillator(),g=KL.createGain();o.type='sine';o.frequency.value=fr;g.gain.setValueAtTime(0,t+i*.07);g.gain.linearRampToValueAtTime(.12,t+i*.07+.02);g.gain.exponentialRampToValueAtTime(.001,t+i*.07+.35);o.connect(g);g.connect(KL.destination);o.start(t+i*.07);o.stop(t+i*.07+.4);});}catch(e){}}
+
+/* ── Gerüst ── */
+var MODUS='gef', SCHRITT=0;
+var RAIL=['Thema','Wörter','Hören','Sprechen','Lektion'];
+function kopf(eb,ttl){$('eb').textContent=eb;$('ttl').textContent=ttl;}
+function rail(i){var r=$('rail');if(MODUS!=='gef'){r.hidden=true;return;}r.hidden=false;
+ r.innerHTML=RAIL.map(function(n,k){return '<button id="r-'+k+'" class="'+(k<i?'done':k===i?'on':'')+'" data-k="'+k+'"><i></i><b>'+n+'</b></button>';}).join('');
+ r.querySelectorAll('button').forEach(function(b){b.onclick=function(){geheZu(+b.dataset.k);};});}
+function fuss(links,rechts){var f=$('fuss');f.innerHTML='';
+ [links,rechts].forEach(function(x,k){if(!x){f.appendChild(document.createElement('span'));return;}
+  var b=document.createElement('button');b.className='btn'+(x.pri?' pri':'')+(x.mic?' mic':'');b.id=k?'b-rechts':'b-links';b.textContent=x.t;if(x.aus)b.disabled=true;b.onclick=x.go;f.appendChild(b);});}
+function karte(){var k=$('karte');k.innerHTML='';k.classList.remove('pop');void k.offsetWidth;k.classList.add('pop');return k;}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function bigKnopf(k,text,go){var b=el('button','big','🔊 '+text);b.type='button';b.id='big';b.onclick=go;k.appendChild(b);return b;}
+
+/* Eine Ohr-Runde: hören → eine von vier Kacheln. Für Wörter, Hören, Sprechen, Lektion gleich. */
+function runde(o){
+ var k=o.karte, g=el('div','grid'), fb=el('div','fb'), fertig=false, fehler=0;
+ k.appendChild(g);k.appendChild(fb);
+ mischen(o.kacheln).forEach(function(x,n){
+  var b=el('button','tile',x.html);b.type='button';b.id='t-'+n;if(x.ok)b.dataset.r='1';g.appendChild(b);
+  b.onclick=function(){if(fertig)return;
+   if(x.ok){fertig=true;b.classList.add('ok');klang(true);fb.className='fb';fb.innerHTML=o.richtig;if(o.dannSprich)setTimeout(function(){sprich(o.dannSprich);},350);o.fertig(fehler===0);}
+   else{fehler++;klang(false);b.classList.add('no');b.disabled=true;fb.className='fb soft';fb.innerHTML=x.falschText||'Hör nochmal genau hin.';}
+  };});
+ if(o.auto)setTimeout(function(){sprich(o.auto);},380);
+ return {fb:fb};
+}
+
+/* ── GEFÜHRTES GESPRÄCH ── */
+function geheZu(i){SCHRITT=i;[thema,woerter,hoeren,sprechen,lektion,ende][i]();}
+
+function thema(unter){
+ rail(0);kopf('Geführtes Gespräch',unter?'Essen & Trinken':'Wähl ein Thema');
+ var k=karte();
+ if(!unter){
+  k.appendChild(el('p','task','Wo möchtest du heute sprechen?'));
+  var st=el('div','punkte');st.style.gap='8px';st.style.marginTop='0';
+  st.innerHTML='<button class="btn" style="padding:.35rem .8rem;font-size:.85rem;background:var(--ink);color:#fff" aria-pressed="true">🌱 Samen</button><button class="btn" style="padding:.35rem .8rem;font-size:.85rem">🌿 Stamm</button><button class="btn" style="padding:.35rem .8rem;font-size:.85rem">🌳 Krone</button>';
+  k.appendChild(st);
+  var g=el('div','grid');k.appendChild(g);
+  [['bilder/om-1F37D.svg','Essen & Trinken','Café · Taverne',true],['bilder/om-1F9F3.svg','Unterwegs','Taxi · Bahnhof · Weg · Hotel'],['bilder/om-1F6D2.svg','Alltag','Einkaufen · Wetter'],[null,'Menschen','Familie · Arzt','👥']].forEach(function(x,n){
+   var b=el('button','tile',(x[0]?'<img src="'+x[0]+'" alt="">':'<span class="te">'+x[3]+'</span>')+'<span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>');
+   b.id='th-'+n;b.onclick=x[3]===true?function(){thema(true);}:function(){$('fbt').textContent='Im Prototyp ist nur „Essen & Trinken" gefüllt.';};g.appendChild(b);});
+  var fb=el('div','fb soft');fb.id='fbt';k.appendChild(fb);
+  fuss({t:'‹ Haus',go:function(){}},{t:'weiter ›',aus:true});
+ } else {
+  k.appendChild(el('p','task','Essen & Trinken — wohin gehst du?'));
+  var g2=el('div','grid eins');k.appendChild(g2);
+  [['bilder/om-2615.svg','Im Café','bestellen, zahlen',true],['bilder/om-1F37D.svg','In der Taverne','ein Tisch, die Empfehlung']].forEach(function(x,n){
+   var b=el('button','tile','<img src="'+x[0]+'" alt="" style="max-height:48%"><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>');b.id='ort-'+n;
+   b.onclick=x[3]?function(){geheZu(1);}:function(){$('fbt2').textContent='Im Prototyp ist nur „Im Café" gefüllt.';};g2.appendChild(b);});
+  var fb2=el('div','fb soft');fb2.id='fbt2';k.appendChild(fb2);
+  fuss({t:'‹ Themen',go:function(){thema(false);}},{t:'weiter ›',aus:true});
+ }
+}
+
+/* Wörter: Feines Ohr mit Wiederholung. Jedes Wort braucht zwei Treffer auf Anhieb; ein Fehler
+   setzt es zurück und holt es bald wieder. So kommt jedes Wort mehrmals, das schwere öfter. */
+var WS=null;
+function woerter(){
+ if(!WS){WS={stapel:mischen(WOERTER.map(function(_,i){return i;})),punkte:WOERTER.map(function(){return 0;}),runde:0};}
+ rail(1);kopf('Geführtes Gespräch','Wörter');
+ if(!WS.stapel.length){
+  var k0=karte();k0.appendChild(el('p','task','Alle zwölf Wörter sitzen.<small>Jedes kam mindestens zweimal — die schweren öfter.</small>'));
+  var g0=el('div','grid');k0.appendChild(g0);
+  [['bilder/om-2615.svg','ο καφές'],['bilder/om-1F95B.svg','το γάλα'],['bilder/sp-wasser.svg','το νερό'],[null,'παρακαλώ']].forEach(function(x){g0.appendChild(el('div','tile ok',(x[0]?'<img src="'+x[0]+'" alt="" style="max-height:55%">':'')+'<span class="tz">'+x[1]+'</span>'));});
+  k0.appendChild(el('div','fb','12 von 12 ✓'));
+  fuss({t:'nochmal',go:function(){WS=null;woerter();}},{t:'Hören ›',pri:true,go:function(){geheZu(2);}});return;}
+ var i=WS.stapel[0], w=WOERTER[i], k=karte();
+ k.appendChild(el('p','task','Hör gut zu und tipp, was es bedeutet.'));
+ var p=el('div','punkte');p.innerHTML=WS.punkte.map(function(n){return '<i class="'+(n>=2?'v':n===1?'h':'')+'"></i>';}).join('');k.appendChild(p);
+ bigKnopf(k,'Anhören',function(){sprich(w.z);});
+ var andere=mischen(WOERTER.map(function(_,j){return j;}).filter(function(j){return j!==i;})).slice(0,3);
+ function kachel(j){var x=WOERTER[j];return x.bild?'<img src="'+x.bild+'" alt="'+esc(x.de)+'">':'<span class="tn">'+esc(x.de)+'</span>';}
+ var R=runde({karte:k,auto:w.z,
+  kacheln:[{ok:true,html:kachel(i)}].concat(andere.map(function(j){var x=WOERTER[j];return {html:kachel(j),falschText:'Das wäre <em>'+esc(x.z)+'</em> — hör nochmal.'};})),
+  richtig:'<span><em>'+esc(w.z)+'</em> = '+esc(w.de)+'<span class="lt">'+esc(w.lt)+'</span></span>',
+  fertig:function(sauber){
+   WS.stapel.shift();
+   if(sauber){WS.punkte[i]++; if(WS.punkte[i]<2) WS.stapel.splice(Math.min(WS.stapel.length,4+Math.floor(Math.random()*3)),0,i);}
+   else{WS.punkte[i]=0; WS.stapel.splice(Math.min(WS.stapel.length,2),0,i);}
+   p.innerHTML=WS.punkte.map(function(n){return '<i class="'+(n>=2?'v':n===1?'h':'')+'"></i>';}).join('');
+   $('b-rechts').disabled=false;}
+ });
+ fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'noch eins ›',pri:true,aus:true,go:woerter});
+}
+
+/* Hören: einen Satz hören, unter vier Sätzen erkennen. Verpasste kommen am Ende noch einmal. */
+var HS=null;
+function hoeren(){
+ if(!HS)HS={stapel:mischen(HOEREN.map(function(_,i){return i;})),n:0};
+ rail(2);kopf('Geführtes Gespräch','Hören');
+ if(!HS.stapel.length){HS=null;geheZu(3);return;}
+ var i=HS.stapel[0],h=HOEREN[i],k=karte();
+ k.appendChild(el('p','task','Welchen Satz hörst du?<small>'+(HS.n+1)+' von '+(HS.n+HS.stapel.length)+'</small>'));
+ bigKnopf(k,'Anhören',function(){sprich(h.z);});
+ runde({karte:k,auto:h.z,
+  kacheln:[{ok:true,html:'<span class="tz">'+esc(h.z)+'</span>'}].concat(h.falsch.map(function(f){return {html:'<span class="tz">'+esc(f)+'</span>',falschText:'Fast — hör auf die kleinen Wörter.'};})),
+  richtig:'<span><em>'+esc(h.z)+'</em><br>= '+esc(h.de)+'</span>',
+  fertig:function(sauber){HS.stapel.shift();HS.n++;if(!sauber)HS.stapel.push(i);$('b-rechts').disabled=false;}});
+ fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'weiter ›',pri:true,aus:true,go:hoeren});
+}
+
+/* Sprechen: Spikiu (Kellner) sagt seine Zeile — du wählst deine Antwort, hörst sie und sagst sie laut. */
+var RS=0;
+function sprechen(){
+ rail(3);kopf('Geführtes Gespräch','Sprechen');
+ if(RS>=ROLLE.length){RS=0;geheZu(4);return;}
+ var r=ROLLE[RS],k=karte();
+ var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el">'+esc(r.sp)+'</div><div class="uebs"><button type="button" id="ueb">Übersetzung</button></div></div>');
+ k.appendChild(z);
+ z.querySelector('#ueb').onclick=function(){this.parentNode.textContent=r.spDe;};
+ bigKnopf(k,'Kellner anhören',function(){sprich(r.sp);});
+ runde({karte:k,auto:r.sp,dannSprich:r.z,
+  kacheln:[{ok:true,html:'<span class="tz">'+esc(r.z)+'</span>'}].concat(r.falsch.map(function(f){return {html:'<span class="tz">'+esc(f[0])+'</span>',falschText:'„'+esc(f[1])+'" — passt hier noch nicht.'};})),
+  richtig:'<span>= '+esc(r.de)+'<br>🗣️ Jetzt sag es laut nach.</span>',
+  fertig:function(){$('b-rechts').disabled=false;}});
+ fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:(RS+1<ROLLE.length?'weiter ›':'Lektion ›'),pri:true,aus:true,go:function(){RS++;sprechen();}});
+}
+
+/* Lektion: eine Regel, dann hören und die richtige Form antippen. */
+var LS=0;
+function lektion(){
+ rail(4);kopf('Geführtes Gespräch','Lektion');
+ if(LS>=LEKTION.items.length){LS=0;geheZu(5);return;}
+ var it=LEKTION.items[LS],k=karte();
+ k.appendChild(el('p','task',esc(LEKTION.regel)+'<small>'+esc(LEKTION.regelSub)+'</small>'));
+ bigKnopf(k,'Anhören',function(){sprich(it.hoer);});
+ runde({karte:k,auto:it.hoer,
+  kacheln:[{ok:true,html:'<span class="tz">'+esc(it.z)+'</span>'}].concat(it.falsch.map(function(f){return {html:'<span class="tz">'+esc(f)+'</span>',falschText:'Beim Bestellen fällt das -ς weg.'};})),
+  richtig:'<span><em>'+esc(it.hoer)+'</em><br>= '+esc(it.de)+'</span>',
+  fertig:function(){$('b-rechts').disabled=false;}});
+ fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'weiter ›',pri:true,aus:true,go:function(){LS++;lektion();}});
+}
+
+function ende(){
+ rail(5);kopf('Geführtes Gespräch','Im Café');
+ var k=karte();
+ k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el">Μπράβο! Τα λέμε αύριο.</div><div class="uebs">Bravo! Bis morgen.</div></div>'));
+ var gelernt=WS?WS.punkte.filter(function(n){return n>=2;}).length:0;
+ var g=el('div','grid');k.appendChild(g);
+ [['📖','Wörter',gelernt+' von 12 sitzen'],['🎧','Hören','4 Sätze erkannt'],['🗣️','Sprechen','4 Antworten gesagt'],['✏️','Lektion','Bestellen frisst das -ς']].forEach(function(x){g.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
+ k.appendChild(el('div','fb','Deine Wörter liegen in der Schatzkiste.'));
+ fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){WS=null;HS=null;RS=0;LS=0;geheZu(0);}});
+}
+
+/* ── FREIES GESPRÄCH ── */
+var FZ=0;
+function frei(){
+ kopf('Freies Gespräch','Im Café');rail(-1);
+ var k=karte();
+ if(FZ>=FREI.length){
+  k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el">'+esc(FREI_ENDE.sp)+'</div><div class="uebs">'+esc(FREI_ENDE.de)+'</div></div>'));
+  var g0=el('div','grid');k.appendChild(g0);
+  [['💬','4 Wechsel','ganz auf Griechisch'],['🎧','Gehört','Spikiu als Kellner'],['☕','Bestellt','Frappé, Tee …'],['🌱','Samen','nächstes Mal: freier']].forEach(function(x){g0.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
+  k.appendChild(el('div','fb',''));
+  sprich(FREI_ENDE.sp);
+  fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){FZ=0;frei();}});return;}
+ var q=FREI[FZ];
+ var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="el" id="spz">'+esc(q.sp)+'</div><div class="uebs" id="spu"><button type="button" id="ueb">Übersetzung</button></div></div><button class="mini" id="spk-mini" type="button" aria-label="Spikiu anhören">🔊</button>');
+ k.appendChild(z);
+ var aktuell={z:q.sp,de:q.de};
+ function uebKnopf(){var u=$('ueb');if(u)u.onclick=function(){$('spu').textContent=aktuell.de;};}
+ uebKnopf();
+ $('spk-mini').onclick=function(){sprich(aktuell.z);};
+ var mic=el('button','big mic','🎤 Selbst sagen');mic.type='button';mic.id='mic';k.appendChild(mic);
+ var g=el('div','grid'),fb=el('div','fb');k.appendChild(g);k.appendChild(fb);
+ mic.onclick=function(){fb.className='fb soft';fb.innerHTML='Hier sprichst du frei, und Spikiu antwortet darauf (Premium). Im Prototyp ohne Mikrofon.';};
+ fb.innerHTML='<span style="color:var(--mid);font-weight:600">Sag es selbst — oder tipp einen Vorschlag.</span>';
+ var gewaehlt=false;
+ q.opts.forEach(function(o,n){
+  var b=el('button','tile','<span class="tz">'+esc(o.z)+'</span>');b.type='button';b.id='f-'+n;g.appendChild(b);
+  b.onclick=function(){if(gewaehlt)return;gewaehlt=true;b.classList.add('gew');sprich(o.z);
+   g.querySelectorAll('.tile').forEach(function(t){if(t!==b){t.disabled=true;t.style.opacity='.45';t.style.boxShadow='none';}});
+   fb.className='fb';fb.innerHTML='<span>Du: <em>'+esc(o.z)+'</em><br>= '+esc(o.de)+'</span>';
+   setTimeout(function(){aktuell={z:o.r,de:o.rDe};$('spz').textContent=o.r;$('spu').innerHTML='<button type="button" id="ueb">Übersetzung</button>';uebKnopf();sprich(o.r);
+    if(o.hilfe){FZ=FZ;} $('b-rechts').disabled=false;},1500);
+  };});
+ fuss({t:'Genug für heute',go:function(){FZ=FREI.length;frei();}},{t:'weiter ›',pri:true,aus:true,go:function(){
+  var gew=q.opts.filter(function(o,n){return $('f-'+n).classList.contains('gew');})[0];
+  if(!(gew&&gew.hilfe))FZ++;frei();}});
+ setTimeout(function(){sprich(q.sp);},380);
+}
+
+/* ── Prototyp-Umschalter ── */
+function modus(m){MODUS=m;$('m-gef').setAttribute('aria-pressed',String(m==='gef'));$('m-frei').setAttribute('aria-pressed',String(m==='frei'));
+ if(m==='gef')geheZu(SCHRITT===5?0:SCHRITT);else frei();}
+$('m-gef').onclick=function(){modus('gef');};
+$('m-frei').onclick=function(){modus('frei');};
+$('back').onclick=function(){if(MODUS==='gef'&&SCHRITT>0)geheZu(SCHRITT-1);};
+thema(false);
+</script>
