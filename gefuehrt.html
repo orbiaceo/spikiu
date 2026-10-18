@@ -4,69 +4,61 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Spikiu · Geführtes Gespräch</title>
-<meta name="description" content="Geführtes Gespräch — Szenen üben, Schritt für Schritt.">
+<meta name="description" content="Geführtes Gespräch — Wörter entdecken, erkennen, hören, sprechen.">
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
-/* ═══ Seiten-Gerüst. Karten-Layout kommt KOMPLETT aus karten-engine.js. ═══ */
-:root{
-  --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0;
-  --ow:2.5px;
-}
+/* ═══ Geführtes Gespräch im „Feines Ohr"-Design (Leo, 19.10.2026: „Lasst uns geführt und freies
+   Gespräch nach diesem Prototyp reformieren"). Vorlage: prototyp-gespraech-ohr.html.
+   Karten-Bausteine: ohr-karten.js. Nur die Lektion rendert weiter karten-engine.js. ═══ */
+:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0; --faint:#dfe6e0; --ow:2.5px; }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
 html,body{height:100%}
 body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;overflow:hidden}
 button{font:inherit;cursor:pointer}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:560px;margin:0 auto;background:var(--minz)}
 
-.app{display:flex;flex-direction:column;height:100dvh;max-width:680px;margin:0 auto;background:var(--minz)}
+.kopf{flex:0 0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px;
+  padding:calc(.55rem + env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) .55rem max(14px,env(safe-area-inset-left));
+  border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.55)}
+.kopf .back{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;box-shadow:2px 3px 0 var(--ink);
+  font-size:1.15rem;display:grid;place-items:center}
+.kopf .back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+.kopf .mitte{text-align:center;min-width:0}
+.kopf .eb{font:600 .64rem/1 'DM Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+.kopf .ttl{font:900 1.3rem/1.15 'Archivo Black','DM Sans',sans-serif;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-.rnav{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;
-  padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;
-  background:var(--minz);border-bottom:var(--ow) solid var(--ink)}
-.rnav .back{width:36px;height:36px;flex:0 0 36px;border-radius:999px;border:2.5px solid var(--ink);
-  background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 var(--ink);
-  display:flex;align-items:center;justify-content:center}
-.rnav .back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
-.rnav .title{font:800 1.05rem 'DM Sans',sans-serif;color:var(--ink)}
+.rail{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:8px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+.rail .step{display:flex;flex-direction:column;gap:4px}
+.rail .step i{display:block;height:5px;border-radius:9px;background:var(--faint)}
+.rail .step b{font:700 .58rem/1 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#9aa49f;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .step.done i,.rail .step.on i{background:var(--acc)}
+.rail .step.on b{color:var(--acc)} .rail .step.done b{color:var(--ink)}
 
-.rail{flex:0 0 auto;display:flex;gap:.3rem;padding:.55rem 1.1rem;background:#fff;border-bottom:var(--ow) solid var(--ink)}
-.rail .step{flex:1;text-align:center;font:800 .6rem/1.4 'DM Sans',sans-serif;letter-spacing:.03em;
-  text-transform:uppercase;color:var(--ink);opacity:.45}
-.rail .step .dot{display:block;width:100%;height:4px;border-radius:3px;background:var(--ink);opacity:.25;margin-bottom:.3rem}
-.rail .step.done{opacity:1}.rail .step.done .dot{background:var(--acc);opacity:1}
-.rail .step.on{opacity:1;color:var(--acc)}.rail .step.on .dot{background:var(--acc);opacity:1}
+main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;
+  padding:12px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+#fuss{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+.lstage{position:relative;flex:1;min-height:0}
 
-.stage{flex:1;min-height:0;position:relative;background:var(--minz)}
-
-/* Themen-Palette (kein Karten-Inhalt → gehört zur Seite, nicht zur Engine) */
-.palette{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:1.1rem;padding:1.2rem 1.1rem;text-align:center}
-/* Spikiu schwebt frei, ohne Kreis (Leo, 17.10.2026, 17:39) — dasselbe sanfte Schweben wie im Spiele-Raum */
-.palette .cap{display:flex;align-items:center;justify-content:center;background:none;border:0;box-shadow:none}
-.palette .cap svg{width:72px;height:72px;animation:capSchweben 4s ease-in-out infinite}
-@keyframes capSchweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@media (prefers-reduced-motion:reduce){.palette .cap svg{animation:none}}
-.palette h2{font:800 1.25rem 'DM Sans',sans-serif;color:var(--ink)}
-.chips{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:360px}
-.chips .chip{font:700 .95rem 'DM Sans',sans-serif;color:var(--ink);background:#fff;
-  border:2px solid var(--ink);border-radius:100px;padding:.6rem 1.05rem;box-shadow:2px 2px 0 var(--ink)}
-.chips .chip:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 /* Spiel zum Schluss (01.10.): eigenes Blatt über der Bühne, scrollt. */
 .spiel-ende{position:absolute;inset:0;z-index:5;overflow-y:auto;background:var(--minz);padding:1rem 1rem calc(1.4rem + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:1rem}
 .spiel-ende .karte{background:#fff;border:2.5px solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem .9rem;max-width:30rem;width:100%;margin:0 auto}
 .spiel-ende .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;max-width:30rem;width:100%;margin:0 auto}
 .spiel-ende .end{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;box-shadow:3px 3px 0 var(--ink)}
 .spiel-ende .end.primary{background:var(--acc);color:#fff}
-.pal-note{font:600 .82rem 'DM Sans',sans-serif;color:var(--muted);max-width:28ch}
+@media (max-height:720px){.kopf .ttl{font-size:1.12rem}.kopf .back{width:36px;height:36px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="rnav">
-    <button class="back" onclick="location.href='haus.html'" aria-label="zurück">‹</button>
-    <div class="title" id="pageTitle">Geführtes Gespräch</div>
+  <header class="kopf">
+    <button class="back" id="back" aria-label="zurück">‹</button>
+    <div class="mitte"><div class="eb" id="eb"></div><div class="ttl" id="ttl"></div></div>
+    <span></span>
   </header>
-  <div class="rail" id="rail"></div>
-  <div class="stage" id="stage"></div>
+  <nav class="rail" id="rail" aria-label="Schritte"></nav>
+  <main class="stage" id="stage"></main>
+  <footer id="fuss"></footer>
 </div>
 
 <script src="sitzung.js"></script>
@@ -75,7 +67,6 @@ button{font:inherit;cursor:pointer}
 <script src="szenen-dialog.js"></script>
 <script src="karten-engine.js"></script>
 <script src="lernpfad-daten.js"></script>
-<!-- Alle drei Zielsprachen + Umschalter (27.09.): vorher nur Spanisch geladen. -->
 <script src="lernpfad-daten-de.js"></script>
 <script src="lernpfad-daten-en.js"></script>
 <script src="lernpfad-daten-el.js"></script>
@@ -84,605 +75,607 @@ button{font:inherit;cursor:pointer}
 <script src="wortfelder.js"></script>
 <script src="silben.js"></script>
 <script src="icon-db.js"></script>
+<script src="bilder-da.js"></script>
 <script src="juegos.js"></script>
+<script src="lexikon.js"></script>
+<script src="ohr-karten.js"></script>
 <script type="module">
   import { speak, warm } from './audio.js';
   window.sprich = speak;
-  /* warm() ohne Argument nimmt seit 02.10. die Zielsprache aus dem Profil
-     (vorher lief es ohne Sprache still ins Leere → Kaltstart beim ersten 🔊). */
   if (typeof warm === 'function') try { warm(); } catch (e) {}
 </script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
-   gefuehrt.html — NUR Ablauf + Daten. KEIN Karten-Layout hier.
-   Fluss: Thema → Wörter → Hören → Sprechen (Drill + Rollenspiel) → Lektion.
-   Alles 0 Token: haeppchen-db.js + szenen.js + szenen-dialog.js, Engine rendert.
+   gefuehrt.html — Ablauf + Daten. Layout: ohr-karten.js („Feines Ohr").
+   Fluss (Leo, 18./19.10.2026):
+     Thema → Wörter als Spirale (Entdecken 4 → Erkennen → Entdecken 4 → Erkennen gemischt …)
+     → Sätze für den Tisch (Wörter ohne Bild leben im Satz) → Hören → Sprechen (Rollenspiel,
+     „sag es laut") → Lektion (gespeichert) → Abschluss.
+   Alles 0 Token: Lernpfad-Station + Wortfeld des Themas + icon-db, Häppchen als Rückfall.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
+  var O = window.OhrKarten;
 
   /* ── Profil ── */
   var USER = {};
   try { USER = JSON.parse(localStorage.getItem('spikiu_user') || '{}'); } catch (e) { USER = {}; }
-  var P = USER.profile || {};
-  var ZIEL = (['de','es','en','el'].indexOf(P.zielsprache) > -1) ? P.zielsprache : 'es';
-  var MUT  = (['de','es','en','el'].indexOf(P.muttersprache) > -1) ? P.muttersprache : 'de';
-  try { document.documentElement.lang = MUT; } catch (e) {}  // lang=el → Großbuchstaben ohne Tonos
+  var PR = USER.profile || {};
+  var ZIEL = (['de','es','en','el'].indexOf(PR.zielsprache) > -1) ? PR.zielsprache : 'es';
+  var MUT  = (['de','es','en','el'].indexOf(PR.muttersprache) > -1) ? PR.muttersprache : 'de';
+  try { document.documentElement.lang = MUT; } catch (e) {}
 
   /* ── UI-Texte (Muttersprache) ── */
   var T = {
-    de: { titel:'Geführtes Gespräch', waehle:'Wähle ein Thema', neu:'neu', wieder:'wiederholen',
-          rail:['Thema','Wörter','Hören','Sprechen','Lektion'],
-          wortEyebrow:'Wortschatz mit Audio', flipHint:'tippen zum Umdrehen',
-          drillEyebrow:'Sprechen üben', hoerEyebrow:'Hörverständnis', hoerFrageB1:'Welchen Satz hörst du?', rpEyebrow:'Rollenspiel', drillSag:'Sag es auf der Zielsprache — dann tippe zum Prüfen:',
-          rolle:{ Kellner:'Kellner', Rezeption:'Rezeption', Fahrer:'Fahrer', Bekannter:'Bekannter', Nachbarin:'Nachbarin', Passantin:'Passantin', Schalterbeamter:'Schalterbeamter', 'Verkäufer':'Verkäufer', 'Ärztin':'Ärztin' },
-          lessonSubtitle:'Deine geführte Szene', goalLabel:'Ziel', kulturLabel:'Gut zu wissen',
-          goal:function(t){ return 'Du hast das Thema „' + t + '" geübt: Wörter, Aussprache und ein kurzes Rollenspiel.'; },
-          vocabLabel:'Wortschatz', dialogueLabel:'Rollenspiel', quizLabel:'Quiz', you:'Du',
-          quizQ:function(w){ return 'Was bedeutet „' + w + '"?'; },
-          done:'Geschafft!', doneSub:'Du hast die ganze Szene gesprochen.',
-          viewLesson:'Lektion ansehen', enough:'Genug für heute',
-          spielPinata:'🪅 Noch eine Piñata zum Schluss?', spielGemelos:'🧩 Noch Paare finden zum Schluss?', spielOido:'👂 Die Wörter noch einmal hören?', spielGolpe:'🥁 Den Schlag der Wörter finden?',
-          weiter:'Weiter', pruefen:'Prüfen', richtig:'Richtig!', fast:'Fast — schau dir die richtige Antwort an.' },
-    es: { titel:'Conversación guiada', waehle:'Elige un tema', neu:'nuevo', wieder:'repasar',
-          rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
-          wortEyebrow:'Vocabulario con audio', flipHint:'toca para girar',
-          drillEyebrow:'Practicar habla', hoerEyebrow:'Comprensión auditiva', hoerFrageB1:'¿Qué frase oyes?', rpEyebrow:'Juego de rol', drillSag:'Dilo en el idioma meta — luego toca para comprobar:',
-          rolle:{ Kellner:'Camarero', Rezeption:'Recepción', Fahrer:'Conductor', Bekannter:'Conocido', Nachbarin:'Vecina', Passantin:'Transeúnte', Schalterbeamter:'Empleado de taquilla', 'Verkäufer':'Vendedor', 'Ärztin':'Doctora' },
-          lessonSubtitle:'Tu escena guiada', goalLabel:'Objetivo', kulturLabel:'Bueno saberlo',
-          goal:function(t){ return 'Has practicado el tema «' + t + '»: vocabulario, pronunciación y un breve juego de rol.'; },
-          vocabLabel:'Vocabulario', dialogueLabel:'Juego de rol', quizLabel:'Quiz', you:'Tú',
-          quizQ:function(w){ return '¿Qué significa «' + w + '»?'; },
-          done:'¡Listo!', doneSub:'Has hablado toda la escena.',
-          viewLesson:'Ver la lección', enough:'Ya está bien por hoy',
-          spielPinata:'🪅 ¿Una piñata para cerrar?', spielGemelos:'🧩 ¿Unas parejas para cerrar?', spielOido:'👂 ¿Escuchar las palabras otra vez?', spielGolpe:'🥁 ¿Encontrar el golpe de las palabras?',
-          weiter:'Seguir', pruefen:'Comprobar', richtig:'¡Correcto!', fast:'Casi — mira la respuesta correcta.' },
-    en: { titel:'Guided conversation', waehle:'Choose a topic', neu:'new', wieder:'review',
-          rail:['Topic','Words','Listen','Speak','Lesson'],
-          wortEyebrow:'Vocabulary with audio', flipHint:'tap to flip',
-          drillEyebrow:'Speaking practice', hoerEyebrow:'Listening', hoerFrageB1:'Which sentence do you hear?', rpEyebrow:'Role play', drillSag:'Say it in the target language — then tap to check:',
-          rolle:{ Kellner:'Waiter', Rezeption:'Reception', Fahrer:'Driver', Bekannter:'Acquaintance', Nachbarin:'Neighbour', Passantin:'Passer-by', Schalterbeamter:'Ticket clerk', 'Verkäufer':'Shop assistant', 'Ärztin':'Doctor' },
-          lessonSubtitle:'Your guided scene', goalLabel:'Goal', kulturLabel:'Good to know',
-          goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, pronunciation and a short roleplay.'; },
-          vocabLabel:'Vocabulary', dialogueLabel:'Roleplay', quizLabel:'Quiz', you:'You',
-          quizQ:function(w){ return 'What does "' + w + '" mean?'; },
-          done:'Done!', doneSub:'You spoke the whole scene.',
-          viewLesson:'View lesson', enough:'Enough for today',
-          spielPinata:'🪅 A piñata to finish?', spielGemelos:'🧩 Match some pairs to finish?', spielOido:'👂 Hear the words once more?', spielGolpe:'🥁 Find the beat of the words?',
-          weiter:'Next', pruefen:'Check', richtig:'Correct!', fast:'Almost — look at the right answer.' },
-    el: { titel:'Καθοδηγούμενη συζήτηση', waehle:'Διάλεξε ένα θέμα', neu:'νέο', wieder:'επανάληψη',
-          rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
-          wortEyebrow:'Λεξιλόγιο με ήχο', flipHint:'πάτησε για να γυρίσει',
-          drillEyebrow:'Εξάσκηση στην ομιλία', hoerEyebrow:'Ακρόαση', hoerFrageB1:'Ποια πρόταση ακούς;', rpEyebrow:'Παιχνίδι ρόλων', drillSag:'Πες το στη γλώσσα που μαθαίνεις — μετά πάτησε για έλεγχο:',
-          rolle:{ Kellner:'Σερβιτόρος', Rezeption:'Ρεσεψιόν', Fahrer:'Οδηγός', Bekannter:'Γνωστός', Nachbarin:'Γειτόνισσα', Passantin:'Περαστική', Schalterbeamter:'Υπάλληλος εκδοτηρίου', 'Verkäufer':'Πωλητής', 'Ärztin':'Γιατρός' },
-          lessonSubtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος', kulturLabel:'Καλό να ξέρεις',
-          goal:function(t){ return 'Εξασκήθηκες στο θέμα «' + t + '»: λεξιλόγιο, προφορά και ένα σύντομο παιχνίδι ρόλων.'; },
-          vocabLabel:'Λεξιλόγιο', dialogueLabel:'Παιχνίδι ρόλων', quizLabel:'Κουίζ', you:'Εσύ',
-          quizQ:function(w){ return 'Τι σημαίνει «' + w + '»;'; },
-          done:'Τα κατάφερες!', doneSub:'Είπες όλη τη σκηνή.',
-          viewLesson:'Δες το μάθημα', enough:'Αρκετά για σήμερα',
-          spielPinata:'🪅 Μια πινιάτα για το τέλος;', spielGemelos:'🧩 Να βρεις μερικά ζευγάρια για το τέλος;', spielOido:'👂 Να ακούσεις τις λέξεις ξανά;', spielGolpe:'🥁 Να βρεις τον ρυθμό των λέξεων;',
-          weiter:'Συνέχεια', pruefen:'Έλεγχος', richtig:'Σωστά!', fast:'Παραλίγο — δες τη σωστή απάντηση.' }
+    de: { titel:'Geführtes Gespräch', rail:['Thema','Wörter','Hören','Sprechen','Lektion'],
+      themaTask:'Wo möchtest du heute sprechen?', wohin:function(k){ return k + ' — wohin gehst du?'; }, themen:'‹ Themen', haus:'‹ Haus',
+      baum:{ a1:'🌱 Samen', a2:'🌿 Stamm', b1:'🌳 Krone' },
+      entTitel:'Wörter entdecken', entTask:'Tipp jedes Bild an: hören, sehen, verstehen.', entKlein1:'Lass dir Zeit. Du kannst jedes Bild so oft antippen, wie du willst.', entKleinN:'Neue Wörter — die alten kommen gleich wieder.',
+      entZaehler:function(n,g){ return n + ' von ' + g + ' entdeckt'; }, entFertig:'Alle vier gehört. Jetzt erkennst du sie wieder.', erkennen:'Erkennen ›',
+      erkTitel:'Wörter erkennen', erkTask:'Hör gut zu und tipp das richtige Bild.', runde:function(i,n){ return 'Runde ' + i + ' von ' + n; },
+      anhoeren:'🔊 Anhören', nochEins:'noch eins ›', falschWort:function(z,tr){ return 'Das ist <em>' + z + '</em> (' + tr + ') — hör nochmal.'; },
+      karte:function(n){ return 'Karte ' + n; }, saetze:'Sätze',
+      satzTitel:'Sätze für den Tisch', satzTask:'Die kleinen Wörter lernst du am besten im Satz.', satzKlein:'Tipp jeden Satz an.', satzFertig:'Gut. Diese Sätze hörst du gleich wieder.', satzZaehler:function(n,g){ return n + ' von ' + g + ' gehört'; },
+      hoeren:'Hören ›', hoerTitel:'Hören', hoerTask:'Welchen Satz hörst du?', vonN:function(i,n){ return i + ' von ' + n; }, hoerFalsch:'Fast — hör auf die kleinen Wörter.',
+      sprTitel:'Sprechen', sprTask:'Was antwortest du?', sprLaut:'🗣️ Jetzt sag es laut nach.', sprFalsch:function(tr){ return '„' + tr + '" — passt hier noch nicht.'; }, ueb:'Übersetzung', weiter:'weiter ›', lektion:'Lektion ›',
+      genug:'Genug für heute', lekTitel:'Lektion', fertigTitel:'Geschafft',
+      endWoerter:function(n,g){ return n + ' von ' + g + ' erkannt'; }, endHoeren:function(n){ return n + ' Sätze erkannt'; }, endSprechen:function(n){ return n + ' Antworten gesagt'; }, endLektion:'in deinen Lektionen',
+      endFb:'Deine Lektion liegt bei „Deine Lektionen".', woerter:'Wörter', hoerenK:'Hören', sprechenK:'Sprechen', lektionK:'Lektion', nochmal:'Nochmal ›',
+      lessonSubtitle:'Deine geführte Szene', goalLabel:'Ziel', kulturLabel:'Gut zu wissen',
+      goal:function(t){ return 'Du hast das Thema „' + t + '" geübt: Wörter, Hören und ein kurzes Rollenspiel.'; },
+      vocabLabel:'Wortschatz', dialogueLabel:'Rollenspiel', quizLabel:'Quiz', you:'Du', quizQ:function(w){ return 'Was bedeutet „' + w + '"?'; },
+      spielPinata:'🪅 Piñata', spielGemelos:'🧩 Paare', spielOido:'👂 Feines Ohr', spielGolpe:'🥁 Der Schlag', viewLesson:'Lektion ansehen', enough:'Genug für heute' },
+    es: { titel:'Conversación guiada', rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
+      themaTask:'¿Dónde quieres hablar hoy?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
+      baum:{ a1:'🌱 Semilla', a2:'🌿 Tallo', b1:'🌳 Copa' },
+      entTitel:'Descubrir palabras', entTask:'Toca cada imagen: escucha, mira, entiende.', entKlein1:'Tómate tu tiempo. Puedes tocar cada imagen las veces que quieras.', entKleinN:'Palabras nuevas; las de antes vuelven enseguida.',
+      entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, entFertig:'Ya has oído las cuatro. Ahora las reconoces.', erkennen:'Reconocer ›',
+      erkTitel:'Reconocer palabras', erkTask:'Escucha bien y toca la imagen correcta.', runde:function(i,n){ return 'Ronda ' + i + ' de ' + n; },
+      anhoeren:'🔊 Escuchar', nochEins:'otra ›', falschWort:function(z,tr){ return 'Eso es <em>' + z + '</em> (' + tr + '). Escucha otra vez.'; },
+      karte:function(n){ return 'Tarjeta ' + n; }, saetze:'Frases',
+      satzTitel:'Frases para la mesa', satzTask:'Las palabritas se aprenden mejor dentro de una frase.', satzKlein:'Toca cada frase.', satzFertig:'Bien. Enseguida vuelves a oír estas frases.', satzZaehler:function(n,g){ return n + ' de ' + g + ' escuchadas'; },
+      hoeren:'Escuchar ›', hoerTitel:'Escuchar', hoerTask:'¿Qué frase oyes?', vonN:function(i,n){ return i + ' de ' + n; }, hoerFalsch:'Casi. Fíjate en las palabras pequeñas.',
+      sprTitel:'Hablar', sprTask:'¿Qué respondes?', sprLaut:'🗣️ Ahora dilo en voz alta.', sprFalsch:function(tr){ return '«' + tr + '»: aquí todavía no encaja.'; }, ueb:'Traducción', weiter:'seguir ›', lektion:'Lección ›',
+      genug:'Ya está bien por hoy', lekTitel:'Lección', fertigTitel:'¡Listo!',
+      endWoerter:function(n,g){ return n + ' de ' + g + ' reconocidas'; }, endHoeren:function(n){ return n + ' frases reconocidas'; }, endSprechen:function(n){ return n + ' respuestas dichas'; }, endLektion:'en tus lecciones',
+      endFb:'Tu lección está en «Tus lecciones».', woerter:'Palabras', hoerenK:'Escuchar', sprechenK:'Hablar', lektionK:'Lección', nochmal:'Otra vez ›',
+      lessonSubtitle:'Tu escena guiada', goalLabel:'Objetivo', kulturLabel:'Bueno saberlo',
+      goal:function(t){ return 'Has practicado el tema «' + t + '»: vocabulario, comprensión y un breve juego de rol.'; },
+      vocabLabel:'Vocabulario', dialogueLabel:'Juego de rol', quizLabel:'Quiz', you:'Tú', quizQ:function(w){ return '¿Qué significa «' + w + '»?'; },
+      spielPinata:'🪅 Piñata', spielGemelos:'🧩 Parejas', spielOido:'👂 Oído fino', spielGolpe:'🥁 El golpe', viewLesson:'Ver la lección', enough:'Ya está bien por hoy' },
+    en: { titel:'Guided conversation', rail:['Topic','Words','Listen','Speak','Lesson'],
+      themaTask:'Where would you like to talk today?', wohin:function(k){ return k + ': where are you going?'; }, themen:'‹ Topics', haus:'‹ Home',
+      baum:{ a1:'🌱 Seed', a2:'🌿 Stem', b1:'🌳 Crown' },
+      entTitel:'Discover words', entTask:'Tap each picture: listen, look, understand.', entKlein1:'Take your time. You can tap each picture as often as you like.', entKleinN:'New words; the earlier ones come back soon.',
+      entZaehler:function(n,g){ return n + ' of ' + g + ' discovered'; }, entFertig:'You’ve heard all four. Now recognize them.', erkennen:'Recognize ›',
+      erkTitel:'Recognize words', erkTask:'Listen closely and tap the right picture.', runde:function(i,n){ return 'Round ' + i + ' of ' + n; },
+      anhoeren:'🔊 Listen', nochEins:'another ›', falschWort:function(z,tr){ return 'That’s <em>' + z + '</em> (' + tr + '). Listen again.'; },
+      karte:function(n){ return 'Card ' + n; }, saetze:'Sentences',
+      satzTitel:'Sentences for the table', satzTask:'The little words are best learned in a sentence.', satzKlein:'Tap each sentence.', satzFertig:'Good. You’ll hear these sentences again soon.', satzZaehler:function(n,g){ return n + ' of ' + g + ' heard'; },
+      hoeren:'Listen ›', hoerTitel:'Listen', hoerTask:'Which sentence do you hear?', vonN:function(i,n){ return i + ' of ' + n; }, hoerFalsch:'Almost. Listen for the little words.',
+      sprTitel:'Speak', sprTask:'What do you answer?', sprLaut:'🗣️ Now say it out loud.', sprFalsch:function(tr){ return '“' + tr + '”: doesn’t fit here yet.'; }, ueb:'Translation', weiter:'next ›', lektion:'Lesson ›',
+      genug:'Enough for today', lekTitel:'Lesson', fertigTitel:'Done!',
+      endWoerter:function(n,g){ return n + ' of ' + g + ' recognized'; }, endHoeren:function(n){ return n + ' sentences recognized'; }, endSprechen:function(n){ return n + ' answers spoken'; }, endLektion:'in your lessons',
+      endFb:'Your lesson is saved in “Your lessons”.', woerter:'Words', hoerenK:'Listen', sprechenK:'Speak', lektionK:'Lesson', nochmal:'Again ›',
+      lessonSubtitle:'Your guided scene', goalLabel:'Goal', kulturLabel:'Good to know',
+      goal:function(t){ return 'You practiced the topic "' + t + '": vocabulary, listening and a short roleplay.'; },
+      vocabLabel:'Vocabulary', dialogueLabel:'Roleplay', quizLabel:'Quiz', you:'You', quizQ:function(w){ return 'What does "' + w + '" mean?'; },
+      spielPinata:'🪅 Piñata', spielGemelos:'🧩 Pairs', spielOido:'👂 Sharp ear', spielGolpe:'🥁 The beat', viewLesson:'View lesson', enough:'Enough for today' },
+    el: { titel:'Καθοδηγούμενη συζήτηση', rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
+      themaTask:'Πού θέλεις να μιλήσεις σήμερα;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
+      baum:{ a1:'🌱 Σπόρος', a2:'🌿 Κορμός', b1:'🌳 Κορυφή' },
+      entTitel:'Ανακάλυψε λέξεις', entTask:'Πάτα κάθε εικόνα: άκου, δες, κατάλαβε.', entKlein1:'Με την ησυχία σου. Μπορείς να πατάς κάθε εικόνα όσες φορές θέλεις.', entKleinN:'Νέες λέξεις· οι προηγούμενες ξαναέρχονται σε λίγο.',
+      entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, entFertig:'Τις άκουσες και τις τέσσερις. Τώρα τις αναγνωρίζεις.', erkennen:'Αναγνώριση ›',
+      erkTitel:'Αναγνώρισε λέξεις', erkTask:'Άκου προσεκτικά και πάτα τη σωστή εικόνα.', runde:function(i,n){ return 'Γύρος ' + i + ' από ' + n; },
+      anhoeren:'🔊 Άκου', nochEins:'άλλο ένα ›', falschWort:function(z,tr){ return 'Αυτό είναι <em>' + z + '</em> (' + tr + '). Άκου ξανά.'; },
+      karte:function(n){ return 'Κάρτα ' + n; }, saetze:'Φράσεις',
+      satzTitel:'Φράσεις για το τραπέζι', satzTask:'Τις μικρές λέξεις τις μαθαίνεις καλύτερα μέσα σε μια φράση.', satzKlein:'Πάτα κάθε φράση.', satzFertig:'Ωραία. Θα ακούσεις ξανά αυτές τις φράσεις σε λίγο.', satzZaehler:function(n,g){ return n + ' από ' + g + ' ακούστηκαν'; },
+      hoeren:'Ακρόαση ›', hoerTitel:'Ακρόαση', hoerTask:'Ποια φράση ακούς;', vonN:function(i,n){ return i + ' από ' + n; }, hoerFalsch:'Παραλίγο. Πρόσεξε τις μικρές λέξεις.',
+      sprTitel:'Ομιλία', sprTask:'Τι απαντάς;', sprLaut:'🗣️ Τώρα πες το δυνατά.', sprFalsch:function(tr){ return '«' + tr + '»: δεν ταιριάζει ακόμα εδώ.'; }, ueb:'Μετάφραση', weiter:'συνέχεια ›', lektion:'Μάθημα ›',
+      genug:'Αρκετά για σήμερα', lekTitel:'Μάθημα', fertigTitel:'Τα κατάφερες!',
+      endWoerter:function(n,g){ return n + ' από ' + g + ' αναγνωρίστηκαν'; }, endHoeren:function(n){ return n + ' φράσεις αναγνωρίστηκαν'; }, endSprechen:function(n){ return n + ' απαντήσεις ειπώθηκαν'; }, endLektion:'στα μαθήματά σου',
+      endFb:'Το μάθημά σου είναι στα «Μαθήματά σου».', woerter:'Λέξεις', hoerenK:'Ακρόαση', sprechenK:'Ομιλία', lektionK:'Μάθημα', nochmal:'Ξανά ›',
+      lessonSubtitle:'Η καθοδηγούμενη σκηνή σου', goalLabel:'Στόχος', kulturLabel:'Καλό να ξέρεις',
+      goal:function(t){ return 'Εξασκήθηκες στο θέμα «' + t + '»: λεξιλόγιο, ακρόαση και ένα σύντομο παιχνίδι ρόλων.'; },
+      vocabLabel:'Λεξιλόγιο', dialogueLabel:'Παιχνίδι ρόλων', quizLabel:'Κουίζ', you:'Εσύ', quizQ:function(w){ return 'Τι σημαίνει «' + w + '»;'; },
+      spielPinata:'🪅 Πινιάτα', spielGemelos:'🧩 Ζευγάρια', spielOido:'👂 Λεπτό αυτί', spielGolpe:'🥁 Ο τόνος', viewLesson:'Δες το μάθημα', enough:'Αρκετά για σήμερα' }
   };
   var U = T[MUT] || T.de;
+  /* Spikius Abschied in der Zielsprache + Übersetzung in der Muttersprache */
+  var ENDE_SP = { es:'¡Muy bien! Hasta mañana.', de:'Sehr gut! Bis morgen.', en:'Well done! See you tomorrow.', el:'Μπράβο! Τα λέμε αύριο.' };
+  var ENDE_TR = { de:'Sehr gut! Bis morgen.', es:'¡Muy bien! Hasta mañana.', en:'Well done! See you tomorrow.', el:'Μπράβο! Τα λέμε αύριο.' };
 
-  var CAPY = '<svg width="20" height="20" viewBox="0 0 80 80" fill="none">'
-  + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
-  + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
-  + '<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
-  + '<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
-  + '<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
-  + '<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
-  + '<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
-  + '<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
-  + '<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
 
-  /* ── Rail ── */
+  var esc = O.esc, mischen = O.mischen;
+  var stage = document.getElementById('stage'), fussEl = document.getElementById('fuss');
+  function sprich(t) { try { if (window.sprich) window.sprich(t, ZIEL); } catch (e) {} }
+  function stumm() { try { if (window.spikiuAudioStop) window.spikiuAudioStop(); } catch (e) {} }
+
+  /* ── Kopf + Leiste ── */
+  document.getElementById('eb').textContent = U.titel;
   var railEl = document.getElementById('rail');
-  railEl.innerHTML = U.rail.map(function (s, i) { return '<div class="step" data-i="' + i + '"><span class="dot"></span>' + s + '</div>'; }).join('');
-  function setRail(idx) {
-    /* Schrittwechsel → altes Audio sofort aus (02.10.) */
-    try { if (window.spikiuAudioStop) window.spikiuAudioStop(); } catch (e) {}
-    railEl.querySelectorAll('.step').forEach(function (s, i) {
-      s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx);
-    });
+  railEl.innerHTML = U.rail.map(function (s) { return '<div class="step"><i></i><b>' + esc(s) + '</b></div>'; }).join('');
+  function kopf(ttl, idx) {
+    stumm();
+    document.getElementById('ttl').textContent = ttl;
+    railEl.querySelectorAll('.step').forEach(function (s, i) { s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx); });
   }
-  document.getElementById('pageTitle').textContent = U.titel;
+  var ZURUECK = 'haus.html';
+  document.getElementById('back').onclick = function () { location.href = ZURUECK; };
 
-  /* ── Engine einrichten ── */
-  var stage = document.getElementById('stage');
-  SpikiuKarten.setup({ stage: stage, zielsprache: ZIEL });
+  var TOPIC_ID = null, TOPIC_LABEL = '', HAP = null, STOFF = null, RP = null;
 
-  var TOPIC_ID = null, TOPIC_LABEL = '', HAP = null, RP = null;
-
-  /* ── Eine Quelle fuer den Stoff dieses Raums ──────────────────────────
-     Liegt fuer dieses Thema eine Lernpfad-Station bereit, kommen die
-     WOERTER von dort — dann zaehlen sie im Gym auf den Ring der Station
-     ein (siehe woerter.js). Sonst bleibt der bisherige Haeppchen-Satz.
-
-     Das HOERVERSTEHEN kommt IMMER aus haeppchen-db.js: die Stationen haben
-     keins, und es hier zu erfinden waere geraten statt gebaut.
-
-     Andere Zielsprachen als Spanisch laufen unveraendert weiter, weil es
-     dort noch keine Stationen gibt. Kein Bruch, nur ein Aufwerten. */
+  /* ── Stoff laden: Häppchen als Rückfall, Station (Lernpfad) als Hauptquelle ── */
   function ladeStoff() {
-    var h = window.spikiuHaeppchen(TOPIC_ID, ZIEL, MUT);
-    if (!h) return null;
+    var h = window.spikiuHaeppchen ? window.spikiuHaeppchen(TOPIC_ID, ZIEL, MUT) : null;
+    if (!h) h = { wortschatz: [], hoerverstehen: [] };
     try {
       var P = window.SpikiuPfad, D = window.SpikiuLernpfad;
-      if (P && D && P.existiert() && D.zielsprache === ZIEL) {
+      if (P && D && D.zielsprache === ZIEL) {
         var st = P.stufe();
-        // Direktweg aus dem Lernroman der Krone: &stufe=b1 (15.10.2026).
         var su = (window.location.search || '').match(/[?&]stufe=(a1|a2|b1)\b/);
         if (su && D.station(su[1], TOPIC_ID)) st = su[1];
         var S = D.station(st, TOPIC_ID);
-        if (S && S.wortschatz && S.wortschatz.length) {
-          h.wortschatz = S.wortschatz.map(function (w) {
-            return { ziel: w.z, lautschrift: w.tr || null, uebersetzung: (typeof w.na === 'string') ? w.na : ((w.na && (w.na[MUT] || w.na.en || w.na.de || w.na.es)) || ''), en: (w.na && typeof w.na === 'object' && w.na.en) || '' };
-          });
-          h.station = st + '.' + TOPIC_ID;
-          h.stufe = st;
-        }
+        if (S && S.wortschatz && S.wortschatz.length) { h.station = st + '.' + TOPIC_ID; h.stufe = st; h.S = S; }
       }
-    } catch (e) { /* Stoff darf nie am Lernpfad scheitern */ }
-    return h;
-  }
-
-  /* Betreten heisst beruehren — mehr wird nicht behauptet. Eine gesetzte
-     Station faellt dadurch nicht zurueck (siehe lernpfad.js). */
-  function markiereBesuch() {
-    try {
-      var P = window.SpikiuPfad;
-      if (P && P.existiert() && HAP && HAP.stufe) P.beruehre(TOPIC_ID, HAP.stufe);
     } catch (e) {}
+    return (h.S || (h.wortschatz && h.wortschatz.length)) ? h : null;
+  }
+  function markiereBesuch() {
+    try { var P = window.SpikiuPfad; if (P && P.existiert() && HAP && HAP.stufe) P.beruehre(TOPIC_ID, HAP.stufe); } catch (e) {}
   }
 
-  /* ── Sitzungs-Persistenz: keine Arbeit geht durch einen Fehl-Tipp verloren.
-        Gespeichert wird Thema + Phase + Karten-Index (entprellt).
-        Raum-Schlüssel 'gefuehrt'. Kein Zombie-Resume: Abschluss räumt auf. ── */
-  var SITZ_PHASE = null, SITZ_INDEX = 0, sitzTimer = null;
-  function sitzSpeichern() {
-    if (!TOPIC_ID || !SITZ_PHASE) return;
-    clearTimeout(sitzTimer);
-    sitzTimer = setTimeout(function () {
-      try {
-        if (window.spikiuSitzung && window.spikiuSitzung.speichere) {
-          window.spikiuSitzung.speichere('gefuehrt', {
-            topicId: TOPIC_ID, topicLabel: TOPIC_LABEL, phase: SITZ_PHASE, index: SITZ_INDEX
-          });
-        }
-      } catch (e) {}
-    }, 350);
-  }
-  function sitzSetze(phase, index) { SITZ_PHASE = phase; SITZ_INDEX = index || 0; sitzSpeichern(); }
-  function sitzRaeumen() {
-    clearTimeout(sitzTimer); SITZ_PHASE = null; SITZ_INDEX = 0;
-    try { if (window.spikiuSitzung && window.spikiuSitzung.raeume) window.spikiuSitzung.raeume('gefuehrt'); } catch (e) {}
-  }
-
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
-  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-
-  /* ── THEMA: Palette = 3 neu + 2 fällig, gefiltert auf 0-Token-Themen (DB) ── */
-  function showPalette() {
-    setRail(0);
-    var wrap = document.createElement('div'); wrap.className = 'palette';
-    wrap.innerHTML = '<span class="cap" role="button" aria-label="Spikiu" style="cursor:pointer">' + CAPY + '</span><h2>' + esc(U.waehle) + '</h2>';
-    stage.innerHTML = ''; stage.appendChild(wrap);
-
-    var SAG = { es:'¡Elige un tema!', de:'Wähl ein Thema!', en:'Choose a topic!', el:'Διάλεξε ένα θέμα!' };
-    wrap.querySelector('.cap').onclick = function () {
-      var txt = SAG[ZIEL] || SAG.es;
-      try {
-        if (window.sprich) { window.sprich(txt, ZIEL); }
-        else if (window.speechSynthesis && window.SpeechSynthesisUtterance) {
-          var uo = new SpeechSynthesisUtterance(txt); speechSynthesis.cancel(); speechSynthesis.speak(uo);
-        }
-      } catch (e) {}
-    };
-
-    function betrete(id, label) {
-      TOPIC_ID = id; TOPIC_LABEL = label;
-      HAP = ladeStoff();
-      if (!HAP) { showPalette(); return; }
-      markiereBesuch();
-      startWoerter();
-    }
-
-    // Die Kachelwahl kommt aus lernpfad.js — dieselbe wie im Chat.
-    // Zwei Oberflächen für dieselbe Sache wären zwei Wahrheiten.
-    var P = window.SpikiuPfad, D = window.SpikiuLernpfad;
-    if (P && D && P.existiert() && D.zielsprache === ZIEL && P.kategorien().length) {
-      var host = document.createElement('div');
-      wrap.appendChild(host);
-      P.waehler(host, {
-        ui: MUT,
-        zurueck: U.waehle,
-        onWahl: function (id, stufe, x) { betrete(id, x.na[MUT] || x.na.en || x.na.de); }
-      });
-      return;
-    }
-
-    // Ohne Lernpfad (Deutsch, Englisch, Griechisch): bisherige Palette.
-    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
-    var alle = (window.spikiuSzenenPalette ? window.spikiuSzenenPalette() : []).filter(function (s) { return db.indexOf(s.id) > -1; });
-    if (!alle.length) {
-      alle = (window.spikiuSzenen || []).filter(function (s) { return db.indexOf(s.id) > -1; }).slice(0, 5);
-    }
-    var done = {};
-    try { done = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').szenen) || {}; } catch (e) {}
-    var chips = document.createElement('div'); chips.className = 'chips';
-    chips.innerHTML = alle.map(function (s, i) {
-      var wieder = done[s.id] && done[s.id].done;
-      return '<button class="chip" data-i="' + i + '">' + s.emoji + ' ' + esc(s[MUT] || s.de)
-        + (wieder ? ' ↻' : '') + '</button>';
-    }).join('');
-    wrap.appendChild(chips);
-    chips.querySelectorAll('.chip').forEach(function (b) {
-      b.onclick = function () {
-        var s = alle[+b.getAttribute('data-i')];
-        betrete(s.id, s[MUT] || s.de);
-      };
-    });
-  }
-
-  /* Bild zum Wort, wie im Wortschatz (Leo, 18.10.): Konzept = englischer Begriff (na.en;
-     bei Zielsprache Englisch das Wort selbst), sonst Suche übers Zielwort. Nur was man
-     sehen kann, hat ein Bild — sonst bleibt die Karte ohne. */
-  function wortIcon(h) {
+  function na(o) { if (!o) return ''; if (typeof o.na === 'string') return o.na; return (o.na && (o.na[MUT] || o.na.en || o.na.de || o.na.es)) || ''; }
+  function bildVon(z, en) {
     try {
       var I = window.spikiuIcon; if (!I || !I.datei) return '';
-      var en = String(h.en || '').replace(/\s*\([^)]*\)\s*/g, ' ').trim();
-      var e = (en && I.konzept(en)) || (ZIEL === 'en' && I.konzept(String(h.ziel).replace(/\s*\([^)]*\)\s*/g, ' ').trim())) || I(h.ziel) || '';
-      return e ? I.datei(e) : '';
+      en = String(en || '').replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+      var e = (en && I.konzept(en)) || (ZIEL === 'en' && I.konzept(String(z).replace(/\s*\([^)]*\)\s*/g, ' ').trim())) || I(z) || '';
+      return e ? da(I.datei(e)) : '';
     } catch (err) { return ''; }
   }
-
-  /* ── WÖRTER: Wort-Karten wie im Wortschatz (18.10.2026, Leo, Screenshot Karten:
-        „Aussehen, Layout so gestalten wie Karten im Wortschatz … auch mit Icons").
-        Vorher Drehkarten (Ziel vorne, Übersetzung hinten). ── */
-  function startWoerter(startIdx) {
-    setRail(1);
-    var items = HAP.wortschatz.map(function (h, i) {
-      return {
-        typ: 'wort',
-        eyebrow: '📖 ' + U.wortEyebrow + ' · ' + (i + 1) + ' / ' + HAP.wortschatz.length,
-        ziel: h.ziel, lt: h.lautschrift || null, tr: h.uebersetzung, icon: wortIcon(h)
-      };
-    });
-    SpikiuKarten.sequence(items, startHoeren,
-      { start: startIdx || 0, onStep: function (i) { sitzSetze('woerter', i); } });
-  }
-
-  /* ── HÖREN auf B1 (15.10.2026): die Häppchen-Hörsätze sind Anfängerstoff aus
-        Spanien. Auf der Krone hört der Lerner Spikius Sätze aus SEINER Station
-        (Lateinamerika) und erkennt sie unter zwei Sätzen aus anderen Stationen. ── */
-  function hoerenAusPfad() {
+  /* Nur Bilder, die es als Datei gibt (bilder-da.js) — sonst bliebe die Kachel leer. */
+  function da(pfad) { var L = window.SPIKIU_BILDER_DA; if (!pfad) return ''; if (!L) return pfad; return L[String(pfad).replace(/^bilder\//, '')] ? pfad : ''; }
+  /* Griechisch: Umschrift für Wortfeld-Wörter aus dem Léxico (Artikel + Lemma) */
+  var ART_LT = { 'ο':'o', 'η':'i', 'το':'to', 'οι':'i', 'τα':'ta' };
+  function ltEl(z) {
+    if (ZIEL !== 'el') return '';
     try {
-      var D = window.SpikiuLernpfad;
-      if (!D || D.zielsprache !== ZIEL) return null;
-      var S = D.station('b1', TOPIC_ID);
-      if (!S || !S.dialog) return null;
-      var eigene = S.dialog.zeilen.filter(function (z) { return z.wer === 'spikiu'; });
+      var X = window.spikiuLexikon; if (!X || !X.bereit('el')) return '';
+      var t = String(z).trim().split(/\s+/), art = ART_LT[t[0].toLowerCase()], wort = art ? t.slice(1).join(' ') : z;
+      var f = X.ficha('el', wort); if (!f || !f.lt) return '';
+      return (art ? art + ' ' : '') + f.lt;
+    } catch (e) { return ''; }
+  }
+
+  /* ── STOFF bauen: Bildwörter (Spirale), Sätze, Hörsätze, Rollenspiel ── */
+  function baueStoff() {
+    var S = HAP.S, st = HAP.stufe || 'a1', D = window.SpikiuLernpfad;
+    var bild = [], gesehen = {}, ohneBild = [];
+    function nimm(x) { if (!x.bild || gesehen[x.bild]) return false; gesehen[x.bild] = 1; bild.push(x); return true; }
+    if (S) {
+      S.wortschatz.forEach(function (w) {
+        var b = bildVon(w.z, w.na && w.na.en);
+        if (!(b && nimm({ z: w.z, lt: w.tr || '', tr: na(w), bild: b }))) ohneBild.push(w);
+      });
+    } else {
+      HAP.wortschatz.forEach(function (h) { var b = bildVon(h.ziel, h.en); if (!(b && nimm({ z: h.ziel, lt: h.lautschrift || '', tr: h.uebersetzung, bild: b }))) ohneBild.push(h); });
+    }
+    /* Ergänzen aus dem Wortfeld des Themas — Wörter der eigenen Stufe zuerst (stabile Reihenfolge,
+       damit eine wiederhergestellte Sitzung dieselben Karten sieht). */
+    try {
+      var F = (window.spikiuWortfelder && TOPIC_ID) ? window.spikiuWortfelder.feld(ZIEL, TOPIC_ID, MUT) : [];
+      var ord = st === 'a1' ? [1, 2, 3] : st === 'a2' ? [2, 1, 3] : [2, 3, 1];
+      var vorhanden = {}; bild.forEach(function (x) { vorhanden[String(x.z).toLowerCase()] = 1; });
+      ord.forEach(function (s) {
+        F.forEach(function (x) {
+          if (bild.length >= 12 || x.stufe !== s || vorhanden[String(x.z).toLowerCase()]) return;
+          var I = window.spikiuIcon, e = (x.en && I && I.konzept) ? I.konzept(x.en) : '';
+          if (!e) return;
+          var pf = da(I.datei(e)); if (!pf) return;
+          if (nimm({ z: x.z, lt: ltEl(x.z), tr: x.tr, bild: pf })) vorhanden[String(x.z).toLowerCase()] = 1;
+        });
+      });
+    } catch (e) {}
+    bild = bild.slice(0, Math.floor(Math.min(bild.length, 12) / 4) * 4);
+
+    /* Sätze für den Tisch: Dialogzeilen (Lerner zuerst), kurz genug für eine Zeile. */
+    var saetze = [], hoeren = [];
+    if (S && S.dialog && S.dialog.zeilen) {
+      var Z = S.dialog.zeilen, ler = Z.filter(function (z) { return z.wer !== 'spikiu'; }), spk = Z.filter(function (z) { return z.wer === 'spikiu'; });
+      ler.concat(spk).forEach(function (z) { if (saetze.length < 4) saetze.push({ z: z.z, lt: z.tr || '', tr: na(z) }); });
+      /* Hören: Spikius Zeilen zuerst, dann Lernerzeilen; Ablenker: 1 aus demselben Dialog, 2 aus anderen Stationen. */
       var fremd = [];
-      (D.themen || []).forEach(function (t) {
-        if (t.id === TOPIC_ID) return;
-        var X = D.station('b1', t.id);
-        ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer === 'spikiu') fremd.push(z.z); });
+      (D && D.themen || []).forEach(function (t) {
+        if (t.id === TOPIC_ID) return; var X = D.station(st, t.id);
+        ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.z) fremd.push(z.z); });
       });
-      if (!eigene.length || fremd.length < 2) return null;
-      return eigene.map(function (z) {
-        var opts = [{ text: z.z, richtig: true }].concat(shuffle(fremd).slice(0, 2).map(function (f) { return { text: f, richtig: false }; }));
-        return { typ: 'satz', audio: z.z, frage: U.hoerFrageB1 || '', optionen: shuffle(opts),
-                 uebersetzung: (z.na && (z.na[MUT] || z.na.en || z.na.de)) || '' };
+      spk.concat(ler).slice(0, 4).forEach(function (z) {
+        var eigen = mischen(Z.filter(function (y) { return y.z !== z.z; }).map(function (y) { return y.z; })).slice(0, 1);
+        var andere = mischen(fremd.filter(function (f) { return f !== z.z && eigen.indexOf(f) < 0; })).slice(0, 3 - eigen.length);
+        hoeren.push({ z: z.z, lt: z.tr || '', tr: na(z), falsch: eigen.concat(andere) });
       });
-    } catch (e) { return null; }
+    } else {
+      (HAP.hoerverstehen || []).forEach(function (h) {
+        if (h.typ !== 'minimalpaar') return;
+        var ok = (h.optionen || []).filter(function (o) { return o.richtig; })[0]; if (!ok) return;
+        hoeren.push({ z: ok.text, tr: h.uebersetzung || '', falsch: h.optionen.filter(function (o) { return !o.richtig; }).map(function (o) { return o.text; }) });
+      });
+    }
+    return { bild: bild, saetze: saetze, hoeren: hoeren };
   }
 
-  /* ── HÖREN: aus hoerverstehen (minimalpaar → single, woerter → multi) ── */
-  function startHoeren(startIdx) {
-    setRail(2);
-    var hv = (HAP.stufe === 'b1' && hoerenAusPfad()) || HAP.hoerverstehen || [];
-    if (!hv.length) { startDrill(); return; }
-    var items = hv.map(function (h, i) {
-      var eyebrow = U.hoerEyebrow + ' · ' + (i + 1) + ' / ' + hv.length;
-      if (h.typ === 'woerter') {
-        return { typ: 'choice', eyebrow: eyebrow, audio: h.audio, instr: h.frage, multi: true, optsZiel: true,
-          options: h.woerter.map(function (x) { return { text: x.text, ok: !!x.gehoert }; }),
-          loesung: h.audio, loesungTr: h.uebersetzung || '',
-          pruefen: U.pruefen, weiter: U.weiter, richtig: U.richtig, fast: U.fast };
-      }
-      return { typ: 'choice', eyebrow: eyebrow, audio: h.audio, instr: h.frage, multi: false, optsZiel: true,
-        options: h.optionen.map(function (x) { return { text: x.text, ok: !!x.richtig }; }),
-          loesung: h.audio, loesungTr: h.uebersetzung || '',
-        pruefen: U.pruefen, weiter: U.weiter, richtig: U.richtig, fast: U.fast };
-    });
-    SpikiuKarten.sequence(items, startDrill,
-      { start: startIdx || 0, onStep: function (i) { sitzSetze('hoeren', i); } });
-  }
-
-  /* ── SPRECHEN A: Produktions-Drill (Cue Muttersprache → Ziel + Audio) ── */
-  function startDrill(startIdx) {
-    setRail(3);
-    var items = HAP.wortschatz.map(function (h, i) {
-      return {
-        typ: 'flip',
-        eyebrow: '🗣️ ' + U.drillEyebrow + ' · ' + (i + 1) + ' / ' + HAP.wortschatz.length,
-        front: { text: h.uebersetzung, ziel: false, hint: U.drillSag, icon: wortIcon(h) },
-        back:  { text: h.ziel, ziel: true, audio: true, sub: h.lautschrift || null, hint: U.flipHint },
-        weiter: U.weiter
-      };
-    });
-    SpikiuKarten.sequence(items, startRollenspiel,
-      { start: startIdx || 0, onStep: function (i) { sitzSetze('drill', i); } });
-  }
-
-  /* ── Rollenspiel aus dem Lernpfad-Dialog (15.10.2026, Leo: „zuerst vollständig") ──
-     Das Skript-Rollenspiel (szenen-dialog.js) gibt es nur für Spanisch und nur mit
-     DEUTSCHEN Übersetzungen. Für alle anderen Paare baut sich das Rollenspiel aus dem
-     Dialog der Station, die der Lerner gerade hat: Spikius Zeile → die richtige
-     Lernerzeile + zwei Lernerzeilen aus ANDEREN Szenen derselben Stufe als falsche
-     Wahl; Tipp = die Aufgabe in der Muttersprache; Übersetzung = na[Muttersprache].
-     Null Token, alle Sprachen, A1 und A2. */
+  /* Rollenspiel aus dem Stations-Dialog: Spikius Zeile → richtige Lernerzeile + 3 Ablenker
+     (andere Lernerzeilen dieses Dialogs und anderer Stationen derselben Stufe). */
   function rollenspielAusPfad() {
     try {
-      var D = window.SpikiuLernpfad, P = window.SpikiuPfad;
-      if (!D || D.zielsprache !== ZIEL || !TOPIC_ID) return null;
-      var st = (HAP && HAP.stufe) || ((P && P.existiert && P.existiert()) ? P.stufe() : 'a1');
-      if (!D.station(st, TOPIC_ID)) st = 'a1';
-      var S = D.station(st, TOPIC_ID);
-      if (!S || !S.dialog || !S.dialog.zeilen) return null;
-      var na = function (o) { return o && o.na ? (o.na[MUT] || o.na.en || o.na.de || o.na.es || '') : ''; };
+      var D = window.SpikiuLernpfad;
+      if (!D || D.zielsprache !== ZIEL || !TOPIC_ID || !HAP.S) return null;
+      var st = HAP.stufe, S = HAP.S;
       var zeilen = S.dialog.zeilen, paare = [], vor = null;
       if (zeilen[0] && zeilen[0].wer !== 'spikiu') vor = D.eroeffnungVon ? D.eroeffnungVon(st, TOPIC_ID) : null;
-      zeilen.forEach(function (z) {
-        if (z.wer === 'spikiu') { vor = z; return; }
-        if (vor) paare.push({ sp: vor, le: z });
-        vor = null;
-      });
+      zeilen.forEach(function (z) { if (z.wer === 'spikiu') { vor = z; return; } if (vor) paare.push({ sp: vor, le: z }); vor = null; });
       if (!paare.length) return null;
-      // Falsche Antworten: Lernerzeilen aus anderen Szenen derselben Stufe.
       var fremd = [];
       (D.themen || []).forEach(function (t) {
-        if (t.id === TOPIC_ID) return;
-        var X = D.station(st, t.id);
-        ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer !== 'spikiu' && z.z) fremd.push(z.z); });
+        if (t.id === TOPIC_ID) return; var X = D.station(st, t.id);
+        ((X && X.dialog && X.dialog.zeilen) || []).forEach(function (z) { if (z.wer !== 'spikiu' && z.z) fremd.push(z); });
       });
+      var eigeneLerner = paare.map(function (p) { return p.le; });
       var aufg = (D.aufgabenVon && D.aufgabenVon(st, TOPIC_ID)) || [];
       var rl = D.rolle ? D.rolle(TOPIC_ID, st) : null;
       var rolleText = rl && rl.spikiu ? (rl.spikiu[MUT] || rl.spikiu.en || rl.spikiu.de || '') : '';
       if (rolleText) rolleText = rolleText.charAt(0).toUpperCase() + rolleText.slice(1);
       var schritte = paare.map(function (p, k) {
-        var falsch = shuffle(fremd.filter(function (f) { return f !== p.le.z; })).slice(0, 2);
+        var innen = eigeneLerner.filter(function (z) { return z.z !== p.le.z; }).slice(0, 1);
+        var aussen = mischen(fremd.filter(function (z) { return z.z !== p.le.z; })).slice(0, 3 - innen.length);
         var a = aufg[k];
         return {
-          spikiu: { ziel: p.sp.z, trans: (p.sp.tr ? p.sp.tr + ' — ' : '') + na(p.sp) },   // Griechisch: Umschrift vorneweg
+          spikiu: { ziel: p.sp.z, lt: p.sp.tr || '', tr: na(p.sp), trans: (p.sp.tr ? p.sp.tr + ' — ' : '') + na(p.sp) },
           tip: a ? (a[MUT] || a.en || a.de || null) : null,
-          opts: [{ text: p.le.z, ok: true }].concat(falsch.map(function (f) { return { text: f, ok: false }; }))
+          ok: { z: p.le.z, tr: na(p.le) },
+          falsch: innen.concat(aussen).map(function (z) { return { z: z.z, tr: na(z) }; }),
+          opts: [{ text: p.le.z, ok: true }]
         };
       });
       return { rolleText: rolleText, schritte: schritte, ausPfad: true };
     } catch (e) { return null; }
   }
 
-  /* ── SPRECHEN B: Skript-Rollenspiel (szenen-dialog.js) — sonst aus dem Lernpfad ── */
-  function startRollenspiel(startIdx) {
-    RP = (window.spikiuSzenenDialog) ? window.spikiuSzenenDialog(TOPIC_ID, ZIEL) : null;
-    // Das Skript trägt nur deutsche Übersetzungen → für andere Muttersprachen den Pfad nehmen.
-    // B1 (Krone, Lateinamerika) hat kein Skript → immer aus dem Pfad.
-    if (!RP || !RP.schritte || !RP.schritte.length || MUT !== 'de' || (HAP && HAP.stufe === 'b1')) { var G = rollenspielAusPfad(); if (G) RP = G; }
-    if (!RP || !RP.schritte || !RP.schritte.length) { finishScene(); return; }
-    var rolle = RP.rolleText || (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
-    var items = RP.schritte.map(function (st, i) {
-      return {
-        typ: 'roleplay',
-        eyebrow: U.rpEyebrow + ' · ' + rolle + ' · ' + (i + 1) + ' / ' + RP.schritte.length,
-        ziel: st.spikiu.ziel, trans: st.spikiu.trans, tip: st.tip || null,
-        options: st.opts.map(function (o) { return { text: o.text, ok: !!o.ok }; }),
-        weiter: U.weiter
-      };
-    });
-    SpikiuKarten.sequence(items, finishScene,
-      { start: startIdx || 0, onStep: function (i) { sitzSetze('rollenspiel', i); } });
+  /* ── Sitzungs-Persistenz (sitzung.js, Raum 'gefuehrt') ── */
+  var SITZ = { phase: null, index: 0 }, sitzTimer = null, ERG = { hoeren: 0, sprechen: 0 };
+  function sitzSpeichern() {
+    if (!TOPIC_ID || !SITZ.phase) return;
+    clearTimeout(sitzTimer);
+    sitzTimer = setTimeout(function () {
+      try { if (window.spikiuSitzung && window.spikiuSitzung.speichere) window.spikiuSitzung.speichere('gefuehrt', { topicId: TOPIC_ID, topicLabel: TOPIC_LABEL, phase: SITZ.phase, index: SITZ.index, ws: WS, erg: ERG }); } catch (e) {}
+    }, 350);
+  }
+  function sitzSetze(phase, index) { SITZ.phase = phase; SITZ.index = index || 0; sitzSpeichern(); }
+  function sitzRaeumen() {
+    clearTimeout(sitzTimer); SITZ.phase = null; SITZ.index = 0;
+    try { if (window.spikiuSitzung && window.spikiuSitzung.raeume) window.spikiuSitzung.raeume('gefuehrt'); } catch (e) {}
   }
 
-  /* ── LEKTION: statisch bauen, speichern, zeigen; Szene für FSRS markieren ── */
+  /* ═══ 0 · THEMA ═══ */
+  function emBild(em) { var I = window.spikiuIcon; var s = (I && I.datei) ? da(I.datei(em)) : ''; return s ? '<img src="' + s + '" alt="" data-em="' + esc(em) + '">' : '<span class="oh-te">' + em + '</span>'; }
+  function emFallback(g) { g.querySelectorAll('img[data-em]').forEach(function (im) { im.onerror = function () { var s = document.createElement('span'); s.className = 'oh-te'; s.textContent = im.getAttribute('data-em'); im.replaceWith(s); }; }); }
+  function showPalette(katId) {
+    kopf(U.rail[0], 0);
+    var P = window.SpikiuPfad, D = window.SpikiuLernpfad;
+    var k = O.karte(stage);
+    if (!(P && D && D.zielsprache === ZIEL && P.kategorien().length)) { altePalette(k); return; }
+    if (!katId) {
+      O.task(k, U.themaTask);
+      var stufen = (D.stufen || ['a1']).filter(function (s) { return (D.themen || []).some(function (t) { return D.gefuellt(s, t.id); }); });
+      var aktiv = P.stufe();
+      if (stufen.length > 1) {
+        var ch = O.el('div', 'oh-chips');
+        stufen.forEach(function (s) {
+          var b = O.el('button', 'oh-chip', esc(U.baum[s] || s)); b.type = 'button'; b.setAttribute('aria-pressed', String(s === aktiv));
+          b.onclick = function () { if (s !== aktiv) { P.setzeStufe(s); showPalette(); } }; ch.appendChild(b);
+        });
+        k.appendChild(ch);
+      }
+      var kats = P.kategorien();
+      var g = O.raster(k, kats.length <= 2 ? 'zwei' : kats.length === 3 ? 'drei' : kats.length === 4 ? 'bilder' : 'liste');
+      kats.forEach(function (K, n) {
+        var b = O.el('button', 'oh-tile' + (K.naechste ? ' oh-vor' : ''),
+          emBild(K.em) + '<span class="oh-tn">' + esc(K.na[MUT] || K.na.en || K.na.de) + '</span>'
+          + '<span class="oh-perlen">' + K.perlen.map(function (s) { return '<i class="' + (s === 'gesetzt' ? 'voll' : s === 'durchschritten' ? 'halb' : '') + '"></i>'; }).join('') + '</span>');
+        b.type = 'button'; b.id = 'kat-' + n; b.onclick = function () { showPalette(K.id); }; g.appendChild(b);
+      });
+      emFallback(g);
+      O.fb(k, '');
+      O.fuss(fussEl, { t: U.haus, go: function () { location.href = ZURUECK; } }, null);
+      return;
+    }
+    var K0 = P.kategorien().filter(function (x) { return x.id === katId; })[0];
+    var liste = P.themenIn(katId);
+    if (!K0 || !liste.length) { showPalette(); return; }
+    O.task(k, U.wohin(K0.na[MUT] || K0.na.en || K0.na.de));
+    var g2 = O.raster(k, liste.length <= 2 ? 'zwei' : liste.length === 3 ? 'drei' : liste.length === 4 ? 'bilder' : 'liste');
+    liste.forEach(function (x, n) {
+      var b = O.el('button', 'oh-tile' + (x.naechste ? ' oh-vor' : ''),
+        emBild(x.em) + '<span class="oh-tn">' + esc(x.na[MUT] || x.na.en || x.na.de) + '</span>'
+        + (x.schritt ? '<span class="oh-ts">' + esc(x.schritt[MUT] || x.schritt.en || x.schritt.de) + '</span>' : '')
+        + '<span class="oh-perlen"><i class="' + (x.status === 'gesetzt' ? 'voll' : x.status === 'durchschritten' ? 'halb' : '') + '"></i></span>');
+      b.type = 'button'; b.id = 'ort-' + n; b.onclick = function () { betrete(x.id, x.na[MUT] || x.na.en || x.na.de); }; g2.appendChild(b);
+    });
+    emFallback(g2);
+    O.fb(k, '');
+    O.fuss(fussEl, { t: U.themen, go: function () { showPalette(); } }, null);
+  }
+  /* Ohne Lernpfad: Themen aus der Häppchen-Datenbank als Liste. */
+  function altePalette(k) {
+    O.task(k, U.themaTask);
+    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
+    var alle = (window.spikiuSzenen || []).filter(function (s) { return db.indexOf(s.id) > -1; }).slice(0, 4);
+    var g = O.raster(k, 'liste');
+    alle.forEach(function (s, n) { var b = O.el('button', 'oh-tile', '<span class="oh-tn">' + s.emoji + ' ' + esc(s[MUT] || s.de) + '</span>'); b.type = 'button'; b.id = 'ort-' + n; b.onclick = function () { betrete(s.id, s[MUT] || s.de); }; g.appendChild(b); });
+    O.fb(k, '');
+    O.fuss(fussEl, { t: U.haus, go: function () { location.href = ZURUECK; } }, null);
+  }
+
+  function lexikonDann(fn) {
+    if (ZIEL !== 'el' || !window.spikiuLexikon) { fn(); return; }
+    var fertig = false, los = function () { if (!fertig) { fertig = true; fn(); } };
+    try { window.spikiuLexikon.laden('el').then(los, los); } catch (e) { los(); }
+    setTimeout(los, 2500);   // nie hängen bleiben
+  }
+  function betrete(id, label, wieder) {
+    TOPIC_ID = id; TOPIC_LABEL = label;
+    HAP = ladeStoff();
+    if (!HAP) { TOPIC_ID = null; showPalette(); return; }
+    lexikonDann(function () {
+      STOFF = baueStoff();
+      RP = rollenspielAusPfad() || ((window.spikiuSzenenDialog && MUT === 'de') ? window.spikiuSzenenDialog(TOPIC_ID, ZIEL) : null);
+      if (wieder) { wieder(); return; }
+      markiereBesuch();
+      WS = null; ERG = { hoeren: 0, sprechen: 0 };
+      woerter();
+    });
+  }
+
+  /* ═══ 1 · WÖRTER als Spirale ═══ */
+  var WS = null;
+  function wsNeu() { return { phase: STOFF.bild.length >= 4 ? 'd' : 's', lot: 0, stapel: [], runde: 0, runden: 0, treffer: STOFF.bild.map(function () { return 0; }) }; }
+  function lots() { return STOFF.bild.length / 4; }
+  function lotLeiste(k) {
+    var e = [];
+    for (var i = 0; i < lots(); i++) e.push({ t: U.karte(i + 1), c: (i < WS.lot || WS.phase === 's') ? 'ok' : (i === WS.lot ? 'on' : '') });
+    if (STOFF.saetze.length) e.push({ t: U.saetze, c: WS.phase === 's' ? 'on' : '' });
+    if (e.length > 1) O.lot(k, e);
+  }
+  function erkennenStapel() {
+    var neu = [], alt = [];
+    for (var j = 0; j < STOFF.bild.length; j++) { var l = Math.floor(j / 4); if (l === WS.lot) neu.push(j, j); else if (l < WS.lot) alt.push(j); }
+    var st = mischen(neu.concat(alt));
+    for (var t = 1; t < st.length; t++) if (st[t] === st[t - 1]) for (var u = t + 1; u < st.length; u++) if (st[u] !== st[t]) { var x = st[t]; st[t] = st[u]; st[u] = x; break; }
+    return st;
+  }
+  function woerter() {
+    if (!WS) WS = wsNeu();
+    sitzSetze('woerter', 0);
+    var k;
+    if (WS.phase === 'd') {
+      kopf(U.entTitel, 1); k = O.karte(stage);
+      var items = STOFF.bild.slice(WS.lot * 4, WS.lot * 4 + 4);
+      O.task(k, U.entTask, WS.lot ? U.entKleinN : U.entKlein1);
+      lotLeiste(k);
+      var r = O.entdecken(k, items, { lang: ZIEL, sprich: sprich, zaehler: U.entZaehler,
+        alleGehoert: function () { document.getElementById('oh-rechts').disabled = false; setTimeout(function () { if (r.fb.isConnected) r.fb.innerHTML = '<span>' + esc(U.entFertig) + '</span>'; }, 1600); } });
+      O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.erkennen, pri: true, aus: true, go: function () { WS.phase = 'r'; WS.stapel = erkennenStapel(); WS.runden = WS.stapel.length; WS.runde = 0; woerter(); } });
+      return;
+    }
+    if (WS.phase === 'r') {
+      if (!WS.stapel.length) { if (WS.lot + 1 < lots()) { WS.lot++; WS.phase = 'd'; } else WS.phase = 's'; woerter(); return; }
+      kopf(U.erkTitel, 1); k = O.karte(stage);
+      var i = WS.stapel[0], w = STOFF.bild[i];
+      O.task(k, U.erkTask, U.runde(WS.runde + 1, WS.runden));
+      lotLeiste(k);
+      O.big(k, U.anhoeren, function () { sprich(w.z); });
+      var pool = []; for (var j = 0; j < Math.min(STOFF.bild.length, (WS.lot + 1) * 4); j++) if (j !== i && STOFF.bild[j].bild !== w.bild) pool.push(j);
+      O.runde(k, { sprich: sprich, auto: w.z,
+        kacheln: [{ ok: true, html: '<img src="' + esc(w.bild) + '" alt="">' }].concat(mischen(pool).slice(0, 3).map(function (j) { var x = STOFF.bild[j]; return { html: '<img src="' + esc(x.bild) + '" alt="">', falsch: U.falschWort(esc(x.z), esc(x.tr)) }; })),
+        richtig: '<span><em>' + esc(w.z) + '</em> = ' + esc(w.tr) + (w.lt ? '<span class="oh-lt">' + esc(w.lt) + '</span>' : '') + '</span>',
+        fertig: function (sauber) {
+          WS.stapel.shift(); WS.runde++;
+          if (sauber) WS.treffer[i]++; else { WS.stapel.splice(Math.min(WS.stapel.length, 2), 0, i); WS.runden++; }
+          sitzSpeichern(); document.getElementById('oh-rechts').disabled = false;
+        } });
+      O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.nochEins, pri: true, aus: true, go: woerter });
+      return;
+    }
+    /* Sätze für den Tisch */
+    if (!STOFF.saetze.length) { hoeren(); return; }
+    kopf(U.satzTitel, 1); k = O.karte(stage);
+    O.task(k, U.satzTask, U.satzKlein);
+    lotLeiste(k);
+    var r2 = O.entdecken(k, STOFF.saetze, { lang: ZIEL, sprich: sprich, zaehler: U.satzZaehler,
+      alleGehoert: function () { document.getElementById('oh-rechts').disabled = false; setTimeout(function () { if (r2.fb.isConnected) r2.fb.innerHTML = '<span>' + esc(U.satzFertig) + '</span>'; }, 1600); } });
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.hoeren, pri: true, aus: true, go: function () { HS = null; hoeren(); } });
+  }
+
+  /* ═══ 2 · HÖREN ═══ */
+  var HS = null;
+  function hoeren() {
+    if (!STOFF.hoeren.length) { sprechen(0); return; }
+    if (!HS) HS = { stapel: STOFF.hoeren.map(function (_, i) { return i; }), n: 0 };
+    if (!HS.stapel.length) { HS = null; sprechen(0); return; }
+    sitzSetze('hoeren', 0);
+    kopf(U.hoerTitel, 2);
+    var i = HS.stapel[0], h = STOFF.hoeren[i], k = O.karte(stage);
+    O.task(k, U.hoerTask, U.vonN(HS.n + 1, HS.n + HS.stapel.length));
+    O.big(k, U.anhoeren, function () { sprich(h.z); });
+    O.runde(k, { sprich: sprich, auto: h.z, liste: true,
+      kacheln: [{ ok: true, html: '<span class="oh-tz" lang="' + ZIEL + '">' + esc(h.z) + '</span>' }].concat(h.falsch.slice(0, 3).map(function (f) { return { html: '<span class="oh-tz" lang="' + ZIEL + '">' + esc(f) + '</span>', falsch: esc(U.hoerFalsch) }; })),
+      richtig: '<span><em>' + esc(h.z) + '</em>' + (h.tr ? '<br>= ' + esc(h.tr) : '') + '</span>',
+      fertig: function (sauber) { HS.stapel.shift(); HS.n++; if (sauber) ERG.hoeren++; else HS.stapel.push(i); sitzSpeichern(); document.getElementById('oh-rechts').disabled = false; } });
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.weiter, pri: true, aus: true, go: hoeren });
+  }
+
+  /* ═══ 3 · SPRECHEN (Rollenspiel) ═══ */
+  function sprechen(i) {
+    if (!RP || !RP.schritte || !RP.schritte.length || !RP.ausPfad) { lektion(); return; }
+    if (i >= RP.schritte.length) { lektion(); return; }
+    sitzSetze('sprechen', i);
+    kopf(U.sprTitel, 3);
+    var s = RP.schritte[i], k = O.karte(stage);
+    O.blase(k, { capy: CAPY, z: s.spikiu.ziel, lang: ZIEL, lt: s.spikiu.lt, tr: s.spikiu.tr, trLabel: U.ueb });
+    O.task(k, s.tip || U.sprTask, RP.rolleText ? RP.rolleText + ' · ' + U.vonN(i + 1, RP.schritte.length) : U.vonN(i + 1, RP.schritte.length));
+    O.big(k, U.anhoeren, function () { sprich(s.spikiu.ziel); });
+    O.runde(k, { sprich: sprich, auto: s.spikiu.ziel, dannSprich: s.ok.z, liste: true,
+      kacheln: [{ ok: true, html: '<span class="oh-tz" lang="' + ZIEL + '">' + esc(s.ok.z) + '</span>' }].concat(s.falsch.map(function (f) { return { html: '<span class="oh-tz" lang="' + ZIEL + '">' + esc(f.z) + '</span>', falsch: esc(U.sprFalsch(f.tr || f.z)) }; })),
+      richtig: '<span>' + (s.ok.tr ? '= ' + esc(s.ok.tr) + '<br>' : '') + esc(U.sprLaut) + '</span>',
+      fertig: function () { ERG.sprechen++; sitzSpeichern(); document.getElementById('oh-rechts').disabled = false; } });
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: i + 1 < RP.schritte.length ? U.weiter : U.lektion, pri: true, aus: true, go: function () { sprechen(i + 1); } });
+  }
+
+  /* ═══ 4 · LEKTION (gespeichert in „Deine Lektionen", gerendert von karten-engine) ═══ */
   function buildLesson() {
-    var vocab = HAP.wortschatz.map(function (h) { return { word: h.ziel, translation: h.uebersetzung || '' }; });
+    var vocab = STOFF.bild.concat(STOFF.saetze.length ? [] : []).map(function (x) { return { word: x.z, translation: x.tr || '' }; });
+    if (HAP.S) HAP.S.wortschatz.forEach(function (w) { if (!vocab.some(function (v) { return v.word === w.z; })) vocab.push({ word: w.z, translation: na(w) }); });
     var dialogue = [];
     if (RP && RP.schritte) {
-      var rolle = RP.rolleText || (U.rolle && U.rolle[RP.rolle]) || RP.rolle;
+      var rolle = RP.rolleText || RP.rolle || '';
       RP.schritte.forEach(function (st) {
-        dialogue.push({ speaker: rolle, text: st.spikiu.ziel, translation: st.spikiu.trans });
-        var ok = null; st.opts.forEach(function (o) { if (o.ok && !ok) ok = o; });
-        if (ok) dialogue.push({ speaker: U.you, text: ok.text, translation: '' });
+        dialogue.push({ speaker: rolle, text: st.spikiu.ziel, translation: st.spikiu.trans || st.spikiu.tr || '' });
+        var ok = st.ok ? { text: st.ok.z, tr: st.ok.tr } : null;
+        if (!ok) st.opts.forEach(function (o) { if (o.ok && !ok) ok = { text: o.text, tr: '' }; });
+        if (ok) dialogue.push({ speaker: U.you, text: ok.text, translation: ok.tr || '' });
       });
     }
     var quiz = [];
-    vocab.forEach(function (v, i) {
+    vocab.slice(0, 8).forEach(function (v, i) {
       if (!v.translation) return;
-      var distract = [];
-      vocab.forEach(function (x, j) { if (j !== i && x.translation && distract.indexOf(x.translation) === -1) distract.push(x.translation); });
-      quiz.push({ question: U.quizQ(v.word), options: shuffle([v.translation].concat(shuffle(distract).slice(0, 2))), answer: v.translation });
+      var distract = []; vocab.forEach(function (x, j) { if (j !== i && x.translation && distract.indexOf(x.translation) === -1) distract.push(x.translation); });
+      quiz.push({ question: U.quizQ(v.word), options: mischen([v.translation].concat(mischen(distract).slice(0, 2))), answer: v.translation });
     });
     return {
-      title: TOPIC_LABEL, subtitle: U.lessonSubtitle,
-      goalLabel: U.goalLabel, goal: U.goal(TOPIC_LABEL),
-      // Krone (b1): „Gut zu wissen" — ein Satz zum Ort (Leo, 16.10.2026).
-      kulturLabel: U.kulturLabel, kultur: (function () {
-        try { var D = window.SpikiuLernpfad; return (D && D.kulturVon && HAP && HAP.stufe && D.zielsprache === ZIEL) ? D.kulturVon(HAP.stufe, TOPIC_ID, MUT) : ''; } catch (e) { return ''; }
-      })(),
-      vocabLabel: U.vocabLabel, vocab: vocab,
-      dialogueLabel: U.dialogueLabel, dialogue: dialogue,
-      quizLabel: U.quizLabel, quiz: quiz
+      title: TOPIC_LABEL, subtitle: U.lessonSubtitle, goalLabel: U.goalLabel, goal: U.goal(TOPIC_LABEL),
+      kulturLabel: U.kulturLabel, kultur: (function () { try { var D = window.SpikiuLernpfad; return (D && D.kulturVon && HAP.stufe && D.zielsprache === ZIEL) ? D.kulturVon(HAP.stufe, TOPIC_ID, MUT) : ''; } catch (e) { return ''; } })(),
+      vocabLabel: U.vocabLabel, vocab: vocab, dialogueLabel: U.dialogueLabel, dialogue: dialogue, quizLabel: U.quizLabel, quiz: quiz
     };
   }
-
-  function finishScene() {
-    setRail(4);
+  function lektion() {
+    kopf(U.lekTitel, 4);
     sitzRaeumen();
     var lesson = buildLesson();
     try {
       var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
-      u.szenen = u.szenen || {};
-      var prev = u.szenen[TOPIC_ID] || {};
+      u.szenen = u.szenen || {}; var prev = u.szenen[TOPIC_ID] || {};
       u.szenen[TOPIC_ID] = { done: true, last: Date.now(), stab: (prev.stab || 0) + 1 };
-      var entry = {
-        id: 'lesson_' + Date.now(), topic: lesson.title || 'Lektion', thema: TOPIC_LABEL,
-        fromConversation: false, lesson: lesson,
-        createdAt: new Date().toISOString(), zielsprache: ZIEL
-      };
       var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
-      arr.push(entry);
+      arr.push({ id: 'lesson_' + Date.now(), topic: lesson.title || 'Lektion', thema: TOPIC_LABEL, fromConversation: false, lesson: lesson, createdAt: new Date().toISOString(), zielsprache: ZIEL });
       arr.sort(function (a, b) { return (b.createdAt || '').localeCompare(a.createdAt || ''); });
-      u.lessons = arr.slice(0, 14);
-      u.blaetter = (u.blaetter || 0) + 1;
+      u.lessons = arr.slice(0, 14); u.blaetter = (u.blaetter || 0) + 1;
       localStorage.setItem('spikiu_user', JSON.stringify(u));
     } catch (e) {}
-    var lessonItem = lesson; lessonItem.typ = 'lesson'; lessonItem.weiter = U.weiter;
-    SpikiuKarten.render(lessonItem, function () {
-      var spiel = spielZumSchluss();
-      var knoepfe = [];
-      if (spiel) knoepfe.push({ label: spiel.label, go: spiel.start });
-      knoepfe.push({ label: U.viewLesson, ghost: true, go: function () { location.href = 'lektionen.html'; } });
-      knoepfe.push({ label: U.enough, ghost: !!spiel, go: function () { location.href = 'haus.html'; } });
-      SpikiuKarten.render({ typ: 'note', emoji: '🎉', title: U.done, sub: U.doneSub, buttons: knoepfe }, function () {});
-    });
+    stage.innerHTML = ''; fussEl.innerHTML = '';
+    var ls = O.el('div', 'lstage'); stage.appendChild(ls);
+    SpikiuKarten.setup({ stage: ls, zielsprache: ZIEL });
+    var item = lesson; item.typ = 'lesson'; item.weiter = U.weiter.replace(' ›', '');
+    SpikiuKarten.render(item, ende);
   }
 
-  /* ── SPIEL ZUM SCHLUSS (Leo, 01.10.): aus der Ernte DIESER Szene, null Token.
-     ANGEBOTEN, nie verordnet — „Genug für heute" steht gleichwertig daneben.
-     Sätze aus dem Rollenspiel → Piñata (Eindringling aus einem anderen Satz
-     derselben Szene). Wörter → Gemelos. Reihum je Szene (Gemelos · Piñata · Oído fino · El golpe, 11.10.); fehlt der
-     Stoff für das eine, kommt das andere; fehlt beides, kein Angebot. ── */
+  /* ═══ 5 · ABSCHLUSS ═══ */
+  function ende() {
+    kopf(U.fertigTitel, 5);
+    var k = O.karte(stage);
+    O.blase(k, { capy: CAPY, z: ENDE_SP[ZIEL], lang: ZIEL, tr: ENDE_TR[MUT], trOffen: true });
+    var g = O.raster(k, 'bilder');
+    var erkannt = WS ? WS.treffer.filter(function (n) { return n >= 1; }).length : 0;
+    [['📖', U.woerter, STOFF.bild.length ? U.endWoerter(erkannt, STOFF.bild.length) : ''], ['🎧', U.hoerenK, U.endHoeren(ERG.hoeren)], ['🗣️', U.sprechenK, U.endSprechen(ERG.sprechen)], ['✏️', U.lektionK, U.endLektion]].forEach(function (x) {
+      g.appendChild(O.el('div', 'oh-tile', '<span class="oh-te">' + x[0] + '</span><span class="oh-tn">' + esc(x[1]) + '</span><span class="oh-ts">' + esc(x[2]) + '</span>'));
+    });
+    O.fb(k, esc(U.endFb));
+    setTimeout(function () { sprich(ENDE_SP[ZIEL]); }, 300);
+    var spiel = spielZumSchluss();
+    O.fuss(fussEl, { t: U.genug, go: function () { location.href = 'haus.html'; } },
+      spiel ? { t: spiel.label + ' ›', pri: true, go: spiel.start } : { t: U.viewLesson + ' ›', pri: true, go: function () { location.href = 'lektionen.html'; } });
+  }
+  function genug() { sitzSpeichern(); location.href = 'haus.html'; }
+
+  /* ── SPIEL ZUM SCHLUSS (Leo, 01.10.): angeboten, nie verordnet. ── */
   function spielZumSchluss() {
     var J = window.spikiuJuegos; if (!J) return null;
     var saetze = [], mitTr = [];
-    /* Leo 10.10.: jeder Wurf endet mit der Übersetzung in der Muttersprache.
-       Die Skript-Übersetzungen (spikiu.trans) sind DEUTSCH → als Piñata-Satz
-       nur Spikius Zeilen, und nur wenn die Muttersprache Deutsch ist. Sonst
-       gibt es keine Übersetzung → dann Gemelos (Wörter haben eine). */
-    var trPasst = (MUT === 'de') || !!(RP && RP.ausPfad);   // Pfad-Rollenspiel trägt die Muttersprache
     if (RP && RP.schritte) RP.schritte.forEach(function (st) {
-      if (st.spikiu && st.spikiu.ziel) {
-        saetze.push(st.spikiu.ziel);
-        if (trPasst && st.spikiu.trans) mitTr.push({ satz: st.spikiu.ziel, tr: st.spikiu.trans });
-      }
-      st.opts.forEach(function (o) { if (o.ok) saetze.push(o.text); });
+      if (st.spikiu && st.spikiu.ziel) { saetze.push(st.spikiu.ziel); if (st.spikiu.tr) mitTr.push({ satz: st.spikiu.ziel, tr: st.spikiu.tr }); }
+      if (st.ok) saetze.push(st.ok.z);
     });
     var passend = mitTr.filter(function (x) { var n = J.woerterAus(x.satz).length; return n >= 3 && n <= 8; });
-    var woerter = (HAP && HAP.wortschatz || []).filter(function (h) { return h.ziel && h.uebersetzung; });
-    var pool = saetze.concat(woerter.map(function (h) { return h.ziel; }));
+    var woerterL = STOFF.bild.concat(STOFF.saetze).filter(function (h) { return h.z && h.tr; });
+    var pool = saetze.concat(woerterL.map(function (h) { return h.z; }));
     var pinata = null;
-    J.mezcla(passend).some(function (x) {
-      var ein = J.eindringling(x.satz, pool, ZIEL);
-      if (ein) pinata = { satz: x.satz, tr: x.tr, intruso: ein.wort, intrusoDe: ein.aus };
-      return !!pinata;
-    });
-    var gemelos = woerter.length >= 4 ? J.mezcla(woerter).slice(0, 4).map(function (h) { return { z: h.ziel, na: h.uebersetzung }; }) : null;
-    /* NACHKLANG (Leo, 11.10., Haus-neu v3): Oído fino und El golpe sind keine
-       Abenteuer-Kacheln mehr — sie klingen am Ende der Szene nach, mit den Wörtern
-       DIESES Themas (wortfelder.js, gleiche Themen-IDs wie die Szenen). Wörter, die
-       in der Szene selbst vorkamen, zuerst. Der Schlag seit 12.10. in es/de/en/el (silbenTon). */
-    var szeneN = {}; (HAP && HAP.wortschatz || []).forEach(function (h) { if (h.ziel) szeneN[nachklangNorm(h.ziel)] = 1; });
+    J.mezcla(passend).some(function (x) { var ein = J.eindringling(x.satz, pool, ZIEL); if (ein) pinata = { satz: x.satz, tr: x.tr, intruso: ein.wort, intrusoDe: ein.aus }; return !!pinata; });
+    var nurW = STOFF.bild.filter(function (h) { return h.z && h.tr; });
+    var gemelos = nurW.length >= 4 ? J.mezcla(nurW).slice(0, 4).map(function (h) { return { z: h.z, na: h.tr }; }) : null;
     var feldW = (window.spikiuWortfelder && TOPIC_ID) ? window.spikiuWortfelder.feld(ZIEL, TOPIC_ID, MUT) : [];
-    var zuerst = feldW.filter(function (x) { return szeneN[nachklangNorm(x.z)]; });
-    var feldSortiert = zuerst.concat(J.mezcla(feldW.filter(function (x) { return !szeneN[nachklangNorm(x.z)]; })));
-    var oido = null, I = window.spikiuIcon;
-    if (I) {
-      var bilder = [], gesehen = {};
-      feldSortiert.forEach(function (x) { var e = x.en ? I.konzept(x.en) : ''; var b = e ? I.datei(e) : ''; if (b && !gesehen[b]) { gesehen[b] = 1; bilder.push({ z: x.z, tr: x.tr, bild: b }); } });
-      if (bilder.length >= 4) oido = { bilder: bilder.slice(0, 8) };
-    }
-    var golpe = null;
-    var gw = feldSortiert.filter(function (x) { var r = J.silbenTon(x.z, ZIEL); return r && r.s.length >= 2 && r.s.length <= 4; });
-    if (gw.length >= 3) golpe = { woerter: gw };
+    var gw = feldW.filter(function (x) { var r = J.silbenTon(x.z, ZIEL); return r && r.s.length >= 2 && r.s.length <= 4; });
+    var golpe = gw.length >= 3 ? { woerter: gw } : null;
     var zaehler = 0; try { zaehler = (JSON.parse(localStorage.getItem('spikiu_user') || '{}').blaetter) || 0; } catch (e) {}
-    var daten = { gemelos: gemelos, pinata: pinata, oido: oido, golpe: golpe };
-    var reihe = ['gemelos', 'pinata', 'oido', 'golpe'].filter(function (a) { return !!daten[a]; });
+    var daten = { gemelos: gemelos, pinata: pinata, golpe: golpe };
+    var reihe = ['gemelos', 'pinata', 'golpe'].filter(function (a) { return !!daten[a]; });
     if (!reihe.length) return null;
     var art = reihe[zaehler % reihe.length];
-    var LABEL = { pinata: U.spielPinata, gemelos: U.spielGemelos, oido: U.spielOido, golpe: U.spielGolpe };
-    return {
-      label: LABEL[art],
-      start: function () { zeigeSpiel(art, daten[art]); }
-    };
+    var LABEL = { pinata: U.spielPinata, gemelos: U.spielGemelos, golpe: U.spielGolpe };
+    return { label: LABEL[art], start: function () { zeigeSpiel(art, daten[art]); } };
   }
-  function nachklangNorm(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/^(el|la|los|las|der|die|das|the|ο|η|το|οι|τα)\s+/, '').replace(/[^\p{L}\s]/gu, '').trim(); }
   function zeigeSpiel(art, daten) {
     var J = window.spikiuJuegos;
-    var opts = { nativeLang: MUT, zielLang: ZIEL, sprich: function (t) { try { if (window.sprich) window.sprich(t, ZIEL); } catch (e) {} } };
+    var opts = { nativeLang: MUT, zielLang: ZIEL, sprich: function (t) { sprich(t); } };
     var blatt = document.createElement('div'); blatt.className = 'spiel-ende';
     var karte = document.createElement('div'); karte.className = 'karte';
-    if (art === 'gemelos') opts.klang = true;   // Mini-Klang bei falschem Paar (Leo, 02.10.)
-    var spiel = (art === 'pinata') ? J.pinata(daten, opts) : (art === 'oido') ? J.oido(daten, opts) : (art === 'golpe') ? J.golpe(daten, opts) : J.gemelos(daten, opts);
-    karte.appendChild(spiel); blatt.appendChild(karte);
-    document.getElementById('stage').appendChild(blatt);
+    if (art === 'gemelos') opts.klang = true;
+    var spiel = (art === 'pinata') ? J.pinata(daten, opts) : (art === 'golpe') ? J.golpe(daten, opts) : J.gemelos(daten, opts);
+    karte.appendChild(spiel); blatt.appendChild(karte); stage.appendChild(blatt);
     var fertig = false;
     spiel.addEventListener('jg-done', function () {
       if (fertig) return; fertig = true;
       var e = document.createElement('div'); e.className = 'ends';
-      var a = document.createElement('button'); a.className = 'end'; a.type = 'button'; a.textContent = U.viewLesson;
-      a.onclick = function () { spiel.stop(); location.href = 'lektionen.html'; };
-      var b = document.createElement('button'); b.className = 'end primary'; b.type = 'button'; b.textContent = U.enough;
-      b.onclick = function () { spiel.stop(); location.href = 'haus.html'; };
+      var a = document.createElement('button'); a.className = 'end'; a.type = 'button'; a.textContent = U.viewLesson; a.onclick = function () { spiel.stop(); location.href = 'lektionen.html'; };
+      var b = document.createElement('button'); b.className = 'end primary'; b.type = 'button'; b.textContent = U.enough; b.onclick = function () { spiel.stop(); location.href = 'haus.html'; };
       e.appendChild(a); e.appendChild(b); blatt.appendChild(e);
       setTimeout(function () { try { e.scrollIntoView({ behavior: 'smooth', block: 'end' }); } catch (x) {} }, 900);
     });
   }
 
-  /* ── Eintritt: nur bei einer WIRKLICH angefangenen, unfertigen Sitzung fragen ── */
+  /* ── Eintritt: Direktweg ?thema=, Wiederkommen, sonst Themenwahl ── */
   function sitzWiederherstellen(sv) {
-    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
-    if (db.indexOf(sv.topicId) === -1) { showPalette(); return; }
-    TOPIC_ID = sv.topicId;
-    var sz = (window.spikiuSzenen || []).filter(function (x) { return x.id === sv.topicId; })[0];
-    TOPIC_LABEL = sv.topicLabel || (sz ? (sz[MUT] || sz.de) : sv.topicId);
-    HAP = ladeStoff();
-    if (!HAP) { showPalette(); return; }
-    var i = sv.index || 0;
-    if (sv.phase === 'hoeren')          { setRail(2); startHoeren(i); }
-    else if (sv.phase === 'drill')      { setRail(3); startDrill(i); }
-    else if (sv.phase === 'rollenspiel'){ setRail(3); startRollenspiel(i); }
-    else                                { setRail(1); startWoerter(i); }
+    var lab = sv.topicLabel || sv.topicId;
+    betrete(sv.topicId, lab, function () {
+      ERG = sv.erg || { hoeren: 0, sprechen: 0 };
+      var ws = sv.ws;
+      if (ws && STOFF.bild.length && ws.treffer && ws.treffer.length === STOFF.bild.length) WS = ws; else WS = null;
+      if (sv.phase === 'hoeren') { HS = null; hoeren(); }
+      else if (sv.phase === 'sprechen') sprechen(sv.index || 0);
+      else woerter();
+    });
   }
-  /* ── Direktweg ?thema=<id> (15.10.2026): der Lernroman verlinkt am Ende jeder
-        Station auf „ihre" Szene. Wer so kommt, will genau dieses Thema — keine
-        Palette, keine Wiederkommen-Frage. Mit &von=learnroman führt der
-        Zurück-Knopf wieder ins Buch. Unbekanntes Thema → normale Palette. ── */
   function direktThema() {
     var such = window.location.search || '';
+    if (/[?&]von=learnroman\b/.test(such)) ZURUECK = 'learnroman.html';
     var m = such.match(/[?&]thema=([a-z]+)/);
-    if (/[?&]von=learnroman\b/.test(such)) {
-      var zb = document.querySelector('.rnav .back');
-      if (zb) zb.onclick = function () { window.location.href = 'learnroman.html'; };
-    }
     if (!m) return false;
-    var id = m[1];
-    var db = (window.spikiuHaeppchen && window.spikiuHaeppchen.themen) || [];
-    if (db.indexOf(id) === -1) return false;
+    var id = m[1], D = window.SpikiuLernpfad, t = D && D.themen ? D.themen.filter(function (x) { return x.id === id; })[0] : null;
     var sz = (window.spikiuSzenen || []).filter(function (x) { return x.id === id; })[0];
-    TOPIC_ID = id;
-    TOPIC_LABEL = sz ? (sz[MUT] || sz.de) : id;
-    HAP = ladeStoff();
-    if (!HAP) { TOPIC_ID = null; TOPIC_LABEL = ''; return false; }
+    var lab = t ? (t.na[MUT] || t.na.en || t.na.de) : (sz ? (sz[MUT] || sz.de) : id);
+    TOPIC_ID = id; HAP = ladeStoff(); if (!HAP) { TOPIC_ID = null; return false; }
     sitzRaeumen();
-    markiereBesuch();
-    startWoerter();
+    betrete(id, lab);
     return true;
   }
-
   function eintritt() {
     if (direktThema()) return;
     var sv = null;
     try { sv = (window.spikiuSitzung && window.spikiuSitzung.lade) ? window.spikiuSitzung.lade('gefuehrt') : null; } catch (e) { sv = null; }
-    var angefangen = sv && sv.topicId && sv.phase && !(sv.phase === 'woerter' && !sv.index);
+    var angefangen = sv && sv.topicId && sv.phase;
     if (angefangen && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen) {
-      window.spikiuSitzung.frageWiederkommen({
-        raum: 'gefuehrt', ts: sv.ts, wo: sv.topicLabel || '',
-        beimWeiter: function () { sitzWiederherstellen(sv); },
-        beimNeu: function () { sitzRaeumen(); showPalette(); }
-      });
+      window.spikiuSitzung.frageWiederkommen({ raum: 'gefuehrt', ts: sv.ts, wo: sv.topicLabel || '',
+        beimWeiter: function () { sitzWiederherstellen(sv); }, beimNeu: function () { sitzRaeumen(); showPalette(); } });
       return;
     }
     showPalette();
