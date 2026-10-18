@@ -79,6 +79,23 @@ footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:12px;padding
 .blase{position:relative}
 .mini{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:var(--acc);color:#fff;box-shadow:2px 2px 0 var(--ink);cursor:pointer;display:grid;place-items:center;font-size:.95rem;align-self:center}
 .big.mic{display:flex;align-items:center;gap:.45rem}
+/* Sätze (Leo, 18.10. 23:41: „Längere Sätze können da nicht hinein passen"): Sätze stehen als vier
+   breite Zeilen untereinander (2×2 nur für Bilder und kurze Wörter); jede Kachel verkleinert ihre
+   Schrift, bis der Text passt (wie fitCard in karten-engine.js). */
+.grid.liste{grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(44px,1fr));gap:9px}
+.karte{overflow-y:auto}
+.grid{grid-template-rows:repeat(2,minmax(88px,1fr))}
+.grid.liste{grid-template-rows:repeat(4,minmax(44px,1fr))}
+.grid.liste .tile{padding:6px 14px;border-radius:16px}
+.tile{--fs:1}
+.tile .tz{font-size:calc(clamp(1rem,4.6vw,1.3rem)*var(--fs))}
+.tile .tl{font-size:calc(.74rem*var(--fs))}
+.tile .tu{font-size:calc(.9rem*var(--fs))}
+.grid.liste .tile .tz{font-size:calc(1.15rem*var(--fs))}
+.tile.eng .tl{display:none}
+.grid.wachsen{grid-template-rows:repeat(2,minmax(min-content,1fr))}
+.grid.liste.wachsen{grid-template-rows:repeat(4,minmax(min-content,1fr))}
+.tile.eng{padding-top:3px;padding-bottom:3px;gap:2px}
 /* Entdecken: Bild antippen → hören + Wort, Umschrift, Bedeutung */
 .tile.ent{position:relative}
 .tile.ent .neu{display:none;flex-direction:column;align-items:center;gap:2px}
@@ -354,9 +371,20 @@ function karte(){var k=$('karte');k.innerHTML='';k.classList.remove('pop');void 
 function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
 function bigKnopf(k,text,go){var b=el('button','big','🔊 '+text);b.type='button';b.id='big';b.onclick=go;k.appendChild(b);return b;}
 
+function zuEng(t){return t.scrollHeight>t.clientHeight+1||t.scrollWidth>t.clientWidth+1;}
+function fitTiles(g){if(!g)return;g.classList.remove('wachsen');var rest=false;g.querySelectorAll('.tile').forEach(function(t){
+ t.classList.remove('eng');t.style.setProperty('--fs','1');var f=1;
+ while(f>.6&&zuEng(t)){f-=.05;t.style.setProperty('--fs',f.toFixed(2));}
+ if(zuEng(t)){t.classList.add('eng');f=Math.min(f+.15,1);t.style.setProperty('--fs',f.toFixed(2));while(f>.55&&zuEng(t)){f-=.05;t.style.setProperty('--fs',f.toFixed(2));}}if(zuEng(t))rest=true;});
+ /* Letzte Stufe: lieber wächst die Kachel (und die Karte rollt), als dass Text abgeschnitten wird. */
+ if(rest)g.classList.add('wachsen');}
+/* Jede Größenänderung (Übersetzung klappt auf, Rückmeldung wird länger, Drehen) → neu einpassen. */
+function fitSpaeter(g){requestAnimationFrame(function(){fitTiles(g);});
+ if(window.ResizeObserver){var h=null;new ResizeObserver(function(){if(h)return;h=requestAnimationFrame(function(){h=null;if(g.isConnected)fitTiles(g);});}).observe(g);}
+ else window.addEventListener('resize',function(){if(g.isConnected)fitTiles(g);});}
 /* Eine Ohr-Runde: hören → eine von vier Kacheln. Für Wörter, Hören, Sprechen, Lektion gleich. */
 function runde(o){
- var k=o.karte, g=el('div','grid'), fb=el('div','fb'), fertig=false, fehler=0;
+ var k=o.karte, g=el('div','grid'+(o.liste?' liste':'')), fb=el('div','fb'), fertig=false, fehler=0;
  k.appendChild(g);k.appendChild(fb);
  mischen(o.kacheln).forEach(function(x,n){
   var b=el('button','tile',x.html);b.type='button';b.id='t-'+n;if(x.ok)b.dataset.r='1';g.appendChild(b);
@@ -364,6 +392,7 @@ function runde(o){
    if(x.ok){fertig=true;b.classList.add('ok');klang(true);fb.className='fb';fb.innerHTML=o.richtig;if(o.dannSprich)setTimeout(function(){sprich(o.dannSprich);},350);o.fertig(fehler===0);}
    else{fehler++;klang(false);b.classList.add('no');b.disabled=true;fb.className='fb soft';fb.innerHTML=x.falschText||'Hör nochmal genau hin.';}
   };});
+ fitSpaeter(g);
  if(o.auto)setTimeout(function(){sprich(o.auto);},380);
  return {fb:fb};
 }
@@ -411,10 +440,11 @@ function kachelEnt(x,klasse){return el('button','tile ent'+(klasse?' '+klasse:''
  '<span class="neu">'+(x.bild?'<span class="tz" lang="'+Z+'">'+esc(x.z)+'</span>':'')+(x.lt?'<span class="tl">'+esc(x.lt)+'</span>':'')+'<span class="tu">'+esc(x.de)+'</span></span>');}
 /* Eine Entdecken-Karte: vier Dinge, jedes antippen; „weiter" erst, wenn alle vier gehört sind. */
 function entdecken(k,items,fertigText,weiter){
- var g=el('div','grid'),fb=el('div','fb'),ges={};k.appendChild(g);k.appendChild(fb);
+ var istSatz=!items[0].bild;
+ var g=el('div','grid'+(istSatz?' liste':'')),fb=el('div','fb'),ges={};k.appendChild(g);k.appendChild(fb);fitSpaeter(g);
  fb.innerHTML='<span style="color:var(--mid);font-weight:600">0 von '+items.length+' entdeckt</span>';
  items.forEach(function(x,n){var b=kachelEnt(x,x.bild?'':'satz');b.type='button';b.id='e-'+n;g.appendChild(b);
-  b.onclick=function(){sprich(x.z);b.classList.add('ges');ges[n]=1;var z=Object.keys(ges).length;
+  b.onclick=function(){sprich(x.z);b.classList.add('ges');ges[n]=1;fitTiles(g);var z=Object.keys(ges).length;
    fb.className='fb';fb.innerHTML='<span><em>'+esc(x.z)+'</em> = '+esc(x.de)+(x.lt?'<span class="lt">'+esc(x.lt)+'</span>':'')+'</span>';
    if(z===items.length){$('b-rechts').disabled=false;setTimeout(function(){if(fb.isConnected){fb.innerHTML='<span>'+fertigText+'</span>';}},1600);}};});
  return g;
@@ -472,7 +502,7 @@ function hoeren(){
  var i=HS.stapel[0],h=HOEREN[i],k=karte();
  k.appendChild(el('p','task','Welchen Satz hörst du?<small>'+(HS.n+1)+' von '+(HS.n+HS.stapel.length)+'</small>'));
  bigKnopf(k,'Anhören',function(){sprich(h.z);});
- runde({karte:k,auto:h.z,
+ runde({karte:k,auto:h.z,liste:true,
   kacheln:[{ok:true,html:'<span class="tz">'+esc(h.z)+'</span>'}].concat(h.falsch.map(function(f){return {html:'<span class="tz">'+esc(f)+'</span>',falschText:'Fast — hör auf die kleinen Wörter.'};})),
   richtig:'<span><em>'+esc(h.z)+'</em><br>= '+esc(h.de)+'</span>',
   fertig:function(sauber){HS.stapel.shift();HS.n++;if(!sauber)HS.stapel.push(i);$('b-rechts').disabled=false;}});
@@ -489,7 +519,7 @@ function sprechen(){
  k.appendChild(z);
  z.querySelector('#ueb').onclick=function(){this.parentNode.textContent=r.spDe;};
  bigKnopf(k,'Kellner anhören',function(){sprich(r.sp);});
- runde({karte:k,auto:r.sp,dannSprich:r.z,
+ runde({karte:k,auto:r.sp,dannSprich:r.z,liste:true,
   kacheln:[{ok:true,html:'<span class="tz">'+esc(r.z)+'</span>'}].concat(r.falsch.map(function(f){return {html:'<span class="tz">'+esc(f[0])+'</span>',falschText:'„'+esc(f[1])+'" — passt hier noch nicht.'};})),
   richtig:'<span>= '+esc(r.de)+'<br>🗣️ Jetzt sag es laut nach.</span>',
   fertig:function(){$('b-rechts').disabled=false;}});
@@ -550,7 +580,7 @@ function frei(){
  uebKnopf();
  $('spk-mini').onclick=function(){sprich(aktuell.z);};
  var mic=el('button','big mic','🎤 Selbst sagen');mic.type='button';mic.id='mic';k.appendChild(mic);
- var g=el('div','grid'),fb=el('div','fb');k.appendChild(g);k.appendChild(fb);
+ var g=el('div','grid liste'),fb=el('div','fb');k.appendChild(g);k.appendChild(fb);
  mic.onclick=function(){fb.className='fb soft';fb.innerHTML='Hier sprichst du frei, und Spikiu antwortet darauf (Premium). Im Prototyp ohne Mikrofon.';};
  fb.innerHTML='<span style="color:var(--mid);font-weight:600">Sag es selbst — oder tipp einen Vorschlag.</span>';
  var gewaehlt=false;
@@ -562,6 +592,7 @@ function frei(){
    setTimeout(function(){aktuell={z:o.r,de:o.rDe};$('spz').textContent=o.r;$('spu').innerHTML='<button type="button" id="ueb">Übersetzung</button>';uebKnopf();sprich(o.r);
     if(o.hilfe){FZ=FZ;} $('b-rechts').disabled=false;},1500);
   };});
+ fitSpaeter(g);
  fuss({t:'Genug für heute',go:function(){FZ=FREI.length;frei();}},{t:'weiter ›',pri:true,aus:true,go:function(){
   var gew=q.opts.filter(function(o,n){return $('f-'+n).classList.contains('gew');})[0];
   if(!(gew&&gew.hilfe))FZ++;frei();}});
@@ -579,5 +610,6 @@ function sprache(z){setzeSprache(z);$('z-es').setAttribute('aria-pressed',String
 $('z-es').onclick=function(){sprache('es');};
 $('z-el').onclick=function(){sprache('el');};
 setzeSprache('es');
+if(location.hash==='#app')document.querySelectorAll('.proto').forEach(function(e){e.hidden=true;});
 thema(false);
 </script>
