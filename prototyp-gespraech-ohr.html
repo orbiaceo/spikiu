@@ -79,7 +79,34 @@ footer{flex:0 0 auto;display:flex;justify-content:space-between;gap:12px;padding
 .blase{position:relative}
 .mini{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:var(--acc);color:#fff;box-shadow:2px 2px 0 var(--ink);cursor:pointer;display:grid;place-items:center;font-size:.95rem;align-self:center}
 .big.mic{display:flex;align-items:center;gap:.45rem}
+/* Entdecken: Bild antippen → hören + Wort, Umschrift, Bedeutung */
+.tile.ent{position:relative}
+.tile.ent .neu{display:none;flex-direction:column;align-items:center;gap:2px}
+.tile.ent.ges .neu{display:flex}
+.tile.ent.ges img{max-height:44%}
+.tile.ent.ges{border-color:var(--acc);box-shadow:3px 4px 0 var(--acc)}
+.tile.ent.ges::after{content:'✓';position:absolute;top:6px;right:9px;font:800 .9rem var(--f-ui);color:var(--acc)}
+.tile .tl{font:500 .74rem var(--f-mono);color:var(--mid)}
+.tile .tu{font:700 .9rem/1.2 var(--f-ui);color:var(--okInk)}
+.tile.satz .tz{font-size:clamp(1rem,4.4vw,1.2rem)}
+.lot{display:flex;gap:6px;justify-content:center;margin-top:-4px}
+.lot b{font:700 .62rem var(--f-ui);letter-spacing:.06em;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;border:1.5px solid var(--faint);color:#9aa49f}
+.lot b.on{border-color:var(--acc);color:var(--acc)} .lot b.ok{border-color:var(--okInk);color:var(--okInk)}
 @media (max-height:720px){
+ .task small{display:none}
+ .proto{padding-top:3px;padding-bottom:1px}
+ .proto span{display:none}
+ .proto button{padding:.16rem .55rem;font-size:.68rem}
+ .lot b{padding:.12rem .4rem;font-size:.56rem}
+ .tile.ent.ges img{max-height:26%}
+ .tile.ent{padding:6px;gap:3px}
+ .tile.ent .neu{gap:0}
+ .tile.ent.ges .tz{font-size:.98rem;line-height:1.15}
+ .tile.satz .tz{font-size:.86rem;line-height:1.15}
+ .tile.satz .tu{font-size:.72rem}
+ .tile.satz .tl{font-size:.6rem}
+ .tile .tl{font-size:.66rem}
+ .tile .tu{font-size:.78rem;line-height:1.15}
  .karte{gap:9px;padding:12px 12px 8px}
  .tile .ts{display:none}
  .tile .te{font-size:2rem}
@@ -186,7 +213,30 @@ var L={
 
  ENDE:{sp:'Μπράβο! Τα λέμε αύριο.',de:'Bravo! Bis morgen.'},
  ORT2:['In der Taverne','ein Tisch, die Empfehlung'], LEKT_KURZ:'Bestellen frisst das -ς', SPRACHE:'Griechisch', BESTELLT:'Frappé, Tee …',
- STIMMEN:['el-GR'], LANG:'el-GR'
+ STIMMEN:['el-GR'], LANG:'el-GR',
+ /* Spirale (Leo, 18.10.): nur sichtbare Wörter als Bildkarten, je 4 eine Karte. Die Station hat nur 3 Bildwörter —
+    ergänzt aus dem Wortfeld Café (wortfelder.js, Stufe 1). Wörter ohne Bild kommen als Sätze. */
+ BILD:[
+  {z:'ο καφές',lt:'o kafés',de:'der Kaffee',bild:'bilder/om-2615.svg'},
+  {z:'το τσάι',lt:'to tsái',de:'der Tee',bild:'bilder/om-1F375.svg'},
+  {z:'το γάλα',lt:'to gála',de:'die Milch',bild:'bilder/om-1F95B.svg'},
+  {z:'το νερό',lt:'to neró',de:'das Wasser',bild:'bilder/sp-wasser.svg'},
+  {z:'το ποτήρι',lt:'to potíri',de:'das Glas',bild:'bilder/om-1F943.svg'},
+  {z:'το κρουασάν',lt:'to krouasán',de:'das Croissant',bild:'bilder/om-1F950.svg'},
+  {z:'το κέικ',lt:'to kéik',de:'der Kuchen',bild:'bilder/om-1F370.svg'},
+  {z:'ο λογαριασμός',lt:'o logariasmós',de:'die Rechnung',bild:'bilder/om-1F9FE.svg'},
+  {z:'το μέλι',lt:'to méli',de:'der Honig',bild:'bilder/om-1F36F.svg'},
+  {z:'το κουτάλι',lt:'to koutáli',de:'der Löffel',bild:'bilder/om-1F944.svg'},
+  {z:'ο χυμός',lt:'o chimós',de:'der Saft',bild:'bilder/om-1F9C3.svg'},
+  {z:'το παγωτό',lt:'to pagotó',de:'das Eis',bild:'bilder/om-1F368.svg'}
+ ],
+ FRASEN:[
+  {z:'Έναν φραπέ, παρακαλώ.',lt:'Énan frapé, parakaló.',de:'Einen Frappé, bitte.'},
+  {z:'Μέτριο, με γάλα.',lt:'Métrio, me gála.',de:'Mittelsüß, mit Milch.'},
+  {z:'Για εδώ ή πακέτο;',lt:'Ya edó i pakéto?',de:'Zum Hiertrinken oder zum Mitnehmen?'},
+  {z:'Ευχαριστώ!',lt:'Efcharistó!',de:'Danke!'}
+ ],
+ TISCH:[0,1,6,3]
  },
  es:{
  WOERTER:[
@@ -250,11 +300,32 @@ var L={
  FREI_ENDE:{sp:'¡Qué buena conversación! Que tenga un buen día.',de:'Was für ein schönes Gespräch! Einen schönen Tag noch.'},
  ENDE:{sp:'¡Muy bien! Hasta mañana.',de:'Sehr gut! Bis morgen.'},
  ORT2:['In der Bar','Tapas, die Empfehlung'], LEKT_KURZ:'un café · una taza', SPRACHE:'Spanisch', BESTELLT:'Milchkaffee, Tee …',
- STIMMEN:['es-US','es-419','es-MX','es-ES'], LANG:'es-US'
+ STIMMEN:['es-US','es-419','es-MX','es-ES'], LANG:'es-US',
+ BILD:[
+  {z:'el café',de:'der Kaffee',bild:'bilder/om-2615.svg'},
+  {z:'el té',de:'der Tee',bild:'bilder/om-1F375.svg'},
+  {z:'la leche',de:'die Milch',bild:'bilder/om-1F95B.svg'},
+  {z:'el agua',de:'das Wasser',bild:'bilder/sp-wasser.svg'},
+  {z:'el vaso',de:'das Glas',bild:'bilder/om-1F943.svg'},
+  {z:'el cruasán',de:'das Croissant',bild:'bilder/om-1F950.svg'},
+  {z:'la tarta',de:'der Kuchen',bild:'bilder/om-1F370.svg'},
+  {z:'la cuenta',de:'die Rechnung',bild:'bilder/om-1F9FE.svg'},
+  {z:'la miel',de:'der Honig',bild:'bilder/om-1F36F.svg'},
+  {z:'la cuchara',de:'der Löffel',bild:'bilder/om-1F944.svg'},
+  {z:'el zumo',de:'der Saft',bild:'bilder/om-1F9C3.svg'},
+  {z:'el helado',de:'das Eis',bild:'bilder/om-1F368.svg'}
+ ],
+ FRASEN:[
+  {z:'Un café, por favor.',de:'Einen Kaffee, bitte.'},
+  {z:'Con leche, gracias.',de:'Mit Milch, danke.'},
+  {z:'Quiero un té.',de:'Ich möchte einen Tee.'},
+  {z:'¿Cuánto es?',de:'Was kostet das?'}
+ ],
+ TISCH:[0,1,5,3]
  }
 };
-var Z='el',WOERTER,HOEREN,ROLLE,LEKTION,FREI,FREI_ENDE,SP;
-function setzeSprache(z){Z=z;SP=L[z];WOERTER=SP.WOERTER;HOEREN=SP.HOEREN;ROLLE=SP.ROLLE;LEKTION=SP.LEKTION;FREI=SP.FREI;FREI_ENDE=SP.FREI_ENDE;stimme();}
+var Z='el',BILD,FRASEN,WOERTER,HOEREN,ROLLE,LEKTION,FREI,FREI_ENDE,SP;
+function setzeSprache(z){Z=z;SP=L[z];BILD=SP.BILD;FRASEN=SP.FRASEN;WOERTER=SP.WOERTER;HOEREN=SP.HOEREN;ROLLE=SP.ROLLE;LEKTION=SP.LEKTION;FREI=SP.FREI;FREI_ENDE=SP.FREI_ENDE;stimme();}
 
 /* ── Werkzeug ── */
 function $(id){return document.getElementById(id);}
@@ -325,35 +396,73 @@ function thema(unter){
  }
 }
 
-/* Wörter: Feines Ohr mit Wiederholung. Jedes Wort braucht zwei Treffer auf Anhieb; ein Fehler
-   setzt es zurück und holt es bald wieder. So kommt jedes Wort mehrmals, das schwere öfter. */
+/* Wörter als Spirale (Leo, 18.10., 22:52 „1 y 2 tal como lo recomendaste"):
+   Entdecken 1 (4 Bilder antippen) → Erkennen 1 (nur diese 4) → Entdecken 2 → Erkennen 2 (alle 8 gemischt)
+   → Entdecken 3 → Erkennen 3 (alle 12) → Sätze für den Tisch (Wörter ohne Bild, in Sätzen).
+   Erkennen: neue Wörter je zweimal, ältere je einmal; ein Fehler holt das Wort nach zwei Runden zurück.
+   Ablenker kommen NUR aus schon entdeckten Wörtern. */
 var WS=null;
+function wsNeu(){return {phase:'d',lot:0,gesehen:{},stapel:[],runde:0,runden:0,treffer:BILD.map(function(){return 0;}),satz:{}};}
+function lots(){return Math.ceil(BILD.length/4);}
+function lotLeiste(){var h='';for(var k=0;k<lots();k++){var c=k<WS.lot||WS.phase==='s'?'ok':(k===WS.lot?'on':'');h+='<b class="'+c+'">Karte '+(k+1)+'</b>';}
+ h+='<b class="'+(WS.phase==='s'?'on':'')+'">Sätze</b>';var d=el('div','lot',h);return d;}
+function kachelEnt(x,klasse){return el('button','tile ent'+(klasse?' '+klasse:''),
+ (x.bild?'<img src="'+x.bild+'" alt="'+esc(x.de)+'">':'<span class="tz">'+esc(x.z)+'</span>')+
+ '<span class="neu">'+(x.bild?'<span class="tz" lang="'+Z+'">'+esc(x.z)+'</span>':'')+(x.lt?'<span class="tl">'+esc(x.lt)+'</span>':'')+'<span class="tu">'+esc(x.de)+'</span></span>');}
+/* Eine Entdecken-Karte: vier Dinge, jedes antippen; „weiter" erst, wenn alle vier gehört sind. */
+function entdecken(k,items,fertigText,weiter){
+ var g=el('div','grid'),fb=el('div','fb'),ges={};k.appendChild(g);k.appendChild(fb);
+ fb.innerHTML='<span style="color:var(--mid);font-weight:600">0 von '+items.length+' entdeckt</span>';
+ items.forEach(function(x,n){var b=kachelEnt(x,x.bild?'':'satz');b.type='button';b.id='e-'+n;g.appendChild(b);
+  b.onclick=function(){sprich(x.z);b.classList.add('ges');ges[n]=1;var z=Object.keys(ges).length;
+   fb.className='fb';fb.innerHTML='<span><em>'+esc(x.z)+'</em> = '+esc(x.de)+(x.lt?'<span class="lt">'+esc(x.lt)+'</span>':'')+'</span>';
+   if(z===items.length){$('b-rechts').disabled=false;setTimeout(function(){if(fb.isConnected){fb.innerHTML='<span>'+fertigText+'</span>';}},1600);}};});
+ return g;
+}
+function alleAnhoeren(items){var i=0;(function n(){if(i>=items.length)return;sprich(items[i].z);i++;setTimeout(n,1400);})();}
+function erkennenStapel(){var neu=[],alt=[];for(var j=0;j<BILD.length;j++){var l=Math.floor(j/4);if(l===WS.lot)neu.push(j,j);else if(l<WS.lot)alt.push(j);}
+ var st=mischen(neu.concat(alt));for(var t=1;t<st.length;t++){if(st[t]===st[t-1]){for(var u=t+1;u<st.length;u++){if(st[u]!==st[t]){var x=st[t];st[t]=st[u];st[u]=x;break;}}}}return st;}
 function woerter(){
- if(!WS){WS={stapel:mischen(WOERTER.map(function(_,i){return i;})),punkte:WOERTER.map(function(){return 0;}),runde:0};}
- rail(1);kopf('Geführtes Gespräch','Wörter');
- if(!WS.stapel.length){
-  var k0=karte();k0.appendChild(el('p','task','Alle '+WOERTER.length+' Wörter sitzen.<small>Jedes kam mindestens zweimal — die schweren öfter.</small>'));
-  var g0=el('div','grid');k0.appendChild(g0);
-  WOERTER.filter(function(w){return w.bild;}).slice(0,3).concat(WOERTER.filter(function(w){return !w.bild;}).slice(-1)).map(function(w){return [w.bild||null,w.z];}).forEach(function(x){g0.appendChild(el('div','tile ok',(x[0]?'<img src="'+x[0]+'" alt="" style="max-height:55%">':'')+'<span class="tz">'+x[1]+'</span>'));});
-  k0.appendChild(el('div','fb',WOERTER.length+' von '+WOERTER.length+' ✓'));
-  fuss({t:'nochmal',go:function(){WS=null;woerter();}},{t:'Hören ›',pri:true,go:function(){geheZu(2);}});return;}
- var i=WS.stapel[0], w=WOERTER[i], k=karte();
- k.appendChild(el('p','task','Hör gut zu und tipp, was es bedeutet.'));
- var p=el('div','punkte');p.innerHTML=WS.punkte.map(function(n){return '<i class="'+(n>=2?'v':n===1?'h':'')+'"></i>';}).join('');k.appendChild(p);
- bigKnopf(k,'Anhören',function(){sprich(w.z);});
- var andere=mischen(WOERTER.map(function(_,j){return j;}).filter(function(j){return j!==i&&!(w.bild&&WOERTER[j].bild===w.bild);})).slice(0,3);
- function kachel(j){var x=WOERTER[j];return x.bild?'<img src="'+x.bild+'" alt="'+esc(x.de)+'">':'<span class="tn">'+esc(x.de)+'</span>';}
- var R=runde({karte:k,auto:w.z,
-  kacheln:[{ok:true,html:kachel(i)}].concat(andere.map(function(j){var x=WOERTER[j];return {html:kachel(j),falschText:'Das wäre <em>'+esc(x.z)+'</em> — hör nochmal.'};})),
-  richtig:'<span><em>'+esc(w.z)+'</em> = '+esc(w.de)+(w.lt?'<span class="lt">'+esc(w.lt)+'</span>':'')+'</span>',
-  fertig:function(sauber){
-   WS.stapel.shift();
-   if(sauber){WS.punkte[i]++; if(WS.punkte[i]<2) WS.stapel.splice(Math.min(WS.stapel.length,4+Math.floor(Math.random()*3)),0,i);}
-   else{WS.punkte[i]=0; WS.stapel.splice(Math.min(WS.stapel.length,2),0,i);}
-   p.innerHTML=WS.punkte.map(function(n){return '<i class="'+(n>=2?'v':n===1?'h':'')+'"></i>';}).join('');
-   $('b-rechts').disabled=false;}
- });
- fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'noch eins ›',pri:true,aus:true,go:woerter});
+ if(!WS)WS=wsNeu();
+ rail(1);
+ var k=karte();
+ if(WS.phase==='d'){
+  kopf('Geführtes Gespräch','Wörter entdecken');
+  var items=BILD.slice(WS.lot*4,WS.lot*4+4);
+  k.appendChild(el('p','task','Tipp jedes Bild an: hören, sehen, verstehen.<small>'+(WS.lot?'Neue Wörter — die alten kommen gleich wieder.':'Lass dir Zeit. Du kannst jedes Bild so oft antippen, wie du willst.')+'</small>'));
+  k.appendChild(lotLeiste());
+  bigKnopf(k,'Alle anhören',function(){alleAnhoeren(items);});
+  entdecken(k,items,'Alle vier gehört. Jetzt erkennst du sie wieder.');
+  fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'Erkennen ›',pri:true,aus:true,go:function(){WS.phase='r';WS.stapel=erkennenStapel();WS.runden=WS.stapel.length;WS.runde=0;woerter();}});
+  return;
+ }
+ if(WS.phase==='r'){
+  if(!WS.stapel.length){
+   if(WS.lot+1<lots()){WS.lot++;WS.phase='d';}else{WS.phase='s';}
+   woerter();return;}
+  kopf('Geführtes Gespräch','Wörter erkennen');
+  var i=WS.stapel[0],w=BILD[i];
+  k.appendChild(el('p','task','Hör gut zu und tipp das richtige Bild.<small>Runde '+(WS.runde+1)+' von '+WS.runden+'</small>'));
+  k.appendChild(lotLeiste());
+  bigKnopf(k,'Anhören',function(){sprich(w.z);});
+  var pool=[];for(var j=0;j<Math.min(BILD.length,(WS.lot+1)*4);j++)if(j!==i&&BILD[j].bild!==w.bild)pool.push(j);
+  var andere=mischen(pool).slice(0,3);
+  runde({karte:k,auto:w.z,
+   kacheln:[{ok:true,html:'<img src="'+w.bild+'" alt="">'}].concat(andere.map(function(j){var x=BILD[j];return {html:'<img src="'+x.bild+'" alt="">',falschText:'Das ist <em>'+esc(x.z)+'</em> ('+esc(x.de)+') — hör nochmal.'};})),
+   richtig:'<span><em>'+esc(w.z)+'</em> = '+esc(w.de)+(w.lt?'<span class="lt">'+esc(w.lt)+'</span>':'')+'</span>',
+   fertig:function(sauber){WS.stapel.shift();WS.runde++;
+    if(sauber)WS.treffer[i]++;else{WS.stapel.splice(Math.min(WS.stapel.length,2),0,i);WS.runden++;}
+    $('b-rechts').disabled=false;}});
+  fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'noch eins ›',pri:true,aus:true,go:woerter});
+  return;
+ }
+ /* Sätze für den Tisch: die Wörter ohne Bild (bitte, danke, ich möchte …) leben in Sätzen. */
+ kopf('Geführtes Gespräch','Sätze für den Tisch');
+ k.appendChild(el('p','task','Die kleinen Wörter lernst du am besten im Satz.<small>Tipp jeden Satz an.</small>'));
+ k.appendChild(lotLeiste());
+ bigKnopf(k,'Alle anhören',function(){alleAnhoeren(FRASEN);});
+ entdecken(k,FRASEN,'Gut. Diese Sätze hörst du gleich im Café.');
+ fuss({t:'Genug für heute',go:function(){geheZu(5);}},{t:'Hören ›',pri:true,aus:true,go:function(){geheZu(2);}});
 }
 
 /* Hören: einen Satz hören, unter vier Sätzen erkennen. Verpasste kommen am Ende noch einmal. */
@@ -408,25 +517,34 @@ function ende(){
  rail(5);kopf('Geführtes Gespräch','Im Café');
  var k=karte();
  k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'">'+esc(SP.ENDE.sp)+'</div><div class="uebs">'+esc(SP.ENDE.de)+'</div></div>'));
- var gelernt=WS?WS.punkte.filter(function(n){return n>=2;}).length:0;
+ var gelernt=WS?WS.treffer.filter(function(n){return n>=1;}).length:0;
  var g=el('div','grid');k.appendChild(g);
- [['📖','Wörter',gelernt+' von '+WOERTER.length+' sitzen'],['🎧','Hören','4 Sätze erkannt'],['🗣️','Sprechen','4 Antworten gesagt'],['✏️','Lektion',SP.LEKT_KURZ]].forEach(function(x){g.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
+ [['📖','Wörter',gelernt+' von '+BILD.length+' erkannt'],['🎧','Hören','4 Sätze erkannt'],['🗣️','Sprechen','4 Antworten gesagt'],['✏️','Lektion',SP.LEKT_KURZ]].forEach(function(x){g.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
  k.appendChild(el('div','fb','Deine Wörter liegen in der Schatzkiste.'));
  fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){WS=null;HS=null;RS=0;LS=0;geheZu(0);}});
 }
 
 /* ── FREIES GESPRÄCH ── */
-var FZ=0;
+var FZ=0, TISCH_OK=false;
 function frei(){
  kopf('Freies Gespräch','Im Café');rail(-1);
  var k=karte();
+ if(!TISCH_OK&&FZ===0){
+  /* Bevor es frei losgeht, deckt Spikiu den Tisch: vier Wörter, die gleich vorkommen. */
+  var items=SP.TISCH.map(function(j){return BILD[j];});
+  k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z">Bevor wir reden, decke ich den Tisch.</div><div class="uebs">Vier Wörter, die gleich vorkommen.</div></div>'));
+  bigKnopf(k,'Alle anhören',function(){alleAnhoeren(items);});
+  entdecken(k,items,'Der Tisch ist gedeckt.');
+  fuss({t:'Genug für heute',go:function(){FZ=FREI.length;TISCH_OK=true;frei();}},{t:'Los geht’s ›',pri:true,aus:true,go:function(){TISCH_OK=true;frei();}});
+  return;
+ }
  if(FZ>=FREI.length){
   k.appendChild(el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'">'+esc(FREI_ENDE.sp)+'</div><div class="uebs">'+esc(FREI_ENDE.de)+'</div></div>'));
   var g0=el('div','grid');k.appendChild(g0);
   [['💬','4 Wechsel','ganz auf '+SP.SPRACHE],['🎧','Gehört','Spikiu als Kellner'],['☕','Bestellt',SP.BESTELLT],['🌱','Samen','nächstes Mal: freier']].forEach(function(x){g0.appendChild(el('div','tile',' <span class="te">'+x[0]+'</span><span class="tn">'+x[1]+'</span><span class="ts">'+x[2]+'</span>'));});
   k.appendChild(el('div','fb',''));
   sprich(FREI_ENDE.sp);
-  fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){FZ=0;frei();}});return;}
+  fuss({t:'‹ Haus',go:function(){}},{t:'Nochmal ›',pri:true,go:function(){FZ=0;TISCH_OK=false;frei();}});return;}
  var q=FREI[FZ];
  var z=el('div','spk-zeile','<span class="cap">'+CAPY+'</span><div class="blase"><div class="z" lang="'+Z+'" id="spz">'+esc(q.sp)+'</div><div class="uebs" id="spu"><button type="button" id="ueb">Übersetzung</button></div></div><button class="mini" id="spk-mini" type="button" aria-label="Spikiu anhören">🔊</button>');
  k.appendChild(z);
@@ -460,7 +578,7 @@ $('m-gef').onclick=function(){modus('gef');};
 $('m-frei').onclick=function(){modus('frei');};
 $('back').onclick=function(){if(MODUS==='gef'&&SCHRITT>0)geheZu(SCHRITT-1);};
 function sprache(z){setzeSprache(z);$('z-es').setAttribute('aria-pressed',String(z==='es'));$('z-el').setAttribute('aria-pressed',String(z==='el'));
- WS=null;HS=null;RS=0;LS=0;FZ=0;if(MODUS==='gef'){SCHRITT=0;thema(false);}else frei();}
+ WS=null;HS=null;RS=0;LS=0;FZ=0;TISCH_OK=false;if(MODUS==='gef'){SCHRITT=0;thema(false);}else frei();}
 $('z-es').onclick=function(){sprache('es');};
 $('z-el').onclick=function(){sprache('el');};
 setzeSprache('es');
