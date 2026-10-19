@@ -1,0 +1,186 @@
+<meta charset="utf-8">
+<title>Bühne in drei Karten</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@500&family=DM+Sans:opsz,wght@9..40,500;9..40,600;9..40,700;9..40,800&family=Lora:wght@500;600&display=swap">
+<style>
+/* Layout: eine App-Spalte wie im Raum — Kopf · Leiste · EINE Karte pro Gedanke · zwei Knöpfe.
+   Spikiu ist bewusst nur hell (wie die App), daher keine Dunkel-Blöcke; alle Farben gesetzt. */
+:root{
+  --minz:#eef7f1; --ink:#15163a; --muted:#4f5f58; --acc:#1f93b0; --faint:#dfe6e0;
+  --gelb:#ffd24a; --zettel:#fff6d6; --karte:#ffffff; --blau:#d3eef6;
+  --display:'Archivo Black','DM Sans',system-ui,sans-serif;
+  --body:'DM Sans',system-ui,sans-serif;
+  --lese:'Lora',Georgia,serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+  /* DIE NEUE LESEREGEL: Lesetext nie unter 17 px; Ziel 19–21 px. */
+  --lese-ziel:1.3rem; --lese-min:1.0625rem;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font-family:var(--body);overflow:hidden}
+button{font:inherit;cursor:pointer;color:var(--ink)}
+.app{display:flex;flex-direction:column;height:100%;max-width:560px;margin:0 auto}
+
+.proto{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding-block:6px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--ink)}
+.proto button{border:0;border-radius:999px;padding:.3rem .7rem;font:700 .72rem var(--body);background:#2b2d55;color:#cfd6ff}
+.proto button[aria-pressed="true"]{background:var(--gelb);color:var(--ink)}
+
+.kopf{flex:0 0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px;padding-block:.55rem;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  border-bottom:2.5px solid var(--ink);background:rgba(255,255,255,.55)}
+.kopf .back{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--ink);background:var(--karte);box-shadow:2px 3px 0 var(--ink);display:grid;place-items:center;font-size:1.15rem}
+.kopf .mitte{text-align:center;min-width:0}
+.kopf .eb{font:500 .64rem/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+.kopf .ttl{font:400 1.25rem/1.15 var(--display);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.rail{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding-top:8px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.rail div{display:flex;flex-direction:column;gap:4px}
+.rail i{display:block;height:5px;border-radius:9px;background:var(--faint)}
+.rail b{font:700 .58rem/1 var(--body);letter-spacing:.05em;text-transform:uppercase;color:#8d9893;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .on i{background:var(--acc)} .rail .on b{color:var(--acc)}
+
+main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding-top:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.karte{flex:1;min-height:0;background:var(--karte);border:2.5px solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);
+  padding:12px 12px 12px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;position:relative}
+@media (prefers-reduced-motion:no-preference){.karte{animation:rein .28s ease-out both}@keyframes rein{from{transform:translateX(14px);opacity:.4}to{transform:none;opacity:1}}}
+
+.punkte{display:flex;gap:7px;justify-content:center;align-items:center}
+.punkte i{width:9px;height:9px;border-radius:50%;background:var(--faint)}
+.punkte i.ok{background:#2f6b3a} .punkte i.on{width:26px;border-radius:9px;background:var(--acc)}
+
+/* Karte 1 — Wer spielt wen */
+.szene{text-align:center;display:flex;flex-direction:column;gap:4px}
+.szene .em{font-size:2.2rem;line-height:1}
+.szene h2{font:600 1.45rem/1.2 var(--lese);text-wrap:balance}
+.szene p{font:600 1rem/1.35 var(--body);color:var(--muted);text-wrap:balance}
+.rollen{flex:1 1 0;min-height:0;display:grid;grid-template-rows:1fr 1fr;gap:12px}
+.rolle{border:2.5px solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);padding:12px 14px;display:flex;align-items:center;gap:14px;min-height:0}
+.rolle.du{background:var(--zettel)}
+.rolle .bild{flex:0 0 64px;height:64px;display:grid;place-items:center;font-size:2.6rem}
+.rolle .bild svg{width:100%;height:100%}
+.rolle .txt{min-width:0;display:flex;flex-direction:column;gap:4px}
+.rolle .l{font:700 .78rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.rolle .n{font:800 1.3rem/1.25 var(--body);text-wrap:balance}
+
+/* Karte 2 und 3 — Lesekarten: Text füllt den Schirm, große Schrift */
+.lese{flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px;border-radius:18px;padding:14px 15px}
+.lese.gelb{background:var(--zettel);border:2.5px solid var(--ink)}
+.lese.blau{background:var(--blau);border:2.5px solid var(--ink)}
+.lese .kopfzeile{display:flex;align-items:center;gap:10px}
+.lese .kopfzeile span{font-size:1.7rem;line-height:1}
+.lese .kopfzeile b{font:800 .85rem/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.lese .text{font:500 var(--fs,var(--lese-ziel))/1.45 var(--lese);text-wrap:pretty;overflow-y:auto;min-height:0}
+/* Rollt der Text doch (nur bei winzigen Schirmen), zeigt ein weicher Rand unten, dass es weitergeht. */
+.lese .text.rollt{-webkit-mask-image:linear-gradient(#000 calc(100% - 2.2em),transparent);mask-image:linear-gradient(#000 calc(100% - 2.2em),transparent);padding-bottom:1.6em}
+.lese .text p+p{margin-top:.55em}
+
+.fuss{flex:0 0 auto;display:flex;justify-content:space-between;gap:12px;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.btn{border:2.5px solid var(--ink);border-radius:100px;box-shadow:3px 4px 0 var(--ink);padding:.7rem 1.25rem;font:800 1rem var(--body);background:var(--karte);white-space:nowrap}
+.btn.pri{background:var(--acc);color:#fff}
+.btn:active,.rolle:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+</style>
+
+<div class="app">
+  <nav class="proto" id="proto" aria-label="Prototyp">
+    <button id="b-zh" aria-pressed="true">Zúrich · UI español</button>
+    <button id="b-ox" aria-pressed="false">Oaxaca · UI deutsch (längster Fall)</button>
+    <button id="b-qu" aria-pressed="false">Quito · UI deutsch</button>
+  </nav>
+  <header class="kopf">
+    <button class="back" id="back" aria-label="zurück">‹</button>
+    <div class="mitte"><div class="eb" id="eb"></div><div class="ttl" id="ttl"></div></div>
+    <span></span>
+  </header>
+  <nav class="rail" id="rail"></nav>
+  <main id="stage"></main>
+  <footer class="fuss" id="fuss"></footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var CAPY = '<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
+  var UI = {
+    es: { eb:'Conversación libre', rail:['Papel','Mesa','Conversación','Repaso','Cosecha'], wer:'Quién es quién', rolle:'Tu papel', wissen:'Bueno saberlo',
+          spikiuIst:'Spikiu es', duBist:'Tú eres', temas:'‹ Temas', atras:'‹ Atrás', seguir:'Seguir ›', los:'¡Vamos! ›' },
+    de: { eb:'Freies Gespräch', rail:['Rolle','Tisch','Gespräch','Rückblick','Ernte'], wer:'Wer ist wer', rolle:'Deine Rolle', wissen:'Gut zu wissen',
+          spikiuIst:'Spikiu ist', duBist:'Du bist', temas:'‹ Themen', atras:'‹ Zurück', seguir:'Weiter ›', los:'Los ›' }
+  };
+  /* Echte Daten aus lernpfad-daten*.js (Krone). */
+  var FAELLE = {
+    zh: { ui:'es', em:'🩺', titel:'En el médico', schritt:'Zúrich: una muñeca torcida', ort:'en una consulta médica de Zúrich',
+          spikiu:'La doctora Meili', du:'Inês, la paciente', duBild:'🎻',
+          rolle:'Eres Inês. Hace un rato, en Zúrich, la rueda de tu bici —la «Velo», como dicen aquí— se ha metido en un raíl del tranvía y te has caído. Ahora te duele la muñeca derecha, la de la mano que sujeta el arco. Eres violonchelista y quieres volver a tocar cuanto antes.',
+          wissen:'En Suiza se saluda con «Grüezi» y se da las gracias con «merci vielmal». En la calle se habla suizo alemán, pero se escribe alemán estándar, y sin «ß»: los suizos escriben «Strasse». Los tranvías azules y blancos de Zúrich circulan hasta la orilla del lago.' },
+    ox: { ui:'de', em:'👨‍👩‍👧', titel:'Über die Familie', schritt:'Oaxaca: von den Großeltern erzählen', ort:'vor dem Totenaltar in Oaxaca',
+          spikiu:'Toño, der Sohn von Doña Lupita', du:'Der Gast der Familie', duBild:'🙋',
+          rolle:'Dein Großvater ist vor fünf Jahren gestorben. Er war sehr ruhig, hatte ein Boot und ging sonntags angeln. Deine Oma Fenna lebt in Utrecht; gestern hast du ihr eine Postkarte geschickt.',
+          wissen:'Am 1. und 2. November bauen Familien in Mexiko eine Ofrenda für ihre Verstorbenen — mit Fotos, ihrem Lieblingsessen und orangefarbenen Cempasúchil-Blumen, deren Farbe und Duft den Seelen den Weg nach Hause zeigen. Es ist ein Fest des Erinnerns, nicht der Trauer.' },
+    qu: { ui:'de', em:'🩺', titel:'Beim Arzt', schritt:'Quito: Rat in der Apotheke', ort:'in einer Apotheke in Quito',
+          spikiu:'Die Apothekerin, Doña Carmen', du:'Die Reisende mit Höhenkrankheit', duBild:'🧳',
+          rolle:'Du bist gestern in Quito angekommen, auf 2.850 Metern. Du hast starke Kopfschmerzen, dir ist etwas schwindelig, und du hast schlecht geschlafen.',
+          wissen:'Quito ist eine der höchstgelegenen Hauptstädte der Welt; gegen das Soroche helfen langsames Gehen, viel Wasser und Ruhe. Wenn es kalt wird, rufen die Leute „¡achachay!" — ein Wort aus dem Kichwa.' }
+  };
+
+  var F = FAELLE.zh, U = UI.es, karte = 0;
+  var stage = document.getElementById('stage'), fuss = document.getElementById('fuss');
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+
+  /* LESEREGEL: erst die Zielgröße; passt es nicht, in kleinen Schritten bis zur Untergrenze (17 px).
+     Darunter NIE — dann rollt der Text in seinem Feld (sichtbar), statt winzig zu werden. */
+  function einpassen(t) {
+    var stufen = ['1.3rem', '1.22rem', '1.14rem', '1.0625rem'];
+    t.classList.remove('rollt');
+    for (var i = 0; i < stufen.length; i++) { t.style.setProperty('--fs', stufen[i]); if (t.scrollHeight <= t.clientHeight + 1) return; }
+    t.classList.add('rollt');
+  }
+
+  function zeige() {
+    var ttl = [U.wer, U.rolle, U.wissen][karte];
+    document.getElementById('eb').textContent = U.eb;
+    document.getElementById('ttl').textContent = F.titel;
+    document.getElementById('rail').innerHTML = U.rail.map(function (r, i) { return '<div class="' + (i === 0 ? 'on' : '') + '"><i></i><b>' + esc(r) + '</b></div>'; }).join('');
+    var punkte = '<div class="punkte" aria-label="' + (karte + 1) + ' / 3">' + [0, 1, 2].map(function (i) { return '<i class="' + (i < karte ? 'ok' : i === karte ? 'on' : '') + '"></i>'; }).join('') + '</div>';
+    var h = '';
+    if (karte === 0) {
+      h = punkte
+        + '<div class="szene"><span class="em" aria-hidden="true">' + F.em + '</span><h2>' + esc(F.schritt) + '</h2><p>' + esc(F.ort) + '</p></div>'
+        + '<div class="rollen">'
+        +   '<div class="rolle"><span class="bild">' + CAPY + '</span><span class="txt"><span class="l">' + esc(U.spikiuIst) + '</span><span class="n">' + esc(F.spikiu) + '</span></span></div>'
+        +   '<div class="rolle du"><span class="bild" aria-hidden="true">' + F.duBild + '</span><span class="txt"><span class="l">' + esc(U.duBist) + '</span><span class="n">' + esc(F.du) + '</span></span></div>'
+        + '</div>';
+    } else if (karte === 1) {
+      h = punkte + '<div class="lese gelb"><div class="kopfzeile"><span aria-hidden="true">🎭</span><b>' + esc(U.rolle) + '</b></div><div class="text" id="text">' + esc(F.rolle) + '</div></div>';
+    } else {
+      h = punkte + '<div class="lese blau"><div class="kopfzeile"><span aria-hidden="true">🗺️</span><b>' + esc(U.wissen) + '</b></div><div class="text" id="text">' + esc(F.wissen) + '</div></div>';
+    }
+    stage.innerHTML = '<section class="karte" aria-label="' + esc(ttl) + '">' + h + '</section>';
+    var t = document.getElementById('text'); if (t) requestAnimationFrame(function () { einpassen(t); });
+    var links = karte === 0 ? U.temas : U.atras, rechts = karte === 2 ? U.los : U.seguir;
+    fuss.innerHTML = '<button class="btn" id="links">' + esc(links) + '</button><button class="btn pri" id="rechts">' + esc(rechts) + '</button>';
+    document.getElementById('links').onclick = function () { if (karte > 0) { karte--; zeige(); } };
+    document.getElementById('rechts').onclick = function () { if (karte < 2) { karte++; zeige(); } else { karte = 0; zeige(); } };
+  }
+  document.getElementById('back').onclick = function () { if (karte > 0) { karte--; zeige(); } };
+  window.addEventListener('resize', function () { var t = document.getElementById('text'); if (t) einpassen(t); });
+
+  function fall(id) {
+    F = FAELLE[id]; U = UI[F.ui]; karte = 0;
+    ['zh', 'ox', 'qu'].forEach(function (x) { document.getElementById('b-' + x).setAttribute('aria-pressed', String(x === id)); });
+    document.documentElement.lang = F.ui;
+    zeige();
+  }
+  document.getElementById('b-zh').onclick = function () { fall('zh'); };
+  document.getElementById('b-ox').onclick = function () { fall('ox'); };
+  document.getElementById('b-qu').onclick = function () { fall('qu'); };
+  if (location.hash === '#app') document.getElementById('proto').hidden = true;
+  fall('zh');
+})();
+</script>
