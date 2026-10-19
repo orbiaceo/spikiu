@@ -398,7 +398,9 @@
      (iOS/Android verlangen eine Geste). Fehlt Web Audio: <audio> als Netz.
      Vorerst nur Piñata + Globos (Test). ── */
   var KLANG = (function () {
-    var PFAD = { dur: '/audio/spiel/dur.wav', moll: '/audio/spiel/moll.wav', paarFalsch: '/audio/spiel/paar-falsch.wav' };
+    /* 19.10. (Leo: „D!"): Paar D „Hauch" aus dem Klang-Prototyp — weicher Zweiklang für richtig,
+       tiefer gedämpfter Ton für nicht ganz (auch beim falschen Paar). Erzeugt mit audio/spiel/klaenge-erzeugen.py. */
+    var PFAD = { dur: '/audio/spiel/richtig.wav', moll: '/audio/spiel/nicht-ganz.wav', paarFalsch: '/audio/spiel/nicht-ganz.wav' };
     var ctx = null, buf = {}, roh = {}, geladen = false;
     function kontext() {
       if (ctx) return ctx;
