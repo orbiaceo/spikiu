@@ -53,7 +53,9 @@
     'passport':'🪪', 'id':'🪪', 'wedding':'💒',
     // Hotel
     'key':'🔑', 'room':'🛏️', 'double room':'🛏️', 'single room':'🛏️',
-    'elevator':'🛗', 'lift':'🛗', 'front desk':'🛎️', 'lobby':'🛎️',
+    'elevator':'🛗', 'lift':'🛗', 'front desk':'sp-rezeption', 'lobby':'🛎️',
+    // Rezeption (Leo, 19.10.: eigenes Bild — Gast vor dem Tresen, Rezeptionistin dahinter):
+    'reception':'sp-rezeption', 'reception desk':'sp-rezeption', 'the reception':'sp-rezeption', 'hotel reception':'sp-rezeption', 'at reception':'sp-rezeption', 'at the reception':'sp-rezeption',
     'shower':'🚿', 'hot water':'♨️', 'heating':'🌡️', 'air conditioning':'❄️', 'ac':'❄️',
     // Arzt
     'doctor':'🩺', 'pharmacy':'⚕️', 'pill':'💊', 'painkillers':'💊', 'fever':'🤒',

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
+  <!-- Spikiu-eigenes Icon: Rezeption — Gast vor dem Tresen, Rezeptionistin dahinter (Leo, 19.10.) -->
+  <g stroke="#000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Rezeptionistin hinter dem Tresen -->
+    <circle cx="47" cy="17" r="7" fill="#fadcbc"/>
+    <path d="M36 37v-7a5 5 0 0 1 5-5h12a5 5 0 0 1 5 5v7z" fill="#ea5a47"/>
+    <!-- Tresen -->
+    <rect x="9" y="36" width="56" height="27" rx="3" fill="#d4b47a"/>
+    <path d="M9 41h56" fill="none"/>
+    <!-- Klingel auf dem Tresen -->
+    <path d="M52 33a4 4 0 0 1 8 0z" fill="#f1b31c"/><path d="M51 33h10" fill="none"/>
+    <!-- Gast vor dem Tresen -->
+    <circle cx="24" cy="15" r="7" fill="#fadcbc"/>
+    <path d="M16 46V28a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v18z" fill="#61b2e4"/>
+    <path d="M18 46h12v17H18z" fill="#3f3f3f"/>
+  </g>
+</svg>
