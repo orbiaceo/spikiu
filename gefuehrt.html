@@ -46,6 +46,8 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 .spiel-ende .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;max-width:30rem;width:100%;margin:0 auto}
 .spiel-ende .end{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;box-shadow:3px 3px 0 var(--ink)}
 .spiel-ende .end.primary{background:var(--acc);color:#fff}
+/* Unterzeile der Station (je Stufe anders) — auch auf kleinen Handys sichtbar */
+.oh-tile .schritt{font:600 .8rem/1.25 'DM Sans',sans-serif;color:var(--muted);text-wrap:balance}
 /* Abschluss-Bilanz: flach, ohne Rand/Schatten — reine Information, kein Knopf */
 .bilanz{flex:1 1 0;min-height:0;width:100%;display:flex;flex-direction:column;justify-content:center;gap:2px;background:var(--minz);border-radius:18px;padding:8px 16px}
 .bz{flex:1 1 0;max-height:84px;display:flex;align-items:center;gap:14px;text-align:left;border-bottom:1.5px dashed var(--faint)}
@@ -119,7 +121,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     de: { titel:'Geführtes Gespräch', rail:['Thema','Wörter','Hören','Sprechen','Lektion'],
       themaTask:'Wo möchtest du heute sprechen?', wohin:function(k){ return k + ' — wohin gehst du?'; }, themen:'‹ Themen', haus:'‹ Haus',
       baum:{ a1:'🌱 Samen', a2:'🌿 Stamm', b1:'🌳 Krone' },
-      entTitel:'Wörter entdecken', entTask:'Tipp jedes Bild an: hören, sehen, verstehen.', entKlein1:'Lass dir Zeit. Du kannst jedes Bild so oft antippen, wie du willst.', entKleinN:'Neue Wörter — die alten kommen gleich wieder.',
+      entTitel:'Wörter entdecken', eentTask:'Tipp jedes Bild an: hören, sehen, verstehen.', entKlein1:'Lass dir Zeit. Du kannst jedes Bild so oft antippen, wie du willst.', entKleinN:'Neue Wörter — die alten kommen gleich wieder.',
       entZaehler:function(n,g){ return n + ' von ' + g + ' entdeckt'; }, entFertig:'Alle vier gehört. Jetzt erkennst du sie wieder.', erkennen:'Erkennen ›',
       erkTitel:'Wörter erkennen', erkTask:'Hör gut zu und tipp das richtige Bild.', runde:function(i,n){ return 'Runde ' + i + ' von ' + n; },
       anhoeren:'🔊 Anhören', nochEins:'noch eins ›', falschWort:function(z,tr){ return 'Das ist <em>' + z + '</em> (' + tr + ') — hör nochmal.'; },
@@ -137,7 +139,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     es: { titel:'Conversación guiada', rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
       themaTask:'¿Dónde quieres hablar hoy?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
       baum:{ a1:'🌱 Semilla', a2:'🌿 Tronco', b1:'🌳 Copa' },
-      entTitel:'Descubrir palabras', entTask:'Toca cada imagen: escucha, mira, entiende.', entKlein1:'Tómate tu tiempo. Puedes tocar cada imagen las veces que quieras.', entKleinN:'Palabras nuevas; las de antes vuelven enseguida.',
+      entTitel:'Descubrir palabras', eentTask:'Toca cada imagen: escucha, mira, entiende.', entKlein1:'Tómate tu tiempo. Puedes tocar cada imagen las veces que quieras.', entKleinN:'Palabras nuevas; las de antes vuelven enseguida.',
       entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, entFertig:'Ya has oído las cuatro. Ahora las reconoces.', erkennen:'Reconocer ›',
       erkTitel:'Reconocer palabras', erkTask:'Escucha bien y toca la imagen correcta.', runde:function(i,n){ return 'Ronda ' + i + ' de ' + n; },
       anhoeren:'🔊 Escuchar', nochEins:'otra ›', falschWort:function(z,tr){ return 'Eso es <em>' + z + '</em> (' + tr + '). Escucha otra vez.'; },
@@ -155,7 +157,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     en: { titel:'Guided conversation', rail:['Topic','Words','Listen','Speak','Lesson'],
       themaTask:'Where would you like to talk today?', wohin:function(k){ return k + ': where are you going?'; }, themen:'‹ Topics', haus:'‹ Home',
       baum:{ a1:'🌱 Seed', a2:'🌿 Stem', b1:'🌳 Crown' },
-      entTitel:'Discover words', entTask:'Tap each picture: listen, look, understand.', entKlein1:'Take your time. You can tap each picture as often as you like.', entKleinN:'New words; the earlier ones come back soon.',
+      entTitel:'Discover words', eentTask:'Tap each picture: listen, look, understand.', entKlein1:'Take your time. You can tap each picture as often as you like.', entKleinN:'New words; the earlier ones come back soon.',
       entZaehler:function(n,g){ return n + ' of ' + g + ' discovered'; }, entFertig:'You’ve heard all four. Now recognize them.', erkennen:'Recognize ›',
       erkTitel:'Recognize words', erkTask:'Listen closely and tap the right picture.', runde:function(i,n){ return 'Round ' + i + ' of ' + n; },
       anhoeren:'🔊 Listen', nochEins:'another ›', falschWort:function(z,tr){ return 'That’s <em>' + z + '</em> (' + tr + '). Listen again.'; },
@@ -173,7 +175,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     el: { titel:'Καθοδηγούμενη συζήτηση', rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
       themaTask:'Πού θέλεις να μιλήσεις σήμερα;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
       baum:{ a1:'🌱 Σπόρος', a2:'🌿 Κορμός', b1:'🌳 Φυλλωσιά' },
-      entTitel:'Ανακάλυψε λέξεις', entTask:'Πάτα κάθε εικόνα: άκου, δες, κατάλαβε.', entKlein1:'Με την ησυχία σου. Μπορείς να πατάς κάθε εικόνα όσες φορές θέλεις.', entKleinN:'Νέες λέξεις· οι προηγούμενες ξαναέρχονται σε λίγο.',
+      entTitel:'Ανακάλυψε λέξεις', eentTask:'Πάτα κάθε εικόνα: άκου, δες, κατάλαβε.', entKlein1:'Με την ησυχία σου. Μπορείς να πατάς κάθε εικόνα όσες φορές θέλεις.', entKleinN:'Νέες λέξεις· οι προηγούμενες ξαναέρχονται σε λίγο.',
       entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, entFertig:'Τις άκουσες και τις τέσσερις. Τώρα τις αναγνωρίζεις.', erkennen:'Αναγνώριση ›',
       erkTitel:'Αναγνώρισε λέξεις', erkTask:'Άκου προσεκτικά και πάτα τη σωστή εικόνα.', runde:function(i,n){ return 'Γύρος ' + i + ' από ' + n; },
       anhoeren:'🔊 Άκου', nochEins:'άλλο ένα ›', falschWort:function(z,tr){ return 'Αυτό είναι <em>' + z + '</em> (' + tr + '). Άκου ξανά.'; },
@@ -261,33 +263,43 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   /* ── STOFF bauen: Bildwörter (Spirale), Sätze, Hörsätze, Rollenspiel ── */
   function baueStoff() {
     var S = HAP.S, st = HAP.stufe || 'a1', D = window.SpikiuLernpfad;
-    var bild = [], gesehen = {}, ohneBild = [];
-    function nimm(x) { if (!x.bild || gesehen[x.bild]) return false; gesehen[x.bild] = 1; bild.push(x); return true; }
-    if (S) {
-      S.wortschatz.forEach(function (w) {
-        var b = bildVon(w.z, w.na && w.na.en);
-        if (!(b && nimm({ z: w.z, lt: w.tr || '', tr: na(w), bild: b }))) ohneBild.push(w);
-      });
-    } else {
-      HAP.wortschatz.forEach(function (h) { var b = bildVon(h.ziel, h.en); if (!(b && nimm({ z: h.ziel, lt: h.lautschrift || '', tr: h.uebersetzung, bild: b }))) ohneBild.push(h); });
-    }
-    /* Ergänzen aus dem Wortfeld des Themas — Wörter der eigenen Stufe zuerst (stabile Reihenfolge,
-       damit eine wiederhergestellte Sitzung dieselben Karten sieht). */
+    /* WÖRTER DER STUFE (Leo, 19.10.: „als Fortgeschrittener bekomme ich den gleichen Wortschatz wie ein
+       Anfänger, Torte, Kaffee …"). Grundstock ist IMMER der Wortschatz der Station dieser Stufe.
+       Bilder nur, wo es eins gibt; die übrigen Wörter kommen als Wortkarten (Liste, ohne Bild).
+       Das Wortfeld des Themas füllt NUR auf Samen auf (bis 12 Bildwörter wie bisher). Stamm und Krone
+       üben ausschließlich die Wörter ihrer Station. Jede Karte ist einheitlich: 4 Bilder ODER 4 Wörter. */
+    var MAX = 12, mitBild = [], ohneBild = [], gesehen = {}, schon = {};
+    function key(z) { return String(z).toLowerCase().trim(); }
+    function nimmBild(x) { if (!x.bild || gesehen[x.bild] || schon[key(x.z)]) return false; gesehen[x.bild] = 1; schon[key(x.z)] = 1; mitBild.push(x); return true; }
+    var quelle = S ? S.wortschatz.map(function (w) { return { z: w.z, lt: w.tr || '', tr: na(w), en: w.na && w.na.en }; })
+                   : HAP.wortschatz.map(function (h) { return { z: h.ziel, lt: h.lautschrift || '', tr: h.uebersetzung, en: h.en }; });
+    quelle.forEach(function (x) {
+      var b = bildVon(x.z, x.en);
+      if (!(b && nimmBild({ z: x.z, lt: x.lt, tr: x.tr, bild: b }))) ohneBild.push({ z: x.z, lt: x.lt, tr: x.tr });
+    });
     try {
       var F = (window.spikiuWortfelder && TOPIC_ID) ? window.spikiuWortfelder.feld(ZIEL, TOPIC_ID, MUT) : [];
-      var ord = st === 'a1' ? [1, 2, 3] : st === 'a2' ? [2, 1, 3] : [2, 3, 1];
-      var vorhanden = {}; bild.forEach(function (x) { vorhanden[String(x.z).toLowerCase()] = 1; });
+      var ord = st === 'a1' ? [1, 2, 3] : st === 'a2' ? [2, 3] : [3];
+      var ziel = st === 'a1' ? MAX : 0;   // Stamm/Krone: nur der Wortschatz der Station (Leo, 19.10.)
       ord.forEach(function (s) {
         F.forEach(function (x) {
-          if (bild.length >= 12 || x.stufe !== s || vorhanden[String(x.z).toLowerCase()]) return;
+          if (mitBild.length >= ziel || x.stufe !== s || schon[key(x.z)]) return;
           var I = window.spikiuIcon, e = (x.en && I && I.konzept) ? I.konzept(x.en) : '';
           if (!e) return;
-          var pf = da(I.datei(e)); if (!pf) return;
-          if (nimm({ z: x.z, lt: ltEl(x.z), tr: x.tr, bild: pf })) vorhanden[String(x.z).toLowerCase()] = 1;
+          var pf = da(I.datei(e)); if (pf) nimmBild({ z: x.z, lt: ltEl(x.z), tr: x.tr, bild: pf });
         });
       });
     } catch (e) {}
-    bild = bild.slice(0, Math.floor(Math.min(bild.length, 12) / 4) * 4);
+    /* Nur volle Bildkarten; übrige Bildwörter werden Wortkarten (ohne Bild), Station zuerst. */
+    var volle = Math.floor(Math.min(mitBild.length, MAX) / 4) * 4;
+    var rest = mitBild.slice(volle).filter(function (x) { return quelle.some(function (q) { return key(q.z) === key(x.z); }); })
+      .map(function (x) { return { z: x.z, lt: x.lt, tr: x.tr }; });
+    var bild = mitBild.slice(0, volle).concat(rest.concat(ohneBild).filter(function (x) { return x.z && x.tr; }).slice(0, MAX - volle));
+    /* Wortkarten zu vollen Vierern, wenn möglich; ein Rest von 1 fällt weg (lebt in Sätzen/Lektion). */
+    var nText = bild.length - volle; if (nText % 4 === 1 && nText > 1) bild = bild.slice(0, bild.length - 1);
+    /* Samen bleibt wie entschieden (18.10.): nur Bildwörter; die kleinen Wörter ohne Bild leben in Sätzen. */
+    if (st === 'a1') bild = mitBild.slice(0, volle);
+    if (bild.length < 4) bild = [];
 
     /* Sätze für den Tisch: Dialogzeilen (Lerner zuerst), kurz genug für eine Zeile. */
     var saetze = [], hoeren = [];
@@ -408,7 +420,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     liste.forEach(function (x, n) {
       var b = O.el('button', 'oh-tile' + (x.naechste ? ' oh-vor' : ''),
         emBild(x.em) + '<span class="oh-tn">' + esc(x.na[MUT] || x.na.en || x.na.de) + '</span>'
-        + (x.schritt ? '<span class="oh-ts">' + esc(x.schritt[MUT] || x.schritt.en || x.schritt.de) + '</span>' : '')
+        + (x.schritt ? '<span class="schritt">' + esc(x.schritt[MUT] || x.schritt.en || x.schritt.de) + '</span>' : '')
         + '<span class="oh-perlen"><i class="' + (x.status === 'gesetzt' ? 'voll' : x.status === 'durchschritten' ? 'halb' : '') + '"></i></span>');
       b.type = 'button'; b.id = 'ort-' + n; b.onclick = function () { betrete(x.id, x.na[MUT] || x.na.en || x.na.de); }; g2.appendChild(b);
     });
@@ -450,7 +462,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   /* ═══ 1 · WÖRTER als Spirale ═══ */
   var WS = null;
   function wsNeu() { return { phase: STOFF.bild.length >= 4 ? 'd' : 's', lot: 0, stapel: [], runde: 0, runden: 0, treffer: STOFF.bild.map(function () { return 0; }) }; }
-  function lots() { return STOFF.bild.length / 4; }
+  function lots() { return Math.ceil(STOFF.bild.length / 4); }
   function lotLeiste(k) {
     var e = [];
     for (var i = 0; i < lots(); i++) e.push({ t: U.karte(i + 1), c: (i < WS.lot || WS.phase === 's') ? 'ok' : (i === WS.lot ? 'on' : '') });
@@ -471,7 +483,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     if (WS.phase === 'd') {
       kopf(U.entTitel, 1); k = O.karte(stage);
       var items = STOFF.bild.slice(WS.lot * 4, WS.lot * 4 + 4);
-      O.task(k, U.entTask, WS.lot ? U.entKleinN : U.entKlein1);
+      O.task(k, items[0].bild ? U.entTask : U.entTaskW, WS.lot ? U.entKleinN : U.entKlein1);
       lotLeiste(k);
       var r = O.entdecken(k, items, { lang: ZIEL, sprich: sprich, zaehler: U.entZaehler,
         alleGehoert: function () { document.getElementById('oh-rechts').disabled = false; setTimeout(function () { if (r.fb.isConnected) r.fb.innerHTML = '<span>' + esc(U.entFertig) + '</span>'; }, 1600); } });
@@ -482,12 +494,14 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       if (!WS.stapel.length) { if (WS.lot + 1 < lots()) { WS.lot++; WS.phase = 'd'; } else WS.phase = 's'; woerter(); return; }
       kopf(U.erkTitel, 1); k = O.karte(stage);
       var i = WS.stapel[0], w = STOFF.bild[i];
-      O.task(k, U.erkTask, U.runde(WS.runde + 1, WS.runden));
+      O.task(k, w.bild ? U.erkTask : U.erkTaskW, U.runde(WS.runde + 1, WS.runden));
       lotLeiste(k);
       O.big(k, U.anhoeren, function () { sprich(w.z); });
-      var pool = []; for (var j = 0; j < Math.min(STOFF.bild.length, (WS.lot + 1) * 4); j++) if (j !== i && STOFF.bild[j].bild !== w.bild) pool.push(j);
-      O.runde(k, { sprich: sprich, auto: w.z,
-        kacheln: [{ ok: true, html: '<img src="' + esc(w.bild) + '" alt="">' }].concat(mischen(pool).slice(0, 3).map(function (j) { var x = STOFF.bild[j]; return { html: '<img src="' + esc(x.bild) + '" alt="">', falsch: U.falschWort(esc(x.z), esc(x.tr)) }; })),
+      /* Ablenker nur aus schon entdeckten Wörtern DERSELBEN Art (Bild zu Bild, Wort zu Wort). */
+      var pool = []; for (var j = 0; j < Math.min(STOFF.bild.length, (WS.lot + 1) * 4); j++) { var y = STOFF.bild[j]; if (j !== i && !!y.bild === !!w.bild && (!w.bild || y.bild !== w.bild) && y.z !== w.z) pool.push(j); }
+      function kachel(x) { return x.bild ? '<img src="' + esc(x.bild) + '" alt="">' : '<span class="oh-tz" lang="' + ZIEL + '">' + esc(x.z) + '</span>'; }
+      O.runde(k, { sprich: sprich, auto: w.z, liste: !w.bild,
+        kacheln: [{ ok: true, html: kachel(w) }].concat(mischen(pool).slice(0, 3).map(function (j) { var x = STOFF.bild[j]; return { html: kachel(x), falsch: U.falschWort(esc(x.z), esc(x.tr)) }; })),
         richtig: '<span><em>' + esc(w.z) + '</em> = ' + esc(w.tr) + (w.lt ? '<span class="oh-lt">' + esc(w.lt) + '</span>' : '') + '</span>',
         fertig: function (sauber) {
           WS.stapel.shift(); WS.runde++;

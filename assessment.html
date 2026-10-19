@@ -562,18 +562,26 @@ function finish(){
        Hier wird der Weg EINMAL angelegt, mit der Stufe aus der Einstufung.
        A0/A1 → a1 · A2/B1/B2 → a2, dieselbe Zuordnung wie bei `koennen`.
 
-       WICHTIG: Ein BESTEHENDER Weg wird NICHT angefasst. Er trägt den
+       WICHTIG: Die STATIONEN eines bestehenden Weges werden NIE angefasst (seit 19.10.
+       wird nur seine Stufe auf das neue Ergebnis gesetzt). Er trägt den
        Fortschritt des Lerners — welche Stationen er durchschritten hat und
        wo er wirklich steht. Der Test darf ihn nicht zurücksetzen, auch nicht,
        wenn jemand die Einstufung wiederholt. Deshalb: nur anlegen, nie
        überschreiben. Die Struktur stammt aus lernpfad.js (leer()). */
     try {
       var wegDa = localStorage.getItem('spikiu_pfad');
+      var neueStufe = (koennen === 'anfang') ? 'a1' : ((data.level === 'B1' || data.level === 'B2') ? 'b1' : 'a2');
+      /* Neu-Einstufung (Leo, 19.10.: „egal wie man sich einstufen lässt … tauchen nur diese Themen"):
+         ein bestehender Weg behält seine Stationen, bekommt aber die Stufe aus dem neuen Test. */
+      if (wegDa) {
+        var weg = JSON.parse(wegDa);
+        if (weg && weg.stationen) { weg.stufe = neueStufe; localStorage.setItem('spikiu_pfad', JSON.stringify(weg)); }
+      }
       if (!wegDa) {
         localStorage.setItem('spikiu_pfad', JSON.stringify({
           zielsprache: zielsprache,
           // b1 = Krone: seit 16.10.2026 in allen vier Zielsprachen.
-          stufe: (koennen === 'anfang') ? 'a1' : ((data.level === 'B1' || data.level === 'B2') ? 'b1' : 'a2'),
+          stufe: neueStufe,
           stationen: {}
         }));
       }

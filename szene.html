@@ -321,7 +321,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     ((ST && ST.wortschatz) || []).forEach(function (w) { if (out.length < 4) nimm({ z: w.z, lt: w.tr || '', tr: inSprache(w.na), bild: bildVon(w.z, w.na && w.na.en) }); });
     try {
       var F = (window.spikiuWortfelder && THEMA) ? window.spikiuWortfelder.feld(ZS, THEMA, MU) : [];
-      var ord = STUFE === 'a1' ? [1, 2, 3] : STUFE === 'a2' ? [2, 1, 3] : [2, 3, 1];
+      var ord = STUFE === 'a1' ? [1, 2, 3] : [];   // Stamm/Krone: nur Wörter der Station (Leo, 19.10.)
       ord.forEach(function (s) {
         F.forEach(function (x) {
           if (out.length >= 4 || x.stufe !== s) return;
