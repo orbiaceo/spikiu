@@ -92,11 +92,34 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 .fz-zeile:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
 .oh-karte.dicht{gap:7px;padding-top:10px}
 .oh-karte.dicht .oh-blase .oh-lt{display:none}
-.oh-karte.dicht .oh-blase .oh-z{font-size:.95rem;line-height:1.25}
+.oh-karte.dicht .oh-blase .oh-z{font-size:1.0625rem;line-height:1.25}
 .oh-karte.dicht .oh-zeile .oh-cap{flex-basis:32px;height:32px}
-.oh-karte.dicht .oh-task{font-size:.93rem;line-height:1.28}
+.oh-karte.dicht .oh-task{font-size:1.0625rem;line-height:1.28}
 .oh-karte.dicht .oh-big{padding:.4rem 1.3rem;font-size:1rem}
 .oh-karte.dicht .oh-fb{min-height:2em;font-size:.88rem}
+/* Bühne in drei Karten (Prototyp 19.10.) */
+.bz-punkte{flex:0 0 auto;display:flex;gap:7px;justify-content:center;align-items:center}
+.bz-punkte i{width:9px;height:9px;border-radius:50%;background:var(--faint)}
+.bz-punkte i.ok{background:#2f6b3a}.bz-punkte i.on{width:26px;border-radius:9px;background:var(--acc)}
+.bz-szene{flex:0 0 auto;text-align:center;display:flex;flex-direction:column;gap:4px}
+.bz-szene .em{font-size:2.2rem;line-height:1}
+.bz-szene h2{font:600 1.4rem/1.2 'Lora',Georgia,serif;text-wrap:balance}
+.bz-szene p{font:600 1.0625rem/1.35 'DM Sans',sans-serif;color:var(--muted);text-wrap:balance}
+.bz-rollen{flex:1 1 0;min-height:200px;width:100%;display:grid;grid-template-rows:1fr 1fr;gap:12px}
+.bz-rolle{border:2.5px solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);padding:12px 14px;display:flex;align-items:center;gap:14px;min-height:0;text-align:left;background:#fff}
+.bz-rolle.du{background:#fff6d6}
+.bz-rolle .bild{flex:0 0 60px;height:60px;display:grid;place-items:center;font-size:2.5rem}
+.bz-rolle .bild svg{width:100%;height:100%}
+.bz-rolle .txt{min-width:0;display:flex;flex-direction:column;gap:4px}
+.bz-rolle .l{font:700 .78rem/1 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.bz-rolle .n{font:800 1.25rem/1.25 'DM Sans',sans-serif;text-wrap:balance}
+.bz-lese{flex:1 1 0;min-height:0;width:100%;display:flex;flex-direction:column;justify-content:center;gap:10px;border-radius:18px;padding:14px 15px;border:2.5px solid var(--ink);text-align:left}
+.bz-lese.gelb{background:#fff6d6}.bz-lese.blau{background:#d3eef6}
+.bz-lese .kz{display:flex;align-items:center;gap:10px}
+.bz-lese .kz span{font-size:1.7rem;line-height:1}
+.bz-lese .kz b{font:800 .85rem/1 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.bz-lese .text{font:500 var(--fs,1.3rem)/1.45 'Lora',Georgia,serif;text-wrap:pretty;overflow-y:auto;min-height:0}
+.bz-lese .text.rollt{-webkit-mask-image:linear-gradient(#000 calc(100% - 2.2em),transparent);mask-image:linear-gradient(#000 calc(100% - 2.2em),transparent);padding-bottom:1.6em}
 .fz-lbl{font:700 .66rem/1 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
 .fz-leer{font:600 .95rem/1.4 'DM Sans',sans-serif;color:var(--muted);text-align:center;margin:auto 0}
 .fz-punkte{font:800 1.6rem 'DM Sans',sans-serif;color:var(--muted);letter-spacing:.3em;margin:auto 0}
@@ -162,7 +185,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 
   /* ── Oberfläche in der Muttersprache (de · es · en · el) ── */
   var WORT = {
-    de: { titel:'Freies Gespräch', rail:['Rolle','Tisch','Gespräch','Rückblick','Ernte'],
+    de: { titel:'Freies Gespräch', zurueckK:'‹ Zurück', rail:['Rolle','Tisch','Gespräch','Rückblick','Ernte'],
       themaTask:'Wo möchtest du üben?', wohin:function(k){ return k + ' — wohin gehst du?'; }, themen:'‹ Themen', haus:'‹ Haus',
       baum:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'},
       spikiuIst:'Spikiu ist', duBist:'Du bist', deineRolle:'Deine Rolle', gutZuWissen:'Gut zu wissen', los:'Los ›',
@@ -180,7 +203,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       nichtsGeerntet:'Noch nichts eingesammelt.', nichtsGeerntetText:'Beim nächsten Mal steht hier, was ihr wirklich gesagt habt.',
       nachHause:'Nach Hause ›', nochmal:'‹ Nochmal',
       keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen.', keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.' },
-    es: { titel:'Conversación libre', rail:['Papel','Mesa','Conversación','Repaso','Cosecha'],
+    es: { titel:'Conversación libre', zurueckK:'‹ Atrás', rail:['Papel','Mesa','Conversación','Repaso','Cosecha'],
       themaTask:'¿Dónde quieres practicar?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
       baum:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
       spikiuIst:'Spikiu es', duBist:'Tú eres', deineRolle:'Tu papel', gutZuWissen:'Bueno saberlo', los:'¡Vamos! ›',
@@ -198,7 +221,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       nichtsGeerntet:'Todavía nada recogido.', nichtsGeerntetText:'La próxima vez aparecerá aquí lo que de verdad hayáis dicho.',
       nachHause:'A casa ›', nochmal:'‹ Otra vez',
       keineDaten:'Los datos del camino o el guion de la escena no están cargados.', keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.' },
-    en: { titel:'Free conversation', rail:['Role','Table','Talk','Review','Harvest'],
+    en: { titel:'Free conversation', zurueckK:'‹ Back', rail:['Role','Table','Talk','Review','Harvest'],
       themaTask:'Where would you like to practise?', wohin:function(k){ return k + ': where are you going?'; }, themen:'‹ Topics', haus:'‹ Home',
       baum:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'},
       spikiuIst:'Spikiu is', duBist:'You are', deineRolle:'Your role', gutZuWissen:'Good to know', los:'Let’s go ›',
@@ -216,7 +239,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       nichtsGeerntet:'Nothing collected yet.', nichtsGeerntetText:'Next time this is where what you actually said will appear.',
       nachHause:'Home ›', nochmal:'‹ Again',
       keineDaten:'The path data or the scene script is not loaded.', keineAufgaben:'This station has no tasks yet. Choose another topic.' },
-    el: { titel:'Ελεύθερη συζήτηση', rail:['Ρόλος','Τραπέζι','Συζήτηση','Ανασκόπηση','Σοδειά'],
+    el: { titel:'Ελεύθερη συζήτηση', zurueckK:'‹ Πίσω', rail:['Ρόλος','Τραπέζι','Συζήτηση','Ανασκόπηση','Σοδειά'],
       themaTask:'Πού θέλεις να εξασκηθείς;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
       baum:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'},
       spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι', deineRolle:'Ο ρόλος σου', gutZuWissen:'Καλό να ξέρεις', los:'Πάμε ›',
@@ -448,29 +471,56 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   /* ══════════════════════════════════════════════════════════
      1 · BÜHNE — wer ist wer, was gilt
      ══════════════════════════════════════════════════════════ */
-  function buehne() {
+  /* Drei Karten statt einer (Leo, 19.10., Prototyp prototyp-buehne-karten.html genehmigt):
+     1 Wer ist wer · 2 Deine Rolle · 3 Gut zu wissen — „eine Karte = ein Gedanke".
+     Lesetext nie unter 17 px; passt er nicht, rollt er in seinem Feld (weicher Rand unten). */
+  function buehne(teil) {
     PHASE = 'buehne';
+    teil = teil || 0;
     kopf(THEMA_NA, 0);
     var th = LP.thema(THEMA);
     var fakten = LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : '';
     var kultur = LP.kulturVon ? LP.kulturVon(STUFE, THEMA, MU) : '';
+    var teile = ['wer'].concat(fakten ? ['rolle'] : [], kultur ? ['wissen'] : []);
+    if (teil >= teile.length) teil = teile.length - 1;
     var k = O.karte(stage);
-    O.task(k, ((th && th.em) ? th.em + ' ' : '') + THEMA_NA, ((U.baum[STUFE] || '') + ' · ' + inSprache(ROLLE && ROLLE.ort)).replace(/ · $/, ''));
-    /* WAS IN DIESER SZENE GILT: ohne „Deine Rolle" verlangten die Aufgaben Aussagen über das
-       echte Leben — mit ihr ist es ein Theaterstück. */
-    var g = O.raster(k, fakten ? 'drei' : 'zwei');
-    g.innerHTML = '<div class="oh-tile" id="b-spikiu"><span class="fz-lbl">' + esc(U.spikiuIst) + '</span><span class="oh-tn">' + esc(gross(inSprache(ROLLE && ROLLE.spikiu))) + '</span></div>'
-      + '<div class="oh-tile" id="b-du"><span class="fz-lbl">' + esc(U.duBist) + '</span><span class="oh-tn">' + esc(gross(inSprache(ROLLE && ROLLE.lerner))) + '</span></div>'
-      + (fakten ? '<div class="oh-tile gew" id="b-rolle"><span class="fz-lbl">' + esc(U.deineRolle) + '</span><span class="oh-tu" style="color:var(--ink)">' + esc(fakten) + '</span></div>' : '');
-    O.fit(g);
-    O.fb(k, kultur ? '<span class="oh-leise">🗺️ ' + esc(U.gutZuWissen) + ': ' + esc(kultur) + '</span>' : '');
-    var tisch = tischWoerter();
-    O.fuss(fussEl, { t: U.themen, go: function () { raeumen(); THEMA = ''; waehler(); } },
-      { t: U.los, pri: true, go: function () {
-        automat.los();
-        letzteSpikiu = eroeffnung();
-        if (tisch.length) tischDecken(tisch); else ersterZug();
-      } });
+    if (teile.length > 1) k.appendChild(O.el('div', 'bz-punkte', teile.map(function (_, i) { return '<i class="' + (i < teil ? 'ok' : i === teil ? 'on' : '') + '"></i>'; }).join('')));
+    var art = teile[teil];
+    if (art === 'wer') {
+      var schritt = '';
+      try { var sch = LP.schritt && LP.schritt[THEMA] && LP.schritt[THEMA][STUFE]; schritt = sch ? inSprache(sch) : ''; } catch (e) {}
+      k.appendChild(O.el('div', 'bz-szene', '<span class="em" aria-hidden="true">' + esc((th && th.em) || '🎭') + '</span>'
+        + '<h2>' + esc(schritt || THEMA_NA) + '</h2><p>' + esc(((U.baum[STUFE] || '') + ' · ' + inSprache(ROLLE && ROLLE.ort)).replace(/ · $/, '')) + '</p>'));
+      k.appendChild(O.el('div', 'bz-rollen',
+        '<div class="bz-rolle" id="b-spikiu"><span class="bild">' + CAPY + '</span><span class="txt"><span class="l">' + esc(U.spikiuIst) + '</span><span class="n">' + esc(gross(inSprache(ROLLE && ROLLE.spikiu))) + '</span></span></div>'
+        + '<div class="bz-rolle du" id="b-du"><span class="bild" aria-hidden="true">🙋</span><span class="txt"><span class="l">' + esc(U.duBist) + '</span><span class="n">' + esc(gross(inSprache(ROLLE && ROLLE.lerner))) + '</span></span></div>'));
+    } else {
+      var feld = O.el('div', 'bz-lese ' + (art === 'rolle' ? 'gelb' : 'blau'),
+        '<div class="kz"><span aria-hidden="true">' + (art === 'rolle' ? '🎭' : '🗺️') + '</span><b>' + esc(art === 'rolle' ? U.deineRolle : U.gutZuWissen) + '</b></div>'
+        + '<div class="text" id="bz-text">' + esc(art === 'rolle' ? fakten : kultur) + '</div>');
+      k.appendChild(feld);
+      var t = feld.querySelector('.text');
+      requestAnimationFrame(function () { leseEinpassen(t); });
+      if (window.ResizeObserver) new ResizeObserver(function () { leseEinpassen(t); }).observe(feld);
+    }
+    var letzte = teil === teile.length - 1;
+    O.fuss(fussEl,
+      teil === 0 ? { t: U.themen, go: function () { raeumen(); THEMA = ''; waehler(); } } : { t: U.zurueckK, go: function () { buehne(teil - 1); } },
+      letzte ? { t: U.los, pri: true, go: los } : { t: U.weiter, pri: true, go: function () { buehne(teil + 1); } });
+    function los() {
+      var tisch = tischWoerter();
+      automat.los();
+      letzteSpikiu = eroeffnung();
+      if (tisch.length) tischDecken(tisch); else ersterZug();
+    }
+  }
+  /* LESEREGEL (19.10.): Ziel 21 px, in Schritten bis 17 px, nie darunter — sonst rollt der Text. */
+  function leseEinpassen(t) {
+    if (!t || !t.isConnected) return;
+    var stufen = ['1.3rem', '1.22rem', '1.14rem', '1.0625rem'];
+    t.classList.remove('rollt');
+    for (var i = 0; i < stufen.length; i++) { t.style.setProperty('--fs', stufen[i]); if (t.scrollHeight <= t.clientHeight + 1) return; }
+    t.classList.add('rollt');
   }
 
   /* ══════════════════════════════════════════════════════════

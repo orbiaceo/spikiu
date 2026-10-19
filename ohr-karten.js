@@ -10,7 +10,7 @@
 
    REGELN (Leo, 18.10.):
    - 2×2 nur für Bilder und kurze Wörter; Sätze stehen als breite Zeilen untereinander.
-   - Jede Kachel passt ihre Schrift selbst an (bis 55 %) und beobachtet ihre Größe;
+   - Jede Kachel passt ihre Schrift selbst an (bis 85 %, Leo 19.10.: „man braucht eine Lupe“ — vorher 55 %) und beobachtet ihre Größe;
      zu eng → Umschrift fällt weg; letzte Stufe: Kachel wächst, Karte rollt innen.
      Text wird NIE abgeschnitten, nichts überlappt.
    - Entdecken: jedes Bild selbst antippen (kein „Alle anhören").
@@ -95,7 +95,7 @@
   + '.oh-btn[disabled]{opacity:.38;box-shadow:none;cursor:default}'
   + '.oh-karte :focus-visible,.oh-fuss :focus-visible{outline:3px solid var(--acc,#1f93b0);outline-offset:2px}'
   + '@media (max-height:720px){.oh-karte{gap:9px;padding:12px 12px 8px}.oh-tile .oh-ts{display:none}.oh-tile .oh-te{font-size:2rem}.oh-tile img{max-height:62%}'
-  + '.oh-task{font-size:1.02rem}.oh-task small{display:none}.oh-big{padding:.5rem 1.5rem;font-size:1.06rem}.oh-fb{min-height:2.3em;font-size:.95rem}.oh-blase .oh-z{font-size:1.02rem}'
+  + '.oh-task{font-size:1.0625rem}.oh-task small{display:none}.oh-big{padding:.5rem 1.5rem;font-size:1.06rem}.oh-fb{min-height:2.3em;font-size:.95rem}.oh-blase .oh-z{font-size:1.0625rem}'
   + '.oh-lot b{padding:.12rem .4rem;font-size:.56rem}.oh-tile.oh-ent.ges img{max-height:26%}.oh-tile.oh-ent{padding:6px;gap:3px}.oh-tile.oh-ent .oh-neu{gap:0}'
   + '.oh-tile.oh-ent.ges .oh-tz{font-size:calc(.98rem*var(--fs));line-height:1.15}}'
   + '@media (prefers-reduced-motion:no-preference){.oh-pop{animation:ohPop .3s ease-out both}@keyframes ohPop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:none}}}';
@@ -120,8 +120,8 @@
     g.classList.remove('wachsen'); var rest = false;
     g.querySelectorAll('.oh-tile').forEach(function (t) {
       t.classList.remove('eng'); t.style.setProperty('--fs', '1'); var f = 1;
-      while (f > .6 && zuEng(t)) { f -= .05; t.style.setProperty('--fs', f.toFixed(2)); }
-      if (zuEng(t)) { t.classList.add('eng'); f = Math.min(f + .15, 1); t.style.setProperty('--fs', f.toFixed(2)); while (f > .55 && zuEng(t)) { f -= .05; t.style.setProperty('--fs', f.toFixed(2)); } }
+      while (f > .9 && zuEng(t)) { f -= .05; t.style.setProperty('--fs', f.toFixed(2)); }
+      if (zuEng(t)) { t.classList.add('eng'); f = Math.min(f + .15, 1); t.style.setProperty('--fs', f.toFixed(2)); while (f > .9 && zuEng(t)) { f -= .05; t.style.setProperty('--fs', f.toFixed(2)); } }
       if (zuEng(t)) rest = true;
     });
     if (rest) g.classList.add('wachsen');
