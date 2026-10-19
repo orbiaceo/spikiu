@@ -18,15 +18,15 @@
 
   WAS BLEIBT (die Logik von vorher, nur neu angezogen):
   - Der Lerner bekommt konkrete Aufgaben und BAUT den Satz SELBST (Leo, 30.08.).
-    Abgeschickt wird nur, was er selbst schreibt oder diktiert. Ein Vorschlag
-    antippen heißt hören und verstehen (Ohr-Runde, richtig/nicht ganz) — das
-    richtige Vorbild bleibt dann über dem Feld stehen und wird von Hand
-    nachgebaut (Entscheid 24.09.: „wer den Satz nur antippt, lernt nichts").
+    Er kann frei schreiben/diktieren ODER einen der vier Vorschläge antippen
+    (Ohr-Runde: falsch = „passt hier noch nicht"; der richtige ZÄHLT als
+    Antwort — Leo, 19.10.: „Ja, es soll zählen."). Angetippte Zeilen gehen
+    nicht in die Rückmeldung; ändert er sie später, zählen sie als eigene.
   - NULL TOKEN während der Szene. Spikius Zeile ist IMMER die nächste
     Skriptzeile — die Szene kann nicht entgleisen.
   - ES WIRD NICHTS GEPRÜFT (31.08.): jede offene Antwort rückt die Aufgabe vor;
     nur eine Rückfrage („¿Cómo?") nicht (Sieb, R13). Beurteilt wird EINMAL am
-    Ende von /api/rueckmeldung — nur die frei gebauten Sätze.
+    Ende von /api/rueckmeldung — nur die selbst gebauten Sätze.
   - Vor der Rückmeldung kann er jeden eigenen Satz noch ändern (Stift, 30.08.).
   - Die Ernte zeigt nur, was vorkam. Sitzung über sitzung.js ('szene').
 
@@ -67,10 +67,6 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 
 /* Selbst sagen: das Feld nimmt den Platz der Vorschläge ein */
 .fz-selbst{flex:1 1 0;min-height:150px;width:100%;display:flex;flex-direction:column;gap:9px}
-.fz-vorbild{flex:0 0 auto;border:2px dashed var(--acc);border-radius:14px;padding:7px 11px;text-align:left;background:#f4fbfd}
-.fz-vorbild .l{font:700 .64rem/1 'DM Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
-.fz-vorbild .s{font:600 1.05rem/1.3 'Lora',Georgia,serif;margin-top:4px}
-.fz-vorbild .u{font:600 .8rem/1.3 'DM Sans',sans-serif;color:var(--muted);margin-top:2px}
 .fz-feld{flex:1 1 0;min-height:70px;width:100%;resize:none;border:2.5px solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);
   padding:10px 12px;font:600 1.12rem/1.35 'Lora',Georgia,serif;color:var(--ink);background:#fff}
 .fz-feld:focus{outline:3px solid var(--acc);outline-offset:2px}
@@ -173,8 +169,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       tischSag:'Bevor wir reden, decke ich den Tisch.', tischUeb:'Vier Wörter, die gleich vorkommen. Tipp jedes Bild an.',
       entZaehler:function(n,g){ return n + ' von ' + g + ' entdeckt'; }, tischFertig:'Der Tisch ist gedeckt.', losGehts:'Los geht’s ›',
       ueb:'Übersetzung', anhoeren:'Anhören', aufgabeVon:function(i,n){ return 'Aufgabe ' + i + ' von ' + n; },
-      selbst:'🎤 Selbst sagen', hinweis:'Sag es selbst — oder hör dir die Vorschläge an.', nurSelbst:'Sag es selbst.',
-      vorbild:'Dein Vorbild', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Jetzt sag es selbst ↑</span>'; },
+      selbst:'🎤 Selbst sagen', hinweis:'Sag es selbst — oder tipp einen Vorschlag.', nurSelbst:'Sag es selbst.',
       falsch:function(u){ return '„' + u + '" — passt hier noch nicht.'; },
       feldPh:'Schreib oder diktiere …', diktieren:'🎙️ Diktieren', hoertZu:'🎙️ Ich höre …', senden:'Senden ›', vorschlaege:'‹ Vorschläge',
       du:function(z){ return 'Du: <em>' + z + '</em>'; }, nochmalSp:'Spikiu sagt es noch einmal.',
@@ -192,8 +187,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       tischSag:'Antes de hablar, pongo la mesa.', tischUeb:'Cuatro palabras que van a salir enseguida. Toca cada imagen.',
       entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, tischFertig:'La mesa está puesta.', losGehts:'¡Empezamos! ›',
       ueb:'Traducción', anhoeren:'Escuchar', aufgabeVon:function(i,n){ return 'Tarea ' + i + ' de ' + n; },
-      selbst:'🎤 Dilo tú', hinweis:'Dilo tú, o escucha antes las propuestas.', nurSelbst:'Dilo tú.',
-      vorbild:'Tu modelo', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Ahora dilo tú ↑</span>'; },
+      selbst:'🎤 Dilo tú', hinweis:'Dilo tú, o toca una propuesta.', nurSelbst:'Dilo tú.',
       falsch:function(u){ return '«' + u + '»: aquí todavía no encaja.'; },
       feldPh:'Escribe o dicta …', diktieren:'🎙️ Dictar', hoertZu:'🎙️ Te escucho …', senden:'Enviar ›', vorschlaege:'‹ Propuestas',
       du:function(z){ return 'Tú: <em>' + z + '</em>'; }, nochmalSp:'Spikiu lo repite.',
@@ -211,8 +205,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       tischSag:'Before we talk, I’ll set the table.', tischUeb:'Four words you’ll hear in a moment. Tap each picture.',
       entZaehler:function(n,g){ return n + ' of ' + g + ' discovered'; }, tischFertig:'The table is set.', losGehts:'Let’s start ›',
       ueb:'Translation', anhoeren:'Listen', aufgabeVon:function(i,n){ return 'Task ' + i + ' of ' + n; },
-      selbst:'🎤 Say it yourself', hinweis:'Say it yourself, or listen to the suggestions first.', nurSelbst:'Say it yourself.',
-      vorbild:'Your model', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Now say it yourself ↑</span>'; },
+      selbst:'🎤 Say it yourself', hinweis:'Say it yourself, or tap a suggestion.', nurSelbst:'Say it yourself.',
       falsch:function(u){ return '“' + u + '”: doesn’t fit here yet.'; },
       feldPh:'Type or dictate …', diktieren:'🎙️ Dictate', hoertZu:'🎙️ Listening …', senden:'Send ›', vorschlaege:'‹ Suggestions',
       du:function(z){ return 'You: <em>' + z + '</em>'; }, nochmalSp:'Spikiu says it again.',
@@ -230,8 +223,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       tischSag:'Πριν μιλήσουμε, στρώνω το τραπέζι.', tischUeb:'Τέσσερις λέξεις που θα ακούσεις σε λίγο. Πάτα κάθε εικόνα.',
       entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, tischFertig:'Το τραπέζι είναι στρωμένο.', losGehts:'Ξεκινάμε ›',
       ueb:'Μετάφραση', anhoeren:'Άκου', aufgabeVon:function(i,n){ return 'Εργασία ' + i + ' από ' + n; },
-      selbst:'🎤 Πες το εσύ', hinweis:'Πες το εσύ ή άκου πρώτα τις προτάσεις.', nurSelbst:'Πες το εσύ.',
-      vorbild:'Το πρότυπό σου', richtig:function(z,u){ return (u ? '= ' + u + ' · ' : '') + '<span class="oh-leise">Τώρα πες το εσύ ↑</span>'; },
+      selbst:'🎤 Πες το εσύ', hinweis:'Πες το εσύ ή πάτα μια πρόταση.', nurSelbst:'Πες το εσύ.',
       falsch:function(u){ return '«' + u + '»: δεν ταιριάζει ακόμα εδώ.'; },
       feldPh:'Γράψε ή υπαγόρευσε …', diktieren:'🎙️ Υπαγόρευση', hoertZu:'🎙️ Σε ακούω …', senden:'Αποστολή ›', vorschlaege:'‹ Προτάσεις',
       du:function(z){ return 'Εσύ: <em>' + z + '</em>'; }, nochmalSp:'Ο Spikiu το ξαναλέει.',
@@ -533,7 +525,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     O.task(k, mitPunkt(inSprache(AUFG[index])), U.aufgabeVon(index + 1, AUFG.length));
     var big = O.big(k, U.selbst, function () { selbstSagen(); });
     var vs = vorschlaege(index);
-    var vorbild = null, beantwortet = false;
+    var beantwortet = false;
 
     /* Platz für Vorschläge ODER das eigene Feld — nie beides */
     var g = null, selbstBox = null;
@@ -546,9 +538,17 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
           if (beantwortet) return;
           sprich(x.z);
           if (x.ok) {
-            vorbild = x; b.classList.add('ok'); O.klang(true);
-            fb.className = 'oh-fb'; fb.innerHTML = '<span>' + U.richtig(esc(x.z), esc(x.na)) + '</span>';
-            big.classList.add('oh-pop');
+            /* Der richtige Vorschlag ZÄHLT als Antwort (Leo, 19.10.: „Ja, es soll zählen."). */
+            var zs = automat.antworte(x.z, 'offen');
+            if (zs.abgelehnt) { schluss(); return; }
+            beantwortet = true; b.classList.add('ok'); O.klang(true);
+            g.querySelectorAll('.oh-tile').forEach(function (t) { if (t !== b) { t.disabled = true; t.style.opacity = '.45'; t.style.boxShadow = 'none'; } });
+            big.disabled = true; big.style.opacity = '.4'; big.style.boxShadow = 'none';
+            protokoll.push({ aufgabe: index, gesagt: x.z, erwartet: x.z, auftrag: inSprache(AUFG[index]), vorher: spz.z, getippt: true });
+            geerntet.gesagt.push(x.z);
+            speichern();
+            fb.className = 'oh-fb'; fb.innerHTML = '<span>' + U.du(esc(x.z)) + (x.na ? ' = ' + esc(x.na) : '') + '</span>';
+            var r0 = document.getElementById('oh-rechts'); if (r0) r0.disabled = false;
           } else {
             O.klang(false); b.classList.add('no'); b.disabled = true;
             fb.className = 'oh-fb soft'; fb.innerHTML = esc(U.falsch(x.na || x.z));
@@ -567,8 +567,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       if (g) g.hidden = true;
       big.hidden = true;
       selbstBox = O.el('div', 'fz-selbst');
-      selbstBox.innerHTML = (vorbild ? '<div class="fz-vorbild"><div class="l">' + esc(U.vorbild) + '</div><div class="s" lang="' + esc(ZS) + '">' + esc(vorbild.z) + '</div>' + (vorbild.na ? '<div class="u">' + esc(vorbild.na) + '</div>' : '') + '</div>' : '')
-        + '<textarea class="fz-feld" id="fz-feld" rows="2" placeholder="' + esc(U.feldPh) + '" lang="' + esc(ZS) + '"></textarea>'
+      selbstBox.innerHTML = '<textarea class="fz-feld" id="fz-feld" rows="2" placeholder="' + esc(U.feldPh) + '" lang="' + esc(ZS) + '"></textarea>'
         + '<div class="fz-reihe">'
         + (vs.length ? '<button type="button" class="fz-link" id="fz-zurueck">' + esc(U.vorschlaege) + '</button>' : '<span></span>')
         + '<span style="display:flex;gap:8px">' + (diktatDa() ? '<button type="button" class="fz-klein" id="fz-dikt">' + esc(U.diktieren) + '</button>' : '')
@@ -579,7 +578,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       feld.addEventListener('input', function () { sb.disabled = !feld.value.trim(); });
       feld.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); if (!sb.disabled) sb.click(); } });
       var zb = selbstBox.querySelector('#fz-zurueck');
-      if (zb) zb.onclick = function () { selbstBox.remove(); selbstBox = null; g.hidden = false; big.hidden = false; O.fit(g); fb.className = 'oh-fb'; fb.innerHTML = vorbild ? '<span>' + U.richtig(esc(vorbild.z), esc(vorbild.na)) + '</span>' : '<span class="oh-leise">' + esc(U.hinweis) + '</span>'; };
+      if (zb) zb.onclick = function () { selbstBox.remove(); selbstBox = null; g.hidden = false; big.hidden = false; O.fit(g); fb.className = 'oh-fb'; fb.innerHTML = '<span class="oh-leise">' + esc(U.hinweis) + '</span>'; };
       var db = selbstBox.querySelector('#fz-dikt');
       if (db) db.onclick = function () { diktat(feld, db, function () { sb.disabled = !feld.value.trim(); }); };
       sb.onclick = function () {
@@ -692,7 +691,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     O.fuss(fussEl, { t: U.zurueck, go: function () { schluss(); } }, { t: U.uebernehmen, pri: true, go: function () {
       var alt = p.gesagt, neu = f.value.trim() || alt;
       var j = geerntet.gesagt.indexOf(alt); if (j > -1) geerntet.gesagt[j] = neu;
-      p.gesagt = neu; if (neu !== alt) p.geaendert = true;
+      p.gesagt = neu; if (neu !== alt) { p.geaendert = true; p.getippt = false; }
       speichern(); schluss();
     } });
     setTimeout(function () { try { f.focus(); } catch (e) {} }, 60);
@@ -705,7 +704,8 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
      aus, geht es ohne ihn weiter — die Ernte bleibt ihm.
      ══════════════════════════════════════════════════════════ */
   async function rueckmeldung() {
-    var zuege = protokoll.filter(function (p) { return p.gesagt && p.gesagt.trim(); })
+    /* Angetippte Vorschläge sind Skriptzeilen — sie gehen nicht in die Rückmeldung (spart Token, nichts zu berichtigen). */
+    var zuege = protokoll.filter(function (p) { return p.gesagt && p.gesagt.trim() && !p.getippt; })
       .map(function (p) { return { gesagt: p.gesagt, aufgabe: p.auftrag || '', vorher: p.vorher || '', ueblich: p.erwartet || '' }; });
     var zeilen = zuege.map(function (z) { return z.gesagt; });
     if (!zuege.length) { ernte(); return; }
