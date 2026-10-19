@@ -46,6 +46,15 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 .spiel-ende .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;max-width:30rem;width:100%;margin:0 auto}
 .spiel-ende .end{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;box-shadow:3px 3px 0 var(--ink)}
 .spiel-ende .end.primary{background:var(--acc);color:#fff}
+/* Abschluss-Bilanz: flach, ohne Rand/Schatten — reine Information, kein Knopf */
+.bilanz{flex:1 1 0;min-height:0;width:100%;display:flex;flex-direction:column;justify-content:center;gap:2px;background:var(--minz);border-radius:18px;padding:8px 16px}
+.bz{flex:1 1 0;max-height:84px;display:flex;align-items:center;gap:14px;text-align:left;border-bottom:1.5px dashed var(--faint)}
+.bz:last-child{border-bottom:0}
+.bz-e{flex:0 0 auto;font-size:1.7rem;line-height:1}
+.bz-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.bz-t b{font:800 1.05rem/1.2 'DM Sans',sans-serif}
+.bz-t span{font:600 .88rem/1.25 'DM Sans',sans-serif;color:var(--muted)}
+.bz-h{flex:0 0 auto;font:800 1rem 'DM Sans',sans-serif;color:#2f6b3a}
 @media (max-height:720px){.kopf .ttl{font-size:1.12rem}.kopf .back{width:36px;height:36px}}
 </style>
 </head>
@@ -127,7 +136,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       spielPinata:'🪅 Piñata', spielGemelos:'🧩 Paare', spielOido:'👂 Feines Ohr', spielGolpe:'🥁 Der Schlag', viewLesson:'Lektion ansehen', enough:'Genug für heute' },
     es: { titel:'Conversación guiada', rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
       themaTask:'¿Dónde quieres hablar hoy?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
-      baum:{ a1:'🌱 Semilla', a2:'🌿 Tallo', b1:'🌳 Copa' },
+      baum:{ a1:'🌱 Semilla', a2:'🌿 Tronco', b1:'🌳 Copa' },
       entTitel:'Descubrir palabras', entTask:'Toca cada imagen: escucha, mira, entiende.', entKlein1:'Tómate tu tiempo. Puedes tocar cada imagen las veces que quieras.', entKleinN:'Palabras nuevas; las de antes vuelven enseguida.',
       entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, entFertig:'Ya has oído las cuatro. Ahora las reconoces.', erkennen:'Reconocer ›',
       erkTitel:'Reconocer palabras', erkTask:'Escucha bien y toca la imagen correcta.', runde:function(i,n){ return 'Ronda ' + i + ' de ' + n; },
@@ -163,7 +172,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       spielPinata:'🪅 Piñata', spielGemelos:'🧩 Pairs', spielOido:'👂 Sharp ear', spielGolpe:'🥁 The beat', viewLesson:'View lesson', enough:'Enough for today' },
     el: { titel:'Καθοδηγούμενη συζήτηση', rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
       themaTask:'Πού θέλεις να μιλήσεις σήμερα;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
-      baum:{ a1:'🌱 Σπόρος', a2:'🌿 Κορμός', b1:'🌳 Κορυφή' },
+      baum:{ a1:'🌱 Σπόρος', a2:'🌿 Κορμός', b1:'🌳 Φυλλωσιά' },
       entTitel:'Ανακάλυψε λέξεις', entTask:'Πάτα κάθε εικόνα: άκου, δες, κατάλαβε.', entKlein1:'Με την ησυχία σου. Μπορείς να πατάς κάθε εικόνα όσες φορές θέλεις.', entKleinN:'Νέες λέξεις· οι προηγούμενες ξαναέρχονται σε λίγο.',
       entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, entFertig:'Τις άκουσες και τις τέσσερις. Τώρα τις αναγνωρίζεις.', erkennen:'Αναγνώριση ›',
       erkTitel:'Αναγνώρισε λέξεις', erkTask:'Άκου προσεκτικά και πάτα τη σωστή εικόνα.', runde:function(i,n){ return 'Γύρος ' + i + ' από ' + n; },
@@ -585,10 +594,13 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     kopf(U.fertigTitel, 5);
     var k = O.karte(stage);
     O.blase(k, { capy: CAPY, z: ENDE_SP[ZIEL], lang: ZIEL, tr: ENDE_TR[MUT], trOffen: true });
-    var g = O.raster(k, 'bilder');
+    /* Bilanz als flache Zeilen, NICHT als Kacheln: Kacheln mit Rand und Schatten sehen aus wie
+       Knöpfe, waren aber tot (Leo, 19.10.: „der User denkt, er kann etwas mit den 4 Kacheln
+       anfangen, aber sie sind tot"). Handeln geht nur über die zwei Knöpfe unten. */
+    var g = O.el('div', 'bilanz'); k.appendChild(g);
     var erkannt = WS ? WS.treffer.filter(function (n) { return n >= 1; }).length : 0;
     [['📖', U.woerter, STOFF.bild.length ? U.endWoerter(erkannt, STOFF.bild.length) : ''], ['🎧', U.hoerenK, U.endHoeren(ERG.hoeren)], ['🗣️', U.sprechenK, U.endSprechen(ERG.sprechen)], ['✏️', U.lektionK, U.endLektion]].forEach(function (x) {
-      g.appendChild(O.el('div', 'oh-tile', '<span class="oh-te">' + x[0] + '</span><span class="oh-tn">' + esc(x[1]) + '</span><span class="oh-ts">' + esc(x[2]) + '</span>'));
+      g.appendChild(O.el('div', 'bz', '<span class="bz-e" aria-hidden="true">' + x[0] + '</span><span class="bz-t"><b>' + esc(x[1]) + '</b>' + (x[2] ? '<span>' + esc(x[2]) + '</span>' : '') + '</span><span class="bz-h" aria-hidden="true">✓</span>'));
     });
     O.fb(k, esc(U.endFb));
     setTimeout(function () { sprich(ENDE_SP[ZIEL]); }, 300);
