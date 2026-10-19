@@ -79,11 +79,11 @@
     'luggage':'🧳', 'luggage hold':'🧳', 'window seat':'💺', 'altitude sickness':'🤢',
     'dizziness':'🤢', 'tablet':'💊',
     // Buchen/Reservieren (Leo, 17.10.2026: „ein besseres Icon für buchen, reservieren" — vorher 📚):
-    'reserve':'📅', 'reservation':'📅', 'booking':'📅'
+    'reserve':'sp-reservieren', 'reservation':'sp-reservieren', 'booking':'sp-reservieren', 'reservations':'sp-reservieren'
   };
   /* Verben („to book") sind abstrakt und bekommen KEIN Nomen-Bild („book" → 📚 war falsch).
      Nur ausdrücklich gelistete Verben haben ein eigenes Bild. */
-  var VERB = { 'to book':'📅', 'to reserve':'📅', 'to book (a room)':'📅' };
+  var VERB = { 'to book':'sp-reservieren', 'to reserve':'sp-reservieren', 'to book (a room)':'sp-reservieren' };
 
   var ARTIKEL = /^(el|la|los|las|un|una|unos|unas|der|die|das|den|dem|ein|eine|einen|the|a|an|to|some)\s+/;
   function norm(s) {
@@ -137,7 +137,12 @@
   /* Direkt über das Konzept (englisch) — für Karten, die ihr Konzept kennen.
      Wichtig bei Doppeldeutigem: „el tiempo" ist im Starter-Wortschatz die ZEIT,
      in der Wetter-Station das WETTER (27.09.). */
-  raum.spikiuIcon.konzept = function (en) { return KONZEPT[norm(en)] || ''; };
+  raum.spikiuIcon.konzept = function (en) {
+    /* Verben aus der Verb-Liste zuerst — sonst wurde „to book" zu „book" → 📚 (Leo, 19.10.). */
+    var roh = String(en || '').toLowerCase().replace(/[¿?¡!.,]/g, '').trim();
+    if (VERB[roh]) return VERB[roh];
+    return KONZEPT[norm(en)] || '';
+  };
   /* Emoji oder sp-Name → Dateipfad in bilder/. */
   raum.spikiuIcon.datei = function (e) {
     if (!e) return '';

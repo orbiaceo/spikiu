@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
+  <!-- Spikiu-eigenes Icon: Kalender mit grünem Haken = buchen / reservieren (Leo, 19.10.) -->
+  <g stroke="#000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="9" y="15" width="46" height="44" rx="4" fill="#fff"/>
+    <path d="M9 19a4 4 0 0 1 4-4h38a4 4 0 0 1 4 4v8H9z" fill="#ea5a47"/>
+    <path d="M20 10v10M44 10v10" fill="none" stroke-width="3"/>
+    <g fill="#3f3f3f" stroke="none">
+      <rect x="15" y="33" width="7" height="4" rx="1.5"/><rect x="26" y="33" width="7" height="4" rx="1.5"/><rect x="37" y="33" width="7" height="4" rx="1.5"/>
+      <rect x="15" y="42" width="7" height="4" rx="1.5"/><rect x="26" y="42" width="7" height="4" rx="1.5"/>
+      <rect x="15" y="51" width="7" height="4" rx="1.5"/>
+    </g>
+    <circle cx="50" cy="51" r="14" fill="#5cb85c"/>
+    <path d="M43 51l5 5 9-10" fill="none" stroke="#fff" stroke-width="4"/>
+  </g>
+</svg>
