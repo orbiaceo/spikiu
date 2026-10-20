@@ -165,9 +165,9 @@
   }
 
   /* Entdecken: vier Dinge (Bild oder Satz). Antippen = klingt + Wort/Umschrift/Bedeutung.
-     o.sprich(z) · o.zaehler(n,ges) → html · o.alleGehoert() · o.fertigText */
+     o.sprich(z) · o.zaehler(n,ges) → html · o.alleGehoert() · o.fertigText · o.art ('bilder'|'liste') */
   function entdecken(k, items, o) {
-    var satz = !items[0].bild, g = raster(k, satz ? 'liste' : 'bilder'), f = fb(k), ges = {};
+    var satz = o.art ? o.art === 'liste' : !items[0].bild, g = raster(k, satz ? 'liste' : 'bilder'), f = fb(k), ges = {};   // o.art: 'bilder' | 'liste' (Wörter ohne Bild trotzdem 2×2, Leo 20.10.)
     f.innerHTML = '<span class="oh-leise">' + (o.zaehler ? o.zaehler(0, items.length) : '0 / ' + items.length) + '</span>';
     items.forEach(function (x, n) {
       var b = el('button', 'oh-tile oh-ent',

@@ -293,7 +293,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     /* Nur volle Bildkarten; übrige Bildwörter werden Wortkarten (ohne Bild), Station zuerst. */
     var volle = Math.floor(Math.min(mitBild.length, MAX) / 4) * 4;
     var rest = mitBild.slice(volle).filter(function (x) { return quelle.some(function (q) { return key(q.z) === key(x.z); }); })
-      .map(function (x) { return { z: x.z, lt: x.lt, tr: x.tr }; });
+      .map(function (x) { return { z: x.z, lt: x.lt, tr: x.tr, bild: x.bild }; });   // Bild behalten (Leo, 20.10.: „es sollen auch Icons vorkommen")
     var bild = mitBild.slice(0, volle).concat(rest.concat(ohneBild).filter(function (x) { return x.z && x.tr; }).slice(0, MAX - volle));
     /* Wortkarten zu vollen Vierern, wenn möglich; ein Rest von 1 fällt weg (lebt in Sätzen/Lektion). */
     var nText = bild.length - volle; if (nText % 4 === 1 && nText > 1) bild = bild.slice(0, bild.length - 1);
@@ -471,8 +471,11 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   }
   function erkennenStapel() {
     var neu = [], alt = [];
-    for (var j = 0; j < STOFF.bild.length; j++) { var l = Math.floor(j / 4); if (l === WS.lot) neu.push(j, j); else if (l < WS.lot) alt.push(j); }
-    var st = mischen(neu.concat(alt));
+    /* Wiederholung maßvoll (Leo, 20.10.: „es wirkt, als würde zu oft wiederholt"): jedes neue Wort EINMAL,
+       dazu nur zwei frühere Wörter als Wiedersehen. Fehler kommen wie bisher bald wieder. Vorher: neue Wörter
+       doppelt + ALLE früheren → bei 12 Wörtern 36 Runden, frühe Wörter 4× gefragt (+ ständig als Ablenker). */
+    for (var j = 0; j < STOFF.bild.length; j++) { var l = Math.floor(j / 4); if (l === WS.lot) neu.push(j); else if (l < WS.lot) alt.push(j); }
+    var st = mischen(neu.concat(mischen(alt).slice(0, 2)));
     for (var t = 1; t < st.length; t++) if (st[t] === st[t - 1]) for (var u = t + 1; u < st.length; u++) if (st[u] !== st[t]) { var x = st[t]; st[t] = st[u]; st[u] = x; break; }
     return st;
   }
@@ -483,9 +486,9 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     if (WS.phase === 'd') {
       kopf(U.entTitel, 1); k = O.karte(stage);
       var items = STOFF.bild.slice(WS.lot * 4, WS.lot * 4 + 4);
-      O.task(k, items[0].bild ? U.entTask : U.entTaskW, WS.lot ? U.entKleinN : U.entKlein1);
+      O.task(k, items.some(function (x) { return x.bild; }) ? U.entTask : U.entTaskW, WS.lot ? U.entKleinN : U.entKlein1);
       lotLeiste(k);
-      var r = O.entdecken(k, items, { lang: ZIEL, sprich: sprich, zaehler: U.entZaehler,
+      var r = O.entdecken(k, items, { art: 'bilder', lang: ZIEL, sprich: sprich, zaehler: U.entZaehler,
         alleGehoert: function () { document.getElementById('oh-rechts').disabled = false; setTimeout(function () { if (r.fb.isConnected) r.fb.innerHTML = '<span>' + esc(U.entFertig) + '</span>'; }, 1600); } });
       O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.erkennen, pri: true, aus: true, go: function () { WS.phase = 'r'; WS.stapel = erkennenStapel(); WS.runden = WS.stapel.length; WS.runde = 0; woerter(); } });
       return;
@@ -498,9 +501,10 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       lotLeiste(k);
       O.big(k, U.anhoeren, function () { sprich(w.z); });
       /* Ablenker nur aus schon entdeckten Wörtern DERSELBEN Art (Bild zu Bild, Wort zu Wort). */
-      var pool = []; for (var j = 0; j < Math.min(STOFF.bild.length, (WS.lot + 1) * 4); j++) { var y = STOFF.bild[j]; if (j !== i && !!y.bild === !!w.bild && (!w.bild || y.bild !== w.bild) && y.z !== w.z) pool.push(j); }
+      var pool = [], andere = []; for (var j = 0; j < Math.min(STOFF.bild.length, (WS.lot + 1) * 4); j++) { var y = STOFF.bild[j]; if (j === i || y.z === w.z || (w.bild && y.bild === w.bild)) continue; (!!y.bild === !!w.bild ? pool : andere).push(j); }
+      if (pool.length < 3) pool = pool.concat(mischen(andere).slice(0, 3 - pool.length));   // gemischte Karten: Bild und Wort dürfen nebeneinander stehen
       function kachel(x) { return x.bild ? '<img src="' + esc(x.bild) + '" alt="">' : '<span class="oh-tz" lang="' + ZIEL + '">' + esc(x.z) + '</span>'; }
-      O.runde(k, { sprich: sprich, auto: w.z, liste: !w.bild,
+      O.runde(k, { sprich: sprich, auto: w.z, liste: false,
         kacheln: [{ ok: true, html: kachel(w) }].concat(mischen(pool).slice(0, 3).map(function (j) { var x = STOFF.bild[j]; return { html: kachel(x), falsch: U.falschWort(esc(x.z), esc(x.tr)) }; })),
         richtig: '<span><em>' + esc(w.z) + '</em> = ' + esc(w.tr) + (w.lt ? '<span class="oh-lt">' + esc(w.lt) + '</span>' : '') + '</span>',
         fertig: function (sauber) {
@@ -619,7 +623,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     O.fb(k, esc(U.endFb));
     setTimeout(function () { sprich(ENDE_SP[ZIEL]); }, 300);
     var spiel = spielZumSchluss();
-    O.fuss(fussEl, { t: U.genug, go: function () { location.href = 'haus.html'; } },
+    O.fuss(fussEl, { t: U.genug, go: zumHaus },
       spiel ? { t: spiel.label + ' ›', pri: true, go: spiel.start } : { t: U.viewLesson + ' ›', pri: true, go: function () { location.href = 'lektionen.html'; } });
   }
   function genug() { sitzSpeichern(); location.href = 'haus.html'; }
@@ -650,22 +654,26 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     var LABEL = { pinata: U.spielPinata, gemelos: U.spielGemelos, golpe: U.spielGolpe };
     return { label: LABEL[art], start: function () { zeigeSpiel(art, daten[art]); } };
   }
+  /* Spiel zum Schluss = EIN Wurf, dann zurück ins Haus (Leo, 20.10.: „die Piñata am Ende endet nicht,
+     der User denkt, er soll mehrere machen, es ist aber derselbe Satz. Bring ihn zurück zur Práctica").
+     Die Bühne zeigt nur das Spiel; unten nur „Genug für heute". Nach dem Ende: Knopf „Zurück ins Haus"
+     und nach ein paar Sekunden von selbst zurück — Tür „Übung/Práctica". */
+  function zumHaus() { try { sessionStorage.setItem('spk_haus_tuer', 'uebung'); } catch (e) {} location.href = 'haus.html'; }
   function zeigeSpiel(art, daten) {
     var J = window.spikiuJuegos;
     var opts = { nativeLang: MUT, zielLang: ZIEL, sprich: function (t) { sprich(t); } };
+    if (art === 'gemelos') opts.klang = true;
+    stage.innerHTML = '';
     var blatt = document.createElement('div'); blatt.className = 'spiel-ende';
     var karte = document.createElement('div'); karte.className = 'karte';
-    if (art === 'gemelos') opts.klang = true;
     var spiel = (art === 'pinata') ? J.pinata(daten, opts) : (art === 'golpe') ? J.golpe(daten, opts) : J.gemelos(daten, opts);
     karte.appendChild(spiel); blatt.appendChild(karte); stage.appendChild(blatt);
+    O.fuss(fussEl, { t: U.enough, go: function () { spiel.stop(); zumHaus(); } }, null);
     var fertig = false;
     spiel.addEventListener('jg-done', function () {
       if (fertig) return; fertig = true;
-      var e = document.createElement('div'); e.className = 'ends';
-      var a = document.createElement('button'); a.className = 'end'; a.type = 'button'; a.textContent = U.viewLesson; a.onclick = function () { spiel.stop(); location.href = 'lektionen.html'; };
-      var b = document.createElement('button'); b.className = 'end primary'; b.type = 'button'; b.textContent = U.enough; b.onclick = function () { spiel.stop(); location.href = 'haus.html'; };
-      e.appendChild(a); e.appendChild(b); blatt.appendChild(e);
-      setTimeout(function () { try { e.scrollIntoView({ behavior: 'smooth', block: 'end' }); } catch (x) {} }, 900);
+      O.fuss(fussEl, null, { t: U.enough + ' ›', pri: true, go: function () { spiel.stop(); zumHaus(); } });
+      setTimeout(function () { if (document.body.contains(spiel)) { spiel.stop(); zumHaus(); } }, 4500);
     });
   }
 
