@@ -253,12 +253,14 @@
   }
 
   var BAUM = {
-    de: { a1:'Samen',   a2:'Stamm',   b1:'Krone' },
-    es: { a1:'Semilla', a2:'Tronco',  b1:'Copa' },
-    en: { a1:'Seed',    a2:'Trunk',   b1:'Crown' },
-    el: { a1:'Σπόρος',  a2:'Κορμός',  b1:'Φυλλωσιά' }
+    de: { a1:'Samen',   a2:'Stamm',   b1:'Krone',    b2:'Blüte' },
+    es: { a1:'Semilla', a2:'Tronco',  b1:'Copa',     b2:'Flor' },
+    en: { a1:'Seed',    a2:'Trunk',   b1:'Crown',    b2:'Blossom' },
+    el: { a1:'Σπόρος',  a2:'Κορμός',  b1:'Φυλλωσιά', b2:'Άνθη' }
   };
-  var BAUM_EM = { a1:'🌱', a2:'🌿', b1:'🌳' };
+  /* b2 = BLÜTE (20.10.2026, Leo: Unterstufe der Krone, „Dale!“) — die Krone
+     beginnt zu blühen. Gibt es b2 in einer Sprache nicht, fällt stufe() auf b1. */
+  var BAUM_EM = { a1:'🌱', a2:'🌿', b1:'🌳', b2:'🌸' };
 
   function kachel(inhalt, extra) {
     var b = document.createElement('button');

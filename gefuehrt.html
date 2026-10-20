@@ -120,7 +120,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   var T = {
     de: { titel:'Geführtes Gespräch', rail:['Thema','Wörter','Hören','Sprechen','Lektion'],
       themaTask:'Wo möchtest du heute sprechen?', wohin:function(k){ return k + ' — wohin gehst du?'; }, themen:'‹ Themen', haus:'‹ Haus',
-      baum:{ a1:'🌱 Samen', a2:'🌿 Stamm', b1:'🌳 Krone' },
+      baum:{ a1:'🌱 Samen', a2:'🌿 Stamm', b1:'🌳 Krone', b2:'🌸 Blüte' },
       entTitel:'Wörter entdecken', eentTask:'Tipp jedes Bild an: hören, sehen, verstehen.', entKlein1:'Lass dir Zeit. Du kannst jedes Bild so oft antippen, wie du willst.', entKleinN:'Neue Wörter — die alten kommen gleich wieder.',
       entZaehler:function(n,g){ return n + ' von ' + g + ' entdeckt'; }, entFertig:'Alle vier gehört. Jetzt erkennst du sie wieder.', erkennen:'Erkennen ›',
       erkTitel:'Wörter erkennen', erkTask:'Hör gut zu und tipp das richtige Bild.', runde:function(i,n){ return 'Runde ' + i + ' von ' + n; },
@@ -138,7 +138,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       spielPinata:'🪅 Piñata', spielGemelos:'🧩 Paare', spielOido:'👂 Feines Ohr', spielGolpe:'🥁 Der Schlag', viewLesson:'Lektion ansehen', enough:'Genug für heute' },
     es: { titel:'Conversación guiada', rail:['Tema','Palabras','Escuchar','Hablar','Lección'],
       themaTask:'¿Dónde quieres hablar hoy?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
-      baum:{ a1:'🌱 Semilla', a2:'🌿 Tronco', b1:'🌳 Copa' },
+      baum:{ a1:'🌱 Semilla', a2:'🌿 Tronco', b1:'🌳 Copa', b2:'🌸 Flor' },
       entTitel:'Descubrir palabras', eentTask:'Toca cada imagen: escucha, mira, entiende.', entKlein1:'Tómate tu tiempo. Puedes tocar cada imagen las veces que quieras.', entKleinN:'Palabras nuevas; las de antes vuelven enseguida.',
       entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, entFertig:'Ya has oído las cuatro. Ahora las reconoces.', erkennen:'Reconocer ›',
       erkTitel:'Reconocer palabras', erkTask:'Escucha bien y toca la imagen correcta.', runde:function(i,n){ return 'Ronda ' + i + ' de ' + n; },
@@ -156,7 +156,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       spielPinata:'🪅 Piñata', spielGemelos:'🧩 Parejas', spielOido:'👂 Oído fino', spielGolpe:'🥁 El golpe', viewLesson:'Ver la lección', enough:'Ya está bien por hoy' },
     en: { titel:'Guided conversation', rail:['Topic','Words','Listen','Speak','Lesson'],
       themaTask:'Where would you like to talk today?', wohin:function(k){ return k + ': where are you going?'; }, themen:'‹ Topics', haus:'‹ Home',
-      baum:{ a1:'🌱 Seed', a2:'🌿 Stem', b1:'🌳 Crown' },
+      baum:{ a1:'🌱 Seed', a2:'🌿 Stem', b1:'🌳 Crown', b2:'🌸 Blossom' },
       entTitel:'Discover words', eentTask:'Tap each picture: listen, look, understand.', entKlein1:'Take your time. You can tap each picture as often as you like.', entKleinN:'New words; the earlier ones come back soon.',
       entZaehler:function(n,g){ return n + ' of ' + g + ' discovered'; }, entFertig:'You’ve heard all four. Now recognize them.', erkennen:'Recognize ›',
       erkTitel:'Recognize words', erkTask:'Listen closely and tap the right picture.', runde:function(i,n){ return 'Round ' + i + ' of ' + n; },
@@ -174,7 +174,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       spielPinata:'🪅 Piñata', spielGemelos:'🧩 Pairs', spielOido:'👂 Sharp ear', spielGolpe:'🥁 The beat', viewLesson:'View lesson', enough:'Enough for today' },
     el: { titel:'Καθοδηγούμενη συζήτηση', rail:['Θέμα','Λέξεις','Ακρόαση','Ομιλία','Μάθημα'],
       themaTask:'Πού θέλεις να μιλήσεις σήμερα;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
-      baum:{ a1:'🌱 Σπόρος', a2:'🌿 Κορμός', b1:'🌳 Φυλλωσιά' },
+      baum:{ a1:'🌱 Σπόρος', a2:'🌿 Κορμός', b1:'🌳 Φυλλωσιά', b2:'🌸 Άνθη' },
       entTitel:'Ανακάλυψε λέξεις', eentTask:'Πάτα κάθε εικόνα: άκου, δες, κατάλαβε.', entKlein1:'Με την ησυχία σου. Μπορείς να πατάς κάθε εικόνα όσες φορές θέλεις.', entKleinN:'Νέες λέξεις· οι προηγούμενες ξαναέρχονται σε λίγο.',
       entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, entFertig:'Τις άκουσες και τις τέσσερις. Τώρα τις αναγνωρίζεις.', erkennen:'Αναγνώριση ›',
       erkTitel:'Αναγνώρισε λέξεις', erkTask:'Άκου προσεκτικά και πάτα τη σωστή εικόνα.', runde:function(i,n){ return 'Γύρος ' + i + ' από ' + n; },
@@ -392,7 +392,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       var stufen = (D.stufen || ['a1']).filter(function (s) { return (D.themen || []).some(function (t) { return D.gefuellt(s, t.id); }); });
       var aktiv = P.stufe();
       if (stufen.length > 1) {
-        var ch = O.el('div', 'oh-chips');
+        var ch = O.el('div', stufen.length > 3 ? 'oh-chips eng' : 'oh-chips');
         stufen.forEach(function (s) {
           var b = O.el('button', 'oh-chip', esc(U.baum[s] || s)); b.type = 'button'; b.setAttribute('aria-pressed', String(s === aktiv));
           b.onclick = function () { if (s !== aktiv) { P.setzeStufe(s); showPalette(); } }; ch.appendChild(b);

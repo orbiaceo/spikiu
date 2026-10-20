@@ -51,7 +51,8 @@
   ];
 
   /* b1 = KRONE (15.10.2026): „La vuelta“, Lateinamerika, nur Zielsprache Spanisch. */
-  var STUFEN = ['a1', 'a2', 'b1'];
+  /* b2 = BLÜTE (20.10.2026): „Sal“, Spanien, die Unterstufe der Krone. */
+  var STUFEN = ['a1', 'a2', 'b1', 'b2'];
 
   /* ── Die Gruppen ──────────────────────────────────────────────────────
      Zwei Ebenen statt einer langen Liste. Bei 10 Stationen kostet das
@@ -2297,8 +2298,836 @@ var B1_LP_B = {
   }
 };
 
+
+  /* ══════════════════════════════════════════════════════════════════
+     B2 · BLÜTE · „SAL" (Leo, 20.10.2026: „Andere Figur als Lotte und andere
+     Stationen. Dale!") — die Unterstufe der Krone: die Krone blüht.
+     Aleksi Virtanen, 37, Koch aus Helsinki, arbeitet ein Jahr in spanischen
+     Küchen für sein Restaurant und sein Kochbuch «Sal». Spanien, Formen aus
+     Spanien (vosotros, piso, móvil), Lanzarote mit kanarischer Farbe, keine
+     Politik. Dieselben zehn Themen, B2-Handlungen, je 16 Wörter (Wendungen
+     und Satzrahmen zählen mit). Gags: „¿cuánta sal, exactamente?" → „a ojo";
+     „En Finlandia diríamos simplemente que no"; Lesetext endet mit
+     „Para mi cuaderno: …".
+     ══════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+     B2 · BLÜTE · A-Gruppe (Leo, 20.10.2026)
+     Aleksi Virtanen, 37, Koch aus Helsinki, ein Jahr in spanischen Küchen
+     für sein Kochbuch «Sal». Spanien-Spanisch (vosotros, piso, móvil).
+     restaurant San Sebastián · hotel Gros · familie Cambados ·
+     cafe Salamanca · bahnhof Madrid-Atocha
+     ══════════════════════════════════════════════════════════════════ */
+var B2_LP_A = {
+
+  schritt: {
+    restaurant: { de:'San Sebastián: Kritik annehmen und verteidigen', en:'San Sebastián: taking criticism and defending your idea', el:'Σαν Σεμπαστιάν: δέχεσαι την κριτική και υπερασπίζεσαι την ιδέα σου' },
+    hotel:      { de:'San Sebastián: die Kaution zurückfordern',      en:'San Sebastián: getting your deposit back', el:'Σαν Σεμπαστιάν: ζητάς πίσω την εγγύηση' },
+    familie:    { de:'Galicien: was die Oma getan hätte',              en:'Galicia: what grandma would have done', el:'Γαλικία: τι θα είχε κάνει η γιαγιά' },
+    cafe:       { de:'Salamanca: fein abgestuft widersprechen',        en:'Salamanca: disagreeing with nuance', el:'Σαλαμάνκα: διαφωνείς με λεπτές αποχρώσεις' },
+    bahnhof:    { de:'Madrid: Zug fällt aus, Rechte einfordern',       en:'Madrid: train cancelled, claiming your rights', el:'Μαδρίτη: το τρένο ακυρώνεται, διεκδικείς τα δικαιώματά σου' }
+  },
+
+  aufgaben: {
+    'b2.restaurant': [
+      { de:'Gib ihm recht, dass Salz fehlt, aber erkläre, dass du den Geschmack des Kabeljaus hervorheben wolltest', es:'Dale la razón en que le falta sal, pero explica que lo que querías era que se notara el sabor del bacalao', en:'Agree that it needs salt, but explain that you wanted the flavour of the cod to come through', el:'Δώσ’ του δίκιο ότι λείπει αλάτι, αλλά εξήγησε ότι ήθελες να φαίνεται η γεύση του μπακαλιάρου' },
+      { de:'Biete an, es noch einmal zu versuchen, und frag, wie viel Salz er genau nehmen würde', es:'Ofrécete a intentarlo otra vez y pregunta cuánta sal le pondría él exactamente', en:'Offer to try again and ask exactly how much salt he would use', el:'Προσφέρσου να το ξαναδοκιμάσεις και ρώτα πόσο αλάτι ακριβώς θα έβαζε εκείνος' },
+      { de:'Sag, dass du sofort nachwürzt und, auch wenn es dir schwerfällt, bei jedem Schritt abschmeckst', es:'Di que lo rectificas ahora mismo y que, aunque te cueste, lo probarás en cada paso', en:'Say you will adjust the seasoning right away and, even if it is hard for you, taste at every step', el:'Πες ότι το διορθώνεις αμέσως και ότι, όσο κι αν σου κοστίζει, θα το δοκιμάζεις σε κάθε βήμα' }
+    ],
+    'b2.hotel': [
+      { de:'Widersprich höflich: Die Flecken waren schon beim Einzug da, laut Inventarliste von Anfang an', es:'Contesta con educación que las manchas ya estaban cuando entraste y que, según el inventario, estaban desde el primer día', en:'Politely object: the stains were already there when you moved in, according to the inventory from day one', el:'Αντίκρουσε ευγενικά: οι λεκέδες υπήρχαν ήδη όταν μπήκες, σύμφωνα με την απογραφή από την πρώτη μέρα' },
+      { de:'Sag, dass sie soweit du weißt nicht gewachsen sind, und zeig die datierten Fotos von der Schlüsselübergabe', es:'Di que, que tú sepas, no han crecido y enseña las fotos con fecha de la entrega de llaves', en:'Say that as far as you know they have not grown, and show the dated photos from the key handover', el:'Πες ότι, απ’ όσο ξέρεις, δεν έχουν μεγαλώσει, και δείξε τις φωτογραφίες με ημερομηνία από την παράδοση των κλειδιών' },
+      { de:'Sag, dass du froh bist, dass ihr euch einig seid, und bitte sie, dir die ganze Kaution zu überweisen', es:'Di que te alegras de que lo veáis igual y pide que te devuelva la fianza entera por transferencia', en:'Say you are glad you see it the same way and ask her to return the full deposit by bank transfer', el:'Πες ότι χαίρεσαι που το βλέπετε το ίδιο και ζήτα να σου επιστρέψει ολόκληρη την εγγύηση με έμβασμα' }
+    ],
+    'b2.familie': [
+      { de:'Bejahe und sag: Hätte deine Oma diese Empanada probiert, hätte sie sofort nach dem Rezept gefragt', es:'Di que sí y que, si tu abuela hubiera probado esta empanada, habría pedido la receta en el acto', en:'Say yes, and that if your grandmother had tasted this empanada, she would have asked for the recipe on the spot', el:'Πες ναι και ότι, αν η γιαγιά σου είχε δοκιμάσει αυτή την εμπανάδα, θα είχε ζητήσει τη συνταγή επιτόπου' },
+      { de:'Erzähl, dass deine Oma genauso war: Sie hat dir erzählt, dass sie im Winter Roggenbrot backte und niemanden in die Küche ließ', es:'Cuenta que tu abuela era igual: te contó que en invierno hacía pan de centeno y no dejaba entrar a nadie en la cocina', en:'Say your grandmother was just the same: she told you she baked rye bread in winter and let nobody into the kitchen', el:'Διηγήσου ότι η γιαγιά σου ήταν ίδια: σου είπε ότι τον χειμώνα έψηνε ψωμί σίκαλης και δεν άφηνε κανέναν να μπει στην κουζίνα' },
+      { de:'Nimm die Einladung an und sag, du wünschtest, deine Oma hätte hier sein können — sie hätte sich gut mit Pilar verstanden', es:'Acepta y di que ojalá tu abuela hubiera podido estar aquí, que se habría llevado muy bien con Pilar', en:'Accept and say you wish your grandmother could have been here; she would have got on very well with Pilar', el:'Δέξου και πες ότι μακάρι η γιαγιά σου να μπορούσε να είναι εδώ· θα τα πήγαινε πολύ καλά με την Πιλάρ' }
+    ],
+    'b2.cafe': [
+      { de:'Widersprich fein: Nicht dass du Tradition nicht magst, aber man muss sie auch erneuern — sonst landet ein Rezept im Museum', es:'Matiza: no es que no te guste la tradición, sino que hay que renovarla; si no, una receta acaba en un museo', en:'Disagree gently: it is not that you dislike tradition, but it also needs renewing, or a recipe ends up in a museum', el:'Διαφώνησε διακριτικά: δεν είναι ότι δεν σου αρέσει η παράδοση, αλλά ότι πρέπει να ανανεώνεται· αλλιώς μια συνταγή καταλήγει σε μουσείο' },
+      { de:'Sag: So viel du in der Küche auch experimentierst, einen Cocido würdest du nie in Schaum verwandeln', es:'Di que, por mucho que experimentes en la cocina, nunca convertirías un cocido en espuma', en:'Say that however much you experiment in the kitchen, you would never turn a cocido into foam', el:'Πες ότι, όσο κι αν πειραματίζεσαι στην κουζίνα, ποτέ δεν θα έκανες ένα κοσίδο αφρό' },
+      { de:'Stimm nur bis zu einem gewissen Punkt zu und sag mit finnischer Direktheit: Es kommt aufs Gericht an', es:'Di que solo hasta cierto punto y, con franqueza finlandesa, que depende del plato', en:'Agree only up to a point and say, with Finnish directness, that it depends on the dish', el:'Συμφώνησε μόνο ως έναν βαθμό και πες, με φινλανδική ειλικρίνεια, ότι εξαρτάται από το πιάτο' }
+    ],
+    'b2.bahnhof': [
+      { de:'Grüß und sag, dass du ein Ticket für den AVE um zehn nach Granada hattest, die Anzeige aber sagt, er sei gestrichen', es:'Saluda y di que tenías billete para el AVE de las diez a Granada, pero que en el panel pone que ha sido cancelado', en:'Say hello and explain you had a ticket for the ten o’clock AVE to Granada, but the board says it has been cancelled', el:'Χαιρέτησε και πες ότι είχες εισιτήριο για το AVE των δέκα για Γρανάδα, αλλά ο πίνακας λέει ότι ακυρώθηκε' },
+      { de:'Nimm den späteren Zug an und frag, ob du ein Recht auf Entschädigung hättest', es:'Acepta el tren más tarde y pregunta si tendrías derecho a alguna indemnización', en:'Accept the later train and ask whether you would be entitled to any compensation', el:'Δέξου το επόμενο τρένο και ρώτα αν θα δικαιούσουν κάποια αποζημίωση' },
+      { de:'Bedank dich und sag, dass du trotzdem eine Beschwerde einreichen möchtest, in der steht, dass man euch nicht vorher informiert hat', es:'Da las gracias y di que aun así quisieras poner una reclamación y que constara que no os avisaron con antelación', en:'Thank her and say you would still like to file a complaint stating that you were not told in advance', el:'Ευχαρίστησε και πες ότι παρ’ όλα αυτά θα ήθελες να κάνεις παράπονο και να καταγραφεί ότι δεν σας ειδοποίησαν εκ των προτέρων' }
+    ]
+  },
+
+  stationen: {
+
+    /* ── B2 · San Sebastián — Probetag in der Küche (Sep) ───────────── */
+    'b2.restaurant': {
+      duzen: true,
+      deineRolle: { de:'Du bist Aleksi, Koch aus Helsinki, und hast deinen Probetag in einem Restaurant der Parte Vieja. Dein Kabeljau ist absichtlich mild gesalzen: Du wolltest, dass man den Fisch schmeckt.', es:'Eres Aleksi, cocinero de Helsinki, y tienes tu día de prueba en un restaurante de la Parte Vieja. Tu bacalao lleva poca sal a propósito: querías que se notara el pescado.', en:'You are Aleksi, a chef from Helsinki, on your trial day in a restaurant in the Old Town. Your cod is lightly salted on purpose: you wanted the fish to come through.', el:'Είσαι ο Αλέξι, μάγειρας από το Ελσίνκι, και έχεις τη δοκιμαστική σου μέρα σε ένα εστιατόριο της Παλιάς Πόλης. Ο μπακαλιάρος σου έχει λίγο αλάτι επίτηδες: ήθελες να φαίνεται η γεύση του ψαριού.' },
+      abrundung: { z:'Así me gusta. Si sale bien, mañana empiezas en la partida de pescado.', na:{ de:'So gefällt mir das. Wenn es gut wird, fängst du morgen am Fischposten an.', en:'That’s what I like to hear. If it turns out well, you start on the fish station tomorrow.', el:'Έτσι μπράβο. Αν βγει καλό, αύριο ξεκινάς στο πόστο των ψαριών.' } },
+      rollen: {
+        spikiu: { de:'der Küchenchef, Iñaki Arregi', es:'el jefe de cocina, Iñaki Arregi', en:'the head chef, Iñaki Arregi', el:'ο σεφ, ο Ινιάκι Αρέγκι' },
+        lerner: { de:'Aleksi, der Koch auf Probe', es:'Aleksi, el cocinero a prueba', en:'Aleksi, the chef on trial', el:'ο Αλέξι, ο μάγειρας σε δοκιμή' },
+        ort:    { de:'in einer Restaurantküche der Parte Vieja, San Sebastián', es:'en la cocina de un restaurante de la Parte Vieja, San Sebastián', en:'in a restaurant kitchen in the Old Town, San Sebastián', el:'στην κουζίνα ενός εστιατορίου στην Παλιά Πόλη του Σαν Σεμπαστιάν' }
+      },
+      wortschatz: [
+        { z:'el día de prueba',         na:{ de:'der Probetag',                 en:'the trial day', el:'η δοκιμαστική μέρα' } },
+        { z:'la brigada',               na:{ de:'die Küchenmannschaft',         en:'the kitchen brigade', el:'η ομάδα της κουζίνας' } },
+        { z:'la partida',               na:{ de:'der Posten (in der Küche)',    en:'the station (in a kitchen)', el:'το πόστο (στην κουζίνα)' } },
+        { z:'el emplatado',             na:{ de:'das Anrichten auf dem Teller', en:'the plating', el:'το σερβίρισμα στο πιάτο' } },
+        { z:'el punto de sal',          na:{ de:'die richtige Salzmenge',       en:'the right amount of salt', el:'το σωστό αλάτι' } },
+        { z:'el bacalao',               na:{ de:'der Kabeljau',                 en:'the cod', el:'ο μπακαλιάρος' } },
+        { z:'el comensal',              na:{ de:'der Gast am Tisch',            en:'the diner', el:'ο θαμώνας, ο πελάτης στο τραπέζι' } },
+        { z:'sazonar',                  na:{ de:'würzen',                       en:'to season', el:'καρυκεύω' } },
+        { z:'rectificar (de sal)',      na:{ de:'(mit Salz) nachwürzen',        en:'to adjust (the salt)', el:'διορθώνω (το αλάτι)' } },
+        { z:'volver a intentarlo',      na:{ de:'es noch einmal versuchen',     en:'to try again', el:'το ξαναδοκιμάζω' } },
+        { z:'estar soso',               na:{ de:'fade sein',                    en:'to be bland', el:'είναι άνοστο' } },
+        { z:'a ojo',                    na:{ de:'nach Gefühl, über den Daumen', en:'by eye, roughly', el:'με το μάτι' } },
+        { z:'aunque me cueste',         na:{ de:'auch wenn es mir schwerfällt', en:'even if it’s hard for me', el:'όσο κι αν μου κοστίζει' } },
+        { z:'tienes razón en que …',    na:{ de:'du hast recht damit, dass …',  en:'you’re right that …', el:'έχεις δίκιο ότι …' } },
+        { z:'lo que pretendía era …',   na:{ de:'was ich wollte, war …',        en:'what I was aiming for was …', el:'αυτό που ήθελα ήταν …' } },
+        { z:'si me dejas, …',           na:{ de:'wenn du mich lässt, …',        en:'if you let me, …', el:'αν μου επιτρέψεις, …' } }
+      ],
+      dialog: {
+        rolle: { de:'Der Küchenchef, Iñaki Arregi', en:'The head chef, Iñaki Arregi', el:'Ο σεφ, ο Ινιάκι Αρέγκι' },
+        zeilen: [
+          { wer:'spikiu', z:'A ver… el emplatado es precioso, Aleksi, pero esto está soso. ¿Precisamente tú, el de la sal?', na:{ de:'Mal sehen … das Anrichten ist wunderschön, Aleksi, aber das ist fade. Ausgerechnet du, der Salz-Mann?', en:'Let’s see… the plating is beautiful, Aleksi, but this is bland. You of all people, the salt man?', el:'Για να δούμε… το σερβίρισμα είναι υπέροχο, Αλέξι, αλλά αυτό είναι άνοστο. Εσύ, ο άνθρωπος του αλατιού;' } },
+          { wer:'lerner', z:'Tienes razón en que le falta sal, pero lo que pretendía era que se notara el sabor del bacalao.', na:{ de:'Du hast recht damit, dass Salz fehlt, aber was ich wollte, war, dass man den Geschmack des Kabeljaus merkt.', en:'You’re right that it needs salt, but what I was aiming for was for the flavour of the cod to come through.', el:'Έχεις δίκιο ότι του λείπει αλάτι, αλλά αυτό που ήθελα ήταν να φαίνεται η γεύση του μπακαλιάρου.' } },
+          { wer:'spikiu', z:'Te entiendo, pero aquí el comensal espera un plato con carácter. Y el bacalao aguanta mucho más de lo que crees.', na:{ de:'Ich verstehe dich, aber hier erwartet der Gast ein Gericht mit Charakter. Und der Kabeljau verträgt viel mehr, als du denkst.', en:'I understand, but here the diner expects a dish with character. And cod can take a lot more than you think.', el:'Σε καταλαβαίνω, αλλά εδώ ο πελάτης περιμένει ένα πιάτο με χαρακτήρα. Και ο μπακαλιάρος αντέχει πολύ περισσότερο απ’ όσο νομίζεις.' } },
+          { wer:'lerner', z:'Si me dejas, lo vuelvo a intentar. Pero dime: ¿cuánta sal le pondrías tú, exactamente?', na:{ de:'Wenn du mich lässt, versuche ich es noch einmal. Aber sag mal: Wie viel Salz würdest du genau nehmen?', en:'If you let me, I’ll try again. But tell me: how much salt would you put in, exactly?', el:'Αν μου επιτρέψεις, θα το ξαναδοκιμάσω. Πες μου όμως: πόσο αλάτι θα έβαζες εσύ, ακριβώς;' } },
+          { wer:'spikiu', z:'¿Exactamente? A ojo, Aleksi, a ojo. Hay que sazonar y probar mientras cocinas, no solo al final.', na:{ de:'Genau? Nach Gefühl, Aleksi, nach Gefühl. Man muss beim Kochen würzen und probieren, nicht erst am Ende.', en:'Exactly? By eye, Aleksi, by eye. You have to season and taste as you cook, not just at the end.', el:'Ακριβώς; Με το μάτι, Αλέξι, με το μάτι. Πρέπει να καρυκεύεις και να δοκιμάζεις όσο μαγειρεύεις, όχι μόνο στο τέλος.' } },
+          { wer:'lerner', z:'Vale, lo rectifico ahora mismo. Aunque me cueste, buscaré el punto de sal probando en cada paso.', na:{ de:'Gut, ich würze sofort nach. Auch wenn es mir schwerfällt, suche ich die richtige Salzmenge und probiere bei jedem Schritt.', en:'OK, I’ll adjust it right now. Even if it’s hard for me, I’ll find the right amount of salt by tasting at every step.', el:'Εντάξει, το διορθώνω αμέσως. Όσο κι αν μου κοστίζει, θα βρω το σωστό αλάτι δοκιμάζοντας σε κάθε βήμα.' } }
+        ]
+      },
+      lesetext: {
+        z:'Primer día de prueba en la Parte Vieja. Toda la brigada probó mi bacalao y el veredicto fue claro: soso. Yo, que escribo un libro llamado «Sal». Iñaki no se rio; me explicó que aquí se sazona durante todo el proceso, no al final. Lo repetí y esta vez asintió. Para mi cuaderno: rectificar de sal.',
+        na:{ de:'Erster Probetag in der Parte Vieja. Die ganze Küchenmannschaft hat meinen Kabeljau probiert, und das Urteil war klar: fade. Ich, der ein Buch namens «Sal» schreibt. Iñaki hat nicht gelacht; er hat mir erklärt, dass man hier während des ganzen Kochens würzt, nicht am Ende. Ich habe es wiederholt, und diesmal hat er genickt. Für mein Notizheft: rectificar de sal.',
+             en:'First trial day in the Old Town. The whole brigade tasted my cod and the verdict was clear: bland. Me, writing a book called «Sal». Iñaki didn’t laugh; he explained that here you season throughout the whole process, not at the end. I made it again and this time he nodded. For my notebook: rectificar de sal.',
+             el:'Πρώτη δοκιμαστική μέρα στην Παλιά Πόλη. Όλη η ομάδα της κουζίνας δοκίμασε τον μπακαλιάρο μου και η ετυμηγορία ήταν σαφής: άνοστος. Εγώ, που γράφω ένα βιβλίο με τίτλο «Sal». Ο Ινιάκι δεν γέλασε· μου εξήγησε ότι εδώ καρυκεύεις σε όλη τη διαδικασία, όχι στο τέλος. Το ξανάφτιαξα και αυτή τη φορά έγνεψε. Για το τετράδιό μου: rectificar de sal.' },
+        frage:{ de:'Was hat Iñaki Aleksi erklärt?', en:'What did Iñaki explain to Aleksi?', el:'Τι εξήγησε ο Ινιάκι στον Αλέξι;' },
+        optionen:[
+          { na:{ de:'Dass man während des ganzen Kochens würzt', en:'That you season throughout the cooking', el:'Ότι καρυκεύεις σε όλη τη διάρκεια του μαγειρέματος' }, richtig:true  },
+          { na:{ de:'Dass man nur am Ende salzt',               en:'That you only add salt at the end', el:'Ότι αλατίζεις μόνο στο τέλος' }, richtig:false },
+          { na:{ de:'Dass Kabeljau kein Salz braucht',           en:'That cod needs no salt', el:'Ότι ο μπακαλιάρος δεν χρειάζεται αλάτι' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib einem Küchenchef: Gib ihm in einem Punkt recht, erklär, was du eigentlich wolltest, und bitte um einen zweiten Versuch. Zwei Sätze.',
+                  en:'Write to a head chef: agree with him on one point, explain what you were really aiming for, and ask for a second attempt. Two sentences.',
+                  el:'Γράψε σε έναν σεφ: δώσ’ του δίκιο σε ένα σημείο, εξήγησε τι ήθελες στην πραγματικότητα και ζήτα μια δεύτερη ευκαιρία. Δύο προτάσεις.' },
+        muster:'Tienes razón en que está un poco soso, pero lo que pretendía era respetar el sabor del pescado. Si me dejas, lo vuelvo a intentar.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Mit „tienes razón en que …" gibst du einen Punkt zu, ohne alles aufzugeben. Danach kommt „pero lo que pretendía era …": So erklärst du, was du eigentlich wolltest. Und „si me dejas, lo vuelvo a intentar" klingt wie ein Versprechen — nach „si" steht hier ganz einfach die normale Form von heute.',
+               en:'With "tienes razón en que …" you concede a point without giving everything up. Then comes "pero lo que pretendía era …": that is how you explain what you were really after. And "si me dejas, lo vuelvo a intentar" sounds like a promise — after "si" you simply use the ordinary present form.',
+               el:'Με το «tienes razón en que …» παραδέχεσαι ένα σημείο χωρίς να τα παρατάς όλα. Μετά έρχεται το «pero lo que pretendía era …»: έτσι εξηγείς τι ήθελες στην πραγματικότητα. Και το «si me dejas, lo vuelvo a intentar» ακούγεται σαν υπόσχεση — μετά το «si» βάζεις απλώς τον συνηθισμένο τύπο του τώρα.' },
+        beispiele:[
+          { z:'Tienes razón en que le falta sal.',      na:{ de:'Du hast recht damit, dass Salz fehlt.', en:'You’re right that it needs salt.', el:'Έχεις δίκιο ότι του λείπει αλάτι.' } },
+          { z:'Si me dejas, lo vuelvo a intentar.',     na:{ de:'Wenn du mich lässt, versuche ich es noch einmal.', en:'If you let me, I’ll try again.', el:'Αν μου επιτρέψεις, θα το ξαναδοκιμάσω.' } }
+        ]
+      },
+      kultur:{ de:'San Sebastián (baskisch Donostia) hat, gemessen an der Einwohnerzahl, eine der höchsten Dichten an Michelin-Sternen der Welt. In den Bars der Parte Vieja isst man Pintxos — kleine Happen, die auf der Theke stehen oder frisch zubereitet werden.',
+               en:'San Sebastián (Donostia in Basque) has, for its population, one of the highest concentrations of Michelin stars in the world. In the bars of the Old Town people eat pintxos — small bites laid out on the counter or made to order.',
+               el:'Το Σαν Σεμπαστιάν (στα βασκικά Ντονόστια) έχει, σε σχέση με τον πληθυσμό του, μία από τις μεγαλύτερες συγκεντρώσεις αστεριών Michelin στον κόσμο. Στα μπαρ της Παλιάς Πόλης τρως πίντσος — μικρές μπουκιές πάνω στον πάγκο ή φρεσκοφτιαγμένες.' }
+    },
+
+    /* ── B2 · San Sebastián, Gros — die Kaution zurückfordern (Okt) ─── */
+    'b2.hotel': {
+      deineRolle: { de:'Du ziehst aus deiner Mietwohnung in Gros aus. Die Feuchtigkeitsflecken im Bad waren schon beim Einzug da: Sie stehen in der Inventarliste, und du hast datierte Fotos von der Schlüsselübergabe.', es:'Dejas tu piso de alquiler en Gros. Las manchas de humedad del baño ya estaban cuando entraste: aparecen en el inventario y tienes fotos con fecha de la entrega de llaves.', en:'You are moving out of your rented flat in Gros. The damp stains in the bathroom were already there when you moved in: they are in the inventory, and you have dated photos from the key handover.', el:'Φεύγεις από το νοικιασμένο διαμέρισμά σου στο Γκρος. Οι λεκέδες υγρασίας στο μπάνιο υπήρχαν ήδη όταν μπήκες: είναι γραμμένοι στην απογραφή και έχεις φωτογραφίες με ημερομηνία από την παράδοση των κλειδιών.' },
+      abrundung: { z:'Claro que sí. Le hago la transferencia esta semana, y perdone el malentendido.', na:{ de:'Selbstverständlich. Ich überweise es Ihnen diese Woche, und entschuldigen Sie das Missverständnis.', en:'Of course. I’ll make the transfer this week, and I’m sorry for the misunderstanding.', el:'Βεβαίως. Σας κάνω το έμβασμα αυτή την εβδομάδα, και συγγνώμη για την παρεξήγηση.' } },
+      rollen: {
+        spikiu: { de:'die Hausverwalterin, Begoña Etxeberria', es:'la administradora, Begoña Etxeberria', en:'the property manager, Begoña Etxeberria', el:'η διαχειρίστρια, η Μπεγκόνια Ετσεβέρια' },
+        lerner: { de:'Aleksi, der ausziehende Mieter', es:'Aleksi, el inquilino que se marcha', en:'Aleksi, the tenant moving out', el:'ο Αλέξι, ο ενοικιαστής που φεύγει' },
+        ort:    { de:'in der leeren Wohnung in Gros, San Sebastián', es:'en el piso vacío de Gros, San Sebastián', en:'in the empty flat in Gros, San Sebastián', el:'στο άδειο διαμέρισμα στο Γκρος, στο Σαν Σεμπαστιάν' }
+      },
+      wortschatz: [
+        { z:'la fianza',                na:{ de:'die Mietkaution',              en:'the (rental) deposit', el:'η εγγύηση ενοικίου' } },
+        { z:'el inventario',            na:{ de:'die Inventarliste',            en:'the inventory', el:'η απογραφή' } },
+        { z:'la mancha de humedad',     na:{ de:'der Feuchtigkeitsfleck',       en:'the damp stain', el:'ο λεκές υγρασίας' } },
+        { z:'el desperfecto',           na:{ de:'der Schaden, der Mangel',      en:'the damage, the defect', el:'η ζημιά' } },
+        { z:'la entrega de llaves',     na:{ de:'die Schlüsselübergabe',        en:'the key handover', el:'η παράδοση των κλειδιών' } },
+        { z:'la transferencia',         na:{ de:'die Überweisung',              en:'the bank transfer', el:'το έμβασμα' } },
+        { z:'el malentendido',          na:{ de:'das Missverständnis',          en:'the misunderstanding', el:'η παρεξήγηση' } },
+        { z:'descontar',                na:{ de:'abziehen, einbehalten',        en:'to deduct', el:'αφαιρώ, κρατάω' } },
+        { z:'hacerse cargo de',         na:{ de:'übernehmen, aufkommen für',    en:'to take care of, to cover', el:'αναλαμβάνω' } },
+        { z:'reclamar',                 na:{ de:'einfordern, reklamieren',      en:'to claim, to complain', el:'διεκδικώ, κάνω παράπονο' } },
+        { z:'salvo …',                  na:{ de:'außer …',                      en:'except …', el:'εκτός από …' } },
+        { z:'dar por hecho',            na:{ de:'als selbstverständlich annehmen', en:'to take for granted', el:'το θεωρώ δεδομένο' } },
+        { z:'puede que + subj.',        na:{ de:'es kann sein, dass …',         en:'it may be that …', el:'μπορεί να …' } },
+        { z:'según el inventario',      na:{ de:'laut Inventarliste',           en:'according to the inventory', el:'σύμφωνα με την απογραφή' } },
+        { z:'que yo sepa',              na:{ de:'soweit ich weiß',              en:'as far as I know', el:'απ’ όσο ξέρω' } },
+        { z:'me gustaría que me devolviera …', na:{ de:'ich hätte gern, dass Sie mir … zurückgeben', en:'I’d like you to give me back …', el:'θα ήθελα να μου επιστρέψετε …' } }
+      ],
+      dialog: {
+        rolle: { de:'Die Hausverwalterin, Begoña Etxeberria', en:'The property manager, Begoña Etxeberria', el:'Η διαχειρίστρια, η Μπεγκόνια Ετσεβέρια' },
+        zeilen: [
+          { wer:'spikiu', z:'Buenos días, Aleksi. He revisado el piso y está todo bien, salvo las manchas de humedad del baño. Ese desperfecto tendré que descontarlo de la fianza.', na:{ de:'Guten Morgen, Aleksi. Ich habe die Wohnung durchgesehen, und alles ist in Ordnung, außer den Feuchtigkeitsflecken im Bad. Diesen Schaden muss ich von der Kaution abziehen.', en:'Good morning, Aleksi. I’ve checked the flat and everything is fine, except the damp stains in the bathroom. I’ll have to deduct that damage from the deposit.', el:'Καλημέρα, Αλέξι. Έλεγξα το διαμέρισμα και όλα είναι εντάξει, εκτός από τους λεκέδες υγρασίας στο μπάνιο. Αυτή τη ζημιά θα πρέπει να την αφαιρέσω από την εγγύηση.' } },
+          { wer:'lerner', z:'Perdone, pero esas manchas ya estaban cuando entré. Según el inventario, el baño tenía humedad desde el primer día.', na:{ de:'Entschuldigen Sie, aber diese Flecken waren schon da, als ich eingezogen bin. Laut Inventarliste hatte das Bad vom ersten Tag an Feuchtigkeit.', en:'Excuse me, but those stains were already there when I moved in. According to the inventory, the bathroom was damp from day one.', el:'Με συγχωρείτε, αλλά αυτοί οι λεκέδες υπήρχαν ήδη όταν μπήκα. Σύμφωνα με την απογραφή, το μπάνιο είχε υγρασία από την πρώτη μέρα.' } },
+          { wer:'spikiu', z:'Pues yo había dado por hecho que eran nuevas. Puede que hayan crecido este otoño, con tanta lluvia.', na:{ de:'Also, ich war davon ausgegangen, dass sie neu sind. Vielleicht sind sie diesen Herbst gewachsen, bei so viel Regen.', en:'Well, I had taken it for granted that they were new. They may have grown this autumn, with all this rain.', el:'Εγώ είχα θεωρήσει δεδομένο ότι ήταν καινούργιοι. Μπορεί να μεγάλωσαν αυτό το φθινόπωρο, με τόση βροχή.' } },
+          { wer:'lerner', z:'Que yo sepa, no han crecido nada. Aquí tiene las fotos de la entrega de llaves, con fecha.', na:{ de:'Soweit ich weiß, sind sie überhaupt nicht gewachsen. Hier sind die Fotos von der Schlüsselübergabe, mit Datum.', en:'As far as I know, they haven’t grown at all. Here are the photos from the key handover, with the date.', el:'Απ’ όσο ξέρω, δεν έχουν μεγαλώσει καθόλου. Ορίστε οι φωτογραφίες από την παράδοση των κλειδιών, με ημερομηνία.' } },
+          { wer:'spikiu', z:'Vaya, es verdad, se ven igual. Entonces es un problema del edificio y se hace cargo la comunidad.', na:{ de:'Oh, das stimmt, sie sehen gleich aus. Dann ist es ein Problem des Gebäudes, und die Eigentümergemeinschaft kommt dafür auf.', en:'Well, that’s true, they look the same. Then it’s a problem with the building, and the residents’ association will cover it.', el:'Α, αλήθεια, φαίνονται ίδιοι. Τότε είναι πρόβλημα της πολυκατοικίας και το αναλαμβάνει η κοινότητα των ιδιοκτητών.' } },
+          { wer:'lerner', z:'Me alegro de que lo veamos igual. Me gustaría que me devolviera la fianza entera, a ser posible por transferencia.', na:{ de:'Ich freue mich, dass wir es gleich sehen. Ich hätte gern, dass Sie mir die ganze Kaution zurückgeben, wenn möglich per Überweisung.', en:'I’m glad we see it the same way. I’d like you to return the full deposit, by bank transfer if possible.', el:'Χαίρομαι που το βλέπουμε το ίδιο. Θα ήθελα να μου επιστρέψετε ολόκληρη την εγγύηση, αν γίνεται με έμβασμα.' } }
+        ]
+      },
+      lesetext: {
+        z:'Hoy he entregado las llaves del piso de Gros. Begoña quería quedarse con parte de la fianza por unas manchas de humedad que ya estaban en septiembre. Menos mal que hice fotos el primer día. No tuve que reclamar mucho: las miró y me dio la razón. Para mi cuaderno: que yo sepa.',
+        na:{ de:'Heute habe ich die Schlüssel der Wohnung in Gros abgegeben. Begoña wollte einen Teil der Kaution behalten, wegen ein paar Feuchtigkeitsflecken, die schon im September da waren. Zum Glück habe ich am ersten Tag Fotos gemacht. Ich musste nicht lange reklamieren: Sie hat sie angesehen und mir recht gegeben. Für mein Notizheft: que yo sepa.',
+             en:'Today I handed back the keys to the flat in Gros. Begoña wanted to keep part of the deposit for some damp stains that were already there in September. Luckily I took photos on the first day. I didn’t have to argue much: she looked at them and agreed with me. For my notebook: que yo sepa.',
+             el:'Σήμερα παρέδωσα τα κλειδιά του διαμερίσματος στο Γκρος. Η Μπεγκόνια ήθελε να κρατήσει μέρος της εγγύησης για κάποιους λεκέδες υγρασίας που υπήρχαν ήδη τον Σεπτέμβριο. Ευτυχώς έβγαλα φωτογραφίες την πρώτη μέρα. Δεν χρειάστηκε να διαμαρτυρηθώ πολύ: τις κοίταξε και μου έδωσε δίκιο. Για το τετράδιό μου: que yo sepa.' },
+        frage:{ de:'Warum bekam Aleksi recht?', en:'Why was Aleksi proved right?', el:'Γιατί δικαιώθηκε ο Αλέξι;' },
+        optionen:[
+          { na:{ de:'Wegen seiner Fotos vom ersten Tag',       en:'Because of his photos from the first day', el:'Χάρη στις φωτογραφίες του από την πρώτη μέρα' }, richtig:true  },
+          { na:{ de:'Weil Begoña sich an die Flecken erinnerte', en:'Because Begoña remembered the stains', el:'Επειδή η Μπεγκόνια θυμόταν τους λεκέδες' }, richtig:false },
+          { na:{ de:'Weil es im Herbst nicht geregnet hat',     en:'Because it didn’t rain in the autumn', el:'Επειδή δεν έβρεξε το φθινόπωρο' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib der Verwalterin: Die Flecken waren laut Inventarliste schon da, du hast Fotos, und du möchtest die ganze Kaution zurück. Zwei Sätze.',
+                  en:'Write to the property manager: according to the inventory the stains were already there, you have photos, and you would like the full deposit back. Two sentences.',
+                  el:'Γράψε στη διαχειρίστρια: σύμφωνα με την απογραφή οι λεκέδες υπήρχαν ήδη, έχεις φωτογραφίες και θέλεις πίσω ολόκληρη την εγγύηση. Δύο προτάσεις.' },
+        muster:'Según el inventario, las manchas ya estaban cuando entré, y tengo fotos con fecha. Me gustaría que me devolviera la fianza entera.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Wenn du möchtest, dass jemand anderes etwas tut, sagst du „me gustaría que …" — und danach kommt eine besondere Vergangenheitsform: devolviera, hiciera, viniera. Das klingt höflich, aber bestimmt. „Que yo sepa" ist eine feste Wendung: „soweit ich weiß". Sie schützt dich, ohne unsicher zu wirken.',
+               en:'When you want someone else to do something, say "me gustaría que …" — followed by a special past form: devolviera, hiciera, viniera. It sounds polite but firm. "Que yo sepa" is a fixed phrase: "as far as I know". It covers you without sounding unsure.',
+               el:'Όταν θέλεις να κάνει κάτι κάποιος άλλος, λες «me gustaría que …» — και μετά ακολουθεί ένας ειδικός τύπος του παρελθόντος: devolviera, hiciera, viniera. Ακούγεται ευγενικό αλλά σταθερό. Το «que yo sepa» είναι σταθερή φράση: «απ’ όσο ξέρω». Σε καλύπτει χωρίς να δείχνεις αβέβαιος.' },
+        beispiele:[
+          { z:'Me gustaría que me devolviera la fianza.', na:{ de:'Ich hätte gern, dass Sie mir die Kaution zurückgeben.', en:'I’d like you to give me back the deposit.', el:'Θα ήθελα να μου επιστρέψετε την εγγύηση.' } },
+          { z:'Que yo sepa, no han crecido.',             na:{ de:'Soweit ich weiß, sind sie nicht gewachsen.', en:'As far as I know, they haven’t grown.', el:'Απ’ όσο ξέρω, δεν έχουν μεγαλώσει.' } }
+        ]
+      },
+      kultur:{ de:'In Spanien beträgt die gesetzliche Kaution (fianza) für eine Mietwohnung eine Monatsmiete. Gros ist das Viertel am Zurriola-Strand, beliebt bei Surfern.',
+               en:'In Spain the legal deposit (fianza) for a rented home is one month’s rent. Gros is the neighbourhood by Zurriola beach, popular with surfers.',
+               el:'Στην Ισπανία η νόμιμη εγγύηση (fianza) για ένα νοικιασμένο σπίτι είναι ένα ενοίκιο. Το Γκρος είναι η γειτονιά δίπλα στην παραλία Θουριόλα, αγαπημένη των σέρφερ.' }
+    },
+
+    /* ── B2 · Cambados, Galicien — Magosto bei Uxías Familie (Nov) ──── */
+    'b2.familie': {
+      duzen: true,
+      deineRolle: { de:'Deine Kollegin Uxía hat dich zum Familienessen nach Cambados mitgenommen. Deine Oma in Finnland kochte leidenschaftlich gern, backte im Winter Roggenbrot und ließ niemanden in ihre Küche.', es:'Tu compañera Uxía te ha llevado a comer con su familia en Cambados. Tu abuela en Finlandia cocinaba con pasión, hacía pan de centeno en invierno y no dejaba entrar a nadie en su cocina.', en:'Your colleague Uxía has brought you to a family lunch in Cambados. Your grandmother in Finland loved cooking, baked rye bread in winter and let nobody into her kitchen.', el:'Η συνάδελφός σου η Ουσία σε πήρε μαζί της σε οικογενειακό τραπέζι στο Καμπάδος. Η γιαγιά σου στη Φινλανδία μαγείρευε με πάθος, έψηνε ψωμί σίκαλης τον χειμώνα και δεν άφηνε κανέναν να μπει στην κουζίνα της.' },
+      abrundung: { z:'Ay, qué bonito. Toma, una castaña recién asada: quema, pero así es el magosto.', na:{ de:'Ach, wie schön. Hier, eine frisch geröstete Kastanie: Sie ist heiß, aber so ist der Magosto.', en:'Oh, how lovely. Here, a freshly roasted chestnut: it’s hot, but that’s the magosto for you.', el:'Αχ, τι ωραία. Πάρε ένα κάστανο μόλις ψημένο: καίει, αλλά έτσι είναι το μαγόστο.' } },
+      rollen: {
+        spikiu: { de:'Pilar, Uxías Großmutter', es:'Pilar, la abuela de Uxía', en:'Pilar, Uxía’s grandmother', el:'η Πιλάρ, η γιαγιά της Ουσία' },
+        lerner: { de:'Aleksi, der Gast am Familientisch', es:'Aleksi, el invitado a la mesa', en:'Aleksi, the guest at the family table', el:'ο Αλέξι, ο καλεσμένος στο οικογενειακό τραπέζι' },
+        ort:    { de:'bei Uxías Familie in Cambados, Galicien', es:'en casa de la familia de Uxía, en Cambados, Galicia', en:'at Uxía’s family home in Cambados, Galicia', el:'στο σπίτι της οικογένειας της Ουσία στο Καμπάδος της Γαλικίας' }
+      },
+      wortschatz: [
+        { z:'la empanada',              na:{ de:'die gefüllte Teigpastete',     en:'the savoury pie', el:'η πίτα (εμπανάδα)' } },
+        { z:'las zamburiñas',           na:{ de:'die kleinen Kammmuscheln',     en:'the small scallops', el:'τα μικρά χτένια' } },
+        { z:'la masa',                  na:{ de:'der Teig',                     en:'the dough', el:'η ζύμη' } },
+        { z:'el sofrito',               na:{ de:'die angeschmorte Gemüsebasis', en:'the slow-fried onion base', el:'το σοφρίτο (σοταρισμένη βάση)' } },
+        { z:'el magosto',               na:{ de:'das galicische Kastanienfest', en:'the Galician chestnut festival', el:'η γιορτή του κάστανου στη Γαλικία' } },
+        { z:'las castañas asadas',      na:{ de:'die gerösteten Kastanien',     en:'the roasted chestnuts', el:'τα ψητά κάστανα' } },
+        { z:'el pan de centeno',        na:{ de:'das Roggenbrot',               en:'the rye bread', el:'το ψωμί σίκαλης' } },
+        { z:'emigrar',                  na:{ de:'auswandern',                   en:'to emigrate', el:'μεταναστεύω' } },
+        { z:'asar',                     na:{ de:'rösten, braten',               en:'to roast', el:'ψήνω' } },
+        { z:'llevarse bien con',        na:{ de:'sich gut verstehen mit',       en:'to get on well with', el:'τα πάω καλά με' } },
+        { z:'en el acto',               na:{ de:'auf der Stelle',               en:'on the spot', el:'επιτόπου' } },
+        { z:'guardar el secreto',       na:{ de:'das Geheimnis hüten',          en:'to keep the secret', el:'κρατάω το μυστικό' } },
+        { z:'recién asado',             na:{ de:'frisch geröstet',              en:'freshly roasted', el:'μόλις ψημένο' } },
+        { z:'si hubiera …, habría …',   na:{ de:'hätte sie …, hätte sie …',     en:'if she had …, she would have …', el:'αν είχε …, θα είχε …' } },
+        { z:'me contó que …',           na:{ de:'sie hat mir erzählt, dass …',  en:'she told me that …', el:'μου διηγήθηκε ότι …' } },
+        { z:'ojalá hubiera podido …',   na:{ de:'hätte sie doch … können',      en:'if only she could have …', el:'μακάρι να μπορούσε να …' } }
+      ],
+      dialog: {
+        rolle: { de:'Pilar, Uxías Großmutter', en:'Pilar, Uxía’s grandmother', el:'Η Πιλάρ, η γιαγιά της Ουσία' },
+        zeilen: [
+          { wer:'spikiu', z:'Esta empanada de zamburiñas es la receta de mi madre. Emigró a Buenos Aires con dieciocho años y volvió a Cambados ya casada. ¿Tu abuela también cocinaba?', na:{ de:'Diese Empanada mit Kammmuscheln ist das Rezept meiner Mutter. Sie ist mit achtzehn nach Buenos Aires ausgewandert und verheiratet nach Cambados zurückgekommen. Hat deine Oma auch gekocht?', en:'This scallop empanada is my mother’s recipe. She emigrated to Buenos Aires at eighteen and came back to Cambados already married. Did your grandmother cook too?', el:'Αυτή η εμπανάδα με χτένια είναι η συνταγή της μητέρας μου. Μετανάστευσε στο Μπουένος Άιρες στα δεκαοχτώ και γύρισε στο Καμπάδος ήδη παντρεμένη. Η γιαγιά σου μαγείρευε κι αυτή;' } },
+          { wer:'lerner', z:'Sí, muchísimo. Si mi abuela hubiera probado esta empanada, habría pedido la receta en el acto.', na:{ de:'Ja, sehr viel. Hätte meine Oma diese Empanada probiert, hätte sie auf der Stelle nach dem Rezept gefragt.', en:'Yes, a great deal. If my grandmother had tasted this empanada, she would have asked for the recipe on the spot.', el:'Ναι, πάρα πολύ. Αν η γιαγιά μου είχε δοκιμάσει αυτή την εμπανάδα, θα είχε ζητήσει τη συνταγή επιτόπου.' } },
+          { wer:'spikiu', z:'Pues mi madre nunca la dio entera; guardaba el secreto del sofrito. Decía que una receta se aprende mirando.', na:{ de:'Na ja, meine Mutter hat es nie vollständig verraten; sie hütete das Geheimnis der Gemüsebasis. Sie sagte, ein Rezept lernt man durch Zuschauen.', en:'Well, my mother never gave it away in full; she kept the secret of the sofrito. She used to say a recipe is learnt by watching.', el:'Η μητέρα μου όμως δεν την έδωσε ποτέ ολόκληρη· κρατούσε το μυστικό του σοφρίτο. Έλεγε ότι μια συνταγή τη μαθαίνεις κοιτάζοντας.' } },
+          { wer:'lerner', z:'Mi abuela era igual. Me contó que en invierno hacía pan de centeno y que no dejaba entrar a nadie en la cocina.', na:{ de:'Meine Oma war genauso. Sie hat mir erzählt, dass sie im Winter Roggenbrot backte und niemanden in die Küche ließ.', en:'My grandmother was just the same. She told me she baked rye bread in winter and let nobody into the kitchen.', el:'Η γιαγιά μου ήταν ίδια. Μου διηγήθηκε ότι τον χειμώνα έψηνε ψωμί σίκαλης και δεν άφηνε κανέναν να μπει στην κουζίνα.' } },
+          { wer:'spikiu', z:'Las abuelas somos así. Venga, ahora vamos al magosto: hay castañas asadas y vino nuevo.', na:{ de:'So sind wir Omas eben. Komm, jetzt gehen wir zum Magosto: Es gibt geröstete Kastanien und jungen Wein.', en:'That’s what we grandmothers are like. Come on, now let’s go to the magosto: there are roasted chestnuts and new wine.', el:'Έτσι είμαστε οι γιαγιάδες. Έλα, τώρα πάμε στο μαγόστο: έχει ψητά κάστανα και καινούργιο κρασί.' } },
+          { wer:'lerner', z:'Encantado. Ojalá mi abuela hubiera podido estar aquí; se habría llevado muy bien contigo.', na:{ de:'Sehr gern. Hätte meine Oma doch hier sein können; sie hätte sich sehr gut mit dir verstanden.', en:'I’d love to. If only my grandmother could have been here; she would have got on very well with you.', el:'Με μεγάλη χαρά. Μακάρι να μπορούσε να είναι εδώ η γιαγιά μου· θα τα πήγαινε πολύ καλά μαζί σου.' } }
+        ]
+      },
+      lesetext: {
+        z:'Uxía me llevó a comer con su familia en Cambados. Su abuela Pilar me habló de su madre, que emigró a Buenos Aires y volvió con una receta de empanada mejorada. Después fuimos al magosto: castañas asadas, vino nuevo y mucho humo. Pensé en mi abuela de Tampere. Para mi cuaderno: guardar el secreto.',
+        na:{ de:'Uxía hat mich zum Essen mit ihrer Familie in Cambados mitgenommen. Ihre Großmutter Pilar hat mir von ihrer Mutter erzählt, die nach Buenos Aires ausgewandert und mit einem verbesserten Empanada-Rezept zurückgekommen ist. Danach sind wir zum Magosto gegangen: geröstete Kastanien, junger Wein und viel Rauch. Ich habe an meine Oma aus Tampere gedacht. Für mein Notizheft: guardar el secreto.',
+             en:'Uxía took me to eat with her family in Cambados. Her grandmother Pilar told me about her mother, who emigrated to Buenos Aires and came back with an improved empanada recipe. Afterwards we went to the magosto: roasted chestnuts, new wine and lots of smoke. I thought of my grandmother from Tampere. For my notebook: guardar el secreto.',
+             el:'Η Ουσία με πήρε να φάμε με την οικογένειά της στο Καμπάδος. Η γιαγιά της η Πιλάρ μού μίλησε για τη μητέρα της, που μετανάστευσε στο Μπουένος Άιρες και γύρισε με μια βελτιωμένη συνταγή για εμπανάδα. Μετά πήγαμε στο μαγόστο: ψητά κάστανα, καινούργιο κρασί και πολύς καπνός. Σκέφτηκα τη γιαγιά μου από το Τάμπερε. Για το τετράδιό μου: guardar el secreto.' },
+        frage:{ de:'Wohin war Pilars Mutter ausgewandert?', en:'Where had Pilar’s mother emigrated to?', el:'Πού είχε μεταναστεύσει η μητέρα της Πιλάρ;' },
+        optionen:[
+          { na:{ de:'Nach Buenos Aires', en:'To Buenos Aires', el:'Στο Μπουένος Άιρες' }, richtig:true  },
+          { na:{ de:'Nach Tampere',      en:'To Tampere',      el:'Στο Τάμπερε' }, richtig:false },
+          { na:{ de:'Nach Madrid',       en:'To Madrid',       el:'Στη Μαδρίτη' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib, was deine Oma getan hätte, wenn sie dieses Gericht probiert hätte, und was sie dir einmal erzählt hat. Zwei Sätze.',
+                  en:'Write what your grandmother would have done if she had tasted this dish, and something she once told you. Two sentences.',
+                  el:'Γράψε τι θα είχε κάνει η γιαγιά σου αν είχε δοκιμάσει αυτό το φαγητό και κάτι που σου είχε διηγηθεί κάποτε. Δύο προτάσεις.' },
+        muster:'Si mi abuela hubiera probado esta empanada, habría pedido la receta en el acto. Me contó una vez que la cocina era su lugar favorito.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Für etwas, das nicht passiert ist, und was dann gewesen wäre: „si" + hubiera + -ado, danach habría + -ado. Si mi abuela hubiera probado esto, habría pedido la receta. Und „ojalá hubiera podido …" ist ein Wunsch, für den es schon zu spät ist: „hätte sie doch … können".',
+               en:'For something that did not happen, and what would have followed: "si" + hubiera + -ado, then habría + -ado. Si mi abuela hubiera probado esto, habría pedido la receta. And "ojalá hubiera podido …" is a wish that comes too late: "if only she could have …".',
+               el:'Για κάτι που δεν έγινε, και τι θα ακολουθούσε: «si» + hubiera + -ado, μετά habría + -ado. Si mi abuela hubiera probado esto, habría pedido la receta. Και το «ojalá hubiera podido …» είναι μια ευχή που έρχεται πια αργά: «μακάρι να μπορούσε …».' },
+        beispiele:[
+          { z:'Si mi abuela hubiera probado esto, habría pedido la receta.', na:{ de:'Hätte meine Oma das probiert, hätte sie nach dem Rezept gefragt.', en:'If my grandmother had tasted this, she would have asked for the recipe.', el:'Αν η γιαγιά μου είχε δοκιμάσει αυτό, θα είχε ζητήσει τη συνταγή.' } },
+          { z:'Ojalá hubiera podido estar aquí.', na:{ de:'Hätte sie doch hier sein können.', en:'If only she could have been here.', el:'Μακάρι να μπορούσε να είναι εδώ.' } }
+        ]
+      },
+      kultur:{ de:'Der Magosto ist das galicische Kastanienfest im Herbst, oft rund um den Martinstag (11. November): geröstete Kastanien und junger Wein. Im 20. Jahrhundert wanderten so viele Galicier nach Buenos Aires aus, dass man dort Spanier oft einfach „gallegos" nennt.',
+               en:'The magosto is Galicia’s autumn chestnut festival, often held around St Martin’s Day (11 November): roasted chestnuts and new wine. In the 20th century so many Galicians emigrated to Buenos Aires that Spaniards there are often simply called “gallegos”.',
+               el:'Το μαγόστο είναι η φθινοπωρινή γιορτή του κάστανου στη Γαλικία, συχνά γύρω από τη γιορτή του Αγίου Μαρτίνου (11 Νοεμβρίου): ψητά κάστανα και καινούργιο κρασί. Τον 20ό αιώνα τόσοι Γαλικιανοί μετανάστευσαν στο Μπουένος Άιρες, ώστε εκεί τους Ισπανούς συχνά τους λένε απλώς «gallegos».' }
+    },
+
+    /* ── B2 · Salamanca — Streitgespräch im Café (Dez) ─────────────── */
+    'b2.cafe': {
+      deineRolle: { de:'Du sitzt in einem Café an der Plaza Mayor mit Don Julián, einem Literaturprofessor im Ruhestand. Er liebt die traditionelle Küche; du findest, Tradition muss man auch erneuern — aber nicht um jeden Preis.', es:'Estás en un café de la Plaza Mayor con don Julián, catedrático de literatura jubilado. A él le encanta la cocina tradicional; tú crees que la tradición también hay que renovarla, pero no a cualquier precio.', en:'You are in a café on the Plaza Mayor with Don Julián, a retired literature professor. He loves traditional cooking; you think tradition also needs renewing — but not at any cost.', el:'Κάθεσαι σε ένα καφέ στην Πλάθα Μαγιόρ με τον δον Χουλιάν, συνταξιούχο καθηγητή λογοτεχνίας. Εκείνος λατρεύει την παραδοσιακή κουζίνα· εσύ πιστεύεις ότι και η παράδοση πρέπει να ανανεώνεται — αλλά όχι με κάθε κόστος.' },
+      abrundung: { z:'Me encanta su franqueza, Aleksi. Otro café, que esta tertulia no ha terminado.', na:{ de:'Ich liebe Ihre Offenheit, Aleksi. Noch einen Kaffee, diese Runde ist noch nicht vorbei.', en:'I love your frankness, Aleksi. Another coffee — this conversation isn’t over yet.', el:'Λατρεύω την ειλικρίνειά σας, Αλέξι. Άλλον έναν καφέ, γιατί αυτή η κουβέντα δεν τελείωσε.' } },
+      rollen: {
+        spikiu: { de:'Don Julián, Literaturprofessor im Ruhestand', es:'don Julián, catedrático de literatura jubilado', en:'Don Julián, a retired literature professor', el:'ο δον Χουλιάν, συνταξιούχος καθηγητής λογοτεχνίας' },
+        lerner: { de:'Aleksi, der Koch aus Finnland', es:'Aleksi, el cocinero finlandés', en:'Aleksi, the chef from Finland', el:'ο Αλέξι, ο μάγειρας από τη Φινλανδία' },
+        ort:    { de:'in einem Café an der Plaza Mayor, Salamanca', es:'en un café de la Plaza Mayor, Salamanca', en:'in a café on the Plaza Mayor, Salamanca', el:'σε ένα καφέ στην Πλάθα Μαγιόρ της Σαλαμάνκα' }
+      },
+      wortschatz: [
+        { z:'la cocina de vanguardia',  na:{ de:'die Avantgarde-Küche',         en:'avant-garde cooking', el:'η πρωτοποριακή κουζίνα' } },
+        { z:'el cocido',                na:{ de:'der Kichererbsen-Eintopf',     en:'the chickpea stew', el:'το κοσίδο (βραστό με ρεβίθια)' } },
+        { z:'la espuma',                na:{ de:'der Schaum',                   en:'the foam', el:'ο αφρός' } },
+        { z:'los garbanzos',            na:{ de:'die Kichererbsen',             en:'the chickpeas', el:'τα ρεβίθια' } },
+        { z:'la tertulia',              na:{ de:'die Gesprächsrunde',           en:'the (regular) discussion group', el:'η παρέα για κουβέντα' } },
+        { z:'la franqueza',             na:{ de:'die Offenheit',                en:'the frankness', el:'η ειλικρίνεια' } },
+        { z:'los soportales',           na:{ de:'die Arkaden',                  en:'the arcades', el:'οι στοές' } },
+        { z:'renovar',                  na:{ de:'erneuern',                     en:'to renew', el:'ανανεώνω' } },
+        { z:'experimentar',             na:{ de:'experimentieren',              en:'to experiment', el:'πειραματίζομαι' } },
+        { z:'matizar',                  na:{ de:'differenzieren, abstufen',     en:'to add nuance', el:'αποχρωματίζω, βάζω αποχρώσεις' } },
+        { z:'de toda la vida',          na:{ de:'altbewährt, wie eh und je',    en:'traditional, the way it’s always been', el:'όπως πάντα, του παλιού καιρού' } },
+        { z:'eso es mucho decir',       na:{ de:'das ist ziemlich übertrieben', en:'that’s going a bit far', el:'αυτό είναι πολύ βαρύ' } },
+        { z:'lo de siempre',            na:{ de:'das Altbekannte',              en:'the usual', el:'τα γνωστά, τα συνηθισμένα' } },
+        { z:'no es que …, sino que …',  na:{ de:'nicht dass …, sondern …',      en:'it’s not that …, it’s that …', el:'δεν είναι ότι …, αλλά ότι …' } },
+        { z:'por mucho que + subj.',    na:{ de:'so sehr … auch',               en:'however much …', el:'όσο κι αν …' } },
+        { z:'hasta cierto punto',       na:{ de:'bis zu einem gewissen Punkt',  en:'up to a point', el:'ως έναν βαθμό' } }
+      ],
+      dialog: {
+        rolle: { de:'Don Julián, Literaturprofessor im Ruhestand', en:'Don Julián, a retired literature professor', el:'Ο δον Χουλιάν, συνταξιούχος καθηγητής λογοτεχνίας' },
+        zeilen: [
+          { wer:'spikiu', z:'Mire, la cocina de vanguardia está muy bien, pero yo prefiero el cocido de toda la vida. ¿No le parece que la tradición se está perdiendo?', na:{ de:'Sehen Sie, die Avantgarde-Küche ist schön und gut, aber ich bevorzuge den Cocido wie eh und je. Finden Sie nicht, dass die Tradition verloren geht?', en:'Look, avant-garde cooking is all very well, but I prefer a good old-fashioned cocido. Don’t you think tradition is being lost?', el:'Κοιτάξτε, η πρωτοποριακή κουζίνα είναι πολύ ωραία, αλλά εγώ προτιμώ το κοσίδο όπως πάντα. Δεν σας φαίνεται ότι η παράδοση χάνεται;' } },
+          { wer:'lerner', z:'No es que no me guste la tradición, sino que creo que hay que renovarla. Una receta que nunca cambia acaba en un museo.', na:{ de:'Nicht dass ich die Tradition nicht mag, sondern ich finde, man muss sie erneuern. Ein Rezept, das sich nie ändert, landet im Museum.', en:'It’s not that I don’t like tradition, it’s that I think it needs renewing. A recipe that never changes ends up in a museum.', el:'Δεν είναι ότι δεν μου αρέσει η παράδοση, αλλά ότι πιστεύω πως πρέπει να ανανεώνεται. Μια συνταγή που δεν αλλάζει ποτέ καταλήγει σε μουσείο.' } },
+          { wer:'spikiu', z:'Hombre, eso es mucho decir. ¿Usted serviría una espuma de garbanzos en lugar de un cocido?', na:{ de:'Na hören Sie, das ist ziemlich übertrieben. Würden Sie einen Kichererbsenschaum statt eines Cocido servieren?', en:'Come now, that’s going a bit far. Would you serve a chickpea foam instead of a cocido?', el:'Έλα τώρα, αυτό είναι πολύ βαρύ. Εσείς θα σερβίρατε αφρό από ρεβίθια αντί για κοσίδο;' } },
+          { wer:'lerner', z:'Por mucho que experimente en la cocina, nunca convertiría un cocido en espuma. En eso tiene usted razón.', na:{ de:'So sehr ich in der Küche auch experimentiere, einen Cocido würde ich nie in Schaum verwandeln. Da haben Sie recht.', en:'However much I experiment in the kitchen, I would never turn a cocido into foam. You’re right about that.', el:'Όσο κι αν πειραματίζομαι στην κουζίνα, ποτέ δεν θα έκανα ένα κοσίδο αφρό. Σε αυτό έχετε δίκιο.' } },
+          { wer:'spikiu', z:'¿Lo ve? Entonces estamos de acuerdo: lo de siempre es lo mejor.', na:{ de:'Sehen Sie? Dann sind wir uns einig: Das Altbekannte ist das Beste.', en:'You see? Then we agree: the usual is best.', el:'Βλέπετε; Τότε συμφωνούμε: τα γνωστά είναι τα καλύτερα.' } },
+          { wer:'lerner', z:'Hasta cierto punto. En Finlandia diríamos simplemente que no, pero aquí prefiero decir que depende del plato.', na:{ de:'Bis zu einem gewissen Punkt. In Finnland würden wir einfach Nein sagen, aber hier sage ich lieber: Es kommt auf das Gericht an.', en:'Up to a point. In Finland we’d simply say no, but here I’d rather say it depends on the dish.', el:'Ως έναν βαθμό. Στη Φινλανδία θα λέγαμε απλώς όχι, αλλά εδώ προτιμώ να πω ότι εξαρτάται από το πιάτο.' } }
+        ]
+      },
+      lesetext: {
+        z:'Esta tarde, bajo los soportales de la Plaza Mayor, don Julián y yo discutimos dos horas sobre el cocido. Él defiende la tradición; yo, la renovación. Al final aprendí a matizar en vez de decir que no. Él dice que soy el finlandés más diplomático que conoce. Para mi cuaderno: hasta cierto punto.',
+        na:{ de:'Heute Nachmittag haben Don Julián und ich unter den Arkaden der Plaza Mayor zwei Stunden lang über den Cocido gestritten. Er verteidigt die Tradition, ich die Erneuerung. Am Ende habe ich gelernt, zu differenzieren, statt Nein zu sagen. Er sagt, ich sei der diplomatischste Finne, den er kennt. Für mein Notizheft: hasta cierto punto.',
+             en:'This afternoon, under the arcades of the Plaza Mayor, Don Julián and I argued for two hours about cocido. He defends tradition; I defend renewal. In the end I learnt to add nuance instead of saying no. He says I’m the most diplomatic Finn he knows. For my notebook: hasta cierto punto.',
+             el:'Σήμερα το απόγευμα, κάτω από τις στοές της Πλάθα Μαγιόρ, ο δον Χουλιάν κι εγώ συζητούσαμε δύο ώρες για το κοσίδο. Εκείνος υπερασπίζεται την παράδοση· εγώ, την ανανέωση. Στο τέλος έμαθα να βάζω αποχρώσεις αντί να λέω όχι. Λέει ότι είμαι ο πιο διπλωματικός Φινλανδός που ξέρει. Για το τετράδιό μου: hasta cierto punto.' },
+        frage:{ de:'Was hat Aleksi am Ende gelernt?', en:'What did Aleksi learn in the end?', el:'Τι έμαθε ο Αλέξι στο τέλος;' },
+        optionen:[
+          { na:{ de:'Zu differenzieren, statt Nein zu sagen', en:'To add nuance instead of saying no', el:'Να βάζει αποχρώσεις αντί να λέει όχι' }, richtig:true  },
+          { na:{ de:'Einen Cocido zu kochen',                  en:'To cook a cocido', el:'Να μαγειρεύει κοσίδο' }, richtig:false },
+          { na:{ de:'Immer Ja zu sagen',                       en:'To always say yes', el:'Να λέει πάντα ναι' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib jemandem, der nur die traditionelle Küche gelten lässt: Widersprich fein abgestuft und gib ihm in einem Punkt recht. Zwei Sätze.',
+                  en:'Write to someone who only accepts traditional cooking: disagree with nuance and agree with him on one point. Two sentences.',
+                  el:'Γράψε σε κάποιον που δέχεται μόνο την παραδοσιακή κουζίνα: διαφώνησε με αποχρώσεις και δώσ’ του δίκιο σε ένα σημείο. Δύο προτάσεις.' },
+        muster:'No es que no me guste la cocina moderna, sino que prefiero lo de toda la vida. Por mucho que lo intenten, una espuma no es un cocido.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„No es que …, sino que …": Zuerst sagst du, was es NICHT ist, dann, was es wirklich ist. Nach „no es que" steht der Subjuntivo (no me guste), nach „sino que" die normale Form (creo). „Por mucho que" + Subjuntivo heißt „so sehr … auch": por mucho que experimente.',
+               en:'"No es que …, sino que …": first you say what it is NOT, then what it really is. After "no es que" comes the subjunctive (no me guste); after "sino que" the ordinary form (creo). "Por mucho que" + subjunctive means "however much …": por mucho que experimente.',
+               el:'«No es que …, sino que …»: πρώτα λες τι ΔΕΝ είναι και μετά τι είναι στην πραγματικότητα. Μετά το «no es que» μπαίνει υποτακτική (no me guste), μετά το «sino que» ο συνηθισμένος τύπος (creo). Το «por mucho que» + υποτακτική σημαίνει «όσο κι αν …»: por mucho que experimente.' },
+        beispiele:[
+          { z:'No es que no me guste, sino que prefiero otra cosa.', na:{ de:'Nicht dass es mir nicht gefällt, sondern ich mag etwas anderes lieber.', en:'It’s not that I don’t like it, it’s that I prefer something else.', el:'Δεν είναι ότι δεν μου αρέσει, αλλά ότι προτιμώ κάτι άλλο.' } },
+          { z:'Por mucho que experimente, respeto el cocido.',      na:{ de:'So sehr ich auch experimentiere, ich respektiere den Cocido.', en:'However much I experiment, I respect the cocido.', el:'Όσο κι αν πειραματίζομαι, σέβομαι το κοσίδο.' } }
+        ]
+      },
+      kultur:{ de:'Die Universität Salamanca, gegründet 1218, ist die älteste noch bestehende Universität Spaniens. Die barocke Plaza Mayor aus dem 18. Jahrhundert ist ringsum von Arkaden umgeben und gilt als einer der schönsten Plätze des Landes.',
+               en:'The University of Salamanca, founded in 1218, is the oldest university in Spain still in operation. The baroque Plaza Mayor, from the 18th century, is lined with arcades on all sides and is considered one of the finest squares in the country.',
+               el:'Το Πανεπιστήμιο της Σαλαμάνκα, που ιδρύθηκε το 1218, είναι το αρχαιότερο πανεπιστήμιο της Ισπανίας που λειτουργεί ακόμα. Η μπαρόκ Πλάθα Μαγιόρ του 18ου αιώνα περιβάλλεται από στοές και θεωρείται μία από τις ωραιότερες πλατείες της χώρας.' }
+    },
+
+    /* ── B2 · Madrid, Atocha — der AVE fällt aus (Jan) ─────────────── */
+    'b2.bahnhof': {
+      deineRolle: { de:'Du hattest ein Ticket für den AVE um zehn von Madrid-Atocha nach Granada. Auf der Anzeigetafel steht: gestrichen. Niemand hat euch vorher informiert, und du möchtest wissen, welche Rechte du hast.', es:'Tenías billete para el AVE de las diez de Madrid-Atocha a Granada. En el panel pone: cancelado. Nadie os avisó antes y quieres saber qué derechos tienes.', en:'You had a ticket for the ten o’clock AVE from Madrid-Atocha to Granada. The departure board says: cancelled. Nobody told you in advance, and you want to know your rights.', el:'Είχες εισιτήριο για το AVE των δέκα από τη Μαδρίτη-Ατότσα για τη Γρανάδα. Ο πίνακας γράφει: ακυρώθηκε. Κανείς δεν σας ειδοποίησε από πριν και θέλεις να μάθεις τα δικαιώματά σου.' },
+      eroeffnung: { z:'Buenos días. Atención al cliente, ¿en qué puedo ayudarle?', na:{ de:'Guten Morgen. Kundenservice, womit kann ich Ihnen helfen?', en:'Good morning. Customer service, how can I help you?', el:'Καλημέρα. Εξυπηρέτηση πελατών, πώς μπορώ να σας βοηθήσω;' } },
+      abrundung: { z:'Su tren sale de la vía cinco. Disculpe las molestias y buen viaje a Granada.', na:{ de:'Ihr Zug fährt von Gleis fünf ab. Entschuldigen Sie die Unannehmlichkeiten, und gute Reise nach Granada.', en:'Your train leaves from platform five. Sorry for the inconvenience, and have a good trip to Granada.', el:'Το τρένο σας φεύγει από τη γραμμή πέντε. Συγγνώμη για την ταλαιπωρία και καλό ταξίδι στη Γρανάδα.' } },
+      rollen: {
+        spikiu: { de:'Marisa vom Kundenservice', es:'Marisa, de atención al cliente', en:'Marisa from customer service', el:'η Μαρίσα από την εξυπηρέτηση πελατών' },
+        lerner: { de:'Aleksi, der Reisende ohne Zug', es:'Aleksi, el viajero sin tren', en:'Aleksi, the passenger without a train', el:'ο Αλέξι, ο ταξιδιώτης χωρίς τρένο' },
+        ort:    { de:'am Kundenschalter im Bahnhof Madrid-Atocha', es:'en el mostrador de atención al cliente de Madrid-Atocha', en:'at the customer service desk at Madrid-Atocha station', el:'στο γκισέ εξυπηρέτησης πελατών στον σταθμό Μαδρίτη-Ατότσα' }
+      },
+      wortschatz: [
+        { z:'la avería',                na:{ de:'die (technische) Störung',     en:'the breakdown, the fault', el:'η βλάβη' } },
+        { z:'la indemnización',         na:{ de:'die Entschädigung',            en:'the compensation', el:'η αποζημίωση' } },
+        { z:'el importe',               na:{ de:'der Betrag',                   en:'the amount', el:'το ποσό' } },
+        { z:'la hoja de reclamaciones', na:{ de:'das offizielle Beschwerdeformular', en:'the official complaint form', el:'το έντυπο παραπόνων' } },
+        { z:'el panel de salidas',      na:{ de:'die Abfahrtstafel',            en:'the departures board', el:'ο πίνακας αναχωρήσεων' } },
+        { z:'la atención al cliente',   na:{ de:'der Kundenservice',            en:'customer service', el:'η εξυπηρέτηση πελατών' } },
+        { z:'las molestias',            na:{ de:'die Unannehmlichkeiten',       en:'the inconvenience', el:'η ταλαιπωρία' } },
+        { z:'solicitar',                na:{ de:'beantragen',                   en:'to apply for, to request', el:'αιτούμαι, ζητώ' } },
+        { z:'rellenar',                 na:{ de:'ausfüllen',                    en:'to fill in', el:'συμπληρώνω' } },
+        { z:'sellar',                   na:{ de:'abstempeln',                   en:'to stamp', el:'σφραγίζω' } },
+        { z:'sin coste',                na:{ de:'kostenlos, ohne Aufpreis',     en:'free of charge', el:'χωρίς χρέωση' } },
+        { z:'con antelación',           na:{ de:'im Voraus, rechtzeitig',       en:'in advance', el:'εκ των προτέρων' } },
+        { z:'estar en su derecho',      na:{ de:'im Recht sein, das Recht haben', en:'to be within one’s rights', el:'είναι δικαίωμά του/σας' } },
+        { z:'¿tendría derecho a …?',    na:{ de:'hätte ich ein Recht auf …?',   en:'would I be entitled to …?', el:'θα δικαιούμουν …;' } },
+        { z:'ha sido cancelado',        na:{ de:'er wurde gestrichen',          en:'it has been cancelled', el:'ακυρώθηκε' } },
+        { z:'quisiera que constara …',  na:{ de:'ich möchte, dass festgehalten wird …', en:'I’d like it to be noted …', el:'θα ήθελα να καταγραφεί …' } }
+      ],
+      dialog: {
+        rolle: { de:'Marisa vom Kundenservice', en:'Marisa from customer service', el:'Η Μαρίσα από την εξυπηρέτηση πελατών' },
+        zeilen: [
+          { wer:'lerner', z:'Buenos días. Tenía billete para el AVE de las diez a Granada, pero en el panel pone que ha sido cancelado.', na:{ de:'Guten Morgen. Ich hatte ein Ticket für den AVE um zehn nach Granada, aber auf der Tafel steht, dass er gestrichen wurde.', en:'Good morning. I had a ticket for the ten o’clock AVE to Granada, but the board says it has been cancelled.', el:'Καλημέρα. Είχα εισιτήριο για το AVE των δέκα για Γρανάδα, αλλά ο πίνακας λέει ότι ακυρώθηκε.' } },
+          { wer:'spikiu', z:'Así es, lo siento mucho. Ha habido una avería técnica. Puedo cambiarle sin coste al tren de las doce y cuarto.', na:{ de:'Das stimmt, es tut mir sehr leid. Es gab eine technische Störung. Ich kann Sie kostenlos auf den Zug um Viertel nach zwölf umbuchen.', en:'That’s right, I’m very sorry. There has been a technical fault. I can move you free of charge to the quarter past twelve train.', el:'Έτσι είναι, λυπάμαι πολύ. Υπήρξε τεχνική βλάβη. Μπορώ να σας αλλάξω χωρίς χρέωση στο τρένο των δώδεκα και τέταρτο.' } },
+          { wer:'lerner', z:'De acuerdo, me viene bien. ¿Tendría derecho a alguna indemnización por llegar tan tarde?', na:{ de:'Einverstanden, das passt mir. Hätte ich ein Recht auf eine Entschädigung, weil ich so spät ankomme?', en:'All right, that suits me. Would I be entitled to any compensation for arriving so late?', el:'Εντάξει, με βολεύει. Θα δικαιούμουν κάποια αποζημίωση επειδή θα φτάσω τόσο αργά;' } },
+          { wer:'spikiu', z:'Sí. Si llega con más de una hora de retraso, puede solicitar que le devuelvan parte del importe, en la web o aquí mismo.', na:{ de:'Ja. Wenn Sie mit mehr als einer Stunde Verspätung ankommen, können Sie beantragen, dass man Ihnen einen Teil des Betrags erstattet, online oder direkt hier.', en:'Yes. If you arrive more than an hour late, you can apply to have part of the fare refunded, online or right here.', el:'Ναι. Αν φτάσετε με πάνω από μία ώρα καθυστέρηση, μπορείτε να ζητήσετε να σας επιστραφεί μέρος του ποσού, στο διαδίκτυο ή εδώ.' } },
+          { wer:'lerner', z:'Gracias. Aun así, quisiera poner una reclamación y que constara que no nos avisaron con antelación.', na:{ de:'Danke. Trotzdem möchte ich eine Beschwerde einreichen, und es soll festgehalten werden, dass man uns nicht vorher informiert hat.', en:'Thank you. Even so, I’d like to make a complaint and have it noted that we weren’t told in advance.', el:'Ευχαριστώ. Παρ’ όλα αυτά, θα ήθελα να κάνω παράπονο και να καταγραφεί ότι δεν μας ειδοποίησαν εκ των προτέρων.' } },
+          { wer:'spikiu', z:'Está en su derecho. Aquí tiene la hoja de reclamaciones; en cuanto la rellene, se la sello.', na:{ de:'Das ist Ihr gutes Recht. Hier ist das Beschwerdeformular; sobald Sie es ausgefüllt haben, stemple ich es Ihnen ab.', en:'You’re within your rights. Here’s the complaint form; as soon as you’ve filled it in, I’ll stamp it for you.', el:'Είναι δικαίωμά σας. Ορίστε το έντυπο παραπόνων· μόλις το συμπληρώσετε, σας το σφραγίζω.' } }
+        ]
+      },
+      lesetext: {
+        z:'Hoy mi AVE a Granada ha sido cancelado por una avería. Marisa, en atención al cliente, me cambió al tren siguiente sin coste y me explicó qué podía pedir. Aun así, rellené la hoja de reclamaciones: soy finlandés, me gustan los papeles en orden. Llegué a Granada de noche, cansado pero tranquilo. Para mi cuaderno: con antelación.',
+        na:{ de:'Heute ist mein AVE nach Granada wegen einer Störung gestrichen worden. Marisa vom Kundenservice hat mich kostenlos auf den nächsten Zug umgebucht und mir erklärt, was ich verlangen kann. Trotzdem habe ich das Beschwerdeformular ausgefüllt: Ich bin Finne, ich mag Papiere in Ordnung. Ich bin nachts in Granada angekommen, müde, aber ruhig. Für mein Notizheft: con antelación.',
+             en:'Today my AVE to Granada was cancelled because of a fault. Marisa at customer service moved me to the next train free of charge and explained what I could claim. Even so, I filled in the complaint form: I’m Finnish, I like my paperwork in order. I reached Granada at night, tired but calm. For my notebook: con antelación.',
+             el:'Σήμερα το AVE μου για τη Γρανάδα ακυρώθηκε λόγω βλάβης. Η Μαρίσα από την εξυπηρέτηση πελατών με έβαλε στο επόμενο τρένο χωρίς χρέωση και μου εξήγησε τι μπορούσα να ζητήσω. Παρ’ όλα αυτά, συμπλήρωσα το έντυπο παραπόνων: είμαι Φινλανδός, μου αρέσουν τα χαρτιά σε τάξη. Έφτασα στη Γρανάδα νύχτα, κουρασμένος αλλά ήρεμος. Για το τετράδιό μου: con antelación.' },
+        frage:{ de:'Was hat Aleksi trotzdem gemacht?', en:'What did Aleksi do anyway?', el:'Τι έκανε ο Αλέξι παρ’ όλα αυτά;' },
+        optionen:[
+          { na:{ de:'Er hat das Beschwerdeformular ausgefüllt', en:'He filled in the complaint form', el:'Συμπλήρωσε το έντυπο παραπόνων' }, richtig:true  },
+          { na:{ de:'Er hat einen Bus nach Granada genommen',    en:'He took a bus to Granada', el:'Πήρε λεωφορείο για τη Γρανάδα' }, richtig:false },
+          { na:{ de:'Er ist eine Nacht in Madrid geblieben',     en:'He stayed one night in Madrid', el:'Έμεινε ένα βράδυ στη Μαδρίτη' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib eine kurze Beschwerde: Dein Zug wurde ohne Vorwarnung gestrichen; frag, ob du ein Recht auf Entschädigung hättest. Zwei Sätze.',
+                  en:'Write a short complaint: your train was cancelled without warning; ask whether you would be entitled to compensation. Two sentences.',
+                  el:'Γράψε ένα σύντομο παράπονο: το τρένο σου ακυρώθηκε χωρίς προειδοποίηση· ρώτα αν θα δικαιούσουν αποζημίωση. Δύο προτάσεις.' },
+        muster:'Mi tren ha sido cancelado sin previo aviso y quisiera que constara en la reclamación. ¿Tendría derecho a una indemnización?'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„Ha sido cancelado" sagt, was mit dem Zug passiert ist, ohne zu sagen, wer es getan hat. Die Endung passt sich an: el tren ha sido cancelado, la conexión ha sido cancelada. „Quisiera que constara …" ist eine sehr höfliche Bitte; nach „quisiera que" kommt dieselbe Vergangenheitsform wie nach „me gustaría que": constara, hiciera.',
+               en:'"Ha sido cancelado" says what happened to the train without saying who did it. The ending adapts: el tren ha sido cancelado, la conexión ha sido cancelada. "Quisiera que constara …" is a very polite request; after "quisiera que" comes the same past form as after "me gustaría que": constara, hiciera.',
+               el:'Το «ha sido cancelado» λέει τι έπαθε το τρένο χωρίς να λέει ποιος το έκανε. Η κατάληξη προσαρμόζεται: el tren ha sido cancelado, la conexión ha sido cancelada. Το «quisiera que constara …» είναι πολύ ευγενικό αίτημα· μετά το «quisiera que» μπαίνει ο ίδιος τύπος του παρελθόντος όπως μετά το «me gustaría que»: constara, hiciera.' },
+        beispiele:[
+          { z:'El AVE de las diez ha sido cancelado.',      na:{ de:'Der AVE um zehn wurde gestrichen.', en:'The ten o’clock AVE has been cancelled.', el:'Το AVE των δέκα ακυρώθηκε.' } },
+          { z:'Quisiera que constara en la reclamación.',   na:{ de:'Ich möchte, dass es in der Beschwerde festgehalten wird.', en:'I’d like it to be noted in the complaint.', el:'Θα ήθελα να καταγραφεί στο παράπονο.' } }
+        ]
+      },
+      kultur:{ de:'Spanien hat das längste Hochgeschwindigkeitsnetz Europas; die erste AVE-Linie fuhr 1992 von Madrid nach Sevilla. Jedes Unternehmen mit Kundenverkehr muss in Spanien offizielle Beschwerdeformulare, die hojas de reclamaciones, bereithalten.',
+               en:'Spain has the longest high-speed rail network in Europe; the first AVE line ran from Madrid to Seville in 1992. In Spain every business that serves the public must keep official complaint forms, the hojas de reclamaciones.',
+               el:'Η Ισπανία έχει το μεγαλύτερο δίκτυο τρένων υψηλής ταχύτητας στην Ευρώπη· η πρώτη γραμμή AVE λειτούργησε το 1992 από τη Μαδρίτη στη Σεβίλλη. Στην Ισπανία κάθε επιχείρηση που εξυπηρετεί κοινό πρέπει να έχει επίσημα έντυπα παραπόνων, τις hojas de reclamaciones.' }
+    }
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   B2 · BLÜTE · B-Gruppe (Stationen 6–10)
+   Aleksi Virtanen, Koch aus Helsinki, ein Jahr in spanischen Küchen.
+   arzt Granada · einkaufen Valencia · taxi Sevilla ·
+   wegbeschreibung Picos de Europa · wetter Lanzarote.
+   Spanien-Spanisch, nie voseo, keine Politik.
+   ══════════════════════════════════════════════════════════════════ */
+var B2_LP_B = {
+
+  schritt: {
+    arzt:            { de:'Granada: ein Missgeschick erklären', en:'Granada: explaining a mishap', el:'Γρανάδα: εξηγείς μια αναποδιά' },
+    einkaufen:       { de:'Valencia: höflich, aber fest reklamieren', en:'Valencia: complaining politely but firmly', el:'Βαλένθια: παραπονιέσαι ευγενικά αλλά σταθερά' },
+    taxi:            { de:'Sevilla: Verlorenes genau beschreiben', en:'Seville: describing a lost item precisely', el:'Σεβίλλη: περιγράφεις με ακρίβεια κάτι που έχασες' },
+    wegbeschreibung: { de:'Asturien: einen langen Weg verstehen', en:'Asturias: understanding a long route', el:'Αστούριας: καταλαβαίνεις μια μεγάλη διαδρομή' },
+    wetter:          { de:'Lanzarote: planen, wenn der Wind dreht', en:'Lanzarote: planning when the wind turns', el:'Λανθαρότε: σχεδιάζεις όταν γυρίζει ο αέρας' }
+  },
+
+  aufgaben: {
+    'b2.arzt': [
+      { de:'Erkläre, was passiert ist: Beim Frittieren ist dir die Pfanne weggerutscht und heißes Öl auf die Hand gefallen', es:'Explica qué pasó: mientras freías, se te resbaló la sartén y te cayó aceite hirviendo en la mano', en:'Explain what happened: while you were frying, the pan slipped and boiling oil fell on your hand', el:'Εξήγησε τι έγινε: ενώ τηγάνιζες, σου γλίστρησε το τηγάνι και σου έπεσε καυτό λάδι στο χέρι' },
+      { de:'Frag, wie viel Salbe genau, und was du tun sollst, falls es sich entzündet', es:'Pregunta cuánta pomada exactamente y qué hacer en caso de que se infecte', en:'Ask exactly how much ointment to use, and what to do in case it gets infected', el:'Ρώτα πόση αλοιφή ακριβώς και τι να κάνεις σε περίπτωση που μολυνθεί' },
+      { de:'Bitte um eine Krankschreibung und erkläre, warum du als Koch so nicht arbeiten kannst', es:'Pide la baja y explica por qué, como cocinero, así no puedes trabajar', en:'Ask for a sick note and explain why, as a cook, you can’t work like this', el:'Ζήτα άδεια ασθενείας και εξήγησε γιατί, ως μάγειρας, δεν μπορείς να δουλέψεις έτσι' }
+    ],
+    'b2.einkaufen': [
+      { de:'Sag, dass du die Paellapfanne vor einer Woche hier gekauft hast und dass sie am Griff gerissen ist und tropft', es:'Di que compraste la paellera aquí hace una semana y que se ha agrietado junto al asa y gotea', en:'Say you bought the paella pan here a week ago and that it has cracked by the handle and leaks', el:'Πες ότι αγόρασες το τηγάνι για παέγια εδώ πριν από μία εβδομάδα και ότι ράγισε δίπλα στο χερούλι και στάζει' },
+      { de:'Sag, was man dir versprochen hat und was trotzdem passiert ist — und mach klar, dass du niemandem die Schuld geben willst', es:'Di lo que te dijeron y lo que pasó sin embargo, y deja claro que no pretendes culpar a nadie', en:'Say what you were told and what happened anyway — and make clear you’re not trying to blame anyone', el:'Πες τι σου είπαν και τι έγινε παρ’ όλα αυτά — και ξεκαθάρισε ότι δεν θέλεις να κατηγορήσεις κανέναν' },
+      { de:'Frag, welche Lösung er vorschlägt: Umtausch oder Geld zurück', es:'Pregunta qué solución te propone: un cambio o un reembolso', en:'Ask what solution he suggests: an exchange or a refund', el:'Ρώτα τι λύση σού προτείνει: αλλαγή ή επιστροφή χρημάτων' }
+    ],
+    'b2.taxi': [
+      { de:'Sag, dass du etwas Wichtiges in dem Taxi vergessen hast, das du heute Morgen am Bahnhof Santa Justa genommen hast', es:'Di que te dejaste algo importante en el taxi que cogiste esta mañana en la estación de Santa Justa', en:'Say you left something important in the taxi you took this morning at Santa Justa station', el:'Πες ότι ξέχασες κάτι σημαντικό στο ταξί που πήρες σήμερα το πρωί από τον σταθμό Σάντα Χούστα' },
+      { de:'Beschreib die Messertasche genau: Material, was darin ist und wozu du die Messer brauchst', es:'Describe el estuche con detalle: de qué es, qué hay dentro y para qué usas los cuchillos', en:'Describe the knife case in detail: what it’s made of, what’s inside and what you use the knives for', el:'Περιέγραψε τη θήκη λεπτομερώς: από τι είναι, τι έχει μέσα και σε τι χρησιμοποιείς τα μαχαίρια' },
+      { de:'Beschreib den Fahrer und sag, wann und wo du ausgestiegen bist', es:'Describe al taxista y di cuándo y dónde te bajaste', en:'Describe the driver and say when and where you got out', el:'Περιέγραψε τον ταξιτζή και πες πότε και πού κατέβηκες' }
+    ],
+    'b2.wegbeschreibung': [
+      { de:'Sag, dass du morgen allein zur Käsehöhle hinaufwillst, und bitte Benito, dir den Weg in Ruhe zu erklären', es:'Di que mañana quieres subir solo a la cueva de los quesos y pídele a Benito que te explique el camino con calma', en:'Say you want to go up to the cheese cave on your own tomorrow, and ask Benito to explain the way slowly', el:'Πες ότι αύριο θέλεις να ανέβεις μόνος στη σπηλιά με τα τυριά και ζήτα από τον Μπενίτο να σου εξηγήσει τον δρόμο με την ησυχία του' },
+      { de:'Wiederhole den ersten Teil zur Sicherheit („cuando llegue…“) und frag, wie es weitergeht', es:'Repite la primera parte para asegurarte («cuando llegue…») y pregunta cómo sigue', en:'Repeat the first part to be sure (“cuando llegue…”) and ask how it continues', el:'Επανάλαβε το πρώτο κομμάτι για σιγουριά («cuando llegue…») και ρώτα πώς συνεχίζει' },
+      { de:'Frag, wie lange man genau braucht, und sag, dass du vor Einbruch der Dunkelheit zurück sein willst', es:'Pregunta cuánto se tarda exactamente y di que quieres estar de vuelta antes de que anochezca', en:'Ask exactly how long it takes and say you want to be back before dark', el:'Ρώτα πόση ώρα θέλει ακριβώς και πες ότι θέλεις να έχεις γυρίσει πριν νυχτώσει' }
+    ],
+    'b2.wetter': [
+      { de:'Sag, dass ihr morgen nicht lesen könnt, falls der Wind nicht nachlässt, und was dir Sorgen macht', es:'Di que, como no amaine el viento, mañana no se podrá vendimiar, y qué te preocupa', en:'Say that if the wind doesn’t drop you won’t be able to pick tomorrow, and what worries you', el:'Πες ότι, αν δεν κοπάσει ο αέρας, αύριο δεν θα μπορέσετε να τρυγήσετε, και τι σε ανησυχεί' },
+      { de:'Schlag vor, besser im Morgengrauen anzufangen, und sag, wann du da sein kannst — Hauptsache, es ist hell', es:'Propón que más vale empezar al amanecer y di a qué hora puedes estar, con tal de que haya luz', en:'Suggest you’d better start at dawn and say when you can be there, as long as it’s light', el:'Πρότεινε ότι καλύτερα να ξεκινήσετε με το χάραμα και πες τι ώρα μπορείς να είσαι εκεί, αρκεί να έχει φως' },
+      { de:'Sag zu, die Kisten mitzubringen, und füg mit „mientras no“ eine Bedingung hinzu', es:'Acepta traer las cajas y añade una condición con «mientras no»', en:'Agree to bring the crates and add a condition with “mientras no”', el:'Δέξου να φέρετε τα τελάρα και πρόσθεσε έναν όρο με «mientras no»' }
+    ]
+  },
+
+  stationen: {
+
+    /* ── B2 · Granada — Verbrennung in der Küche (Feb) ──────────────── */
+    'b2.arzt': {
+      deineRolle: { de:'Du bist Aleksi. Beim Frittieren von Auberginen ist dir die Pfanne weggerutscht, und siedend heißes Öl ist auf deinen Handrücken gefallen. Du willst wissen, wie du die Wunde pflegst, und du brauchst eine Krankschreibung.', es:'Eres Aleksi. Estabas friendo berenjenas, se te resbaló la sartén y te cayó aceite hirviendo en el dorso de la mano. Quieres saber cómo curarte la quemadura y necesitas la baja.', en:'You are Aleksi. You were frying aubergines when the pan slipped and boiling oil landed on the back of your hand. You want to know how to look after the burn, and you need a sick note.', el:'Είσαι ο Αλέξι. Τηγάνιζες μελιτζάνες, σου γλίστρησε το τηγάνι και καυτό λάδι έπεσε στη ράχη του χεριού σου. Θέλεις να μάθεις πώς να φροντίσεις το έγκαυμα και χρειάζεσαι άδεια ασθενείας.' },
+      abrundung: { z:'Le doy una semana de baja. Vuelva dentro de siete días y, si todo va bien, le doy el alta.', na:{ de:'Ich schreibe Sie eine Woche krank. Kommen Sie in sieben Tagen wieder, und wenn alles gut aussieht, schreibe ich Sie gesund.', en:'I’ll sign you off for a week. Come back in seven days and, if all is well, I’ll sign you fit for work.', el:'Σας δίνω μία εβδομάδα άδεια ασθενείας. Ελάτε σε επτά μέρες και, αν όλα πάνε καλά, θα σας γράψω ικανό για δουλειά.' } },
+      rollen: {
+        spikiu: { de:'Dr. Nieves Ortega, die Ärztin', es:'la doctora Nieves Ortega', en:'Dr Nieves Ortega, the GP', el:'η γιατρός Νιέβες Ορτέγα' },
+        lerner: { de:'Aleksi, der Koch mit der verbrannten Hand', es:'Aleksi, el cocinero de la mano quemada', en:'Aleksi, the cook with the burnt hand', el:'ο Αλέξι, ο μάγειρας με το καμένο χέρι' },
+        ort:    { de:'im Gesundheitszentrum in Granada', es:'en el centro de salud, en Granada', en:'at the health centre in Granada', el:'στο κέντρο υγείας στη Γρανάδα' }
+      },
+      wortschatz: [
+        { z:'la quemadura',        na:{ de:'die Verbrennung',          en:'the burn', el:'το έγκαυμα' } },
+        { z:'la ampolla',          na:{ de:'die Brandblase',           en:'the blister', el:'η φουσκάλα' } },
+        { z:'la pomada',           na:{ de:'die Salbe',                en:'the ointment', el:'η αλοιφή' } },
+        { z:'el apósito',          na:{ de:'der Wundverband',          en:'the dressing', el:'το επίθεμα' } },
+        { z:'el dorso de la mano', na:{ de:'der Handrücken',           en:'the back of the hand', el:'η ράχη του χεριού' } },
+        { z:'el centro de salud',  na:{ de:'das Gesundheitszentrum (Hausarzt)', en:'the health centre (GP surgery)', el:'το κέντρο υγείας' } },
+        { z:'la baja',             na:{ de:'die Krankschreibung',      en:'the sick note, sick leave', el:'η άδεια ασθενείας' } },
+        { z:'reventar',            na:{ de:'aufstechen, platzen lassen', en:'to burst', el:'σπάω (μια φουσκάλα)' } },
+        { z:'cicatrizar',          na:{ de:'verheilen (Wunde)',        en:'to heal (a wound)', el:'επουλώνομαι' } },
+        { z:'se me resbaló …',     na:{ de:'… ist mir weggerutscht',   en:'… slipped out of my hand', el:'μου γλίστρησε …' } },
+        { z:'se me cayó …',        na:{ de:'… ist mir heruntergefallen', en:'I dropped … (by accident)', el:'μου έπεσε …' } },
+        { z:'dar el alta',         na:{ de:'gesundschreiben',          en:'to sign someone fit for work', el:'γράφω κάποιον ικανό για δουλειά' } },
+        { z:'el aceite hirviendo', na:{ de:'das siedend heiße Öl',     en:'boiling-hot oil', el:'το καυτό λάδι' } },
+        { z:'en caso de que …',    na:{ de:'falls …',                  en:'in case …', el:'σε περίπτωση που …' } },
+        { z:'siempre que …',       na:{ de:'sofern …, vorausgesetzt …', en:'as long as …', el:'αρκεί να …' } },
+        { z:'aunque le moleste',   na:{ de:'auch wenn es Sie stört',   en:'even if it bothers you', el:'ακόμα κι αν σας ενοχλεί' } }
+      ],
+      dialog: {
+        rolle: { de:'Dr. Nieves Ortega, die Ärztin', en:'Dr Nieves Ortega, the GP', el:'Η γιατρός Νιέβες Ορτέγα' },
+        zeilen: [
+          { wer:'spikiu', z:'Buenos días, siéntese. Veo que trae la mano vendada: ¿qué le ha pasado?', na:{ de:'Guten Morgen, setzen Sie sich. Ich sehe, Ihre Hand ist verbunden: Was ist passiert?', en:'Good morning, have a seat. I see your hand is bandaged — what happened?', el:'Καλημέρα, καθίστε. Βλέπω ότι έχετε το χέρι δεμένο: τι σας συνέβη;' } },
+          { wer:'lerner', z:'Estaba friendo berenjenas y se me resbaló la sartén. Se me cayó aceite hirviendo en el dorso de la mano.', na:{ de:'Ich habe Auberginen frittiert, und die Pfanne ist mir weggerutscht. Siedend heißes Öl ist mir auf den Handrücken gefallen.', en:'I was frying aubergines and the pan slipped. Boiling oil landed on the back of my hand.', el:'Τηγάνιζα μελιτζάνες και μου γλίστρησε το τηγάνι. Μου έπεσε καυτό λάδι στη ράχη του χεριού.' } },
+          { wer:'spikiu', z:'Vaya. Es una quemadura de segundo grado, pero superficial. No reviente la ampolla, aunque le moleste.', na:{ de:'Oje. Das ist eine Verbrennung zweiten Grades, aber oberflächlich. Stechen Sie die Blase nicht auf, auch wenn sie stört.', en:'Oh dear. It’s a second-degree burn, but a superficial one. Don’t burst the blister, even if it bothers you.', el:'Ωχ. Είναι έγκαυμα δευτέρου βαθμού, αλλά επιφανειακό. Μη σπάσετε τη φουσκάλα, ακόμα κι αν σας ενοχλεί.' } },
+          { wer:'lerner', z:'¿Cuánta pomada me pongo, exactamente? Y en caso de que se infecte, ¿qué hago?', na:{ de:'Wie viel Salbe soll ich nehmen, ganz genau? Und falls es sich entzündet, was mache ich dann?', en:'How much ointment should I put on, exactly? And in case it gets infected, what do I do?', el:'Πόση αλοιφή να βάλω, ακριβώς; Και σε περίπτωση που μολυνθεί, τι κάνω;' } },
+          { wer:'spikiu', z:'Una capa fina, a ojo. Cambie el apósito cada día y, si tiene fiebre, vuelva enseguida. Siempre que la mantenga limpia, cicatrizará en unos diez días.', na:{ de:'Eine dünne Schicht, nach Augenmaß. Wechseln Sie den Verband jeden Tag, und wenn Sie Fieber bekommen, kommen Sie sofort wieder. Sofern Sie die Wunde sauber halten, heilt sie in etwa zehn Tagen.', en:'A thin layer — just judge it by eye. Change the dressing every day and, if you get a temperature, come back straight away. As long as you keep it clean, it will heal in about ten days.', el:'Ένα λεπτό στρώμα, με το μάτι. Να αλλάζετε το επίθεμα κάθε μέρα και, αν έχετε πυρετό, να έρθετε αμέσως. Αρκεί να το κρατάτε καθαρό, θα επουλωθεί σε περίπου δέκα μέρες.' } },
+          { wer:'lerner', z:'¿Me podría dar la baja? Soy cocinero y, con la mano así, no puedo trabajar.', na:{ de:'Könnten Sie mich krankschreiben? Ich bin Koch, und mit der Hand so kann ich nicht arbeiten.', en:'Could you give me a sick note? I’m a cook, and with my hand like this I can’t work.', el:'Θα μπορούσατε να μου δώσετε άδεια ασθενείας; Είμαι μάγειρας και, με το χέρι έτσι, δεν μπορώ να δουλέψω.' } }
+        ]
+      },
+      lesetext: {
+        z:'Hoy se me resbaló la sartén y me quemé el dorso de la mano. La doctora Ortega me ha dado una semana de baja. Por la tarde, aunque me dolía, subí al mirador de San Nicolás: la Alhambra y, detrás, la nieve de Sierra Nevada. Para mi cuaderno: se me resbaló.',
+        na:{ de:'Heute ist mir die Pfanne weggerutscht, und ich habe mir den Handrücken verbrannt. Dr. Ortega hat mich eine Woche krankgeschrieben. Am Nachmittag bin ich, obwohl es wehtat, zum Aussichtspunkt San Nicolás hinaufgestiegen: die Alhambra und dahinter der Schnee der Sierra Nevada. Für mein Heft: se me resbaló.',
+             en:'Today the pan slipped out of my hand and I burnt the back of my hand. Dr Ortega has signed me off for a week. In the afternoon, although it hurt, I walked up to the San Nicolás viewpoint: the Alhambra and, behind it, the snow on the Sierra Nevada. For my notebook: se me resbaló.',
+             el:'Σήμερα μου γλίστρησε το τηγάνι και έκαψα τη ράχη του χεριού μου. Η γιατρός Ορτέγα μού έδωσε μία εβδομάδα άδεια ασθενείας. Το απόγευμα, αν και πονούσε, ανέβηκα στο σημείο θέας του Σαν Νικολάς: η Αλάμπρα και, πίσω της, το χιόνι της Σιέρα Νεβάδα. Για το τετράδιό μου: se me resbaló.' },
+        frage:{ de:'Wie lange ist Aleksi krankgeschrieben?', en:'How long has Aleksi been signed off for?', el:'Για πόσο καιρό πήρε ο Αλέξι άδεια ασθενείας;' },
+        optionen:[
+          { na:{ de:'Eine Woche',                      en:'One week', el:'Μία εβδομάδα' }, richtig:true  },
+          { na:{ de:'Zehn Tage',                       en:'Ten days', el:'Δέκα μέρες' }, richtig:false },
+          { na:{ de:'Gar nicht — er arbeitet weiter',  en:'Not at all — he keeps working', el:'Καθόλου — συνεχίζει να δουλεύει' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erzähl ein kleines Missgeschick mit „se me…“ und sag, was du tust, falls es nicht gut ausgeht. Zwei Sätze.',
+                  en:'Tell a small mishap with “se me…” and say what you’ll do in case it doesn’t turn out well. Two sentences.', el:'Διηγήσου μια μικρή αναποδιά με «se me…» και πες τι θα κάνεις σε περίπτωση που δεν πάει καλά. Δύο προτάσεις.' },
+        muster:'Ayer se me cayó el móvil y se me rompió la pantalla. En caso de que no se pueda arreglar, me compraré otro.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„Se me cayó la sartén“ heißt: Die Pfanne ist mir heruntergefallen — aus Versehen, nicht mit Absicht. So baust du es: se + me/te/le + was passiert ist. Genauso: se me olvidó, se me rompió. Nach „en caso de que“ (falls) und „siempre que“ (sofern) kommt der Subjuntivo: en caso de que se infecte.',
+               en:'“Se me cayó la sartén” means: the pan fell — by accident, not on purpose. The pattern: se + me/te/le + what happened. Likewise: se me olvidó (it slipped my mind), se me rompió (it broke on me). After “en caso de que” (in case) and “siempre que” (as long as) comes the subjuntivo: en caso de que se infecte.',
+               el:'Το «se me cayó la sartén» σημαίνει: μου έπεσε το τηγάνι — κατά λάθος, όχι επίτηδες. Το σχήμα: se + me/te/le + αυτό που έγινε. Το ίδιο: se me olvidó (μου ξέφυγε), se me rompió (μου έσπασε). Μετά το «en caso de que» (σε περίπτωση που) και το «siempre que» (αρκεί να) έρχεται subjuntivo: en caso de que se infecte.' },
+        beispiele:[
+          { z:'Se me cayó la sartén.',                na:{ de:'Mir ist die Pfanne heruntergefallen.', en:'I dropped the pan.', el:'Μου έπεσε το τηγάνι.' } },
+          { z:'En caso de que tenga fiebre, vuelva.', na:{ de:'Falls Sie Fieber bekommen, kommen Sie wieder.', en:'In case you get a temperature, come back.', el:'Σε περίπτωση που έχετε πυρετό, ελάτε ξανά.' } }
+        ]
+      },
+      kultur: { de:'In Granada bekommt man in vielen Bars zu jedem Getränk eine Tapa gratis — oft frittierte Auberginen mit Zuckerrohrhonig. Die Krankschreibung („la baja“) stellt in Spanien meist der Hausarzt im Centro de Salud aus.',
+                en:'In Granada many bars give you a free tapa with every drink — often fried aubergines with cane honey. In Spain the sick note (“la baja”) is usually issued by your GP at the local health centre.',
+                el:'Στη Γρανάδα πολλά μπαρ σού δίνουν δωρεάν τάπα με κάθε ποτό — συχνά τηγανητές μελιτζάνες με μέλι από ζαχαροκάλαμο. Στην Ισπανία την άδεια ασθενείας («la baja») τη βγάζει συνήθως ο οικογενειακός γιατρός στο κέντρο υγείας.' }
+    },
+
+    /* ── B2 · Valencia — die undichte Paellera (März, Fallas) ────────── */
+    'b2.einkaufen': {
+      deineRolle: { de:'Du bist Aleksi. Vor einer Woche hast du in einem Laden beim Mercado Central eine Paellapfanne gekauft. Gleich beim ersten Mal ist sie am Griff gerissen und tropft. Du willst keinen Streit, aber eine Lösung.', es:'Eres Aleksi. Hace una semana compraste una paellera en una tienda junto al Mercado Central. La primera vez que la usaste se agrietó junto al asa y ahora gotea. No quieres discutir, pero sí una solución.', en:'You are Aleksi. A week ago you bought a paella pan in a shop by the Mercado Central. The very first time you used it, it cracked by the handle and now it leaks. You don’t want an argument, but you do want a solution.', el:'Είσαι ο Αλέξι. Πριν από μία εβδομάδα αγόρασες ένα τηγάνι για παέγια σε ένα μαγαζί δίπλα στην Κεντρική Αγορά. Την πρώτη φορά που το χρησιμοποίησες ράγισε δίπλα στο χερούλι και τώρα στάζει. Δεν θέλεις καβγά, αλλά θέλεις λύση.' },
+      eroeffnung: { z:'¡Bon dia! Pase, pase. ¿Qué se le ofrece?', na:{ de:'Bon dia! (Valencianisch für „Guten Morgen“.) Kommen Sie herein. Was darf es sein?', en:'Bon dia! (Valencian for “good morning”.) Come in, come in. What can I do for you?', el:'Bon dia! («Καλημέρα» στα βαλενθιανά.) Περάστε, περάστε. Τι θα θέλατε;' } },
+      abrundung: { z:'¡Bones Falles! Y en la paella, nada de chorizo, ¿eh?', na:{ de:'Schöne Fallas! Und in die Paella kommt keine Chorizo, ja?', en:'Happy Fallas! And no chorizo in the paella, all right?', el:'Καλές Φάγιες! Και στην παέγια, καθόλου τσορίθο, εντάξει;' } },
+      rollen: {
+        spikiu: { de:'Vicent, der Ladenbesitzer', es:'Vicent, el dueño de la tienda', en:'Vicent, the shop owner', el:'ο Βισέντ, ο ιδιοκτήτης του μαγαζιού' },
+        lerner: { de:'Aleksi, der unzufriedene Kunde', es:'Aleksi, el cliente descontento', en:'Aleksi, the unhappy customer', el:'ο Αλέξι, ο δυσαρεστημένος πελάτης' },
+        ort:    { de:'in einem Haushaltswarenladen beim Mercado Central, Valencia', es:'en una tienda de menaje junto al Mercado Central de Valencia', en:'in a kitchenware shop by the Mercado Central, Valencia', el:'σε ένα κατάστημα με είδη κουζίνας δίπλα στην Κεντρική Αγορά της Βαλένθιας' }
+      },
+      wortschatz: [
+        { z:'la paellera',          na:{ de:'die Paellapfanne',         en:'the paella pan', el:'το τηγάνι για παέγια' } },
+        { z:'la grieta',            na:{ de:'der Riss',                 en:'the crack', el:'η ρωγμή' } },
+        { z:'el asa',               na:{ de:'der Griff, der Henkel',    en:'the handle', el:'το χερούλι' } },
+        { z:'el defecto de fábrica',na:{ de:'der Herstellungsfehler',   en:'the manufacturing defect', el:'το εργοστασιακό ελάττωμα' } },
+        { z:'la garantía',          na:{ de:'die Garantie',             en:'the guarantee', el:'η εγγύηση' } },
+        { z:'el reembolso',         na:{ de:'die Rückerstattung',       en:'the refund', el:'η επιστροφή χρημάτων' } },
+        { z:'el menaje',            na:{ de:'die Haushaltswaren (Küche)', en:'kitchenware', el:'τα είδη κουζίνας' } },
+        { z:'agrietarse',           na:{ de:'Risse bekommen',           en:'to crack', el:'ραγίζω' } },
+        { z:'gotear',               na:{ de:'tropfen, undicht sein',    en:'to leak, to drip', el:'στάζω' } },
+        { z:'aguantar',             na:{ de:'aushalten',                en:'to withstand, to take', el:'αντέχω' } },
+        { z:'el acero pulido',      na:{ de:'der polierte Stahl', en:'polished steel', el:'το γυαλισμένο ατσάλι' } },
+        { z:'de regalo',            na:{ de:'als Geschenk, gratis dazu', en:'as a gift, thrown in', el:'δώρο' } },
+        { z:'¡que no se diga!',     na:{ de:'es soll keiner sagen …!',  en:'nobody will say …!', el:'να μη λέγεται!' } },
+        { z:'me dijeron que …; sin embargo …', na:{ de:'man sagte mir …; trotzdem …', en:'I was told …; however …', el:'μου είπαν ότι …· κι όμως …' } },
+        { z:'no pretendo …, solo …',na:{ de:'ich will nicht …, nur …',   en:'I’m not trying to …, I just …', el:'δεν θέλω να …, απλώς …' } },
+        { z:'¿qué solución me propone?', na:{ de:'welche Lösung schlagen Sie vor?', en:'what solution do you suggest?', el:'τι λύση μού προτείνετε;' } }
+      ],
+      dialog: {
+        rolle: { de:'Vicent, der Ladenbesitzer', en:'Vicent, the shop owner', el:'Ο Βισέντ, ο ιδιοκτήτης του μαγαζιού' },
+        zeilen: [
+          { wer:'lerner', z:'Buenos días. Hace una semana le compré esta paellera y ya gotea: se ha agrietado junto al asa.', na:{ de:'Guten Morgen. Vor einer Woche habe ich bei Ihnen diese Paellapfanne gekauft, und sie tropft schon: Am Griff ist ein Riss entstanden.', en:'Good morning. I bought this paella pan from you a week ago and it already leaks: it has cracked by the handle.', el:'Καλημέρα. Πριν από μία εβδομάδα σας αγόρασα αυτό το τηγάνι για παέγια και ήδη στάζει: έχει ραγίσει δίπλα στο χερούλι.' } },
+          { wer:'spikiu', z:'¿Agrietada? Imposible: son paelleras de acero pulido, de toda la vida. ¿No la habrá puesto al fuego vacía?', na:{ de:'Gerissen? Unmöglich: Das sind Paellapfannen aus poliertem Stahl, wie eh und je. Sie haben sie doch nicht etwa leer aufs Feuer gestellt?', en:'Cracked? Impossible — these are polished steel paella pans, the traditional kind. You didn’t put it on the heat empty, did you?', el:'Ραγισμένο; Αδύνατον: είναι τηγάνια από γυαλισμένο ατσάλι, από τα παραδοσιακά. Μήπως το βάλατε άδειο στη φωτιά;' } },
+          { wer:'lerner', z:'Me dijeron que aguantaba cualquier fuego; sin embargo, se agrietó el primer día. No pretendo culpar a nadie, solo quiero una que no gotee.', na:{ de:'Man hat mir gesagt, sie halte jedes Feuer aus; trotzdem ist sie am ersten Tag gerissen. Ich will niemandem die Schuld geben, ich möchte nur eine, die nicht tropft.', en:'I was told it could take any heat; however, it cracked on the first day. I’m not trying to blame anyone — I just want one that doesn’t leak.', el:'Μου είπαν ότι αντέχει σε κάθε φωτιά· κι όμως, ράγισε την πρώτη μέρα. Δεν θέλω να κατηγορήσω κανέναν, απλώς θέλω ένα που να μη στάζει.' } },
+          { wer:'spikiu', z:'A ver, déjeme mirar… Pues tiene razón, es un defecto de fábrica. Y está en garantía.', na:{ de:'Mal sehen, lassen Sie mich schauen … Sie haben recht, das ist ein Herstellungsfehler. Und sie hat noch Garantie.', en:'Let me have a look … Well, you’re right, it’s a manufacturing defect. And it’s under guarantee.', el:'Για να δω… Έχετε δίκιο, είναι εργοστασιακό ελάττωμα. Και είναι στην εγγύηση.' } },
+          { wer:'lerner', z:'Entonces, ¿qué solución me propone? ¿Me la cambia o me hace un reembolso?', na:{ de:'Welche Lösung schlagen Sie mir dann vor? Tauschen Sie sie um, oder erstatten Sie mir das Geld?', en:'So what solution do you suggest? Will you exchange it or give me a refund?', el:'Τότε, τι λύση μού προτείνετε; Θα μου το αλλάξετε ή θα μου επιστρέψετε τα χρήματα;' } },
+          { wer:'spikiu', z:'Se la cambio ahora mismo y le doy de regalo un paquete de arroz. ¡Que no se diga que en Valencia tratamos mal a un cocinero!', na:{ de:'Ich tausche sie sofort um und schenke Ihnen eine Packung Reis dazu. Es soll keiner sagen, dass wir in Valencia einen Koch schlecht behandeln!', en:'I’ll swap it right now and throw in a packet of rice as a gift. Nobody will say we treat a cook badly in Valencia!', el:'Σας το αλλάζω αμέσως και σας δίνω δώρο ένα πακέτο ρύζι. Να μη λέγεται ότι στη Βαλένθια φερόμαστε άσχημα σε έναν μάγειρα!' } }
+        ]
+      },
+      lesetext: {
+        z:'En Valencia, en Fallas, los petardos empiezan a las ocho de la mañana. Hoy devolví la paellera rota. Vicent primero dijo que era imposible; sin embargo, al final me la cambió y me regaló arroz. Esta noche queman las fallas, figuras enormes de cartón y madera. Para mi cuaderno: de toda la vida.',
+        na:{ de:'In Valencia beginnen während der Fallas die Böller um acht Uhr morgens. Heute habe ich die kaputte Paellapfanne zurückgebracht. Vicent sagte zuerst, das sei unmöglich; am Ende hat er sie aber umgetauscht und mir Reis geschenkt. Heute Nacht verbrennen sie die Fallas, riesige Figuren aus Pappe und Holz. Für mein Heft: de toda la vida.',
+             en:'In Valencia, during the Fallas, the firecrackers start at eight in the morning. Today I took the broken paella pan back. Vicent first said it was impossible; however, in the end he exchanged it and gave me some rice. Tonight they burn the fallas, huge figures made of cardboard and wood. For my notebook: de toda la vida.',
+             el:'Στη Βαλένθια, τις μέρες των Φάγιες, τα βεγγαλικά αρχίζουν στις οχτώ το πρωί. Σήμερα επέστρεψα το χαλασμένο τηγάνι. Ο Βισέντ στην αρχή είπε ότι είναι αδύνατον· στο τέλος όμως μου το άλλαξε και μου χάρισε ρύζι. Απόψε καίνε τις φάγιες, τεράστιες φιγούρες από χαρτόνι και ξύλο. Για το τετράδιό μου: de toda la vida.' },
+        frage:{ de:'Was hat Vicent am Ende getan?', en:'What did Vicent do in the end?', el:'Τι έκανε τελικά ο Βισέντ;' },
+        optionen:[
+          { na:{ de:'Er hat die Pfanne umgetauscht und Reis dazugegeben', en:'He exchanged the pan and added some rice', el:'Άλλαξε το τηγάνι και πρόσθεσε ρύζι' }, richtig:true  },
+          { na:{ de:'Er hat das Geld zurückgegeben',                     en:'He gave the money back', el:'Επέστρεψε τα χρήματα' }, richtig:false },
+          { na:{ de:'Er hat den Umtausch abgelehnt',                     en:'He refused to exchange it', el:'Αρνήθηκε να το αλλάξει' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Schreib eine kurze, höfliche Reklamation: was man dir versprochen hat, was trotzdem passiert ist („sin embargo“) und was du willst („no pretendo…, solo…“). Zwei Sätze.',
+                  en:'Write a short, polite complaint: what you were promised, what happened anyway (“sin embargo”) and what you want (“no pretendo…, solo…”). Two sentences.', el:'Γράψε ένα σύντομο, ευγενικό παράπονο: τι σου υποσχέθηκαν, τι έγινε παρ’ όλα αυτά («sin embargo») και τι θέλεις («no pretendo…, solo…»). Δύο προτάσεις.' },
+        muster:'Me dijeron que el ordenador aguantaba golpes; sin embargo, se rompió la primera semana. No pretendo discutir, solo quiero que me lo cambien.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Höflich, aber fest: Sag zuerst, was man dir versprochen hat — „me dijeron que aguantaba…“ —, dann mit „sin embargo“ (trotzdem), was passiert ist. „No pretendo…, solo…“ nimmt die Schärfe heraus: Du willst niemandem etwas vorwerfen, nur eine Lösung. Vorsicht: „pretender“ heißt „vorhaben“, nicht „vortäuschen“.',
+               en:'Polite but firm: first say what you were promised — “me dijeron que aguantaba…” — then, with “sin embargo” (however), what actually happened. “No pretendo…, solo…” takes the edge off: you’re not blaming anyone, you just want a solution. Careful: “pretender” means “to intend”, not “to pretend”.',
+               el:'Ευγενικά αλλά σταθερά: πες πρώτα τι σου υποσχέθηκαν — «me dijeron que aguantaba…» — και μετά, με το «sin embargo» (κι όμως), τι έγινε. Το «no pretendo…, solo…» μαλακώνει τον τόνο: δεν κατηγορείς κανέναν, θέλεις μόνο μια λύση. Προσοχή: το «pretender» σημαίνει «σκοπεύω», όχι «προσποιούμαι».' },
+        beispiele:[
+          { z:'Me dijeron que aguantaba el fuego; sin embargo, se agrietó.', na:{ de:'Man sagte mir, sie halte das Feuer aus; trotzdem ist sie gerissen.', en:'I was told it could take the heat; however, it cracked.', el:'Μου είπαν ότι αντέχει τη φωτιά· κι όμως, ράγισε.' } },
+          { z:'No pretendo discutir, solo quiero una solución.',            na:{ de:'Ich will nicht streiten, ich möchte nur eine Lösung.', en:'I’m not trying to argue, I just want a solution.', el:'Δεν θέλω να μαλώσω, θέλω μόνο μια λύση.' } }
+        ]
+      },
+      kultur: { de:'Im Valencianischen heißt eigentlich die Pfanne selbst „paella“; die klassische Paella valenciana kommt mit Huhn, Kaninchen und grünen Bohnen — ohne Meeresfrüchte und ohne Chorizo. Die Fallas enden in der Nacht des 19. März mit der „Cremà“, wenn die großen Figuren verbrannt werden.',
+                en:'In Valencian, “paella” is actually the name of the pan itself; the classic paella valenciana has chicken, rabbit and green beans — no seafood and no chorizo. The Fallas end on the night of 19 March with the “Cremà”, when the huge figures are burnt.',
+                el:'Στα βαλενθιανά «paella» λέγεται στην πραγματικότητα το ίδιο το τηγάνι· η κλασική paella valenciana έχει κοτόπουλο, κουνέλι και φασολάκια — χωρίς θαλασσινά και χωρίς τσορίθο. Οι Φάγιες τελειώνουν τη νύχτα της 19ης Μαρτίου με την «Cremà», όταν καίγονται οι τεράστιες φιγούρες.' }
+    },
+
+    /* ── B2 · Sevilla — die vergessene Messertasche (April, Feria) ───── */
+    'b2.taxi': {
+      deineRolle: { de:'Du bist Aleksi. Heute früh hast du am Bahnhof Santa Justa ein Taxi genommen und deine Messertasche darin vergessen: braunes Leder, sieben Messer. Der Fahrer war ein älterer Herr mit Schnurrbart, der Sevillanas sang. Ausgestiegen bist du gegen zehn in der Calle Betis in Triana.', es:'Eres Aleksi. Esta mañana cogiste un taxi en la estación de Santa Justa y te dejaste dentro tu estuche de cuchillos: cuero marrón, siete cuchillos. El taxista era un señor mayor con bigote que cantaba sevillanas. Te bajaste sobre las diez en la calle Betis, en Triana.', en:'You are Aleksi. This morning you took a taxi at Santa Justa station and left your knife roll in it: brown leather, seven knives. The driver was an older man with a moustache who was singing sevillanas. You got out at around ten on Calle Betis, in Triana.', el:'Είσαι ο Αλέξι. Σήμερα το πρωί πήρες ταξί από τον σταθμό Σάντα Χούστα και ξέχασες μέσα τη θήκη με τα μαχαίρια σου: καφέ δέρμα, εφτά μαχαίρια. Ο ταξιτζής ήταν ένας ηλικιωμένος κύριος με μουστάκι που τραγουδούσε σεβιγιάνας. Κατέβηκες γύρω στις δέκα στην οδό Μπέτις, στην Τριάνα.' },
+      abrundung: { z:'¡Ese es Manolo! Lo localizo ahora mismo y le devolvemos la llamada en cinco minutos.', na:{ de:'Das ist Manolo! Ich mache ihn sofort ausfindig, und wir rufen Sie in fünf Minuten zurück.', en:'That’s Manolo! I’ll track him down right away and we’ll call you back in five minutes.', el:'Αυτός είναι ο Μανόλο! Τον εντοπίζω αμέσως και σας ξανακαλούμε σε πέντε λεπτά.' } },
+      rollen: {
+        spikiu: { de:'Rocío von der Taxizentrale', es:'Rocío, de la centralita de Radiotaxi', en:'Rocío at the taxi switchboard', el:'η Ροθίο από το κέντρο ραδιοταξί' },
+        lerner: { de:'Aleksi, der Fahrgast, der seine Messer vergessen hat', es:'Aleksi, el pasajero que se dejó los cuchillos', en:'Aleksi, the passenger who left his knives behind', el:'ο Αλέξι, ο επιβάτης που ξέχασε τα μαχαίρια του' },
+        ort:    { de:'am Telefon, in Sevilla mitten in der Feria', es:'al teléfono, en Sevilla, en plena Feria', en:'on the phone in Seville, in the middle of the Feria', el:'στο τηλέφωνο, στη Σεβίλλη, εν μέσω Φέριας' }
+      },
+      wortschatz: [
+        { z:'el estuche',           na:{ de:'das Etui, die Tasche',     en:'the case', el:'η θήκη' } },
+        { z:'el cuero',             na:{ de:'das Leder',                en:'leather', el:'το δέρμα' } },
+        { z:'la carrera',           na:{ de:'die Taxifahrt',            en:'the fare, the ride', el:'η κούρσα' } },
+        { z:'la centralita',        na:{ de:'die (Telefon-)Zentrale',   en:'the switchboard', el:'το τηλεφωνικό κέντρο' } },
+        { z:'la oficina de objetos perdidos', na:{ de:'das Fundbüro',   en:'lost property', el:'το γραφείο απολεσθέντων' } },
+        { z:'el bigote',            na:{ de:'der Schnurrbart',          en:'the moustache', el:'το μουστάκι' } },
+        { z:'la matrícula',         na:{ de:'das Nummernschild',        en:'the number plate', el:'η πινακίδα κυκλοφορίας' } },
+        { z:'dejarse algo',         na:{ de:'etwas liegen lassen',      en:'to leave something behind', el:'ξεχνάω κάτι κάπου' } },
+        { z:'localizar',            na:{ de:'ausfindig machen',         en:'to track down', el:'εντοπίζω' } },
+        { z:'bajarse de',           na:{ de:'aussteigen aus',           en:'to get out of', el:'κατεβαίνω από' } },
+        { z:'con detalle',          na:{ de:'genau, ausführlich',       en:'in detail', el:'λεπτομερώς' } },
+        { z:'le atiende …',         na:{ de:'hier spricht … (am Telefon)', en:'… speaking (on the phone)', el:'σας εξυπηρετεί …' } },
+        { z:'devolver la llamada',  na:{ de:'zurückrufen',              en:'to call back', el:'ξανακαλώ (κάποιον)' } },
+        { z:'el taxi que cogí',     na:{ de:'das Taxi, das ich genommen habe', en:'the taxi I took', el:'το ταξί που πήρα' } },
+        { z:'… en el que hay …',    na:{ de:'… in dem … ist',           en:'… with … in it', el:'… μέσα στο οποίο υπάρχει …' } },
+        { z:'… con los que trabajo',na:{ de:'… mit denen ich arbeite',  en:'… that I work with', el:'… με τα οποία δουλεύω' } }
+      ],
+      dialog: {
+        rolle: { de:'Rocío von der Taxizentrale', en:'Rocío at the taxi switchboard', el:'Η Ροθίο από το κέντρο ραδιοταξί' },
+        zeilen: [
+          { wer:'spikiu', z:'Radiotaxi, buenas tardes, le atiende Rocío. ¿En qué puedo ayudarle?', na:{ de:'Funktaxi, guten Tag, hier spricht Rocío. Wie kann ich Ihnen helfen?', en:'Radio taxis, good afternoon, Rocío speaking. How can I help you?', el:'Ραδιοταξί, καλησπέρα, σας εξυπηρετεί η Ροθίο. Πώς μπορώ να σας βοηθήσω;' } },
+          { wer:'lerner', z:'Buenas tardes. Me dejé algo muy importante en el taxi que cogí esta mañana en la estación de Santa Justa.', na:{ de:'Guten Tag. Ich habe etwas sehr Wichtiges in dem Taxi liegen lassen, das ich heute Morgen am Bahnhof Santa Justa genommen habe.', en:'Good afternoon. I left something very important in the taxi I took this morning at Santa Justa station.', el:'Καλησπέρα. Ξέχασα κάτι πολύ σημαντικό στο ταξί που πήρα σήμερα το πρωί από τον σταθμό Σάντα Χούστα.' } },
+          { wer:'spikiu', z:'Vaya. Si nadie lo ha llevado a la oficina de objetos perdidos, lo buscamos nosotros. ¿Me lo describe con detalle?', na:{ de:'Oje. Wenn es niemand ins Fundbüro gebracht hat, suchen wir selbst. Beschreiben Sie es mir genau?', en:'Oh dear. If nobody has taken it to lost property, we’ll look for it ourselves. Could you describe it in detail?', el:'Ωχ. Αν δεν το έχει πάει κανείς στο γραφείο απολεσθέντων, θα το ψάξουμε εμείς. Μου το περιγράφετε λεπτομερώς;' } },
+          { wer:'lerner', z:'Es un estuche de cuero marrón, enrollado, en el que hay siete cuchillos. Son los cuchillos con los que trabajo desde hace quince años.', na:{ de:'Es ist eine aufgerollte Tasche aus braunem Leder, in der sieben Messer stecken. Es sind die Messer, mit denen ich seit fünfzehn Jahren arbeite.', en:'It’s a rolled-up brown leather case with seven knives in it. They’re the knives I’ve been working with for fifteen years.', el:'Είναι μια τυλιχτή θήκη από καφέ δέρμα, μέσα στην οποία υπάρχουν εφτά μαχαίρια. Είναι τα μαχαίρια με τα οποία δουλεύω εδώ και δεκαπέντε χρόνια.' } },
+          { wer:'spikiu', z:'Con la Feria tenemos cientos de carreras al día. ¿Recuerda algo del taxista o de dónde se bajó?', na:{ de:'Wegen der Feria haben wir Hunderte Fahrten am Tag. Erinnern Sie sich an etwas beim Fahrer oder daran, wo Sie ausgestiegen sind?', en:'With the Feria on, we have hundreds of fares a day. Do you remember anything about the driver, or where you got out?', el:'Με τη Φέρια έχουμε εκατοντάδες κούρσες τη μέρα. Θυμάστε κάτι για τον ταξιτζή ή πού κατεβήκατε;' } },
+          { wer:'lerner', z:'El taxista que me llevó era un señor mayor con bigote, que cantaba sevillanas. Me bajé sobre las diez en la calle Betis, en Triana.', na:{ de:'Der Fahrer, der mich gefahren hat, war ein älterer Herr mit Schnurrbart, der Sevillanas sang. Ich bin gegen zehn in der Calle Betis in Triana ausgestiegen.', en:'The driver who took me was an older man with a moustache who was singing sevillanas. I got out at around ten on Calle Betis, in Triana.', el:'Ο ταξιτζής που με πήγε ήταν ένας ηλικιωμένος κύριος με μουστάκι, που τραγουδούσε σεβιγιάνας. Κατέβηκα γύρω στις δέκα στην οδό Μπέτις, στην Τριάνα.' } }
+        ]
+      },
+      lesetext: {
+        z:'Por la mañana me dejé los cuchillos en un taxi. Llamé a la centralita y describí el estuche como si fuera un plato: cuero, siete cuchillos, olor a cebolla. No me fijé en la matrícula, pero sí en el bigote del taxista. A las dos me los trajo a la pensión. Para mi cuaderno: dejarse algo.',
+        na:{ de:'Am Morgen habe ich meine Messer in einem Taxi liegen lassen. Ich rief die Zentrale an und beschrieb die Tasche wie ein Gericht: Leder, sieben Messer, Zwiebelgeruch. Auf das Nummernschild habe ich nicht geachtet, aber auf den Schnurrbart des Fahrers. Um zwei brachte er sie mir in die Pension. Für mein Heft: dejarse algo.',
+             en:'This morning I left my knives in a taxi. I rang the switchboard and described the case as if it were a dish: leather, seven knives, a smell of onion. I didn’t notice the number plate, but I did notice the driver’s moustache. At two he brought them to my guesthouse. For my notebook: dejarse algo.',
+             el:'Το πρωί ξέχασα τα μαχαίρια μου σε ένα ταξί. Τηλεφώνησα στο κέντρο και περιέγραψα τη θήκη σαν να ήταν πιάτο: δέρμα, εφτά μαχαίρια, μυρωδιά κρεμμυδιού. Δεν πρόσεξα την πινακίδα, πρόσεξα όμως το μουστάκι του ταξιτζή. Στις δύο μού τα έφερε στην πανσιόν. Για το τετράδιό μου: dejarse algo.' },
+        frage:{ de:'Was hatte sich Aleksi vom Taxi gemerkt?', en:'What had Aleksi remembered about the taxi?', el:'Τι είχε συγκρατήσει ο Αλέξι από το ταξί;' },
+        optionen:[
+          { na:{ de:'Den Schnurrbart des Fahrers', en:'The driver’s moustache', el:'Το μουστάκι του ταξιτζή' }, richtig:true  },
+          { na:{ de:'Das Nummernschild',           en:'The number plate', el:'Την πινακίδα' }, richtig:false },
+          { na:{ de:'Den Namen des Fahrers',       en:'The driver’s name', el:'Το όνομα του ταξιτζή' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Beschreib einen Gegenstand, den du verloren hast, ganz genau — mit „en el que“ oder „con el que“. Zwei Sätze.',
+                  en:'Describe something you have lost very precisely — with “en el que” or “con el que”. Two sentences.', el:'Περιέγραψε με ακρίβεια κάτι που έχασες — με «en el que» ή «con el que». Δύο προτάσεις.' },
+        muster:'Es una mochila azul en la que llevo el ordenador. Es la mochila con la que viajo siempre.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Mit „que“ hängst du eine Beschreibung direkt an: el taxi que cogí. Steht davor ein kleines Wort wie en, con oder de, sagst du „el que / la que / los que“: un estuche en el que hay siete cuchillos, los cuchillos con los que trabajo. Übrigens: In Spanien „coge“ man ein Taxi ganz normal.',
+               en:'With “que” you attach a description straight on: el taxi que cogí. If a little word like en, con or de comes first, say “el que / la que / los que”: un estuche en el que hay siete cuchillos, los cuchillos con los que trabajo. By the way: in Spain you simply “coger” a taxi.',
+               el:'Με το «que» κολλάς αμέσως μια περιγραφή: el taxi que cogí. Αν μπροστά υπάρχει ένα μικρό λεξάκι όπως en, con ή de, λες «el que / la que / los que»: un estuche en el que hay siete cuchillos, los cuchillos con los que trabajo. Παρεμπιπτόντως: στην Ισπανία «coger» ένα ταξί είναι απολύτως φυσικό.' },
+        beispiele:[
+          { z:'Es el taxi que cogí esta mañana.',          na:{ de:'Das ist das Taxi, das ich heute Morgen genommen habe.', en:'It’s the taxi I took this morning.', el:'Είναι το ταξί που πήρα σήμερα το πρωί.' } },
+          { z:'Es un estuche en el que hay siete cuchillos.', na:{ de:'Es ist eine Tasche, in der sieben Messer stecken.', en:'It’s a case with seven knives in it.', el:'Είναι μια θήκη μέσα στην οποία υπάρχουν εφτά μαχαίρια.' } }
+        ]
+      },
+      kultur: { de:'Die Feria de Abril in Sevilla beginnt meist zwei Wochen nach Ostern; auf dem Festgelände im Viertel Los Remedios stehen Hunderte Festzelte, die „casetas“. Triana, am anderen Ufer des Guadalquivir, ist berühmt für Flamenco und Keramik.',
+                en:'Seville’s Feria de Abril usually starts two weeks after Easter; the fairground in the Los Remedios district fills with hundreds of marquees, the “casetas”. Triana, across the Guadalquivir, is famous for flamenco and ceramics.',
+                el:'Η Φέρια ντε Αμπρίλ της Σεβίλλης ξεκινά συνήθως δύο εβδομάδες μετά το Πάσχα· στον χώρο της γιορτής, στη συνοικία Λος Ρεμέδιος, στήνονται εκατοντάδες σκηνές, οι «casetas». Η Τριάνα, στην άλλη όχθη του Γουαδαλκιβίρ, φημίζεται για το φλαμένκο και τα κεραμικά της.' }
+    },
+
+    /* ── B2 · Picos de Europa — der Weg zur Cabrales-Höhle (Mai) ────── */
+    'b2.wegbeschreibung': {
+      duzen: true,
+      deineRolle: { de:'Du bist Aleksi. Morgen willst du allein zur Höhle hinauf, in der Benitos Cabrales reift. Lass dir den Weg erklären, wiederhole ihn zur Sicherheit und frag, wie lange du brauchst — du willst vor Einbruch der Dunkelheit zurück sein.', es:'Eres Aleksi. Mañana quieres subir solo a la cueva donde madura el cabrales de Benito. Pide que te explique el camino, repítelo para asegurarte y pregunta cuánto se tarda: quieres estar de vuelta antes de que anochezca.', en:'You are Aleksi. Tomorrow you want to go up alone to the cave where Benito’s Cabrales matures. Get him to explain the way, repeat it to be sure and ask how long it takes — you want to be back before dark.', el:'Είσαι ο Αλέξι. Αύριο θέλεις να ανέβεις μόνος στη σπηλιά όπου ωριμάζει το καμπράλες του Μπενίτο. Ζήτα να σου εξηγήσει τον δρόμο, επανάλαβέ τον για σιγουριά και ρώτα πόση ώρα θέλει — θέλεις να έχεις γυρίσει πριν νυχτώσει.' },
+      eroeffnung: { z:'¡Hombre, el finlandés! ¿Qué, otra vez por aquí arriba?', na:{ de:'Na so was, der Finne! Was, schon wieder hier oben?', en:'Well, if it isn’t the Finn! What, up here again?', el:'Για δες, ο Φινλανδός! Τι, πάλι εδώ πάνω;' } },
+      abrundung: { z:'Toma, llévate pan y un trozo de queso. Si te pierdes, por lo menos comes bien.', na:{ de:'Hier, nimm Brot und ein Stück Käse mit. Wenn du dich verläufst, isst du wenigstens gut.', en:'Here, take some bread and a piece of cheese. If you get lost, at least you’ll eat well.', el:'Πάρε, κράτα ψωμί κι ένα κομμάτι τυρί. Αν χαθείς, τουλάχιστον θα φας καλά.' } },
+      rollen: {
+        spikiu: { de:'Benito, Käser und Hirte', es:'Benito, quesero y pastor', en:'Benito, cheesemaker and shepherd', el:'ο Μπενίτο, τυροκόμος και βοσκός' },
+        lerner: { de:'Aleksi, der Koch auf Käsesuche', es:'Aleksi, el cocinero que busca quesos', en:'Aleksi, the cook on a cheese hunt', el:'ο Αλέξι, ο μάγειρας που ψάχνει τυριά' },
+        ort:    { de:'in Sotres, Picos de Europa (Asturien)', es:'en Sotres, en los Picos de Europa (Asturias)', en:'in Sotres, in the Picos de Europa (Asturias)', el:'στο Σότρες, στα Πίκος ντε Ευρόπα (Αστούριας)' }
+      },
+      wortschatz: [
+        { z:'la majada',            na:{ de:'die Alm (Weide mit Hirtenhütten)', en:'the mountain pasture (with shepherds’ huts)', el:'η στάνη' } },
+        { z:'el abrevadero',        na:{ de:'die Viehtränke',           en:'the water trough', el:'η ποτίστρα' } },
+        { z:'la pista',             na:{ de:'der Fahrweg, Schotterweg', en:'the dirt track', el:'ο χωματόδρομος' } },
+        { z:'el haya',              na:{ de:'die Buche',                en:'the beech tree', el:'η οξιά' } },
+        { z:'el arroyo',            na:{ de:'der Bach',                 en:'the stream', el:'το ρέμα' } },
+        { z:'la cueva',             na:{ de:'die Höhle',                en:'the cave', el:'η σπηλιά' } },
+        { z:'la niebla',            na:{ de:'der Nebel',                en:'the fog', el:'η ομίχλη' } },
+        { z:'madurar',              na:{ de:'reifen',                   en:'to mature, to ripen', el:'ωριμάζω' } },
+        { z:'estar de vuelta',      na:{ de:'zurück sein',              en:'to be back', el:'έχω γυρίσει' } },
+        { z:'tener su miga',        na:{ de:'es in sich haben',         en:'to be trickier than it looks', el:'έχει τα κόλπα του' } },
+        { z:'a ver si lo he entendido', na:{ de:'mal sehen, ob ich es verstanden habe', en:'let me check I’ve got it', el:'για να δω αν κατάλαβα' } },
+        { z:'esperar a que levante',na:{ de:'warten, bis er sich hebt (Nebel)', en:'to wait for it to lift (fog)', el:'περιμένω να σηκωθεί (η ομίχλη)' } },
+        { z:'cuando llegues a …',   na:{ de:'wenn du zu … kommst',      en:'when you get to …', el:'όταν φτάσεις σε …' } },
+        { z:'en cuanto veas …',     na:{ de:'sobald du … siehst',       en:'as soon as you see …', el:'μόλις δεις …' } },
+        { z:'hasta que …',          na:{ de:'bis …',                    en:'until …', el:'μέχρι να …' } },
+        { z:'antes de que anochezca', na:{ de:'bevor es dunkel wird',   en:'before it gets dark', el:'πριν νυχτώσει' } }
+      ],
+      dialog: {
+        rolle: { de:'Benito, Käser und Hirte', en:'Benito, cheesemaker and shepherd', el:'Ο Μπενίτο, τυροκόμος και βοσκός' },
+        zeilen: [
+          { wer:'lerner', z:'Sí, y mañana quiero subir solo a la cueva donde maduran tus quesos. ¿Me explicas el camino con calma?', na:{ de:'Ja, und morgen will ich allein zur Höhle hinauf, in der deine Käse reifen. Erklärst du mir den Weg in Ruhe?', en:'Yes, and tomorrow I want to go up on my own to the cave where your cheeses mature. Can you explain the way slowly?', el:'Ναι, και αύριο θέλω να ανέβω μόνος στη σπηλιά όπου ωριμάζουν τα τυριά σου. Μου εξηγείς τον δρόμο με την ησυχία σου;' } },
+          { wer:'spikiu', z:'Tiene su miga, así que apunta. Sales de Sotres por la pista y, cuando llegues a una majada con un abrevadero, coges el sendero de la izquierda hasta que veas un haya enorme.', na:{ de:'Der hat es in sich, also schreib mit. Du gehst auf dem Fahrweg aus Sotres hinaus, und wenn du zu einer Alm mit einer Viehtränke kommst, nimmst du den Pfad links, bis du eine riesige Buche siehst.', en:'It’s trickier than it looks, so write this down. You leave Sotres on the track and, when you reach a mountain pasture with a water trough, you take the path on the left until you see a huge beech tree.', el:'Έχει τα κόλπα του, οπότε σημείωσε. Βγαίνεις από το Σότρες από τον χωματόδρομο και, όταν φτάσεις σε μια στάνη με μια ποτίστρα, παίρνεις το μονοπάτι αριστερά μέχρι να δεις μια τεράστια οξιά.' } },
+          { wer:'lerner', z:'A ver si lo he entendido: cuando llegue a la majada, giro a la izquierda y sigo hasta el haya. ¿Y luego?', na:{ de:'Mal sehen, ob ich es verstanden habe: Wenn ich zur Alm komme, biege ich links ab und gehe bis zur Buche. Und dann?', en:'Let me check I’ve got it: when I reach the pasture, I turn left and carry on to the beech. And then?', el:'Για να δω αν κατάλαβα: όταν φτάσω στη στάνη, στρίβω αριστερά και συνεχίζω μέχρι την οξιά. Και μετά;' } },
+          { wer:'spikiu', z:'En cuanto veas el haya, bajas hacia el arroyo. La cueva está detrás de unas rocas: la reconocerás por el aire frío que sale.', na:{ de:'Sobald du die Buche siehst, gehst du zum Bach hinunter. Die Höhle liegt hinter ein paar Felsen: Du erkennst sie an der kalten Luft, die herauskommt.', en:'As soon as you see the beech, head down towards the stream. The cave is behind some rocks — you’ll know it by the cold air coming out.', el:'Μόλις δεις την οξιά, κατεβαίνεις προς το ρέμα. Η σπηλιά είναι πίσω από κάτι βράχια: θα την αναγνωρίσεις από τον κρύο αέρα που βγαίνει.' } },
+          { wer:'lerner', z:'¿Y cuánto se tarda, exactamente? Quiero estar de vuelta antes de que anochezca.', na:{ de:'Und wie lange braucht man, ganz genau? Ich will zurück sein, bevor es dunkel wird.', en:'And how long does it take, exactly? I want to be back before it gets dark.', el:'Και πόση ώρα θέλει, ακριβώς; Θέλω να έχω γυρίσει πριν νυχτώσει.' } },
+          { wer:'spikiu', z:'Hora y media, a ojo; depende de tus piernas. Y si baja la niebla, no sigas: espera a que levante.', na:{ de:'Anderthalb Stunden, über den Daumen; kommt auf deine Beine an. Und wenn der Nebel herunterkommt, geh nicht weiter: Warte, bis er sich hebt.', en:'An hour and a half, roughly — depends on your legs. And if the fog comes down, don’t carry on: wait for it to lift.', el:'Μιάμιση ώρα, με το μάτι· εξαρτάται από τα πόδια σου. Κι αν πέσει ομίχλη, μη συνεχίσεις: περίμενε να σηκωθεί.' } }
+        ]
+      },
+      lesetext: {
+        z:'Hoy subí solo a la cueva de Benito. Cuando llegué a la majada, empezó a bajar la niebla y esperé media hora debajo del haya. Dentro de la cueva, cientos de quesos maduraban en silencio, con un olor fortísimo. Volví antes de que anocheciera. Para mi cuaderno: tener su miga.',
+        na:{ de:'Heute bin ich allein zu Benitos Höhle hinaufgestiegen. Als ich zur Alm kam, zog Nebel auf, und ich wartete eine halbe Stunde unter der Buche. In der Höhle reiften Hunderte Käse in aller Stille, mit einem sehr starken Geruch. Ich war zurück, bevor es dunkel wurde. Für mein Heft: tener su miga.',
+             en:'Today I went up alone to Benito’s cave. When I reached the pasture, the fog started to come down and I waited half an hour under the beech. Inside the cave, hundreds of cheeses were maturing in silence, with a very strong smell. I got back before it got dark. For my notebook: tener su miga.',
+             el:'Σήμερα ανέβηκα μόνος στη σπηλιά του Μπενίτο. Όταν έφτασα στη στάνη, άρχισε να πέφτει ομίχλη και περίμενα μισή ώρα κάτω από την οξιά. Μέσα στη σπηλιά, εκατοντάδες τυριά ωρίμαζαν σιωπηλά, με μια πολύ έντονη μυρωδιά. Γύρισα πριν νυχτώσει. Για το τετράδιό μου: tener su miga.' },
+        frage:{ de:'Was tat Aleksi, als der Nebel kam?', en:'What did Aleksi do when the fog came?', el:'Τι έκανε ο Αλέξι όταν ήρθε η ομίχλη;' },
+        optionen:[
+          { na:{ de:'Er wartete unter der Buche', en:'He waited under the beech', el:'Περίμενε κάτω από την οξιά' }, richtig:true  },
+          { na:{ de:'Er kehrte sofort um',        en:'He turned back at once', el:'Γύρισε πίσω αμέσως' }, richtig:false },
+          { na:{ de:'Er rief Benito an',          en:'He phoned Benito', el:'Τηλεφώνησε στον Μπενίτο' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Erkläre jemandem den Weg zu dir nach Hause — mit „cuando“ und „en cuanto“. Zwei Sätze.',
+                  en:'Explain to someone how to get to your home — with “cuando” and “en cuanto”. Two sentences.', el:'Εξήγησε σε κάποιον πώς θα έρθει στο σπίτι σου — με «cuando» και «en cuanto». Δύο προτάσεις.' },
+        muster:'Cuando salgas del metro, gira a la derecha. En cuanto veas una farmacia, mi portal es el siguiente.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'Geht es um etwas, das erst noch kommt, folgt nach cuando (wenn), en cuanto (sobald) und hasta que (bis) der Subjuntivo: cuando llegues, en cuanto veas. Erzählst du, was schon war, bleibt alles wie gewohnt: cuando llegué, esperé. Und „antes de que“ (bevor) will den Subjuntivo immer: antes de que anochezca.',
+               en:'When it’s about something still to come, cuando (when), en cuanto (as soon as) and hasta que (until) take the subjuntivo: cuando llegues, en cuanto veas. When you tell what already happened, everything stays as usual: cuando llegué, esperé. And “antes de que” (before) always wants the subjuntivo: antes de que anochezca.',
+               el:'Όταν μιλάς για κάτι που δεν έχει γίνει ακόμα, μετά το cuando (όταν), το en cuanto (μόλις) και το hasta que (μέχρι να) μπαίνει subjuntivo: cuando llegues, en cuanto veas. Όταν διηγείσαι κάτι που έγινε, όλα μένουν ως συνήθως: cuando llegué, esperé. Και το «antes de que» (πριν) θέλει πάντα subjuntivo: antes de que anochezca.' },
+        beispiele:[
+          { z:'Cuando llegues a la majada, gira a la izquierda.', na:{ de:'Wenn du zur Alm kommst, bieg links ab.', en:'When you get to the pasture, turn left.', el:'Όταν φτάσεις στη στάνη, στρίψε αριστερά.' } },
+          { z:'Quiero volver antes de que anochezca.',            na:{ de:'Ich will zurück, bevor es dunkel wird.', en:'I want to get back before it gets dark.', el:'Θέλω να γυρίσω πριν νυχτώσει.' } }
+        ]
+      },
+      kultur: { de:'Der Cabrales ist ein Blauschimmelkäse aus Asturien, der in natürlichen Kalksteinhöhlen der Picos de Europa reift. Er wird aus Kuhmilch gemacht, traditionell oft gemischt mit Schaf- und Ziegenmilch.',
+                en:'Cabrales is a blue cheese from Asturias that matures in natural limestone caves in the Picos de Europa. It is made from cow’s milk, traditionally often mixed with sheep’s and goat’s milk.',
+                el:'Το καμπράλες είναι μπλε τυρί από την Αστούριας, που ωριμάζει σε φυσικές ασβεστολιθικές σπηλιές στα Πίκος ντε Ευρόπα. Φτιάχνεται από αγελαδινό γάλα, παραδοσιακά συχνά ανακατεμένο με πρόβειο και κατσικίσιο.' }
+    },
+
+    /* ── B2 · Lanzarote, La Geria — Weinlese bei Calima (Aug) ─────────── */
+    'b2.wetter': {
+      duzen: true,
+      deineRolle: { de:'Du bist Aleksi. Morgen soll in La Geria die Weinlese beginnen, aber heute kommt Calima, und es soll Wind aufkommen. Du willst früh anfangen, bevor es heiß wird, und mit den Helfern aus Haría die Kisten mitbringen.', es:'Eres Aleksi. Mañana empieza la vendimia en La Geria, pero hoy hay calima y dicen que se levantará el viento. Quieres empezar temprano, antes del calor, y traer las cajas con los chicos de Haría.', en:'You are Aleksi. The grape harvest in La Geria is due to start tomorrow, but today there is calima and the wind is expected to pick up. You want to start early, before the heat, and bring the crates with the helpers from Haría.', el:'Είσαι ο Αλέξι. Αύριο αρχίζει ο τρύγος στη Λα Χέρια, αλλά σήμερα έχει καλίμα και λένε ότι θα σηκωθεί αέρας. Θέλεις να ξεκινήσετε νωρίς, πριν από τη ζέστη, και να φέρεις τα τελάρα με τα παιδιά από τη Χαρία.' },
+      abrundung: { z:'¿Llover? ¡Aquí en agosto, mi niño, ni en sueños! Mañana a las siete, y trae un pañuelo para la calima.', na:{ de:'Regnen? Hier im August, mein Junge — nicht mal im Traum! Morgen um sieben, und bring ein Tuch gegen die Calima mit.', en:'Rain? Here in August, my dear? Not a chance! Tomorrow at seven, and bring a scarf for the calima.', el:'Βροχή; Εδώ τον Αύγουστο, παιδί μου, ούτε στον ύπνο σου! Αύριο στις εφτά, και φέρε ένα μαντίλι για την καλίμα.' } },
+      rollen: {
+        spikiu: { de:'Candelaria, die Winzerin', es:'Candelaria, la viticultora', en:'Candelaria, the winegrower', el:'η Καντελάρια, η αμπελουργός' },
+        lerner: { de:'Aleksi, Erntehelfer für ein paar Tage', es:'Aleksi, vendimiador por unos días', en:'Aleksi, grape-picker for a few days', el:'ο Αλέξι, τρυγητής για λίγες μέρες' },
+        ort:    { de:'in den Weinbergen von La Geria, Lanzarote', es:'en los viñedos de La Geria, en Lanzarote', en:'in the vineyards of La Geria, Lanzarote', el:'στους αμπελώνες της Λα Χέρια, στο Λανθαρότε' }
+      },
+      wortschatz: [
+        { z:'la calima',            na:{ de:'der Saharastaub-Dunst',    en:'the Saharan dust haze', el:'η καλίμα (σκόνη από τη Σαχάρα)' } },
+        { z:'la vendimia',          na:{ de:'die Weinlese',             en:'the grape harvest', el:'ο τρύγος' } },
+        { z:'la parra',             na:{ de:'der Rebstock',             en:'the vine', el:'το κλήμα' } },
+        { z:'el hoyo',              na:{ de:'die Mulde, die Grube',     en:'the hollow, the pit', el:'ο λάκκος' } },
+        { z:'el picón',             na:{ de:'der schwarze Vulkankies',  en:'black volcanic gravel', el:'το μαύρο ηφαιστειακό χαλίκι' } },
+        { z:'la ola de calor',      na:{ de:'die Hitzewelle',           en:'the heatwave', el:'ο καύσωνας' } },
+        { z:'amainar',              na:{ de:'nachlassen (Wind)',        en:'to drop, to die down (wind)', el:'κοπάζω' } },
+        { z:'vendimiar',            na:{ de:'Wein lesen',               en:'to pick grapes', el:'τρυγάω' } },
+        { z:'levantarse el viento', na:{ de:'aufkommen (Wind)',         en:'to pick up (wind)', el:'σηκώνεται αέρας' } },
+        { z:'al amanecer',          na:{ de:'im Morgengrauen',          en:'at dawn', el:'με το χάραμα' } },
+        { z:'mi niño',              na:{ de:'mein Junge, mein Lieber (Kanaren, liebevoll)', en:'my dear (Canarian, affectionate)', el:'παιδί μου (στα Κανάρια, χαϊδευτικά)' } },
+        { z:'ustedes (en Canarias)',na:{ de:'ihr (auf den Kanaren statt vosotros)', en:'you all (Canarian, instead of vosotros)', el:'εσείς (στα Κανάρια, αντί για vosotros)' } },
+        { z:'como no …',            na:{ de:'wenn nicht … (als Warnung)', en:'if … not (as a warning)', el:'αν δεν … (ως προειδοποίηση)' } },
+        { z:'con tal de que …',     na:{ de:'Hauptsache, …; vorausgesetzt, …', en:'as long as …, provided …', el:'αρκεί να …' } },
+        { z:'mientras no …',        na:{ de:'solange nicht …',          en:'as long as … not', el:'όσο δεν …' } },
+        { z:'más vale que …',       na:{ de:'besser, wir …',            en:'we’d better …', el:'καλύτερα να …' } }
+      ],
+      dialog: {
+        rolle: { de:'Candelaria, die Winzerin', en:'Candelaria, the winegrower', el:'Η Καντελάρια, η αμπελουργός' },
+        zeilen: [
+          { wer:'spikiu', z:'¡Buenos días, mi niño! Mira el cielo, todo amarillo: es calima. Y dicen que esta tarde se levanta el viento.', na:{ de:'Guten Morgen, mein Junge! Schau dir den Himmel an, ganz gelb: Das ist Calima. Und es heißt, heute Nachmittag kommt Wind auf.', en:'Good morning, my dear! Look at the sky, all yellow — that’s calima. And they say the wind will pick up this afternoon.', el:'Καλημέρα, παιδί μου! Κοίτα τον ουρανό, κατακίτρινος: είναι καλίμα. Και λένε ότι το απόγευμα θα σηκωθεί αέρας.' } },
+          { wer:'lerner', z:'Como no amaine el viento, mañana no podremos vendimiar, ¿no? Me preocupa que la uva se llene de arena.', na:{ de:'Wenn der Wind nicht nachlässt, können wir morgen nicht lesen, oder? Ich habe Sorge, dass die Trauben voller Sand werden.', en:'If the wind doesn’t drop, we won’t be able to pick tomorrow, will we? I’m worried the grapes will get full of sand.', el:'Αν δεν κοπάσει ο αέρας, αύριο δεν θα μπορέσουμε να τρυγήσουμε, έτσι; Ανησυχώ μήπως γεμίσουν άμμο τα σταφύλια.' } },
+          { wer:'spikiu', z:'Tranquilo: cada parra vive en su hoyo, protegida por un muro de piedra. Lo malo no es el viento, sino el calor que trae la calima.', na:{ de:'Keine Sorge: Jeder Rebstock lebt in seiner Mulde, geschützt von einer Steinmauer. Das Schlimme ist nicht der Wind, sondern die Hitze, die die Calima mitbringt.', en:'Don’t worry: each vine lives in its own hollow, sheltered by a stone wall. The problem isn’t the wind, it’s the heat the calima brings.', el:'Ησύχασε: κάθε κλήμα ζει στον λάκκο του, προστατευμένο από έναν πέτρινο τοίχο. Το κακό δεν είναι ο αέρας, αλλά η ζέστη που φέρνει η καλίμα.' } },
+          { wer:'lerner', z:'Entonces más vale que empecemos al amanecer. Con tal de que haya luz, yo puedo estar aquí a las siete.', na:{ de:'Dann fangen wir besser im Morgengrauen an. Hauptsache, es ist hell — ich kann um sieben hier sein.', en:'Then we’d better start at dawn. As long as there’s light, I can be here at seven.', el:'Τότε καλύτερα να ξεκινήσουμε με το χάραμα. Αρκεί να υπάρχει φως, εγώ μπορώ να είμαι εδώ στις εφτά.' } },
+          { wer:'spikiu', z:'Me gusta. ¿Y ustedes, tú y los chicos de Haría, pueden traer las cajas?', na:{ de:'Gefällt mir. Und könnt ihr — du und die Jungs aus Haría — die Kisten mitbringen?', en:'I like it. And can you lot — you and the lads from Haría — bring the crates?', el:'Μου αρέσει. Κι εσείς, εσύ και τα παιδιά από τη Χαρία, μπορείτε να φέρετε τα τελάρα;' } },
+          { wer:'lerner', z:'Claro, nosotros las traemos. Mientras no llueva, por mí perfecto: en Finlandia esto ya sería una ola de calor.', na:{ de:'Klar, wir bringen sie mit. Solange es nicht regnet, passt mir alles: In Finnland wäre das hier schon eine Hitzewelle.', en:'Of course, we’ll bring them. As long as it doesn’t rain, it’s fine by me — in Finland this would already be a heatwave.', el:'Βεβαίως, τα φέρνουμε εμείς. Όσο δεν βρέχει, για μένα όλα τέλεια: στη Φινλανδία αυτό θα ήταν ήδη καύσωνας.' } }
+        ]
+      },
+      lesetext: {
+        z:'Último día de vendimia en La Geria. La calima lo volvió todo amarillo, pero el viento amainó a mediodía. Las parras viven en hoyos de picón negro, cada una con su muro. Candelaria me llama «mi niño», aunque tengo treinta y siete años. En una semana vuelvo a Helsinki. Para mi cuaderno: amainar.',
+        na:{ de:'Letzter Tag der Weinlese in La Geria. Die Calima hat alles gelb gefärbt, aber mittags hat der Wind nachgelassen. Die Rebstöcke leben in Mulden aus schwarzem Vulkankies, jeder mit seiner Mauer. Candelaria nennt mich „mi niño“, obwohl ich siebenunddreißig bin. In einer Woche fliege ich zurück nach Helsinki. Für mein Heft: amainar.',
+             en:'Last day of the harvest in La Geria. The calima turned everything yellow, but the wind dropped at midday. The vines live in hollows of black volcanic gravel, each with its own wall. Candelaria calls me “mi niño”, even though I’m thirty-seven. In a week I go back to Helsinki. For my notebook: amainar.',
+             el:'Τελευταία μέρα του τρύγου στη Λα Χέρια. Η καλίμα τα έβαψε όλα κίτρινα, αλλά ο αέρας κόπασε το μεσημέρι. Τα κλήματα ζουν σε λάκκους από μαύρο ηφαιστειακό χαλίκι, το καθένα με τον τοίχο του. Η Καντελάρια με λέει «mi niño», αν και είμαι τριάντα εφτά χρονών. Σε μία εβδομάδα γυρίζω στο Ελσίνκι. Για το τετράδιό μου: amainar.' },
+        frage:{ de:'Wo wachsen die Reben in La Geria?', en:'Where do the vines grow in La Geria?', el:'Πού μεγαλώνουν τα κλήματα στη Λα Χέρια;' },
+        optionen:[
+          { na:{ de:'In Mulden aus schwarzem Vulkankies', en:'In hollows of black volcanic gravel', el:'Σε λάκκους από μαύρο ηφαιστειακό χαλίκι' }, richtig:true  },
+          { na:{ de:'In Gewächshäusern',                  en:'In greenhouses', el:'Σε θερμοκήπια' }, richtig:false },
+          { na:{ de:'Direkt am Strand',                   en:'Right on the beach', el:'Ακριβώς πάνω στην παραλία' }, richtig:false }
+        ]
+      },
+      schreibaufgabe: {
+        auftrag:{ de:'Plane einen Ausflug, der vom Wetter abhängt — mit „como no“, „con tal de que“ oder „mientras no“. Zwei Sätze.',
+                  en:'Plan a trip that depends on the weather — with “como no”, “con tal de que” or “mientras no”. Two sentences.', el:'Σχεδίασε μια εκδρομή που εξαρτάται από τον καιρό — με «como no», «con tal de que» ή «mientras no». Δύο προτάσεις.' },
+        muster:'Como no deje de llover, nos quedamos en casa. Mientras no haga mucho viento, mañana vamos a la playa.'
+      },
+      grammatik: {
+        titel:{ de:'Grammatik ohne Schnickschnack', en:'Simple Grammar for you', el:'Γραμματική χωρίς περιττά' },
+        text:{ de:'„Como no amaine el viento…“ klingt wie eine kleine Warnung: Wenn der Wind nicht nachlässt, dann … „Con tal de que“ heißt „Hauptsache“, „mientras no“ heißt „solange nicht“. Danach kommt immer der Subjuntivo. Auf den Kanaren sagt man zu mehreren Leuten „ustedes“, auch unter Freunden — vosotros hörst du dort kaum.',
+               en:'“Como no amaine el viento…” sounds like a small warning: if the wind doesn’t drop, then … “Con tal de que” means “as long as”, “mientras no” means “as long as … not”. All three are followed by the subjuntivo. In the Canary Islands people say “ustedes” to a group, even among friends — you’ll hardly hear vosotros there.',
+               el:'Το «como no amaine el viento…» ακούγεται σαν μικρή προειδοποίηση: αν δεν κοπάσει ο αέρας, τότε… Το «con tal de que» σημαίνει «αρκεί να», το «mientras no» σημαίνει «όσο δεν». Μετά απ’ αυτά μπαίνει πάντα subjuntivo. Στα Κανάρια λένε «ustedes» σε πολλούς, ακόμα και ανάμεσα σε φίλους — το vosotros σχεδόν δεν το ακούς εκεί.' },
+        beispiele:[
+          { z:'Como no amaine el viento, no vendimiamos.', na:{ de:'Wenn der Wind nicht nachlässt, lesen wir nicht.', en:'If the wind doesn’t drop, we won’t pick.', el:'Αν δεν κοπάσει ο αέρας, δεν τρυγάμε.' } },
+          { z:'Mientras no llueva, empezamos a las siete.', na:{ de:'Solange es nicht regnet, fangen wir um sieben an.', en:'As long as it doesn’t rain, we start at seven.', el:'Όσο δεν βρέχει, ξεκινάμε στις εφτά.' } }
+        ]
+      },
+      kultur: { de:'In La Geria wächst der Wein in Mulden im schwarzen Vulkankies, geschützt von halbrunden Steinmauern, den „zocos“; die Lava stammt von den Ausbrüchen der Jahre 1730 bis 1736. Die Calima ist Wüstenstaub aus der Sahara, den der Ostwind herüberträgt.',
+                en:'In La Geria the vines grow in hollows dug into black volcanic gravel, sheltered by semicircular stone walls called “zocos”; the lava comes from the eruptions of 1730 to 1736. Calima is desert dust from the Sahara, carried over by the east wind.',
+                el:'Στη Λα Χέρια τα αμπέλια μεγαλώνουν σε λάκκους μέσα στο μαύρο ηφαιστειακό χαλίκι, προστατευμένα από ημικυκλικούς πέτρινους τοίχους, τους «zocos»· η λάβα προέρχεται από τις εκρήξεις του 1730 έως το 1736. Η καλίμα είναι σκόνη της ερήμου από τη Σαχάρα, που τη φέρνει ο ανατολικός άνεμος.' }
+    }
+  }
+};
+
   [B1_LP_A, B1_LP_B].forEach(function (F) {
     Object.keys(F.schritt).forEach(function (t) { if (SCHRITT[t]) SCHRITT[t].b1 = F.schritt[t]; });
+    Object.keys(F.aufgaben).forEach(function (k) { AUFGABEN[k] = F.aufgaben[k]; });
+    Object.keys(F.stationen).forEach(function (k) { STATIONEN[k] = F.stationen[k]; });
+  });
+
+  [B2_LP_A, B2_LP_B].forEach(function (F) {
+    Object.keys(F.schritt).forEach(function (t) { if (SCHRITT[t]) SCHRITT[t].b2 = F.schritt[t]; });
     Object.keys(F.aufgaben).forEach(function (k) { AUFGABEN[k] = F.aufgaben[k]; });
     Object.keys(F.stationen).forEach(function (k) { STATIONEN[k] = F.stationen[k]; });
   });

@@ -346,7 +346,7 @@ var KOENNEN_ETAPPE = { anfang:'fundament', mittel:'aufbau', fortgeschritten:'anw
 var offenBis = Math.max(0, etIdx(KOENNEN_ETAPPE[PROFIL.koennen] || 'fundament'));
 // Wer im Lernweg auf der Krone (b1) steht, liest auch die Anwendung (15.10.2026).
 try { var pf0 = JSON.parse(localStorage.getItem('spikiu_pfad') || 'null');
-      if (pf0 && pf0.stufe === 'b1') offenBis = Math.max(offenBis, etIdx('anwendung')); } catch(e){}
+      if (pf0 && (pf0.stufe === 'b1' || pf0.stufe === 'b2')) offenBis = Math.max(offenBis, etIdx('anwendung')); } catch(e){}
 if (DEV) offenBis = ETAPPEN.length - 1;
 function istOffen(c){ return etIdx(c.level) <= offenBis; }
 

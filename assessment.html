@@ -570,7 +570,8 @@ function finish(){
        überschreiben. Die Struktur stammt aus lernpfad.js (leer()). */
     try {
       var wegDa = localStorage.getItem('spikiu_pfad');
-      var neueStufe = (koennen === 'anfang') ? 'a1' : ((data.level === 'B1' || data.level === 'B2') ? 'b1' : 'a2');
+      var neueStufe = (koennen === 'anfang') ? 'a1' : (data.level === 'B2' ? 'b2' : (data.level === 'B1' ? 'b1' : 'a2'));
+      /* B2 → Blüte (20.10.2026). Hat die Zielsprache keine Blüte, gilt in lernpfad.js stufe() die Krone. */
       /* Neu-Einstufung (Leo, 19.10.: „egal wie man sich einstufen lässt … tauchen nur diese Themen"):
          ein bestehender Weg behält seine Stationen, bekommt aber die Stufe aus dem neuen Test. */
       if (wegDa) {

@@ -187,7 +187,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   var WORT = {
     de: { titel:'Freies Gespräch', zurueckK:'‹ Zurück', rail:['Rolle','Tisch','Gespräch','Rückblick','Ernte'],
       themaTask:'Wo möchtest du üben?', wohin:function(k){ return k + ' — wohin gehst du?'; }, themen:'‹ Themen', haus:'‹ Haus',
-      baum:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone'},
+      baum:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone', b2:'🌸 Blüte'},
       spikiuIst:'Spikiu ist', duBist:'Du bist', deineRolle:'Deine Rolle', gutZuWissen:'Gut zu wissen', los:'Los ›',
       tischSag:'Bevor wir reden, decke ich den Tisch.', tischUeb:'Vier Wörter, die gleich vorkommen. Tipp jedes Bild an.',
       entZaehler:function(n,g){ return n + ' von ' + g + ' entdeckt'; }, tischFertig:'Der Tisch ist gedeckt.', losGehts:'Los geht’s ›',
@@ -205,7 +205,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       keineDaten:'Die Lernpfad-Daten oder der Szenen-Ablauf sind nicht geladen.', keineAufgaben:'Diese Station hat noch keine Aufgaben. Wähle ein anderes Thema.' },
     es: { titel:'Conversación libre', zurueckK:'‹ Atrás', rail:['Papel','Mesa','Conversación','Repaso','Cosecha'],
       themaTask:'¿Dónde quieres practicar?', wohin:function(k){ return k + ': ¿adónde vas?'; }, themen:'‹ Temas', haus:'‹ Casa',
-      baum:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa'},
+      baum:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa', b2:'🌸 Flor'},
       spikiuIst:'Spikiu es', duBist:'Tú eres', deineRolle:'Tu papel', gutZuWissen:'Bueno saberlo', los:'¡Vamos! ›',
       tischSag:'Antes de hablar, pongo la mesa.', tischUeb:'Cuatro palabras que van a salir enseguida. Toca cada imagen.',
       entZaehler:function(n,g){ return n + ' de ' + g + ' descubiertas'; }, tischFertig:'La mesa está puesta.', losGehts:'¡Empezamos! ›',
@@ -223,7 +223,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       keineDaten:'Los datos del camino o el guion de la escena no están cargados.', keineAufgaben:'Esta estación todavía no tiene tareas. Elige otro tema.' },
     en: { titel:'Free conversation', zurueckK:'‹ Back', rail:['Role','Table','Talk','Review','Harvest'],
       themaTask:'Where would you like to practise?', wohin:function(k){ return k + ': where are you going?'; }, themen:'‹ Topics', haus:'‹ Home',
-      baum:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown'},
+      baum:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown', b2:'🌸 Blossom'},
       spikiuIst:'Spikiu is', duBist:'You are', deineRolle:'Your role', gutZuWissen:'Good to know', los:'Let’s go ›',
       tischSag:'Before we talk, I’ll set the table.', tischUeb:'Four words you’ll hear in a moment. Tap each picture.',
       entZaehler:function(n,g){ return n + ' of ' + g + ' discovered'; }, tischFertig:'The table is set.', losGehts:'Let’s start ›',
@@ -241,7 +241,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       keineDaten:'The path data or the scene script is not loaded.', keineAufgaben:'This station has no tasks yet. Choose another topic.' },
     el: { titel:'Ελεύθερη συζήτηση', zurueckK:'‹ Πίσω', rail:['Ρόλος','Τραπέζι','Συζήτηση','Ανασκόπηση','Σοδειά'],
       themaTask:'Πού θέλεις να εξασκηθείς;', wohin:function(k){ return k + ': πού πηγαίνεις;'; }, themen:'‹ Θέματα', haus:'‹ Σπίτι',
-      baum:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά'},
+      baum:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά', b2:'🌸 Άνθη'},
       spikiuIst:'Ο Spikiu είναι', duBist:'Εσύ είσαι', deineRolle:'Ο ρόλος σου', gutZuWissen:'Καλό να ξέρεις', los:'Πάμε ›',
       tischSag:'Πριν μιλήσουμε, στρώνω το τραπέζι.', tischUeb:'Τέσσερις λέξεις που θα ακούσεις σε λίγο. Πάτα κάθε εικόνα.',
       entZaehler:function(n,g){ return n + ' από ' + g + ' ανακαλύφθηκαν'; }, tischFertig:'Το τραπέζι είναι στρωμένο.', losGehts:'Ξεκινάμε ›',
@@ -382,7 +382,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       var stufen = (D.stufen || ['a1']).filter(function (s) { return (D.themen || []).some(function (t) { return D.gefuellt(s, t.id); }); });
       var aktiv = P.stufe();
       if (stufen.length > 1) {
-        var ch = O.el('div', 'oh-chips');
+        var ch = O.el('div', stufen.length > 3 ? 'oh-chips eng' : 'oh-chips');
         stufen.forEach(function (s) {
           var b = O.el('button', 'oh-chip', esc(U.baum[s] || s)); b.type = 'button'; b.setAttribute('aria-pressed', String(s === aktiv));
           b.onclick = function () { if (s !== aktiv) { P.setzeStufe(s); waehler(); } }; ch.appendChild(b);

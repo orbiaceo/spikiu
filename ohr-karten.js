@@ -51,6 +51,8 @@
   + '.oh-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}'
   + '.oh-chip{font:800 .85rem "DM Sans",sans-serif;border:2.5px solid var(--ink,#15163a);border-radius:999px;background:#fff;color:var(--ink,#15163a);padding:.35rem .85rem;box-shadow:2px 3px 0 var(--ink,#15163a);cursor:pointer}'
   + '.oh-chip[aria-pressed="true"]{background:var(--ink,#15163a);color:#fff}'
+  /* Vier Baum-Stufen (Blüte, 20.10.2026) passen eng in eine Zeile, auch bei 360 px. */
+  + '.oh-chips.eng{gap:5px;flex-wrap:nowrap}.oh-chips.eng .oh-chip{font-size:.74rem;padding:.3rem .5rem;white-space:nowrap}'
   /* Raster: nach Platz, nicht nach Inhalt (sonst überlappt die Rückmeldezeile) */
   + '.oh-grid{flex:1 1 0;min-height:140px;width:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,minmax(64px,1fr));gap:12px}'
   + '.oh-grid.zwei{grid-template-columns:1fr;grid-template-rows:repeat(2,minmax(64px,1fr))}'

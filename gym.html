@@ -251,14 +251,14 @@ var SAETZE = [];   // [{ text, mean, stufe }]
 var FILTER = 'wort';
 function aktStufe(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe(); } catch(e){} return 'a1'; }
 function mtVon(o){ if (!o) return ''; var m = PROFILE.muttersprache; return o[m] || (m === 'el' ? o.en : '') || o.de || o.en || o.es || ''; }
-function stufenBis(st){ return st === 'b1' ? ['b1','a2','a1'] : (st === 'a2' ? ['a2','a1'] : ['a1']); }
+function stufenBis(st){ return st === 'b2' ? ['b2','b1','a2','a1'] : (st === 'b1' ? ['b1','a2','a1'] : (st === 'a2' ? ['a2','a1'] : ['a1'])); }
 function mische(a){ if (window.spikiuUebung && window.spikiuUebung.shuffle) window.spikiuUebung.shuffle(a); return a; }
 function buildAusdruecke(){
   var z = PROFILE.zielsprache, st = aktStufe(), out = [];
   var KS = (window.spikiuKurzsaetze || {})[z] || {}, SP = window.spikiuSprichwort || {};
   var dazu = function(text, lit, mean, icon, src, k){ if (text && mean) out.push({ text:text, lit:lit || '', mean:mean, icon:icon || '', src:src || '', stufe:k }); };
   // Wer Wendungen wählt, will die Schwierigkeit steigern: auch im Samen gibt es die Stamm-Wendungen.
-  var stufen = st === 'b1' ? ['b1','a2','a1'] : ['a2','a1'];
+  var stufen = st === 'b2' ? ['b2','b1','a2','a1'] : (st === 'b1' ? ['b1','a2','a1'] : ['a2','a1']);
   stufen.forEach(function(k){
     (KS[k] || []).forEach(function(x){ if (x.art !== 'satz') dazu(x.z, '', mtVon(x.t), '', '', k); });
     if (k === 'a2') ((SP.wendungen || {})[z] || []).forEach(function(p){ dazu(p.text, mtVon(p.w), mtVon(p.t), p.icon, p.src, k); });

@@ -179,7 +179,7 @@ function baueDaten(){
   // Spielfeld). Alle Stufen bis zur eigenen, mit Stufen-Etikett.
   var KS = window.spikiuKurzsaetze && window.spikiuKurzsaetze[z], D0 = lernpfad();
   if (KS){
-    stufenBis(D0 || { stufen: ['a1','a2','b1'] }).forEach(function(st){
+    stufenBis(D0 || { stufen: ['a1','a2','b1','b2'] }).forEach(function(st){
       (KS[st] || []).forEach(function(x){ SAETZE.push({ satz:x.z, tr:(x.t && (x.t[PROFILE.muttersprache] || (PROFILE.muttersprache === 'el' ? x.t.en : ''))) || '', art:x.art || 'satz', stufe:st }); });
     });
   }
@@ -217,7 +217,7 @@ function woerterVonThemaLernpfad(id){
 // Stufe des Weges: a1 = 1 (Samen), a2 = 2 (Stamm), b1 = 3 (Krone). Bis 16.10.2026 fiel
 // die Krone hier auf 1 zurück — die Spiele zeigten Krone-Lernern nur Anfängerstoff (Leo).
 function aktStufe(){ try { var P = window.SpikiuPfad; if (P && P.existiert && P.existiert()) return P.stufe(); } catch(e){} return 'a1'; }
-function stufeZahl(){ return ({ a1:1, a2:2, b1:3 })[aktStufe()] || 1; }
+function stufeZahl(){ return ({ a1:1, a2:2, b1:3, b2:4 })[aktStufe()] || 1; }
 // Stufen des Pfades bis zur eigenen — die eigene zuerst.
 function stufenBis(D){
   var alle = (D && D.stufen) || ['a1','a2'], ich = aktStufe(), i = alle.indexOf(ich);
@@ -233,16 +233,19 @@ var BEREICH_THEMEN = { essen:['cafe','restaurant'], cafe:['cafe','restaurant'], 
   taxi:['wegbeschreibung','taxi','bahnhof','hotel'], bahnhof:['wegbeschreibung','taxi','bahnhof','hotel'],
   hotel:['wegbeschreibung','taxi','bahnhof','hotel'] };
 function kroneWoerter(themenIds){
-  var D = lernpfad(); if (!D || aktStufe() !== 'b1') return [];
+  var D = lernpfad(), ak = aktStufe(); if (!D || (ak !== 'b1' && ak !== 'b2')) return [];
   var out = [];
+  /* Blüte (b2, 20.10.2026): eigene Wörter zuerst, dazu die der Krone. */
+  (ak === 'b2' ? ['b2', 'b1'] : ['b1']).forEach(function(stK){
   themenIds.forEach(function(id){
-    var S = D.station('b1', id); if (!S) return;
+    var S = D.station(stK, id); if (!S) return;
     (S.wortschatz || []).forEach(function(w){
       var z = String(w.z || '').trim(), kern = z.replace(ART_RE, '');
       if (!z || /[\s.,¿?¡!…]/.test(kern)) return;            // nur Einzelwörter
       var en = (D.zielsprache === 'en') ? z.replace(ART_RE, '') : ((w.na && typeof w.na === 'object' && w.na.en) ? String(w.na.en).replace(ART_RE, '') : '');
-      out.push({ z:z, tr:naTr(w.na), stufe:3, en:en, nomen: ART_RE.test(z) });
+      out.push({ z:z, tr:naTr(w.na), stufe:(stK === 'b2' ? 4 : 3), en:en, nomen: ART_RE.test(z) });
     });
+  });
   });
   return out;
 }

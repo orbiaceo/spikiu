@@ -60,7 +60,7 @@ komplett (Ohren + 4 Beine), heißt nach außen IMMER „Spikiu", nie „Capy".
   Nimm sprechende Namen wie `verlauf`, `ort`, `zustand`.
 - **NIE Asterisks** für Betonung in HTML — immer `<em>`.
 - **Naming nach außen:** nie „Kurs" (→ Lernabenteuer), „Level" (→ Etappe), „KI" (→ Spikiu),
-  „Atelier". Reifegrad nur als Baum (Samen/Stamm/Krone), nie CEFR (A1/B2). Details: Seele.
+  „Atelier". Reifegrad nur als Baum (Samen/Stamm/Krone/Blüte), nie CEFR (A1/B2). Details: Seele.
 - **SITZUNGS-PERSISTENZ (Pflicht für jeden Raum):** Keine Arbeit darf durch einen Fehl-Tipp
   verloren gehen. Jeder Raum sichert seinen Zustand laufend über `sitzung.js`
   (`window.spikiuSitzung`, Schlüssel `spikiu_sitzung:<raum>`) — entprellt vom Raum (~350 ms) —
