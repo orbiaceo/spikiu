@@ -77,7 +77,7 @@
       gTask: 'Wo liegt der Schlag? Hör zu und tipp die starke Silbe.', gKlatsch: '👏 Spikiu klatscht',
       gFalsch: 'Nicht ganz. Hör noch einmal hin.', gTilde: ' · die Tilde zeigt den Schlag', gTonos: ' · der Tonos (´) zeigt den Schlag',
       mTask: 'In welchen Korb gehört das Wort?', mFalsch: function (x) { return '<em>' + x + '</em> gehört in den anderen Korb.'; },
-      mFertig: 'Alle Wörter liegen im richtigen Korb.',
+      mFertig: 'Alle Wörter liegen im richtigen Korb.', mOhr: 'nochmal hören', mHin: 'Nicht ganz. Hör noch einmal hin.',
       meTask: 'Deck zwei Karten auf: Wort und Bild gehören zusammen.', meFertig: 'Alle Paare gefunden.',
       aIntro: 'So sieht ein Akrostichon aus. Zu jedem Buchstaben ein Wort, das zum Thema passt.',
       aPick: 'Wähl ein Wort', aThema: 'Thema',
@@ -122,7 +122,7 @@
       gTask: '¿Dónde cae el golpe? Escucha y toca la sílaba fuerte.', gKlatsch: '👏 Spikiu da palmas',
       gFalsch: 'Casi. Escucha otra vez.', gTilde: ' · la tilde marca el golpe', gTonos: ' · el tonos (´) marca el golpe',
       mTask: '¿En qué cesta va la palabra?', mFalsch: function (x) { return '<em>' + x + '</em> va en la otra cesta.'; },
-      mFertig: 'Todas las palabras están en su cesta.',
+      mFertig: 'Todas las palabras están en su cesta.', mOhr: 'escuchar otra vez', mHin: 'Casi. Escucha otra vez.',
       meTask: 'Da la vuelta a dos cartas: palabra e imagen van juntas.', meFertig: 'Todas las parejas encontradas.',
       aIntro: 'Así es un acróstico. Para cada letra, una palabra que tenga que ver con el tema.',
       aPick: 'Elige una palabra', aThema: 'Tema',
@@ -167,7 +167,7 @@
       gTask: 'Where is the beat? Listen and tap the strong syllable.', gKlatsch: '👏 Spikiu claps',
       gFalsch: 'Not quite. Listen again.', gTilde: ' · the accent mark shows the beat', gTonos: ' · the tonos (´) shows the beat',
       mTask: 'Which basket does the word go in?', mFalsch: function (x) { return '<em>' + x + '</em> goes in the other basket.'; },
-      mFertig: 'Every word is in the right basket.',
+      mFertig: 'Every word is in the right basket.', mOhr: 'hear it again', mHin: 'Not quite. Listen again.',
       meTask: 'Turn over two cards: word and picture belong together.', meFertig: 'All pairs found.',
       aIntro: 'This is an acrostic. For each letter, a word that fits the topic.',
       aPick: 'Pick a word', aThema: 'Topic',
@@ -212,7 +212,7 @@
       gTask: 'Πού πέφτει ο τόνος; Άκου και πάτα την τονισμένη συλλαβή.', gKlatsch: '👏 Ο Spikiu χτυπάει παλαμάκια',
       gFalsch: 'Σχεδόν. Άκου ξανά.', gTilde: ' · το τονικό σημάδι δείχνει πού πέφτει ο τόνος', gTonos: ' · ο τόνος (´) δείχνει πού πέφτει',
       mTask: 'Σε ποιο καλάθι πάει η λέξη;', mFalsch: function (x) { return 'Το <em>' + x + '</em> πάει στο άλλο καλάθι.'; },
-      mFertig: 'Όλες οι λέξεις είναι στο σωστό καλάθι.',
+      mFertig: 'Όλες οι λέξεις είναι στο σωστό καλάθι.', mOhr: 'άκου ξανά', mHin: 'Όχι ακριβώς. Άκου ξανά.',
       meTask: 'Γύρισε δύο κάρτες: η λέξη και η εικόνα πάνε μαζί.', meFertig: 'Βρήκες όλα τα ζευγάρια.',
       aIntro: 'Αυτή είναι μια ακροστιχίδα. Για κάθε γράμμα, μια λέξη που ταιριάζει στο θέμα.',
       aPick: 'Διάλεξε μια λέξη', aThema: 'Θέμα',
@@ -1211,11 +1211,11 @@
     return root;
   }
 
-  /* ── AL MERCADO: in den richtigen Korb ── cfg = { koerbe:[{titel, icon, woerter:[{z,tr}]}, {…}] } */
+  /* ── DER KORB (früher Al mercado): in den richtigen Korb ── cfg = { koerbe:[{titel, icon, woerter:[{z,tr,bild?}]}, {…}], hoeren? } — hoeren: erst nur hören (Leo, 20.10.) */
   function mercado(cfg, opts) {
     var U = T(opts), root = wurzel(), ton = rundenKlang(), K = cfg.koerbe, liste = [];
     K.forEach(function (kb, i) { mezcla(kb.woerter).slice(0, 3).forEach(function (x) { liste.push({ x: x, k: i }); }); });
-    liste = mezcla(liste); var n = 0;
+    liste = mezcla(liste); var n = 0, fehlerJetzt = false, warte = false;
     root.appendChild(el('p', 'jg-task', U.mTask));
     var ware = el('div', 'jg-ware'); root.appendChild(ware);
     /* Nochmal hören (Leo, 16.10.2026): Tippen auf das gesprochene Wort spricht es erneut. */
@@ -1228,12 +1228,25 @@
     function zeige() {
       if (n >= liste.length) { ware.textContent = '✔'; ton.dur(); fb.className = 'jg-fb'; fb.textContent = U.mFertig; done(root, true); return; }
       // Mit Artikel — so, wie es gesprochen wird (Leo, 16.10.: „η ζάχαρη" hören, „ζάχαρη" lesen passte nicht).
-      var x = liste[n].x; ware.textContent = x.z + ' 🔊'; ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); sprichOpt(opts, x.z);
+      var x = liste[n].x; fehlerJetzt = false; warte = false;
+      /* DER KORB (Leo, 20.10.): erst nur hören — das Wort erscheint erst nach der richtigen Zuordnung. */
+      if (cfg.hoeren) ware.innerHTML = '<span style="font-size:1.7rem">👂</span> <span style="font:700 .9rem DM Sans,sans-serif">' + esc(U.mOhr) + '</span>';
+      else ware.textContent = x.z + ' 🔊';
+      ware.classList.remove('jg-pop'); void ware.offsetWidth; ware.classList.add('jg-pop'); setTimeout(function () { sprichOpt(opts, x.z); }, cfg.hoeren ? 250 : 0);
     }
     function waehle(i, b) {
-      if (n >= liste.length) return; ton.wecken(); var it = liste[n];
-      if (it.k === i) { b.querySelector('.inhalt').appendChild(el('span', null, it.x.z)); fb.className = 'jg-fb'; fb.innerHTML = '<em>' + esc(it.x.z) + '</em> = ' + esc(it.x.tr); n++; setTimeout(zeige, 600); }
-      else { ton.moll(); b.classList.add('no'); wobble(b); setTimeout(function () { b.classList.remove('no'); }, 500); fb.className = 'jg-fb soft'; fb.innerHTML = U.mFalsch(esc(it.x.z)); }
+      if (n >= liste.length || warte) return; ton.wecken(); var it = liste[n];
+      if (it.k === i) {
+        warte = true;   // bis das nächste Wort da ist, zählt kein Tipp
+        b.querySelector('.inhalt').appendChild(el('span', null, it.x.z)); fb.className = 'jg-fb';
+        if (cfg.hoeren) { ton.dur(); ware.textContent = it.x.z; }
+        fb.innerHTML = (cfg.hoeren && it.x.bild ? '<img src="' + esc(it.x.bild) + '" alt="" style="width:34px;height:34px;vertical-align:middle;margin-right:6px">' : '') + '<em>' + esc(it.x.z) + '</em> = ' + esc(it.x.tr);
+        n++; setTimeout(zeige, cfg.hoeren ? 1300 : 600);
+      }
+      else {
+        if (!fehlerJetzt) ton.moll(); fehlerJetzt = true; b.classList.add('no'); wobble(b); setTimeout(function () { b.classList.remove('no'); }, 500); fb.className = 'jg-fb soft';
+        if (cfg.hoeren) { fb.textContent = U.mHin; setTimeout(function () { sprichOpt(opts, it.x.z); }, 350); } else fb.innerHTML = U.mFalsch(esc(it.x.z));
+      }
     }
     zeige();
     return root;
