@@ -17,6 +17,7 @@
 
    API (window.OhrKarten):
      karte(host)                           → leere Karte in host (ersetzt Inhalt)
+     hinweis(k, capy, text)                → Spikius Ein-Satz-Hinweis oben auf der Karte
      task(k, text, klein)                  → Aufgabenzeile
      big(k, label, fn, {mic})              → großer gelber Knopf
      blase(k, {z, lang, tr, trLabel, capy, mini})  → Spikius Sprechblase
@@ -100,6 +101,15 @@
   + '.oh-task{font-size:1.0625rem}.oh-task small{display:none}.oh-big{padding:.5rem 1.5rem;font-size:1.06rem}.oh-fb{min-height:2.3em;font-size:.95rem}.oh-blase .oh-z{font-size:1.0625rem}'
   + '.oh-lot b{padding:.12rem .4rem;font-size:.56rem}.oh-tile.oh-ent.ges img{max-height:26%}.oh-tile.oh-ent{padding:6px;gap:3px}.oh-tile.oh-ent .oh-neu{gap:0}'
   + '.oh-tile.oh-ent.ges .oh-tz{font-size:calc(.98rem*var(--fs));line-height:1.15}}'
+  /* Spikius Hinweis: ein Satz, was auf dieser Karte zu tun ist (Leo 20.10., Test mit Rolf) */
+  + '.oh-hinweis{display:flex;gap:9px;align-items:center;text-align:left;width:100%;flex:0 0 auto}'
+  + '.oh-hinweis .oh-cap{flex:0 0 42px;height:42px}.oh-hinweis .oh-cap svg{width:100%;height:100%}'
+  + '.oh-hinweis p{margin:0;flex:1;min-width:0;background:#d3eef6;border:2px solid var(--ink,#15163a);border-radius:4px 16px 16px 16px;padding:7px 11px;font:600 .98rem/1.3 "DM Sans",system-ui,sans-serif}'
+  + '.oh-label{font:800 .66rem "DM Sans",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#5f7068);margin-bottom:-6px}'
+  + '.oh-tile .oh-orte{display:flex;gap:6px;align-items:center;font:700 calc(.74rem*var(--fs)) "DM Sans",sans-serif;color:var(--muted,#5f7068)}'
+  + '@media (prefers-reduced-motion:no-preference){.oh-hinweis{animation:ohRein .45s ease-out both}@keyframes ohRein{from{opacity:.3;transform:translateY(-4px)}to{opacity:1;transform:none}}'
+  + '.oh-tile.oh-puls:not(.ges){animation:ohPuls 1.4s ease-in-out 2}@keyframes ohPuls{50%{box-shadow:3px 4px 0 var(--ink,#15163a),0 0 0 7px rgba(31,147,176,.25)}}}'
+  + '@media (max-height:720px){.oh-hinweis .oh-cap{flex-basis:36px;height:36px}.oh-hinweis p{font-size:.9rem;padding:5px 9px}}'
   + '@media (prefers-reduced-motion:no-preference){.oh-pop{animation:ohPop .3s ease-out both}@keyframes ohPop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:none}}}';
 
   function css() { if (document.getElementById('oh-css')) return; var s = document.createElement('style'); s.id = 'oh-css'; s.textContent = CSS; document.head.appendChild(s); }
@@ -139,6 +149,7 @@
     css(); host.innerHTML = '';
     var k = el('section', 'oh-karte oh-pop'); k.setAttribute('aria-live', 'polite'); host.appendChild(k); return k;
   }
+  function hinweis(k, capy, text) { var z = el('div', 'oh-hinweis', '<span class="oh-cap">' + (capy || '') + '</span><p>' + esc(text) + '</p>'); k.appendChild(z); return z; }
   function task(k, text, klein) { var p = el('p', 'oh-task', esc(text) + (klein ? '<small>' + esc(klein) + '</small>' : '')); k.appendChild(p); return p; }
   function big(k, label, fn, o) { var b = el('button', 'oh-big', esc(label)); b.type = 'button'; b.id = (o && o.id) || 'oh-big'; b.onclick = fn; k.appendChild(b); return b; }
   function blase(k, o) {
@@ -213,6 +224,6 @@
     return { grid: g, fb: f };
   }
 
-  w.OhrKarten = { css: css, karte: karte, task: task, big: big, blase: blase, raster: raster, fb: fb, lot: lot, fuss: fuss,
+  w.OhrKarten = { css: css, karte: karte, hinweis: hinweis, task: task, big: big, blase: blase, raster: raster, fb: fb, lot: lot, fuss: fuss,
     entdecken: entdecken, runde: runde, klang: klang, fit: fit, esc: esc, mischen: mischen, el: el };
 })(window);
