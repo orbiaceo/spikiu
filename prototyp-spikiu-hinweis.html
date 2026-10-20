@@ -1,0 +1,139 @@
+<title>Spikiu zeigt den Weg</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&family=Lora:wght@500;600&display=swap">
+<style>
+/* Layout: eine Handy-Bühne wie gefuehrt.html; oben Umschalter für die drei Karten. Bewusst nur hell, wie die App. */
+:root{
+  --bg:#eef3ef; --karte:#ffffff; --ink:#15163a; --acc:#1f93b0; --muted:#5f7068;
+  --blase:#d3eef6; --leise:#dfe6e0; --ok:#c7e89a;
+  --f-text:"DM Sans",system-ui,-apple-system,sans-serif; --f-serif:"Lora",Georgia,serif;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-text);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px}
+.wrap{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:12px;min-height:calc(100% - 24px)}
+.proto{display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--muted)}
+.proto b{color:var(--ink)}
+.schalter{display:flex;gap:6px;flex-wrap:wrap}
+.schalter button{font:700 .78rem var(--f-text);border:2px solid var(--ink);border-radius:999px;background:var(--karte);color:var(--ink);padding:.3rem .7rem;cursor:pointer}
+.schalter button[aria-pressed="true"]{background:var(--ink);color:#fff}
+header{text-align:center}
+header .eyebrow{font:800 .72rem var(--f-text);letter-spacing:.2em;color:var(--acc);text-transform:uppercase}
+header h1{margin:2px 0 0;font:800 1.5rem var(--f-text)}
+.rail{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.rail div{display:flex;flex-direction:column;gap:4px;align-items:center;font:700 .62rem var(--f-text);letter-spacing:.06em;text-transform:uppercase;color:#9aa49f}
+.rail div::before{content:"";display:block;width:100%;height:5px;border-radius:9px;background:var(--leise)}
+.rail div.on{color:var(--acc)}.rail div.on::before{background:var(--acc)}
+.karte{flex:1;background:var(--karte);border:2.5px solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:14px;display:flex;flex-direction:column;gap:12px;text-align:center;min-height:470px}
+/* NEU: Spikius Hinweis — eine Zeile, ein Satz */
+.hinweis{display:flex;gap:9px;align-items:center;text-align:left;animation:rein .45s ease-out both}
+.hinweis svg{flex:0 0 44px;height:44px}
+.hinweis p{margin:0;flex:1;min-width:0;background:var(--blase);border:2px solid var(--ink);border-radius:4px 16px 16px 16px;padding:8px 11px;font:600 .98rem/1.3 var(--f-text)}
+@keyframes rein{from{opacity:.3;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.task{margin:0;font:500 1.12rem/1.35 var(--f-serif);text-wrap:balance}
+.label{font:800 .66rem var(--f-text);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:-6px}
+.chips{display:flex;gap:5px;justify-content:center;flex-wrap:nowrap}
+.chip{font:800 .74rem var(--f-text);border:2.5px solid var(--ink);border-radius:999px;background:var(--karte);color:var(--ink);padding:.3rem .5rem;box-shadow:2px 3px 0 var(--ink);white-space:nowrap;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid.eins{grid-template-columns:1fr}
+.tile{position:relative;background:var(--karte);border:2.5px solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;color:var(--ink);font:inherit;min-height:110px}
+.tile:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.tile .em{font-size:2.4rem;line-height:1}
+.tile .tn{font:800 1.08rem/1.2 var(--f-text)}
+.tile .ts{font:600 .8rem/1.25 var(--f-text);color:var(--muted)}
+.tile .tz{font:600 1.25rem/1.25 var(--f-serif)}
+.tile .tu{font:700 .85rem/1.2 var(--f-text);color:#2f6b3a}
+.tile.vor{border-color:var(--acc);box-shadow:3px 4px 0 var(--acc)}
+.tile.vor::before{content:"";position:absolute;top:9px;left:10px;width:9px;height:9px;border-radius:50%;background:var(--acc)}
+.tile.ges{background:#f4fbec}
+.tile.puls{animation:puls 1.4s ease-in-out 2}
+@keyframes puls{50%{box-shadow:3px 4px 0 var(--ink),0 0 0 7px rgba(31,147,176,.25)}}
+.orte{font:700 .72rem var(--f-text);color:var(--muted)}
+.lot{display:flex;gap:6px;justify-content:center}
+.lot b{font:700 .62rem var(--f-text);letter-spacing:.06em;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;border:1.5px solid var(--leise);color:#9aa49f}
+.lot b.on{border-color:var(--acc);color:var(--acc)}
+.fb{font:600 .95rem var(--f-text);color:var(--muted);min-height:1.4em}
+.fuss{display:flex;justify-content:space-between;gap:10px}
+.btn{font:800 1rem var(--f-text);border:2.5px solid var(--ink);border-radius:999px;background:var(--karte);color:var(--ink);box-shadow:3px 4px 0 var(--ink);padding:.6rem 1.2rem;cursor:pointer}
+.btn.pri{background:var(--acc);color:#fff}
+.btn[disabled]{opacity:.45;cursor:default}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.hinweis,.tile.puls{animation:none}}
+</style>
+
+<div class="wrap">
+  <div class="proto">
+    <span><b>Prototyp:</b> Spikiu sagt auf jeder Karte in einem Satz, was zu tun ist. Leiste unten: andere Karte zeigen.</span>
+    <div class="schalter" id="schalter">
+      <button type="button" id="s-thema" aria-pressed="true">1 · Thema</button>
+      <button type="button" id="s-ort" aria-pressed="false">2 · Ort</button>
+      <button type="button" id="s-woerter" aria-pressed="false">3 · Wörter</button>
+      <button type="button" id="s-aus" aria-pressed="false">Hinweis aus (ab 4. Besuch)</button>
+    </div>
+  </div>
+  <header><div class="eyebrow">Geführtes Gespräch</div><h1 id="titel">Thema</h1></header>
+  <div class="rail" id="rail"><div class="on">Thema</div><div>Wörter</div><div>Hören</div><div>Sprechen</div><div>Lektion</div></div>
+  <main class="karte" id="karte"></main>
+  <div class="fuss" id="fuss"></div>
+</div>
+
+<script>
+(function(){
+  var CAPY='<svg viewBox="0 0 80 80" fill="none" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="#fff"/><circle cx="48" cy="23" r="1.2" fill="#fff"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+  var hinweisAn=true, ansicht='thema', stufe='b2';
+  var karte=document.getElementById('karte'), fuss=document.getElementById('fuss');
+  function hinweis(t){ return hinweisAn ? '<div class="hinweis">'+CAPY+'<p>'+t+'</p></div>' : ''; }
+  function rail(n){ [].forEach.call(document.querySelectorAll('#rail div'),function(d,i){ d.className=i<=n?'on':''; }); }
+
+  var STUFEN=[['a1','🌱 Samen'],['a2','🌿 Stamm'],['b1','🌳 Krone'],['b2','🌸 Blüte']];
+  var KATS=[['🍽️','Essen &amp; Trinken',2,true],['🧳','Unterwegs',4],['🛒','Alltag',2],['👥','Menschen',2]];
+  var WOERTER=[['la empanada','gefüllte Teigtasche'],['las zamburiñas','kleine Kammmuscheln'],['la masa','der Teig'],['el sofrito','angebratene Gemüsegrundlage']];
+
+  function thema(){
+    document.getElementById('titel').textContent='Thema'; rail(0);
+    karte.innerHTML=hinweis('Wähl zuerst deine Stufe. Dann tipp ein Thema an.')
+      +'<p class="task">Worüber möchtest du sprechen?</p>'
+      +'<div class="label">Deine Stufe</div>'
+      +'<div class="chips">'+STUFEN.map(function(s){return '<button type="button" class="chip" id="st-'+s[0]+'" aria-pressed="'+(s[0]===stufe)+'">'+s[1]+'</button>';}).join('')+'</div>'
+      +'<div class="grid">'+KATS.map(function(k,i){return '<button type="button" class="tile'+(k[3]?' vor':'')+'" id="kat-'+i+'"><span class="em">'+k[0]+'</span><span class="tn">'+k[1]+'</span><span class="orte">'+k[2]+' Orte</span></button>';}).join('')+'</div>';
+    [].forEach.call(karte.querySelectorAll('.chip'),function(b){ b.onclick=function(){ stufe=b.id.slice(3); thema(); }; });
+    [].forEach.call(karte.querySelectorAll('.tile'),function(b,i){ b.onclick=function(){ if(i===0) zeige('ort'); }; });
+    fuss.innerHTML='<button type="button" class="btn" id="f-haus">‹ Haus</button>';
+  }
+  function ort(){
+    document.getElementById('titel').textContent='Thema'; rail(0);
+    karte.innerHTML=hinweis('Tipp einen Ort an. Dort spielt dein Gespräch.')
+      +'<p class="task">Essen &amp; Trinken: wohin gehst du?</p>'
+      +'<div class="grid eins">'
+      +'<button type="button" class="tile vor" id="ort-0"><span class="em">☕</span><span class="tn">Im Café</span><span class="ts">Salamanca: fein abgestuft widersprechen</span></button>'
+      +'<button type="button" class="tile" id="ort-1"><span class="em">🍽️</span><span class="tn">Im Restaurant</span><span class="ts">San Sebastián: Kritik annehmen und verteidigen</span></button>'
+      +'</div>';
+    [].forEach.call(karte.querySelectorAll('.tile'),function(b){ b.onclick=function(){ zeige('woerter'); }; });
+    fuss.innerHTML='<button type="button" class="btn" id="f-themen">‹ Themen</button>';
+    document.getElementById('f-themen').onclick=function(){ zeige('thema'); };
+  }
+  function woerter(){
+    document.getElementById('titel').textContent='Wörter entdecken'; rail(1);
+    var ges={};
+    karte.innerHTML=hinweis('Tipp jede Karte an. Du hörst das Wort und siehst, was es heißt.')
+      +'<div class="lot"><b class="on">Karte 1</b><b>Karte 2</b><b>Karte 3</b><b>Sätze</b></div>'
+      +'<div class="grid">'+WOERTER.map(function(w,i){return '<button type="button" class="tile'+(i===0&&hinweisAn?' puls':'')+'" id="w-'+i+'"><span class="tz" lang="es">'+w[0]+'</span><span class="tu" hidden>'+w[1]+'</span></button>';}).join('')+'</div>'
+      +'<div class="fb" id="fb">0 von 4 entdeckt</div>';
+    fuss.innerHTML='<button type="button" class="btn" id="f-genug">Genug für heute</button><button type="button" class="btn pri" id="f-erk" disabled>Erkennen ›</button>';
+    [].forEach.call(karte.querySelectorAll('.tile'),function(b,i){ b.onclick=function(){
+      b.classList.remove('puls'); b.classList.add('ges'); b.querySelector('.tu').hidden=false; ges[i]=1;
+      var n=Object.keys(ges).length;
+      document.getElementById('fb').textContent = n<4 ? n+' von 4 entdeckt' : 'Alle vier gehört. Jetzt erkennst du sie wieder.';
+      if(n===4) document.getElementById('f-erk').disabled=false;
+    }; });
+  }
+  function zeige(a){
+    ansicht=a;
+    ['thema','ort','woerter'].forEach(function(x){ document.getElementById('s-'+x).setAttribute('aria-pressed',String(x===a)); });
+    ({thema:thema,ort:ort,woerter:woerter})[a]();
+  }
+  ['thema','ort','woerter'].forEach(function(x){ document.getElementById('s-'+x).onclick=function(){ zeige(x); }; });
+  document.getElementById('s-aus').onclick=function(){ hinweisAn=!hinweisAn; this.setAttribute('aria-pressed',String(!hinweisAn)); zeige(ansicht); };
+  zeige('thema');
+})();
+</script>
