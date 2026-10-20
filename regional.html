@@ -6,7 +6,8 @@
 <title>Spikiu · Regionalismos</title>
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
-:root{--bg:#eef7f1;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--acc:#1f93b0;--ow:2.5px}
+:root{--bg:#eef7f1;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--acc:#1f93b0;--ow:2.5px;
+  --paper:#fff;--soft:#f6f1e6;--wasser:#cfe7e6;--nachbar:#e6ebe3;--heim:#f4efe2}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;display:flex;justify-content:center}
@@ -19,63 +20,117 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .kopf{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem}
 .back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
 .back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
-.tt{flex:1;text-align:center;padding-right:36px}
+.tt{flex:1;text-align:center;padding-right:36px;min-width:0}
 .tt .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase}
-.tt h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0}
-.buehne{flex:1;overflow-y:auto;padding:1rem 1rem 2.5rem;-webkit-overflow-scrolling:touch}
-.intro{display:flex;gap:.6rem;align-items:flex-end;margin-bottom:.9rem}
-.intro .capy{width:58px;height:58px;flex:0 0 auto}
-.blase{background:#fff;border:2px solid var(--ink);border-radius:16px 16px 16px 4px;padding:.55rem .8rem;font-size:.95rem;line-height:1.4;box-shadow:3px 3px 0 var(--ink)}
-.tabs{display:flex;gap:.4rem;margin:.2rem 0 .7rem}
-.tab{flex:1;background:#fff;border:var(--ow) solid var(--ink);border-radius:999px;padding:.5rem .6rem;font:800 .9rem/1.1 'DM Sans';color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
-.tab.an{background:var(--ink);color:#fff}
-.chips{display:flex;gap:.35rem;overflow-x:auto;padding:.1rem .1rem .55rem;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;border:2px solid var(--ink);border-radius:999px;padding:.3rem .7rem;font:700 .8rem/1.1 'DM Sans';background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
-.chip.an{box-shadow:inset 0 0 0 2px var(--ink);font-weight:800}
-.chip.klein{font-size:.74rem;padding:.25rem .6rem;opacity:.8}
-.chip.klein.an{opacity:1;background:var(--ink);color:#fff}
-.karte{background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.9rem .95rem .8rem;margin:0 0 1rem}
-.k-kopf{display:flex;align-items:center;gap:.7rem;margin-bottom:.55rem}
-.k-bild{width:54px;height:54px;flex:0 0 auto;border-radius:14px;background:#f3f6ee;display:flex;align-items:center;justify-content:center}
-.k-bild img{width:46px;height:46px}
-.k-bild span{font-size:1.9rem}
-.k-tt{font:800 1.08rem/1.25 'DM Sans'}
-.k-kat{font:600 .66rem/1 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
-.zeile{display:flex;align-items:center;gap:.55rem;padding:.38rem .2rem;border-top:1px dashed rgba(21,22,58,.18)}
-.zeile:first-of-type{border-top:0}
-.zeile.hervor{background:#fff6d6;border-radius:10px;border-top-color:transparent}
-.z-reg{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.25rem}
-.z-reg .rk-chip{min-width:2.2rem;font-size:.66rem}
-.zeile.gruppe{padding:.5rem .3rem}
-.rk-chip{flex:0 0 auto;min-width:2.6rem;text-align:center;border:2px solid var(--ink);border-radius:8px;font:800 .72rem/1.5 'DM Mono',monospace;padding:0 .3rem}
-.z-wort{flex:1;font:600 1.12rem/1.3 'Lora',serif;color:var(--read)}
-.z-laut{display:block;font:500 .78rem/1.3 'DM Mono',monospace;color:var(--muted)}
-.ton{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:2px solid var(--ink);background:var(--acc);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink)}
-.ton svg{width:16px;height:16px}
+.tt h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;text-wrap:balance}
+.punkte{display:flex;gap:5px;justify-content:center;margin-top:.35rem}
+.punkte i{width:20px;height:5px;border-radius:3px;background:#cfd9d2;transition:background .2s}
+.punkte i.an{background:var(--ink)}
+.buehne{flex:1;overflow-y:auto;padding:1rem 1rem 2rem;-webkit-overflow-scrolling:touch}
+.schritt{display:flex;flex-direction:column;gap:1rem;animation:rein .28s ease-out}
+@keyframes rein{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+.capy{flex:0 0 auto}
+.spikiu{display:flex;gap:.55rem;align-items:flex-end}
+.spikiu .capy{width:52px;height:52px}
+.blase{background:#fff;border:2px solid var(--ink);border-radius:16px 16px 16px 4px;padding:.55rem .8rem;font-size:.97rem;line-height:1.4;box-shadow:3px 3px 0 var(--ink);min-width:0}
+
+/* Schritt 1 · Karte */
+.karte-wrap{background:var(--wasser);border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.karte-wrap svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.nachbar{fill:var(--nachbar);stroke:#b3bfb8;stroke-width:.6;stroke-linejoin:round}
+.heim{fill:var(--heim);stroke:#9aa59e;stroke-width:.7;stroke-linejoin:round}
+.land{cursor:pointer}
+.land path{fill:var(--paper);stroke:var(--ink);stroke-width:1.1;stroke-linejoin:round;transition:fill .18s}
+.land.an path{stroke-width:1.6}
+.land:focus{outline:none}
+.land:focus-visible path{stroke:var(--acc);stroke-width:3}
+.pille rect{fill:var(--paper);stroke:var(--ink);stroke-width:1.8}
+.pille .sch{fill:var(--ink);stroke:none}
+.pille text{font:800 11px 'DM Sans',system-ui,sans-serif;fill:var(--ink)}
+.meer{pointer-events:none;font:500 8.5px 'DM Mono',monospace;letter-spacing:.28em;fill:#5f8f88}
+.ausschnitt{fill:var(--wasser)}
+.ausschnitt-rand{fill:none;stroke:var(--ink);stroke-width:1.6}
+.ausschnitt-titel{font:500 8px 'DM Mono',monospace;letter-spacing:.16em;fill:#4c7770;text-transform:uppercase}
+.ausschnitt-quelle{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:3 2}
+.gewaehlt{display:flex;flex-wrap:wrap;gap:.35rem;min-height:2rem;align-items:center}
+.gewaehlt .leer{color:var(--muted);font-size:.92rem}
+.rchip{border:2px solid var(--ink);border-radius:999px;padding:.2rem .65rem;font:800 .85rem/1.2 'DM Sans';display:inline-flex;gap:.3rem;align-items:center}
+.links{display:flex;gap:1.1rem}
+.link{background:none;border:none;color:var(--acc);font:700 .92rem 'DM Sans';cursor:pointer;padding:.2rem 0;text-decoration:underline;text-underline-offset:3px}
+.weiter{border:var(--ow) solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:.85rem 1rem;font:800 1.05rem 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--acc);width:100%}
+.weiter:disabled{background:#c9d3cd;color:#6f7a74;box-shadow:none;border-color:#aeb9b3;cursor:default}
+.weiter:focus-visible,.tuer:focus-visible,.kachel:focus-visible,.back:focus-visible,.ton:focus-visible,.nav-k:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+/* Schritt 2 · Türen */
+.tueren{display:grid;gap:.85rem}
+.tuer{display:flex;align-items:center;gap:1rem;text-align:left;background:#fff;border:var(--ow) solid var(--ink);border-radius:20px;padding:1.1rem 1rem;box-shadow:4px 4px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:'DM Sans'}
+.tuer:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.tuer .sym{width:64px;height:64px;flex:0 0 auto;border-radius:16px;display:grid;place-items:center;font-size:2rem;border:2px solid var(--ink)}
+.tuer b{display:block;font:1.15rem/1.2 'Archivo Black',sans-serif}
+.tuer .u{display:block;color:var(--muted);font-size:.92rem;margin-top:.2rem}
+
+/* Schritt 3 · Themen */
+.kacheln{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.kachel{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;padding:.9rem .7rem;box-shadow:3px 3px 0 var(--ink);cursor:pointer;color:var(--ink);display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;font-family:'DM Sans';text-align:left}
+.kachel:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.kachel .em{font-size:1.7rem;line-height:1}
+.kachel b{font:800 1rem/1.2 'DM Sans'}
+.kachel small{font:500 .72rem 'DM Mono',monospace;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.kachel.gemischt{background:var(--soft)}
+.kachel:disabled{opacity:.45;cursor:default;box-shadow:none}
+
+/* Schritt 4 · eine Karte nach der anderen */
+.auswahl{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;font-size:.85rem}
+.auswahl .rchip{font-size:.75rem;padding:.12rem .5rem}
+.auswahl .tag{font:500 .7rem 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.leiste{height:6px;border-radius:3px;background:#d6e2db;overflow:hidden}
+.leiste i{display:block;height:100%;background:var(--acc);transition:width .25s}
+.wk{background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 4px 0 var(--ink);padding:1.1rem 1rem 1rem;display:flex;flex-direction:column;gap:.8rem}
+.wk-kopf{display:flex;align-items:center;gap:.8rem}
+.wk-bild{width:62px;height:62px;border-radius:16px;background:var(--soft);display:grid;place-items:center;font-size:2.1rem;flex:0 0 auto}
+.wk-bild img{width:52px;height:52px}
+.wk-tt{font:1.25rem/1.2 'Archivo Black',sans-serif}
+.wk-kat{font:500 .66rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:.3rem}
+.vergleich{display:grid;gap:.55rem}
+.zeile{display:flex;align-items:center;gap:.7rem;border:2px solid var(--ink);border-radius:16px;padding:.55rem .55rem .55rem .8rem}
+.zeile .w{flex:1;min-width:0}
+.zeile .wort{font:600 1.35rem/1.25 'Lora',serif;color:var(--read);overflow-wrap:anywhere}
+.zeile .laut{display:block;font:500 .82rem/1.3 'DM Mono',monospace;color:var(--muted)}
+.zeile .wer{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.25rem}
+.zeile .wer span{font:800 .72rem/1.4 'DM Sans';border:1.5px solid var(--ink);border-radius:999px;padding:0 .45rem}
+.ton{width:44px;height:44px;flex:0 0 auto;border-radius:999px;border:2px solid var(--ink);background:var(--acc);cursor:pointer;display:grid;place-items:center;box-shadow:2px 2px 0 var(--ink)}
+.ton svg{width:22px;height:22px}
 .ton.spielt{animation:puls 1s ease infinite}
 @keyframes puls{50%{transform:scale(1.1)}}
-.witz{display:flex;gap:.5rem;align-items:flex-start;margin-top:.6rem;background:#eef7f1;border-radius:14px;padding:.5rem .6rem}
-.witz .capy{width:34px;height:34px;flex:0 0 auto}
-.witz div{font-size:.92rem;line-height:1.4}
-.hinweis{margin-top:.45rem;font-size:.86rem;line-height:1.4;color:var(--muted)}
-.erkl{font-size:.97rem;line-height:1.45;margin:.1rem 0 .5rem}
-.toast{position:absolute;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:.6rem .9rem;font-size:.9rem;max-width:88%;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;z-index:5}
-.toast.zeig{opacity:1}
-.leer{text-align:center;padding:2rem 1rem;color:var(--muted)}
-@media (prefers-reduced-motion:reduce){.ton.spielt{animation:none}}
+.witz{display:flex;gap:.55rem;align-items:flex-start;background:var(--bg);border-radius:14px;padding:.6rem .7rem;font-size:.95rem;line-height:1.4}
+.witz .capy{width:32px;height:32px}
+.hinweis{font-size:.88rem;color:var(--muted);line-height:1.4}
+.erkl{font-size:1rem;line-height:1.5;color:var(--read)}
+.nav{display:flex;align-items:center;gap:.7rem}
+.nav-k{width:52px;height:52px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.3rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
+.nav-k:disabled{opacity:.3;cursor:default;box-shadow:none}
+.nav-k.vor{background:var(--ink);color:#fff;box-shadow:2px 2px 0 var(--acc)}
+.zaehler{flex:1;text-align:center;font:500 .85rem 'DM Mono',monospace;color:var(--muted);font-variant-numeric:tabular-nums}
+.ende{text-align:center;display:flex;flex-direction:column;gap:.8rem;align-items:center;padding-top:1rem}
+.ende .capy{width:90px;height:90px}
+.ende h2{font:1.3rem 'Archivo Black',sans-serif;margin:0}
+.ende p{margin:0}
+.knopf2{border:var(--ow) solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:.7rem 1.2rem;font:800 1rem 'DM Sans';cursor:pointer;box-shadow:2px 2px 0 var(--ink);width:100%}
+.leer-box{text-align:center;padding:1.5rem 1rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.schritt,.ton.spielt{animation:none}}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="kopf"><button class="back" id="zurueck" type="button" aria-label="zurück">‹</button>
-    <div class="tt"><div class="rk" id="rk"></div><h1 id="titel">Regional</h1></div></div>
+    <div class="tt"><div class="rk" id="rk"></div><h1 id="titel">Regional</h1>
+      <div class="punkte" id="punkte" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div></div>
   <div class="buehne" id="buehne"></div>
-  <div class="toast" id="toast"></div>
 </div>
 
 <script src="icon-db.js"></script>
 <script src="regional-daten.js"></script>
+<script src="regional-karten.js"></script>
 <script src="sitzung.js"></script>
 <!-- Audio: audio.js ist ein ES-Modul am Root, hier importiert und über window gebrückt (wie learnroman/proverbios). -->
 <script type="module">
@@ -86,17 +141,16 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 </script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
-   SPIKIU · RAUM „REGIONAL" (16.10.2026)
-   Leo, 15.10.: „ESPAÑOL REGIONAL … un glosario en forma divertida con cartoons
-   y con ejemplos de pronunciación que debemos grabar. Lo mismo para otras
-   lenguas." · 16.10.: „Empieza por español regional, luego alemán, inglés y griego."
-   Zwei Reiter: Wörter (ein Begriff = eine Karte, je Region die Variante, Bild,
-   Spikius Witz) und Aussprache (je Erscheinung Beispiele je Region).
-   Regionen-Chips heben eine Region hervor; Kategorie-Chips filtern die Wörter.
-   🔊 liest mit audio.js (Piper) vor wie alle Räume (Leo 16.10. 12:27: „Por ahora no
-   vamos a grabar nada"). Aufnahmelisten in audio/regional/ bleiben für später. NULL Token.
-   Sitzungs-Persistenz über sitzung.js (Raum 'regional': Reiter, Region, Kategorie,
-   Scroll). Verbotene Variablennamen (name, status, top …) vermieden.
+   SPIKIU · RAUM „REGIONALISMEN" — Schritt für Schritt (21.10.2026)
+   Leo, 20.10. 18:20: „Es ist alles total zusammengepfercht … Bauen wir verschiedene
+   Schnittstellen. Zuerst eine Karte, wo man die Länder auswählt. Dann … die Themen …
+   ob man nur die Wörter oder die Aussprache … üben will. Ein bisschen ästhetischer und
+   ordentlicher nacheinander." · 23:39: „ein richtiges Map für jede Sprache." · 00:02: „Aprobado!"
+   Ablauf: (1) echte Landkarte (regional-karten.js), mind. zwei Gegenden wählen →
+   (2) Wörter oder Aussprache → (3) Thema (nur Wörter) → (4) eine Karte nach der anderen,
+   nur mit den gewählten Gegenden; Karten ohne Unterschied fallen weg (Leo 16.10.).
+   🔊 über audio.js (Piper) wie alle Räume. NULL Token. Sitzungs-Persistenz über sitzung.js
+   (Raum 'regional'). Verbotene Variablennamen (name, status, top …) vermieden.
    ══════════════════════════════════════════════════════════════════════ */
 (function () {
   var profil = {};
@@ -105,30 +159,69 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
   var UI = ['de','es','en','el'].indexOf(profil.muttersprache) > -1 ? profil.muttersprache : 'de';
   document.documentElement.lang = UI;
 
+  function plural(n, eins, viele) { return n === 1 ? eins : viele.replace('#', n); }
   var TXT = {
-    de:{ rk:'Bibliothek', woerter:'Wörter', laut:'Aussprache', alle:'Alle',
+    de:{ rk:'Bibliothek', zurueck:'zurück',
+         s1:'Wo wollen wir hinhören? Tipp <b>zwei oder mehr</b> Gegenden auf der Karte an, dann vergleichen wir sie.',
+         nichts:'Noch nichts gewählt.', alle:'Alle wählen', leeren:'Auswahl leeren', weiter:'Weiter',
+         fehlt:function (n) { return plural(n, 'Wähl noch 1 Gegend', 'Wähl noch # Gegenden'); },
+         s2:'Gut. Was willst du vergleichen?',
+         woerter:'Wörter', woerterU:'Wer sagt was? Gleiche Sache, andere Wörter.',
+         laut:'Aussprache', lautU:'Wie klingt dasselbe Wort dort?',
+         s3:'Welches Thema? Oder einfach alles gemischt.', gemischt:'Alles gemischt',
+         karten:function (n) { return plural(n, '1 Karte', '# Karten'); },
          kat:{ alltag:'Alltag', essen:'Essen & Trinken', unterwegs:'Unterwegs', leute:'Leute', gruesse:'Grüße' },
-         intro:'Eine Sprache, viele Gegenden. Hier siehst du, wie man dasselbe anderswo sagt — tipp eine Region an, dann leuchtet sie auf.',
-         introLaut:'So klingt es in den Regionen.',
-         zurueck:'zurück', wo:function(t){ return t; } },
-    es:{ rk:'Biblioteca', woerter:'Palabras', laut:'Pronunciación', alle:'Todas',
+         aendern:'ändern', vor:'Nächste Karte', zurKarte:'Vorige Karte', hoeren:'anhören',
+         ende:'Geschafft!', endeT:function (n) { return plural(n, '1 Karte verglichen.', '# Karten verglichen.'); },
+         nochmal:'Noch einmal', andere:'Andere Gegenden wählen',
+         keine:'Zwischen diesen Gegenden gibt es hier keinen Unterschied. Wähl andere aus.', karteLabel:'Karte: Gegenden wählen' },
+    es:{ rk:'Biblioteca', zurueck:'atrás',
+         s1:'¿Dónde escuchamos? Toca <b>dos o más</b> lugares en el mapa y los comparamos.',
+         nichts:'Aún no has elegido nada.', alle:'Elegir todos', leeren:'Borrar selección', weiter:'Seguir',
+         fehlt:function (n) { return plural(n, 'Elige 1 lugar más', 'Elige # lugares más'); },
+         s2:'Bien. ¿Qué quieres comparar?',
+         woerter:'Palabras', woerterU:'¿Quién dice qué? La misma cosa, otras palabras.',
+         laut:'Pronunciación', lautU:'¿Cómo suena allí la misma palabra?',
+         s3:'¿Qué tema? O todo mezclado.', gemischt:'Todo mezclado',
+         karten:function (n) { return plural(n, '1 tarjeta', '# tarjetas'); },
          kat:{ alltag:'Día a día', essen:'Comer y beber', unterwegs:'De viaje', leute:'Gente', gruesse:'Saludos' },
-         intro:'Una lengua, muchos lugares. Aquí ves cómo se dice lo mismo en otras partes: toca una región y se ilumina.',
-         introLaut:'Así suena en cada región.',
-         zurueck:'atrás', wo:function(t){ return t; } },
-    en:{ rk:'Library', woerter:'Words', laut:'Pronunciation', alle:'All',
+         aendern:'cambiar', vor:'Tarjeta siguiente', zurKarte:'Tarjeta anterior', hoeren:'escuchar',
+         ende:'¡Listo!', endeT:function (n) { return plural(n, '1 tarjeta comparada.', '# tarjetas comparadas.'); },
+         nochmal:'Otra vez', andere:'Elegir otros lugares',
+         keine:'Entre estos lugares no hay diferencias aquí. Elige otros.', karteLabel:'Mapa: elegir lugares' },
+    en:{ rk:'Library', zurueck:'back',
+         s1:'Where shall we listen? Tap <b>two or more</b> places on the map and we’ll compare them.',
+         nichts:'Nothing chosen yet.', alle:'Select all', leeren:'Clear', weiter:'Continue',
+         fehlt:function (n) { return plural(n, 'Choose 1 more place', 'Choose # more places'); },
+         s2:'Good. What would you like to compare?',
+         woerter:'Words', woerterU:'Who says what? Same thing, different words.',
+         laut:'Pronunciation', lautU:'How does the same word sound there?',
+         s3:'Which topic? Or everything mixed.', gemischt:'Everything mixed',
+         karten:function (n) { return plural(n, '1 card', '# cards'); },
          kat:{ alltag:'Everyday', essen:'Food & drink', unterwegs:'Getting around', leute:'People', gruesse:'Greetings' },
-         intro:'One language, many places. See how the same thing is said elsewhere — tap a region and it lights up.',
-         introLaut:'This is how it sounds in each region.',
-         zurueck:'back', wo:function(t){ return t; } },
-    el:{ rk:'Βιβλιοθήκη', woerter:'Λέξεις', laut:'Προφορά', alle:'Όλες',
+         aendern:'change', vor:'Next card', zurKarte:'Previous card', hoeren:'listen',
+         ende:'Done!', endeT:function (n) { return plural(n, '1 card compared.', '# cards compared.'); },
+         nochmal:'Again', andere:'Choose other places',
+         keine:'There’s no difference between these places here. Choose others.', karteLabel:'Map: choose places' },
+    el:{ rk:'Βιβλιοθήκη', zurueck:'πίσω',
+         s1:'Πού θα ακούσουμε; Πάτα <b>δύο ή περισσότερους</b> τόπους στον χάρτη και τους συγκρίνουμε.',
+         nichts:'Δεν έχεις διαλέξει τίποτα ακόμα.', alle:'Επιλογή όλων', leeren:'Καθαρισμός', weiter:'Συνέχεια',
+         fehlt:function (n) { return plural(n, 'Διάλεξε άλλον 1 τόπο', 'Διάλεξε άλλους # τόπους'); },
+         s2:'Ωραία. Τι θέλεις να συγκρίνεις;',
+         woerter:'Λέξεις', woerterU:'Ποιος λέει τι; Το ίδιο πράγμα, άλλες λέξεις.',
+         laut:'Προφορά', lautU:'Πώς ακούγεται εκεί η ίδια λέξη;',
+         s3:'Ποιο θέμα; Ή όλα ανακατεμένα.', gemischt:'Όλα ανακατεμένα',
+         karten:function (n) { return plural(n, '1 κάρτα', '# κάρτες'); },
          kat:{ alltag:'Καθημερινά', essen:'Φαγητό & ποτό', unterwegs:'Μετακινήσεις', leute:'Άνθρωποι', gruesse:'Χαιρετισμοί' },
-         intro:'Μία γλώσσα, πολλοί τόποι. Δες πώς λέγεται το ίδιο αλλού — πάτα μια περιοχή και φωτίζεται.',
-         introLaut:'Έτσι ακούγεται σε κάθε περιοχή.',
-         zurueck:'πίσω', wo:function(t){ return t; } }
+         aendern:'αλλαγή', vor:'Επόμενη κάρτα', zurKarte:'Προηγούμενη κάρτα', hoeren:'άκου',
+         ende:'Τέλεια!', endeT:function (n) { return plural(n, '1 κάρτα συγκρίθηκε.', '# κάρτες συγκρίθηκαν.'); },
+         nochmal:'Ξανά', andere:'Άλλοι τόποι',
+         keine:'Ανάμεσα σε αυτούς τους τόπους δεν υπάρχει διαφορά εδώ. Διάλεξε άλλους.', karteLabel:'Χάρτης: διάλεξε τόπους' }
   };
   var T = TXT[UI];
+  var KAT_EM = { alltag:'🏠', essen:'🍽️', unterwegs:'🚌', leute:'🤝', gruesse:'👋' };
   var DB = (window.spikiuRegional || {})[ZIEL];
+  var KARTE = (window.spikiuRegionalKarten || {})[ZIEL];
   var CAPY = '<svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">'
     + '<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
     + '<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
@@ -143,28 +236,29 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
   function inUi(o) { if (!o) return ''; if (typeof o === 'string') return o; return o[UI] || o.en || o.de || o.es || ''; }
+  function ohneKlammer(s) { return String(s).replace(/\s*\(.*$/, ''); }
 
   var buehne = document.getElementById('buehne');
   document.getElementById('rk').textContent = T.rk;
   document.getElementById('zurueck').setAttribute('aria-label', T.zurueck);
-  document.getElementById('zurueck').onclick = function () { window.location.href = 'haus.html'; };
 
   // ── Zustand + Sitzungs-Persistenz ──
-  var zustand = { reiter: 'woerter', region: '', kat: '', y: 0 };
+  var zustand = { schritt: 1, regionen: [], art: '', kat: '', i: 0 };
+  var stapel = [];   // Karten des aktuellen Durchgangs (aus dem Zustand ableitbar)
   var sitzTimer = null;
   function sichern() {
     clearTimeout(sitzTimer);
     sitzTimer = setTimeout(function () {
-      try { if (window.spikiuSitzung) window.spikiuSitzung.speichere('regional', { reiter: zustand.reiter, region: zustand.region, kat: zustand.kat, y: Math.round(buehne.scrollTop), ziel: ZIEL }); } catch (e) {}
+      try { if (window.spikiuSitzung) window.spikiuSitzung.speichere('regional', { schritt: zustand.schritt, regionen: zustand.regionen, art: zustand.art, kat: zustand.kat, i: zustand.i, ziel: ZIEL }); } catch (e) {}
     }, 350);
   }
-  buehne.addEventListener('scroll', sichern, { passive: true });
+  function raeumen() { clearTimeout(sitzTimer); try { if (window.spikiuSitzung) window.spikiuSitzung.raeume('regional'); } catch (e) {} }
 
   function regionVon(id) { for (var i = 0; i < DB.regionen.length; i++) if (DB.regionen[i].id === id) return DB.regionen[i]; return null; }
+  function gewaehlt(id) { return zustand.regionen.indexOf(id) > -1; }
+  function datenReihe(ids) { var alle = DB.regionen.map(function (r) { return r.id; }); return ids.slice().sort(function (a, b) { return alle.indexOf(a) - alle.indexOf(b); }); }
 
-  // ── Vorlesen mit dem Audio-System aller Räume (audio.js / Piper), Leo 16.10. 12:27:
-  //    „deja que se pronuncie con el sistema de audio que tenemos … Por ahora no vamos a
-  //    grabar nada." Fallback: Browser-Stimme. (Aufnahmelisten bleiben für später.)
+  // ── Vorlesen mit audio.js (Piper), Fallback Browser-Stimme ──
   function sprich(text, knopf) {
     knopf.classList.add('spielt');
     var fertig = function () { knopf.classList.remove('spielt'); };
@@ -187,38 +281,16 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     if (e) return '<img src="' + esc(I.datei(e)) + '" alt="" loading="lazy">';
     return em ? '<span aria-hidden="true">' + esc(em) + '</span>' : '';
   }
+  function spikiu(html) { return '<div class="spikiu">' + CAPY + '<div class="blase">' + html + '</div></div>'; }
+  function rchip(r, kurz) { return '<span class="rchip" style="background:' + esc(r.farbe) + '">' + esc(r.em || '') + ' ' + esc(kurz ? r.kurz : ohneKlammer(inUi(r.name))) + '</span>'; }
 
-  function chipsRegionen() {
-    var h = '<div class="chips" id="chipsR"><button type="button" class="chip' + (zustand.region ? '' : ' an') + '" data-r="">' + esc(T.alle) + '</button>';
-    DB.regionen.forEach(function (r) {
-      var an = zustand.region === r.id;
-      h += '<button type="button" class="chip' + (an ? ' an' : '') + '" data-r="' + esc(r.id) + '" style="background:' + esc(r.farbe) + '">'
-        + esc(r.em || '') + ' ' + esc(String(inUi(r.name)).replace(/\s*\(.*$/, '')) + '</button>';
-    });
-    return h + '</div>';
-  }
-  function chipsKat() {
-    var da = {}; DB.woerter.forEach(function (w) { da[w.kat] = 1; });
-    var h = '<div class="chips"><button type="button" class="chip klein' + (zustand.kat ? '' : ' an') + '" data-k="">' + esc(T.alle) + '</button>';
-    ['alltag','essen','unterwegs','leute','gruesse'].forEach(function (k) {
-      if (!da[k]) return;
-      h += '<button type="button" class="chip klein' + (zustand.kat === k ? ' an' : '') + '" data-k="' + k + '">' + esc(T.kat[k]) + '</button>';
-    });
-    return h + '</div>';
-  }
-  function reihenfolge() {
-    var ids = DB.regionen.map(function (r) { return r.id; });
-    if (zustand.region) ids = [zustand.region].concat(ids.filter(function (x) { return x !== zustand.region; }));
-    return ids;
-  }
-  /* KONTRAST STATT WIEDERHOLUNG (Leo, 16.10. 12:24: „Has puesto en una tarjeta 5 veces
-     la palabra … Eso no sirve para nada … contrastar las diferentes palabras … in Bayern
-     sagt man Semmel und in Bremen Brötchen" · „Zu viel des Guten!"): Jede Karte zeigt
-     jedes WORT nur einmal, daneben alle Regionen, die es sagen. „fegen / kehren" zählt
-     für beide Wörter. Karten mit nur einem Wort für alle fallen weg. */
+  /* ── Karten-Stapel nach Auswahl ──
+     KONTRAST STATT WIEDERHOLUNG (Leo, 16.10.): jedes WORT nur einmal, daneben alle
+     gewählten Gegenden, die es sagen; „fegen / kehren" zählt für beide Wörter;
+     sagen alle gewählten Gegenden dasselbe, fällt die Karte weg. */
   function gruppen(w) {
     var map = {}, liste = [];
-    reihenfolge().forEach(function (rid) {
+    datenReihe(zustand.regionen).forEach(function (rid) {
       var v = w.varianten[rid]; if (!v) return;
       String(v).split(/\s*[\/·]\s*/).forEach(function (teil) {
         teil = teil.trim(); if (!teil) return;
@@ -229,90 +301,243 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     });
     return liste;
   }
-  function gruppeHtml(g, wortId) {
-    var chips = g.regionen.map(function (rid) {
-      var r = regionVon(rid); if (!r) return '';
-      return '<span class="rk-chip" style="background:' + esc(r.farbe) + '" title="' + esc(inUi(r.name)) + '">' + esc(r.kurz) + '</span>';
-    }).join('');
-    var hervor = zustand.region && g.regionen.indexOf(zustand.region) > -1;
-    // Dateiname stabil: die erste Region in DATEN-Reihenfolge (nicht die hervorgehobene).
-    var idx = function (rid) { for (var i = 0; i < DB.regionen.length; i++) if (DB.regionen[i].id === rid) return i; return 99; };
-    var erste = g.regionen.slice().sort(function (a, b) { return idx(a) - idx(b); })[0];
-    return '<div class="zeile gruppe' + (hervor ? ' hervor' : '') + '">'
-      + '<span class="z-wort" lang="' + ZIEL + '">' + esc(g.wort) + '<span class="z-reg">' + chips + '</span></span>'
-      + '<button type="button" class="ton" aria-label="🔊" data-text="' + esc(g.wort) + '">' + TON + '</button></div>';
+  function wortStapel(kat) {
+    return DB.woerter.map(function (w, i) { return { art: 'wort', w: w, i: i, gr: gruppen(w) }; })
+      .filter(function (x) { return (kat === 'alle' || x.w.kat === kat) && x.gr.length > 1; })
+      .sort(function (x, y) { return (y.gr.length - x.gr.length) || (x.i - y.i); });
   }
-  function zeileHtml(regionId, wort, laut, datei) {
-    var r = regionVon(regionId); if (!r) return '';
-    return '<div class="zeile' + (zustand.region === regionId ? ' hervor' : '') + '">'
-      + '<span class="rk-chip" style="background:' + esc(r.farbe) + '" title="' + esc(inUi(r.name)) + '">' + esc(r.kurz) + '</span>'
-      + '<span class="z-wort" lang="' + ZIEL + '">' + esc(wort) + (laut ? '<span class="z-laut">' + esc(laut) + '</span>' : '') + '</span>'
-      + '<button type="button" class="ton" aria-label="🔊" data-text="' + esc(wort) + '">' + TON + '</button></div>';
+  function lautStapel() {
+    var out = [];
+    DB.aussprache.forEach(function (a) {
+      var bsp = a.beispiele.filter(function (b) { return gewaehlt(b.region); });
+      if (bsp.length) out.push({ art: 'laut', a: a, bsp: bsp });
+    });
+    return out;
+  }
+  function stapelBauen() { stapel = zustand.art === 'laut' ? lautStapel() : wortStapel(zustand.kat || 'alle'); }
+
+  function punkte() {
+    var p = document.querySelectorAll('#punkte i');
+    for (var i = 0; i < p.length; i++) p[i].classList.toggle('an', i < zustand.schritt);
+  }
+  function geh(s) {
+    zustand.schritt = s;
+    if (s === 4) stapelBauen();
+    punkte(); buehne.scrollTop = 0;
+    [null, schritt1, schritt2, schritt3, schritt4][s]();
+    sichern();
   }
 
-  function render() {
-    if (!DB) { buehne.innerHTML = '<div class="leer">—</div>'; return; }
-    document.getElementById('titel').textContent = inUi(DB.titel);
-    document.title = 'Spikiu · ' + inUi(DB.titel);
-    var h = '<div class="intro">' + CAPY + '<div class="blase">' + esc(zustand.reiter === 'laut' ? T.introLaut : T.intro) + '</div></div>';
-    h += '<div class="tabs"><button type="button" class="tab' + (zustand.reiter === 'woerter' ? ' an' : '') + '" data-t="woerter">' + esc(T.woerter) + '</button>'
-       + '<button type="button" class="tab' + (zustand.reiter === 'laut' ? ' an' : '') + '" data-t="laut">' + esc(T.laut) + '</button></div>';
-    h += chipsRegionen();
-    if (zustand.reiter === 'woerter') {
-      h += chipsKat();
-      // Spannendes zuerst: Begriffe mit den meisten verschiedenen Formen oben (sonst
-      // begann Griechisch mit sechsmal demselben „Γεια σου!").
-      var vielfalt = function (w) { return gruppen(w).length; };
-      DB.woerter.map(function (w, i) { return { w: w, i: i, v: vielfalt(w) }; })
-        .sort(function (x, y) { return (y.v - x.v) || (x.i - y.i); })
-        .map(function (x) { return x.w; })
-        .forEach(function (w) {
-        if (zustand.kat && w.kat !== zustand.kat) return;
-        var gr = gruppen(w);
-        if (gr.length < 2) return;   // kein Kontrast → keine Karte (Leo 16.10.)
-        var b = bildHtml(w.en, w.em);
-        h += '<div class="karte"><div class="k-kopf">' + (b ? '<div class="k-bild">' + b + '</div>' : '')
-          + '<div><div class="k-tt">' + esc(inUi(w.konzept)) + '</div><div class="k-kat">' + esc(T.kat[w.kat] || '') + '</div></div></div>';
-        gr.forEach(function (g) { h += gruppeHtml(g, w.id); });
-        if (w.witz) h += '<div class="witz">' + CAPY + '<div>' + esc(inUi(w.witz)) + '</div></div>';
-        if (w.hinweis) h += '<div class="hinweis">💡 ' + esc(inUi(w.hinweis)) + '</div>';
-        h += '</div>';
-      });
-    } else {
-      DB.aussprache.forEach(function (a) {
-        var bsp = a.beispiele.slice();
-        if (zustand.region) bsp.sort(function (x, y) { return (x.region === zustand.region ? -1 : 0) - (y.region === zustand.region ? -1 : 0); });
-        h += '<div class="karte"><div class="k-tt" style="margin-bottom:.3rem">' + esc(inUi(a.titel)) + '</div>'
-          + '<div class="erkl">' + esc(inUi(a.erklaerung)) + '</div>';
-        bsp.forEach(function (x) { h += zeileHtml(x.region, x.wort, x.laut, 'laut-' + a.id + '-' + x.region); });
-        h += '</div>';
-      });
+  /* ── Schritt 1 · echte Landkarte ── */
+  function schildText(rid) {
+    var r = regionVon(rid), k = KARTE.schild && KARTE.schild.kurz && KARTE.schild.kurz[rid];
+    return k ? inUi(k) : ohneKlammer(inUi(r.name));
+  }
+  function pille(rid, c) {
+    var r = regionVon(rid), an = gewaehlt(rid), v = (KARTE.schild && KARTE.schild.versatz && KARTE.schild.versatz[rid]) || [0, 0];
+    var txt = schildText(rid) + (an ? ' ✓' : ''), w = Math.round(txt.length * 6.3 + 30), h = 22;
+    var x = c[0] + v[0] - w / 2, y = c[1] + v[1] - h / 2;
+    return '<g class="land pille-g' + (an ? ' an' : '') + '" data-r="' + esc(rid) + '" aria-hidden="true"><g class="pille" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')">'
+      + '<rect class="sch" x="2" y="2" width="' + w + '" height="' + h + '" rx="11"/>'
+      + '<rect width="' + w + '" height="' + h + '" rx="11"' + (an ? ' style="fill:' + esc(r.farbe) + '"' : '') + '/>'
+      + '<text x="9" y="15.5">' + esc(r.em || '') + ' ' + esc(txt) + '</text></g></g>';
+  }
+  function landG(rid, teile) {
+    var r = regionVon(rid); if (!r) return '';
+    var an = gewaehlt(rid);
+    return '<g class="land' + (an ? ' an' : '') + '" tabindex="0" role="checkbox" aria-checked="' + an + '" aria-label="' + esc(ohneKlammer(inUi(r.name))) + '" data-r="' + esc(rid) + '">'
+      + teile.map(function (d) { return '<path d="' + d + '"' + (an ? ' style="fill:' + esc(r.farbe) + '"' : '') + '/>'; }).join('') + '</g>';
+  }
+  function hinter(ctx) { return ctx.map(function (d) { return d.charAt(0) === '§' ? '<path class="nachbar" d="' + d.slice(1) + '"/>' : '<path class="heim" d="' + d + '"/>'; }).join(''); }
+  function karteSvg() {
+    var M = KARTE, s = '<svg viewBox="0 0 ' + M.w + ' ' + M.h + '" role="group" aria-label="' + esc(T.karteLabel) + '">';
+    s += hinter(M.main.ctx);
+    Object.keys(M.main.reg).forEach(function (rid) { s += landG(rid, M.main.reg[rid]); });
+    (M.meere || []).forEach(function (m) { s += '<text class="meer" x="' + m[1] + '" y="' + m[2] + '">' + esc(inUi(m[0])) + '</text>'; });
+    if (M.inset) {
+      var I = M.inset;
+      if (I.quelle) {
+        var q = I.quelle;
+        s += '<rect class="ausschnitt-quelle" x="' + q[0][0] + '" y="' + q[0][1] + '" width="' + (q[1][0] - q[0][0]) + '" height="' + (q[1][1] - q[0][1]) + '"/>'
+          + '<line class="ausschnitt-quelle" x1="' + ((q[0][0] + q[1][0]) / 2) + '" y1="' + q[1][1] + '" x2="' + (I.x + I.w / 2) + '" y2="' + I.y + '"/>';
+      }
+      s += '<clipPath id="ausschnitt-clip"><rect x="' + I.x + '" y="' + I.y + '" width="' + I.w + '" height="' + I.h + '" rx="8"/></clipPath>'
+        + '<rect class="ausschnitt" x="' + I.x + '" y="' + I.y + '" width="' + I.w + '" height="' + I.h + '" rx="8"/>'
+        + '<g clip-path="url(#ausschnitt-clip)">' + hinter(I.ctx);
+      Object.keys(I.reg).forEach(function (rid) { s += landG(rid, I.reg[rid]); });
+      s += '</g><rect class="ausschnitt-rand" x="' + I.x + '" y="' + I.y + '" width="' + I.w + '" height="' + I.h + '" rx="8"/>';
+      if (I.titel) s += '<text class="ausschnitt-titel" x="' + (I.x + 7) + '" y="' + (I.y + I.h - 6) + '">' + esc(inUi(I.titel)) + '</text>';
     }
-    buehne.innerHTML = h;
-    [].forEach.call(buehne.querySelectorAll('[data-t]'), function (b) { b.onclick = function () { zustand.reiter = b.getAttribute('data-t'); buehne.scrollTop = 0; render(); sichern(); }; });
-    [].forEach.call(buehne.querySelectorAll('.chip[data-r]'), function (b) {
-      b.onclick = function () { var y = buehne.scrollTop; zustand.region = b.getAttribute('data-r'); render(); buehne.scrollTop = y; sichern(); };
+    // Namensschilder zuletzt: liegen über allem und sind selbst antippbar (kleine Gegenden).
+    Object.keys(M.main.reg).forEach(function (rid) { if (regionVon(rid)) s += pille(rid, M.main.cen[rid]); });
+    if (M.inset) Object.keys(M.inset.reg).forEach(function (rid) { if (regionVon(rid)) s += pille(rid, M.inset.cen[rid]); });
+    return s + '</svg>';
+  }
+  function schritt1() {
+    var n = zustand.regionen.length;
+    buehne.innerHTML = '<section class="schritt">'
+      + spikiu(T.s1)
+      + (KARTE ? '<div class="karte-wrap">' + karteSvg() + '</div>' : '')
+      + '<div class="gewaehlt">' + (n ? datenReihe(zustand.regionen).map(function (id) { return rchip(regionVon(id)); }).join('') : '<span class="leer">' + esc(T.nichts) + '</span>') + '</div>'
+      + '<div class="links"><button class="link" type="button" id="alle">' + esc(T.alle) + '</button>'
+      + (n ? '<button class="link" type="button" id="keine">' + esc(T.leeren) + '</button>' : '') + '</div>'
+      + '<button class="weiter" type="button" id="w1"' + (n < 2 ? ' disabled' : '') + '>' + esc(n < 2 ? T.fehlt(2 - n) : T.weiter) + '</button>'
+      + '</section>';
+    [].forEach.call(buehne.querySelectorAll('.land'), function (g) {
+      var umschalten = function () {
+        var id = g.getAttribute('data-r'), k = zustand.regionen.indexOf(id);
+        if (k < 0) zustand.regionen.push(id); else zustand.regionen.splice(k, 1);
+        var y = buehne.scrollTop; schritt1(); buehne.scrollTop = y; sichern();
+        var el = buehne.querySelector('.land[tabindex="0"][data-r="' + id + '"]'); if (el && g.hasAttribute('tabindex')) el.focus({ preventScroll: true });
+      };
+      g.addEventListener('click', umschalten);
+      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); umschalten(); } });
     });
-    [].forEach.call(buehne.querySelectorAll('.chip[data-k]'), function (b) {
-      b.onclick = function () { zustand.kat = b.getAttribute('data-k'); render(); sichern(); };
-    });
-    [].forEach.call(buehne.querySelectorAll('.ton'), function (b) {
-      b.onclick = function () { sprich(b.getAttribute('data-text'), b); };
+    document.getElementById('alle').onclick = function () { zustand.regionen = DB.regionen.map(function (r) { return r.id; }); schritt1(); sichern(); };
+    var k = document.getElementById('keine'); if (k) k.onclick = function () { zustand.regionen = []; schritt1(); sichern(); };
+    document.getElementById('w1').onclick = function () { geh(2); };
+  }
+
+  /* ── Schritt 2 · Wörter oder Aussprache ── */
+  function schritt2() {
+    buehne.innerHTML = '<section class="schritt">'
+      + spikiu(esc(T.s2))
+      + '<div class="gewaehlt">' + datenReihe(zustand.regionen).map(function (id) { return rchip(regionVon(id)); }).join('') + '</div>'
+      + '<div class="tueren">'
+      + '<button class="tuer" type="button" data-a="wort"><span class="sym" style="background:#F7E3B0">🗣️</span><span><b>' + esc(T.woerter) + '</b><span class="u">' + esc(T.woerterU) + '</span></span></button>'
+      + '<button class="tuer" type="button" data-a="laut"><span class="sym" style="background:#B8E2EC">👂</span><span><b>' + esc(T.laut) + '</b><span class="u">' + esc(T.lautU) + '</span></span></button>'
+      + '</div></section>';
+    [].forEach.call(buehne.querySelectorAll('.tuer'), function (b) {
+      b.onclick = function () {
+        zustand.art = b.getAttribute('data-a'); zustand.i = 0;
+        if (zustand.art === 'laut') { zustand.kat = ''; geh(4); } else geh(3);
+      };
     });
   }
 
-  // ── Eintritt: angefangene Sitzung anbieten (Wiederkommen-Karte) ──
+  /* ── Schritt 3 · Thema (nur Wörter) ── */
+  function schritt3() {
+    var da = {}; DB.woerter.forEach(function (w) { da[w.kat] = 1; });
+    var h = '<section class="schritt">' + spikiu(esc(T.s3)) + '<div class="kacheln">';
+    ['alltag','essen','unterwegs','leute','gruesse'].forEach(function (k) {
+      if (!da[k]) return;
+      var n = wortStapel(k).length;
+      h += '<button class="kachel" type="button" data-k="' + k + '"' + (n ? '' : ' disabled') + '><span class="em">' + KAT_EM[k] + '</span><b>' + esc(T.kat[k]) + '</b><small>' + esc(T.karten(n)) + '</small></button>';
+    });
+    var alle = wortStapel('alle').length;
+    h += '<button class="kachel gemischt" type="button" data-k="alle"' + (alle ? '' : ' disabled') + '><span class="em">🎲</span><b>' + esc(T.gemischt) + '</b><small>' + esc(T.karten(alle)) + '</small></button>';
+    buehne.innerHTML = h + '</div></section>';
+    [].forEach.call(buehne.querySelectorAll('.kachel'), function (b) {
+      b.onclick = function () { zustand.kat = b.getAttribute('data-k'); zustand.i = 0; geh(4); };
+    });
+  }
+
+  /* ── Schritt 4 · eine Karte nach der anderen ── */
+  function wortKarte(c) {
+    var w = c.w, b = bildHtml(w.en, w.em);
+    return '<div class="wk-kopf">' + (b ? '<div class="wk-bild">' + b + '</div>' : '')
+      + '<div><div class="wk-tt">' + esc(inUi(w.konzept)) + '</div><div class="wk-kat">' + esc(T.kat[w.kat] || '') + '</div></div></div>'
+      + '<div class="vergleich">' + c.gr.map(function (g) {
+          var r0 = regionVon(g.regionen[0]);
+          return '<div class="zeile" style="background:' + esc(r0.farbe) + '40"><div class="w"><div class="wort" lang="' + ZIEL + '">' + esc(g.wort) + '</div><div class="wer">'
+            + g.regionen.map(function (id) { var r = regionVon(id); return '<span style="background:' + esc(r.farbe) + '">' + esc(r.em || '') + ' ' + esc(ohneKlammer(inUi(r.name))) + '</span>'; }).join('')
+            + '</div></div><button class="ton" type="button" data-text="' + esc(g.wort) + '" aria-label="' + esc(g.wort + ' · ' + T.hoeren) + '">' + TON + '</button></div>';
+        }).join('') + '</div>'
+      + (w.witz ? '<div class="witz">' + CAPY + '<div>' + esc(inUi(w.witz)) + '</div></div>' : '')
+      + (w.hinweis ? '<div class="hinweis">💡 ' + esc(inUi(w.hinweis)) + '</div>' : '');
+  }
+  function lautKarte(c) {
+    var a = c.a;
+    return '<div class="wk-tt">' + esc(inUi(a.titel)) + '</div><div class="erkl">' + esc(inUi(a.erklaerung)) + '</div>'
+      + '<div class="vergleich">' + c.bsp.map(function (b) {
+          var r = regionVon(b.region); if (!r) return '';
+          return '<div class="zeile" style="background:' + esc(r.farbe) + '40"><div class="w"><div class="wort" lang="' + ZIEL + '">' + esc(b.wort) + '</div>'
+            + (b.laut ? '<span class="laut">[' + esc(b.laut) + ']</span>' : '')
+            + '<div class="wer"><span style="background:' + esc(r.farbe) + '">' + esc(r.em || '') + ' ' + esc(ohneKlammer(inUi(r.name))) + '</span></div></div>'
+            + '<button class="ton" type="button" data-text="' + esc(b.wort) + '" aria-label="' + esc(b.wort + ' · ' + T.hoeren) + '">' + TON + '</button></div>';
+        }).join('') + '</div>';
+  }
+  function schritt4() {
+    var n = stapel.length;
+    var thema = zustand.art === 'laut' ? T.laut : (zustand.kat === 'alle' ? T.gemischt : (T.kat[zustand.kat] || ''));
+    var kopf = '<div class="auswahl">' + datenReihe(zustand.regionen).map(function (id) { return rchip(regionVon(id), true); }).join('')
+      + '<span class="tag">· ' + esc(thema) + '</span><button class="link" type="button" id="aendern">' + esc(T.aendern) + '</button></div>';
+    if (!n) {
+      buehne.innerHTML = '<section class="schritt">' + kopf + spikiu(esc(T.keine)) + '<button class="weiter" type="button" id="neu">' + esc(T.andere) + '</button></section>';
+      document.getElementById('neu').onclick = function () { geh(1); };
+      document.getElementById('aendern').onclick = function () { geh(1); };
+      return;
+    }
+    if (zustand.i >= n) {
+      raeumen();
+      buehne.innerHTML = '<section class="schritt">' + kopf + '<div class="ende">' + CAPY + '<h2>' + esc(T.ende) + '</h2><p>' + esc(T.endeT(n)) + '</p>'
+        + '<button class="weiter" type="button" id="nochmal">' + esc(T.nochmal) + '</button>'
+        + '<button class="knopf2" type="button" id="neu">' + esc(T.andere) + '</button></div></section>';
+      document.getElementById('nochmal').onclick = function () { zustand.i = 0; schritt4(); sichern(); };
+      document.getElementById('neu').onclick = function () { geh(1); };
+      document.getElementById('aendern').onclick = function () { geh(1); };
+      return;
+    }
+    var c = stapel[zustand.i];
+    buehne.innerHTML = '<section class="schritt">' + kopf
+      + '<div class="leiste"><i style="width:' + Math.round((zustand.i + 1) / n * 100) + '%"></i></div>'
+      + '<article class="wk">' + (c.art === 'wort' ? wortKarte(c) : lautKarte(c)) + '</article>'
+      + '<div class="nav"><button class="nav-k" type="button" id="zr" aria-label="' + esc(T.zurKarte) + '"' + (zustand.i ? '' : ' disabled') + '>‹</button>'
+      + '<div class="zaehler">' + (zustand.i + 1) + ' / ' + n + '</div>'
+      + '<button class="nav-k vor" type="button" id="vr" aria-label="' + esc(T.vor) + '">›</button></div></section>';
+    document.getElementById('aendern').onclick = function () { geh(1); };
+    document.getElementById('zr').onclick = function () { blaettern(-1); };
+    document.getElementById('vr').onclick = function () { blaettern(1); };
+    [].forEach.call(buehne.querySelectorAll('.ton'), function (b) { b.onclick = function () { sprich(b.getAttribute('data-text'), b); }; });
+  }
+  function blaettern(d) {
+    if (zustand.schritt !== 4) return;
+    var ziel = zustand.i + d;
+    if (ziel < 0 || ziel > stapel.length) return;
+    zustand.i = ziel; buehne.scrollTop = 0; schritt4(); sichern();
+  }
+  // Wischen und Pfeiltasten auf den Karten
+  var x0 = null, y0 = null;
+  buehne.addEventListener('touchstart', function (e) { if (zustand.schritt === 4) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, { passive: true });
+  buehne.addEventListener('touchend', function (e) {
+    if (x0 == null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
+    blaettern(dx < 0 ? 1 : -1);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (zustand.schritt !== 4) return;
+    if (e.key === 'ArrowRight') blaettern(1); else if (e.key === 'ArrowLeft') blaettern(-1);
+  });
+
+  // Zurück: einen Schritt zurück, im ersten Schritt ins Haus
+  document.getElementById('zurueck').onclick = function () {
+    if (zustand.schritt === 4) geh(zustand.art === 'laut' ? 2 : 3);
+    else if (zustand.schritt > 1) geh(zustand.schritt - 1);
+    else window.location.href = 'haus.html';
+  };
+
+  // ── Eintritt ──
+  if (!DB) { buehne.innerHTML = '<div class="leer-box">—</div>'; return; }
+  document.getElementById('titel').textContent = inUi(DB.titel);
+  document.title = 'Spikiu · ' + inUi(DB.titel);
   var sv = null;
   try { sv = window.spikiuSitzung ? window.spikiuSitzung.lade('regional') : null; } catch (e) { sv = null; }
-  if (sv && sv.ziel === ZIEL && (sv.y || 0) > 150 && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen) {
-    render();
+  var gueltig = sv && sv.ziel === ZIEL && sv.regionen && sv.regionen.filter(regionVon).length > 1;
+  if (gueltig && sv.schritt === 4 && (sv.i || 0) > 0 && window.spikiuSitzung && window.spikiuSitzung.frageWiederkommen) {
+    // Angefangener Durchgang: Wiederkommen-Karte anbieten
+    zustand.regionen = sv.regionen.filter(regionVon);
+    geh(1);
     window.spikiuSitzung.frageWiederkommen({
-      raum: 'regional', ts: sv.ts, wo: inUi(DB && DB.titel) + ' · ' + (sv.reiter === 'laut' ? T.laut : T.woerter),
-      beimWeiter: function () { zustand.reiter = sv.reiter || 'woerter'; zustand.region = sv.region || ''; zustand.kat = sv.kat || ''; render(); buehne.scrollTop = sv.y || 0; },
-      beimNeu: function () { try { window.spikiuSitzung.raeume('regional'); } catch (e) {} }
+      raum: 'regional', ts: sv.ts,
+      wo: inUi(DB.titel) + ' · ' + (sv.art === 'laut' ? T.laut : T.woerter) + ' · ' + ((sv.i || 0) + 1),
+      beimWeiter: function () { zustand.art = sv.art || 'wort'; zustand.kat = sv.kat || 'alle'; zustand.i = sv.i || 0; geh(4); },
+      beimNeu: function () { raeumen(); zustand.regionen = []; geh(1); }
     });
   } else {
-    render();
+    // Gewählte Gegenden bleiben still erhalten, sonst leere Karte
+    if (gueltig) zustand.regionen = sv.regionen.filter(regionVon);
+    geh(1);
   }
 })();
 </script>
