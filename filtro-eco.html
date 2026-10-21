@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spikiu — Filtro anti-eco</title>
+<!--
+  PROTOTYP (21.10.2026) — Leo: davefx klingt „grabada como en un baño".
+  Gleicher Satz, drei Fassungen: ohne Filter / suave / fuerte. Alles im Browser, null Kosten.
+  Kette: Hochpass 90 Hz → Senke ~350 Hz (Kastenklang) → Präsenz +3 dB ~3,5 kHz →
+  Abwärts-Expander (dämpft die Hall-Fahnen zwischen Silben/Wörtern).
+  Nicht im Menü verlinkt. Nach Leos Entscheidung entfernen (bzw. Gewinner in audio.js übernehmen).
+-->
+<style>
+  :root { --ink:#2b2118; --warm:#c9956a; --bg:#faf6f0; --muted:#7a6a58; --card:#fff; --line:#eadfce; --ok:#3f8f5a; --bad:#b4483c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; padding:24px 16px 48px; }
+  main { max-width:34rem; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+  header { display:flex; align-items:center; gap:14px; }
+  .capy { width:64px; height:64px; flex:0 0 auto; animation:float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  h1 { font-size:1.2rem; margin:0; }
+  .sub { font-size:.88rem; color:var(--muted); margin:4px 0 0; line-height:1.45; }
+  .estado { font-size:.82rem; color:var(--muted); min-height:1.2em; margin:0; }
+  .estado.ok { color:var(--ok); } .estado.bad { color:var(--bad); }
+  .card { background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .card.suena { border-color:var(--warm); }
+  .card .t { font-size:1rem; line-height:1.4; }
+  .botones { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .b { border:1.5px solid var(--line); border-radius:12px; background:#fff; color:var(--ink); font:inherit; font-size:.86rem; padding:10px 4px; cursor:pointer; }
+  .b small { display:block; font-size:.68rem; color:var(--muted); margin-top:2px; }
+  .b.laeuft { background:var(--warm); border-color:var(--warm); color:#fff; }
+  .b.laeuft small { color:#fff; }
+  .b:disabled { opacity:.45; cursor:wait; }
+  .propia { display:flex; gap:8px; }
+  .propia input { flex:1 1 auto; min-width:0; border:1.5px solid var(--line); border-radius:12px; padding:10px; font:inherit; font-size:.95rem; background:#fff; color:var(--ink); }
+  .propia button { border:none; border-radius:12px; background:#efe6da; color:var(--ink); font:inherit; font-size:.9rem; padding:0 14px; cursor:pointer; }
+  .ciego { display:flex; flex-direction:column; gap:8px; }
+  .ciego .fila { display:flex; gap:8px; }
+  .ciego .fila .b { flex:1 1 0; }
+  .hint { font-size:.8rem; color:var(--muted); margin:0; line-height:1.45; }
+  h2 { font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <h1>¿Menos baño?</h1>
+      <p class="sub">La voz davefx con y sin filtro. Mejor con auriculares: el eco se oye sobre todo en las pausas y al final de las frases.</p>
+    </div>
+  </header>
+
+  <p class="estado" id="estado">Toca cualquier botón: la primera vez descarga la voz.</p>
+
+  <h2>Comparar</h2>
+  <div id="frases" style="display:flex;flex-direction:column;gap:10px"></div>
+  <div class="propia">
+    <input id="propiaTxt" type="text" placeholder="Probar una frase propia…" maxlength="220">
+    <button id="propiaBtn" type="button">Añadir</button>
+  </div>
+
+  <h2>A ciegas</h2>
+  <div class="card ciego">
+    <p class="hint">Tres botones, orden secreto. Escucha y elige la que mejor suena; luego te digo cuál era.</p>
+    <div class="fila" id="ciegoFila"></div>
+    <p class="hint" id="ciegoRes"></p>
+    <button class="b" id="ciegoNuevo" type="button">Otra ronda</button>
+  </div>
+</main>
+
+<script type="module">
+import { TtsSession } from '/audio/vendor/piper-tts-web.js';
+
+const $ = (id) => document.getElementById(id);
+const VOZ = 'es_ES-davefx-medium';
+const FRASES = [
+  '¿Tienes ganas de salir esta noche?',
+  'Hola, soy Spikiu. Hoy vamos a hablar un poco de tu ciudad.',
+  'Si mañana hace buen tiempo, ¿vamos juntos al mercado?',
+  'El café de la esquina abre a las ocho y cierra muy tarde.',
+];
+
+// ── Filtros: tres fassungen ───────────────────────────────────────────────
+// suave: corrige el color + recorta poco la cola. fuerte: recorta más (riesgo: voz "cortada").
+const FASSUNGEN = {
+  sin:    null,
+  suave:  { caja: -3.5, presencia: 2.5, umbral: -28, ratio: 2.5, suelo: -15 },
+  fuerte: { caja: -6,   presencia: 4,   umbral: -22, ratio: 4.0, suelo: -25 },
+};
+const NOMBRE = { sin: 'Sin filtro', suave: 'Suave', fuerte: 'Fuerte' };
+
+async function decodifica(blob) {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const buf = await ctx.decodeAudioData(await blob.arrayBuffer());
+  ctx.close && ctx.close();
+  return buf;
+}
+
+// Ecualizador con OfflineAudioContext
+async function ecualiza(buf, p) {
+  const off = new OfflineAudioContext(1, buf.length, buf.sampleRate);
+  const src = off.createBufferSource(); src.buffer = buf;
+  const hp = off.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 90; hp.Q.value = 0.7;
+  const caja = off.createBiquadFilter(); caja.type = 'peaking'; caja.frequency.value = 350; caja.Q.value = 1.0; caja.gain.value = p.caja;
+  const pres = off.createBiquadFilter(); pres.type = 'peaking'; pres.frequency.value = 3500; pres.Q.value = 0.9; pres.gain.value = p.presencia;
+  src.connect(hp); hp.connect(caja); caja.connect(pres); pres.connect(off.destination);
+  src.start();
+  return (await off.startRendering()).getChannelData(0).slice();
+}
+
+// Expansor descendente: donde la señal cae por debajo del umbral (cola de eco),
+// baja aún más. Umbral relativo al pico de la frase.
+function expande(x, sr, p) {
+  const n = x.length;
+  const atk = Math.exp(-1 / (0.002 * sr)), rel = Math.exp(-1 / (0.050 * sr));
+  const env = new Float32Array(n);
+  let e = 0, pico = 1e-9;
+  for (let i = 0; i < n; i++) {
+    const a = Math.abs(x[i]);
+    e = a > e ? atk * e + (1 - atk) * a : rel * e + (1 - rel) * a;
+    env[i] = e; if (e > pico) pico = e;
+  }
+  const umbral = pico * Math.pow(10, p.umbral / 20);
+  const suelo = Math.pow(10, p.suelo / 20);
+  const gA = Math.exp(-1 / (0.003 * sr)), gR = Math.exp(-1 / (0.060 * sr));
+  const y = new Float32Array(n);
+  let g = 1;
+  for (let i = 0; i < n; i++) {
+    let obj = 1;
+    if (env[i] < umbral) obj = Math.max(suelo, Math.pow(env[i] / umbral, p.ratio - 1));
+    g = obj > g ? gA * g + (1 - gA) * obj : gR * g + (1 - gR) * obj;
+    y[i] = x[i] * g;
+  }
+  // volumen igualado al original (pico)
+  let mx = 1e-9; for (let i = 0; i < n; i++) mx = Math.max(mx, Math.abs(y[i]));
+  const k = 0.9 / mx; for (let i = 0; i < n; i++) y[i] *= k;
+  return y;
+}
+
+function aWav(muestras, sr) {
+  const n = muestras.length, ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+  const s = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  s(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); s(8, 'WAVE'); s(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  s(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const c = Math.max(-1, Math.min(1, muestras[i])); v.setInt16(44 + i * 2, c < 0 ? c * 0x8000 : c * 0x7fff, true); }
+  return new Blob([ab], { type: 'audio/wav' });
+}
+
+// ── Piper + caché por frase ───────────────────────────────────────────────
+const WASM_PATHS = {
+  onnxWasm: '/audio/vendor/ort/',
+  piperWasm: '/audio/vendor/piper/piper_phonemize.wasm',
+  piperData: '/audio/vendor/piper/piper_phonemize.data',
+};
+let sesion = null;
+function getSesion() {
+  if (!sesion) {
+    TtsSession._instance = null;
+    sesion = TtsSession.create({
+      voiceId: VOZ, wasmPaths: WASM_PATHS,
+      progress: (ev) => { if (ev && ev.total) estado('Descargando la voz … ' + Math.round(100 * ev.loaded / ev.total) + ' %'); },
+    });
+    sesion.catch(() => { sesion = null; });
+  }
+  return sesion;
+}
+const cache = new Map();   // frase -> Promise<{sin,suave,fuerte}>
+function versiones(frase) {
+  if (cache.has(frase)) return cache.get(frase);
+  const p = (async () => {
+    const s = await getSesion();
+    estado('Calculando …');
+    const blob = await s.predict(frase);
+    const buf = await decodifica(blob);
+    const out = { sin: blob };
+    for (const k of ['suave', 'fuerte']) out[k] = aWav(expande(await ecualiza(buf, FASSUNGEN[k]), buf.sampleRate, FASSUNGEN[k]), buf.sampleRate);
+    estado('');
+    return out;
+  })();
+  cache.set(frase, p);
+  p.catch(() => cache.delete(frase));
+  return p;
+}
+
+function estado(t, cls) { const e = $('estado'); e.textContent = t; e.className = 'estado' + (cls ? ' ' + cls : ''); }
+
+// ── Reproducción ──────────────────────────────────────────────────────────
+let actual = null;
+function para() {
+  if (actual) { actual.a.pause(); URL.revokeObjectURL(actual.url); actual.fin(); actual = null; }
+}
+async function suena(btn, frase, k) {
+  const eraEste = actual && actual.btn === btn;
+  para();
+  if (eraEste) return;
+  btn.disabled = true;
+  let v;
+  try { v = await versiones(frase); }
+  catch (e) { btn.disabled = false; estado('Error: ' + (e && e.message || e), 'bad'); return; }
+  btn.disabled = false;
+  para();
+  const url = URL.createObjectURL(v[k]);
+  const a = new Audio(url);
+  btn.classList.add('laeuft');
+  const card = btn.closest('.card'); card.classList.add('suena');
+  const fin = () => { btn.classList.remove('laeuft'); card.classList.remove('suena'); };
+  actual = { a, url, btn, fin };
+  a.onended = () => { if (actual && actual.a === a) { URL.revokeObjectURL(url); fin(); actual = null; } };
+  a.play().catch(() => { fin(); actual = null; });
+}
+
+function tarjeta(frase) {
+  const c = document.createElement('div'); c.className = 'card';
+  c.innerHTML = '<div class="t"></div><div class="botones"></div>';
+  c.querySelector('.t').textContent = frase;
+  const sub = { sin: 'original', suave: 'poco', fuerte: 'mucho' };
+  for (const k of ['sin', 'suave', 'fuerte']) {
+    const b = document.createElement('button'); b.className = 'b'; b.type = 'button';
+    b.innerHTML = NOMBRE[k] + '<small>' + sub[k] + '</small>';
+    b.onclick = () => suena(b, frase, k);
+    c.querySelector('.botones').appendChild(b);
+  }
+  $('frases').appendChild(c);
+}
+FRASES.forEach(tarjeta);
+$('propiaBtn').onclick = () => {
+  const t = $('propiaTxt').value.replace(/\s+/g, ' ').trim();
+  if (t) { tarjeta(t); $('propiaTxt').value = ''; }
+};
+$('propiaTxt').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('propiaBtn').click(); });
+
+// ── A ciegas ──────────────────────────────────────────────────────────────
+function rondaCiega() {
+  para();
+  const frase = FRASES[Math.floor(Math.random() * FRASES.length)];
+  const orden = ['sin', 'suave', 'fuerte'].sort(() => Math.random() - 0.5);
+  const fila = $('ciegoFila'); fila.innerHTML = ''; $('ciegoRes').textContent = '«' + frase + '»';
+  orden.forEach((k, i) => {
+    const b = document.createElement('button'); b.className = 'b'; b.type = 'button';
+    b.innerHTML = String.fromCharCode(65 + i) + '<small>escuchar</small>';
+    b.onclick = () => suena(b, frase, k);
+    fila.appendChild(b);
+  });
+  const elegir = document.createElement('div'); elegir.className = 'fila';
+  orden.forEach((k, i) => {
+    const b = document.createElement('button'); b.className = 'b'; b.type = 'button';
+    b.innerHTML = 'Me quedo con ' + String.fromCharCode(65 + i);
+    b.onclick = () => {
+      $('ciegoRes').textContent = 'Elegiste ' + String.fromCharCode(65 + i) + ' = ' + NOMBRE[k] + '. (' +
+        orden.map((x, j) => String.fromCharCode(65 + j) + ' = ' + NOMBRE[x]).join(' · ') + ')';
+    };
+    elegir.appendChild(b);
+  });
+  const viejo = document.querySelector('.ciego .elegir'); if (viejo) viejo.remove();
+  elegir.classList.add('elegir');
+  fila.after(elegir);
+}
+$('ciegoNuevo').onclick = rondaCiega;
+rondaCiega();
+</script>
+</body>
+</html>
