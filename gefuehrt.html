@@ -192,9 +192,10 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       spielPinata:'🪅 Πινιάτα', spielGemelos:'🧩 Ζευγάρια', spielOido:'👂 Λεπτό αυτί', spielGolpe:'🥁 Ο τόνος', viewLesson:'Δες το μάθημα', enough:'Αρκετά για σήμερα' }
   };
   var U = T[MUT] || T.de;
-  /* Spikius Hinweis oben auf Thema-, Ort- und Wörterkarte — nur bei den ersten 3 Besuchen (Leo 20.10., Test mit Rolf). */
+  /* Spikius Hinweis oben auf Thema-, Ort- und Wörterkarte, bis der Lerner EIN Geführtes Gespräch ganz durchlaufen hat
+     (bis zur Lektion). Leo 21.10.: Besuche zählen war zu knapp — drei Neuladungen, und Spikiu war weg. */
   var HINWEIS = true;
-  try { var hz = (parseInt(localStorage.getItem('spikiu_hinweis_gefuehrt'), 10) || 0) + 1; localStorage.setItem('spikiu_hinweis_gefuehrt', String(hz)); HINWEIS = hz <= 3; } catch (e) {}
+  try { HINWEIS = localStorage.getItem('spikiu_gefuehrt_einmal_fertig') !== '1'; localStorage.removeItem('spikiu_hinweis_gefuehrt'); } catch (e) {}
   function hinweis(k, text) { if (HINWEIS && O.hinweis) O.hinweis(k, CAPY, text); }
   /* Spikius Abschied in der Zielsprache + Übersetzung in der Muttersprache */
   var ENDE_SP = { es:'¡Muy bien! Hasta mañana.', de:'Sehr gut! Bis morgen.', en:'Well done! See you tomorrow.', el:'Μπράβο! Τα λέμε αύριο.' };
@@ -598,6 +599,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   function lektion() {
     kopf(U.lekTitel, 4);
     sitzRaeumen();
+    try { localStorage.setItem('spikiu_gefuehrt_einmal_fertig', '1'); } catch (e) {}   /* ab jetzt ohne Spikius Wegweiser */
     var lesson = buildLesson();
     try {
       var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
