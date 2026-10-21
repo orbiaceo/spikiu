@@ -600,7 +600,11 @@ function loadRoom(id){if(id==='eintauchen')id='uebung';   // alte Tür „Abente
  CUR=id;try{sessionStorage.setItem('spk_haus_tuer',id);}catch(e){}S=document.getElementById('stage');S.innerHTML='';
  DOORS.forEach(function(D){document.getElementById('door-'+D.id).classList.toggle('on',D.id===id);});
  var tuer=DOORS.filter(function(D){return D.id===id;})[0];
- document.getElementById('subbar').textContent=tuer?tuer.sub:(id==='regal'?H().regalKr:'');
+ /* Übung (Leo, 21.10.): kein Echo der Gruppen „Sprechen/Trainieren“ mehr — stattdessen der
+    nützliche Satz: wo du zuletzt warst, sonst wo du anfangen sollst. */
+ var subTxt=tuer?tuer.sub:(id==='regal'?H().regalKr:'');
+ if(id==='uebung'){var tmp=document.createElement('div');tmp.innerHTML=letzteAktivitaet()||H().anfang;subTxt=tmp.textContent;}
+ document.getElementById('subbar').textContent=subTxt;
  document.getElementById('stage').scrollTop=0;
  if(id==='bibliothek')roomBibliothek();
  if(id==='uebung')roomUebung();
