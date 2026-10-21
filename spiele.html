@@ -484,7 +484,38 @@ function korbDaten(){
   });
   return koerbe.length === 2 ? koerbe : null;
 }
+/* ── FEINES OHR (+ DER SCHLAG): DAUMEN VOR/ZURÜCK (Leo, 21.10.2026, 22:12: „Feines Ohr. Por lo menos adelantar o
+   retroceder con el pulgar.") — links = nächste Runde, auch ungelöst; rechts = schon gelöste Runden ansehen (gesperrt).
+   Feines Ohr geht nach dem richtigen Bild außerdem von selbst weiter (1,5–5 s, wie im Geführten Gespräch). Keine Kinetik. ── */
+var RUECK = [], RBLICK = -1, R_T = null, R_SPIEL = null;
+function rWarte(t){ return Math.min(5000, Math.max(1500, 900 + String(t||'').length * 55)); }
+function rueckBlick(){
+  if (!RUECK.length) return;
+  RBLICK = RBLICK < 0 ? RUECK.length - 1 : Math.max(0, RBLICK - 1); zeigeRueck();
+}
+function zeigeRueck(){
+  clearTimeout(R_T); leeren(); kopf(ui()[R_SPIEL][0]);
+  var c = document.createElement('div'); c.className = 'card'; c.innerHTML = RUECK[RBLICK]; inner.appendChild(c);
+  c.querySelectorAll('button').forEach(function(b){ b.disabled = true; });
+  enden(null);
+}
+(function(){
+  var st = document.getElementById('stage'), x0 = null, y0 = 0;
+  if (!st) return;
+  st.addEventListener('touchstart', function(e){ if (e.touches.length !== 1) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  st.addEventListener('touchend', function(e){
+    if (x0 === null || (ansicht !== 'oido' && ansicht !== 'golpe')) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    clearTimeout(R_T);
+    if (dx < 0) { if (RBLICK >= 0 && RBLICK < RUECK.length - 1) { RBLICK++; zeigeRueck(); } else { RBLICK = -1; neueRunde(R_SPIEL); } }
+    else rueckBlick();
+  }, { passive: true });
+})();
+
 function neueRunde(spiel){
+  clearTimeout(R_T); RBLICK = -1;
+  if (R_SPIEL !== spiel) { RUECK = []; R_SPIEL = spiel; }
   leeren(); kopf(ui()[spiel][0]); ansicht = spiel;
   sichereSitzung({ spiel: spiel }, true);
   var J = window.spikiuJuegos, st = stufeZahl(), karte = null;
@@ -505,7 +536,15 @@ function neueRunde(spiel){
   var c = document.createElement('div'); c.className = 'card'; c.appendChild(karte); inner.appendChild(c);
   aktiv = karte;
   var e = null;
-  karte.addEventListener('jg-done', function(){ if (!e) e = enden(function(){ neueRunde(spiel); }); });
+  karte.addEventListener('jg-done', function(){
+    if (spiel === 'oido' || spiel === 'golpe') { RUECK.push(c.innerHTML); if (RUECK.length > 30) RUECK.shift(); }
+    if (spiel === 'oido') {   // kein zweiter Tipp nötig: von selbst zur nächsten Runde
+      if (!e) e = enden(null);
+      var fb = c.querySelector('.jg-fb'); R_T = setTimeout(function(){ if (ansicht === 'oido' && RBLICK < 0) neueRunde('oido'); }, rWarte(fb ? fb.textContent : ''));
+      return;
+    }
+    if (!e) e = enden(function(){ neueRunde(spiel); });
+  });
 }
 
 function oeffne(id, zustand){
