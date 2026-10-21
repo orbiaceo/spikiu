@@ -213,10 +213,55 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   var railEl = document.getElementById('rail');
   railEl.innerHTML = U.rail.map(function (s) { return '<div class="step"><i></i><b>' + esc(s) + '</b></div>'; }).join('');
   function kopf(ttl, idx) {
-    stumm();
+    stumm(); clearTimeout(AUTO_T); WISCH = null;
     document.getElementById('ttl').textContent = ttl;
     railEl.querySelectorAll('.step').forEach(function (s, i) { s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx); });
   }
+  /* ── WEITER VON SELBST + DAUMEN (Leo, 21.10.2026, 21:31/21:38): nach dem richtigen Tipp keine zweite
+     Berührung „noch eins ›" — die Karte zeigt die Lösung, wartet nach Textlänge 1,5–5 s und geht von selbst
+     weiter. Mit dem Daumen jederzeit vor UND zurück: zurück zeigt die schon gelösten Karten (nur ansehen),
+     vor geht weiter — auch OHNE zu lösen („die Items können schon bekannt sein, ihn zur Arbeit zu zwingen
+     ist keine gute Idee"). Keine Wisch-Kinetik (Leo 17.10.): die Karte steht einfach da. ── */
+  var AUTO_T = null, WISCH = null, VERLAUF = [], BLICK = -1, LIVE = null;
+  function wartezeit(txt) { return Math.min(5000, Math.max(1500, 900 + String(txt || '').length * 55)); }
+  function vonSelbst(txt, fn) { clearTimeout(AUTO_T); AUTO_T = setTimeout(fn, wartezeit(txt)); }
+  function wisch(vor, zurueck) { WISCH = { vor: vor, zurueck: zurueck }; }
+  /* Gelöste Karte merken (Rückblick per Daumen). */
+  function merke(k, ttl, idx, z) {
+    var g = k.querySelector('.oh-grid'), f = k.querySelector('.oh-fb'), t = k.querySelector('.oh-task');
+    if (!g) return;
+    VERLAUF.push({ ttl: ttl, idx: idx, task: t ? t.innerHTML : '', grid: g.outerHTML, fb: f ? f.innerHTML : '', z: z });
+    if (VERLAUF.length > 40) VERLAUF.shift();
+  }
+  function zurueckBlick() {
+    if (!VERLAUF.length) return;
+    BLICK = BLICK < 0 ? VERLAUF.length - 1 : Math.max(0, BLICK - 1);
+    zeigeBlick();
+  }
+  function zeigeBlick() {
+    var v = VERLAUF[BLICK]; if (!v) return;
+    kopf(v.ttl, v.idx);
+    var k = O.karte(stage);
+    var t = O.el('p', 'oh-task', v.task); k.appendChild(t);
+    O.big(k, U.anhoeren, function () { sprich(v.z); });
+    var box = O.el('div', ''); box.innerHTML = v.grid; var g = box.firstChild; k.appendChild(g);
+    g.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
+    O.fb(k, v.fb);
+    O.fuss(fussEl, { t: U.genug, go: genug }, null);
+    wisch(function () { if (BLICK < VERLAUF.length - 1) { BLICK++; zeigeBlick(); } else { BLICK = -1; if (LIVE) LIVE(); } }, zurueckBlick);
+  }
+  (function () {
+    var x0 = null, y0 = 0;
+    stage.addEventListener('touchstart', function (e) { if (e.touches.length !== 1) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      if (x0 === null || !WISCH) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+      var w = WISCH; clearTimeout(AUTO_T);
+      if (dx < 0) { if (w.vor) w.vor(); } else if (w.zurueck) w.zurueck();
+    }, { passive: true });
+  })();
+
   var ZURUECK = 'haus.html';
   document.getElementById('back').onclick = function () { location.href = ZURUECK; };
 
@@ -500,7 +545,9 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       var r = O.entdecken(k, items, { art: 'bilder', lang: ZIEL, sprich: sprich, zaehler: U.entZaehler,
         alleGehoert: function () { document.getElementById('oh-rechts').disabled = false; setTimeout(function () { if (r.fb.isConnected) r.fb.innerHTML = '<span>' + esc(U.entFertig) + '</span>'; }, 1600); } });
       if (HINWEIS && !WS.lot && r.grid.firstChild) r.grid.firstChild.classList.add('oh-puls');
-      O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.erkennen, pri: true, aus: true, go: function () { WS.phase = 'r'; WS.stapel = erkennenStapel(); WS.runden = WS.stapel.length; WS.runde = 0; woerter(); } });
+      var zuErkennen = function () { WS.phase = 'r'; WS.stapel = erkennenStapel(); WS.runden = WS.stapel.length; WS.runde = 0; woerter(); };
+      O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.erkennen, pri: true, aus: true, go: zuErkennen });
+      LIVE = woerter; wisch(zuErkennen, zurueckBlick);
       return;
     }
     if (WS.phase === 'r') {
@@ -520,9 +567,13 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
         fertig: function (sauber) {
           WS.stapel.shift(); WS.runde++;
           if (sauber) WS.treffer[i]++; else { WS.stapel.splice(Math.min(WS.stapel.length, 2), 0, i); WS.runden++; }
-          sitzSpeichern(); document.getElementById('oh-rechts').disabled = false;
+          sitzSpeichern(); geloest = true; merke(k, U.erkTitel, 1, w.z);
+          vonSelbst(w.z + w.tr + (w.lt || ''), woerter);
         } });
-      O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.nochEins, pri: true, aus: true, go: woerter });
+      var geloest = false;
+      O.fuss(fussEl, { t: U.genug, go: genug }, null);
+      LIVE = woerter;
+      wisch(function () { if (!geloest) { WS.stapel.shift(); WS.runde++; sitzSpeichern(); } woerter(); }, zurueckBlick);   // vor: auch ungelöst weiter
       return;
     }
     /* Sätze für den Tisch */
@@ -532,7 +583,9 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     lotLeiste(k);
     var r2 = O.entdecken(k, STOFF.saetze, { lang: ZIEL, sprich: sprich, zaehler: U.satzZaehler,
       alleGehoert: function () { document.getElementById('oh-rechts').disabled = false; setTimeout(function () { if (r2.fb.isConnected) r2.fb.innerHTML = '<span>' + esc(U.satzFertig) + '</span>'; }, 1600); } });
-    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.hoeren, pri: true, aus: true, go: function () { HS = null; hoeren(); } });
+    var zuHoeren = function () { HS = null; hoeren(); };
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.hoeren, pri: true, aus: true, go: zuHoeren });
+    LIVE = woerter; wisch(zuHoeren, zurueckBlick);
   }
 
   /* ═══ 2 · HÖREN ═══ */
@@ -549,8 +602,14 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     O.runde(k, { sprich: sprich, auto: h.z, liste: true,
       kacheln: [{ ok: true, html: '<span class="oh-tz" lang="' + ZIEL + '">' + esc(h.z) + '</span>' }].concat(h.falsch.slice(0, 3).map(function (f) { return { html: '<span class="oh-tz" lang="' + ZIEL + '">' + esc(f) + '</span>', falsch: esc(U.hoerFalsch) }; })),
       richtig: '<span><em>' + esc(h.z) + '</em>' + (h.tr ? '<br>= ' + esc(h.tr) : '') + '</span>',
-      fertig: function (sauber) { HS.stapel.shift(); HS.n++; if (sauber) ERG.hoeren++; else HS.stapel.push(i); sitzSpeichern(); document.getElementById('oh-rechts').disabled = false; } });
-    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.weiter, pri: true, aus: true, go: hoeren });
+      fertig: function (sauber) {
+        HS.stapel.shift(); HS.n++; if (sauber) ERG.hoeren++; else HS.stapel.push(i); sitzSpeichern();
+        geloest = true; merke(k, U.hoerTitel, 2, h.z); vonSelbst(h.z + (h.tr || ''), hoeren);
+      } });
+    var geloest = false;
+    O.fuss(fussEl, { t: U.genug, go: genug }, null);
+    LIVE = hoeren;
+    wisch(function () { if (!geloest) { HS.stapel.shift(); HS.n++; sitzSpeichern(); } hoeren(); }, zurueckBlick);
   }
 
   /* ═══ 3 · SPRECHEN (Rollenspiel) ═══ */
@@ -568,6 +627,9 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       richtig: '<span>' + (s.ok.tr ? '= ' + esc(s.ok.tr) + '<br>' : '') + esc(U.sprLaut) + '</span>',
       fertig: function () { ERG.sprechen++; sitzSpeichern(); document.getElementById('oh-rechts').disabled = false; } });
     O.fuss(fussEl, { t: U.genug, go: genug }, { t: i + 1 < RP.schritte.length ? U.weiter : U.lektion, pri: true, aus: true, go: function () { sprechen(i + 1); } });
+    /* Sprechen bleibt beim Knopf: nach dem Tipp soll der Lerner den Satz LAUT sagen — nicht wegziehen. Daumen geht trotzdem. */
+    LIVE = function () { sprechen(i); };
+    wisch(function () { sprechen(i + 1); }, i > 0 ? function () { sprechen(i - 1); } : zurueckBlick);
   }
 
   /* ═══ 4 · LEKTION (gespeichert in „Deine Lektionen", gerendert von karten-engine) ═══ */
