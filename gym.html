@@ -90,7 +90,29 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .aus-src{font:600 .76rem/1 'DM Mono',monospace;color:#8a8378}
 .aus-buch{border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);font:800 .82rem/1 'DM Sans';padding:.45rem .85rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
 .aus-buch.drin{background:#dff2e5;box-shadow:none;cursor:default}
-@media (prefers-reduced-motion:reduce){.card-hint{animation:none;}}
+/* ── Vierer + Feines Ohr (Leo, 21.10.2026: „Perfecto, tal como está en este prototipo") ──
+   Vier Wortkarten am Stück, der Ton kommt von selbst; danach eine Ohr-Runde je Wort
+   über genau diese vier (Hören → Bedeutung tippen). Ersetzt bei „Wörter" die
+   Einzelfrage „Was bedeutet dieses Wort?" nach jeder Karte. Vorlage: prototyp-wortschatz-vierer.html */
+.vl{display:flex;gap:6px}.vl b{width:8px;height:8px;border-radius:50%;background:#dfe6e0}.vl b.da{background:#9fc9d6}.vl b.jetzt{background:var(--green)}
+.gym-speak.wartet{animation:gymWink 1.4s ease infinite}
+@keyframes gymWink{50%{box-shadow:0 0 0 8px rgba(31,147,176,.25),3px 3px 0 var(--ink)}}
+.gym-tipp{font:600 .8rem var(--f-ui,'DM Sans');color:var(--muted);min-height:1.2em}
+.card.ohr{justify-content:flex-start;gap:12px;padding:16px 14px 10px}
+.ohr-task{font:500 1.12rem/1.35 'Lora',Georgia,serif;margin:0;text-wrap:balance}
+.ohr-big{flex:0 0 auto;background:#ffd24a;color:var(--ink);border:var(--ow) solid var(--ink);border-radius:100px;box-shadow:3px 4px 0 var(--ink);padding:.6rem 1.8rem;font:800 1.15rem 'DM Sans',sans-serif;cursor:pointer}
+.ohr-big:active,.ohr-tile:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.ohr-grid{flex:1 1 0;min-height:220px;width:100%;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(90px,1fr);gap:12px}
+.ohr-tile{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;min-width:0;min-height:0;color:var(--ink);font:inherit}
+.ohr-tile img{width:auto;height:auto;max-width:60%;max-height:58%;min-height:0;flex:0 1 auto}
+.ohr-tile .ohr-tn{font:800 clamp(1rem,4.4vw,1.2rem)/1.2 'DM Sans',sans-serif;text-wrap:balance;overflow-wrap:anywhere}
+.ohr-tile.ok{background:#c7e89a}
+.ohr-tile.no{background:#fbf0e0;border-color:#c67a1e;opacity:.6;box-shadow:none}
+.ohr-tile[disabled]{cursor:default}
+.ohr-fb{flex:0 0 auto;min-height:2.6em;display:flex;align-items:center;justify-content:center;font:700 1.02rem/1.3 'DM Sans',sans-serif;color:#2f6b3a;text-wrap:balance}
+.ohr-fb em{font:600 1.08rem 'Lora',serif;font-style:normal}
+.ohr-fb.soft{color:#c67a1e}
+@media (prefers-reduced-motion:reduce){.card-hint{animation:none;}.gym-speak.wartet{animation:none}}
 /* Ohne Wisch-Kinetik (Leo, 17.10.2026: „eliminar ese efecto … simplemente hacer aparecer la siguiente tarjeta, sea con el botón o como en Reel“): Karten erscheinen ohne Gleiten. */
 .card,.card.deck-current,.card.deck-next,.card.deck-past{transform:none!important;transition:none!important}
 .card.deck-next,.card.deck-past{visibility:hidden}
@@ -158,6 +180,13 @@ var UI = {
        addTitle:'Πρόσθεσε μια λέξη', phWort:'Λέξη (γλώσσα που μαθαίνεις)', phTr:'Μετάφραση', save:'Αποθήκευση', cancel:'Ακύρωση', added:'Προστέθηκε ✓' }
 };
 function ui(){ return UI[uiLang()] || UI.de; }
+var OHR_UI = {
+  de:{ titel:'Feines Ohr', task:'Hör gut zu und tipp, was es bedeutet.', hoer:'🔊 Anhören', nicht:'Nicht ganz. Hör noch einmal hin.', tippTon:'Tipp einmal irgendwo, dann spricht Spikiu.' },
+  es:{ titel:'Oído fino', task:'Escucha bien y toca lo que significa.', hoer:'🔊 Escuchar', nicht:'Casi. Escucha otra vez.', tippTon:'Toca una vez en cualquier sitio y Spikiu habla.' },
+  en:{ titel:'Sharp Ear', task:'Listen closely and tap what it means.', hoer:'🔊 Listen', nicht:'Not quite. Listen again.', tippTon:'Tap anywhere once and Spikiu will speak.' },
+  el:{ titel:'Καλό αυτί', task:'Άκου καλά και πάτα τι σημαίνει.', hoer:'🔊 Άκου', nicht:'Σχεδόν. Άκου ξανά.', tippTon:'Πάτα μία φορά οπουδήποτε και ο Spikiu μιλάει.' }
+};
+function oui(){ return OHR_UI[uiLang()] || OHR_UI.de; }
 
 var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
 var CAPY_SVG = '<svg viewBox="0 0 80 80" fill="none">'
@@ -188,6 +217,37 @@ function playFrom(btn, text){
   var loading = !voiceReady; if (btn){ btn.classList.add(loading ? 'loading' : 'playing'); }
   var fin = function(){ voiceReady = true; if (btn){ btn.classList.remove('loading'); btn.classList.remove('playing'); } };
   var p = speakText(text); if (p && p.then){ p.then(fin, fin); } else { setTimeout(fin, 1400); }
+}
+
+// ── Ton von selbst (Leo, 21.10.): Karte erscheint → Wort klingt; 🔊 nur zum Wiederholen.
+// Browser erlauben Ton erst nach der ersten Berührung auf DIESER Seite. Bis dahin wartet
+// das Wort (🔊 winkt) und klingt beim ersten Tipp irgendwo — danach immer von selbst.
+var tonFrei = false, tonWartend = null;
+document.addEventListener('pointerdown', function(){
+  if (tonFrei) return; tonFrei = true; ohrKlangWecken();
+  [].forEach.call(document.querySelectorAll('.gym-tipp'), function(t){ t.textContent = ''; });
+  if (tonWartend){ var f = tonWartend; tonWartend = null; setTimeout(f, 60); }
+}, true);
+function autoSprich(text, knopf, karte){
+  var los = function(){ if (karte && stepEls[pointer] !== karte) return; if (knopf){ knopf.classList.remove('wartet'); playFrom(knopf, text); } else speakText(text); };
+  if (tonFrei) { tonWartend = null; setTimeout(los, 380); }
+  else { tonWartend = los; if (knopf) knopf.classList.add('wartet'); }
+}
+// Richtig / nicht ganz: dieselben Dateien wie Feines Ohr (audio/spiel/).
+var ohrCtx = null, ohrBuf = {}, OHR_KLANG = { ok:'/audio/spiel/richtig.wav', no:'/audio/spiel/nicht-ganz.wav' };
+function ohrKlangWecken(){
+  var AC = window.AudioContext || window.webkitAudioContext; if (!AC || ohrCtx || !window.fetch) return;
+  try { ohrCtx = new AC(); } catch(e){ return; }
+  Object.keys(OHR_KLANG).forEach(function(k){
+    fetch(OHR_KLANG[k]).then(function(r){ return r.ok ? r.arrayBuffer() : null; })
+      .then(function(ab){ if (!ab) return; var fertig = function(b){ ohrBuf[k] = b; }; var pr = ohrCtx.decodeAudioData(ab, fertig, function(){}); if (pr && pr.then) pr.then(fertig, function(){}); })
+      .catch(function(){});
+  });
+}
+function ohrKlang(ok){
+  var k = ok ? 'ok' : 'no';
+  if (ohrCtx && ohrBuf[k]){ try { if (ohrCtx.state === 'suspended') ohrCtx.resume(); var q = ohrCtx.createBufferSource(); q.buffer = ohrBuf[k]; q.connect(ohrCtx.destination); q.start(0); return; } catch(e){} }
+  try { new Audio(OHR_KLANG[k]).play().catch(function(){}); } catch(e){}
 }
 
 // ── Quelle: Starter-Wortschatz + eigene Wörter (localStorage) ──
@@ -386,7 +446,7 @@ function baueFilter(){
 }
 function neuStart(p){
   stepEls.forEach(function(c){ if (c && c.parentNode) c.parentNode.removeChild(c); });
-  stepEls = []; forced = {}; UNITS = buildUnits(); pointer = 0;
+  stepEls = []; UNITS = buildUnits(); PLAN = []; wortZeiger = 0; pointer = 0; zuletztGesagt = null; clearTimeout(ohrWeiterT);
   for (var k = 0; k <= (p || 0); k++) ensureStep(k);
   pointer = p || 0; deckLayout();
 }
@@ -401,7 +461,8 @@ function sitzSichern(){
 var deck = document.getElementById('deck');
 var stepEls = [];
 var pointer = 0;
-var forced = {};   // step-Index → erzwungene Wort-Karte (für gerade hinzugefügte Wörter)
+var PLAN = [];      // Schrittfolge: {typ:'wort'|'ohr'|'satz'|'aus', i, ueb?, block?, ziel?, n?}
+var wortZeiger = 0, zuletztGesagt = null, ohrWeiterT = null;
 
 function deckLayout(){
   for (var i=0;i<stepEls.length;i++){
@@ -410,6 +471,11 @@ function deckLayout(){
     c.classList.add(i < pointer ? 'deck-past' : (i === pointer ? 'deck-current' : 'deck-next'));
   }
   var b = document.getElementById('btnBack'); if (b) b.disabled = pointer <= 0;
+  var cur = stepEls[pointer];
+  if (cur && cur !== zuletztGesagt){
+    zuletztGesagt = cur; tonWartend = null; clearTimeout(ohrWeiterT);
+    if (cur._sag && !cur._geloest) autoSprich(cur._sag, cur.querySelector('.gym-speak'), cur);
+  }
 }
 
 // Emoji → self-hosted OpenMoji-SVG (bilder/om-<Codepunkte>.svg), wie in proverbios.html.
@@ -420,15 +486,23 @@ function omIcon(e){
   return '<img class="word-icon" src="' + src + '" alt="" aria-hidden="true" width="96" height="96">';
 }
 
-function makeWordCard(wi){
+function vierLot(n, ges){
+  var h = '<div class="vl" aria-hidden="true">';
+  for (var i=0;i<ges;i++) h += '<b class="' + (i < n ? 'da' : (i === n ? 'jetzt' : '')) + '"></b>';
+  return h + '</div>';
+}
+function wortIcon(wd){ return (window.spikiuIcon && ((wd.konzept && window.spikiuIcon.konzept(wd.konzept)) || window.spikiuIcon(wd.wort))) || wd.icon; }
+function makeWordCard(wi, pos, ges){
   var wd = WORDS[wi] || { wort:'', tr:'', text:'' };
   var card = document.createElement('div'); card.className = 'card wort';
-  card.innerHTML =
-        omIcon((window.spikiuIcon && ((wd.konzept && window.spikiuIcon.konzept(wd.konzept)) || window.spikiuIcon(wd.wort))) || wd.icon)
+  card._sag = wd.wort;
+  card.innerHTML = (typeof pos === 'number' ? vierLot(pos, ges) : '')
+    +   omIcon((window.spikiuIcon && ((wd.konzept && window.spikiuIcon.konzept(wd.konzept)) || window.spikiuIcon(wd.wort))) || wd.icon)
     + '<div class="gym-wort">' + escPlain(wd.wort) + '</div>'
     + '<button class="gym-speak" type="button" aria-label="Vorlesen">' + SPK_ICON + '</button>'
     + '<div class="gym-tr">' + escPlain(wd.tr) + '</div>'
     + (wd.buch ? '<div class="gym-src">🍃</div>' : wd.own ? '<div class="gym-src">+</div>' : '')
+    + '<div class="gym-tipp">' + (tonFrei ? '' : escPlain(oui().tippTon)) + '</div>'
     ;  /* „weiter wischen“ entfernt (Leo, 15.10.) */
   var sb = card.querySelector('.gym-speak');
   if (sb) sb.onclick = function(){ playFrom(sb, wd.wort); };
@@ -492,19 +566,83 @@ function zeigeWiedersehen(frisch){
   setTimeout(function(){ if (box.parentNode) box.remove(); }, 4000);
 }
 
+// Feines Ohr über die vier gerade gesehenen Wörter: Wort klingt → Bedeutung tippen.
+function makeOhrCard(p){
+  var ziel = WORDS[p.ziel] || { wort:'', tr:'' }, o = oui();
+  var card = document.createElement('div'); card.className = 'card ohr';
+  card._sag = ziel.wort;
+  card.innerHTML = vierLot(p.n, p.block.length)
+    + '<p class="ohr-task">' + escPlain(o.task) + '</p>'
+    + '<button class="ohr-big" type="button">' + escPlain(o.hoer) + '</button>'
+    + '<div class="ohr-grid"></div><div class="ohr-fb" aria-live="polite"></div>';
+  card.querySelector('.ohr-big').onclick = function(){ speakText(ziel.wort); };
+  var grid = card.querySelector('.ohr-grid'), fb = card.querySelector('.ohr-fb'), fehler = 0;
+  if (!p.reihe) p.reihe = mischeKopie(p.block);
+  p.reihe.forEach(function(wi){
+    var wd = WORDS[wi] || { wort:'', tr:'' }, richtig = wi === p.ziel;
+    var t = document.createElement('button'); t.type = 'button'; t.className = 'ohr-tile';
+    var bild = omIcon(wortIcon(wd)).replace('class="word-icon"', 'class="ohr-bild"');
+    t.innerHTML = bild + '<span class="ohr-tn">' + escPlain(wd.tr || wd.wort) + '</span>';
+    var im = t.querySelector('img'); if (im) im.onerror = function(){ im.remove(); };
+    grid.appendChild(t);
+    t.onclick = function(){
+      if (card._geloest) return;
+      if (richtig){
+        card._geloest = true; t.classList.add('ok'); ohrKlang(true);
+        fb.className = 'ohr-fb'; fb.innerHTML = '<em>' + escPlain(ziel.wort) + '</em>&nbsp;= ' + escPlain(ziel.tr);
+        [].forEach.call(grid.children, function(c){ c.disabled = true; });
+        meldeWort(ziel, fehler === 0);
+        // wie im Geführten Gespräch: von selbst weiter, Wartezeit nach Textlänge (1,5–5 s)
+        var warte = Math.min(5000, Math.max(1500, 900 + 55 * (String(ziel.wort) + String(ziel.tr)).length));
+        clearTimeout(ohrWeiterT);
+        ohrWeiterT = setTimeout(function(){ if (stepEls[pointer] === card) forward(); }, warte);
+      } else {
+        fehler++; ohrKlang(false); t.classList.add('no'); t.disabled = true;
+        fb.className = 'ohr-fb soft'; fb.textContent = o.nicht;
+      }
+    };
+  });
+  return card;
+}
+function meldeWort(wd, ok){
+  if (!window.SpikiuWoerter) return;
+  try {
+    window.SpikiuWoerter.melde(PROFILE.zielsprache, wd.wort, !!ok, wd.station || null);
+    var frisch = window.SpikiuWoerter.pruefeStationen(PROFILE.zielsprache) || [];
+    if (frisch.length) zeigeWiedersehen(frisch);
+  } catch(e){}
+}
+function mischeKopie(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+// Plan wächst blockweise (endloses Deck). Wörter: 4 Karten → 4 Ohr-Runden (jedes Wort
+// einmal, gemischt). Sätze / Wendungen: wie bisher Karte → Übung.
+function planVerlaengern(){
+  if (FILTER === 'wort' || !UNITS.length || UNITS[0].typ === 'wort'){
+    var n = WORDS.length; if (!n) return false;
+    var block = [];
+    for (var k=0; k < Math.min(4, n); k++) block.push((wortZeiger + k) % n);
+    wortZeiger += block.length;
+    block.forEach(function(wi, pos){ PLAN.push({ typ:'wort', i:wi, pos:pos, ges:block.length }); });
+    if (block.length >= 2) mischeKopie(block).forEach(function(z, pos){ PLAN.push({ typ:'ohr', block:block, ziel:z, n:pos }); });
+    return true;
+  }
+  UNITS.forEach(function(u){ PLAN.push({ typ:u.typ, i:u.i }); PLAN.push({ typ:u.typ, i:u.i, ueb:true }); });
+  return true;
+}
 function ensureStep(i){
-  if (i < 0 || !UNITS.length) return null;
+  if (i < 0) return null;
   if (stepEls[i]) return stepEls[i];
-  var card, unit = UNITS[Math.floor(i / 2) % UNITS.length];
-  if (typeof forced[i - (i % 2)] === 'number') unit = { typ:'wort', i: forced[i - (i % 2)] };
-  if (unit.typ === 'aus') card = (i % 2 === 0) ? makeAusdruckCard(unit.i) : makeAusdruckUebung(unit.i);
-  else if (unit.typ === 'satz') card = (i % 2 === 0) ? makeSatzCard(unit.i) : makeSatzUebung(unit.i);
-  else card = (i % 2 === 0) ? makeWordCard(unit.i) : makeUebungCard(unit.i);
+  while (PLAN.length <= i) if (!planVerlaengern()) return null;
+  var card, p = PLAN[i];
+  if (p.typ === 'aus') card = p.ueb ? makeAusdruckUebung(p.i) : makeAusdruckCard(p.i);
+  else if (p.typ === 'satz') card = p.ueb ? makeSatzUebung(p.i) : makeSatzCard(p.i);
+  else if (p.typ === 'ohr') card = makeOhrCard(p);
+  else card = makeWordCard(p.i, p.pos, p.ges);
   stepEls[i] = card; deck.appendChild(card); deckLayout();
   return card;
 }
-function forward(){ pointer++; ensureStep(pointer); deckLayout(); sitzSichern(); }
-function back(){ if (pointer > 0){ pointer--; deckLayout(); sitzSichern(); } }
+function forward(){ clearTimeout(ohrWeiterT); if (!ensureStep(pointer + 1)) return; pointer++; deckLayout(); sitzSichern(); }
+function back(){ clearTimeout(ohrWeiterT); if (pointer > 0){ pointer--; deckLayout(); sitzSichern(); } }
 
 // ── Daumen: links = weiter, rechts = zurück ──
 function bindSwipe(){
@@ -539,11 +677,10 @@ function saveWord(){
   closeAdd(); toast(ui().added);
   // direkt zeigen: die nächste Wort-Karte wird das neue Wort
   var ni = WORDS.length - 1;
-  var nextWordStep = (pointer % 2 === 0) ? pointer + 2 : pointer + 1;
-  forced[nextWordStep] = ni;
-  pointer = nextWordStep; stepEls[pointer] = makeWordCard(ni);
-  if (!stepEls[pointer].parentNode) deck.appendChild(stepEls[pointer]);
-  deckLayout();
+  ensureStep(pointer);
+  PLAN.splice(pointer + 1, 0, { typ:'wort', i:ni });
+  stepEls.splice(pointer + 1, 0, undefined);
+  forward();
 }
 
 document.getElementById('btnBack').onclick = back;
