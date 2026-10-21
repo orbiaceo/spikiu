@@ -47,10 +47,15 @@ S['C_no']=room(mix([(0,note(440,0.5,KAL,0.005,0.2)),(0.16,note(392,0.6,KAL,0.005
 # D Hauch (sanfter Ton, weicher Einsatz)
 S['D_ok']=lowpass(mix([(0,note(523.3,1.0,PAD,0.05,0.35)),(0.0,note(659.3,1.0,PAD,0.07,0.33)*0.8)],1.05),0.25)
 S['D_no']=lowpass(mix([(0,note(261.6,0.55,PAD,0.04,0.18,glide=-0.03))],0.6),0.25)
+# E Quarte (Leo, 21.10.: „Tomemos A!") — gleiche Lage und Klangfarbe wie D_no (Do⁴),
+#   richtig = Do⁴ kurz → Fa⁴ klingt aus. Ersetzt D_ok als richtig.wav (D_ok: Dur-Terz eine Oktave höher, ermüdend).
+S['E_ok']=lowpass(mix([(0,note(261.6,0.25,PAD,0.025,0.18)),(0.13,note(349.2,0.65,PAD,0.025,0.25))],0.8),0.25)
 out={}
 for k,y in S.items():
-    y=fin(y,-13 if k.endswith('ok') else -16)
+    y=fin(y,-13 if k in ('A_ok','B_ok','C_ok','D_ok') else -16)   # E_ok so leise wie der Fehlton
     data=wav(y); open(k+'.wav','wb').write(data)
     out[k]='data:audio/wav;base64,'+base64.b64encode(data).decode()
     print(k,len(data))
 json.dump(out,open('klaenge.json','w'))
+# Im Spiel aktiv: richtig.wav = E_ok, nicht-ganz.wav = D_no
+import shutil; shutil.copy('E_ok.wav','richtig.wav'); shutil.copy('D_no.wav','nicht-ganz.wav')

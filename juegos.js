@@ -399,7 +399,9 @@
      Vorerst nur Piñata + Globos (Test). ── */
   var KLANG = (function () {
     /* 19.10. (Leo: „D!"): Paar D „Hauch" aus dem Klang-Prototyp — weicher Zweiklang für richtig,
-       tiefer gedämpfter Ton für nicht ganz (auch beim falschen Paar). Erzeugt mit audio/spiel/klaenge-erzeugen.py. */
+       tiefer gedämpfter Ton für nicht ganz (auch beim falschen Paar). Erzeugt mit audio/spiel/klaenge-erzeugen.py.
+       21.10. (Leo: „Tomemos A!"): richtig = Quarte Do⁴ → Fa⁴ (E_ok), gleiche Lage, Klangfarbe und Lautstärke wie
+       der Fehlton Do⁴ — die alte Dur-Terz eine Oktave höher war auf Dauer zu hell/ermüdend. */
     var PFAD = { dur: '/audio/spiel/richtig.wav', moll: '/audio/spiel/nicht-ganz.wav', paarFalsch: '/audio/spiel/nicht-ganz.wav' };
     var ctx = null, buf = {}, roh = {}, geladen = false;
     function kontext() {
