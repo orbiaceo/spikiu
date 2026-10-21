@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6f0">
+<title>Spikiu — Estudio de voz</title>
+<!--
+  WERKZEUG-ROUTE (21.10.2026) — Leos Aufnahmestudio für die eigene Piper-Stimme (VITS, LJSpeech-Format).
+  Eine WAV pro Satz (mono, 16 bit, 22050 Hz, Stille getrimmt) + metadata.csv `id|texto`.
+  Liest window.SpikiuVozGuion aus voz-guion-es.js. Takes in IndexedDB 'spikiu_voz'/'tomas',
+  Position in localStorage 'spikiu_sitzung:grabar-voz'. Nicht im Menü verlinkt. UI auf Spanisch (Leos Wahl).
+-->
+<style>
+  :root { --ink:#2b2118; --warm:#c9956a; --warm-d:#8b5e3c; --bg:#faf6f0; --muted:#7a6a58; --card:#fff; --line:#eadfce;
+          --ok:#3f8f5a; --bad:#b4483c; --rec:#c8372d; --soft:#efe6da; }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+         padding:16px 16px 64px; overflow-x:hidden; }
+  main { max-width:34rem; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+  header { display:flex; align-items:center; gap:12px; }
+  .capy { width:56px; height:56px; flex:0 0 auto; animation:flotar 4s ease-in-out infinite; }
+  @keyframes flotar { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) { .capy { animation:none; } }
+  h1 { font-size:1.2rem; margin:0; }
+  .sub { font-size:.86rem; color:var(--muted); margin:3px 0 0; line-height:1.4; }
+  h2 { font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:0 0 8px; }
+  .card { background:var(--card); border:1.5px solid var(--line); border-radius:18px; padding:14px; min-width:0; }
+  .oculto { display:none !important; }
+  .nota { font-size:.84rem; color:var(--muted); line-height:1.45; margin:6px 0 0; }
+  .calma { font-size:.92rem; color:var(--warm-d); background:var(--soft); border-radius:12px; padding:9px 12px; margin:0; }
+
+  /* Avisos */
+  #avisos { display:flex; flex-direction:column; gap:8px; }
+  .aviso { display:flex; gap:10px; align-items:flex-start; border-radius:14px; padding:10px 12px; font-size:.88rem; line-height:1.45;
+           background:#fdf0e6; border:1.5px solid #ecc9a8; }
+  .aviso.error { background:#fbeceb; border-color:#e3b2ac; color:#7d2a22; }
+  .aviso.info { background:#eef5ef; border-color:#bcd8c3; color:#2d5e3c; }
+  .aviso .txt { flex:1 1 auto; min-width:0; overflow-wrap:anywhere; }
+  .aviso button { flex:0 0 auto; border:none; background:none; font-size:1.1rem; color:inherit; cursor:pointer; padding:0 2px; min-height:auto; }
+
+  /* Botones */
+  button { font:inherit; cursor:pointer; touch-action:manipulation; }
+  .btn { min-height:48px; border-radius:14px; border:1.5px solid var(--line); background:#fff; color:var(--ink); padding:10px 14px;
+         font-size:.95rem; font-weight:600; }
+  .btn:disabled { opacity:.4; cursor:not-allowed; }
+  .btn.prim { background:var(--warm); border-color:var(--warm); color:#fff; }
+  .btn.ok { background:var(--ok); border-color:var(--ok); color:#fff; }
+  .btn.peligro { background:#fff; border-color:var(--bad); color:var(--bad); }
+  .fila { display:flex; gap:8px; flex-wrap:wrap; }
+  .fila > .btn { flex:1 1 0; min-width:0; }
+
+  /* Modo */
+  .modos { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .modo { min-height:88px; border-radius:16px; border:1.5px solid var(--line); background:#fff; text-align:left; padding:12px; }
+  .modo strong { display:block; font-size:1rem; }
+  .modo span { display:block; font-size:.8rem; color:var(--muted); margin-top:4px; line-height:1.35; }
+  .modo.activo { border-color:var(--warm); background:#fdf7f0; }
+
+  /* Tarjeta principal */
+  .cabeza { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .tipo { display:inline-block; font-size:.74rem; font-weight:600; padding:3px 10px; border-radius:99px; background:var(--soft); color:#6b5942; }
+  .contador { font-size:.86rem; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .progreso { height:6px; background:var(--soft); border-radius:99px; overflow:hidden; margin:10px 0 0; }
+  .progreso > div { height:100%; background:var(--warm); width:0; transition:width .3s; }
+  .frase { font-size:clamp(1.55rem, 7vw, 2.1rem); line-height:1.3; font-weight:600; margin:18px 0 6px; overflow-wrap:anywhere; min-height:2.6em; }
+  .frase.larga { font-size:clamp(1.25rem, 5.4vw, 1.6rem); }
+  .pista { font-size:.92rem; color:var(--warm-d); margin:0; }
+  .meta { font-size:.8rem; color:var(--muted); margin:6px 0 0; min-height:1.2em; }
+  .meta.ok { color:var(--ok); }
+
+  .medidor { height:14px; background:var(--soft); border-radius:99px; overflow:hidden; margin:16px 0 0; position:relative; }
+  .medidor > div { height:100%; width:0; background:var(--ok); transition:width .06s linear; }
+  .medidor.alto > div { background:var(--rec); }
+  .medidor .marca { position:absolute; top:0; bottom:0; width:2px; background:rgba(43,33,24,.25); }
+  .medidor-txt { display:flex; justify-content:space-between; font-size:.72rem; color:var(--muted); margin-top:3px; font-variant-numeric:tabular-nums; }
+
+  .grabar-zona { display:flex; justify-content:center; margin:18px 0 6px; }
+  #btnGrabar { width:132px; height:132px; border-radius:50%; border:none; background:var(--warm); color:#fff; font-size:1.05rem; font-weight:700;
+               box-shadow:0 6px 18px rgba(201,149,106,.4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; }
+  #btnGrabar .punto { width:26px; height:26px; border-radius:50%; background:#fff; }
+  #btnGrabar.grabando { background:var(--rec); box-shadow:0 0 0 0 rgba(200,55,45,.55); animation:latido 1.4s ease-out infinite; }
+  #btnGrabar.grabando .punto { border-radius:6px; }
+  #btnGrabar:disabled { opacity:.5; }
+  @keyframes latido { 0% { box-shadow:0 0 0 0 rgba(200,55,45,.55); } 100% { box-shadow:0 0 0 22px rgba(200,55,45,0); } }
+  .tiempo { text-align:center; font-size:.85rem; color:var(--muted); font-variant-numeric:tabular-nums; min-height:1.2em; }
+
+  .controles { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .controles .ancho { grid-column:1 / -1; min-height:56px; font-size:1.02rem; }
+  .chequeos { display:flex; flex-direction:column; gap:6px; margin-top:12px; }
+  .chequeo { font-size:.88rem; border-radius:10px; padding:7px 10px; background:#fdf0e6; color:#7a4a1c; }
+  .chequeo.bien { background:#eef5ef; color:#2d5e3c; }
+
+  .nav { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .nav .ancho { grid-column:1 / -1; }
+
+  /* Lista */
+  .lista-filtros { display:flex; gap:8px; margin-bottom:8px; }
+  .lista-filtros .btn { flex:1 1 0; min-height:40px; font-size:.85rem; }
+  .lista-filtros .btn.activo { border-color:var(--warm); background:#fdf7f0; }
+  #lista { max-height:60vh; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:4px; -webkit-overflow-scrolling:touch; }
+  .item { display:flex; gap:8px; align-items:center; text-align:left; border:1px solid var(--line); background:#fff; border-radius:10px;
+          padding:8px 10px; min-height:44px; font-size:.88rem; width:100%; color:var(--ink); }
+  .item .num { flex:0 0 3.2em; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .item .chk { flex:0 0 1.2em; color:var(--ok); font-weight:700; }
+  .item .t { flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .item.hecha { background:#f6faf6; }
+  .item.actual { border-color:var(--warm); border-width:2px; }
+
+  .zona-peligro { border-color:#e3b2ac; background:#fffafa; }
+  .zona-peligro h2 { color:var(--bad); }
+  .dato { font-variant-numeric:tabular-nums; }
+  .kbd { font-size:.76rem; color:var(--muted); text-align:center; margin:0; }
+  @media (hover: none) { .kbd { display:none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <h1>Estudio de voz</h1>
+      <p class="sub">Una frase, una toma. Todo se guarda en este teléfono en cuanto tocas <em>Guardar</em>.</p>
+    </div>
+  </header>
+
+  <div id="avisos" aria-live="polite"></div>
+
+  <!-- Elegir modo -->
+  <section class="card" id="secModo">
+    <h2>¿Qué grabamos?</h2>
+    <div class="modos">
+      <button class="modo" id="modoPrueba" type="button"><strong>Prueba</strong><span id="modoPruebaTxt">20 frases para afinar micrófono y sala</span></button>
+      <button class="modo" id="modoCompleto" type="button"><strong>Guion completo</strong><span id="modoCompletoTxt">Todas las frases</span></button>
+    </div>
+  </section>
+
+  <!-- Preparación -->
+  <section class="card" id="secPrep">
+    <h2>Sala y micrófono</h2>
+    <div class="fila">
+      <button class="btn" id="btnSilencio" type="button">Medir silencio (4 s)</button>
+    </div>
+    <p class="nota" id="ruidoTxt">Aún no medido. Quédate en silencio cuatro segundos; así sabemos cuánto ruido tiene la sala.</p>
+    <p class="nota" id="micTxt"></p>
+  </section>
+
+  <!-- Tarjeta principal -->
+  <section class="card oculto" id="secFrase">
+    <p class="calma oculto" id="seguimos"></p>
+    <div class="cabeza" style="margin-top:4px">
+      <span class="tipo" id="tipo">—</span>
+      <span class="contador" id="contador">0 / 0</span>
+    </div>
+    <div class="progreso" aria-hidden="true"><div id="barra"></div></div>
+    <p class="frase" id="frase">—</p>
+    <p class="pista" id="pista"></p>
+    <p class="meta" id="metaGrabada"></p>
+
+    <div class="medidor" id="medidor" aria-hidden="true"><div id="medidorBarra"></div><span class="marca" style="left:66.7%"></span><span class="marca" style="left:98.3%"></span></div>
+    <div class="medidor-txt"><span>−60 dB</span><span id="medidorDb">—</span><span>0 dB</span></div>
+
+    <div class="grabar-zona">
+      <button id="btnGrabar" type="button" aria-label="Grabar"><span class="punto"></span><span id="btnGrabarTxt">Grabar</span></button>
+    </div>
+    <div class="tiempo" id="tiempo"></div>
+
+    <div class="chequeos" id="chequeos"></div>
+
+    <div class="controles">
+      <button class="btn" id="btnEscuchar" type="button" disabled>▶ Escuchar</button>
+      <button class="btn" id="btnRepetir" type="button" disabled>↺ Repetir</button>
+      <button class="btn ok ancho" id="btnGuardar" type="button" disabled>✓ Guardar y siguiente</button>
+    </div>
+    <p class="kbd" style="margin-top:10px">Teclado: Espacio = grabar/parar · Enter = guardar y siguiente · ← → = navegar</p>
+  </section>
+
+  <!-- Navegación -->
+  <section class="card oculto" id="secNav">
+    <div class="nav">
+      <button class="btn" id="btnAnterior" type="button">← Anterior</button>
+      <button class="btn" id="btnSiguiente" type="button">Siguiente →</button>
+      <button class="btn ancho" id="btnPrimeraSin" type="button">Ir a la primera sin grabar</button>
+      <button class="btn ancho" id="btnLista" type="button">Ver todas las frases</button>
+    </div>
+    <div class="oculto" id="panelLista" style="margin-top:12px">
+      <div class="lista-filtros">
+        <button class="btn activo" id="filtroTodas" type="button">Todas</button>
+        <button class="btn" id="filtroSin" type="button">Sin grabar</button>
+        <button class="btn" id="filtroCon" type="button">Grabadas</button>
+      </div>
+      <div id="lista" role="list"></div>
+    </div>
+  </section>
+
+  <!-- Exportar -->
+  <section class="card" id="secExport">
+    <h2>Exportar</h2>
+    <p class="nota" style="margin-top:0" id="exportResumen">—</p>
+    <div class="fila" style="margin-top:10px">
+      <button class="btn prim" id="btnExpNuevo" type="button">Solo lo nuevo</button>
+      <button class="btn" id="btnExpTodo" type="button">Todo</button>
+    </div>
+    <p class="nota" id="exportProgreso"></p>
+    <p class="nota" id="almacen"></p>
+  </section>
+
+  <!-- Zona de peligro -->
+  <section class="card zona-peligro">
+    <h2>Zona de peligro</h2>
+    <p class="nota" style="margin-top:0">Borra todas las tomas de este teléfono. No se puede deshacer. Exporta antes.</p>
+    <div class="fila" style="margin-top:10px">
+      <button class="btn peligro" id="btnBorrar" type="button">Borrar todo</button>
+    </div>
+  </section>
+</main>
+
+<!-- AudioWorklet: se carga vía Blob-URL desde este bloque -->
+<script type="text/plain" id="worklet-captura">
+class SpkCaptura extends AudioWorkletProcessor {
+  constructor() {
+    super();
+    this.tam = 2048;
+    this.buf = new Float32Array(this.tam);
+    this.n = 0;
+  }
+  process(inputs) {
+    const entrada = inputs[0];
+    const canal = entrada && entrada[0];
+    if (canal) {
+      for (let i = 0; i < canal.length; i++) {
+        this.buf[this.n++] = canal[i];
+        if (this.n === this.tam) {
+          this.port.postMessage(this.buf, [this.buf.buffer]);
+          this.buf = new Float32Array(this.tam);
+          this.n = 0;
+        }
+      }
+    }
+    return true;
+  }
+}
+registerProcessor('spk-captura', SpkCaptura);
+</script>
+
+<script src="voz-guion-es.js"></script>
+
+<script>
+// ==== NUCLEO-INICIO (puro, sin DOM: CRC32, WAV, ZIP, análisis) ====
+var SpkVozNucleo = (function () {
+  'use strict';
+
+  var TABLA_CRC = (function () {
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+
+  function crc32(u8, previo) {
+    var c = (previo === undefined ? 0 : previo) ^ 0xFFFFFFFF;
+    for (var i = 0; i < u8.length; i++) c = TABLA_CRC[(c ^ u8[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  // Float32 [-1,1] → WAV mono 16-bit PCM
+  function codificarWav(muestras, frecuencia) {
+    var n = muestras.length;
+    var buf = new ArrayBuffer(44 + n * 2);
+    var v = new DataView(buf);
+    function txt(o, s) { for (var i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); }
+    txt(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); txt(8, 'WAVE');
+    txt(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, frecuencia, true); v.setUint32(28, frecuencia * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    txt(36, 'data'); v.setUint32(40, n * 2, true);
+    var o = 44;
+    for (var i = 0; i < n; i++, o += 2) {
+      var s = muestras[i];
+      if (s > 1) s = 1; else if (s < -1) s = -1;
+      v.setInt16(o, s < 0 ? Math.round(s * 0x8000) : Math.round(s * 0x7FFF), true);
+    }
+    return new Uint8Array(buf);
+  }
+
+  function aDb(x) { return x > 0 ? 20 * Math.log10(x) : -120; }
+
+  function picoDb(muestras) {
+    var p = 0;
+    for (var i = 0; i < muestras.length; i++) { var a = Math.abs(muestras[i]); if (a > p) p = a; }
+    return aDb(p);
+  }
+
+  function rmsDb(muestras, desde) {
+    var s = 0, n = 0;
+    for (var i = desde || 0; i < muestras.length; i++) { s += muestras[i] * muestras[i]; n++; }
+    return n ? aDb(Math.sqrt(s / n)) : -120;
+  }
+
+  // Remuestreo de reserva (lineal con media previa) si OfflineAudioContext falla.
+  function remuestrearLineal(entrada, de, a) {
+    if (de === a) return entrada;
+    var razon = de / a;
+    var salida = new Float32Array(Math.floor(entrada.length / razon));
+    var ventana = Math.max(1, Math.round(razon));
+    for (var i = 0; i < salida.length; i++) {
+      var pos = i * razon, i0 = Math.floor(pos), f = pos - i0;
+      var acc = 0, cnt = 0;
+      for (var k = 0; k < ventana; k++) {
+        var j = i0 + k - (ventana >> 1);
+        if (j >= 0 && j + 1 < entrada.length) { acc += entrada[j] * (1 - f) + entrada[j + 1] * f; cnt++; }
+      }
+      salida[i] = cnt ? acc / cnt : 0;
+    }
+    return salida;
+  }
+
+  // Recorte de silencio: umbral relativo al pico (en tramas de 10 ms) y al ruido de fondo.
+  // Devuelve índices [ini, fin) con ~0,15 s de margen y la duración de voz.
+  function analizarRecorte(muestras, frecuencia, ruidoDb, margenS) {
+    var tram = Math.max(1, Math.round(frecuencia * 0.01));
+    var nT = Math.floor(muestras.length / tram);
+    var margen = Math.round(frecuencia * (margenS === undefined ? 0.15 : margenS));
+    if (nT < 3) return { ini: 0, fin: muestras.length, vozIni: 0, vozFin: muestras.length, vozS: muestras.length / frecuencia, umbralDb: null, ruidoTomaDb: null, tocaFinal: false };
+    var dbs = new Float32Array(nT), maxDb = -120;
+    for (var t = 0; t < nT; t++) {
+      var s = 0;
+      for (var i = t * tram; i < (t + 1) * tram; i++) s += muestras[i] * muestras[i];
+      dbs[t] = aDb(Math.sqrt(s / tram));
+      if (dbs[t] > maxDb) maxDb = dbs[t];
+    }
+    var orden = Array.prototype.slice.call(dbs).sort(function (a, b) { return a - b; });
+    var ruidoToma = orden[Math.floor(orden.length * 0.1)];
+    var base = (typeof ruidoDb === 'number' && isFinite(ruidoDb)) ? Math.max(ruidoDb, ruidoToma - 6) : ruidoToma;
+    var umbral = Math.max(base + 12, maxDb - 35);
+    if (umbral >= maxDb) umbral = maxDb - 6;
+    var primero = -1, ultimo = -1;
+    for (t = 0; t < nT - 1; t++) if (dbs[t] > umbral && dbs[t + 1] > umbral) { primero = t; break; }
+    for (t = nT - 1; t > 0; t--) if (dbs[t] > umbral && dbs[t - 1] > umbral) { ultimo = t; break; }
+    if (primero < 0 || ultimo < primero) {
+      return { ini: 0, fin: muestras.length, vozIni: 0, vozFin: muestras.length, vozS: 0, umbralDb: umbral, ruidoTomaDb: ruidoToma, tocaFinal: false };
+    }
+    var vozIni = primero * tram, vozFin = Math.min(muestras.length, (ultimo + 1) * tram);
+    return {
+      ini: Math.max(0, vozIni - margen),
+      fin: Math.min(muestras.length, vozFin + margen),
+      vozIni: vozIni, vozFin: vozFin,
+      vozS: (vozFin - vozIni) / frecuencia,
+      umbralDb: umbral, ruidoTomaDb: ruidoToma,
+      tocaFinal: (muestras.length - vozFin) < frecuencia * 0.06
+    };
+  }
+
+  // Duración mínima plausible para un texto (≈ 15 letras/s hablado tranquilo).
+  function duracionEsperada(texto) {
+    var letras = (String(texto).match(/[\p{L}\p{N}]/gu) || []).length;
+    return Math.max(0.3, letras / 15);
+  }
+
+  // ── ZIP (STORE, sin compresión) ────────────────────────────────
+  var codificador = new TextEncoder();
+
+  function fechaDos(d) {
+    var hora = (d.getHours() << 11) | (d.getMinutes() << 5) | (Math.floor(d.getSeconds() / 2));
+    var dia = ((Math.max(1980, d.getFullYear()) - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+    return { hora: hora & 0xFFFF, dia: dia & 0xFFFF };
+  }
+
+  // archivos: [{ ruta, datos: Uint8Array | Blob, crc?: number }]
+  // Para Blob hace falta crc y tamano calculados antes (ver prepararArchivo).
+  function crearZip(archivos, fecha) {
+    var dos = fechaDos(fecha || new Date());
+    var partes = [], central = [], desplaz = 0, tamCentral = 0;
+    for (var a = 0; a < archivos.length; a++) {
+      var f = archivos[a];
+      var nombreU8 = codificador.encode(f.ruta);
+      var tam = (f.tamano !== undefined) ? f.tamano : f.datos.length;
+      var crc = (f.crc !== undefined) ? f.crc : crc32(f.datos);
+      if (desplaz + 30 + nombreU8.length + tam > 0xFFFFFFFF) throw new Error('El ZIP superaría 4 GB; exporta por partes («Solo lo nuevo»).');
+
+      var loc = new DataView(new ArrayBuffer(30));
+      loc.setUint32(0, 0x04034b50, true); loc.setUint16(4, 20, true); loc.setUint16(6, 0x0800, true); loc.setUint16(8, 0, true);
+      loc.setUint16(10, dos.hora, true); loc.setUint16(12, dos.dia, true); loc.setUint32(14, crc, true);
+      loc.setUint32(18, tam, true); loc.setUint32(22, tam, true); loc.setUint16(26, nombreU8.length, true); loc.setUint16(28, 0, true);
+      partes.push(new Uint8Array(loc.buffer), nombreU8, f.datos);
+
+      var cen = new DataView(new ArrayBuffer(46));
+      cen.setUint32(0, 0x02014b50, true); cen.setUint16(4, 20, true); cen.setUint16(6, 20, true); cen.setUint16(8, 0x0800, true);
+      cen.setUint16(10, 0, true); cen.setUint16(12, dos.hora, true); cen.setUint16(14, dos.dia, true); cen.setUint32(16, crc, true);
+      cen.setUint32(20, tam, true); cen.setUint32(24, tam, true); cen.setUint16(28, nombreU8.length, true); cen.setUint16(30, 0, true);
+      cen.setUint16(32, 0, true); cen.setUint16(34, 0, true); cen.setUint16(36, 0, true); cen.setUint32(38, 0, true);
+      cen.setUint32(42, desplaz, true);
+      central.push(new Uint8Array(cen.buffer), nombreU8);
+      tamCentral += 46 + nombreU8.length;
+      desplaz += 30 + nombreU8.length + tam;
+    }
+    var fin = new DataView(new ArrayBuffer(22));
+    fin.setUint32(0, 0x06054b50, true); fin.setUint16(4, 0, true); fin.setUint16(6, 0, true);
+    fin.setUint16(8, archivos.length, true); fin.setUint16(10, archivos.length, true);
+    fin.setUint32(12, tamCentral, true); fin.setUint32(16, desplaz, true); fin.setUint16(20, 0, true);
+    return new Blob(partes.concat(central, [new Uint8Array(fin.buffer)]), { type: 'application/zip' });
+  }
+
+  function lineaMetadata(id, texto) {
+    return String(id) + '|' + String(texto).replace(/[\r\n|]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  return {
+    crc32: crc32, codificarWav: codificarWav, picoDb: picoDb, rmsDb: rmsDb, aDb: aDb,
+    remuestrearLineal: remuestrearLineal, analizarRecorte: analizarRecorte, duracionEsperada: duracionEsperada,
+    crearZip: crearZip, lineaMetadata: lineaMetadata
+  };
+})();
+// ==== NUCLEO-FIN ====
+</script>
+
+<script>
+(function () {
+  'use strict';
+  var N = SpkVozNucleo;
+  var FREC_SALIDA = 22050;
+  var CLAVE_SESION = 'spikiu_sitzung:grabar-voz';
+  var CLAVE_EXPORTADOS = 'spikiu_voz_exportados';
+  var MAX_TOMA_S = 30;
+  var PREVIO_S = 0.25;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ── Avisos visibles ─────────────────────────────────────────────
+  var avisosVistos = {};
+  function avisar(texto, clase, clave) {
+    if (clave && avisosVistos[clave]) { avisosVistos[clave].querySelector('.txt').innerHTML = texto; return avisosVistos[clave]; }
+    var caja = document.createElement('div');
+    caja.className = 'aviso ' + (clase || '');
+    caja.setAttribute('role', clase === 'error' ? 'alert' : 'status');
+    var t = document.createElement('div'); t.className = 'txt'; t.innerHTML = texto;
+    var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Cerrar'); x.textContent = '×';
+    x.onclick = function () { caja.remove(); if (clave) delete avisosVistos[clave]; };
+    caja.appendChild(t); caja.appendChild(x);
+    $('avisos').appendChild(caja);
+    if (clave) avisosVistos[clave] = caja;
+    return caja;
+  }
+  function quitarAviso(clave) { if (avisosVistos[clave]) { avisosVistos[clave].remove(); delete avisosVistos[clave]; } }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  window.addEventListener('error', function (ev) { avisar('Error inesperado: ' + esc(ev.message || ev.error), 'error'); });
+  window.addEventListener('unhandledrejection', function (ev) {
+    var r = ev.reason; avisar('Error inesperado: ' + esc((r && (r.message || r.name)) || r), 'error');
+  });
+
+  // ── Guion ───────────────────────────────────────────────────────
+  var DEMO = [
+    { id: 'demo_0001', texto: 'renovar.', tipo: 'palabra', prueba: true },
+    { id: 'demo_0002', texto: 'El billete está en la mesa.', tipo: 'afirmativa', prueba: true },
+    { id: 'demo_0003', texto: '¿Tienes el móvil cargado?', tipo: 'pregunta_si_no', prueba: true },
+    { id: 'demo_0004', texto: '¡Qué bonito día hace hoy!', tipo: 'exclamativa', prueba: true },
+    { id: 'demo_0005', texto: '¿Prefieres té o café?', tipo: 'pregunta_disyuntiva', prueba: true }
+  ];
+  var guion = window.SpikiuVozGuion;
+  var frasesTodas;
+  if (!guion || !Array.isArray(guion.frases) || !guion.frases.length) {
+    avisar('No encontré el guion (<code>voz-guion-es.js</code>). Uso 5 frases de demostración para que puedas probar la página. <em>No grabes en serio así.</em>', 'error', 'guion');
+    guion = { version: 0, idioma: 'es', frases: DEMO };
+  }
+  frasesTodas = guion.frases.filter(function (f) { return f && f.id && typeof f.texto === 'string'; });
+  (function () {
+    var vistos = {}, dup = [];
+    frasesTodas.forEach(function (f) { if (vistos[f.id]) dup.push(f.id); vistos[f.id] = true; });
+    if (dup.length) avisar('El guion tiene ids repetidos: ' + esc(dup.slice(0, 5).join(', ')) + '. Las tomas se sobrescribirían entre sí.', 'error');
+  })();
+  var porId = {};
+  frasesTodas.forEach(function (f, i) { porId[f.id] = f; f._i = i; });
+  var frasesPrueba = frasesTodas.filter(function (f) { return f.prueba; });
+
+  var TIPOS = {
+    palabra:             ['palabra', 'Clara, como en un diccionario.'],
+    articulo:            ['artículo + palabra', 'Clara, como en un diccionario.'],
+    afirmativa:          ['afirmación', 'Natural y tranquila; baja al final.'],
+    imperativa:          ['orden', 'Firme pero amable.'],
+    pregunta_si_no:      ['pregunta sí/no', 'Sube al final.'],
+    pregunta_abierta:    ['pregunta abierta', 'Arranca arriba en la palabra interrogativa, baja al final.'],
+    pregunta_disyuntiva: ['pregunta: ¿esto o aquello?', 'Sube en la primera opción, baja en la última.'],
+    exclamativa:         ['exclamación', 'Con emoción, sin gritar.'],
+    numeros:             ['números', 'Despacio y completo, cada cifra entera.'],
+    dialogo:             ['diálogo', 'Como si hablaras con alguien enfrente.']
+  };
+
+  // ── Estado ──────────────────────────────────────────────────────
+  var zustand = {
+    modo: null,          // 'prueba' | 'completo'
+    pos: 0,              // índice dentro de la lista del modo
+    ruidoDb: null,
+    ruidoFecha: null,
+    capturaHz: null
+  };
+  var grabadas = {};     // id → { fecha, texto, dur, picoDb }
+  var tomaPendiente = null; // { id, wav: Blob, dur, picoDb, chequeos, texto }
+  var filtroLista = 'todas';
+
+  function lista() { return zustand.modo === 'prueba' ? frasesPrueba : frasesTodas; }
+  function fraseActual() { var l = lista(); return l[Math.min(Math.max(zustand.pos, 0), l.length - 1)]; }
+
+  // ── Persistencia: localStorage (posición) ───────────────────────
+  var temporizadorSesion = null;
+  function guardarSesion() {
+    clearTimeout(temporizadorSesion);
+    temporizadorSesion = setTimeout(function () {
+      try {
+        var f = fraseActual();
+        localStorage.setItem(CLAVE_SESION, JSON.stringify({
+          modo: zustand.modo, pos: zustand.pos, id: f ? f.id : null,
+          ruidoDb: zustand.ruidoDb, ruidoFecha: zustand.ruidoFecha, capturaHz: zustand.capturaHz, ts: Date.now()
+        }));
+      } catch (e) { avisar('No pude guardar la posición (localStorage bloqueado). Las tomas sí se guardan.', '', 'ls'); }
+    }, 350);
+  }
+  function cargarSesion() {
+    try { var raw = localStorage.getItem(CLAVE_SESION); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+  }
+  function leerExportados() {
+    try { return JSON.parse(localStorage.getItem(CLAVE_EXPORTADOS) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function escribirExportados(mapa) {
+    try { localStorage.setItem(CLAVE_EXPORTADOS, JSON.stringify(mapa)); } catch (e) { avisar('No pude anotar qué se exportó; «Solo lo nuevo» podría repetir tomas.', ''); }
+  }
+
+  // ── Persistencia: IndexedDB (tomas) ─────────────────────────────
+  var dbPromesa = null;
+  function abrirDb() {
+    if (dbPromesa) return dbPromesa;
+    dbPromesa = new Promise(function (ok, mal) {
+      if (!window.indexedDB) { mal(new Error('Este navegador no tiene IndexedDB.')); return; }
+      var pet = indexedDB.open('spikiu_voz', 1);
+      pet.onupgradeneeded = function () { if (!pet.result.objectStoreNames.contains('tomas')) pet.result.createObjectStore('tomas'); };
+      pet.onsuccess = function () { ok(pet.result); };
+      pet.onerror = function () { mal(pet.error || new Error('No se pudo abrir IndexedDB.')); };
+      pet.onblocked = function () { mal(new Error('IndexedDB bloqueada: cierra otras pestañas de esta página.')); };
+    });
+    return dbPromesa;
+  }
+  function tx(modoTx, fn) {
+    return abrirDb().then(function (db) {
+      return new Promise(function (ok, mal) {
+        var t = db.transaction('tomas', modoTx), almacen = t.objectStore('tomas'), resultado;
+        resultado = fn(almacen);
+        t.oncomplete = function () { ok(resultado && 'result' in resultado ? resultado.result : resultado); };
+        t.onerror = function () { mal(t.error || new Error('Error de IndexedDB')); };
+        t.onabort = function () { mal(t.error || new Error('Transacción cancelada (¿sin espacio?)')); };
+      });
+    });
+  }
+  function dbGuardar(registro) { return tx('readwrite', function (s) { return s.put(registro, registro.id); }); }
+  function dbLeer(id) { return tx('readonly', function (s) { return s.get(id); }); }
+  function dbBorrarTodo() { return tx('readwrite', function (s) { return s.clear(); }); }
+  function dbResumenes() {
+    return abrirDb().then(function (db) {
+      return new Promise(function (ok, mal) {
+        var mapa = {}, t = db.transaction('tomas', 'readonly');
+        var cur = t.objectStore('tomas').openCursor();
+        cur.onsuccess = function () {
+          var c = cur.result;
+          if (c) { var v = c.value; mapa[c.key] = { fecha: v.fecha, texto: v.texto, dur: v.dur, picoDb: v.picoDb }; c.continue(); }
+        };
+        t.oncomplete = function () { ok(mapa); };
+        t.onerror = function () { mal(t.error); };
+      });
+    });
+  }
+
+  var persistPedido = false;
+  function pedirPersistencia() {
+    if (persistPedido) return; persistPedido = true;
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persisted().then(function (ya) { return ya || navigator.storage.persist(); }).then(function (ok) {
+        if (!ok) avisar('El navegador no garantizó almacenamiento permanente. Exporta con frecuencia (<em>Solo lo nuevo</em>) para no arriesgar nada.', '', 'persist');
+        mostrarAlmacen();
+      }).catch(function () {});
+    }
+  }
+  var almacenPend = null;
+  function mostrarAlmacen() {
+    clearTimeout(almacenPend);
+    almacenPend = setTimeout(function () {
+      if (!(navigator.storage && navigator.storage.estimate)) { $('almacen').textContent = ''; return; }
+      Promise.all([navigator.storage.estimate(), navigator.storage.persisted ? navigator.storage.persisted() : Promise.resolve(false)]).then(function (r) {
+        var e = r[0], mb = function (b) { return (b / 1048576).toFixed(1).replace('.', ',') + ' MB'; };
+        $('almacen').textContent = 'Espacio usado: ' + mb(e.usage || 0) + (e.quota ? ' de ' + mb(e.quota) + ' disponibles' : '') +
+          (r[1] ? ' · almacenamiento permanente ✓' : '');
+      }).catch(function () {});
+    }, 300);
+  }
+
+  // ── Wake Lock ───────────────────────────────────────────────────
+  var bloqueoPantalla = null;
+  function pedirWakeLock() {
+    if (!('wakeLock' in navigator)) { avisar('Este navegador no puede mantener la pantalla encendida; puede apagarse mientras grabas.', '', 'wake'); return; }
+    if (bloqueoPantalla || document.visibilityState !== 'visible') return;
+    navigator.wakeLock.request('screen').then(function (b) {
+      bloqueoPantalla = b; quitarAviso('wake');
+      b.addEventListener('release', function () { bloqueoPantalla = null; });
+    }).catch(function (e) { avisar('No pude mantener la pantalla encendida (' + esc(e.name || e.message) + '). Tócala de vez en cuando.', '', 'wake'); });
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') pedirWakeLock();
+    else if (grabando) detenerGrabacion();
+  });
+
+  // ── Micrófono y captura ─────────────────────────────────────────
+  var flujo = null, ctxAudio = null, nodoFuente = null, nodoCaptura = null, nodoMudo = null;
+  var abriendoMic = null;
+  var grabando = false, midiendo = false;
+  var trozosToma = [], trozosRuido = [], trozosPrevios = [], muestrasPrevias = 0;
+  var muestrasToma = 0, picoReciente = 0, inicioToma = 0;
+
+  function explicarErrorMic(e) {
+    var nm = e && e.name;
+    if (!window.isSecureContext) return 'El micrófono solo funciona con <em>https</em>. Abre la página desde spikiu.com, no desde una dirección http.';
+    if (nm === 'NotAllowedError' || nm === 'SecurityError')
+      return 'Permiso de micrófono denegado. En Chrome (Android): toca el candado ⓘ a la izquierda de la dirección → <em>Permisos</em> → <em>Micrófono</em> → <em>Permitir</em>, y recarga la página. ' +
+             'Si no aparece: Ajustes de Android → Apps → Chrome → Permisos → Micrófono → Permitir.';
+    if (nm === 'NotFoundError' || nm === 'OverconstrainedError') return 'No encontré ningún micrófono. Si usas un micro externo, revisa que esté conectado.';
+    if (nm === 'NotReadableError' || nm === 'AbortError') return 'El micrófono está ocupado por otra app (llamada, grabadora, WhatsApp…). Ciérrala y vuelve a intentarlo.';
+    return 'No pude abrir el micrófono: ' + esc((e && (e.name + ' — ' + e.message)) || e);
+  }
+
+  function abrirMic() {
+    if (flujo && ctxAudio && ctxAudio.state !== 'closed') return ctxAudio.resume().then(function () { return true; });
+    if (abriendoMic) return abriendoMic;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      avisar(explicarErrorMic({ name: 'NoMediaDevices', message: 'navigator.mediaDevices no existe' }), 'error', 'mic');
+      return Promise.resolve(false);
+    }
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    ctxAudio = new Ctx();
+    abriendoMic = navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 }
+    }).then(function (s) {
+      flujo = s;
+      quitarAviso('mic');
+      revisarAjustes(s);
+      nodoFuente = ctxAudio.createMediaStreamSource(s);
+      nodoMudo = ctxAudio.createGain(); nodoMudo.gain.value = 0; nodoMudo.connect(ctxAudio.destination);
+      zustand.capturaHz = ctxAudio.sampleRate;
+      return montarCaptura().then(function () { return ctxAudio.resume(); }).then(function () {
+        s.getAudioTracks().forEach(function (t) {
+          t.addEventListener('ended', function () {
+            avisar('El micrófono se desconectó. Toca <em>Grabar</em> para volver a abrirlo.', 'error', 'mic');
+            cerrarMic();
+          });
+        });
+        return true;
+      });
+    }).catch(function (e) {
+      avisar(explicarErrorMic(e), 'error', 'mic');
+      cerrarMic();
+      return false;
+    }).then(function (r) { abriendoMic = null; return r; });
+    return abriendoMic;
+  }
+
+  function cerrarMic() {
+    if (grabando) { grabando = false; pintarBoton(); }
+    try { if (flujo) flujo.getTracks().forEach(function (t) { t.stop(); }); } catch (e) {}
+    try { if (ctxAudio) ctxAudio.close(); } catch (e) {}
+    flujo = null; ctxAudio = null; nodoFuente = null; nodoCaptura = null;
+  }
+
+  function revisarAjustes(s) {
+    var pista = s.getAudioTracks()[0];
+    if (!pista) return;
+    var aj = pista.getSettings ? pista.getSettings() : {};
+    var activos = [];
+    if (aj.echoCancellation === true) activos.push('cancelación de eco');
+    if (aj.noiseSuppression === true) activos.push('supresión de ruido');
+    if (aj.autoGainControl === true) activos.push('control automático de volumen');
+    var txt = 'Micrófono: ' + esc(pista.label || 'predeterminado');
+    if (aj.sampleRate) txt += ' · ' + aj.sampleRate + ' Hz';
+    if (aj.channelCount) txt += ' · ' + aj.channelCount + ' canal' + (aj.channelCount > 1 ? 'es' : '');
+    $('micTxt').innerHTML = txt;
+    if (activos.length) {
+      avisar('Atención: el teléfono sigue aplicando <em>' + activos.join(', ') + '</em>. Eso altera la voz y empeora el entrenamiento. ' +
+             'Prueba con otro navegador (Chrome actualizado) o desactiva «Mejorar voz / reducción de ruido» en los ajustes del sistema.', 'error', 'procesado');
+    }
+  }
+
+  function montarCaptura() {
+    var codigo = $('worklet-captura').textContent;
+    if (ctxAudio.audioWorklet && typeof AudioWorkletNode !== 'undefined') {
+      var url = URL.createObjectURL(new Blob([codigo], { type: 'application/javascript' }));
+      return ctxAudio.audioWorklet.addModule(url).then(function () {
+        URL.revokeObjectURL(url);
+        nodoCaptura = new AudioWorkletNode(ctxAudio, 'spk-captura', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1], channelCount: 1, channelCountMode: 'explicit' });
+        nodoCaptura.port.onmessage = function (m) { alRecibir(m.data); };
+        nodoFuente.connect(nodoCaptura); nodoCaptura.connect(nodoMudo);
+      }).catch(function (e) {
+        URL.revokeObjectURL(url);
+        console.warn('AudioWorklet falló, uso ScriptProcessor', e);
+        montarScriptProcessor();
+      });
+    }
+    montarScriptProcessor();
+    return Promise.resolve();
+  }
+  function montarScriptProcessor() {
+    if (!ctxAudio.createScriptProcessor) throw new Error('Este navegador no permite capturar audio sin comprimir.');
+    nodoCaptura = ctxAudio.createScriptProcessor(4096, 1, 1);
+    nodoCaptura.onaudioprocess = function (e) { alRecibir(new Float32Array(e.inputBuffer.getChannelData(0))); };
+    nodoFuente.connect(nodoCaptura); nodoCaptura.connect(nodoMudo);
+    avisar('Uso el modo de captura antiguo (ScriptProcessor). Funciona, pero si oyes cortes usa un Chrome actualizado.', '', 'sp');
+  }
+
+  function alRecibir(trozo) {
+    var p = 0;
+    for (var i = 0; i < trozo.length; i++) { var a = trozo[i] < 0 ? -trozo[i] : trozo[i]; if (a > p) p = a; }
+    if (p > picoReciente) picoReciente = p;
+    if (grabando) {
+      trozosToma.push(trozo); muestrasToma += trozo.length;
+      if (muestrasToma > MAX_TOMA_S * ctxAudio.sampleRate) detenerGrabacion();
+    } else {
+      trozosPrevios.push(trozo); muestrasPrevias += trozo.length;
+      var maxPrev = PREVIO_S * ctxAudio.sampleRate;
+      while (trozosPrevios.length > 1 && muestrasPrevias - trozosPrevios[0].length >= maxPrev) muestrasPrevias -= trozosPrevios.shift().length;
+    }
+    if (midiendo) trozosRuido.push(trozo);
+  }
+
+  function unir(trozos) {
+    var total = 0; trozos.forEach(function (t) { total += t.length; });
+    var r = new Float32Array(total), o = 0;
+    trozos.forEach(function (t) { r.set(t, o); o += t.length; });
+    return r;
+  }
+
+  // Medidor
+  var medidorActivo = false;
+  function bucleMedidor() {
+    var db = N.aDb(picoReciente); picoReciente *= 0.6;
+    var ancho = Math.max(0, Math.min(100, (db + 60) / 60 * 100));
+    $('medidorBarra').style.width = ancho + '%';
+    $('medidor').classList.toggle('alto', db >= -1);
+    $('medidorDb').textContent = db > -119 ? Math.round(db) + ' dBFS' : '—';
+    if (grabando) $('tiempo').textContent = (muestrasToma / ctxAudio.sampleRate).toFixed(1).replace('.', ',') + ' s';
+    if (flujo) requestAnimationFrame(bucleMedidor); else { medidorActivo = false; $('medidorBarra').style.width = '0'; }
+  }
+  function arrancarMedidor() { if (!medidorActivo) { medidorActivo = true; requestAnimationFrame(bucleMedidor); } }
+
+  // ── Medir silencio ──────────────────────────────────────────────
+  function veredictoRuido(db) {
+    if (db < -60) return ['excelente', 'bien'];
+    if (db < -50) return ['bien', 'bien'];
+    return ['hay ruido de fondo — busca un sitio más tranquilo (nevera, ventilador, calle…)', 'mal'];
+  }
+  function pintarRuido() {
+    if (typeof zustand.ruidoDb !== 'number') return;
+    var v = veredictoRuido(zustand.ruidoDb);
+    var cuando = zustand.ruidoFecha ? ' (medido ' + new Date(zustand.ruidoFecha).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) + ')' : '';
+    $('ruidoTxt').innerHTML = 'Ruido de fondo: <strong class="dato">' + zustand.ruidoDb.toFixed(1).replace('.', ',') + ' dBFS</strong> — <em>' + v[0] + '</em>' + cuando + '.';
+  }
+  function medirSilencio() {
+    if (grabando || midiendo) return;
+    if (tomaPendiente && !confirm('Hay una toma sin guardar. ¿Descartarla para medir el silencio?')) return;
+    tomaPendiente = null;
+    abrirMic().then(function (ok) {
+      if (!ok) return;
+      arrancarMedidor();
+      midiendo = true; trozosRuido = [];
+      var btn = $('btnSilencio'); btn.disabled = true; $('btnGrabar').disabled = true;
+      var resta = 4;
+      btn.textContent = 'Silencio… ' + resta;
+      var reloj = setInterval(function () {
+        resta--;
+        if (resta > 0) { btn.textContent = 'Silencio… ' + resta; return; }
+        clearInterval(reloj);
+        midiendo = false;
+        var datos = unir(trozosRuido); trozosRuido = [];
+        var saltar = Math.round(0.3 * ctxAudio.sampleRate); // el toque en la pantalla
+        if (datos.length <= saltar) { avisar('No llegó audio del micrófono durante la medición. ¿Está silenciado?', 'error'); }
+        else {
+          // Mediana de tramas de 50 ms: robusta ante un golpe suelto
+          var tram = Math.round(0.05 * ctxAudio.sampleRate), vals = [];
+          for (var i = saltar; i + tram <= datos.length; i += tram) vals.push(N.rmsDb(datos.subarray(i, i + tram)));
+          vals.sort(function (a, b) { return a - b; });
+          zustand.ruidoDb = vals.length ? vals[Math.floor(vals.length / 2)] : N.rmsDb(datos, saltar);
+          zustand.ruidoFecha = Date.now();
+          pintarRuido(); guardarSesion();
+        }
+        btn.disabled = false; btn.textContent = 'Medir silencio otra vez'; $('btnGrabar').disabled = false;
+        pintar();
+      }, 1000);
+    });
+  }
+
+  // ── Grabar ──────────────────────────────────────────────────────
+  var reproductor = null, urlReproduccion = null;
+  function pararReproduccion() {
+    if (reproductor) { try { reproductor.pause(); } catch (e) {} reproductor = null; }
+    if (urlReproduccion) { URL.revokeObjectURL(urlReproduccion); urlReproduccion = null; }
+  }
+
+  function alternarGrabacion() {
+    if (midiendo || procesando) return;
+    if (grabando) { detenerGrabacion(); return; }
+    pararReproduccion();
+    abrirMic().then(function (ok) {
+      if (!ok) return;
+      arrancarMedidor();
+      trozosToma = trozosPrevios.slice(); muestrasToma = muestrasPrevias; // ~0,25 s previos: nada se corta al empezar
+      trozosPrevios = []; muestrasPrevias = 0;
+      inicioToma = performance.now();
+      grabando = true;
+      tomaPendiente = null;
+      pintar();
+    });
+  }
+
+  var procesando = false;
+  function detenerGrabacion() {
+    if (!grabando) return;
+    grabando = false;
+    var crudo = unir(trozosToma); trozosToma = [];
+    var hz = ctxAudio.sampleRate;
+    var f = fraseActual();
+    procesando = true; pintar();
+    $('tiempo').textContent = 'Preparando la toma…';
+    procesarToma(crudo, hz, f).then(function (toma) {
+      tomaPendiente = toma;
+    }).catch(function (e) {
+      avisar('No pude procesar la toma: ' + esc(e.message || e) + '. Vuelve a grabarla.', 'error');
+    }).then(function () { procesando = false; $('tiempo').textContent = ''; pintar(); });
+  }
+
+  function remuestrear(crudo, de, a) {
+    if (de === a) return Promise.resolve(crudo);
+    var Oac = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    if (!Oac) return Promise.resolve(N.remuestrearLineal(crudo, de, a));
+    try {
+      var largo = Math.ceil(crudo.length * a / de);
+      var oac = new Oac(1, largo, a);
+      var b = oac.createBuffer(1, crudo.length, de);
+      b.getChannelData(0).set(crudo);
+      var src = oac.createBufferSource(); src.buffer = b; src.connect(oac.destination); src.start(0);
+      return Promise.resolve(oac.startRendering()).then(function (r) { return new Float32Array(r.getChannelData(0)); })
+        .catch(function () { return N.remuestrearLineal(crudo, de, a); });
+    } catch (e) { return Promise.resolve(N.remuestrearLineal(crudo, de, a)); }
+  }
+
+  function procesarToma(crudo, hz, frase) {
+    if (crudo.length < hz * 0.2) return Promise.reject(new Error('la toma es demasiado corta'));
+    var pico = N.picoDb(crudo);
+    return remuestrear(crudo, hz, FREC_SALIDA).then(function (m) {
+      var an = N.analizarRecorte(m, FREC_SALIDA, zustand.ruidoDb, 0.15);
+      var recorte = m.subarray(an.ini, an.fin);
+      var wav = N.codificarWav(recorte, FREC_SALIDA);
+      var dur = recorte.length / FREC_SALIDA;
+      var chequeos = [];
+      if (pico >= -1) chequeos.push(['Demasiado fuerte: la voz satura (pico ' + pico.toFixed(1).replace('.', ',') + ' dBFS). Aléjate un poco del teléfono.', 'mal']);
+      else if (pico < -20) chequeos.push(['Demasiado bajo (pico ' + pico.toFixed(1).replace('.', ',') + ' dBFS). Acércate o habla un poco más fuerte.', 'mal']);
+      if (an.vozS === 0) chequeos.push(['No detecté voz en la toma.', 'mal']);
+      else if (an.vozS < N.duracionEsperada(frase.texto) * 0.45) chequeos.push(['¿Se cortó? La toma es muy corta para este texto (' + an.vozS.toFixed(1).replace('.', ',') + ' s de voz).', 'mal']);
+      if (an.tocaFinal) chequeos.push(['¿Se cortó? La voz llega hasta el final: espera medio segundo antes de parar.', 'mal']);
+      if (!chequeos.length) chequeos.push(['Bien: pico ' + pico.toFixed(1).replace('.', ',') + ' dBFS · ' + dur.toFixed(1).replace('.', ',') + ' s', 'bien']);
+      return { id: frase.id, texto: frase.texto, wav: new Blob([wav], { type: 'audio/wav' }), dur: dur, picoDb: pico, chequeos: chequeos };
+    });
+  }
+
+  function escuchar() {
+    pararReproduccion();
+    var f = fraseActual();
+    var obtener = tomaPendiente && tomaPendiente.id === f.id ? Promise.resolve(tomaPendiente.wav)
+      : (grabadas[f.id] ? dbLeer(f.id).then(function (r) { return r && r.wav; }) : Promise.resolve(null));
+    obtener.then(function (blob) {
+      if (!blob) return;
+      urlReproduccion = URL.createObjectURL(blob);
+      reproductor = new Audio(urlReproduccion);
+      reproductor.onended = pararReproduccion;
+      return reproductor.play();
+    }).catch(function (e) { avisar('No pude reproducir: ' + esc(e.message || e), 'error'); });
+  }
+
+  function guardarYSiguiente() {
+    var f = fraseActual();
+    if (!tomaPendiente || tomaPendiente.id !== f.id || procesando) {
+      if (!tomaPendiente && grabadas[f.id]) irA(zustand.pos + 1); // ya grabada: Enter solo avanza
+      return;
+    }
+    var toma = tomaPendiente;
+    var registro = { id: toma.id, texto: toma.texto, wav: toma.wav, dur: toma.dur, picoDb: toma.picoDb, fecha: Date.now(), hz: FREC_SALIDA };
+    $('btnGuardar').disabled = true;
+    dbGuardar(registro).then(function () {
+      grabadas[toma.id] = { fecha: registro.fecha, texto: registro.texto, dur: registro.dur, picoDb: registro.picoDb };
+      tomaPendiente = null;
+      pedirPersistencia();
+      mostrarAlmacen();
+      pararReproduccion();
+      $('seguimos').classList.add('oculto');
+      if (zustand.pos < lista().length - 1) irA(zustand.pos + 1, true);
+      else { pintar(); avisar('¡Última frase de este modo guardada! Exporta cuando quieras.', 'info', 'fin'); }
+      pintarExport();
+      if (!$('panelLista').classList.contains('oculto')) pintarLista();
+    }).catch(function (e) {
+      avisar('¡No se pudo guardar la toma! ' + esc(e.message || e) + ' — La toma sigue aquí: exporta lo grabado y libera espacio, luego vuelve a tocar Guardar.', 'error', 'guardar');
+      pintar();
+    });
+  }
+
+  function repetir() {
+    if (grabando || procesando) return;
+    tomaPendiente = null; pararReproduccion();
+    alternarGrabacion();
+  }
+
+  // ── Navegación ──────────────────────────────────────────────────
+  function irA(i, sinPreguntar) {
+    if (grabando || procesando) return;
+    var l = lista();
+    i = Math.max(0, Math.min(l.length - 1, i));
+    if (i === zustand.pos) return;
+    if (!sinPreguntar && tomaPendiente && !confirm('Hay una toma sin guardar. ¿Descartarla?')) return;
+    tomaPendiente = null; pararReproduccion();
+    zustand.pos = i;
+    guardarSesion(); pintar();
+    if (!$('panelLista').classList.contains('oculto')) pintarLista();
+  }
+  function primeraSinGrabar() {
+    var l = lista();
+    for (var i = 0; i < l.length; i++) if (!grabadas[l[i].id]) { irA(i); return; }
+    avisar('Todas las frases de este modo están grabadas.', 'info', 'todas');
+  }
+
+  // ── Pintar ──────────────────────────────────────────────────────
+  function contarGrabadas(l) { var n = 0; l.forEach(function (f) { if (grabadas[f.id]) n++; }); return n; }
+
+  function pintarBoton() {
+    var b = $('btnGrabar');
+    b.classList.toggle('grabando', grabando);
+    $('btnGrabarTxt').textContent = grabando ? 'Parar' : (tomaPendiente ? 'Otra vez' : 'Grabar');
+    b.setAttribute('aria-label', grabando ? 'Parar grabación' : 'Grabar');
+    b.disabled = procesando || midiendo;
+  }
+
+  function pintar() {
+    $('modoPrueba').classList.toggle('activo', zustand.modo === 'prueba');
+    $('modoCompleto').classList.toggle('activo', zustand.modo === 'completo');
+    $('modoPruebaTxt').textContent = frasesPrueba.length + ' frases para afinar micrófono y sala';
+    $('modoCompletoTxt').textContent = 'Las ' + frasesTodas.length + ' frases del guion';
+    if (!zustand.modo) return;
+    $('secFrase').classList.remove('oculto'); $('secNav').classList.remove('oculto');
+    var l = lista(), f = fraseActual();
+    if (!f) return;
+    var tp = TIPOS[f.tipo] || [f.tipo ? String(f.tipo).replace(/_/g, ' ') : 'frase', ''];
+    $('tipo').textContent = tp[0];
+    $('pista').textContent = tp[1];
+    $('contador').textContent = (zustand.pos + 1) + ' / ' + l.length;
+    var hechas = contarGrabadas(l);
+    $('barra').style.width = (l.length ? hechas / l.length * 100 : 0) + '%';
+    var fr = $('frase'); fr.textContent = f.texto; fr.classList.toggle('larga', f.texto.length > 90);
+
+    var g = grabadas[f.id], meta = $('metaGrabada');
+    meta.className = 'meta';
+    if (g) {
+      meta.classList.add('ok');
+      meta.textContent = '✓ Grabada (' + (g.dur || 0).toFixed(1).replace('.', ',') + ' s)' + (tomaPendiente ? ' — la nueva toma la reemplazará al guardar.' : '') +
+        ' · ' + hechas + ' de ' + l.length + ' grabadas';
+      if (g.texto !== f.texto) { meta.className = 'meta'; meta.textContent = '⚠ El texto cambió desde que grabaste esta frase. Vuelve a grabarla.'; }
+    } else meta.textContent = hechas + ' de ' + l.length + ' grabadas';
+
+    pintarBoton();
+    var hayPend = !!(tomaPendiente && tomaPendiente.id === f.id);
+    $('btnEscuchar').disabled = grabando || procesando || !(hayPend || g);
+    $('btnRepetir').disabled = grabando || procesando || !hayPend;
+    $('btnGuardar').disabled = grabando || procesando || !hayPend;
+    $('btnGuardar').textContent = hayPend ? (zustand.pos < l.length - 1 ? '✓ Guardar y siguiente' : '✓ Guardar') : (g ? '✓ Ya guardada' : '✓ Guardar y siguiente');
+    var ch = $('chequeos'); ch.innerHTML = '';
+    if (hayPend) tomaPendiente.chequeos.forEach(function (c) {
+      var d = document.createElement('div'); d.className = 'chequeo' + (c[1] === 'bien' ? ' bien' : ''); d.textContent = c[0]; ch.appendChild(d);
+    });
+    if (!grabando && !procesando) $('tiempo').textContent = '';
+    $('btnAnterior').disabled = zustand.pos === 0 || grabando;
+    $('btnSiguiente').disabled = zustand.pos >= l.length - 1 || grabando;
+  }
+
+  function pintarLista() {
+    var l = lista(), cont = $('lista'), frag = document.createDocumentFragment();
+    cont.innerHTML = '';
+    l.forEach(function (f, i) {
+      var hecha = !!grabadas[f.id];
+      if (filtroLista === 'sin' && hecha) return;
+      if (filtroLista === 'con' && !hecha) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'listitem');
+      b.className = 'item' + (hecha ? ' hecha' : '') + (i === zustand.pos ? ' actual' : '');
+      b.innerHTML = '<span class="num">' + (i + 1) + '</span><span class="chk">' + (hecha ? '✓' : '') + '</span><span class="t">' + esc(f.texto) + '</span>';
+      b.onclick = function () { irA(i); window.scrollTo({ top: $('secFrase').offsetTop - 8, behavior: 'smooth' }); };
+      frag.appendChild(b);
+    });
+    cont.appendChild(frag);
+    var act = cont.querySelector('.actual');
+    if (act) cont.scrollTop = act.offsetTop - cont.offsetTop - 80;
+  }
+
+  function idsGrabadosOrdenados() {
+    return Object.keys(grabadas).sort(function (a, b) {
+      var fa = porId[a], fb = porId[b];
+      if (fa && fb) return fa._i - fb._i;
+      return a < b ? -1 : a > b ? 1 : 0;
+    });
+  }
+  function idsNuevos() {
+    var exp = leerExportados();
+    return idsGrabadosOrdenados().filter(function (id) { return exp[id] !== grabadas[id].fecha; });
+  }
+  function pintarExport() {
+    var todos = idsGrabadosOrdenados().length, nuevos = idsNuevos().length;
+    $('exportResumen').textContent = todos + ' tomas guardadas en este teléfono · ' + nuevos + ' nuevas desde la última exportación.';
+    $('btnExpNuevo').textContent = 'Solo lo nuevo (' + nuevos + ')';
+    $('btnExpTodo').textContent = 'Todo (' + todos + ')';
+    $('btnExpNuevo').disabled = !nuevos || exportando;
+    $('btnExpTodo').disabled = !todos || exportando;
+  }
+
+  // ── Exportar ────────────────────────────────────────────────────
+  var exportando = false;
+  function dos(n) { return (n < 10 ? '0' : '') + n; }
+  function exportar(soloNuevo) {
+    if (exportando) return;
+    var ids = soloNuevo ? idsNuevos() : idsGrabadosOrdenados();
+    if (!ids.length) return;
+    exportando = true; pintarExport();
+    var prog = $('exportProgreso');
+    var archivos = [], metadata = [], hecho = 0, ahora = new Date(), exportadosAhora = {};
+    var cadena = Promise.resolve();
+    ids.forEach(function (id) {
+      cadena = cadena.then(function () { return dbLeer(id); }).then(function (r) {
+        if (!r || !r.wav) throw new Error('falta la toma ' + id + ' en la base de datos');
+        return r.wav.arrayBuffer().then(function (ab) {
+          var u8 = new Uint8Array(ab);
+          // Guardamos el Blob (no el buffer) para no retener todo en memoria
+          archivos.push({ ruta: 'wavs/' + id + '.wav', datos: r.wav, crc: N.crc32(u8), tamano: u8.length });
+          metadata.push(N.lineaMetadata(id, r.texto));
+          exportadosAhora[id] = r.fecha;
+          hecho++;
+          if (hecho % 10 === 0 || hecho === ids.length) prog.textContent = 'Preparando… ' + hecho + ' / ' + ids.length;
+        });
+      });
+    });
+    cadena.then(function () {
+      var enc = new TextEncoder();
+      var csv = enc.encode(metadata.join('\n') + '\n');
+      var totalGuion = frasesTodas.length;
+      var info = [
+        'Spikiu · Estudio de voz',
+        'Fecha de exportación: ' + ahora.toISOString(),
+        'Exportación: ' + (soloNuevo ? 'solo lo nuevo desde la última exportación' : 'todo'),
+        'Guion: idioma ' + (guion.idioma || '?') + ', versión ' + (guion.version || '?') + ', ' + totalGuion + ' frases',
+        'Tomas en este ZIP: ' + ids.length,
+        'Tomas grabadas en total en el teléfono: ' + idsGrabadosOrdenados().length + ' / ' + totalGuion,
+        'Formato: WAV PCM 16 bit, mono, ' + FREC_SALIDA + ' Hz; silencio recortado con 0,15 s de margen',
+        'Frecuencia de captura: ' + (zustand.capturaHz ? zustand.capturaHz + ' Hz' : 'desconocida'),
+        'Ruido de fondo medido: ' + (typeof zustand.ruidoDb === 'number' ? zustand.ruidoDb.toFixed(1) + ' dBFS' : 'no medido'),
+        'metadata.csv: id|texto (UTF-8), solo las tomas de este ZIP, en orden del guion',
+        'Navegador: ' + navigator.userAgent,
+        ''
+      ].join('\n');
+      archivos.push({ ruta: 'metadata.csv', datos: csv });
+      archivos.push({ ruta: 'info.txt', datos: enc.encode(info) });
+      var zip = N.crearZip(archivos, ahora);
+      var nombreZip = 'spikiu-voz-' + ahora.getFullYear() + dos(ahora.getMonth() + 1) + dos(ahora.getDate()) + '-' + dos(ahora.getHours()) + dos(ahora.getMinutes()) + '.zip';
+      var url = URL.createObjectURL(zip);
+      var a = document.createElement('a'); a.href = url; a.download = nombreZip; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 120000);
+      var exp = leerExportados();
+      Object.keys(exportadosAhora).forEach(function (id) { exp[id] = exportadosAhora[id]; });
+      escribirExportados(exp);
+      prog.textContent = 'Listo: ' + nombreZip + ' (' + (zip.size / 1048576).toFixed(1).replace('.', ',') + ' MB, ' + ids.length + ' tomas). Revisa tus descargas.';
+    }).catch(function (e) {
+      prog.textContent = '';
+      avisar('La exportación falló: ' + esc(e.message || e) + '. Tus tomas siguen guardadas. Prueba con «Solo lo nuevo» para un ZIP más pequeño.', 'error');
+    }).then(function () { exportando = false; pintarExport(); });
+  }
+
+  // ── Borrar todo ─────────────────────────────────────────────────
+  function borrarTodo() {
+    var n = Object.keys(grabadas).length, nuevos = idsNuevos().length;
+    if (!confirm('¿Borrar las ' + n + ' tomas de este teléfono? No se puede deshacer.')) return;
+    if (nuevos && !confirm('Atención: ' + nuevos + ' tomas NO se han exportado nunca. ¿Borrarlas de verdad?')) return;
+    dbBorrarTodo().then(function () {
+      grabadas = {}; tomaPendiente = null;
+      try { localStorage.removeItem(CLAVE_EXPORTADOS); } catch (e) {}
+      zustand.pos = 0; guardarSesion();
+      pintar(); pintarExport(); mostrarAlmacen();
+      if (!$('panelLista').classList.contains('oculto')) pintarLista();
+      avisar('Todo borrado. Empezamos de cero.', 'info');
+    }).catch(function (e) { avisar('No pude borrar: ' + esc(e.message || e), 'error'); });
+  }
+
+  // ── Modo ────────────────────────────────────────────────────────
+  function elegirModo(m) {
+    if (grabando || procesando) return;
+    if (zustand.modo === m) return;
+    if (tomaPendiente && !confirm('Hay una toma sin guardar. ¿Descartarla?')) return;
+    var actual = zustand.modo ? fraseActual() : null;
+    tomaPendiente = null;
+    zustand.modo = m;
+    var l = lista(), idx = -1;
+    if (actual) l.some(function (f, i) { if (f.id === actual.id) { idx = i; return true; } return false; });
+    if (idx < 0) { idx = 0; for (var i = 0; i < l.length; i++) if (!grabadas[l[i].id]) { idx = i; break; } }
+    zustand.pos = idx;
+    $('seguimos').classList.add('oculto');
+    guardarSesion(); pintar();
+    if (!$('panelLista').classList.contains('oculto')) pintarLista();
+  }
+
+  // ── Eventos ─────────────────────────────────────────────────────
+  $('modoPrueba').onclick = function () { elegirModo('prueba'); };
+  $('modoCompleto').onclick = function () { elegirModo('completo'); };
+  $('btnSilencio').onclick = medirSilencio;
+  $('btnGrabar').onclick = alternarGrabacion;
+  $('btnEscuchar').onclick = escuchar;
+  $('btnRepetir').onclick = repetir;
+  $('btnGuardar').onclick = guardarYSiguiente;
+  $('btnAnterior').onclick = function () { irA(zustand.pos - 1); };
+  $('btnSiguiente').onclick = function () { irA(zustand.pos + 1); };
+  $('btnPrimeraSin').onclick = primeraSinGrabar;
+  $('btnLista').onclick = function () {
+    var p = $('panelLista'), abrir = p.classList.contains('oculto');
+    p.classList.toggle('oculto', !abrir);
+    $('btnLista').textContent = abrir ? 'Ocultar la lista' : 'Ver todas las frases';
+    if (abrir) pintarLista();
+  };
+  function filtrar(f) {
+    filtroLista = f;
+    $('filtroTodas').classList.toggle('activo', f === 'todas');
+    $('filtroSin').classList.toggle('activo', f === 'sin');
+    $('filtroCon').classList.toggle('activo', f === 'con');
+    pintarLista();
+  }
+  $('filtroTodas').onclick = function () { filtrar('todas'); };
+  $('filtroSin').onclick = function () { filtrar('sin'); };
+  $('filtroCon').onclick = function () { filtrar('con'); };
+  $('btnExpNuevo').onclick = function () { exportar(true); };
+  $('btnExpTodo').onclick = function () { exportar(false); };
+  $('btnBorrar').onclick = borrarTodo;
+
+  document.addEventListener('keydown', function (ev) {
+    var tg = ev.target && ev.target.tagName;
+    if (tg === 'INPUT' || tg === 'TEXTAREA' || tg === 'SELECT' || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (!zustand.modo) return;
+    if (ev.code === 'Space' || ev.key === ' ') { ev.preventDefault(); if (!ev.repeat) alternarGrabacion(); }
+    else if (ev.key === 'Enter') { ev.preventDefault(); if (!ev.repeat) guardarYSiguiente(); }
+    else if (ev.key === 'ArrowLeft') { ev.preventDefault(); irA(zustand.pos - 1); }
+    else if (ev.key === 'ArrowRight') { ev.preventDefault(); irA(zustand.pos + 1); }
+  });
+  // Espacio sobre un botón con foco lo «pulsaría» otra vez al soltar: lo evitamos.
+  document.addEventListener('keyup', function (ev) {
+    if ((ev.code === 'Space' || ev.key === ' ') && ev.target && ev.target.tagName === 'BUTTON' && zustand.modo) ev.preventDefault();
+  });
+  window.addEventListener('beforeunload', function (ev) {
+    if (tomaPendiente || grabando) { ev.preventDefault(); ev.returnValue = ''; }
+  });
+
+  // ── Arranque ────────────────────────────────────────────────────
+  var previa = cargarSesion();
+  if (previa) {
+    if (typeof previa.ruidoDb === 'number') { zustand.ruidoDb = previa.ruidoDb; zustand.ruidoFecha = previa.ruidoFecha || null; }
+    if (previa.capturaHz) zustand.capturaHz = previa.capturaHz;
+  }
+  pintarRuido();
+  pedirWakeLock();
+  pintar();
+
+  dbResumenes().then(function (mapa) {
+    grabadas = mapa;
+  }).catch(function (e) {
+    avisar('No puedo acceder al almacenamiento de tomas (IndexedDB): ' + esc(e.message || e) + '. <em>No grabes hasta resolverlo</em> (¿modo incógnito?).', 'error', 'idb');
+  }).then(function () {
+    if (previa && (previa.modo === 'prueba' || previa.modo === 'completo')) {
+      zustand.modo = previa.modo;
+      var l = lista(), idx = -1;
+      if (previa.id) l.some(function (f, i) { if (f.id === previa.id) { idx = i; return true; } return false; });
+      if (idx < 0) idx = Math.max(0, Math.min(l.length - 1, previa.pos || 0));
+      zustand.pos = idx;
+      var s = $('seguimos');
+      s.textContent = 'Seguimos donde lo dejaste: frase ' + (idx + 1) + '.';
+      s.classList.remove('oculto');
+    }
+    pintar(); pintarExport(); mostrarAlmacen();
+    if (navigator.storage && navigator.storage.persisted) navigator.storage.persisted().then(function (p) { if (p) persistPedido = true; }).catch(function () {});
+  });
+})();
+</script>
+</body>
+</html>
