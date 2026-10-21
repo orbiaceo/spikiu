@@ -117,12 +117,29 @@
   function mischen(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
 
-  var KL = null;
+  /* Richtig / nicht ganz: dieselben Dateien wie alle Spiele und das Gym (audio/spiel/, Leo 21.10.: „Todito.").
+     richtig = Quarte Do⁴ → Fa⁴, nicht ganz = Do⁴ — vorher hier ein eigener Dur-Dreiklang Do⁵-Mi⁵-Sol⁵ (zu hell, ermüdend).
+     Dateien werden beim Laden geholt, beim ersten Tippen dekodiert (iOS/Android brauchen die Geste). Fehlt Web Audio: <audio>. */
+  var KL = null, KL_PFAD = { ok: '/audio/spiel/richtig.wav', no: '/audio/spiel/nicht-ganz.wav' }, KL_ROH = {}, KL_BUF = {};
+  function klDekodiere(k) {
+    if (!KL || !KL_ROH[k] || KL_BUF[k]) return;
+    try { var fertig = function (b) { KL_BUF[k] = b; }; var p = KL.decodeAudioData(KL_ROH[k].slice(0), fertig, function () {}); if (p && p.then) p.then(fertig, function () {}); } catch (e) {}
+  }
+  function klWecken() {
+    if (!KL) { var AC = w.AudioContext || w.webkitAudioContext; if (!AC) return; try { KL = new AC(); } catch (e) { return; } }
+    if (KL.state === 'suspended' && KL.resume) { try { KL.resume(); } catch (e) {} }
+    Object.keys(KL_ROH).forEach(klDekodiere);
+  }
+  if (w.fetch) Object.keys(KL_PFAD).forEach(function (k) {
+    fetch(KL_PFAD[k]).then(function (r) { return r.ok ? r.arrayBuffer() : null; })
+      .then(function (ab) { if (ab) { KL_ROH[k] = ab; klDekodiere(k); } }).catch(function () {});
+  });
+  try { w.addEventListener('pointerdown', klWecken, { capture: true, passive: true }); } catch (e) {}
   function klang(ok) {
-    try {
-      KL = KL || new (w.AudioContext || w.webkitAudioContext)(); var t = KL.currentTime, f = ok ? [523.25, 659.25, 783.99] : [392, 466.16];
-      f.forEach(function (fr, i) { var o = KL.createOscillator(), g = KL.createGain(); o.type = 'sine'; o.frequency.value = fr; g.gain.setValueAtTime(0, t + i * .07); g.gain.linearRampToValueAtTime(.12, t + i * .07 + .02); g.gain.exponentialRampToValueAtTime(.001, t + i * .07 + .35); o.connect(g); g.connect(KL.destination); o.start(t + i * .07); o.stop(t + i * .07 + .4); });
-    } catch (e) {}
+    var k = ok ? 'ok' : 'no';
+    klWecken();
+    if (KL && KL_BUF[k]) { try { var q = KL.createBufferSource(); q.buffer = KL_BUF[k]; q.connect(KL.destination); q.start(0); return; } catch (e) {} }
+    try { var a = new Audio(KL_PFAD[k]); a.play().catch(function () {}); } catch (e) {}
   }
 
   /* ── Einpassen: Schrift kleiner, dann Umschrift weg, dann Kachel wachsen lassen ── */
