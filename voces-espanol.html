@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spikiu — Voces en español</title>
+<!--
+  PROTOTYP (21.10.2026, 23:31) — Leo: davefx klingt in Sätzen gut, aber bei Artikel + Nomen /
+  Einzelwörtern Fehler („renovar" → „tenovar", „el agua" → „élagua"). Alle spanischen Piper-Stimmen
+  (España + México) mit Aussage-, Befehls-, Frage-, Ausrufesätzen und Artikel + Nomen.
+  Schalter: Anti-Hall-Filter (Kopie von audio.js NACHBEARBEITUNG.es) an/aus, Punkt an Einzelwörtern.
+  Nicht im Menü verlinkt. Nach der Stimmen-Entscheidung entfernen.
+-->
+<style>
+  :root { --ink:#2b2118; --warm:#c9956a; --bg:#faf6f0; --muted:#7a6a58; --card:#fff; --line:#eadfce; --ok:#3f8f5a; --bad:#b4483c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; padding:24px 16px 48px; }
+  main { max-width:34rem; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+  header { display:flex; align-items:center; gap:14px; }
+  .capy { width:64px; height:64px; flex:0 0 auto; animation:float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  h1 { font-size:1.2rem; margin:0; }
+  .sub { font-size:.88rem; color:var(--muted); margin:4px 0 0; line-height:1.45; }
+  h2 { font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 0; }
+  .hint { font-size:.8rem; color:var(--muted); margin:0; line-height:1.45; }
+  .tabs { display:flex; flex-wrap:wrap; gap:6px; }
+  .tab { border:1.5px solid var(--line); background:#fff; color:var(--ink); border-radius:99px; padding:7px 12px; font:inherit; font-size:.85rem; cursor:pointer; }
+  .tab.on { background:var(--warm); border-color:var(--warm); color:#fff; }
+  .frases { display:flex; flex-direction:column; gap:6px; }
+  .frase { background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:8px 12px; font-size:.95rem; }
+  .frase.suena { border-color:var(--warm); background:#fff8ef; }
+  .opcion { display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--ink); }
+  .opcion input { width:18px; height:18px; accent-color:var(--warm); }
+  .row { display:flex; align-items:center; gap:12px; background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:10px 12px; }
+  .row .info { flex:1 1 auto; min-width:0; }
+  .row .n { font-weight:600; font-size:.98rem; }
+  .row .d { font-size:.78rem; color:var(--muted); margin-top:2px; }
+  .row .s { font-size:.76rem; margin-top:3px; min-height:1em; color:var(--muted); }
+  .row .s.ok { color:var(--ok); } .row .s.bad { color:var(--bad); }
+  .play { flex:0 0 auto; width:48px; height:48px; border-radius:50%; border:none; background:var(--warm); color:#fff; font-size:1.1rem; cursor:pointer; box-shadow:0 3px 10px rgba(201,149,106,.35); }
+  .play.laeuft { background:#8b5e3c; }
+  .aktuell { border-color:var(--warm); }
+  .tag { display:inline-block; font-size:.66rem; font-weight:600; padding:1px 7px; border-radius:99px; background:#efe6da; color:#6b5942; margin-left:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <h1>Voces en español</h1>
+      <p class="sub">Elige un tipo de frase y escucha cómo lo lee cada voz. Ojo sobre todo a las palabras sueltas: ahí es donde davefx tropieza.</p>
+    </div>
+  </header>
+
+  <h2>Tipo de frase</h2>
+  <div class="tabs" id="tabs"></div>
+  <div class="frases" id="frases"></div>
+
+  <label class="opcion"><input type="checkbox" id="conFiltro" checked> Filtro anti-eco (el de ahora en Spikiu)</label>
+  <label class="opcion"><input type="checkbox" id="conPunto"> Añadir punto a las palabras sueltas</label>
+
+  <h2>Piper · España y México</h2>
+  <p class="hint">El primer toque por voz descarga el modelo una vez (unos segundos; <em>claude-high</em> es el más pesado).</p>
+  <div id="piper"></div>
+
+  <h2>Voz del dispositivo · gratis</h2>
+  <p class="hint">Las voces españolas instaladas en <em>este</em> aparato.</p>
+  <div id="geraet"></div>
+</main>
+
+<script type="module">
+import { TtsSession } from '/audio/vendor/piper-tts-web.js';
+
+const $ = (id) => document.getElementById(id);
+
+// ── Grupos de frases ──────────────────────────────────────────────────────
+const GRUPOS = {
+  'Palabras': ['renovar', 'matizar', 'el agua', 'la espuma', 'la franqueza', 'el árbol', 'la rueda', 'el ratón', 'los huevos', 'una ciudad', 'el hielo', 'la llave'],
+  'Afirmativas': ['Mi hermana vive en un pueblo cerca del mar.', 'El tren sale a las ocho y media.', 'Ayer comimos arroz con pollo en casa de mis abuelos.'],
+  'Imperativas': ['Abre la ventana, por favor.', 'Repite la frase despacio.', 'No toques eso, está caliente.'],
+  'Interrogativas': ['¿Tienes ganas de salir?', '¿Quieres un café?', '¿Qué quieres hacer mañana?', '¿Prefieres salir o quedarte en casa?'],
+  'Exclamativas': ['¡Qué bonito día!', '¡Cuidado con el perro!', '¡No me lo puedo creer!'],
+};
+let grupo = 'Palabras';
+function pintaGrupo() {
+  $('tabs').innerHTML = '';
+  for (const g of Object.keys(GRUPOS)) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'tab' + (g === grupo ? ' on' : ''); b.textContent = g;
+    b.onclick = () => { stopAlles(); grupo = g; pintaGrupo(); };
+    $('tabs').appendChild(b);
+  }
+  $('frases').innerHTML = '';
+  for (const f of GRUPOS[grupo]) { const d = document.createElement('div'); d.className = 'frase'; d.textContent = f; $('frases').appendChild(d); }
+}
+function lista() {
+  const punto = $('conPunto').checked;
+  return [...$('frases').children].map((el) => {
+    let t = el.textContent;
+    if (punto && !/[.!?…]$/.test(t)) t += '.';
+    return { el, texto: t };
+  });
+}
+function marcaSonando(el) {
+  document.querySelectorAll('.frase.suena').forEach((x) => x.classList.remove('suena'));
+  if (el) el.classList.add('suena');
+}
+
+// ── Filtro anti-eco: copia EXACTA de audio.js (NACHBEARBEITUNG) ──
+const NACHBEARBEITUNG = {
+  es: { caja: -6, presencia: 4, umbral: -22, ratio: 4.0, suelo: -25 },
+};
+let filterCtx = null;
+async function nachbearbeite(blob, zielsprache) {
+  const p = NACHBEARBEITUNG[zielsprache];
+  if (!p || typeof OfflineAudioContext === 'undefined') return blob;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!filterCtx) filterCtx = new AC();
+    const buf = await filterCtx.decodeAudioData(await blob.arrayBuffer());
+    const sr = buf.sampleRate;
+    const off = new OfflineAudioContext(1, buf.length, sr);
+    const src = off.createBufferSource(); src.buffer = buf;
+    const hp = off.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 90; hp.Q.value = 0.7;
+    const caja = off.createBiquadFilter(); caja.type = 'peaking'; caja.frequency.value = 350; caja.Q.value = 1.0; caja.gain.value = p.caja;
+    const pres = off.createBiquadFilter(); pres.type = 'peaking'; pres.frequency.value = 3500; pres.Q.value = 0.9; pres.gain.value = p.presencia;
+    src.connect(hp); hp.connect(caja); caja.connect(pres); pres.connect(off.destination);
+    src.start();
+    const x = (await off.startRendering()).getChannelData(0);
+    return wavAus(expandiere(x, sr, p), sr);
+  } catch (_) {
+    return blob;
+  }
+}
+function expandiere(x, sr, p) {
+  const n = x.length;
+  const atk = Math.exp(-1 / (0.002 * sr)), rel = Math.exp(-1 / (0.050 * sr));
+  const env = new Float32Array(n);
+  let e = 0, pico = 1e-9;
+  for (let i = 0; i < n; i++) {
+    const a = Math.abs(x[i]);
+    e = a > e ? atk * e + (1 - atk) * a : rel * e + (1 - rel) * a;
+    env[i] = e; if (e > pico) pico = e;
+  }
+  const schwelle = pico * Math.pow(10, p.umbral / 20);
+  const boden = Math.pow(10, p.suelo / 20);
+  const gA = Math.exp(-1 / (0.003 * sr)), gR = Math.exp(-1 / (0.060 * sr));
+  const y = new Float32Array(n);
+  let g = 1, mx = 1e-9;
+  for (let i = 0; i < n; i++) {
+    let ziel = 1;
+    if (env[i] < schwelle) ziel = Math.max(boden, Math.pow(env[i] / schwelle, p.ratio - 1));
+    g = ziel > g ? gA * g + (1 - gA) * ziel : gR * g + (1 - gR) * ziel;
+    y[i] = x[i] * g;
+    if (Math.abs(y[i]) > mx) mx = Math.abs(y[i]);
+  }
+  const k = 0.9 / mx;
+  for (let i = 0; i < n; i++) y[i] *= k;
+  return y;
+}
+function wavAus(muestras, sr) {
+  const n = muestras.length, ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+  const tx = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  tx(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); tx(8, 'WAVE'); tx(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  tx(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const c = Math.max(-1, Math.min(1, muestras[i])); v.setInt16(44 + i * 2, c < 0 ? c * 0x8000 : c * 0x7fff, true); }
+  return new Blob([ab], { type: 'audio/wav' });
+}
+
+
+// ── Reproducción: una voz a la vez ────────────────────────────────────────
+let gen = 0, detener = null;
+function stopAlles() {
+  gen++;
+  if (detener) { try { detener(); } catch (_) {} detener = null; }
+  try { speechSynthesis.cancel(); } catch (_) {}
+  marcaSonando(null);
+  document.querySelectorAll('.play.laeuft').forEach((b) => { b.classList.remove('laeuft'); b.textContent = '▶'; });
+}
+const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
+function suenaBlob(blob) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(blob);
+    const a = new Audio(url);
+    const fin = () => { URL.revokeObjectURL(url); resolve(); };
+    detener = () => { a.pause(); fin(); };
+    a.onended = a.onerror = fin;
+    a.play().catch(fin);
+  });
+}
+function zeile(container, nombre, detalle, tag, leer) {
+  const r = document.createElement('div'); r.className = 'row';
+  r.innerHTML = '<div class="info"><div class="n"></div><div class="d"></div><div class="s"></div></div><button class="play" type="button" aria-label="Escuchar">▶</button>';
+  r.querySelector('.n').textContent = nombre;
+  if (tag) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = tag; r.querySelector('.n').appendChild(t); }
+  r.querySelector('.d').textContent = detalle;
+  const btn = r.querySelector('.play'), st = r.querySelector('.s');
+  const setStatus = (txt, cls) => { st.textContent = txt; st.className = 's' + (cls ? ' ' + cls : ''); };
+  btn.onclick = async () => {
+    const estabaSonando = btn.classList.contains('laeuft');
+    stopAlles();
+    if (estabaSonando) return;
+    const mio = gen, l = lista();
+    document.querySelectorAll('.row.aktuell').forEach((x) => x.classList.remove('aktuell'));
+    r.classList.add('aktuell');
+    btn.classList.add('laeuft'); btn.textContent = '■';
+    try {
+      await leer(l, setStatus, () => mio === gen);
+      if (mio === gen) setStatus('Listo · ' + grupo, 'ok');
+    } catch (e) { setStatus('Error: ' + (e && e.message || e), 'bad'); }
+    if (mio === gen) { marcaSonando(null); btn.classList.remove('laeuft'); btn.textContent = '▶'; }
+  };
+  container.appendChild(r);
+}
+
+// ── Piper ─────────────────────────────────────────────────────────────────
+const WASM_PATHS = {
+  onnxWasm: '/audio/vendor/ort/',
+  piperWasm: '/audio/vendor/piper/piper_phonemize.wasm',
+  piperData: '/audio/vendor/piper/piper_phonemize.data',
+};
+const PIPER = [
+  ['es_ES-davefx-medium', 'Davefx · medium', '♂ España · la de ahora', 'activa'],
+  ['es_ES-sharvard-medium', 'Sharvard · medium', '♂ España · la de antes (preguntas planas)', ''],
+  ['es_MX-claude-high', 'Claude · high', '♀ México · la más pesada', ''],
+  ['es_MX-ald-medium', 'Ald · medium', '♂ México', ''],
+  ['es_ES-carlfm-x_low', 'Carlfm · x_low', '♂ España · calidad baja', ''],
+  ['es_ES-mls_10246-low', 'MLS 10246 · low', 'audiolibro · calidad baja', ''],
+  ['es_ES-mls_9972-low', 'MLS 9972 · low', 'audiolibro · calidad baja', ''],
+];
+const sesiones = new Map();
+let cadena = Promise.resolve();
+function sesionPiper(voiceId, progreso) {
+  if (sesiones.has(voiceId)) return sesiones.get(voiceId);
+  const p = cadena.then(() => {
+    TtsSession._instance = null;
+    return TtsSession.create({ voiceId, wasmPaths: WASM_PATHS, progress: progreso });
+  });
+  cadena = p.then(() => {}, () => {});
+  sesiones.set(voiceId, p);
+  p.catch(() => sesiones.delete(voiceId));
+  return p;
+}
+for (const [id, nombre, detalle, tag] of PIPER) {
+  zeile($('piper'), nombre, detalle, tag, async (l, setStatus, sigue) => {
+    if (!sesiones.has(id)) setStatus('descargando modelo …');
+    const s = await sesionPiper(id, (ev) => {
+      if (ev && ev.total) setStatus('descargando modelo … ' + Math.round(100 * ev.loaded / ev.total) + ' %');
+    });
+    const filtro = $('conFiltro').checked;
+    for (let i = 0; i < l.length; i++) {
+      if (!sigue()) return;
+      setStatus((i + 1) + ' de ' + l.length + (filtro ? ' · con filtro' : ' · sin filtro'));
+      let blob = await s.predict(l[i].texto);
+      if (filtro) blob = await nachbearbeite(blob, 'es');
+      if (!sigue()) return;
+      marcaSonando(l[i].el);
+      await suenaBlob(blob);
+      if (i + 1 < l.length) await pausa(600);
+    }
+  });
+}
+
+// ── Voz del dispositivo ───────────────────────────────────────────────────
+function vocesDispositivo() {
+  const box = $('geraet'); box.innerHTML = '';
+  if (!window.speechSynthesis) { box.innerHTML = '<p class="hint">Este navegador no tiene síntesis de voz.</p>'; return; }
+  const es = speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith('es'));
+  if (!es.length) { box.innerHTML = '<p class="hint">No hay voz española en este aparato (o aún no ha cargado).</p>'; return; }
+  for (const v of es) {
+    zeile(box, v.name, v.lang + (v.localService ? ' · sin conexión' : ' · en línea'), v.default ? 'estándar' : '', async (l, setStatus, sigue) => {
+      for (let i = 0; i < l.length; i++) {
+        if (!sigue()) return;
+        setStatus((i + 1) + ' de ' + l.length);
+        marcaSonando(l[i].el);
+        await new Promise((resolve) => {
+          const u = new SpeechSynthesisUtterance(l[i].texto);
+          u.lang = v.lang; u.voice = v;
+          u.onend = u.onerror = resolve;
+          detener = () => { speechSynthesis.cancel(); resolve(); };
+          speechSynthesis.speak(u);
+        });
+        if (i + 1 < l.length) await pausa(600);
+      }
+    });
+  }
+}
+pintaGrupo();
+vocesDispositivo();
+if (window.speechSynthesis) speechSynthesis.onvoiceschanged = vocesDispositivo;
+</script>
+</body>
+</html>
