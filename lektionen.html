@@ -323,8 +323,22 @@ function renderLessonPoster(l) {
   // Then each option (a, b, c, ...) becomes a clickable button.
   // On click: wrong → red, correct option auto-highlighted green,
   // explanation revealed, all buttons disabled.
-  function correctLetterFromAnswer(answerText, optionsLen) {
+  // 21.10.2026: Vokabel-Quiz liefert die Antwort als Klartext ("die Familie"),
+  // nicht als Buchstaben → nichts galt als richtig, jeder Klick wurde rot ✗.
+  // Darum zuerst Textvergleich mit den Optionen, erst danach Buchstabe.
+  function normQuiz(s) {
+    return String(s || '').toLowerCase()
+      .replace(/^\s*(option\s+)?[a-z]\s*[\)\.:—-]\s*/i, '')
+      .replace(/[„“"'«»¿?¡!.,;:]/g, '')
+      .replace(/\s+/g, ' ').trim();
+  }
+  function correctLetterFromAnswer(answerText, opts) {
     if (!answerText) return null;
+    const optionsLen = opts.length;
+    const a = normQuiz(answerText);
+    let hit = opts.findIndex(o => normQuiz(o) === a);
+    if (hit < 0) hit = opts.findIndex(o => { const n = normQuiz(o); return n && (a.startsWith(n + ' ') || a.endsWith(' ' + n)); });
+    if (hit >= 0) return String.fromCharCode(97 + hit);
     const m = String(answerText).trim().match(/^[^a-z]*([a-z])\b/i);
     if (!m) return null;
     const letter = m[1].toLowerCase();
@@ -333,7 +347,7 @@ function renderLessonPoster(l) {
   }
   const quizHtml = (l.quiz || []).map((q, qIdx) => {
     const opts = q.options || [];
-    const correct = correctLetterFromAnswer(q.answer, opts.length);
+    const correct = correctLetterFromAnswer(q.answer, opts);
     const optionsButtons = opts.map((o, oIdx) => {
       const letter = String.fromCharCode(97 + oIdx); // a, b, c
       const isCorrect = (letter === correct);
