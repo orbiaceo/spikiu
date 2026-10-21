@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Wortschatz-Vierer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@500;600;700;800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Prototyp (Leo, 21.10.2026): vier Wortkarten am Stück, Ton kommt von selbst,
+   danach eine „Feines Ohr"-Runde über genau diese vier Wörter.
+   Layout wie gym.html: Kopf · Filter · Karte füllt den Rest · drei Knöpfe unten.
+   Bewusst ein Look (hell), wie die App. */
+:root{
+  --bg:#eef7f1; --ink:#15163a; --read:#2b2621; --muted:#6b6154; --card:#ffffff;
+  --acc:#1f93b0; --yel:#ffd24a; --ok:#c7e89a; --okInk:#2f6b3a; --warn:#c67a1e; --warn2:#fbf0e0; --faint:#dfe6e0;
+  --f-display:'Archivo Black',Impact,sans-serif; --f-ui:'DM Sans',system-ui,sans-serif;
+  --f-z:'Lora',Georgia,serif; --f-mono:'DM Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto}
+.top{flex:0 0 auto;display:flex;align-items:center;gap:.6rem;padding:.6rem max(16px,env(safe-area-inset-right,0px)) .6rem max(16px,env(safe-area-inset-left,0px));background:rgba(255,255,255,.72);border-bottom:2.5px solid var(--ink)}
+.back{width:38px;height:38px;border-radius:999px;border:2.5px solid var(--ink);background:var(--card);box-shadow:2px 2px 0 var(--ink);font-size:1.2rem;cursor:pointer}
+.tt{flex:1;text-align:center}
+.tt .rk{font:500 .58rem/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+.tt h1{font-family:var(--f-display);font-size:1.15rem;margin:.15rem 0 0}
+.filter{flex:0 0 auto;display:flex;gap:.4rem;justify-content:center;align-items:center;padding:.6rem 16px 0}
+.filter span{border:2px solid var(--ink);border-radius:999px;background:var(--card);font:800 .78rem/1 var(--f-ui);padding:.42rem .8rem}
+.filter span.an{background:var(--ink);color:#fff}
+.filter i{font:800 .8rem var(--f-ui);color:var(--muted);font-style:normal}
+.stage{flex:1;min-height:0;display:flex;padding:1rem max(16px,env(safe-area-inset-right,0px)) .9rem max(16px,env(safe-area-inset-left,0px))}
+.karte{flex:1;min-height:0;background:var(--card);border:2.5px solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;padding:1.4rem 1.2rem;text-align:center;overflow-y:auto}
+/* Wortkarte */
+.lot{display:flex;gap:6px}
+.lot b{width:8px;height:8px;border-radius:50%;background:var(--faint)}
+.lot b.da{background:#9fc9d6}.lot b.jetzt{background:var(--acc)}
+.icon{font-size:clamp(4rem,22vw,5.6rem);line-height:1}
+.wort{font:600 clamp(1.9rem,8vw,2.5rem)/1.2 var(--f-z);color:var(--read)}
+.spk{width:56px;height:56px;border-radius:999px;border:2.5px solid var(--ink);background:var(--acc);color:#fff;box-shadow:3px 3px 0 var(--ink);cursor:pointer;display:grid;place-items:center}
+.spk svg{width:22px;height:22px}
+.spk:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.spk.spielt{animation:puls 1s ease infinite}
+.spk.wartet{animation:wink 1.4s ease infinite}
+@keyframes puls{50%{transform:scale(1.1)}}
+@keyframes wink{50%{box-shadow:0 0 0 8px rgba(31,147,176,.25),3px 3px 0 var(--ink)}}
+.tr{font:600 1.15rem var(--f-ui);color:var(--muted)}
+.tipp{font:600 .8rem var(--f-ui);color:var(--muted);min-height:1.2em}
+/* Ohr-Runde */
+.karte.ohr{justify-content:flex-start;gap:12px;padding:16px 14px 10px}
+.task{font:500 1.12rem/1.35 var(--f-z);margin:0;text-wrap:balance}
+.big{background:var(--yel);border:2.5px solid var(--ink);border-radius:100px;box-shadow:3px 4px 0 var(--ink);padding:.6rem 1.8rem;font:800 1.15rem var(--f-ui);cursor:pointer;display:flex;align-items:center;gap:.45rem}
+.big:active,.tile:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.grid{flex:1 1 0;min-height:220px;width:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,minmax(90px,1fr));gap:12px}
+.tile{background:var(--card);border:2.5px solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;min-width:0}
+.tile .te{font-size:clamp(2.2rem,11vw,3.2rem);line-height:1}
+.tile .tn{font:800 clamp(1rem,4.4vw,1.2rem)/1.2 var(--f-ui);text-wrap:balance}
+.tile.ok{background:var(--ok)}
+.tile.no{background:var(--warn2);border-color:var(--warn);opacity:.6;box-shadow:none}
+.tile[disabled]{cursor:default}
+.fb{min-height:2.6em;display:flex;align-items:center;justify-content:center;font:700 1.02rem/1.3 var(--f-ui);color:var(--okInk);text-wrap:balance}
+.fb em{font:600 1.08rem var(--f-z);font-style:normal}
+.fb.soft{color:var(--warn)}
+/* Fuß */
+.nav{flex:0 0 auto;display:flex;justify-content:space-between;gap:.6rem;padding:.7rem max(16px,env(safe-area-inset-right,0px)) calc(1rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));border-top:2.5px solid var(--ink);background:rgba(255,255,255,.7)}
+.nb{background:var(--card);border:2.5px solid var(--ink);border-radius:999px;padding:.65rem 1rem;font:800 .9rem/1 var(--f-ui);cursor:pointer;box-shadow:3px 3px 0 var(--ink);white-space:nowrap}
+.nb:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.nb:disabled{opacity:.35;box-shadow:none;cursor:default}
+.nb.fwd{background:var(--acc);color:#fff}
+.nb.add{background:var(--bg)}
+@media (prefers-reduced-motion:reduce){.spk.spielt,.spk.wartet{animation:none}}
+</style>
+
+<div class="app">
+  <div class="top"><button class="back" type="button" aria-label="zurück">‹</button><div class="tt"><div class="rk">Wortschatz</div><h1 id="titel">Karten</h1></div><div style="width:38px"></div></div>
+  <div class="filter"><span class="an">Wörter</span><i>›</i><span>Sätze</span><i>›</i><span>Wendungen</span></div>
+  <div class="stage" id="stage"></div>
+  <div class="nav">
+    <button class="nb" type="button" id="btnZur">‹ zurück</button>
+    <button class="nb add" type="button" id="btnAdd">＋ Wort</button>
+    <button class="nb fwd" type="button" id="btnVor">weiter ›</button>
+  </div>
+</div>
+
+<script>
+var KL_OK='/audio/spiel/richtig.wav';var KL_NO='/audio/spiel/nicht-ganz.wav';
+(function(){
+'use strict';
+// Beispiel-Wortschatz (Prototyp). Echte Quelle in gym.html: Lernpfad + eigene Wörter.
+var WOERTER = [
+  {w:'el café', tr:'der Kaffee', e:'☕'}, {w:'el té', tr:'der Tee', e:'🍵'},
+  {w:'el pan', tr:'das Brot', e:'🍞'},    {w:'el agua', tr:'das Wasser', e:'💧'},
+  {w:'la leche', tr:'die Milch', e:'🥛'}, {w:'el queso', tr:'der Käse', e:'🧀'},
+  {w:'la manzana', tr:'der Apfel', e:'🍎'}, {w:'el huevo', tr:'das Ei', e:'🥚'}
+];
+var GRUPPE = 4;
+
+// ── Schritte: 4 Wortkarten → 4 Ohr-Runden (jedes der 4 Wörter einmal, gemischt) → nächste 4 …
+function mischen(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+var schritte = [];
+for (var g=0; g<WOERTER.length; g+=GRUPPE){
+  var block = WOERTER.slice(g, g+GRUPPE);
+  block.forEach(function(x, n){ schritte.push({typ:'wort', x:x, n:n, block:block}); });
+  mischen(block).forEach(function(z, n){ schritte.push({typ:'ohr', ziel:z, n:n, block:block}); });
+}
+var zeiger = 0, geloest = {};
+
+// ── Stimme: in der App audio.js (Piper), hier im Prototyp die Browser-Stimme ──
+var spkSpeak = null;
+try { import('/audio.js').then(function(m){ if (m && m.speak) spkSpeak = m.speak; }).catch(function(){}); } catch(e){}
+function sprich(text, knopf){
+  if (knopf) knopf.classList.add('spielt');
+  var aus = function(){ if (knopf) knopf.classList.remove('spielt'); };
+  if (spkSpeak){ try { var p = spkSpeak(text, 'es'); if (p && p.then){ p.then(aus, aus); return; } } catch(e){} }
+  try {
+    var s = window.speechSynthesis;
+    var u = new SpeechSynthesisUtterance(text); u.lang = 'es-ES'; u.rate = .9;
+    var v = s.getVoices().filter(function(x){ return /^es/i.test(x.lang); })[0]; if (v) u.voice = v;
+    u.onend = aus; u.onerror = aus; s.cancel(); s.speak(u);
+    setTimeout(aus, 2500);
+  } catch(e){ aus(); }
+}
+try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function(){}; } catch(e){}
+
+// Browser lassen Ton erst nach der ersten Berührung zu. Bis dahin wartet das Wort
+// und spielt beim ersten Tipp irgendwo — danach kommt es immer von selbst.
+var frei = false, wartend = null;
+document.addEventListener('pointerdown', function(){
+  if (frei) return; frei = true; weckeKlang();
+  if (wartend){ var w = wartend; wartend = null; setTimeout(w, 60); }
+}, true);
+function autoSprich(text, knopf){
+  var los = function(){ if (knopf) knopf.classList.remove('wartet'); sprich(text, knopf); };
+  if (frei) setTimeout(los, 380);
+  else { wartend = los; if (knopf) knopf.classList.add('wartet'); }
+}
+
+// ── Klang richtig / nicht ganz (dieselben Dateien wie Feines Ohr) ──
+var ctx = null, buf = {};
+function weckeKlang(){
+  var AC = window.AudioContext || window.webkitAudioContext; if (!AC || ctx) return;
+  try { ctx = new AC(); } catch(e){ return; }
+  [['ok',KL_OK],['no',KL_NO]].forEach(function(p){
+    fetch(p[1]).then(function(r){ return r.arrayBuffer(); })
+      .then(function(ab){ return ctx.decodeAudioData(ab); })
+      .then(function(b){ buf[p[0]] = b; }).catch(function(){});
+  });
+}
+function klang(ok){
+  var k = ok ? 'ok' : 'no';
+  if (ctx && buf[k]){ try { if (ctx.state==='suspended') ctx.resume(); var q = ctx.createBufferSource(); q.buffer = buf[k]; q.connect(ctx.destination); q.start(0); return; } catch(e){} }
+  try { new Audio(ok ? KL_OK : KL_NO).play().catch(function(){}); } catch(e){}
+}
+
+var SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>';
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+var stage = document.getElementById('stage'), titel = document.getElementById('titel');
+var weiterT = null;
+
+function zeige(){
+  clearTimeout(weiterT);
+  var s = schritte[zeiger]; if (!s) return;
+  stage.innerHTML = '';
+  document.getElementById('btnZur').disabled = zeiger === 0;
+  if (s.typ === 'wort') zeigeWort(s); else zeigeOhr(s);
+}
+
+function lot(n, an){
+  var h = '<div class="lot" aria-hidden="true">';
+  for (var i=0;i<GRUPPE;i++) h += '<b class="' + (i<n ? 'da' : (i===n ? 'jetzt' : '')) + '"></b>';
+  return h + '</div>';
+}
+
+function zeigeWort(s){
+  titel.textContent = 'Karten';
+  var k = document.createElement('div'); k.className = 'karte';
+  k.innerHTML = lot(s.n)
+    + '<div class="icon" aria-hidden="true">' + s.x.e + '</div>'
+    + '<div class="wort" lang="es">' + esc(s.x.w) + '</div>'
+    + '<button class="spk" type="button" aria-label="Noch einmal hören">' + SPK + '</button>'
+    + '<div class="tr">' + esc(s.x.tr) + '</div>'
+    + '<div class="tipp">' + (frei ? '' : 'Tipp einmal irgendwo, dann spricht Spikiu.') + '</div>';
+  stage.appendChild(k);
+  var b = k.querySelector('.spk');
+  b.onclick = function(){ sprich(s.x.w, b); };
+  autoSprich(s.x.w, b);
+  if (!frei) document.addEventListener('pointerdown', function weg(){ var t = k.querySelector('.tipp'); if (t) t.textContent = ''; document.removeEventListener('pointerdown', weg, true); }, true);
+}
+
+function zeigeOhr(s){
+  titel.textContent = 'Feines Ohr';
+  var schon = geloest[zeiger];
+  var k = document.createElement('div'); k.className = 'karte ohr';
+  k.innerHTML = lot(s.n)
+    + '<p class="task">Hör gut zu und tipp, was es bedeutet.</p>'
+    + '<button class="big" type="button">🔊 Anhören</button>'
+    + '<div class="grid"></div><div class="fb" aria-live="polite"></div>';
+  stage.appendChild(k);
+  var grid = k.querySelector('.grid'), fb = k.querySelector('.fb'), fertig = !!schon;
+  k.querySelector('.big').onclick = function(){ sprich(s.ziel.w); };
+  // Kacheln in fester Reihenfolge je Runde (beim Zurückblättern gleich)
+  if (!s.reihe) s.reihe = mischen(s.block);
+  s.reihe.forEach(function(x){
+    var t = document.createElement('button'); t.type = 'button'; t.className = 'tile';
+    t.innerHTML = '<span class="te" aria-hidden="true">' + x.e + '</span><span class="tn">' + esc(x.tr) + '</span>';
+    grid.appendChild(t);
+    var richtig = x === s.ziel;
+    if (schon){ t.disabled = true; if (richtig) t.classList.add('ok'); }
+    t.onclick = function(){
+      if (fertig) return;
+      if (richtig){
+        fertig = true; geloest[zeiger] = true; t.classList.add('ok'); klang(true);
+        fb.className = 'fb'; fb.innerHTML = '<em lang="es">' + esc(s.ziel.w) + '</em>&nbsp;= ' + esc(s.ziel.tr);
+        [].forEach.call(grid.children, function(c){ c.disabled = true; });
+        // wie im Geführten Gespräch: Karte geht von selbst weiter
+        var warte = Math.min(5000, Math.max(1500, 900 + 55 * (s.ziel.w + s.ziel.tr).length));
+        weiterT = setTimeout(vor, warte);
+      } else {
+        klang(false); t.classList.add('no'); t.disabled = true;
+        fb.className = 'fb soft'; fb.textContent = 'Nicht ganz. Hör noch einmal hin.';
+      }
+    };
+  });
+  if (schon){ fb.innerHTML = '<em lang="es">' + esc(s.ziel.w) + '</em>&nbsp;= ' + esc(s.ziel.tr); }
+  else autoSprich(s.ziel.w, null);
+}
+
+function vor(){ if (zeiger < schritte.length - 1){ zeiger++; } else { zeiger = 0; geloest = {}; schritte.forEach(function(s){ delete s.reihe; }); } zeige(); }
+function zurueck(){ if (zeiger > 0){ zeiger--; zeige(); } }
+document.getElementById('btnVor').onclick = vor;
+document.getElementById('btnZur').onclick = zurueck;
+document.getElementById('btnAdd').onclick = function(){};
+
+// Daumen: links = weiter, rechts = zurück (ohne Kinetik)
+var x0 = null, y0 = null;
+stage.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, {passive:true});
+stage.addEventListener('touchend', function(e){
+  if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+  if (Math.abs(dx) < 55 || Math.abs(dy) > Math.abs(dx)) return;
+  if (dx < 0) vor(); else zurueck();
+}, {passive:true});
+
+zeige();
+})();
+</script>
+
+</body>
+</html>
