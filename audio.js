@@ -19,7 +19,7 @@ import { TtsSession } from '/audio/vendor/piper-tts-web.js';
 // Kein Aufrufer kennt je einen voiceId — nur die zielsprache.
 const VOICE_MAP = {
   de: 'de_DE-thorsten-medium',   // 02.10.: high → medium (gleicher Sprecher, schneller); eva_k-x_low klang zu schlecht
-  es: 'es_ES-davefx-medium',     // 21.10.: sharvard → davefx (einzige, die sí/no-Fragen hebt; Hörtest preguntas-voces.html)
+  es: 'es_ES-davefx-medium',     // 21.10.: sharvard → davefx (einzige, die sí/no-Fragen hebt); Hall-Filter s. NACHBEARBEITUNG
   en: 'en_US-lessac-high',
   el: 'el_GR-rapunzelina-low',
 };
@@ -198,6 +198,73 @@ function synth(session, text) {
   return p;
 }
 
+// ── Anti-Hall-Filter (21.10.): davefx (Spanisch) ist „wie im Bad“ aufgenommen. ────
+// Leo wählte im Blindtest (Prototyp filtro-eco.html, danach entfernt) die Fassung „fuerte“: Hochpass 90 Hz →
+// Senke 350 Hz −6 dB (Kastenklang) → Präsenz 3,5 kHz +4 dB → Abwärts-Expander
+// (Schwelle −22 dB unter Satzpeak, Ratio 4, Boden −25 dB) dämpft die Hall-Fahnen.
+// Nur für Sprachen in NACHBEARBEITUNG. Jeder Fehler → Original-Blob (nie stumm).
+const NACHBEARBEITUNG = {
+  es: { caja: -6, presencia: 4, umbral: -22, ratio: 4.0, suelo: -25 },
+};
+let filterCtx = null;
+async function nachbearbeite(blob, zielsprache) {
+  const p = NACHBEARBEITUNG[zielsprache];
+  if (!p || typeof OfflineAudioContext === 'undefined') return blob;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!filterCtx) filterCtx = new AC();
+    const buf = await filterCtx.decodeAudioData(await blob.arrayBuffer());
+    const sr = buf.sampleRate;
+    const off = new OfflineAudioContext(1, buf.length, sr);
+    const src = off.createBufferSource(); src.buffer = buf;
+    const hp = off.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 90; hp.Q.value = 0.7;
+    const caja = off.createBiquadFilter(); caja.type = 'peaking'; caja.frequency.value = 350; caja.Q.value = 1.0; caja.gain.value = p.caja;
+    const pres = off.createBiquadFilter(); pres.type = 'peaking'; pres.frequency.value = 3500; pres.Q.value = 0.9; pres.gain.value = p.presencia;
+    src.connect(hp); hp.connect(caja); caja.connect(pres); pres.connect(off.destination);
+    src.start();
+    const x = (await off.startRendering()).getChannelData(0);
+    return wavAus(expandiere(x, sr, p), sr);
+  } catch (_) {
+    return blob;
+  }
+}
+function expandiere(x, sr, p) {
+  const n = x.length;
+  const atk = Math.exp(-1 / (0.002 * sr)), rel = Math.exp(-1 / (0.050 * sr));
+  const env = new Float32Array(n);
+  let e = 0, pico = 1e-9;
+  for (let i = 0; i < n; i++) {
+    const a = Math.abs(x[i]);
+    e = a > e ? atk * e + (1 - atk) * a : rel * e + (1 - rel) * a;
+    env[i] = e; if (e > pico) pico = e;
+  }
+  const schwelle = pico * Math.pow(10, p.umbral / 20);
+  const boden = Math.pow(10, p.suelo / 20);
+  const gA = Math.exp(-1 / (0.003 * sr)), gR = Math.exp(-1 / (0.060 * sr));
+  const y = new Float32Array(n);
+  let g = 1, mx = 1e-9;
+  for (let i = 0; i < n; i++) {
+    let ziel = 1;
+    if (env[i] < schwelle) ziel = Math.max(boden, Math.pow(env[i] / schwelle, p.ratio - 1));
+    g = ziel > g ? gA * g + (1 - gA) * ziel : gR * g + (1 - gR) * ziel;
+    y[i] = x[i] * g;
+    if (Math.abs(y[i]) > mx) mx = Math.abs(y[i]);
+  }
+  const k = 0.9 / mx;
+  for (let i = 0; i < n; i++) y[i] *= k;
+  return y;
+}
+function wavAus(muestras, sr) {
+  const n = muestras.length, ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+  const tx = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  tx(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); tx(8, 'WAVE'); tx(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  tx(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const c = Math.max(-1, Math.min(1, muestras[i])); v.setInt16(44 + i * 2, c < 0 ? c * 0x8000 : c * 0x7fff, true); }
+  return new Blob([ab], { type: 'audio/wav' });
+}
+
 // ── Anti-Desync (Phase B): Generations-Zähler. Jeder speak() erhöht ihn und merkt
 // sich seinen Wert; die Wiedergabe-Schleife bricht ab, sobald ein neuerer speak()
 // gestartet wurde — so ertönt nie eine veraltete Phrase verspätet über einem
@@ -212,11 +279,11 @@ async function speakWithPiper(text, zielsprache, gen) {
   if (!chunks.length) return;
   emit({ phase: 'speak', zielsprache });
   // Pipeline: nächsten Satz synthetisieren, während der aktuelle spielt.
-  let nextSynth = synth(session, chunks[0]);
+  let nextSynth = synth(session, chunks[0]).then((bl) => nachbearbeite(bl, zielsprache));
   for (let i = 0; i < chunks.length; i++) {
     const blob = await nextSynth;
     if (gen !== speakGen) return;                   // ein neuerer Klick hat übernommen
-    if (i + 1 < chunks.length) nextSynth = synth(session, chunks[i + 1]);
+    if (i + 1 < chunks.length) nextSynth = synth(session, chunks[i + 1]).then((bl) => nachbearbeite(bl, zielsprache));
     await playBlob(blob);
     if (gen !== speakGen) return;                   // während der Wiedergabe abgebrochen
   }
