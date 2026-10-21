@@ -6,7 +6,11 @@
    erschien sekundenkurz „¡Hola! Yo soy Spikiu." mit rotem Knopf). Ursache: #welcome
    ist im HTML „active" und wird gemalt, bevor boot() am Seitenende ins Haus wechselt.
    Wer schon ein Profil hat, bekommt die Willkommensseite deshalb gar nicht erst zu sehen. */
-try{var _u=JSON.parse(localStorage.getItem('spikiu_user')||'null');if(_u&&_u.name)document.documentElement.classList.add('hat-profil');}catch(e){}
+/* DOPPELTE BEGRÜSSUNG ENDGÜLTIG WEG (Leo, 21.10.2026, zwei Screenshots: erst hier „¡Hola! Soy Spikiu.",
+   dann im Assessment „Hola, soy Spikiu, tu compañero…"). Wer noch kein Profil hat, kommt gar nicht erst
+   ins Haus: sofort weiter ins Assessment — dort stellt Spikiu sich EINMAL vor. location.replace, damit
+   „Zurück" nicht wieder hier landet. Das Assessment verlangt den Vornamen, also keine Schleife. */
+try{var _u=JSON.parse(localStorage.getItem('spikiu_user')||'null');if(_u&&_u.name)document.documentElement.classList.add('hat-profil');else location.replace('assessment.html');}catch(e){location.replace('assessment.html');}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
@@ -986,6 +990,7 @@ document.documentElement.lang=HL;
  /* Sprache: was die Startseite gewählt hat (spikiu_lang) — sonst die Browsersprache, sonst Deutsch.
     Leo, 15.10.: nach der Sprachwahl auf der Startseite erschien hier „¡Hola! Yo soy Spikiu." (fest
     spanisch) mit deutschem Untertitel. Jetzt folgen Überschrift UND Text der gewählten Sprache. */
+ location.replace('assessment.html'); return;   /* Sicherheitsnetz: nie eine zweite Begrüßung (Leo 21.10.) */
  var lg='de'; try{ var gl=localStorage.getItem('spikiu_lang')||String(navigator.language||'').slice(0,2).toLowerCase(); if(gl==='es'||gl==='en'||gl==='el'||gl==='de') lg=gl; }catch(e){}
  var HEY={
    de:{h:'Hallo! Ich bin Spikiu.', sub:'Schön, dass du da bist. Lass uns anfangen.', btn:"Los geht's →"},
