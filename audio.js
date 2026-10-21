@@ -132,8 +132,19 @@ function splitSentences(text) {
 // einen Brocken immer KOMPLETT, bevor der erste Ton kommt. Kürzere Brocken = früherer
 // erster Ton, und ein überholter Brocken blockiert die Engine nur kurz. Kurze Teilstücke
 // werden wieder zusammengelegt (mind. ~40 Zeichen), damit die Satzmelodie nicht zerfällt.
+//
+// FRAGEN (21.10.): Eine Frage wird NIE an ihren Kommas geteilt — sonst bekommt Piper den
+// ersten Teil ohne „?" und liest ihn als Aussage (Leo: „las preguntas no se pronuncian como
+// preguntas"). Die ganze Frage geht als EIN Brocken, damit die Melodie bis zum „?" reicht.
+// Nur ein sehr langer Vorsatz VOR dem „¿" darf abgetrennt werden („Si mañana …, ¿vienes?").
 function splitClauses(satz) {
   if (satz.length <= 90) return [satz];
+  if (/\?\s*$/.test(satz)) {
+    if (satz.length <= 220) return [satz];
+    const ab = satz.lastIndexOf('¿');
+    if (ab > 0) return [...splitClauses(satz.slice(0, ab).trim()), satz.slice(ab).trim()];
+    return [satz];
+  }
   const teile = satz.match(/[^,;:]+[,;:]+|[^,;:]+$/g) || [satz];
   const out = [];
   let puffer = '';

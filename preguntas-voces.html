@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spikiu — Preguntas: prueba de voces</title>
+<!--
+  TEST-ROUTE (21.10.2026) — Leos Hör-Test: Entonan die spanischen Piper-Stimmen Fragen?
+  Befund: es_ES-sharvard-medium liest Ja/Nein-Fragen wie Aussagen (Trainingskorpus fast nur
+  Aussagesätze). Hier alle spanischen Piper-Stimmen + Gerätestimmen mit denselben Testfragen.
+  Nicht im Menü verlinkt. Nach der Stimmen-Entscheidung entfernen.
+-->
+<style>
+  :root { --ink:#2b2118; --warm:#c9956a; --bg:#faf6f0; --muted:#7a6a58; --card:#fff; --line:#eadfce; --ok:#3f8f5a; --bad:#b4483c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; padding:24px 16px 48px; }
+  main { max-width:34rem; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+  header { display:flex; align-items:center; gap:14px; }
+  .capy { width:64px; height:64px; flex:0 0 auto; animation:float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  h1 { font-size:1.2rem; margin:0; }
+  .sub { font-size:.88rem; color:var(--muted); margin:4px 0 0; line-height:1.45; }
+  h2 { font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 0; }
+  .hint { font-size:.8rem; color:var(--muted); margin:0; line-height:1.45; }
+  .frases { display:flex; flex-direction:column; gap:6px; }
+  .frase { display:flex; align-items:center; gap:10px; background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:8px 10px; cursor:pointer; }
+  .frase input { flex:0 0 auto; width:18px; height:18px; accent-color:var(--warm); }
+  .frase .t { flex:1 1 auto; font-size:.95rem; }
+  .frase .k { font-size:.68rem; font-weight:600; padding:1px 7px; border-radius:99px; background:#efe6da; color:#6b5942; white-space:nowrap; }
+  .frase .k.sn { background:#e2efe6; color:#2d6a4f; }
+  .frase.suena { border-color:var(--warm); background:#fff8ef; }
+  .propia { display:flex; gap:8px; }
+  .propia input { flex:1 1 auto; border:1.5px solid var(--line); border-radius:12px; padding:10px; font:inherit; font-size:.95rem; background:#fff; color:var(--ink); min-width:0; }
+  .propia button { border:none; border-radius:12px; background:#efe6da; color:var(--ink); font:inherit; font-size:.9rem; padding:0 14px; cursor:pointer; }
+  .opcion { display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--muted); }
+  .opcion input { width:18px; height:18px; accent-color:var(--warm); }
+  .row { display:flex; align-items:center; gap:12px; background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:10px 12px; }
+  .row .info { flex:1 1 auto; min-width:0; }
+  .row .n { font-weight:600; font-size:.98rem; }
+  .row .d { font-size:.78rem; color:var(--muted); margin-top:2px; }
+  .row .s { font-size:.76rem; margin-top:3px; min-height:1em; color:var(--muted); }
+  .row .s.ok { color:var(--ok); } .row .s.bad { color:var(--bad); }
+  .play { flex:0 0 auto; width:48px; height:48px; border-radius:50%; border:none; background:var(--warm); color:#fff; font-size:1.1rem; cursor:pointer; box-shadow:0 3px 10px rgba(201,149,106,.35); }
+  .play.laeuft { background:#8b5e3c; }
+  .aktuell { border-color:var(--warm); }
+  .tag { display:inline-block; font-size:.66rem; font-weight:600; padding:1px 7px; border-radius:99px; background:#efe6da; color:#6b5942; margin-left:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg class="capy" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
+      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
+      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
+      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
+      <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
+      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
+      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
+      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
+      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <h1>¿Suben las preguntas?</h1>
+      <p class="sub">Las mismas frases con todas las voces españolas. Escucha sobre todo las de sí/no: ahí la voz tiene que subir al final.</p>
+    </div>
+  </header>
+
+  <h2>Frases de prueba</h2>
+  <p class="hint">Marca las que quieres oír. Cada voz las lee todas, una tras otra.</p>
+  <div class="frases" id="frases"></div>
+  <div class="propia">
+    <input id="propiaTxt" type="text" placeholder="Añadir una frase propia…" maxlength="220">
+    <button id="propiaBtn" type="button">Añadir</button>
+  </div>
+  <label class="opcion"><input type="checkbox" id="sinApertura"> Probar sin «¿» (solo «?» al final)</label>
+
+  <h2>Piper · en el móvil, gratis</h2>
+  <p class="hint">El primer toque por voz descarga el modelo una vez (unos segundos; <em>claude-high</em> es el más pesado).</p>
+  <div id="piper"></div>
+
+  <h2>Voz del dispositivo · gratis</h2>
+  <p class="hint">Las voces españolas instaladas en <em>este</em> aparato. Otros móviles suenan distinto.</p>
+  <div id="geraet"></div>
+</main>
+
+<script type="module">
+import { TtsSession } from '/audio/vendor/piper-tts-web.js';
+
+const $ = (id) => document.getElementById(id);
+
+// ── Frases: tipo sí/no es lo decisivo ─────────────────────────────────────
+const FRASES = [
+  ['¿Tienes ganas de salir?', 'sí/no', true],
+  ['¿Quieres un café?', 'sí/no', true],
+  ['¿Ya terminaste el trabajo?', 'sí/no', true],
+  ['¿Vienes mañana a la fiesta de Marta?', 'sí/no', true],
+  ['Tienes ganas de salir.', 'enunciado', true],
+  ['¿Qué quieres hacer mañana?', 'abierta', true],
+  ['¿Dónde vives ahora?', 'abierta', true],
+  ['¿Prefieres salir o quedarte en casa?', 'disyuntiva', true],
+  ['Si mañana hace buen tiempo y no tienes que trabajar, ¿tienes ganas de salir conmigo al parque?', 'sí/no larga', true],
+];
+const frasesEl = $('frases');
+function pintaFrase(texto, tipo, marcada) {
+  const l = document.createElement('label'); l.className = 'frase';
+  l.innerHTML = '<input type="checkbox"><span class="t"></span><span class="k"></span>';
+  l.querySelector('input').checked = marcada;
+  l.querySelector('.t').textContent = texto;
+  const k = l.querySelector('.k'); k.textContent = tipo;
+  if (tipo.startsWith('sí/no')) k.classList.add('sn');
+  frasesEl.appendChild(l);
+}
+FRASES.forEach(([t, k, m]) => pintaFrase(t, k, m));
+$('propiaBtn').onclick = () => {
+  const t = $('propiaTxt').value.replace(/\s+/g, ' ').trim();
+  if (!t) return;
+  pintaFrase(t, 'propia', true); $('propiaTxt').value = '';
+};
+$('propiaTxt').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('propiaBtn').click(); });
+
+function elegidas() {
+  const sin = $('sinApertura').checked;
+  return [...frasesEl.querySelectorAll('.frase')]
+    .filter((f) => f.querySelector('input').checked)
+    .map((f) => ({ el: f, texto: sin ? f.querySelector('.t').textContent.replace(/¿/g, '') : f.querySelector('.t').textContent }));
+}
+function marcaSonando(f) {
+  frasesEl.querySelectorAll('.frase.suena').forEach((x) => x.classList.remove('suena'));
+  if (f) f.classList.add('suena');
+}
+
+// ── Reproducción: siempre UNA voz a la vez ────────────────────────────────
+let gen = 0;
+let detener = null;
+function stopAlles() {
+  gen++;
+  if (detener) { try { detener(); } catch (_) {} detener = null; }
+  try { speechSynthesis.cancel(); } catch (_) {}
+  marcaSonando(null);
+  document.querySelectorAll('.play.laeuft').forEach((b) => { b.classList.remove('laeuft'); b.textContent = '▶'; });
+}
+const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
+function suenaBlob(blob) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(blob);
+    const a = new Audio(url);
+    const fin = () => { URL.revokeObjectURL(url); resolve(); };
+    detener = () => { a.pause(); fin(); };
+    a.onended = a.onerror = fin;
+    a.play().catch(fin);
+  });
+}
+
+function zeile(container, nombre, detalle, tag, leer) {
+  const r = document.createElement('div'); r.className = 'row';
+  r.innerHTML = '<div class="info"><div class="n"></div><div class="d"></div><div class="s"></div></div><button class="play" type="button" aria-label="Escuchar">▶</button>';
+  r.querySelector('.n').textContent = nombre;
+  if (tag) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = tag; r.querySelector('.n').appendChild(t); }
+  r.querySelector('.d').textContent = detalle;
+  const btn = r.querySelector('.play'), st = r.querySelector('.s');
+  const setStatus = (txt, cls) => { st.textContent = txt; st.className = 's' + (cls ? ' ' + cls : ''); };
+  btn.onclick = async () => {
+    const estabaSonando = btn.classList.contains('laeuft');
+    stopAlles();
+    if (estabaSonando) return;
+    const mio = gen;
+    const lista = elegidas();
+    if (!lista.length) { setStatus('Marca al menos una frase.', 'bad'); return; }
+    document.querySelectorAll('.row.aktuell').forEach((x) => x.classList.remove('aktuell'));
+    r.classList.add('aktuell');
+    btn.classList.add('laeuft'); btn.textContent = '■';
+    try {
+      await leer(lista, setStatus, () => mio === gen);
+      if (mio === gen) setStatus('Listo · ' + lista.length + ' frases', 'ok');
+    } catch (e) { setStatus('Error: ' + (e && e.message || e), 'bad'); }
+    if (mio === gen) { marcaSonando(null); btn.classList.remove('laeuft'); btn.textContent = '▶'; }
+  };
+  container.appendChild(r);
+}
+
+// ── Piper ─────────────────────────────────────────────────────────────────
+const WASM_PATHS = {
+  onnxWasm: '/audio/vendor/ort/',
+  piperWasm: '/audio/vendor/piper/piper_phonemize.wasm',
+  piperData: '/audio/vendor/piper/piper_phonemize.data',
+};
+const PIPER = [
+  ['es_ES-sharvard-medium', 'Sharvard · medium', '♂ España · la de ahora', 'activa'],
+  ['es_MX-claude-high', 'Claude · high', '♂ México · la más pesada', ''],
+  ['es_MX-ald-medium', 'Ald · medium', '♂ México', ''],
+  ['es_ES-davefx-medium', 'Davefx · medium', '♂ España', ''],
+  ['es_ES-carlfm-x_low', 'Carlfm · x_low', '♂ España · calidad baja', ''],
+  ['es_ES-mls_10246-low', 'MLS 10246 · low', 'audiolibro · calidad baja', ''],
+  ['es_ES-mls_9972-low', 'MLS 9972 · low', 'audiolibro · calidad baja', ''],
+];
+const sesiones = new Map();
+let cadena = Promise.resolve();
+function sesionPiper(voiceId, progreso) {
+  if (sesiones.has(voiceId)) return sesiones.get(voiceId);
+  const p = cadena.then(() => {
+    TtsSession._instance = null;
+    return TtsSession.create({ voiceId, wasmPaths: WASM_PATHS, progress: progreso });
+  });
+  cadena = p.then(() => {}, () => {});
+  sesiones.set(voiceId, p);
+  p.catch(() => sesiones.delete(voiceId));
+  return p;
+}
+for (const [id, nombre, detalle, tag] of PIPER) {
+  zeile($('piper'), nombre, detalle, tag, async (lista, setStatus, sigue) => {
+    if (!sesiones.has(id)) setStatus('descargando modelo …');
+    const s = await sesionPiper(id, (ev) => {
+      if (ev && ev.total) setStatus('descargando modelo … ' + Math.round(100 * ev.loaded / ev.total) + ' %');
+    });
+    for (let i = 0; i < lista.length; i++) {
+      if (!sigue()) return;
+      setStatus('frase ' + (i + 1) + ' de ' + lista.length);
+      const blob = await s.predict(lista[i].texto);
+      if (!sigue()) return;
+      marcaSonando(lista[i].el);
+      await suenaBlob(blob);
+      if (i + 1 < lista.length) await pausa(500);
+    }
+  });
+}
+
+// ── Voz del dispositivo ───────────────────────────────────────────────────
+function vocesDispositivo() {
+  const box = $('geraet'); box.innerHTML = '';
+  if (!window.speechSynthesis) { box.innerHTML = '<p class="hint">Este navegador no tiene síntesis de voz.</p>'; return; }
+  const es = speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith('es'));
+  if (!es.length) { box.innerHTML = '<p class="hint">No hay voz española en este aparato (o aún no ha cargado).</p>'; return; }
+  for (const v of es) {
+    zeile(box, v.name, v.lang + (v.localService ? ' · sin conexión' : ' · en línea'), v.default ? 'estándar' : '', async (lista, setStatus, sigue) => {
+      for (let i = 0; i < lista.length; i++) {
+        if (!sigue()) return;
+        setStatus('frase ' + (i + 1) + ' de ' + lista.length);
+        marcaSonando(lista[i].el);
+        await new Promise((resolve) => {
+          const u = new SpeechSynthesisUtterance(lista[i].texto);
+          u.lang = v.lang; u.voice = v;
+          u.onend = u.onerror = resolve;
+          detener = () => { speechSynthesis.cancel(); resolve(); };
+          speechSynthesis.speak(u);
+        });
+        if (i + 1 < lista.length) await pausa(500);
+      }
+    });
+  }
+}
+vocesDispositivo();
+if (window.speechSynthesis) speechSynthesis.onvoiceschanged = vocesDispositivo;
+</script>
+</body>
+</html>
