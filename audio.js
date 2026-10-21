@@ -19,7 +19,7 @@ import { TtsSession } from '/audio/vendor/piper-tts-web.js';
 // Kein Aufrufer kennt je einen voiceId — nur die zielsprache.
 const VOICE_MAP = {
   de: 'de_DE-thorsten-medium',   // 02.10.: high → medium (gleicher Sprecher, schneller); eva_k-x_low klang zu schlecht
-  es: 'es_ES-sharvard-medium',
+  es: 'es_ES-davefx-medium',     // 21.10.: sharvard → davefx (einzige, die sí/no-Fragen hebt; Hörtest preguntas-voces.html)
   en: 'en_US-lessac-high',
   el: 'el_GR-rapunzelina-low',
 };

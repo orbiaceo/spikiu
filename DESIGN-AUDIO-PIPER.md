@@ -87,7 +87,7 @@ Stimme angehört. Lehre: die `low`/`x_low`-Tiers klingen amateurhaft — Sprung 
 | Sprache | voiceId | Sex | Tier | Notiz |
 |---|---|---|---|---|
 | Deutsch | `de_DE-thorsten-medium` | ♂ | medium | **02.10.2026:** high → medium (high zu langsam beim Schrittwechsel). `eva_k-x_low` kurz probiert, von Leo verworfen („nicht gut"). Gute deutsche FRAUENSTIMME gibt es in Piper nicht (alle low/x_low). |
-| Spanisch | `es_ES-sharvard-medium` | ♂ | medium | Leos Wahl; `es_ES-sharvard-high` existiert nicht (nur medium) |
+| Spanisch | `es_ES-davefx-medium` | ♂ | medium | **21.10.2026:** sharvard → davefx. Hörtest `preguntas-voces.html`: einzige spanische Piper-Stimme, die Ja/Nein-Fragen am Ende hebt (sharvard = Harvard-Satzkorpus, fast nur Aussagesätze → Fragen flach). Schwäche: hörbarer Raumhall in der Aufnahme. |
 | Englisch (US) | `en_US-lessac-high` | ♀ | high | männliche Reserve in high vorhanden: `en_US-ryan-high` |
 | Griechisch | `el_GR-rapunzelina-low` | — | low | EINZIGE griechische Piper-Stimme; medium/high existiert NICHT |
 
