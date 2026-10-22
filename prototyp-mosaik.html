@@ -27,33 +27,36 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 .chip{flex:0 0 auto;display:flex;align-items:center;gap:.4rem;font:800 .9rem/1 var(--f);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:99px;padding:.45rem .8rem .45rem .5rem;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
 .chip.ohne{padding-left:.8rem}
 .chip[aria-pressed="true"]{background:var(--mustard)}
-.chip .g{flex:0 0 24px;width:24px;height:24px}
+.chip .g{flex:0 0 24px;width:24px;height:24px;font-size:1.15rem}
 .label{font:800 .76rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:4px 0 -4px}
 
 /* Glyphen = die Kacheln der Spielkiste */
-.g{display:block}
-.g svg{display:block;width:100%;height:100%}
+.g{display:flex;align-items:center;justify-content:center;line-height:1;font-size:1.85rem}
+.g svg{width:1.45em;height:1.27em;display:block}
+.g.leise{opacity:.45}
 
 /* ── A · Themen: ein Azulejo pro Szene, alles sichtbar ── */
 .thema{background:var(--card);border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);overflow:hidden;display:flex;flex-direction:column}
 .thema.dunkel{background:transparent;border-style:dashed;box-shadow:none}
-.t-kopf{display:flex;align-items:center;gap:12px;padding:14px 14px 4px;background:none;border:0;text-align:left;width:100%;font-family:var(--f);color:var(--ink);cursor:pointer}
-.t-kopf .g{flex:0 0 48px;height:48px}
+.t-kopf{display:flex;align-items:center;gap:12px;padding:14px;background:none;border:0;text-align:left;width:100%;font-family:var(--f);color:var(--ink);cursor:pointer}
+.t-kopf .g{flex:0 0 48px;height:48px;font-size:2rem}
+.t-kopf{border-bottom:var(--ow) solid var(--ink)}
+.t-kopf.allein{border-bottom:0}
 .t-kopf .tx{flex:1;min-width:0}
 .t-kopf b{display:block;font:800 1.12rem/1.2 var(--f)}
-.t-kopf small{display:block;font:600 .88rem/1.3 var(--f);color:var(--muted)}
+.t-kopf small{display:block;font:600 .88rem/1.3 var(--f);color:rgba(21,22,58,.7)}
 .t-kopf .chev{font:800 1.4rem/1 var(--f)}
-.t-body{display:flex;flex-direction:column;gap:10px;padding:8px 14px 14px}
+.t-body{display:flex;flex-direction:column;gap:10px;padding:12px 14px 14px}
 .worte{display:flex;flex-wrap:wrap;gap:7px}
 .wort{font:800 .95rem/1 var(--f);color:var(--ink);background:var(--mustard);border:2px solid var(--ink);border-radius:99px;padding:.45rem .7rem;cursor:pointer}
 .wort.wartet{background:var(--card);border-style:dashed}
 .anhang{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:.55rem .7rem;cursor:pointer;font-family:var(--f);color:var(--ink);text-align:left;width:100%;box-shadow:2px 3px 0 var(--ink)}
-.anhang .g{flex:0 0 32px;height:32px}
+.anhang .g{flex:0 0 32px;height:32px;font-size:1.4rem}
 .anhang .at{flex:1;min-width:0;font:800 .95rem/1.25 var(--f)}
 .anhang i{font-style:normal;font:800 1.2rem/1 var(--f)}
 .leiste{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .werk{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;min-height:8.4rem;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;font-family:var(--f);color:var(--ink);text-align:center}
-.werk .g{width:48px;height:48px}
+.werk .g{width:52px;height:48px;font-size:1.85rem}
 .werk b{font:800 1rem/1.2 var(--f)}
 .werk small{font:600 .82rem/1.25 var(--f);color:var(--ink);opacity:.75}
 .werk:active,.thema .t-kopf:active,.anhang:active{transform:translate(2px,2px)}
@@ -64,7 +67,7 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 .sheet .innen{width:100%;max-width:440px;background:var(--card);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:16px;display:flex;flex-direction:column;gap:10px;animation:hoch .2s ease-out}
 @keyframes hoch{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
 .sheet .oben{display:flex;align-items:center;gap:12px}
-.sheet .oben .g{flex:0 0 52px;height:52px}
+.sheet .oben .g{flex:0 0 52px;height:52px;font-size:2.1rem;background:var(--kf,#fff);border:2px solid var(--ink);border-radius:14px}
 .sheet .typ{font:800 .74rem/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .sheet h2{margin:.15rem 0 0;font:800 1.4rem/1.15 var(--f)}
 .sheet .tr{font:600 1.02rem/1.35 var(--f);color:var(--muted);margin:0}
@@ -129,31 +132,13 @@ var D=[
 ];
 var BY={};D.forEach(function(d){BY[d.id]=d;});
 var ART={szene:'Szene',gespraech:'Freies Gespräch',wort:'Wort',lektion:'Lektion',kapitel:'Lernroman',werk:'Werk'};
-var FARBE={szene:'#ffe08a',gespraech:'#f7bcd8',wort:'#fff',lektion:'#ffd0b0',kapitel:'#bfe6d5',akro:'#cdbdf2',garten:'#c7e89a',dunkel:'#fff'};
+/* Farben + Symbole 1:1 wie die Kacheln in haus.html (Leo, 22.10.: „Einheit aufbewahren!") */
+var FARBE={szene:'#ffd24a',gespraech:'#c7e89a',wort:'#c7e89a',lektion:'#ffd24a',kapitel:'#d3eef6',akro:'#cdbdf2',garten:'#bfe6d5',dunkel:'transparent'};
+var SCHATZ_SVG='<svg viewBox="0 0 48 42" aria-hidden="true"><path d="M5 19 Q5 5 24 5 Q43 5 43 19 Z" fill="#d79b5a" stroke="#15163a" stroke-width="2.6" stroke-linejoin="round"/><rect x="5" y="19" width="38" height="19" rx="2.5" fill="#b8763a" stroke="#15163a" stroke-width="2.6"/><path d="M11 8.6 V38 M37 8.6 V38" stroke="#ffd24a" stroke-width="4.2"/><rect x="19.5" y="15" width="9" height="10" rx="2" fill="#ffd24a" stroke="#15163a" stroke-width="2.2"/><circle cx="24" cy="19.3" r="1.4" fill="#15163a"/><path d="M24 20.5 V22.6" stroke="#15163a" stroke-width="1.6" stroke-linecap="round"/><path d="M41 2.5 l1 2.4 2.4 1 -2.4 1 -1 2.4 -1 -2.4 -2.4 -1 2.4 -1z" fill="#ff4f9a"/></svg>';
+var EM={szene:'🎭',gespraech:'💬',wort:SCHATZ_SVG,lektion:'📓',kapitel:'📖',akro:'🔤',garten:'🌿'};
 function farbe(d){return d.dunkel?FARBE.dunkel:d.art==='werk'?FARBE[d.werk]:FARBE[d.art];}
 
-/* ═══ GLYPHEN — Azulejo-Motive, 44×44, Tinte 2px, Pastell (wie GLYPH in spiele.html) ═══ */
-var K='#15163a';
-function stern8(cx,cy,r,fill,dash){var a='',b='';for(var i=0;i<4;i++){var w=Math.PI/2*i+Math.PI/4;a+=(i?'L':'M')+(cx+Math.cos(w)*r).toFixed(1)+','+(cy+Math.sin(w)*r).toFixed(1);var v=Math.PI/2*i;b+=(i?'L':'M')+(cx+Math.cos(v)*r).toFixed(1)+','+(cy+Math.sin(v)*r).toFixed(1);}
- var st=' stroke="'+K+'" stroke-width="2" stroke-linejoin="round"'+(dash?' stroke-dasharray="3 2.5"':'');return '<path d="'+a+'Z" fill="'+fill+'"'+st+'/><path d="'+b+'Z" fill="'+fill+'"'+st+'/>';}
-var GL={
- /* Szene: andalusischer Achtstern, innen ein Kreis */
- szene:function(d){return d.dunkel?stern8(22,22,18,'#fff',1):stern8(22,22,18,'#ffd24a')+'<circle cx="22" cy="22" r="6" fill="#fff" stroke="'+K+'" stroke-width="2"/>';},
- /* Freies Gespräch: Rosette (vier Blätter) */
- gespraech:function(){return '<g stroke="'+K+'" stroke-width="2" fill="#ff8fc0"><ellipse cx="22" cy="12" rx="6" ry="9"/><ellipse cx="22" cy="32" rx="6" ry="9"/><ellipse cx="12" cy="22" rx="9" ry="6"/><ellipse cx="32" cy="22" rx="9" ry="6"/></g><circle cx="22" cy="22" r="5" fill="#ffd24a" stroke="'+K+'" stroke-width="2"/>';},
- /* Wort: Raute; gesetzt = gefüllt, wartet = gestrichelt */
- wort:function(d){return d.g?'<path d="M22 6L38 22L22 38L6 22Z" fill="#ffd24a" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M22 15L29 22L22 29L15 22Z" fill="#fff" stroke="'+K+'" stroke-width="2"/>'
-   :'<path d="M22 6L38 22L22 38L6 22Z" fill="#fff" stroke="'+K+'" stroke-width="2" stroke-dasharray="3 2.5" stroke-linejoin="round"/>';},
- /* Lektion: maurischer Bogen (Tür, durch die man nochmal geht) */
- lektion:function(){return '<path d="M9 40V20C9 10 15 5 22 5S35 10 35 20V40Z" fill="#ffb98a" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M15 40V22C15 16 18 12 22 12S29 16 29 22V40" fill="#fff" stroke="'+K+'" stroke-width="2"/><path d="M5 40H39" stroke="'+K+'" stroke-width="2" stroke-linecap="round"/>';},
- /* Lernroman: aufgeschlagenes Buch auf Sechseck */
- kapitel:function(){return '<path d="M22 3L39 12.5V31.5L22 41L5 31.5V12.5Z" fill="#8fd3b6" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M11 15C15 14 19 15 22 17C25 15 29 14 33 15V30C29 29 25 30 22 32C19 30 15 29 11 30Z" fill="#fff" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M22 17V32" stroke="'+K+'" stroke-width="2"/>';},
- /* Akrostichon: drei Buchstaben-Kacheln (wie in der Spielkiste) */
- akro:function(){return '<rect x="12" y="3" width="13" height="11" rx="3" fill="#ffd24a" stroke="'+K+'" stroke-width="2"/><rect x="12" y="17" width="13" height="11" rx="3" fill="#ffd24a" stroke="'+K+'" stroke-width="2"/><rect x="12" y="31" width="13" height="11" rx="3" fill="#ffd24a" stroke="'+K+'" stroke-width="2"/><path d="M29 8h12M29 22h9M29 36h11" stroke="'+K+'" stroke-width="2" stroke-linecap="round"/>';},
- /* Garten: Spross auf Beet */
- garten:function(){return '<path d="M6 34H38V40H6Z" fill="#c69a6b" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M22 34V18" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/><path d="M22 22C14 22 10 16 10 10C18 10 22 15 22 22Z" fill="#9bd14a" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M22 19C29 19 34 14 34 7C26 7 22 12 22 19Z" fill="#9bd14a" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/>';}
-};
-function glyph(d){var f=d.art==='werk'?GL[d.werk]:GL[d.art];return '<span class="g"><svg viewBox="0 0 44 44" aria-hidden="true">'+f(d)+'</svg></span>';}
+function glyph(d){var k=d.art==='werk'?d.werk:d.art;return '<span class="g'+(d.dunkel?' leise':'')+'" aria-hidden="true">'+EM[k]+'</span>';}
 
 var FMT=function(t){return new Date(t+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});};
 var KURZ=function(t){return new Date(t+'T12:00:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'});};
@@ -166,7 +151,7 @@ var filt='alles';
 function passt(d){if(filt==='alles')return true;if(filt==='szene')return d.art==='szene'||d.art==='gespraech';return d.art===filt;}
 function baueFilter(){var f=document.getElementById('filter');f.innerHTML='';
  FILTER.forEach(function(x){var b=document.createElement('button');b.className='chip'+(x[0]==='alles'?' ohne':'');b.id='f-'+x[0];b.setAttribute('aria-pressed',x[0]===filt);
-  var probe={art:x[0],g:1,werk:'akro'};b.innerHTML=(x[0]==='alles'?'':glyph(probe))+x[1];
+  var probe={art:x[0],g:1,werk:'garten'};b.innerHTML=(x[0]==='alles'?'':glyph(probe))+x[1];
   b.onclick=function(){filt=x[0];baueFilter();alles();};f.appendChild(b);});}
 
 /* ═══ A · THEMEN ═══ */
@@ -181,13 +166,13 @@ function baueThemen(){var v=document.getElementById('v-themen');v.innerHTML='';v
   var k=kinder(q.id),ws=k.filter(function(x){return x.art==='wort';}),ls=k.filter(function(x){return x.art==='lektion';});
   if(filt==='lektion'&&!ls.length)return; if(filt==='wort'&&!ws.length)return;
   var c=document.createElement('article');c.className='thema';
-  var kopf=document.createElement('button');kopf.className='t-kopf';
+  var kopf=document.createElement('button');kopf.className='t-kopf';kopf.style.background=farbe(q);
   kopf.innerHTML=glyph(q)+'<span class="tx"><b></b><small>'+ART[q.art]+' · '+KURZ(q.tag)+(ws.length?' · '+wartet(ws):'')+'</small></span><span class="chev">›</span>';
   kopf.querySelector('b').textContent=q.t;kopf.onclick=function(){oeffne(q.id);};c.appendChild(kopf);
   var body=document.createElement('div');body.className='t-body';
   if(ws.length&&filt!=='lektion'){var w=document.createElement('div');w.className='worte';ws.forEach(function(x){var b=document.createElement('button');b.className='wort'+(x.g?'':' wartet');b.textContent=x.t;b.onclick=function(){oeffne(x.id);};w.appendChild(b);});body.appendChild(w);}
   if(filt!=='wort')ls.forEach(function(l){var a=document.createElement('button');a.className='anhang';a.innerHTML=glyph(l)+'<span class="at"></span><i>›</i>';a.querySelector('.at').textContent='Lektion: '+l.t;a.onclick=function(){oeffne(l.id);};body.appendChild(a);});
-  if(body.children.length)c.appendChild(body);v.appendChild(c);});
+  if(body.children.length)c.appendChild(body);else kopf.classList.add('allein');v.appendChild(c);});
  if(filt==='alles'||filt==='werk'){var lb=document.createElement('div');lb.className='label';lb.textContent='Deine Werke';v.appendChild(lb);
   var le=document.createElement('div');le.className='leiste';werke.forEach(function(w){var b=document.createElement('button');b.className='werk';b.style.background=farbe(w);
    b.innerHTML=glyph(w)+'<b></b><small>'+KURZ(w.tag)+'</small>';b.querySelector('b').textContent=w.t;b.onclick=function(){oeffne(w.id);};le.appendChild(b);});v.appendChild(le);}
@@ -203,7 +188,7 @@ function zu(){document.querySelectorAll('.schleier,.sheet').forEach(function(e){
 function oeffne(id){zu();var d=BY[id];var s=document.createElement('div');s.className='schleier';s.onclick=zu;
  var sh=document.createElement('div');sh.className='sheet';sh.setAttribute('role','dialog');var c=document.createElement('div');c.className='innen';
  var typ=ART[d.art]+(d.tag?' · '+FMT(d.tag):' · noch nicht geübt');if(d.art==='wort')typ+=d.g?' · sitzt':' · wartet aufs Wiedersehen';
- c.innerHTML='<div class="oben">'+glyph(d)+'<div><div class="typ"></div><h2></h2></div></div>'+(d.tr?'<p class="tr"></p>':'');
+ c.style.setProperty('--kf',d.dunkel?'#fff':farbe(d));c.innerHTML='<div class="oben">'+glyph(d)+'<div><div class="typ"></div><h2></h2></div></div>'+(d.tr?'<p class="tr"></p>':'');
  c.querySelector('.typ').textContent=typ;c.querySelector('h2').textContent=d.t;if(d.tr)c.querySelector('.tr').textContent=d.tr;
  var rel=[],lbl='';
  if(d.art==='wort'){rel=[d.von];D.forEach(function(x){if(x.nutzt&&x.nutzt.indexOf(d.id)>-1)rel.push(x.id);});lbl='Kam aus · steckt in';}
@@ -214,7 +199,7 @@ function oeffne(id){zu();var d=BY[id];var s=document.createElement('div');s.clas
   rel.forEach(function(r){var b=document.createElement('button');b.textContent=(BY[r].art==='lektion'?'Lektion: ':'')+BY[r].t;b.onclick=function(){oeffne(r);};bz.appendChild(b);});c.appendChild(bz);}
  var btns=document.createElement('div');btns.className='btns';
  function knopf(t,h,f){var b=document.createElement('button');b.className='btn'+(h?' haupt':'');b.textContent=t;b.onclick=f;btns.appendChild(b);}
- if(d.art==='wort'){knopf('🔊 Anhören',false,function(){sprich(d.t);});knopf('Im Gym üben',true,function(){toast('→ würde gym.html mit „'+d.t+'" öffnen');});}
+ if(d.art==='wort'){knopf('🔊 Anhören',false,function(){sprich(d.t);});knopf('🃏 Im Wortschatz üben',true,function(){toast('→ würde Wortschatz mit „'+d.t+'" öffnen');});}
  else knopf(d.akt,true,function(){toast('→ würde „'+d.t+'" öffnen');});
  c.appendChild(btns);sh.appendChild(c);document.body.appendChild(s);document.body.appendChild(sh);sh.querySelector('.btn').focus();}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')zu();});
