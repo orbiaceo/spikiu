@@ -127,7 +127,7 @@ button{font-family:inherit}
  function mt(v){if(v==null)return '';if(typeof v!=='object')return v;var m=muttersprache();return v[m]!=null?v[m]:(v.de!=null?v.de:'');}
  if(muttersprache()==='el')document.documentElement.lang='el';
  document.getElementById('kRoom').textContent=T.room;
- document.getElementById('back').onclick=function(){location.href='haus.html';};
+ document.getElementById('back').onclick=function(){location.href='haus.html?tuer=uebung';};
 
  // ── gesehene Texte (Rotation) ──
  function seen(){try{return JSON.parse(localStorage.getItem('spikiu_taller_seen')||'[]');}catch(e){return [];}}
@@ -176,11 +176,11 @@ button{font-family:inherit}
   wireMC();wireOrden();
   F.innerHTML='<button class="prim" id="again">'+esc(T.again)+'</button><button id="enough">'+esc(T.enough)+'</button>';
   document.getElementById('again').onclick=load;
-  document.getElementById('enough').onclick=function(){location.href='haus.html';};
+  document.getElementById('enough').onclick=function(){location.href='haus.html?tuer=uebung';};
  }
  function renderEmpty(){B.innerHTML='<div class="empty">'+esc(T.empty)+'</div>';
   F.innerHTML='<button id="enough">'+esc(T.enough)+'</button>';
-  document.getElementById('enough').onclick=function(){location.href='haus.html';};}
+  document.getElementById('enough').onclick=function(){location.href='haus.html?tuer=uebung';};}
 
  function wireMC(){[].forEach.call(B.querySelectorAll('.task.mc'),function(t){
   var a=CUR.aufgaben[+t.dataset.i];var opts=t.querySelectorAll('.opt');

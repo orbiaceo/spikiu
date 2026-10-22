@@ -773,9 +773,9 @@ function addPage(key){var p=THEMES[key].page;pages.push({ch:p.ch,title:p.title,b
 var BRILLE='<svg viewBox="0 0 64 44" width="2.1em" height="1.45em" fill="none" stroke="#15163a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17" cy="30" r="11"/><circle cx="47" cy="30" r="11"/><path d="M28 29q4-5 8 0"/><path d="M6.5 27 17 9q2.5-3 5 0"/><path d="M57.5 27 47 9q-2.5-3-5 0"/><path d="M11.5 27q2-3 5-3" stroke-width="2.2"/><path d="M41.5 27q2-3 5-3" stroke-width="2.2"/></svg>';
 function roomBibliothek(){
  /* Bibliothek (16.10.): lesen & entdecken. Regal → Leiste unten; Wendungen + Schreiben → Praxis. */
- kacheln({layout:'tri',items:[
+ /* 22.10. (Leo, 16:37): Leseverstehen → Übung. Die Bibliothek bekommt später reines Lese-Material. */
+ kacheln({layout:'two',items:[
   {em:'📖',tt:H().roman,bg:'#d3eef6',go:function(){location.href='learnroman.html';}},
-  {em:BRILLE,tt:H().lese,pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}},
   /* Regional (Leo, 15./16.10.2026: „CREAR UN NUEVO ESPACIO"). */
   {em:'🗺️',tt:H().regio,bg:'#ffe0b3',go:function(){location.href='regional.html';}}
  ]});}
@@ -941,11 +941,13 @@ function roomUebung(){
   {em:'🎭',tt:H().gef,bg:'#ffd24a',go:function(){location.href='gefuehrt.html';}},
   {em:'💬',tt:H().frei,pill:'Premium',pillBg:'#ffd24a',bg:'#c7e89a',go:function(){location.href='szene.html';}}
  ]});
- kacheln({label:H().gTrain,layout:'tri',kompakt:true,items:[
+ kacheln({label:H().gTrain,layout:'four',kompakt:true,items:[
   {em:'🃏',tt:H().wort,bg:'#ffd0b0',go:function(){location.href='wortschatz.html';}},
   {em:'🪅',tt:H().spiele,bg:'#ffe08a',go:function(){location.href='spiele.html';}},
   /* Wendungen wohnen seit 16.10. im Wortschatz (ein Deck: Wörter + Wendungen). */
-  {em:'✍️',tt:H().schreib,pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}}
+  {em:'✍️',tt:H().schreib,pill:'Premium',pillBg:'#ffd24a',bg:'#cdbdf2',go:function(){location.href='schreibwerkstatt.html';}},
+  /* Leseverstehen aus der Bibliothek hierher (Leo, 22.10. 16:37). */
+  {em:BRILLE,tt:H().lese,pill:'Premium',pillBg:'#ffd24a',bg:'#f7bcd8',go:function(){location.href='taller.html';}}
  ]});}
 function uebKarte(i){
  if(i>=UWORDS.length){
