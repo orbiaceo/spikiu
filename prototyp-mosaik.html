@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,600;9..40,700;9..40,800&family=DM+Mono:wght@500&display=swap">
 <style>
-/* Mosaik: alles in einer Ansicht, als Azulejos. Look 1:1 aus haus.html / spiele.html:
+/* Mosaik: alle Lernstationen in einer Ansicht, Kacheln ohne Schmuck. Look 1:1 aus haus.html / spiele.html:
    Minzgrund, Tinte 2.5px, Versatz-Schatten, Pastell der Spielkiste, DM Sans 800. Ein Look (hell). */
 :root{
   --bg:#eef7f1; --ink:#15163a; --card:#fff; --muted:#5f7068;
@@ -19,9 +19,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.4;
 .zurueck{flex:0 0 40px;height:40px;border-radius:99px;background:var(--card);border:var(--ow) solid var(--ink);box-shadow:2px 3px 0 var(--ink);font:800 1.1rem/1 var(--f);color:var(--ink)}
 h1{font:800 1.5rem/1.1 var(--f);margin:0;flex:1}
 .beispiel{font:500 .6rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;background:var(--card);border:2px solid var(--ink);border-radius:99px;padding:.3rem .5rem;box-shadow:2px 2px 0 var(--ink);white-space:nowrap}
-.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:4px;gap:4px}
-.seg button{font:800 .95rem/1 var(--f);color:var(--ink);background:transparent;border:2px solid transparent;border-radius:11px;padding:.65rem .2rem;cursor:pointer}
-.seg button[aria-selected="true"]{background:var(--mustard);border-color:var(--ink)}
 .idee{font:600 .92rem/1.4 var(--f);color:var(--muted);margin:0}
 button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 .view[hidden]{display:none!important}
@@ -40,9 +37,7 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 /* ── A · Themen: ein Azulejo pro Szene, alles sichtbar ── */
 .thema{background:var(--card);border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);overflow:hidden;display:flex;flex-direction:column}
 .thema.dunkel{background:transparent;border-style:dashed;box-shadow:none}
-.fries{height:22px;border-bottom:var(--ow) solid var(--ink);background-repeat:repeat-x;background-size:22px 22px}
-.thema.dunkel .fries{display:none}
-.t-kopf{display:flex;align-items:center;gap:12px;padding:12px 14px 4px;background:none;border:0;text-align:left;width:100%;font-family:var(--f);color:var(--ink);cursor:pointer}
+.t-kopf{display:flex;align-items:center;gap:12px;padding:14px 14px 4px;background:none;border:0;text-align:left;width:100%;font-family:var(--f);color:var(--ink);cursor:pointer}
 .t-kopf .g{flex:0 0 48px;height:48px}
 .t-kopf .tx{flex:1;min-width:0}
 .t-kopf b{display:block;font:800 1.12rem/1.2 var(--f)}
@@ -62,29 +57,6 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 .werk b{font:800 1rem/1.2 var(--f)}
 .werk small{font:600 .82rem/1.25 var(--f);color:var(--ink);opacity:.75}
 .werk:active,.thema .t-kopf:active,.anhang:active{transform:translate(2px,2px)}
-
-/* ── B · Tage: Posteingang, eine Zeile pro Spur ── */
-.tag{display:flex;flex-direction:column;gap:8px}
-.tag-kopf{display:flex;align-items:center;gap:8px;font:800 .95rem/1 var(--f)}
-.tag-kopf .g{width:22px;height:22px}
-.zeile{display:flex;align-items:center;gap:12px;background:var(--card);border:2px solid var(--ink);border-radius:16px;box-shadow:2px 3px 0 var(--ink);padding:.6rem .75rem;cursor:pointer;font-family:var(--f);color:var(--ink);text-align:left;width:100%}
-.zeile:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
-.zeile .g{flex:0 0 40px;height:40px}
-.zeile .tx{flex:1;min-width:0}
-.zeile b{display:block;font:800 1rem/1.25 var(--f)}
-.zeile small{display:block;font:600 .86rem/1.3 var(--f);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.zeile .chev{font:800 1.3rem/1 var(--f)}
-
-/* ── C · Fliesen: Wand aus Azulejos, eine Fliese pro Spur ── */
-.wand{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.fliese{aspect-ratio:1;max-width:100%;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;padding:.4rem;cursor:pointer;font-family:var(--f);color:var(--ink);text-align:center;min-width:0}
-.fliese .g{width:44%;height:44%}
-.fliese b{font:800 .84rem/1.15 var(--f);max-width:100%;overflow-wrap:anywhere}
-.fliese.gross{grid-column:span 2;aspect-ratio:auto}
-.fliese.gross b{font-size:1rem}
-.fliese.gross .g{width:52px;height:52px}
-.fliese.dunkel{background:transparent!important;border-style:dashed;box-shadow:none}
-.fliese:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
 
 /* ── Karte ── */
 .schleier{position:fixed;inset:0;background:rgba(21,22,58,.35);z-index:20}
@@ -109,16 +81,9 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 
 <div class="app">
   <div class="kopf"><button class="zurueck" aria-label="zurück">‹</button><h1>Mein Mosaik</h1><span class="beispiel">Beispiel-Daten</span></div>
-  <div class="seg" role="tablist">
-    <button role="tab" id="t-themen" data-v="themen" aria-selected="true">Themen</button>
-    <button role="tab" id="t-tage" data-v="tage" aria-selected="false">Tage</button>
-    <button role="tab" id="t-wand" data-v="wand" aria-selected="false">Fliesen</button>
-  </div>
   <p class="idee" id="idee"></p>
   <div class="chips" id="filter"></div>
   <section class="view" id="v-themen"></section>
-  <section class="view" id="v-tage" hidden></section>
-  <section class="view" id="v-wand" hidden></section>
 </div>
 
 <script>
@@ -189,8 +154,6 @@ var GL={
  garten:function(){return '<path d="M6 34H38V40H6Z" fill="#c69a6b" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M22 34V18" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/><path d="M22 22C14 22 10 16 10 10C18 10 22 15 22 22Z" fill="#9bd14a" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/><path d="M22 19C29 19 34 14 34 7C26 7 22 12 22 19Z" fill="#9bd14a" stroke="'+K+'" stroke-width="2" stroke-linejoin="round"/>';}
 };
 function glyph(d){var f=d.art==='werk'?GL[d.werk]:GL[d.art];return '<span class="g"><svg viewBox="0 0 44 44" aria-hidden="true">'+f(d)+'</svg></span>';}
-/* Fries für die Themen-Kacheln: Reihe kleiner Achtsterne, Farbe der Art */
-function fries(fill){var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><rect width="44" height="44" fill="'+fill+'"/>'+stern8(22,22,13,'#fff')+'</svg>';return "url('data:image/svg+xml,"+encodeURIComponent(s)+"')";}
 
 var FMT=function(t){return new Date(t+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});};
 var KURZ=function(t){return new Date(t+'T12:00:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'});};
@@ -218,7 +181,6 @@ function baueThemen(){var v=document.getElementById('v-themen');v.innerHTML='';v
   var k=kinder(q.id),ws=k.filter(function(x){return x.art==='wort';}),ls=k.filter(function(x){return x.art==='lektion';});
   if(filt==='lektion'&&!ls.length)return; if(filt==='wort'&&!ws.length)return;
   var c=document.createElement('article');c.className='thema';
-  c.innerHTML='<div class="fries" style="background-image:'+fries(farbe(q))+'"></div>';
   var kopf=document.createElement('button');kopf.className='t-kopf';
   kopf.innerHTML=glyph(q)+'<span class="tx"><b></b><small>'+ART[q.art]+' · '+KURZ(q.tag)+(ws.length?' · '+wartet(ws):'')+'</small></span><span class="chev">›</span>';
   kopf.querySelector('b').textContent=q.t;kopf.onclick=function(){oeffne(q.id);};c.appendChild(kopf);
@@ -233,29 +195,6 @@ function baueThemen(){var v=document.getElementById('v-themen');v.innerHTML='';v
   var le2=document.createElement('div');le2.className='leiste';D.filter(function(d){return d.dunkel;}).forEach(function(d){var b=document.createElement('button');b.className='werk';b.style.cssText='background:transparent;border-style:dashed;box-shadow:none';
    b.innerHTML=glyph(d)+'<b></b><small>noch nicht geübt</small>';b.querySelector('b').textContent=d.t;b.onclick=function(){oeffne(d.id);};le2.appendChild(b);});v.appendChild(le2);}
 }
-
-/* ═══ B · TAGE (Posteingang) ═══ */
-function baueTage(){var v=document.getElementById('v-tage');v.innerHTML='';v.style.cssText='display:flex;flex-direction:column;gap:16px';
- var tage={};D.forEach(function(d){if(d.tag&&passt(d))(tage[d.tag]=tage[d.tag]||[]).push(d);});
- Object.keys(tage).sort().reverse().forEach(function(k){var es=tage[k];var t=document.createElement('div');t.className='tag';
-  t.innerHTML='<div class="tag-kopf"><span class="g"><svg viewBox="0 0 44 44">'+stern8(22,22,18,'#ffd24a')+'</svg></span>'+FMT(k)+'</div>';
-  var gross=es.filter(function(d){return d.art!=='wort';}),worte=es.filter(function(d){return d.art==='wort';});
-  gross.forEach(function(d){t.appendChild(zeile(d,ART[d.art]+(d.von?' · aus „'+BY[d.von].t+'"':'')+(d.nutzt?' · '+d.nutzt.map(function(n){return BY[n].t;}).join(', '):'')));});
-  if(worte.length){var z=document.createElement('button');z.className='zeile';z.innerHTML=glyph({art:'wort',g:1})+'<span class="tx"><b></b><small></small></span><span class="chev">›</span>';
-   z.querySelector('b').textContent=worte.length===1?worte[0].t:'Gesammelt: '+worte.map(function(w){return w.t;}).slice(0,2).join(', ')+(worte.length>2?' …':'');
-   z.querySelector('small').textContent='Schatzkiste'+(worte[0].von?' · aus „'+BY[worte[0].von].t+'"':'');
-   z.onclick=function(){worte.length===1?oeffne(worte[0].id):oeffne(worte[0].von,true);};t.appendChild(z);}
-  v.appendChild(t);});}
-function zeile(d,sub){var z=document.createElement('button');z.className='zeile';z.innerHTML=glyph(d)+'<span class="tx"><b></b><small></small></span><span class="chev">›</span>';
- z.querySelector('b').textContent=d.t;z.querySelector('small').textContent=sub;z.onclick=function(){oeffne(d.id);};return z;}
-
-/* ═══ C · FLIESEN (Wand) ═══ */
-function baueWand(){var v=document.getElementById('v-wand');v.innerHTML='';var w=document.createElement('div');w.className='wand';
- D.filter(passt).filter(function(d){return !d.dunkel;}).sort(function(a,b){return a.tag<b.tag?1:a.tag>b.tag?-1:0;}).forEach(function(d){
-  var f=document.createElement('button');var gr=['szene','gespraech','kapitel'].indexOf(d.art)>-1;f.className='fliese'+(gr?' gross':'');f.style.background=d.art==='wort'?(d.g?'#fff3c4':'#fff'):farbe(d);
-  f.innerHTML=glyph(d)+'<b></b>';f.querySelector('b').textContent=d.t;f.onclick=function(){oeffne(d.id);};w.appendChild(f);});
- if(filt==='alles'||filt==='szene')D.filter(function(d){return d.dunkel;}).forEach(function(d){var f=document.createElement('button');f.className='fliese dunkel';f.innerHTML=glyph(d)+'<b></b>';f.querySelector('b').textContent=d.t;f.onclick=function(){oeffne(d.id);};w.appendChild(f);});
- v.appendChild(w);}
 
 /* ═══ KARTE — eine für alles: woher, wohin, zurück zur Übung ═══ */
 function sprich(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='es-ES';speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){toast('🔊 '+t);}}
@@ -280,17 +219,8 @@ function oeffne(id){zu();var d=BY[id];var s=document.createElement('div');s.clas
  c.appendChild(btns);sh.appendChild(c);document.body.appendChild(s);document.body.appendChild(sh);sh.querySelector('.btn').focus();}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')zu();});
 
-/* ═══ Umschalten ═══ */
-var IDEE={themen:'Alles auf einen Blick, nach Szenen geordnet. Jede Kachel zeigt die Wörter und Lektionen, die daraus kamen.',
- tage:'Dasselbe als Tagebuch: eine Zeile pro Tätigkeit, das Neueste oben.',
- wand:'Dasselbe als Fliesenwand: eine Fliese pro Tätigkeit, Farbe und Muster sagen, was es ist.'};
-var aktiv='themen';
-function alles(){baueThemen();baueTage();baueWand();}
-function zeige(v){aktiv=v;['themen','tage','wand'].forEach(function(k){document.getElementById('v-'+k).hidden=k!==v;document.getElementById('t-'+k).setAttribute('aria-selected',k===v);});
- document.getElementById('idee').textContent=IDEE[v];try{localStorage.setItem('proto_mosaik_v',v);}catch(e){}}
-document.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){zeige(b.dataset.v);};});
+/* ═══ Start ═══ */
+function alles(){baueThemen();}
+document.getElementById('idee').textContent='Deine Lernstationen. Tipp an, was du wiedersehen willst.';
 baueFilter();alles();
-var st='themen';try{st=localStorage.getItem('proto_mosaik_v')||'themen';}catch(e){}
-if(['themen','tage','wand'].indexOf(location.hash.slice(1))>-1)st=location.hash.slice(1);
-zeige(st);
 </script>
