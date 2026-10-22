@@ -784,7 +784,7 @@
     N("Stille. Die drei alten Männer an der Theke ließen ihre Zeitungen sinken.",
       "Silence. The three old men at the counter lowered their newspapers."),
     Z("Lola tocó la taza. Después miró a Lukas por encima de las gafas.", "Lola fasste die Tasse an. Dann sah sie Lukas über ihre Brille hinweg an.", "Lola touched the cup. Then she looked at Lukas over her glasses."),
-    Z("—Tienes razón. Lo siento mucho. Se lo cambio ahora mismo.", "Du hast recht. Das tut mir sehr leid. Ich tausche ihn sofort aus.", "You're right. I'm very sorry. I'll change it right away."),
+    Z("—Tiene razón. Lo siento mucho. Se lo cambio ahora mismo.", "Sie haben recht. Das tut mir sehr leid. Ich tausche ihn sofort aus.", "You're right. I'm very sorry. I'll change it right away."),
     Z("Le trajo otro café, muy caliente, y una galleta. Una galleta sin frutos secos. Por si acaso.", "Sie brachte ihm einen anderen Kaffee, sehr heiß, und einen Keks. Einen Keks ohne Nüsse. Für alle Fälle.", "She brought him another coffee, very hot, and a cookie. A cookie with no nuts. Just in case."),
     Z("—No pasa nada, Lola. Gracias.", "Macht nichts, Lola. Danke.", "No problem, Lola. Thanks."),
     N("Die Männer an der Theke hoben ihre Zeitungen wieder. Einer von ihnen nickte Lukas zu. Respekt.",
