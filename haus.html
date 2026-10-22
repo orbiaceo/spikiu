@@ -97,19 +97,7 @@ button{font-family:inherit}
 .k-kompakt .tile{height:96px;border-radius:18px;box-shadow:3px 4px 0 var(--ink)}
 .k-kompakt .tile .em{font-size:1.6rem}
 .k-kompakt.k-tri .k-top{max-width:calc(50% - .35rem)}
-/* Lernweg im Regal (Leo, 21.10.): der Baum und die geübten Szenen auf einen Blick. Keine Zahlen. */
-.weg-streifen{display:flex;align-items:center;gap:.7rem;width:100%;max-width:340px;margin:0 auto;text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:.65rem .8rem .65rem .55rem;color:var(--ink)}
-.weg-streifen:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink)}
-.weg-streifen .ws-baum{flex:0 0 58px;width:58px;height:66px;display:flex;align-items:flex-end;justify-content:center}
-.weg-streifen .ws-baum svg{width:58px;height:66px}
-.weg-streifen .ws-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:.4rem}
-.weg-streifen .ws-kopf{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.weg-streifen .ws-tt{font:800 1rem/1.2 'DM Sans',sans-serif}
-.weg-streifen .ws-pill{font:800 .72rem/1 'DM Sans',sans-serif;border:2px solid var(--ink);border-radius:100px;padding:.22rem .55rem;background:#eef7f1}
-.weg-streifen .ws-szenen{display:flex;flex-wrap:wrap;gap:.3rem}
-.weg-streifen .ws-sz{font:700 .76rem/1 'DM Sans',sans-serif;background:#e8f5ee;border:1.5px solid var(--ink);border-radius:100px;padding:.25rem .5rem;white-space:nowrap}
-.weg-streifen .ws-leer{font:600 .8rem/1.35 'DM Sans',sans-serif;color:var(--muted,#5f7068)}
-.weg-streifen .ws-chev{flex:0 0 auto;font-size:1.5rem;line-height:1}
+.mos-wrap{width:100%;align-self:stretch}
 .k-label{font:800 .72rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted,#5f7068);text-align:center;margin-bottom:-.35rem}
 .hilfe-knopf{position:absolute;top:calc(.45rem + env(safe-area-inset-top));right:.6rem;width:32px;height:32px;border-radius:999px;border:2px solid var(--ink);background:#fff;font:800 .95rem/1 'DM Sans',sans-serif;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink);z-index:3}
 .hilfe-knopf:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
@@ -294,7 +282,8 @@ button{font-family:inherit}
 
 <script src="woerterbuch.js"></script>
 <script src="lexikon.js"></script>
-<script src="baum.js"></script>
+<script src="woerter.js"></script>
+<script src="mosaik.js"></script>
 <script src="szenen.js"></script>
 <script>
 /* ── SPIKIU · CAPY VIVO (wiederverwendbarer Helfer) ──────────────────
@@ -479,7 +468,7 @@ function hausSprache(){
  return 'de';}
 var HL=hausSprache();
 var HUI={
- de:{wegR:'Dein Lernweg',wegLeer:'Noch keine Szene geübt — dein Baum wartet.',etS:'🌱 Samen',etSt:'🌿 Stamm',etK:'🌳 Krone',d1:'Abenteuer',d1s:'Hören und sprechen — mit Spikiu, Schritt für Schritt.',d2:'Bibliothek',d2s:'Lesen und entdecken.',gHablar:'Sprechen',gTrain:'Trainieren',hilfe:'Hilfe',anfang:'Fang mit dem Geführten Gespräch an — dort triffst du deine ersten Wörter.',regal:'Dein Regal',regals:'Deine Schatzkiste, deine Lektionen, dein Garten',regalKr:'Alles, was du gesammelt hast.',garten:'Dein Garten',gartens:'Von A bis Z',akro:'Deine Akrosticha',akros:'Zu jedem Buchstaben ein Wort',zurBib:'‹ zurück zur Bibliothek',d3:'Übung',d3s:'Sprechen und trainieren.',bibRoman:'Dein Lernroman wartet — lies weiter, wo du warst.',bibRegio:'Deine Regionalismen warten — mach weiter, wo du warst.',bibAnfang:'Fang mit dem Lernroman an — eine Geschichte, Kapitel für Kapitel.',
+ de:{wegR:'Dein Lernweg',wegLeer:'Noch keine Szene geübt — dein Baum wartet.',etS:'🌱 Samen',etSt:'🌿 Stamm',etK:'🌳 Krone',d1:'Abenteuer',d1s:'Hören und sprechen — mit Spikiu, Schritt für Schritt.',d2:'Bibliothek',d2s:'Lesen und entdecken.',gHablar:'Sprechen',gTrain:'Trainieren',hilfe:'Hilfe',anfang:'Fang mit dem Geführten Gespräch an — dort triffst du deine ersten Wörter.',regal:'Dein Regal',regals:'Deine Schatzkiste, deine Lektionen, dein Garten',regalKr:'Deine Lernstationen. Tipp an, was du wiedersehen willst.',garten:'Dein Garten',gartens:'Von A bis Z',akro:'Deine Akrosticha',akros:'Zu jedem Buchstaben ein Wort',zurBib:'‹ zurück zur Bibliothek',d3:'Übung',d3s:'Sprechen und trainieren.',bibRoman:'Dein Lernroman wartet — lies weiter, wo du warst.',bibRegio:'Deine Regionalismen warten — mach weiter, wo du warst.',bibAnfang:'Fang mit dem Lernroman an — eine Geschichte, Kapitel für Kapitel.',
   gef:'Geführtes Gespräch',gefs:'Szenen üben',frei:'Freies Gespräch',freis:'Frei reden',gratis:'gratis',
   zuletzt:function(t){return 'Zuletzt: «'+t+'» — weiter?';},gesammelt:function(z){return 'Du hast schon '+z+' gesammelt. 🍃';},
   roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen',regio:'Regionalismen',wends:'Sprache & Kultur',lek:'Deine Lektionen',buch:'Meine Schatzkiste',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
@@ -487,7 +476,7 @@ var HUI={
   zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n+'s Schatzkiste';},buchSub:'Was du gefunden hast — Stück für Stück.',geschrieben:'gehütet von Spikiu',
   mitgenommen:'Mitgenommen',deineW:'Deine Wörter',deineA:'Deine Wendungen',wendungen:function(n){return n+' '+(n===1?'Wendung':'Wendungen');},leer:'Noch leer',leerSub:'Sprich mit mir oder üb ein paar Wörter — dann füllt sich diese Kiste von selbst.',
   hook:'Kein Zertifikat.<br>Dein Schatz.',hookSub:'Andere sammeln Streaks. Bei Spikiu wächst ein Schatz, der nur dir gehört — Stück für Stück, in deinem Tempo.',druck:'Gedruckte Edition · bald'},
- es:{wegR:'Tu camino',wegLeer:'Aún no has practicado ninguna escena — tu árbol te espera.',etS:'🌱 Semilla',etSt:'🌿 Tronco',etK:'🌳 Copa',d1:'Aventura',d1s:'Escuchar y hablar — con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Leer y descubrir.',gHablar:'Hablar',gTrain:'Entrenar',hilfe:'Ayuda',anfang:'Empieza con la Conversación guiada — ahí conoces tus primeras palabras.',regal:'Tu estante',regals:'Tu cofre, tus lecciones, tu huerto',regalKr:'Todo lo que has reunido.',garten:'Tu huerto',gartens:'De la A a la Z',akro:'Tus acrósticos',akros:'Una palabra por letra',zurBib:'‹ volver a la biblioteca',d3:'Práctica',d3s:'Hablar y entrenar.',bibRoman:'Tu novela te espera — sigue leyendo donde lo dejaste.',bibRegio:'Tus regionalismos te esperan — sigue donde lo dejaste.',bibAnfang:'Empieza con la Novela para aprender — una historia, capítulo a capítulo.',
+ es:{wegR:'Tu camino',wegLeer:'Aún no has practicado ninguna escena — tu árbol te espera.',etS:'🌱 Semilla',etSt:'🌿 Tronco',etK:'🌳 Copa',d1:'Aventura',d1s:'Escuchar y hablar — con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Leer y descubrir.',gHablar:'Hablar',gTrain:'Entrenar',hilfe:'Ayuda',anfang:'Empieza con la Conversación guiada — ahí conoces tus primeras palabras.',regal:'Tu estante',regals:'Tu cofre, tus lecciones, tu huerto',regalKr:'Tus estaciones. Toca lo que quieras volver a ver.',garten:'Tu huerto',gartens:'De la A a la Z',akro:'Tus acrósticos',akros:'Una palabra por letra',zurBib:'‹ volver a la biblioteca',d3:'Práctica',d3s:'Hablar y entrenar.',bibRoman:'Tu novela te espera — sigue leyendo donde lo dejaste.',bibRegio:'Tus regionalismos te esperan — sigue donde lo dejaste.',bibAnfang:'Empieza con la Novela para aprender — una historia, capítulo a capítulo.',
   gef:'Conversación guiada',gefs:'Practicar escenas',frei:'Conversación libre',freis:'Hablar libremente',gratis:'gratis',
   zuletzt:function(t){return 'Lo último: «'+t+'». ¿Seguimos?';},gesammelt:function(z){return 'Ya has reunido '+z+'. 🍃';},
   roman:'Novela para aprender',romans:'Lectura inmersiva',wend:'Giros',regio:'Regionalismos',wends:'Lengua y cultura',lek:'Tus lecciones',buch:'Mi cofre',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
@@ -495,7 +484,7 @@ var HUI={
   zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return 'El cofre de '+n;},buchSub:'Lo que has encontrado, pieza a pieza.',geschrieben:'guardado por Spikiu',
   mitgenommen:'Lo que te llevas',deineW:'Tus palabras',deineA:'Tus expresiones',wendungen:function(n){return n+' '+(n===1?'expresión':'expresiones');},leer:'Todavía vacío',leerSub:'Habla conmigo o practica unas palabras, y este cofre se llena solo.',
   hook:'Sin certificado.<br>Tu tesoro.',hookSub:'Otros acumulan rachas. En Spikiu crece un tesoro que es solo tuyo, pieza a pieza, a tu ritmo.',druck:'Edición impresa · pronto'},
- en:{wegR:'Your path',wegLeer:'No scene practiced yet — your tree is waiting.',etS:'🌱 Seed',etSt:'🌿 Trunk',etK:'🌳 Crown',d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and discover.',gHablar:'Speak',gTrain:'Train',hilfe:'Help',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your treasure chest, your lessons, your garden',regalKr:'Everything you’ve gathered.',garten:'Your garden',gartens:'From A to Z',akro:'Your acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'Speak and train.',bibRoman:'Your learning novel is waiting — read on where you left off.',bibRegio:'Your regionalisms are waiting — carry on where you left off.',bibAnfang:'Start with the Learning Novel — one story, chapter by chapter.',
+ en:{wegR:'Your path',wegLeer:'No scene practiced yet — your tree is waiting.',etS:'🌱 Seed',etSt:'🌿 Trunk',etK:'🌳 Crown',d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and discover.',gHablar:'Speak',gTrain:'Train',hilfe:'Help',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your treasure chest, your lessons, your garden',regalKr:'Your learning stops. Tap whatever you want to see again.',garten:'Your garden',gartens:'From A to Z',akro:'Your acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'Speak and train.',bibRoman:'Your learning novel is waiting — read on where you left off.',bibRegio:'Your regionalisms are waiting — carry on where you left off.',bibAnfang:'Start with the Learning Novel — one story, chapter by chapter.',
   gef:'Guided conversation',gefs:'Practice scenes',frei:'Free conversation',freis:'Talk freely',gratis:'free',
   zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(z){return 'You’ve already collected '+z+'. 🍃';},
   roman:'Learning Novel',romans:'Immersive reading',wend:'Expressions',regio:'Regionalisms',wends:'Language & culture',lek:'Your lessons',buch:'My treasure chest',woerter:function(n){return n+' '+(n===1?'word':'words');},
@@ -503,7 +492,7 @@ var HUI={
   zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s treasure chest';},buchSub:'What you’ve found — piece by piece.',geschrieben:'kept by Spikiu',
   mitgenommen:'Taken with you',deineW:'Your words',deineA:'Your phrases',wendungen:function(n){return n+' '+(n===1?'phrase':'phrases');},leer:'Still empty',leerSub:'Talk with me or practise a few words — and this chest fills itself.',
   hook:'No certificate.<br>Your treasure.',hookSub:'Others collect streaks. With Spikiu, a treasure grows that belongs only to you — piece by piece, at your pace.',druck:'Printed edition · soon'},
- el:{wegR:'Η διαδρομή σου',wegLeer:'Δεν έχεις εξασκηθεί ακόμα σε καμία σκηνή — το δέντρο σου περιμένει.',etS:'🌱 Σπόρος',etSt:'🌿 Κορμός',etK:'🌳 Φυλλωσιά',d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και ανακάλυψε.',gHablar:'Μίλα',gTrain:'Προπόνηση',hilfe:'Βοήθεια',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Ο θησαυρός σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Όλα όσα έχεις μαζέψει.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Μίλα και προπονήσου.',bibRoman:'Το μυθιστόρημά σου σε περιμένει — συνέχισε από εκεί που σταμάτησες.',bibRegio:'Οι τοπικισμοί σου σε περιμένουν — συνέχισε από εκεί που σταμάτησες.',bibAnfang:'Ξεκίνα με το Μυθιστόρημα — μία ιστορία, κεφάλαιο με κεφάλαιο.',
+ el:{wegR:'Η διαδρομή σου',wegLeer:'Δεν έχεις εξασκηθεί ακόμα σε καμία σκηνή — το δέντρο σου περιμένει.',etS:'🌱 Σπόρος',etSt:'🌿 Κορμός',etK:'🌳 Φυλλωσιά',d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και ανακάλυψε.',gHablar:'Μίλα',gTrain:'Προπόνηση',hilfe:'Βοήθεια',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Ο θησαυρός σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Οι σταθμοί σου. Πάτα ό,τι θέλεις να ξαναδείς.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Μίλα και προπονήσου.',bibRoman:'Το μυθιστόρημά σου σε περιμένει — συνέχισε από εκεί που σταμάτησες.',bibRegio:'Οι τοπικισμοί σου σε περιμένουν — συνέχισε από εκεί που σταμάτησες.',bibAnfang:'Ξεκίνα με το Μυθιστόρημα — μία ιστορία, κεφάλαιο με κεφάλαιο.',
   gef:'Καθοδηγούμενη συζήτηση',gefs:'Εξάσκηση σε σκηνές',frei:'Ελεύθερη συζήτηση',freis:'Μίλα ελεύθερα',gratis:'δωρεάν',
   zuletzt:function(t){return 'Τελευταία φορά: «'+t+'» — συνεχίζουμε;';},gesammelt:function(z){return 'Έχεις ήδη μαζέψει '+z+'. 🍃';},
   roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',regio:'Τοπικισμοί',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Ο θησαυρός μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
@@ -790,37 +779,13 @@ function roomBibliothek(){
   /* Regional (Leo, 15./16.10.2026: „CREAR UN NUEVO ESPACIO"). */
   {em:'🗺️',tt:H().regio,bg:'#ffe0b3',go:function(){location.href='regional.html';}}
  ]});}
-/* Dein Regal: was du gesammelt hast — Buch, Lektionen, Garten, Akrosticha. */
+/* Dein Regal = Mosaik (Leo, 22.10.2026, 14:27: „Aprobado! Dale!" — Prototyp prototyp-mosaik.html).
+   Alle Lernstationen auf einen Blick: eine Kachel pro Station mit ihren Wörtern und der Lektion,
+   antippen → zurück zur Übung. Ersetzt die vier Kacheln + den Lernweg-Streifen (Baum, verworfen).
+   Schatzkiste, Lektionen, Garten, Akrosticha sind jetzt Filter bzw. „Deine Werke". Code: mosaik.js. */
 function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0;
- kacheln({greet:{title:'🌱 '+H().regal},layout:'four',items:[
-  {em:SCHATZ_SVG,tt:H().buch,bg:'#c7e89a',go:renderBook},
-  {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){location.href='lektionen.html';}},
-  {em:'🌿',tt:H().garten,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
-  {em:'🔤',tt:H().akro,bg:'#cdbdf2',go:function(){location.href='spiele.html?spiel=acrostico';}}
- ]});
- lernwegStreifen();
-}
-/* Lernweg-Streifen über den Regal-Kacheln (Leo, 21.10.: „ponerlo también aquí").
-   Liest wie dashboard.html: Etappe, Blätter, geübte Szenen. Zeigt still — keine Zahlen, kein Prozent. */
-function lernwegStreifen(){
- var wrap=S.querySelector('.k-wrap'),grid=wrap&&wrap.querySelector('.k-four');if(!grid)return;
- var u={};try{u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');}catch(e){}
- var P=u.profile||{},et=P.etappe||'samen';if(['samen','stamm','krone'].indexOf(et)<0)et='samen';
- var b=document.createElement('button');b.className='weg-streifen';
- b.innerHTML='<span class="ws-baum"></span><span class="ws-txt"><span class="ws-kopf"><span class="ws-tt"></span><span class="ws-pill"></span></span><span class="ws-szenen"></span></span><span class="ws-chev">›</span>';
- b.querySelector('.ws-tt').textContent=H().wegR;
- b.querySelector('.ws-pill').textContent={samen:H().etS,stamm:H().etSt,krone:H().etK}[et];
- try{if(window.spkBaum){var bw=b.querySelector('.ws-baum');window.spkBaum(bw,{etappe:et,blaetter:u.blaetter||0});
-  /* Ausschnitt näher an den Baum, damit er im kleinen Streifen lesbar bleibt. */
-  var sv=bw.querySelector('svg');if(sv)sv.setAttribute('viewBox',{samen:'50 118 100 108',stamm:'25 55 150 172',krone:'0 0 200 230'}[et]);}}catch(e){}
- var done=u.szenen||{},ids=Object.keys(done).filter(function(k){return done[k]&&done[k].done;});
- ids.sort(function(a,c){return (done[c].last||0)-(done[a].last||0);});
- var box=b.querySelector('.ws-szenen');
- if(ids.length){ids.slice(0,3).forEach(function(id){var sz=(window.spikiuSzenen||[]).filter(function(x){return x.id===id;})[0];
-   var c=document.createElement('span');c.className='ws-sz';c.textContent=sz?(sz.emoji+' '+(sz[HL]||sz.de)):id;box.appendChild(c);});}
- else{var l=document.createElement('span');l.className='ws-leer';l.textContent=H().wegLeer;box.appendChild(l);}
- b.onclick=function(){location.href='dashboard.html#lernweg';};
- wrap.insertBefore(b,grid);
+ var box=document.createElement('div');box.className='mos-wrap';S.appendChild(box);
+ if(window.spikiuMosaik)window.spikiuMosaik(box,{sprache:HL,say:say,buch:renderBook,untertitel:false});
 }
 function readRoman(){
  var c=document.createElement('div');c.className='tool read';

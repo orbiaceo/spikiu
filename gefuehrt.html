@@ -668,7 +668,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       u.szenen = u.szenen || {}; var prev = u.szenen[TOPIC_ID] || {};
       u.szenen[TOPIC_ID] = { done: true, last: Date.now(), stab: (prev.stab || 0) + 1 };
       var arr = Array.isArray(u.lessons) ? u.lessons.slice() : [];
-      arr.push({ id: 'lesson_' + Date.now(), topic: lesson.title || 'Lektion', thema: TOPIC_LABEL, fromConversation: false, lesson: lesson, createdAt: new Date().toISOString(), zielsprache: ZIEL });
+      arr.push({ id: 'lesson_' + Date.now(), topic: lesson.title || 'Lektion', thema: TOPIC_LABEL, szene: TOPIC_ID, fromConversation: false, lesson: lesson, createdAt: new Date().toISOString(), zielsprache: ZIEL });
       arr.sort(function (a, b) { return (b.createdAt || '').localeCompare(a.createdAt || ''); });
       u.lessons = arr.slice(0, 14); u.blaetter = (u.blaetter || 0) + 1;
       localStorage.setItem('spikiu_user', JSON.stringify(u));

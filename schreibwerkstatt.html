@@ -416,7 +416,7 @@
     var u=leseNutzer();
     var arr=Array.isArray(u.lessons)?u.lessons.slice():[];
     if(!arr.some(function(x){ return x && x.id===pend.id; })) arr.push({
-      id:pend.id, topic:d.lesson.title||T.lektion, thema:pend.thema, fromConversation:true,
+      id:pend.id, topic:d.lesson.title||T.lektion, thema:pend.thema, raum:'schreiben', fromConversation:true,
       lesson:d.lesson, createdAt:pend.createdAt, zielsprache:pend.zielsprache });
     arr.sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
     u.lessons=arr.slice(0,14);

@@ -724,6 +724,9 @@ window.addEventListener('load', function(){
   document.getElementById('lkPdf').textContent = ui.pdf;
   render();
   if (location.hash === '#last'){ var ll = lessons(); if (ll.length) openLesson(ll[0].id); }
+  /* Mosaik im Regal (22.10.2026): #lektion-<id> öffnet genau diese Lektion. */
+  var lkHash = (location.hash || '').match(/^#lektion-(.+)$/);
+  if (lkHash){ var lkId = decodeURIComponent(lkHash[1]); if (lessons().some(function(x){ return x.id === lkId; })) openLesson(lkId); }
   fertigeAusstehende();
 });
 

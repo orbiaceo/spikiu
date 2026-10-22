@@ -3190,6 +3190,7 @@ function drillDone(){
       id: 'lesson_' + Date.now(),
       topic: lesson.title || 'Lektion',
       thema: TOPIC_LABEL || lesson.title,
+      szene: (typeof TOPIC_ID !== 'undefined' && TOPIC_ID) ? TOPIC_ID : undefined,   /* Mosaik im Regal */
       fromConversation: false,
       lesson: lesson,
       createdAt: new Date().toISOString(),

@@ -55,7 +55,7 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
 
     <div class="sec-lbl" data-t="lernen">Lernen</div>
     <div class="rowcard">
-      <button class="row" data-go="dashboard.html#lernweg"><span class="ic" style="background:var(--sage)">🌱</span><span class="rl"><span class="rt" data-t="weg">Lernweg</span><span class="rs" data-t="wegs">Dein Weg — was als Nächstes wächst</span></span><span class="chev">›</span></button>
+      <button class="row" data-go="haus.html?tuer=regal"><span class="ic" style="background:var(--sage)">📚</span><span class="rl"><span class="rt" data-t="weg">Lernweg</span><span class="rs" data-t="wegs">Dein Weg — was als Nächstes wächst</span></span><span class="chev">›</span></button>
     </div>
 
     <div class="sec-lbl" data-t="konto">Konto</div>
@@ -78,13 +78,13 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
 var ML=(function(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache;if(['de','es','en','el'].indexOf(m)>-1)return m;}catch(e){}
  try{var l=localStorage.getItem('spikiu_lang');if(['de','es','en','el'].indexOf(l)>-1)return l;}catch(e){}return 'de';})();
 var MT={
- de:{doc:'Spikiu · Mein',title:'Mein',back:'zurück',lernen:'Lernen',weg:'Lernweg',wegs:'Dein Weg — was als Nächstes wächst',konto:'Konto',abo:'Abonnement',abos:'Dein Spikiu-Abo verwalten',aktiv:'Aktiv',
+ de:{doc:'Spikiu · Mein',title:'Mein',back:'zurück',lernen:'Lernen',weg:'Mein Regal',wegs:'Deine Lernstationen auf einen Blick',konto:'Konto',abo:'Abonnement',abos:'Dein Spikiu-Abo verwalten',aktiv:'Aktiv',
   einst:'Einstellungen',einsts:'Sprache, Muttersprache, Ton, Datenschutz',einstSoon:'Einstellungen kommen bald',mehr:'Mehr',hilfe:'Über Spikiu & Hilfe',hilfeSoon:'Über Spikiu & Hilfe kommen bald',abmelden:'Abmelden',abmeldenSoon:'Abmelden — bald verfügbar',du:'Du'},
- es:{doc:'Spikiu · Perfil',title:'Perfil',back:'atrás',lernen:'Aprender',weg:'Ruta de aprendizaje',wegs:'Tu camino: lo que crece después',konto:'Cuenta',abo:'Suscripción',abos:'Gestiona tu suscripción a Spikiu',aktiv:'Activa',
+ es:{doc:'Spikiu · Perfil',title:'Perfil',back:'atrás',lernen:'Aprender',weg:'Mi estante',wegs:'Tus estaciones de un vistazo',konto:'Cuenta',abo:'Suscripción',abos:'Gestiona tu suscripción a Spikiu',aktiv:'Activa',
   einst:'Ajustes',einsts:'Idioma, lengua materna, tono, privacidad',einstSoon:'Los ajustes llegan pronto',mehr:'Más',hilfe:'Sobre Spikiu y ayuda',hilfeSoon:'«Sobre Spikiu y ayuda» llega pronto',abmelden:'Cerrar sesión',abmeldenSoon:'Cerrar sesión: disponible pronto',du:'Tú'},
- en:{doc:'Spikiu · Profile',title:'Profile',back:'back',lernen:'Learning',weg:'Learning path',wegs:'Your path — what grows next',konto:'Account',abo:'Subscription',abos:'Manage your Spikiu subscription',aktiv:'Active',
+ en:{doc:'Spikiu · Profile',title:'Profile',back:'back',lernen:'Learning',weg:'My shelf',wegs:'All your learning stops at a glance',konto:'Account',abo:'Subscription',abos:'Manage your Spikiu subscription',aktiv:'Active',
   einst:'Settings',einsts:'Language, native language, tone, privacy',einstSoon:'Settings coming soon',mehr:'More',hilfe:'About Spikiu & help',hilfeSoon:'About Spikiu & help coming soon',abmelden:'Log out',abmeldenSoon:'Log out — coming soon',du:'You'},
- el:{doc:'Spikiu · Προφίλ',title:'Προφίλ',back:'πίσω',lernen:'Μάθηση',weg:'Η διαδρομή σου',wegs:'Η διαδρομή σου — τι μεγαλώνει μετά',konto:'Λογαριασμός',abo:'Συνδρομή',abos:'Διαχειρίσου τη συνδρομή σου στο Spikiu',aktiv:'Ενεργή',
+ el:{doc:'Spikiu · Προφίλ',title:'Προφίλ',back:'πίσω',lernen:'Μάθηση',weg:'Το ράφι μου',wegs:'Όλοι οι σταθμοί σου με μια ματιά',konto:'Λογαριασμός',abo:'Συνδρομή',abos:'Διαχειρίσου τη συνδρομή σου στο Spikiu',aktiv:'Ενεργή',
   einst:'Ρυθμίσεις',einsts:'Γλώσσα, μητρική γλώσσα, ύφος, απόρρητο',einstSoon:'Οι ρυθμίσεις έρχονται σύντομα',mehr:'Περισσότερα',hilfe:'Σχετικά με τον Spikiu & βοήθεια',hilfeSoon:'Το «Σχετικά με τον Spikiu & βοήθεια» έρχεται σύντομα',abmelden:'Αποσύνδεση',abmeldenSoon:'Αποσύνδεση — σύντομα διαθέσιμη',du:'Εσύ'}
 }[ML];
 document.documentElement.lang=ML; document.title=MT.doc;
