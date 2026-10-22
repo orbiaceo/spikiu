@@ -2,99 +2,105 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,600;9..40,700;9..40,800&family=DM+Mono:wght@500&display=swap">
 <style>
-/* Ein Himmel statt Baum + Regal. Bewusst EIN Look (Nacht), Spikiu-Komponenten (Tinte, dicker Rand, Versatz-Schatten). */
+/* Comic-Himmel im Spikiu-Haus-Look: Minzgrund, Tinte 2.5px, Versatz-Schatten, Pastell aus haus.html. Ein Look (hell). */
 :root{
-  --ink:#15163a; --night:#14164a; --night2:#232770; --paper:#fffaf0; --card:#ffffff;
-  --gold:#ffd24a; --mint:#bfe6d5; --lila:#cdbdf2; --sky:#9ed8f0; --peach:#ffd0b0;
-  --muted:#5f6488; --star:#f6f4ff;
+  --bg:#eef7f1; --ink:#15163a; --card:#fff; --muted:#5f7068;
+  --mustard:#ffd24a; --sage:#9bd14a; --sky:#d3eef6; --cyan:#2bb3d4; --plum:#9b7bff; --terra:#ff6b5a; --pink:#ff4f9a;
+  --lila:#cdbdf2; --mint:#bfe6d5; --peach:#ffd0b0; --gruen:#c7e89a;
+  --ow:2.5px; --shb:3px 4px;
   --f:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'DM Mono',ui-monospace,monospace;
   color-scheme:light;
 }
 html,body{height:100%}
-body{background:var(--night);color:var(--star);font-family:var(--f);-webkit-tap-highlight-color:transparent;overflow-x:hidden}
-.app{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 20px;gap:12px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+.app{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 24px;gap:12px}
 header{display:flex;flex-direction:column;gap:10px}
-.kopf{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-h1{font:800 1.45rem/1.1 var(--f);margin:0;text-wrap:balance}
-.beispiel{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1.5px solid var(--gold);border-radius:99px;padding:.3rem .5rem;white-space:nowrap}
-.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border:2.5px solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 #000a;padding:3px;gap:3px}
-.seg button{font:800 .86rem/1 var(--f);color:var(--ink);background:transparent;border:0;border-radius:12px;padding:.6rem .2rem;cursor:pointer}
-.seg button[aria-selected="true"]{background:var(--gold)}
-.seg button:focus-visible,.chip:focus-visible,.btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
-.idee{font:600 .84rem/1.4 var(--f);color:#c9cbf0;margin:0}
+.kopf{display:flex;align-items:center;gap:10px}
+.zurueck{flex:0 0 40px;height:40px;border-radius:99px;background:var(--card);border:var(--ow) solid var(--ink);box-shadow:2px 3px 0 var(--ink);font:800 1.1rem/1 var(--f);color:var(--ink)}
+h1{font:800 1.45rem/1.1 var(--f);margin:0;flex:1;text-wrap:balance}
+.beispiel{font:500 .6rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:99px;padding:.3rem .5rem;white-space:nowrap;box-shadow:2px 2px 0 var(--ink)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:var(--shb) 0 var(--ink);padding:4px;gap:4px}
+.seg button{font:800 .86rem/1 var(--f);color:var(--ink);background:transparent;border:2px solid transparent;border-radius:11px;padding:.55rem .2rem;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--mustard);border-color:var(--ink)}
+.seg button:focus-visible,.chip:focus-visible,.btn:focus-visible,.st:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.idee{font:600 .86rem/1.4 var(--f);color:var(--muted);margin:0}
 .view[hidden]{display:none!important}
 
 /* ── Himmel ── */
-.himmel{position:relative;border:2.5px solid #000;border-radius:22px;overflow:hidden;background:radial-gradient(120% 80% at 50% 100%,#2f357f 0%,var(--night2) 38%,var(--night) 75%)}
+.himmel{position:relative;border:var(--ow) solid var(--ink);border-radius:22px;overflow:hidden;background:var(--sky);box-shadow:4px 5px 0 var(--ink)}
 .himmel svg{display:block;width:100%;height:auto}
-.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 4px 6px 2px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;font:800 .8rem/1 var(--f);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:99px;padding:.48rem .7rem;cursor:pointer;display:flex;align-items:center;gap:.35rem}
-.chip[aria-pressed="true"]{background:var(--gold)}
-.chip i{font-style:normal}
-.legende{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font:600 .76rem/1.3 var(--f);color:#c9cbf0}
+.chip{flex:0 0 auto;font:800 .8rem/1 var(--f);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:99px;padding:.48rem .72rem;cursor:pointer;display:flex;align-items:center;gap:.35rem;box-shadow:2px 2px 0 var(--ink)}
+.chip[aria-pressed="true"]{background:var(--mustard)}
+.chip svg{flex:0 0 16px}
+.legende{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font:600 .78rem/1.3 var(--f);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:10px 12px}
 .legende span{display:flex;align-items:center;gap:6px}
-.legende svg{flex:0 0 18px}
-.st{cursor:pointer}
+.legende svg{flex:0 0 20px}
+.st{cursor:pointer;outline:none}
 .st .hit{fill:transparent}
-.dim{opacity:.13;transition:opacity .25s}
-.lbl{font:700 10.5px var(--f);fill:#e9e8ff}
-.lbl.k{font:600 9px var(--f);fill:#b9bbe8}
-.funkel{animation:funkel 3.2s ease-in-out infinite}
-@keyframes funkel{0%,100%{opacity:1}50%{opacity:.55}}
+.dim{opacity:.18;transition:opacity .25s}
+.lbl{font:800 11px var(--f);fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}
+.lbl.k{font:700 9.5px var(--f);fill:var(--muted)}
+.lbl.z{fill:var(--terra)}
+.wipp{animation:wipp 3.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes wipp{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
 .puls{animation:puls 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes puls{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+@keyframes puls{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.7);opacity:0}}
 
 /* ── Sternbilder ── */
 .bilder{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.bild{background:var(--night2);border:2.5px solid #000;border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:var(--star);font-family:var(--f);min-width:0}
-.bild.offen{border-style:dashed;border-color:#6f74b8;background:transparent}
-.bild svg{width:100%;height:96px;display:block}
-.bild b{font:800 .9rem/1.2 var(--f)}
-.bild small{font:600 .74rem/1.3 var(--f);color:#c9cbf0}
-.zeile-lbl{font:500 .68rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#9fa3d8;margin:6px 0 -4px}
+.bild{background:var(--card);border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:var(--shb) 0 var(--ink);padding:8px 8px 10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:var(--ink);font-family:var(--f);min-width:0}
+.bild:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.bild.offen{border-style:dashed;box-shadow:none;background:transparent}
+.bild .fenster{background:var(--sky);border:2px solid var(--ink);border-radius:14px}
+.bild.offen .fenster{background:transparent;border-style:dashed}
+.bild svg{width:100%;height:92px;display:block}
+.bild b{font:800 .9rem/1.2 var(--f);padding:0 4px}
+.bild small{font:600 .74rem/1.3 var(--f);color:var(--muted);padding:0 4px}
+.zeile-lbl{font:800 .72rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:6px 0 -2px}
 
 /* ── Tagebuch ── */
-.buch{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;scrollbar-width:none}
+.buch{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 6px 12px 2px;scrollbar-width:none}
 .buch::-webkit-scrollbar{display:none}
-.seite{flex:0 0 86%;scroll-snap-align:center;background:var(--paper);color:var(--ink);border:2.5px solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 #000;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;min-width:0;background-image:repeating-linear-gradient(transparent 0 27px,#e8e2d2 27px 28px)}
-.seite h3{margin:0;font:800 1.05rem/1.2 var(--f)}
-.seite .datum{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.seite .mini{background:var(--night);border-radius:12px;border:2px solid var(--ink)}
+.seite{flex:0 0 86%;scroll-snap-align:center;background:var(--card);color:var(--ink);border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.seite .datum{font:800 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.seite .mini{background:var(--sky);border-radius:14px;border:2px solid var(--ink)}
 .seite .mini svg{display:block;width:100%;height:150px}
-.eintrag{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:.55rem .65rem;cursor:pointer;font-family:var(--f);color:var(--ink);text-align:left;width:100%}
-.eintrag .sym{flex:0 0 26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--night)}
+.eintrag{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--ink);border-radius:14px;box-shadow:2px 3px 0 var(--ink);padding:.55rem .65rem;cursor:pointer;font-family:var(--f);color:var(--ink);text-align:left;width:100%}
+.eintrag:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.eintrag .sym{flex:0 0 32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--sky);border:2px solid var(--ink)}
 .eintrag .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.eintrag .tx b{font:800 .88rem/1.2 var(--f)}
+.eintrag .tx b{font:800 .9rem/1.2 var(--f)}
 .eintrag .tx small{font:600 .74rem/1.25 var(--f);color:var(--muted)}
-.eintrag .chev{font-size:1.2rem}
-.seite .worte{display:flex;flex-wrap:wrap;gap:5px}
-.seite .wort{font:700 .78rem/1 var(--f);background:#fff3c4;border:1.5px solid var(--ink);border-radius:99px;padding:.3rem .5rem;cursor:pointer;color:var(--ink)}
-.seite .wort.neu{background:#fff;border-style:dashed}
-.blaettern{display:flex;justify-content:space-between;font:600 .78rem var(--f);color:#c9cbf0}
+.eintrag .chev{font:800 1.3rem/1 var(--f)}
+.seite .worte{display:flex;flex-wrap:wrap;gap:6px}
+.seite .wort{font:800 .78rem/1 var(--f);background:var(--mustard);border:2px solid var(--ink);border-radius:99px;padding:.32rem .55rem;cursor:pointer;color:var(--ink)}
+.seite .wort.neu{background:var(--card);border-style:dashed}
+.blaettern{display:flex;justify-content:space-between;font:700 .78rem var(--f);color:var(--muted)}
 
-/* ── Karte (Bottom-Sheet) ── */
-.schleier{position:fixed;inset:0;background:#0009;z-index:20}
+/* ── Karte ── */
+.schleier{position:fixed;inset:0;background:rgba(21,22,58,.35);z-index:20}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;display:flex;justify-content:center;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
-.sheet .innen{width:100%;max-width:440px;background:var(--card);color:var(--ink);border:2.5px solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 #000;padding:16px;display:flex;flex-direction:column;gap:10px;animation:hoch .22s ease-out}
+.sheet .innen{width:100%;max-width:440px;background:var(--card);color:var(--ink);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:16px;display:flex;flex-direction:column;gap:10px;animation:hoch .22s ease-out}
 @keyframes hoch{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
-.sheet .typ{font:500 .68rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sheet .typ{font:800 .68rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .sheet h2{margin:0;font:800 1.35rem/1.15 var(--f);text-wrap:balance}
 .sheet .tr{font:600 .95rem/1.35 var(--f);color:var(--muted);margin:0}
 .sheet .bez{display:flex;flex-wrap:wrap;gap:6px}
-.sheet .bez button{font:700 .78rem/1 var(--f);background:#eef1ff;border:1.5px solid var(--ink);border-radius:99px;padding:.35rem .55rem;cursor:pointer;color:var(--ink)}
-.sheet .bez-lbl{font:600 .76rem var(--f);color:var(--muted);margin-bottom:-4px}
+.sheet .bez button{font:800 .78rem/1 var(--f);background:#e8f5ee;border:1.5px solid var(--ink);border-radius:99px;padding:.36rem .58rem;cursor:pointer;color:var(--ink)}
+.sheet .bez-lbl{font:700 .76rem var(--f);color:var(--muted);margin-bottom:-4px}
 .btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn{flex:1 1 auto;font:800 .92rem/1 var(--f);color:var(--ink);background:var(--card);border:2.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 var(--ink);padding:.75rem .8rem;cursor:pointer}
-.btn.haupt{background:var(--gold)}
+.btn{flex:1 1 auto;font:800 .92rem/1 var(--f);color:var(--ink);background:var(--card);border:var(--ow) solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 var(--ink);padding:.75rem .8rem;cursor:pointer}
+.btn.haupt{background:var(--mustard)}
 .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:#fff;font:700 .84rem/1.3 var(--f);padding:.6rem .9rem;border-radius:12px;border:2px solid var(--gold);max-width:90vw;text-align:center}
-@media (prefers-reduced-motion:reduce){.funkel,.puls{animation:none}.sheet .innen{animation:none}}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--card);color:var(--ink);font:700 .84rem/1.3 var(--f);padding:.6rem .9rem;border-radius:14px;border:var(--ow) solid var(--ink);box-shadow:3px 3px 0 var(--ink);max-width:90vw;text-align:center}
+@media (prefers-reduced-motion:reduce){.wipp,.puls{animation:none}.sheet .innen{animation:none}}
 </style>
 
 <div class="app">
   <header>
-    <div class="kopf"><h1 id="titel">Mein Himmel</h1><span class="beispiel">Beispiel-Daten</span></div>
+    <div class="kopf"><button class="zurueck" aria-label="zurück">‹</button><h1 id="titel">Mein Himmel</h1><span class="beispiel">Beispiel-Daten</span></div>
     <div class="seg" role="tablist">
       <button role="tab" aria-selected="true" data-v="himmel" id="t-himmel">Himmel</button>
       <button role="tab" aria-selected="false" data-v="bilder" id="t-bilder">Sternbilder</button>
@@ -194,21 +200,25 @@ var FMT=function(t){var d=new Date(t+'T12:00:00');return d.toLocaleDateString('d
 var KURZ=function(t){var d=new Date(t+'T12:00:00');return d.toLocaleDateString('de-DE',{day:'numeric',month:'short'});};
 var ruhig=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ── Symbole ── */
-function stern(x,y,r,fill){var p=[];for(var i=0;i<8;i++){var a=Math.PI/4*i-Math.PI/2,rr=i%2?r*.38:r;p.push((x+Math.cos(a)*rr).toFixed(1)+','+(y+Math.sin(a)*rr).toFixed(1));}return '<polygon points="'+p.join(' ')+'" fill="'+fill+'"/>';}
-function symbol(d,x,y,s){s=s||1;
- if(d.art==='szene'){if(d.dunkel)return '<polygon points="'+stern(x,y,11*s,'none').match(/points="([^"]+)"/)[1]+'" fill="none" stroke="#8a8fd0" stroke-width="1.4" stroke-dasharray="2 2"/>';
-   return '<circle cx="'+x+'" cy="'+y+'" r="'+16*s+'" fill="#ffd24a" opacity=".18"/>'+stern(x,y,12*s,'#ffd24a');}
- if(d.art==='gespraech')return '<circle cx="'+x+'" cy="'+y+'" r="'+15*s+'" fill="#9ed8f0" opacity=".18"/>'+stern(x,y,10*s,'#9ed8f0');
- if(d.art==='wort'){return d.g?'<circle cx="'+x+'" cy="'+y+'" r="'+6*s+'" fill="#fff" opacity=".22"/><circle class="funkel" cx="'+x+'" cy="'+y+'" r="'+2.8*s+'" fill="#fff"/>'
-   :'<circle cx="'+x+'" cy="'+y+'" r="'+2.4*s+'" fill="#c9cbf0" opacity=".55"/>';}
- if(d.art==='kapitel')return '<circle cx="'+x+'" cy="'+y+'" r="'+9*s+'" fill="#bfe6d5"/><ellipse cx="'+x+'" cy="'+y+'" rx="'+15*s+'" ry="'+4*s+'" fill="none" stroke="#bfe6d5" stroke-width="1.6" transform="rotate(-18 '+x+' '+y+')"/>';
- if(d.art==='werk')return '<rect x="'+(x-6*s)+'" y="'+(y-6*s)+'" width="'+12*s+'" height="'+12*s+'" rx="2" fill="#cdbdf2" transform="rotate(45 '+x+' '+y+')"/>';
- if(d.art==='lektion')return '<g><rect x="'+(x-3.5*s)+'" y="'+(y-3.5*s)+'" width="'+7*s+'" height="'+7*s+'" rx="1" fill="#ffd0b0"/><rect x="'+(x-12*s)+'" y="'+(y-2*s)+'" width="'+7*s+'" height="'+4*s+'" fill="#9ed8f0"/><rect x="'+(x+5*s)+'" y="'+(y-2*s)+'" width="'+7*s+'" height="'+4*s+'" fill="#9ed8f0"/></g>';
+/* ── Symbole (Comic: Tinten-Umriss, Pastell-Füllung) ── */
+var INK='#15163a';
+function sternPts(x,y,r,z){var p=[];for(var i=0;i<z*2;i++){var a=Math.PI/z*i-Math.PI/2,rr=i%2?r*.48:r;p.push((x+Math.cos(a)*rr).toFixed(1)+','+(y+Math.sin(a)*rr).toFixed(1));}return p.join(' ');}
+function symbol(d,x,y,s){s=s||1;var sw=(2.2*Math.max(.8,Math.min(s,1.2))).toFixed(1);
+ if(d.art==='szene'){if(d.dunkel)return '<polygon points="'+sternPts(x,y,13*s,5)+'" fill="#fff" fill-opacity=".6" stroke="'+INK+'" stroke-width="'+sw+'" stroke-dasharray="3 3" stroke-linejoin="round"/>';
+   return '<polygon points="'+sternPts(x+2*s,y+2.5*s,14*s,5)+'" fill="'+INK+'" stroke="'+INK+'" stroke-width="'+sw+'" stroke-linejoin="round"/><polygon points="'+sternPts(x,y,14*s,5)+'" fill="#ffd24a" stroke="'+INK+'" stroke-width="'+sw+'" stroke-linejoin="round"/>';}
+ if(d.art==='gespraech')return '<polygon points="'+sternPts(x+2*s,y+2.5*s,12*s,5)+'" fill="'+INK+'"/><polygon points="'+sternPts(x,y,12*s,5)+'" fill="#ff4f9a" stroke="'+INK+'" stroke-width="'+sw+'" stroke-linejoin="round"/>';
+ if(d.art==='wort'){return d.g?'<polygon points="'+sternPts(x,y,6*s,4)+'" fill="#ffd24a" stroke="'+INK+'" stroke-width="1.6" stroke-linejoin="round"/>'
+   :'<circle cx="'+x+'" cy="'+y+'" r="'+3.6*s+'" fill="#fff" stroke="'+INK+'" stroke-width="1.5" stroke-dasharray="2 1.6"/>';}
+ if(d.art==='kapitel')return '<circle cx="'+(x+2*s)+'" cy="'+(y+2.5*s)+'" r="'+10*s+'" fill="'+INK+'"/><circle cx="'+x+'" cy="'+y+'" r="'+10*s+'" fill="#9bd14a" stroke="'+INK+'" stroke-width="'+sw+'"/><ellipse cx="'+x+'" cy="'+y+'" rx="'+17*s+'" ry="'+4.5*s+'" fill="none" stroke="'+INK+'" stroke-width="'+sw+'" transform="rotate(-18 '+x+' '+y+')"/>';
+ if(d.art==='werk')return '<rect x="'+(x-7*s+2*s)+'" y="'+(y-7*s+2.5*s)+'" width="'+14*s+'" height="'+14*s+'" rx="2" fill="'+INK+'" transform="rotate(45 '+(x+2*s)+' '+(y+2.5*s)+')"/><rect x="'+(x-7*s)+'" y="'+(y-7*s)+'" width="'+14*s+'" height="'+14*s+'" rx="2" fill="#cdbdf2" stroke="'+INK+'" stroke-width="'+sw+'" transform="rotate(45 '+x+' '+y+')"/>';
+ if(d.art==='lektion')return '<g stroke="'+INK+'" stroke-width="1.6" stroke-linejoin="round"><line x1="'+(x-6*s)+'" y1="'+y+'" x2="'+(x+6*s)+'" y2="'+y+'"/><rect x="'+(x-15*s)+'" y="'+(y-3.5*s)+'" width="'+9*s+'" height="'+7*s+'" rx="1" fill="#2bb3d4"/><rect x="'+(x+6*s)+'" y="'+(y-3.5*s)+'" width="'+9*s+'" height="'+7*s+'" rx="1" fill="#2bb3d4"/><rect x="'+(x-5*s)+'" y="'+(y-5*s)+'" width="'+10*s+'" height="'+10*s+'" rx="2" fill="#ffd0b0"/><line x1="'+x+'" y1="'+(y-5*s)+'" x2="'+x+'" y2="'+(y-9*s)+'"/><circle cx="'+x+'" cy="'+(y-10*s)+'" r="'+1.6*s+'" fill="#ff6b5a"/></g>';
  return '';}
 
-/* ── Hintergrund-Sterne (deterministisch) ── */
-function staub(w,h,n,seed){var s=seed||7,o='';function r(){s=(s*9301+49297)%233280;return s/233280;}for(var i=0;i<n;i++)o+='<circle cx="'+(r()*w).toFixed(1)+'" cy="'+(r()*h).toFixed(1)+'" r="'+(r()*.9+.2).toFixed(2)+'" fill="#fff" opacity="'+(r()*.35+.08).toFixed(2)+'"/>';return o;}
+/* Comic-Wolken + kleine Funkel-Kreuze statt Sternenstaub */
+function wolke(x,y,s){return '<g transform="translate('+x+','+y+') scale('+s+')"><path d="M-30,10 a12,12 0 0 1 4,-20 a16,16 0 0 1 28,-6 a12,12 0 0 1 20,8 a10,10 0 0 1 0,18 Z" fill="#fff" stroke="'+INK+'" stroke-width="2.5" stroke-linejoin="round"/></g>';}
+function staub(w,h,n,seed){var s=seed||7,o='';function r(){s=(s*9301+49297)%233280;return s/233280;}
+ for(var i=0;i<n;i++){var x=r()*w,y=r()*h*.85,k=r()*2.5+2;o+='<path d="M'+x.toFixed(1)+','+(y-k).toFixed(1)+'v'+(2*k).toFixed(1)+'M'+(x-k).toFixed(1)+','+y.toFixed(1)+'h'+(2*k).toFixed(1)+'" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>';}
+ return o;}
 
 /* Spikiu (komplett: 2 Ohren, 4 Beine), sitzt auf dem Hügel und schaut hoch */
 function capy(x,y){return '<g transform="translate('+x+','+y+')">'
@@ -220,41 +230,41 @@ function capy(x,y){return '<g transform="translate('+x+','+y+')">'
  +'<circle cx="22" cy="-14" r="1.6" fill="#15163a"/><ellipse cx="27" cy="-8" rx="2.4" ry="1.6" fill="#15163a"/></g>';}
 
 /* ═══ VIEW 1: HIMMEL ═══ */
-var FILTER=[['alles','Alles',''],['szene','Szenen','⭐'],['wort','Schatzkiste','✦'],['lektion','Lektionen','🛰️'],['kapitel','Lesen','🪐'],['werk','Garten & Akrosticha','◆']];
+var FILTER=[['alles','Alles',''],['szene','Szenen','szene'],['wort','Schatzkiste','wort'],['lektion','Lektionen','lektion'],['kapitel','Lesen','kapitel'],['werk','Garten & Akrosticha','werk']];
 var filt='alles',fokus=null;
 function sichtbar(d){if(filt==='alles')return true;if(filt==='szene')return d.art==='szene'||d.art==='gespraech';return d.art===filt;}
 function zeichneHimmel(){
- var W=400,H=600,o='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Dein Lernhimmel">'+staub(W,H,110,11);
+ var W=400,H=600,o='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Dein Lernhimmel">'+staub(W,H,26,11)+wolke(40,40,.9)+wolke(368,255,.75)+wolke(170,380,.6);
  /* Weg = Milchstraße durch die Zeit (Szenen, Gespräche, Kapitel nach Datum) bis zur nächsten dunklen Szene */
  var weg=D.filter(function(d){return (d.art==='szene'||d.art==='gespraech'||d.art==='kapitel')&&!d.dunkel;}).sort(function(a,b){return a.tag<b.tag?-1:1;});
  var pts=weg.map(function(d){return [d.x,d.y];});pts.push([BY.arzt.x,BY.arzt.y]);
  var pfad='M'+pts[0].join(',');for(var i=1;i<pts.length;i++){var a=pts[i-1],b=pts[i];pfad+=' Q'+((a[0]+b[0])/2+(i%2?28:-28))+','+((a[1]+b[1])/2)+' '+b.join(',');}
- o+='<path d="'+pfad+'" fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="16" stroke-linecap="round"/>';
- o+='<path d="'+pfad+'" fill="none" stroke="#ffd24a" stroke-opacity=".35" stroke-width="1.3" stroke-dasharray="1 5" stroke-linecap="round"/>';
+ o+='<path d="'+pfad+'" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".75"/>';
+ o+='<path d="'+pfad+'" fill="none" stroke="#15163a" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>';
  /* Linien: Wort ← Quelle (Sternbild), Werk → Wörter */
  D.forEach(function(d){
-  if(d.art==='wort'){var q=BY[d.von];o+='<line data-rel="'+d.id+' '+q.id+'" x1="'+q.x+'" y1="'+q.y+'" x2="'+d.x.toFixed(1)+'" y2="'+d.y.toFixed(1)+'" stroke="#c9cbf0" stroke-opacity=".28" stroke-width="1"/>';}
-  if(d.art==='werk')d.nutzt.forEach(function(n){var w=BY[n];o+='<line data-rel="'+d.id+' '+n+'" x1="'+d.x+'" y1="'+d.y+'" x2="'+w.x.toFixed(1)+'" y2="'+w.y.toFixed(1)+'" stroke="#cdbdf2" stroke-opacity=".35" stroke-width="1" stroke-dasharray="3 3"/>';});
+  if(d.art==='wort'){var q=BY[d.von];o+='<line data-rel="'+d.id+' '+q.id+'" x1="'+q.x+'" y1="'+q.y+'" x2="'+d.x.toFixed(1)+'" y2="'+d.y.toFixed(1)+'" stroke="#15163a" stroke-opacity=".55" stroke-width="1.3"/>';}
+  if(d.art==='werk')d.nutzt.forEach(function(n){var w=BY[n];o+='<line data-rel="'+d.id+' '+n+'" x1="'+d.x+'" y1="'+d.y+'" x2="'+w.x.toFixed(1)+'" y2="'+w.y.toFixed(1)+'" stroke="#9b7bff" stroke-width="1.6" stroke-dasharray="4 3"/>';});
  });
  /* Hügel + Spikiu */
- o+='<path d="M0,560 Q120,520 220,548 T400,540 L400,600 L0,600Z" fill="#0d0f33"/>'+capy(58,548);
- o+='<text x="92" y="584" class="lbl k">Spikiu schaut mit dir hoch</text>';
+ o+='<path d="M-5,560 Q120,518 220,548 T405,538 L405,605 L-5,605Z" fill="#9bd14a" stroke="#15163a" stroke-width="2.5"/>'+capy(58,546);
+ o+='<text x="100" y="586" class="lbl k" style="fill:#15163a">Spikiu schaut mit dir hoch</text>';
  /* Objekte */
  var neuest=D.filter(function(d){return !d.dunkel&&d.art!=='wort';}).sort(function(a,b){return a.tag<b.tag?1:-1;})[0];
  D.forEach(function(d){
   if(d.art==='lektion')return;
   var x=+d.x.toFixed(1),y=+d.y.toFixed(1);
   o+='<g class="st" data-id="'+d.id+'" tabindex="0" role="button" aria-label="'+ARTEN[d.art].n+': '+d.t+'">';
-  if(d===neuest)o+='<circle class="puls" cx="'+x+'" cy="'+y+'" r="16" fill="none" stroke="#ffd24a" stroke-width="2"/>';
+  if(d===neuest)o+='<circle class="puls" cx="'+x+'" cy="'+y+'" r="18" fill="none" stroke="#ff6b5a" stroke-width="2.5"/>';
   o+='<circle class="hit" cx="'+x+'" cy="'+y+'" r="'+(d.art==='wort'?13:22)+'"/>'+symbol(d,x,y);
   if(d.art!=='wort'){var lx=x,ly=y+(d.art==='kapitel'?24:27);o+='<text x="'+lx+'" y="'+ly+'" text-anchor="middle" class="lbl'+(d.dunkel?' k':'')+'">'+d.t.replace('Freies Gespräch: ','')+'</text>';
-   if(d===neuest)o+='<text x="'+lx+'" y="'+(ly+12)+'" text-anchor="middle" class="lbl k" fill="#ffd24a">zuletzt · '+KURZ(d.tag)+'</text>';
+   if(d===neuest)o+='<text x="'+lx+'" y="'+(ly+12)+'" text-anchor="middle" class="lbl k z">zuletzt · '+KURZ(d.tag)+'</text>';
    if(d.dunkel)o+='<text x="'+lx+'" y="'+(ly+11)+'" text-anchor="middle" class="lbl k">noch dunkel</text>';}
   o+='</g>';
  });
  /* Lektionen = Satelliten, umkreisen ihr Gespräch */
  D.filter(function(d){return d.art==='lektion';}).forEach(function(d,i){var q=BY[d.von],r=62,x=q.x,y=q.y-r;
-  o+='<g class="st" data-id="'+d.id+'" tabindex="0" role="button" aria-label="Lektion: '+d.t+'"><circle cx="'+q.x+'" cy="'+q.y+'" r="'+r+'" fill="none" stroke="#9ed8f0" stroke-opacity=".18" stroke-dasharray="2 4"/>'
+  o+='<g class="st" data-id="'+d.id+'" tabindex="0" role="button" aria-label="Lektion: '+d.t+'"><circle cx="'+q.x+'" cy="'+q.y+'" r="'+r+'" fill="none" stroke="#15163a" stroke-opacity=".35" stroke-dasharray="2 4"/>'
    +'<g><circle class="hit" cx="'+x+'" cy="'+y+'" r="16"/>'+symbol(d,x,y)
    +(ruhig?'':'<animateTransform attributeName="transform" type="rotate" from="'+(i*140)+' '+q.x+' '+q.y+'" to="'+(i*140+360)+' '+q.x+' '+q.y+'" dur="'+(48+i*14)+'s" repeatCount="indefinite"/>')+'</g></g>';});
  o+='</svg>';
@@ -265,19 +275,19 @@ function zeichneHimmel(){
 function dimmen(){var el=document.getElementById('himmel');
  el.querySelectorAll('.st').forEach(function(g){var d=BY[g.getAttribute('data-id')];var an=sichtbar(d);
   if(fokus){an=fokus.indexOf(d.id)>-1;}g.classList.toggle('dim',!an);});
- el.querySelectorAll('line').forEach(function(l){var r=l.getAttribute('data-rel').split(' ');var an=fokus?(fokus.indexOf(r[0])>-1&&fokus.indexOf(r[1])>-1):filt==='alles';l.classList.toggle('dim',!an);});}
+ el.querySelectorAll('line[data-rel]').forEach(function(l){var r=l.getAttribute('data-rel').split(' ');var an=fokus?(fokus.indexOf(r[0])>-1&&fokus.indexOf(r[1])>-1):filt==='alles';l.classList.toggle('dim',!an);});}
 function baueFilter(){var f=document.getElementById('filter');f.innerHTML='';
- FILTER.forEach(function(x){var b=document.createElement('button');b.className='chip';b.id='f-'+x[0];b.setAttribute('aria-pressed',x[0]===filt);b.innerHTML=(x[2]?'<i>'+x[2]+'</i>':'')+x[1];
+ FILTER.forEach(function(x){var b=document.createElement('button');b.className='chip';b.id='f-'+x[0];b.setAttribute('aria-pressed',x[0]===filt);b.innerHTML=(x[2]?'<svg viewBox="-18 -18 36 36" width="16" height="16">'+symbol({art:x[2],g:1},0,0,.9)+'</svg>':'')+x[1];
   b.onclick=function(){filt=x[0];fokus=null;baueFilter();dimmen();};f.appendChild(b);});}
 function baueLegende(){var L=[['szene','Szene (Geführtes Gespräch)'],['gespraech','Freies Gespräch'],['wort','Wort — hell = sitzt schon'],['lektion','Lektion (Satellit)'],['kapitel','Lernroman-Kapitel'],['werk','Garten · Akrostichon']];
- document.getElementById('legende').innerHTML=L.map(function(l){var d={art:l[0],g:1};return '<span><svg viewBox="-10 -10 20 20" width="18" height="18">'+symbol(d,0,0,.75)+'</svg>'+l[1]+'</span>';}).join('');}
+ document.getElementById('legende').innerHTML=L.map(function(l){var d={art:l[0],g:1};return '<span><svg viewBox="-18 -18 36 36" width="20" height="20">'+symbol(d,0,0,.9)+'</svg>'+l[1]+'</span>';}).join('');}
 
 /* ═══ VIEW 2: STERNBILDER ═══ */
 function mini(ids,W,H,zentrum){var ds=ids.map(function(i){return BY[i];});
  var xs=ds.map(function(d){return d.x;}),ys=ds.map(function(d){return d.y;});
  var mx=Math.min.apply(0,xs)-22,Mx=Math.max.apply(0,xs)+22,my=Math.min.apply(0,ys)-22,My=Math.max.apply(0,ys)+22;
  var o='<svg viewBox="'+mx.toFixed(0)+' '+my.toFixed(0)+' '+(Mx-mx).toFixed(0)+' '+(My-my).toFixed(0)+'" aria-hidden="true">';
- ds.forEach(function(d){if(d.art==='wort'&&zentrum)o+='<line x1="'+zentrum.x+'" y1="'+zentrum.y+'" x2="'+d.x+'" y2="'+d.y+'" stroke="#c9cbf0" stroke-opacity=".35"/>';});
+ ds.forEach(function(d){if(d.art==='wort'&&zentrum)o+='<line x1="'+zentrum.x+'" y1="'+zentrum.y+'" x2="'+d.x+'" y2="'+d.y+'" stroke="#15163a" stroke-opacity=".5" stroke-width="1.3"/>';});
  ds.forEach(function(d){o+=symbol(d,+d.x.toFixed(1),+d.y.toFixed(1),1.1);});return o+'</svg>';}
 function sternbild(q){return D.filter(function(d){return d.id===q.id||d.von===q.id;}).map(function(d){return d.id;});}
 function baueBilder(){var hell=document.getElementById('bilder'),dunkel=document.getElementById('bilderDunkel');hell.innerHTML='';dunkel.innerHTML='';
@@ -286,7 +296,7 @@ function baueBilder(){var hell=document.getElementById('bilder'),dunkel=document
   var b=document.createElement('button');b.className='bild'+(q.dunkel?' offen':'');
   var info=q.dunkel?'Als Nächstes auf deinem Weg':(hellW.length===ws.length&&ws.length?'Alle Wörter leuchten':(hellW.length?'Einige Wörter leuchten schon':'Die Wörter warten aufs Wiedersehen'));
   var lek=ids.some(function(i){return BY[i].art==='lektion';})?' · mit Lektion':'';
-  b.innerHTML=(q.dunkel?'<svg viewBox="-20 -20 40 40">'+symbol(q,0,0,1.2)+'</svg>':mini(ids,0,0,q))+'<b>'+q.e+' '+q.t.replace('Freies Gespräch: ','')+'</b><small>'+info+lek+'</small>';
+  b.innerHTML='<span class="fenster">'+(q.dunkel?'<svg viewBox="-24 -24 48 48">'+symbol(q,0,0,1.2)+'</svg>':mini(ids,0,0,q))+'</span><b>'+q.e+' '+q.t.replace('Freies Gespräch: ','')+'</b><small>'+info+lek+'</small>';
   b.onclick=function(){oeffne(q.id);};(q.dunkel?dunkel:hell).appendChild(b);});}
 
 /* ═══ VIEW 3: TAGEBUCH ═══ */
@@ -296,11 +306,11 @@ function baueBuch(){var tage={};D.forEach(function(d){if(d.tag)(tage[d.tag]=tage
   var s=document.createElement('article');s.className='seite';
   var gross=es.filter(function(d){return d.art!=='wort';}),worte=es.filter(function(d){return d.art==='wort';});
   /* Mini-Himmel: alles bis zu diesem Tag, heutige Sterne hell */
-  var o='<svg viewBox="0 0 400 600" aria-hidden="true">'+staub(400,600,60,3);
-  D.forEach(function(d){if(d.dunkel||d.art==='lektion'||bisher.indexOf(d.id)<0)return;var neu=es.indexOf(d)>-1;o+='<g opacity="'+(neu?1:.3)+'">'+symbol(d,+d.x.toFixed(1),+d.y.toFixed(1),neu?1.4:1)+'</g>';});o+='</svg>';
+  var o='<svg viewBox="0 0 400 600" aria-hidden="true">'+staub(400,600,14,3)+wolke(60,60,1.2);
+  D.forEach(function(d){if(d.dunkel||d.art==='lektion'||bisher.indexOf(d.id)<0)return;var neu=es.indexOf(d)>-1;o+='<g opacity="'+(neu?1:.35)+'">'+symbol(d,+d.x.toFixed(1),+d.y.toFixed(1),neu?1.4:1)+'</g>';});o+='</svg>';
   s.innerHTML='<div class="datum">'+FMT(k)+'</div><div class="mini">'+o+'</div>';
   gross.forEach(function(d){var b=document.createElement('button');b.className='eintrag';
-   b.innerHTML='<span class="sym"><svg viewBox="-16 -16 32 32" width="22" height="22">'+symbol(d,0,0,.95)+'</svg></span><span class="tx"><b></b><small>'+ARTEN[d.art].n+(d.von&&BY[d.von]?' · aus „'+BY[d.von].t+'"':'')+'</small></span><span class="chev">›</span>';
+   b.innerHTML='<span class="sym"><svg viewBox="-17 -17 34 34" width="26" height="26">'+symbol(d,0,0,.95)+'</svg></span><span class="tx"><b></b><small>'+ARTEN[d.art].n+(d.von&&BY[d.von]?' · aus „'+BY[d.von].t+'"':'')+'</small></span><span class="chev">›</span>';
    b.querySelector('b').textContent=d.t;b.onclick=function(){oeffne(d.id);};s.appendChild(b);});
   if(worte.length){var w=document.createElement('div');w.className='worte';worte.forEach(function(d){var c=document.createElement('button');c.className='wort'+(d.g?'':' neu');c.textContent=d.t;c.onclick=function(){oeffne(d.id);};w.appendChild(c);});
    var l=document.createElement('div');l.className='datum';l.textContent='Gesammelt';s.appendChild(l);s.appendChild(w);}
