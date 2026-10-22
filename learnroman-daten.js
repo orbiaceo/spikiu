@@ -64,6 +64,7 @@
     var bl = c.body[i], g = e.b ? e.b[i] : undefined;
     return (g === undefined || g === null) ? null : g;
   }
+  function elOder(v) { return (v && typeof v === 'object' && v.el) ? v.el : lokal(v, 'en'); }
   function blockFuer(b, mutter) {
     var o = {};
     if (b.na != null) o.na = lokal(b.na, mutter);
@@ -189,8 +190,10 @@
                    var o = blockFuer(bl, mutter);
                    if (el) {
                      var g = mitGriechisch(c, i, el);
-                     if (bl.na != null) o.na = g || lokal(bl.na, 'en');
-                     if (bl.tr != null) o.tr = (g === '' ? '' : (g || lokal(bl.tr, 'en')));
+                     // Ohne Eintrag in der el-Datei: Griechisch direkt im Buch ({de,en,el},
+                     // z. B. Lukas Teil III), sonst Englisch.
+                     if (bl.na != null) o.na = g || elOder(bl.na);
+                     if (bl.tr != null) o.tr = (g === '' ? '' : (g || elOder(bl.tr)));
                    }
                    return o;
                  }) };
