@@ -5,9 +5,9 @@
    Ansicht „Themen"). Ersetzt die vier Regal-Kacheln + den Lernweg-Streifen
    (Baum) in haus.html und die Seite dashboard.html (Lernweg).
 
-   EINE Ansicht, alles auf einen Blick: eine Kachel pro Lernstation, darin
-   die Wörter (gefüllt = sitzt, gestrichelt = wartet aufs Wiedersehen) und
-   die Lektion. Antippen → zurück zur Übung. Keine Zahlen, kein Prozent.
+   EINE Ansicht, alles auf einen Blick: eine Kachel pro Lernstation, nur Titel
+   (Leo, 16:26: kein Inhalt auflisten). Antippen → zurück zur Übung; hat die
+   Station auch eine Lektion, fragt eine kleine Karte, welches. Keine Zahlen.
    Symbole + Farben 1:1 aus den Haus-Kacheln (Leo: „Einheit aufbewahren!").
 
    Statischer Root-Helfer wie baum.js / nav.js — kein vercel.json-Eintrag.
@@ -117,10 +117,6 @@
       '.mos-kopf b{display:block;font:800 1.08rem/1.2 "DM Sans",sans-serif}',
       '.mos-kopf small{display:block;font:600 .85rem/1.3 "DM Sans",sans-serif;color:rgba(21,22,58,.7)}',
       '.mos-chev{font:800 1.35rem/1 "DM Sans",sans-serif}',
-      '.mos-body{display:flex;flex-direction:column;gap:10px;padding:12px 14px 14px}',
-      '.mos-worte{display:flex;flex-wrap:wrap;gap:7px}',
-      '.mos-wort{font:800 .93rem/1 "DM Sans",sans-serif;color:#15163a;background:#ffd24a;border:2px solid #15163a;border-radius:99px;padding:.45rem .7rem;cursor:pointer}',
-      '.mos-wort.wartet{background:#fff;border-style:dashed}',
       '.mos-zeile{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:2px solid #15163a;border-radius:14px;box-shadow:2px 3px 0 #15163a;padding:.55rem .7rem;text-align:left;font:800 .93rem/1.25 "DM Sans",sans-serif;color:#15163a;cursor:pointer}',
       '.mos-zeile .mos-g{flex:0 0 30px;font-size:1.35rem}',
       '.mos-zeile .at{flex:1;min-width:0}',
@@ -253,11 +249,6 @@
     var fmtLang = function (t) { try { return new Date(t).toLocaleDateString(LOC[ml], { weekday: 'long', day: 'numeric', month: 'long' }); } catch (e) { return ''; } };
     function g(art) { var r = RAUM[art]; return '<span class="mos-g" aria-hidden="true">' + (r ? r.em : '') + '</span>'; }
     function artName(s) { return { szene: L.szene, gespraech: L.gespraech, schreiben: L.schreiben, lesen: L.lernroman, wendungen: L.wendungen, sammlung: L.kiste }[s.art] || ''; }
-    function stand(s) {
-      if (!s.worte.length) return '';
-      var n = s.worte.filter(function (x) { return sitzt(D.ziel, x.z); }).length;
-      return n === s.worte.length ? L.alleSitzen : n ? L.einige : L.warten;
-    }
     function ziel(s) {
       if (s.szene) return { t: L.nochmal, go: 'gefuehrt.html?thema=' + encodeURIComponent(s.szene) };
       if (s.art === 'gespraech') return { t: L.nochmal, go: 'szene.html' };
@@ -269,7 +260,6 @@
     function passt(s) {
       if (filt === 'alles') return true;
       if (filt === 'gespr') return s.art === 'szene' || s.art === 'gespraech';
-      if (filt === 'kiste') return s.worte.length > 0;
       if (filt === 'lek') return !!s.lektion;
       if (filt === 'lesen') return s.art === 'lesen';
       return false;
@@ -284,9 +274,9 @@
       var F = [['alles', L.alles, ''], ['gespr', L.gespr, 'szene'], ['kiste', L.kiste, 'sammlung'], ['lek', L.lek, 'lektion'], ['lesen', L.lesen, 'lesen'], ['werke', L.werke, 'akro']];
       var fc = d.createElement('div'); fc.className = 'mos-chips';
       F.forEach(function (f) {
-        var b = d.createElement('button'); b.type = 'button'; b.className = 'mos-chip'; b.setAttribute('aria-pressed', String(f[0] === filt));
+        var b = d.createElement('button'); b.type = 'button'; b.className = 'mos-chip'; if (f[0] !== 'kiste') b.setAttribute('aria-pressed', String(f[0] === filt));
         b.innerHTML = (f[2] ? g(f[2]) : '') + esc(f[1]);
-        b.onclick = function () { filt = f[0]; zeichne(); };
+        b.onclick = function () { if (f[0] === 'kiste' && typeof opt.buch === 'function') { opt.buch(); return; } filt = f[0]; zeichne(); };
         fc.appendChild(b);
       });
       m.appendChild(fc);
@@ -297,21 +287,13 @@
         var c = d.createElement('article'); c.className = 'mos-th';
         var k = d.createElement('button'); k.type = 'button'; k.className = 'mos-kopf'; k.style.background = RAUM[s.art].bg;
         var an = artName(s); if (an === s.titel) an = '';
-        var sub = [an, s.t ? fmt(s.t) : '', s.kapitel ? L.kapitel + ' ' + s.kapitel : '', stand(s)].filter(Boolean).join(' · ');
+        /* Leo, 22.10. 16:26: „Der Inhalt soll nicht aufgelistet werden. Nur der Titel der Aktivität
+           und die Möglichkeit sie zu öffnen." → keine Wörter, keine Lektionszeile in der Kachel. */
+        var sub = [an, s.t ? fmt(s.t) : '', s.kapitel ? L.kapitel + ' ' + s.kapitel : ''].filter(Boolean).join(' · ');
         k.innerHTML = g(s.art) + '<span class="tx"><b>' + esc(s.titel) + '</b><small>' + esc(sub) + '</small></span><span class="mos-chev">›</span>';
-        k.onclick = function () { karteStation(s); };
+        k.classList.add('allein');
+        k.onclick = function () { oeffneStation(s); };
         c.appendChild(k);
-        var body = d.createElement('div'); body.className = 'mos-body';
-        if (s.worte.length) {
-          var wo = d.createElement('div'); wo.className = 'mos-worte';
-          s.worte.forEach(function (x) {
-            var b = d.createElement('button'); b.type = 'button'; b.className = 'mos-wort' + (sitzt(D.ziel, x.z) ? '' : ' wartet'); b.lang = D.ziel;
-            b.textContent = x.z; b.onclick = function () { karteWort(x, s); }; wo.appendChild(b);
-          });
-          body.appendChild(wo);
-        }
-        if (s.lektion && filt !== 'kiste') body.appendChild(lekZeile(s.lektion));
-        if (body.children.length) c.appendChild(body); else k.classList.add('allein');
         m.appendChild(c);
       });
 
@@ -340,13 +322,6 @@
       el.appendChild(m);
     }
 
-    function lekZeile(lk) {
-      var a = d.createElement('button'); a.type = 'button'; a.className = 'mos-zeile';
-      a.innerHTML = g('lektion') + '<span class="at">' + esc(L.lektion + ': ' + lk.titel) + '</span><span class="mos-chev">›</span>';
-      a.onclick = function () { location.href = 'lektionen.html#lektion-' + encodeURIComponent(lk.id); };
-      return a;
-    }
-
     // ── Karte (eine für alles) ──
     function zu() { d.querySelectorAll('.mos-schleier,.mos-sheet').forEach(function (e) { e.remove(); }); }
     function karte(art, typ, titel, tr, inhalt, knoepfe, langZiel) {
@@ -363,33 +338,22 @@
       d.body.appendChild(sl); d.body.appendChild(sh);
       var f = sh.querySelector('.mos-btn'); if (f) f.focus();
     }
-    function karteWort(x, s) {
-      var box = d.createElement('div'); box.style.cssText = 'display:flex;flex-direction:column;gap:8px';
-      box.innerHTML = '<div class="bl">' + esc(L.kamAus) + '</div>';
-      var hin = d.createElement('button'); hin.type = 'button'; hin.className = 'mos-zeile';
-      hin.innerHTML = g(s.art) + '<span class="at">' + esc(s.titel) + '</span><span class="mos-chev">›</span>';
-      hin.onclick = function () { karteStation(s); };
-      box.appendChild(hin);
-      karte('sammlung', L.sammlung + ' · ' + (sitzt(D.ziel, x.z) ? L.sitzt : L.wartet), x.z, x.tr, box, [
-        { t: L.anhoeren, f: function () { try { if (typeof opt.say === 'function') opt.say(x.z, D.ziel); } catch (e) {} } },
-        { t: L.ueben, haupt: true, f: function () { location.href = 'wortschatz.html'; } }
-      ], true);
-    }
-    function karteStation(s) {
-      var box = null;
-      if (s.worte.length) {
-        box = d.createElement('div'); box.style.cssText = 'display:flex;flex-direction:column;gap:8px';
-        box.innerHTML = '<div class="bl">' + esc(L.gesammelt) + '</div>';
-        var wo = d.createElement('div'); wo.className = 'mos-worte';
-        s.worte.forEach(function (x) { var b = d.createElement('button'); b.type = 'button'; b.className = 'mos-wort' + (sitzt(D.ziel, x.z) ? '' : ' wartet'); b.lang = D.ziel; b.textContent = x.z; b.onclick = function () { karteWort(x, s); }; wo.appendChild(b); });
-        box.appendChild(wo);
-      }
+    function knoepfeStation(s) {
       var kn = [], z = ziel(s);
       if (z) kn.push({ t: z.t, haupt: true, f: function () { location.href = z.go; } });
-      if (s.lektion) kn.push({ t: L.oeffnen, f: function () { location.href = 'lektionen.html#lektion-' + encodeURIComponent(s.lektion.id); } });
-      if (s.art === 'sammlung' && typeof opt.buch === 'function') kn.push({ t: L.alleWorte, f: function () { zu(); opt.buch(); } });
+      if (s.lektion) kn.push({ t: L.oeffnen, haupt: !z, f: function () { location.href = 'lektionen.html#lektion-' + encodeURIComponent(s.lektion.id); } });
+      if (s.art === 'sammlung' && typeof opt.buch === 'function') kn.push({ t: L.alleWorte, haupt: true, f: function () { zu(); opt.buch(); } });
+      return kn;
+    }
+    function oeffneStation(s) {
+      var kn = knoepfeStation(s);
+      if (kn.length === 1) { kn[0].f(); return; }   /* nur ein Weg → direkt hin */
+      karteStation(s);
+    }
+    function karteStation(s) {
+      var kn = knoepfeStation(s);
       kn.push({ t: L.zu, f: zu });
-      karte(s.art, [artName(s), s.t ? fmtLang(s.t) : ''].filter(Boolean).join(' · '), s.titel, '', box, kn, false);
+      karte(s.art, [artName(s), s.t ? fmtLang(s.t) : ''].filter(Boolean).join(' · '), s.titel, '', null, kn, false);
     }
     d.addEventListener('keydown', function (e) { if (e.key === 'Escape') zu(); });
 
