@@ -1,0 +1,349 @@
+<title>Spikiu Himmel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,600;9..40,700;9..40,800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Ein Himmel statt Baum + Regal. Bewusst EIN Look (Nacht), Spikiu-Komponenten (Tinte, dicker Rand, Versatz-Schatten). */
+:root{
+  --ink:#15163a; --night:#14164a; --night2:#232770; --paper:#fffaf0; --card:#ffffff;
+  --gold:#ffd24a; --mint:#bfe6d5; --lila:#cdbdf2; --sky:#9ed8f0; --peach:#ffd0b0;
+  --muted:#5f6488; --star:#f6f4ff;
+  --f:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'DM Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--night);color:var(--star);font-family:var(--f);-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+.app{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 20px;gap:12px}
+header{display:flex;flex-direction:column;gap:10px}
+.kopf{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+h1{font:800 1.45rem/1.1 var(--f);margin:0;text-wrap:balance}
+.beispiel{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1.5px solid var(--gold);border-radius:99px;padding:.3rem .5rem;white-space:nowrap}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border:2.5px solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 #000a;padding:3px;gap:3px}
+.seg button{font:800 .86rem/1 var(--f);color:var(--ink);background:transparent;border:0;border-radius:12px;padding:.6rem .2rem;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--gold)}
+.seg button:focus-visible,.chip:focus-visible,.btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.idee{font:600 .84rem/1.4 var(--f);color:#c9cbf0;margin:0}
+.view[hidden]{display:none!important}
+
+/* ── Himmel ── */
+.himmel{position:relative;border:2.5px solid #000;border-radius:22px;overflow:hidden;background:radial-gradient(120% 80% at 50% 100%,#2f357f 0%,var(--night2) 38%,var(--night) 75%)}
+.himmel svg{display:block;width:100%;height:auto}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;font:800 .8rem/1 var(--f);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:99px;padding:.48rem .7rem;cursor:pointer;display:flex;align-items:center;gap:.35rem}
+.chip[aria-pressed="true"]{background:var(--gold)}
+.chip i{font-style:normal}
+.legende{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font:600 .76rem/1.3 var(--f);color:#c9cbf0}
+.legende span{display:flex;align-items:center;gap:6px}
+.legende svg{flex:0 0 18px}
+.st{cursor:pointer}
+.st .hit{fill:transparent}
+.dim{opacity:.13;transition:opacity .25s}
+.lbl{font:700 10.5px var(--f);fill:#e9e8ff}
+.lbl.k{font:600 9px var(--f);fill:#b9bbe8}
+.funkel{animation:funkel 3.2s ease-in-out infinite}
+@keyframes funkel{0%,100%{opacity:1}50%{opacity:.55}}
+.puls{animation:puls 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes puls{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+
+/* ── Sternbilder ── */
+.bilder{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bild{background:var(--night2);border:2.5px solid #000;border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:var(--star);font-family:var(--f);min-width:0}
+.bild.offen{border-style:dashed;border-color:#6f74b8;background:transparent}
+.bild svg{width:100%;height:96px;display:block}
+.bild b{font:800 .9rem/1.2 var(--f)}
+.bild small{font:600 .74rem/1.3 var(--f);color:#c9cbf0}
+.zeile-lbl{font:500 .68rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#9fa3d8;margin:6px 0 -4px}
+
+/* ── Tagebuch ── */
+.buch{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;scrollbar-width:none}
+.buch::-webkit-scrollbar{display:none}
+.seite{flex:0 0 86%;scroll-snap-align:center;background:var(--paper);color:var(--ink);border:2.5px solid var(--ink);border-radius:18px;box-shadow:4px 5px 0 #000;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;min-width:0;background-image:repeating-linear-gradient(transparent 0 27px,#e8e2d2 27px 28px)}
+.seite h3{margin:0;font:800 1.05rem/1.2 var(--f)}
+.seite .datum{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.seite .mini{background:var(--night);border-radius:12px;border:2px solid var(--ink)}
+.seite .mini svg{display:block;width:100%;height:150px}
+.eintrag{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:.55rem .65rem;cursor:pointer;font-family:var(--f);color:var(--ink);text-align:left;width:100%}
+.eintrag .sym{flex:0 0 26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--night)}
+.eintrag .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.eintrag .tx b{font:800 .88rem/1.2 var(--f)}
+.eintrag .tx small{font:600 .74rem/1.25 var(--f);color:var(--muted)}
+.eintrag .chev{font-size:1.2rem}
+.seite .worte{display:flex;flex-wrap:wrap;gap:5px}
+.seite .wort{font:700 .78rem/1 var(--f);background:#fff3c4;border:1.5px solid var(--ink);border-radius:99px;padding:.3rem .5rem;cursor:pointer;color:var(--ink)}
+.seite .wort.neu{background:#fff;border-style:dashed}
+.blaettern{display:flex;justify-content:space-between;font:600 .78rem var(--f);color:#c9cbf0}
+
+/* ── Karte (Bottom-Sheet) ── */
+.schleier{position:fixed;inset:0;background:#0009;z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;display:flex;justify-content:center;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.sheet .innen{width:100%;max-width:440px;background:var(--card);color:var(--ink);border:2.5px solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 #000;padding:16px;display:flex;flex-direction:column;gap:10px;animation:hoch .22s ease-out}
+@keyframes hoch{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.sheet .typ{font:500 .68rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sheet h2{margin:0;font:800 1.35rem/1.15 var(--f);text-wrap:balance}
+.sheet .tr{font:600 .95rem/1.35 var(--f);color:var(--muted);margin:0}
+.sheet .bez{display:flex;flex-wrap:wrap;gap:6px}
+.sheet .bez button{font:700 .78rem/1 var(--f);background:#eef1ff;border:1.5px solid var(--ink);border-radius:99px;padding:.35rem .55rem;cursor:pointer;color:var(--ink)}
+.sheet .bez-lbl{font:600 .76rem var(--f);color:var(--muted);margin-bottom:-4px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{flex:1 1 auto;font:800 .92rem/1 var(--f);color:var(--ink);background:var(--card);border:2.5px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 var(--ink);padding:.75rem .8rem;cursor:pointer}
+.btn.haupt{background:var(--gold)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:#fff;font:700 .84rem/1.3 var(--f);padding:.6rem .9rem;border-radius:12px;border:2px solid var(--gold);max-width:90vw;text-align:center}
+@media (prefers-reduced-motion:reduce){.funkel,.puls{animation:none}.sheet .innen{animation:none}}
+</style>
+
+<div class="app">
+  <header>
+    <div class="kopf"><h1 id="titel">Mein Himmel</h1><span class="beispiel">Beispiel-Daten</span></div>
+    <div class="seg" role="tablist">
+      <button role="tab" aria-selected="true" data-v="himmel" id="t-himmel">Himmel</button>
+      <button role="tab" aria-selected="false" data-v="bilder" id="t-bilder">Sternbilder</button>
+      <button role="tab" aria-selected="false" data-v="buch" id="t-buch">Tagebuch</button>
+    </div>
+    <p class="idee" id="idee"></p>
+  </header>
+
+  <section class="view" id="v-himmel">
+    <div class="chips" id="filter"></div>
+    <div class="himmel" id="himmel"></div>
+    <div class="legende" id="legende"></div>
+  </section>
+
+  <section class="view" id="v-bilder" hidden>
+    <div class="zeile-lbl">Leuchtet schon</div>
+    <div class="bilder" id="bilder"></div>
+    <div class="zeile-lbl">Noch dunkel</div>
+    <div class="bilder" id="bilderDunkel"></div>
+  </section>
+
+  <section class="view" id="v-buch" hidden>
+    <div class="buch" id="buch"></div>
+    <div class="blaettern"><span>‹ älter</span><span>wischen zum Blättern</span><span>neuer ›</span></div>
+  </section>
+</div>
+
+<script>
+/* ═══ TAXONOMIE (Vorschlag) ═══════════════════════════════════════════
+   Jede Spur = eine Lerntätigkeit, die bleibt. Fünf Arten, ein Himmel.
+   Beziehung „von": Wort stammt aus einer Szene/einem Kapitel/Gespräch;
+   Lektion stammt aus einem Gespräch; Werk benutzt Wörter (nutzt).
+   Wort „gesetzt" = in woerter.js an zwei Tagen erkannt → leuchtet. */
+var ARTEN={
+  szene:{n:'Szene',plural:'Szenen',von:'Geführtes Gespräch'},
+  gespraech:{n:'Gespräch',plural:'Gespräche',von:'Freies Gespräch'},
+  wort:{n:'Wort',plural:'Wörter',von:'Schatzkiste'},
+  lektion:{n:'Lektion',plural:'Lektionen',von:'aus einem Gespräch'},
+  kapitel:{n:'Kapitel',plural:'Lesen',von:'Lernroman'},
+  werk:{n:'Werk',plural:'Werke',von:'Garten · Akrostichon'}
+};
+var D=[
+ /* Sternbilder = Themen (Szenen + was daraus kam) */
+ {id:'familie',art:'szene',t:'Über die Familie',e:'👪',tag:'2026-10-01',x:92,y:118,thema:'familie',akt:'Nochmal sprechen'},
+ {id:'w-hermana',art:'wort',t:'la hermana',tr:'die Schwester',tag:'2026-10-01',von:'familie',g:1},
+ {id:'w-abuelo',art:'wort',t:'el abuelo',tr:'der Großvater',tag:'2026-10-01',von:'familie',g:1},
+ {id:'w-padres',art:'wort',t:'los padres',tr:'die Eltern',tag:'2026-10-01',von:'familie',g:1},
+ {id:'w-primo',art:'wort',t:'el primo',tr:'der Cousin',tag:'2026-10-02',von:'familie',g:0},
+ {id:'w-mayor',art:'wort',t:'mayor',tr:'älter',tag:'2026-10-02',von:'familie',g:0},
+
+ {id:'lukas1',art:'kapitel',t:'Lukas · Kapitel 1',e:'📖',tag:'2026-10-03',x:76,y:470,thema:'lukas',akt:'Nochmal lesen'},
+ {id:'w-madrugada',art:'wort',t:'la madrugada',tr:'der frühe Morgen',tag:'2026-10-03',von:'lukas1',g:1},
+ {id:'w-despierto',art:'wort',t:'despierto',tr:'wach',tag:'2026-10-03',von:'lukas1',g:0},
+ {id:'w-ciudad',art:'wort',t:'la ciudad',tr:'die Stadt',tag:'2026-10-03',von:'lukas1',g:1},
+
+ {id:'cafe',art:'szene',t:'Im Café',e:'☕',tag:'2026-10-05',x:300,y:100,thema:'cafe',akt:'Nochmal sprechen'},
+ {id:'w-cuenta',art:'wort',t:'la cuenta',tr:'die Rechnung',tag:'2026-10-05',von:'cafe',g:1},
+ {id:'w-cortado',art:'wort',t:'un cortado',tr:'ein Kaffee mit etwas Milch',tag:'2026-10-05',von:'cafe',g:1},
+ {id:'w-tarta',art:'wort',t:'la tarta',tr:'der Kuchen',tag:'2026-10-05',von:'cafe',g:0},
+ {id:'w-camarero',art:'wort',t:'el camarero',tr:'der Kellner',tag:'2026-10-06',von:'cafe',g:1},
+ {id:'l-cafe',art:'lektion',t:'Lektion: Bestellen im Café',e:'📓',tag:'2026-10-06',von:'cafe',akt:'Lektion öffnen'},
+
+ {id:'weg',art:'szene',t:'Nach dem Weg fragen',e:'🧭',tag:'2026-10-09',x:92,y:300,thema:'weg',akt:'Nochmal sprechen'},
+ {id:'w-derecha',art:'wort',t:'a la derecha',tr:'rechts',tag:'2026-10-09',von:'weg',g:1},
+ {id:'w-recto',art:'wort',t:'todo recto',tr:'geradeaus',tag:'2026-10-09',von:'weg',g:0},
+ {id:'w-plano',art:'wort',t:'el plano',tr:'der Stadtplan',tag:'2026-10-09',von:'weg',g:0},
+ {id:'w-cerca',art:'wort',t:'cerca',tr:'in der Nähe',tag:'2026-10-10',von:'weg',g:1},
+
+ {id:'finde',art:'gespraech',t:'Freies Gespräch: Mein Wochenende',e:'💬',tag:'2026-10-12',x:212,y:222,thema:'finde',akt:'Gespräch nachlesen'},
+ {id:'w-playa',art:'wort',t:'la playa',tr:'der Strand',tag:'2026-10-12',von:'finde',g:0},
+ {id:'w-hemos',art:'wort',t:'hemos ido',tr:'wir sind gegangen',tag:'2026-10-12',von:'finde',g:0},
+ {id:'l-finde',art:'lektion',t:'Lektion: Was ich gemacht habe',e:'📓',tag:'2026-10-12',von:'finde',akt:'Lektion öffnen'},
+
+ {id:'einkaufen',art:'szene',t:'Einkaufen',e:'🛒',tag:'2026-10-16',x:306,y:330,thema:'einkaufen',akt:'Nochmal sprechen'},
+ {id:'w-patatas',art:'wort',t:'las patatas',tr:'die Kartoffeln',tag:'2026-10-16',von:'einkaufen',g:0},
+ {id:'w-kilo',art:'wort',t:'un kilo',tr:'ein Kilo',tag:'2026-10-16',von:'einkaufen',g:1},
+ {id:'w-vuelta',art:'wort',t:'la vuelta',tr:'das Wechselgeld',tag:'2026-10-16',von:'einkaufen',g:0},
+ {id:'w-barato',art:'wort',t:'barato',tr:'billig',tag:'2026-10-17',von:'einkaufen',g:0},
+
+ /* Werke: benutzen Wörter aus verschiedenen Sternbildern */
+ {id:'akro',art:'werk',t:'Akrostichon CAFÉ',e:'🔤',tag:'2026-10-07',x:330,y:205,nutzt:['w-cortado','w-abuelo','w-camarero'],akt:'Ansehen'},
+ {id:'beet',art:'werk',t:'Garten: Beet P',e:'🌿',tag:'2026-10-18',x:214,y:420,nutzt:['w-primo','w-plano','w-patatas'],akt:'Ansehen'},
+
+ /* noch dunkel: nächste Szenen auf dem Weg */
+ {id:'arzt',art:'szene',t:'Beim Arzt',e:'🩺',x:300,y:470,dunkel:1,akt:'Szene beginnen'},
+ {id:'hotel',art:'szene',t:'Im Hotel',e:'🏨',x:212,y:52,dunkel:1,akt:'Szene beginnen'}
+];
+var BY={};D.forEach(function(d){BY[d.id]=d;});
+
+/* Wörter rund um ihre Quelle legen */
+(function(){var gr={};D.forEach(function(d){if(d.art==='wort'){(gr[d.von]=gr[d.von]||[]).push(d);}});
+ Object.keys(gr).forEach(function(k){var q=BY[k],ws=gr[k],start={familie:-0.4,cafe:1.9,weg:-0.6,finde:0.5,einkaufen:1.9,lukas1:-1.3}[k]||0;
+  ws.forEach(function(w,i){var a=start+i*(Math.PI*2/ Math.max(ws.length,4))*0.9,r=40+(i%2)*10;w.x=q.x+Math.cos(a)*r;w.y=q.y+Math.sin(a)*r;});});
+ D.forEach(function(d){if(d.art==='lektion'){var q=BY[d.von];d.x=q.x;d.y=q.y-62;}});})();
+
+var FMT=function(t){var d=new Date(t+'T12:00:00');return d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});};
+var KURZ=function(t){var d=new Date(t+'T12:00:00');return d.toLocaleDateString('de-DE',{day:'numeric',month:'short'});};
+var ruhig=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── Symbole ── */
+function stern(x,y,r,fill){var p=[];for(var i=0;i<8;i++){var a=Math.PI/4*i-Math.PI/2,rr=i%2?r*.38:r;p.push((x+Math.cos(a)*rr).toFixed(1)+','+(y+Math.sin(a)*rr).toFixed(1));}return '<polygon points="'+p.join(' ')+'" fill="'+fill+'"/>';}
+function symbol(d,x,y,s){s=s||1;
+ if(d.art==='szene'){if(d.dunkel)return '<polygon points="'+stern(x,y,11*s,'none').match(/points="([^"]+)"/)[1]+'" fill="none" stroke="#8a8fd0" stroke-width="1.4" stroke-dasharray="2 2"/>';
+   return '<circle cx="'+x+'" cy="'+y+'" r="'+16*s+'" fill="#ffd24a" opacity=".18"/>'+stern(x,y,12*s,'#ffd24a');}
+ if(d.art==='gespraech')return '<circle cx="'+x+'" cy="'+y+'" r="'+15*s+'" fill="#9ed8f0" opacity=".18"/>'+stern(x,y,10*s,'#9ed8f0');
+ if(d.art==='wort'){return d.g?'<circle cx="'+x+'" cy="'+y+'" r="'+6*s+'" fill="#fff" opacity=".22"/><circle class="funkel" cx="'+x+'" cy="'+y+'" r="'+2.8*s+'" fill="#fff"/>'
+   :'<circle cx="'+x+'" cy="'+y+'" r="'+2.4*s+'" fill="#c9cbf0" opacity=".55"/>';}
+ if(d.art==='kapitel')return '<circle cx="'+x+'" cy="'+y+'" r="'+9*s+'" fill="#bfe6d5"/><ellipse cx="'+x+'" cy="'+y+'" rx="'+15*s+'" ry="'+4*s+'" fill="none" stroke="#bfe6d5" stroke-width="1.6" transform="rotate(-18 '+x+' '+y+')"/>';
+ if(d.art==='werk')return '<rect x="'+(x-6*s)+'" y="'+(y-6*s)+'" width="'+12*s+'" height="'+12*s+'" rx="2" fill="#cdbdf2" transform="rotate(45 '+x+' '+y+')"/>';
+ if(d.art==='lektion')return '<g><rect x="'+(x-3.5*s)+'" y="'+(y-3.5*s)+'" width="'+7*s+'" height="'+7*s+'" rx="1" fill="#ffd0b0"/><rect x="'+(x-12*s)+'" y="'+(y-2*s)+'" width="'+7*s+'" height="'+4*s+'" fill="#9ed8f0"/><rect x="'+(x+5*s)+'" y="'+(y-2*s)+'" width="'+7*s+'" height="'+4*s+'" fill="#9ed8f0"/></g>';
+ return '';}
+
+/* ── Hintergrund-Sterne (deterministisch) ── */
+function staub(w,h,n,seed){var s=seed||7,o='';function r(){s=(s*9301+49297)%233280;return s/233280;}for(var i=0;i<n;i++)o+='<circle cx="'+(r()*w).toFixed(1)+'" cy="'+(r()*h).toFixed(1)+'" r="'+(r()*.9+.2).toFixed(2)+'" fill="#fff" opacity="'+(r()*.35+.08).toFixed(2)+'"/>';return o;}
+
+/* Spikiu (komplett: 2 Ohren, 4 Beine), sitzt auf dem Hügel und schaut hoch */
+function capy(x,y){return '<g transform="translate('+x+','+y+')">'
+ +'<ellipse cx="0" cy="0" rx="22" ry="13" fill="#b07d55" stroke="#15163a" stroke-width="2"/>'
+ +'<rect x="-15" y="9" width="5" height="9" rx="2" fill="#8d5f3d" stroke="#15163a" stroke-width="1.6"/><rect x="-6" y="10" width="5" height="9" rx="2" fill="#8d5f3d" stroke="#15163a" stroke-width="1.6"/>'
+ +'<rect x="4" y="10" width="5" height="9" rx="2" fill="#8d5f3d" stroke="#15163a" stroke-width="1.6"/><rect x="13" y="9" width="5" height="9" rx="2" fill="#8d5f3d" stroke="#15163a" stroke-width="1.6"/>'
+ +'<ellipse cx="18" cy="-12" rx="11" ry="9" fill="#b07d55" stroke="#15163a" stroke-width="2" transform="rotate(-25 18 -12)"/>'
+ +'<circle cx="13" cy="-20" r="3.2" fill="#8d5f3d" stroke="#15163a" stroke-width="1.5"/><circle cx="21" cy="-23" r="3.2" fill="#8d5f3d" stroke="#15163a" stroke-width="1.5"/>'
+ +'<circle cx="22" cy="-14" r="1.6" fill="#15163a"/><ellipse cx="27" cy="-8" rx="2.4" ry="1.6" fill="#15163a"/></g>';}
+
+/* ═══ VIEW 1: HIMMEL ═══ */
+var FILTER=[['alles','Alles',''],['szene','Szenen','⭐'],['wort','Schatzkiste','✦'],['lektion','Lektionen','🛰️'],['kapitel','Lesen','🪐'],['werk','Garten & Akrosticha','◆']];
+var filt='alles',fokus=null;
+function sichtbar(d){if(filt==='alles')return true;if(filt==='szene')return d.art==='szene'||d.art==='gespraech';return d.art===filt;}
+function zeichneHimmel(){
+ var W=400,H=600,o='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Dein Lernhimmel">'+staub(W,H,110,11);
+ /* Weg = Milchstraße durch die Zeit (Szenen, Gespräche, Kapitel nach Datum) bis zur nächsten dunklen Szene */
+ var weg=D.filter(function(d){return (d.art==='szene'||d.art==='gespraech'||d.art==='kapitel')&&!d.dunkel;}).sort(function(a,b){return a.tag<b.tag?-1:1;});
+ var pts=weg.map(function(d){return [d.x,d.y];});pts.push([BY.arzt.x,BY.arzt.y]);
+ var pfad='M'+pts[0].join(',');for(var i=1;i<pts.length;i++){var a=pts[i-1],b=pts[i];pfad+=' Q'+((a[0]+b[0])/2+(i%2?28:-28))+','+((a[1]+b[1])/2)+' '+b.join(',');}
+ o+='<path d="'+pfad+'" fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="16" stroke-linecap="round"/>';
+ o+='<path d="'+pfad+'" fill="none" stroke="#ffd24a" stroke-opacity=".35" stroke-width="1.3" stroke-dasharray="1 5" stroke-linecap="round"/>';
+ /* Linien: Wort ← Quelle (Sternbild), Werk → Wörter */
+ D.forEach(function(d){
+  if(d.art==='wort'){var q=BY[d.von];o+='<line data-rel="'+d.id+' '+q.id+'" x1="'+q.x+'" y1="'+q.y+'" x2="'+d.x.toFixed(1)+'" y2="'+d.y.toFixed(1)+'" stroke="#c9cbf0" stroke-opacity=".28" stroke-width="1"/>';}
+  if(d.art==='werk')d.nutzt.forEach(function(n){var w=BY[n];o+='<line data-rel="'+d.id+' '+n+'" x1="'+d.x+'" y1="'+d.y+'" x2="'+w.x.toFixed(1)+'" y2="'+w.y.toFixed(1)+'" stroke="#cdbdf2" stroke-opacity=".35" stroke-width="1" stroke-dasharray="3 3"/>';});
+ });
+ /* Hügel + Spikiu */
+ o+='<path d="M0,560 Q120,520 220,548 T400,540 L400,600 L0,600Z" fill="#0d0f33"/>'+capy(58,548);
+ o+='<text x="92" y="584" class="lbl k">Spikiu schaut mit dir hoch</text>';
+ /* Objekte */
+ var neuest=D.filter(function(d){return !d.dunkel&&d.art!=='wort';}).sort(function(a,b){return a.tag<b.tag?1:-1;})[0];
+ D.forEach(function(d){
+  if(d.art==='lektion')return;
+  var x=+d.x.toFixed(1),y=+d.y.toFixed(1);
+  o+='<g class="st" data-id="'+d.id+'" tabindex="0" role="button" aria-label="'+ARTEN[d.art].n+': '+d.t+'">';
+  if(d===neuest)o+='<circle class="puls" cx="'+x+'" cy="'+y+'" r="16" fill="none" stroke="#ffd24a" stroke-width="2"/>';
+  o+='<circle class="hit" cx="'+x+'" cy="'+y+'" r="'+(d.art==='wort'?13:22)+'"/>'+symbol(d,x,y);
+  if(d.art!=='wort'){var lx=x,ly=y+(d.art==='kapitel'?24:27);o+='<text x="'+lx+'" y="'+ly+'" text-anchor="middle" class="lbl'+(d.dunkel?' k':'')+'">'+d.t.replace('Freies Gespräch: ','')+'</text>';
+   if(d===neuest)o+='<text x="'+lx+'" y="'+(ly+12)+'" text-anchor="middle" class="lbl k" fill="#ffd24a">zuletzt · '+KURZ(d.tag)+'</text>';
+   if(d.dunkel)o+='<text x="'+lx+'" y="'+(ly+11)+'" text-anchor="middle" class="lbl k">noch dunkel</text>';}
+  o+='</g>';
+ });
+ /* Lektionen = Satelliten, umkreisen ihr Gespräch */
+ D.filter(function(d){return d.art==='lektion';}).forEach(function(d,i){var q=BY[d.von],r=62,x=q.x,y=q.y-r;
+  o+='<g class="st" data-id="'+d.id+'" tabindex="0" role="button" aria-label="Lektion: '+d.t+'"><circle cx="'+q.x+'" cy="'+q.y+'" r="'+r+'" fill="none" stroke="#9ed8f0" stroke-opacity=".18" stroke-dasharray="2 4"/>'
+   +'<g><circle class="hit" cx="'+x+'" cy="'+y+'" r="16"/>'+symbol(d,x,y)
+   +(ruhig?'':'<animateTransform attributeName="transform" type="rotate" from="'+(i*140)+' '+q.x+' '+q.y+'" to="'+(i*140+360)+' '+q.x+' '+q.y+'" dur="'+(48+i*14)+'s" repeatCount="indefinite"/>')+'</g></g>';});
+ o+='</svg>';
+ var el=document.getElementById('himmel');el.innerHTML=o;
+ el.querySelectorAll('.st').forEach(function(g){var f=function(){oeffne(g.getAttribute('data-id'));};g.addEventListener('click',f);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}});});
+ dimmen();
+}
+function dimmen(){var el=document.getElementById('himmel');
+ el.querySelectorAll('.st').forEach(function(g){var d=BY[g.getAttribute('data-id')];var an=sichtbar(d);
+  if(fokus){an=fokus.indexOf(d.id)>-1;}g.classList.toggle('dim',!an);});
+ el.querySelectorAll('line').forEach(function(l){var r=l.getAttribute('data-rel').split(' ');var an=fokus?(fokus.indexOf(r[0])>-1&&fokus.indexOf(r[1])>-1):filt==='alles';l.classList.toggle('dim',!an);});}
+function baueFilter(){var f=document.getElementById('filter');f.innerHTML='';
+ FILTER.forEach(function(x){var b=document.createElement('button');b.className='chip';b.id='f-'+x[0];b.setAttribute('aria-pressed',x[0]===filt);b.innerHTML=(x[2]?'<i>'+x[2]+'</i>':'')+x[1];
+  b.onclick=function(){filt=x[0];fokus=null;baueFilter();dimmen();};f.appendChild(b);});}
+function baueLegende(){var L=[['szene','Szene (Geführtes Gespräch)'],['gespraech','Freies Gespräch'],['wort','Wort — hell = sitzt schon'],['lektion','Lektion (Satellit)'],['kapitel','Lernroman-Kapitel'],['werk','Garten · Akrostichon']];
+ document.getElementById('legende').innerHTML=L.map(function(l){var d={art:l[0],g:1};return '<span><svg viewBox="-10 -10 20 20" width="18" height="18">'+symbol(d,0,0,.75)+'</svg>'+l[1]+'</span>';}).join('');}
+
+/* ═══ VIEW 2: STERNBILDER ═══ */
+function mini(ids,W,H,zentrum){var ds=ids.map(function(i){return BY[i];});
+ var xs=ds.map(function(d){return d.x;}),ys=ds.map(function(d){return d.y;});
+ var mx=Math.min.apply(0,xs)-22,Mx=Math.max.apply(0,xs)+22,my=Math.min.apply(0,ys)-22,My=Math.max.apply(0,ys)+22;
+ var o='<svg viewBox="'+mx.toFixed(0)+' '+my.toFixed(0)+' '+(Mx-mx).toFixed(0)+' '+(My-my).toFixed(0)+'" aria-hidden="true">';
+ ds.forEach(function(d){if(d.art==='wort'&&zentrum)o+='<line x1="'+zentrum.x+'" y1="'+zentrum.y+'" x2="'+d.x+'" y2="'+d.y+'" stroke="#c9cbf0" stroke-opacity=".35"/>';});
+ ds.forEach(function(d){o+=symbol(d,+d.x.toFixed(1),+d.y.toFixed(1),1.1);});return o+'</svg>';}
+function sternbild(q){return D.filter(function(d){return d.id===q.id||d.von===q.id;}).map(function(d){return d.id;});}
+function baueBilder(){var hell=document.getElementById('bilder'),dunkel=document.getElementById('bilderDunkel');hell.innerHTML='';dunkel.innerHTML='';
+ D.filter(function(d){return ['szene','gespraech','kapitel'].indexOf(d.art)>-1;}).sort(function(a,b){return (a.tag||'z')<(b.tag||'z')?1:-1;}).forEach(function(q){
+  var ids=sternbild(q),ws=ids.filter(function(i){return BY[i].art==='wort';}),hellW=ws.filter(function(i){return BY[i].g;});
+  var b=document.createElement('button');b.className='bild'+(q.dunkel?' offen':'');
+  var info=q.dunkel?'Als Nächstes auf deinem Weg':(hellW.length===ws.length&&ws.length?'Alle Wörter leuchten':(hellW.length?'Einige Wörter leuchten schon':'Die Wörter warten aufs Wiedersehen'));
+  var lek=ids.some(function(i){return BY[i].art==='lektion';})?' · mit Lektion':'';
+  b.innerHTML=(q.dunkel?'<svg viewBox="-20 -20 40 40">'+symbol(q,0,0,1.2)+'</svg>':mini(ids,0,0,q))+'<b>'+q.e+' '+q.t.replace('Freies Gespräch: ','')+'</b><small>'+info+lek+'</small>';
+  b.onclick=function(){oeffne(q.id);};(q.dunkel?dunkel:hell).appendChild(b);});}
+
+/* ═══ VIEW 3: TAGEBUCH ═══ */
+function baueBuch(){var tage={};D.forEach(function(d){if(d.tag)(tage[d.tag]=tage[d.tag]||[]).push(d);});
+ var keys=Object.keys(tage).sort(),bisher=[];var buch=document.getElementById('buch');buch.innerHTML='';
+ keys.forEach(function(k){var es=tage[k];es.forEach(function(d){bisher.push(d.id);});
+  var s=document.createElement('article');s.className='seite';
+  var gross=es.filter(function(d){return d.art!=='wort';}),worte=es.filter(function(d){return d.art==='wort';});
+  /* Mini-Himmel: alles bis zu diesem Tag, heutige Sterne hell */
+  var o='<svg viewBox="0 0 400 600" aria-hidden="true">'+staub(400,600,60,3);
+  D.forEach(function(d){if(d.dunkel||d.art==='lektion'||bisher.indexOf(d.id)<0)return;var neu=es.indexOf(d)>-1;o+='<g opacity="'+(neu?1:.3)+'">'+symbol(d,+d.x.toFixed(1),+d.y.toFixed(1),neu?1.4:1)+'</g>';});o+='</svg>';
+  s.innerHTML='<div class="datum">'+FMT(k)+'</div><div class="mini">'+o+'</div>';
+  gross.forEach(function(d){var b=document.createElement('button');b.className='eintrag';
+   b.innerHTML='<span class="sym"><svg viewBox="-16 -16 32 32" width="22" height="22">'+symbol(d,0,0,.95)+'</svg></span><span class="tx"><b></b><small>'+ARTEN[d.art].n+(d.von&&BY[d.von]?' · aus „'+BY[d.von].t+'"':'')+'</small></span><span class="chev">›</span>';
+   b.querySelector('b').textContent=d.t;b.onclick=function(){oeffne(d.id);};s.appendChild(b);});
+  if(worte.length){var w=document.createElement('div');w.className='worte';worte.forEach(function(d){var c=document.createElement('button');c.className='wort'+(d.g?'':' neu');c.textContent=d.t;c.onclick=function(){oeffne(d.id);};w.appendChild(c);});
+   var l=document.createElement('div');l.className='datum';l.textContent='Gesammelt';s.appendChild(l);s.appendChild(w);}
+  buch.appendChild(s);});
+ requestAnimationFrame(function(){buch.scrollLeft=buch.scrollWidth;});}
+
+/* ═══ KARTE: dieselbe Karte für alle drei Ansichten ═══ */
+function sprich(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='es-ES';speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){toast('🔊 '+t);}}
+function toast(t){var x=document.querySelector('.toast');if(x)x.remove();x=document.createElement('div');x.className='toast';x.textContent=t;document.body.appendChild(x);setTimeout(function(){x.remove();},2200);}
+function zu(){document.querySelectorAll('.schleier,.sheet').forEach(function(e){e.remove();});}
+function oeffne(id){zu();var d=BY[id];var s=document.createElement('div');s.className='schleier';s.onclick=zu;
+ var sh=document.createElement('div');sh.className='sheet';sh.setAttribute('role','dialog');var c=document.createElement('div');c.className='innen';
+ var typ=ARTEN[d.art].n+(d.tag?' · '+FMT(d.tag):'');
+ if(d.art==='wort')typ+=d.g?' · sitzt schon':' · wartet aufs Wiedersehen';
+ c.innerHTML='<div class="typ"></div><h2></h2>'+(d.tr?'<p class="tr"></p>':'');
+ c.querySelector('.typ').textContent=typ;c.querySelector('h2').textContent=(d.e?d.e+' ':'')+d.t;if(d.tr)c.querySelector('.tr').textContent=d.tr;
+ /* Beziehungen */
+ var rel=[],lbl='';
+ if(d.art==='wort'){rel=[d.von];D.forEach(function(x){if(x.nutzt&&x.nutzt.indexOf(d.id)>-1)rel.push(x.id);});lbl='Kam aus · steckt in';}
+ else if(d.art==='werk'){rel=d.nutzt;lbl='Diese Wörter hast du verwendet';}
+ else if(d.art==='lektion'){rel=[d.von];lbl='Entstanden aus';}
+ else if(!d.dunkel){rel=D.filter(function(x){return x.von===d.id;}).map(function(x){return x.id;});lbl='Was du hier gesammelt hast';}
+ if(rel.length){var l=document.createElement('div');l.className='bez-lbl';l.textContent=lbl;c.appendChild(l);var bz=document.createElement('div');bz.className='bez';
+  rel.forEach(function(r){var b=document.createElement('button');b.textContent=(BY[r].art==='lektion'?'📓 ':'')+BY[r].t;b.onclick=function(){oeffne(r);};bz.appendChild(b);});c.appendChild(bz);}
+ var btns=document.createElement('div');btns.className='btns';
+ function knopf(t,haupt,f){var b=document.createElement('button');b.className='btn'+(haupt?' haupt':'');b.textContent=t;b.onclick=f;btns.appendChild(b);}
+ if(d.art==='wort'){knopf('🔊 Anhören',false,function(){sprich(d.t);});knopf('Im Gym üben',true,function(){toast('→ würde gym.html mit „'+d.t+'" öffnen');});}
+ else knopf(d.akt,true,function(){toast('→ würde „'+d.t+'" öffnen');});
+ if(!d.dunkel&&d.art!=='wort'&&d.art!=='lektion'){knopf('Am Himmel zeigen',false,function(){fokus=[d.id].concat(rel);if(d.art==='werk')fokus=fokus.concat(rel.map(function(r){return BY[r].von;}));zeige('himmel');zu();dimmen();toast('Tipp ins Leere, um alles zu sehen');});}
+ c.appendChild(btns);sh.appendChild(c);document.body.appendChild(s);document.body.appendChild(sh);sh.querySelector('.btn').focus();}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')zu();});
+
+/* ═══ Umschalten ═══ */
+var IDEE={himmel:'Alles, was du gemacht hast, leuchtet hier. Tipp einen Stern an und du kommst zurück zu der Szene, dem Wort, der Lektion.',
+ bilder:'Derselbe Himmel, nach Themen geordnet. Jede Szene ist ein Sternbild mit den Wörtern, die du dort gesammelt hast.',
+ buch:'Derselbe Himmel als Tagebuch. Eine Seite pro Tag, zum Blättern.'};
+function zeige(v){['himmel','bilder','buch'].forEach(function(k){document.getElementById('v-'+k).hidden=k!==v;document.getElementById('t-'+k).setAttribute('aria-selected',k===v);});
+ document.getElementById('idee').textContent=IDEE[v];if(v==='buch'){var bu=document.getElementById('buch');requestAnimationFrame(function(){bu.scrollLeft=bu.scrollWidth;});}try{localStorage.setItem('proto_himmel_v',v);}catch(e){}}
+document.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){zeige(b.dataset.v);};});
+document.getElementById('himmel').addEventListener('click',function(e){if(fokus&&!e.target.closest('.st')){fokus=null;dimmen();}});
+
+baueFilter();baueLegende();zeichneHimmel();baueBilder();baueBuch();
+var start='himmel';try{start=localStorage.getItem('proto_himmel_v')||'himmel';}catch(e){}
+if(['himmel','bilder','buch'].indexOf(location.hash.slice(1))>-1)start=location.hash.slice(1);
+zeige(start);
+</script>
