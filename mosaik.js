@@ -12,7 +12,8 @@
 
    Statischer Root-Helfer wie baum.js / nav.js — kein vercel.json-Eintrag.
    Einbindung:  <script src="woerter.js"></script> <script src="mosaik.js"></script>
-   Aufruf:      window.spikiuMosaik(containerEl, { sprache, say, buch });
+   Aufruf:      window.spikiuMosaik(containerEl, { sprache, kategorie, zurueck, say, buch });
+     kategorie = gespr | lek | lesen  (die Kacheln davor baut haus.html mit kacheln())
      sprache = Muttersprache (de|es|en|el) · say(text, lang) = Vorlesen
      untertitel:false = kein eigener Untertitel (das Haus zeigt ihn schon oben)
      buch    = Funktion, die die Schatzkiste (Mein Buch) öffnet
@@ -47,7 +48,7 @@
   };
 
   var TX = {
-    de: { titel: 'Dein Regal', kr: 'Deine Lernstationen. Tipp an, was du wiedersehen willst.',
+    de: { zurueck: '‹ zurück zum Regal', leerGespr: 'Noch kein Gespräch geübt.', leerLek: 'Noch keine Lektion.', leerLesen: 'Noch nichts gelesen.', titel: 'Dein Regal', kr: 'Deine Lernstationen. Tipp an, was du wiedersehen willst.',
       alles: 'Alles', gespr: 'Gespräche', kiste: 'Schatzkiste', lek: 'Lektionen', lesen: 'Lesen', werke: 'Werke',
       szene: 'Geführtes Gespräch', gespraech: 'Freies Gespräch', schreiben: 'Schreiben', lernroman: 'Lernroman',
       wendungen: 'Wendungen', sammlung: 'Gesammelt', lektion: 'Lektion',
@@ -57,7 +58,7 @@
       kamAus: 'Kam aus', gesammelt: 'Was du hier gesammelt hast', sitzt: 'sitzt', wartet: 'wartet aufs Wiedersehen',
       nochmal: 'Nochmal sprechen', nachlesen: 'Nochmal schreiben', weiterlesen: 'Weiterlesen', ansehen: 'Ansehen', beginnen: 'Szene beginnen',
       oeffnen: 'Lektion öffnen', anhoeren: '🔊 Anhören', ueben: '🃏 Im Wortschatz üben', alleWorte: 'Alle Wörter ansehen', kapitel: 'Kapitel', zu: 'Schließen' },
-    es: { titel: 'Tu estante', kr: 'Tus estaciones. Toca lo que quieras volver a ver.',
+    es: { zurueck: '‹ volver al estante', leerGespr: 'Aún no has practicado ninguna conversación.', leerLek: 'Aún no hay lecciones.', leerLesen: 'Aún no has leído nada.', titel: 'Tu estante', kr: 'Tus estaciones. Toca lo que quieras volver a ver.',
       alles: 'Todo', gespr: 'Conversaciones', kiste: 'Cofre', lek: 'Lecciones', lesen: 'Leer', werke: 'Obras',
       szene: 'Conversación guiada', gespraech: 'Conversación libre', schreiben: 'Escribir', lernroman: 'Novela para aprender',
       wendungen: 'Expresiones', sammlung: 'Recogidas', lektion: 'Lección',
@@ -67,7 +68,7 @@
       kamAus: 'Viene de', gesammelt: 'Lo que recogiste aquí', sitzt: 'ya está', wartet: 'espera el reencuentro',
       nochmal: 'Hablar otra vez', nachlesen: 'Escribir otra vez', weiterlesen: 'Seguir leyendo', ansehen: 'Ver', beginnen: 'Empezar escena',
       oeffnen: 'Abrir lección', anhoeren: '🔊 Escuchar', ueben: '🃏 Practicar en Vocabulario', alleWorte: 'Ver todas las palabras', kapitel: 'Capítulo', zu: 'Cerrar' },
-    en: { titel: 'Your shelf', kr: 'Your learning stops. Tap whatever you want to see again.',
+    en: { zurueck: '‹ back to the shelf', leerGespr: 'No conversation practised yet.', leerLek: 'No lessons yet.', leerLesen: 'Nothing read yet.', titel: 'Your shelf', kr: 'Your learning stops. Tap whatever you want to see again.',
       alles: 'All', gespr: 'Conversations', kiste: 'Treasure chest', lek: 'Lessons', lesen: 'Reading', werke: 'Works',
       szene: 'Guided conversation', gespraech: 'Free conversation', schreiben: 'Writing', lernroman: 'Learning Novel',
       wendungen: 'Expressions', sammlung: 'Collected', lektion: 'Lesson',
@@ -77,7 +78,7 @@
       kamAus: 'Came from', gesammelt: 'What you collected here', sitzt: 'has stuck', wartet: 'waiting to meet you again',
       nochmal: 'Speak again', nachlesen: 'Write again', weiterlesen: 'Read on', ansehen: 'View', beginnen: 'Start scene',
       oeffnen: 'Open lesson', anhoeren: '🔊 Listen', ueben: '🃏 Practise in Vocabulary', alleWorte: 'See all words', kapitel: 'Chapter', zu: 'Close' },
-    el: { titel: 'Το ράφι σου', kr: 'Οι σταθμοί σου. Πάτα ό,τι θέλεις να ξαναδείς.',
+    el: { zurueck: '‹ πίσω στο ράφι', leerGespr: 'Δεν έχεις εξασκηθεί ακόμα σε συζήτηση.', leerLek: 'Δεν υπάρχουν ακόμα μαθήματα.', leerLesen: 'Δεν έχεις διαβάσει ακόμα τίποτα.', titel: 'Το ράφι σου', kr: 'Οι σταθμοί σου. Πάτα ό,τι θέλεις να ξαναδείς.',
       alles: 'Όλα', gespr: 'Συζητήσεις', kiste: 'Θησαυρός', lek: 'Μαθήματα', lesen: 'Ανάγνωση', werke: 'Έργα',
       szene: 'Καθοδηγούμενη συζήτηση', gespraech: 'Ελεύθερη συζήτηση', schreiben: 'Γράψιμο', lernroman: 'Μυθιστόρημα',
       wendungen: 'Εκφράσεις', sammlung: 'Συλλογή', lektion: 'Μάθημα',
@@ -102,16 +103,13 @@
       '.mos h2{font:800 1.3rem/1.15 "DM Sans",sans-serif;margin:0;text-align:center}',
       '.mos .mos-kr{font:600 .9rem/1.35 "DM Sans",sans-serif;color:#5f7068;text-align:center;margin:-6px 0 0}',
       '.mos .mos-versp{font:600 .9rem/1.4 "DM Sans",sans-serif;font-style:italic;color:#15163a;text-align:center;margin:0}',
-      '.mos-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 4px 6px 2px;scrollbar-width:none;margin:0 -2px}',
-      '.mos-chips::-webkit-scrollbar{display:none}',
-      '.mos-chip{flex:0 0 auto;display:flex;align-items:center;gap:.35rem;font:800 .88rem/1 "DM Sans",sans-serif;color:#15163a;background:#fff;border:2px solid #15163a;border-radius:99px;padding:.45rem .75rem;box-shadow:2px 2px 0 #15163a;cursor:pointer}',
-      '.mos-chip[aria-pressed="true"]{background:#ffd24a}',
       '.mos-g{display:flex;align-items:center;justify-content:center;line-height:1;font-size:1.85rem}',
       '.mos-g svg{width:1.45em;height:1.27em;display:block}',
-      '.mos-chip .mos-g{font-size:1.05rem;width:1.3rem}',
       '.mos-th{background:#fff;border:2.5px solid #15163a;border-radius:20px;box-shadow:4px 5px 0 #15163a;overflow:hidden}',
       '.mos-kopf{display:flex;align-items:center;gap:12px;padding:12px 14px;width:100%;border:0;border-bottom:2.5px solid #15163a;text-align:left;font-family:inherit;color:#15163a;cursor:pointer}',
       '.mos-kopf.allein{border-bottom:0}',
+      '.mos-kopf.mos-th{border:2.5px solid #15163a}',
+      '.mos-zurueck{align-self:center;background:none;border:none;color:#5f7068;font:700 .9rem "DM Sans",sans-serif;cursor:pointer;padding:.4rem .6rem}',
       '.mos-kopf .mos-g{flex:0 0 44px;height:44px;font-size:1.9rem}',
       '.mos-kopf .tx{flex:1;min-width:0}',
       '.mos-kopf b{display:block;font:800 1.08rem/1.2 "DM Sans",sans-serif}',
@@ -162,7 +160,7 @@
       var s = szenen.filter(function (x) { return ['de', 'es', 'en', 'el'].some(function (k) { return x[k] && x[k].toLowerCase() === n; }); })[0];
       return s ? s.id : '';
     }
-    var map = {}, liste = [];
+    var map = {}, liste = [], lektionen = [];
     function station(key, art, titel, t) {
       var s = map[key];
       if (!s) { s = map[key] = { key: key, art: art, titel: titel, t: t || 0, worte: [], wk: {}, lektion: null }; liste.push(s); }
@@ -185,6 +183,7 @@
       var s = station(key, art, l.thema || (szId && szeneLabel(szId)) || l.topic || L.lektion, t);
       if (szId) s.szene = szId;
       if (!s.lektion || t >= s.lektion.t) s.lektion = { id: l.id, titel: l.topic || l.thema || L.lektion, t: t };
+      lektionen.push({ id: l.id, titel: l.topic || l.thema || L.lektion, t: t, art: art });
       var voc = (l.lesson && Array.isArray(l.lesson.vocab)) ? l.lesson.vocab : [];
       voc.forEach(function (v) { if (v) wort(s, v.word || v.z, v.translation || v.tr); });
     });
@@ -232,19 +231,20 @@
     var versp = '';
     try { var v = u.roadmap && u.roadmap.page1 && (u.roadmap.page1.versprechen || u.roadmap.page1.ziel); versp = typeof v === 'string' ? v : (v && (v.text || v.satz)) || ''; } catch (e) {}
 
-    return { ziel: ziel, stationen: liste, werke: werke, naechste: naechste, versprechen: versp };
+    lektionen.sort(function (a, b) { return b.t - a.t; });
+    return { ziel: ziel, lektionen: lektionen, stationen: liste, werke: werke, naechste: naechste, versprechen: versp };
   }
 
   function sitzt(ziel, z) { try { return !!(w.SpikiuWoerter && w.SpikiuWoerter.gesetzt(ziel, z)); } catch (e) { return false; } }
 
   // ── Rendern ─────────────────────────────────────────────────────
+  w.spikiuMosaikText = function (ml) { return TX[ml] || TX.de; };
   w.spikiuMosaik = function (el, opt) {
     opt = opt || {};
     var ml = TX[opt.sprache] ? opt.sprache : 'de';
     var L = TX[ml];
     stil();
     var D = sammle(L, ml);
-    var filt = 'alles';
     var fmt = function (t) { try { return new Date(t).toLocaleDateString(LOC[ml], { day: 'numeric', month: 'short' }); } catch (e) { return ''; } };
     var fmtLang = function (t) { try { return new Date(t).toLocaleDateString(LOC[ml], { weekday: 'long', day: 'numeric', month: 'long' }); } catch (e) { return ''; } };
     function g(art) { var r = RAUM[art]; return '<span class="mos-g" aria-hidden="true">' + (r ? r.em : '') + '</span>'; }
@@ -257,58 +257,40 @@
       if (s.art === 'wendungen') return { t: L.ansehen, go: 'wortschatz.html' };
       return null;
     }
-    function passt(s) {
-      if (filt === 'alles') return true;
-      if (filt === 'gespr') return s.art === 'szene' || s.art === 'gespraech';
-      if (filt === 'lek') return !!s.lektion;
-      if (filt === 'lesen') return s.art === 'lesen';
-      return false;
+    /* Leo, 22.10. 16:31: „die Themen als erste Karte in Form von Kacheln … der User klickt auf
+       z. B. Gespräche, dann bekommt er die Liste." Die Kacheln baut haus.html mit kacheln();
+       hier entsteht nur die Liste hinter einer Kachel. */
+    var KAT = {
+      gespr: { titel: L.gespr, art: 'szene', leer: L.leerGespr },
+      lek:   { titel: L.lek,   art: 'lektion', leer: L.leerLek },
+      lesen: { titel: L.lesen, art: 'lesen', leer: L.leerLesen }
+    };
+    function zeile(art, titel, sub, onclick) {
+      var k = d.createElement('button'); k.type = 'button'; k.className = 'mos-kopf allein mos-th'; k.style.background = RAUM[art].bg;
+      k.innerHTML = g(art) + '<span class="tx"><b>' + esc(titel) + '</b><small>' + esc(sub) + '</small></span><span class="mos-chev">›</span>';
+      k.onclick = onclick; return k;
     }
-
     function zeichne() {
+      var kat = KAT[opt.kategorie] || KAT.gespr, id = KAT[opt.kategorie] ? opt.kategorie : 'gespr';
       el.innerHTML = '';
       var m = d.createElement('div'); m.className = 'mos';
-      m.innerHTML = '<h2>' + esc(L.titel) + '</h2>' + (opt.untertitel === false ? '' : '<p class="mos-kr">' + esc(L.kr) + '</p>')
-        + (D.versprechen ? '<p class="mos-versp">„' + esc(D.versprechen) + '"</p>' : '');
-      // Filter (= die alten Regal-Kacheln)
-      var F = [['alles', L.alles, ''], ['gespr', L.gespr, 'szene'], ['kiste', L.kiste, 'sammlung'], ['lek', L.lek, 'lektion'], ['lesen', L.lesen, 'lesen'], ['werke', L.werke, 'akro']];
-      var fc = d.createElement('div'); fc.className = 'mos-chips';
-      F.forEach(function (f) {
-        var b = d.createElement('button'); b.type = 'button'; b.className = 'mos-chip'; if (f[0] !== 'kiste') b.setAttribute('aria-pressed', String(f[0] === filt));
-        b.innerHTML = (f[2] ? g(f[2]) : '') + esc(f[1]);
-        b.onclick = function () { if (f[0] === 'kiste' && typeof opt.buch === 'function') { opt.buch(); return; } filt = f[0]; zeichne(); };
-        fc.appendChild(b);
-      });
-      m.appendChild(fc);
-
-      var st = D.stationen.filter(passt);
-      if (!D.stationen.length) { var le = d.createElement('div'); le.className = 'mos-leer'; le.textContent = L.leer; m.appendChild(le); }
-      st.forEach(function (s) {
-        var c = d.createElement('article'); c.className = 'mos-th';
-        var k = d.createElement('button'); k.type = 'button'; k.className = 'mos-kopf'; k.style.background = RAUM[s.art].bg;
-        var an = artName(s); if (an === s.titel) an = '';
-        /* Leo, 22.10. 16:26: „Der Inhalt soll nicht aufgelistet werden. Nur der Titel der Aktivität
-           und die Möglichkeit sie zu öffnen." → keine Wörter, keine Lektionszeile in der Kachel. */
-        var sub = [an, s.t ? fmt(s.t) : '', s.kapitel ? L.kapitel + ' ' + s.kapitel : ''].filter(Boolean).join(' · ');
-        k.innerHTML = g(s.art) + '<span class="tx"><b>' + esc(s.titel) + '</b><small>' + esc(sub) + '</small></span><span class="mos-chev">›</span>';
-        k.classList.add('allein');
-        k.onclick = function () { oeffneStation(s); };
-        c.appendChild(k);
-        m.appendChild(c);
-      });
-
-      if ((filt === 'alles' || filt === 'werke') && D.werke.length) {
-        var lb = d.createElement('div'); lb.className = 'mos-label'; lb.textContent = L.deineWerke; m.appendChild(lb);
-        var lw = d.createElement('div'); lw.className = 'mos-leiste';
-        D.werke.forEach(function (x) {
-          var b = d.createElement('button'); b.type = 'button'; b.className = 'mos-tile'; b.style.background = RAUM[x.art].bg;
-          b.innerHTML = g(x.art) + '<b>' + esc(x.titel) + '</b>' + (x.sub ? '<small lang="' + esc(D.ziel) + '">' + esc(x.sub) + '</small>' : '');
-          b.onclick = function () { location.href = x.go; };
-          lw.appendChild(b);
+      m.innerHTML = '<h2>' + esc(kat.titel) + '</h2>';
+      var n = 0;
+      if (id === 'lek') {
+        D.lektionen.forEach(function (lk) { n++;
+          m.appendChild(zeile('lektion', lk.titel, [artName({ art: lk.art }), fmt(lk.t)].filter(Boolean).join(' · '), function () { location.href = 'lektionen.html#lektion-' + encodeURIComponent(lk.id); }));
         });
-        m.appendChild(lw);
+      } else {
+        D.stationen.forEach(function (s) {
+          var ok = id === 'gespr' ? (s.art === 'szene' || s.art === 'gespraech') : s.art === 'lesen';
+          if (!ok) return; n++;
+          var an = artName(s); if (an === s.titel) an = '';
+          var sub = [an, s.t ? fmt(s.t) : '', s.kapitel ? L.kapitel + ' ' + s.kapitel : ''].filter(Boolean).join(' · ');
+          m.appendChild(zeile(s.art, s.titel, sub, function () { oeffneStation(s); }));
+        });
       }
-      if ((filt === 'alles' || filt === 'gespr') && D.naechste.length) {
+      if (!n) { var le = d.createElement('div'); le.className = 'mos-leer'; le.textContent = kat.leer; m.appendChild(le); }
+      if (id === 'gespr' && D.naechste.length) {
         var ln = d.createElement('div'); ln.className = 'mos-label'; ln.textContent = L.naechstes; m.appendChild(ln);
         var lz = d.createElement('div'); lz.className = 'mos-leiste';
         D.naechste.forEach(function (x) {
@@ -318,6 +300,10 @@
           lz.appendChild(b);
         });
         m.appendChild(lz);
+      }
+      if (typeof opt.zurueck === 'function') {
+        var zb = d.createElement('button'); zb.type = 'button'; zb.className = 'mos-zurueck'; zb.textContent = L.zurueck; zb.onclick = opt.zurueck;
+        m.appendChild(zb);
       }
       el.appendChild(m);
     }

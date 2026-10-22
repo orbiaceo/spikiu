@@ -784,8 +784,20 @@ function roomBibliothek(){
    antippen → zurück zur Übung. Ersetzt die vier Kacheln + den Lernweg-Streifen (Baum, verworfen).
    Schatzkiste, Lektionen, Garten, Akrosticha sind jetzt Filter bzw. „Deine Werke". Code: mosaik.js. */
 function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0;
+ /* 16:31: erst die Themen als Kacheln (wie überall im Haus), Antippen → Liste (mosaik.js). */
+ var T=window.spikiuMosaikText?window.spikiuMosaikText(HL):{gespr:'Gespräche',lesen:'Lesen'};
+ kacheln({greet:{title:H().regal},layout:'four',kompakt:true,items:[
+  {em:'🎭',tt:T.gespr,bg:'#ffd24a',go:function(){regalListe('gespr');}},
+  {em:SCHATZ_SVG,tt:H().buch,bg:'#c7e89a',go:renderBook},
+  {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){regalListe('lek');}},
+  {em:'📖',tt:T.lesen,bg:'#d3eef6',go:function(){regalListe('lesen');}},
+  {em:'🌿',tt:H().garten,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
+  {em:'🔤',tt:H().akro,bg:'#cdbdf2',go:function(){location.href='spiele.html?spiel=acrostico';}}
+ ]});
+}
+function regalListe(kat){S.innerHTML='';document.getElementById('stage').scrollTop=0;
  var box=document.createElement('div');box.className='mos-wrap';S.appendChild(box);
- if(window.spikiuMosaik)window.spikiuMosaik(box,{sprache:HL,say:say,buch:renderBook,untertitel:false});
+ if(window.spikiuMosaik)window.spikiuMosaik(box,{sprache:HL,kategorie:kat,zurueck:roomRegal,say:say,buch:renderBook});
 }
 function readRoman(){
  var c=document.createElement('div');c.className='tool read';
