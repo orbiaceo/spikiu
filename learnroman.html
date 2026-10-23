@@ -250,6 +250,8 @@ var UI = {
        ende:'— Ende der Station —', endeK:'— Ende des Kapitels —', buchEnde:'— Ende des Buches —',
        szeneK:function(t){ return 'Diese Station ist die Szene »' + t + '«'; },
        szeneS:'Spiel sie selbst — im Geführten Gespräch.', szeneGo:'Szene spielen ›',
+       themaK:function(t){ return 'Dieses Thema als Szene auf der Krone: »' + t + '«'; },
+       themaS:'Dieselbe Grammatik, eine andere Geschichte — spiel sie im Geführten Gespräch.',
        naechste:'Weiter', back:'zurück', hoeren:'Vorlesen', tr:'Übersetzung',
        devnote:'Deine Etappe · zum Testen umschaltbar',
        leerH:'Dieses Buch entsteht noch.',
@@ -261,6 +263,8 @@ var UI = {
        ende:'— Fin de la estación —', endeK:'— Fin del capítulo —', buchEnde:'— Fin del libro —',
        szeneK:function(t){ return 'Esta estación es la escena «' + t + '»'; },
        szeneS:'Juégala tú — en la conversación guiada.', szeneGo:'Jugar la escena ›',
+       themaK:function(t){ return 'Este tema, como escena de la Copa: «' + t + '»'; },
+       themaS:'La misma gramática, otra historia: juégala en la conversación guiada.',
        naechste:'Seguir', back:'atrás', hoeren:'Escuchar', tr:'Traducción',
        devnote:'Tu etapa · conmutable para probar',
        leerH:'Este libro todavía se está escribiendo.',
@@ -272,6 +276,8 @@ var UI = {
        ende:'— End of the stop —', endeK:'— End of the chapter —', buchEnde:'— The end —',
        szeneK:function(t){ return 'This stop is the scene “' + t + '”'; },
        szeneS:'Play it yourself — in Guided Conversation.', szeneGo:'Play the scene ›',
+       themaK:function(t){ return 'This topic as a Crown scene: “' + t + '”'; },
+       themaS:'Same grammar, a different story — play it in Guided Conversation.',
        naechste:'Next', back:'back', hoeren:'Read aloud', tr:'Translation',
        devnote:'Your stage · switchable for testing',
        leerH:'This book is still being written.',
@@ -283,6 +289,8 @@ var UI = {
        ende:'— Τέλος του σταθμού —', endeK:'— Τέλος του κεφαλαίου —', buchEnde:'— Τέλος του βιβλίου —',
        szeneK:function(t){ return 'Αυτός ο σταθμός είναι η σκηνή «' + t + '»'; },
        szeneS:'Παίξ’ την κι εσύ — στην Καθοδηγούμενη συζήτηση.', szeneGo:'Παίξε τη σκηνή ›',
+       themaK:function(t){ return 'Αυτό το θέμα ως σκηνή της Φυλλωσιάς: «' + t + '»'; },
+       themaS:'Ίδια γραμματική, άλλη ιστορία — παίξ’ την στην Καθοδηγούμενη συζήτηση.',
        naechste:'Συνέχεια', back:'πίσω', hoeren:'Άκου', tr:'Μετάφραση',
        devnote:'Το στάδιό σου · αλλάζει για δοκιμή',
        leerH:'Αυτό το βιβλίο γράφεται ακόμα.',
@@ -588,9 +596,12 @@ function finHTML(i, th){
   var h = '<div class="fin">';
   var n = naechsterIdx(i);
   h += '<div class="ende">' + esc(n < 0 ? T.buchEnde : (IST_STATION ? T.ende : T.endeK)) + '</div>';
+  // Lukas Teil III (Krone): die Szene des Geführten Gesprächs spielt woanders
+  // (Lottes Lateinamerika) — die Station übt nur dasselbe Thema, ist nicht DIE Szene.
+  var nurThema = !!(BUCH.kroneThemaNur && BUCH.kroneThemaNur.indexOf(c.level) > -1);
   if (th){
     h += '<div class="szene"><span class="st-ic" style="background:' + th.farbe + '">' + th.emoji + '</span><div class="sz-tx">'
-       + '<div class="sz-k">' + esc(T.szeneK(th.name)) + '</div><div class="sz-s">' + esc(T.szeneS) + '</div>'
+       + '<div class="sz-k">' + esc(nurThema ? T.themaK(th.name) : T.szeneK(th.name)) + '</div><div class="sz-s">' + esc(nurThema ? T.themaS : T.szeneS) + '</div>'
        + '<a class="knopf" href="gefuehrt.html?thema=' + encodeURIComponent(th.id) + (c.level === 'anwendung' ? '&amp;stufe=b1' : '') + '&amp;von=learnroman">' + esc(T.szeneGo) + '</a>'
        + '</div></div>';
   }

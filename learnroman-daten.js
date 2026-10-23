@@ -112,6 +112,8 @@
                     el: 'Ένα χαρτί, μια πόλη, εννιά μήνες. Κάθε σταθμός είναι μια σκηνή από την Καθοδηγούμενη συζήτηση.' },
       einheit: 'station',
       teile: { fundament: 'Vecino de Madrid', aufbau: 'La visita', anwendung: 'Hasta luego' },
+      // Teil III übt die Krone-Themen, die Krone-SZENE selbst spielt bei Lotte.
+      kroneThemaNur: ['anwendung'],
       kapitel: LUKAS },
     { buch: 'marta-in-muenchen', zielsprache: 'de', muttersprachen: ['es', 'en'],
       titel: 'Marta in München',
@@ -181,6 +183,7 @@
       buch: b.buch, zielsprache: b.zielsprache, muttersprache: mutter,
       titel: b.titel, untertitel: lokal(b.untertitel, mutter) || '',
       einheit: b.einheit || 'kapitel', teile: b.teile || {},
+      kroneThemaNur: b.kroneThemaNur || null,
       etappen: etappenFuer(mutter),
       kapitel: b.kapitel.map(function (c) {
         var el = (mutter === 'el') ? w[EL_QUELLE[b.buch]] : null;
