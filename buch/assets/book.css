@@ -311,3 +311,4 @@ table.tb td b{color:var(--red)}
 .ed-print .trackline,.ed-digital .trackline{height:0;margin:0;position:relative;z-index:3}
 .ed-print .trackline .track,.ed-digital .trackline .track{position:absolute;right:0;top:-.3mm;transform:translateY(-100%);background:var(--paper)}
 .ed-print .trackline .track{background:#fff}
+table.tb td:first-child:not(.esc),table.tb th:first-child{white-space:nowrap}
