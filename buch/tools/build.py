@@ -58,17 +58,27 @@ class Ctx:
     def __init__(self, edition, book):
         self.edition = edition   # print | digital | online
         self.book = book         # G | C
-        self.tracks = {}         # id -> list of es strings (für Audio-Manifest)
+        self.tracks = {}         # id -> Liste {t, p} (Audio-Manifest, sprechbar + Pausen)
+        self.say = {}            # Knopf-Schlüssel -> Liste {t, p} (online: jeder Knopf spielt NUR seinen Block)
+        self.lastbtn = {}        # Track-ID -> zuletzt gesetzter Knopf
+        self.pending = {}        # Inhalt, der vor seinem Knopf kam
+        self.btn_n = 0
+        self.shown = set()       # Track-IDs, die schon einen sichtbaren Knopf haben
 
 def esc(s):
     return html.escape(s, quote=False)
 
 def track_html(tid, ctx):
+    ctx.shown.add(tid)
     lab = f'▶ {tid}'
     if ctx.edition == 'print':
         return f'<span class="track">{lab}</span>'
     if ctx.edition == 'online':
-        return f'<button class="track" data-track="{tid}">{lab}</button>'
+        ctx.btn_n += 1
+        key = f'{tid}#{ctx.btn_n}'
+        ctx.lastbtn[tid] = key
+        ctx.say[key] = ctx.pending.pop(tid, [])
+        return f'<button class="track" data-key="{key}" data-track="{tid}">{lab}</button>'
     return f'<a class="track" href="{AUDIO_BASE}{tid}.mp3">{lab}</a>'
 
 def xref_html(book, sid, ctx, label=None):
@@ -111,17 +121,68 @@ SPIKIU_SVG = '''<svg viewBox="0 0 80 80" class="{cls}"><ellipse cx="40" cy="50" 
 def spikiu(cls=''):
     return SPIKIU_SVG.format(cls=cls)
 
-def add_track(ctx, tid, texts):
+# ── Hörbausteine: was die Stimme wirklich sagt ─────────────────────────────
+# Leo, 23.10., 13:48: „empieza a leer caóticamente y rápidamente muchas palabras … suena como si estuviera
+# tartamudeando“. Ursache: Wortlisten gingen als EIN Brocken an Piper („casa, mamá, Ana, leche, …“),
+# Notationen („ce · ci“, „bue-no“, «…») wurden mitgelesen, und Knöpfe mit derselben Track-ID spielten
+# fremde Blöcke mit. Jetzt: jedes Wort / jeder Satz einzeln, mit Satzzeichen am Ende und echter Pause.
+PAUSE = {'wort': 900, 'satz': 700, 'hoer': 2500}
+_KURZ_UNBENUTZT = {'sí', 'si', 'no', 'tú', 'tu', 'yo', 'ya', 'mi', 'el', 'él', 'la', 'lo', 'le', 'te', 'me', 'se', 'sé', 'de', 'en',
+            'un', 'y', 'o', 'a', 'e', 'u', 'al', 'es', 'ha', 'he', 'va', 've', 'da', 'di', 'dé', 'ti', 'su', 'mí', 'ni', 'ay', 'oh', 'eh'}
+
+def _sauber(t):
+    t = strip_tags(t)
+    t = re.sub(r'\([^)]*\)', ' ', t)                       # Klammern = Erklärung, nicht sprechen
+    t = re.sub(r'[«»„“”"]', '', t)
+    t = re.sub(r"(\w)-(\w)", r"\1\2", t)                  # Silbentrennung bue-no → bueno
+    t = re.sub(r'\s*[·|/→=]\s*', ' | ', t)                  # Notation trennt Bausteine
+    t = re.sub(r'^\s*(…|\.\.\.)\s*', '', t)
+    return re.sub(r'\s+', ' ', t).strip()
+
+def bausteine(text, art=None):
+    """Text → Liste {t, p}. art: 'hoer' (Hörübung: lange Pause), sonst automatisch Wort oder Satz."""
+    out = []
+    for teil in _sauber(text).split(' | '):
+        teil = teil.strip(' ,;:–-')
+        if not teil:
+            continue
+        if re.search(r'[.!?…]', teil):
+            for satz in re.findall(r'[^.!?…]+[.!?…]+|[^.!?…]+$', teil):
+                satz = satz.strip(' ,;:–-')
+                if len(re.sub(r'[^\wáéíóúñü]', '', satz)) >= 2:
+                    out.append({'t': satz.replace('…', '.'), 'p': PAUSE[art or 'satz']})
+        elif teil.count(',') >= 1 and len(teil.split()) <= 3 * (teil.count(',') + 1):
+            for w in teil.split(','):
+                w = w.strip()
+                if w:
+                    out.append({'t': w + '.', 'p': PAUSE[art or 'wort']})
+        else:
+            out.append({'t': teil + '.', 'p': PAUSE[art or ('wort' if len(teil.split()) <= 3 else 'satz')]})
+    return out
+
+def add_track(ctx, tid, texts, art=None):
     if not tid:
         return
-    lst = ctx.tracks.setdefault(tid, [])
+    items = []
     for t in texts:
-        t = strip_tags(t).strip()
-        if t:
-            lst.append(t)
+        items += bausteine(t, art)
+    ctx.tracks.setdefault(tid, []).extend(items)
+    if ctx.edition == 'online':
+        key = ctx.lastbtn.get(tid)
+        if key:
+            ctx.say[key].extend(items)
+        else:
+            ctx.pending.setdefault(tid, []).extend(items)
 
 # ───────────────────────── Gramática-Blöcke ─────────────────────────
 def B(b, ctx):
+    """Block → HTML. Hat ein hörbarer Block einen Track, aber noch keinen sichtbaren Knopf, bekommt er einen eigenen."""
+    vor = ''
+    if b['type'] in ('table', 'examples', 'conj') and b.get('track') and b['track'] not in ctx.shown:
+        vor = f'<div class="trackline">{track_html(b["track"], ctx)}</div>'
+    return vor + _B(b, ctx)
+
+def _B(b, ctx):
     t = b['type']
     if t == 'h':
         tr = track_html(b['track'], ctx) if b.get('track') else ''
@@ -139,7 +200,7 @@ def B(b, ctx):
             sub = M(c.get('sub', ''), ctx)
             if c.get('track'):
                 sub += track_html(c['track'], ctx)
-                add_track(ctx, c['track'], [re.findall(r'<es>(.*?)</es>', u.get('x', '')) and ' '.join(re.findall(r'<es>(.*?)</es>', u.get('x', ''))) or '' for u in c.get('uses', [])])
+                add_track(ctx, c['track'], [f for u in c.get('uses', []) for f in re.findall(r'<es>(.*?)</es>', u.get('x', ''))])
             uses = ''.join(f'<div class="use"><div class="t">{M(u.get("t",""), ctx)}</div><div class="x">{M(u.get("x",""), ctx)}</div></div>' for u in c.get('uses', []))
             out.append(f'<div class="col t{c.get("tone",0)}"><div class="col-h">{ic}<div><strong>{M(c["title"], ctx)}</strong><small>{sub}</small></div></div>{uses}</div>')
         return f'<div class="cols n{len(out)}">{"".join(out)}</div>'
@@ -168,8 +229,8 @@ def B(b, ctx):
         cells = ''.join(f'<div class="t{q.get("tone",0)}"><div class="q">{M(q["q"], ctx)}</div><small>{M(q.get("small",""), ctx)}</small>{"<div class=tag>"+M(q["tag"],ctx)+"</div>" if q.get("tag") else ""}</div>' for q in b['items'])
         return f'<div class="question n{len(b["items"])}">{cells}</div>'
     if t == 'story':
-        add_track(ctx, b.get('track'), [b['es']])
         tr = track_html(b['track'], ctx) if b.get('track') else ''
+        add_track(ctx, b.get('track'), [b['es']])
         title = f'<h2>{M(b["title"], ctx)}{tr}</h2>' if b.get('title') else ''
         note = f'<p class="story-note">{M(b["note"], ctx)}</p>' if b.get('note') else ''
         return f'{title}<div class="story"><div class="es-t">{M(b["es"], ctx)}</div><div class="de">{M(b.get("de",""), ctx)}</div></div>{note}'
@@ -192,7 +253,7 @@ def B(b, ctx):
         pron = b.get('pron', ['yo', 'tú', 'él, ella, usted', 'nosotros, -as', 'vosotros, -as', 'ellos, ellas, ustedes'])
         vs = b['verbs']
         if b.get('track'):
-            add_track(ctx, b['track'], [', '.join(strip_tags(f) for f in v['forms']) for v in vs])
+            add_track(ctx, b['track'], [strip_tags(f) for v in vs for f in v['forms']])
         head = '<th></th>' + ''.join(f'<th>{M(v["inf"], ctx)}<small>{M(v.get("de",""), ctx)}</small></th>' for v in vs)
         rows = ''
         for i, p in enumerate(pron):
@@ -253,7 +314,7 @@ def E(n, e, ctx):
     sol = ''
     body = ''
     if t == 'hear':
-        add_track(ctx, e.get('track'), [p['opts'][p['said']] for p in e['pairs']])
+        add_track(ctx, e.get('track'), [p['opts'][p['said']] for p in e['pairs']], art='hoer')
         cells = ''
         sols = []
         for i, p in enumerate(e['pairs']):
@@ -714,6 +775,7 @@ def main():
                 manifest.setdefault(k, v)
     if not (a.check or a.png):
         write_prompts(chapters)
+        write_sprechskript(chapters, manifest)
         json.dump(dict(sorted(manifest.items(), key=lambda kv: [int(x) if x.isdigit() else x for x in re.split(r'[.-]', kv[0])])), open(os.path.join(ROOT, 'out', 'audio-manifest.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
 STYLE = ('STYLE: hand-drawn editorial cartoon for a modern language textbook. Confident dark navy ink outlines (#15163A) with slightly varied line weight, '
@@ -721,6 +783,32 @@ STYLE = ('STYLE: hand-drawn editorial cartoon for a modern language textbook. Co
          'terracotta (#C0533A), sage green (#5F7068), soft mint (#E4EFE9); natural, varied skin tones. Expressive faces and exaggerated body language, like a great newspaper cartoon. '
          'One clear joke, clean composition, generous empty space in the upper part of the image for speech bubbles that will be added later. Absolutely no text, no letters, '
          'no numbers, no speech bubbles, no logos, no watermark, no capybara or any mascot animal. Landscape 3:2, 1536x1024.')
+
+def write_sprechskript(chapters, tracks):
+    """Aufnahmeskript für das Lautkapitel (Leo spricht es selbst ein): pro Track eine Datei."""
+    out = ['# Sprechskript Kapitel 1 – Laute und Buchstaben', '',
+           'Pro Track EINE Aufnahme, Dateiname = Track-ID (z. B. `1.3-1.mp3`), abgelegt in `buch/audio/`. '
+           'Sobald eine Datei da ist, spielt der ▶-Knopf online deine Aufnahme statt der künstlichen Stimme; '
+           'dieselben Dateien dienen auch dem Download für Druck und PDF.', '',
+           'Sprechweise: ruhig, deutlich, natürliches Tempo. Zwischen einzelnen Wörtern ca. 1 Sekunde Pause, '
+           'zwischen Sätzen ca. ½ Sekunde. Bei Hörübungen (Minimalpaare) 2–3 Sekunden Pause, damit man ankreuzen kann.', '']
+    for ch in chapters:
+        if ch['chapter'] != 1:
+            continue
+        for sec in ch['sections']:
+            ids = sorted({t for t in tracks if t.startswith(sec['id'] + '-')}, key=lambda x: int(x.split('-')[1]))
+            if not ids:
+                continue
+            out.append(f'## {sec["id"]} {sec["topic"]}')
+            out.append('')
+            for tid in ids:
+                out.append(f'**{tid}**')
+                out.append('')
+                for i, b in enumerate(tracks[tid], 1):
+                    pause = {900: '1 s', 700: '½ s', 2500: '3 s'}.get(b['p'], '')
+                    out.append(f'{i}. {b["t"]}' + (f'  _(Pause {pause})_' if pause else ''))
+                out.append('')
+    open(os.path.join(ROOT, 'out', 'Sprechskript-Kapitel-1.md'), 'w', encoding='utf-8').write('\n'.join(out))
 
 def write_prompts(chapters):
     out = ['# Bildprompts – Gramática A', '',

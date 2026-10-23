@@ -305,3 +305,9 @@ ol.trans .w{border-bottom:1px solid var(--line);height:5.8mm;margin-bottom:1mm}
 table.tb td b{color:var(--red)}
 
 .tbwrap{max-width:100%}
+.trackline{margin:.4mm 0 .6mm;text-align:right}
+.trackline .track{margin-left:0}
+/* PDF: der Knopf ohne eigene Zeile – sitzt rechts im Abstand über dem Block (kostet keine Höhe) */
+.ed-print .trackline,.ed-digital .trackline{height:0;margin:0;position:relative;z-index:3}
+.ed-print .trackline .track,.ed-digital .trackline .track{position:absolute;right:0;top:-.3mm;transform:translateY(-100%);background:var(--paper)}
+.ed-print .trackline .track{background:#fff}

@@ -66,17 +66,25 @@ ol.tf li{grid-template-columns:1fr}
 '''
 
 JS = '''
-var cur=null, lauf=0;
-/* Audio: die App-Stimme (audio.js, Piper davefx; iOS → Gerätestimme). Satz für Satz, erneut tippen = Stopp. */
-function aus(){ if(cur) cur.classList.remove('playing'); cur=null; lauf++; try{ window.spikiuStopp && window.spikiuStopp(); }catch(e){} }
+var cur=null, lauf=0, mp3=null;
+/* Audio (Leo, 23.10., 13:48): jeder Knopf spielt NUR seinen Block, Baustein für Baustein, mit echter Pause.
+   Gibt es eine eigene Aufnahme (buch/audio/<track>.mp3, z. B. Leos Lautkapitel), spielt sie statt der Stimme. */
+function aus(){ if(cur) cur.classList.remove('playing'); cur=null; lauf++; if(mp3){ try{mp3.pause();}catch(e){} mp3=null; } try{ window.spikiuStopp && window.spikiuStopp(); }catch(e){} }
+function warte(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
 async function spiele(b){
-  var saetze=(window.TRACKS||{})[b.dataset.track]||[];
-  if(!saetze.length || !window.spikiuSprich) return;
   aus(); cur=b; b.classList.add('playing'); var meins=++lauf;
-  for(var i=0;i<saetze.length;i++){
+  var tid=b.dataset.track;
+  if((window.AUFNAHMEN||[]).indexOf(tid)>-1){
+    mp3=new Audio('audio/'+tid+'.mp3'); mp3.onended=function(){ if(meins===lauf) aus(); };
+    mp3.play().catch(function(){ if(meins===lauf) aus(); }); return;
+  }
+  var bs=(window.SAY||{})[b.dataset.key]||[];
+  if(!bs.length || !window.spikiuSprich){ aus(); return; }
+  for(var i=0;i<bs.length;i++){
     if(meins!==lauf) return;
-    try{ await window.spikiuSprich(saetze[i], 'es'); }catch(e){}
-    await new Promise(function(r){ setTimeout(r, 350); });
+    try{ await window.spikiuSprich(bs[i].t, 'es'); }catch(e){}
+    if(meins!==lauf) return;
+    if(i<bs.length-1) await warte(bs[i].p||700);
   }
   if(meins===lauf) aus();
 }
@@ -112,6 +120,11 @@ JS_SITZUNG = '''
   document.querySelectorAll('.sec').forEach(function(s){o2.observe(s);});
 })();
 '''
+
+def aufnahmen():
+    import os, glob
+    from build import ROOT
+    return sorted(os.path.basename(f)[:-4] for f in glob.glob(os.path.join(ROOT, 'audio', '*.mp3')))
 
 def build_online(book, chapters, tests, ctx):
     name = 'Gramática A' if book == 'G' else 'Cuaderno A'
@@ -165,6 +178,6 @@ def build_online(book, chapters, tests, ctx):
             f'<link rel="stylesheet" href="assets/book.css"><style>{CSS}</style></head><body class="book-{book.lower()}">'
             f'<div class="top"><button id="menu">☰</button><a class="back" href="../haus.html" id="zurBib">‹ Bibliothek</a><b>{name}</b><a class="other" href="{other}">{other_name} →</a></div>'
             f'<div class="wrap"><nav class="toc">{nav}</nav><main>{body}</main></div>'
-            f'<script>window.TRACKS={json.dumps(ctx.tracks, ensure_ascii=False)};</script>'
+            f'<script>window.SAY={json.dumps(ctx.say, ensure_ascii=False)};window.AUFNAHMEN={json.dumps(aufnahmen())};</script>'
             f'<script type="module">import {{ speak, stop, warm }} from "/audio.js"; window.spikiuSprich = speak; window.spikiuStopp = stop; try{{ warm("es"); }}catch(e){{}}</script>'
             f'<script src="../sitzung.js"></script><script>var AUDIO="{AUDIO_BASE}";var RAUM="{"gramatica-a" if book=="G" else "cuaderno-a"}";{JS}{JS_SITZUNG}</script></body></html>')
