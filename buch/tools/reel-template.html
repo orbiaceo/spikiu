@@ -40,6 +40,25 @@ button{font:inherit;color:inherit}
 .cardx .use .x,.cardx .use .t{font-size:16px}
 .cardx table.tb,.cardx table.conj,.cardx table.signal,.cardx .examples{font-size:15px;margin:0}
 .cardx .tbwrap{overflow-x:auto}
+/* Tabellen auf dem Handy: jede Zeile ein Kasten, Zellen untereinander mit kleiner Spaltenüberschrift */
+@media (max-width:620px){
+ .cardx table.tb.stapel,.cardx table.tb.stapel tbody,.cardx table.tb.stapel tr,.cardx table.tb.stapel td{display:block;width:100%}
+ .cardx table.tb.stapel tr:first-child:has(th){display:none}
+ .cardx table.tb.stapel tr{padding:8px 0;border-bottom:1px solid var(--line)}
+ .cardx table.tb.stapel tr.hl{background:var(--sun-l);border-radius:10px;padding:8px 10px}
+ .cardx table.tb.stapel td{border:none;padding:1px 0}
+ .cardx table.tb.stapel td.esc{font-size:18px}
+ .cardx table.tb.stapel td:not(.esc)[data-label]:not([data-label=""])::before{content:attr(data-label);display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);margin-top:3px}
+ .cardx table.tb.stapel td:first-child{white-space:normal}
+}
+/* Kurze Raster (z. B. Alphabet): Zellen fließen nebeneinander und brechen nur zwischen den Zellen um */
+.cardx table.tb.raster,.cardx table.tb.raster tbody{display:block}
+.cardx table.tb.raster tr{display:contents}
+.cardx table.tb.raster td{display:inline-block;white-space:nowrap;border:none;padding:5px 14px 5px 0;min-width:4.4em}
+/* Beispiele auf dem Handy untereinander: Spanisch, darunter Deutsch (vorher zwei Spalten → schmale Wortsäule) */
+.cardx .examples{display:flex;flex-direction:column;gap:0}
+.cardx .examples > .de{margin:0 0 10px;font-size:14.5px}
+.cardx .examples > .es{font-size:17.5px}
 .cardx .story{margin:0}.cardx .story .es-t{font-size:18px}
 .cardx .question{margin:0}.cardx .question .q{font-size:20px}
 .cardx p{margin:0}

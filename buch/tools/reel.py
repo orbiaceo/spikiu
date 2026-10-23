@@ -14,12 +14,32 @@ def _ctx():
 def _html_ohne_knopf(h):
     return re.sub(r'<span class="track">[^<]*</span>', '', h)
 
+def _stapel_tabelle(h):
+    """Tabellen fürs Handy: jede Zeile wird ein eigener Kasten, jede Zelle trägt ihre Spaltenüberschrift (data-label)."""
+    def tab(m):
+        t = m.group(0)
+        kopf = re.search(r'<tr>((?:<th>.*?</th>)+)</tr>', t)
+        labels = [strip_tags(x) for x in re.findall(r'<th>(.*?)</th>', kopf.group(1))] if kopf else []
+        def zeile(r):
+            n = [-1]
+            def zelle(c):
+                n[0] += 1
+                lab = labels[n[0]] if n[0] < len(labels) else ''
+                return f'<td data-label="{build.esc(lab)}"' + c.group(1)
+            return re.sub(r'<td(\s|>)', zelle, r.group(0))
+        zellen = [strip_tags(x) for x in re.findall(r'<td[^>]*>(.*?)</td>', t, flags=re.S)]
+        if not kopf and max((len(z) for z in zellen), default=0) <= 12:
+            return t.replace('<table class="tb">', '<table class="tb raster">', 1)   # kurze Raster (Alphabet): fließen als Kästchen
+        t = re.sub(r'<tr class="[^"]*">.*?</tr>', zeile, t, flags=re.S)
+        return t.replace('<table class="tb">', '<table class="tb stapel">', 1)
+    return re.sub(r'<table class="tb">.*?</table>', tab, h, flags=re.S)
+
 def _block(b):
     """→ (html, say) für einen Gramática-Block; say = Hörbausteine nur dieses Blocks."""
     ctx = _ctx()
     h = build._B(b, ctx)
     say = [x for v in ctx.tracks.values() for x in v]
-    return _html_ohne_knopf(h), say
+    return _stapel_tabelle(_html_ohne_knopf(h)), say
 
 def _say_text(*texts):
     out = []

@@ -346,3 +346,5 @@ h1.satz{font-size:18.5pt}
 .ed-print .trackline .track,.ed-digital .trackline .track{position:static;transform:none}
 .chap,.top b,nav.toc .ch,.go-link .go{font-weight:700}
 .ed-online h1.satz br{display:none}
+
+@media (max-width:560px){.ed-online .examples{display:flex;flex-direction:column}.ed-online .examples > .de{margin-bottom:8px}}
