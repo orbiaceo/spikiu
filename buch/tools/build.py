@@ -490,7 +490,7 @@ def C_pages(ch, sec, ctx, solutions):
     return out
 
 def solutions_flow(solutions, tests_sol, ctx):
-    blocks = [(f'<h1 class="satz" style="font-family:Archivo Black,sans-serif;font-style:normal;font-size:18pt;color:var(--accent)">Lösungen</h1>', 'full')]
+    blocks = [(f'<h1 class="satz" style="font-family:var(--f-head);font-weight:700;font-style:normal;font-size:18pt;color:var(--accent)">Lösungen</h1>', 'full')]
     for sec, sols in solutions:
         h_ = f'<div class="secnr"><b>{sec["id"]}</b>{esc(sec["topic"])}</div>'
         first = True
@@ -532,7 +532,7 @@ def front_pages(book, ctx, chapters):
     return out
 
 def toc_flow(book, chapters, tests):
-    blocks = [('<h1 style="font-family:Archivo Black,sans-serif;font-weight:400;font-size:20pt;margin:0 0 2mm">Inhalt</h1>', '')]
+    blocks = [('<h1 style="font-family:var(--f-head);font-weight:700;font-size:20pt;margin:0 0 2mm">Inhalt</h1>', '')]
     for ch in chapters:
         entries = f'<div class="toc-ch"><span>{ch["chapter"]}</span>{esc(ch["title"])}</div>'
         blocks.append(entries)
@@ -553,7 +553,7 @@ def verb_flow(ctx):
     if not os.path.exists(path):
         return []
     V = json.load(open(path, encoding='utf-8'))
-    blocks = [('<h1 style="font-family:Archivo Black,sans-serif;font-weight:400;font-size:20pt;margin:0 0 1mm">Verbtabellen</h1><p style="font-size:8.4pt;color:var(--sage)">Bei <span class="es">hablar, comer, vivir</span> sind die Endungen rot: Sie sind das Muster für alle regelmäßigen Verben. Bei allen anderen Verben ist rot, was vom Muster abweicht. Imperativ: <span class="es">tú / usted</span>.</p>', 'full')]
+    blocks = [('<h1 style="font-family:var(--f-head);font-weight:700;font-size:20pt;margin:0 0 1mm">Verbtabellen</h1><p style="font-size:8.4pt;color:var(--sage)">Bei <span class="es">hablar, comer, vivir</span> sind die Endungen rot: Sie sind das Muster für alle regelmäßigen Verben. Bei allen anderen Verben ist rot, was vom Muster abweicht. Imperativ: <span class="es">tú / usted</span>.</p>', 'full')]
     tenses = V['tenses']
     pron = ['yo', 'tú', 'él/ella/Ud.', 'nosotros', 'vosotros', 'ellos/Uds.']
     for v in V['verbs']:
@@ -571,7 +571,7 @@ def register_flow(chapters):
         for sec in ch['sections']:
             for term in sec.get('index', []):
                 idx.setdefault(term, []).append(sec['id'])
-    blocks = [('<h1 style="font-family:Archivo Black,sans-serif;font-weight:400;font-size:20pt;margin:0 0 1mm">Register</h1><p style="font-size:8.4pt;color:var(--sage)">Die Zahl ist der Abschnitt. Du findest ihn mit derselben Nummer in der Gramática und im Cuaderno.</p>', 'full')]
+    blocks = [('<h1 style="font-family:var(--f-head);font-weight:700;font-size:20pt;margin:0 0 1mm">Register</h1><p style="font-size:8.4pt;color:var(--sage)">Die Zahl ist der Abschnitt. Du findest ihn mit derselben Nummer in der Gramática und im Cuaderno.</p>', 'full')]
     letter = None
     import unicodedata
     def key(s):

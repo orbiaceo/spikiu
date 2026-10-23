@@ -66,7 +66,7 @@ def howto_page(book, ctx):
 <h2>Die Zeichen</h2>
 <div class="legend">
 <div class="sym"><span class="track">▶ 11.5-1</span></div><div>Hier gibt es etwas zu hören. Alle Aufnahmen: spikiu.com/buch</div>
-<div class="sym"><b style="font-family:Archivo Black">→ Üben</b></div><div>Am Ende jedes Abschnitts: Wo du im Cuaderno weiterübst.</div>
+<div class="sym"><b style="font-family:var(--f-head);font-weight:700">→ Üben</b></div><div>Am Ende jedes Abschnitts: Wo du im Cuaderno weiterübst.</div>
 <div class="sym"><span class="box ojo"><span class="tag" style="margin:0">Ojo</span></span></div><div>Achtung, hier stolpern fast alle Deutschsprachigen.</div>
 <div class="sym"><span class="box region"><span class="tag" style="margin:0">Así se dice en …</span></span></div><div>So sagt man es in Lateinamerika oder in anderen Regionen Spaniens.</div>
 <div class="sym"><span class="box novela"><span class="tag" style="margin:0">En la novela</span></span></div><div>Ein Satz aus den Spikiu-Lernromanen, an dem man die Regel in freier Wildbahn sieht.</div>
@@ -81,9 +81,9 @@ def howto_page(book, ctx):
 <h2>Die Zeichen</h2>
 <div class="legend">
 <div class="sym"><span class="track">▶ 11.5-3</span></div><div>Hörübung. Alle Aufnahmen: spikiu.com/buch</div>
-<div class="sym"><b style="font-family:DM Mono;font-size:8pt">← Erklärung</b></div><div>Hier steht die Regel in der Gramática A.</div>
+<div class="sym"><b style="font-family:var(--f-mono);font-size:8pt">← Erklärung</b></div><div>Hier steht die Regel in der Gramática A.</div>
 <div class="sym"><span class="ex-n" style="top:0">1</span></div><div>Nummer der Übung. Die Lösungen stehen hinten im Heft, mit kurzer Begründung, wo es knifflig ist.</div>
-<div class="sym"><b style="font-family:Archivo Black">Test</b></div><div>Nach jedem großen Block ein Test. Die Tabelle darunter zeigt, welcher Abschnitt zu welcher Aufgabe gehört.</div>
+<div class="sym"><b style="font-family:var(--f-head);font-weight:700">Test</b></div><div>Nach jedem großen Block ein Test. Die Tabelle darunter zeigt, welcher Abschnitt zu welcher Aufgabe gehört.</div>
 </div>
 <h2>Ein Tipp</h2>
 <p>Schreib die Lösungen nicht ins Heft, wenn du eine Übung später wiederholen willst – nimm ein Blatt daneben. Und sprich die Sätze laut. Spanisch, das nur im Kopf stattfindet, bleibt dort.</p></div>'''
@@ -105,8 +105,8 @@ def ensemble_page(ctx):
     return page(body, 'Gramática A', '', 'Gramática A')
 
 def back_promo(book, ctx):
-    body = f'''<div class="kicker" style="font-family:DM Mono;font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:var(--red)">Wie geht es weiter?</div>
-<h1 style="font-family:Archivo Black;font-weight:400;font-size:24pt;line-height:1.05;margin:2mm 0 4mm">Von A nach B –<br><span style="color:var(--sun)">und ins Gespräch.</span></h1>
+    body = f'''<div class="kicker" style="font-family:var(--f-mono);font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:var(--red)">Wie geht es weiter?</div>
+<h1 style="font-family:var(--f-head);font-weight:700;font-size:24pt;line-height:1.05;margin:2mm 0 4mm">Von A nach B –<br><span style="color:var(--sun)">und ins Gespräch.</span></h1>
 <p style="font-size:9.8pt;max-width:120mm">Wenn du hier angekommen bist, kannst du über deinen Alltag sprechen, von gestern erzählen und Pläne machen. Die <b>Gramática B</b> und das <b>Cuaderno B</b> führen dich weiter: zum Subjuntivo, zu Bedingungen, zur indirekten Rede – bis zum Feinschliff auf C-Niveau.</p>
 <div class="offer" style="margin-top:8mm">{spikiu("capy")}<div class="k">Für dich mit diesem Buch</div><h2>4 Wochen Spikiu<br><span>gratis.</span></h2>
 <p>Den Code findest du vorne im Buch. Einlösen auf spikiu.com/gratis.</p></div>'''
