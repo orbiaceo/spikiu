@@ -782,10 +782,11 @@ function roomBibliothek(){
  /* Gramática + Cuaderno (Leo, 23.10.2026, 13:17: „Ja, ins Repo"). Die Bücher erklären auf Deutsch
     für Spanisch-Lernende → nur bei Ziel es + Muttersprache de. Online-Fassung: buch/*.html. */
  if(bkZiel()==='es'&&bkMutter()==='de'){
-  bibItems.push({em:'📘',tt:'Gramática',bg:'#cdbdf2',go:function(){location.href='buch/Gramatica-A.html';}});
-  bibItems.push({em:'✏️',tt:'Cuaderno',bg:'#c7e89a',go:function(){location.href='buch/Cuaderno-A.html';}});
+  /* 24.10. (Leo, 00:27 „Ins Repo damit!“): Gramática als Kartenstapel – Theorie wischen, dann üben (Cuaderno integriert).
+     Die Buchansicht bleibt über das Menü der Karten („Als Buch lesen“) erreichbar. */
+  bibItems.push({em:'📘',tt:'Gramática',bg:'#cdbdf2',go:function(){location.href='buch/Gramatica-Karten.html';}});
  }
- kacheln({layout:bibItems.length>2?'four':'two',items:bibItems});}
+ kacheln({layout:bibItems.length>2?'tri':'two',items:bibItems});}
 /* Dein Regal = Mosaik (Leo, 22.10.2026, 14:27: „Aprobado! Dale!" — Prototyp prototyp-mosaik.html).
    Alle Lernstationen auf einen Blick: eine Kachel pro Station mit ihren Wörtern und der Lektion,
    antippen → zurück zur Übung. Ersetzt die vier Kacheln + den Lernweg-Streifen (Baum, verworfen).

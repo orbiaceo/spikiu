@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="de" class="ed-online ed-reel">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gramática · Spikiu</title>
+<link rel="stylesheet" href="assets/book.css">
+<style>
+/* Gramática als Kartenstapel (Leo, 24.10.2026). Eine Karte = ein Gedanke, Daumen wischt nach oben.
+   Theorie → „Üben?“ → Übungen mit sofortiger Rückmeldung → nächster Abschnitt. Erzeugt von tools/reel.py. */
+@font-face{font-family:'Lexend';font-weight:100 900;font-display:swap;src:url(/fonts/lexend-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Lexend';font-weight:100 900;font-display:swap;src:url(/fonts/lexend-latin-ext-wght-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Literata';font-weight:200 900;font-display:swap;src:url(/fonts/literata-latin-opsz-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Literata';font-weight:200 900;font-display:swap;src:url(/fonts/literata-latin-ext-opsz-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:italic;font-weight:200 900;font-display:swap;src:url(/fonts/literata-latin-opsz-italic.woff2) format('woff2')}
+:root{--card:#fff;--ok:#2f7d5b;--ok-bg:#dcefe5;--bad:#b64a33;--bad-bg:#f8dcd3;--bar-h:52px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;background:var(--paper)!important;color:var(--ink)}
+body{font-family:var(--f-body);font-weight:300;font-size:17px;line-height:1.5;overflow:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--ink)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:var(--bar-h);z-index:20;background:var(--ink);color:#fff;display:flex;align-items:center;gap:10px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.bar .ib{background:none;border:1px solid #474a78;border-radius:10px;min-width:38px;height:36px;cursor:pointer;color:#fff;font-size:15px;padding:0 9px;text-decoration:none;display:inline-flex;align-items:center}
+.bar .where{display:flex;flex-direction:column;line-height:1.15;min-width:0;flex:1}
+.bar .where b{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .where small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#aab6af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .mode{font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:5px 10px;background:#2a2c5c;color:#ffd59a;white-space:nowrap}
+.bar .mode.ueben{background:var(--sun);color:var(--ink)}
+.reel{position:fixed;top:calc(env(safe-area-inset-top,0px) + var(--bar-h));bottom:0;left:0;right:0;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.reel::-webkit-scrollbar{display:none}
+.slide{height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;padding-block:14px calc(14px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(30px,calc(env(safe-area-inset-right,0px) + 30px))}
+.cardx{width:100%;max-width:540px;max-height:100%;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(21,22,58,.07)}
+.cardx.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cardx.dark .es{color:#ffd59a}.cardx.dark .c1{color:#a9dcc6;border-color:#a9dcc6}.cardx.dark .c2{color:#ffb38f;border-color:#ffb38f}.cardx.dark .de{color:#c9d1cc}
+.cardx.t1{background:var(--t1-bg)}.cardx.t2{background:var(--t2-bg)}.cardx.kojo{background:var(--rose)}.cardx.kspk{background:var(--sun-l)}.cardx.kreg{background:var(--mint)}
+.cardx .box,.cardx .spk{margin:0;background:transparent;border:none;padding:0;font-size:16px}
+.cardx .cols{margin:0}.cardx .col{background:transparent;padding:0}
+.cardx .use .x,.cardx .use .t{font-size:16px}
+.cardx table.tb,.cardx table.conj,.cardx table.signal,.cardx .examples{font-size:15px;margin:0}
+.cardx .tbwrap{overflow-x:auto}
+.cardx .story{margin:0}.cardx .story .es-t{font-size:18px}
+.cardx .question{margin:0}.cardx .question .q{font-size:20px}
+.cardx p{margin:0}
+.eyebrow{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cardx.dark .eyebrow{color:#aab6af}
+.eyebrow b{color:var(--sun);font-weight:700;letter-spacing:0;font-size:13px}
+.ctitle{margin:0;font-weight:700;font-size:20px;line-height:1.25;text-wrap:balance}
+.hook-es{font-family:var(--f-es);font-weight:600;font-size:29px;line-height:1.14;text-wrap:balance;margin:0}
+.hook-es br{display:none}
+.hook-de{color:var(--sage);font-size:15px}
+.big{font-size:19px;line-height:1.5}
+.cartoonx{border:1.5px solid var(--ink);border-radius:16px;background:#fff;padding:12px 12px 10px;display:flex;flex-direction:column;gap:10px}
+.cartoonx img.final{width:100%;border-radius:10px}
+.bubs{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+.bubx{font-family:var(--f-es);font-weight:500;font-size:15px;line-height:1.2;text-align:center;background:#fff;border:1.3px solid var(--ink);border-radius:16px;padding:7px 12px;position:relative}
+.bubx:nth-child(2){margin-left:auto}
+.icons{display:flex;justify-content:center;gap:22px;padding:4px 0}
+.icons img{width:62px;height:62px}
+.ph{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sage)}
+.gloss{font-size:13px;color:var(--sage);text-align:right}
+.play{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--ink);background:#fff;border-radius:999px;padding:8px 14px;font-weight:500;font-size:14px;cursor:pointer;color:var(--ink)}
+.play.on{background:var(--sun);border-color:var(--sun)}
+.cardx.dark .play{background:transparent;border-color:#6d70a6;color:#fff}
+.hint{font-size:12.5px;color:var(--sage);text-align:center}
+.swipe{animation:nudge 2.2s ease-in-out 1s 3}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){.swipe{animation:none}}
+.btns{display:flex;flex-direction:column;gap:10px}
+.btn{border:none;border-radius:16px;padding:16px 18px;font-weight:600;font-size:17px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.second{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn small{font-weight:300;font-size:13px;opacity:.75;text-align:right}
+.task{font-size:15px;color:var(--grey)}
+.sent{font-family:var(--f-es);font-size:20px;line-height:1.55;font-weight:420}
+.gapline{display:inline-block;min-width:56px;border-bottom:2px solid var(--ink);margin:0 4px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:13px 10px;font-family:var(--f-es);font-size:18px;font-weight:500;cursor:pointer;color:var(--ink)}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.opt[disabled]{cursor:default}
+.fb{border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.45}
+.fb.ok{background:var(--ok-bg);color:#1f5a40}.fb.no{background:var(--bad-bg);color:#7e3020}.fb.info{background:#f3f0e8;color:var(--grey)}
+.fbs{display:flex;flex-direction:column;gap:8px}
+.mtext{font-family:var(--f-es);font-size:18px;line-height:2.05;font-weight:420}
+.tok,.chip{border:none;background:#f1ede4;border-bottom:2px solid var(--ink);border-radius:8px 8px 2px 2px;padding:1px 6px;font-family:var(--f-es);font-size:18px;cursor:pointer;color:var(--ink)}
+.tok .lab,.chip .lab{font-family:var(--f-body);font-size:11px;font-weight:700;margin-left:4px}
+.tok.v0,.chip.v0{background:var(--t1-bg);border-color:var(--t1);color:var(--t1)}
+.tok.v1,.chip.v1{background:var(--t2-bg);border-color:var(--t2);color:var(--t2)}
+.tok.v2,.chip.v2{background:#e6e3f6;border-color:#5a55a0;color:#5a55a0}
+.tok.ok,.chip.ok{outline:2px solid var(--ok)}.tok.no,.chip.no{outline:2px solid var(--bad);outline-offset:1px}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:13px}
+.legend span{border-radius:999px;padding:3px 10px}
+.legend .l0{background:var(--t1-bg);color:var(--t1)}.legend .l1{background:var(--t2-bg);color:var(--t2)}.legend .l2{background:#e6e3f6;color:#5a55a0}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.ctext{font-family:var(--f-es);font-size:18px;line-height:2.1;font-weight:420}
+.ctext input,.fl input,.tf input{font-family:var(--f-es);font-size:17px;border:none;border-bottom:2px solid var(--ink);background:#f7f4ec;border-radius:6px 6px 0 0;padding:1px 6px;color:var(--ink)}
+input.ok{background:var(--ok-bg)!important;border-color:var(--ok)!important}
+input.no{background:var(--bad-bg)!important;border-color:var(--bad)!important}
+.h{font-family:var(--f-body);font-size:11.5px;color:var(--sage);margin-left:2px}
+.fix{font-family:var(--f-body);font-size:12px;color:var(--bad);margin-left:3px}
+.who{font-family:var(--f-body);font-size:12px;color:var(--sage);display:block;line-height:1.2;margin-top:6px}
+.fl{display:flex;flex-direction:column;gap:6px;font-family:var(--f-es);font-size:18px}
+.tf{display:flex;flex-direction:column;gap:12px}
+.tf .q{font-family:var(--f-es);font-size:18px}
+.tf input{width:100%!important}
+.mrow{display:grid;grid-template-columns:1fr;gap:4px;padding:8px 0;border-bottom:1px solid var(--line)}
+.mrow .l{font-family:var(--f-es);font-size:17px}
+.mrow select{font:inherit;font-size:15px;padding:8px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--ink);max-width:100%}
+.mrow select.ok{border-color:var(--ok);background:var(--ok-bg)}.mrow select.no{border-color:var(--bad);background:var(--bad-bg)}
+.pairs{display:flex;flex-direction:column;gap:10px}
+.pr{display:grid;grid-template-columns:28px 1fr 1fr;gap:8px;align-items:center}
+.pr .n{font-size:12px;color:var(--sage)}
+.pr small{grid-column:2/4;font-size:12px;color:var(--sage);margin-top:-4px}
+textarea{width:100%;min-height:92px;border:1.5px solid var(--line);border-radius:14px;padding:12px;font-family:var(--f-es);font-size:17px;line-height:1.45;color:var(--ink);background:#fffefa;resize:vertical}
+.check{align-self:flex-start;background:var(--ink);color:#fff;border:none;border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px;cursor:pointer}
+.check.light{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.solution{font-family:var(--f-es);font-size:17px;line-height:1.45;background:var(--ok-bg);color:#1f5a40;border-radius:14px;padding:12px 14px}
+.imp{display:grid;grid-template-columns:repeat(auto-fit,minmax(52px,1fr));gap:10px}
+.imp img{width:100%;max-width:60px;margin:0 auto;display:block}
+.tongue-x{font-family:var(--f-es);font-size:24px;line-height:1.3}
+.premium{font-size:13px;color:var(--sage);border-top:1px dashed var(--line);padding-top:10px}
+.dots{position:fixed;right:max(8px,calc(env(safe-area-inset-right,0px) + 8px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:15}
+.dots i{width:6px;height:6px;border-radius:50%;background:#d6d1c5}
+.dots i.u{background:#f6cf98}
+.dots i.on{background:var(--ink);transform:scale(1.4)}.dots i.u.on{background:var(--sun)}
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(21,22,58,.45);display:flex;align-items:flex-end}
+.sheet .in{width:100%;max-height:86%;overflow-y:auto;background:var(--paper);border-radius:22px 22px 0 0;padding-block:18px calc(22px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sheet h3{margin:14px 0 4px;font-weight:700;font-size:16px}
+.sheet h3 span{color:var(--sun);margin-right:6px}
+.row{display:grid;grid-template-columns:40px 1fr auto auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.row .n{font-weight:700;color:var(--sun);font-size:14px}
+.row .tt{font-size:14.5px;min-width:0}
+.row .cur{font-size:11px;color:var(--sun);display:block}
+.row button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:500;cursor:pointer;color:var(--ink)}
+.sheet .foot{display:flex;gap:8px;margin-top:16px}
+.sheet .foot a,.sheet .foot button{flex:1;text-align:center;border:none;background:var(--ink);color:#fff;border-radius:14px;padding:13px;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px}
+.sheet .foot a{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="bar">
+  <a class="ib" href="../haus.html" id="zurBib" aria-label="Zur Bibliothek">‹</a>
+  <button class="ib" id="menuBtn" aria-label="Inhalt öffnen">☰</button>
+  <div class="where"><small id="chap"></small><b id="here"></b></div>
+  <span class="mode" id="mode">Lesen</span>
+</div>
+<div class="reel" id="reel"></div>
+<div class="dots" id="dots" aria-hidden="true"></div>
+<div class="sheet" id="sheet" hidden><div class="in" role="dialog" aria-label="Inhalt"><div id="rows"></div><div class="foot"><a id="alsBuch" href="Gramatica-A.html">Als Buch lesen</a><button id="closeSheet">Schließen</button></div></div></div>
+<script>/*DATA*/</script>
+<script type="module">import { speak, stop, warm } from "/audio.js"; window.spikiuSprich = speak; window.spikiuStopp = stop; try{ warm("es"); }catch(e){}</script>
+<script src="../sitzung.js"></script>
+<script>
+var SPIKIU='<svg viewBox="0 0 80 80" width="54" height="54" aria-hidden="true"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var RAUM='gramatica-karten';
+var reel=document.getElementById('reel'), dotsEl=document.getElementById('dots');
+var SAYS=[], cur=null, imUeben=false, aktIdx=0;
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function secIdx(id){ for(var i=0;i<DATA.secs.length;i++) if(DATA.secs[i].id===id) return i; return 0; }
+function addSay(l){ if(!l||!l.length) return -1; SAYS.push(l); return SAYS.length-1; }
+function play(l,lab){ var i=addSay(l); return i<0?'':'<button class="play" data-say="'+i+'">▶ '+(lab||'Anhören')+'</button>'; }
+function slide(inner,cls,part){ var s=document.createElement('section'); s.className='slide'; s.dataset.part=part; s.innerHTML='<div class="cardx '+(cls||'')+'">'+inner+'</div>'; return s; }
+function kopf(sec,extra){ return '<div class="eyebrow"><b>'+sec.id+'</b>'+esc(sec.topic)+(extra?' · '+extra:'')+'</div>'; }
+function norm(x){return String(x).replace(/<[^>]+>/g,'').trim().toLowerCase().replace(/\s+/g,' ').replace(/[.!¡?¿,;]+$/,'');}
+function ohneAkz(x){return norm(x).normalize('NFD').replace(/[̀-ͯ]/g,'');}
+
+/* ── Abschnitt laden ── */
+function ladeAbschnitt(i, ueben){
+  stopAudio(); SAYS=[]; reel.innerHTML=''; cur=DATA.secs[i]; imUeben=false;
+  document.getElementById('chap').textContent=cur.chap;
+  document.getElementById('here').textContent=cur.id+' '+cur.topic;
+  document.getElementById('alsBuch').href='Gramatica-A.html#s-'+cur.id.replace('.','-');
+  theorie(cur);
+  if(ueben){ uebungen(cur); }
+  baueDots();
+  var ziel= ueben ? reel.querySelector('[data-part="u"]') : reel.children[0];
+  reel.scrollTop=0; if(ziel) ziel.scrollIntoView();
+}
+function theorie(sec){
+  sec.cards.forEach(function(c,n){
+    var h='', cls='';
+    if(c.k==='hook'){
+      var bild='<div class="icons">'+c.icons.map(function(u){return '<img alt="" src="icons/'+u+'.svg">';}).join('')+'</div><div class="ph">Platzhalter · Bild folgt</div>';
+      h=kopf(sec,sec.baum)+'<p class="hook-es">'+c.es+'</p><div class="hook-de">'+c.de+'</div><div class="cartoonx"><div class="bubs">'+c.bubbles.map(function(b){return '<div class="bubx">'+b+'</div>';}).join('')+'</div>'+bild+'</div>'+(c.gloss?'<div class="gloss">'+c.gloss+'</div>':'')+play(c.say)+(n===0?'<div class="hint swipe">Wisch nach oben ↑</div>':'');
+    } else if(c.k==='dark'){ cls='dark'; h='<div class="eyebrow">In einem Satz</div><div class="big">'+c.html+'</div>'; }
+    else { cls=c.cls||''; h=(c.title?'<h2 class="ctitle">'+c.title+'</h2>':'')+c.html+play(c.say); }
+    reel.appendChild(slide(h,cls,'t'));
+  });
+  var nxt=DATA.secs[secIdx(sec.id)+1];
+  reel.appendChild(slide(kopf(sec)+'<h2 class="ctitle" style="font-size:25px">Willst du das üben?</h2><p class="task">Übungen aus dem Cuaderno – mit Antwort sofort.</p><div class="btns"><button class="btn primary" data-act="ueben">Ja, üben <small>'+sec.ex.length+' Karten</small></button>'+(nxt?'<button class="btn second" data-act="weiter">Weiter lesen <small>'+esc(nxt.id+' '+nxt.topic)+'</small></button>':'')+'</div>','','d'));
+}
+
+/* ── Übungen ── */
+function uebungen(sec){
+  if(imUeben) return; imUeben=true;
+  sec.ex.forEach(function(e){
+    var h=kopf(sec,'Üben')+'<div class="task">'+e.title+'</div>', s;
+    var f={hear:hear,mark:mark,choice:choice,cloze:cloze,dialog:dialog,fill:fill,sort:sortx,match:match,transform:transform,translate:translate,impulse:impulse,free:free,tongue:tongue}[e.k];
+    if(!f) return;
+    s=slide(h,'','u'); reel.appendChild(s); f(s.firstChild,e);
+  });
+  var nxt=DATA.secs[secIdx(sec.id)+1];
+  reel.appendChild(slide('<div style="display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center">'+SPIKIU+'<div>'+kopf(sec,'fertig geübt')+'<h2 class="ctitle">'+esc(sec.topic)+'</h2></div></div><div class="btns">'+(nxt?'<button class="btn primary" data-act="weiter">Weiter: '+esc(nxt.id+' '+nxt.topic)+'</button>':'<button class="btn primary" data-act="menu">Zum Inhalt</button>')+'<button class="btn second" data-act="oben">Theorie '+sec.id+' nochmal</button></div>','','e'));
+}
+function fbOut(card){ var d=card.querySelector('.fbs'); if(!d){ d=document.createElement('div'); d.className='fbs'; card.appendChild(d);} return d; }
+function choice(card,e){
+  var gaps=e.parts.filter(function(p){return p.o;}), k=0;
+  card.insertAdjacentHTML('beforeend','<div class="sent"></div><div class="opts"></div>');
+  var sent=card.querySelector('.sent'), opts=card.querySelector('.opts'), fb=fbOut(card);
+  function satz(a){ var n=-1; return e.parts.map(function(p){ if(p.s!==undefined) return p.s; n++; if(n<a) return '<span class="es c2">'+p.o[p.r]+'</span>'; return '<span class="gapline"'+(n>a?' style="opacity:.35;min-width:36px"':'')+'>&nbsp;</span>'; }).join(''); }
+  function zeige(){ sent.innerHTML=satz(k); var g=gaps[k];
+    opts.innerHTML=g.o.map(function(o,i){return '<button class="opt" data-i="'+i+'">'+o+'</button>';}).join('');
+    opts.querySelectorAll('.opt').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i;
+      opts.querySelectorAll('.opt').forEach(function(x){x.disabled=true;}); opts.children[g.r].classList.add('right');
+      if(i!==g.r){ b.classList.add('wrong'); fb.innerHTML='<div class="fb no">Hier passt <span class="es">'+g.o[g.r]+'</span>.</div>'; } else fb.innerHTML='<div class="fb ok">Genau.</div>';
+      setTimeout(function(){ if(k<gaps.length-1){ k++; fb.innerHTML=''; zeige(); } else { sent.innerHTML=satz(gaps.length); opts.innerHTML=''; if(e.why) fb.innerHTML+='<div class="fb info">'+e.why+'</div>'; } }, i===g.r?700:1600);
+    }; }); }
+  zeige();
+}
+function mark(card,e){
+  var html=e.toks.map(function(t,i){ return t.s!==undefined ? t.s : '<button class="tok" data-i="'+i+'" data-v="-1">'+t.w+'<span class="lab"></span></button>'; }).join('');
+  card.insertAdjacentHTML('beforeend','<div class="legend">'+e.labs.map(function(l,i){return '<span class="l'+(i%3)+'">'+(i+1)+'× = '+esc(l)+'</span>';}).join('')+'</div><div class="mtext">'+html+'</div>'+play(e.say)+'<button class="check">Prüfen</button>');
+  card.querySelectorAll('.tok').forEach(function(b){ b.onclick=function(){ var v=(+b.dataset.v)+1; if(v>=e.labs.length) v=-1; b.dataset.v=v; b.className='tok'+(v>=0?' v'+(v%3):''); b.querySelector('.lab').textContent=v>=0?e.labs[v]:''; }; });
+  card.querySelector('.check').onclick=function(){ var fehl=0, leer=0;
+    card.querySelectorAll('.tok').forEach(function(b){ b.classList.remove('ok','no'); var v=+b.dataset.v; if(v<0){leer++;return;} if(e.labs[v]===e.toks[+b.dataset.i].a) b.classList.add('ok'); else {b.classList.add('no'); fehl++;} });
+    var fb=fbOut(card); fb.innerHTML = leer ? '<div class="fb info">Es fehlen noch '+(leer===1?'ein Wort':leer+' Wörter')+'.</div>' : (fehl ? '<div class="fb no">Rot umrandet: Schau dir diese noch einmal an.</div>' : '<div class="fb ok">Alles richtig.</div>'+(e.why?'<div class="fb info">'+e.why+'</div>':''));
+  };
+}
+function gapHtml(parts){ return parts.map(function(p){ return p.s!==undefined ? p.s : '<input style="width:'+(Math.max(2,p.a.length)*0.62+1.6)+'em" data-a="'+esc(p.a)+'" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Lücke">'+(p.h?'<span class="h">('+esc(p.h)+')</span>':''); }).join(''); }
+function pruefeInputs(card,e){ var fehl=0;
+  card.querySelectorAll('input[data-a]').forEach(function(inp){ var a=inp.dataset.a, v=inp.value, alt=inp.parentNode.querySelector('.fix[data-for="'+inp.dataset.k+'"]'); if(alt) alt.remove();
+    inp.classList.remove('ok','no'); if(norm(v)===norm(a)) { inp.classList.add('ok'); return; }
+    inp.classList.add('no'); fehl++; var sp=document.createElement('span'); sp.className='fix'; sp.dataset.for=inp.dataset.k; sp.textContent=(v && ohneAkz(v)===ohneAkz(a) ? '→ Akzent: ' : '→ ')+a;
+    var nach=inp.nextSibling && inp.nextSibling.classList && inp.nextSibling.classList.contains('h') ? inp.nextSibling : inp; nach.parentNode.insertBefore(sp, nach.nextSibling); });
+  var fb=fbOut(card); fb.innerHTML=(fehl?'<div class="fb no">Daneben steht die richtige Form.</div>':'<div class="fb ok">Alles richtig.</div>')+(e.why?'<div class="fb info">'+e.why+'</div>':'');
+}
+function nummeriere(card){ card.querySelectorAll('input[data-a]').forEach(function(x,i){x.dataset.k=i;}); }
+function cloze(card,e){ card.insertAdjacentHTML('beforeend','<div class="ctext">'+gapHtml(e.parts)+'</div>'+play(e.say)+'<button class="check">Prüfen</button>'); nummeriere(card); card.querySelector('.check').onclick=function(){pruefeInputs(card,e);}; }
+function dialog(card,e){ card.insertAdjacentHTML('beforeend','<div class="ctext">'+e.lines.map(function(l){return '<span class="who">'+esc(l.who)+'</span>'+gapHtml(l.parts);}).join('<br>')+'</div>'+play(e.say)+'<button class="check">Prüfen</button>'); nummeriere(card); card.querySelector('.check').onclick=function(){pruefeInputs(card,e);}; }
+function fill(card,e){ card.insertAdjacentHTML('beforeend','<div class="fl">'+e.items.map(function(p){return '<div>'+gapHtml(p)+'</div>';}).join('')+'</div><button class="check">Prüfen</button>'); nummeriere(card); card.querySelector('.check').onclick=function(){pruefeInputs(card,e);}; }
+function sortx(card,e){
+  var labs=e.baskets.map(function(b){return b.l;});
+  card.insertAdjacentHTML('beforeend','<div class="legend">'+labs.map(function(l,i){return '<span class="l'+(i%3)+'">'+(i+1)+'× = '+l+'</span>';}).join('')+'</div><div class="chips">'+e.words.map(function(w,i){return '<button class="chip" data-i="'+i+'" data-v="-1">'+w+'<span class="lab"></span></button>';}).join('')+'</div><button class="check">Prüfen</button>');
+  card.querySelectorAll('.chip').forEach(function(b){ b.onclick=function(){ var v=(+b.dataset.v)+1; if(v>=labs.length) v=-1; b.dataset.v=v; b.className='chip'+(v>=0?' v'+(v%3):''); b.querySelector('.lab').textContent=v>=0?String(v+1):''; }; });
+  card.querySelector('.check').onclick=function(){ var fehl=0, leer=0;
+    card.querySelectorAll('.chip').forEach(function(b){ b.classList.remove('ok','no'); var v=+b.dataset.v, w=e.words[+b.dataset.i]; if(v<0){leer++;return;} if(e.baskets[v].a.indexOf(w)>-1) b.classList.add('ok'); else {b.classList.add('no'); fehl++;} });
+    fbOut(card).innerHTML= leer ? '<div class="fb info">Es fehlen noch '+leer+'.</div>' : (fehl?'<div class="fb no">Rot umrandet gehört in einen anderen Korb.</div>':'<div class="fb ok">Alles richtig.</div>'+(e.why?'<div class="fb info">'+e.why+'</div>':''));
+  };
+}
+function match(card,e){
+  var opts='<option value="">– wählen –</option>'+e.right.map(function(r,i){return '<option value="'+i+'">'+r.replace(/<[^>]+>/g,'')+'</option>';}).join('');
+  card.insertAdjacentHTML('beforeend','<div>'+e.left.map(function(l,i){return '<div class="mrow"><div class="l">'+l+'</div><select data-i="'+i+'" aria-label="Zuordnen">'+opts+'</select></div>';}).join('')+'</div><button class="check">Prüfen</button>');
+  card.querySelector('.check').onclick=function(){ var fehl=0;
+    card.querySelectorAll('select').forEach(function(s){ s.classList.remove('ok','no'); if(+s.value===e.ans[+s.dataset.i] && s.value!=='') s.classList.add('ok'); else {s.classList.add('no'); fehl++;} });
+    fbOut(card).innerHTML=fehl?'<div class="fb no">Rot: noch nicht richtig zugeordnet.</div>':'<div class="fb ok">Alles richtig.</div>'+(e.why?'<div class="fb info">'+e.why+'</div>':'');
+  };
+}
+function transform(card,e){
+  card.insertAdjacentHTML('beforeend',(e.ex?'<div class="task">Beispiel: <span class="es">'+e.ex.q+'</span> → <span class="es">'+e.ex.a+'</span></div>':'')+'<div class="tf">'+e.items.map(function(it){return '<div><div class="q">'+it.q+'</div><input data-a="'+esc(it.a)+'" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Deine Antwort"></div>';}).join('')+'</div><button class="check">Prüfen</button>');
+  nummeriere(card); card.querySelector('.check').onclick=function(){pruefeInputs(card,e);};
+}
+function zeigeLsg(card){ card.querySelector('[data-show]').onclick=function(){ card.querySelector('[data-sol]').hidden=false; this.hidden=true; }; }
+function translate(card,e){ card.insertAdjacentHTML('beforeend','<div class="big" style="font-weight:400">'+e.de+'</div><textarea aria-label="Deine Übersetzung" placeholder="Auf Spanisch …"></textarea><button class="check light" data-show>Lösung zeigen</button><div data-sol hidden><div class="solution">'+e.es+'</div></div>'); zeigeLsg(card); }
+function impulse(card,e){ card.insertAdjacentHTML('beforeend',(e.start?'<div class="sent">'+e.start+'</div>':'')+'<div class="imp">'+e.items.map(function(it){return '<img alt="" src="icons/'+it.i+'.svg">';}).join('')+'</div><textarea aria-label="Deine Sätze"></textarea><button class="check light" data-show>Vorschläge zeigen</button><div data-sol hidden class="fbs">'+e.items.map(function(it){return '<div class="solution">'+it.s+'</div>';}).join('')+'</div>'); zeigeLsg(card); }
+function free(card,e){ card.insertAdjacentHTML('beforeend',(e.html?'<div class="task">'+e.html+'</div>':'')+'<textarea aria-label="Dein Text" style="min-height:140px"></textarea><button class="check light" data-show>Worauf achten?</button><div data-sol hidden><div class="fb info">'+(e.sol||'Keine feste Lösung.')+'</div></div><div class="premium">Mit Premium liest Spikiu deinen Text und antwortet dir darauf.</div>'); zeigeLsg(card); }
+function tongue(card,e){ card.insertAdjacentHTML('beforeend','<div class="tongue-x">'+e.es+'</div><div class="task">'+e.de+'</div>'+play(e.say,'Vorsprechen')); }
+function hear(card,e){
+  card.insertAdjacentHTML('beforeend',play(e.say,'Hören')+'<div class="pairs">'+e.pairs.map(function(p,i){return '<div class="pr" data-i="'+i+'"><span class="n">'+'abcdefghij'[i]+'</span>'+p.o.map(function(o,j){return '<button class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+(p.g?'<small>'+p.g+'</small>':'')+'</div>';}).join('')+'</div>');
+  card.querySelectorAll('.pr').forEach(function(row){ var p=e.pairs[+row.dataset.i]; row.querySelectorAll('.opt').forEach(function(b){ b.onclick=function(){ row.querySelectorAll('.opt').forEach(function(x){x.disabled=true;}); row.querySelectorAll('.opt')[p.r].classList.add('right'); if(+b.dataset.j!==p.r) b.classList.add('wrong'); }; }); });
+}
+
+/* ── Hören: Spikiu-Stimme (audio.js), Baustein für Baustein ── */
+var lauf=0, aktiv=null;
+function stopAudio(){ lauf++; try{ window.spikiuStopp && window.spikiuStopp(); }catch(e){} if(aktiv){aktiv.classList.remove('on');aktiv=null;} }
+function warte(ms){return new Promise(function(r){setTimeout(r,ms);});}
+async function spiele(b){
+  stopAudio(); aktiv=b; b.classList.add('on'); var meins=++lauf, list=SAYS[+b.dataset.say]||[];
+  if(!window.spikiuSprich){ stopAudio(); return; }
+  for(var i=0;i<list.length;i++){ if(meins!==lauf) return; try{ await window.spikiuSprich(list[i].t,'es'); }catch(e){} if(meins!==lauf) return; if(i<list.length-1) await warte(list[i].p||700); }
+  if(meins===lauf) stopAudio();
+}
+
+/* ── Klicks ── */
+document.addEventListener('click',function(ev){
+  var p=ev.target.closest('.play'); if(p){ if(aktiv===p) stopAudio(); else spiele(p); return; }
+  var a=ev.target.closest('[data-act]'); if(!a) return;
+  var i=secIdx(cur.id);
+  if(a.dataset.act==='ueben'){ uebungen(cur); baueDots(); var u=reel.querySelector('[data-part="u"]'); if(u) u.scrollIntoView({behavior:'smooth'}); }
+  else if(a.dataset.act==='weiter'){ if(DATA.secs[i+1]) ladeAbschnitt(i+1,false); }
+  else if(a.dataset.act==='oben'){ reel.children[0].scrollIntoView({behavior:'smooth'}); }
+  else if(a.dataset.act==='menu'){ oeffneMenu(); }
+});
+
+/* ── Punkte, Kopf, Merken ── */
+var io=null;
+function baueDots(){
+  dotsEl.innerHTML=''; var n=reel.children.length;
+  Array.prototype.forEach.call(reel.children,function(s){ var d=document.createElement('i'); if(s.dataset.part==='u'||s.dataset.part==='e') d.className='u'; dotsEl.appendChild(d); });
+  dotsEl.hidden = n>34;
+  if(io) io.disconnect();
+  io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(!en.isIntersecting||en.intersectionRatio<.6) return;
+    var idx=Array.prototype.indexOf.call(reel.children,en.target); aktIdx=idx;
+    Array.prototype.forEach.call(dotsEl.children,function(d,j){d.classList.toggle('on',j===idx);});
+    var part=en.target.dataset.part, m=document.getElementById('mode'), u=(part==='u'||part==='e');
+    m.textContent=u?'Üben':'Lesen'; m.classList.toggle('ueben',u);
+    stopAudio(); merke();
+  }); },{root:reel,threshold:[.6]});
+  Array.prototype.forEach.call(reel.children,function(s){io.observe(s);});
+}
+var merkT=null;
+function merke(){ clearTimeout(merkT); merkT=setTimeout(function(){ try{ window.spikiuSitzung && window.spikiuSitzung.speichere(RAUM,{sec:cur.id, idx:aktIdx, ueben:imUeben, titel:cur.id+' '+cur.topic}); }catch(e){} },350); }
+
+/* ── Menü ── */
+var sheet=document.getElementById('sheet');
+function oeffneMenu(){
+  document.getElementById('rows').innerHTML=DATA.nav.map(function(ch){ return '<h3><span>'+ch.ch+'</span>'+esc(ch.t)+'</h3>'+ch.s.map(function(s){ var hier=cur&&cur.id===s.id; return '<div class="row"><span class="n">'+s.id+'</span><span class="tt">'+esc(s.t)+(hier?'<span class="cur">Du bist hier</span>':'')+'</span><button data-go="'+s.id+'" data-m="l">Lesen</button><button data-go="'+s.id+'" data-m="u">Üben</button></div>'; }).join(''); }).join('');
+  sheet.hidden=false; var h=sheet.querySelector('.cur'); if(h) h.closest('.row').scrollIntoView({block:'center'});
+}
+document.getElementById('menuBtn').onclick=oeffneMenu;
+document.getElementById('closeSheet').onclick=function(){ sheet.hidden=true; };
+sheet.addEventListener('click',function(e){ if(e.target===sheet){ sheet.hidden=true; return; } var g=e.target.closest('[data-go]'); if(!g) return; sheet.hidden=true; ladeAbschnitt(secIdx(g.dataset.go), g.dataset.m==='u'); });
+document.getElementById('zurBib').addEventListener('click',function(){ try{sessionStorage.setItem('spk_haus_tuer','bibliothek');}catch(e){} });
+
+/* ── Start: #s-11-5 oder Wiederkommen ── */
+(function(){
+  var h=(location.hash||'').match(/^#s-(\d+)-(\d+)$/), start=0;
+  if(h) start=secIdx(h[1]+'.'+h[2]);
+  ladeAbschnitt(start,false);
+  var S=window.spikiuSitzung; if(!S||h) return;
+  var alt=S.lade(RAUM);
+  if(alt && alt.sec && (alt.sec!==DATA.secs[0].id || alt.idx>1)){
+    S.frageWiederkommen({raum:RAUM, ts:alt.ts, wo:alt.titel||'',
+      beimWeiter:function(){ ladeAbschnitt(secIdx(alt.sec), !!alt.ueben); setTimeout(function(){ var t=reel.children[Math.min(alt.idx||0, reel.children.length-1)]; if(t) t.scrollIntoView(); },60); },
+      beimNeu:function(){ S.raeume(RAUM); }});
+  }
+})();
+</script>
+</body>
+</html>

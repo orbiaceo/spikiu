@@ -752,6 +752,10 @@ def main():
                 htmlp = os.path.join(ROOT, name + '.html')   # online liegt direkt in buch/ (wird mit ausgeliefert)
                 open(htmlp, 'w', encoding='utf-8').write(build_online(book, chapters, tests, ctx))
                 print('online:', htmlp)
+                if book == 'G':
+                    from reel import build_reel
+                    rp, nk, nu = build_reel(chapters)
+                    print(f'karten: {rp} ({nk} Theorie-, {nu} Übungskarten)')
             else:
                 h = build_book(book, chapters, tests, ed, ctx)
                 suffix = '' if not only else '-kap' + '-'.join(map(str, only))
