@@ -1,0 +1,2309 @@
+{
+ "chapter": 1,
+ "title": "Laute und Buchstaben",
+ "sections": [
+  {
+   "id": "1.1",
+   "topic": "Das Alphabet und die fünf Vokale",
+   "level": "A1",
+   "headline_es": "Murciélago: cinco vocales<br>en una sola palabra.",
+   "headline_de": "Murciélago (Fledermaus): fünf Vokale in einem einzigen Wort.",
+   "index": [
+    "Alphabet",
+    "Vokale",
+    "Buchstabieren",
+    "¿Cómo se escribe?",
+    "ñ (eñe)",
+    "Buchstabennamen"
+   ],
+   "cartoon": {
+    "id": "1.1-A",
+    "icons": [
+     "1F987",
+     "1F9D2",
+     "1F631"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Mur-cié-la-go!<br>¡Tiene a, e, i, o, u!"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Nico, me da igual!<br>¡Sácalo de aquí!"
+     }
+    ],
+    "gloss": "<es>murciélago</es> Fledermaus · <es>me da igual</es> ist mir egal · <es>¡sácalo!</es> schaff ihn raus!",
+    "prompt": "SCENE: Night in a cosy, slightly messy Madrid living room. A small, harmless bat flutters in circles around the ceiling lamp. On the right, PILAR (63, short grey bob, cardigan, reading glasses on a chain) stands on a wooden chair, clutching a broom with both hands, mouth wide open in panic. On the left, NICO (4, curly hair, dinosaur pyjamas) stands on the sofa, beaming with pure delight, pointing at the bat with one hand and proudly counting on the five fingers of the other hand. In the doorway in the background, LUCÍA (32, messy bun, oversized T-shirt) leans against the frame with a cup of tea, completely unimpressed. Leave clear empty space above Nico (top left) and above Pilar (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Spanische Vokale sind wie Klaviertasten: Jede der fünf klingt immer gleich. Nichts wird gedehnt, nichts verschluckt – auch nicht das e am Ende: <es>noche</es> endet klar wie „Bett“."
+     },
+     {
+      "type": "h",
+      "text": "Fünf Tasten",
+      "track": "1.1-1"
+     },
+     {
+      "type": "table",
+      "track": "1.1-1",
+      "head": [
+       "",
+       "a",
+       "e",
+       "i",
+       "o",
+       "u"
+      ],
+      "es_cols": [],
+      "rows": [
+       [
+        "klingt wie",
+        "a in „Mann“",
+        "e in „Bett“",
+        "i in „Kino“",
+        "o in „Post“",
+        "u in „Mut“, nie ü"
+       ],
+       [
+        "Beispiele",
+        "<es>casa, mamá, Ana</es>",
+        "<es>leche, mesa, Pepe</es>",
+        "<es>sí, Nico, Lima</es>",
+        "<es>no, foto, ocho</es>",
+        "<es>uno, tú, música</es>"
+       ]
+      ]
+     },
+     {
+      "type": "variantes",
+      "text": "Das s am Silbenende wird in Andalusien, auf den Kanaren und in der Karibik oft gehaucht oder verschluckt: <es>los amigos</es> klingt dann wie „lo’ amigo’“."
+     },
+     {
+      "type": "h",
+      "text": "Das Alphabet: 27 Buchstaben, eins davon ist das ñ",
+      "track": "1.1-2"
+     },
+     {
+      "type": "table",
+      "track": "1.1-2",
+      "es_cols": [],
+      "rows": [
+       [
+        "<b>A</b> <es>a</es>",
+        "<b>B</b> <es>be</es>",
+        "<b>C</b> <es>ce</es>",
+        "<b>D</b> <es>de</es>",
+        "<b>E</b> <es>e</es>",
+        "<b>F</b> <es>efe</es>",
+        "<b>G</b> <es>ge</es>"
+       ],
+       [
+        "<b>H</b> <es>hache</es>",
+        "<b>I</b> <es>i</es>",
+        "<b>J</b> <es>jota</es>",
+        "<b>K</b> <es>ka</es>",
+        "<b>L</b> <es>ele</es>",
+        "<b>M</b> <es>eme</es>",
+        "<b>N</b> <es>ene</es>"
+       ],
+       [
+        "<b>Ñ</b> <es>eñe</es>",
+        "<b>O</b> <es>o</es>",
+        "<b>P</b> <es>pe</es>",
+        "<b>Q</b> <es>cu</es>",
+        "<b>R</b> <es>erre</es>",
+        "<b>S</b> <es>ese</es>",
+        "<b>T</b> <es>te</es>"
+       ],
+       [
+        "<b>U</b> <es>u</es>",
+        "<b>V</b> <es>uve</es>",
+        "<b>W</b> <es>uve doble</es>",
+        "<b>X</b> <es>equis</es>",
+        "<b>Y</b> <es>ye</es>",
+        "<b>Z</b> <es>zeta</es>",
+        ""
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "1.1-2",
+      "items": [
+       [
+        "¿Cómo se escribe? – Ele, u, ce, i con tilde, a.",
+        "Wie schreibt man das? – L-U-C-Í-A."
+       ]
+      ]
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Eine Taste macht den Unterschied. Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.1-3",
+      "pairs": [
+       {
+        "opts": [
+         "peso",
+         "piso"
+        ],
+        "gloss": "Gewicht / Wohnung",
+        "said": 1
+       },
+       {
+        "opts": [
+         "casa",
+         "cosa"
+        ],
+        "gloss": "Haus / Sache",
+        "said": 0
+       },
+       {
+        "opts": [
+         "mesa",
+         "misa"
+        ],
+        "gloss": "Tisch / Messe",
+        "said": 0
+       },
+       {
+        "opts": [
+         "dedo",
+         "dado"
+        ],
+        "gloss": "Finger / Würfel",
+        "said": 1
+       },
+       {
+        "opts": [
+         "luna",
+         "lana"
+        ],
+        "gloss": "Mond / Wolle",
+        "said": 0
+       },
+       {
+        "opts": [
+         "pelo",
+         "palo"
+        ],
+        "gloss": "Haar / Stock",
+        "said": 0
+       }
+      ]
+     },
+     {
+      "type": "transform",
+      "title": "Wer oder was wird hier buchstabiert? Schreib das Wort.",
+      "kind": "Erkennen",
+      "example": {
+       "q": "ce, a, ese, a",
+       "a": "casa"
+      },
+      "items": [
+       {
+        "q": "pe, i, ele, a, erre",
+        "a": "Pilar"
+       },
+       {
+        "q": "eme, a, de, erre, i, de",
+        "a": "Madrid"
+       },
+       {
+        "q": "jota, a, eme, o con tilde, ene",
+        "a": "jamón"
+       },
+       {
+        "q": "e, ese, pe, a, eñe, a",
+        "a": "España"
+       }
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Beim Tierarzt. Dani meldet seinen Hund an. Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.1-4",
+      "lines": [
+       [
+        "Recepción",
+        "¿Nombre del perro, por favor?"
+       ],
+       [
+        "Dani",
+        "Tofu. {{Te}}, o, {{efe}}, {{u}}."
+       ],
+       [
+        "Recepción",
+        "¿Tofu? ¿Como el tofu?"
+       ],
+       [
+        "Dani",
+        "Sí. Es vegetariano."
+       ],
+       [
+        "Recepción",
+        "¿Y su nombre?"
+       ],
+       [
+        "Dani",
+        "Dani. {{De}}, a, {{ene}}, i."
+       ]
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Und du? Buchstabier deinen Namen und deine Stadt auf Spanisch.",
+      "kind": "Frei",
+      "lines": 1,
+      "solution": "Zum Beispiel: <es>Anna: a, ene, ene, a. Köln: ka, o con diéresis, ele, ene.</es> Die Pünktchen über ö, ü, ä heißen <es>diéresis</es>."
+     },
+     {
+      "type": "tongue",
+      "title": "Der Klassiker vom Schulhof. Sprich nach, erst langsam, dann schnell.",
+      "kind": "Sprechen",
+      "track": "1.1-5",
+      "es": "A, e, i, o, u, ¡el burro sabe más que tú!",
+      "de": "A, e, i, o, u, der Esel weiß mehr als du!"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Das spanische Alphabet hat ___ Buchstaben.",
+     "options": [
+      "26",
+      "27",
+      "29"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Der Buchstabe ñ heißt ___.",
+     "options": [
+      "ene",
+      "eñe",
+      "enie"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Im Wort leche klingt das letzte e ___.",
+     "options": [
+      "klar wie in „Bett“",
+      "schwach wie in „bitte“"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "1.2",
+   "topic": "Doppelvokale",
+   "level": "A1",
+   "headline_es": "Ahí hay un hombre<br>que dice «¡ay!».",
+   "headline_de": "Dort ist ein Mann, der „au!“ sagt.",
+   "index": [
+    "Doppelvokale (Diphthonge)",
+    "Silben",
+    "starke und schwache Vokale",
+    "ahí / hay / ¡ay!",
+    "eu, ei, ie",
+    "Akzent auf i und u"
+   ],
+   "cartoon": {
+    "id": "1.2-A",
+    "icons": [
+     "1F996",
+     "1F9D2",
+     "1F616"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Ahí! ¡Ahí hay<br>un dinosaurio!"
+     },
+     {
+      "pos": "tr",
+      "text": "¡¡Ay, ay, ay!!"
+     }
+    ],
+    "gloss": "<es>ahí</es> (a-í) dort · <es>hay</es> (ai) es gibt · <es>¡ay!</es> (ai) au!",
+    "prompt": "SCENE: A bright living room, the floor covered with small plastic toy dinosaurs. In the centre, DANI (34, beard, calm type, socks only) hops on one leg, holding his other foot with both hands, his face twisted in comic pain, eyes squeezed shut. On the floor right under where his foot just was lies a small spiky plastic T-Rex. On the left, NICO (4, curly hair, dinosaur T-shirt) kneels on the carpet and points at the T-Rex with great excitement, completely ignoring Dani's pain. Leave clear empty space above Nico (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Vokale tanzen. <es>a, e, o</es> sind die Starken, <es>i</es> und <es>u</es> die Leichten. Ein Leichter mit einem Starken – oder zwei Leichte – tanzen eng: <c1>eine Silbe</c1>. Zwei Starke wollen beide führen und tanzen allein: <c2>zwei Silben</c2>."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Eng getanzt",
+        "sub": "eine Silbe",
+        "icon": "1F46B",
+        "tone": 1,
+        "track": "1.2-1",
+        "uses": [
+         {
+          "t": "Leicht + stark",
+          "x": "<es>bue-no, a-gua, sie-te, ai-re, Eu-ro-pa</es>"
+         },
+         {
+          "t": "Leicht + leicht",
+          "x": "<es>ciu-dad, muy, rui-do</es> <de>Lärm</de>"
+         }
+        ]
+       },
+       {
+        "title": "Allein getanzt",
+        "sub": "zwei Silben",
+        "icon": "1F483",
+        "tone": 2,
+        "track": "1.2-1",
+        "uses": [
+         {
+          "t": "Stark + stark",
+          "x": "<es>le-o, pa-e-lla, Bil-ba-o</es>"
+         },
+         {
+          "t": "Akzent auf i oder u",
+          "x": "Der Akzent macht den Leichten stark: <es>dí-a, Lu-cí-a, pa-ís, Ra-úl</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Lies, was dasteht – nicht deutsch. <es>eu</es> ist e + u, nie „oi“: <es>euro</es> klingt „e-uro“, nicht „Oiro“. <es>ei</es> ist e + i, nie „ai“: <es>seis</es>, <es>reina</es>. <es>ie</es> ist i + e, kein langes i: <es>siete</es>, <es>Diego</es>."
+     },
+     {
+      "type": "h",
+      "text": "Drei Wörter, die man sich merkt",
+      "track": "1.2-2"
+     },
+     {
+      "type": "examples",
+      "track": "1.2-2",
+      "items": [
+       [
+        "hay · ahí · ¡ay!",
+        "es gibt · dort · au! – <es>hay</es> und <es>¡ay!</es> klingen gleich (ai), <es>ahí</es> hat zwei Silben (a-í)."
+       ],
+       [
+        "Son seis euros.",
+        "Das macht sechs Euro."
+       ],
+       [
+        "¡Buenos días, ciudad!",
+        "Guten Morgen, Stadt!"
+       ]
+      ]
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Paar oder kein Paar? Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.2-3",
+      "pairs": [
+       {
+        "opts": [
+         "bueno",
+         "bono"
+        ],
+        "gloss": "gut / Gutschein",
+        "said": 0
+       },
+       {
+        "opts": [
+         "suelo",
+         "solo"
+        ],
+        "gloss": "Boden / allein",
+        "said": 1
+       },
+       {
+        "opts": [
+         "nieto",
+         "neto"
+        ],
+        "gloss": "Enkel / netto",
+        "said": 0
+       },
+       {
+        "opts": [
+         "causa",
+         "cosa"
+        ],
+        "gloss": "Grund / Sache",
+        "said": 1
+       },
+       {
+        "opts": [
+         "veinte",
+         "vente"
+        ],
+        "gloss": "zwanzig / komm her",
+        "said": 0
+       },
+       {
+        "opts": [
+         "hay",
+         "ahí"
+        ],
+        "gloss": "es gibt / dort",
+        "said": 1
+       }
+      ]
+     },
+     {
+      "type": "mark",
+      "title": "Lucías Frühstück. Hör zu: Tanzt das Vokalpaar eng (E, eine Silbe) oder allein (A, zwei Silben)? Schreib E oder A.",
+      "kind": "Erkennen",
+      "track": "1.2-4",
+      "text": "[[Buenos|E]] [[días|A]]. Son las [[seis|E]]. [[Lucía|A]] desayuna en el bar de [[Raúl|A]]: un café y un vaso de [[agua|E]]. Son dos [[euros|E]]. Y a la una, ¡[[paella|A]]!",
+      "why": "<es>días, Lucía, Raúl</es>: Der Akzent macht i und u stark, das Paar trennt sich. <es>paella</es>: zwei Starke, a und e."
+     },
+     {
+      "type": "transform",
+      "title": "Klatsch die Silben und schreib sie mit Bindestrichen.",
+      "kind": "Bilden",
+      "example": {
+       "q": "siete",
+       "a": "sie-te"
+      },
+      "items": [
+       {
+        "q": "ciudad",
+        "a": "ciu-dad"
+       },
+       {
+        "q": "Raúl",
+        "a": "Ra-úl"
+       },
+       {
+        "q": "Mario",
+        "a": "Ma-rio"
+       }
+      ],
+      "why": "<es>Mario</es> hat zwei Silben, <es>María</es> drei: <es>Ma-rí-a</es>. Den Unterschied macht der Akzent."
+     },
+     {
+      "type": "dialog",
+      "title": "Auf dem Markt. Jens, Lucías Kollege aus Hamburg, kauft Obst. Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.2-5",
+      "lines": [
+       [
+        "Frutero",
+        "¡{{Buenos}} días! ¿Qué le pongo?"
+       ],
+       [
+        "Jens",
+        "Un kilo de naranjas y {{seis}} plátanos."
+       ],
+       [
+        "Frutero",
+        "Son {{nueve}} euros con {{veinte}}."
+       ],
+       [
+        "Jens",
+        "¿Nueve «oiros»?"
+       ],
+       [
+        "Frutero",
+        "No, hombre: nueve {{euros}}. E-u."
+       ]
+      ]
+     },
+     {
+      "type": "tongue",
+      "title": "Sprich nach: Jedes Paar in einem Zug, jedes ahí in zwei.",
+      "kind": "Sprechen",
+      "track": "1.2-6",
+      "es": "Ahí hay seis euros. ¡Ay, no: hay nueve!",
+      "de": "Da liegen sechs Euro. Ach nein, es sind neun!"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Euro spricht man ___ aus.",
+     "options": [
+      "„e-u-ro“",
+      "„oi-ro“"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Das Wort día hat ___ Silben.",
+     "options": [
+      "eine",
+      "zwei",
+      "drei"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "„Dort“ heißt auf Spanisch ___.",
+     "options": [
+      "hay",
+      "ahí",
+      "¡ay!"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "1.3",
+   "topic": "C und Z",
+   "level": "A1",
+   "headline_es": "Una cerveza, por favor.<br>Pero sin «ts».",
+   "headline_de": "Ein Bier, bitte. Aber ohne „ts“.",
+   "index": [
+    "c (Aussprache)",
+    "z (Aussprache)",
+    "ce, ci",
+    "ca, co, cu",
+    "s (immer scharf)",
+    "Seseo (Lateinamerika)",
+    "casa / caza"
+   ],
+   "cartoon": {
+    "id": "1.3-A",
+    "icons": [
+     "1F37A",
+     "1F914",
+     "1F926"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Una «tser-wet-sa»,<br>por favor."
+     },
+     {
+      "pos": "tr",
+      "text": "¿Una… qué?"
+     }
+    ],
+    "gloss": "<es>cerveza</es> Bier – ohne ein einziges „ts“",
+    "prompt": "SCENE: A sunny terrace of a typical Madrid bar with small metal tables and a striped awning. On the left, JENS, a tall, very pale German tourist in his forties with a sunburnt nose, sandals with white socks and a small backpack, sits at a table, holding the menu, speaking with great confidence and a proud smile. Standing next to him, an older Spanish WAITER with a white shirt, black vest and a tray under his arm leans forward with a deeply puzzled face, one eyebrow raised high. At the next table on the right, DANI (34, beard, relaxed) quietly hides his face behind his hand in second-hand embarrassment. Leave clear empty space above Jens (top left) and above the waiter (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Das c hat zwei Gesichter. Vor e und i ist es <c1>weich</c1> wie das englische th in „think“ – genau wie das z. Vor a, o, u ist es <c2>hart</c2>: ein k. Ein deutsches „ts“ gibt es nie."
+     },
+     {
+      "type": "h",
+      "text": "Weich oder hart?",
+      "track": "1.3-1"
+     },
+     {
+      "type": "table",
+      "track": "1.3-1",
+      "head": [
+       "Schreibung",
+       "klingt wie",
+       "Beispiele"
+      ],
+      "es_cols": [
+       0,
+       2
+      ],
+      "rows": [
+       [
+        "<c1><es>ce · ci</es></c1>",
+        "th in engl. „think“",
+        "<es>cena, cero, cine, Lucía</es>"
+       ],
+       [
+        "<c1><es>za · zo · zu</es></c1>",
+        "th in engl. „think“",
+        "<es>zapato, zumo, azul, Zaragoza</es>"
+       ],
+       [
+        "<c2><es>ca · co · cu</es></c2>",
+        "k",
+        "<es>casa, coche, Cuba</es>"
+       ],
+       [
+        "<c2><es>que · qui</es></c2>",
+        "k – mehr in <g>1.7</g>",
+        "<es>queso, quince</es>"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Deutsche Augen lesen z und ce als „ts“ wie in „Cäsar“. Nie! <es>Cerveza</es> klingt „ther-BE-tha“. Und das s bleibt immer scharf, auch vorn: <es>sí</es> klingt wie „ßi“."
+     },
+     {
+      "type": "variantes",
+      "text": "<b>Seseo:</b> In ganz Lateinamerika, auf den Kanaren und in weiten Teilen Andalusiens klingen z und ce, ci wie ein scharfes s – <es>cerveza</es> wie „serbesa“, <es>casa</es> und <es>caza</es> gleich. <b>Ceceo:</b> In Teilen Andalusiens klingt umgekehrt auch das s wie th."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "k, s oder th? Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.3-2",
+      "pairs": [
+       {
+        "opts": [
+         "casa",
+         "caza"
+        ],
+        "gloss": "Haus / Jagd",
+        "said": 1
+       },
+       {
+        "opts": [
+         "cien",
+         "quien"
+        ],
+        "gloss": "hundert / wer",
+        "said": 1
+       },
+       {
+        "opts": [
+         "roca",
+         "rosa"
+        ],
+        "gloss": "Fels / Rose",
+        "said": 1
+       },
+       {
+        "opts": [
+         "cola",
+         "sola"
+        ],
+        "gloss": "Schlange / allein",
+        "said": 0
+       },
+       {
+        "opts": [
+         "taco",
+         "taza"
+        ],
+        "gloss": "Taco / Tasse",
+        "said": 1
+       },
+       {
+        "opts": [
+         "cita",
+         "quita"
+        ],
+        "gloss": "Verabredung / nimmt weg",
+        "said": 0
+       }
+      ]
+     },
+     {
+      "type": "mark",
+      "title": "Freitagabend bei Pilar. Wie klingt das c, z oder qu im unterstrichenen Wort? Schreib TH (wie engl. „think“) oder K.",
+      "kind": "Erkennen",
+      "text": "[[Cena|TH]] en [[casa|K]] de Pilar: [[queso|K]], [[croquetas|K]] y una [[cerveza|TH]] muy fría. Nico toma un [[zumo|TH]] [[azul|TH]]. ¿Un zumo azul? Sí. Nico tiene [[cuatro|K]] años y [[cinco|TH]] dinosaurios."
+     },
+     {
+      "type": "cloze",
+      "title": "c, z oder qu? Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.3-3",
+      "text": "{{z}}umo · {{c}}ena · {{qu}}eso · a{{z}}ul · {{c}}inco · {{qu}}ince · pla{{z}}a · {{c}}oche · Lu{{c}}ía · ta{{z}}a · {{c}}erve{{z}}a",
+      "why": "Den th-Laut hörst du, aber nicht, ob er c oder z geschrieben wird: <es>cinco</es> oder „zinco“? Vor e und i ist c die sichere Wahl, vor a, o, u steht z."
+     },
+     {
+      "type": "dialog",
+      "title": "Auf der Terrasse. Dani und Lucía bestellen. Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.3-4",
+      "lines": [
+       [
+        "Camarero",
+        "¡Buenas! ¿Qué les pongo?"
+       ],
+       [
+        "Dani",
+        "Una {{cerveza}}, por favor."
+       ],
+       [
+        "Lucía",
+        "Para mí, un {{zumo}} de naranja."
+       ],
+       [
+        "Dani",
+        "Y unas {{croquetas}} y un poco de {{queso}}."
+       ],
+       [
+        "Camarero",
+        "Muy bien. Son {{doce}} euros."
+       ]
+      ]
+     },
+     {
+      "type": "tongue",
+      "title": "Erst langsam, dann schnell. Kein einziges „ts“!",
+      "kind": "Sprechen",
+      "track": "1.3-5",
+      "es": "Cecilia come cinco cerezas y un queso en la plaza de Zaragoza.",
+      "de": "Cecilia isst auf dem Platz in Zaragoza fünf Kirschen und einen Käse."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Bier heißt cerve___a.",
+     "options": [
+      "z",
+      "s",
+      "c"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "In cine klingt das c wie ___.",
+     "options": [
+      "th in engl. „think“",
+      "k",
+      "ts"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Käse heißt ___eso.",
+     "options": [
+      "c",
+      "qu",
+      "k"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "1.4",
+   "topic": "G und J",
+   "level": "A1",
+   "headline_es": "¿Un bocadillo de «yamón»?<br>Lo siento, no sé qué es eso.",
+   "headline_de": "Ein Brötchen mit „Yamón“? Tut mir leid, ich weiß nicht, was das ist.",
+   "index": [
+    "g (Aussprache)",
+    "j (Aussprache)",
+    "ge, gi",
+    "gue, gui",
+    "güe, güi",
+    "ü (diéresis)",
+    "jamón"
+   ],
+   "cartoon": {
+    "id": "1.4-A",
+    "icons": [
+     "1F96A",
+     "1F356",
+     "2753"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Un bocadillo<br>de «yamón», por favor."
+     },
+     {
+      "pos": "tr",
+      "text": "¿De… qué?"
+     }
+    ],
+    "gloss": "<es>jamón</es> Schinken – das j wie ch in „Bach“",
+    "prompt": "SCENE: Inside a traditional Spanish tapas bar. Behind the counter, a row of whole cured hams hangs from the ceiling, clearly visible and glowing in warm light. On the left at the counter, JENS, a tall, pale German tourist in his forties with a sunburnt nose and a small backpack, points with great confidence directly at the hanging hams. On the right behind the counter, a stocky BARMAN with a moustache and an apron stares at him in total confusion, a knife in one hand and an empty plate in the other. The hams hang right above his head. Leave clear empty space above Jens (top left) and above the barman (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<c2>j</c2> und <c2>g</c2> vor e und i kratzen kräftig wie ch in „Bach“. Vor a, o, u bleibt <c1>g</c1> ein g wie in „Garten“."
+     },
+     {
+      "type": "h",
+      "text": "Was du siehst – was du hörst",
+      "track": "1.4-1"
+     },
+     {
+      "type": "table",
+      "track": "1.4-1",
+      "head": [
+       "Schreibung",
+       "klingt wie",
+       "Beispiele"
+      ],
+      "es_cols": [
+       0,
+       2
+      ],
+      "rows": [
+       [
+        "<c1><es>ga · go · gu</es></c1>",
+        "g in „Garten“",
+        "<es>gato, gol, gusto</es>"
+       ],
+       [
+        "<c2><es>ge · gi</es></c2> und <c2><es>j</es></c2>",
+        "ch in „Bach“, kräftig",
+        "<es>gente, gigante, jamón, jefe</es>"
+       ],
+       [
+        "<c1><es>gue · gui</es></c1>",
+        "g, das u bleibt stumm",
+        "<es>guerra, guitarra</es>"
+       ],
+       [
+        "<c1><es>güe · güi</es></c1>",
+        "g, und das u spricht mit",
+        "<es>pingüino, vergüenza</es>"
+       ]
+      ]
+     },
+     {
+      "type": "trick",
+      "icon": "1F482",
+      "text": "In <es>gue, gui</es> hält das u als Leibwächter das g hart und schweigt. Zwei Punkte wecken es: <es>pin-gü-i-no</es>."
+     },
+     {
+      "type": "ojo",
+      "text": "Das j ist nie das j aus „ja“: <es>Jamón</es> ist kein „Yamón“, <es>Juan</es> kein „Yuan“."
+     },
+     {
+      "type": "variantes",
+      "text": "In der Karibik, in Mittelamerika, Kolumbien, auf den Kanaren und in Andalusien ist das j nur gehaucht wie ein deutsches h: <es>jamón</es> wie „hamón“."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Garten oder Bach? Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.4-2",
+      "pairs": [
+       {
+        "opts": [
+         "gota",
+         "jota"
+        ],
+        "gloss": "Tropfen / der Buchstabe J",
+        "said": 1
+       },
+       {
+        "opts": [
+         "higo",
+         "hijo"
+        ],
+        "gloss": "Feige / Sohn",
+        "said": 0
+       },
+       {
+        "opts": [
+         "mago",
+         "majo"
+        ],
+        "gloss": "Zauberer / nett",
+        "said": 1
+       },
+       {
+        "opts": [
+         "paga",
+         "paja"
+        ],
+        "gloss": "zahlt / Stroh",
+        "said": 0
+       },
+       {
+        "opts": [
+         "trago",
+         "trajo"
+        ],
+        "gloss": "Schluck / brachte",
+        "said": 1
+       }
+      ]
+     },
+     {
+      "type": "sort",
+      "title": "Garten oder Bach? Sortiere nach dem Klang.",
+      "kind": "Erkennen",
+      "words": [
+       "gato",
+       "gente",
+       "guerra",
+       "jamón",
+       "guitarra",
+       "girasol",
+       "gorila",
+       "viaje"
+      ],
+      "baskets": [
+       {
+        "label": "g wie in „Garten“",
+        "answers": [
+         "gato",
+         "guerra",
+         "guitarra",
+         "gorila"
+        ]
+       },
+       {
+        "label": "ch wie in „Bach“",
+        "answers": [
+         "gente",
+         "jamón",
+         "girasol",
+         "viaje"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "u oder ü? Weck das u nur, wenn es sprechen soll.",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "ping{{ü}}ino",
+       "g{{u}}erra",
+       "verg{{ü}}enza",
+       "g{{u}}itarra",
+       "cig{{ü}}eña",
+       "Mig{{u}}el",
+       "ling{{ü}}ística",
+       "hamburg{{u}}esa",
+       "ag{{u}}a"
+      ],
+      "why": "Bei <es>agua</es> warst du vielleicht unsicher: Vor a und o spricht das u immer mit, deshalb braucht es dort nie Punkte."
+     },
+     {
+      "type": "cloze",
+      "title": "Pilars Einkaufszettel. g oder j? Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.4-3",
+      "text": "naran{{j}}as · a{{j}}o · lechu{{g}}a · {{g}}uisantes · pipas de {{g}}irasol · ¡y {{j}}amón para Nico!",
+      "why": "Vor a, o, u verrät dir das Ohr den Buchstaben. Bei <es>girasol</es> hörst du keinen Unterschied zu j – da hilft nur das Auge."
+     },
+     {
+      "type": "tongue",
+      "title": "Zungenbrecher. Sag ihn dreimal, jedes Mal ein bisschen schneller.",
+      "kind": "Sprechen",
+      "track": "1.4-4",
+      "es": "Juan junta juncos junto a la zanja.",
+      "de": "Juan sammelt Binsen neben dem Graben."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Pinguin heißt pin___ino.",
+     "options": [
+      "gu",
+      "gü"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "In gente klingt das g wie ___.",
+     "options": [
+      "g in „Garten“",
+      "ch in „Bach“",
+      "j in „ja“"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Gitarre heißt ___itarra.",
+     "options": [
+      "g",
+      "gu",
+      "j"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "1.5",
+   "topic": "R und RR",
+   "level": "A1",
+   "headline_es": "No quiero un «pero».<br>¡Quiero un perro!",
+   "headline_de": "Ich will kein „aber“. Ich will einen Hund!",
+   "index": [
+    "r (Aussprache)",
+    "rr",
+    "Zungenspitzen-r",
+    "gerolltes r",
+    "pero / perro"
+   ],
+   "cartoon": {
+    "id": "1.5-A",
+    "icons": [
+     "1F415",
+     "1F9D2",
+     "1F475"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Pero, Nico…"
+     },
+     {
+      "pos": "tr",
+      "text": "¡No «pero»!<br>¡PE-RRRRRO!"
+     }
+    ],
+    "gloss": "<es>pero</es> aber · <es>perro</es> Hund",
+    "prompt": "SCENE: A sunny path in Madrid's Retiro park. In the centre, a scruffy, friendly medium-sized mixed-breed dog wags its tail and sits on the gravel. On the right, NICO (4, curly hair, dinosaur T-shirt) has thrown both arms around the dog's neck and refuses to let go, his feet planted firmly, chin raised, rolling his tongue with dramatic determination. On the left, PILAR (63, short grey bob, cardigan, handbag over her arm) bends forward with a raised index finger, a mix of strictness and helplessness on her face. In the background, DANI (34, beard) holds the empty end of the dog's lead and shrugs with a calm smile. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Das spanische r macht die Zungenspitze, nie der Rachen. <c1>r</c1> heißt: einmal tippen. <c2>rr</c2> heißt: rollen wie ein kleiner Motor. Ein Tipp mehr – und aus <es>pero</es> (aber) wird <es>perro</es> (Hund)."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Einmal tippen",
+        "sub": "r",
+        "icon": "1F449",
+        "tone": 1,
+        "track": "1.5-1",
+        "uses": [
+         {
+          "t": "zwischen Vokalen",
+          "x": "<es>pero, cara, María</es>"
+         },
+         {
+          "t": "am Wortende – immer hörbar",
+          "x": "<es>Pilar, comer, hablar</es>"
+         },
+         {
+          "t": "nach Konsonant",
+          "x": "<es>tres, gracias, bravo</es>"
+         }
+        ]
+       },
+       {
+        "title": "Rollen",
+        "sub": "rr – und manchmal r",
+        "icon": "1F3CD",
+        "tone": 2,
+        "track": "1.5-1",
+        "uses": [
+         {
+          "t": "rr zwischen Vokalen",
+          "x": "<es>perro, arroz, Tierra</es>"
+         },
+         {
+          "t": "r am Wortanfang",
+          "x": "<es>Rafa, rojo, Roma</es>"
+         },
+         {
+          "t": "r nach l, n, s",
+          "x": "<es>Enrique, alrededor, Israel</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "variantes",
+      "text": "In Puerto Rico rollt das rr oft weiter hinten im Hals: <es>carro</es>. In den Anden und in Costa Rica werden r und rr oft gezischt, fast wie „rsch“."
+     },
+     {
+      "type": "trick",
+      "icon": "1F996",
+      "text": "Das Tippen kannst du schon: Sag ganz schnell „Edda, Edda, Edda“ – die Zungenspitze tippt einmal hinter die oberen Zähne. Das ist <es>era</es>. Fürs Rollen mach Nicos T-Rex nach: <es>¡drrrr!</es> Erst mit d davor, dann ohne."
+     },
+     {
+      "type": "ojo",
+      "text": "Das deutsche Rachen-r klingt für Spanier wie ein j: Aus <es>Rosa</es> wird „Josa“. Und das r am Ende bleibt hörbar: <es>Pilar</es>, nicht „Pila“."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Tippen oder rollen? Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.5-2",
+      "pairs": [
+       {
+        "opts": [
+         "pero",
+         "perro"
+        ],
+        "gloss": "aber / Hund",
+        "said": 1
+       },
+       {
+        "opts": [
+         "caro",
+         "carro"
+        ],
+        "gloss": "teuer / Karren",
+        "said": 0
+       },
+       {
+        "opts": [
+         "para",
+         "parra"
+        ],
+        "gloss": "für / Weinrebe",
+        "said": 1
+       },
+       {
+        "opts": [
+         "cero",
+         "cerro"
+        ],
+        "gloss": "null / Hügel",
+        "said": 0
+       },
+       {
+        "opts": [
+         "ahora",
+         "ahorra"
+        ],
+        "gloss": "jetzt / spart",
+        "said": 1
+       },
+       {
+        "opts": [
+         "coro",
+         "corro"
+        ],
+        "gloss": "Chor / ich renne",
+        "said": 0
+       }
+      ]
+     },
+     {
+      "type": "mark",
+      "title": "Rafas Hund. Hör zu: Wird das r getippt (T) oder gerollt (R)? Schreib T oder R.",
+      "kind": "Hören",
+      "track": "1.5-3",
+      "text": "[[Rafa|R]], el jefe de Lucía, tiene un [[perro|R]] enorme. Se llama [[Pirata|T]]. Come [[arroz|R]] y duerme en la oficina. [[Pero|T]] cuando ve a [[Enrique|R]], el cartero, hace: ¡[[grrr|R]]!",
+      "why": "<es>Enrique</es> schreibt man mit einem r, gerollt wird trotzdem: Nach n rollt das r immer."
+     },
+     {
+      "type": "fill",
+      "title": "r oder rr? Die Übersetzung hilft dir.",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "pe{{rr}}o <de>Hund</de>",
+       "pe{{r}}o <de>aber</de>",
+       "a{{rr}}oz <de>Reis</de>",
+       "to{{rr}}e <de>Turm</de>",
+       "ba{{rr}}io <de>Stadtviertel</de>",
+       "pa{{r}}a <de>für</de>"
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Im Park. Nico hat einen Plan. Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.5-4",
+      "lines": [
+       [
+        "Nico",
+        "¡Abuela, mira! ¡Un {{perro}}!"
+       ],
+       [
+        "Pilar",
+        "Es Tofu, el perro de Dani."
+       ],
+       [
+        "Nico",
+        "¡Yo quiero un perro! ¡{{Ahora}}!"
+       ],
+       [
+        "Pilar",
+        "{{Pero}}, Nico, tu mamá…"
+       ],
+       [
+        "Nico",
+        "¡Un perro grande y {{rojo}}, como un T-{{Rex}}!"
+       ]
+      ]
+     },
+     {
+      "type": "tongue",
+      "title": "Der berühmteste Zungenbrecher Spaniens. Roll, so gut du kannst!",
+      "kind": "Sprechen",
+      "track": "1.5-5",
+      "es": "Erre con erre, cigarro; erre con erre, barril. Rápido ruedan los carros cargados de azúcar del ferrocarril.",
+      "de": "R mit r: Zigarre, r mit r: Fass. Schnell rollen die Wagen, beladen mit Zucker von der Eisenbahn."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Hund heißt pe___o.",
+     "options": [
+      "r",
+      "rr"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Das r in Rafa wird ___.",
+     "options": [
+      "einmal getippt",
+      "gerollt"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "„Aber“ heißt pe___o.",
+     "options": [
+      "r",
+      "rr"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "1.6",
+   "topic": "B, V und das weiche D",
+   "level": "A1",
+   "headline_es": "¿Vaca o baca?<br>Suena igual.",
+   "headline_de": "Kuh oder Dachgepäckträger? Klingt gleich.",
+   "index": [
+    "b und v",
+    "weiches b",
+    "weiches d",
+    "weiches g",
+    "mb / nv",
+    "vaca / baca"
+   ],
+   "cartoon": {
+    "id": "1.6-A",
+    "icons": [
+     "1F697",
+     "1F404",
+     "1F4F1"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Mamá, tengo<br>una baca nueva!"
+     },
+     {
+      "pos": "tr",
+      "text": "¿¡Una VACA!?<br>¿En el coche?"
+     }
+    ],
+    "gloss": "<es>baca</es> Dachgepäckträger · <es>vaca</es> Kuh",
+    "prompt": "SCENE: Left two thirds of the image: a quiet Madrid street. DANI (34, beard, relaxed) stands proudly next to his small old hatchback car and points with one hand at a brand-new, shiny, completely empty roof rack on top of the car, while holding a smartphone to his ear with the other hand. Right third: a round inset, like a picture-in-picture video call, showing PILAR (63, short grey bob, cardigan) in her kitchen with a phone at her ear, eyes wide in horror; above her head floats a small thought cloud showing a cow standing on the roof of a car. Leave clear empty space above Dani (top left) and above the inset (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "b und v sind Zwillinge: Sie klingen gleich, wie ein deutsches b – nie wie w oder f. Und zwischen zwei Vokalen legen sich b, d und g aufs Sofa: Sie werden <c1>weich</c1> und lässig."
+     },
+     {
+      "type": "h",
+      "text": "Hart oder auf dem Sofa?",
+      "track": "1.6-1"
+     },
+     {
+      "type": "table",
+      "track": "1.6-1",
+      "head": [
+       "Wo?",
+       "klingt wie",
+       "Beispiele"
+      ],
+      "es_cols": [
+       2
+      ],
+      "rows": [
+       [
+        "<b>b, v</b>",
+        "b in „Bus“; zwischen Vokalen <c1>weich</c1>",
+        "<es>vino, también · uva</es>"
+       ],
+       [
+        "<b>d</b> am Anfang, nach n und l",
+        "d in „Dach“",
+        "<es>día, Dani, cuando, falda</es>"
+       ],
+       [
+        "<b>d</b> zwischen Vokalen",
+        "<c1>weich</c1> wie th in engl. „this“",
+        "<es>nada, todo, adiós</es>"
+       ],
+       [
+        "<b>g</b> zwischen Vokalen",
+        "<c1>weich</c1>, nur gehaucht",
+        "<es>agua, amigo, lago</es>"
+       ]
+      ]
+     },
+     {
+      "type": "variantes",
+      "text": "In Andalusien und im lockeren Gespräch fällt das d zwischen Vokalen oft ganz weg: <es>cansado</es> → „cansao“, <es>todo</es> → „to“."
+     },
+     {
+      "type": "trick",
+      "icon": "270F",
+      "text": "b oder v? Hören hilft beim Schreiben nicht. Eine sichere Regel gibt es: Nach m steht immer b, nach n immer v – <es>también, hombre</es>, aber <es>invierno, enviar</es>."
+     },
+     {
+      "type": "ojo",
+      "text": "<es>Vino</es> klingt wie „bino“, nie wie „Wino“. Und in Madrid ist das d am Ende fast weg: „Madri“."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Welches Wort hörst du? Achtung, das weiche d klingt fast wie ein getipptes r.",
+      "kind": "Hören",
+      "track": "1.6-2",
+      "pairs": [
+       {
+        "opts": [
+         "beso",
+         "peso"
+        ],
+        "gloss": "Kuss / Gewicht",
+        "said": 0
+       },
+       {
+        "opts": [
+         "vino",
+         "pino"
+        ],
+        "gloss": "Wein / Kiefer",
+        "said": 0
+       },
+       {
+        "opts": [
+         "boca",
+         "poca"
+        ],
+        "gloss": "Mund / wenig",
+        "said": 1
+       },
+       {
+        "opts": [
+         "todo",
+         "toro"
+        ],
+        "gloss": "alles / Stier",
+        "said": 1
+       },
+       {
+        "opts": [
+         "cada",
+         "cara"
+        ],
+        "gloss": "jede / Gesicht",
+        "said": 0
+       },
+       {
+        "opts": [
+         "dos",
+         "tos"
+        ],
+        "gloss": "zwei / Husten",
+        "said": 1
+       }
+      ]
+     },
+     {
+      "type": "sort",
+      "title": "Hart oder auf dem Sofa? Sortiere nach dem Klang des d.",
+      "kind": "Erkennen",
+      "words": [
+       "Dani",
+       "nada",
+       "día",
+       "todo",
+       "cuando",
+       "cada",
+       "falda",
+       "adiós"
+      ],
+      "baskets": [
+       {
+        "label": "hart wie in „Dach“",
+        "answers": [
+         "Dani",
+         "día",
+         "cuando",
+         "falda"
+        ]
+       },
+       {
+        "label": "weich wie engl. „this“",
+        "answers": [
+         "nada",
+         "todo",
+         "cada",
+         "adiós"
+        ]
+       }
+      ],
+      "why": "Nach n und l bleibt das d hart: <es>cuando, falda</es>."
+     },
+     {
+      "type": "fill",
+      "title": "b oder v? Denk an m und n.",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "tam{{b}}ién",
+       "in{{v}}ierno",
+       "hom{{b}}re",
+       "en{{v}}iar",
+       "cam{{b}}io",
+       "in{{v}}itar"
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Postkarte aus Valencia. b oder v? Hör ruhig zu – helfen wird es dir nicht.",
+      "kind": "Schreiben",
+      "track": "1.6-3",
+      "text": "¡Hola, mamá! Un {{b}}eso desde {{V}}alencia. Hace {{b}}uen tiempo, el {{v}}ino es {{b}}ueno y {{b}}arato. Dani {{b}}ebe agua. Yo, no. ¡Hasta el sá{{b}}ado! Lucía",
+      "why": "b und v klingen gleich, also musst du die Schreibung lernen. Eselsbrücke: <es>beber</es> (trinken) und <es>bueno</es> – b wie „Bier“ und „besser“."
+     },
+     {
+      "type": "tongue",
+      "title": "Sprich nach. Jedes v ist ein b, jedes b zwischen Vokalen ein weiches.",
+      "kind": "Sprechen",
+      "track": "1.6-4",
+      "es": "Una vaca vaga viaja en la baca de un coche viejo.",
+      "de": "Eine faule Kuh reist auf dem Dachgepäckträger eines alten Autos."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Auch heißt tam___ién.",
+     "options": [
+      "b",
+      "v"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Winter heißt in___ierno.",
+     "options": [
+      "b",
+      "v"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Das Wort vino klingt wie ___.",
+     "options": [
+      "„bino“",
+      "„wino“",
+      "„fino“"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "1.7",
+   "topic": "LL, Y, Ñ, H und QU",
+   "level": "A1",
+   "headline_es": "¡Feliz año nuevo!<br>Con ñ, por favor.",
+   "headline_de": "Frohes neues Jahr! Mit ñ, bitte.",
+   "index": [
+    "ll",
+    "y (Aussprache)",
+    "ñ",
+    "h (stumm)",
+    "ch",
+    "qu",
+    "año / ano"
+   ],
+   "cartoon": {
+    "id": "1.7-A",
+    "icons": [
+     "1F347",
+     "1F4F1",
+     "1F926"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Mensaje de mamá:<br>«¡Feliz ano nuevo, hija!»"
+     },
+     {
+      "pos": "tr",
+      "text": "Mamá… ¡la ñ!"
+     }
+    ],
+    "gloss": "<es>año</es> Jahr · <es>ano</es> After – ja, wirklich",
+    "prompt": "SCENE: New Year's Eve, a few seconds after midnight, in Lucía's small Madrid apartment. A TV in the background shows a festive crowd at night under a clock tower, with confetti. On the sofa, DANI (34, beard, relaxed, paper party hat) calmly eats grapes one by one from a little bowl, completely relaxed. Next to him, LUCÍA (32, messy bun, sparkly party top) stares at the screen of her smartphone, slapping her free hand against her forehead, half laughing, half in despair. Streamers and a half-empty bottle of cava on the coffee table. Leave clear empty space top left (for a message-style bubble) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Diese Buchstaben tragen Kostüm: Sie sehen anders aus, als sie klingen. Kennst du das Kostüm, liest du sofort richtig."
+     },
+     {
+      "type": "h",
+      "text": "Wer steckt im Kostüm?",
+      "track": "1.7-1"
+     },
+     {
+      "type": "table",
+      "track": "1.7-1",
+      "head": [
+       "Schreibung",
+       "klingt wie",
+       "Beispiele"
+      ],
+      "es_cols": [
+       0,
+       2
+      ],
+      "rows": [
+       [
+        "<es>ll · y</es>",
+        "j in „ja“; <es>y</es> allein und am Ende: i",
+        "<es>calle, yo, playa · y, hoy, muy</es>"
+       ],
+       [
+        "<es>ñ</es>",
+        "gn in „Champagner“",
+        "<es>España, mañana, niño, año</es>"
+       ],
+       [
+        "<es>ch</es>",
+        "tsch in „Tschüss“",
+        "<es>chico, noche, churros</es>"
+       ],
+       [
+        "<es>h</es>",
+        "nichts – immer stumm",
+        "<es>hola, hotel, ahora, hay</es>"
+       ],
+       [
+        "<es>que · qui</es>",
+        "k, das u bleibt stumm",
+        "<es>queso, quince, Quique</es>"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Die Welle auf dem ñ ist kein Schmuck: <es>año</es> heißt Jahr, <es>ano</es> heißt After. <es>¡Feliz cumpleaños!</es> ohne ñ wünscht etwas ganz anderes."
+     },
+     {
+      "type": "variantes",
+      "text": "Fast überall klingen ll und y gleich (Yeísmo). Am Río de la Plata klingen beide wie „sch“: <es>calle</es> „casche“, <es>yo</es> „scho“. In Teilen der Anden und in Paraguay klingt ll noch anders als y, etwa wie „lj“."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Mit Welle oder ohne? Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.7-2",
+      "pairs": [
+       {
+        "opts": [
+         "año",
+         "ano"
+        ],
+        "gloss": "Jahr / After",
+        "said": 0
+       },
+       {
+        "opts": [
+         "cana",
+         "caña"
+        ],
+        "gloss": "graues Haar / kleines Bier",
+        "said": 1
+       },
+       {
+        "opts": [
+         "pena",
+         "peña"
+        ],
+        "gloss": "Kummer / Clique",
+        "said": 0
+       },
+       {
+        "opts": [
+         "mono",
+         "moño"
+        ],
+        "gloss": "Affe / Haarknoten",
+        "said": 1
+       },
+       {
+        "opts": [
+         "pollo",
+         "polo"
+        ],
+        "gloss": "Hähnchen / Poloshirt",
+        "said": 0
+       },
+       {
+        "opts": [
+         "olla",
+         "ola"
+        ],
+        "gloss": "Kochtopf / Welle",
+        "said": 1
+       }
+      ]
+     },
+     {
+      "type": "match",
+      "title": "Kostüm ab! Wie klingt das Wort? Ordne die deutsche Lautschrift zu.",
+      "kind": "Erkennen",
+      "left": [
+       "hola",
+       "queso",
+       "calle",
+       "niño",
+       "chico",
+       "hoy"
+      ],
+      "right": [
+       "„tschiko“",
+       "„keso“",
+       "„ninjo“",
+       "„oi“",
+       "„ola“",
+       "„kaje“"
+      ],
+      "answer": [
+       4,
+       1,
+       5,
+       2,
+       0,
+       3
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Nicos Geburtstagskarte. ñ, ll, h oder qu? Hör zu und ergänze.",
+      "kind": "Hören",
+      "track": "1.7-3",
+      "text": "¡Feliz cumplea{{ñ}}os, Nico! {{H}}oy tienes cuatro a{{ñ}}os. Ma{{ñ}}ana {{ll}}ega tu regalo: un dinosaurio {{qu}}e ruge. ¡Un beso muy fuerte! Tu tía Lucía",
+      "why": "Das h in <es>hoy</es> hörst du nicht, und <es>llega</es> könnte man nach dem Klang auch mit y schreiben. Solche Wörter lernst du mit den Augen."
+     },
+     {
+      "type": "free",
+      "title": "Dein Neujahrsgruß. Schreib eine kurze Nachricht an jemanden, den du magst – mit ñ!",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>¡Feliz año nuevo, mamá! Un beso muy fuerte.</es> Hast du die Welle auf dem ñ gesetzt?"
+     },
+     {
+      "type": "tongue",
+      "title": "Ein Zungenbrecher voller ñ. Sprich nach.",
+      "kind": "Sprechen",
+      "track": "1.7-4",
+      "es": "Ñoño Yáñez come ñame por las mañanas con el niño.",
+      "de": "Ñoño Yáñez isst morgens mit dem Kind Yamswurzel."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Jahr heißt a___o.",
+     "options": [
+      "n",
+      "ñ"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "In hola spricht man das h ___.",
+     "options": [
+      "wie in „Haus“",
+      "gar nicht"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "queso klingt wie ___.",
+     "options": [
+      "„keso“",
+      "„kweso“"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "1.8",
+   "topic": "Betonung und Akzent",
+   "level": "A1",
+   "headline_es": "Papá, el Papa<br>come papas.",
+   "headline_de": "Papa, der Papst isst Kartoffeln.",
+   "index": [
+    "Betonung",
+    "Akzent (tilde)",
+    "Betonungsregeln",
+    "tú / tu",
+    "él / el",
+    "sí / si",
+    "papa / papá"
+   ],
+   "cartoon": {
+    "id": "1.8-A",
+    "icons": [
+     "1F4FA",
+     "1F35F",
+     "1F9D2"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Papá, papá!<br>¡El Papa come papas!"
+     },
+     {
+      "pos": "tr",
+      "text": "Patatas, Nico.<br>Aquí se dice «patatas»."
+     }
+    ],
+    "gloss": "<es>papá</es> Papa · <es>el Papa</es> der Papst · <es>papas</es> Kartoffeln (Lateinamerika, Kanaren)",
+    "prompt": "SCENE: A family living room on a Sunday afternoon. On a TV screen in the centre, an elderly man in white papal robes and a white skullcap stands on a balcony, cheerfully eating French fries from a paper cone. On the left, NICO (4, curly hair, dinosaur T-shirt) stands right in front of the TV, pointing at the screen with both hands, utterly amazed. On the right, NICO'S FATHER (Lucía's brother, mid-thirties, glasses, very sleepy) lies stretched out on the sofa under a blanket, opening one eye and raising a lazy finger like a teacher. Leave clear empty space above Nico (top left) and above the father (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Jedes spanische Wort hat <em>eine</em> laute Silbe. Wo sie liegt, verrät meist das <c1>Wortende</c1>. Wo die Regel nicht stimmt, steht ein <c2>Akzent</c2> wie ein Warnschild: Hier, diese Silbe!"
+     },
+     {
+      "type": "h",
+      "text": "Zwei Regeln und ein Warnschild",
+      "track": "1.8-1"
+     },
+     {
+      "type": "table",
+      "track": "1.8-1",
+      "head": [
+       "Das Wort endet auf …",
+       "betont wird …",
+       "Beispiele"
+      ],
+      "es_cols": [
+       2
+      ],
+      "rows": [
+       [
+        "Vokal, -n oder -s",
+        "<c1>die vorletzte Silbe</c1>",
+        "<es><b>ca</b>sa, <b>ha</b>blan, <b>lu</b>nes, <b>Car</b>men</es>"
+       ],
+       [
+        "anderen Konsonanten",
+        "<c1>die letzte Silbe</c1>",
+        "<es>Ma<b>drid</b>, ha<b>blar</b>, Pi<b>lar</b>, re<b>loj</b></es>"
+       ],
+       [
+        "egal – die Regel passt nicht",
+        "<c2>die Silbe mit Akzent</c2>",
+        "<es>ca<b>fé</b>, pa<b>pá</b>, <b>mó</b>vil, ja<b>món</b>, <b>lá</b>piz</es>"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Ein Akzent, ein anderes Wort",
+      "track": "1.8-2"
+     },
+     {
+      "type": "examples",
+      "track": "1.8-2",
+      "items": [
+       [
+        "papa · papá",
+        "Papst (oder Kartoffel) · Papa"
+       ],
+       [
+        "hablo · habló",
+        "ich spreche · er/sie sprach"
+       ],
+       [
+        "inglés · ingles",
+        "Englisch · Leisten – <es>Hablo ingles</es> geht also schief"
+       ],
+       [
+        "tu · tú   el · él   si · sí",
+        "dein · du   der · er   wenn · ja"
+       ]
+      ]
+     },
+     {
+      "type": "spikiu",
+      "title": "Drittletzte Silbe? Immer Akzent!",
+      "text": "Liegt die Betonung noch weiter vorn, auf der drittletzten Silbe, musst du nicht rechnen: Akzent, immer, ohne Ausnahme. <es><b>mú</b>sica, te<b>lé</b>fono, <b>sá</b>bado, <b>plá</b>tano</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Wo liegt die Betonung? Welches Wort hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "1.8-3",
+      "pairs": [
+       {
+        "opts": [
+         "papa",
+         "papá"
+        ],
+        "gloss": "Papst / Papa",
+        "said": 1
+       },
+       {
+        "opts": [
+         "hablo",
+         "habló"
+        ],
+        "gloss": "ich spreche / er sprach",
+        "said": 0
+       },
+       {
+        "opts": [
+         "esta",
+         "está"
+        ],
+        "gloss": "diese / ist",
+        "said": 1
+       },
+       {
+        "opts": [
+         "ingles",
+         "inglés"
+        ],
+        "gloss": "Leisten / Englisch",
+        "said": 1
+       },
+       {
+        "opts": [
+         "secretaria",
+         "secretaría"
+        ],
+        "gloss": "Sekretärin / Sekretariat",
+        "said": 0
+       },
+       {
+        "opts": [
+         "tomo",
+         "tomó"
+        ],
+        "gloss": "ich nehme / er nahm",
+        "said": 0
+       }
+      ]
+     },
+     {
+      "type": "sort",
+      "title": "Ohne Akzent geht es nach dem Wortende. Welche Silbe ist betont?",
+      "kind": "Erkennen",
+      "words": [
+       "casa",
+       "Madrid",
+       "lunes",
+       "hablar",
+       "Carmen",
+       "papel",
+       "zapato",
+       "Pilar"
+      ],
+      "baskets": [
+       {
+        "label": "die vorletzte",
+        "answers": [
+         "casa",
+         "lunes",
+         "Carmen",
+         "zapato"
+        ]
+       },
+       {
+        "label": "die letzte",
+        "answers": [
+         "Madrid",
+         "hablar",
+         "papel",
+         "Pilar"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "Akzent oder nicht? Schreib den Vokal – mit Akzent, wenn er nötig ist.",
+      "kind": "Entscheiden",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "caf{{é|e}}",
+       "m{{ú|u}}sica",
+       "m{{ó|o}}vil",
+       "l{{u|u}}nes",
+       "tel{{é|e}}fono",
+       "jam{{ó|o}}n",
+       "Pil{{a|a}}r",
+       "c{{a|a}}sa",
+       "l{{á|a}}piz"
+      ],
+      "why": "<es>lunes, Pilar, casa</es> folgen der Regel – kein Akzent. <es>jamón</es> endet auf n, ist aber hinten betont: Akzent. <es>lápiz, móvil</es> enden auf Konsonant, sind aber vorn betont: Akzent."
+     },
+     {
+      "type": "choice",
+      "title": "Mit oder ohne Akzent? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "¿Es [[!tu|tú]] móvil? <de>Ist das dein Handy?</de>",
+       "[[Tu|!Tú]] eres Dani, ¿no? <de>Du bist Dani, oder?</de>",
+       "[[!Él|El]] es Rafa, mi jefe. <de>Er ist Rafa, mein Chef.</de>",
+       "¿Dónde [[esta|!está]] Nico? <de>Wo ist Nico?</de>"
+      ]
+     },
+     {
+      "type": "tongue",
+      "title": "Sprechübung. Klopf bei jeder betonten Silbe auf den Tisch.",
+      "kind": "Sprechen",
+      "track": "1.8-4",
+      "es": "Mi papá toma café en el sofá y escucha música en el móvil.",
+      "de": "Mein Papa trinkt Kaffee auf dem Sofa und hört Musik auf dem Handy."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "___ eres mi amigo.",
+     "options": [
+      "Tu",
+      "Tú"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Telefon heißt tel___fono.",
+     "options": [
+      "e",
+      "é"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Madrid wird auf der ___ Silbe betont.",
+     "options": [
+      "letzten",
+      "vorletzten"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "1.9",
+   "topic": "Satzmelodie und ¿…? ¡…!",
+   "level": "A1",
+   "headline_es": "¿Tienes novio?<br>¡Tienes novio!",
+   "headline_de": "Hast du einen Freund? Du hast einen Freund!",
+   "index": [
+    "Satzmelodie",
+    "Fragezeichen (¿ ?)",
+    "Ausrufezeichen (¡ !)",
+    "Ja-Nein-Frage",
+    "Intonation"
+   ],
+   "cartoon": {
+    "id": "1.9-A",
+    "icons": [
+     "2753",
+     "2757",
+     "2615"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿¡Tienes novio!?"
+     },
+     {
+      "pos": "tc",
+      "text": "¡Tiene novio!<br>¡Tiene novio!"
+     },
+     {
+      "pos": "tr",
+      "text": "Tengo novio.<br>Se llama Dani."
+     }
+    ],
+    "gloss": "<es>novio</es> fester Freund · <es>se llama</es> er heißt",
+    "prompt": "SCENE: Saturday morning in Lucía's small Madrid kitchen. On the left, PILAR (63, short grey bob, cardigan) has just come in through the door, a stack of plastic food containers in her arms, frozen mid-step, eyes and mouth wide open. In the centre, DANI (34, beard, striped pyjamas, bare feet) stands at the stove with a coffee pot and gives a calm little wave. NICO (4, curly hair) bounces on the spot next to Pilar, pointing at Dani and grinning wickedly. On the right, LUCÍA (32, messy bun, bathrobe) leans against the fridge with a mug, completely deadpan. Leave clear empty space top left, top centre and top right for three speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Eine spanische Frage ist oft ein normaler Satz – nur die Stimme macht sie zur Frage. Darum warnt vorne ein <c2>¿</c2>: Gleich geht die Stimme hoch!"
+     },
+     {
+      "type": "h",
+      "text": "Gleiche Wörter, andere Melodie",
+      "track": "1.9-1"
+     },
+     {
+      "type": "table",
+      "track": "1.9-1",
+      "head": [
+       "Satz",
+       "Melodie",
+       "Was ist es?"
+      ],
+      "es_cols": [
+       0
+      ],
+      "rows": [
+       [
+        "<es>Tienes hambre.</es>",
+        "↘ fällt am Ende",
+        "Aussage: Du hast Hunger."
+       ],
+       [
+        "<es>¿Tienes hambre?</es>",
+        "↗ steigt am Ende",
+        "Ja-Nein-Frage: Hast du Hunger?"
+       ],
+       [
+        "<es>¿Dónde está Nico?</es>",
+        "↘ fällt am Ende",
+        "Frage mit Fragewort: Wo ist Nico?"
+       ],
+       [
+        "<es>¡Qué hambre!</es>",
+        "↗↘ hoch, dann runter",
+        "Ausruf: Was für ein Hunger!"
+       ]
+      ]
+     },
+     {
+      "type": "variantes",
+      "text": "Auf den Kanaren, in der Karibik, in Mexiko und in Argentinien schwingt die Satzmelodie hörbar anders – in Buenos Aires zum Beispiel fast italienisch."
+     },
+     {
+      "type": "h",
+      "text": "Das Warnschild steht da, wo die Frage beginnt",
+      "track": "1.9-2"
+     },
+     {
+      "type": "examples",
+      "track": "1.9-2",
+      "items": [
+       [
+        "Lucía, ¿tienes un momento?",
+        "Lucía, hast du kurz Zeit?"
+       ],
+       [
+        "Hola, mamá. ¡Qué sorpresa!",
+        "Hallo, Mama. Was für eine Überraschung!"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Keine Umstellung wie im Deutschen nötig: <es>Tienes hambre.</es> → <es>¿Tienes hambre?</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Frage oder Aussage? Hör auf die Melodie und kreuze an.",
+      "kind": "Hören",
+      "track": "1.9-3",
+      "pairs": [
+       {
+        "opts": [
+         "Es tarde.",
+         "¿Es tarde?"
+        ],
+        "gloss": "Es ist spät.",
+        "said": 1
+       },
+       {
+        "opts": [
+         "Dani está aquí.",
+         "¿Dani está aquí?"
+        ],
+        "gloss": "Dani ist hier.",
+        "said": 0
+       },
+       {
+        "opts": [
+         "Hay café.",
+         "¿Hay café?"
+        ],
+        "gloss": "Es gibt Kaffee.",
+        "said": 1
+       },
+       {
+        "opts": [
+         "Nico duerme.",
+         "¿Nico duerme?"
+        ],
+        "gloss": "Nico schläft.",
+        "said": 0
+       }
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Die Überraschung. Hör zu und setz die Zeichen: ¿ ? ¡ ! oder Punkt.",
+      "kind": "Hören",
+      "track": "1.9-4",
+      "lines": [
+       [
+        "Pilar",
+        "{{¡}}Hola, hija{{!}} {{¿}}Quién es ese chico{{?}}"
+       ],
+       [
+        "Lucía",
+        "Es Dani{{.}}"
+       ],
+       [
+        "Pilar",
+        "{{¿}}Dani{{?}} {{¿}}Tienes novio{{?}}"
+       ],
+       [
+        "Nico",
+        "{{¡}}Tiene novio{{!}} {{¡}}Tiene novio{{!}}"
+       ]
+      ],
+      "why": "Lucía spricht ruhig und fallend: eine Aussage, also ein Punkt. Pilars <es>¿Dani?</es> steigt – sie kann es nicht glauben."
+     },
+     {
+      "type": "match",
+      "title": "Was passt? Lies die linke Seite laut – mit der richtigen Melodie.",
+      "kind": "Erkennen",
+      "left": [
+       "¿Tienes hambre?",
+       "¿Dónde está Nico?",
+       "¡Feliz cumpleaños!",
+       "¿Tienes novio?"
+      ],
+      "right": [
+       "¡Gracias!",
+       "Mamá… sí.",
+       "Sí, mucha.",
+       "Debajo de la mesa."
+      ],
+      "answer": [
+       2,
+       3,
+       0,
+       1
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch? Vergiss die Zeichen vorne nicht.",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Hast du Hunger?",
+        "es": "¿Tienes hambre?"
+       },
+       {
+        "de": "Was für eine Überraschung!",
+        "es": "¡Qué sorpresa!"
+       },
+       {
+        "de": "Lucía, hast du kurz Zeit?",
+        "es": "Lucía, ¿tienes un momento?"
+       }
+      ]
+     },
+     {
+      "type": "tongue",
+      "title": "Ein Satz, drei Melodien. Sprich nach.",
+      "kind": "Sprechen",
+      "track": "1.9-5",
+      "es": "Nico duerme. ¿Nico duerme? ¡Nico duerme!",
+      "de": "Nico schläft. Schläft Nico? Nico schläft (endlich)!"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "___Dónde está Nico?",
+     "options": [
+      "¿",
+      "¡"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Bei einer Ja-Nein-Frage geht die Stimme am Ende ___.",
+     "options": [
+      "hoch",
+      "runter"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "___Qué sorpresa!",
+     "options": [
+      "¿",
+      "¡"
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ ]
+}

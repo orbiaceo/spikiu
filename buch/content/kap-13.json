@@ -1,0 +1,627 @@
+{
+ "chapter": 13,
+ "title": "Sätze verbinden",
+ "sections": [
+  {
+   "id": "13.1",
+   "topic": "y, pero, porque, cuando",
+   "level": "A1",
+   "headline_es": "Llego tarde porque Tofu<br>se ha comido mi zapato.",
+   "headline_de": "Ich komme zu spät, weil Tofu meinen Schuh gefressen hat.",
+   "index": [
+    "y / e",
+    "o / u",
+    "pero",
+    "porque",
+    "¿por qué?",
+    "cuando",
+    "si (falls)",
+    "Satzbau nach porque und cuando"
+   ],
+   "cartoon": {
+    "id": "13.1-A",
+    "icons": [
+     "1F995",
+     "1F996",
+     "1F475"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Mira, abuela!<br>¡Diplodocus y iguanodontes!"
+     },
+     {
+      "pos": "tr",
+      "text": "Diplodocus <b>e</b> iguanodontes,<br>cariño."
+     }
+    ],
+    "gloss": "<es>e</es> = <es>y</es> vor i- und hi-",
+    "prompt": "SCENE: A living room floor covered with plastic dinosaurs lined up in two armies. On the left, NICO, 4, in a dinosaur T-shirt, kneels on the carpet and holds up a long-necked dinosaur in one hand and a smaller dinosaur in the other, beaming with pride, as if presenting a scientific discovery. On the right, PILAR sits upright on the sofa, reading glasses on the tip of her nose, one finger raised like a strict schoolteacher, with a sweet but know-it-all smile. Nico's eyes show he is just starting to get annoyed. Leave clear empty space above Nico (top left) and above Pilar (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Spanische Bindewörter schieben nichts herum. Deutsch: weil ich Hunger <c2>habe</c2> – das Verb rutscht ans Ende. Spanisch: <es>porque <c1>tengo</c1> hambre</es> – alles bleibt, wo es ist."
+     },
+     {
+      "type": "table",
+      "track": "13.1-1",
+      "es_cols": [
+       0
+      ],
+      "rows": [
+       [
+        "y",
+        "und",
+        "<es>Dani y Tofu duermen. Siempre.</es>"
+       ],
+       [
+        "o",
+        "oder",
+        "<es>¿Café o té? —Café. Mucho.</es>"
+       ],
+       [
+        "pero",
+        "aber",
+        "<es>El piso es pequeño, pero tiene terraza.</es>"
+       ],
+       [
+        "porque",
+        "weil, denn",
+        "<es>No como carne porque no me gusta.</es>"
+       ],
+       [
+        "cuando",
+        "wenn, als",
+        "<es>Cuando llueve, Tofu no quiere salir.</es>"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Kleine Verwandlungen: y wird e, o wird u"
+     },
+     {
+      "type": "examples",
+      "track": "13.1-2",
+      "items": [
+       [
+        "padre e hijo · Lucía e Irene",
+        "vor i- und hi- wird y zu e"
+       ],
+       [
+        "siete u ocho · uno u otro",
+        "vor o- und ho- wird o zu u"
+       ],
+       [
+        "agua y hielo",
+        "aber: hie- klingt wie „je“ – y bleibt"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<es>¿Por qué?</es> fragt (getrennt, mit Akzent), <es>porque</es> antwortet (zusammen, ohne): <es>¿Por qué llegas tarde? —Porque Tofu…</es> Und <es>cuando</es> ist immer Zeit. „Wenn“ im Sinn von „falls“ heißt <es>si</es>: <es>Si tienes tiempo, llámame.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "fill",
+      "title": "y oder e? o oder u? Ergänze.",
+      "kind": "Erkennen",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "Lucía {{e}} Irene",
+       "siete {{u}} ocho",
+       "agua {{y}} hielo",
+       "uno {{u}} otro",
+       "geografía {{e}} historia",
+       "Dani {{y}} Tofu"
+      ],
+      "why": "<es>agua y hielo</es>: <es>hie-</es> klingt wie „je“, nicht wie i – deshalb bleibt <es>y</es>."
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Me encanta Dani, [[!pero|porque]] habla durante las películas.",
+       "No voy a la fiesta [[pero|!porque]] mañana trabajo a las siete.",
+       "[[!Cuando|Porque]] Pilar llama, Lucía siempre está en la ducha.",
+       "Nico come pasta [[!y|pero]] helado. Juntos. En el mismo plato.",
+       "¿[[!Por qué|Porque]] no contestas? —[[Por qué|!Porque]] estoy en la ducha, mamá."
+      ]
+     },
+     {
+      "type": "match",
+      "title": "Ausreden und andere Wahrheiten. Was passt zusammen?",
+      "kind": "Verbinden",
+      "left": [
+       "Dani llega tarde porque",
+       "Lucía no cocina porque",
+       "Cuando Nico ve un dinosaurio,",
+       "Pilar llama siempre cuando",
+       "Me encanta Madrid, pero"
+      ],
+      "right": [
+       "grita de alegría.",
+       "Lucía está en la ducha.",
+       "en agosto hace demasiado calor.",
+       "no encuentra las llaves.",
+       "su cocina es un desastre."
+      ],
+      "answer": [
+       3,
+       4,
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "type": "transform",
+      "title": "Aus zwei Sätzen wird einer. Verbinde mit porque.",
+      "kind": "Bilden",
+      "example": {
+       "q": "No salgo. Llueve.",
+       "a": "No salgo porque llueve."
+      },
+      "items": [
+       {
+        "q": "Dani está cansado. Ha trabajado diez horas.",
+        "a": "Dani está cansado porque ha trabajado diez horas."
+       },
+       {
+        "q": "Nico llora. Su dinosaurio está roto.",
+        "a": "Nico llora porque su dinosaurio está roto."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich gehe nicht zur Party, weil ich müde bin.",
+        "es": "No voy a la fiesta porque estoy cansado/cansada."
+       },
+       {
+        "de": "Wenn ich in Madrid bin, esse ich immer Churros.",
+        "es": "Cuando estoy en Madrid, siempre como churros."
+       },
+       {
+        "de": "Die Wohnung ist klein, aber sie hat einen Balkon.",
+        "es": "El piso es pequeño, pero tiene balcón."
+       }
+      ],
+      "why": "Nach <es>porque</es> und <es>cuando</es> bleibt das Verb vorne beim Subjekt – nicht am Satzende wie im Deutschen."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Mi padre ___ hijo son idénticos.",
+     "options": [
+      "y",
+      "e"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "No como nada ___ no tengo hambre.",
+     "options": [
+      "porque",
+      "por qué",
+      "pero"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Llegas a las siete ___ a las ocho?",
+     "options": [
+      "o",
+      "u"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "13.2",
+   "topic": "que und donde als Relativwörter",
+   "level": "A2",
+   "headline_es": "El vecino que vive arriba<br>toca la batería de noche.",
+   "headline_de": "Der Nachbar, der oben wohnt, spielt nachts Schlagzeug.",
+   "index": [
+    "que (der, die, das)",
+    "donde (wo)",
+    "lo que (was)",
+    "Relativsatz",
+    "Relativpronomen"
+   ],
+   "cartoon": {
+    "id": "13.2-A",
+    "icons": [
+     "1F453",
+     "1F475",
+     "1F4F1"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Ves al chico que lleva gafas?<br>Me encanta."
+     },
+     {
+      "pos": "tc",
+      "text": "¿El chico que está<br>hablando con mi madre?"
+     }
+    ],
+    "prompt": "SCENE: A house party in a Madrid flat, warm light, people with drinks in the background. On the left, MARTA (Lucía's colleague, 30, curly hair) whispers excitedly into LUCÍA's ear and points discreetly with a carrot stick to the right side of the room. In the centre, LUCÍA follows the direction with a slowly growing look of alarm. On the right, a handsome, shy man with round glasses holds a glass of wine and smiles politely and helplessly, because PILAR is already standing right next to him, holding up her phone very close to his face and showing him photo after photo. Leave clear empty space above Marta (top left) and above Lucía (top centre) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<es>que</es> ist der Universalkleber: Es ersetzt <em>der, die, das, welche</em> – für Menschen und Dinge, Einzahl und Mehrzahl. Für Orte gibt es <es>donde</es>. Und wieder bleibt das Verb vorne: <es>el vecino que <c1>vive</c1> arriba</es> – der Nachbar, der oben <c2>wohnt</c2>."
+     },
+     {
+      "type": "examples",
+      "track": "13.2-1",
+      "items": [
+       [
+        "La tarta que hizo Pilar está buenísima.",
+        "Die Torte, die Pilar gemacht hat, ist superlecker."
+       ],
+       [
+        "Los zapatos que compré ayer me hacen daño.",
+        "Die Schuhe, die ich gestern gekauft habe, drücken."
+       ],
+       [
+        "Es el bar donde conocí a Dani.",
+        "Das ist die Bar, wo ich Dani kennengelernt habe."
+       ],
+       [
+        "Madrid es la ciudad donde vivo… y donde nunca duermo.",
+        "Madrid ist die Stadt, in der ich lebe … und nie schlafe."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "lo que – das, was"
+     },
+     {
+      "type": "examples",
+      "track": "13.2-2",
+      "items": [
+       [
+        "Lo que necesito es un café.",
+        "Was ich brauche, ist ein Kaffee."
+       ],
+       [
+        "No entiendo lo que dice Nico. Habla en dinosaurio.",
+        "Ich verstehe nicht, was Nico sagt. Er spricht Dinosaurisch."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<es>que</es> fällt nie weg – anders als im Englischen (<em>the shoes I bought</em>): <es>los zapatos <em>que</em> compré</es>. Kein Akzent: <es>que</es> und <es>donde</es> verbinden, <es>¿qué?</es> und <es>¿dónde?</es> fragen. Und meist steht vor <es>que</es> kein Komma."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "match",
+      "title": "Wer ist wer? Verbinde.",
+      "kind": "Erkennen",
+      "left": [
+       "Pilar es la madre",
+       "Tofu es el perro",
+       "Rafa es el jefe",
+       "Nico es el niño",
+       "La Latina es el barrio"
+      ],
+      "right": [
+       "que se comió la tarta de la boda.",
+       "donde vive Lucía.",
+       "que llama siempre en el peor momento.",
+       "que manda correos a las once de la noche.",
+       "que duerme más que Dani."
+      ],
+      "answer": [
+       2,
+       4,
+       3,
+       0,
+       1
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "que oder donde? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "El restaurante [[que|!donde]] cenamos ayer era carísimo.",
+       "El restaurante [[!que|donde]] me recomendaste era carísimo.",
+       "Esta es la playa [[que|!donde]] Nico perdió su T-Rex.",
+       "¿Dónde está el libro [[!que|donde]] te dejé?",
+       "[[!Lo que|Que]] más me gusta de Dani es su calma."
+      ],
+      "why": "a und b: Beide Male ein Restaurant. In a ist es der Ort, an dem etwas passiert (<es>cenamos allí</es>) → <es>donde</es>. In b ist es das Ding, das jemand empfiehlt (<es>me lo recomendaste</es>) → <es>que</es>."
+     },
+     {
+      "type": "cloze",
+      "title": "Lucía zeigt dir ihr Viertel. Ergänze que, donde oder lo que.",
+      "kind": "Erzählen",
+      "track": "13.2-3",
+      "text": "Este es mi barrio. Aquí está el bar {{donde}} desayuno todos los días. El camarero {{que}} trabaja por las mañanas se llama Paco y ya sabe {{lo que}} quiero: café con leche y tostada. Y ese es el parque {{donde}} Tofu persigue palomas. Las palomas {{que}} viven aquí ya conocen a Tofu y no se mueven."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Das Handy, das ich gestern gekauft habe, funktioniert nicht.",
+        "es": "El móvil que compré ayer no funciona."
+       },
+       {
+        "de": "Das ist das Dorf, wo meine Oma wohnt.",
+        "es": "Este es el pueblo donde vive mi abuela."
+       },
+       {
+        "de": "Ich verstehe nicht, was du sagst.",
+        "es": "No entiendo lo que dices."
+       }
+      ]
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Es el bar ___ conocí a Dani.",
+     "options": [
+      "que",
+      "donde"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "El libro ___ leo es muy aburrido.",
+     "options": [
+      "que",
+      "qué",
+      "donde"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "No sé ___ quieres.",
+     "options": [
+      "que",
+      "lo que"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "13.3",
+   "topic": "también und tampoco",
+   "level": "A1",
+   "headline_es": "—No me gustan los lunes.<br>—A mí tampoco.",
+   "headline_de": "Ich mag keine Montage. – Ich auch nicht.",
+   "index": [
+    "también",
+    "tampoco",
+    "a mí también / a mí tampoco",
+    "yo sí / yo no",
+    "zustimmen und widersprechen",
+    "ich auch (nicht)"
+   ],
+   "cartoon": {
+    "id": "13.3-A",
+    "icons": [
+     "1F475",
+     "1F490",
+     "1F468"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "No me gusta nada<br>tu novio."
+     },
+     {
+      "pos": "tr",
+      "text": "Pues a mí sí."
+     }
+    ],
+    "gloss": "<es>pues</es> tja, also",
+    "prompt": "SCENE: The kitchen of PILAR's flat. On the left, PILAR leans across the kitchen table towards LUCÍA and whispers behind her hand, with a disapproving, conspiratorial face. LUCÍA, sitting opposite, covers her eyes with one hand. On the right, in the open kitchen doorway, stands DANI, who has obviously heard everything: he holds a big bouquet of flowers for Pilar and smiles completely calm and friendly, totally unbothered. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<es>también</es> und <es>tampoco</es> sind Echos: <c1>también</c1> wiederholt ein Ja, <c2>tampoco</c2> wiederholt ein Nein. Wer widerspricht, sagt einfach <es>sí</es> oder <es>no</es>."
+     },
+     {
+      "type": "table",
+      "track": "13.3-1",
+      "es_cols": [
+       0,
+       1,
+       2
+      ],
+      "hl": [
+       2,
+       3
+      ],
+      "head": [
+       "Jemand sagt …",
+       "Ich auch (nicht)",
+       "Ich nicht / ich schon"
+      ],
+      "rows": [
+       [
+        "<es>Tengo hambre.</es>",
+        "<es><c1>Yo también.</c1></es>",
+        "<es>Yo no.</es>"
+       ],
+       [
+        "<es>No tengo hambre.</es>",
+        "<es><c2>Yo tampoco.</c2></es>",
+        "<es>Yo sí.</es>"
+       ],
+       [
+        "<es>Me gusta el café.</es>",
+        "<es><c1>A mí también.</c1></es>",
+        "<es>A mí no.</es>"
+       ],
+       [
+        "<es>No me gusta el café.</es>",
+        "<es><c2>A mí tampoco.</c2></es>",
+        "<es>A mí sí.</es>"
+       ]
+      ]
+     },
+     {
+      "type": "spikiu",
+      "title": "Antworte im gleichen Kleid",
+      "text": "Schau auf den Satzanfang. Beginnt er mit <es>me</es> (<es>me gusta, me encanta, me duele</es>), antwortest du mit <es>a mí</es>. Beginnt er mit dem Verb oder mit <es>yo</es>, antwortest du mit <es>yo</es>. <es>Me encanta Nico. —A mí también.</es> · <es>Quiero un café. —Yo también.</es>"
+     },
+     {
+      "type": "ojo",
+      "text": "„Ich auch nicht“ ist nie <es>también no</es>, sondern <es>tampoco</es>. Im Satz gilt: <es>tampoco</es> vorne braucht kein <es>no</es> – <es>Tampoco tengo tiempo</es> oder <es>No tengo tiempo tampoco</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "match",
+      "title": "Wer sagt was? Ordne die Antworten zu.",
+      "kind": "Erkennen",
+      "left": [
+       "Tengo sueño.",
+       "No tengo sueño.",
+       "Me gusta bailar.",
+       "No me gusta bailar."
+      ],
+      "right": [
+       "A mí tampoco.",
+       "Yo también.",
+       "A mí también.",
+       "Yo tampoco."
+      ],
+      "answer": [
+       1,
+       3,
+       2,
+       0
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Das erste Date. Dani ist mit allem einverstanden. Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Me encanta el cine coreano. —A mí [[!también|tampoco]].",
+       "No me gusta el fútbol. —A mí [[también|!tampoco]].",
+       "Soy un desastre con las plantas. —Yo [[!también|tampoco]].",
+       "No tengo coche. —Yo [[también|!tampoco]].",
+       "No sé cocinar. —[[!Yo tampoco|A mí tampoco]]."
+      ],
+      "why": "e: <es>No sé</es> beginnt mit dem Verb (kein <es>me</es>) – also <es>yo</es>."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar und Dani beim Essen. Pilar widerspricht immer. Fast.",
+      "kind": "Entscheiden",
+      "track": "13.3-2",
+      "lines": [
+       [
+        "Dani",
+        "Me encanta esta paella."
+       ],
+       [
+        "Pilar",
+        "Pues a mí {{no}}. Tiene demasiado arroz."
+       ],
+       [
+        "Dani",
+        "No me gusta mucho la tele."
+       ],
+       [
+        "Pilar",
+        "A mí {{sí}}."
+       ],
+       [
+        "Dani",
+        "No me gusta discutir."
+       ],
+       [
+        "Pilar",
+        "A mí {{tampoco}}."
+       ],
+       [
+        "Lucía",
+        "¡Por fin estáis de acuerdo!"
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich mag keinen Kaffee. – Ich auch nicht.",
+        "es": "No me gusta el café. —A mí tampoco."
+       },
+       {
+        "de": "Wir haben auch kein Auto.",
+        "es": "Nosotros tampoco tenemos coche."
+       }
+      ],
+      "why": "„auch kein“ und „auch nicht“ sind beide <es>tampoco</es>."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "—No me gusta el jazz. —A mí ___.",
+     "options": [
+      "también",
+      "tampoco"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "—Tengo frío. —___ también.",
+     "options": [
+      "Yo",
+      "A mí"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "—No tengo hermanos. —Yo ___. Tengo tres.",
+     "options": [
+      "sí",
+      "no",
+      "tampoco"
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ]
+}

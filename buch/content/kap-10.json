@@ -1,0 +1,420 @@
+{
+  "chapter": 10,
+  "title": "Zukunft",
+  "sections": [
+    {
+      "id": "10.1",
+      "topic": "ir a + Infinitiv",
+      "level": "A1",
+      "headline_es": "Mañana voy a empezar la dieta.<br>Como todos los lunes.",
+      "headline_de": "Morgen fange ich mit der Diät an. Wie jeden Montag.",
+      "index": [
+        "ir a + Infinitiv",
+        "Zukunft",
+        "Pläne ausdrücken",
+        "vamos a",
+        "Zeitangaben der Zukunft"
+      ],
+      "cartoon": {
+        "id": "10.1-A",
+        "icons": [
+          "1F6CB",
+          "1F355",
+          "1F3CB"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "El lunes voy a ir<br>al gimnasio. En serio."
+          },
+          {
+            "pos": "tr",
+            "text": "¿Qué lunes?"
+          }
+        ],
+        "prompt": "SCENE: Sunday evening in LUCÍA's living room. Left: LUCÍA lies stretched out on the sofa in comfy pyjamas, a pizza box open on her belly, a slice in one hand, raising the other hand like taking a solemn oath, very serious face. On the coffee table in front of her: a pair of brand-new running shoes still in the box with the price tag on, and a gym membership card covered in dust. Right: DANI leans in the doorway with arms crossed, one eyebrow raised, calm and sceptical. On the wall a calendar where several Mondays are already crossed out. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "<es>Voy a comer</es> – „ich gehe zu essen“: Du bist schon unterwegs. So sprichst du über <c1>Pläne</c1> und über das, was du <c2>kommen siehst</c2>."
+          },
+          {
+            "type": "table",
+            "track": "10.1-1",
+            "head": [
+              "ich",
+              "du",
+              "er, sie, Sie",
+              "wir",
+              "ihr",
+              "sie, Sie"
+            ],
+            "rows": [
+              [
+                "voy a",
+                "vas a",
+                "va a",
+                "vamos a",
+                "vais a",
+                "van a"
+              ]
+            ],
+            "es_cols": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "type": "columns",
+            "cols": [
+              {
+                "title": "Der Plan",
+                "sub": "was du vorhast",
+                "icon": "1F4C5",
+                "tone": 1,
+                "track": "10.1-2",
+                "uses": [
+                  {
+                    "t": "Pläne und Absichten",
+                    "x": "<es>Este verano voy a aprender a nadar.</es> <de>Diesen Sommer lerne ich schwimmen.</de>"
+                  },
+                  {
+                    "t": "vamos a … = lass uns …",
+                    "x": "<es>¡Vamos a pedir una pizza!</es> <de>Lass uns eine Pizza bestellen!</de>"
+                  }
+                ]
+              },
+              {
+                "title": "Die Vorahnung",
+                "sub": "was gleich passiert",
+                "icon": "1F327",
+                "tone": 2,
+                "track": "10.1-2",
+                "uses": [
+                  {
+                    "t": "Man sieht es kommen",
+                    "x": "<es>Mira esas nubes. Va a llover.</es> <de>Schau dir die Wolken an. Gleich regnet es.</de><br><es>¡Cuidado, Nico! ¡Te vas a caer!</es> <de>Vorsicht, Nico! Du fällst gleich hin!</de>"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "signal",
+            "rows": [
+              [
+                "Wann?",
+                "mañana, esta noche, el sábado, la semana que viene, el año que viene",
+                0
+              ]
+            ]
+          },
+          {
+            "type": "ojo",
+            "text": "Das kleine <es>a</es> nicht vergessen: <es>Voy <em>a</em> comer</es>, nicht <es>voy comer</es>. Pronomen vorne oder hinten (<g>9.3</g>): <es>Lo voy a comprar = Voy a comprarlo.</es>"
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "choice",
+            "title": "Wer hat was vor? Unterstreiche die richtige Form.",
+            "kind": "Entscheiden",
+            "items": [
+              "Esta noche [[!voy|va|vamos]] a ver una película con Dani.",
+              "¿Vosotros [[vamos|!vais|van]] a venir a la boda?",
+              "Mis padres [[vas|!van|vamos]] a vender la casa del pueblo.",
+              "Nico, ¿qué [[!vas|va]] a ser de mayor? – Un dinosaurio.",
+              "Dani y yo [[van|!vamos]] a buscar un piso más grande."
+            ]
+          },
+          {
+            "type": "match",
+            "title": "Was passiert gleich? Ordne zu.",
+            "kind": "Entscheiden",
+            "left": [
+              "El cielo está muy negro.",
+              "Nico corre con un helado en la mano.",
+              "Son las nueve. Dani todavía duerme.",
+              "Tu madre tiene el teléfono en la mano."
+            ],
+            "right": [
+              "Va a llegar tarde. Otra vez.",
+              "Va a llover.",
+              "Te va a llamar. Ahora mismo.",
+              "Se va a caer."
+            ],
+            "answer": [
+              1,
+              3,
+              0,
+              2
+            ]
+          },
+          {
+            "type": "cloze",
+            "title": "Große Neuigkeiten. Lucía schreibt Marta. Setz ir a + Infinitiv ein.",
+            "kind": "Bilden",
+            "track": "10.1-3",
+            "text": "¡Hola, Marta! Dani y yo {{vamos a vivir|vivir}} juntos. Bueno, en mayo. Primero {{vamos a buscar|buscar}} un piso: yo quiero un balcón, Dani quiere un sitio para Tofu. Mi madre dice que {{va a ser|ser}} un desastre. Ya la conoces. ¿Y tú? ¿Qué {{vas a hacer|hacer}} en Semana Santa? ¿{{Vas a venir|venir}} a Madrid?"
+          },
+          {
+            "type": "free",
+            "title": "Gute Vorsätze. Was machst du nächste Woche – und was ganz sicher nicht?",
+            "kind": "Frei",
+            "text": "<es>La semana que viene voy a … No voy a …</es>",
+            "lines": 3,
+            "solution": "Keine feste Lösung. Prüf selbst: <es>voy/vas/va … + a + Infinitiv</es>?"
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "Mira esas nubes. ___ a llover.",
+          "options": [
+            "Va",
+            "Voy",
+            "Vamos"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "¿Qué ___ a hacer vosotros el sábado?",
+          "options": [
+            "vais",
+            "van"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Mañana voy ___ al médico.",
+          "options": [
+            "ir",
+            "a ir"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "10.2",
+      "topic": "Das Futur",
+      "level": "A2",
+      "headline_es": "Algún día viviré en una playa.<br>Con wifi.",
+      "headline_de": "Eines Tages werde ich an einem Strand leben. Mit WLAN.",
+      "index": [
+        "Futur",
+        "futuro simple",
+        "Vermutung",
+        "unregelmäßiges Futur",
+        "tendré, haré, diré",
+        "Vorhersage"
+      ],
+      "cartoon": {
+        "id": "10.2-A",
+        "icons": [
+          "1F52E",
+          "1F9D9-200D-2640-FE0F",
+          "23F3"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "Conocerás a un hombre<br>que siempre llegará tarde."
+          },
+          {
+            "pos": "tr",
+            "text": "Ya lo conozco.<br>Se llama Dani."
+          }
+        ],
+        "prompt": "SCENE: A small, kitschy fortune teller's booth at a street fair in Madrid, purple curtains and fairy lights. Left: an elderly fortune teller with big earrings and a colourful headscarf leans dramatically over a glowing crystal ball, eyes half closed, hands hovering mysteriously. Right: LUCÍA sits across the little table, arms crossed, completely unimpressed, deadpan face, glancing at her wristwatch. Behind her, just visible through the gap in the curtain, DANI strolls along very slowly and relaxed with an ice cream, clearly late. Leave clear empty space above the fortune teller (top left) and above Lucía (top right) for two speech bubbles."
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "Das Futur ist die <c1>Kristallkugel</c1>: Vorhersagen, Versprechen, Träume – <es>Te llamaré.</es> Und so einfach: ganzer Infinitiv plus Endung, für <em>alle</em> Verben gleich."
+          },
+          {
+            "type": "table",
+            "track": "10.2-1",
+            "head": [
+              "yo",
+              "tú",
+              "él, ella",
+              "nosotros",
+              "vosotros",
+              "ellos, ellas"
+            ],
+            "rows": [
+              [
+                "hablar<c2>é</c2>",
+                "hablar<c2>ás</c2>",
+                "hablar<c2>á</c2>",
+                "hablar<c2>emos</c2>",
+                "hablar<c2>éis</c2>",
+                "hablar<c2>án</c2>"
+              ],
+              [
+                "vivir<c2>é</c2>",
+                "vivir<c2>ás</c2>",
+                "vivir<c2>á</c2>",
+                "vivir<c2>emos</c2>",
+                "vivir<c2>éis</c2>",
+                "vivir<c2>án</c2>"
+              ]
+            ],
+            "es_cols": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "type": "table",
+            "track": "10.2-2",
+            "head": [
+              "Unregelmäßig: nur der Stamm ändert sich",
+              ""
+            ],
+            "rows": [
+              [
+                "tener → tendré · poner → pondré · salir → saldré · venir → vendré",
+                "+ <es>d</es>"
+              ],
+              [
+                "poder → podré · saber → sabré · querer → querré",
+                "kürzer"
+              ],
+              [
+                "hacer → haré · decir → diré",
+                "ganz eigen"
+              ]
+            ],
+            "es_cols": [
+              0
+            ]
+          },
+          {
+            "type": "spikiu",
+            "title": "Das Futur als Achselzucken",
+            "text": "Eine Vermutung? Nimm das Futur – auch für <em>jetzt</em>, wie das deutsche „wohl“: <es>¿Dónde está Dani? – Estará en el metro.</es> <de>Er wird wohl in der U-Bahn sein.</de>"
+          },
+          {
+            "type": "ojo",
+            "text": "Für feste Pläne sagen Spanier meist <es>ir a</es> (<g>10.1</g>). Das Futur klingt ferner: <es>Algún día Dani llegará a tiempo.</es>"
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "fill",
+            "title": "Die Formen. Ergänze das Futur.",
+            "kind": "Bilden",
+            "cols": 3,
+            "gap": "m",
+            "items": [
+              "tener: yo {{tendré}}",
+              "hacer: tú {{harás}}",
+              "salir: ella {{saldrá}}",
+              "poder: nosotros {{podremos}}",
+              "decir: vosotros {{diréis}}",
+              "venir: ellos {{vendrán}}"
+            ]
+          },
+          {
+            "type": "cloze",
+            "title": "Dein Horoskop für die Woche. Setz die Verben ins Futur.",
+            "kind": "Bilden",
+            "track": "10.2-4",
+            "text": "<b>Géminis.</b> Esta semana {{será|ser}} muy intensa. El lunes {{conocerás|conocer}} a una persona interesante en el metro. El martes tu jefe te {{dará|dar}} una buena noticia. El jueves {{saldrás|salir}} con amigos y {{gastarás|gastar}} demasiado. El viernes tu madre te {{llamará|llamar}} tres veces. Y el fin de semana {{podrás|poder}} descansar. O no."
+          },
+          {
+            "type": "transform",
+            "title": "Wo ist Dani? Lucía weiß es nicht – sie vermutet. Antworte mit dem Futur.",
+            "kind": "Bilden",
+            "example": {
+              "q": "¿Dónde está Dani? (estar en el metro)",
+              "a": "Estará en el metro."
+            },
+            "items": [
+              {
+                "q": "¿Por qué no contesta? (estar dormido)",
+                "a": "Estará dormido."
+              },
+              {
+                "q": "¿Qué hora es? (ser las diez)",
+                "a": "Serán las diez."
+              },
+              {
+                "q": "¿Por qué llora Nico? (tener hambre)",
+                "a": "Tendrá hambre."
+              }
+            ],
+            "why": "Das Futur steht hier für eine Vermutung über <em>jetzt</em>, nicht für die Zukunft."
+          },
+          {
+            "type": "translate",
+            "title": "Wie sagst du das auf Spanisch?",
+            "kind": "Übersetzen",
+            "items": [
+              {
+                "de": "Eines Tages werde ich ein Haus am Meer haben.",
+                "es": "Algún día tendré una casa junto al mar."
+              },
+              {
+                "de": "Was wirst du in zehn Jahren machen?",
+                "es": "¿Qué harás dentro de diez años?"
+              }
+            ]
+          },
+          {
+            "type": "free",
+            "title": "Jetzt bist du die Wahrsagerin. Schreib ein Horoskop für jemanden, den du kennst.",
+            "kind": "Frei",
+            "text": "Drei Sätze, gern mit <es>tendrás, conocerás, podrás</es>.",
+            "lines": 3,
+            "solution": "Keine feste Lösung. Prüf selbst: Infinitiv + Endung? Unregelmäßige Stämme (<es>tendr-, podr-, har-</es>)?"
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "Algún día ___ una casa en la playa.",
+          "options": [
+            "tendré",
+            "teneré"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "¿Dónde está Dani? – ___ en el metro.",
+          "options": [
+            "Estará",
+            "Estaré"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Mañana ___ en todo el norte.",
+          "options": [
+            "llueverá",
+            "lloverá"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  ]
+}

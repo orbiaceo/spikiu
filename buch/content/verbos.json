@@ -1,0 +1,1392 @@
+{
+ "tenses": [
+  "Presente",
+  "Perfecto",
+  "Indefinido",
+  "Imperfecto",
+  "Futuro"
+ ],
+ "verbs": [
+  {
+   "inf": "hablar",
+   "de": "sprechen",
+   "model": "Muster für alle regelmäßigen Verben auf -ar",
+   "forms": {
+    "Presente": [
+     "habl<b>o</b>",
+     "habl<b>as</b>",
+     "habl<b>a</b>",
+     "habl<b>amos</b>",
+     "habl<b>áis</b>",
+     "habl<b>an</b>"
+    ],
+    "Indefinido": [
+     "habl<b>é</b>",
+     "habl<b>aste</b>",
+     "habl<b>ó</b>",
+     "habl<b>amos</b>",
+     "habl<b>asteis</b>",
+     "habl<b>aron</b>"
+    ],
+    "Imperfecto": [
+     "habl<b>aba</b>",
+     "habl<b>abas</b>",
+     "habl<b>aba</b>",
+     "habl<b>ábamos</b>",
+     "habl<b>abais</b>",
+     "habl<b>aban</b>"
+    ],
+    "Futuro": [
+     "hablar<b>é</b>",
+     "hablar<b>ás</b>",
+     "hablar<b>á</b>",
+     "hablar<b>emos</b>",
+     "hablar<b>éis</b>",
+     "hablar<b>án</b>"
+    ],
+    "Perfecto": [
+     "he habl<b>ado</b>",
+     "has habl<b>ado</b>",
+     "ha habl<b>ado</b>",
+     "hemos habl<b>ado</b>",
+     "habéis habl<b>ado</b>",
+     "han habl<b>ado</b>"
+    ]
+   },
+   "part": "habl<b>ado</b>",
+   "ger": "habl<b>ando</b>",
+   "imp": "habla / hable"
+  },
+  {
+   "inf": "comer",
+   "de": "essen",
+   "model": "Muster für alle regelmäßigen Verben auf -er",
+   "forms": {
+    "Presente": [
+     "com<b>o</b>",
+     "com<b>es</b>",
+     "com<b>e</b>",
+     "com<b>emos</b>",
+     "com<b>éis</b>",
+     "com<b>en</b>"
+    ],
+    "Indefinido": [
+     "com<b>í</b>",
+     "com<b>iste</b>",
+     "com<b>ió</b>",
+     "com<b>imos</b>",
+     "com<b>isteis</b>",
+     "com<b>ieron</b>"
+    ],
+    "Imperfecto": [
+     "com<b>ía</b>",
+     "com<b>ías</b>",
+     "com<b>ía</b>",
+     "com<b>íamos</b>",
+     "com<b>íais</b>",
+     "com<b>ían</b>"
+    ],
+    "Futuro": [
+     "comer<b>é</b>",
+     "comer<b>ás</b>",
+     "comer<b>á</b>",
+     "comer<b>emos</b>",
+     "comer<b>éis</b>",
+     "comer<b>án</b>"
+    ],
+    "Perfecto": [
+     "he com<b>ido</b>",
+     "has com<b>ido</b>",
+     "ha com<b>ido</b>",
+     "hemos com<b>ido</b>",
+     "habéis com<b>ido</b>",
+     "han com<b>ido</b>"
+    ]
+   },
+   "part": "com<b>ido</b>",
+   "ger": "com<b>iendo</b>",
+   "imp": "come / coma"
+  },
+  {
+   "inf": "vivir",
+   "de": "leben, wohnen",
+   "model": "Muster für alle regelmäßigen Verben auf -ir",
+   "forms": {
+    "Presente": [
+     "viv<b>o</b>",
+     "viv<b>es</b>",
+     "viv<b>e</b>",
+     "viv<b>imos</b>",
+     "viv<b>ís</b>",
+     "viv<b>en</b>"
+    ],
+    "Indefinido": [
+     "viv<b>í</b>",
+     "viv<b>iste</b>",
+     "viv<b>ió</b>",
+     "viv<b>imos</b>",
+     "viv<b>isteis</b>",
+     "viv<b>ieron</b>"
+    ],
+    "Imperfecto": [
+     "viv<b>ía</b>",
+     "viv<b>ías</b>",
+     "viv<b>ía</b>",
+     "viv<b>íamos</b>",
+     "viv<b>íais</b>",
+     "viv<b>ían</b>"
+    ],
+    "Futuro": [
+     "vivir<b>é</b>",
+     "vivir<b>ás</b>",
+     "vivir<b>á</b>",
+     "vivir<b>emos</b>",
+     "vivir<b>éis</b>",
+     "vivir<b>án</b>"
+    ],
+    "Perfecto": [
+     "he viv<b>ido</b>",
+     "has viv<b>ido</b>",
+     "ha viv<b>ido</b>",
+     "hemos viv<b>ido</b>",
+     "habéis viv<b>ido</b>",
+     "han viv<b>ido</b>"
+    ]
+   },
+   "part": "viv<b>ido</b>",
+   "ger": "viv<b>iendo</b>",
+   "imp": "vive / viva"
+  },
+  {
+   "inf": "ser",
+   "de": "sein (Wesen)",
+   "forms": {
+    "Presente": [
+     "<b>soy</b>",
+     "<b>eres</b>",
+     "<b>es</b>",
+     "<b>somos</b>",
+     "<b>sois</b>",
+     "<b>son</b>"
+    ],
+    "Perfecto": [
+     "he sido",
+     "has sido",
+     "ha sido",
+     "hemos sido",
+     "habéis sido",
+     "han sido"
+    ],
+    "Indefinido": [
+     "<b>fui</b>",
+     "<b>fuiste</b>",
+     "<b>fue</b>",
+     "<b>fuimos</b>",
+     "<b>fuisteis</b>",
+     "<b>fueron</b>"
+    ],
+    "Imperfecto": [
+     "<b>era</b>",
+     "<b>eras</b>",
+     "<b>era</b>",
+     "<b>éramos</b>",
+     "<b>erais</b>",
+     "<b>eran</b>"
+    ],
+    "Futuro": [
+     "seré",
+     "serás",
+     "será",
+     "seremos",
+     "seréis",
+     "serán"
+    ]
+   },
+   "part": "sido",
+   "ger": "siendo",
+   "imp": "sé / sea"
+  },
+  {
+   "inf": "estar",
+   "de": "sein (Zustand, Ort)",
+   "forms": {
+    "Presente": [
+     "<b>estoy</b>",
+     "<b>estás</b>",
+     "<b>está</b>",
+     "estamos",
+     "estáis",
+     "<b>están</b>"
+    ],
+    "Perfecto": [
+     "he estado",
+     "has estado",
+     "ha estado",
+     "hemos estado",
+     "habéis estado",
+     "han estado"
+    ],
+    "Indefinido": [
+     "<b>estuve</b>",
+     "<b>estuviste</b>",
+     "<b>estuvo</b>",
+     "<b>estuvimos</b>",
+     "<b>estuvisteis</b>",
+     "<b>estuvieron</b>"
+    ],
+    "Imperfecto": [
+     "estaba",
+     "estabas",
+     "estaba",
+     "estábamos",
+     "estabais",
+     "estaban"
+    ],
+    "Futuro": [
+     "estaré",
+     "estarás",
+     "estará",
+     "estaremos",
+     "estaréis",
+     "estarán"
+    ]
+   },
+   "part": "estado",
+   "ger": "estando",
+   "imp": "está / esté"
+  },
+  {
+   "inf": "tener",
+   "de": "haben",
+   "forms": {
+    "Presente": [
+     "<b>tengo</b>",
+     "<b>tienes</b>",
+     "<b>tiene</b>",
+     "tenemos",
+     "tenéis",
+     "<b>tienen</b>"
+    ],
+    "Perfecto": [
+     "he tenido",
+     "has tenido",
+     "ha tenido",
+     "hemos tenido",
+     "habéis tenido",
+     "han tenido"
+    ],
+    "Indefinido": [
+     "<b>tuve</b>",
+     "<b>tuviste</b>",
+     "<b>tuvo</b>",
+     "<b>tuvimos</b>",
+     "<b>tuvisteis</b>",
+     "<b>tuvieron</b>"
+    ],
+    "Imperfecto": [
+     "tenía",
+     "tenías",
+     "tenía",
+     "teníamos",
+     "teníais",
+     "tenían"
+    ],
+    "Futuro": [
+     "<b>tendré</b>",
+     "<b>tendrás</b>",
+     "<b>tendrá</b>",
+     "<b>tendremos</b>",
+     "<b>tendréis</b>",
+     "<b>tendrán</b>"
+    ]
+   },
+   "part": "tenido",
+   "ger": "teniendo",
+   "imp": "ten / tenga"
+  },
+  {
+   "inf": "ir",
+   "de": "gehen, fahren",
+   "forms": {
+    "Presente": [
+     "<b>voy</b>",
+     "<b>vas</b>",
+     "<b>va</b>",
+     "<b>vamos</b>",
+     "<b>vais</b>",
+     "<b>van</b>"
+    ],
+    "Perfecto": [
+     "he ido",
+     "has ido",
+     "ha ido",
+     "hemos ido",
+     "habéis ido",
+     "han ido"
+    ],
+    "Indefinido": [
+     "<b>fui</b>",
+     "<b>fuiste</b>",
+     "<b>fue</b>",
+     "<b>fuimos</b>",
+     "<b>fuisteis</b>",
+     "<b>fueron</b>"
+    ],
+    "Imperfecto": [
+     "<b>iba</b>",
+     "<b>ibas</b>",
+     "<b>iba</b>",
+     "<b>íbamos</b>",
+     "<b>ibais</b>",
+     "<b>iban</b>"
+    ],
+    "Futuro": [
+     "iré",
+     "irás",
+     "irá",
+     "iremos",
+     "iréis",
+     "irán"
+    ]
+   },
+   "part": "ido",
+   "ger": "<b>yendo</b>",
+   "imp": "ve / vaya",
+   "note": "Indefinido wie <es>ser</es>: <es>fui</es> = ich ging / ich war"
+  },
+  {
+   "inf": "hacer",
+   "de": "machen, tun",
+   "forms": {
+    "Presente": [
+     "<b>hago</b>",
+     "haces",
+     "hace",
+     "hacemos",
+     "hacéis",
+     "hacen"
+    ],
+    "Perfecto": [
+     "<b>he hecho</b>",
+     "<b>has hecho</b>",
+     "<b>ha hecho</b>",
+     "<b>hemos hecho</b>",
+     "<b>habéis hecho</b>",
+     "<b>han hecho</b>"
+    ],
+    "Indefinido": [
+     "<b>hice</b>",
+     "<b>hiciste</b>",
+     "<b>hizo</b>",
+     "<b>hicimos</b>",
+     "<b>hicisteis</b>",
+     "<b>hicieron</b>"
+    ],
+    "Imperfecto": [
+     "hacía",
+     "hacías",
+     "hacía",
+     "hacíamos",
+     "hacíais",
+     "hacían"
+    ],
+    "Futuro": [
+     "<b>haré</b>",
+     "<b>harás</b>",
+     "<b>hará</b>",
+     "<b>haremos</b>",
+     "<b>haréis</b>",
+     "<b>harán</b>"
+    ]
+   },
+   "part": "<b>hecho</b>",
+   "ger": "haciendo",
+   "imp": "haz / haga"
+  },
+  {
+   "inf": "poder",
+   "de": "können",
+   "forms": {
+    "Presente": [
+     "<b>puedo</b>",
+     "<b>puedes</b>",
+     "<b>puede</b>",
+     "podemos",
+     "podéis",
+     "<b>pueden</b>"
+    ],
+    "Perfecto": [
+     "he podido",
+     "has podido",
+     "ha podido",
+     "hemos podido",
+     "habéis podido",
+     "han podido"
+    ],
+    "Indefinido": [
+     "<b>pude</b>",
+     "<b>pudiste</b>",
+     "<b>pudo</b>",
+     "<b>pudimos</b>",
+     "<b>pudisteis</b>",
+     "<b>pudieron</b>"
+    ],
+    "Imperfecto": [
+     "podía",
+     "podías",
+     "podía",
+     "podíamos",
+     "podíais",
+     "podían"
+    ],
+    "Futuro": [
+     "<b>podré</b>",
+     "<b>podrás</b>",
+     "<b>podrá</b>",
+     "<b>podremos</b>",
+     "<b>podréis</b>",
+     "<b>podrán</b>"
+    ]
+   },
+   "part": "podido",
+   "ger": "<b>pudiendo</b>",
+   "imp": "–"
+  },
+  {
+   "inf": "querer",
+   "de": "wollen, lieben",
+   "forms": {
+    "Presente": [
+     "<b>quiero</b>",
+     "<b>quieres</b>",
+     "<b>quiere</b>",
+     "queremos",
+     "queréis",
+     "<b>quieren</b>"
+    ],
+    "Perfecto": [
+     "he querido",
+     "has querido",
+     "ha querido",
+     "hemos querido",
+     "habéis querido",
+     "han querido"
+    ],
+    "Indefinido": [
+     "<b>quise</b>",
+     "<b>quisiste</b>",
+     "<b>quiso</b>",
+     "<b>quisimos</b>",
+     "<b>quisisteis</b>",
+     "<b>quisieron</b>"
+    ],
+    "Imperfecto": [
+     "quería",
+     "querías",
+     "quería",
+     "queríamos",
+     "queríais",
+     "querían"
+    ],
+    "Futuro": [
+     "<b>querré</b>",
+     "<b>querrás</b>",
+     "<b>querrá</b>",
+     "<b>querremos</b>",
+     "<b>querréis</b>",
+     "<b>querrán</b>"
+    ]
+   },
+   "part": "querido",
+   "ger": "queriendo",
+   "imp": "quiere / quiera"
+  },
+  {
+   "inf": "decir",
+   "de": "sagen",
+   "forms": {
+    "Presente": [
+     "<b>digo</b>",
+     "<b>dices</b>",
+     "<b>dice</b>",
+     "decimos",
+     "decís",
+     "<b>dicen</b>"
+    ],
+    "Perfecto": [
+     "<b>he dicho</b>",
+     "<b>has dicho</b>",
+     "<b>ha dicho</b>",
+     "<b>hemos dicho</b>",
+     "<b>habéis dicho</b>",
+     "<b>han dicho</b>"
+    ],
+    "Indefinido": [
+     "<b>dije</b>",
+     "<b>dijiste</b>",
+     "<b>dijo</b>",
+     "<b>dijimos</b>",
+     "<b>dijisteis</b>",
+     "<b>dijeron</b>"
+    ],
+    "Imperfecto": [
+     "decía",
+     "decías",
+     "decía",
+     "decíamos",
+     "decíais",
+     "decían"
+    ],
+    "Futuro": [
+     "<b>diré</b>",
+     "<b>dirás</b>",
+     "<b>dirá</b>",
+     "<b>diremos</b>",
+     "<b>diréis</b>",
+     "<b>dirán</b>"
+    ]
+   },
+   "part": "<b>dicho</b>",
+   "ger": "<b>diciendo</b>",
+   "imp": "di / diga"
+  },
+  {
+   "inf": "venir",
+   "de": "kommen",
+   "forms": {
+    "Presente": [
+     "<b>vengo</b>",
+     "<b>vienes</b>",
+     "<b>viene</b>",
+     "venimos",
+     "venís",
+     "<b>vienen</b>"
+    ],
+    "Perfecto": [
+     "he venido",
+     "has venido",
+     "ha venido",
+     "hemos venido",
+     "habéis venido",
+     "han venido"
+    ],
+    "Indefinido": [
+     "<b>vine</b>",
+     "<b>viniste</b>",
+     "<b>vino</b>",
+     "<b>vinimos</b>",
+     "<b>vinisteis</b>",
+     "<b>vinieron</b>"
+    ],
+    "Imperfecto": [
+     "venía",
+     "venías",
+     "venía",
+     "veníamos",
+     "veníais",
+     "venían"
+    ],
+    "Futuro": [
+     "<b>vendré</b>",
+     "<b>vendrás</b>",
+     "<b>vendrá</b>",
+     "<b>vendremos</b>",
+     "<b>vendréis</b>",
+     "<b>vendrán</b>"
+    ]
+   },
+   "part": "venido",
+   "ger": "<b>viniendo</b>",
+   "imp": "ven / venga"
+  },
+  {
+   "inf": "dar",
+   "de": "geben",
+   "forms": {
+    "Presente": [
+     "<b>doy</b>",
+     "das",
+     "da",
+     "damos",
+     "<b>dais</b>",
+     "dan"
+    ],
+    "Perfecto": [
+     "he dado",
+     "has dado",
+     "ha dado",
+     "hemos dado",
+     "habéis dado",
+     "han dado"
+    ],
+    "Indefinido": [
+     "<b>di</b>",
+     "<b>diste</b>",
+     "<b>dio</b>",
+     "<b>dimos</b>",
+     "<b>disteis</b>",
+     "<b>dieron</b>"
+    ],
+    "Imperfecto": [
+     "daba",
+     "dabas",
+     "daba",
+     "dábamos",
+     "dabais",
+     "daban"
+    ],
+    "Futuro": [
+     "daré",
+     "darás",
+     "dará",
+     "daremos",
+     "daréis",
+     "darán"
+    ]
+   },
+   "part": "dado",
+   "ger": "dando",
+   "imp": "da / dé"
+  },
+  {
+   "inf": "saber",
+   "de": "wissen, können (gelernt)",
+   "forms": {
+    "Presente": [
+     "<b>sé</b>",
+     "sabes",
+     "sabe",
+     "sabemos",
+     "sabéis",
+     "saben"
+    ],
+    "Perfecto": [
+     "he sabido",
+     "has sabido",
+     "ha sabido",
+     "hemos sabido",
+     "habéis sabido",
+     "han sabido"
+    ],
+    "Indefinido": [
+     "<b>supe</b>",
+     "<b>supiste</b>",
+     "<b>supo</b>",
+     "<b>supimos</b>",
+     "<b>supisteis</b>",
+     "<b>supieron</b>"
+    ],
+    "Imperfecto": [
+     "sabía",
+     "sabías",
+     "sabía",
+     "sabíamos",
+     "sabíais",
+     "sabían"
+    ],
+    "Futuro": [
+     "<b>sabré</b>",
+     "<b>sabrás</b>",
+     "<b>sabrá</b>",
+     "<b>sabremos</b>",
+     "<b>sabréis</b>",
+     "<b>sabrán</b>"
+    ]
+   },
+   "part": "sabido",
+   "ger": "sabiendo",
+   "imp": "sabe / sepa"
+  },
+  {
+   "inf": "poner",
+   "de": "stellen, legen",
+   "forms": {
+    "Presente": [
+     "<b>pongo</b>",
+     "pones",
+     "pone",
+     "ponemos",
+     "ponéis",
+     "ponen"
+    ],
+    "Perfecto": [
+     "<b>he puesto</b>",
+     "<b>has puesto</b>",
+     "<b>ha puesto</b>",
+     "<b>hemos puesto</b>",
+     "<b>habéis puesto</b>",
+     "<b>han puesto</b>"
+    ],
+    "Indefinido": [
+     "<b>puse</b>",
+     "<b>pusiste</b>",
+     "<b>puso</b>",
+     "<b>pusimos</b>",
+     "<b>pusisteis</b>",
+     "<b>pusieron</b>"
+    ],
+    "Imperfecto": [
+     "ponía",
+     "ponías",
+     "ponía",
+     "poníamos",
+     "poníais",
+     "ponían"
+    ],
+    "Futuro": [
+     "<b>pondré</b>",
+     "<b>pondrás</b>",
+     "<b>pondrá</b>",
+     "<b>pondremos</b>",
+     "<b>pondréis</b>",
+     "<b>pondrán</b>"
+    ]
+   },
+   "part": "<b>puesto</b>",
+   "ger": "poniendo",
+   "imp": "pon / ponga"
+  },
+  {
+   "inf": "salir",
+   "de": "ausgehen, abfahren",
+   "forms": {
+    "Presente": [
+     "<b>salgo</b>",
+     "sales",
+     "sale",
+     "salimos",
+     "salís",
+     "salen"
+    ],
+    "Perfecto": [
+     "he salido",
+     "has salido",
+     "ha salido",
+     "hemos salido",
+     "habéis salido",
+     "han salido"
+    ],
+    "Indefinido": [
+     "salí",
+     "saliste",
+     "salió",
+     "salimos",
+     "salisteis",
+     "salieron"
+    ],
+    "Imperfecto": [
+     "salía",
+     "salías",
+     "salía",
+     "salíamos",
+     "salíais",
+     "salían"
+    ],
+    "Futuro": [
+     "<b>saldré</b>",
+     "<b>saldrás</b>",
+     "<b>saldrá</b>",
+     "<b>saldremos</b>",
+     "<b>saldréis</b>",
+     "<b>saldrán</b>"
+    ]
+   },
+   "part": "salido",
+   "ger": "saliendo",
+   "imp": "sal / salga"
+  },
+  {
+   "inf": "ver",
+   "de": "sehen",
+   "forms": {
+    "Presente": [
+     "<b>veo</b>",
+     "ves",
+     "ve",
+     "vemos",
+     "<b>veis</b>",
+     "ven"
+    ],
+    "Perfecto": [
+     "<b>he visto</b>",
+     "<b>has visto</b>",
+     "<b>ha visto</b>",
+     "<b>hemos visto</b>",
+     "<b>habéis visto</b>",
+     "<b>han visto</b>"
+    ],
+    "Indefinido": [
+     "<b>vi</b>",
+     "viste",
+     "<b>vio</b>",
+     "vimos",
+     "visteis",
+     "vieron"
+    ],
+    "Imperfecto": [
+     "<b>veía</b>",
+     "<b>veías</b>",
+     "<b>veía</b>",
+     "<b>veíamos</b>",
+     "<b>veíais</b>",
+     "<b>veían</b>"
+    ],
+    "Futuro": [
+     "veré",
+     "verás",
+     "verá",
+     "veremos",
+     "veréis",
+     "verán"
+    ]
+   },
+   "part": "<b>visto</b>",
+   "ger": "viendo",
+   "imp": "ve / vea"
+  },
+  {
+   "inf": "conocer",
+   "de": "kennen",
+   "forms": {
+    "Presente": [
+     "<b>conozco</b>",
+     "conoces",
+     "conoce",
+     "conocemos",
+     "conocéis",
+     "conocen"
+    ],
+    "Perfecto": [
+     "he conocido",
+     "has conocido",
+     "ha conocido",
+     "hemos conocido",
+     "habéis conocido",
+     "han conocido"
+    ],
+    "Indefinido": [
+     "conocí",
+     "conociste",
+     "conoció",
+     "conocimos",
+     "conocisteis",
+     "conocieron"
+    ],
+    "Imperfecto": [
+     "conocía",
+     "conocías",
+     "conocía",
+     "conocíamos",
+     "conocíais",
+     "conocían"
+    ],
+    "Futuro": [
+     "conoceré",
+     "conocerás",
+     "conocerá",
+     "conoceremos",
+     "conoceréis",
+     "conocerán"
+    ]
+   },
+   "part": "conocido",
+   "ger": "conociendo",
+   "imp": "conoce / conozca"
+  },
+  {
+   "inf": "pedir",
+   "de": "bitten, bestellen",
+   "forms": {
+    "Presente": [
+     "<b>pido</b>",
+     "<b>pides</b>",
+     "<b>pide</b>",
+     "pedimos",
+     "pedís",
+     "<b>piden</b>"
+    ],
+    "Perfecto": [
+     "he pedido",
+     "has pedido",
+     "ha pedido",
+     "hemos pedido",
+     "habéis pedido",
+     "han pedido"
+    ],
+    "Indefinido": [
+     "pedí",
+     "pediste",
+     "<b>pidió</b>",
+     "pedimos",
+     "pedisteis",
+     "<b>pidieron</b>"
+    ],
+    "Imperfecto": [
+     "pedía",
+     "pedías",
+     "pedía",
+     "pedíamos",
+     "pedíais",
+     "pedían"
+    ],
+    "Futuro": [
+     "pediré",
+     "pedirás",
+     "pedirá",
+     "pediremos",
+     "pediréis",
+     "pedirán"
+    ]
+   },
+   "part": "pedido",
+   "ger": "<b>pidiendo</b>",
+   "imp": "pide / pida",
+   "note": "wie <es>pedir</es>: <es>repetir, servir, vestirse</es>"
+  },
+  {
+   "inf": "dormir",
+   "de": "schlafen",
+   "forms": {
+    "Presente": [
+     "<b>duermo</b>",
+     "<b>duermes</b>",
+     "<b>duerme</b>",
+     "dormimos",
+     "dormís",
+     "<b>duermen</b>"
+    ],
+    "Perfecto": [
+     "he dormido",
+     "has dormido",
+     "ha dormido",
+     "hemos dormido",
+     "habéis dormido",
+     "han dormido"
+    ],
+    "Indefinido": [
+     "dormí",
+     "dormiste",
+     "<b>durmió</b>",
+     "dormimos",
+     "dormisteis",
+     "<b>durmieron</b>"
+    ],
+    "Imperfecto": [
+     "dormía",
+     "dormías",
+     "dormía",
+     "dormíamos",
+     "dormíais",
+     "dormían"
+    ],
+    "Futuro": [
+     "dormiré",
+     "dormirás",
+     "dormirá",
+     "dormiremos",
+     "dormiréis",
+     "dormirán"
+    ]
+   },
+   "part": "dormido",
+   "ger": "<b>durmiendo</b>",
+   "imp": "duerme / duerma"
+  },
+  {
+   "inf": "volver",
+   "de": "zurückkommen",
+   "forms": {
+    "Presente": [
+     "<b>vuelvo</b>",
+     "<b>vuelves</b>",
+     "<b>vuelve</b>",
+     "volvemos",
+     "volvéis",
+     "<b>vuelven</b>"
+    ],
+    "Perfecto": [
+     "<b>he vuelto</b>",
+     "<b>has vuelto</b>",
+     "<b>ha vuelto</b>",
+     "<b>hemos vuelto</b>",
+     "<b>habéis vuelto</b>",
+     "<b>han vuelto</b>"
+    ],
+    "Indefinido": [
+     "volví",
+     "volviste",
+     "volvió",
+     "volvimos",
+     "volvisteis",
+     "volvieron"
+    ],
+    "Imperfecto": [
+     "volvía",
+     "volvías",
+     "volvía",
+     "volvíamos",
+     "volvíais",
+     "volvían"
+    ],
+    "Futuro": [
+     "volveré",
+     "volverás",
+     "volverá",
+     "volveremos",
+     "volveréis",
+     "volverán"
+    ]
+   },
+   "part": "<b>vuelto</b>",
+   "ger": "volviendo",
+   "imp": "vuelve / vuelva",
+   "note": "wie <es>volver</es>: <es>poder, contar, encontrar, costar</es> (o → ue)"
+  },
+  {
+   "inf": "empezar",
+   "de": "anfangen",
+   "forms": {
+    "Presente": [
+     "<b>empiezo</b>",
+     "<b>empiezas</b>",
+     "<b>empieza</b>",
+     "empezamos",
+     "empezáis",
+     "<b>empiezan</b>"
+    ],
+    "Perfecto": [
+     "he empezado",
+     "has empezado",
+     "ha empezado",
+     "hemos empezado",
+     "habéis empezado",
+     "han empezado"
+    ],
+    "Indefinido": [
+     "<b>empecé</b>",
+     "empezaste",
+     "empezó",
+     "empezamos",
+     "empezasteis",
+     "empezaron"
+    ],
+    "Imperfecto": [
+     "empezaba",
+     "empezabas",
+     "empezaba",
+     "empezábamos",
+     "empezabais",
+     "empezaban"
+    ],
+    "Futuro": [
+     "empezaré",
+     "empezarás",
+     "empezará",
+     "empezaremos",
+     "empezaréis",
+     "empezarán"
+    ]
+   },
+   "part": "empezado",
+   "ger": "empezando",
+   "imp": "empieza / empiece",
+   "note": "wie <es>empezar</es>: <es>pensar, cerrar, despertarse</es> (e → ie)"
+  },
+  {
+   "inf": "jugar",
+   "de": "spielen",
+   "forms": {
+    "Presente": [
+     "<b>juego</b>",
+     "<b>juegas</b>",
+     "<b>juega</b>",
+     "jugamos",
+     "jugáis",
+     "<b>juegan</b>"
+    ],
+    "Perfecto": [
+     "he jugado",
+     "has jugado",
+     "ha jugado",
+     "hemos jugado",
+     "habéis jugado",
+     "han jugado"
+    ],
+    "Indefinido": [
+     "<b>jugué</b>",
+     "jugaste",
+     "jugó",
+     "jugamos",
+     "jugasteis",
+     "jugaron"
+    ],
+    "Imperfecto": [
+     "jugaba",
+     "jugabas",
+     "jugaba",
+     "jugábamos",
+     "jugabais",
+     "jugaban"
+    ],
+    "Futuro": [
+     "jugaré",
+     "jugarás",
+     "jugará",
+     "jugaremos",
+     "jugaréis",
+     "jugarán"
+    ]
+   },
+   "part": "jugado",
+   "ger": "jugando",
+   "imp": "juega / juegue"
+  },
+  {
+   "inf": "oír",
+   "de": "hören",
+   "forms": {
+    "Presente": [
+     "<b>oigo</b>",
+     "<b>oyes</b>",
+     "<b>oye</b>",
+     "<b>oímos</b>",
+     "oís",
+     "<b>oyen</b>"
+    ],
+    "Perfecto": [
+     "<b>he oído</b>",
+     "<b>has oído</b>",
+     "<b>ha oído</b>",
+     "<b>hemos oído</b>",
+     "<b>habéis oído</b>",
+     "<b>han oído</b>"
+    ],
+    "Indefinido": [
+     "oí",
+     "<b>oíste</b>",
+     "<b>oyó</b>",
+     "<b>oímos</b>",
+     "<b>oísteis</b>",
+     "<b>oyeron</b>"
+    ],
+    "Imperfecto": [
+     "oía",
+     "oías",
+     "oía",
+     "oíamos",
+     "oíais",
+     "oían"
+    ],
+    "Futuro": [
+     "oiré",
+     "oirás",
+     "oirá",
+     "oiremos",
+     "oiréis",
+     "oirán"
+    ]
+   },
+   "part": "<b>oído</b>",
+   "ger": "<b>oyendo</b>",
+   "imp": "oye / oiga"
+  },
+  {
+   "inf": "leer",
+   "de": "lesen",
+   "forms": {
+    "Presente": [
+     "leo",
+     "lees",
+     "lee",
+     "leemos",
+     "leéis",
+     "leen"
+    ],
+    "Perfecto": [
+     "<b>he leído</b>",
+     "<b>has leído</b>",
+     "<b>ha leído</b>",
+     "<b>hemos leído</b>",
+     "<b>habéis leído</b>",
+     "<b>han leído</b>"
+    ],
+    "Indefinido": [
+     "leí",
+     "<b>leíste</b>",
+     "<b>leyó</b>",
+     "<b>leímos</b>",
+     "<b>leísteis</b>",
+     "<b>leyeron</b>"
+    ],
+    "Imperfecto": [
+     "leía",
+     "leías",
+     "leía",
+     "leíamos",
+     "leíais",
+     "leían"
+    ],
+    "Futuro": [
+     "leeré",
+     "leerás",
+     "leerá",
+     "leeremos",
+     "leeréis",
+     "leerán"
+    ]
+   },
+   "part": "<b>leído</b>",
+   "ger": "<b>leyendo</b>",
+   "imp": "lee / lea"
+  },
+  {
+   "inf": "traer",
+   "de": "bringen",
+   "forms": {
+    "Presente": [
+     "<b>traigo</b>",
+     "traes",
+     "trae",
+     "traemos",
+     "traéis",
+     "traen"
+    ],
+    "Perfecto": [
+     "<b>he traído</b>",
+     "<b>has traído</b>",
+     "<b>ha traído</b>",
+     "<b>hemos traído</b>",
+     "<b>habéis traído</b>",
+     "<b>han traído</b>"
+    ],
+    "Indefinido": [
+     "<b>traje</b>",
+     "<b>trajiste</b>",
+     "<b>trajo</b>",
+     "<b>trajimos</b>",
+     "<b>trajisteis</b>",
+     "<b>trajeron</b>"
+    ],
+    "Imperfecto": [
+     "traía",
+     "traías",
+     "traía",
+     "traíamos",
+     "traíais",
+     "traían"
+    ],
+    "Futuro": [
+     "traeré",
+     "traerás",
+     "traerá",
+     "traeremos",
+     "traeréis",
+     "traerán"
+    ]
+   },
+   "part": "<b>traído</b>",
+   "ger": "<b>trayendo</b>",
+   "imp": "trae / traiga"
+  },
+  {
+   "inf": "llegar",
+   "de": "ankommen",
+   "forms": {
+    "Presente": [
+     "llego",
+     "llegas",
+     "llega",
+     "llegamos",
+     "llegáis",
+     "llegan"
+    ],
+    "Perfecto": [
+     "he llegado",
+     "has llegado",
+     "ha llegado",
+     "hemos llegado",
+     "habéis llegado",
+     "han llegado"
+    ],
+    "Indefinido": [
+     "<b>llegué</b>",
+     "llegaste",
+     "llegó",
+     "llegamos",
+     "llegasteis",
+     "llegaron"
+    ],
+    "Imperfecto": [
+     "llegaba",
+     "llegabas",
+     "llegaba",
+     "llegábamos",
+     "llegabais",
+     "llegaban"
+    ],
+    "Futuro": [
+     "llegaré",
+     "llegarás",
+     "llegará",
+     "llegaremos",
+     "llegaréis",
+     "llegarán"
+    ]
+   },
+   "part": "llegado",
+   "ger": "llegando",
+   "imp": "llega / llegue",
+   "note": "<es>-gar</es> → <es>-gué</es>: <es>pagar, jugar</es>"
+  },
+  {
+   "inf": "buscar",
+   "de": "suchen",
+   "forms": {
+    "Presente": [
+     "busco",
+     "buscas",
+     "busca",
+     "buscamos",
+     "buscáis",
+     "buscan"
+    ],
+    "Perfecto": [
+     "he buscado",
+     "has buscado",
+     "ha buscado",
+     "hemos buscado",
+     "habéis buscado",
+     "han buscado"
+    ],
+    "Indefinido": [
+     "<b>busqué</b>",
+     "buscaste",
+     "buscó",
+     "buscamos",
+     "buscasteis",
+     "buscaron"
+    ],
+    "Imperfecto": [
+     "buscaba",
+     "buscabas",
+     "buscaba",
+     "buscábamos",
+     "buscabais",
+     "buscaban"
+    ],
+    "Futuro": [
+     "buscaré",
+     "buscarás",
+     "buscará",
+     "buscaremos",
+     "buscaréis",
+     "buscarán"
+    ]
+   },
+   "part": "buscado",
+   "ger": "buscando",
+   "imp": "busca / busque",
+   "note": "<es>-car</es> → <es>-qué</es>: <es>tocar, sacar, explicar</es>"
+  }
+ ]
+}

@@ -1,0 +1,1054 @@
+{
+ "chapter": 3,
+ "title": "Adjektive",
+ "sections": [
+  {
+   "id": "3.1",
+   "topic": "Angleichung",
+   "level": "A1",
+   "headline_es": "Jersey amarillo, bufanda amarilla,<br>calcetines amarillos.",
+   "headline_de": "Gelber Pullover, gelber Schal, gelbe Socken.",
+   "index": [
+    "Adjektiv",
+    "Angleichung",
+    "Adjektivendungen",
+    "español – española",
+    "gemischte Gruppe"
+   ],
+   "cartoon": {
+    "id": "3.1-A",
+    "icons": [
+     "1F9E3",
+     "1F9E6",
+     "1F415"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Jersey amarillo,<br>bufanda amarilla!"
+     },
+     {
+      "pos": "tr",
+      "text": "Y perro amarillo.<br>Gracias, Pilar."
+     }
+    ],
+    "gloss": "<es>el jersey</es> Pullover · <es>la bufanda</es> Schal",
+    "prompt": "SCENE: PILAR's cosy living room with a basket full of knitting wool. On the left, PILAR, beaming with pride, holds up her knitting needles like trophies. In the centre stands DANI, perfectly calm and resigned, dressed head to toe in hand-knitted, slightly too big, bright yellow things: a yellow sweater, a long yellow scarf, yellow socks and a yellow bobble hat. At his feet sits his scruffy dog, also wearing a tiny yellow knitted sweater and looking deeply embarrassed. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Das Adjektiv ist ein Chamäleon: Es nimmt die Farbe seines Nomens an – <c1>männlich oder weiblich</c1> und <c2>Einzahl oder Mehrzahl</c2>. Immer, egal wo es steht."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Adjektiv endet auf …",
+       "el",
+       "la",
+       "los",
+       "las"
+      ],
+      "es_cols": [
+       1,
+       2,
+       3,
+       4
+      ],
+      "track": "3.1-1",
+      "rows": [
+       [
+        "-o",
+        "rojo",
+        "roj<b>a</b>",
+        "roj<b>os</b>",
+        "roj<b>as</b>"
+       ],
+       [
+        "-e",
+        "grande",
+        "grande",
+        "grande<b>s</b>",
+        "grande<b>s</b>"
+       ],
+       [
+        "Konsonant",
+        "azul",
+        "azul",
+        "azul<b>es</b>",
+        "azul<b>es</b>"
+       ],
+       [
+        "Herkunft, -or",
+        "español",
+        "español<b>a</b>",
+        "español<b>es</b>",
+        "español<b>as</b>"
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "3.1-2",
+      "items": [
+       [
+        "un piso pequeño, una cocina pequeña",
+        "eine kleine Wohnung, eine kleine Küche"
+       ],
+       [
+        "Las gafas de Pilar son enormes.",
+        "Pilars Brille ist riesig. (<es>gafas</es> ist Plural)"
+       ],
+       [
+        "unos niños felices",
+        "glückliche Kinder (z → c wie in <g>2.2</g>)"
+       ],
+       [
+        "Lucía y Dani están cansados.",
+        "Lucía und Dani sind müde. Gemischt? Männlich."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Im Deutschen bleibt das Adjektiv nach „ist“ nackt: <em>Die Küche ist klein.</em> Im Spanischen nie: <es>La cocina es pequeña.</es> Und die Rebellen aus <g>2.1</g> bleiben, was sie sind: <es>el agua fría, la mano fría</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Pilar besichtigt Lucías neue Wohnung. Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "La cocina es muy [[pequeño|!pequeña]].",
+       "Los vecinos son [[!simpáticos|simpáticas]].",
+       "Las ventanas son [[grande|!grandes]].",
+       "El agua del grifo está [[frío|!fría]].",
+       "Y el problema es [[!enorme|enorma]]: ¡no hay ascensor!"
+      ],
+      "why": "d: <es>agua</es> ist weiblich, auch wenn <es>el</es> davorsteht. e: Adjektive auf -e haben keine weibliche Form."
+     },
+     {
+      "type": "fill",
+      "title": "Das Chamäleon. Setz die richtige Form ein.",
+      "kind": "Bilden",
+      "cols": 3,
+      "items": [
+       "una chica {{alemana|alemán}}",
+       "dos coches {{azules|azul}}",
+       "una camisa {{verde|verde}}",
+       "unos niños {{felices|feliz}}",
+       "las gafas {{negras|negro}}",
+       "el día {{largo|largo}}"
+      ],
+      "why": "<es>alemana</es>: Die Tilde fällt weg, weil die Betonung gleich bleibt. <es>el día largo</es>: <es>día</es> ist männlich (<g>2.1</g>)."
+     },
+     {
+      "type": "cloze",
+      "title": "Die Hochzeit von Marta. Wer trägt was?",
+      "kind": "Bilden",
+      "track": "3.1-4",
+      "text": "Lucía tiene un vestido {{rojo|rojo}}, unos zapatos {{rojos|rojo}} y una chaqueta {{roja|rojo}}. Dani tiene una camisa {{blanca|blanco}}, unos pantalones {{grises|gris}} y unos calcetines {{amarillos|amarillo}} – de Pilar, claro. Nico tiene una camiseta {{verde|verde}} con un dinosaurio {{enorme|enorme}}."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Die Wohnung ist klein, aber die Küche ist groß.",
+        "es": "El piso es pequeño, pero la cocina es grande."
+       },
+       {
+        "de": "Lucía und Dani sind müde.",
+        "es": "Lucía y Dani están cansados."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Was ist gerade in deinem Kühlschrank? Beschreib vier Dinge.",
+      "kind": "Frei",
+      "lines": 2,
+      "text": "<es>Hay una cerveza fría, unos tomates …</es>",
+      "solution": "Zum Beispiel: <es>Hay una cerveza fría, unos tomates rojos, un queso francés y dos yogures naturales.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Las casas del pueblo son ___.",
+     "options": [
+      "blanco",
+      "blancas",
+      "blancos"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Lucía y Dani están ___.",
+     "options": [
+      "cansadas",
+      "cansados"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "El agua está muy ___.",
+     "options": [
+      "frío",
+      "fría"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "3.2",
+   "topic": "Vor oder nach dem Nomen",
+   "level": "A2",
+   "headline_es": "Dani es un gran hombre.<br>Bueno… un hombre grande.",
+   "headline_de": "Dani ist ein großartiger Mann. Na ja … ein großer Mann.",
+   "index": [
+    "Stellung des Adjektivs",
+    "gran / grande",
+    "buen, mal",
+    "primer, tercer",
+    "viejo amigo"
+   ],
+   "cartoon": {
+    "id": "3.2-A",
+    "icons": [
+     "1F469-200D-1F3A8",
+     "1F469",
+     "1F37B"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Te presento a Marta,<br>una vieja amiga."
+     },
+     {
+      "pos": "tr",
+      "text": "¡Oye!<br>¿Vieja yo?"
+     }
+    ],
+    "gloss": "<es>te presento a</es> darf ich vorstellen · <es>¡Oye!</es> He!",
+    "prompt": "SCENE: A lively tapas bar in Madrid. On the left, LUCÍA, relaxed and smiling, gestures with an open hand towards her friend MARTA, a stylish woman of about thirty with trendy clothes, introducing her to two people at the bar. MARTA, on the right, has just frozen mid-sip with her wine glass, eyebrows shot up, mouth open in mock outrage, one hand on her chest as if deeply insulted. The two people at the bar try not to laugh. Leave clear empty space above Lucía (top left) and above Marta (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<c1>Nach dem Nomen</c1> sortiert das Adjektiv: <em>welches?</em> <es>el coche rojo, la comida italiana</es>. Das ist der Normalfall. <c2>Vor dem Nomen</c2> wertet es oder schwärmt: <es>¡Qué buena idea!</es> Zahlen stehen auch davor: <es>el primer día</es>. Und manchmal ändert sich die Bedeutung."
+     },
+     {
+      "type": "h",
+      "text": "Kurz vor männlichen Nomen",
+      "track": "3.2-2"
+     },
+     {
+      "type": "table",
+      "es_cols": [
+       0,
+       1
+      ],
+      "track": "3.2-2",
+      "rows": [
+       [
+        "bueno → <b>buen</b> · malo → <b>mal</b>",
+        "un buen día · un mal momento"
+       ],
+       [
+        "primero → <b>primer</b> · tercero → <b>tercer</b>",
+        "el primer beso · el tercer piso"
+       ],
+       [
+        "grande → <b>gran</b> (auch weiblich!)",
+        "un gran amigo · una gran idea"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Gleiches Wort, andere Bedeutung",
+      "track": "3.2-3"
+     },
+     {
+      "type": "table",
+      "head": [
+       "<c2>davor</c2>",
+       "<c1>danach</c1>"
+      ],
+      "es_cols": [],
+      "track": "3.2-3",
+      "rows": [
+       [
+        "<es>un gran hombre</es> – großartig",
+        "<es>un hombre grande</es> – groß gewachsen"
+       ],
+       [
+        "<es>una vieja amiga</es> – seit Langem",
+        "<es>una amiga vieja</es> – alt an Jahren"
+       ],
+       [
+        "<es>¡Pobre Dani!</es> – der Arme!",
+        "<es>un chico pobre</es> – ohne Geld"
+       ]
+      ]
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Lucías erster Tag in der neuen Firma. Was ist richtig? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Hoy es mi [[!primer día|primero día]] en la oficina.",
+       "La oficina está en la [[tercer planta|!tercera planta]].",
+       "Rafa es [[!un gran jefe|un grande jefe]].",
+       "Tiene [[un rojo coche|!un coche rojo]].",
+       "¡Qué [[mal suerte|!mala suerte]]: no hay café!"
+      ],
+      "why": "b, e: Gekürzt wird nur vor einem <em>männlichen</em> Nomen. <es>planta</es> und <es>suerte</es> sind weiblich: <es>tercera, mala</es>. Nur <es>gran</es> gilt für beide."
+     },
+     {
+      "type": "match",
+      "title": "Was ist gemeint? Ordne zu.",
+      "kind": "Erkennen",
+      "left": [
+       "un gran hombre",
+       "un hombre grande",
+       "una vieja amiga",
+       "una amiga vieja",
+       "¡Pobre Dani!"
+      ],
+      "right": [
+       "eine Freundin von 85 Jahren",
+       "Der arme Dani!",
+       "ein großer, kräftiger Mann",
+       "eine Freundin seit vielen Jahren",
+       "ein großartiger Mann"
+      ],
+      "answer": [
+       4,
+       2,
+       3,
+       0,
+       1
+      ]
+     },
+     {
+      "type": "transform",
+      "title": "Mach es emotional: Das Adjektiv wandert nach vorn.",
+      "kind": "Bilden",
+      "example": {
+       "q": "un amigo bueno",
+       "a": "un buen amigo"
+      },
+      "items": [
+       {
+        "q": "una idea buena",
+        "a": "una buena idea"
+       },
+       {
+        "q": "un momento malo",
+        "a": "un mal momento"
+       },
+       {
+        "q": "una fiesta grande",
+        "a": "una gran fiesta"
+       }
+      ],
+      "why": "Nur <es>grande</es> wird auch vor weiblichen Nomen kurz: <es>una gran fiesta</es>, aber <es>una buena idea</es>."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Das ist eine gute Idee!",
+        "es": "¡Es una buena idea!"
+       },
+       {
+        "de": "Pilar ist eine alte Freundin von Doña Carmen.",
+        "es": "Pilar es una vieja amiga de doña Carmen."
+       }
+      ],
+      "why": "b: Beides stimmt hier: Die zwei kennen sich seit Jahren – und doña Carmen ist über achtzig."
+     },
+     {
+      "type": "free",
+      "title": "Wer ist für dich ein gran hombre oder eine gran mujer? Warum?",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>Mi abuela es una gran mujer. Es muy valiente y tiene un buen corazón.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Hoy es un ___ día.",
+     "options": [
+      "bueno",
+      "buen"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Es una ___ idea.",
+     "options": [
+      "gran",
+      "grande"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "La oficina está en el ___ piso.",
+     "options": [
+      "tercer",
+      "tercero"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "3.3",
+   "topic": "Vergleichen",
+   "level": "A2",
+   "headline_es": "Mi paella es buena.<br>La de Dani es mejor.",
+   "headline_de": "Meine Paella ist gut. Die von Dani ist besser.",
+   "index": [
+    "Vergleich",
+    "más … que",
+    "menos … que",
+    "tan … como",
+    "mejor, peor",
+    "mayor, menor",
+    "Superlativ"
+   ],
+   "cartoon": {
+    "id": "3.3-A",
+    "icons": [
+     "1F958",
+     "1F958",
+     "1F466"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Nico, ¿cuál es mejor?"
+     },
+     {
+      "pos": "tr",
+      "text": "La de Dani.<br>¡Mucho mejor!"
+     }
+    ],
+    "gloss": "<es>¿cuál?</es> welche?",
+    "prompt": "SCENE: A family kitchen table with two big paella pans side by side, each with a small flag stuck in it. NICO, four years old, sits on a high chair between them like a very serious TV cooking-show judge, a napkin tucked into his dinosaur T-shirt, a big spoon raised, cheeks full of rice. On the left, PILAR in an apron leans forward with hopeful, slightly threatening eyes. On the right, DANI stands calmly with folded arms and a tiny modest smile. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Vergleichen ist eine Waage: <c1>más … que</c1> (mehr als) und <c2>menos … que</c2> (weniger als) lassen sie kippen, <em>tan … como</em> (so … wie) hält sie im Gleichgewicht."
+     },
+     {
+      "type": "examples",
+      "track": "3.3-1",
+      "items": [
+       [
+        "Madrid es <c1>más</c1> grande <c1>que</c1> Sevilla.",
+        "Madrid ist größer als Sevilla."
+       ],
+       [
+        "El metro es <c2>menos</c2> caro <c2>que</c2> el taxi.",
+        "Die U-Bahn ist billiger als das Taxi."
+       ],
+       [
+        "Dani es tan tranquilo como su perro.",
+        "Dani ist so ruhig wie sein Hund."
+       ],
+       [
+        "Es el piso más caro de Madrid.",
+        "Die teuerste Wohnung Madrids. (der/die …-ste: <es>el/la más …</es>)"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Vier Abkürzungen",
+      "track": "3.3-2"
+     },
+     {
+      "type": "table",
+      "es_cols": [
+       0,
+       2
+      ],
+      "track": "3.3-2",
+      "rows": [
+       [
+        "bueno → <b>mejor</b>",
+        "besser",
+        "La paella de Dani es mejor."
+       ],
+       [
+        "malo → <b>peor</b>",
+        "schlechter",
+        "El tráfico es peor que ayer."
+       ],
+       [
+        "grande → <b>mayor</b>",
+        "älter",
+        "Doña Carmen es mayor que Pilar."
+       ],
+       [
+        "pequeño → <b>menor</b>",
+        "jünger",
+        "Nico es el menor de la familia."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "„Als“ = <es>que</es>, „wie“ = <es>como</es>. Mit Zahlen aber: <es>más de cincuenta años</es>. Und „mein großer Bruder“ = <es>mi hermano mayor</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "transform",
+      "title": "Vergleiche. (+ mehr, − weniger, = gleich)",
+      "kind": "Bilden",
+      "example": {
+       "q": "el taxi / el metro: caro (+)",
+       "a": "El taxi es más caro que el metro."
+      },
+      "items": [
+       {
+        "q": "Dani / Lucía: tranquilo (+)",
+        "a": "Dani es más tranquilo que Lucía."
+       },
+       {
+        "q": "la cerveza / el agua: sano (−)",
+        "a": "La cerveza es menos sana que el agua."
+       },
+       {
+        "q": "Nico / Tofu: rápido (=)",
+        "a": "Nico es tan rápido como Tofu."
+       },
+       {
+        "q": "la paella de Dani / la de Pilar: bueno (+)",
+        "a": "La paella de Dani es mejor que la de Pilar."
+       }
+      ],
+      "why": "b: Das Adjektiv passt sich an: <es>la cerveza</es> → <es>sana</es>. d: nie <es>más bueno</es>, sondern <es>mejor</es>."
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Lucía es tan alta [[que|!como]] Marta.",
+       "El hotel nuevo es [[más bueno|!mejor]] que el viejo.",
+       "Rafa tiene más [[que|!de]] cincuenta años.",
+       "El hermano [[más grande|!mayor]] de Dani tiene cuarenta años.",
+       "Es el peor día [[!de|en]] mi vida."
+      ],
+      "why": "c: Mit Zahlen: <es>más de</es>. d: Beim Alter: <es>mayor</es>. e: „meines Lebens“ = <es>de mi vida</es>."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar vergleicht. Ergänze.",
+      "kind": "Bilden",
+      "track": "3.3-4",
+      "lines": [
+       [
+        "Pilar",
+        "Hija, el piso de tu hermana es {{más|+}} grande {{que}} tu piso."
+       ],
+       [
+        "Lucía",
+        "Sí, mamá, pero mi barrio es {{mejor|bueno, +}}."
+       ],
+       [
+        "Pilar",
+        "Y tu sobrino es el niño {{más|+}} guapo {{del|de + el}} mundo."
+       ],
+       [
+        "Lucía",
+        "En eso, mamá, estamos de acuerdo."
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Das ist die schlechteste Pizza von Madrid.",
+        "es": "Es la peor pizza de Madrid."
+       },
+       {
+        "de": "Meine Schwester ist älter als ich.",
+        "es": "Mi hermana es mayor que yo."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Du und ein Mensch aus deiner Familie: drei Vergleiche.",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>Mi hermano es más alto que yo. Yo soy más rápida que él. Pero él es mejor en la cocina.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Madrid es más grande ___ Sevilla.",
+     "options": [
+      "que",
+      "como"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Dani es tan alto ___ su padre.",
+     "options": [
+      "que",
+      "como"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "El café de aquí es ___ que el de la oficina.",
+     "options": [
+      "más bueno",
+      "mejor"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "3.4",
+   "topic": "Die Endung -ísimo",
+   "level": "A2",
+   "headline_es": "La paella está buenísima.<br>Y el camarero, también.",
+   "headline_de": "Die Paella ist superlecker. Und der Kellner … sieht superlecker aus.",
+   "index": [
+    "-ísimo",
+    "Steigerung",
+    "buenísimo",
+    "muchísimo",
+    "estar bueno"
+   ],
+   "cartoon": {
+    "id": "3.4-A",
+    "icons": [
+     "1F958",
+     "1F468-200D-1F373",
+     "1F60D"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Está buenísimo…"
+     },
+     {
+      "pos": "tr",
+      "text": "¿El arroz?<br>¡Sí, riquísimo!"
+     }
+    ],
+    "gloss": "<es>el arroz</es> der Reis",
+    "prompt": "SCENE: A sunny restaurant terrace by the sea. LUCÍA and her friend MARTA share a big paella. On the left, MARTA has stopped eating; her chin rests dreamily in her hand, and her heart-eyed gaze follows a very handsome young waiter who walks past in the background carrying a tray, completely unaware. On the right, LUCÍA, totally focused on the food, holds a spoon piled high with rice, cheeks full, nodding enthusiastically at the paella pan and not noticing anything. Leave clear empty space above Marta (top left) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<es>-ísimo</es> ist der Lautstärkeregler ganz rechts: <c1>muy caro</c1> ist teuer, <c2>carísimo</c2> ist „Bist du verrückt?“."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Adjektiv",
+       "-ísimo",
+       "Was passiert?"
+      ],
+      "es_cols": [
+       0,
+       1
+      ],
+      "track": "3.4-1",
+      "rows": [
+       [
+        "caro, buena",
+        "car<b>ísimo</b>, buen<b>ísima</b>",
+        "Vokal weg, Endung dran – sie passt sich an"
+       ],
+       [
+        "fácil",
+        "facil<b>ísimo</b>",
+        "Konsonant bleibt"
+       ],
+       [
+        "rápido",
+        "rapid<b>ísimo</b>",
+        "nur ein Akzent: der auf dem í"
+       ],
+       [
+        "rico, largo",
+        "riqu<b>ísimo</b>, largu<b>ísimo</b>",
+        "c → qu, g → gu: Der Klang bleibt"
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "3.4-2",
+      "items": [
+       [
+        "El piso es pequeñísimo y carísimo.",
+        "Die Wohnung ist winzig und sündhaft teuer."
+       ],
+       [
+        "Estoy cansadísima.",
+        "Ich bin todmüde."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Nie doppelt: <es>muy carísimo</es> geht nicht. Und Vorsicht: <es>La paella está buenísima</es> = superlecker. <es>El camarero está buenísimo</es> = sehr attraktiv."
+     },
+     {
+      "type": "region",
+      "text": "Mit <es>súper</es> klingt es ganz jung: <es>súper caro, súper rico</es> – in Spanien wie in Lateinamerika. In Argentinien hörst du auch <es>re-</es>: <es>rebueno</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "fill",
+      "title": "Dreh den Regler auf. Schreib die -ísimo-Form.",
+      "kind": "Bilden",
+      "cols": 3,
+      "items": [
+       "caro → {{carísimo}}",
+       "fácil → {{facilísimo}}",
+       "rico → {{riquísimo}}",
+       "largo → {{larguísimo}}",
+       "rápido → {{rapidísimo}}",
+       "guapas → {{guapísimas}}"
+      ],
+      "why": "<es>riquísimo, larguísimo</es>: Mit <es>qu</es> und <es>gu</es> bleibt der Klang von <es>rico</es> und <es>largo</es>."
+     },
+     {
+      "type": "transform",
+      "title": "Pilar sagt muy. Lucía übertreibt.",
+      "kind": "Bilden",
+      "example": {
+       "q": "El piso es muy caro.",
+       "a": "¡Es carísimo!"
+      },
+      "items": [
+       {
+        "q": "La película es muy larga.",
+        "a": "¡Es larguísima!"
+       },
+       {
+        "q": "Los tomates están muy ricos.",
+        "a": "¡Están riquísimos!"
+       },
+       {
+        "q": "Nico está muy cansado.",
+        "a": "¡Está cansadísimo!"
+       }
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Eine Karte aus Cádiz. Lucía übertreibt – setz die -ísimo-Form ein.",
+      "kind": "Erzählen",
+      "track": "3.4-3",
+      "text": "¡Hola, mamá! Cádiz es {{bonitísimo|bonito}}. El hotel es {{pequeñísimo|pequeño}}, pero la playa está {{cerquísima|cerca}}. El pescado está {{riquísimo|rico}} y el vino es {{baratísimo|barato}}. Dani está {{contentísimo|contento}} y Tofu, {{gordísimo|gordo}}. Besos, Lucía. P. D.: El camarero está {{buenísimo|bueno}}.",
+      "why": "<es>cerquísima</es>: Auch manche Adverbien steigern so, und c → qu."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Tausend Dank!",
+        "es": "¡Muchísimas gracias!"
+       },
+       {
+        "de": "Ich bin todmüde.",
+        "es": "Estoy cansadísimo. / Estoy cansadísima."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Bewerte ein Restaurant, ein Hotel oder einen Film – mit drei -ísimo-Formen.",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>El restaurante es pequeñísimo, pero la comida está buenísima y no es carísimo.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "La paella está ___.",
+     "options": [
+      "muy riquísima",
+      "riquísima"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "El tren es ___.",
+     "options": [
+      "rapidísimo",
+      "rápidísimo"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "La película es ___.",
+     "options": [
+      "largísima",
+      "larguísima"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "3.5",
+   "topic": "muy und mucho, bien und bueno",
+   "level": "A1",
+   "headline_es": "—¿Qué tal? —Muy bien, gracias.<br>¿Muy bueno? ¡Cuidado!",
+   "headline_de": "– Wie geht’s? – Sehr gut, danke. „Muy bueno“? Vorsicht!",
+   "index": [
+    "muy",
+    "mucho",
+    "bien",
+    "bueno",
+    "sehr / viel",
+    "Estoy bien"
+   ],
+   "cartoon": {
+    "id": "3.5-A",
+    "icons": [
+     "1F475",
+     "1F468",
+     "1F6CD"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Qué tal, Jonas?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Muy bueno, gracias!"
+     },
+     {
+      "pos": "ml",
+      "text": "Ya lo veo, hijo."
+     }
+    ],
+    "gloss": "<es>ya lo veo</es> das sehe ich",
+    "prompt": "SCENE: The stairwell of an old Madrid apartment building. On the right, JONAS, a tall, athletic young German neighbour with a friendly, proud smile, carries heavy shopping bags up the stairs, his T-shirt slightly too tight. On the left, the elderly neighbour DOÑA CARMEN, about eighty, in a flowered dressing gown and hair curlers, leans in her open doorway and looks him up and down with a delighted, mischievous grin, one eyebrow raised. Leave clear empty space above Doña Carmen (top left and middle left) and above Jonas (top right) for three speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Zwei Paare, zwei Fragen. <c1>muy oder mucho?</c1> „Sehr“ oder „viel“. <c2>bueno oder bien?</c2> „Was für ein …?“ oder „Wie?“"
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "muy · mucho",
+        "sub": "sehr oder viel?",
+        "icon": "1F4AF",
+        "tone": 1,
+        "track": "3.5-1",
+        "uses": [
+         {
+          "t": "muy – sehr; bleibt immer gleich",
+          "x": "<es>muy caro, muy tarde, muy bien</es>"
+         },
+         {
+          "t": "mucho – viel; passt sich an",
+          "x": "<es>mucho café, mucha gente, muchas gracias</es>"
+         },
+         {
+          "t": "nach dem Verb: mucho",
+          "x": "<es>Me gusta mucho.</es> <de>Das gefällt mir sehr.</de>"
+         }
+        ]
+       },
+       {
+        "title": "bueno · bien",
+        "sub": "was für ein oder wie?",
+        "icon": "1F44D",
+        "tone": 2,
+        "track": "3.5-1",
+        "uses": [
+         {
+          "t": "bueno – was für ein? passt sich an",
+          "x": "<es>un buen libro, la comida es buena</es>"
+         },
+         {
+          "t": "bien – wie? bleibt immer gleich",
+          "x": "<es>Estoy bien. Hablas muy bien.</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "spikiu",
+      "title": "muy steht nie am Ende",
+      "text": "Frag dich: Folgt noch ein Adjektiv oder Adverb? Dann <es>muy</es>. Steht nichts mehr dahinter, nimm <es>mucho</es>: <es>—¿Te gusta? —Sí, mucho.</es> Darum heißt auch „Ich mag dich sehr“ <es>Me gustas mucho</es> – das Deutsche sagt „sehr“, das Spanische „viel“."
+     },
+     {
+      "type": "ojo",
+      "text": "<es>Estoy bien</es> = Mir geht’s gut. <es>Estoy bueno</es> = Ich bin heiß (attraktiv). <es>Soy bueno</es> = Ich bin ein guter Mensch. Jonas aus dem Cartoon lernt das gerade."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "fill",
+      "title": "muy oder mucho, mucha, muchos, muchas?",
+      "kind": "Entscheiden",
+      "cols": 3,
+      "gap": "m",
+      "items": [
+       "{{muy}} caro",
+       "{{mucho}} dinero",
+       "{{mucha}} gente",
+       "{{muchos}} amigos",
+       "{{muy}} bien",
+       "{{muchas}} gracias",
+       "{{muy}} tarde",
+       "{{mucho}} frío",
+       "{{muy}} cansada"
+      ],
+      "why": "<es>mucho frío</es>: <es>frío</es> ist hier ein Nomen (die Kälte), wie in <es>Hace mucho frío.</es>"
+     },
+     {
+      "type": "choice",
+      "title": "bien oder bueno? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "—¿Qué tal? —[[!Bien|Bueno]], gracias.",
+       "La paella está muy [[!buena|bien]].",
+       "Hablas español muy [[!bien|bueno]].",
+       "Hoy es un [[bien|!buen]] día para la playa.",
+       "Dani es muy [[!bueno|bien]] con los niños."
+      ],
+      "why": "b: Essen schmeckt: <es>estar bueno</es>. e: <es>bueno con</es> beschreibt Dani als Mensch – ein Adjektiv."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar ruft an. Setz muy, mucho, bien oder bueno in der richtigen Form ein.",
+      "kind": "Bilden",
+      "track": "3.5-2",
+      "lines": [
+       [
+        "Pilar",
+        "Hola, hija. ¿Todo {{bien}}?"
+       ],
+       [
+        "Lucía",
+        "Sí, mamá, {{muy}} bien. Pero tengo {{mucho}} trabajo."
+       ],
+       [
+        "Pilar",
+        "¿Y Dani? ¿Es {{bueno}} contigo?"
+       ],
+       [
+        "Lucía",
+        "Sí, mamá. Dani es un chico {{muy}} tranquilo."
+       ],
+       [
+        "Pilar",
+        "Ya. {{Muy}} tranquilo. Y {{muy}} tarde, siempre. {{Muchos}} besos a Dani."
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Mir geht’s sehr gut, danke.",
+        "es": "Estoy muy bien, gracias."
+       },
+       {
+        "de": "Die Paella ist sehr gut, aber hier sind viele Leute.",
+        "es": "La paella está muy buena, pero aquí hay mucha gente."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Wie geht’s dir heute wirklich? Drei Sätze mit muy, mucho, bien oder bueno.",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>Estoy bien, pero muy cansado. Tengo mucho trabajo. El café de hoy es muy bueno.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "En el bar hay ___ gente.",
+     "options": [
+      "muy",
+      "mucha",
+      "mucho"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Hablas español muy ___.",
+     "options": [
+      "bueno",
+      "bien"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "—¿Te gusta? —Sí, ___.",
+     "options": [
+      "muy",
+      "mucho"
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ ]
+}

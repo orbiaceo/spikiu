@@ -1,0 +1,1067 @@
+{
+ "chapter": 2,
+ "title": "Substantive und Artikel",
+ "sections": [
+  {
+   "id": "2.1",
+   "topic": "Männlich und weiblich",
+   "level": "A1",
+   "headline_es": "El agua, el mapa, el sofá:<br>¡el día es un desastre!",
+   "headline_de": "Das Wasser, die Landkarte, das Sofa: Der Tag ist eine Katastrophe!",
+   "index": [
+    "Genus",
+    "männlich und weiblich",
+    "el día",
+    "la mano",
+    "el agua",
+    "el problema",
+    "-ción, -dad"
+   ],
+   "cartoon": {
+    "id": "2.1-A",
+    "icons": [
+     "1F4A7",
+     "1F6CB",
+     "1F5FA"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Dani! ¡El agua!<br>¡El sofá!"
+     },
+     {
+      "pos": "tr",
+      "text": "Tranquila.<br>Tengo el mapa."
+     }
+    ],
+    "gloss": "<es>tranquila</es> ruhig, keine Panik",
+    "prompt": "SCENE: A small, colourful Madrid living room is flooded knee-deep with water after a pipe burst; a thin jet still sprays from the wall. On the left, LUCÍA stands in the water in rolled-up jeans, arms raised in panic, holding a bucket in one hand and a mop in the other, hair wild. In the middle of the room DANI sits perfectly relaxed on the old sofa, which floats like a raft. He wears a sailor's cap and calmly studies a large unfolded paper map, as if planning a sea voyage. A rubber duck, a slipper and a coffee cup float past. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Jedes Nomen ist <c1>männlich (el)</c1> oder <c2>weiblich (la)</c2>. Die Endung ist ein Namensschild: <es>-o</es> heißt fast immer <es>el</es>, <es>-a</es> fast immer <es>la</es>. Ein paar Rebellen tragen das falsche Schild."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Männlich",
+        "sub": "el",
+        "icon": "1F468",
+        "tone": 1,
+        "track": "2.1-1",
+        "uses": [
+         {
+          "t": "-o, -aje, -or, viele Konsonanten",
+          "x": "<es>el libro, el viaje, el color, el móvil</es>"
+         }
+        ]
+       },
+       {
+        "title": "Weiblich",
+        "sub": "la",
+        "icon": "1F469",
+        "tone": 2,
+        "track": "2.1-1",
+        "uses": [
+         {
+          "t": "-a, -ción, -sión, -dad, -tad",
+          "x": "<es>la casa, la canción, la ciudad, la libertad</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Die Rebellen",
+      "track": "2.1-2"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Rebell",
+       "Was ist los?"
+      ],
+      "es_cols": [
+       0
+      ],
+      "track": "2.1-2",
+      "rows": [
+       [
+        "el día, el mapa, el problema",
+        "-a, aber männlich – wie viele auf <b>-ma</b>: <es>el idioma, el tema</es>"
+       ],
+       [
+        "la mano, la foto, la moto",
+        "-o, aber weiblich (<es>foto</es> = <es>la fotografía</es>)"
+       ],
+       [
+        "el agua",
+        "weiblich! Vor betontem a- steht aber <es>el</es>: <es>el agua fría</es>"
+       ]
+      ]
+     },
+     {
+      "type": "p",
+      "text": "Bei Menschen zählt das echte Geschlecht: <es>el camarero – la camarera</es>. Bei <es>-e</es> und <es>-ista</es> wechselt nur der Artikel: <es>el/la estudiante, el/la turista</es>."
+     },
+     {
+      "type": "ojo",
+      "text": "Deutsch hilft nicht: <em>das</em> Haus – <es>la casa</es>, <em>der</em> Tisch – <es>la mesa</es>. Lern jedes Wort mit Artikel."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Nico räumt auf. Wohin gehört jedes Wort: el oder la?",
+      "kind": "Erkennen",
+      "words": [
+       "viaje",
+       "verdad",
+       "día",
+       "mano",
+       "cerveza",
+       "mapa",
+       "foto",
+       "problema"
+      ],
+      "baskets": [
+       {
+        "label": "el",
+        "answers": [
+         "viaje",
+         "día",
+         "mapa",
+         "problema"
+        ]
+       },
+       {
+        "label": "la",
+        "answers": [
+         "verdad",
+         "mano",
+         "foto",
+         "cerveza"
+        ]
+       }
+      ],
+      "why": "Die Rebellen: <es>el día, el mapa, el problema</es> sind männlich trotz -a; <es>la mano, la foto</es> sind weiblich trotz -o."
+     },
+     {
+      "type": "choice",
+      "title": "Lucías Wohnung nach der Überschwemmung. Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "¿Dónde está [[!el|la]] mapa?",
+       "[[!El|La]] agua está muy fría.",
+       "[[El|!La]] foto de Nico está en el sofá.",
+       "[[!El|La]] problema es [[!el|la]] sofá.",
+       "[[El|!La]] mano de Dani está fría."
+      ],
+      "why": "b: <es>agua</es> ist weiblich, aber vor betontem a- steht <es>el</es>. Das Adjektiv bleibt weiblich: <es>fría</es>."
+     },
+     {
+      "type": "fill",
+      "title": "Ein Beruf, zwei Menschen. Schreib die weibliche Form.",
+      "kind": "Bilden",
+      "cols": 3,
+      "items": [
+       "el camarero – la {{camarera}}",
+       "el profesor – la {{profesora}}",
+       "el jefe – la {{jefa}}",
+       "el estudiante – la {{estudiante}}",
+       "el turista – la {{turista}}",
+       "el médico – la {{médica}}"
+      ],
+      "why": "<es>estudiante</es> und <es>turista</es> bleiben gleich, nur der Artikel zeigt das Geschlecht."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Das Problem ist nicht die Wohnung. Das Problem ist die Stadt.",
+        "es": "El problema no es el piso. El problema es la ciudad."
+       },
+       {
+        "de": "Das Wasser in Madrid ist gut.",
+        "es": "El agua de Madrid es buena."
+       }
+      ],
+      "why": "b: <es>el agua</es>, aber <es>buena</es> – das Wort ist weiblich, nur der Artikel ist ein Rebell."
+     },
+     {
+      "type": "free",
+      "title": "Schau dich um. Schreib sechs Dinge, die du gerade siehst – mit el oder la.",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>el móvil, la mesa, el ordenador, la ventana, el café, la lámpara</es>. Prüf im Wörterbuch, ob dein Artikel stimmt."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿Dónde está ___ mapa de Madrid?",
+     "options": [
+      "el",
+      "la"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "___ mano de Pilar está fría.",
+     "options": [
+      "El",
+      "La"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "___ agua del mar está fría.",
+     "options": [
+      "El",
+      "La"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "2.2",
+   "topic": "Der Plural",
+   "level": "A1",
+   "headline_es": "Un lápiz, dos lápices,<br>tres cafés y mil problemas.",
+   "headline_de": "Ein Bleistift, zwei Bleistifte, drei Kaffee und tausend Probleme.",
+   "index": [
+    "Plural",
+    "Mehrzahl",
+    "-s / -es",
+    "lápiz – lápices",
+    "gemischte Gruppe",
+    "la gente"
+   ],
+   "cartoon": {
+    "id": "2.2-A",
+    "icons": [
+     "1F475",
+     "2615",
+     "1F468"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Las chicas<br>del jueves!"
+     },
+     {
+      "pos": "tr",
+      "text": "Perdón:<br>los chicos del jueves."
+     }
+    ],
+    "gloss": "<es>jueves</es> Donnerstag",
+    "prompt": "SCENE: A cosy old-fashioned Madrid café terrace. Around a round table sit PILAR and five women friends in their sixties, all dressed up, raising their coffee cups and cake forks in a cheerful toast. A small hand-made sign on the table shows six women's silhouettes. On the right, DANI has just squeezed onto an extra chair at the table, the only man, calm and smiling, politely raising one finger as if to make a small correction. The women look at him with amused, slightly scandalised faces. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Der Plural ist ein Anhängsel: Vokal + <c1>s</c1>, Konsonant + <c2>es</c2>. Denn „los bars“ kann kein Spanier aussprechen."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Wort endet auf …",
+       "Plural",
+       "Beispiel"
+      ],
+      "es_cols": [
+       2
+      ],
+      "track": "2.2-1",
+      "rows": [
+       [
+        "Vokal",
+        "<c1>+ s</c1>",
+        "el café → los café<b>s</b> · la casa → las casa<b>s</b>"
+       ],
+       [
+        "Konsonant",
+        "<c2>+ es</c2>",
+        "el bar → los bar<b>es</b> · la ciudad → las ciudad<b>es</b>"
+       ],
+       [
+        "-z",
+        "z → <b>ces</b>",
+        "el lápiz → los lápi<b>ces</b> · la vez → las ve<b>ces</b>"
+       ],
+       [
+        "-s (unbetont)",
+        "bleibt",
+        "el lunes → los lunes · la crisis → las crisis"
+       ],
+       [
+        "mit Tilde",
+        "Betonung bleibt",
+        "la canción → las canciones · el joven → los jóvenes"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Ein Mann reicht: die Gruppe wird männlich",
+      "track": "2.2-3"
+     },
+     {
+      "type": "examples",
+      "track": "2.2-3",
+      "items": [
+       [
+        "los padres",
+        "die Eltern (Vater + Mutter)"
+       ],
+       [
+        "los hermanos",
+        "die Geschwister – oder die Brüder"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<es>la gente</es> (die Leute) ist Singular: <es>La gente es simpática.</es> Nicht <es>son</es>! Genauso <es>el dinero, la ropa</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Was kommt dran? Sortiere nach der Pluralendung.",
+      "kind": "Erkennen",
+      "words": [
+       "bar",
+       "casa",
+       "lunes",
+       "ciudad",
+       "café",
+       "crisis",
+       "móvil",
+       "coche",
+       "cumpleaños"
+      ],
+      "baskets": [
+       {
+        "label": "+ s",
+        "answers": [
+         "casa",
+         "café",
+         "coche"
+        ]
+       },
+       {
+        "label": "+ es",
+        "answers": [
+         "bar",
+         "ciudad",
+         "móvil"
+        ]
+       },
+       {
+        "label": "bleibt gleich",
+        "answers": [
+         "lunes",
+         "crisis",
+         "cumpleaños"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "Aus eins mach zwei. Schreib den Plural.",
+      "kind": "Bilden",
+      "cols": 3,
+      "items": [
+       "el lápiz → los {{lápices}}",
+       "la canción → las {{canciones}}",
+       "el joven → los {{jóvenes}}",
+       "el autobús → los {{autobuses}}",
+       "el examen → los {{exámenes}}",
+       "el pez → los {{peces}}"
+      ],
+      "why": "Die Betonung bleibt auf derselben Silbe. Deshalb verlieren <es>canciones, autobuses</es> die Tilde, und <es>jóvenes, exámenes</es> bekommen eine."
+     },
+     {
+      "type": "cloze",
+      "title": "Nicos Geburtstag bei Pilar. Setz den Plural ein.",
+      "kind": "Bilden",
+      "track": "2.2-4",
+      "text": "En la fiesta de Nico hay seis {{niños|niño}}, tres {{pasteles|pastel}}, veinte {{globos|globo}} y dos {{dinosaurios|dinosaurio}} de plástico. En la mesa hay {{zumos|zumo}} de naranja y muchos {{lápices|lápiz}} de colores. Al final, las {{paredes|pared}} de Pilar ya no son blancas."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Die Leute in Madrid sind sehr nett.",
+        "es": "La gente de Madrid es muy simpática."
+       },
+       {
+        "de": "Lucías Eltern sind in Sevilla.",
+        "es": "Los padres de Lucía están en Sevilla."
+       }
+      ],
+      "why": "a: <es>la gente</es> ist Singular, also <es>es</es> und <es>simpática</es>."
+     },
+     {
+      "type": "free",
+      "title": "Was hast du doppelt oder dreifach? Schreib fünf Dinge mit Zahl.",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>dos móviles, tres bolígrafos, cinco tazas, dos ordenadores, mil problemas</es>."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "En la mesa hay dos ___.",
+     "options": [
+      "lápiz",
+      "lápizes",
+      "lápices"
+     ],
+     "answer": 2
+    },
+    {
+     "q": "La gente de aquí ___ muy simpática.",
+     "options": [
+      "es",
+      "son"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Pilar, sus amigas y Dani: ___ amigos del jueves.",
+     "options": [
+      "las",
+      "los"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "2.3",
+   "topic": "Bestimmter und unbestimmter Artikel",
+   "level": "A1",
+   "headline_es": "Hay un perro en el sofá.<br>Ah, no: es el perro de Dani.",
+   "headline_de": "Auf dem Sofa liegt ein Hund. Ach nein, das ist Danis Hund.",
+   "index": [
+    "Artikel",
+    "el, la, los, las",
+    "un, una, unos, unas",
+    "bestimmter Artikel",
+    "unbestimmter Artikel",
+    "hay un"
+   ],
+   "cartoon": {
+    "id": "2.3-A",
+    "icons": [
+     "1F6CB",
+     "1F415",
+     "1F996"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Socorro!<br>¡Hay un perro en el sofá!"
+     },
+     {
+      "pos": "tr",
+      "text": "No es UN perro.<br>¡Es Tofu!"
+     }
+    ],
+    "gloss": "<es>¡Socorro!</es> Hilfe!",
+    "prompt": "SCENE: LUCÍA has just opened the door of her apartment, still holding her keys and a shopping bag, frozen in shock with wide eyes. On her bright, clean sofa lies a big, scruffy, very relaxed dog on its back, paws in the air, surrounded by crisps. Next to the dog sits NICO, four years old, in a dinosaur T-shirt, one arm around the dog, looking at his aunt with an offended, know-it-all expression, like a small professor correcting a student. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<c1>un, una</c1> stellt etwas Neues vor: irgendeins. <c2>el, la</c2> zeigt auf Bekanntes: genau das eine, das wir beide meinen."
+     },
+     {
+      "type": "table",
+      "head": [
+       "",
+       "männlich",
+       "weiblich"
+      ],
+      "es_cols": [
+       1,
+       2
+      ],
+      "track": "2.3-1",
+      "rows": [
+       [
+        "bestimmt <de>der, die, das</de>",
+        "<c2>el</c2> · <c2>los</c2>",
+        "<c2>la</c2> · <c2>las</c2>"
+       ],
+       [
+        "unbestimmt <de>ein, eine</de>",
+        "<c1>un</c1> · <c1>unos</c1>",
+        "<c1>una</c1> · <c1>unas</c1>"
+       ]
+      ]
+     },
+     {
+      "type": "story",
+      "track": "2.3-2",
+      "es": "En el piso de Lucía hay <c1>un</c1> sofá, <c1>una</c1> mesa y <c1>un</c1> perro. <c2>El</c2> sofá es viejo, <c2>la</c2> mesa es de Ikea y <c2>el</c2> perro… no es de Lucía.",
+      "de": "In Lucías Wohnung: ein Sofa, ein Tisch, ein Hund. Das Sofa ist alt, der Tisch von Ikea und der Hund … gehört nicht Lucía."
+     },
+     {
+      "type": "h",
+      "text": "Ganz allgemein? Mit Artikel!",
+      "track": "2.3-3"
+     },
+     {
+      "type": "examples",
+      "track": "2.3-3",
+      "items": [
+       [
+        "Me gusta el café.",
+        "Ich mag Kaffee."
+       ],
+       [
+        "El amor es complicado.",
+        "Liebe ist kompliziert."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Nach <es>hay</es> steht nie <es>el</es>: <es>Hay un banco aquí.</es> Aber: <es>¿Dónde está el banco?</es> (<g>6.2</g>)"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "mark",
+      "title": "Lucías erster Tag im Büro. Ist das Ding neu (N) oder schon bekannt (B)?",
+      "kind": "Erkennen",
+      "track": "2.3-4",
+      "text": "En la oficina hay [[un|N]] jefe, [[una|N]] máquina de café y [[un|N]] gato. [[El|B]] jefe es simpático. [[La|B]] máquina de café está rota. ¿Y [[el|B]] gato? [[El|B]] gato es el jefe de verdad."
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche. (— heißt: kein Artikel)",
+      "kind": "Entscheiden",
+      "items": [
+       "Me gusta [[!el|—]] chocolate.",
+       "Hay [[el|!un]] supermercado en la esquina.",
+       "Perdón, ¿dónde está [[!el|un]] baño?",
+       "[[!Los|—]] lunes son horribles."
+      ],
+      "why": "a, d: Was allgemein gilt, bekommt im Spanischen den Artikel – anders als im Deutschen. c: Im Restaurant gibt es <em>das</em> Bad – das eine, das alle kennen."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar ruft an. Setz el, la, un oder una ein.",
+      "kind": "Bilden",
+      "track": "2.3-5",
+      "instr": "<es>la pantalla</es> der Bildschirm · <es>el fondo de pantalla</es> das Hintergrundbild",
+      "lines": [
+       [
+        "Pilar",
+        "Lucía, tengo {{un}} problema. {{El}} ordenador está raro."
+       ],
+       [
+        "Lucía",
+        "¿Raro? ¿Qué pasa, mamá?"
+       ],
+       [
+        "Pilar",
+        "Hay {{una}} foto en {{la}} pantalla. ¡De {{un}} perro con gafas!"
+       ],
+       [
+        "Lucía",
+        "Mamá, {{el}} perro con gafas es {{el}} fondo de pantalla. ¡Es Tofu!"
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich mag Kaffee, aber nicht den Kaffee im Büro.",
+        "es": "Me gusta el café, pero no el café de la oficina."
+       },
+       {
+        "de": "Im Büro ist eine Katze.",
+        "es": "Hay un gato en la oficina."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Deine Straße. Was gibt es dort? Und wie ist es?",
+      "kind": "Frei",
+      "lines": 2,
+      "text": "Erst <es>Hay un …, hay una …</es>, dann <es>El … es …, la … es …</es>",
+      "solution": "Zum Beispiel: <es>En mi calle hay un bar y una farmacia. El bar es barato y la farmacia es muy pequeña.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "En la plaza hay ___ farmacia.",
+     "options": [
+      "la",
+      "una"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Me gusta ___ chocolate.",
+     "options": [
+      "un",
+      "el",
+      "—"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Perdón, ¿dónde está ___ estación?",
+     "options": [
+      "la",
+      "una"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "2.4",
+   "topic": "al und del",
+   "level": "A1",
+   "headline_es": "Del sofá al bar,<br>del bar al sofá.",
+   "headline_de": "Vom Sofa in die Bar, von der Bar aufs Sofa.",
+   "index": [
+    "al",
+    "del",
+    "a + el",
+    "de + el",
+    "Verschmelzung"
+   ],
+   "cartoon": {
+    "id": "2.4-A",
+    "icons": [
+     "1F6CB",
+     "1F37A",
+     "1F6AA"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Voy al bar del barrio.<br>Vuelvo a las diez."
+     },
+     {
+      "pos": "tr",
+      "text": "¿A las diez<br>de qué día?"
+     }
+    ],
+    "gloss": "<es>voy</es> ich gehe · <es>vuelvo</es> ich komme zurück",
+    "prompt": "SCENE: A Madrid apartment hallway in the evening. On the left, DANI stands in the open front door, jacket half on, keys in hand, completely relaxed, giving a lazy little wave. Through the door you see the stairwell and, far below on the street, the warm glowing sign of a small neighbourhood bar. On the right, LUCÍA lies on the sofa in pyjamas with a blanket and a bowl of popcorn, looking at him over her shoulder with a deeply sceptical, raised-eyebrow face. On the wall a clock shows nine o'clock, and next to it hangs a calendar. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Wie im Deutschen aus <em>zu dem</em> „zum“ und aus <em>von dem</em> „vom“ wird, verschmelzen im Spanischen <c1>a + el → al</c1> und <c2>de + el → del</c2>. Nur mit <es>el</es> – mit allen anderen Artikeln nie."
+     },
+     {
+      "type": "table",
+      "head": [
+       "",
+       "+ el",
+       "+ la",
+       "+ los",
+       "+ las"
+      ],
+      "es_cols": [
+       0,
+       1,
+       2,
+       3,
+       4
+      ],
+      "hl": [],
+      "track": "2.4-1",
+      "rows": [
+       [
+        "a",
+        "<c1>al</c1>",
+        "a la",
+        "a los",
+        "a las"
+       ],
+       [
+        "de",
+        "<c2>del</c2>",
+        "de la",
+        "de los",
+        "de las"
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "2.4-2",
+      "items": [
+       [
+        "Voy al cine. Voy a la playa.",
+        "Ich gehe ins Kino. Ich gehe an den Strand."
+       ],
+       [
+        "las llaves del coche",
+        "die Autoschlüssel (die Schlüssel des Autos)"
+       ],
+       [
+        "de lunes a viernes, del trabajo a casa",
+        "von Montag bis Freitag, von der Arbeit nach Hause"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Wo nichts verschmilzt"
+     },
+     {
+      "type": "table",
+      "es_cols": [],
+      "rows": [
+       [
+        "<es>él</es> mit Akzent heißt „er“",
+        "<es>el regalo de él</es> <de>sein Geschenk (von ihm)</de>"
+       ],
+       [
+        "Namen mit großem <es>El</es>",
+        "<es>el viaje a El Salvador</es> · <es>de El País</es>"
+       ],
+       [
+        "<es>casa</es> ohne Artikel = Zuhause",
+        "<es>Voy a casa.</es> <de>Ich gehe nach Hause.</de>"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Erst das Genus prüfen, dann verschmelzen! „Zum Bahnhof“ heißt <es>a la estación</es>, denn <es>estación</es> ist weiblich. Und die Rebellen machen mit: <es>el día → del día</es>, <es>el agua → al agua</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "fill",
+      "title": "Verschmelzen oder nicht? Achte auf das Genus.",
+      "kind": "Entscheiden",
+      "cols": 3,
+      "items": [
+       "(a) {{al}} parque",
+       "(a) {{a la}} estación",
+       "(de) {{del}} coche",
+       "(de) {{de los}} vecinos",
+       "(a) {{al}} baño",
+       "(de) {{de la}} ciudad",
+       "(de) {{del}} día",
+       "(a) {{al}} agua",
+       "(a) {{a la}} playa"
+      ],
+      "why": "<es>del día</es>: <es>día</es> ist ein Rebell, also männlich. <es>al agua</es>: <es>agua</es> bekommt <es>el</es> (<g>2.1</g>), also verschmilzt es auch."
+     },
+     {
+      "type": "cloze",
+      "title": "Danis Samstag. Setz al, del, a la, de la … ein.",
+      "kind": "Erzählen",
+      "track": "2.4-3",
+      "text": "De la cama {{al|a}} sofá. {{Del|de}} sofá {{a la|a}} nevera. {{De la|de}} nevera {{al|a}} sofá otra vez. A las ocho: {{del|de}} sofá {{al|a}} bar {{del|de}} barrio. ¿Y a las doce? {{Del|de}} bar {{a la|a}} cama. ¡Qué sábado!",
+      "instr": "<es>la nevera</es> der Kühlschrank"
+     },
+     {
+      "type": "choice",
+      "title": "Mit oder ohne Verschmelzung? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Es el móvil [[de el|!del]] jefe.",
+       "El regalo es [[!de él|del]]. No es de Pilar.",
+       "Pilar está en la puerta [[de el|!del]] supermercado.",
+       "Mañana voy [[al|!a]] casa de mi madre."
+      ],
+      "why": "b: <es>él</es> mit Akzent ist „er“ – da verschmilzt nichts. d: <es>casa</es> hat hier keinen Artikel, also bleibt <es>a</es> allein."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Das Handy vom Chef ist im Wasser.",
+        "es": "El móvil del jefe está en el agua."
+       },
+       {
+        "de": "Wo ist die Bushaltestelle?",
+        "es": "¿Dónde está la parada del autobús?"
+       },
+       {
+        "de": "Von Montag bis Freitag: von der Arbeit nach Hause.",
+        "es": "De lunes a viernes: del trabajo a casa."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Dein Samstag in Stationen – wie bei Dani.",
+      "kind": "Frei",
+      "lines": 2,
+      "text": "<es>Del … al …, de la … a la …</es>",
+      "solution": "Zum Beispiel: <es>De la cama a la ducha. De la ducha al mercado. Del mercado al parque, y del parque al cine.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "A las cinco voy ___ médico.",
+     "options": [
+      "a el",
+      "al"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Es la casa ___ vecino.",
+     "options": [
+      "del",
+      "de el"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Vamos ___ estación?",
+     "options": [
+      "al",
+      "a la"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "2.5",
+   "topic": "Wann kein Artikel steht",
+   "level": "A1",
+   "headline_es": "Soy diseñadora.<br>Una diseñadora sin café.",
+   "headline_de": "Ich bin Designerin. Eine Designerin ohne Kaffee.",
+   "index": [
+    "ohne Artikel",
+    "Beruf",
+    "otro (ohne un)",
+    "Soy profesor",
+    "Uhrzeit mit Artikel",
+    "Wochentage mit Artikel"
+   ],
+   "cartoon": {
+    "id": "2.5-A",
+    "icons": [
+     "1F469-200D-1F3A8",
+     "1F996",
+     "1F942"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Soy diseñadora."
+     },
+     {
+      "pos": "tr",
+      "text": "¡Y yo soy<br>un tiranosaurio!"
+     }
+    ],
+    "gloss": "<es>tiranosaurio</es> Tyrannosaurus",
+    "prompt": "SCENE: A grown-up garden party with fairy lights. LUCÍA stands on the left with a glass of wine, smiling politely at an elegant older woman who is holding a cocktail and has clearly just asked her what she does for a living. Between them, at knee height, NICO bursts into the picture in a full green dinosaur costume with a tail, arms held up like tiny T-Rex claws, mouth wide open in a fierce roar, completely serious. The elegant woman is startled and spills a little of her drink. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Ein Etikett braucht keinen Artikel. <c1>Soy diseñadora</c1> sagt, <em>was</em> du bist – wie ein Namensschild. Sobald du mehr erzählst, kommt der Artikel zurück: <c2>Soy una diseñadora sin café.</c2>"
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Ohne Artikel",
+        "sub": "wo Deutsch oft „ein“ sagt",
+        "icon": "1F3F7",
+        "tone": 1,
+        "track": "2.5-1",
+        "uses": [
+         {
+          "t": "Beruf, Herkunft, Religion",
+          "x": "<es>Soy profesor. Pilar es católica.</es>"
+         },
+         {
+          "t": "Ob überhaupt (tener, hay)",
+          "x": "<es>¿Tienes coche?</es> <de>Hast du ein Auto?</de>"
+         },
+         {
+          "t": "otro, medio, mil, ¡qué …!",
+          "x": "<es>otro café, mil euros, ¡qué día!</es>"
+         }
+        ]
+       },
+       {
+        "title": "Mit Artikel",
+        "sub": "auch anders als im Deutschen",
+        "icon": "1F570",
+        "tone": 2,
+        "track": "2.5-1",
+        "uses": [
+         {
+          "t": "Uhrzeit",
+          "x": "<es>Son las tres.</es> <de>Es ist drei.</de>"
+         },
+         {
+          "t": "Wochentage",
+          "x": "<es>el lunes</es> <de>am Montag</de>"
+         },
+         {
+          "t": "señor, señora + Name",
+          "x": "<es>La señora Pérez está aquí.</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<es>otro</es> steht nie mit <es>un</es>: „noch einen Kaffee“ heißt <es>otro café</es>, nicht <es>un otro café</es>. Genauso <es>medio kilo</es> (ein halbes Kilo)."
+     },
+     {
+      "type": "novela",
+      "source": "El año de Lukas",
+      "quote": "Le trajo otro café, muy caliente, y una galleta.",
+      "note": "<es>otro café</es> – ganz ohne <es>un</es>. Der Keks ist neu im Bild: <es>una galleta</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Artikel oder nicht? Unterstreiche. (— heißt: kein Artikel)",
+      "kind": "Entscheiden",
+      "items": [
+       "Lucía es [[una|!—]] diseñadora.",
+       "Lucía es [[!una|—]] diseñadora fantástica.",
+       "[[Un|!—]] otro café, por favor.",
+       "Son [[!las|—]] tres y Dani no está.",
+       "[[!El|—]] lunes hay reunión.",
+       "Pilar: «¡Qué [[una|!—]] sorpresa!»"
+      ],
+      "why": "a/b: Das Etikett allein braucht keinen Artikel. Kommt eine Beschreibung dazu (<es>fantástica</es>), kehrt <es>una</es> zurück. e: <es>el lunes</es> = am Montag."
+     },
+     {
+      "type": "transform",
+      "title": "Mehr erzählen: Mach aus dem Etikett eine Beschreibung.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Rafa es jefe. (horrible)",
+       "a": "Rafa es un jefe horrible."
+      },
+      "items": [
+       {
+        "q": "Pilar es abuela. (muy moderna)",
+        "a": "Pilar es una abuela muy moderna."
+       },
+       {
+        "q": "Lucía es diseñadora. (genial)",
+        "a": "Lucía es una diseñadora genial."
+       },
+       {
+        "q": "Doña Carmen es vecina. (muy curiosa)",
+        "a": "Doña Carmen es una vecina muy curiosa."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Noch einen Kaffee, bitte.",
+        "es": "Otro café, por favor."
+       },
+       {
+        "de": "Hast du ein Auto?",
+        "es": "¿Tienes coche?"
+       },
+       {
+        "de": "Am Montag ist Lucía in Sevilla.",
+        "es": "El lunes Lucía está en Sevilla."
+       },
+       {
+        "de": "Es ist ein Uhr. Was für ein Tag!",
+        "es": "Es la una. ¡Qué día!"
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Stell dich und zwei Menschen vor: erst das Etikett, dann mehr.",
+      "kind": "Frei",
+      "lines": 3,
+      "solution": "Zum Beispiel: <es>Soy ingeniero. Soy un ingeniero con mucho café. Mi hermana es médica. Es una médica muy buena.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Mi hermano es ___ médico.",
+     "options": [
+      "un",
+      "—"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Camarero, ___ otro café, por favor.",
+     "options": [
+      "un",
+      "—"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Son ___ cinco de la tarde.",
+     "options": [
+      "las",
+      "—"
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ]
+}

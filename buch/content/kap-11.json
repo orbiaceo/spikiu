@@ -1,0 +1,1451 @@
+{
+ "chapter": 11,
+ "title": "Vergangenheit I",
+ "sections": [
+  {
+   "id": "11.1",
+   "topic": "Das Perfekt",
+   "level": "A2",
+   "headline_es": "¿Quién se ha comido mi tarta?",
+   "headline_de": "Wer hat meine Torte gegessen?",
+   "index": [
+    "Perfekt (pretérito perfecto)",
+    "haber (he, has, ha …)",
+    "Partizip (-ado, -ido)",
+    "hecho, dicho, visto",
+    "ya",
+    "todavía no",
+    "nunca",
+    "alguna vez"
+   ],
+   "cartoon": {
+    "id": "11.1-A",
+    "icons": [
+     "1F370",
+     "1F466",
+     "1F440"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Nico, ¿has visto<br>mi tarta?"
+     },
+     {
+      "pos": "tr",
+      "text": "No. ¡Yo no he comido nada!"
+     }
+    ],
+    "gloss": "<es>tarta</es> Torte",
+    "prompt": "SCENE: A bright Madrid kitchen. On the left, LUCÍA holds an empty cake plate with only a few crumbs and a lonely candle on it. She leans forward, eyes narrowed, like a detective interrogating a suspect. On the right stands NICO, 4 years old, in a dinosaur T-shirt: his whole face, both hands and the T-shirt are smeared with chocolate cake, a big crumb sits on the tip of his nose. He holds his hands behind his back and smiles like a little angel. A trail of small chocolate footprints leads from the kitchen table straight to his feet; his plastic T-Rex on the floor is also covered in chocolate. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Das Perfekt ist ein Doppelpack, der zusammenklebt: <c1>haber</c1> + <c2>Partizip</c2> – <es><c1>he</c1> <c2>comido</c2></es>. Für Vergangenes, das noch zu <em>heute</em> gehört."
+     },
+     {
+      "type": "conj",
+      "track": "11.1-1",
+      "pron": [
+       "yo",
+       "tú",
+       "él, ella, usted",
+       "nosotros, -as",
+       "vosotros, -as",
+       "ellos, ustedes"
+      ],
+      "verbs": [
+       {
+        "inf": "hablar",
+        "de": "sprechen",
+        "forms": [
+         "he habl<b>ado</b>",
+         "has habl<b>ado</b>",
+         "ha habl<b>ado</b>",
+         "hemos habl<b>ado</b>",
+         "habéis habl<b>ado</b>",
+         "han habl<b>ado</b>"
+        ]
+       },
+       {
+        "inf": "comer",
+        "de": "essen",
+        "forms": [
+         "he com<b>ido</b>",
+         "has com<b>ido</b>",
+         "ha com<b>ido</b>",
+         "hemos com<b>ido</b>",
+         "habéis com<b>ido</b>",
+         "han com<b>ido</b>"
+        ]
+       },
+       {
+        "inf": "vivir",
+        "de": "leben, wohnen",
+        "forms": [
+         "he viv<b>ido</b>",
+         "has viv<b>ido</b>",
+         "ha viv<b>ido</b>",
+         "hemos viv<b>ido</b>",
+         "habéis viv<b>ido</b>",
+         "han viv<b>ido</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "11.1-2",
+      "items": [
+       [
+        "hecho, dicho, visto, puesto, vuelto",
+        "Rebellen: von <es>hacer, decir, ver, poner, volver</es>"
+       ],
+       [
+        "escrito, abierto, roto, muerto, sido",
+        "Rebellen: von <es>escribir, abrir, romper, morir, ser</es>"
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "11.1-3",
+      "items": [
+       [
+        "¿Ya has hablado con tu madre?",
+        "Hast du schon mit deiner Mutter gesprochen?"
+       ],
+       [
+        "Hoy no he hecho nada. Nunca he estado tan bien.",
+        "Heute habe ich nichts gemacht. Mir ging es nie so gut."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Nichts passt dazwischen: <es>No lo he visto.</es> Auch bei „sein“ nimmst du <es>haber</es>: <es>He ido</es> – ich <em>bin</em> gegangen."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "mark",
+      "title": "Pilars Sprachnachricht. Hör zu: P = Perfekt (schon passiert), J = jetzt (Präsens).",
+      "kind": "Erkennen",
+      "track": "11.1-4",
+      "text": "Hola, cariño, soy mamá. [[Estoy|J]] en el súper. [[He comprado|P]] fruta para ti. ¿[[Has comido|P]] hoy? Tu hermano [[dice|J]] que no [[comes|J]] bien. Ah, y [[he hablado|P]] con Dani. ¡Qué chico tan majo! Oye, ¿por qué no me [[has llamado|P]]? Te [[llamo|J]] luego. Un beso."
+     },
+     {
+      "type": "fill",
+      "title": "Die Partizipien. Ergänze.",
+      "kind": "Bilden",
+      "cols": 3,
+      "items": [
+       "hablar → {{hablado}}",
+       "comer → {{comido}}",
+       "vivir → {{vivido}}",
+       "hacer → {{hecho}}",
+       "decir → {{dicho}}",
+       "ver → {{visto}}",
+       "escribir → {{escrito}}",
+       "volver → {{vuelto}}",
+       "abrir → {{abierto}}"
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Vor der Reise. Dani ist entspannt, Lucía nicht. Ergänze das Perfekt.",
+      "kind": "Bilden",
+      "track": "11.1-5",
+      "lines": [
+       [
+        "Lucía",
+        "¿{{Has hecho|hacer}} la maleta?"
+       ],
+       [
+        "Dani",
+        "Todavía no. Pero {{he comprado|comprar}} crema para el sol."
+       ],
+       [
+        "Lucía",
+        "¿Y {{has llamado|llamar}} al hotel?"
+       ],
+       [
+        "Dani",
+        "No, pero ya {{he visto|ver}} las fotos. ¡Es precioso!"
+       ],
+       [
+        "Lucía",
+        "Dani, el tren sale en una hora. ¿Dónde {{has puesto|poner}} los billetes?"
+       ],
+       [
+        "Dani",
+        "Tranquila. Los {{has metido|meter}} tú en tu bolso."
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Heute habe ich zu viel gegessen.",
+        "es": "Hoy he comido demasiado."
+       },
+       {
+        "de": "Hast du schon mit Rafa gesprochen?",
+        "es": "¿Ya has hablado con Rafa? (auch: ¿Has hablado ya con Rafa?)"
+       },
+       {
+        "de": "Wir sind noch nie in Mexiko gewesen.",
+        "es": "Nunca hemos estado en México. (auch: No hemos estado nunca en México.)"
+       }
+      ],
+      "why": "Im Deutschen steht das Partizip am Satzende. Im Spanischen klebt es direkt an <es>he, has, hemos</es>."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿___ visto mis gafas?",
+     "options": [
+      "Has",
+      "Eres",
+      "Tienes"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Hoy Dani ha ___ la cena.",
+     "options": [
+      "hacido",
+      "hecho"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Nunca ___ en Japón.",
+     "options": [
+      "he estado",
+      "estoy"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "11.2",
+   "topic": "Indefinido regelmäßig",
+   "level": "A2",
+   "headline_es": "Ayer hablé con ella.<br>Hoy hablo con su abogado.",
+   "headline_de": "Gestern habe ich mit ihr gesprochen. Heute spreche ich mit ihrem Anwalt.",
+   "index": [
+    "Indefinido (regelmäßig)",
+    "pretérito indefinido",
+    "Betonung im Indefinido",
+    "pagué, busqué, empecé",
+    "ayer, anoche",
+    "hace (vor)"
+   ],
+   "cartoon": {
+    "id": "11.2-A",
+    "icons": [
+     "1F9FE",
+     "1F4B3",
+     "23F0"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Pago yo!"
+     },
+     {
+      "pos": "tr",
+      "text": "Tarde, cariño.<br>Ya pagué yo."
+     }
+    ],
+    "gloss": "<es>pagar</es> bezahlen · <es>tarde</es> zu spät",
+    "prompt": "SCENE: A cosy Spanish restaurant at the end of a dinner, empty plates and two wine glasses on the table. On the left, DANI, calm and relaxed, has just pulled his wallet out of his jacket in slow motion and raises it heroically with one hand, like a knight drawing his sword. On the right, LUCÍA leans back in her chair, arms crossed, one eyebrow raised, with a satisfied little smile; next to her plate lies a folded receipt, and a waiter is already walking away in the background with the card machine, waving goodbye. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Die Betonung ist der Zeitstempel: <es>habl<c1>o</c1></es> – ich spreche (jetzt), <es>habl<c2>ó</c2></es> – er sprach (vorbei). Der Strich auf der Endung schiebt alles in die Vergangenheit."
+     },
+     {
+      "type": "conj",
+      "track": "11.2-1",
+      "pron": [
+       "yo",
+       "tú",
+       "él, ella, usted",
+       "nosotros, -as",
+       "vosotros, -as",
+       "ellos, ustedes"
+      ],
+      "verbs": [
+       {
+        "inf": "hablar",
+        "de": "sprechen",
+        "forms": [
+         "habl<b>é</b>",
+         "habl<b>aste</b>",
+         "habl<b>ó</b>",
+         "habl<b>amos</b>",
+         "habl<b>asteis</b>",
+         "habl<b>aron</b>"
+        ]
+       },
+       {
+        "inf": "comer",
+        "de": "essen",
+        "forms": [
+         "com<b>í</b>",
+         "com<b>iste</b>",
+         "com<b>ió</b>",
+         "com<b>imos</b>",
+         "com<b>isteis</b>",
+         "com<b>ieron</b>"
+        ]
+       },
+       {
+        "inf": "vivir",
+        "de": "leben, wohnen",
+        "forms": [
+         "viv<b>í</b>",
+         "viv<b>iste</b>",
+         "viv<b>ió</b>",
+         "viv<b>imos</b>",
+         "viv<b>isteis</b>",
+         "viv<b>ieron</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "p",
+      "text": "<es>-er</es> und <es>-ir</es> teilen sich die Endungen. <es>hablamos, vivimos</es> klingen wie im Präsens. Bei <es>yo</es> ändert sich oft die Schreibung: <es>pa<b>gu</b>é, bus<b>qu</b>é, empe<b>c</b>é</es>."
+     },
+     {
+      "type": "examples",
+      "track": "11.2-2",
+      "items": [
+       [
+        "El sábado Nico comió arena en la playa.",
+        "Am Samstag hat Nico am Strand Sand gegessen."
+       ],
+       [
+        "En 2019 mis padres me escribieron… un fax.",
+        "2019 haben mir meine Eltern geschrieben … ein Fax."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Ohne Strich wechseln Person und Zeit: <es>tomo</es> (ich nehme) – <es>tomó</es> (er nahm). Und mit <es>ayer</es> nie Perfekt: <es>Ayer hablé.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Jetzt oder vorbei? Hör zu und kreuz an, was du hörst.",
+      "kind": "Hören",
+      "track": "11.2-3",
+      "pairs": [
+       {
+        "opts": [
+         "hablo",
+         "habló"
+        ],
+        "gloss": "ich spreche / er sprach",
+        "said": 1
+       },
+       {
+        "opts": [
+         "tomo",
+         "tomó"
+        ],
+        "gloss": "ich nehme / er nahm",
+        "said": 0
+       },
+       {
+        "opts": [
+         "llamo",
+         "llamó"
+        ],
+        "gloss": "ich rufe an / er rief an",
+        "said": 1
+       },
+       {
+        "opts": [
+         "compro",
+         "compró"
+        ],
+        "gloss": "ich kaufe / er kaufte",
+        "said": 1
+       },
+       {
+        "opts": [
+         "bailo",
+         "bailó"
+        ],
+        "gloss": "ich tanze / er tanzte",
+        "said": 0
+       },
+       {
+        "opts": [
+         "paso",
+         "pasó"
+        ],
+        "gloss": "ich gehe vorbei / es passierte",
+        "said": 1
+       }
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "Die Endungen. Ergänze.",
+      "kind": "Bilden",
+      "cols": 3,
+      "items": [
+       "yo habl{{é}}",
+       "tú com{{iste}}",
+       "Pilar llam{{ó}}",
+       "nosotros viv{{imos}}",
+       "vosotros beb{{isteis}}",
+       "ellos cen{{aron}}",
+       "yo lle{{gué}}",
+       "yo bus{{qué}}",
+       "yo empe{{cé}}"
+      ],
+      "why": "Die letzten drei: Bei <es>yo</es> ändert sich die Schreibung, damit der Laut gleich bleibt. Bei <es>él</es> nicht: <es>llegó, buscó, empezó</es>."
+     },
+     {
+      "type": "cloze",
+      "title": "Lucías Samstag. Setz die Verben im Indefinido ein.",
+      "kind": "Erzählen",
+      "track": "11.2-4",
+      "text": "El sábado {{me levanté|levantarse}} a las doce. Por la tarde, Dani y yo {{salimos|salir}} con Tofu. En el parque, Tofu {{encontró|encontrar}} un bocadillo en un banco y se lo {{comió|comer}}. Un señor nos {{miró|mirar}} muy serio: ¡era su bocadillo! Dani le {{pagó|pagar}} otro bocadillo. Al final, el señor nos {{invitó|invitar}} a su cumpleaños.",
+      "why": "<es>salimos</es> sieht aus wie Präsens. Dass es vorbei ist, sagt <es>el sábado</es>."
+     },
+     {
+      "type": "transform",
+      "title": "Pilar fragt nach. Antworte: Schon gestern erledigt!",
+      "kind": "Bilden",
+      "example": {
+       "q": "¿Hoy llamas a tu tía?",
+       "a": "No, la llamé ayer."
+      },
+      "items": [
+       {
+        "q": "¿Hoy compras el pan?",
+        "a": "No, lo compré ayer."
+       },
+       {
+        "q": "¿Hoy Dani paga la luz?",
+        "a": "No, la pagó ayer."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Gestern habe ich mit meinem Chef gesprochen.",
+        "es": "Ayer hablé con mi jefe."
+       },
+       {
+        "de": "Letztes Jahr haben wir in Valencia gewohnt.",
+        "es": "El año pasado vivimos en Valencia."
+       },
+       {
+        "de": "Bist du gestern spät angekommen? – Nein, um zehn.",
+        "es": "¿Llegaste tarde ayer? —No, llegué a las diez."
+       }
+      ]
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Ayer ___ con mi madre dos horas.",
+     "options": [
+      "hablo",
+      "hablé"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "El lunes yo ___ tarde al trabajo.",
+     "options": [
+      "llegé",
+      "llegué",
+      "llegó"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Anoche Dani ___ una pizza entera.",
+     "options": [
+      "comió",
+      "comí"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "11.3",
+   "topic": "Indefinido unregelmäßig",
+   "level": "A2",
+   "headline_es": "Fui a la playa.<br>Fue un error.",
+   "headline_de": "Ich bin an den Strand gefahren. Es war ein Fehler.",
+   "index": [
+    "Indefinido (unregelmäßig)",
+    "fui (ser / ir)",
+    "tuve, hice, pude",
+    "estuve, puse, quise, vine",
+    "dije, dijeron",
+    "dar (di, dio)"
+   ],
+   "cartoon": {
+    "id": "11.3-A",
+    "icons": [
+     "1F3D6",
+     "1F99E",
+     "1F475"
+    ],
+    "bubbles": [
+     {
+      "pos": "tr",
+      "text": "¡Cariño!<br>¿Qué tal las vacaciones?"
+     },
+     {
+      "pos": "tl",
+      "text": "Fui a la playa.<br>Fue un error."
+     }
+    ],
+    "prompt": "SCENE: The front door of PILAR's flat. On the left, LUCÍA has just come back from holiday: she is sunburnt bright red like a boiled lobster, except for two white circles around her eyes where her sunglasses were. She stands stiffly like a robot because every movement hurts, holding a small suitcase and a deflated inflatable flamingo under one arm. On the right, PILAR opens the door with her arms wide open for a hug, then freezes mid-gesture, her smile turning into horror. Leave clear empty space above Lucía (top left) and above Pilar (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Die Unregelmäßigen sind eine Bande: jeder mit eigenem <c1>Stamm</c1>, alle mit denselben <c2>Endungen</c2>, keiner mit Akzent – <es><c1>tuv</c1><c2>e</c2>, <c1>hic</c1><c2>e</c2>, <c1>pud</c1><c2>e</c2></es>. Und <es>ser</es> und <es>ir</es> teilen sich alles: <es>fui</es>."
+     },
+     {
+      "type": "conj",
+      "track": "11.3-1",
+      "pron": [
+       "yo",
+       "tú",
+       "él, ella, usted",
+       "nosotros, -as",
+       "vosotros, -as",
+       "ellos, ustedes"
+      ],
+      "verbs": [
+       {
+        "inf": "tener",
+        "de": "haben",
+        "forms": [
+         "tuv<b>e</b>",
+         "tuv<b>iste</b>",
+         "tuv<b>o</b>",
+         "tuv<b>imos</b>",
+         "tuv<b>isteis</b>",
+         "tuv<b>ieron</b>"
+        ]
+       },
+       {
+        "inf": "hacer",
+        "de": "machen",
+        "forms": [
+         "hic<b>e</b>",
+         "hic<b>iste</b>",
+         "hiz<b>o</b>",
+         "hic<b>imos</b>",
+         "hic<b>isteis</b>",
+         "hic<b>ieron</b>"
+        ]
+       },
+       {
+        "inf": "ser · ir",
+        "de": "sein · gehen",
+        "forms": [
+         "fui",
+         "fuiste",
+         "fue",
+         "fuimos",
+         "fuisteis",
+         "fueron"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "table",
+      "track": "11.3-2",
+      "es_cols": [
+       0,
+       1,
+       2,
+       3
+      ],
+      "rows": [
+       [
+        "estar → <es>estuve</es>",
+        "poder → <es>pude</es>",
+        "poner → <es>puse</es>",
+        "saber → <es>supe</es>"
+       ],
+       [
+        "querer → <es>quise</es>",
+        "venir → <es>vine</es>",
+        "decir → <es>dije</es>",
+        "traer → <es>traje</es>"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<es>tuve</es>, nie <es>tuvé</es>. <es>hizo</es> mit z. Nach j fällt das i weg: <es>dijeron</es>. Und <es>dar</es> geht wie ein -er-Verb, ohne Strich: <es>di, dio</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Gehen oder sein? Sortiere die Sätze.",
+      "kind": "Erkennen",
+      "words": [
+       "Fui a Sevilla.",
+       "Fue un día horrible.",
+       "¿Fuiste a la fiesta?",
+       "Fue mi primer amor.",
+       "Fuimos al cine.",
+       "Fueron muy simpáticos."
+      ],
+      "baskets": [
+       {
+        "label": "<es>ir</es> – gehen, fahren",
+        "answers": [
+         "Fui a Sevilla.",
+         "¿Fuiste a la fiesta?",
+         "Fuimos al cine."
+        ]
+       },
+       {
+        "label": "<es>ser</es> – sein",
+        "answers": [
+         "Fue un día horrible.",
+         "Fue mi primer amor.",
+         "Fueron muy simpáticos."
+        ]
+       }
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Welche Form stimmt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Ayer Rafa [[hació|!hizo]] una reunión de cuatro horas.",
+       "Yo no [[podí|!pude]] dormir: el vecino tocó la batería.",
+       "Mis padres [[!vinieron|venieron]] a comer el domingo.",
+       "¿Dónde [[!pusiste|poniste]] las llaves?",
+       "¿Qué te [[dició|!dijo]] tu madre?"
+      ],
+      "why": "Die Bande trägt nie einen Akzent und hat ihren eigenen Stamm: <es>hizo, pude, vinieron, pusiste, dijo</es>."
+     },
+     {
+      "type": "cloze",
+      "title": "Lucías Sommer. Setz die Verben im Indefinido ein.",
+      "kind": "Erzählen",
+      "track": "11.3-3",
+      "text": "El verano pasado {{fui|ir}} a Cádiz con Dani. El viaje {{fue|ser}} un desastre. Primero, Dani no {{pudo|poder}} encontrar su DNI y {{tuvimos|tener}} que coger otro tren. En la playa {{hizo|hacer}} un sol increíble, pero yo no me {{puse|ponerse}} crema. Por la noche {{estuve|estar}} en el hotel, roja como un tomate. Mi madre me {{dijo|decir}}: «Te lo dije».",
+      "why": "<es>fui</es> (ir: Lucía fährt hin) und <es>fue</es> (ser: das Urteil über die Reise) – gleiche Form, anderes Verb."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Was hast du am Wochenende gemacht? – Nichts.",
+        "es": "¿Qué hiciste el fin de semana? —Nada."
+       },
+       {
+        "de": "Wir sind nach Mallorca geflogen, und es war toll.",
+        "es": "Fuimos a Mallorca y fue genial."
+       }
+      ]
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "El año pasado ___ a Cuba de vacaciones.",
+     "options": [
+      "fui",
+      "fue",
+      "era"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Qué ___ tú ayer?",
+     "options": [
+      "haciste",
+      "hiciste"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Mis padres me ___ la verdad.",
+     "options": [
+      "dijeron",
+      "dijieron"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "11.4",
+   "topic": "Imperfecto",
+   "level": "A2",
+   "headline_es": "Sin móviles, ¿cómo quedaba la gente?",
+   "headline_de": "Ohne Handys – wie haben sich die Leute damals verabredet?",
+   "index": [
+    "Imperfecto",
+    "pretérito imperfecto",
+    "era, iba, veía",
+    "había (es gab)",
+    "Gewohnheiten in der Vergangenheit",
+    "antes, de pequeño"
+   ],
+   "cartoon": {
+    "id": "11.4-A",
+    "icons": [
+     "1F4D6",
+     "1F475",
+     "1F9D2"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "De pequeña, Lucía comía tierra.<br>¡Todos los días!"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Mamá!<br>¡Tenía dos años!"
+     }
+    ],
+    "gloss": "<es>tierra</es> Erde",
+    "prompt": "SCENE: A living room with an old-fashioned sofa. In the left half, PILAR sits next to DANI with a huge, thick family photo album open on their laps. Pilar points proudly at one photo with great delight; the photo (small, no text) shows a toddler sitting happily in a flower bed with mud all over her face. DANI looks at it with a calm, amused, very interested smile. In the right half, LUCÍA has just come in from the kitchen carrying a tray with three coffee cups; she freezes, completely mortified, the cups wobbling. Leave clear empty space above Pilar (top left) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Das <c1>Imperfecto</c1> ist ein Fotoalbum: Jedes Bild zeigt, <em>wie es war</em> oder <em>was man immer machte</em>. Passieren tut nichts. (In <g>11.5</g> wird daraus die Bühne.)"
+     },
+     {
+      "type": "conj",
+      "track": "11.4-1",
+      "pron": [
+       "yo",
+       "tú",
+       "él, ella, usted",
+       "nosotros, -as",
+       "vosotros, -as",
+       "ellos, ustedes"
+      ],
+      "verbs": [
+       {
+        "inf": "hablar",
+        "de": "sprechen",
+        "forms": [
+         "habl<b>aba</b>",
+         "habl<b>abas</b>",
+         "habl<b>aba</b>",
+         "habl<b>ábamos</b>",
+         "habl<b>abais</b>",
+         "habl<b>aban</b>"
+        ]
+       },
+       {
+        "inf": "comer · vivir",
+        "de": "essen · wohnen",
+        "forms": [
+         "com<b>ía</b>",
+         "com<b>ías</b>",
+         "com<b>ía</b>",
+         "com<b>íamos</b>",
+         "com<b>íais</b>",
+         "com<b>ían</b>"
+        ]
+       },
+       {
+        "inf": "ser",
+        "de": "sein",
+        "forms": [
+         "era",
+         "eras",
+         "era",
+         "éramos",
+         "erais",
+         "eran"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "p",
+      "text": "Nur drei Ausreißer: <es>ser</es>, <es>ir</es> (<es>iba</es>) und <es>ver</es> (<es>veía</es>). Bequemer geht’s nicht."
+     },
+     {
+      "type": "examples",
+      "track": "11.4-2",
+      "items": [
+       [
+        "De pequeño, Dani iba al cole en bici. Y llegaba tarde.",
+        "Als Kind fuhr Dani Rad zur Schule. Und kam zu spät."
+       ],
+       [
+        "Mi primer piso tenía una ventana y tres cucarachas.",
+        "Meine erste Wohnung: ein Fenster, drei Kakerlaken."
+       ],
+       [
+        "Mi abuela tenía ochenta años y conducía como una loca.",
+        "Oma war achtzig und fuhr wie eine Verrückte."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "„Es gab“ heißt <es>había</es>, auch bei Mehrzahl: <es>Había muchos turistas</es> – nie <es>habían</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "mark",
+      "title": "Pilar erzählt von früher. Hör zu: G = Gewohnheit (was immer so war), B = Beschreibung (wie es war).",
+      "kind": "Erkennen",
+      "track": "11.4-3",
+      "text": "Cuando yo [[era|B]] joven, no [[había|B]] móviles. Mi casa [[era|B]] pequeña y [[tenía|B]] un patio con limones. Los domingos [[íbamos|G]] al cine y mi padre siempre [[compraba|G]] pipas. Mi hermana y yo [[escribíamos|G]] cartas a los chicos. ¡Y los chicos nos [[contestaban|G]]!"
+     },
+     {
+      "type": "transform",
+      "title": "Früher und heute. Dani hat sich verändert. Wie war er früher?",
+      "kind": "Bilden",
+      "example": {
+       "q": "Ahora Dani cocina muy bien. (fatal)",
+       "a": "Antes cocinaba fatal."
+      },
+      "items": [
+       {
+        "q": "Ahora vive con Lucía. (con sus padres)",
+        "a": "Antes vivía con sus padres."
+       },
+       {
+        "q": "Ahora tiene un perro. (un pez)",
+        "a": "Antes tenía un pez."
+       },
+       {
+        "q": "Ahora va al gimnasio. (al bar)",
+        "a": "Antes iba al bar."
+       },
+       {
+        "q": "Ahora es muy tranquilo. (todavía más tranquilo)",
+        "a": "Antes era todavía más tranquilo."
+       }
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Nico will alles wissen. Ergänze.",
+      "kind": "Erzählen",
+      "track": "11.4-4",
+      "lines": [
+       [
+        "Nico",
+        "Abuela, cuando tú {{eras|ser}} pequeña, ¿{{había|haber}} dinosaurios?"
+       ],
+       [
+        "Pilar",
+        "¡No, cariño! Pero {{teníamos|tener}} una tele en blanco y negro."
+       ],
+       [
+        "Nico",
+        "¿Y qué {{veíais|ver}}?"
+       ],
+       [
+        "Pilar",
+        "Dibujos. Y los sábados mi padre nos {{llevaba|llevar}} al parque."
+       ],
+       [
+        "Nico",
+        "¿Al parque de los dinosaurios?"
+       ],
+       [
+        "Pilar",
+        "No. Allí solo {{había|haber}} palomas."
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Früher habe ich in einer WG gewohnt.",
+        "es": "Antes vivía en un piso compartido."
+       },
+       {
+        "de": "Es gab nur ein Bad für sechs Personen.",
+        "es": "Solo había un baño para seis personas."
+       }
+      ]
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "De pequeño, Dani ___ al cole en bici.",
+     "options": [
+      "iba",
+      "fue"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "En mi pueblo no ___ cine.",
+     "options": [
+      "habían",
+      "había"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Mi abuela ___ ochenta años y conducía como una loca.",
+     "options": [
+      "tenía",
+      "tuvo"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "11.5",
+   "topic": "Indefinido oder Imperfecto?",
+   "level": "A2",
+   "headline_es": "Me duchaba tan tranquila<br>cuando sonó el móvil.",
+   "headline_de": "Ich stand gerade ganz entspannt unter der Dusche, als das Handy klingelte.",
+   "deeper": "Für Profis: <gb>14.1</gb>",
+   "index": [
+    "Indefinido",
+    "Imperfecto",
+    "Indefinido oder Imperfecto",
+    "Vergangenheit erzählen",
+    "conocer (conocía/conocí)",
+    "saber (sabía/supe)",
+    "querer (quería/quise)",
+    "mientras",
+    "de repente"
+   ],
+   "cartoon": {
+    "id": "11.5-A",
+    "size": "l",
+    "icons": [
+     "1F6BF",
+     "1F4A7",
+     "1F4F1"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Me duchaba.<br>Hasta que llamaste tú."
+     },
+     {
+      "pos": "tr",
+      "text": "¡Hola, cariño!<br>¿Qué hacías?"
+     }
+    ],
+    "gloss": "<es>cariño</es> Schatz",
+    "prompt": "SCENE: Left two thirds of the image: LUCÍA stands in a narrow apartment hallway right outside the open bathroom door. She is dripping wet, wrapped in a slightly too small orange towel, her hair is piled up with shampoo foam like a soft-serve ice cream, water drips from her elbow, one bare foot stands in a growing puddle. She holds a smartphone to her ear with a completely deadpan, unimpressed face. Behind her the shower is still running and steam drifts out of the bathroom. Right third: a round inset, like a picture-in-picture video call, showing PILAR relaxed in a cosy armchair with a cup of coffee, smiling sweetly, phone at her ear. Leave clear empty space above Lucía (top left) and above the inset (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Erzählen ist Theater. Das <c1>Imperfecto</c1> baut die Bühne: wie es war und was gerade lief. Das <c2>Indefinido</c2> ist die Handlung: was passierte und die Geschichte weiterbringt."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Die Bühne",
+        "sub": "Imperfecto",
+        "icon": "1F3AD",
+        "tone": 1,
+        "track": "11.5-1",
+        "uses": [
+         {
+          "t": "Wie es war",
+          "x": "Zeit, Wetter, Ort, Aussehen, Alter, Gefühle<br><es>Eran las siete y llovía.</es><br><es>Estaba nerviosa. Tenía veinte años.</es>"
+         },
+         {
+          "t": "Was gerade lief",
+          "x": "<es>Me duchaba…</es> <de>Ich duschte gerade …</de><br><es>Los niños dormían.</es> <de>Die Kinder schliefen.</de>"
+         },
+         {
+          "t": "Was immer so war",
+          "x": "<es>De pequeña, pasaba los veranos en el pueblo.</es><br><de>Als Kind war ich jeden Sommer im Dorf.</de>"
+         }
+        ]
+       },
+       {
+        "title": "Die Handlung",
+        "sub": "Indefinido",
+        "icon": "1F6AA",
+        "tone": 2,
+        "track": "11.5-1",
+        "uses": [
+         {
+          "t": "Was passierte",
+          "x": "<es>…cuando sonó el móvil.</es> <de>… als das Handy klingelte.</de><br><es>Ayer perdí las llaves.</es> <de>Gestern habe ich die Schlüssel verloren.</de>"
+         },
+         {
+          "t": "Eins nach dem anderen",
+          "x": "<es>Abrí la puerta, vi el desastre y llamé a mi madre.</es><br><de>Ich öffnete die Tür, sah das Chaos und rief meine Mutter an.</de>"
+         },
+         {
+          "t": "Was ein klares Ende hat",
+          "x": "<es>Viví tres años en Sevilla.</es><br><es>La reunión duró cuatro horas.</es> <de>Leider.</de>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Kleine Wegweiser"
+     },
+     {
+      "type": "signal",
+      "rows": [
+       [
+        "Imperfecto",
+        "siempre, todos los días, antes, de pequeño, normalmente, mientras",
+        1
+       ],
+       [
+        "Indefinido",
+        "ayer, anoche, el lunes, en 2019, una vez, de repente, entonces",
+        2
+       ]
+      ]
+     }
+    ],
+    [
+     {
+      "type": "h",
+      "text": "Die Frage, die fast immer hilft"
+     },
+     {
+      "type": "question",
+      "items": [
+       {
+        "q": "Wie war es?",
+        "small": "Beschreibung, Hintergrund, Gewohnheit",
+        "tag": "→ IMPERFECTO",
+        "tone": 1
+       },
+       {
+        "q": "Und dann?",
+        "small": "Ereignis, nächster Schritt",
+        "tag": "→ INDEFINIDO",
+        "tone": 2
+       }
+      ]
+     },
+     {
+      "type": "story",
+      "title": "Beides zusammen: so klingt eine Geschichte",
+      "track": "11.5-2",
+      "es": "<c1>Era</c1> lunes y <c1>llovía</c1>. Yo <c1>estaba</c1> nerviosa: <c1>era</c1> mi primer día en la oficina. En el metro, la gente <c1>leía</c1> o <c1>dormía</c1>. <c2>Llegué</c2> a las nueve en punto, <c2>abrí</c2> la puerta… y <c2>vi</c2> a mi exnovio. <c1>Era</c1> mi nuevo jefe.",
+      "de": "Es war Montag und es regnete. Ich war nervös: Es war mein erster Tag im Büro. In der U-Bahn lasen oder schliefen die Leute. Ich kam pünktlich um neun an, öffnete die Tür … und sah meinen Ex. Er war mein neuer Chef.",
+      "note": "Die <c1>Bühne</c1> steht, bis jemand die Tür öffnet. Dann übernimmt die <c2>Handlung</c2>. Und der letzte Satz? Er ist die Pointe, aber trotzdem Bühne: Er beschreibt, wer der Mann <em>war</em>."
+     },
+     {
+      "type": "ojo",
+      "text": "Die Wegweiser helfen, entscheiden tut die Bedeutung. <es>Ayer <c1>llovía</c1> cuando <c2>salí</c2> de casa.</es> – <em>Ayer</em> steht da, und trotzdem ist der Regen Bühne. Und lange Dauer heißt nicht automatisch Imperfecto: <es>Viví tres años en Sevilla</es> ist abgeschlossen, also Handlung."
+     },
+     {
+      "type": "spikiu",
+      "title": "Vier Verben wechseln die Bedeutung",
+      "text": "Im Indefinido erzählen diese Verben den Moment, in dem etwas <em>anfing</em> oder <em>geschah</em>: <es>conocía</es> kannte – <es>conocí</es> lernte kennen · <es>sabía</es> wusste – <es>supe</es> erfuhr · <es>tenía</es> hatte – <es>tuve un hijo</es> bekam ein Kind · <es>no quería</es> wollte nicht – <es>no quise</es> weigerte mich."
+     },
+     {
+      "type": "novela",
+      "source": "El año de Lukas",
+      "quote": "Esa mañana <c2>llegó</c2> una carta. Una carta de verdad, en un sobre, con sello y con aquella letra grande y azul que Lukas <c1>conocía</c1> tan bien.",
+      "note": "Der Brief kommt an – Handlung. Die Schrift kennt Lukas schon lange – Bühne."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "mark",
+      "title": "Die Hochzeit. Hör zu und schreib B (Bühne) oder H (Handlung) in die Kästchen.",
+      "kind": "Erkennen",
+      "track": "11.5-3",
+      "text": "[[Era|B]] el día de la boda de mi hermana. [[Hacía|B]] un sol precioso y todos [[estábamos|B]] muy elegantes. Mientras los novios [[bailaban|B]], mi sobrino Nico, de cuatro años, [[se subió|H]] a la mesa, [[cogió|H]] la tarta con las dos manos… y [[se la comió|H]]. Nadie [[dijo|H]] nada. La tarta [[estaba|B]] buenísima.",
+      "why": "Nicos drei Handlungen folgen aufeinander: rauf, nehmen, essen. Während das Brautpaar tanzt, läuft das Fest einfach weiter – Bühne."
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Cuando [[!era|fui]] estudiante, [[!vivía|viví]] en un piso con cuatro personas y un gato.",
+       "Ayer [[perdía|!perdí]] el autobús y [[llegaba|!llegué]] tarde a la reunión.",
+       "[[!Hacía|Hizo]] un frío horrible, así que [[me ponía|!me puse]] dos jerséis.",
+       "Mientras el jefe [[!hablaba|habló]], yo [[!miraba|miré]] el móvil. De repente, me [[preguntaba|!preguntó]] algo.",
+       "[[Conocía|!Conocí]] a Lucía en una fiesta. [[!Llevaba|Llevó]] un vestido rojo.",
+       "De pequeño, siempre [[!quería|quise]] ser astronauta. Hoy soy dentista.",
+       "[[Vivía|!Viví]] tres años en Sevilla. Luego [[me mudaba|!me mudé]] a Madrid."
+      ],
+      "why": "e: <es>conocí</es> heißt hier „ich habe kennengelernt“. g: drei Jahre, aber abgeschlossen – also Indefinido."
+     },
+     {
+      "type": "cloze",
+      "title": "Die erste Verabredung. Setz die Verben ein.",
+      "kind": "Erzählen",
+      "text": "Mi primera cita con Dani {{fue|ser}} un desastre. {{Era|ser}} un sábado de agosto y {{hacía|hacer}} muchísimo calor. Yo {{llevaba|llevar}} mi camisa favorita, la blanca. Dani {{llegó|llegar}} veinte minutos tarde. {{Pedimos|pedir, nosotros}} dos cafés con hielo. Mientras Dani me {{contaba|contar}} su viaje a Japón, un camarero {{tropezó|tropezar}} y me {{tiró|tirar}} un café entero encima. Mi camisa ya no {{era|ser}} blanca. Dani {{empezó|empezar}} a reírse. Yo también. Hoy llevamos cinco años juntos.",
+      "why": "Warum <es>fue un desastre</es> und nicht <es>era</es>? Lucía bewertet die ganze, abgeschlossene Verabredung von heute aus – das ist ein Ereignis mit Ende."
+     }
+    ],
+    [
+     {
+      "type": "cards",
+      "title": "Und dann …? Die Bühne steht. Schreib die Handlung.",
+      "kind": "Bilden",
+      "start": "Era domingo por la tarde. Yo leía un libro en el sofá cuando …",
+      "items": [
+       {
+        "icon": "1F6AA",
+        "solution": "… llamaron a la puerta."
+       },
+       {
+        "icon": "1F426",
+        "solution": "… entró un pájaro por la ventana."
+       },
+       {
+        "icon": "1F4A7",
+        "solution": "… empezó a caer agua del techo."
+       },
+       {
+        "icon": "1F413",
+        "solution": "… un gallo empezó a cantar en el balcón de enfrente."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Als ich klein war, habe ich jeden Sommer bei meiner Oma im Dorf verbracht.",
+        "es": "Cuando era pequeño/pequeña, pasaba todos los veranos en el pueblo de mi abuela."
+       },
+       {
+        "de": "Ich war gerade am Kochen, als meine Schwiegermutter klingelte.",
+        "es": "Estaba cocinando cuando mi suegra llamó al timbre. (auch: Cocinaba cuando…)"
+       },
+       {
+        "de": "Das Wetter war schön, also sind wir an den Strand gegangen.",
+        "es": "Hacía buen tiempo, así que fuimos a la playa."
+       },
+       {
+        "de": "Ich wusste es nicht. Ich habe es erst gestern erfahren.",
+        "es": "No lo sabía. Lo supe ayer."
+       },
+       {
+        "de": "Wir haben drei Jahre in Valencia gewohnt.",
+        "es": "Vivimos tres años en Valencia."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Ein Tag, der anders lief als geplant. Erzähl in fünf Sätzen.",
+      "kind": "Frei",
+      "text": "Erst die Bühne (Wann? Wo? Wie war das Wetter, wie ging es dir?), dann die Handlung (Was passierte? Und dann?).",
+      "lines": 5,
+      "solution": "Keine feste Lösung. Prüf selbst: Stehen Zeit, Ort und Stimmung im Imperfecto? Stehen die Ereignisse im Indefinido?"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Cuando ___ niña, vivía en Bilbao.",
+     "options": [
+      "era",
+      "fui"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Leía el periódico cuando ___ el teléfono.",
+     "options": [
+      "sonaba",
+      "sonó"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Ayer ___ a Marta en una fiesta. ¡Es genial!",
+     "options": [
+      "conocía",
+      "conocí"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "11.6",
+   "topic": "Perfekt oder Indefinido?",
+   "level": "A2",
+   "headline_es": "¿Has estado alguna vez en México?<br>—Sí, fui en 2019.",
+   "headline_de": "Warst du schon mal in Mexiko? – Ja, 2019.",
+   "index": [
+    "Perfekt oder Indefinido",
+    "offene und geschlossene Zeit",
+    "hoy / ayer",
+    "alguna vez",
+    "Lateinamerika (Indefinido statt Perfekt)",
+    "hace (vor)"
+   ],
+   "cartoon": {
+    "id": "11.6-A",
+    "icons": [
+     "1F6CB",
+     "1F3CB",
+     "1F37F"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Has ido al gimnasio<br>esta semana?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Claro! Fui el lunes…<br>a pagar la cuota."
+     }
+    ],
+    "gloss": "<es>la cuota</es> der Mitgliedsbeitrag",
+    "prompt": "SCENE: A small Madrid living room on a Friday evening. On the right, DANI lies stretched out on the sofa in a hoodie, completely relaxed, a giant bowl of popcorn on his belly and the TV remote in his hand. In the corner next to the sofa stands a brand-new gym bag with the price tag still hanging from it and a pair of spotless running shoes on top, untouched. On the left, LUCÍA stands in the doorway in sports clothes, sweaty, a towel around her neck, looking at him with her hands on her hips and a sceptical look. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Ist die Zeitschachtel noch <c1>offen</c1> (heute, diese Woche, im Leben)? Dann Perfekt: <es>he ido</es>. Ist sie <c2>zu</c2> (gestern, 2019)? Dann Indefinido: <es>fui</es>."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Die Schachtel ist offen",
+        "sub": "Perfekt",
+        "icon": "1F513",
+        "tone": 1,
+        "track": "11.6-1",
+        "uses": [
+         {
+          "t": "Heute, diese Woche, dieses Jahr",
+          "x": "<es>Esta mañana he desayunado churros.</es><br><es>Este año he cambiado de trabajo dos veces.</es>"
+         },
+         {
+          "t": "Im Leben, bis jetzt",
+          "x": "<es>¿Has estado alguna vez en México?</es><br><es>Nunca he montado en camello.</es>"
+         }
+        ]
+       },
+       {
+        "title": "Die Schachtel ist zu",
+        "sub": "Indefinido",
+        "icon": "1F512",
+        "tone": 2,
+        "track": "11.6-1",
+        "uses": [
+         {
+          "t": "Gestern, letzte Woche, letztes Jahr",
+          "x": "<es>Ayer desayuné churros. Otra vez.</es><br><es>El año pasado cambié de trabajo.</es>"
+         },
+         {
+          "t": "Mit Datum oder „vor …“",
+          "x": "<es>Sí, fui en 2019. Con mi madre.</es><br><es>Pilar llamó hace tres días.</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Deutsch: „Gestern <em>habe</em> ich Paella gegessen.“ Spanisch: <es>ayer</es> schließt die Schachtel – <es>Ayer comí paella</es>, nie <es>ayer he comido</es>."
+     },
+     {
+      "type": "region",
+      "text": "In Lateinamerika (und auf den Kanaren) geht die Schachtel schneller zu: Was vorbei ist, steht meist im Indefinido – auch heute. Madrid: <es>¿Ya has comido? Hoy he comido tacos.</es> Mexiko: <es>¿Ya comiste? Hoy comí tacos.</es> Beides ist richtig, nur nicht in derselben Stadt."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Offen oder zu? Sortiere die Zeitangaben.",
+      "kind": "Erkennen",
+      "words": [
+       "hoy",
+       "ayer",
+       "en 2019",
+       "esta semana",
+       "nunca",
+       "anoche",
+       "hace tres días",
+       "esta mañana"
+      ],
+      "baskets": [
+       {
+        "label": "offen → Perfekt",
+        "answers": [
+         "hoy",
+         "esta semana",
+         "nunca",
+         "esta mañana"
+        ]
+       },
+       {
+        "label": "zu → Indefinido",
+        "answers": [
+         "ayer",
+         "en 2019",
+         "anoche",
+         "hace tres días"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Lucías Woche – so sagt man es in Madrid. Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Esta semana [[!he trabajado|trabajé]] sesenta horas.",
+       "El lunes Rafa me [[ha llamado|!llamó]] a las once de la noche.",
+       "Ayer [[he visto|!vi]] a mi madre en el gimnasio. ¿Mi madre? ¿En el gimnasio?",
+       "¿[[!Has estado|Estuviste]] alguna vez en Mallorca? —Sí, [[he ido|!fui]] en 2015."
+      ],
+      "why": "d: <es>alguna vez</es> fragt nach dem ganzen Leben (offen). <es>en 2015</es> ist ein Datum (zu)."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar ruft an. Natürlich. Perfekt oder Indefinido?",
+      "kind": "Entscheiden",
+      "track": "11.6-2",
+      "lines": [
+       [
+        "Pilar",
+        "Hola, cariño. ¿Qué {{has hecho|hacer}} hoy?"
+       ],
+       [
+        "Lucía",
+        "Nada especial. {{He trabajado|trabajar}} y {{he ido|ir}} al súper."
+       ],
+       [
+        "Pilar",
+        "¿Y {{has comido|comer}} bien?"
+       ],
+       [
+        "Lucía",
+        "Sí, mamá. Ayer {{hice|hacer}} lentejas y hoy {{he comido|comer}} lentejas."
+       ],
+       [
+        "Pilar",
+        "¿Y por qué no {{viniste|venir}} el domingo?"
+       ],
+       [
+        "Lucía",
+        "Porque {{estuve|estar}} con Dani en la sierra. Te lo {{dije|decir}}."
+       ]
+      ],
+      "why": "<es>ayer hice</es> – Schachtel zu. <es>hoy he comido</es> – offen. Der Sonntag ist vorbei: Indefinido."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch (Spanien)?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Letzte Woche habe ich meine Schlüssel verloren. Heute habe ich sie gefunden – im Kühlschrank.",
+        "es": "La semana pasada perdí las llaves. Hoy las he encontrado… en la nevera."
+       },
+       {
+        "de": "Hast du schon mit Rafa gesprochen? – Ja, vorgestern.",
+        "es": "¿Ya has hablado con Rafa? —Sí, hablé con él anteayer."
+       }
+      ],
+      "why": "b: Die Frage ist offen (<es>ya</es>), die Antwort nennt einen Tag, der vorbei ist (<es>anteayer</es>)."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Esta semana ___ tres veces al gimnasio.",
+     "options": [
+      "he ido",
+      "fui"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "El año pasado ___ en Lisboa.",
+     "options": [
+      "he estado",
+      "estuve"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Ayer ___ con Rafa de las vacaciones.",
+     "options": [
+      "he hablado",
+      "hablé"
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ ]
+}

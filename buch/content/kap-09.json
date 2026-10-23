@@ -1,0 +1,798 @@
+{
+  "chapter": 9,
+  "title": "Objektpronomen",
+  "sections": [
+    {
+      "id": "9.1",
+      "topic": "lo, la, le",
+      "level": "A2",
+      "headline_es": "¿Mi móvil? Lo tiene Nico.<br>Y le doy un dinosaurio a cambio.",
+      "headline_de": "Mein Handy? Das hat Nico. Und ich gebe ihm dafür einen Dinosaurier.",
+      "index": [
+        "Objektpronomen",
+        "lo, la, los, las",
+        "le, les",
+        "direktes Objekt",
+        "indirektes Objekt",
+        "Leísmo",
+        "ayudar",
+        "preguntar"
+      ],
+      "cartoon": {
+        "id": "9.1-A",
+        "size": "l",
+        "icons": [
+          "1F4F1",
+          "1F466",
+          "1F996"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "¿Mi móvil?<br>¿Quién lo tiene?"
+          },
+          {
+            "pos": "tr",
+            "text": "Yo no lo tengo.<br>Lo tiene el T-Rex."
+          }
+        ],
+        "prompt": "SCENE: A messy living room in a Madrid apartment. Left half: LUCÍA is on her knees in front of the sofa, half buried under the cushions she has thrown on the floor, looking up with a frantic, suspicious expression, one hand still searching under the sofa. Right half: NICO, 4 years old, in a dinosaur T-shirt, stands very straight with an exaggerated innocent face, eyes looking at the ceiling. In both hands he holds a big green plastic T-Rex toy, and the T-Rex has a smartphone clamped in its open jaws, screen still glowing. Toy dinosaurs are scattered on the carpet. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "Pronomen sind Stellvertreter, damit du nichts zweimal sagen musst. <c1>lo, la</c1> stehen für das <em>Paket</em>: wen oder was? <c2>le</c2> steht für den <em>Empfänger</em>: wem?"
+          },
+          {
+            "type": "columns",
+            "cols": [
+              {
+                "title": "Das Paket",
+                "sub": "lo · la · los · las",
+                "icon": "1F4E6",
+                "tone": 1,
+                "track": "9.1-1",
+                "uses": [
+                  {
+                    "t": "Wen? Was?",
+                    "x": "<es>¿El móvil? Lo tiene Nico.</es> <de>Das Handy? Das hat Nico.</de><br><es>¿La paella? La hace mi madre.</es> <de>Die Paella? Die macht meine Mutter.</de>"
+                  },
+                  {
+                    "t": "Männlich oder weiblich – wie das Wort",
+                    "x": "<es>¿Los billetes? Los tengo yo.</es><br><es>¿Las gafas? No las encuentro.</es> <de>Die Brille? Ich finde sie nicht.</de>"
+                  },
+                  {
+                    "t": "Auch für Personen",
+                    "x": "<es>¿Dani? Lo veo mañana.</es> <de>Dani? Den sehe ich morgen.</de><br><es>Señora, la llamo luego.</es> <de>Ich rufe Sie später an.</de>"
+                  }
+                ]
+              },
+              {
+                "title": "Der Empfänger",
+                "sub": "le · les",
+                "icon": "1F932",
+                "tone": 2,
+                "track": "9.1-1",
+                "uses": [
+                  {
+                    "t": "Wem?",
+                    "x": "<es>Le doy un dinosaurio.</es> <de>Ich gebe ihm einen Dinosaurier.</de><br><es>Les escribo un mensaje.</es> <de>Ich schreibe ihnen eine Nachricht.</de>"
+                  },
+                  {
+                    "t": "Ein Wort für alle",
+                    "x": "<es>le</es> = ihm, ihr, Ihnen<br><es>les</es> = ihnen, Ihnen (mehrere)"
+                  },
+                  {
+                    "t": "Typische Verben",
+                    "x": "<es>dar, decir, escribir, mandar, regalar, preguntar</es> – man gibt, sagt, schickt <em>jemandem</em> etwas."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "h",
+            "text": "Alle auf einen Blick"
+          },
+          {
+            "type": "table",
+            "head": [
+              "",
+              "ich",
+              "du",
+              "er, sie, Sie",
+              "wir",
+              "ihr",
+              "sie, Sie"
+            ],
+            "rows": [
+              [
+                "wen? was?",
+                "me",
+                "te",
+                "lo / la",
+                "nos",
+                "os",
+                "los / las"
+              ],
+              [
+                "wem?",
+                "me",
+                "te",
+                "le",
+                "nos",
+                "os",
+                "les"
+              ]
+            ],
+            "es_cols": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "hl": []
+          },
+          {
+            "type": "p",
+            "text": "Nur bei <em>er, sie, Sie</em> musst du entscheiden. <es>me, te, nos, os</es> passen immer: <es>Te veo.</es> <de>Ich sehe dich.</de> <es>Te doy un beso.</es> <de>Ich gebe dir einen Kuss.</de> Das Pronomen steht <em>vor</em> dem Verb: <es>Lo tiene Nico. No la encuentro.</es> Mehr zur Stellung in <g>9.3</g>."
+          },
+          {
+            "type": "h",
+            "text": "Der Empfänger kommt doppelt"
+          },
+          {
+            "type": "examples",
+            "track": "9.1-2",
+            "items": [
+              [
+                "A mi madre le compro flores.",
+                "Meiner Mutter kaufe ich Blumen."
+              ],
+              [
+                "Le digo la verdad a Dani.",
+                "Ich sage Dani die Wahrheit."
+              ],
+              [
+                "¿Le pregunto al camarero?",
+                "Soll ich den Kellner fragen?"
+              ]
+            ]
+          },
+          {
+            "type": "p",
+            "text": "Klingt doppelt gemoppelt, ist aber ganz normal: Steht der Empfänger mit <es>a</es> im Satz, kommt <es>le</es> trotzdem dazu."
+          },
+          {
+            "type": "ojo",
+            "text": "Deutsch und Spanisch zählen nicht immer gleich. <es>ayudar</es> (helfen) und <es>llamar</es> (anrufen) wollen ein <c1>Paket</c1>: <es><c1>La</c1> ayudo.</es> Ich helfe <em>ihr</em>. Dafür hat <es>preguntar</es> einen <c2>Empfänger</c2>: <es><c2>Le</c2> pregunto.</es> Ich frage <em>ihn</em>."
+          },
+          {
+            "type": "trick",
+            "icon": "1F4A1",
+            "text": "<es>lo</es> kann auch einen ganzen Gedanken vertreten: <es>No lo sé.</es> <de>Ich weiß es nicht.</de> <es>Ya lo veo.</es> <de>Seh ich schon.</de> <es>¡Lo siento!</es> <de>Tut mir leid!</de>"
+          },
+          {
+            "type": "region",
+            "text": "In Madrid und weiten Teilen Spaniens hörst du bei Männern oft <es>le</es> statt <es>lo</es>: <es>A Dani le veo mañana.</es> Dieser Leísmo gilt dort als korrekt – aber nur für männliche Personen, nie für Dinge oder Frauen. Mit <es>lo</es> und <es>la</es> liegst du überall richtig."
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "mark",
+            "title": "Besuch bei Pilar. Hör zu und schreib P (Paket: lo, la, los, las) oder E (Empfänger: le, les).",
+            "kind": "Erkennen",
+            "track": "9.1-3",
+            "text": "Es el cumpleaños de mi madre. ¿El regalo? [[Lo|P]] tengo en la maleta: es un libro. Ya tiene cien, pero [[le|E]] encantan los libros. ¿Las flores? [[Las|P]] compro en la estación. ¿Y a mi padre? [[Le|E]] llevo un vino. ¿Y Dani? [[Lo|P]] espero en el andén. Llega tarde, claro. [[Le|E]] mando un mensaje: «¿Dónde estás?». Suena el móvil. Es mi madre. No [[lo|P]] cojo.",
+            "why": "<es>le encantan</es>: Die Mutter ist der Empfänger, wie bei <es>gustar</es> (<g>5.5</g>). Das letzte <es>lo</es> ist das Handy."
+          },
+          {
+            "type": "choice",
+            "title": "lo, la, los oder las? Unterstreiche.",
+            "kind": "Entscheiden",
+            "items": [
+              "¿El billete? [[!Lo|La|Los]] tengo en el móvil.",
+              "¿Las llaves? Nico [[los|!las|la]] esconde en el congelador.",
+              "¿La tortilla de mi madre? [[!La|Lo]] como fría, del frigorífico.",
+              "¿Los platos? [[Las|!Los]] lavo mañana. O pasado mañana."
+            ]
+          },
+          {
+            "type": "choice",
+            "title": "Paket oder Empfänger? Vorsicht, hier führt dich das Deutsche in die Irre.",
+            "kind": "Entscheiden",
+            "items": [
+              "¿Pilar? [[!La|Le]] ayudo con el ordenador.",
+              "¿Dani? [[!Lo|Le]] llamo esta noche.",
+              "¿Rafa? [[Lo|!Le]] pregunto mañana.",
+              "¿Marta? [[La|!Le]] escribo un correo.",
+              "¿Mis padres? [[Los|!Les]] regalo un viaje a Roma."
+            ],
+            "why": "a: <es>ayudar</es> will ein Paket, obwohl wir „ihr helfen“ sagen. b: In Spanien hörst du auch <es>le llamo</es> (Leísmo). c: Die Frage ist das Paket, Rafa der Empfänger: <es>preguntar algo a alguien</es>."
+          },
+          {
+            "type": "transform",
+            "title": "Weniger ist mehr. Ersetz die markierten Wörter durch ein Pronomen.",
+            "kind": "Bilden",
+            "example": {
+              "q": "Compro <b>el pan</b>.",
+              "a": "Lo compro."
+            },
+            "items": [
+              {
+                "q": "Dani pierde <b>las llaves</b> cada semana.",
+                "a": "Dani las pierde cada semana."
+              },
+              {
+                "q": "Nico come <b>los macarrones</b> con las manos.",
+                "a": "Nico los come con las manos."
+              },
+              {
+                "q": "Escribo un mensaje <b>a Dani</b>.",
+                "a": "Le escribo un mensaje."
+              },
+              {
+                "q": "Mi madre llama <b>a mi hermana</b> cada hora.",
+                "a": "Mi madre la llama cada hora."
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "type": "dialog",
+            "title": "Pilar ruft an. Natürlich mitten in einer Besprechung. Setz die Pronomen ein.",
+            "kind": "Bilden",
+            "track": "9.1-4",
+            "lines": [
+              [
+                "Pilar",
+                "Hija, ¿tienes la receta de la tarta de queso?"
+              ],
+              [
+                "Lucía",
+                "Sí, mamá, {{la}} tengo en el ordenador."
+              ],
+              [
+                "Pilar",
+                "¿Y a tu hermana? ¿{{Le}} das el regalo de Nico?"
+              ],
+              [
+                "Lucía",
+                "Sí, {{le}} doy el dinosaurio el sábado."
+              ],
+              [
+                "Pilar",
+                "¿Y Dani? ¿{{Lo}} ves esta noche?"
+              ],
+              [
+                "Lucía",
+                "Mamá, estoy en una reunión. {{Te}} llamo luego."
+              ],
+              [
+                "Pilar",
+                "Vale, vale. Pero ¿{{me}} llamas de verdad?"
+              ]
+            ],
+            "why": "<es>¿Lo ves?</es> – in Spanien auch <es>¿Le ves?</es> (Leísmo)."
+          },
+          {
+            "type": "translate",
+            "title": "Wie sagst du das auf Spanisch?",
+            "kind": "Übersetzen",
+            "items": [
+              {
+                "de": "Mein Handy? Ich finde es nicht.",
+                "es": "¿Mi móvil? No lo encuentro."
+              },
+              {
+                "de": "Ich helfe ihr morgen.",
+                "es": "La ayudo mañana."
+              },
+              {
+                "de": "Ich gebe ihm einen Kuss.",
+                "es": "Le doy un beso."
+              },
+              {
+                "de": "Kennst du Marta? – Ja, ich kenne sie.",
+                "es": "¿Conoces a Marta? – Sí, la conozco."
+              },
+              {
+                "de": "Ich weiß es nicht.",
+                "es": "No lo sé."
+              }
+            ]
+          },
+          {
+            "type": "free",
+            "title": "Wer bekommt was? Schreib vier Sätze über Geschenke für deine Leute.",
+            "kind": "Frei",
+            "text": "Zum Beispiel: <es>A mi hermano le regalo calcetines. Siempre. Y los odia.</es>",
+            "lines": 4,
+            "solution": "Keine feste Lösung. Prüf selbst: Steht <es>le/les</es> für die Person und <es>lo/la/los/las</es> für das Geschenk – jeweils vor dem Verb?"
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "¿Las gafas? No ___ encuentro.",
+          "options": [
+            "los",
+            "las",
+            "les"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "¿Pilar? ___ ayudo con el ordenador.",
+          "options": [
+            "La",
+            "Le"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "A Dani ___ doy un beso.",
+          "options": [
+            "lo",
+            "le"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "9.2",
+      "topic": "Zwei Pronomen zusammen",
+      "level": "A2",
+      "headline_es": "¿La llave de mi piso?<br>Te la doy… mañana.",
+      "headline_de": "Den Schlüssel zu meiner Wohnung? Den gebe ich dir … morgen.",
+      "index": [
+        "zwei Pronomen",
+        "se lo, se la",
+        "me lo, te lo",
+        "Reihenfolge der Pronomen",
+        "le wird zu se"
+      ],
+      "cartoon": {
+        "id": "9.2-A",
+        "icons": [
+          "1F475",
+          "1F511",
+          "1F605"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "¿Y la llave de tu piso?<br>¿Me la das?"
+          },
+          {
+            "pos": "tr",
+            "text": "Claro, mamá.<br>Te la doy… mañana."
+          }
+        ],
+        "prompt": "SCENE: The front door of LUCÍA's small Madrid apartment. Left side, in the hallway: PILAR, 63, elegant, with a big handbag on her arm and a potted plant as a 'present', holds out her open palm with a sweet but determined smile. Right side, in the doorway: LUCÍA forces a wide, nervous smile, one hand on the door frame, the other hand hidden behind her back, where the viewer can clearly see her clutching a key ring with a single key. A tiny drop of sweat on her forehead. Leave clear empty space above Pilar (top left) and above Lucía (top right) for two speech bubbles."
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "Zwei Pronomen? Erst der <c2>Empfänger</c2>, dann das <c1>Paket</c1>: <es><c2>me</c2> <c1>lo</c1>, <c2>te</c2> <c1>la</c1>, <c2>nos</c2> <c1>los</c1></es>. Und aus <es>le lo</es> wird <es>se lo</es>."
+          },
+          {
+            "type": "examples",
+            "track": "9.2-1",
+            "items": [
+              [
+                "¿El vino? <c2>Me</c2> <c1>lo</c1> regala Rafa.",
+                "Den Wein? Den schenkt mir Rafa."
+              ],
+              [
+                "¿La contraseña? No <c2>te</c2> <c1>la</c1> digo.",
+                "Das Passwort? Das sag ich dir nicht."
+              ],
+              [
+                "¿Las fotos? <c2>Nos</c2> <c1>las</c1> manda Pilar. Todas.",
+                "Die Fotos? Die schickt uns Pilar. Alle."
+              ],
+              [
+                "¿El regalo? <c2>Se</c2> <c1>lo</c1> doy a Pilar.",
+                "Das Geschenk? Das gebe ich Pilar."
+              ]
+            ]
+          },
+          {
+            "type": "h",
+            "text": "Aus le wird se"
+          },
+          {
+            "type": "table",
+            "track": "9.2-2",
+            "head": [
+              "le / les + lo",
+              "le / les + la",
+              "le / les + los",
+              "le / les + las"
+            ],
+            "rows": [
+              [
+                "se lo",
+                "se la",
+                "se los",
+                "se las"
+              ]
+            ],
+            "es_cols": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "spikiu",
+            "title": "Wer „le lo“ sagt, klingt lelo",
+            "text": "<es>lelo</es> heißt auf Spanisch „doof, belämmert“. Damit das niemandem passiert, wird das erste <es>le</es> zu <es>se</es>: <es>se lo, se la, se los, se las</es>."
+          },
+          {
+            "type": "ojo",
+            "text": "Im Deutschen ist es umgekehrt: Ich gebe <em>es ihm</em> – Sache vor Person. Im Spanischen kommt die Person zuerst: <es><c2>se</c2> <c1>lo</c1> doy</es>. Weil <es>se</es> vieles heißen kann, sagst du bei Bedarf dazu, wer gemeint ist: <es>Se lo doy a usted.</es>"
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "choice",
+            "title": "Welche Reihenfolge stimmt? Unterstreiche.",
+            "kind": "Entscheiden",
+            "items": [
+              "¿El postre? Nico [[!me lo|lo me]] pide cada cinco minutos.",
+              "¿Las fotos de la boda? Pilar [[las nos|!nos las]] manda por WhatsApp.",
+              "¿El regalo para mamá? [[Le lo|!Se lo]] compro mañana.",
+              "¿La verdad? No [[!te la|la te]] digo."
+            ]
+          },
+          {
+            "type": "transform",
+            "title": "Zwei auf einmal. Ersetz die markierten Teile durch Pronomen.",
+            "kind": "Bilden",
+            "example": {
+              "q": "Te doy <b>el libro</b>.",
+              "a": "Te lo doy."
+            },
+            "items": [
+              {
+                "q": "Nico me pide <b>una galleta</b>.",
+                "a": "Nico me la pide."
+              },
+              {
+                "q": "Mando <b>las fotos</b> <b>a Pilar</b>.",
+                "a": "Se las mando."
+              },
+              {
+                "q": "Dani nos prepara <b>la cena</b>.",
+                "a": "Dani nos la prepara."
+              },
+              {
+                "q": "Digo <b>la verdad</b> <b>a mis padres</b>.",
+                "a": "Se la digo."
+              }
+            ],
+            "why": "b und d: Empfänger in der 3. Person + Paket ergibt immer <es>se lo / se la / se los / se las</es>."
+          },
+          {
+            "type": "dialog",
+            "title": "Der Umzug. Lucía und Dani organisieren alles. Setz die Pronomen ein.",
+            "kind": "Bilden",
+            "track": "9.2-3",
+            "lines": [
+              [
+                "Lucía",
+                "Dani, ¿la furgoneta? ¿Quién nos {{la}} presta?"
+              ],
+              [
+                "Dani",
+                "Mi primo. {{Nos}} la presta el sábado."
+              ],
+              [
+                "Lucía",
+                "¿Y las cajas? ¿{{Me}} {{las}} traes tú?"
+              ],
+              [
+                "Dani",
+                "Sí, {{te}} {{las}} traigo mañana."
+              ],
+              [
+                "Lucía",
+                "¿Y la llave del piso nuevo? ¿{{Se}} {{la}} doy a mi madre?"
+              ],
+              [
+                "Dani",
+                "¿A Pilar? ¿La llave? ¿Estás loca?"
+              ]
+            ]
+          },
+          {
+            "type": "match",
+            "title": "Fragen und Antworten. Was passt zusammen? Das Paket verrät es.",
+            "kind": "Entscheiden",
+            "left": [
+              "¿Me dejas tu cargador?",
+              "¿Le das el regalo a Pilar?",
+              "¿Nos trae la cuenta, por favor?",
+              "¿Les mandas las fotos a tus padres?"
+            ],
+            "right": [
+              "Sí, se las mando esta noche.",
+              "Sí, te lo dejo. Pero hasta las seis.",
+              "Ahora mismo se la traigo.",
+              "Sí, se lo doy el domingo."
+            ],
+            "answer": [
+              1,
+              3,
+              2,
+              0
+            ],
+            "why": "b, c und d: Bei <es>se</es> hilft nur das Paket: <es>se lo</es> (el regalo), <es>se la</es> (la cuenta), <es>se las</es> (las fotos)."
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "¿El regalo? ___ doy a Pilar mañana.",
+          "options": [
+            "Le lo",
+            "Se lo",
+            "Lo le"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "¿La contraseña? No ___ digo.",
+          "options": [
+            "te la",
+            "la te"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "¿Las fotos? Dani ___ manda a sus padres.",
+          "options": [
+            "se los",
+            "se las"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "9.3",
+      "topic": "Wohin mit dem Pronomen?",
+      "level": "A2",
+      "headline_es": "¿Nuestra serie?<br>¡Dani está viéndola sin mí!",
+      "headline_de": "Unsere Serie? Dani schaut sie ohne mich!",
+      "index": [
+        "Stellung der Pronomen",
+        "angehängte Pronomen",
+        "Akzent bei angehängten Pronomen",
+        "Infinitiv + Pronomen",
+        "Gerundio + Pronomen"
+      ],
+      "cartoon": {
+        "id": "9.3-A",
+        "icons": [
+          "1F4FA",
+          "1F37F",
+          "1F632"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "¿La estás viendo<br>sin mí?"
+          },
+          {
+            "pos": "tr",
+            "text": "Te lo puedo explicar.<br>O puedo explicártelo."
+          }
+        ],
+        "prompt": "SCENE: Evening in a cosy Madrid living room. Left: LUCÍA has just come in through the door, still in her coat, shopping bags dropping from her hands, mouth open in shocked betrayal, pointing at the TV. Right: DANI sits on the sofa in pyjamas under a blanket with a huge bowl of popcorn on his lap and the remote control in his raised hand, frozen like a thief caught in the act, with a calm, guilty half-smile. The TV screen shows a dramatic dark scene of a series (no text, no logos). Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "Das Pronomen ist ein Magnet: Es klebt <c1>vorne</c1> am konjugierten Verb – oder <c2>hinten</c2> an Infinitiv und <es>-ando/-iendo</es>, dann als ein Wort."
+          },
+          {
+            "type": "columns",
+            "cols": [
+              {
+                "title": "Vorne",
+                "sub": "vor dem konjugierten Verb",
+                "icon": "1F448",
+                "tone": 1,
+                "track": "9.3-1",
+                "uses": [
+                  {
+                    "t": "Ein Verb allein: nur vorne",
+                    "x": "<es>Lo veo. No la encuentro. Te lo digo.</es>"
+                  },
+                  {
+                    "t": "Zwei Verben: vor das erste",
+                    "x": "<es>Lo quiero ver.</es> <de>Ich will es sehen.</de><br><es>La estoy viendo.</es> <de>Ich schaue sie gerade.</de>"
+                  }
+                ]
+              },
+              {
+                "title": "Hinten",
+                "sub": "an Infinitiv oder -ando/-iendo",
+                "icon": "1F449",
+                "tone": 2,
+                "track": "9.3-1",
+                "uses": [
+                  {
+                    "t": "Zwei Verben: hinten dran",
+                    "x": "<es>Quiero verlo.</es><br><es>Estoy viéndola.</es>"
+                  },
+                  {
+                    "t": "Infinitiv allein: nur hinten",
+                    "x": "<es>Es difícil decirlo.</es> <de>Es ist schwer, das zu sagen.</de>"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "table",
+            "track": "9.3-2",
+            "head": [
+              "ohne",
+              "mit Pronomen",
+              "Akzent? Die Betonung bleibt."
+            ],
+            "rows": [
+              [
+                "viendo",
+                "viéndola",
+                "am <es>-ando/-iendo</es>: immer"
+              ],
+              [
+                "explicar",
+                "explicártelo",
+                "zwei Pronomen: immer"
+              ],
+              [
+                "comprar",
+                "comprarlo",
+                "eins am Infinitiv: nie"
+              ]
+            ],
+            "es_cols": [
+              0,
+              1
+            ]
+          },
+          {
+            "type": "ojo",
+            "text": "Nie dazwischen, nie doppelt: <em>nicht</em> <es>quiero lo ver</es>, <em>nicht</em> <es>lo quiero verlo</es>. Beim Befehl klebt es immer hinten: <es>¡Cómpralo!</es> (<g>12.1</g>)"
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "transform",
+            "title": "Von vorne nach hinten. Schreib die andere Möglichkeit.",
+            "kind": "Bilden",
+            "example": {
+              "q": "Lo quiero ver.",
+              "a": "Quiero verlo."
+            },
+            "items": [
+              {
+                "q": "Te lo puedo explicar.",
+                "a": "Puedo explicártelo."
+              },
+              {
+                "q": "¿La pared? Nico la está pintando.",
+                "a": "Nico está pintándola."
+              },
+              {
+                "q": "Se lo estoy diciendo.",
+                "a": "Estoy diciéndoselo."
+              }
+            ],
+            "why": "Achte auf die Akzente: <es>explicártelo, pintándola, diciéndoselo</es>."
+          },
+          {
+            "type": "choice",
+            "title": "Was ist richtig? Unterstreiche.",
+            "kind": "Entscheiden",
+            "items": [
+              "[[!Lo quiero comprar|Quiero lo comprar]] mañana.",
+              "No [[!te lo puedo|te puedo lo]] decir. Es un secreto.",
+              "¿Las llaves? [[!Las estoy buscando|Las estoy buscándolas]]."
+            ]
+          },
+          {
+            "type": "fill",
+            "title": "Akzent oder nicht? Schreib den betonten Vokal – mit oder ohne Akzent.",
+            "kind": "Entscheiden",
+            "cols": 3,
+            "items": [
+              "vi{{é}}ndola",
+              "compr{{a}}rlo",
+              "dec{{í}}rmelo",
+              "llam{{a}}rte",
+              "d{{á}}rtelo",
+              "ayud{{a}}rme"
+            ],
+            "why": "Ein Pronomen am Infinitiv: kein Akzent. Am <es>-ando/-iendo</es> oder mit zwei Pronomen: Akzent."
+          },
+          {
+            "type": "cloze",
+            "title": "Die Überraschungsparty. Lucía plant Danis Geburtstag. Häng die Pronomen an.",
+            "kind": "Erzählen",
+            "track": "9.3-3",
+            "text": "El viernes es el cumpleaños de Dani y quiero {{sorprenderlo|sorprender + lo}}. Es un secreto: nadie puede {{decírselo|decir + se + lo}}. ¿La tarta? Mi madre está {{haciéndola|haciendo + la}} ahora mismo. ¿Los globos? Nico quiere {{inflarlos|inflar + los}}, pero tiene cuatro años y no puede. ¿Y Dani? Llega tarde, claro. ¡Perfecto!",
+            "why": "<es>decírselo</es>: <es>le lo</es> geht nicht, also <es>se lo</es> (<g>9.2</g>) – und mit zwei Pronomen kommt der Akzent."
+          },
+          {
+            "type": "translate",
+            "title": "Wie sagst du das auf Spanisch? Wenn es geht, auf beide Arten.",
+            "kind": "Übersetzen",
+            "items": [
+              {
+                "de": "Ich will es nicht sehen.",
+                "es": "No quiero verlo. / No lo quiero ver."
+              },
+              {
+                "de": "Das Buch? Ich lese es gerade.",
+                "es": "¿El libro? Estoy leyéndolo. / Lo estoy leyendo."
+              },
+              {
+                "de": "Ich kann es dir nicht erklären.",
+                "es": "No puedo explicártelo. / No te lo puedo explicar."
+              }
+            ]
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "Quiero ___ mañana.",
+          "options": [
+            "lo ver",
+            "verlo"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "¿El libro? Estoy ___ .",
+          "options": [
+            "leyéndolo",
+            "leyendolo"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "No ___ decir. Es un secreto.",
+          "options": [
+            "te lo puedo",
+            "puedo te lo"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  ]
+}

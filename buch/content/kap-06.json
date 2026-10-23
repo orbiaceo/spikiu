@@ -1,0 +1,786 @@
+{
+ "chapter": 6,
+ "title": "Ser, estar, hay",
+ "sections": [
+  {
+   "id": "6.1",
+   "topic": "ser oder estar",
+   "level": "A1",
+   "headline_es": "No soy aburrido.<br>Estoy aburrido.",
+   "headline_de": "Ich bin nicht langweilig. Mir ist langweilig.",
+   "index": [
+    "ser",
+    "estar",
+    "ser oder estar",
+    "Eigenschaften (ser)",
+    "Zustand (estar)",
+    "Ort (estar)",
+    "listo, aburrido, malo, rico"
+   ],
+   "cartoon": {
+    "id": "6.1-A",
+    "icons": [
+     "1FAAA",
+     "1F914",
+     "1F511"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Y usted…<br>¿es listo?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Sí, estoy listo!<br>¿Nos vamos?"
+     }
+    ],
+    "gloss": "<es>ser listo</es> klug sein · <es>estar listo</es> fertig sein",
+    "prompt": "SCENE: The narrow entrance hall of PILAR's apartment in Madrid, coat rack, framed family photos on the wall. On the left PILAR stands with her arms crossed and looks DANI up and down with a sharp, testing, suspicious squint, like a strict examiner meeting her daughter's boyfriend for the first time. In the middle DANI, already wearing his jacket, beams with innocent enthusiasm, car keys dangling from one raised finger, his other hand pointing cheerfully at the front door, completely missing the point of the question. On the right, slightly behind him, LUCÍA puts her hand over her face in embarrassment. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Mit <c1>ser</c1> füllst du den Ausweis aus: wer oder was etwas <em>ist</em>. Mit <c2>estar</c2> postest du deinen Status: wie es dir <em>gerade</em> geht und <em>wo</em> du gerade bist."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Der Ausweis",
+        "sub": "ser",
+        "icon": "1FAAA",
+        "tone": 1,
+        "track": "6.1-1",
+        "uses": [
+         {
+          "t": "Wer? Was? Woher?",
+          "x": "Name, Beruf, Herkunft<br><es>Soy Lucía. Soy diseñadora.</es><br><es>Dani es de Valencia.</es> <de>Dani kommt aus Valencia.</de>"
+         },
+         {
+          "t": "Wie ist er, sie, es?",
+          "x": "Charakter, Aussehen, Material<br><es>Mi madre es simpática. Y muy directa.</es><br><es>La mesa es de madera.</es> <de>Der Tisch ist aus Holz.</de>"
+         },
+         {
+          "t": "Uhrzeit, Tag, Preis",
+          "x": "<es>Son las tres. Hoy es lunes.</es><br><es>¿Cuánto es?</es> <de>Was macht das?</de>"
+         }
+        ]
+       },
+       {
+        "title": "Der Status",
+        "sub": "estar",
+        "icon": "1F4F1",
+        "tone": 2,
+        "track": "6.1-1",
+        "uses": [
+         {
+          "t": "Wie geht's gerade?",
+          "x": "Gefühle, Gesundheit, Laune<br><es>Estoy cansada. Nico está enfermo.</es><br><es>¿Qué tal estás?</es> <de>Wie geht's dir?</de>"
+         },
+         {
+          "t": "Wo?",
+          "x": "Personen, Dinge, Orte<br><es>Estoy en el baño.</es> <de>Ich bin im Bad.</de><br><es>Toledo está cerca de Madrid.</es>"
+         },
+         {
+          "t": "Wie ist es gerade?",
+          "x": "ein Zustand, der sich ändern kann<br><es>El café está frío.</es> <de>Der Kaffee ist kalt.</de><br><es>La puerta está abierta.</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "table",
+      "track": "6.1-2",
+      "es_cols": [
+       1
+      ],
+      "rows": [
+       [
+        "<c1>ser</c1>",
+        "soy · eres · es · somos · sois · son"
+       ],
+       [
+        "<c2>estar</c2>",
+        "estoy · estás · está · estamos · estáis · están"
+       ]
+      ]
+     }
+    ],
+    [
+     {
+      "type": "story",
+      "title": "Profil und Status",
+      "track": "6.1-3",
+      "es": "Mi perfil: <c1>Soy</c1> Lucía, <c1>soy</c1> de Madrid y <c1>soy</c1> diseñadora. <c1>Soy</c1> divertida y un poco caótica. Mi novio <c1>es</c1> Dani: <c1>es</c1> tranquilo y muy simpático.<br>Mi estado hoy: <c2>Estoy</c2> en la oficina. <c2>Estoy</c2> cansada y nerviosa: el jefe <c2>está</c2> de mal humor, mi café <c2>está</c2> frío y Dani <c2>está</c2>… ¿Dónde <c2>está</c2> Dani?",
+      "de": "Mein Profil: Ich bin Lucía, komme aus Madrid und bin Designerin. Ich bin lustig und ein bisschen chaotisch. Mein Freund ist Dani: Er ist ruhig und sehr nett. Mein Status heute: Ich bin im Büro. Ich bin müde und nervös: Der Chef hat schlechte Laune, mein Kaffee ist kalt und Dani ist … Wo ist Dani?",
+      "note": "Das <c1>Profil</c1> stimmt auch nächstes Jahr noch. Der <c2>Status</c2> ist morgen schon ein anderer."
+     },
+     {
+      "type": "h",
+      "text": "Ein Wort, zwei Bedeutungen"
+     },
+     {
+      "type": "table",
+      "track": "6.1-4",
+      "es_cols": [
+       0,
+       2
+      ],
+      "head": [
+       "mit <c1>ser</c1>",
+       "",
+       "mit <c2>estar</c2>",
+       ""
+      ],
+      "rows": [
+       [
+        "Dani es aburrido.",
+        "Dani ist langweilig.",
+        "Dani está aburrido.",
+        "Dani langweilt sich."
+       ],
+       [
+        "Nico es listo.",
+        "Nico ist schlau.",
+        "Nico está listo.",
+        "Nico ist fertig."
+       ],
+       [
+        "El jefe es malo.",
+        "Der Chef ist böse.",
+        "El jefe está malo.",
+        "Der Chef ist krank."
+       ],
+       [
+        "Mi tío es rico.",
+        "Mein Onkel ist reich.",
+        "La paella está rica.",
+        "Die Paella schmeckt super."
+       ],
+       [
+        "Lucía es guapa.",
+        "Lucía ist hübsch.",
+        "¡Qué guapa estás hoy!",
+        "Du siehst heute toll aus!"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Zwei Fallen. Ein <em>Ereignis</em> findet mit <c1>ser</c1> statt, auch an einem Ort: <es>La fiesta es en casa de Dani.</es> Und der Beruf bleibt <c1>ser</c1>, auch als Ferienjob: <es>Este verano soy camarero.</es> Ohne <es>un</es>, siehe <g>2.5</g>."
+     },
+     {
+      "type": "spikiu",
+      "title": "Der gerade-Test",
+      "text": "Setz im Deutschen <em>gerade</em> ein. Klingt der Satz normal, nimm <c2>estar</c2>: „Ich bin gerade müde“ → <es>Estoy cansada.</es> Klingt er absurd, nimm <c1>ser</c1>: „Ich bin gerade Spanierin“ → <es>Soy española.</es> Nur beim Ort musst du nicht testen: <em>wo</em> ist immer <c2>estar</c2>, auch wenn etwas seit tausend Jahren dort steht."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Ausweis oder Status? Sortiere.",
+      "kind": "Erkennen",
+      "words": [
+       "de Bilbao",
+       "cansado",
+       "profesora",
+       "en el metro",
+       "alto",
+       "nervioso",
+       "las cinco",
+       "de mal humor",
+       "simpática",
+       "enfermo"
+      ],
+      "baskets": [
+       {
+        "label": "Ausweis: <es>ser</es>",
+        "answers": [
+         "de Bilbao",
+         "profesora",
+         "alto",
+         "las cinco",
+         "simpática"
+        ]
+       },
+       {
+        "label": "Status: <es>estar</es>",
+        "answers": [
+         "cansado",
+         "en el metro",
+         "nervioso",
+         "de mal humor",
+         "enfermo"
+        ]
+       }
+      ],
+      "why": "<es>las cinco</es>: Die Uhrzeit steht im Ausweis – <es>son las cinco</es>."
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Pilar [[!es|está]] la madre de Lucía y [[!es|está]] de Toledo.",
+       "Perdone, ¿dónde [[es|!está]] el baño?",
+       "Hoy Nico [[es|!está]] enfermo. Normalmente [[!es|está]] un niño muy activo.",
+       "¡Qué rica [[es|!está]] la paella, mamá!",
+       "La reunión [[!es|está]] a las diez, en la sala dos."
+      ],
+      "why": "b: Normalerweise ist er so – das ist Ausweis. c: Die Paella schmeckt heute gut – Status. d: Eine Besprechung ist ein Ereignis, und Ereignisse finden mit <es>ser</es> statt."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar ruft an. Natürlich im falschen Moment. Ergänze ser oder estar.",
+      "kind": "Situation",
+      "track": "6.1-5",
+      "lines": [
+       [
+        "Pilar",
+        "Hola, cariño. ¿Cómo {{estás}}?"
+       ],
+       [
+        "Lucía",
+        "Hola, mamá. {{Estoy}} bien, pero {{estoy}} en el trabajo."
+       ],
+       [
+        "Pilar",
+        "¿Y Dani? ¿{{Está}} contigo?"
+       ],
+       [
+        "Lucía",
+        "No, Dani {{está}} en Valencia. Su hermana {{está}} enferma."
+       ],
+       [
+        "Pilar",
+        "¡Ay, pobre! ¿Y cómo {{es}} su hermana? ¿Simpática?"
+       ],
+       [
+        "Lucía",
+        "Sí, mamá, {{es}} muy simpática. Mamá, {{son}} las once y {{estoy}} en una reunión…"
+       ],
+       [
+        "Pilar",
+        "¿En una reunión? ¿Y por qué contestas?"
+       ]
+      ],
+      "why": "<es>¿Cómo es?</es> fragt nach dem Charakter, <es>¿Cómo está?</es> nach dem Befinden. <es>Son las once</es>: Uhrzeit ist Ausweis, und ab zwei Uhr Plural."
+     }
+    ],
+    [
+     {
+      "type": "match",
+      "title": "Ein Wort, zwei Bedeutungen. Was heißt das?",
+      "kind": "Verstehen",
+      "left": [
+       "Dani está aburrido.",
+       "Dani es aburrido.",
+       "Nico está listo.",
+       "Nico es listo.",
+       "Rafa está malo.",
+       "La sopa está rica."
+      ],
+      "right": [
+       "Nico ist fertig.",
+       "Die Suppe schmeckt gut.",
+       "Dani ist ein langweiliger Typ.",
+       "Rafa ist krank.",
+       "Dani langweilt sich.",
+       "Nico ist schlau."
+      ],
+      "answer": [
+       4,
+       2,
+       0,
+       5,
+       3,
+       1
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Jahrestag. Lucía schreibt ihrer Kollegin Marta. Ergänze ser oder estar.",
+      "kind": "Erzählen",
+      "track": "6.1-6",
+      "text": "Marta, ¡socorro! {{Son|ser}} las nueve y {{estoy|estar}} sola en el restaurante. El restaurante {{es|ser}} precioso y el vino {{está|estar}} buenísimo, pero Dani no {{está|estar}} aquí. Hoy {{es|ser}} nuestro aniversario. Dani {{es|ser}} un chico maravilloso, pero no {{es|ser}} puntual. Nunca. ¡Ah, aquí {{está|estar}}! Con flores. Bueno… ya no {{estoy|estar}} enfadada.",
+      "why": "<es>Dani es un chico maravilloso</es> – Ausweis. <es>¡Aquí está!</es> – Ort. <es>Ya no estoy enfadada</es> – der Status hat sich geändert, dank der Blumen."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich bin Grafikdesignerin und komme aus Madrid.",
+        "es": "Soy diseñadora gráfica y soy de Madrid."
+       },
+       {
+        "de": "Wo bist du? – Im Supermarkt.",
+        "es": "¿Dónde estás? – (Estoy) En el supermercado."
+       },
+       {
+        "de": "Die Tür ist offen und der Kühlschrank ist leer.",
+        "es": "La puerta está abierta y la nevera está vacía."
+       },
+       {
+        "de": "Mein Bruder ist sehr nett, aber heute hat er schlechte Laune.",
+        "es": "Mi hermano es muy simpático, pero hoy está de mal humor."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Dein Ausweis und dein Status. Schreib drei Sätze mit ser und drei mit estar.",
+      "kind": "Frei",
+      "text": "Wer bist du, woher kommst du, wie bist du? Und heute: Wo bist du, wie geht es dir?",
+      "lines": 3,
+      "solution": "Zum Beispiel: Soy Thomas, soy de Hamburgo y soy profesor. Soy tranquilo. Hoy estoy en casa. Estoy un poco cansado, pero estoy contento."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Mi madre ___ de Toledo.",
+     "options": [
+      "es",
+      "está"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Dónde ___ mis llaves?",
+     "options": [
+      "son",
+      "están"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "¡Qué rica ___ la paella!",
+     "options": [
+      "es",
+      "está"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "6.2",
+   "topic": "hay oder está",
+   "level": "A1",
+   "headline_es": "En la nevera hay tres yogures.<br>¿Dónde está mi cerveza?",
+   "headline_de": "Im Kühlschrank sind drei Joghurts. Wo ist mein Bier?",
+   "index": [
+    "hay",
+    "estar (Ort)",
+    "hay oder está",
+    "es gibt",
+    "Ortsangaben",
+    "encima de, debajo de, al lado de"
+   ],
+   "cartoon": {
+    "id": "6.2-A",
+    "icons": [
+     "1F3E6",
+     "1FA91",
+     "1F937"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Perdone, ¿hay un banco<br>por aquí?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Claro! Está aquí.<br>Y es muy cómodo."
+     }
+    ],
+    "gloss": "<es>el banco</es> die Bank (Geld) und die Sitzbank · <es>cómodo</es> bequem",
+    "prompt": "SCENE: A sunny little square in old Madrid with orange trees and pigeons. On the right an old man with a white moustache and a flat cap sits completely relaxed on a green park bench, feeding pigeons, and proudly pats the empty space on the bench next to him with his palm, smiling with great helpfulness. On the left DANI stands holding an open, completely empty wallet upside down, a single moth fluttering out of it, looking around hopefully for a cash machine. In the background more benches, but no bank building anywhere. Leave clear empty space above Dani (top left) and above the old man (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<c1>hay</c1> macht Inventur: Was gibt es? <c2>está</c2> ist das Navi: Wo ist das, was du schon kennst?"
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Die Inventur",
+        "sub": "hay – es gibt",
+        "icon": "1F4CB",
+        "tone": 1,
+        "track": "6.2-1",
+        "uses": [
+         {
+          "t": "Etwas Neues, Unbekanntes",
+          "x": "<es>En la plaza hay un banco.</es> <de>Auf dem Platz steht eine Bank.</de>"
+         },
+         {
+          "t": "Immer nur hay",
+          "x": "<es>Hay un problema. Hay muchos problemas.</es><br><es>No hay pan.</es> <de>Es gibt kein Brot.</de>"
+         }
+        ]
+       },
+       {
+        "title": "Das Navi",
+        "sub": "está, están – ist, sind",
+        "icon": "1F4CD",
+        "tone": 2,
+        "track": "6.2-1",
+        "uses": [
+         {
+          "t": "Etwas Bekanntes, Bestimmtes",
+          "x": "<es>El banco está en la plaza.</es> <de>Die Bank ist auf dem Platz.</de>"
+         },
+         {
+          "t": "Singular oder Plural",
+          "x": "<es>¿Dónde está mi móvil?</es><br><es>Las llaves están en la mesa.</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "signal",
+      "rows": [
+       [
+        "hay",
+        "un, una, unos, unas · dos, tres … · mucho, poco · pan, café (ohne Artikel)",
+        1
+       ],
+       [
+        "está, están",
+        "el, la, los, las · mi, tu, su · este, esta · Lucía, Madrid",
+        2
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "6.2-2",
+      "items": [
+       [
+        "El gato está encima de la nevera.",
+        "Die Katze ist auf dem Kühlschrank."
+       ],
+       [
+        "Las llaves están debajo del sofá.",
+        "Die Schlüssel sind unter dem Sofa."
+       ],
+       [
+        "El gimnasio está al lado de casa. Por desgracia.",
+        "Das Fitnessstudio ist gleich nebenan. Leider."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Deutsch: <em>steht, liegt, hängt</em>. Spanisch: <c1>hay</c1> oder <c2>está</c2>. Nie <es>hay el/la</es>: <es>El baño está al fondo.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Inventur oder Navi? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "En mi barrio [[!hay|está]] un mercado muy bueno.",
+       "¿Dónde [[hay|está|!están]] mis gafas?",
+       "Perdone, ¿[[!hay|está]] una farmacia por aquí?",
+       "La farmacia [[hay|!está]] al lado del banco.",
+       "En la nevera no [[!hay|está]] nada. Bueno, [[!hay|está]] un yogur muy, muy viejo.",
+       "—Nico, ¿dónde [[hay|!está]] Tofu? —Debajo de la mesa. ¡Y [[!hay|está]] una pizza con él!"
+      ],
+      "why": "e: <es>no hay nada</es> – Inventur, Ergebnis: null. f: Tofu kennen wir – Navi. Die Pizza ist neu im Bild – Inventur."
+     },
+     {
+      "type": "cloze",
+      "title": "Lucías Wohnung. Ergänze hay, está oder están.",
+      "kind": "Bilden",
+      "track": "6.2-3",
+      "text": "Mi piso {{está}} en Lavapiés, en el centro de Madrid. No es grande: {{hay}} un salón, una cocina pequeña y un dormitorio. En el salón {{hay}} un sofá azul y muchos libros. Mi ordenador {{está}} en la mesa, al lado de la ventana. En el baño {{hay}} una ducha, pero no {{hay}} agua caliente. ¿Y mis llaves? Nunca sé dónde {{están}}."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Gibt es hier in der Nähe eine Apotheke?",
+        "es": "¿Hay una farmacia por aquí cerca?"
+       },
+       {
+        "de": "Das Hotel liegt neben dem Bahnhof.",
+        "es": "El hotel está al lado de la estación."
+       },
+       {
+        "de": "Im Kühlschrank ist kein Bier.",
+        "es": "En la nevera no hay cerveza."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Dein Zimmer. Was gibt es dort, und wo steht es?",
+      "kind": "Frei",
+      "lines": 3,
+      "solution": "Zum Beispiel: En mi habitación hay una cama, una mesa y muchos libros. La cama está al lado de la ventana. Mi móvil está debajo de la almohada."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿___ un cajero por aquí?",
+     "options": [
+      "Hay",
+      "Está"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "El cajero ___ al lado del banco.",
+     "options": [
+      "hay",
+      "está"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Mis gafas ___ en la mesa.",
+     "options": [
+      "hay",
+      "están"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "6.3",
+   "topic": "estar + -ando/-iendo",
+   "level": "A1",
+   "headline_es": "No puedo hablar, mamá.<br>Estoy conduciendo.",
+   "headline_de": "Ich kann nicht reden, Mama. Ich fahre gerade Auto.",
+   "index": [
+    "estar + Gerundium",
+    "Gerundium (-ando, -iendo)",
+    "gerade etwas tun",
+    "leyendo, durmiendo, pidiendo",
+    "Verlaufsform"
+   ],
+   "cartoon": {
+    "id": "6.3-A",
+    "icons": [
+     "1F319",
+     "1F6CF",
+     "1F4F1"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Hola, cariño.<br>¿Estás durmiendo?"
+     },
+     {
+      "pos": "tr",
+      "text": "No, mamá.<br>Estoy hablando contigo."
+     }
+    ],
+    "gloss": "<es>durmiendo</es> schlafend · <es>contigo</es> mit dir",
+    "prompt": "SCENE: Left third of the image: a round inset like a video call, showing PILAR wide awake and fully dressed at a brightly lit kitchen table with a cup of coffee and a crossword puzzle, cheerful and chatty, phone at her ear. Right two thirds: LUCÍA's dark bedroom in the middle of the night, moonlight through the blinds, an alarm clock glowing on the bedside table. LUCÍA lies in bed tangled in her duvet, hair a wild mess, one eye open, one eye shut, holding her smartphone to her ear with a flat, exhausted, deadpan face. Leave clear empty space above Pilar's inset (top left) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Das Präsens ist dein <c1>Stundenplan</c1>: was du normalerweise machst. <es>estar</es> + <es>-ando/-iendo</es> ist der <c2>Livestream</c2>: was genau jetzt passiert."
+     },
+     {
+      "type": "examples",
+      "track": "6.3-1",
+      "items": [
+       [
+        "Dani <c1>trabaja</c1> en un banco.",
+        "Dani arbeitet bei einer Bank. (Stundenplan)"
+       ],
+       [
+        "Ahora no puede hablar: <c2>está trabajando</c2>.",
+        "Gerade kann er nicht reden: Er arbeitet. (Livestream)"
+       ],
+       [
+        "Nico <c2>está comiendo</c2> pasta… con las manos.",
+        "Nico isst gerade Nudeln … mit den Händen."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "So baust du das Gerundium"
+     },
+     {
+      "type": "table",
+      "track": "6.3-2",
+      "es_cols": [
+       1
+      ],
+      "rows": [
+       [
+        "-ar → <b>-ando</b>",
+        "hablar → habl<b>ando</b> · trabajar → trabaj<b>ando</b>"
+       ],
+       [
+        "-er, -ir → <b>-iendo</b>",
+        "comer → com<b>iendo</b> · vivir → viv<b>iendo</b>"
+       ],
+       [
+        "Vokal davor → <b>-yendo</b>",
+        "leer → le<b>yendo</b> · oír → o<b>yendo</b> · ir → <b>yendo</b>"
+       ],
+       [
+        "e → i, o → u",
+        "pedir → p<b>i</b>diendo · decir → d<b>i</b>ciendo · dormir → d<b>u</b>rmiendo"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Das Gerundium ändert sich nie: <es>Lucía está cansad<b>a</b></es>, aber <es>está trabajand<b>o</b></es>. Zustände bleiben im Präsens: <es>Tengo hambre</es>, nicht <es>estoy teniendo hambre</es>. Und <es>¿Qué haces?</es> kann auch „jetzt“ heißen – der Livestream betont: mittendrin."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "transform",
+      "title": "Gerade jetzt! Mach einen Livestream daraus.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Dani cocina.",
+       "a": "Dani está cocinando."
+      },
+      "items": [
+       {
+        "q": "Lucía lee un libro.",
+        "a": "Lucía está leyendo un libro."
+       },
+       {
+        "q": "Nico duerme. ¡Por fin!",
+        "a": "Nico está durmiendo. ¡Por fin!"
+       },
+       {
+        "q": "Pilar pide una pizza.",
+        "a": "Pilar está pidiendo una pizza."
+       },
+       {
+        "q": "Nos duchamos.",
+        "a": "Nos estamos duchando. / Estamos duchándonos."
+       }
+      ],
+      "why": "<es>leer → leyendo</es>, <es>dormir → durmiendo</es>, <es>pedir → pidiendo</es>: die Sonderfälle aus der Tabelle. Reflexiv: <es>nos</es> vor <es>estar</es> – oder hinten angehängt, dann mit Akzent: <es>duchándonos</es>."
+     },
+     {
+      "type": "cards",
+      "title": "Samstagmorgen, zehn Uhr. Was machen sie gerade?",
+      "kind": "Bilden",
+      "items": [
+       {
+        "icon": "1F996",
+        "cap": "Nico",
+        "solution": "Nico está jugando con sus dinosaurios."
+       },
+       {
+        "icon": "1F4F1",
+        "cap": "Pilar",
+        "solution": "Pilar está llamando a Lucía."
+       },
+       {
+        "icon": "1F6BF",
+        "cap": "Lucía",
+        "solution": "Lucía se está duchando. / Lucía está duchándose."
+       },
+       {
+        "icon": "1F373",
+        "cap": "Dani",
+        "solution": "Dani está haciendo el desayuno."
+       }
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar ruft an. Lucía hat keine Zeit. Ergänze estar + Gerundium.",
+      "kind": "Situation",
+      "track": "6.3-3",
+      "lines": [
+       [
+        "Pilar",
+        "Hola, hija. ¿Qué haces?"
+       ],
+       [
+        "Lucía",
+        "Hola, mamá. {{Estoy trabajando|trabajar}}. ¿Qué pasa?"
+       ],
+       [
+        "Pilar",
+        "Nada. Tu padre {{está viendo|ver}} el fútbol y yo me aburro. ¿Y Dani?"
+       ],
+       [
+        "Lucía",
+        "Dani {{está cocinando|cocinar}}. Y Nico {{está pintando|pintar}} la pared."
+       ],
+       [
+        "Pilar",
+        "¿La pared? ¿Y tú qué haces?"
+       ],
+       [
+        "Lucía",
+        "¿Yo? Yo ahora {{estoy corriendo|correr}}. ¡Adiós, mamá!"
+       ]
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Und bei dir? Was passiert gerade um dich herum? Drei Sätze.",
+      "kind": "Frei",
+      "lines": 4,
+      "solution": "Zum Beispiel: Estoy leyendo este libro. Mi vecino está escuchando música. Mi gato está durmiendo en la mesa."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "No puedo hablar, estoy ___.",
+     "options": [
+      "conduciendo",
+      "conduciando"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Silencio, Nico está ___.",
+     "options": [
+      "dormiendo",
+      "durmiendo"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "¿Qué estás ___?",
+     "options": [
+      "leiendo",
+      "leyendo"
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ ]
+}

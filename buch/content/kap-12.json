@@ -1,0 +1,442 @@
+{
+  "chapter": 12,
+  "title": "Imperativ",
+  "sections": [
+    {
+      "id": "12.1",
+      "topic": "Bejaht: tú und usted",
+      "level": "A2",
+      "headline_es": "¡Pase y siéntese, por favor!<br>– ¡Nico, ven aquí!",
+      "headline_de": "Kommen Sie herein und setzen Sie sich bitte! – Nico, komm her!",
+      "index": [
+        "Imperativ",
+        "Befehle",
+        "tú-Imperativ",
+        "usted-Imperativ",
+        "ven, ten, pon, sal, haz, di, ve, sé",
+        "Pronomen am Imperativ"
+      ],
+      "cartoon": {
+        "id": "12.1-A",
+        "icons": [
+          "1F9D1-200D-2695-FE0F",
+          "1F9B4",
+          "1F466"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "Siéntese, por favor."
+          },
+          {
+            "pos": "tr",
+            "text": "¡Nico, siéntate!<br>¡Y deja el esqueleto!"
+          }
+        ],
+        "prompt": "SCENE: A bright paediatrician's consulting room. Left: a friendly female doctor in a white coat with a stethoscope sits at her desk and politely gestures with an open hand towards an empty chair. Centre: LUCÍA, half sitting down on that chair, has twisted around in panic and points sharply at the right side of the room. Right: NICO, 4 years old, dinosaur T-shirt, has climbed onto a stool and is happily hugging a life-size plastic teaching skeleton, which is tilting dangerously; he holds one of its arm bones in his hand like a trophy. Leave clear empty space above the doctor (top left) and above Lucía and Nico (top right) for two speech bubbles."
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "Für <c1>tú</c1> nimmst du die er-Form des Präsens: <es>habla, come, escribe</es>. Für <c2>usted</c2> tauschst du den Vokal: <es>hable, coma, escriba</es>. Höflich heißt: Der Vokal wechselt die Seite."
+          },
+          {
+            "type": "columns",
+            "cols": [
+              {
+                "title": "tú",
+                "sub": "= er-Form des Präsens",
+                "icon": "1F466",
+                "tone": 1,
+                "track": "12.1-1",
+                "uses": [
+                  {
+                    "t": "Auch mit Stammwechsel",
+                    "x": "<es>¡Coge el móvil!</es> <de>Geh ans Handy!</de><br><es>¡Cierra la puerta!</es> <es>¡Vuelve pronto!</es>"
+                  }
+                ]
+              },
+              {
+                "title": "usted",
+                "sub": "-ar → e · -er/-ir → a",
+                "icon": "1F935",
+                "tone": 2,
+                "track": "12.1-1",
+                "uses": [
+                  {
+                    "t": "Basis ist die yo-Form",
+                    "x": "<es>Pase, por favor.</es> <de>Treten Sie ein.</de><br><es>tengo → tenga · hago → haga</es>"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "table",
+            "track": "12.1-2",
+            "head": [
+              "",
+              "venir",
+              "tener",
+              "poner",
+              "salir",
+              "hacer",
+              "decir",
+              "ir",
+              "ser"
+            ],
+            "rows": [
+              [
+                "tú",
+                "ven",
+                "ten",
+                "pon",
+                "sal",
+                "haz",
+                "di",
+                "ve",
+                "sé"
+              ],
+              [
+                "usted",
+                "venga",
+                "tenga",
+                "ponga",
+                "salga",
+                "haga",
+                "diga",
+                "vaya",
+                "sea"
+              ]
+            ],
+            "es_cols": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "type": "trick",
+            "icon": "1F9F2",
+            "text": "Pronomen kleben hinten dran (<g>9.3</g>). Die Betonung bleibt, also kommt oft ein Akzent: <es>¡Siéntate! ¡Siéntese! ¡Cómpralo! ¡Dímelo!</es> Kurze Wörter mit einem Pronomen brauchen keinen: <es>dime, hazlo, ponlo</es>."
+          },
+          {
+            "type": "novela",
+            "source": "El año de Lukas",
+            "quote": "<c2>Tome</c2> una pastilla cada ocho horas, <c2>beba</c2> mucha agua y <c2>descanse</c2>.",
+            "note": "Die Ärztin siezt Lukas: <es>tomar → tome, beber → beba, descansar → descanse</es>."
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "mark",
+            "title": "In der Praxis. Hör zu und schreib T (tú) oder U (usted).",
+            "kind": "Erkennen",
+            "track": "12.1-3",
+            "text": "La doctora: «[[Pase|U]], por favor, y [[siéntese|U]].» Lucía: «Nico, [[ven|T]] aquí. [[Deja|T]] el esqueleto.» La doctora: «[[Abra|U]] la boca, por favor… No, usted no. El niño.» Lucía: «Nico, [[abre|T]] la boca. [[Di|T]] “aaa”.» La doctora: «Muy bien. [[Tome|U]] esta receta y [[vuelva|U]] en un mes.»",
+            "why": "Die Ärztin sagt <es>Abra la boca</es> zu Lucía – gemeint war aber Nico. Lucía übersetzt dann ins <es>tú</es>: <es>abre</es>."
+          },
+          {
+            "type": "fill",
+            "title": "hablar, beber, abrir … Ergänze die Formen: erst tú, dann usted.",
+            "kind": "Bilden",
+            "cols": 3,
+            "items": [
+              "habl{{a}} / habl{{e}}",
+              "beb{{e}} / beb{{a}}",
+              "abr{{e}} / abr{{a}}",
+              "(venir) {{ven}} / {{venga}}",
+              "(hacer) {{haz}} / {{haga}}",
+              "(salir) {{sal}} / {{salga}}"
+            ]
+          },
+          {
+            "type": "transform",
+            "title": "Erst Nico, dann der Chef. Mach aus dem tú-Befehl einen usted-Befehl.",
+            "kind": "Bilden",
+            "example": {
+              "q": "¡Ven aquí!",
+              "a": "¡Venga aquí!"
+            },
+            "items": [
+              {
+                "q": "¡Cierra la ventana!",
+                "a": "¡Cierre la ventana!"
+              },
+              {
+                "q": "¡Siéntate!",
+                "a": "¡Siéntese!"
+              },
+              {
+                "q": "¡Dímelo!",
+                "a": "¡Dígamelo!"
+              },
+              {
+                "q": "¡Pon la mesa!",
+                "a": "¡Ponga la mesa!"
+              }
+            ],
+            "why": "<es>siéntate → siéntese</es>: Das Pronomen wechselt mit (<es>te → se</es>). <es>Dígamelo</es> bekommt einen Akzent, weil die Betonung bleibt."
+          },
+          {
+            "type": "cloze",
+            "title": "Pilars Tortilla, am Telefon diktiert. Setz die tú-Befehle ein.",
+            "kind": "Bilden",
+            "track": "12.1-4",
+            "text": "Mira, hija, es muy fácil. {{Pela|pelar}} cuatro patatas y {{córtalas|cortar + las}} en trozos pequeños. {{Pon|poner}} mucho aceite en la sartén. Luego {{bate|batir}} seis huevos y {{mézclalos|mezclar + los}} con las patatas. {{Ten|tener}} paciencia. Y {{dale|dar + le}} la vuelta con un plato. ¿Lucía? ¡{{Escúchame|escuchar + me}}!",
+            "why": "<es>dale</es> ohne Akzent: <es>da</es> ist einsilbig. <es>córtalas, mézclalos, escúchame</es> brauchen ihn."
+          },
+          {
+            "type": "translate",
+            "title": "Wie sagst du das auf Spanisch?",
+            "kind": "Übersetzen",
+            "items": [
+              {
+                "de": "Komm her und hilf mir!",
+                "es": "¡Ven aquí y ayúdame!"
+              },
+              {
+                "de": "Machen Sie bitte das Fenster auf.",
+                "es": "Abra la ventana, por favor."
+              }
+            ]
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "Nico, ___ aquí ahora mismo.",
+          "options": [
+            "ven",
+            "venga",
+            "vienes"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Señora, ___ , por favor.",
+          "options": [
+            "siéntate",
+            "siéntese"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "¿El regalo? ¡___ ya!",
+          "options": [
+            "Ábrelo",
+            "Abrelo"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "12.2",
+      "topic": "Verneint (Vorschau auf den Subjuntivo)",
+      "level": "A2",
+      "headline_es": "¡No toques eso, Nico!<br>¡Y no te comas la plastilina!",
+      "headline_de": "Fass das nicht an, Nico! Und iss die Knete nicht!",
+      "deeper": "Für Profis: <gb>15.2</gb>",
+      "index": [
+        "verneinter Imperativ",
+        "Verbote",
+        "Subjuntivo (Vorschau)",
+        "¡No me digas!",
+        "Pronomen beim Verbot"
+      ],
+      "cartoon": {
+        "id": "12.2-A",
+        "icons": [
+          "1F475",
+          "1F645",
+          "1F644"
+        ],
+        "bubbles": [
+          {
+            "pos": "tl",
+            "text": "No comas tanto pan.<br>No salgas tan tarde. No…"
+          },
+          {
+            "pos": "tr",
+            "text": "Mamá… ¡no me digas!"
+          }
+        ],
+        "prompt": "SCENE: LUCÍA's small kitchen in Madrid. Left: PILAR stands with one hand on her hip and the index finger of the other hand raised like a teacher, mid-lecture, very sure of herself; she has just taken a baguette away from Lucía and holds it like a pointer. Right: LUCÍA, 32, leans against the fridge with her arms crossed, eyes rolled up to the ceiling, an exaggerated sarcastic expression of fake surprise, mouth slightly open. Fridge magnets and a cluttered counter add everyday chaos. Leave clear empty space above Pilar (top left) and above Lucía (top right) for two speech bubbles.",
+        "gloss": "<es>¡No me digas!</es> Was du nicht sagst! (wörtl.: Sag mir nicht!)"
+      },
+      "gramatica": [
+        [
+          {
+            "type": "oneline",
+            "text": "Beim Verbot kommt der <c2>Gegenvokal</c2>: <es>-ar</es> → <es>e</es>, <es>-er/-ir</es> → <es>a</es>. <es>¡<c1>Come</c1>!</es> – <es>¡No <c2>comas</c2>!</es> Das ist schon Subjuntivo – hier als Vorschau."
+          },
+          {
+            "type": "table",
+            "track": "12.2-1",
+            "head": [
+              "",
+              "¡Ja! (tú)",
+              "¡Nein! (tú)",
+              "¡Nein! (usted)"
+            ],
+            "rows": [
+              [
+                "hablar",
+                "habla",
+                "no hables",
+                "no hable"
+              ],
+              [
+                "comer",
+                "come",
+                "no comas",
+                "no coma"
+              ],
+              [
+                "venir",
+                "ven",
+                "no vengas",
+                "no venga"
+              ],
+              [
+                "decir",
+                "di",
+                "no digas",
+                "no diga"
+              ],
+              [
+                "ir",
+                "ve",
+                "no vayas",
+                "no vaya"
+              ]
+            ],
+            "es_cols": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "spikiu",
+            "title": "usted + s = Verbot für tú",
+            "text": "Die <es>usted</es>-Form aus <g>12.1</g> kennst du schon. Häng ein <es>-s</es> an, und du hast das Verbot für <es>tú</es>: <es>venga → no vengas · sea → no seas · tenga → no tengas</es>."
+          },
+          {
+            "type": "ojo",
+            "text": "Pronomen wandern nach vorne: <es>¡Dímelo! → ¡No me lo digas!</es> <es>No comes</es> heißt „Du isst nicht“ – kein Verbot. Schreibung: <es>tocar → no toques</es>."
+          }
+        ]
+      ],
+      "cuaderno": [
+        [
+          {
+            "type": "choice",
+            "title": "Aussage oder Verbot? Unterstreiche.",
+            "kind": "Entscheiden",
+            "items": [
+              "Nico, ¡no [[tocas|!toques]] la tarta!",
+              "Dani normalmente no [[!come|coma]] carne.",
+              "¡No [[!seas|eres]] tan pesada, mamá!",
+              "¡No [[vas|!vayas]] sin paraguas! Va a llover."
+            ],
+            "why": "b ist eine Aussage über Dani – kein Verbot, also Präsens."
+          },
+          {
+            "type": "transform",
+            "title": "Lucía hat es sich anders überlegt. Mach aus dem Ja ein Nein.",
+            "kind": "Bilden",
+            "example": {
+              "q": "¡Llama a Dani!",
+              "a": "¡No llames a Dani!"
+            },
+            "items": [
+              {
+                "q": "¡Cómpralo!",
+                "a": "¡No lo compres!"
+              },
+              {
+                "q": "¡Siéntate ahí!",
+                "a": "¡No te sientes ahí!"
+              },
+              {
+                "q": "¡Hazlo ahora!",
+                "a": "¡No lo hagas ahora!"
+              }
+            ],
+            "why": "Beim Verbot wandern die Pronomen nach vorne, und der Akzent fällt weg: Das Wort ist wieder kurz."
+          },
+          {
+            "type": "cloze",
+            "title": "Pilars Zettel für Babysitter Dani. Setz die Verbote ein.",
+            "kind": "Bilden",
+            "track": "12.2-3",
+            "text": "Querido Dani: Nico es un niño muy bueno, pero… No le {{des|dar}} chocolate después de las seis. No lo {{dejes|dejar}} solo en la cocina. No {{abras|abrir}} la puerta del balcón. No {{pongas|poner}} la tele. Y por favor, no {{digas|decir}} la palabra «dinosaurio» antes de dormir. Y no {{tengas|tener}} miedo: solo tiene cuatro años. Un beso, Pilar.",
+            "why": "<es>dar → no des</es>: ohne Akzent (<es>usted</es>: <es>dé</es>)."
+          },
+          {
+            "type": "translate",
+            "title": "Wie sagst du das auf Spanisch?",
+            "kind": "Übersetzen",
+            "items": [
+              {
+                "de": "Ruf mich nicht an!",
+                "es": "¡No me llames!"
+              },
+              {
+                "de": "Sag es Pilar nicht!",
+                "es": "¡No se lo digas a Pilar!"
+              }
+            ]
+          },
+          {
+            "type": "free",
+            "title": "Tipps für Besuch in deiner Stadt: Was tun, was lieber nicht? (tú)",
+            "kind": "Frei",
+            "text": "Zum Beispiel: <es>Coge el metro. No cojas un taxi en el centro.</es>",
+            "lines": 2,
+            "solution": "Keine feste Lösung. Prüf selbst: Ja mit der er-Form, Nein mit Gegenvokal + <es>-s</es>?"
+          }
+        ]
+      ],
+      "test": [
+        {
+          "q": "Nico, ¡no ___ la tarta!",
+          "options": [
+            "tocas",
+            "toques",
+            "toca"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "¡No ___ tarde, Dani!",
+          "options": [
+            "llegas",
+            "llegues"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Señora, no ___ miedo.",
+          "options": [
+            "tenga",
+            "tiene",
+            "ten"
+          ],
+          "answer": 0
+        }
+      ]
+    }
+  ]
+}

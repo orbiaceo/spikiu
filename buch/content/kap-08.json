@@ -1,0 +1,657 @@
+{
+ "chapter": 8,
+ "title": "Präpositionen",
+ "sections": [
+  {
+   "id": "8.1",
+   "topic": "a, en, de, con",
+   "level": "A1",
+   "headline_es": "Voy a Valencia en coche.<br>Con mi madre. Seis horas.",
+   "headline_de": "Ich fahre mit dem Auto nach Valencia. Mit meiner Mutter. Sechs Stunden.",
+   "index": [
+    "Präpositionen",
+    "a",
+    "en",
+    "de",
+    "con",
+    "conmigo, contigo",
+    "a pie / en coche",
+    "Verkehrsmittel"
+   ],
+   "cartoon": {
+    "id": "8.1-A",
+    "icons": [
+     "1F40E",
+     "1F466",
+     "1F6B6"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Mira, tía Lucía!<br>¡Voy a caballo!"
+     },
+     {
+      "pos": "tr",
+      "text": "No, Nico.<br>Vas en Dani."
+     }
+    ],
+    "gloss": "<es>a caballo</es> zu Pferd · <es>la tía</es> die Tante",
+    "prompt": "SCENE: A sunny park path in Madrid. In the centre DANI walks along with NICO sitting on his shoulders. Nico wears a toy cowboy hat, holds Dani's ears like reins with one hand and waves a plastic dinosaur in the air with the other, shouting with pure joy. DANI looks straight ahead with a completely dry, patient, slightly long-suffering face, his hair messed up by Nico's grip. On the right LUCÍA walks next to them, laughing and filming the scene with her phone. A pigeon flees in the foreground. Leave clear empty space above Nico (top left) and on the top right for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Vier Wörter, vier Bilder: <es>a</es> ist ein Pfeil, <es>en</es> eine Kiste, <es>de</es> ein Etikett, <es>con</es> ein Händedruck."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "a",
+        "sub": "der Pfeil",
+        "icon": "27A1",
+        "tone": 1,
+        "track": "8.1-1",
+        "uses": [
+         {
+          "t": "Wohin? Um wie viel Uhr?",
+          "x": "<es>Voy a Valencia.</es> · <es>a las tres</es> <de>um drei</de>"
+         },
+         {
+          "t": "Ausnahme: zu Fuß, zu Pferd",
+          "x": "<es>a pie, a caballo</es>"
+         }
+        ]
+       },
+       {
+        "title": "en",
+        "sub": "die Kiste",
+        "icon": "1F4E6",
+        "tone": 2,
+        "track": "8.1-1",
+        "uses": [
+         {
+          "t": "Wo? In, auf",
+          "x": "<es>Estoy en casa.</es> · <es>en la mesa</es> <de>auf dem Tisch</de>"
+         },
+         {
+          "t": "Womit unterwegs? Wann?",
+          "x": "<es>en coche, en metro, en bici</es> · <es>en mayo</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "de",
+        "sub": "das Etikett",
+        "icon": "1F3F7",
+        "tone": 0,
+        "track": "8.1-2",
+        "uses": [
+         {
+          "t": "Woher? Wessen?",
+          "x": "<es>Soy de Toledo.</es> · <es>el móvil de Lucía</es>"
+         },
+         {
+          "t": "Was ist drin? Von … bis",
+          "x": "<es>un bocadillo de jamón</es> · <es>de lunes a viernes</es>"
+         }
+        ]
+       },
+       {
+        "title": "con",
+        "sub": "der Händedruck",
+        "icon": "1F91D",
+        "tone": 0,
+        "track": "8.1-2",
+        "uses": [
+         {
+          "t": "Mit wem? Womit?",
+          "x": "<es>Vivo con Dani.</es> <es>un café con leche</es>"
+         },
+         {
+          "t": "Mit mir, mit dir",
+          "x": "<es>conmigo, contigo</es> – aber <es>con él, con ella, con usted</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<em>Nach Hause</em> = <es>a casa</es> (Pfeil), <em>zu Hause</em> = <es>en casa</es> (Kiste). Auch „in die Küche gehen“ ist ein Pfeil: <es>Voy a la cocina.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "fill",
+      "title": "Pfeil, Kiste, Etikett oder Händedruck? Ergänze a, en, de oder con.",
+      "kind": "Erkennen",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "{{a}} pie",
+       "{{en}} metro",
+       "{{a}} las diez",
+       "{{en}} agosto",
+       "café {{con}} leche",
+       "un bocadillo {{de}} jamón",
+       "{{de}} lunes {{a}} viernes",
+       "Estoy {{en}} casa.",
+       "Voy {{a}} casa."
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Nico va al cole [[en|!a]] pie.",
+       "Mi madre vive [[a|!en]] Toledo, pero hoy viene [[!a|en]] Madrid.",
+       "¿Vienes [[!conmigo|con mí]] al cine?",
+       "El móvil [[!de|con]] Dani nunca tiene batería.",
+       "Voy [[a|!en]] bici [[!a|en]] la oficina."
+      ],
+      "why": "a: Zu Fuß ist die Ausnahme – <es>a pie</es>, aber <es>en coche</es>. b: <es>vivir en</es> (Kiste), <es>venir a</es> (Pfeil)."
+     },
+     {
+      "type": "cloze",
+      "title": "Lucía fährt mit Pilar nach Valencia. Ergänze.",
+      "kind": "Erzählen",
+      "track": "8.1-3",
+      "text": "El sábado voy {{a}} Valencia {{con}} mi madre. Vamos {{en}} coche, el coche {{de}} mi madre. Salimos {{a}} las siete {{de}} la mañana. Mi madre conduce {{con}} música de los ochenta, muy alta. Llegamos {{a}} casa de mi tía {{a}} la una. Seis horas {{en}} el coche {{con}} mi madre. ¡Necesito vacaciones {{de}} mis vacaciones!"
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich gehe zu Fuß, nicht mit dem Bus.",
+        "es": "Voy a pie, no en autobús."
+       },
+       {
+        "de": "Kommst du mit mir?",
+        "es": "¿Vienes conmigo?"
+       },
+       {
+        "de": "Um neun bin ich zu Hause.",
+        "es": "A las nueve estoy en casa."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Dein Weg zur Arbeit oder zur Uni. Wie, mit wem, von wann bis wann?",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: Voy a la oficina en metro. Trabajo de nueve a cinco. Como con mis compañeros a las dos."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Voy al trabajo ___ pie.",
+     "options": [
+      "a",
+      "en"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Vamos a Sevilla ___ tren.",
+     "options": [
+      "en",
+      "con"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Vienes ___ al cine?",
+     "options": [
+      "con mí",
+      "conmigo"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "8.2",
+   "topic": "por und para – Grundlagen",
+   "level": "A2",
+   "headline_es": "Gracias por las flores.<br>Pero… ¿son para mí?",
+   "headline_de": "Danke für die Blumen. Aber … sind die für mich?",
+   "index": [
+    "por",
+    "para",
+    "por oder para",
+    "gracias por",
+    "para + Infinitiv",
+    "Grund",
+    "Zweck"
+   ],
+   "cartoon": {
+    "id": "8.2-A",
+    "icons": [
+     "1F490",
+     "1F468",
+     "23F0"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Para quién son<br>las flores?"
+     },
+     {
+      "pos": "tr",
+      "text": "Para mi novia.<br>Por llegar tarde. Otra vez."
+     }
+    ],
+    "gloss": "<es>otra vez</es> schon wieder",
+    "prompt": "SCENE: A small, colourful flower shop in Madrid. On the left behind the counter a florist in an apron wraps an enormous bouquet with a knowing, amused smile, as if she has done this many times for this customer. On the counter lies a customer loyalty card completely full of stamps. On the right DANI stands in front of the counter, a little sheepish, glancing nervously at his wristwatch, his wallet already open. Leave clear empty space above the florist (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<c1>para</c1> schaut nach vorn, aufs Ziel: Für wen? Wozu? <c2>por</c2> schaut zurück, auf den Grund: Warum? Und <c2>por</c2> geht hindurch: durch, über, pro."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "para",
+        "sub": "das Ziel",
+        "icon": "1F3AF",
+        "tone": 1,
+        "track": "8.2-1",
+        "uses": [
+         {
+          "t": "Für wen?",
+          "x": "<es>Las flores son para ti.</es> <de>Die Blumen sind für dich.</de>"
+         },
+         {
+          "t": "Wozu? para + Infinitiv",
+          "x": "<es>Ahorro para comprar un coche.</es><br><de>Ich spare, um ein Auto zu kaufen.</de>"
+         },
+         {
+          "t": "Bis wann?",
+          "x": "<es>El informe es para el lunes.</es>"
+         }
+        ]
+       },
+       {
+        "title": "por",
+        "sub": "der Grund, der Weg",
+        "icon": "1F463",
+        "tone": 2,
+        "track": "8.2-1",
+        "uses": [
+         {
+          "t": "Warum? Wofür danke?",
+          "x": "<es>Gracias por todo.</es> <es>Perdón por el retraso.</es>"
+         },
+         {
+          "t": "Wo entlang? Wo ungefähr?",
+          "x": "<es>Paseo por el parque.</es> <es>¿Hay un banco por aquí?</es>"
+         },
+         {
+          "t": "Wann, wie, pro, Tausch",
+          "x": "<es>por la mañana · por teléfono · 80 euros por noche</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "question",
+      "items": [
+       {
+        "q": "Für wen? Wozu?",
+        "small": "Empfänger, Zweck, Frist",
+        "tag": "→ PARA",
+        "tone": 1
+       },
+       {
+        "q": "Warum? Wodurch?",
+        "small": "Grund, Dank, Weg, Preis",
+        "tag": "→ POR",
+        "tone": 2
+       }
+      ]
+     },
+     {
+      "type": "spikiu",
+      "title": "Der wegen-Test",
+      "text": "Wo du im Deutschen „für“ sagst, setz <em>wegen</em> ein. Passt es, nimm <c2>por</c2>: „Danke für den Kaffee“ – danke wegen des Kaffees → <es>Gracias por el café.</es> Passt eher „bestimmt für“ oder „um zu“, nimm <c1>para</c1>: <es>Un café para Dani.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "fill",
+      "title": "Ziel oder Grund? Ergänze por oder para.",
+      "kind": "Erkennen",
+      "cols": 3,
+      "items": [
+       "un café {{para}} llevar",
+       "gracias {{por}} la cena",
+       "un regalo {{para}} Nico",
+       "{{por}} la tarde",
+       "perdón {{por}} el retraso",
+       "{{para}} aprender español"
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Este regalo es [[!para|por]] ti. ¡Feliz cumpleaños!",
+       "Gracias [[para|!por]] el regalo. ¡Me encanta!",
+       "Estudio español [[!para|por]] hablar con la familia de mi novio.",
+       "Dani llega tarde [[!por|para]] el tráfico. Dice él.",
+       "El hotel cuesta ochenta euros [[!por|para]] noche."
+      ],
+      "why": "d: Das ist der Grund (wegen des Verkehrs) – <es>por</es>. e: pro Nacht – <es>por</es>."
+     },
+     {
+      "type": "dialog",
+      "title": "Im Blumenladen. Ergänze por oder para.",
+      "kind": "Situation",
+      "track": "8.2-2",
+      "lines": [
+       [
+        "Florista",
+        "Hola, Dani. ¿Otra vez flores?"
+       ],
+       [
+        "Dani",
+        "Sí. Son {{para}} Lucía. Es {{por}} el retraso de ayer."
+       ],
+       [
+        "Florista",
+        "¿Cuánto retraso?"
+       ],
+       [
+        "Dani",
+        "Dos horas. Necesito algo bonito {{para}} pedir perdón."
+       ],
+       [
+        "Florista",
+        "Estas rosas: treinta euros {{por}} doce. Y gracias {{por}} venir. ¡Eres mi mejor cliente!"
+       ]
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Danke für deine Hilfe.",
+        "es": "Gracias por tu ayuda."
+       },
+       {
+        "de": "Ich arbeite, um zu reisen.",
+        "es": "Trabajo para viajar."
+       },
+       {
+        "de": "Wir gehen durch die Altstadt spazieren.",
+        "es": "Paseamos por el centro (por el casco antiguo)."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Wem dankst du wofür? Und was schenkst du wem? Je zwei Sätze.",
+      "kind": "Frei",
+      "lines": 2,
+      "solution": "Zum Beispiel: Gracias por la cena, mamá. Gracias por tu paciencia, Dani. El libro es para mi hermana. Las flores son para mi abuela."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Gracias ___ todo.",
+     "options": [
+      "por",
+      "para"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Estas flores son ___ mi madre.",
+     "options": [
+      "por",
+      "para"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Ahorro ___ comprar un piso.",
+     "options": [
+      "por",
+      "para"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "8.3",
+   "topic": "Das persönliche a",
+   "level": "A2",
+   "headline_es": "Quiero a Dani.<br>Pero quiero un novio puntual.",
+   "headline_de": "Ich liebe Dani. Aber ich will einen pünktlichen Freund.",
+   "index": [
+    "persönliches a",
+    "a + Person",
+    "¿A quién?",
+    "querer a (lieben)",
+    "al (a + el)",
+    "Haustiere"
+   ],
+   "cartoon": {
+    "id": "8.3-A",
+    "icons": [
+     "2764",
+     "1F355",
+     "1F466"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Lucía, ¿quieres a Dani?"
+     },
+     {
+      "pos": "tr",
+      "text": "Sí, mamá.<br>Quiero a Dani."
+     },
+     {
+      "pos": "mr",
+      "text": "¡Y yo quiero pizza!"
+     }
+    ],
+    "gloss": "<es>querer a alguien</es> jemanden lieben · <es>querer algo</es> etwas wollen",
+    "prompt": "SCENE: Sunday lunch at PILAR's dining table. On the left PILAR leans forward over the table with an intense, probing, very serious look at her daughter, like a detective in an interrogation. In the middle LUCÍA, a bit embarrassed but sincere, holds DANI's hand on the tablecloth; DANI smiles calmly and a little proudly. On the right NICO stands on his chair, holding up an empty plate with both hands, mouth wide open, shouting with total enthusiasm. A big pot of stew in the centre of the table. Leave clear empty space above Pilar (top left), above Lucía (top right) and to the right of Nico (middle right) for three speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Für Menschen rollt Spanisch einen roten Teppich aus: das <c1>a</c1>. Siehst, rufst, suchst oder liebst du eine Person, steht <c1>a</c1> davor. Vor Dingen nicht."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Mit Teppich",
+        "sub": "Personen, eigene Tiere",
+        "icon": "1F64B",
+        "tone": 1,
+        "track": "8.3-1",
+        "uses": [
+         {
+          "t": "Menschen",
+          "x": "<es>Veo a Dani.</es> <de>Ich sehe Dani.</de><br><es>Llamo a mi madre.</es> <es>Busco al camarero.</es>"
+         },
+         {
+          "t": "Tiere mit Namen",
+          "x": "<es>Quiero mucho a Tofu.</es>"
+         },
+         {
+          "t": "Frage: Wen?",
+          "x": "<es>¿A quién buscas?</es> <de>Wen suchst du?</de>"
+         }
+        ]
+       },
+       {
+        "title": "Ohne Teppich",
+        "sub": "Dinge, Tiere allgemein",
+        "icon": "1F4E6",
+        "tone": 2,
+        "track": "8.3-1",
+        "uses": [
+         {
+          "t": "Dinge",
+          "x": "<es>Veo la tele.</es> <es>Llamo un taxi.</es><br><es>Busco las llaves.</es> <de>Wie immer.</de>"
+         },
+         {
+          "t": "Irgendein Tier",
+          "x": "<es>Veo un perro en la calle.</es>"
+         },
+         {
+          "t": "Frage: Was?",
+          "x": "<es>¿Qué buscas?</es> <de>Was suchst du?</de>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Ein a macht aus „wollen“ „lieben“"
+     },
+     {
+      "type": "examples",
+      "track": "8.3-2",
+      "items": [
+       [
+        "Quiero a mi abuela.",
+        "Ich liebe meine Oma."
+       ],
+       [
+        "Quiero un helado.",
+        "Ich will ein Eis."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Kein Teppich nach <es>tener</es> und <es>hay</es>: <es>Tengo dos hermanos.</es> <es>Hay un chico en la puerta.</es> Ist die Person noch unbekannt und beliebig, fehlt das <es>a</es> oft auch: <es>Necesito un médico.</es> <de>Irgendeinen.</de> Und <es>a + el = al</es>: <es>Llamo al médico.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Teppich oder nicht? Wähle a oder – (nichts).",
+      "kind": "Entscheiden",
+      "items": [
+       "Los domingos llamo [[!a|–]] mi madre.",
+       "¿Ves [[!a|–]] ese chico? Es el nuevo vecino.",
+       "Busco [[a|!–]] mis gafas. Otra vez.",
+       "Nico quiere [[a|!–]] un dinosaurio de verdad.",
+       "Dani quiere mucho [[!a|–]] Tofu.",
+       "Tengo [[a|!–]] tres hermanas.",
+       "Hoy visito [[!a|–]] mi abuela y después visito [[a|!–]] el Museo del Prado."
+      ],
+      "why": "f: Nach <es>tener</es> steht kein persönliches <es>a</es>. g: Die Oma bekommt den Teppich, das Museum nicht."
+     },
+     {
+      "type": "cloze",
+      "title": "Wo ist Tofu? Ergänze a oder al.",
+      "kind": "Erzählen",
+      "track": "8.3-3",
+      "text": "Dani busca {{a}} Tofu por todo el barrio. Pregunta {{al}} panadero y {{a}} doña Carmen. Nadie ve {{a}} Tofu. Dani llama {{a}} Lucía. Lucía llama {{a}} la policía. Por fin, Dani encuentra {{a}} Tofu: está en el sofá de doña Carmen, viendo la tele con ella."
+     },
+     {
+      "type": "transform",
+      "title": "¿Qué? oder ¿A quién? Frag nach dem Objekt.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Veo a Pilar.",
+       "a": "¿A quién ves?"
+      },
+      "items": [
+       {
+        "q": "Veo una película.",
+        "a": "¿Qué ves?"
+       },
+       {
+        "q": "Busco a mi hermano.",
+        "a": "¿A quién buscas?"
+       },
+       {
+        "q": "Espero a Dani. Como siempre.",
+        "a": "¿A quién esperas?"
+       },
+       {
+        "q": "Necesito un café.",
+        "a": "¿Qué necesitas?"
+       },
+       {
+        "q": "Llamo a mi jefe. Por desgracia.",
+        "a": "¿A quién llamas?"
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Wen liebst du, was willst du? Zwei Sätze mit quiero a …, zwei mit quiero …",
+      "kind": "Frei",
+      "lines": 3,
+      "solution": "Zum Beispiel: Quiero a mi hermana. Quiero mucho a mi gato. Quiero un trabajo nuevo. Quiero una casa con jardín."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Veo ___ Dani en el bar.",
+     "options": [
+      "a",
+      "– (nichts)"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Tengo ___ dos hermanos.",
+     "options": [
+      "a",
+      "– (nichts)"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Busco ___ camarero.",
+     "options": [
+      "al",
+      "el"
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ]
+}

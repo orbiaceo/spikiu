@@ -1,0 +1,1482 @@
+{
+ "chapter": 5,
+ "title": "Das Verb im Präsens",
+ "sections": [
+  {
+   "id": "5.1",
+   "topic": "Regelmäßige Verben auf -ar, -er, -ir",
+   "level": "A1",
+   "headline_es": "Hablo poco, como mucho<br>y vivo bien.",
+   "headline_de": "Ich rede wenig, esse viel und lebe gut.",
+   "index": [
+    "Präsens",
+    "regelmäßige Verben",
+    "Verben auf -ar",
+    "Verben auf -er",
+    "Verben auf -ir",
+    "hablar",
+    "comer",
+    "vivir",
+    "Endungen"
+   ],
+   "cartoon": {
+    "id": "5.1-A",
+    "size": "l",
+    "icons": [
+     "1F35D",
+     "1F466",
+     "1F996"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Nico, ¿cómo comes?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Como como<br>un T-Rex!"
+     }
+    ],
+    "gloss": "<es>como</es> ich esse · <es>como</es> wie",
+    "prompt": "SCENE: A sunny family kitchen at lunchtime. On the left, PILAR (63, short grey bob, reading glasses on a chain, elegant cardigan) sits at the table, holding her fork in mid-air, looking at her grandson with a mix of horror and fascination. On the right, NICO (4, wild curly hair, dinosaur T-shirt) stands on his chair, arms bent like tiny T-Rex claws, mouth wide open, attacking a huge plate of spaghetti with tomato sauce directly with his face. Sauce is splashed on the wall, on the tablecloth and on Pilar's glasses. A green toy dinosaur sits next to his plate, also covered in sauce. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Jedes Verb hat einen <c1>Stamm</c1> – der trägt die Bedeutung – und eine <c2>Endung</c2> – die sagt, wer es tut. Den Stamm behältst du, die Endung tauschst du aus: <es><c1>habl</c1><c2>o</c2>, <c1>habl</c1><c2>as</c2>, <c1>habl</c1><c2>amos</c2></es>."
+     },
+     {
+      "type": "h",
+      "text": "Drei Familien, ein System"
+     },
+     {
+      "type": "conj",
+      "track": "5.1-1",
+      "verbs": [
+       {
+        "inf": "hablar",
+        "de": "sprechen",
+        "forms": [
+         "habl<b>o</b>",
+         "habl<b>as</b>",
+         "habl<b>a</b>",
+         "habl<b>amos</b>",
+         "habl<b>áis</b>",
+         "habl<b>an</b>"
+        ]
+       },
+       {
+        "inf": "comer",
+        "de": "essen",
+        "forms": [
+         "com<b>o</b>",
+         "com<b>es</b>",
+         "com<b>e</b>",
+         "com<b>emos</b>",
+         "com<b>éis</b>",
+         "com<b>en</b>"
+        ]
+       },
+       {
+        "inf": "vivir",
+        "de": "leben, wohnen",
+        "forms": [
+         "viv<b>o</b>",
+         "viv<b>es</b>",
+         "viv<b>e</b>",
+         "viv<b>imos</b>",
+         "viv<b>ís</b>",
+         "viv<b>en</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "trick",
+      "icon": "1F50D",
+      "text": "Drei Abkürzungen: <es>yo</es> endet immer auf <b>-o</b>. Bei <b>-ar</b> steckt ein <b>a</b> in der Endung, bei <b>-er</b> und <b>-ir</b> ein <b>e</b>. Und <b>-ir</b> zeigt sein <b>i</b> nur bei <es>nosotros</es> und <es>vosotros</es>: <es>viv<b>imos</b>, viv<b>ís</b></es>."
+     }
+    ],
+    [
+     {
+      "type": "h",
+      "text": "Wichtige Verben, die genau so gehen"
+     },
+     {
+      "type": "signal",
+      "rows": [
+       [
+        "-ar",
+        "trabajar, llamar, comprar, tomar, escuchar, mirar, llegar, necesitar, cenar",
+        1
+       ],
+       [
+        "-er",
+        "beber, leer, aprender, comprender, vender, correr, creer",
+        2
+       ],
+       [
+        "-ir",
+        "escribir, abrir, recibir, subir, compartir, decidir",
+        0
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Das Präsens kann mehr als „jetzt“",
+      "track": "5.1-2"
+     },
+     {
+      "type": "examples",
+      "track": "5.1-2",
+      "items": [
+       [
+        "Los domingos como con mi madre.",
+        "Sonntags esse ich bei meiner Mutter. (Gewohnheit)"
+       ],
+       [
+        "Espera, hablo por teléfono.",
+        "Warte, ich telefoniere gerade. (jetzt)"
+       ],
+       [
+        "Mañana trabajo en casa.",
+        "Morgen arbeite ich von zu Hause. (bald)"
+       ],
+       [
+        "Aprendo español desde enero.",
+        "Ich lerne seit Januar Spanisch. (seit)"
+       ]
+      ]
+     },
+     {
+      "type": "story",
+      "title": "Ein ganz normaler Tag",
+      "track": "5.1-3",
+      "es": "De lunes a viernes trabaj<c2>o</c2> en una agencia de diseño. Lleg<c2>o</c2> tarde, beb<c2>o</c2> dos cafés y contest<c2>o</c2> cuarenta correos. Mi jefe, Rafa, habl<c2>a</c2> mucho y escuch<c2>a</c2> poco. A las dos, Marta y yo com<c2>emos</c2> en el bar de abajo. Por la tarde dibuj<c2>o</c2>, diseñ<c2>o</c2> y mir<c2>o</c2> el móvil. A las seis llam<c2>a</c2> mi madre. Siempre a las seis. ¿Y tú? ¿Trabaj<c2>as</c2> mucho? ¿Com<c2>es</c2> bien?",
+      "de": "Von Montag bis Freitag arbeite ich in einer Designagentur. Ich komme zu spät, trinke zwei Kaffee und beantworte vierzig Mails. Mein Chef Rafa redet viel und hört wenig zu. Um zwei essen Marta und ich in der Bar unten. Nachmittags zeichne ich, gestalte und schaue aufs Handy. Um sechs ruft meine Mutter an. Immer um sechs. Und du? Arbeitest du viel? Isst du gut?",
+      "note": "Kein einziges <es>yo</es> – die <c2>Endung</c2> sagt alles. <es>Marta y yo</es> steht nur da, damit man weiß, wer mit wem isst."
+     },
+     {
+      "type": "ojo",
+      "text": "Die <es>vosotros</es>-Formen tragen einen Akzent: <es>habláis, coméis, vivís</es>. Und für Fragen brauchst du keine neue Form, nur eine steigende Melodie: <es>¿Hablas alemán?</es> Im Deutschen dreht man um („Sprichst du …?“), im Spanischen nicht."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "match",
+      "title": "Wer ist das? Ordne die Formen den Personen zu.",
+      "kind": "Erkennen",
+      "left": [
+       "comemos",
+       "vives",
+       "hablan",
+       "bebo",
+       "escribís",
+       "trabaja"
+      ],
+      "right": [
+       "yo",
+       "tú",
+       "él, ella, usted",
+       "nosotros, -as",
+       "vosotros, -as",
+       "ellos, ellas, ustedes"
+      ],
+      "answer": [
+       3,
+       1,
+       5,
+       0,
+       4,
+       2
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "Ergänze die Endung.",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "m",
+      "items": [
+       "habl{{as|tú}}",
+       "com{{emos|nosotros}}",
+       "viv{{ís|vosotros}}",
+       "escrib{{e|ella}}",
+       "le{{o|yo}}",
+       "llam{{an|ellos}}",
+       "beb{{éis|vosotros}}",
+       "abr{{imos|nosotros}}",
+       "necesit{{a|usted}}"
+      ],
+      "why": "Akzent nicht vergessen: <es>bebéis, vivís</es>."
+     },
+     {
+      "type": "cloze",
+      "title": "Pilars Sprachnachricht. Setz die Verben ein.",
+      "kind": "Bilden",
+      "track": "5.1-4",
+      "text": "Hola, hija, soy mamá. ¿Por qué no {{coges|coger}} el teléfono? Bueno. Doña Carmen y yo {{tomamos|tomar}} un café en la plaza. Ella {{necesita|necesitar}} un ordenador nuevo y yo no {{comprendo|comprender}} nada de ordenadores. ¿Dani y tú {{coméis|comer}} conmigo el domingo? Vosotros {{trabajáis|trabajar}} demasiado. ¿Y tú {{comes|comer}} bien? Yo {{creo|creer}} que no. Bueno, te {{llamo|llamar}} luego. ¡Un beso!",
+      "why": "<es>Dani y tú</es> = <es>vosotros</es>, darum <es>coméis</es>."
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Nico y yo [[!leemos|leen]] un libro de dinosaurios.",
+       "¿Vosotros [[viven|!vivís]] en Madrid?",
+       "Dani siempre [[!llega|llego]] tarde.",
+       "Mis vecinos [[!escuchan|escucháis]] reguetón a las tres de la mañana.",
+       "Señora Ruiz, usted [[hablas|!habla]] muy bien alemán."
+      ],
+      "why": "e: <es>usted</es> nimmt die Form von <es>él</es> und <es>ella</es>."
+     }
+    ],
+    [
+     {
+      "type": "cards",
+      "title": "Was machen sie gerade? Schreib zu jedem Bild einen Satz.",
+      "kind": "Bilden",
+      "items": [
+       {
+        "icon": "1F4D6",
+        "cap": "Nico",
+        "solution": "Nico lee un libro de dinosaurios."
+       },
+       {
+        "icon": "1F4BB",
+        "cap": "Lucía",
+        "solution": "Lucía trabaja con el ordenador."
+       },
+       {
+        "icon": "2615",
+        "cap": "Dani",
+        "solution": "Dani bebe un café."
+       },
+       {
+        "icon": "1F4F1",
+        "cap": "Pilar",
+        "solution": "Pilar llama a Lucía. Otra vez."
+       }
+      ]
+     },
+     {
+      "type": "transform",
+      "title": "Nicht nur Lucía: Dani auch! Schreib die Sätze für Lucía und Dani (ellos).",
+      "kind": "Bilden",
+      "example": {
+       "q": "Trabajo mucho.",
+       "a": "Trabajan mucho."
+      },
+      "items": [
+       {
+        "q": "Como en el bar de abajo.",
+        "a": "Comen en el bar de abajo."
+       },
+       {
+        "q": "Vivo en el centro.",
+        "a": "Viven en el centro."
+       },
+       {
+        "q": "Bebo demasiado café.",
+        "a": "Beben demasiado café."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Wir essen um drei. Und ihr?",
+        "es": "Comemos a las tres. ¿Y vosotros?"
+       },
+       {
+        "de": "Sprichst du Deutsch?",
+        "es": "¿Hablas alemán?"
+       },
+       {
+        "de": "Meine Eltern wohnen in Toledo.",
+        "es": "Mis padres viven en Toledo."
+       },
+       {
+        "de": "Ich lerne seit März Spanisch.",
+        "es": "Aprendo español desde marzo."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Dein ganz normaler Montag. Schreib vier Sätze.",
+      "kind": "Frei",
+      "text": "Wann arbeitest du, was isst und trinkst du, wen rufst du an?",
+      "lines": 4,
+      "solution": "Zum Beispiel: <es>Los lunes trabajo de ocho a cuatro. A las diez bebo un café con mis compañeros. Como en la oficina. Por la noche llamo a mi hermana.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Nosotros ___ en un piso pequeño.",
+     "options": [
+      "vivimos",
+      "vivemos"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Vosotros ___ café?",
+     "options": [
+      "bebéis",
+      "bebís"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Mi jefe ___ mucho y escucha poco.",
+     "options": [
+      "hablo",
+      "habla"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "5.2",
+   "topic": "Verben, die den Stamm ändern",
+   "level": "A1",
+   "headline_es": "Quiero dormir,<br>pero no puedo.",
+   "headline_de": "Ich will schlafen, aber ich kann nicht.",
+   "index": [
+    "Stammwechsel",
+    "Stiefelverben",
+    "e → ie",
+    "o → ue",
+    "e → i",
+    "querer",
+    "poder",
+    "pedir",
+    "jugar"
+   ],
+   "cartoon": {
+    "id": "5.2-A",
+    "icons": [
+     "1F36B",
+     "1F466",
+     "1F415"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Tía, ¿puedo comer<br>chocolate?"
+     },
+     {
+      "pos": "tr",
+      "text": "No."
+     },
+     {
+      "pos": "ml",
+      "text": "¿Y podemos?"
+     }
+    ],
+    "gloss": "<es>tía</es> Tante",
+    "prompt": "SCENE: A living room in the afternoon. On the right, LUCÍA sits on the sofa with her laptop on her knees, arms crossed, looking down over her glasses with a firm, slightly amused 'no' face. On the coffee table in front of her lies a big bar of chocolate. On the left, NICO (4, wild curly hair, dinosaur T-shirt) stands with huge pleading puppy eyes, hugging TOFU, a small scruffy dog, tightly around the neck. Tofu also looks up at Lucía with the exact same pleading expression, tongue out. Nico and Tofu clearly present themselves as a team. Leave clear empty space top left above Nico, top right above Lucía and on the middle left beside Nico for three speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Bei manchen Verben dehnt sich der Vokal im Stamm, sobald die Betonung auf ihm liegt: <c1>e→ie</c1>, <c1>o→ue</c1>, <c1>e→i</c1>. Bei <es>nosotros</es> und <es>vosotros</es> liegt die Betonung auf der Endung – da bleibt alles normal."
+     },
+     {
+      "type": "conj",
+      "track": "5.2-1",
+      "verbs": [
+       {
+        "inf": "querer",
+        "de": "wollen; lieben",
+        "forms": [
+         "qu<span class='c1'>ie</span>r<b>o</b>",
+         "qu<span class='c1'>ie</span>r<b>es</b>",
+         "qu<span class='c1'>ie</span>r<b>e</b>",
+         "quer<b>emos</b>",
+         "quer<b>éis</b>",
+         "qu<span class='c1'>ie</span>r<b>en</b>"
+        ]
+       },
+       {
+        "inf": "poder",
+        "de": "können",
+        "forms": [
+         "p<span class='c1'>ue</span>d<b>o</b>",
+         "p<span class='c1'>ue</span>d<b>es</b>",
+         "p<span class='c1'>ue</span>d<b>e</b>",
+         "pod<b>emos</b>",
+         "pod<b>éis</b>",
+         "p<span class='c1'>ue</span>d<b>en</b>"
+        ]
+       },
+       {
+        "inf": "pedir",
+        "de": "bestellen, bitten",
+        "forms": [
+         "p<span class='c1'>i</span>d<b>o</b>",
+         "p<span class='c1'>i</span>d<b>es</b>",
+         "p<span class='c1'>i</span>d<b>e</b>",
+         "ped<b>imos</b>",
+         "ped<b>ís</b>",
+         "p<span class='c1'>i</span>d<b>en</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "trick",
+      "icon": "1F462",
+      "text": "Umrande die veränderten Formen: Sie bilden einen <em>Stiefel</em>. <es>yo, tú, él, ellos</es> stecken drin, <es>nosotros</es> und <es>vosotros</es> stehen draußen."
+     },
+     {
+      "type": "signal",
+      "rows": [
+       [
+        "e → ie",
+        "querer, pensar, empezar, cerrar, entender, preferir",
+        1
+       ],
+       [
+        "o → ue",
+        "poder, dormir, volver, costar, encontrar · jugar → juego",
+        2
+       ],
+       [
+        "e → i",
+        "pedir, repetir, servir, seguir",
+        0
+       ]
+      ]
+     }
+    ],
+    [
+     {
+      "type": "h",
+      "text": "Sätze, die du jeden Tag brauchst",
+      "track": "5.2-2"
+     },
+     {
+      "type": "examples",
+      "track": "5.2-2",
+      "items": [
+       [
+        "¿Puedes repetir, por favor?",
+        "Kannst du das bitte wiederholen?"
+       ],
+       [
+        "No entiendo.",
+        "Ich verstehe nicht."
+       ],
+       [
+        "¿Cuánto cuesta?",
+        "Wie viel kostet das?"
+       ],
+       [
+        "Quiero un café con leche, por favor.",
+        "Ich hätte gern einen Milchkaffee."
+       ],
+       [
+        "La película empieza a las nueve. ¿Y Dani?",
+        "Der Film fängt um neun an. Und Dani?"
+       ]
+      ]
+     },
+     {
+      "type": "story",
+      "title": "Die Nacht vor dem großen Termin",
+      "track": "5.2-3",
+      "es": "Son las dos de la mañana. <c1>Quiero</c1> dormir, pero no <c1>puedo</c1>. Todo el barrio <c1>duerme</c1>. Yo no. <c1>Pienso</c1> en el trabajo, en Rafa, en la factura de la luz. <c1>Cierro</c1> los ojos y <c1>cuento</c1> ovejas. A las tres <c1>empiezo</c1> a contar dinosaurios, como Nico. A las cuatro <c1>vuelvo</c1> a mirar el móvil. A las siete <c1>suena</c1> el despertador. ¿Y ahora? Ahora sí <c1>puedo</c1> dormir.",
+      "de": "Es ist zwei Uhr morgens. Ich will schlafen, aber ich kann nicht. Das ganze Viertel schläft. Ich nicht. Ich denke an die Arbeit, an Rafa, an die Stromrechnung. Ich schließe die Augen und zähle Schafe. Um drei fange ich an, Dinosaurier zu zählen, wie Nico. Um vier schaue ich wieder aufs Handy. Um sieben klingelt der Wecker. Und jetzt? Jetzt kann ich schlafen.",
+      "note": "Alle markierten Formen stehen bei <es>yo</es> oder <es>él</es> – also im Stiefel. Darum dehnt sich überall der Vokal."
+     },
+     {
+      "type": "ojo",
+      "text": "Man sieht es dem Verb nicht an. Gute Wörterbücher schreiben es dazu: <es>pensar (ie)</es>, <es>dormir (ue)</es>, <es>pedir (i)</es> – lern es gleich mit. Und der Infinitiv bleibt immer gleich: <es>repetir</es>, nie <es>repitir</es>."
+     },
+     {
+      "type": "novela",
+      "source": "El año de Lukas",
+      "quote": "¿Tres días? ¡No <c1>puedo</c1>! Mañana tengo una cita muy importante.",
+      "note": "Lukas ist erkältet, die Ärztin verordnet drei Tage Bett. Er hat aber ein Date – und <es>puedo</es> ist sein Protest."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Welcher Vokal hat sich gedehnt? Sortiere.",
+      "kind": "Erkennen",
+      "words": [
+       "quiero",
+       "duerme",
+       "pido",
+       "cuesta",
+       "empieza",
+       "repito",
+       "vuelven",
+       "piensas",
+       "sirve"
+      ],
+      "baskets": [
+       {
+        "label": "e → ie",
+        "answers": [
+         "quiero",
+         "empieza",
+         "piensas"
+        ]
+       },
+       {
+        "label": "o → ue",
+        "answers": [
+         "duerme",
+         "cuesta",
+         "vuelven"
+        ]
+       },
+       {
+        "label": "e → i",
+        "answers": [
+         "pido",
+         "repito",
+         "sirve"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Im Stiefel oder draußen? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Vosotros [[!dormís|duermís]] mucho.",
+       "¿Cuánto [[costa|!cuesta]] este bolso?",
+       "Nico [[juga|!juega]] con sus dinosaurios.",
+       "Nosotros [[!podemos|puedemos]] ir mañana.",
+       "¿Puedes [[!repetir|repitir]], por favor?"
+      ],
+      "why": "c: <es>jugar</es> ist der einzige mit u → ue. e: Der Infinitiv ändert sich nie."
+     },
+     {
+      "type": "dialog",
+      "title": "Im Restaurant. Dani hat Hunger, Lucía kann sich nicht entscheiden.",
+      "kind": "Bilden",
+      "track": "5.2-4",
+      "lines": [
+       [
+        "Camarero",
+        "¿Qué {{quieren|querer}} ustedes?"
+       ],
+       [
+        "Lucía",
+        "Mmm… ¿{{Puedo|poder}} ver la carta otra vez?"
+       ],
+       [
+        "Dani",
+        "Yo {{pido|pedir}} el menú del día. Y de postre, tarta."
+       ],
+       [
+        "Camarero",
+        "Lo siento, la cocina {{cierra|cerrar}} en cinco minutos."
+       ],
+       [
+        "Dani",
+        "Entonces {{pedimos|pedir}} ya. ¡Dos tartas!"
+       ],
+       [
+        "Lucía",
+        "¿Dos? ¿Tú no {{piensas|pensar}} en tu dieta?"
+       ],
+       [
+        "Dani",
+        "Sí. {{Pienso|pensar}} en ella todos los días."
+       ]
+      ],
+      "why": "<es>pedimos</es>: nosotros steht außerhalb des Stiefels."
+     }
+    ],
+    [
+     {
+      "type": "transform",
+      "title": "Wir auch! Mach aus yo die Form für nosotros.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Duermo poco.",
+       "a": "Dormimos poco."
+      },
+      "items": [
+       {
+        "q": "Quiero pizza.",
+        "a": "Queremos pizza."
+       },
+       {
+        "q": "Vuelvo a las ocho.",
+        "a": "Volvemos a las ocho."
+       },
+       {
+        "q": "Juego al pádel.",
+        "a": "Jugamos al pádel."
+       }
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Nico schläft bei Oma Pilar. Pilar erzählt.",
+      "kind": "Erzählen",
+      "track": "5.2-5",
+      "text": "Hoy Nico {{duerme|dormir}} en mi casa. Bueno, „{{duerme|dormir}}“… A las nueve {{quiere|querer}} agua. A las diez {{pide|pedir}} un cuento. Yo le {{cuento|contar}} el cuento de la princesa. Pero él {{prefiere|preferir}} el cuento del T-Rex. A las once {{empieza|empezar}} a cantar. Nosotros no {{dormimos|dormir}} nada. Mañana Nico {{vuelve|volver}} a su casa. Y yo {{duermo|dormir}} tres días.",
+      "why": "<es>dormimos</es>: nosotros steht außerhalb des Stiefels."
+     },
+     {
+      "type": "translate",
+      "title": "Drei Sätze, die du auf Reisen brauchst.",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Wie viel kostet das?",
+        "es": "¿Cuánto cuesta?"
+       },
+       {
+        "de": "Ich verstehe nicht. Kannst du das wiederholen?",
+        "es": "No entiendo. ¿Puedes repetir?"
+       },
+       {
+        "de": "Wir wollen die Rechnung, bitte.",
+        "es": "Queremos la cuenta, por favor."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Was willst du, was kannst du, was verstehst du nicht? Drei Sätze.",
+      "kind": "Frei",
+      "text": "Nimm <es>quiero, puedo, no entiendo, prefiero</es>.",
+      "lines": 4,
+      "solution": "Zum Beispiel: <es>Quiero aprender a bailar salsa. Puedo cocinar, pero no muy bien. No entiendo a mi jefe. Prefiero los gatos.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿___ abrir la ventana? Hace calor.",
+     "options": [
+      "Puedo",
+      "Podo"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Nosotros ___ a casa a las diez.",
+     "options": [
+      "volvemos",
+      "vuelvemos"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿Qué ___ tú, té o café?",
+     "options": [
+      "prefieres",
+      "preferes"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "5.3",
+   "topic": "Die wichtigen Unregelmäßigen",
+   "level": "A1",
+   "headline_es": "Tengo un plan:<br>no hago nada.",
+   "headline_de": "Ich habe einen Plan: Ich mache nichts.",
+   "index": [
+    "unregelmäßige Verben",
+    "tener",
+    "hacer",
+    "ir",
+    "decir",
+    "salir",
+    "venir",
+    "Verben mit -go",
+    "ir oder venir"
+   ],
+   "cartoon": {
+    "id": "5.3-A",
+    "icons": [
+     "1F6CB",
+     "1F37F",
+     "1F4F1"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Dani, ¿dónde estás?<br>¿Vienes o no?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Sí, sí! ¡Ya voy!"
+     }
+    ],
+    "prompt": "SCENE: Split image. Left third, as a round picture-in-picture inset: LUCÍA sits alone at a restaurant table, dressed up nicely, a candle burning down, checking the time on her phone with an icy face. Right two thirds: DANI lies stretched out on his sofa at home in pyjama trousers and an old T-shirt, a bowl of popcorn on his belly, the TV on, phone at his ear, smiling with absolute calm. TOFU, his small scruffy dog, sleeps on his feet. Dani has clearly not moved one centimetre and has no intention of doing so soon. Leave clear empty space above the inset (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Die wichtigsten Verben sind die frechsten – aber fast alle gehören zu einem von zwei Clubs: zum <c1>Go-Club</c1> (<es>tengo, hago, salgo</es>) oder zum <c2>Oy-Club</c2> (<es>soy, estoy, voy</es>)."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Der Go-Club",
+        "sub": "yo endet auf -go",
+        "tone": 1,
+        "track": "5.3-1",
+        "uses": [
+         {
+          "t": "Nur yo ist anders",
+          "x": "hacer → <es>hago</es> · poner → <es>pongo</es><br>salir → <es>salgo</es> · traer → <es>traigo</es>"
+         },
+         {
+          "t": "-go plus Stiefel",
+          "x": "tener → <es>tengo, tienes</es><br>venir → <es>vengo, vienes</es><br>decir → <es>digo, dices</es>"
+         }
+        ]
+       },
+       {
+        "title": "Der Oy-Club",
+        "sub": "yo endet auf -oy",
+        "tone": 2,
+        "track": "5.3-1",
+        "uses": [
+         {
+          "t": "Vier Mitglieder",
+          "x": "ser → <es>soy</es> · estar → <es>estoy</es><br>ir → <es>voy</es> · dar → <es>doy</es>"
+         },
+         {
+          "t": "Einzelgänger",
+          "x": "saber → <es>sé</es> · ver → <es>veo</es><br>conocer → <es>conozco</es>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "conj",
+      "track": "5.3-2",
+      "verbs": [
+       {
+        "inf": "tener",
+        "de": "haben",
+        "forms": [
+         "teng<b>o</b>",
+         "tien<b>es</b>",
+         "tien<b>e</b>",
+         "ten<b>emos</b>",
+         "ten<b>éis</b>",
+         "tien<b>en</b>"
+        ]
+       },
+       {
+        "inf": "decir",
+        "de": "sagen",
+        "forms": [
+         "dig<b>o</b>",
+         "dic<b>es</b>",
+         "dic<b>e</b>",
+         "dec<b>imos</b>",
+         "dec<b>ís</b>",
+         "dic<b>en</b>"
+        ]
+       },
+       {
+        "inf": "ir",
+        "de": "gehen, fahren",
+        "forms": [
+         "v<b>oy</b>",
+         "v<b>as</b>",
+         "v<b>a</b>",
+         "v<b>amos</b>",
+         "v<b>ais</b>",
+         "v<b>an</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "type": "ojo",
+      "text": "<es>¡Ya voy!</es> heißt „Ich komme schon!“. Wer zu jemand anderem hingeht, nimmt <es>ir</es>; <es>venir</es> gilt nur für den Ort, an dem der Sprecher ist: <es>¿Vienes a mi fiesta?</es> <de>Kommst du zu meiner Party?</de>"
+     },
+     {
+      "type": "story",
+      "title": "Ein Plan für Freitag",
+      "track": "5.3-3",
+      "es": "Los viernes <c1>salgo</c1> de la oficina a las seis. <c1>Tengo</c1> un plan: no <c1>hago</c1> nada. <c1>Pongo</c1> el móvil en silencio, <c2>estoy</c2> en pijama a las siete y <c2>veo</c2> una serie. A las siete y cuarto llama Dani:<br>—¿<c1>Vienes</c1>? <c2>Vamos</c2> a un concierto.<br>—No, gracias. <c1>Tengo</c1> planes.<br>—¿Qué planes?<br>—No <c1>hago</c1> nada. Es un plan muy serio.<br>—Vale. Entonces <c1>vengo</c1> yo y <c1>traigo</c1> pizza.<br>Dani llega dos horas después. Sin pizza.",
+      "de": "Freitags gehe ich um sechs aus dem Büro. Ich habe einen Plan: Ich mache nichts. Ich stelle das Handy auf lautlos, bin um sieben im Schlafanzug und schaue eine Serie. Um Viertel nach sieben ruft Dani an: „Kommst du? Wir gehen auf ein Konzert.“ – „Nein, danke. Ich habe Pläne.“ – „Was für Pläne?“ – „Ich mache nichts. Das ist ein sehr ernster Plan.“ – „Okay. Dann komme ich und bringe Pizza mit.“ Dani kommt zwei Stunden später an. Ohne Pizza.",
+      "note": "Grün: der <c1>Go-Club</c1> und seine Stiefel-Verwandten. Rot: <c2>estar, ver, ir</c2> – Oy-Club und Einzelgänger. Alles andere ist regelmäßig."
+     },
+     {
+      "type": "h",
+      "text": "Fünf kurze Sätze, die du täglich sagst",
+      "track": "5.3-4"
+     },
+     {
+      "type": "examples",
+      "track": "5.3-4",
+      "items": [
+       [
+        "No sé.",
+        "Ich weiß nicht."
+       ],
+       [
+        "Tengo hambre.",
+        "Ich habe Hunger."
+       ],
+       [
+        "¿Qué haces?",
+        "Was machst du (gerade)?"
+       ],
+       [
+        "Te digo una cosa…",
+        "Ich sag dir mal was …"
+       ],
+       [
+        "¡Ya voy!",
+        "Ich komme schon!"
+       ]
+      ]
+     },
+     {
+      "type": "novela",
+      "source": "El año de Lukas",
+      "quote": "¿Paraguas? Yo <c1>tengo</c1> tres. <c2>Soy</c2> gallega.",
+      "note": "Carmen, Lukas’ Mitbewohnerin, sagt selten mehr als drei Sätze am Tag – und braucht dafür beide Clubs."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "sort",
+      "title": "Welcher Club? Sortiere die yo-Formen.",
+      "kind": "Erkennen",
+      "words": [
+       "tengo",
+       "voy",
+       "como",
+       "salgo",
+       "soy",
+       "hablo",
+       "digo",
+       "doy",
+       "vivo",
+       "pongo",
+       "estoy",
+       "vengo"
+      ],
+      "baskets": [
+       {
+        "label": "Go-Club",
+        "answers": [
+         "tengo",
+         "salgo",
+         "digo",
+         "pongo",
+         "vengo"
+        ]
+       },
+       {
+        "label": "Oy-Club",
+        "answers": [
+         "voy",
+         "soy",
+         "doy",
+         "estoy"
+        ]
+       },
+       {
+        "label": "ganz regelmäßig",
+        "answers": [
+         "como",
+         "hablo",
+         "vivo"
+        ]
+       }
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "Wie heißt die yo-Form?",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "m",
+      "items": [
+       "hacer → {{hago}}",
+       "poner → {{pongo}}",
+       "salir → {{salgo}}",
+       "traer → {{traigo}}",
+       "venir → {{vengo}}",
+       "dar → {{doy}}",
+       "saber → {{sé}}",
+       "ver → {{veo}}",
+       "conocer → {{conozco}}"
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Lucías Samstag. Setz die Verben ein.",
+      "kind": "Erzählen",
+      "track": "5.3-5",
+      "text": "Los sábados no {{tengo|tener}} prisa. {{Hago|hacer}} un café enorme y {{pongo|poner}} música. A las doce {{viene|venir}} Dani, a veces a la una. Nosotros {{vamos|ir}} al Rastro y luego {{salimos|salir}} a comer. Mi madre {{dice|decir}} que {{tengo|tener}} una vida muy tranquila. ¡Ja! Ella no {{sabe|saber}} nada.",
+      "why": "<es>salimos</es>: Der Go-Club ist nur bei <es>yo</es> rebellisch."
+     }
+    ],
+    [
+     {
+      "type": "choice",
+      "title": "ir oder venir? Wo ist der Sprecher?",
+      "kind": "Entscheiden",
+      "items": [
+       "—¡Nico, a la mesa! —¡Ya [[!voy|vengo]]!",
+       "Dani, ¿[[!vienes|vas]] a mi fiesta el sábado?",
+       "Mañana [[!voy|vengo]] al médico.",
+       "¿[[!Venís|Vais]] a mi casa esta noche? Hago paella."
+      ],
+      "why": "b und d: Lucía lädt zu sich ein – also dorthin, wo sie ist: <es>venir</es>. a: Nico geht zu den anderen hin: <es>ir</es>."
+     },
+     {
+      "type": "dialog",
+      "title": "Freitagabend. Pilar ruft an – natürlich.",
+      "kind": "Bilden",
+      "track": "5.3-6",
+      "lines": [
+       [
+        "Pilar",
+        "Hola, hija. ¿Qué {{haces|hacer}}?"
+       ],
+       [
+        "Lucía",
+        "Nada, mamá. {{Estoy|estar}} en el sofá."
+       ],
+       [
+        "Pilar",
+        "¿Y por qué no {{sales|salir}}? {{Tienes|tener}} treinta y dos años."
+       ],
+       [
+        "Lucía",
+        "Los viernes no {{salgo|salir}}. {{Tengo|tener}} un plan."
+       ],
+       [
+        "Pilar",
+        "Pues doña Carmen y yo {{vamos|ir}} a bailar. ¿{{Vienes|venir}}?"
+       ],
+       [
+        "Lucía",
+        "…Vale, mamá. Ya {{voy|ir}}."
+       ]
+      ],
+      "why": "Letzte Zeile: Lucía geht zu Pilar hin – also <es>ir</es>: <es>voy</es>."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich habe keine Zeit.",
+        "es": "No tengo tiempo."
+       },
+       {
+        "de": "Was machst du heute Abend?",
+        "es": "¿Qué haces esta noche?"
+       },
+       {
+        "de": "Wir gehen ins Kino. Kommst du mit?",
+        "es": "Vamos al cine. ¿Vienes?"
+       },
+       {
+        "de": "Ich komme schon!",
+        "es": "¡Ya voy!"
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Und dein Freitagabend? Vier Sätze.",
+      "kind": "Frei",
+      "text": "Nimm <es>tengo, hago, salgo, voy</es> …",
+      "lines": 4,
+      "solution": "Zum Beispiel: <es>Los viernes salgo del trabajo a las cinco. Voy al gimnasio. Luego hago la cena. No tengo grandes planes.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Los viernes ___ con mis amigas.",
+     "options": [
+      "salo",
+      "salgo"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "—¡A comer! —¡Ya ___!",
+     "options": [
+      "vengo",
+      "voy"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Yo no ___ nada los domingos.",
+     "options": [
+      "hago",
+      "haco"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "5.4",
+   "topic": "Reflexive Verben",
+   "level": "A1",
+   "headline_es": "Me levanto, me ducho…<br>y me arrepiento.",
+   "headline_de": "Ich stehe auf, ich dusche … und bereue es.",
+   "index": [
+    "reflexive Verben",
+    "me, te, se, nos, os",
+    "levantarse",
+    "ducharse",
+    "llamarse",
+    "Tagesablauf",
+    "acostarse"
+   ],
+   "cartoon": {
+    "id": "5.4-A",
+    "icons": [
+     "1F6BF",
+     "1F415",
+     "1F9FC"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Te duchas ahora?"
+     },
+     {
+      "pos": "tr",
+      "text": "¿Yo? No.<br>¡Ducho a Tofu!"
+     }
+    ],
+    "prompt": "SCENE: A small, steamy bathroom. On the left, DANI stands in the doorway in a bathrobe with a towel over his shoulder, ready for his own shower, looking in with calm surprise. On the right, LUCÍA kneels next to the bathtub, completely soaked, fully dressed in jeans and T-shirt, her hair dripping. In the bathtub sits TOFU, a small scruffy dog, covered in a huge crown of soap foam and looking extremely happy. Lucía holds the shower head; water splashes everywhere, including on Dani's feet. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Reflexive Verben sind Verben mit Spiegel: Die Handlung kommt zu dir zurück. Das <c1>Spiegelwort</c1> steht vor dem Verb: <es><c1>me</c1> ducho</es>. Ohne Spiegel trifft es <c2>jemand anderen</c2>."
+     },
+     {
+      "type": "conj",
+      "track": "5.4-1",
+      "verbs": [
+       {
+        "inf": "levantarse",
+        "de": "aufstehen",
+        "forms": [
+         "<span class='c1'>me</span> levant<b>o</b>",
+         "<span class='c1'>te</span> levant<b>as</b>",
+         "<span class='c1'>se</span> levant<b>a</b>",
+         "<span class='c1'>nos</span> levant<b>amos</b>",
+         "<span class='c1'>os</span> levant<b>áis</b>",
+         "<span class='c1'>se</span> levant<b>an</b>"
+        ]
+       },
+       {
+        "inf": "acostarse",
+        "de": "ins Bett gehen",
+        "forms": [
+         "<span class='c1'>me</span> acuest<b>o</b>",
+         "<span class='c1'>te</span> acuest<b>as</b>",
+         "<span class='c1'>se</span> acuest<b>a</b>",
+         "<span class='c1'>nos</span> acost<b>amos</b>",
+         "<span class='c1'>os</span> acost<b>áis</b>",
+         "<span class='c1'>se</span> acuest<b>an</b>"
+        ]
+       }
+      ],
+      "pron": [
+       "yo",
+       "tú",
+       "él, ella, usted",
+       "nosotros, -as",
+       "vosotros, -as",
+       "ellos, ustedes"
+      ]
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "Mit Spiegel",
+        "sub": "für mich selbst",
+        "tone": 1,
+        "track": "5.4-2",
+        "uses": [
+         {
+          "t": "",
+          "x": "<es>Me ducho.</es> <de>Ich dusche.</de><br><es>Me despierto.</es> <de>Ich wache auf.</de>"
+         }
+        ]
+       },
+       {
+        "title": "Ohne Spiegel",
+        "sub": "für jemand anderen",
+        "tone": 2,
+        "track": "5.4-2",
+        "uses": [
+         {
+          "t": "",
+          "x": "<es>Ducho a Tofu.</es> <de>Ich dusche Tofu.</de><br><es>Despierto a Dani.</es> <de>Ich wecke Dani.</de>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Im Wörterbuch hängt das Spiegelwort hinten: <es>levantar<b>se</b></es>. Viele Verben sind nur im Spanischen reflexiv: <es>me llamo</es> ich heiße, <es>me quedo</es> ich bleibe. Und beim Körper steht der Artikel: <es>Me lavo el pelo</es>, nicht <es>mi pelo</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Mit Spiegel oder ohne? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Lucía [[!se ducha|ducha]] por la noche.",
+       "Lucía [[se ducha|!ducha]] a Tofu.",
+       "Pilar [[se despierta|!despierta]] a Lucía con una llamada a las siete.",
+       "¿Cómo [[!te llamas|llamas]]?",
+       "[[Me llamo|!Llamo]] a mi madre todos los días."
+      ],
+      "why": "b, c und e: Die Handlung trifft eine andere Person – kein Spiegelwort. e: <es>llamar</es> anrufen, <es>llamarse</es> heißen."
+     },
+     {
+      "type": "fill",
+      "title": "Setz das Spiegelwort ein.",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "{{me}} levanto",
+       "{{te}} duchas",
+       "{{se}} acuesta",
+       "{{nos}} quedamos",
+       "{{os}} levantáis",
+       "{{se}} llaman"
+      ]
+     },
+     {
+      "type": "cloze",
+      "title": "Lucías Morgen – und der von Dani. Setz die Verben ein.",
+      "kind": "Erzählen",
+      "track": "5.4-3",
+      "text": "El despertador suena a las siete. No {{me levanto|levantarse}}. A las siete y media {{me despierto|despertarse}} de verdad. {{Me ducho|ducharse}} en tres minutos, {{me visto|vestirse}} en dos y {{me pongo|ponerse}} un zapato de cada color. Dani, en cambio, {{se levanta|levantarse}} tranquilo, {{se afeita|afeitarse}}, desayuna… y llega tarde. ¿Cómo lo hace?",
+      "why": "Achtung Stiefel und Go-Club: <es>me despierto</es> (e → ie), <es>me visto</es> (e → i), <es>me pongo</es> (-go)."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Ich heiße Dani und das ist Tofu.",
+        "es": "Me llamo Dani y este es Tofu."
+       },
+       {
+        "de": "Wann stehst du auf?",
+        "es": "¿A qué hora te levantas?"
+       },
+       {
+        "de": "Nico putzt sich nie die Zähne.",
+        "es": "Nico nunca se lava los dientes."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Dein Morgen. Schreib drei Sätze.",
+      "kind": "Frei",
+      "text": "Wann wachst du auf, stehst du auf, duschst du …?",
+      "lines": 3,
+      "solution": "Zum Beispiel: <es>Me despierto a las seis y media, pero me levanto a las siete. Me ducho, me visto y bebo un café. Me voy a las ocho.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿Cómo ___ llamas?",
+     "options": [
+      "te",
+      "se"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Nosotros ___ levantamos a las seis.",
+     "options": [
+      "nos",
+      "se"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Me lavo ___ pelo todos los días.",
+     "options": [
+      "el",
+      "mi"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "5.5",
+   "topic": "gustar und Verwandte",
+   "level": "A1",
+   "headline_es": "Me gustan los perros.<br>Y me gustas tú.",
+   "headline_de": "Ich mag Hunde. Und ich mag dich.",
+   "deeper": "Mehr zu <es>le</es> und <es>les</es>: <g>9.1</g>",
+   "index": [
+    "gustar",
+    "encantar",
+    "doler",
+    "molestar",
+    "interesar",
+    "Vorlieben ausdrücken",
+    "me gusta / me gustan",
+    "Me gustas"
+   ],
+   "cartoon": {
+    "id": "5.5-A",
+    "icons": [
+     "1F364",
+     "1F935",
+     "1F633"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¡Mmm! ¡Me gustas mucho!"
+     },
+     {
+      "pos": "tr",
+      "text": "Gracias…<br>pero estoy casado."
+     }
+    ],
+    "gloss": "<es>casado</es> verheiratet",
+    "prompt": "SCENE: A crowded, traditional tapas bar in Madrid with hams hanging from the ceiling. On the left, a sunburnt German tourist in his fifties (socks with sandals, a small phrasebook in his shirt pocket) has just tasted a croqueta: eyes closed in bliss, he holds the hand of the young WAITER with both hands and looks up at him adoringly. On the right, the waiter, holding a tray in his other hand, blushes deep red, leans back a little and shows the wedding ring on his finger. In the background at the bar, LUCÍA almost chokes on her drink with laughter. Leave clear empty space top left and top right for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "<es>gustar</es> heißt nicht „mögen“, sondern „gefallen“. Das Ding, das <c2>gefällt</c2>, bestimmt die Endung; die <c1>Person</c1> steht vorn: <es><c1>me</c1> gust<c2>a</c2> el café, <c1>me</c1> gust<c2>an</c2> los gatos</es>."
+     },
+     {
+      "type": "table",
+      "track": "5.5-1",
+      "head": [
+       "wem gefällt’s?",
+       "ein Ding / ein Tun",
+       "mehrere Dinge"
+      ],
+      "es_cols": [
+       0,
+       1,
+       2
+      ],
+      "rows": [
+       [
+        "<c1>me · te · le · nos · os · les</c1>",
+        "gust<c2>a</c2> el café<br>gust<c2>a</c2> bailar",
+        "gust<c2>an</c2> los gatos<br>gust<c2>an</c2> las tapas"
+       ]
+      ]
+     },
+     {
+      "type": "spikiu",
+      "title": "Sag im Kopf „gefallen“",
+      "text": "Mir <em>gefällt</em> der Kaffee: <es>Me gusta el café.</es> Mir <em>gefallen</em> die Hunde: <es>Me gustan los perros.</es> <em>Du gefällst</em> mir: <es>Me gustas.</es> Darum ist <es>¡Me gustas!</es> kein Lob fürs Essen, sondern eine Liebeserklärung."
+     },
+     {
+      "type": "h",
+      "text": "Die Verwandten: encantar, doler, interesar",
+      "track": "5.5-2"
+     },
+     {
+      "type": "examples",
+      "track": "5.5-2",
+      "items": [
+       [
+        "Me encanta el chocolate.",
+        "Ich liebe Schokolade."
+       ],
+       [
+        "Me duelen los pies.",
+        "Mir tun die Füße weh."
+       ],
+       [
+        "A mi madre le interesa todo. Sobre todo, mi vida.",
+        "Meine Mutter interessiert sich für alles. Vor allem für mein Leben."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Nie <es>yo gusto el café</es> („Ich gefalle dem Kaffee“). Zum Betonen oder Klarstellen kommt <es>a</es> + Person davor: <es>A mí me gusta, a él no.</es> <es>A Pilar le gusta opinar.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Ein Ding oder mehrere? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "Me [[!gusta|gustan]] el chocolate.",
+       "A Nico le [[gusta|!gustan]] los dinosaurios.",
+       "¿Te [[!gusta|gustan]] bailar?",
+       "A Pilar le [[!gusta|gustan]] dar consejos."
+      ],
+      "why": "c und d: Ein Tun (Infinitiv) gilt als ein Ding – also <es>gusta</es>, auch bei <es>dar consejos</es>."
+     },
+     {
+      "type": "dialog",
+      "title": "Pilar plant das Weihnachtsessen. Ergänze.",
+      "kind": "Bilden",
+      "track": "5.5-3",
+      "lines": [
+       [
+        "Pilar",
+        "¿A Dani {{le}} gusta el pescado?"
+       ],
+       [
+        "Lucía",
+        "No, mamá. A Dani no {{le}} gusta nada el pescado. Le {{encantan|encantar}} las croquetas."
+       ],
+       [
+        "Pilar",
+        "¿Y a ti? ¿Qué {{te}} {{gusta|gustar}}?"
+       ],
+       [
+        "Lucía",
+        "A mí {{me}} gusta todo. Y a Nico le {{encantan|encantar}} los macarrones. Solo los macarrones."
+       ],
+       [
+        "Pilar",
+        "¡Ay! A vosotros no {{os}} {{gusta|gustar}} mi cocina."
+       ]
+      ],
+      "why": "Letzte Zeile: <es>mi cocina</es> ist ein Ding – also <es>gusta</es>, auch wenn <es>vosotros</es> mehrere sind."
+     },
+     {
+      "type": "transform",
+      "title": "Und den anderen? Schreib den Satz für die Person in Klammern.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Me gusta el fútbol. (a Dani)",
+       "a": "A Dani le gusta el fútbol."
+      },
+      "items": [
+       {
+        "q": "Me encanta la playa. (a nosotros)",
+        "a": "Nos encanta la playa."
+       },
+       {
+        "q": "Me molesta el ruido. (a mis vecinos)",
+        "a": "A mis vecinos les molesta el ruido."
+       },
+       {
+        "q": "Me duele la cabeza. (a Lucía)",
+        "a": "A Lucía le duele la cabeza."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Gefällt dir meine neue Wohnung?",
+        "es": "¿Te gusta mi piso nuevo?"
+       },
+       {
+        "de": "Ich mag dich. (zu einer guten Freundin)",
+        "es": "Me caes muy bien. (Nicht: Me gustas – das wäre eine Liebeserklärung!)"
+       }
+      ],
+      "why": "b: Für Sympathie sagt man <es>me caes bien</es>. <es>Me gustas</es> heißt: Ich finde dich attraktiv."
+     },
+     {
+      "type": "free",
+      "title": "Dein Profil für eine Dating-App: Was liebst du, was magst du, was nervt dich?",
+      "kind": "Frei",
+      "text": "Nimm <es>me encanta(n), me gusta(n), no me gusta(n), me molesta(n)</es>.",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>Me encantan los gatos y la comida india. Me gusta bailar. No me gusta esperar. Me molesta el ruido.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Me ___ las tapas.",
+     "options": [
+      "gusta",
+      "gustan"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "A Dani ___ gusta el fútbol.",
+     "options": [
+      "le",
+      "se"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿___ gusta bailar?",
+     "options": [
+      "Te",
+      "Tú"
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ]
+}

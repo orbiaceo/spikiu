@@ -4,3 +4,9 @@ voice-test/
 # Piper-Modelle laden zur Laufzeit von HuggingFace (OPFS-Cache), nie ins Repo
 *.onnx
 *.onnx.json
+
+# Buchprojekt Gramática/Cuaderno: Ausgaben und lokale Hilfsdaten nie committen
+buch/out/
+buch/.openmoji/
+buch/assets/fonts
+buch/tools/__pycache__/

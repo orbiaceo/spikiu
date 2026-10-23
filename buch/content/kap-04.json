@@ -1,0 +1,689 @@
+{
+ "chapter": 4,
+ "title": "Pronomen I",
+ "sections": [
+  {
+   "id": "4.1",
+   "topic": "Ich, du, Sie, ihr",
+   "level": "A1",
+   "headline_es": "Soy Lucía, estoy en Madrid<br>y tengo un problema.",
+   "headline_de": "Ich bin Lucía, ich bin in Madrid und ich habe ein Problem.",
+   "index": [
+    "Personalpronomen",
+    "yo, tú, él, ella",
+    "usted",
+    "vosotros",
+    "ustedes",
+    "tú oder usted",
+    "vos",
+    "Pronomen weglassen"
+   ],
+   "cartoon": {
+    "id": "4.1-A",
+    "icons": [
+     "1F382",
+     "1F466",
+     "1F415"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Quién es el culpable?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡Yo no! ¡Es él!"
+     }
+    ],
+    "gloss": "<es>el culpable</es> der Schuldige",
+    "prompt": "SCENE: A bright, slightly messy kitchen in a Madrid apartment. On the table stands a plate with nothing left of a chocolate birthday cake except crumbs and one lonely candle lying on its side. LUCÍA stands on the left, hands on her hips, one eyebrow raised, looking down with an ironic, suspicious face. On the right stands NICO (4, wild curly hair, T-shirt with a dinosaur on it): his whole face and both hands are smeared with chocolate, and he points with total conviction at TOFU, a small scruffy dog sitting beside him. Tofu looks innocent and a bit confused and has not a single crumb on him. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Die Verbendung verrät schon, wer es ist. Darum lässt man das Pronomen meist <c1>weg</c1>. Es ist ein <c2>Zeigefinger</c2>: nur für Kontrast und Nachdruck."
+     },
+     {
+      "type": "table",
+      "track": "4.1-1",
+      "head": [
+       "einer",
+       "",
+       "mehrere",
+       ""
+      ],
+      "es_cols": [
+       0,
+       2
+      ],
+      "hl": [
+       3
+      ],
+      "rows": [
+       [
+        "yo · soy",
+        "ich bin",
+        "nosotros, -as · somos",
+        "wir sind"
+       ],
+       [
+        "tú · eres",
+        "du bist",
+        "vosotros, -as · sois",
+        "ihr seid"
+       ],
+       [
+        "él, ella · es",
+        "er, sie ist",
+        "ellos, ellas · son",
+        "sie sind"
+       ],
+       [
+        "usted (Ud.) · es",
+        "Sie sind",
+        "ustedes (Uds.) · son",
+        "Sie sind"
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "4.1-2",
+      "items": [
+       [
+        "Soy Lucía. Tengo 32 años.",
+        "Normal: ohne. Die Endung reicht."
+       ],
+       [
+        "Yo soy de Madrid, él es de Bilbao.",
+        "Kontrast: mit Zeigefinger."
+       ],
+       [
+        "—¿Quién tiene hambre? —¡Yo!",
+        "Ohne Verb: mit Zeigefinger."
+       ],
+       [
+        "Es tarde.",
+        "Es ist spät. (Für „es“ gibt es kein Wort.)"
+       ]
+      ]
+     },
+     {
+      "type": "p",
+      "text": "<b>tú oder usted?</b> In Spanien duzt man fast alle. <es>usted</es> ist für Respekt (ältere Unbekannte, Ämter) und nimmt die Form von <es>él</es>: <es>usted es</es>. Gemischte Gruppen sind männlich: drei Frauen und Nico sind <es>ellos</es>."
+     },
+     {
+      "type": "region",
+      "text": "In Lateinamerika gibt es kein <es>vosotros</es>: <es>ustedes</es> gilt für alle Gruppen. In Argentinien und Uruguay sagt man statt <es>tú</es> meist <es>vos</es>, mit eigenen Formen („du bist“: <es>sos</es>). Wir bleiben bei <es>tú</es> und <es>vosotros</es>."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Die Endung verrät es. Welches Pronomen passt?",
+      "kind": "Erkennen",
+      "items": [
+       "[[!Nosotros|Vosotros]] somos de Madrid.",
+       "¿[[!Tú|Usted]] tienes hambre?",
+       "[[Ella|!Yo]] estoy en la oficina.",
+       "¿[[Ellos|!Vosotros]] sois hermanos?"
+      ],
+      "why": "Die Verbform zeigt die Person: <es>sois</es> geht nur mit <es>vosotros</es>."
+     },
+     {
+      "type": "sort",
+      "title": "Duzen oder siezen? Du bist in Spanien. Sortiere.",
+      "kind": "Entscheiden",
+      "words": [
+       "deine Kollegin",
+       "der Polizist",
+       "Nico (4)",
+       "doña Carmen (85)",
+       "dein Bruder",
+       "der König"
+      ],
+      "baskets": [
+       {
+        "label": "tú",
+        "answers": [
+         "deine Kollegin",
+         "Nico (4)",
+         "dein Bruder"
+        ]
+       },
+       {
+        "label": "usted",
+        "answers": [
+         "der Polizist",
+         "doña Carmen (85)",
+         "der König"
+        ]
+       }
+      ],
+      "why": "Kollegen duzt man in Spanien fast immer. Im Zweifel: Hör hin, wie der andere dich anspricht."
+     },
+     {
+      "type": "mark",
+      "title": "Lucías Profil. Kann das Pronomen weg? Schreib W (weg) oder B (bleibt).",
+      "kind": "Entscheiden",
+      "track": "4.1-3",
+      "text": "Hola, [[yo|W]] soy Lucía y [[yo|W]] tengo 32 años. [[Yo|W]] soy diseñadora gráfica. Mi novio se llama Dani y [[él|W]] es muy tranquilo. [[Él|B]] siempre está relajado; [[yo|B]], siempre nerviosa. ¿Y [[tú|B]]? ¿Cómo eres?",
+      "why": "Ein einzelnes <es>Hola, yo soy …</es> zur Begrüßung ist okay, aber nicht nötig. Bei Dani gegen Lucía zeigt der Finger: er so, ich so. <es>¿Y tú?</es> hat kein Verb – ohne <es>tú</es> bliebe nichts übrig."
+     },
+     {
+      "type": "transform",
+      "title": "Pilar fragt jetzt mehrere Leute. Mach daraus die Plural-Frage.",
+      "kind": "Bilden",
+      "example": {
+       "q": "¿Estás bien?",
+       "a": "¿Estáis bien?"
+      },
+      "items": [
+       {
+        "q": "¿Tienes hambre?",
+        "a": "¿Tenéis hambre?"
+       },
+       {
+        "q": "Señora, ¿está usted bien?",
+        "a": "Señoras, ¿están ustedes bien?"
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Wir sind müde. – Ich nicht!",
+        "es": "Estamos cansados. —¡Yo no!"
+       },
+       {
+        "de": "Sind Sie Frau Ruiz?",
+        "es": "¿Es usted la señora Ruiz?"
+       }
+      ]
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "—¿Quién tiene las llaves? —¡___!",
+     "options": [
+      "Yo",
+      "Soy"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Señor Gómez, ¿___ es de aquí?",
+     "options": [
+      "tú",
+      "usted"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Lucía y Dani, ¿___ tenéis hambre?",
+     "options": [
+      "vosotros",
+      "ustedes"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "4.2",
+   "topic": "Mein, dein, sein",
+   "level": "A1",
+   "headline_es": "Mi piso es tu piso.<br>Mi nevera, no.",
+   "headline_de": "Meine Wohnung ist deine Wohnung. Mein Kühlschrank nicht.",
+   "index": [
+    "Possessivbegleiter",
+    "mi, tu, su",
+    "nuestro, vuestro",
+    "su (sein, ihr, Ihr)",
+    "Besitz ausdrücken",
+    "de él, de ella"
+   ],
+   "cartoon": {
+    "id": "4.2-A",
+    "icons": [
+     "1F9FE",
+     "1F449",
+     "1F914"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Aquí tiene su cuenta."
+     },
+     {
+      "pos": "tr",
+      "text": "¿Su cuenta?<br>¿De quién?"
+     }
+    ],
+    "gloss": "<es>la cuenta</es> die Rechnung",
+    "prompt": "SCENE: A small restaurant table after a big family dinner, empty plates and wine glasses everywhere. On the far left, a polite elderly WAITER in a white shirt and black vest bows slightly and holds out a small plate with the bill to PILAR. At the table sit PILAR, LUCÍA and DANI. In a perfect chain, each of them points at the next person with an innocent face: Pilar points at Dani, Dani points at Lucía, Lucía points back at Pilar. Nobody touches the bill. The waiter's smile is frozen. Leave clear empty space above the waiter (top left) and above the three at the table (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Mein, dein, sein richten sich nach dem <c2>Ding</c2>, nicht nach dem <c1>Besitzer</c1>: <es>mis gafas</es> – eine Besitzerin, zwei Gläser. Und <es>su</es> ist ein Joker: sein, ihr oder Ihr."
+     },
+     {
+      "type": "table",
+      "track": "4.2-1",
+      "head": [
+       "ein Ding",
+       "mehrere Dinge",
+       "Deutsch",
+       "Beispiel"
+      ],
+      "es_cols": [
+       0,
+       1,
+       3
+      ],
+      "hl": [
+       2
+      ],
+      "rows": [
+       [
+        "mi",
+        "mis",
+        "mein",
+        "mi móvil, mis llaves"
+       ],
+       [
+        "tu",
+        "tus",
+        "dein",
+        "tu piso, tus amigos"
+       ],
+       [
+        "su",
+        "sus",
+        "sein, ihr, Ihr",
+        "su perro, sus hijos"
+       ],
+       [
+        "nuestro, nuestra",
+        "nuestros, nuestras",
+        "unser",
+        "nuestra casa, nuestros vecinos"
+       ],
+       [
+        "vuestro, vuestra",
+        "vuestros, vuestras",
+        "euer",
+        "vuestro coche, vuestras bicis"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "su – ein Wort, viele Besitzer",
+      "track": "4.2-2"
+     },
+     {
+      "type": "examples",
+      "track": "4.2-2",
+      "items": [
+       [
+        "Pilar tiene un gato. Su gato es enorme.",
+        "Pilar hat eine Katze. Ihre Katze ist riesig."
+       ],
+       [
+        "Nico y sus dinosaurios.",
+        "Nico und seine Dinosaurier."
+       ],
+       [
+        "Señor Gómez, ¿es su coche?",
+        "Herr Gómez, ist das Ihr Auto?"
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Sein oder ihr? Im Spanischen egal: <es>Lucía y su madre</es>, <es>Dani y su madre</es>. Wird es unklar, sag <es>el coche de él · de ella · de usted</es>. Und: <es>tú</es> du, <es>tu</es> dein."
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Ein Ding oder mehrere? Unterstreiche.",
+      "kind": "Erkennen",
+      "items": [
+       "[[Mi|!Mis]] gafas están en el coche.",
+       "[[!Nuestra|Nuestro]] casa es pequeña.",
+       "¿Es [[!vuestro|vuestra]] perro?",
+       "Señor Gómez, ¿es [[!su|tu]] maleta?"
+      ],
+      "why": "b: <es>casa</es> ist weiblich – egal, wer dort wohnt. d: Herrn Gómez siezt man, also <es>su</es> (Ihr)."
+     },
+     {
+      "type": "mark",
+      "title": "Lucías Party. Wessen Ding? Schreib 1 (sein), 2 (ihr) oder 3 (Ihr).",
+      "kind": "Erkennen",
+      "track": "4.2-3",
+      "text": "Doña Carmen, la vecina, está en la puerta con [[su|2]] gato. Dani está en la cocina con [[su|1]] perro, Tofu. Mi madre está en el sofá con [[su|2]] móvil, como siempre. Y Nico está debajo de la mesa con [[sus|1]] dinosaurios. —Doña Carmen, ¿es [[su|3]] gato o es un tigre?",
+      "why": "Am Ende spricht Lucía doña Carmen direkt an – und siezt sie: <es>su gato</es> = Ihre Katze."
+     },
+     {
+      "type": "cloze",
+      "title": "Das Familienfoto. Setz mi, su, nuestro … ein.",
+      "kind": "Bilden",
+      "track": "4.2-4",
+      "text": "En la foto está {{mi|ich}} familia. A la izquierda está {{mi|ich}} madre con {{sus|sie}} gafas de sol. Al lado está {{mi|ich}} hermana con {{su|sie}} hijo Nico y {{sus|er}} dinosaurios. Detrás estamos Dani y yo con Tofu, {{su|er}} perro. ¿Y el señor del sombrero? No es {{nuestro|wir}} tío. Es un turista.",
+      "why": "<es>sus gafas</es>: Plural wegen der Brille, nicht wegen Pilar. <es>sus dinosaurios</es>: die Dinosaurier gehören Nico."
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Mein Handy und meine Schlüssel sind im Auto.",
+        "es": "Mi móvil y mis llaves están en el coche."
+       },
+       {
+        "de": "Ist das Ihr Koffer, Herr López?",
+        "es": "¿Es su maleta, señor López?"
+       },
+       {
+        "de": "Unsere Nachbarn sind sehr laut.",
+        "es": "Nuestros vecinos son muy ruidosos."
+       }
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Was ist auf deinem Handy-Hintergrund? Beschreib es in drei Sätzen.",
+      "kind": "Frei",
+      "text": "Nimm <es>mi, su, nuestro …</es>",
+      "lines": 2,
+      "solution": "Zum Beispiel: <es>Es mi perro, Bruno. Está en el sofá de mis padres. Es su sitio favorito.</es>"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "Pilar está en el coche con ___ gafas de sol.",
+     "options": [
+      "su",
+      "sus"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Señora Ruiz, ¿es ___ coche?",
+     "options": [
+      "tu",
+      "su"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "Somos hermanos. Es ___ casa.",
+     "options": [
+      "nuestro",
+      "nuestra"
+     ],
+     "answer": 1
+    }
+   ]
+  },
+  {
+   "id": "4.3",
+   "topic": "Dies und das",
+   "level": "A1",
+   "headline_es": "Este no. Ese tampoco.<br>¡Aquel!",
+   "headline_de": "Der hier nicht. Der da auch nicht. Der dort hinten!",
+   "index": [
+    "Demonstrativbegleiter",
+    "este, ese, aquel",
+    "esto, eso, aquello",
+    "aquí, ahí, allí",
+    "esta noche"
+   ],
+   "cartoon": {
+    "id": "4.3-A",
+    "icons": [
+     "1F950",
+     "1F370",
+     "1F996"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Este?"
+     },
+     {
+      "pos": "tr",
+      "text": "¡No! ¡Aquel!"
+     }
+    ],
+    "prompt": "SCENE: Inside a traditional Spanish bakery with an extremely long glass counter that runs from the front of the image deep into the background. Close to the front, a friendly BAKER in a white apron holds up a tiny croissant with tongs and smiles hopefully. In the middle of the counter there are ordinary cakes. Far, far away at the very end of the counter stands a gigantic green birthday cake shaped like a T-Rex. NICO (4) stands on tiptoe on the right, pointing with his whole arm towards the far end with shining eyes. LUCÍA stands behind him, already holding her wallet and looking worried. Leave clear empty space above the baker (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Spanisch zeigt in drei Entfernungen: <es>este</es> – hier bei mir, <es>ese</es> – da bei dir, <es>aquel</es> – dort hinten, weit weg von uns beiden. Alle drei passen sich ans Ding an."
+     },
+     {
+      "type": "columns",
+      "cols": [
+       {
+        "title": "hier · aquí",
+        "sub": "bei mir",
+        "icon": "1F447",
+        "tone": 1,
+        "track": "4.3-1",
+        "uses": [
+         {
+          "t": "este · esta · estos · estas",
+          "x": "<es>Este café está frío.</es><br><de>Der Kaffee hier ist kalt.</de>"
+         }
+        ]
+       },
+       {
+        "title": "da · ahí",
+        "sub": "bei dir",
+        "icon": "1FAF5",
+        "tone": 0,
+        "track": "4.3-1",
+        "uses": [
+         {
+          "t": "ese · esa · esos · esas",
+          "x": "<es>¿Es nueva esa chaqueta?</es><br><de>Ist die Jacke (an dir) neu?</de>"
+         }
+        ]
+       },
+       {
+        "title": "dort · allí",
+        "sub": "weit weg",
+        "icon": "26F0",
+        "tone": 2,
+        "track": "4.3-1",
+        "uses": [
+         {
+          "t": "aquel · aquella · aquellos · aquellas",
+          "x": "<es>¿Quién es aquel chico?</es><br><de>Wer ist der Typ dort hinten?</de>"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Für Dinge ohne Namen: esto, eso, aquello (nie vor einem Nomen)",
+      "track": "4.3-2"
+     },
+     {
+      "type": "examples",
+      "track": "4.3-2",
+      "items": [
+       [
+        "¿Qué es esto?",
+        "Was ist das (hier)?"
+       ],
+       [
+        "Eso no es mi problema.",
+        "Das ist nicht mein Problem."
+       ],
+       [
+        "¿Eso? Es un regalo para mamá.",
+        "Das da? Ein Geschenk für Mama."
+       ]
+      ]
+     },
+     {
+      "type": "trick",
+      "icon": "23F0",
+      "text": "Auch die Zeit hat Entfernungen. Was jetzt ist, ist <es>este</es>: <es>esta noche</es> heute Abend, <es>este fin de semana</es> dieses Wochenende. Was lange her ist, ist <es>aquel</es>: <es>en aquella época</es> damals."
+     },
+     {
+      "type": "ojo",
+      "text": "Allein bleibt das Wort gleich, ohne Akzent: <es>—¿Qué bolso? —Ese.</es> Und für Unbekanntes nie <es>este</es>: <es>¿Qué es esto?</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "choice",
+      "title": "Wo ist das Ding? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "(in deiner Hand) [[!Este|Ese|Aquel]] móvil es nuevo.",
+       "(an deinem Freund) ¿Es nueva [[esta|!esa|aquella]] camiseta?",
+       "(ganz hinten im Laden) ¿Y [[estos|esos|!aquellos]] zapatos?",
+       "(Nico hält etwas Klebriges hoch) ¿Qué es [[!eso|ese|esa]]?"
+      ],
+      "why": "d: Lucía weiß nicht, was es ist – darum <es>eso</es>. Im Alltag hörst du für „dort“ auch oft <es>ese</es>; <es>aquel</es> betont: wirklich weit weg."
+     },
+     {
+      "type": "fill",
+      "title": "Ergänze die Endung.",
+      "kind": "Bilden",
+      "cols": 3,
+      "gap": "s",
+      "items": [
+       "est{{a}} pizza",
+       "es{{os}} chicos",
+       "aquell{{as}} casas",
+       "est{{e}} piso",
+       "es{{as}} llaves",
+       "aque{{l}} coche"
+      ]
+     },
+     {
+      "type": "dialog",
+      "title": "Sonntag auf dem Rastro, dem Flohmarkt. Die Hinweise sagen, wo das Ding ist.",
+      "kind": "Entscheiden",
+      "track": "4.3-3",
+      "lines": [
+       [
+        "Lucía",
+        "¡Mira, Dani! ¿Qué es {{esto|hier}}?"
+       ],
+       [
+        "Dani",
+        "¿{{Eso|bei dir}}? Es un teléfono de 1980."
+       ],
+       [
+        "Lucía",
+        "¡Es precioso! ¿Y {{aquella|dort}} lámpara?"
+       ],
+       [
+        "Dani",
+        "¿Cuál? ¿La verde? Es horrible."
+       ],
+       [
+        "Lucía",
+        "Vale. ¿Y {{estas|hier}} gafas? ¿Qué tal?"
+       ],
+       [
+        "Dani",
+        "Con {{esas|bei dir}} gafas eres Harry Potter."
+       ],
+       [
+        "Lucía",
+        "Perfecto. ¡Son para Nico!"
+       ]
+      ]
+     },
+     {
+      "type": "transform",
+      "title": "Alles doppelt. Setz in den Plural.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Este chico es mi primo.",
+       "a": "Estos chicos son mis primos."
+      },
+      "items": [
+       {
+        "q": "Esa silla está rota.",
+        "a": "Esas sillas están rotas."
+       },
+       {
+        "q": "Aquel coche es de Rafa.",
+        "a": "Aquellos coches son de Rafa."
+       }
+      ]
+     },
+     {
+      "type": "translate",
+      "title": "Wie sagst du das auf Spanisch?",
+      "kind": "Übersetzen",
+      "items": [
+       {
+        "de": "Was ist das hier?",
+        "es": "¿Qué es esto?"
+       },
+       {
+        "de": "Heute Abend habe ich keine Zeit.",
+        "es": "Esta noche no tengo tiempo."
+       }
+      ]
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿Qué es ___? —Un regalo para ti.",
+     "options": [
+      "esto",
+      "este"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "Allí, al fondo: ___ montañas son los Pirineos.",
+     "options": [
+      "estas",
+      "aquellas"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "—¿Qué bolso? —___ de allí, el rojo.",
+     "options": [
+      "Este",
+      "Aquel"
+     ],
+     "answer": 1
+    }
+   ]
+  }
+ ]
+}

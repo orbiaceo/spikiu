@@ -1,0 +1,686 @@
+{
+ "chapter": 7,
+ "title": "Fragen, Nein, Zahlen, Zeit",
+ "sections": [
+  {
+   "id": "7.1",
+   "topic": "Fragewörter",
+   "level": "A1",
+   "headline_es": "¿Dónde estás? ¿Con quién?<br>¿Y cuándo vuelves?",
+   "headline_de": "Wo bist du? Mit wem? Und wann kommst du zurück?",
+   "index": [
+    "Fragewörter",
+    "qué oder cuál",
+    "por qué / porque",
+    "quién, quiénes",
+    "cuánto, cuánta",
+    "dónde, adónde, de dónde",
+    "Fragen stellen"
+   ],
+   "cartoon": {
+    "id": "7.1-A",
+    "icons": [
+     "1F996",
+     "1F466",
+     "2753"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "¿Por qué el T-Rex<br>tiene los brazos tan cortos?"
+     },
+     {
+      "pos": "tr",
+      "text": "Porque sí."
+     },
+     {
+      "pos": "ml",
+      "text": "¿Y por qué porque sí?"
+     }
+    ],
+    "gloss": "<es>los brazos</es> die Arme · <es>porque sí</es> darum",
+    "prompt": "SCENE: The dinosaur hall of a natural history museum. A huge T-Rex skeleton towers in the background, its comically tiny arms clearly visible. In the foreground DANI sits slumped on a museum bench, completely drained, staring blankly into the distance, one hand on his forehead. NICO stands right next to him on tiptoe, tugging at Dani's sleeve with both hands, looking up with enormous, bright, endlessly curious eyes, pointing at the skeleton's tiny arms. A museum guard in the far background suppresses a smile. Leave clear empty space top left, top right and middle left for three speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Fragewörter tragen immer einen Hut: den Akzent. Mit Hut fragen sie: <c1>¿qué? ¿dónde? ¿por qué?</c1> Ohne Hut verbinden sie nur: <c2>que, donde, porque</c2>."
+     },
+     {
+      "type": "table",
+      "track": "7.1-1",
+      "es_cols": [
+       0,
+       2
+      ],
+      "rows": [
+       [
+        "¿qué?",
+        "was?",
+        "¿Qué haces?"
+       ],
+       [
+        "¿quién?, ¿quiénes?",
+        "wer?",
+        "¿Quién es ese chico?"
+       ],
+       [
+        "¿dónde? ¿adónde?",
+        "wo? wohin?",
+        "¿Adónde vas?"
+       ],
+       [
+        "¿cuándo? ¿cómo?",
+        "wann? wie?",
+        "¿Cuándo vuelves? ¿Cómo estás?"
+       ],
+       [
+        "¿cuánto, -a, -os, -as?",
+        "wie viel(e)?",
+        "¿Cuántos años tienes?"
+       ],
+       [
+        "¿cuál?, ¿cuáles?",
+        "welche(r, s)?",
+        "¿Cuál es tu número?"
+       ],
+       [
+        "¿por qué?",
+        "warum?",
+        "—¿Por qué? —Porque sí."
+       ]
+      ]
+     },
+     {
+      "type": "p",
+      "text": "Das Fragewort steht vorn, dann das Verb: <es>¿Dónde vive Pilar?</es> Eine Präposition wandert mit: <es>¿Con quién vas?</es> <de>Mit wem gehst du?</de> · <es>¿De dónde eres?</es> <de>Wo kommst du her?</de>"
+     },
+     {
+      "type": "ojo",
+      "text": "„Was ist deine Nummer?“ heißt <es>¿Cuál es tu número?</es> Mit <es>¿Qué es…?</es> willst du eine Erklärung: <es>¿Qué es una tapa?</es> Vor einem Nomen steht <es>qué</es>: <es>¿Qué película vemos?</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "match",
+      "title": "Pilar lernt Dani kennen. Welche Antwort passt?",
+      "kind": "Verstehen",
+      "left": [
+       "¿Cómo te llamas?",
+       "¿De dónde eres?",
+       "¿Cuántos años tienes?",
+       "¿Dónde trabajas?",
+       "¿Por qué llegas tan tarde?",
+       "¿Cuándo es la boda?"
+      ],
+      "right": [
+       "En un banco, en el centro.",
+       "Porque hay mucho tráfico.",
+       "Dani. Bueno, Daniel.",
+       "¿Qué boda?",
+       "Treinta y cuatro.",
+       "De Valencia."
+      ],
+      "answer": [
+       2,
+       5,
+       4,
+       0,
+       1,
+       3
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "¿[[!Cuál|Qué]] es tu dirección?",
+       "¿[[!Qué|Cuál]] es una «tapa»?",
+       "—¿[[!Por qué|Porque]] no comes? —[[Por qué|!Porque]] no tengo hambre.",
+       "¿[[Cuántos|!Cuántas]] horas trabajas al día?",
+       "¿[[Quién|!Quiénes]] son esos chicos?"
+      ],
+      "why": "a: Nach Name, Nummer, Adresse fragt man mit <es>¿Cuál es…?</es> b: Hier willst du eine Erklärung – <es>¿Qué es…?</es> d: <es>la hora</es> ist weiblich."
+     },
+     {
+      "type": "transform",
+      "title": "Frag nach dem markierten Teil.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Nico tiene <em>cuatro</em> años.",
+       "a": "¿Cuántos años tiene Nico?"
+      },
+      "items": [
+       {
+        "q": "Dani vive <em>en Lavapiés</em>.",
+        "a": "¿Dónde vive Dani?"
+       },
+       {
+        "q": "Lucía va al cine <em>con Marta</em>.",
+        "a": "¿Con quién va Lucía al cine?"
+       },
+       {
+        "q": "El billete cuesta <em>veinte euros</em>.",
+        "a": "¿Cuánto cuesta el billete?"
+       },
+       {
+        "q": "Pilar llama <em>porque está aburrida</em>.",
+        "a": "¿Por qué llama Pilar?"
+       }
+      ],
+      "why": "b: Die Präposition kommt mit nach vorn: <es>¿Con quién…?</es>"
+     },
+     {
+      "type": "free",
+      "title": "Ein Star steckt mit dir im Aufzug fest. Stell fünf Fragen.",
+      "kind": "Frei",
+      "text": "Nimm fünf verschiedene Fragewörter. Du darfst duzen.",
+      "lines": 4,
+      "solution": "Zum Beispiel: ¿Cómo te llamas de verdad? ¿De dónde eres? ¿Dónde vives? ¿Cuántos coches tienes? ¿Por qué estás en este ascensor?"
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "¿___ es tu número de móvil?",
+     "options": [
+      "Qué",
+      "Cuál"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "—¿Por qué no vienes? —___ estoy cansada.",
+     "options": [
+      "Porque",
+      "Por qué"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "¿___ hermanos tienes?",
+     "options": [
+      "Cuántos",
+      "Cuántas"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "7.2",
+   "topic": "Verneinung",
+   "level": "A1",
+   "headline_es": "No sé nada, no veo nada<br>y no conozco a nadie.",
+   "headline_de": "Ich weiß nichts, ich sehe nichts und ich kenne niemanden.",
+   "index": [
+    "Verneinung",
+    "no",
+    "nada",
+    "nadie",
+    "nunca",
+    "ningún, ninguna",
+    "doppelte Verneinung",
+    "kein (no + Nomen)"
+   ],
+   "cartoon": {
+    "id": "7.2-A",
+    "icons": [
+     "1F382",
+     "1F466",
+     "1F937"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Nico,<br>¿dónde está la tarta?"
+     },
+     {
+      "pos": "tr",
+      "text": "No sé nada. No veo nada.<br>¡Aquí no hay nada!"
+     }
+    ],
+    "gloss": "<es>la tarta</es> die Torte",
+    "prompt": "SCENE: A family kitchen. On the left LUCÍA stands with her arms crossed, one eyebrow raised, looking down at NICO. On the kitchen table there is a large, completely empty cake plate with only a few crumbs and one lonely cherry left. NICO stands in front of the table, his face, hands and dinosaur T-shirt smeared all over with chocolate cream, shrugging with both palms up and the most innocent wide-eyed expression in the world, a fork hidden badly behind his back. Under the table a small dog licks chocolate off the floor. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Vor dem Verb steht ein Türsteher, der Nein sagt. Entweder <c1>no</c1> + Verb + <c2>Nein-Wort</c2>: <es><c1>No</c1> como <c2>nunca</c2>.</es> Oder das <c2>Nein-Wort</c2> steht selbst vorn: <es><c2>Nunca</c2> como.</es> Zwei Neins machen hier kein Ja."
+     },
+     {
+      "type": "table",
+      "track": "7.2-1",
+      "es_cols": [
+       0,
+       1,
+       2
+      ],
+      "head": [
+       "Ja-Wort",
+       "Nein-Wort",
+       "So klingt es"
+      ],
+      "rows": [
+       [
+        "algo <de>etwas</de>",
+        "nada <de>nichts</de>",
+        "<c1>No</c1> quiero <c2>nada</c2>."
+       ],
+       [
+        "alguien <de>jemand</de>",
+        "nadie <de>niemand</de>",
+        "<c2>Nadie</c2> me llama. = <c1>No</c1> me llama <c2>nadie</c2>."
+       ],
+       [
+        "siempre <de>immer</de>",
+        "nunca <de>nie</de>",
+        "Dani <c1>no</c1> llega <c2>nunca</c2> a tiempo."
+       ],
+       [
+        "algún, alguna <de>irgendein</de>",
+        "ningún, ninguna <de>kein einziger</de>",
+        "<c1>No</c1> tengo <c2>ningún</c2> problema."
+       ],
+       [
+        "también <de>auch</de>",
+        "tampoco <de>auch nicht</de>",
+        "—Yo <c1>no</c1> bailo. —Yo <c2>tampoco</c2>."
+       ]
+      ]
+     },
+     {
+      "type": "examples",
+      "track": "7.2-2",
+      "items": [
+       [
+        "—¿Tienes hambre? —No, no tengo hambre.",
+        "– Hast du Hunger? – Nein, ich habe keinen Hunger."
+       ],
+       [
+        "No hablo nunca con nadie de nada.",
+        "Ich rede nie mit jemandem über irgendwas."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "Deutsches <em>kein</em> ist meistens einfach <c1>no</c1> + Nomen ohne Artikel: <es>No tengo tiempo.</es> <de>Ich habe keine Zeit.</de> <es>ningún</es> nur mit Nachdruck: <es>No tengo ningún problema.</es> <de>Ich habe überhaupt kein Problem.</de>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "transform",
+      "title": "Lucía hat einen schlechten Tag. Mach alles negativ.",
+      "kind": "Bilden",
+      "example": {
+       "q": "Siempre desayuno.",
+       "a": "Nunca desayuno. / No desayuno nunca."
+      },
+      "items": [
+       {
+        "q": "Alguien me llama.",
+        "a": "Nadie me llama. / No me llama nadie."
+       },
+       {
+        "q": "Tengo algo en la nevera.",
+        "a": "No tengo nada en la nevera."
+       },
+       {
+        "q": "Dani siempre llega a tiempo.",
+        "a": "Dani nunca llega a tiempo. / Dani no llega nunca a tiempo."
+       },
+       {
+        "q": "Me gusta mi trabajo.",
+        "a": "No me gusta mi trabajo."
+       }
+      ]
+     },
+     {
+      "type": "choice",
+      "title": "Was passt? Unterstreiche.",
+      "kind": "Entscheiden",
+      "items": [
+       "No hay [[algo|!nada]] en la tele.",
+       "¿Hay [[!alguien|nadie]] en casa?",
+       "[[!Nunca|No nunca]] bebo café por la noche.",
+       "—Yo no como carne. —Yo [[también|!tampoco]].",
+       "Ich habe kein Auto: [[!No tengo coche.|Tengo ningún coche.]]"
+      ],
+      "why": "c: Steht das Nein-Wort vorn, fällt <es>no</es> weg. e: <es>ningún</es> hinter dem Verb braucht davor ein <es>no</es> – und für einfaches „kein“ reicht <es>no</es>."
+     },
+     {
+      "type": "dialog",
+      "title": "Wo ist die Torte? Nico weiß natürlich nichts.",
+      "kind": "Situation",
+      "track": "7.2-3",
+      "lines": [
+       [
+        "Lucía",
+        "Nico, ¿tienes {{algo}} en la boca?"
+       ],
+       [
+        "Nico",
+        "No, no tengo {{nada}}."
+       ],
+       [
+        "Lucía",
+        "¿Y quién tiene chocolate en la cara?"
+       ],
+       [
+        "Nico",
+        "{{Nadie}}. Yo no como {{nunca}} chocolate. ¡{{Nunca}}!"
+       ],
+       [
+        "Lucía",
+        "Ya. ¿Y Tofu? ¿Come chocolate?"
+       ],
+       [
+        "Nico",
+        "Tofu {{tampoco}}. Pero ahora tiene sueño."
+       ]
+      ]
+     },
+     {
+      "type": "free",
+      "title": "Drei Dinge, die du nie machst.",
+      "kind": "Frei",
+      "lines": 4,
+      "solution": "Zum Beispiel: Nunca como pescado. No bailo nunca en público. Nadie sabe que canto en la ducha."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "No hay ___ en la nevera.",
+     "options": [
+      "algo",
+      "nada"
+     ],
+     "answer": 1
+    },
+    {
+     "q": "___ me escribe. ¡Qué triste!",
+     "options": [
+      "Nadie",
+      "No nadie"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "„Ich habe keine Zeit.“ – ___ tiempo.",
+     "options": [
+      "No tengo",
+      "Tengo ningún"
+     ],
+     "answer": 0
+    }
+   ]
+  },
+  {
+   "id": "7.3",
+   "topic": "Zahlen, Uhrzeit, Datum",
+   "level": "A1",
+   "headline_es": "Quedamos a las ocho.<br>Dani llega a las nueve menos cuarto.",
+   "headline_de": "Wir sind um acht verabredet. Dani kommt um Viertel vor neun.",
+   "index": [
+    "Zahlen",
+    "Uhrzeit",
+    "Datum",
+    "es la una / son las dos",
+    "a las (um)",
+    "cien / ciento",
+    "Wochentage und Monate"
+   ],
+   "cartoon": {
+    "id": "7.3-A",
+    "icons": [
+     "23F0",
+     "1F339",
+     "1F37D"
+    ],
+    "bubbles": [
+     {
+      "pos": "tl",
+      "text": "Dani, ¡son las nueve!<br>¡Quedamos a las ocho!"
+     },
+     {
+      "pos": "tr",
+      "text": "Tranquila,<br>solo es una hora."
+     }
+    ],
+    "gloss": "<es>quedamos</es> wir sind verabredet",
+    "prompt": "SCENE: A cosy restaurant in Madrid in the evening. On the left LUCÍA sits alone at a table set for two, tapping her wristwatch furiously with one finger, eyes narrowed. On her table an empty bread basket, two empty wine glasses and a napkin folded into a tiny angry bird show that she has been waiting a long time. On the right DANI has just come through the door, totally relaxed and smiling warmly, holding out a small bouquet of slightly wilted flowers. Behind him a waiter rolls his eyes. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+   },
+   "gramatica": [
+    [
+     {
+      "type": "oneline",
+      "text": "Bei der Uhrzeit denkt Spanisch <em>la hora</em> mit: <es>es la (hora) una</es> – ab zwei sind es mehrere Stunden: <es>son las (horas) dos</es>. Deshalb <es>la/las</es> und <es>es/son</es>."
+     },
+     {
+      "type": "signal",
+      "rows": [
+       [
+        "0–10",
+        "cero, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, diez",
+        0
+       ],
+       [
+        "11–20",
+        "once, doce, trece, catorce, quince, dieciséis, diecisiete, dieciocho, diecinueve, veinte",
+        0
+       ],
+       [
+        "21–29",
+        "veintiuno, veintidós, veintitrés, veinticuatro … veintinueve",
+        0
+       ],
+       [
+        "30–90",
+        "treinta, treinta y uno … cuarenta, cincuenta, sesenta, setenta, ochenta, noventa",
+        0
+       ],
+       [
+        "100–2026",
+        "cien, ciento uno, doscientos, quinientos, setecientos, novecientos, mil, dos mil veintiséis",
+        0
+       ]
+      ]
+     },
+     {
+      "type": "table",
+      "track": "7.3-1",
+      "es_cols": [
+       1,
+       3
+      ],
+      "rows": [
+       [
+        "1:00",
+        "Es la una.",
+        "2:15",
+        "Son las dos y cuarto."
+       ],
+       [
+        "2:00",
+        "Son las dos.",
+        "2:30",
+        "Son las dos y media."
+       ],
+       [
+        "2:10",
+        "Son las dos y diez.",
+        "2:45",
+        "Son las tres menos cuarto."
+       ]
+      ]
+     },
+     {
+      "type": "ojo",
+      "text": "<es>cien</es> nur bei genau 100, sonst <es>ciento</es>. <es>¿Qué hora es?</es> fragt nach jetzt, <es>¿A qué hora…?</es> nach dem Termin: <es>A las diez.</es> Datum ohne „am“, alles klein: <es>Hoy es lunes, tres de mayo.</es>"
+     }
+    ]
+   ],
+   "cuaderno": [
+    [
+     {
+      "type": "hear",
+      "title": "Preise und Telefonnummern. Was hörst du? Kreuze an.",
+      "kind": "Hören",
+      "track": "7.3-2",
+      "pairs": [
+       {
+        "opts": [
+         "trece",
+         "treinta"
+        ],
+        "gloss": "13 / 30",
+        "said": 1
+       },
+       {
+        "opts": [
+         "doce",
+         "dos"
+        ],
+        "gloss": "12 / 2",
+        "said": 0
+       },
+       {
+        "opts": [
+         "catorce",
+         "cuarenta"
+        ],
+        "gloss": "14 / 40",
+        "said": 0
+       },
+       {
+        "opts": [
+         "quince",
+         "cincuenta"
+        ],
+        "gloss": "15 / 50",
+        "said": 1
+       },
+       {
+        "opts": [
+         "seis",
+         "siete"
+        ],
+        "gloss": "6 / 7",
+        "said": 0
+       },
+       {
+        "opts": [
+         "sesenta",
+         "setenta"
+        ],
+        "gloss": "60 / 70",
+        "said": 1
+       }
+      ]
+     },
+     {
+      "type": "fill",
+      "title": "Schreib die Zahlen aus.",
+      "kind": "Schreiben",
+      "cols": 3,
+      "items": [
+       "16 → {{dieciséis}}",
+       "22 → {{veintidós}}",
+       "35 → {{treinta y cinco}}",
+       "100 → {{cien}}",
+       "115 → {{ciento quince}}",
+       "500 → {{quinientos}}",
+       "777 → {{setecientos setenta y siete}}",
+       "1990 → {{mil novecientos noventa}}",
+       "2026 → {{dos mil veintiséis}}"
+      ],
+      "why": "<es>cien</es> nur genau bei 100, danach <es>ciento</es>. Zwischen Hunderter und Zehner steht kein <es>y</es>: <es>ciento quince</es>."
+     },
+     {
+      "type": "transform",
+      "title": "Wie spät ist es?",
+      "kind": "Bilden",
+      "example": {
+       "q": "8:30",
+       "a": "Son las ocho y media."
+      },
+      "items": [
+       {
+        "q": "1:00",
+        "a": "Es la una."
+       },
+       {
+        "q": "3:15",
+        "a": "Son las tres y cuarto."
+       },
+       {
+        "q": "6:45",
+        "a": "Son las siete menos cuarto."
+       },
+       {
+        "q": "10:20",
+        "a": "Son las diez y veinte."
+       },
+       {
+        "q": "12:50",
+        "a": "Es la una menos diez."
+       }
+      ],
+      "why": "e: zehn vor <em>eins</em> – also <es>es la una menos diez</es>."
+     },
+     {
+      "type": "cloze",
+      "title": "Lucías Woche. Schreib die Zahlen und Uhrzeiten aus.",
+      "kind": "Erzählen",
+      "track": "7.3-3",
+      "text": "El lunes tengo una reunión {{a las nueve|9:00}}. El martes es el cumpleaños de mi madre: cumple {{sesenta y cuatro|64}} años. El miércoles, Nico come en mi casa a {{la una|1:00}}. El jueves es {{el doce|12}} de octubre: ¡fiesta! Y el viernes, Dani y yo quedamos a {{las ocho y media|8:30}}. Bueno, Dani llega {{a las nueve y cuarto|9:15}}.",
+      "why": "<es>a la una</es>, aber <es>a las nueve</es>: Die Eins ist allein."
+     },
+     {
+      "type": "free",
+      "title": "Dein Tag in Zahlen.",
+      "kind": "Frei",
+      "text": "Wann stehst du auf? Wann isst du zu Mittag? Wann ist dein Geburtstag?",
+      "lines": 2,
+      "solution": "Zum Beispiel: Me levanto a las siete menos cuarto. Como a la una y media. Mi cumpleaños es el veintitrés de abril."
+     }
+    ]
+   ],
+   "test": [
+    {
+     "q": "___ la una y media.",
+     "options": [
+      "Es",
+      "Son"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "La clase empieza ___ las nueve.",
+     "options": [
+      "a",
+      "en"
+     ],
+     "answer": 0
+    },
+    {
+     "q": "El billete cuesta ___ euros. (500)",
+     "options": [
+      "quinientos",
+      "cincocientos"
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ]
+}
