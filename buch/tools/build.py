@@ -153,8 +153,13 @@ def B(b, ctx):
             rows += f'<tr class="{"hl" if i in hl else ""}">{tds}</tr>'
         tr = ''
         if b.get('track'):
-            add_track(ctx, b['track'], [' · '.join(r[j] for j in sorted(escs) if j < len(r)) + ' ' + ' '.join(re.findall(r'<es>(.*?)</es>', ' '.join(r[j] for j in range(len(r)) if j not in escs))) for r in b['rows']])
-        return f'<table class="tb">{"<tr>"+head+"</tr>" if head else ""}{rows}</table>'
+            parts_ = []
+            for r in b['rows']:
+                bits = [r[j] for j in sorted(escs) if j < len(r)]
+                bits += re.findall(r'<es>(.*?)</es>', ' '.join(r[j] for j in range(len(r)) if j not in escs))
+                parts_.append(', '.join(strip_tags(x).replace(' · ', ', ') for x in bits if strip_tags(x).strip()))
+            add_track(ctx, b['track'], parts_)
+        return f'<div class="tbwrap"><table class="tb">{"<tr>"+head+"</tr>" if head else ""}{rows}</table></div>'
     if t == 'examples':
         add_track(ctx, b.get('track'), [i[0] for i in b['items']])
         items = ''.join(f'<span class="es">{M(es_, ctx)}</span><span class="de">{M(de_, ctx)}</span>' for es_, de_ in b['items'])
@@ -192,7 +197,7 @@ def B(b, ctx):
         rows = ''
         for i, p in enumerate(pron):
             rows += f'<tr><td class="p">{p}</td>' + ''.join(f'<td class="f">{M(v["forms"][i], ctx)}</td>' for v in vs) + '</tr>'
-        return f'<table class="conj"><tr>{head}</tr>{rows}</table>'
+        return f'<div class="tbwrap"><table class="conj"><tr>{head}</tr>{rows}</table></div>'
     raise ValueError(f'Unbekannter Blocktyp: {t}')
 
 # ───────────────────────── Cuaderno-Übungen ─────────────────────────
@@ -381,9 +386,9 @@ def cartoon_html(sec, ctx, big=False):
     else:
         icons_ = ''.join(icon(i) for i in c.get('icons', []))
         inner = f'<div class="ph">{icons_}</div><div class="label">Platzhalter · Bild folgt (Prompt {cid})</div>'
-    bubs = ''.join(f'<div class="bub {bb.get("pos","tl")}">{M(bb["text"], ctx)}</div>' for bb in c.get('bubbles', []))
-    gloss = f'<div class="gloss">{M(c["gloss"], ctx)}</div>' if c.get('gloss') else ''
-    return f'<div class="cartoon {size}">{inner}{bubs}{gloss}</div>'
+    bubs = '<div class="bubs">' + ''.join(f'<div class="bub {bb.get("pos","tl")}">{M(bb["text"], ctx)}</div>' for bb in c.get('bubbles', [])) + '</div>'
+    gloss = f'<div class="cgloss">{M(c["gloss"], ctx)}</div>' if c.get('gloss') else ''
+    return f'<div class="cartoon {size}">{inner}{bubs}</div>{gloss}'
 
 def G_pages(ch, sec, ctx):
     out = []

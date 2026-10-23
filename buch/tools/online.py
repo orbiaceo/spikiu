@@ -1,4 +1,5 @@
 """Online-Fassung (HTML) für Spikiu-Abonnenten: fließend, ohne Seiten, mit Audio-Knöpfen und aufklappbaren Lösungen."""
+import json
 from build import B, E, M, esc, strip_tags, cartoon_html, xref_html, spikiu, AUDIO_BASE, track_html
 
 CSS = '''
@@ -26,7 +27,14 @@ main{padding:24px 28px 80px;max-width:820px;min-width:0}
 html,body{overflow-x:hidden}
 .sec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin:0 0 28px;scroll-margin-top:64px}
 .sec h1.satz{font-size:30px}
-.sec .cartoon{height:220px}
+.sec .cartoon{height:auto;display:flex;flex-direction:column-reverse;padding:12px 12px 28px}
+.sec .cartoon .ph{position:static;padding:8px 0}
+.sec .cartoon .bubs{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.sec .cartoon .bub{position:relative;left:auto;right:auto;top:auto;transform:none;max-width:100%}
+.sec .cartoon .bub.tr,.sec .cartoon .bub.mr{margin-left:auto}
+.cgloss{font-size:13px;margin:-4px 0 14px}
+.tbwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbwrap table{min-width:100%}
 .sec .cartoon .ph img{height:84px}
 .sec .bub{font-size:17px;max-width:260px}
 .chap{font-family:'Archivo Black',sans-serif;font-size:26px;margin:36px 0 14px}
@@ -58,14 +66,22 @@ ol.tf li{grid-template-columns:1fr}
 '''
 
 JS = '''
-var player=new Audio(), cur=null;
-document.addEventListener('click',function(e){
-  var b=e.target.closest('button.track'); if(b){
-    if(cur===b && !player.paused){player.pause(); b.classList.remove('playing'); return;}
-    if(cur) cur.classList.remove('playing');
-    player.src=AUDIO+b.dataset.track+'.mp3'; player.play().catch(function(){}); cur=b; b.classList.add('playing');
-    player.onended=function(){b.classList.remove('playing');};
+var cur=null, lauf=0;
+/* Audio: die App-Stimme (audio.js, Piper davefx; iOS → Gerätestimme). Satz für Satz, erneut tippen = Stopp. */
+function aus(){ if(cur) cur.classList.remove('playing'); cur=null; lauf++; try{ window.spikiuStopp && window.spikiuStopp(); }catch(e){} }
+async function spiele(b){
+  var saetze=(window.TRACKS||{})[b.dataset.track]||[];
+  if(!saetze.length || !window.spikiuSprich) return;
+  aus(); cur=b; b.classList.add('playing'); var meins=++lauf;
+  for(var i=0;i<saetze.length;i++){
+    if(meins!==lauf) return;
+    try{ await window.spikiuSprich(saetze[i], 'es'); }catch(e){}
+    await new Promise(function(r){ setTimeout(r, 350); });
   }
+  if(meins===lauf) aus();
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('button.track'); if(b){ if(cur===b){ aus(); } else { spiele(b); } }
   var m=e.target.closest('#menu'); if(m){document.querySelector('nav.toc').classList.toggle('open');}
   if(e.target.closest('nav.toc a')){document.querySelector('nav.toc').classList.remove('open');}
 });
@@ -149,4 +165,6 @@ def build_online(book, chapters, tests, ctx):
             f'<link rel="stylesheet" href="assets/book.css"><style>{CSS}</style></head><body class="book-{book.lower()}">'
             f'<div class="top"><button id="menu">☰</button><a class="back" href="../haus.html" id="zurBib">‹ Bibliothek</a><b>{name}</b><a class="other" href="{other}">{other_name} →</a></div>'
             f'<div class="wrap"><nav class="toc">{nav}</nav><main>{body}</main></div>'
+            f'<script>window.TRACKS={json.dumps(ctx.tracks, ensure_ascii=False)};</script>'
+            f'<script type="module">import {{ speak, stop, warm }} from "/audio.js"; window.spikiuSprich = speak; window.spikiuStopp = stop; try{{ warm("es"); }}catch(e){{}}</script>'
             f'<script src="../sitzung.js"></script><script>var AUDIO="{AUDIO_BASE}";var RAUM="{"gramatica-a" if book=="G" else "cuaderno-a"}";{JS}{JS_SITZUNG}</script></body></html>')

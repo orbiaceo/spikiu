@@ -58,8 +58,10 @@ h3{font-weight:700;font-size:9.3pt;margin:2.4mm 0 1mm}
 p{margin:0 0 1.8mm}
 
 /* ── Cartoon ── */
-.cartoon{position:relative;flex:0 0 auto;border:1.4px solid var(--ink);border-radius:2mm;background:#fff;height:40mm;margin-bottom:3mm;overflow:hidden}
-.cartoon.l{height:46mm}
+.cartoon{position:relative;flex:0 0 auto;border:1.4px solid var(--ink);border-radius:2mm;background:#fff;height:37mm;margin-bottom:3mm;overflow:hidden}
+.cgloss{flex:0 0 auto;font-size:7pt;color:var(--sage);text-align:right;margin:-2mm 0 2.6mm}
+.cgloss .es{font-size:1.12em}
+.cartoon.l{height:43mm}
 .cartoon.s{height:34mm}
 .cartoon .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:5mm;padding-top:6mm}
 .cartoon .ph img{height:17mm}
@@ -301,3 +303,5 @@ ol.trans .w{border-bottom:1px solid var(--line);height:5.8mm;margin-bottom:1mm}
 .variantes b{color:var(--t1);font-weight:700}
 .variantes .es{font-size:1.14em;color:var(--ink)}
 table.tb td b{color:var(--red)}
+
+.tbwrap{max-width:100%}
