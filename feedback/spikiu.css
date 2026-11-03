@@ -1,0 +1,17 @@
+/* Spikiu-Optik für das Tester-Feedbackfenster (feedback/widget.css).
+   Nur Variablen: Farben und Linien aus haus.html (M1 Pop). Spikiu ist hell,
+   deshalb gelten die Werte auch im Dunkelmodus des Geräts. */
+.fb-root {
+  --fb-accent: #ff6b5a;
+  --fb-accent-text: #ffffff;
+  --fb-surface: #ffffff;
+  --fb-text: #15163a;
+  --fb-muted: #5f7068;
+  --fb-line: #15163a;
+  --fb-chip: #eef7f1;
+  --fb-danger: #c0392b;
+  --fb-radius: 16px;
+  --fb-font: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --fb-launch-bg: #15163a;
+  --fb-launch-opacity: 0.55;
+}

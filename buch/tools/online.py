@@ -182,4 +182,4 @@ def build_online(book, chapters, tests, ctx):
             f'<div class="wrap"><nav class="toc">{nav}</nav><main>{body}</main></div>'
             f'<script>window.SAY={json.dumps(ctx.say, ensure_ascii=False)};window.AUFNAHMEN={json.dumps(aufnahmen())};</script>'
             f'<script type="module">import {{ speak, stop, warm }} from "/audio.js"; window.spikiuSprich = speak; window.spikiuStopp = stop; try{{ warm("es"); }}catch(e){{}}</script>'
-            f'<script src="../sitzung.js"></script><script>var AUDIO="{AUDIO_BASE}";var RAUM="{"gramatica-a" if book=="G" else "cuaderno-a"}";{JS}{JS_SITZUNG}</script></body></html>')
+            f'<script src="../sitzung.js"></script><script>var AUDIO="{AUDIO_BASE}";var RAUM="{"gramatica-a" if book=="G" else "cuaderno-a"}";{JS}{JS_SITZUNG}</script><script src="/feedback-spikiu.js" defer></script></body></html>')
