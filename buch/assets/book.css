@@ -348,3 +348,93 @@ h1.satz{font-size:18.5pt}
 .ed-online h1.satz br{display:none}
 
 @media (max-width:560px){.ed-online .examples{display:flex;flex-direction:column}.ed-online .examples > .de{margin-bottom:8px}}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SPIKIU-HAUS-STIL ALS IDENTITÄT (Leo, 03.11.2026, 15:56: „Auf jeden Fall sollte das Farbliche, der Stil, dasselbe sein.
+   Auch wenn wir das Buch als Buch anbieten und später auch als gedrucktes Buch … wollen wir diesen Spikiu-Look behalten als Identität.“)
+   Gilt für ALLE Ausgaben (Online, Digital-PDF, Druck-PDF, Karten). Löst Typografie D (Lexend/Literata) ab.
+   Wie learnroman.html: Minz-Grund, Tinte #15163a mit kräftiger Kontur + versetztem Schatten, Akzent #1f93b0,
+   Senf #ffd24a, Himmel #d3eef6, Schrift = Sprache: DM Sans (Deutsch, Oberfläche) + Lora aufrecht (Spanisch).
+   Druck: Papier bleibt weiß (Minz vollflächig bräuchte Beschnitt), sonst alles gleich.
+   ══════════════════════════════════════════════════════════════════════════ */
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(fonts/dm-sans_normal_latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(fonts/dm-sans_normal_latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/lora_normal_latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/lora_normal_latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Lora';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/lora_italic_latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{
+  --ink:#15163a; --minz:#eef7f1; --acc:#1f93b0; --acc-d:#16758d; --mustard:#ffd24a; --sky:#d3eef6; --coral:#ff6b5a; --muted:#5f7068; --read:#23243f;
+  --paper:var(--minz); --sage:var(--muted); --grey:#4a5560; --line:rgba(21,22,58,.18);
+  --sun:var(--acc); --sun-l:#fff1bf; --mint:#e3f4ea; --rose:#ffe4de; --red:#d0483a;
+  --t1:#2b7a5c; --t1-bg:#e3f4ea; --t2:#d0483a; --t2-bg:#ffe4de;
+  --accent:var(--acc-d);
+  --ow:.6mm; --sh:.9mm .9mm 0 var(--ink); --sh-s:.55mm .55mm 0 var(--ink);
+  --f-head:'DM Sans',system-ui,sans-serif; --f-body:'DM Sans',system-ui,sans-serif; --f-mono:'DM Sans',system-ui,sans-serif; --f-es:'Lora',Georgia,serif;
+  --body-weight:400;
+}
+.ed-online{--body-weight:400;--ow:2.5px;--sh:4px 5px 0 var(--ink);--sh-s:2px 2px 0 var(--ink)}
+.book-c{--accent:#c2402e}
+.book-c .runhead{color:var(--accent)}
+.ed-print body,.ed-digital body{letter-spacing:0}
+/* Etiketten: keine Schreibmaschinen-Versalien mehr, sondern DM Sans fett wie die App-Eyebrows */
+.runhead,.secnr,.box .tag,.spk .tag,.oneline b.k,.cartoon .label,table.tb th,.vt th,.ex-k,.title-page .kick,.promo .kicker,.offer .k{font-weight:700;letter-spacing:.04em}
+.secnr{color:var(--muted)}
+.secnr b{display:inline-block;color:#fff;background:var(--acc);border:var(--ow) solid var(--ink);border-radius:999px;padding:0 2mm;font-size:8pt;font-weight:800}
+.ed-online .secnr b{padding:1px 9px;font-size:13px}
+h1.satz,.story .es-t,.serif{color:var(--ink)}
+h1.satz{font-weight:600}
+h2,.col-h strong,.question .q,.ex-n,.arrow .go,.test-h h1,.reg-l,.toc-ch,.toc-x,.title-page h1,.front h1,.promo h1,.offer h2,.audio .t{font-weight:800}
+b,strong,.use .t,.ex-t,h3{font-weight:700}
+.es{font-weight:500;font-size:1.04em}
+/* Cartoon, Kästen und Karten: Tinte-Kontur + versetzter Schatten */
+.cartoon{border:var(--ow) solid var(--ink);border-radius:3mm;box-shadow:var(--sh);background:#fff}
+.ed-online .cartoon{border-radius:18px}
+.bub,.bub:after{border-color:var(--ink)}
+.bub{border-width:.45mm;box-shadow:var(--sh-s)}
+.bub:after{border-right-width:.45mm;border-bottom-width:.45mm}
+.oneline{background:var(--sky);color:var(--ink);border:var(--ow) solid var(--ink);border-radius:3mm;box-shadow:var(--sh)}
+.oneline b.k{color:var(--muted)}
+.oneline .es{color:var(--ink)}
+.oneline .c1{color:var(--t1);border-color:var(--t1)}
+.oneline .c2{color:var(--t2);border-color:var(--t2)}
+.oneline .de{color:var(--grey)}
+.col{border:.4mm solid var(--ink);border-radius:2.5mm;background:#fff}
+.col.t1,.col.t2{border-color:var(--ink)}
+table.tb th,table.conj th,.vt th{border-bottom:var(--ow) solid var(--ink)}
+table.tb tr.hl td{background:var(--sun-l)}
+.question{border:var(--ow) solid var(--ink);border-radius:3mm;box-shadow:var(--sh)}
+.story,.panel,.basket,.ens,.audio{border:.45mm solid var(--ink);border-radius:3mm;background:#fff;box-shadow:var(--sh-s)}
+.card,.pair{border:.4mm solid var(--ink);border-radius:2mm;background:#fff}
+.box{border-radius:2.5mm}
+.ojo{background:var(--rose);border:.45mm solid var(--ink);border-left:1.6mm solid var(--coral)}.ojo .tag{color:#b23a2c}
+.region{background:var(--mint);border:.45mm solid var(--ink);border-left:1.6mm solid #9bd14a}.region .tag{color:var(--t1)}
+.novela{background:#fff;border:.45mm dashed var(--ink)}.novela .tag{color:var(--acc-d)}
+.spk{background:#fff7d6;border:.45mm solid var(--ink);border-radius:2.5mm}
+.spk .tag{color:#9a6a00}
+.variantes{border-top:.4mm dashed var(--acc);border-bottom:.4mm dashed var(--acc)}
+.variantes b{color:var(--acc-d)}
+.track{color:#fff;background:var(--acc)!important;border:.35mm solid var(--ink);font-weight:700}
+.arrow{border-top:var(--ow) solid var(--ink)}
+.arrow .go span{color:var(--acc)}
+.tongue{background:var(--sky);color:var(--ink);border:var(--ow) solid var(--ink);box-shadow:var(--sh);border-radius:3mm}
+.tongue small{color:var(--grey)}
+.wordbank span{background:var(--sun-l);border:.3mm solid var(--ink)}
+.ex-n{background:var(--acc);color:#fff;border:.35mm solid var(--ink)}
+.kbox,.pair .o i,.titem .o i{border-color:var(--ink)}
+.gap,.match .slot{border-bottom-color:var(--ink)}
+.toc-ch span,.reg-l,.chap span,nav.toc .ch span{color:var(--acc)}
+.toc-e,.toc-x{border-bottom:.3mm dashed var(--line)}
+/* Titel, Werbeseite */
+.title-page h1 em,.promo h1 em,.offer h2 span{color:var(--acc)}
+.title-page .lvl{border:var(--ow) solid var(--ink);background:var(--mustard);box-shadow:var(--sh-s);font-weight:700}
+.offer{background:var(--sky);color:var(--ink);border:var(--ow) solid var(--ink);box-shadow:var(--sh)}
+.offer h2{color:var(--ink)}
+.offer .k{color:var(--acc-d)}
+.offer p{color:var(--read)}
+.offer li:before{color:var(--acc)}
+.offer .code .box2{border:.45mm dashed var(--ink);color:var(--ink);background:#fff}
+.offer .code small{color:var(--grey)}
+.offer img.qr2{border:.4mm solid var(--ink)}
+.promo .kicker{color:var(--acc-d)}
+/* Druck: weißes Papier, Hör-Knopf-Hintergrund passend */
+.ed-print .trackline .track{background:var(--acc)!important}

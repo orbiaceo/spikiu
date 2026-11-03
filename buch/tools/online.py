@@ -1,5 +1,5 @@
 """Online-Fassung (HTML) für Spikiu-Abonnenten: fließend, ohne Seiten, mit Audio-Knöpfen und aufklappbaren Lösungen."""
-import json
+import json, re
 from build import B, E, M, esc, strip_tags, cartoon_html, xref_html, spikiu, AUDIO_BASE, track_html
 
 CSS = '''
@@ -65,6 +65,23 @@ ol.tf li{grid-template-columns:1fr}
 @media (max-width:860px){.wrap{grid-template-columns:1fr}nav.toc{display:none;position:fixed;inset:52px 0 0 0;background:var(--paper);z-index:9;height:auto}
  nav.toc.open{display:block} main{padding:16px 16px 60px} .sec{padding:16px} .cols.n2,.cols.n3,.question.n2,.question.n3,.baskets.n2,.baskets.n3{grid-template-columns:1fr}
  .pairs,.pairs.n4,.pairs.n6{grid-template-columns:repeat(2,1fr)} .cards.n4,.cards.n5,.cards.n6{grid-template-columns:repeat(2,1fr)} .match{grid-template-columns:1fr} .fillgrid.fc3,.fillgrid.fc4{grid-template-columns:1fr 1fr}}
+/* Spikiu-Haus-Stil (Leo, 03.11.2026): Kopf wie learnroman.html, Abschnitte als Karten mit Tinte-Kontur */
+html,body{background:var(--minz)}
+body{color:var(--ink)}
+.top{background:var(--minz);color:var(--ink);border-bottom:2.5px solid var(--ink)}
+.top b{font-weight:800;color:var(--ink)}
+.top a,.top a.back{color:var(--ink);font-weight:700}
+.top a.back{display:inline-flex;align-items:center;border:2.5px solid var(--ink);border-radius:999px;background:#fff;padding:4px 12px;box-shadow:2px 2px 0 var(--ink)}
+.top a.other{color:var(--acc-d)}
+.top button{border:2.5px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);width:36px;height:36px;padding:0;box-shadow:2px 2px 0 var(--ink)}
+.top button:active,.top a.back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+nav.toc{border-right:2.5px solid var(--ink);background:var(--minz)}
+nav.toc a{color:var(--grey)}
+nav.toc a:hover,nav.toc a.on{color:var(--ink);border-left-color:var(--acc);font-weight:700}
+.sec,.test,.vt{background:#fff;border:2.5px solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink)}
+.chap{font-weight:800}
+details.sol summary{color:var(--acc-d);font-weight:700}
+
 '''
 
 JS = '''
@@ -143,7 +160,7 @@ def build_online(book, chapters, tests, ctx):
             baum = {'A1': '🌱 Samen', 'A2': '🌿 Stamm'}.get(sec['level'], sec['level'])   # in der App nie CEFR (CLAUDE.md)
             h = f'<div class="secnr"><b>{sec["id"]}</b>{esc(sec["topic"])} · {baum}</div>'
             if book == 'G':
-                h += f'<h1 class="satz">{M(sec["headline_es"], ctx)}</h1><div class="satz-de">{M(sec["headline_de"], ctx)}</div>'
+                h += f'<h1 class="satz">{M(re.sub(r"<br\s*/?>", " ", sec["headline_es"]), ctx)}</h1><div class="satz-de">{M(sec["headline_de"], ctx)}</div>'
                 h += cartoon_html(sec, ctx, big=True)
                 for pg in sec['gramatica']:
                     h += ''.join(B(b, ctx) for b in pg)
@@ -177,7 +194,7 @@ def build_online(book, chapters, tests, ctx):
             body += '<section class="sec" id="verbtabellen">' + ''.join(b[0] if isinstance(b, tuple) else b for b in vf) + '</section>'
     return (f'<!doctype html><html lang="de" class="ed-online book-{book.lower()}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1"><title>{name} · Spikiu</title>'
-            f'<link rel="stylesheet" href="assets/book.css"><style>{CSS}</style></head><body class="book-{book.lower()}">'
+            f'<link rel="stylesheet" href="assets/book.css"><link rel="stylesheet" href="/fonts/spikiu-fonts.css"><style>{CSS}</style></head><body class="book-{book.lower()}">'
             f'<div class="top"><button id="menu">☰</button><a class="back" href="../haus.html" id="zurBib">‹ Bibliothek</a><b>{name}</b><a class="other" href="{other}">{other_name} →</a></div>'
             f'<div class="wrap"><nav class="toc">{nav}</nav><main>{body}</main></div>'
             f'<script>window.SAY={json.dumps(ctx.say, ensure_ascii=False)};window.AUFNAHMEN={json.dumps(aufnahmen())};</script>'

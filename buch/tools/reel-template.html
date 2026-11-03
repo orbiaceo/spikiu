@@ -239,6 +239,16 @@ html.ed-reel .row button{border:2px solid var(--ink);box-shadow:2px 2px 0 var(--
 html.ed-reel .sheet .foot a,html.ed-reel .sheet .foot button{border:var(--ow) solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:800}
 html.ed-reel .sheet .foot button{background:var(--acc);color:#fff}
 html.ed-reel .sheet .foot a{background:#fff;color:var(--ink);border:var(--ow) solid var(--ink)}
+
+/* Schalter Lesen | Üben (03.11.2026) */
+.modus{display:flex;flex:0 0 auto;border:2px solid var(--ink);border-radius:999px;background:#fff;overflow:hidden;box-shadow:2px 2px 0 var(--ink)}
+.modus button{border:none;background:transparent;font:800 11.5px/1 var(--f-body);color:var(--muted);padding:7px 10px;cursor:pointer}
+.modus button+button{border-left:2px solid var(--ink)}
+.modus #mLesen.on{background:var(--sky);color:var(--ink)}
+.modus #mUeben.on{background:var(--mustard);color:var(--ink)}
+.uebhin{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;border:2px dashed var(--ink);background:#fff8dc;color:var(--ink);border-radius:999px;padding:7px 13px;font:700 13.5px/1.2 var(--f-body);cursor:pointer}
+.uebhin span{font-size:16px;line-height:1}
+.uebhin:active{transform:translate(1px,1px)}
 </style>
 </head>
 <body>
@@ -246,7 +256,7 @@ html.ed-reel .sheet .foot a{background:#fff;color:var(--ink);border:var(--ow) so
   <a class="ib" href="../haus.html" id="zurBib" aria-label="Zur Bibliothek">‹</a>
   <button class="ib" id="menuBtn" aria-label="Inhalt öffnen">☰</button>
   <div class="where"><small id="chap"></small><b id="here"></b></div>
-  <span class="mode" id="mode">Lesen</span>
+  <div class="modus" role="group" aria-label="Lesen oder üben"><button data-act="lesen" id="mLesen" class="on" aria-pressed="true">Lesen</button><button data-act="ueben" id="mUeben" aria-pressed="false">Üben</button></div>
 </div>
 <div class="reel" id="reel"></div>
 <div class="dots" id="dots" aria-hidden="true"></div>
@@ -285,7 +295,7 @@ function theorie(sec){
     var h='', cls='';
     if(c.k==='hook'){
       var bild='<div class="icons">'+c.icons.map(function(u){return '<img alt="" src="icons/'+u+'.svg">';}).join('')+'</div><div class="ph">Platzhalter · Bild folgt</div>';
-      h=kopf(sec,sec.baum)+'<p class="hook-es">'+c.es+'</p><div class="hook-de">'+c.de+'</div><div class="cartoonx"><div class="bubs">'+c.bubbles.map(function(b){return '<div class="bubx">'+b+'</div>';}).join('')+'</div>'+bild+'</div>'+(c.gloss?'<div class="gloss">'+c.gloss+'</div>':'')+play(c.say)+(n===0?'<div class="hint swipe">Wisch nach oben ↑</div>':'');
+      h=kopf(sec,sec.baum)+'<p class="hook-es">'+c.es+'</p><div class="hook-de">'+c.de+'</div>'+(n===0&&sec.ex.length?'<button class="uebhin" data-act="ueben">✏️ '+sec.ex.length+(sec.ex.length===1?' Übung':' Übungen')+' zu diesem Thema <span>›</span></button>':'')+'<div class="cartoonx"><div class="bubs">'+c.bubbles.map(function(b){return '<div class="bubx">'+b+'</div>';}).join('')+'</div>'+bild+'</div>'+(c.gloss?'<div class="gloss">'+c.gloss+'</div>':'')+play(c.say)+(n===0?'<div class="hint swipe">Wisch nach oben ↑</div>':'');
     } else if(c.k==='dark'){ cls='dark'; h='<div class="eyebrow">In einem Satz</div><div class="big">'+c.html+'</div>'; }
     else { cls=c.cls||''; h=(c.title?'<h2 class="ctitle">'+c.title+'</h2>':'')+c.html+play(c.say); }
     reel.appendChild(slide(h,cls,'t'));
@@ -391,6 +401,7 @@ document.addEventListener('click',function(ev){
   var i=secIdx(cur.id);
   if(a.dataset.act==='ueben'){ uebungen(cur); baueDots(); var u=reel.querySelector('[data-part="u"]'); if(u) u.scrollIntoView({behavior:'smooth'}); }
   else if(a.dataset.act==='weiter'){ if(DATA.secs[i+1]) ladeAbschnitt(i+1,false); }
+  else if(a.dataset.act==='lesen'){ reel.children[0].scrollIntoView({behavior:'smooth'}); }
   else if(a.dataset.act==='oben'){ reel.children[0].scrollIntoView({behavior:'smooth'}); }
   else if(a.dataset.act==='menu'){ oeffneMenu(); }
 });
@@ -405,12 +416,14 @@ function baueDots(){
   io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(!en.isIntersecting||en.intersectionRatio<.6) return;
     var idx=Array.prototype.indexOf.call(reel.children,en.target); aktIdx=idx;
     Array.prototype.forEach.call(dotsEl.children,function(d,j){d.classList.toggle('on',j===idx);});
-    var part=en.target.dataset.part, m=document.getElementById('mode'), u=(part==='u'||part==='e');
-    m.textContent=u?'Üben':'Lesen'; m.classList.toggle('ueben',u);
+    var part=en.target.dataset.part, u=(part==='u'||part==='e');
+    zeigeModus(u);
     stopAudio(); merke();
   }); },{root:reel,threshold:[.6]});
   Array.prototype.forEach.call(reel.children,function(s){io.observe(s);});
 }
+/* Schalter Lesen | Üben im Kopf (Leo, 03.11.2026: Üben soll von Anfang an sichtbar sein, nicht erst am Abschnittsende) */
+function zeigeModus(u){ var l=document.getElementById('mLesen'), b=document.getElementById('mUeben'); l.classList.toggle('on',!u); b.classList.toggle('on',u); l.setAttribute('aria-pressed',String(!u)); b.setAttribute('aria-pressed',String(u)); }
 var merkT=null;
 function merke(){ clearTimeout(merkT); merkT=setTimeout(function(){ try{ window.spikiuSitzung && window.spikiuSitzung.speichere(RAUM,{sec:cur.id, idx:aktIdx, ueben:imUeben, titel:cur.id+' '+cur.topic}); }catch(e){} },350); }
 
