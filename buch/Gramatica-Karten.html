@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Gramática · Spikiu</title>
 <link rel="stylesheet" href="assets/book.css">
+<link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
 /* Gramática als Kartenstapel (Leo, 24.10.2026). Eine Karte = ein Gedanke, Daumen wischt nach oben.
    Theorie → „Üben?“ → Übungen mit sofortiger Rückmeldung → nächster Abschnitt. Erzeugt von tools/reel.py. */
@@ -156,6 +157,88 @@ textarea{width:100%;min-height:92px;border:1.5px solid var(--line);border-radius
 .sheet .foot{display:flex;gap:8px;margin-top:16px}
 .sheet .foot a,.sheet .foot button{flex:1;text-align:center;border:none;background:var(--ink);color:#fff;border-radius:14px;padding:13px;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px}
 .sheet .foot a{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HAUS-STIL WIE IM LERNROMAN (Leo, 03.11.2026: „das Design der Farben genauso wie beim Lernroman … damit es einheitlich bleibt“)
+   Gilt NUR für die Karten (html.ed-reel). Buch-HTML + PDF behalten Typografie D (book.css unverändert).
+   Minz-Grund, Tinte-Kontur 2.5 px + versetzter Schatten, runder weißer Zurück-Knopf, Akzent #1f93b0, Senf für „an“.
+   Schrift = Sprache wie im ganzen Haus: DM Sans trägt Muttersprache + Oberfläche, Lora die Zielsprache.
+   ══════════════════════════════════════════════════════════════════════════ */
+html.ed-reel{
+  --minz:#eef7f1; --acc:#1f93b0; --mustard:#ffd24a; --sky:#d3eef6; --sage-g:#9bd14a; --muted:#5f7068; --read:#23243f; --ow:2.5px;
+  --paper:var(--minz); --sun:var(--acc); --sun-l:#fff3c4; --line:rgba(21,22,58,.18); --grey:var(--muted); --sage:var(--muted);
+  --f-body:'DM Sans',system-ui,sans-serif; --f-head:'DM Sans',system-ui,sans-serif; --f-mono:'DM Sans',system-ui,sans-serif; --f-es:'Lora',Georgia,serif;
+  --ok:#2f7d5b; --ok-bg:#e3f4d2; --bad:#c2402e; --bad-bg:#ffe1dc;
+}
+html.ed-reel body{font-weight:400;color:var(--ink)}
+html.ed-reel body::before{background:var(--minz)}
+html.ed-reel .es{font-style:normal;font-weight:500}
+/* Kopf wie learnroman.html */
+html.ed-reel .bar{background:var(--minz);color:var(--ink);border-bottom:var(--ow) solid var(--ink)}
+html.ed-reel .bar .ib{width:36px;min-width:36px;height:36px;padding:0;justify-content:center;border-radius:999px;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 var(--ink)}
+html.ed-reel .bar .ib:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+html.ed-reel .bar .where b{font-weight:800;font-size:15px;color:var(--ink)}
+html.ed-reel .bar .where small{font-weight:700;font-size:11px;letter-spacing:0;text-transform:none;color:var(--muted)}
+html.ed-reel .bar .mode{font-weight:800;font-size:10.5px;letter-spacing:.04em;background:#fff;color:var(--ink);border:2px solid var(--ink);padding:4px 10px}
+html.ed-reel .bar .mode.ueben{background:var(--mustard);color:var(--ink)}
+/* Karten */
+html.ed-reel .cardx{background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink)}
+html.ed-reel .slide{padding-right:max(34px,calc(env(safe-area-inset-right,0px) + 34px))}
+html.ed-reel .cardx.dark{background:var(--sky);color:var(--ink);border-color:var(--ink)}
+html.ed-reel .cardx.dark .es{color:var(--ink)}
+html.ed-reel .cardx.dark .c1{color:var(--t1);border-color:var(--t1)}
+html.ed-reel .cardx.dark .c2{color:var(--t2);border-color:var(--t2)}
+html.ed-reel .cardx.dark .de{color:var(--muted)}
+html.ed-reel .cardx.dark .eyebrow{color:var(--muted)}
+html.ed-reel .cardx.dark .play{background:var(--acc);border-color:var(--ink);color:#fff}
+html.ed-reel .cardx.kspk{background:#fff8dc}
+html.ed-reel .eyebrow{font-weight:700;font-size:11.5px;letter-spacing:.02em;text-transform:none;color:var(--muted)}
+html.ed-reel .eyebrow b{font-weight:800;font-size:11px;color:#fff;background:var(--acc);border:2px solid var(--ink);border-radius:999px;padding:1px 8px}
+html.ed-reel .ctitle{font-weight:800;color:var(--ink)}
+html.ed-reel .hook-es{font-family:'Lora',serif;font-weight:600;font-size:28px;color:var(--ink)}
+html.ed-reel .hook-de,html.ed-reel .gloss,html.ed-reel .hint,html.ed-reel .ph{color:var(--muted)}
+html.ed-reel .cartoonx{border:2px solid var(--ink);border-radius:16px;background:var(--minz)}
+html.ed-reel .bubx{border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);font-weight:500}
+html.ed-reel .big{font-weight:500}
+/* Hör-Knopf wie im Lernroman: blau, Tinte-Kontur, versetzter Schatten */
+html.ed-reel .play{background:var(--acc);color:#fff;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);font-weight:800;font-size:14px}
+html.ed-reel .play:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+html.ed-reel .play.on{background:var(--mustard);color:var(--ink);border-color:var(--ink)}
+/* Knöpfe */
+html.ed-reel .btn{border:var(--ow) solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:800}
+html.ed-reel .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+html.ed-reel .btn.primary{background:var(--acc);color:#fff}
+html.ed-reel .btn.second{background:#fff;color:var(--ink);border:var(--ow) solid var(--ink)}
+html.ed-reel .check{background:var(--acc);color:#fff;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:800}
+html.ed-reel .check:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+html.ed-reel .check.light{background:#fff;color:var(--ink);border:2.5px solid var(--ink)}
+html.ed-reel .opt{border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);font-family:'Lora',serif}
+html.ed-reel .opt:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+html.ed-reel .opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);box-shadow:2px 2px 0 var(--ok)}
+html.ed-reel .opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);box-shadow:2px 2px 0 var(--bad)}
+html.ed-reel .fb{border:2px solid currentColor;font-weight:500}
+html.ed-reel .fb.info{background:var(--minz);color:var(--ink);border-color:rgba(21,22,58,.25);border-style:dashed}
+html.ed-reel .task{color:var(--muted);font-weight:600}
+html.ed-reel .sent,html.ed-reel .mtext,html.ed-reel .ctext,html.ed-reel .fl,html.ed-reel .tf .q,html.ed-reel .mrow .l,html.ed-reel .tongue-x{font-weight:500;color:var(--read)}
+html.ed-reel .tok,html.ed-reel .chip{background:var(--minz);font-weight:500}
+html.ed-reel .ctext input,html.ed-reel .fl input,html.ed-reel .tf input{background:#fff;border-bottom:2.5px solid var(--acc)}
+html.ed-reel textarea,html.ed-reel .mrow select{border:2px solid var(--ink);background:#fff}
+html.ed-reel .solution{border:2px solid var(--ok)}
+html.ed-reel .premium{color:var(--muted)}
+/* Punkte rechts */
+html.ed-reel .dots i{background:rgba(21,22,58,.18)}
+html.ed-reel .dots i.u{background:#ffe69a}
+html.ed-reel .dots i.on{background:var(--ink)}
+html.ed-reel .dots i.u.on{background:var(--mustard);outline:1.5px solid var(--ink)}
+/* Inhaltsverzeichnis (Menü) */
+html.ed-reel .sheet .in{background:var(--minz);border-top:var(--ow) solid var(--ink)}
+html.ed-reel .sheet h3{font-weight:800}
+html.ed-reel .sheet h3 span,html.ed-reel .row .n,html.ed-reel .row .cur{color:var(--acc)}
+html.ed-reel .row{border-bottom:1.5px dashed rgba(21,22,58,.18)}
+html.ed-reel .row button{border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);font-weight:700}
+html.ed-reel .sheet .foot a,html.ed-reel .sheet .foot button{border:var(--ow) solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:800}
+html.ed-reel .sheet .foot button{background:var(--acc);color:#fff}
+html.ed-reel .sheet .foot a{background:#fff;color:var(--ink);border:var(--ow) solid var(--ink)}
 </style>
 </head>
 <body>
