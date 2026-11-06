@@ -1,0 +1,111 @@
+<svg viewBox="0 0 680 980" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Szene: Nachts im Wohnzimmer. Eine kleine Fledermaus kreist um die Lampe. Nico steht begeistert auf dem Sofa und zählt die Vokale, Oma Pilar steht mit dem Besen auf dem Stuhl. Lucía schaut ungerührt mit Tee aus der Tür.">
+<defs>
+ <filter id="hand" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".022" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+ <style>
+  .t{fill:none;stroke:#15163a;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+  .f{stroke:#15163a;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+  .du{fill:none;stroke:#15163a;stroke-width:2.2;stroke-linecap:round}
+  .h{font-family:'DM Sans',sans-serif;font-weight:800;fill:#15163a}
+  .b{font-family:'DM Sans',sans-serif;font-weight:700;fill:#15163a}
+  .v{fill:#ffd24a}
+ </style>
+</defs>
+<rect width="680" height="980" fill="#fff"/>
+<!-- Titel auf Senf-Pinselstrich -->
+<path d="M44 52 C140 30 520 26 640 46 C658 70 656 150 636 176 C470 190 190 196 52 182 C30 150 28 84 44 52Z" fill="#ffd24a" filter="url(#hand)"/>
+<text class="h" x="340" y="104" text-anchor="middle" font-size="47">Murciélago:</text>
+<text class="h" x="340" y="160" text-anchor="middle" font-size="35">¿cinco vocales en una palabra?</text>
+
+<g filter="url(#hand)">
+ <!-- Wand, Boden -->
+ <path class="du" d="M20 905 H660" stroke-width="3"/>
+ <!-- Lampe -->
+ <path class="t" d="M340 196 V262"/>
+ <path class="f" d="M302 304 L318 262 H362 L378 304Z" fill="#d3eef6"/>
+ <path class="du" d="M318 318 l-10 14 M340 322 v16 M362 318 l10 14"/>
+ <!-- Flugbahn -->
+ <path d="M248 282 C210 250 250 222 300 236 M392 236 C450 222 470 262 438 292" fill="none" stroke="#15163a" stroke-width="2.2" stroke-dasharray="7 9" stroke-linecap="round"/>
+ <!-- Fledermaus -->
+ <g transform="translate(232 300) rotate(-12)">
+  <path class="f" fill="#5b5d7a" d="M0 0 C-14 -20 -40 -26 -58 -18 C-50 -10 -48 0 -54 8 C-42 4 -30 8 -24 16 C-18 8 -8 6 0 10 C8 6 18 8 24 16 C30 8 42 4 54 8 C48 0 50 -10 58 -18 C40 -26 14 -20 0 0Z"/>
+  <ellipse class="f" fill="#5b5d7a" cx="0" cy="2" rx="11" ry="13"/>
+  <path class="f" fill="#5b5d7a" d="M-8 -9 l-3 -11 l9 7 M8 -9 l3 -11 l-9 7"/>
+  <circle cx="-4" cy="0" r="2.6" fill="#fff"/><circle cx="5" cy="0" r="2.6" fill="#fff"/>
+  <path class="du" d="M-4 7 q4 4 8 0" stroke="#fff" stroke-width="1.8"/>
+ </g>
+ <!-- Blase der Fledermaus (Humor) -->
+ <path class="f" fill="#fff" d="M28 224 C30 206 48 198 84 198 H232 C254 198 264 210 262 226 C260 246 250 254 228 254 H150 L190 282 L120 254 H58 C40 254 26 242 28 224Z"/>
+ <text class="b" x="145" y="234" text-anchor="middle" font-size="21">¡Hola! Soy el ejemplo.</text>
+
+ <!-- Sprechblase Nico -->
+ <path class="f" fill="#fff" d="M22 420 C16 358 76 336 166 336 C262 336 312 362 310 418 C308 472 256 498 198 498 L214 548 L156 498 C76 498 26 476 22 420Z"/>
+ <text class="h" x="166" y="396" text-anchor="middle" font-size="28">¡Mur-cié-la-go!</text>
+ <text class="b" x="166" y="446" text-anchor="middle" font-size="27">¡Tiene</text>
+ <g class="h" font-size="29" text-anchor="middle">
+  <rect class="v" x="72" y="456" width="186" height="34" rx="10" stroke="none"/>
+  <text x="166" y="482">a, e, i, o, u!</text>
+ </g>
+
+ <!-- Sprechblase Pilar -->
+ <path class="f" fill="#fff" d="M380 404 C376 350 432 328 520 328 C610 328 662 352 660 404 C658 456 612 478 552 478 L532 528 L500 476 C428 474 384 456 380 404Z"/>
+ <text class="h" x="520" y="392" text-anchor="middle" font-size="29">¡Nico,</text>
+ <text class="h" x="520" y="426" text-anchor="middle" font-size="29">me da igual!</text>
+ <text class="h" x="520" y="460" text-anchor="middle" font-size="23">¡Sácalo de aquí!</text>
+ <path class="du" d="M470 560 l-16 -10 M466 584 l-20 0 M592 540 l14 -12" stroke-width="3"/>
+
+ <!-- Tür mit Lucía (ungerührt, Tee) -->
+ <path class="t" d="M318 905 V560 H418 V905" fill="#f4f1ea"/>
+ <path class="du" d="M330 905 V574 H406 V905"/>
+ <circle class="f" fill="#fff" cx="372" cy="626" r="24"/>
+ <path class="f" fill="#15163a" d="M350 616 C352 592 392 590 396 612 C388 604 362 606 350 616Z"/>
+ <circle class="f" fill="#15163a" cx="372" cy="594" r="9"/>
+ <path class="du" d="M362 628 h7 M378 628 h7 M366 640 h12"/>
+ <path class="f" fill="#d3eef6" d="M352 652 C352 650 392 650 394 652 L400 760 H344Z"/>
+ <path class="f" fill="#fff" d="M384 694 h22 v22 c0 8 -22 8 -22 0Z"/>
+ <path class="du" d="M406 700 c10 0 10 12 0 12 M390 688 c-4 -8 4 -10 0 -18 M400 688 c-4 -8 4 -10 0 -18"/>
+ <path class="t" d="M354 760 V890 M388 760 V890"/>
+ <text class="b" x="434" y="612" font-size="20" fill="#5f7068">zzz…</text>
+
+ <!-- Sofa mit Nico -->
+ <path class="f" fill="#d3eef6" d="M30 790 C30 760 50 750 80 752 H262 C288 752 300 766 300 790 V880 H30Z"/>
+ <path class="t" d="M30 820 H300 M44 880 v24 M286 880 v24"/>
+ <!-- Nico -->
+ <path class="t" d="M150 790 V742 M176 790 V742"/>
+ <path class="f" fill="#9bd14a" d="M138 744 C136 700 140 676 163 674 C186 676 190 700 188 744Z"/>
+ <path class="du" d="M148 700 l6 8 l6 -8 M168 716 l6 8 l6 -8" stroke="#2b7a5c"/>
+ <circle class="f" fill="#fff" cx="163" cy="634" r="36"/>
+ <path class="f" fill="#15163a" d="M128 626 C122 590 160 584 170 598 C178 584 206 594 198 622 C190 606 178 604 170 612 C160 600 140 604 128 626Z"/>
+ <circle cx="152" cy="636" r="4" fill="#15163a"/><circle cx="176" cy="636" r="4" fill="#15163a"/>
+ <path class="f" fill="#ff6b5a" d="M150 650 C156 666 172 666 178 650Z"/>
+ <!-- Zeigefinger zur Fledermaus -->
+ <path class="t" d="M186 692 L226 640 L236 612"/>
+ <!-- fünf Finger zählen -->
+ <path class="t" d="M140 694 L96 690"/>
+ <circle class="f" fill="#fff" cx="84" cy="688" r="13"/>
+ <path class="t" d="M74 678 l-8 -14 M80 675 l-3 -17 M87 675 l3 -17 M94 679 l8 -13 M72 692 l-12 0"/>
+ <text class="h" x="58" y="650" font-size="20">5!</text>
+
+ <!-- Stuhl mit Pilar -->
+ <path class="t" d="M470 770 H600 M482 770 V905 M590 770 V905 M590 770 V650"/>
+ <path class="du" d="M482 842 H590"/>
+ <path class="t" d="M512 770 V712 M548 770 V712"/>
+ <path class="f" fill="#ffd9cf" d="M496 714 C492 660 500 620 530 618 C560 620 568 660 564 714Z"/>
+ <path class="du" d="M530 630 V710"/>
+ <circle class="f" fill="#fff" cx="530" cy="578" r="38"/>
+ <path class="f" fill="#c9cdd6" d="M492 578 C486 534 574 530 568 578 C562 552 498 552 492 578Z"/>
+ <circle class="t" cx="516" cy="580" r="9"/><circle class="t" cx="544" cy="580" r="9"/><path class="du" d="M525 580 h10"/>
+ <circle cx="516" cy="580" r="2.6" fill="#15163a"/><circle cx="544" cy="580" r="2.6" fill="#15163a"/>
+ <ellipse class="f" fill="#15163a" cx="530" cy="602" rx="8" ry="10"/>
+ <path class="du" d="M507 589 l-6 18 l18 6 M553 589 l6 18 l-18 6"/>
+ <!-- Besen hoch -->
+ <path class="t" d="M498 664 L634 540" stroke-width="5"/>
+ <path class="f" fill="#ffd24a" d="M624 552 L652 512 L672 528 L646 566Z"/>
+ <path class="du" d="M632 546 l26 -24 M640 554 l24 -22"/>
+ <path class="t" d="M500 660 C510 650 520 648 528 654 M560 640 C580 620 600 600 612 586"/>
+ <!-- Tafel unten: die fünf Vokale im Wort -->
+ <path class="f" fill="#2f4a3c" d="M436 800 H664 V880 H436Z"/>
+ <path class="t" d="M456 880 l-10 26 M644 880 l10 26"/>
+ <text x="550" y="836" text-anchor="middle" font-family="Lora,serif" font-size="29" fill="#fff">m<tspan fill="#ffd24a">u</tspan>rc<tspan fill="#ffd24a">i</tspan><tspan fill="#ffd24a">é</tspan>l<tspan fill="#ffd24a">a</tspan>g<tspan fill="#ffd24a">o</tspan></text>
+ <text x="550" y="868" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="700" font-size="18" fill="#d3eef6">a · e · i · o · u  ✓</text>
+</g>
+</svg>
