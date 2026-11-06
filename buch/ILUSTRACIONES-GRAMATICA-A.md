@@ -33,7 +33,7 @@ Cada personaje se reconoce por su silueta y dos o tres rasgos. Siempre igual.
 |---|---|
 | **LUCÍA** (32), diseñadora en Madrid | Moño alto despeinado, gafas redondas, camiseta y vaqueros. Cara de ironía seca. |
 | **DANI** (34), su novio | Alto y ancho, barba corta, sudadera. Ojos medio cerrados: siempre tranquilo. |
-| **NICO** (4), su sobrino | Muy pequeño, pelo rizado enorme, camiseta con un dinosaurio. Siempre lleva un T-Rex de juguete. |
+| **NICO** (4), su sobrino | Muy pequeño, pelo rizado castaño enorme, camiseta verde lisa, pantalón corto azul. Sin dinosaurios en la ropa ni juguete fijo (solo cuando la escena lo pide). |
 | **PILAR** (63), madre de Lucía y abuela de Nico | Bajita y redonda, melena corta gris, gafas colgando de una cadena, bolso grande. |
 | **TOFU**, perro de Dani | Perro mediano y peludo, orejas caídas, cara de inocente. |
 | **JENS** (45), turista alemán, el estudiante | Altísimo y flaco, nariz roja de sol, sandalias con calcetines, mochila pequeña. |
@@ -49,7 +49,7 @@ Classic newspaper comic-strip style in the tradition of 1960s–70s Argentine ca
 CHARACTER MODEL SHEET: seven characters standing in one row, full body, front view, same scale, evenly spaced, white background, nothing else.
 1. LUCÍA, 32: tall messy bun, round glasses, T-shirt and jeans, dry ironic half-smile.
 2. DANI, 34: tall and broad, short beard, hoodie, half-closed calm eyes.
-3. NICO, 4: very small, huge curly hair, T-shirt with a dinosaur, holding a toy T-Rex, mischievous grin.
+3. NICO, 4: very small, huge curly brown hair, plain green T-shirt, blue shorts, mischievous grin.
 4. PILAR, 63: short and round, short grey bob, glasses on a chain, big handbag, raised index finger.
 5. TOFU: medium-sized shaggy dog, floppy ears, innocent face.
 6. JENS, 45: very tall and thin, red sunburnt nose, sandals with socks, small backpack, big confident smile.
