@@ -643,7 +643,27 @@
      }
     ],
     "gloss": "<es>cerveza</es> Bier – ohne ein einziges „ts“",
-    "prompt": "SCENE: A sunny terrace of a typical Madrid bar with small metal tables and a striped awning. On the left, JENS, a tall, very pale German tourist in his forties with a sunburnt nose, sandals with white socks and a small backpack, sits at a table, holding the menu, speaking with great confidence and a proud smile. Standing next to him, an older Spanish WAITER with a white shirt, black vest and a tray under his arm leans forward with a deeply puzzled face, one eyebrow raised high. At the next table on the right, DANI (34, beard, relaxed) quietly hides his face behind his hand in second-hand embarrassment. Leave clear empty space above Jens (top left) and above the waiter (top right) for two speech bubbles."
+    "prompt": "SCENE: A sunny terrace of a typical Madrid bar with small metal tables and a striped awning. On the left, JENS, a tall, very pale German tourist in his forties with a sunburnt nose, sandals with white socks and a small backpack, sits at a table, holding the menu, speaking with great confidence and a proud smile. Standing next to him, an older Spanish WAITER with a white shirt, black vest and a tray under his arm leans forward with a deeply puzzled face, one eyebrow raised high. At the next table on the right, DANI (34, beard, relaxed) quietly hides his face behind his hand in second-hand embarrassment. Leave clear empty space above Jens (top left) and above the waiter (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-03.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 5,
+       "w": 48,
+       "tail": "bc",
+       "text": "Una «tser‑wet‑sa»,<br>por favor."
+      },
+      {
+       "x": 37,
+       "y": 34,
+       "w": 22,
+       "tail": "r",
+       "text": "¿Una…<br>qué?"
+      }
+     ],
+     "gloss": "<es>cerveza</es> Bier – ohne ein einziges „ts“"
+    }
    },
    "gramatica": [
     [
