@@ -492,7 +492,27 @@
      }
     ],
     "gloss": "<es>¿cuál?</es> welche?",
-    "prompt": "SCENE: A family kitchen table with two big paella pans side by side, each with a small flag stuck in it. NICO, four years old, sits on a high chair between them like a very serious TV cooking-show judge, a napkin tucked into his dinosaur T-shirt, a big spoon raised, cheeks full of rice. On the left, PILAR in an apron leans forward with hopeful, slightly threatening eyes. On the right, DANI stands calmly with folded arms and a tiny modest smile. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: A family kitchen table with two big paella pans side by side, each with a small flag stuck in it. NICO, four years old, sits on a high chair between them like a very serious TV cooking-show judge, a napkin tucked into his dinosaur T-shirt, a big spoon raised, cheeks full of rice. On the left, PILAR in an apron leans forward with hopeful, slightly threatening eyes. On the right, DANI stands calmly with folded arms and a tiny modest smile. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "03-03.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 17,
+       "w": 48,
+       "tail": "bl",
+       "text": "Cariño,<br>¿cuál es mejor?"
+      },
+      {
+       "x": 31,
+       "y": 32,
+       "w": 42,
+       "tail": "bc",
+       "text": "La de él.<br>¡Mucho mejor!"
+      }
+     ],
+     "gloss": "<es>bueno → mejor</es> gut → besser · <es>¿cuál?</es> welche? · <es>la de él</es> die von ihm"
+    }
    },
    "gramatica": [
     [
