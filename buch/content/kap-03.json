@@ -33,7 +33,27 @@
      }
     ],
     "gloss": "<es>el jersey</es> Pullover · <es>la bufanda</es> Schal",
-    "prompt": "SCENE: PILAR's cosy living room with a basket full of knitting wool. On the left, PILAR, beaming with pride, holds up her knitting needles like trophies. In the centre stands DANI, perfectly calm and resigned, dressed head to toe in hand-knitted, slightly too big, bright yellow things: a yellow sweater, a long yellow scarf, yellow socks and a yellow bobble hat. At his feet sits his scruffy dog, also wearing a tiny yellow knitted sweater and looking deeply embarrassed. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: PILAR's cosy living room with a basket full of knitting wool. On the left, PILAR, beaming with pride, holds up her knitting needles like trophies. In the centre stands DANI, perfectly calm and resigned, dressed head to toe in hand-knitted, slightly too big, bright yellow things: a yellow sweater, a long yellow scarf, yellow socks and a yellow bobble hat. At his feet sits his scruffy dog, also wearing a tiny yellow knitted sweater and looking deeply embarrassed. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "03-01.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 2,
+       "w": 48,
+       "tail": "bl",
+       "text": "¡Jersey rayado,<br>bufanda rayada,<br>gorro rayado!"
+      },
+      {
+       "x": 51,
+       "y": 8,
+       "w": 47,
+       "tail": "bl",
+       "text": "Y perro rayado.<br>Gracias, abuela."
+      }
+     ],
+     "gloss": "<es>rayado</es> gestreift: <es>el jersey rayado</es>, <es>la bufanda rayada</es> – das Adjektiv passt sich an"
+    }
    },
    "gramatica": [
     [

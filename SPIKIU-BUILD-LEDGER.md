@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 07.11.2026 · BILD 3.1 EINGEBAUT (**Leo, 21:40: „2.6“** – gemeint ist Ficha 03.01, Kapitel 2 hat nur 5 Abschnitte) — `buch/bilder/03-01.png` (Oma mit Stricknadeln, Mann + Hund ganz in Streifen gestrickt). Weil s/w statt gelb: Blasen auf **rayado** umgestellt: Oma „¡Jersey rayado, bufanda rayada, gorro rayado!“ · Mann „Y perro rayado. Gracias, abuela.“ (statt „Pilar“). Glosse: „rayado gestreift: el jersey rayado, la bufanda rayada – das Adjektiv passt sich an“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2 komplett, 3.1**.
+
 Stand: 07.11.2026 · 2.3 BLASE GEÄNDERT (**Leo, 19:23: „Mejor es ¿Un perro en el sofá?“**) — Frau jetzt „¡Socorro! ¿Un perro en el sofá?“ (statt „¡Hay un perro en el sofá!“).
 
 Stand: 07.11.2026 · BILD 2.5 EINGEBAUT – KAPITEL 2 KOMPLETT BEBILDERT (**Leo, 19:19: „2.5“**) — `buch/bilder/02-05.png` (Party, Frau mit Glas, Kind im Dino-Kostüm brüllt, elegante Dame verschüttet ihr Getränk; Bild fast quadratisch 1199×1312). Blasen in Lesereihenfolge: Dame „¿Y usted, a qué se dedica?“ (neu, als Auftakt) · Frau „Soy diseñadora.“ · Kind „¡Y yo soy un tiranosaurio!“. Glosse: „Soy diseñadora. Beruf – ohne Artikel · ¿A qué se dedica? Was machen Sie beruflich?“. Überlauf 0. **Kapitel 1 + 2: alle 14 Bilder eingebaut.**
