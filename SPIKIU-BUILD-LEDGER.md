@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 07.11.2026 · 2.3 BLASE GEÄNDERT (**Leo, 19:23: „Mejor es ¿Un perro en el sofá?“**) — Frau jetzt „¡Socorro! ¿Un perro en el sofá?“ (statt „¡Hay un perro en el sofá!“).
+
 Stand: 07.11.2026 · BILD 2.5 EINGEBAUT – KAPITEL 2 KOMPLETT BEBILDERT (**Leo, 19:19: „2.5“**) — `buch/bilder/02-05.png` (Party, Frau mit Glas, Kind im Dino-Kostüm brüllt, elegante Dame verschüttet ihr Getränk; Bild fast quadratisch 1199×1312). Blasen in Lesereihenfolge: Dame „¿Y usted, a qué se dedica?“ (neu, als Auftakt) · Frau „Soy diseñadora.“ · Kind „¡Y yo soy un tiranosaurio!“. Glosse: „Soy diseñadora. Beruf – ohne Artikel · ¿A qué se dedica? Was machen Sie beruflich?“. Überlauf 0. **Kapitel 1 + 2: alle 14 Bilder eingebaut.**
 
 Stand: 07.11.2026 · BILD 2.4 EINGEBAUT (**Leo, 19:16: „2.4“**) — `buch/bilder/02-04.png` (Mann winkt an der Tür, Frau skeptisch unter der Decke). Blasen: Mann „Voy al bar del barrio. Vuelvo a las diez.“ (rechts höher = zuerst) · Frau „¿A las diez de qué día?“. Glosse: „al bar = a + el · del barrio = de + el · vuelvo ich komme zurück“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2.1–2.4**.
