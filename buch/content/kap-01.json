@@ -894,7 +894,27 @@
      }
     ],
     "gloss": "<es>jamón</es> Schinken – das j wie ch in „Bach“",
-    "prompt": "SCENE: Inside a traditional Spanish tapas bar. Behind the counter, a row of whole cured hams hangs from the ceiling, clearly visible and glowing in warm light. On the left at the counter, JENS, a tall, pale German tourist in his forties with a sunburnt nose and a small backpack, points with great confidence directly at the hanging hams. On the right behind the counter, a stocky BARMAN with a moustache and an apron stares at him in total confusion, a knife in one hand and an empty plate in the other. The hams hang right above his head. Leave clear empty space above Jens (top left) and above the barman (top right) for two speech bubbles."
+    "prompt": "SCENE: Inside a traditional Spanish tapas bar. Behind the counter, a row of whole cured hams hangs from the ceiling, clearly visible and glowing in warm light. On the left at the counter, JENS, a tall, pale German tourist in his forties with a sunburnt nose and a small backpack, points with great confidence directly at the hanging hams. On the right behind the counter, a stocky BARMAN with a moustache and an apron stares at him in total confusion, a knife in one hand and an empty plate in the other. The hams hang right above his head. Leave clear empty space above Jens (top left) and above the barman (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-04.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 6,
+       "w": 38,
+       "tail": "bc",
+       "text": "Un bocadillo<br>de «yamón»,<br>por favor."
+      },
+      {
+       "x": 67,
+       "y": 5,
+       "w": 30,
+       "tail": "bl",
+       "text": "¿De… qué?"
+      }
+     ],
+     "gloss": "<es>jamón</es> Schinken – das j wie ch in „Bach“"
+    }
    },
    "gramatica": [
     [
