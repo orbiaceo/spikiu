@@ -284,7 +284,27 @@
      }
     ],
     "gloss": "<es>jueves</es> Donnerstag",
-    "prompt": "SCENE: A cosy old-fashioned Madrid café terrace. Around a round table sit PILAR and five women friends in their sixties, all dressed up, raising their coffee cups and cake forks in a cheerful toast. A small hand-made sign on the table shows six women's silhouettes. On the right, DANI has just squeezed onto an extra chair at the table, the only man, calm and smiling, politely raising one finger as if to make a small correction. The women look at him with amused, slightly scandalised faces. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: A cosy old-fashioned Madrid café terrace. Around a round table sit PILAR and five women friends in their sixties, all dressed up, raising their coffee cups and cake forks in a cheerful toast. A small hand-made sign on the table shows six women's silhouettes. On the right, DANI has just squeezed onto an extra chair at the table, the only man, calm and smiling, politely raising one finger as if to make a small correction. The women look at him with amused, slightly scandalised faces. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "02-02.png",
+     "bubbles": [
+      {
+       "x": 3,
+       "y": 28,
+       "w": 42,
+       "tail": "bl",
+       "text": "¡Las chicas<br>del jueves!"
+      },
+      {
+       "x": 54,
+       "y": 24,
+       "w": 40,
+       "tail": "bc",
+       "text": "Perdón:<br>los chicos<br>del jueves."
+      }
+     ],
+     "gloss": "<es>las chicas</es> – kommt ein Mann dazu: <es>los chicos</es> · <es>jueves</es> Donnerstag"
+    }
    },
    "gramatica": [
     [
