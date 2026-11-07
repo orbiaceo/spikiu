@@ -134,7 +134,7 @@ def _sauber(t):
     t = strip_tags(t)
     t = re.sub(r'\([^)]*\)', ' ', t)                       # Klammern = Erklärung, nicht sprechen
     t = re.sub(r'[«»„“”"]', '', t)
-    t = re.sub(r"(\w)-(\w)", r"\1\2", t)                  # Silbentrennung bue-no → bueno
+    t = re.sub(r"(?<=\w)[-‐‑](?=\w)", "", t)               # Silbentrennung bue-no, pa-e-lla → bueno, paella (auch 1-Buchstaben-Silben)
     t = re.sub(r'\s*[·|/→=]\s*', ' | ', t)                  # Notation trennt Bausteine
     t = re.sub(r'^\s*(…|\.\.\.)\s*', '', t)
     return re.sub(r'\s+', ' ', t).strip()

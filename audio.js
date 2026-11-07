@@ -310,8 +310,16 @@ function speakWithBrowser(text, zielsprache) {
 }
 
 // ── Öffentlich: speak(text, zielsprache) ───────────────────────────────────────
+// ── Sprech-Ebene ≠ Lese-Ebene (Leo, 07.11.2026: „Bue-no es lo visual. Lo que lee la voz debe ser: bueno.“) ──
+// Silbentrennung, die man SIEHT (mur-cié-la-go, pa-e-lla), wird für die Stimme zum ganzen Wort zusammengezogen –
+// sonst klingt es wie gestottert. Nur Bindestriche ZWISCHEN zwei Buchstaben; Endungen wie „-ar“ bleiben unberührt.
+function sprechText(text) {
+  return String(text).replace(/(\p{L})[-‐‑](?=\p{L})/gu, '$1');   // ohne Lookbehind: läuft auch auf älterem Safari
+}
+
 async function speak(text, zielsprache) {
   if (!text || !String(text).trim()) return;
+  text = sprechText(text);
   const gen = ++speakGen;          // dieser Aufruf ist ab jetzt der aktuelle
   stopPlayback();                  // altes Audio SOFORT aus — nie zwei Stimmen übereinander
   // Geräte-Stimme direkt (Griechisch immer; auf iOS ALLE Sprachen): kein stummes Piper.
