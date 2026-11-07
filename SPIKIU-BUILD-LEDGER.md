@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 07.11.2026 · BILDER 1.5 + 1.6 EINGEBAUT (**Leo, 18:22: „Pero y baca en vez de perro y vaca“**) — `buch/bilder/01-05.png` (Mutter + Kind umarmt Hund), `01-06.png` (Sohn am Auto, Mutter im Kreis denkt an Kuh). Blasen ohne Figurennamen: 1.5 Mutter „Pero, cariño…“ · Kind „¡No «pero»! ¡PE‑RRRRRO!“ · 1.6 Sohn „¡Mamá, tengo una baca nueva!“ (oben, wird zuerst gelesen) · Mutter „¿¡Una VACA!? ¿En el coche?“ (Spitze zum Kreis). Überlauf 0. Bilder eingebaut: **1.1–1.6**.
+
 Stand: 07.11.2026 · BILD 1.4 EINGEBAUT (**Leo, 18:15: „El yamon“**) — `buch/bilder/01-04.png` (Tourist zeigt auf den Schinken, Kellner verdutzt). Blasen: Tourist „Un bocadillo de «yamón», por favor.“ · Kellner „¿De… qué?“ (läuft als Gag weiter zu 1.3 „¿Una… qué?“). Alle Ausgaben neu gebaut, Überlauf 0. Bilder eingebaut: **1.1–1.4**.
 
 Stand: 07.11.2026 · BILD 1.3 EINGEBAUT (**Leo, 18:11: „Perfecto. Aquí sigue la cosecha. Tserveza mosquito ;-)“**) — `buch/bilder/01-03.png` (Tourist + Kellner mit Mücken-Denkwolke). Blasen: Tourist „Una «tser‑wet‑sa», por favor.“ (**geschützte Bindestriche U+2011**, damit die Zeile nicht im Wort bricht; Stimme liest „tserwetsa“) · Kellner „¿Una… qué?“. Alle Ausgaben neu gebaut, Überlauf 0. Stand der Bilder: **1.1, 1.2, 1.3** eingebaut.

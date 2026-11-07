@@ -1159,7 +1159,27 @@
      }
     ],
     "gloss": "<es>pero</es> aber · <es>perro</es> Hund",
-    "prompt": "SCENE: A sunny path in Madrid's Retiro park. In the centre, a scruffy, friendly medium-sized mixed-breed dog wags its tail and sits on the gravel. On the right, NICO (4, curly hair, dinosaur T-shirt) has thrown both arms around the dog's neck and refuses to let go, his feet planted firmly, chin raised, rolling his tongue with dramatic determination. On the left, PILAR (63, short grey bob, cardigan, handbag over her arm) bends forward with a raised index finger, a mix of strictness and helplessness on her face. In the background, DANI (34, beard) holds the empty end of the dog's lead and shrugs with a calm smile. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: A sunny path in Madrid's Retiro park. In the centre, a scruffy, friendly medium-sized mixed-breed dog wags its tail and sits on the gravel. On the right, NICO (4, curly hair, dinosaur T-shirt) has thrown both arms around the dog's neck and refuses to let go, his feet planted firmly, chin raised, rolling his tongue with dramatic determination. On the left, PILAR (63, short grey bob, cardigan, handbag over her arm) bends forward with a raised index finger, a mix of strictness and helplessness on her face. In the background, DANI (34, beard) holds the empty end of the dog's lead and shrugs with a calm smile. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-05.png",
+     "bubbles": [
+      {
+       "x": 4,
+       "y": 9,
+       "w": 44,
+       "tail": "bc",
+       "text": "Pero, cariño…"
+      },
+      {
+       "x": 50,
+       "y": 37,
+       "w": 46,
+       "tail": "bl",
+       "text": "¡No «pero»!<br>¡PE‑RRRRRO!"
+      }
+     ],
+     "gloss": "<es>pero</es> aber · <es>perro</es> Hund"
+    }
    },
    "gramatica": [
     [
@@ -1407,7 +1427,27 @@
      }
     ],
     "gloss": "<es>baca</es> Dachgepäckträger · <es>vaca</es> Kuh",
-    "prompt": "SCENE: Left two thirds of the image: a quiet Madrid street. DANI (34, beard, relaxed) stands proudly next to his small old hatchback car and points with one hand at a brand-new, shiny, completely empty roof rack on top of the car, while holding a smartphone to his ear with the other hand. Right third: a round inset, like a picture-in-picture video call, showing PILAR (63, short grey bob, cardigan) in her kitchen with a phone at her ear, eyes wide in horror; above her head floats a small thought cloud showing a cow standing on the roof of a car. Leave clear empty space above Dani (top left) and above the inset (top right) for two speech bubbles."
+    "prompt": "SCENE: Left two thirds of the image: a quiet Madrid street. DANI (34, beard, relaxed) stands proudly next to his small old hatchback car and points with one hand at a brand-new, shiny, completely empty roof rack on top of the car, while holding a smartphone to his ear with the other hand. Right third: a round inset, like a picture-in-picture video call, showing PILAR (63, short grey bob, cardigan) in her kitchen with a phone at her ear, eyes wide in horror; above her head floats a small thought cloud showing a cow standing on the roof of a car. Leave clear empty space above Dani (top left) and above the inset (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-06.png",
+     "bubbles": [
+      {
+       "x": 44,
+       "y": 25,
+       "w": 54,
+       "tail": "bl",
+       "text": "¡Mamá, tengo<br>una baca nueva!"
+      },
+      {
+       "x": 48,
+       "y": 40,
+       "w": 46,
+       "tail": "l",
+       "text": "¿¡Una VACA!?<br>¿En el coche?"
+      }
+     ],
+     "gloss": "<es>baca</es> Dachgepäckträger · <es>vaca</es> Kuh"
+    }
    },
    "gramatica": [
     [
