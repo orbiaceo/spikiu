@@ -1952,7 +1952,27 @@
      }
     ],
     "gloss": "<es>papá</es> Papa · <es>el Papa</es> der Papst · <es>papas</es> Kartoffeln (Lateinamerika, Kanaren)",
-    "prompt": "SCENE: A family living room on a Sunday afternoon. On a TV screen in the centre, an elderly man in white papal robes and a white skullcap stands on a balcony, cheerfully eating French fries from a paper cone. On the left, NICO (4, curly hair, dinosaur T-shirt) stands right in front of the TV, pointing at the screen with both hands, utterly amazed. On the right, NICO'S FATHER (Lucía's brother, mid-thirties, glasses, very sleepy) lies stretched out on the sofa under a blanket, opening one eye and raising a lazy finger like a teacher. Leave clear empty space above Nico (top left) and above the father (top right) for two speech bubbles."
+    "prompt": "SCENE: A family living room on a Sunday afternoon. On a TV screen in the centre, an elderly man in white papal robes and a white skullcap stands on a balcony, cheerfully eating French fries from a paper cone. On the left, NICO (4, curly hair, dinosaur T-shirt) stands right in front of the TV, pointing at the screen with both hands, utterly amazed. On the right, NICO'S FATHER (Lucía's brother, mid-thirties, glasses, very sleepy) lies stretched out on the sofa under a blanket, opening one eye and raising a lazy finger like a teacher. Leave clear empty space above Nico (top left) and above the father (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-08.png",
+     "bubbles": [
+      {
+       "x": 3,
+       "y": 20,
+       "w": 58,
+       "tail": "bl",
+       "text": "¡Papá, papá!<br>¡El Papa come papas!"
+      },
+      {
+       "x": 59,
+       "y": 38,
+       "w": 39,
+       "tail": "bc",
+       "text": "Patatas, hijo.<br>Aquí se dice<br>«patatas»."
+      }
+     ],
+     "gloss": "<es>papá</es> Papa · <es>el Papa</es> der Papst · <es>papas</es> Kartoffeln (Lateinamerika, Kanaren)"
+    }
    },
    "gramatica": [
     [
