@@ -257,7 +257,27 @@
      }
     ],
     "gloss": "<es>te presento a</es> darf ich vorstellen · <es>¡Oye!</es> He!",
-    "prompt": "SCENE: A lively tapas bar in Madrid. On the left, LUCÍA, relaxed and smiling, gestures with an open hand towards her friend MARTA, a stylish woman of about thirty with trendy clothes, introducing her to two people at the bar. MARTA, on the right, has just frozen mid-sip with her wine glass, eyebrows shot up, mouth open in mock outrage, one hand on her chest as if deeply insulted. The two people at the bar try not to laugh. Leave clear empty space above Lucía (top left) and above Marta (top right) for two speech bubbles."
+    "prompt": "SCENE: A lively tapas bar in Madrid. On the left, LUCÍA, relaxed and smiling, gestures with an open hand towards her friend MARTA, a stylish woman of about thirty with trendy clothes, introducing her to two people at the bar. MARTA, on the right, has just frozen mid-sip with her wine glass, eyebrows shot up, mouth open in mock outrage, one hand on her chest as if deeply insulted. The two people at the bar try not to laugh. Leave clear empty space above Lucía (top left) and above Marta (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "03-02.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 9,
+       "w": 56,
+       "tail": "bl",
+       "text": "Te presento a Marta,<br>una vieja amiga."
+      },
+      {
+       "x": 58,
+       "y": 20,
+       "w": 38,
+       "tail": "br",
+       "text": "¡Oye!<br>¿Vieja yo?"
+      }
+     ],
+     "gloss": "<es>una vieja amiga</es> eine langjährige Freundin · <es>una amiga vieja</es> eine betagte Freundin"
+    }
    },
    "gramatica": [
     [

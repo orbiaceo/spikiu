@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 07.11.2026 · BILD 3.2 EINGEBAUT (**Leo, 23:27: „03.02“**) — `buch/bilder/03-02.png` (zwei Frauen an der Bar, die Vorgestellte gekränkt). Blasen: „Te presento a Marta, una vieja amiga.“ · „¡Oye! ¿Vieja yo?“. Glosse neu: „una vieja amiga eine langjährige Freundin · una amiga vieja eine betagte Freundin“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2 komplett, 3.1–3.2**.
+
 Stand: 07.11.2026 · BILD 3.1 EINGEBAUT (**Leo, 21:40: „2.6“** – gemeint ist Ficha 03.01, Kapitel 2 hat nur 5 Abschnitte) — `buch/bilder/03-01.png` (Oma mit Stricknadeln, Mann + Hund ganz in Streifen gestrickt). Weil s/w statt gelb: Blasen auf **rayado** umgestellt: Oma „¡Jersey rayado, bufanda rayada, gorro rayado!“ · Mann „Y perro rayado. Gracias, abuela.“ (statt „Pilar“). Glosse: „rayado gestreift: el jersey rayado, la bufanda rayada – das Adjektiv passt sich an“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2 komplett, 3.1**.
 
 Stand: 07.11.2026 · 2.3 BLASE GEÄNDERT (**Leo, 19:23: „Mejor es ¿Un perro en el sofá?“**) — Frau jetzt „¡Socorro! ¿Un perro en el sofá?“ (statt „¡Hay un perro en el sofá!“).
