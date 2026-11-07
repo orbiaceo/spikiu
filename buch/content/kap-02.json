@@ -35,7 +35,27 @@
      }
     ],
     "gloss": "<es>tranquila</es> ruhig, keine Panik",
-    "prompt": "SCENE: A small, colourful Madrid living room is flooded knee-deep with water after a pipe burst; a thin jet still sprays from the wall. On the left, LUCÍA stands in the water in rolled-up jeans, arms raised in panic, holding a bucket in one hand and a mop in the other, hair wild. In the middle of the room DANI sits perfectly relaxed on the old sofa, which floats like a raft. He wears a sailor's cap and calmly studies a large unfolded paper map, as if planning a sea voyage. A rubber duck, a slipper and a coffee cup float past. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: A small, colourful Madrid living room is flooded knee-deep with water after a pipe burst; a thin jet still sprays from the wall. On the left, LUCÍA stands in the water in rolled-up jeans, arms raised in panic, holding a bucket in one hand and a mop in the other, hair wild. In the middle of the room DANI sits perfectly relaxed on the old sofa, which floats like a raft. He wears a sailor's cap and calmly studies a large unfolded paper map, as if planning a sea voyage. A rubber duck, a slipper and a coffee cup float past. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "02-01.png",
+     "bubbles": [
+      {
+       "x": 3,
+       "y": 26,
+       "w": 46,
+       "tail": "bl",
+       "text": "¡Cariño! ¡El agua!<br>¡El sofá!"
+      },
+      {
+       "x": 55,
+       "y": 35,
+       "w": 42,
+       "tail": "bc",
+       "text": "Tranquila.<br>Tengo el mapa."
+      }
+     ],
+     "gloss": "<es>el agua, el mapa, el sofá</es> – männlich, auch wenn sie anders aussehen · <es>tranquila</es> ruhig, keine Panik"
+    }
    },
    "gramatica": [
     [
