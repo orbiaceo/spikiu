@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 07.11.2026 · BILD 2.4 EINGEBAUT (**Leo, 19:16: „2.4“**) — `buch/bilder/02-04.png` (Mann winkt an der Tür, Frau skeptisch unter der Decke). Blasen: Mann „Voy al bar del barrio. Vuelvo a las diez.“ (rechts höher = zuerst) · Frau „¿A las diez de qué día?“. Glosse: „al bar = a + el · del barrio = de + el · vuelvo ich komme zurück“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2.1–2.4**.
+
 Stand: 07.11.2026 · BILD 2.3 EINGEBAUT (**Leo, 19:13: „2.3“**) — `buch/bilder/02-03.png` (Frau mit Einkaufstüten in der Tür, Hund auf dem Sofa, Kind erklärt). Blasen: Frau „¡Socorro! ¡Hay un perro en el sofá!“ · Kind „No es UN perro. ¡Es EL perro de papá!“ (statt „¡Es Tofu!“ – zeigt jetzt un ↔ el direkt). Glosse: „un perro irgendein Hund · el perro der Hund, den wir kennen · ¡Socorro! Hilfe!“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2.1–2.3**.
 
 Stand: 07.11.2026 · BILD 2.2 EINGEBAUT (**Leo, 18:49: „02.02“**) — `buch/bilder/02-02.png` (Damenkränzchen, ein einziger Herr mit erhobenem Finger). Blasen: Dame „¡Las chicas del jueves!“ · Herr „Perdón: los chicos del jueves.“ Glosse: „las chicas – kommt ein Mann dazu: los chicos · jueves Donnerstag“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2.1–2.2**.

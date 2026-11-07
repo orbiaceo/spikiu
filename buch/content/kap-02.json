@@ -741,7 +741,27 @@
      }
     ],
     "gloss": "<es>voy</es> ich gehe · <es>vuelvo</es> ich komme zurück",
-    "prompt": "SCENE: A Madrid apartment hallway in the evening. On the left, DANI stands in the open front door, jacket half on, keys in hand, completely relaxed, giving a lazy little wave. Through the door you see the stairwell and, far below on the street, the warm glowing sign of a small neighbourhood bar. On the right, LUCÍA lies on the sofa in pyjamas with a blanket and a bowl of popcorn, looking at him over her shoulder with a deeply sceptical, raised-eyebrow face. On the wall a clock shows nine o'clock, and next to it hangs a calendar. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles."
+    "prompt": "SCENE: A Madrid apartment hallway in the evening. On the left, DANI stands in the open front door, jacket half on, keys in hand, completely relaxed, giving a lazy little wave. Through the door you see the stairwell and, far below on the street, the warm glowing sign of a small neighbourhood bar. On the right, LUCÍA lies on the sofa in pyjamas with a blanket and a bowl of popcorn, looking at him over her shoulder with a deeply sceptical, raised-eyebrow face. On the wall a clock shows nine o'clock, and next to it hangs a calendar. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "02-04.png",
+     "bubbles": [
+      {
+       "x": 44,
+       "y": 24,
+       "w": 54,
+       "tail": "bc",
+       "text": "Voy al bar del barrio.<br>Vuelvo a las diez."
+      },
+      {
+       "x": 3,
+       "y": 39,
+       "w": 40,
+       "tail": "bl",
+       "text": "¿A las diez<br>de qué día?"
+      }
+     ],
+     "gloss": "<es>al bar</es> = <es>a + el</es> · <es>del barrio</es> = <es>de + el</es> · <es>vuelvo</es> ich komme zurück"
+    }
    },
    "gramatica": [
     [
