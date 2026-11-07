@@ -1697,7 +1697,27 @@
      }
     ],
     "gloss": "<es>año</es> Jahr · <es>ano</es> After – ja, wirklich",
-    "prompt": "SCENE: New Year's Eve, a few seconds after midnight, in Lucía's small Madrid apartment. A TV in the background shows a festive crowd at night under a clock tower, with confetti. On the sofa, DANI (34, beard, relaxed, paper party hat) calmly eats grapes one by one from a little bowl, completely relaxed. Next to him, LUCÍA (32, messy bun, sparkly party top) stares at the screen of her smartphone, slapping her free hand against her forehead, half laughing, half in despair. Streamers and a half-empty bottle of cava on the coffee table. Leave clear empty space top left (for a message-style bubble) and above Lucía (top right) for two speech bubbles."
+    "prompt": "SCENE: New Year's Eve, a few seconds after midnight, in Lucía's small Madrid apartment. A TV in the background shows a festive crowd at night under a clock tower, with confetti. On the sofa, DANI (34, beard, relaxed, paper party hat) calmly eats grapes one by one from a little bowl, completely relaxed. Next to him, LUCÍA (32, messy bun, sparkly party top) stares at the screen of her smartphone, slapping her free hand against her forehead, half laughing, half in despair. Streamers and a half-empty bottle of cava on the coffee table. Leave clear empty space top left (for a message-style bubble) and above Lucía (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-07.png",
+     "bubbles": [
+      {
+       "x": 8,
+       "y": 17,
+       "w": 60,
+       "tail": "bl",
+       "text": "Mensaje de mamá:<br>«¡Feliz ano nuevo, hija!»"
+      },
+      {
+       "x": 8,
+       "y": 32,
+       "w": 40,
+       "tail": "bc",
+       "text": "Mamá… ¡la ñ!"
+      }
+     ],
+     "gloss": "<es>año</es> Jahr · <es>ano</es> After – ja, wirklich"
+    }
    },
    "gramatica": [
     [
