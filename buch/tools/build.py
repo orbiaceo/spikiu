@@ -556,7 +556,7 @@ def front_pages(book, ctx, chapters):
     from front import title_page, imprint_page, promo_page, howto_page, ensemble_page
     out = [title_page(book, ctx), imprint_page(book, ctx), promo_page(book, ctx), howto_page(book, ctx)]
     if book == 'G':
-        out.append(ensemble_page(ctx))
+        pass  # „Lucía und ihre Leute“ entfällt (Leo, 07.11.2026: keine festen Figuren mehr – „Irán apareciendo personajes poco a poco.“)
     return out
 
 def toc_flow(book, chapters, tests):
