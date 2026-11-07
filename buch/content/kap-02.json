@@ -527,7 +527,27 @@
      }
     ],
     "gloss": "<es>¡Socorro!</es> Hilfe!",
-    "prompt": "SCENE: LUCÍA has just opened the door of her apartment, still holding her keys and a shopping bag, frozen in shock with wide eyes. On her bright, clean sofa lies a big, scruffy, very relaxed dog on its back, paws in the air, surrounded by crisps. Next to the dog sits NICO, four years old, in a dinosaur T-shirt, one arm around the dog, looking at his aunt with an offended, know-it-all expression, like a small professor correcting a student. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: LUCÍA has just opened the door of her apartment, still holding her keys and a shopping bag, frozen in shock with wide eyes. On her bright, clean sofa lies a big, scruffy, very relaxed dog on its back, paws in the air, surrounded by crisps. Next to the dog sits NICO, four years old, in a dinosaur T-shirt, one arm around the dog, looking at his aunt with an offended, know-it-all expression, like a small professor correcting a student. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "02-03.png",
+     "bubbles": [
+      {
+       "x": 4,
+       "y": 22,
+       "w": 42,
+       "tail": "bl",
+       "text": "¡Socorro!<br>¡Hay un perro<br>en el sofá!"
+      },
+      {
+       "x": 55,
+       "y": 31,
+       "w": 42,
+       "tail": "bc",
+       "text": "No es UN perro.<br>¡Es EL perro<br>de papá!"
+      }
+     ],
+     "gloss": "<es>un perro</es> irgendein Hund · <es>el perro</es> der Hund, den wir kennen · <es>¡Socorro!</es> Hilfe!"
+    }
    },
    "gramatica": [
     [
