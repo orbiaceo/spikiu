@@ -34,7 +34,27 @@
      }
     ],
     "gloss": "<es>murciélago</es> Fledermaus · <es>me da igual</es> ist mir egal · <es>¡sácalo!</es> schaff ihn raus!",
-    "prompt": "SCENE: Night in a cosy, slightly messy Madrid living room. A small, harmless bat flutters in circles around the ceiling lamp. On the right, PILAR (63, short grey bob, cardigan, reading glasses on a chain) stands on a wooden chair, clutching a broom with both hands, mouth wide open in panic. On the left, NICO (4, curly hair, dinosaur pyjamas) stands on the sofa, beaming with pure delight, pointing at the bat with one hand and proudly counting on the five fingers of the other hand. In the doorway in the background, LUCÍA (32, messy bun, oversized T-shirt) leans against the frame with a cup of tea, completely unimpressed. Leave clear empty space above Nico (top left) and above Pilar (top right) for two speech bubbles."
+    "prompt": "SCENE: Night in a cosy, slightly messy Madrid living room. A small, harmless bat flutters in circles around the ceiling lamp. On the right, PILAR (63, short grey bob, cardigan, reading glasses on a chain) stands on a wooden chair, clutching a broom with both hands, mouth wide open in panic. On the left, NICO (4, curly hair, dinosaur pyjamas) stands on the sofa, beaming with pure delight, pointing at the bat with one hand and proudly counting on the five fingers of the other hand. In the doorway in the background, LUCÍA (32, messy bun, oversized T-shirt) leans against the frame with a cup of tea, completely unimpressed. Leave clear empty space above Nico (top left) and above Pilar (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-01.png",
+     "bubbles": [
+      {
+       "x": 47,
+       "y": 1.5,
+       "w": 50,
+       "tail": "bc",
+       "text": "¡Hola! Tengo<br>a, e, i, o, u."
+      },
+      {
+       "x": 29,
+       "y": 36,
+       "w": 48,
+       "tail": "bl",
+       "text": "¡Un mur-cié-la-go!"
+      }
+     ],
+     "gloss": "<es>murciélago</es> Fledermaus – ein Wort mit allen fünf Vokalen"
+    }
    },
    "gramatica": [
     [
@@ -337,7 +357,27 @@
      }
     ],
     "gloss": "<es>ahí</es> (a-í) dort · <es>hay</es> (ai) es gibt · <es>¡ay!</es> (ai) au!",
-    "prompt": "SCENE: A bright living room, the floor covered with small plastic toy dinosaurs. In the centre, DANI (34, beard, calm type, socks only) hops on one leg, holding his other foot with both hands, his face twisted in comic pain, eyes squeezed shut. On the floor right under where his foot just was lies a small spiky plastic T-Rex. On the left, NICO (4, curly hair, dinosaur T-shirt) kneels on the carpet and points at the T-Rex with great excitement, completely ignoring Dani's pain. Leave clear empty space above Nico (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: A bright living room, the floor covered with small plastic toy dinosaurs. In the centre, DANI (34, beard, calm type, socks only) hops on one leg, holding his other foot with both hands, his face twisted in comic pain, eyes squeezed shut. On the floor right under where his foot just was lies a small spiky plastic T-Rex. On the left, NICO (4, curly hair, dinosaur T-shirt) kneels on the carpet and points at the T-Rex with great excitement, completely ignoring Dani's pain. Leave clear empty space above Nico (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "01-02.png",
+     "bubbles": [
+      {
+       "x": 24,
+       "y": 2,
+       "w": 36,
+       "tail": "r",
+       "text": "¡Ahí! ¡Ahí hay<br>un plátano!"
+      },
+      {
+       "x": 45,
+       "y": 19.5,
+       "w": 31,
+       "tail": "bl",
+       "text": "¡¡Ay, ay, ay!!"
+      }
+     ],
+     "gloss": "<es>ahí</es> (a-í) dort · <es>hay</es> (ai) es gibt · <es>¡ay!</es> (ai) au! · <es>plátano</es> Banane"
+    }
    },
    "gramatica": [
     [

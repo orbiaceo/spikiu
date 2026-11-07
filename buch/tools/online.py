@@ -1,6 +1,6 @@
 """Online-Fassung (HTML) für Spikiu-Abonnenten: fließend, ohne Seiten, mit Audio-Knöpfen und aufklappbaren Lösungen."""
 import json, re
-from build import B, E, M, esc, strip_tags, cartoon_html, xref_html, spikiu, AUDIO_BASE, track_html
+from build import B, E, M, esc, strip_tags, cartoon_html, bild_html, xref_html, spikiu, AUDIO_BASE, track_html
 
 CSS = '''
 @font-face{font-family:'Lexend';font-weight:100 900;font-display:swap;src:url(/fonts/lexend-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -82,6 +82,8 @@ nav.toc a:hover,nav.toc a.on{color:var(--ink);border-left-color:var(--acc);font-
 .chap{font-weight:800}
 details.sol summary{color:var(--acc-d);font-weight:700}
 
+.sec .bild{margin:0 0 16px}
+.sec .bild-box{height:min(78vh,720px)}
 '''
 
 JS = '''
@@ -160,8 +162,12 @@ def build_online(book, chapters, tests, ctx):
             baum = {'A1': '🌱 Samen', 'A2': '🌿 Stamm'}.get(sec['level'], sec['level'])   # in der App nie CEFR (CLAUDE.md)
             h = f'<div class="secnr"><b>{sec["id"]}</b>{esc(sec["topic"])} · {baum}</div>'
             if book == 'G':
+                hat_bild = bool((sec.get("cartoon") or {}).get("bild"))
+                if hat_bild:   # Bild zuerst: visuelle Einführung, dann die Grammatik
+                    h += bild_html(sec, ctx)
                 h += f'<h1 class="satz">{M(re.sub(r"<br\s*/?>", " ", sec["headline_es"]), ctx)}</h1><div class="satz-de">{M(sec["headline_de"], ctx)}</div>'
-                h += cartoon_html(sec, ctx, big=True)
+                if not hat_bild:
+                    h += cartoon_html(sec, ctx, big=True)
                 for pg in sec['gramatica']:
                     h += ''.join(B(b, ctx) for b in pg)
                 deeper = M(sec.get('deeper', ''), ctx)

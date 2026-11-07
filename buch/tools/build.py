@@ -451,22 +451,50 @@ def cartoon_html(sec, ctx, big=False):
     gloss = f'<div class="cgloss">{M(c["gloss"], ctx)}</div>' if c.get('gloss') else ''
     return f'<div class="cartoon {size}">{inner}{bubs}</div>{gloss}'
 
+def bild_html(sec, ctx, cls=''):
+    """Bildseite / Bild-Karte (Leo, 06.–07.11.2026): eigenes ganzseitiges Bild am Abschnittsanfang,
+    Sprechblasen als TEXT darüber (Bilder kommen ohne Schrift). Positionen in % des Bildes,
+    Schriftgröße in cqw → skaliert gleich in PDF, Online-Buch und Karten."""
+    b = (sec.get('cartoon') or {}).get('bild')
+    if not b:
+        return ''
+    pfad = os.path.join(ROOT, 'bilder', b['datei'])
+    try:
+        from PIL import Image
+        with Image.open(pfad) as im:
+            w, h = im.size
+    except Exception:
+        w, h = 2, 3
+    bubs = ''.join(
+        f'<div class="bb t-{bb.get("tail", "bl")}" style="left:{bb["x"]}%;top:{bb["y"]}%;width:{bb["w"]}%">{M(bb["text"], ctx)}</div>'
+        for bb in b.get('bubbles', []))
+    gloss = f'<figcaption class="cgloss">{M(b["gloss"], ctx)}</figcaption>' if b.get('gloss') else ''
+    return (f'<figure class="bild {cls}"><div class="bild-box"><div class="bild-in" style="--r:{w / h:.4f}">'
+            f'<img src="bilder/{b["datei"]}" alt="">{bubs}</div></div>{gloss}</figure>')
+
 def G_pages(ch, sec, ctx):
     out = []
     pages = sec['gramatica']
     left = f'Gramática A · {ch["chapter"]} {ch["title"]}'
+    hat_bild = bool((sec.get('cartoon') or {}).get('bild'))
+    if hat_bild:
+        # eigene Bildseite vor der Grammatik (im Druck: links das Bild, rechts die Grammatik)
+        kopf = f'<div class="secnr"><b>{sec["id"]}</b>{esc(sec["topic"])}</div>'
+        out.append(page(kopf + bild_html(sec, ctx), left, esc(sec['level']), 'Gramática A', cls='bildseite',
+                        anchor='s-' + sec['id'].replace('.', '-')))
     for pi, blocks in enumerate(pages):
         body = ''
         if pi == 0:
             body += f'<div class="secnr"><b>{sec["id"]}</b>{esc(sec["topic"])}</div>'
             body += f'<h1 class="satz">{M(sec["headline_es"], ctx)}</h1><div class="satz-de">{M(sec["headline_de"], ctx)}</div>'
-            body += cartoon_html(sec, ctx, big=len(pages) > 1)
+            if not hat_bild:
+                body += cartoon_html(sec, ctx, big=len(pages) > 1)
         body += ''.join(B(b, ctx) for b in blocks)
         if pi == len(pages) - 1:
             deeper = f'<span class="deeper">{M(sec["deeper"], ctx)}</span>' if sec.get('deeper') else '<span></span>'
             body += f'<div class="arrow">{deeper}<div class="go"><span>→</span> Üben: {xref_html("C", sec["id"], ctx)}</div></div>'
         right = sec['level'] if pi == 0 else f'{sec["id"]} {sec["topic"]}'
-        out.append(page(body, left, esc(right), 'Gramática A', anchor=('s-' + sec['id'].replace('.', '-')) if pi == 0 else ''))
+        out.append(page(body, left, esc(right), 'Gramática A', anchor=('s-' + sec['id'].replace('.', '-')) if pi == 0 and not hat_bild else ''))
     return out
 
 def C_pages(ch, sec, ctx, solutions):
@@ -622,6 +650,19 @@ document.fonts.ready.then(function(){
     });
     fl.parentNode.removeChild(fl);
   });
+  // 2b. Doppelseite (Leo, 06.11.2026: „la linke Seite ein Bild und die rechte die Grammatik“): Bildseiten
+  //     stehen immer auf einer geraden (linken) Seite – sonst davor eine Leerseite (Vakat).
+  (function(){
+    var alle=Array.prototype.slice.call(document.querySelectorAll('section.page')), versatz=0;
+    alle.forEach(function(p,i){
+      if(!p.classList.contains('bildseite')) return;
+      if((i+1+versatz)%2===1){
+        var v=document.createElement('section'); v.className='page vakat nofolio';
+        v.innerHTML='<div class="runhead"><span></span><span></span></div><div class="pbody"></div><div class="folio"><span class="pn"></span><span class="fs"></span></div>';
+        p.parentNode.insertBefore(v,p); versatz++;
+      }
+    });
+  })();
   // 3. Seitenzahlen, Inhaltsverzeichnis
   var pages=document.querySelectorAll('section.page'); var map={};
   pages.forEach(function(p,i){

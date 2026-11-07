@@ -50,7 +50,10 @@ def _say_text(*texts):
 def karten(sec):
     cards = []
     c = sec.get('cartoon') or {}
-    cards.append({'k': 'hook', 'es': M(re.sub(r'<br\s*/?>', ' ', sec['headline_es'])), 'de': M(sec['headline_de']),
+    if c.get('bild'):   # Bild-Karte zuerst (07.11.2026); der Hook verliert dann seinen Platzhalter-Cartoon
+        cards.append({'k': 'bild', 'html': build.bild_html(sec, _ctx()),
+                      'say': _say_text(*[strip_tags(x['text']) for x in c['bild'].get('bubbles', [])])})
+    cards.append({'k': 'hook', 'nobild': bool(c.get('bild')), 'es': M(re.sub(r'<br\s*/?>', ' ', sec['headline_es'])), 'de': M(sec['headline_de']),
                   'icons': c.get('icons', []), 'bubbles': [M(x['text']) for x in c.get('bubbles', [])],
                   'gloss': M(c.get('gloss', '')), 'say': _say_text(strip_tags(sec['headline_es']))})
     titel = None
