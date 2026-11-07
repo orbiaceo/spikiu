@@ -2243,7 +2243,34 @@
      }
     ],
     "gloss": "<es>novio</es> fester Freund · <es>se llama</es> er heißt",
-    "prompt": "SCENE: Saturday morning in Lucía's small Madrid kitchen. On the left, PILAR (63, short grey bob, cardigan) has just come in through the door, a stack of plastic food containers in her arms, frozen mid-step, eyes and mouth wide open. In the centre, DANI (34, beard, striped pyjamas, bare feet) stands at the stove with a coffee pot and gives a calm little wave. NICO (4, curly hair) bounces on the spot next to Pilar, pointing at Dani and grinning wickedly. On the right, LUCÍA (32, messy bun, bathrobe) leans against the fridge with a mug, completely deadpan. Leave clear empty space top left, top centre and top right for three speech bubbles."
+    "prompt": "SCENE: Saturday morning in Lucía's small Madrid kitchen. On the left, PILAR (63, short grey bob, cardigan) has just come in through the door, a stack of plastic food containers in her arms, frozen mid-step, eyes and mouth wide open. In the centre, DANI (34, beard, striped pyjamas, bare feet) stands at the stove with a coffee pot and gives a calm little wave. NICO (4, curly hair) bounces on the spot next to Pilar, pointing at Dani and grinning wickedly. On the right, LUCÍA (32, messy bun, bathrobe) leans against the fridge with a mug, completely deadpan. Leave clear empty space top left, top centre and top right for three speech bubbles.",
+    "bild": {
+     "datei": "01-09.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 14,
+       "w": 38,
+       "tail": "bl",
+       "text": "¿¡Tienes<br>novio!?"
+      },
+      {
+       "x": 34,
+       "y": 23,
+       "w": 30,
+       "tail": "bc",
+       "text": "¡Hola!<br>¡Tiene novio!"
+      },
+      {
+       "x": 63,
+       "y": 31,
+       "w": 35,
+       "tail": "bc",
+       "text": "Sí, mamá.<br>Tengo novio."
+      }
+     ],
+     "gloss": "<es>novio</es> fester Freund · <es>tener</es> haben: <es>tengo, tienes, tiene</es>"
+    }
    },
    "gramatica": [
     [
