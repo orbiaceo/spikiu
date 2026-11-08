@@ -36,7 +36,27 @@
      }
     ],
     "gloss": "<es>el culpable</es> der Schuldige",
-    "prompt": "SCENE: A bright, slightly messy kitchen in a Madrid apartment. On the table stands a plate with nothing left of a chocolate birthday cake except crumbs and one lonely candle lying on its side. LUCÍA stands on the left, hands on her hips, one eyebrow raised, looking down with an ironic, suspicious face. On the right stands NICO (4, wild curly hair, T-shirt with a dinosaur on it): his whole face and both hands are smeared with chocolate, and he points with total conviction at TOFU, a small scruffy dog sitting beside him. Tofu looks innocent and a bit confused and has not a single crumb on him. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: A bright, slightly messy kitchen in a Madrid apartment. On the table stands a plate with nothing left of a chocolate birthday cake except crumbs and one lonely candle lying on its side. LUCÍA stands on the left, hands on her hips, one eyebrow raised, looking down with an ironic, suspicious face. On the right stands NICO (4, wild curly hair, T-shirt with a dinosaur on it): his whole face and both hands are smeared with chocolate, and he points with total conviction at TOFU, a small scruffy dog sitting beside him. Tofu looks innocent and a bit confused and has not a single crumb on him. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "04-01.png",
+     "bubbles": [
+      {
+       "x": 3,
+       "y": 9,
+       "w": 60,
+       "tail": "bl",
+       "text": "¿Quién es el culpable?"
+      },
+      {
+       "x": 47,
+       "y": 34,
+       "w": 40,
+       "tail": "bl",
+       "text": "¡Yo no!<br>¡Es él!"
+      }
+     ],
+     "gloss": "<es>yo</es> ich · <es>él</es> er – nur zum Betonen: <es>¡Yo no!</es> · <es>el culpable</es> der Schuldige"
+    }
    },
    "gramatica": [
     [
