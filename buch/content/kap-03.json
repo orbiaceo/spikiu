@@ -954,7 +954,34 @@
      }
     ],
     "gloss": "<es>ya lo veo</es> das sehe ich",
-    "prompt": "SCENE: The stairwell of an old Madrid apartment building. On the right, JONAS, a tall, athletic young German neighbour with a friendly, proud smile, carries heavy shopping bags up the stairs, his T-shirt slightly too tight. On the left, the elderly neighbour DOÑA CARMEN, about eighty, in a flowered dressing gown and hair curlers, leans in her open doorway and looks him up and down with a delighted, mischievous grin, one eyebrow raised. Leave clear empty space above Doña Carmen (top left and middle left) and above Jonas (top right) for three speech bubbles."
+    "prompt": "SCENE: The stairwell of an old Madrid apartment building. On the right, JONAS, a tall, athletic young German neighbour with a friendly, proud smile, carries heavy shopping bags up the stairs, his T-shirt slightly too tight. On the left, the elderly neighbour DOÑA CARMEN, about eighty, in a flowered dressing gown and hair curlers, leans in her open doorway and looks him up and down with a delighted, mischievous grin, one eyebrow raised. Leave clear empty space above Doña Carmen (top left and middle left) and above Jonas (top right) for three speech bubbles.",
+    "bild": {
+     "datei": "03-05.png",
+     "bubbles": [
+      {
+       "x": 48,
+       "y": 2,
+       "w": 44,
+       "tail": "bc",
+       "text": "¿Qué tal, vecino?"
+      },
+      {
+       "x": 2,
+       "y": 13,
+       "w": 48,
+       "tail": "br",
+       "text": "¡Muy bueno, gracias!"
+      },
+      {
+       "x": 52,
+       "y": 20,
+       "w": 38,
+       "tail": "bc",
+       "text": "Ya lo veo, hijo."
+      }
+     ],
+     "gloss": "<es>¿Qué tal?</es> → <es>Muy bien.</es> (mir geht’s gut) · <es>Muy bueno</es> heißt: Ich bin sehr gut … oder sehr attraktiv"
+    }
    },
    "gramatica": [
     [
