@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 08.11.2026 · BILD 3.4 EINGEBAUT (**Leo, 13:06: „3.4“**) — `buch/bilder/03-04.png` (Freundin mit Herzaugen schaut dem Kellner nach, die andere genießt die Paella). Blasen: „Está buenísimo…“ · „¿El arroz? ¡Sí, riquísimo!“. Glosse erklärt jetzt den Doppelsinn: „buenísimo, riquísimo super gut · está buenísimo sagt man auch über einen attraktiven Mann · el arroz der Reis“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2 komplett, 3.1–3.4**.
+
 Stand: 07.11.2026 · BILD 3.3 EINGEBAUT (**Leo, 23:28: „03.03“**) — `buch/bilder/03-03.png` (Oma hoffnungsvoll, Kind probiert streng, Koch mit verschränkten Armen, zwei Paellas). Blasen ohne Namen: Oma „Cariño, ¿cuál es mejor?“ · Kind „La de él. ¡Mucho mejor!“. Glosse: „bueno → mejor gut → besser · ¿cuál? welche? · la de él die von ihm“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2 komplett, 3.1–3.3**.
 
 Stand: 07.11.2026 · BILD 3.2 EINGEBAUT (**Leo, 23:27: „03.02“**) — `buch/bilder/03-02.png` (zwei Frauen an der Bar, die Vorgestellte gekränkt). Blasen: „Te presento a Marta, una vieja amiga.“ · „¡Oye! ¿Vieja yo?“. Glosse neu: „una vieja amiga eine langjährige Freundin · una amiga vieja eine betagte Freundin“. Überlauf 0. Bilder eingebaut: **Kap. 1 + 2 komplett, 3.1–3.2**.

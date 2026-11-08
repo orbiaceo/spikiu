@@ -732,7 +732,27 @@
      }
     ],
     "gloss": "<es>el arroz</es> der Reis",
-    "prompt": "SCENE: A sunny restaurant terrace by the sea. LUCÍA and her friend MARTA share a big paella. On the left, MARTA has stopped eating; her chin rests dreamily in her hand, and her heart-eyed gaze follows a very handsome young waiter who walks past in the background carrying a tray, completely unaware. On the right, LUCÍA, totally focused on the food, holds a spoon piled high with rice, cheeks full, nodding enthusiastically at the paella pan and not noticing anything. Leave clear empty space above Marta (top left) and above Lucía (top right) for two speech bubbles."
+    "prompt": "SCENE: A sunny restaurant terrace by the sea. LUCÍA and her friend MARTA share a big paella. On the left, MARTA has stopped eating; her chin rests dreamily in her hand, and her heart-eyed gaze follows a very handsome young waiter who walks past in the background carrying a tray, completely unaware. On the right, LUCÍA, totally focused on the food, holds a spoon piled high with rice, cheeks full, nodding enthusiastically at the paella pan and not noticing anything. Leave clear empty space above Marta (top left) and above Lucía (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "03-04.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 12,
+       "w": 50,
+       "tail": "bl",
+       "text": "Está buenísimo…"
+      },
+      {
+       "x": 60,
+       "y": 23,
+       "w": 38,
+       "tail": "bc",
+       "text": "¿El arroz?<br>¡Sí, riquísimo!"
+      }
+     ],
+     "gloss": "<es>buenísimo, riquísimo</es> super gut · <es>está buenísimo</es> sagt man auch über einen attraktiven Mann · <es>el arroz</es> der Reis"
+    }
    },
    "gramatica": [
     [
