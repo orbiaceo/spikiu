@@ -511,7 +511,34 @@
       "text": "¡No! ¡Aquel!"
      }
     ],
-    "prompt": "SCENE: Inside a traditional Spanish bakery with an extremely long glass counter that runs from the front of the image deep into the background. Close to the front, a friendly BAKER in a white apron holds up a tiny croissant with tongs and smiles hopefully. In the middle of the counter there are ordinary cakes. Far, far away at the very end of the counter stands a gigantic green birthday cake shaped like a T-Rex. NICO (4) stands on tiptoe on the right, pointing with his whole arm towards the far end with shining eyes. LUCÍA stands behind him, already holding her wallet and looking worried. Leave clear empty space above the baker (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: Inside a traditional Spanish bakery with an extremely long glass counter that runs from the front of the image deep into the background. Close to the front, a friendly BAKER in a white apron holds up a tiny croissant with tongs and smiles hopefully. In the middle of the counter there are ordinary cakes. Far, far away at the very end of the counter stands a gigantic green birthday cake shaped like a T-Rex. NICO (4) stands on tiptoe on the right, pointing with his whole arm towards the far end with shining eyes. LUCÍA stands behind him, already holding her wallet and looking worried. Leave clear empty space above the baker (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "04-03.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 4,
+       "w": 40,
+       "tail": "bl",
+       "text": "¿Este cruasán?"
+      },
+      {
+       "x": 30,
+       "y": 15,
+       "w": 32,
+       "tail": "bl",
+       "text": "¡No! ¡Aquel!"
+      },
+      {
+       "x": 63,
+       "y": 16,
+       "w": 35,
+       "tail": "br",
+       "text": "¿Aquel? ¡Ay,<br>mi cartera!"
+      }
+     ],
+     "gloss": "<es>este</es> hier bei mir · <es>ese</es> da bei dir · <es>aquel</es> dort drüben · <es>la cartera</es> der Geldbeutel"
+    }
    },
    "gramatica": [
     [
