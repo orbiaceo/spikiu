@@ -421,7 +421,27 @@
      }
     ],
     "gloss": "<es>el banco</es> die Bank (Geld) und die Sitzbank · <es>cómodo</es> bequem",
-    "prompt": "SCENE: A sunny little square in old Madrid with orange trees and pigeons. On the right an old man with a white moustache and a flat cap sits completely relaxed on a green park bench, feeding pigeons, and proudly pats the empty space on the bench next to him with his palm, smiling with great helpfulness. On the left DANI stands holding an open, completely empty wallet upside down, a single moth fluttering out of it, looking around hopefully for a cash machine. In the background more benches, but no bank building anywhere. Leave clear empty space above Dani (top left) and above the old man (top right) for two speech bubbles."
+    "prompt": "SCENE: A sunny little square in old Madrid with orange trees and pigeons. On the right an old man with a white moustache and a flat cap sits completely relaxed on a green park bench, feeding pigeons, and proudly pats the empty space on the bench next to him with his palm, smiling with great helpfulness. On the left DANI stands holding an open, completely empty wallet upside down, a single moth fluttering out of it, looking around hopefully for a cash machine. In the background more benches, but no bank building anywhere. Leave clear empty space above Dani (top left) and above the old man (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "06-02.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 1,
+       "w": 54,
+       "tail": "bl",
+       "text": "Perdone, ¿hay<br>un banco por aquí?"
+      },
+      {
+       "x": 44,
+       "y": 17,
+       "w": 52,
+       "tail": "br",
+       "text": "¡Claro! Está aquí.<br>Y es muy cómodo."
+      }
+     ],
+     "gloss": "<es>hay</es> es gibt · <es>está</es> befindet sich · <es>el banco</es> die Bank (Geld) und die Sitzbank · <es>cómodo</es> bequem"
+    }
    },
    "gramatica": [
     [
