@@ -778,7 +778,27 @@
       "text": "¡Sí, sí! ¡Ya voy!"
      }
     ],
-    "prompt": "SCENE: Split image. Left third, as a round picture-in-picture inset: LUCÍA sits alone at a restaurant table, dressed up nicely, a candle burning down, checking the time on her phone with an icy face. Right two thirds: DANI lies stretched out on his sofa at home in pyjama trousers and an old T-shirt, a bowl of popcorn on his belly, the TV on, phone at his ear, smiling with absolute calm. TOFU, his small scruffy dog, sleeps on his feet. Dani has clearly not moved one centimetre and has no intention of doing so soon. Leave clear empty space above the inset (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: Split image. Left third, as a round picture-in-picture inset: LUCÍA sits alone at a restaurant table, dressed up nicely, a candle burning down, checking the time on her phone with an icy face. Right two thirds: DANI lies stretched out on his sofa at home in pyjama trousers and an old T-shirt, a bowl of popcorn on his belly, the TV on, phone at his ear, smiling with absolute calm. TOFU, his small scruffy dog, sleeps on his feet. Dani has clearly not moved one centimetre and has no intention of doing so soon. Leave clear empty space above the inset (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "05-03.png",
+     "bubbles": [
+      {
+       "x": 58,
+       "y": 6,
+       "w": 40,
+       "tail": "l",
+       "text": "Cariño,<br>¿dónde estás?<br>¿Vienes o no?"
+      },
+      {
+       "x": 56,
+       "y": 32,
+       "w": 40,
+       "tail": "bc",
+       "text": "¡Sí, sí!<br>¡Ya voy!"
+      }
+     ],
+     "gloss": "<es>ir</es> gehen: <es>voy</es> · <es>venir</es> kommen: <es>vienes</es> · <es>estar</es>: <es>estás</es> – die wichtigsten Verben sind die eigenwilligsten"
+    }
    },
    "gramatica": [
     [
@@ -1133,7 +1153,27 @@
       "text": "¿Yo? No.<br>¡Ducho a Tofu!"
      }
     ],
-    "prompt": "SCENE: A small, steamy bathroom. On the left, DANI stands in the doorway in a bathrobe with a towel over his shoulder, ready for his own shower, looking in with calm surprise. On the right, LUCÍA kneels next to the bathtub, completely soaked, fully dressed in jeans and T-shirt, her hair dripping. In the bathtub sits TOFU, a small scruffy dog, covered in a huge crown of soap foam and looking extremely happy. Lucía holds the shower head; water splashes everywhere, including on Dani's feet. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles."
+    "prompt": "SCENE: A small, steamy bathroom. On the left, DANI stands in the doorway in a bathrobe with a towel over his shoulder, ready for his own shower, looking in with calm surprise. On the right, LUCÍA kneels next to the bathtub, completely soaked, fully dressed in jeans and T-shirt, her hair dripping. In the bathtub sits TOFU, a small scruffy dog, covered in a huge crown of soap foam and looking extremely happy. Lucía holds the shower head; water splashes everywhere, including on Dani's feet. Leave clear empty space above Dani (top left) and above Lucía (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "05-04.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 8,
+       "w": 46,
+       "tail": "bc",
+       "text": "¿Te duchas ahora?"
+      },
+      {
+       "x": 52,
+       "y": 16,
+       "w": 44,
+       "tail": "br",
+       "text": "¿Yo? No.<br>¡Ducho al perro!"
+      }
+     ],
+     "gloss": "<es>me ducho</es> ich dusche mich · <es>ducho al perro</es> ich dusche den Hund"
+    }
    },
    "gramatica": [
     [
