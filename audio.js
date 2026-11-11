@@ -275,7 +275,12 @@ let speakGen = 0;
 async function speakWithPiper(text, zielsprache, gen) {
   const session = await getSession(zielsprache);   // kann beim Kaltstart Sekunden dauern
   if (gen !== speakGen) return;                     // überholt, während das Modell lud
-  const chunks = splitSentences(text);
+  // Sätze; eine PAUSE-Marke (aus vokalListen) wird zu echter Stille zwischen zwei Sätzen.
+  const chunks = [], pauseNach = [];
+  String(text).split(PAUSE).forEach((teil, k) => {
+    if (k > 0 && chunks.length) pauseNach[chunks.length - 1] = true;
+    chunks.push(...splitSentences(teil));
+  });
   if (!chunks.length) return;
   emit({ phase: 'speak', zielsprache });
   // Pipeline: nächsten Satz synthetisieren, während der aktuelle spielt.
@@ -286,6 +291,10 @@ async function speakWithPiper(text, zielsprache, gen) {
     if (i + 1 < chunks.length) nextSynth = synth(session, chunks[i + 1]).then((bl) => nachbearbeite(bl, zielsprache));
     await playBlob(blob);
     if (gen !== speakGen) return;                   // während der Wiedergabe abgebrochen
+    if (pauseNach[i]) {
+      await new Promise((r) => setTimeout(r, 450));
+      if (gen !== speakGen) return;
+    }
   }
 }
 
@@ -295,7 +304,7 @@ function speakWithBrowser(text, zielsprache) {
     const synth = window.speechSynthesis;
     if (!synth || typeof SpeechSynthesisUtterance === 'undefined') return resolve(false);
     const lang = FALLBACK_LANG[zielsprache] || 'en-US';
-    const u = new SpeechSynthesisUtterance(String(text));
+    const u = new SpeechSynthesisUtterance(String(text).split(PAUSE).join(' … '));
     u.lang = lang;
     const voices = synth.getVoices ? synth.getVoices() : [];
     const match = voices.find((v) => v.lang === lang) ||
@@ -313,8 +322,20 @@ function speakWithBrowser(text, zielsprache) {
 // ── Sprech-Ebene ≠ Lese-Ebene (Leo, 07.11.2026: „Bue-no es lo visual. Lo que lee la voz debe ser: bueno.“) ──
 // Silbentrennung, die man SIEHT (mur-cié-la-go, pa-e-lla), wird für die Stimme zum ganzen Wort zusammengezogen –
 // sonst klingt es wie gestottert. Nur Bindestriche ZWISCHEN zwei Buchstaben; Endungen wie „-ar“ bleiben unberührt.
+// Vokal-Listen (Leo, 11.11.2026: „a, e, i, o, u“ klang wie „Tate, Tito, Tu“): drei oder mehr einzeln
+// stehende Vokale hintereinander werden zu eigenen Sätzen mit PAUSE dazwischen → langsam und klar.
+const PAUSE = '⏸';
+function vokalListen(t) {
+  // Trenner: Leerzeichen, Komma, Mittelpunkt, Semikolon, Schrägstrich – KEIN Bindestrich (sonst wäre „e-u-ro-pa“ eine Liste)
+  return t.replace(/(^|[^\p{L}\-‐‑])([aeiouáéíóú])((?:[\s,·;\/]+[aeiouáéíóú]){2,})(?![\p{L}\-‐‑])/giu,
+    (m, vor, erster, rest) => {
+      const v = [erster].concat(rest.split(/[\s,·;\/]+/).filter(Boolean));
+      return vor + ' ' + PAUSE + ' ' + v.map((x) => x.toLowerCase() + '.').join(' ' + PAUSE + ' ') + ' ' + PAUSE + ' ';
+    }).replace(new RegExp(PAUSE + '\\s*[.,;:!?…]+', 'g'), PAUSE);   // kein verwaister Satzpunkt nach der letzten Pause
+}
 function sprechText(text) {
-  return String(text).replace(/(\p{L})[-‐‑](?=\p{L})/gu, '$1');   // ohne Lookbehind: läuft auch auf älterem Safari
+  // erst Vokal-Listen (bevor „a-e-i“ zu einem Wort zusammengezogen würde), dann Silben-Bindestriche
+  return vokalListen(String(text)).replace(/(\p{L})[-‐‑](?=\p{L})/gu, '$1');   // ohne Lookbehind: läuft auch auf älterem Safari
 }
 
 async function speak(text, zielsprache) {
