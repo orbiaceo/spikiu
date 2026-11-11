@@ -38,7 +38,27 @@
      }
     ],
     "gloss": "<es>como</es> ich esse · <es>como</es> wie",
-    "prompt": "SCENE: A sunny family kitchen at lunchtime. On the left, PILAR (63, short grey bob, reading glasses on a chain, elegant cardigan) sits at the table, holding her fork in mid-air, looking at her grandson with a mix of horror and fascination. On the right, NICO (4, wild curly hair, dinosaur T-shirt) stands on his chair, arms bent like tiny T-Rex claws, mouth wide open, attacking a huge plate of spaghetti with tomato sauce directly with his face. Sauce is splashed on the wall, on the tablecloth and on Pilar's glasses. A green toy dinosaur sits next to his plate, also covered in sauce. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: A sunny family kitchen at lunchtime. On the left, PILAR (63, short grey bob, reading glasses on a chain, elegant cardigan) sits at the table, holding her fork in mid-air, looking at her grandson with a mix of horror and fascination. On the right, NICO (4, wild curly hair, dinosaur T-shirt) stands on his chair, arms bent like tiny T-Rex claws, mouth wide open, attacking a huge plate of spaghetti with tomato sauce directly with his face. Sauce is splashed on the wall, on the tablecloth and on Pilar's glasses. A green toy dinosaur sits next to his plate, also covered in sauce. Leave clear empty space above Pilar (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "05-01.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 12,
+       "w": 50,
+       "tail": "bl",
+       "text": "Cariño,<br>¿cómo comes?"
+      },
+      {
+       "x": 48,
+       "y": 27,
+       "w": 48,
+       "tail": "bc",
+       "text": "¡Como como<br>un tiranosaurio!"
+      }
+     ],
+     "gloss": "<es>como</es> ich esse · <es>como</es> wie · <es>comer</es> essen: <es>como, comes, come</es>"
+    }
    },
    "gramatica": [
     [
