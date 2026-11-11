@@ -1383,7 +1383,27 @@
      }
     ],
     "gloss": "<es>casado</es> verheiratet",
-    "prompt": "SCENE: A crowded, traditional tapas bar in Madrid with hams hanging from the ceiling. On the left, a sunburnt German tourist in his fifties (socks with sandals, a small phrasebook in his shirt pocket) has just tasted a croqueta: eyes closed in bliss, he holds the hand of the young WAITER with both hands and looks up at him adoringly. On the right, the waiter, holding a tray in his other hand, blushes deep red, leans back a little and shows the wedding ring on his finger. In the background at the bar, LUCÍA almost chokes on her drink with laughter. Leave clear empty space top left and top right for two speech bubbles."
+    "prompt": "SCENE: A crowded, traditional tapas bar in Madrid with hams hanging from the ceiling. On the left, a sunburnt German tourist in his fifties (socks with sandals, a small phrasebook in his shirt pocket) has just tasted a croqueta: eyes closed in bliss, he holds the hand of the young WAITER with both hands and looks up at him adoringly. On the right, the waiter, holding a tray in his other hand, blushes deep red, leans back a little and shows the wedding ring on his finger. In the background at the bar, LUCÍA almost chokes on her drink with laughter. Leave clear empty space top left and top right for two speech bubbles.",
+    "bild": {
+     "datei": "05-05.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 22,
+       "w": 50,
+       "tail": "bl",
+       "text": "¡Mmm!<br>¡Me gustas mucho!"
+      },
+      {
+       "x": 50,
+       "y": 15,
+       "w": 48,
+       "tail": "bl",
+       "text": "Gracias…<br>pero estoy casado."
+      }
+     ],
+     "gloss": "<es>me gusta la croqueta</es> die Krokette schmeckt mir · <es>me gustas</es> du gefällst mir · <es>casado</es> verheiratet"
+    }
    },
    "gramatica": [
     [
