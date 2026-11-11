@@ -636,7 +636,27 @@
      }
     ],
     "gloss": "<es>durmiendo</es> schlafend · <es>contigo</es> mit dir",
-    "prompt": "SCENE: Left third of the image: a round inset like a video call, showing PILAR wide awake and fully dressed at a brightly lit kitchen table with a cup of coffee and a crossword puzzle, cheerful and chatty, phone at her ear. Right two thirds: LUCÍA's dark bedroom in the middle of the night, moonlight through the blinds, an alarm clock glowing on the bedside table. LUCÍA lies in bed tangled in her duvet, hair a wild mess, one eye open, one eye shut, holding her smartphone to her ear with a flat, exhausted, deadpan face. Leave clear empty space above Pilar's inset (top left) and above Lucía (top right) for two speech bubbles."
+    "prompt": "SCENE: Left third of the image: a round inset like a video call, showing PILAR wide awake and fully dressed at a brightly lit kitchen table with a cup of coffee and a crossword puzzle, cheerful and chatty, phone at her ear. Right two thirds: LUCÍA's dark bedroom in the middle of the night, moonlight through the blinds, an alarm clock glowing on the bedside table. LUCÍA lies in bed tangled in her duvet, hair a wild mess, one eye open, one eye shut, holding her smartphone to her ear with a flat, exhausted, deadpan face. Leave clear empty space above Pilar's inset (top left) and above Lucía (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "06-03.png",
+     "bubbles": [
+      {
+       "x": 56,
+       "y": 6,
+       "w": 43,
+       "tail": "l",
+       "text": "Hola, cariño.<br>¿Estás durmiendo?"
+      },
+      {
+       "x": 38,
+       "y": 41,
+       "w": 58,
+       "tail": "bc",
+       "text": "No, mamá.<br>Estoy hablando contigo."
+      }
+     ],
+     "gloss": "<es>estoy hablando</es> ich spreche gerade · <es>durmiendo</es> schlafend · <es>contigo</es> mit dir"
+    }
    },
    "gramatica": [
     [
