@@ -35,7 +35,27 @@
      }
     ],
     "gloss": "<es>ser listo</es> klug sein · <es>estar listo</es> fertig sein",
-    "prompt": "SCENE: The narrow entrance hall of PILAR's apartment in Madrid, coat rack, framed family photos on the wall. On the left PILAR stands with her arms crossed and looks DANI up and down with a sharp, testing, suspicious squint, like a strict examiner meeting her daughter's boyfriend for the first time. In the middle DANI, already wearing his jacket, beams with innocent enthusiasm, car keys dangling from one raised finger, his other hand pointing cheerfully at the front door, completely missing the point of the question. On the right, slightly behind him, LUCÍA puts her hand over her face in embarrassment. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: The narrow entrance hall of PILAR's apartment in Madrid, coat rack, framed family photos on the wall. On the left PILAR stands with her arms crossed and looks DANI up and down with a sharp, testing, suspicious squint, like a strict examiner meeting her daughter's boyfriend for the first time. In the middle DANI, already wearing his jacket, beams with innocent enthusiasm, car keys dangling from one raised finger, his other hand pointing cheerfully at the front door, completely missing the point of the question. On the right, slightly behind him, LUCÍA puts her hand over her face in embarrassment. Leave clear empty space above Pilar (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "06-01.png",
+     "bubbles": [
+      {
+       "x": 55,
+       "y": 1,
+       "w": 40,
+       "tail": "bc",
+       "text": "Y usted…<br>¿es listo?"
+      },
+      {
+       "x": 2,
+       "y": 17,
+       "w": 50,
+       "tail": "br",
+       "text": "¡Sí, estoy listo!<br>¿Nos vamos?"
+      }
+     ],
+     "gloss": "<es>ser listo</es> klug sein · <es>estar listo</es> fertig sein"
+    }
    },
    "gramatica": [
     [
