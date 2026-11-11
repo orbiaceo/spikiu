@@ -191,9 +191,21 @@ function stopPlayback() {
 // Klick mit einer noch laufenden Vorab-Synthese kollidieren (→ Fehler → Browser-Stimme
 // oder Hänger). Jetzt eine Warteschlange pro Session.
 const synthChain = new WeakMap();   // session -> Promise
+
+// ── Einzelsilben (Leo, 12.11.2026: „In den Silben ist es undeutlich, das g klingt wie ein anderer Konsonant“) ──
+// „ga.“, „gue.“, „ci.“ als eigener Satz: Piper hat kaum Kontext und spricht den Anlaut verwaschen. Für Bausteine
+// mit höchstens EINEM Vokalkern: etwas langsamer und ruhiger (weniger Zufallsrauschen im Modell).
+// Wörter mit zwei+ Silben (Minimalpaare gota/jota) bleiben unverändert – die klangen schon gut.
+const KURZ_SKALEN = { length: 1.3, noise: 0.5, noiseW: 0.5 };
+function kurzeSilbe(text) {
+  const w = String(text).toLowerCase().replace(/[^\p{L}]/gu, '');
+  if (!w || w.length > 5) return false;
+  const kerne = w.replace(/([gq])u(?=[eiéí])/g, '$1').match(/[aeiouáéíóúü]+/g);   // gue/que: u ist stumm
+  return !kerne || kerne.length <= 1;
+}
 function synth(session, text) {
   const vorher = synthChain.get(session) || Promise.resolve();
-  const p = vorher.then(() => session.predict(text));
+  const p = vorher.then(() => session.predict(text, kurzeSilbe(text) ? KURZ_SKALEN : undefined));
   synthChain.set(session, p.then(() => {}, () => {}));
   return p;
 }
@@ -207,8 +219,10 @@ const NACHBEARBEITUNG = {
   es: { caja: -6, presencia: 4, umbral: -22, ratio: 4.0, suelo: -25 },
 };
 let filterCtx = null;
-async function nachbearbeite(blob, zielsprache) {
-  const p = NACHBEARBEITUNG[zielsprache];
+async function nachbearbeite(blob, zielsprache, kurz) {
+  let p = NACHBEARBEITUNG[zielsprache];
+  // Einzelsilbe: Expander sanft – bei „ga“ liegt der leise Anlaut unter der Schwelle und wurde weggedrückt
+  if (p && kurz) p = Object.assign({}, p, { umbral: -38, ratio: 2.0 });
   if (!p || typeof OfflineAudioContext === 'undefined') return blob;
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -241,11 +255,16 @@ function expandiere(x, sr, p) {
   const schwelle = pico * Math.pow(10, p.umbral / 20);
   const boden = Math.pow(10, p.suelo / 20);
   const gA = Math.exp(-1 / (0.003 * sr)), gR = Math.exp(-1 / (0.060 * sr));
+  // Vorausschau 40 ms (12.11.2026): die Tür öffnet sich, BEVOR der Vokal kommt – so bleibt der leise
+  // Anlaut (g, b, d, f …) erhalten; die Hall-Fahne NACH dem Laut wird weiter gedämpft.
+  const voraus = Math.round(0.040 * sr);
   const y = new Float32Array(n);
   let g = 1, mx = 1e-9;
   for (let i = 0; i < n; i++) {
     let ziel = 1;
-    if (env[i] < schwelle) ziel = Math.max(boden, Math.pow(env[i] / schwelle, p.ratio - 1));
+    let envV = env[i];
+    for (let k = 1; k <= voraus && i + k < n; k += 32) if (env[i + k] > envV) envV = env[i + k];
+    if (envV < schwelle) ziel = Math.max(boden, Math.pow(envV / schwelle, p.ratio - 1));
     g = ziel > g ? gA * g + (1 - gA) * ziel : gR * g + (1 - gR) * ziel;
     y[i] = x[i] * g;
     if (Math.abs(y[i]) > mx) mx = Math.abs(y[i]);
@@ -284,11 +303,11 @@ async function speakWithPiper(text, zielsprache, gen) {
   if (!chunks.length) return;
   emit({ phase: 'speak', zielsprache });
   // Pipeline: nächsten Satz synthetisieren, während der aktuelle spielt.
-  let nextSynth = synth(session, chunks[0]).then((bl) => nachbearbeite(bl, zielsprache));
+  let nextSynth = synth(session, chunks[0]).then((bl) => nachbearbeite(bl, zielsprache, kurzeSilbe(chunks[0])));
   for (let i = 0; i < chunks.length; i++) {
     const blob = await nextSynth;
     if (gen !== speakGen) return;                   // ein neuerer Klick hat übernommen
-    if (i + 1 < chunks.length) nextSynth = synth(session, chunks[i + 1]).then((bl) => nachbearbeite(bl, zielsprache));
+    if (i + 1 < chunks.length) nextSynth = synth(session, chunks[i + 1]).then((bl) => nachbearbeite(bl, zielsprache, kurzeSilbe(chunks[i + 1])));
     await playBlob(blob);
     if (gen !== speakGen) return;                   // während der Wiedergabe abgebrochen
     if (pauseNach[i]) {

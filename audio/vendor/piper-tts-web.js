@@ -295,7 +295,9 @@ const _TtsSession = class _TtsSession {
       await modelBlob.arrayBuffer()
     ));
   }
-  async predict(text) {
+  async predict(text, opt) {
+    // Spikiu-Patch (12.11.2026): optionale Skalen pro Aufruf (kurze Silben langsamer + ruhiger)
+    opt = opt || {};
     await this.waitReady;
     const input = JSON.stringify([{ text: text.trim() }]);
     const phonemeIds = await new Promise(async (resolve) => {
@@ -323,9 +325,10 @@ const _TtsSession = class _TtsSession {
     });
     const speakerId = 0;
     const sampleRate = __privateGet(this, _modelConfig).audio.sample_rate;
-    const noiseScale = __privateGet(this, _modelConfig).inference.noise_scale;
-    const lengthScale = __privateGet(this, _modelConfig).inference.length_scale;
-    const noiseW = __privateGet(this, _modelConfig).inference.noise_w;
+    const inf = __privateGet(this, _modelConfig).inference;
+    const noiseScale = inf.noise_scale * (opt.noise || 1);
+    const lengthScale = inf.length_scale * (opt.length || 1);
+    const noiseW = inf.noise_w * (opt.noiseW || 1);
     const session = __privateGet(this, _ortSession);
     const feeds = {
       input: new (__privateGet(this, _ort)).Tensor("int64", phonemeIds, [1, phonemeIds.length]),

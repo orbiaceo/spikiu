@@ -148,8 +148,19 @@ def _buchstabiert(t):
     """L-U-C-Í-A → ele, u, ce, i con tilde, a (dann greift die Buchstabier-Liste)."""
     return _BS_GROSS.sub(lambda m: ', '.join(BUCHSTABE_ES.get(c, c.lower()) for c in re.split(r'[-‐‑]', m.group(1))), t)
 
+_DEUTSCH = re.compile(r'\b(und|oder|wie|nicht|auch|aber|mit|vor|nach|immer|nie|das|der|die|ist)\b', re.I)
+
+def _nur_spanisch(t):
+    t = re.sub(r'<de>.*?</de>', ' ', t)
+    if '<es>' in t and _DEUTSCH.search(strip_tags(re.sub(r'<es>.*?</es>', ' ', t))):
+        t = ' · '.join(re.findall(r'<es>(.*?)</es>', t))       # Mischzeile mit Deutsch: nur die spanischen Stellen
+    return t
+
 def _sauber(t):
+    # Leo, 12.11.2026: „gi und j“, „siempre immer“ – Deutsches darf nie an die spanische Stimme gehen
+    t = _nur_spanisch(t)
     t = strip_tags(t)
+    t = re.sub(r'…(?=\s*[a-záéíóúñü])', ',', t)              # „¿Una… qué?“ ist EIN Satz mit Zögern, nicht zwei
     t = re.sub(r'\([^)]*\)', ' ', t)                       # Klammern = Erklärung, nicht sprechen
     t = re.sub(r'[«»„“”"]', '', t)
     t = _buchstabiert(t)                                      # VOR dem Zusammenziehen: L-U-C-Í-A bleibt buchstabiert
@@ -173,13 +184,14 @@ def bausteine(text, art=None):
                     m = None    # „¡Ay, ay, ay!“ = Ausruf, kein Buchstabieren
                 if m:   # Buchstabier-Liste im Satz: davor als Satz, jedes Element einzeln, danach als Satz
                     vor, nach = satz[:m.start()].strip(' ,;:–-'), satz[m.end():].strip(' ,;:–-.!?…')
+                    if '¡' in nach: nach += '!'     # „¡el burro sabe más que tú!“ bleibt ein Ausruf
                     if len(re.sub(r'[^\wáéíóúñü]', '', vor)) >= 2:
                         out.append({'t': vor.rstrip('.') + '.', 'p': PAUSE[art or 'satz']})
                     for w in m.group(1).split(','):
                         if w.strip():
                             out.append({'t': w.strip() + '.', 'p': PAUSE[art or 'wort']})
                     if len(re.sub(r'[^\wáéíóúñü]', '', nach)) >= 2:
-                        out.append({'t': nach + '.', 'p': PAUSE[art or 'satz']})
+                        out.append({'t': nach if nach.endswith('!') else nach + '.', 'p': PAUSE[art or 'satz']})
                     continue
                 if len(re.sub(r'[^\wáéíóúñü]', '', satz)) >= 2:
                     out.append({'t': satz.replace('…', '.'), 'p': PAUSE[art or 'satz']})
@@ -250,6 +262,7 @@ def _B(b, ctx):
             for r in b['rows']:
                 bits = [r[j] for j in sorted(escs) if j < len(r)]
                 bits += re.findall(r'<es>(.*?)</es>', ' '.join(r[j] for j in range(len(r)) if j not in escs))
+                bits = [re.sub(r'\s+$', '', strip_tags(_nur_spanisch(x))) for x in bits]
                 parts_.append(', '.join(strip_tags(x).replace(' · ', ', ') for x in bits if strip_tags(x).strip()))
             add_track(ctx, b['track'], parts_)
         return f'<div class="tbwrap"><table class="tb">{"<tr>"+head+"</tr>" if head else ""}{rows}</table></div>'
