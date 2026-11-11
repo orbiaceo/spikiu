@@ -406,7 +406,34 @@
      }
     ],
     "gloss": "<es>tía</es> Tante",
-    "prompt": "SCENE: A living room in the afternoon. On the right, LUCÍA sits on the sofa with her laptop on her knees, arms crossed, looking down over her glasses with a firm, slightly amused 'no' face. On the coffee table in front of her lies a big bar of chocolate. On the left, NICO (4, wild curly hair, dinosaur T-shirt) stands with huge pleading puppy eyes, hugging TOFU, a small scruffy dog, tightly around the neck. Tofu also looks up at Lucía with the exact same pleading expression, tongue out. Nico and Tofu clearly present themselves as a team. Leave clear empty space top left above Nico, top right above Lucía and on the middle left beside Nico for three speech bubbles."
+    "prompt": "SCENE: A living room in the afternoon. On the right, LUCÍA sits on the sofa with her laptop on her knees, arms crossed, looking down over her glasses with a firm, slightly amused 'no' face. On the coffee table in front of her lies a big bar of chocolate. On the left, NICO (4, wild curly hair, dinosaur T-shirt) stands with huge pleading puppy eyes, hugging TOFU, a small scruffy dog, tightly around the neck. Tofu also looks up at Lucía with the exact same pleading expression, tongue out. Nico and Tofu clearly present themselves as a team. Leave clear empty space top left above Nico, top right above Lucía and on the middle left beside Nico for three speech bubbles.",
+    "bild": {
+     "datei": "05-02.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 4,
+       "w": 54,
+       "tail": "bl",
+       "text": "Tía, ¿puedo comer<br>chocolate?"
+      },
+      {
+       "x": 64,
+       "y": 11,
+       "w": 18,
+       "tail": "bc",
+       "text": "No."
+      },
+      {
+       "x": 18,
+       "y": 25,
+       "w": 36,
+       "tail": "br",
+       "text": "¿Y podemos?"
+      }
+     ],
+     "gloss": "<es>poder</es> können: <es>puedo</es> (o → ue) · aber <es>podemos</es> · <es>tía</es> Tante"
+    }
    },
    "gramatica": [
     [
