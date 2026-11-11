@@ -1,0 +1,47 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   GERAET.CSS — Spikiu passt sich dem Gerät an (Leo, 12.11.2026, 00:03:
+   „Ja. Deine Empfehlung." → Laptop A „Ruhige Bühne" für alle Räume;
+   Großansicht B später nur für Gespräch + Lesen). Prototyp: geraete-prototyp.html
+
+   Erkennung nach FÄHIGKEIT, nie nach Gerätename:
+     Handy   < 700 px   → nichts ändert sich (alles wie bisher getestet)
+     Tablet  700–1099   → kein Handy-Rähmchen, Raum als Spalte 760 px, Schrift 17 px
+     Laptop  ≥ 1100     → Spalte 880 px, Schrift 18 px
+     Maus    (hover:hover) and (pointer:fine) → Zeiger-Cursor, sanftes Anheben
+     E-Ink   (update:slow) → keine Animation, keine Schatten, Graustufen
+
+   Einbinden: <link rel="stylesheet" href="geraet.css"> als LETZTES im <head>.
+   Ausnahme: <body class="g-voll"> = Seite regelt Tablet/Laptop selbst (haus.html).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Stufe Tablet + Laptop: die Bühne ── */
+@media (min-width:700px){
+  html{font-size:17px;background:#dcebe2}
+  html body:not(.g-voll){
+    max-width:760px;width:100%;margin:0 auto;padding:0;
+    min-height:100dvh;
+    background:var(--bg,var(--minz,var(--paper,#eef7f1)));background-image:none;
+    box-shadow:-2.5px 0 0 #15163a,2.5px 0 0 #15163a;
+  }
+  /* Das alte Handy-Rähmchen fällt weg — der Raum füllt die Spalte */
+  html body:not(.g-voll) .app,
+  html body:not(.g-voll) > .frame{
+    width:100%;max-width:none;height:100dvh;margin:0;
+    border:0;border-radius:0;box-shadow:none;
+  }
+}
+@media (min-width:1100px){
+  html{font-size:18px}
+  html body:not(.g-voll){max-width:880px}
+}
+
+/* ── Maus und Trackpad ── */
+@media (hover:hover) and (pointer:fine){
+  button:not(:disabled),a[href],[onclick],.tile,.chip{cursor:pointer}
+}
+
+/* ── E-Ink-Lesegeräte (Kindle, Tolino …) ── */
+@media (update:slow){
+  html{filter:grayscale(1) contrast(1.15)}
+  *,*::before,*::after{animation:none!important;transition:none!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}

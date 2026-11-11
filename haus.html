@@ -34,13 +34,6 @@ body.m5{--bg:#cfeee2;--bubS:#fff;--bubT:#fff;--you:#15163a;--youtx:#eef7f1;--acc
 .view{display:none;background-color:var(--bg)}
 .view.active{display:flex;flex-direction:column;height:100dvh;width:100%;position:relative}
 .hat-profil #welcome{display:none!important}
-@media (min-width:700px) and (min-height:560px){
- html{font-size:17px}
- body{background:var(--back);background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px}
- .view.active{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;overflow:hidden;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
- .badge{top:calc(1rem + env(safe-area-inset-top));right:1.1rem}
-}
-@media (min-width:1200px){.badge{right:calc(50vw - 250px)}}
 button{font-family:inherit}
 .welcome{align-items:center;justify-content:center;text-align:center;padding:1.5rem;gap:.2rem;overflow:auto}
 .welcome .big{width:148px;height:148px;margin-bottom:.4rem}
@@ -255,8 +248,57 @@ button{font-family:inherit}
 .meta{flex:0 0 auto;display:flex;justify-content:center;gap:1.3rem;padding:.55rem 0 calc(.7rem + env(safe-area-inset-bottom));border-top:2px solid var(--ink);background:rgba(255,255,255,.55)}
 .meta a{font:600 .72rem/1 'DM Sans',sans-serif;color:var(--muted);text-decoration:none;cursor:pointer}
 .meta a:active{color:var(--ink)}
-</style></head>
-<body data-nav="haus">
+/* ===== GERÄTESTUFEN (Leo, 12.11.2026: „Ja. Deine Empfehlung." → Laptop A „Ruhige Bühne").
+   Kein Handy-Rähmchen mehr. Handy (<700) bleibt unverändert; Grundregeln in geraet.css,
+   das Haus regelt seine Stufen hier selbst (body.g-voll). Prototyp: geraete-prototyp.html ===== */
+.brand{display:none}
+@media (min-width:700px){
+ html{font-size:17px}
+ .badge{top:calc(1rem + env(safe-area-inset-top));right:1.1rem}
+ .nav{padding-top:calc(.8rem + env(safe-area-inset-top))}
+ .doors{max-width:520px}
+ .door .ic{width:48px;height:48px}
+ .door .lb{font-size:.95rem}
+ .subbar{font-size:.92rem;max-width:640px}
+ .stage{max-width:760px;padding:2rem 2rem calc(3rem + env(safe-area-inset-bottom))}
+ .k-two,.k-four,.k-tri{max-width:640px;gap:1rem}
+ .k-four{grid-template-columns:repeat(4,1fr)}
+ .k-kompakt{gap:1rem}
+ .k-kompakt .tile{height:140px;border-radius:20px;box-shadow:4px 5px 0 var(--ink)}
+ .k-kompakt .tile .em{font-size:2.05rem}
+ .tile .tt{font-size:.95rem}
+ .k-label{font-size:.78rem}
+}
+@media (min-width:1100px){
+ html{font-size:18px}
+ .nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.7rem 2.2rem 0;column-gap:2rem}
+ .brand{display:flex;align-items:center;gap:.6rem;font:400 1.25rem/1 'Archivo Black',sans-serif;color:var(--ink);grid-column:1;grid-row:1}
+ .brand i{width:44px;height:44px;display:block}
+ .brand i svg{width:100%;height:100%}
+ .doors{margin:0;gap:.6rem;max-width:none;grid-column:2;grid-row:1}
+ .door{flex-direction:row;min-height:0;padding:.5rem 1.1rem;border-radius:999px;border:2.5px solid transparent;gap:.55rem}
+ .door .ic{width:34px;height:34px}
+ .door.on{border-color:var(--ink);background:#fff;box-shadow:2px 3px 0 var(--ink)}
+ .door.on:after{display:none}
+ .hilfe-knopf{position:static;grid-column:3;grid-row:1;justify-self:end}
+ .subbar{grid-column:1/-1;grid-row:2;max-width:none;padding:.55rem 0 .7rem}
+ .stage{max-width:1040px;padding:2.4rem 2.5rem calc(3rem + env(safe-area-inset-bottom))}
+ .k-two{max-width:720px}
+ .k-four{max-width:none}
+ .k-kompakt .tile{height:170px}
+ .k-kompakt .tile .em{font-size:2.3rem}
+}
+@media (min-width:1100px) and (hover:hover) and (pointer:fine){
+ .door:hover:not(.on){background:#fff}
+ .tile{transition:transform .12s,box-shadow .12s}
+ .tile:hover{transform:translate(-2px,-3px);box-shadow:7px 9px 0 var(--ink)}
+ .stage{counter-reset:kachel}
+ .stage .tile{position:relative;counter-increment:kachel}
+ .stage .tile::before{content:counter(kachel);position:absolute;top:.55rem;left:.65rem;font:700 .7rem/1 'DM Mono',monospace;border:1.5px solid rgba(21,22,58,.5);border-radius:6px;padding:.18rem .35rem;color:rgba(21,22,58,.7);background:rgba(255,255,255,.6)}
+}
+</style>
+<link rel="stylesheet" href="geraet.css"></head>
+<body data-nav="haus" class="g-voll">
 
 
 <section class="view welcome active" id="welcome">
@@ -269,6 +311,7 @@ button{font-family:inherit}
 
 <section class="view" id="house">
   <header class="nav" style="position:relative">
+    <div class="brand" aria-hidden="true"><i id="brandCapy"></i>Spikiu</div>
     <button class="hilfe-knopf" id="hilfeKnopf" type="button" onclick="location.href='faq.html'">?</button>
     <div class="doors" id="doors"></div>
     <div class="subbar" id="subbar"></div>
@@ -934,6 +977,18 @@ function renderBook(){bookIdx=0;var ov=document.getElementById('bookov');
  view.addEventListener('pointerup',function(e){if(x0==null)return;var dx=e.clientX-x0;x0=null;var P=bookPages();
   if(dx<-45&&bookIdx<P.length-1){bookIdx++;bookPage(1);}else if(dx>45&&bookIdx>0){bookIdx--;bookPage(-1);}});}
 function closeBook(){lxSchliessen();var ov=document.getElementById('bookov');ov.classList.remove('open');ov.innerHTML='';}
+/* Tastatur am Laptop (Gerätestufen, 12.11.): 1–9 öffnet die n-te Kachel, ← → wechselt die Tür. */
+window.addEventListener('keydown',function(e){
+ if(innerWidth<1100||e.metaKey||e.ctrlKey||e.altKey)return;
+ var ov=document.getElementById('bookov');if(ov&&ov.classList.contains('open'))return;
+ var t=e.target&&e.target.tagName;if(t==='INPUT'||t==='TEXTAREA'||(e.target&&e.target.isContentEditable))return;
+ if(!document.getElementById('house').classList.contains('active'))return;
+ var n=parseInt(e.key,10);
+ if(n>=1&&n<=9){var k=document.querySelectorAll('#stage .tile')[n-1];if(k){e.preventDefault();k.click();}return;}
+ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var ds=[].slice.call(document.querySelectorAll('#doors .door'));
+  var i=ds.findIndex(function(d){return d.classList.contains('on');});if(i<0||!ds.length)return;
+  i=(i+(e.key==='ArrowRight'?1:ds.length-1))%ds.length;e.preventDefault();ds[i].click();}
+});
 window.addEventListener('keydown',function(e){var ov=document.getElementById('bookov');
  if(!ov||!ov.classList.contains('open'))return;var P=bookPages();
  if(e.key==='ArrowRight'&&bookIdx<P.length-1){bookIdx++;bookPage(1);}
@@ -1000,6 +1055,7 @@ document.getElementById('wbig').innerHTML=capyBig();var _wc=document.querySelect
 document.getElementById('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')submitName();});
 document.documentElement.lang=HL;
 (function boot(){
+ var _bc=document.getElementById('brandCapy');if(_bc)_bc.innerHTML=CAPY_SMALL.replace('width="20" height="20" ','');
  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'null');
   if(u&&u.name){NAME=u.name;enterHouse();return;}}catch(e){}
  /* ══════════════════════════════════════════════════════════════
