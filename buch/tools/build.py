@@ -130,10 +130,29 @@ PAUSE = {'wort': 900, 'satz': 700, 'hoer': 2500}
 _KURZ_UNBENUTZT = {'sí', 'si', 'no', 'tú', 'tu', 'yo', 'ya', 'mi', 'el', 'él', 'la', 'lo', 'le', 'te', 'me', 'se', 'sé', 'de', 'en',
             'un', 'y', 'o', 'a', 'e', 'u', 'al', 'es', 'ha', 'he', 'va', 've', 'da', 'di', 'dé', 'ti', 'su', 'mí', 'ni', 'ay', 'oh', 'eh'}
 
+# ── Buchstabieren (Leo, 11.11.2026: „Ele, u, ce, etc. werden so schnell und verbunden vorgelesen wie wenn es ein
+#    Satz wäre. Buchstabieren von Buchstaben oder Silben braucht eine besondere Behandlung … für alle Fälle“) ──
+# Ein Buchstabier-Element = spanischer Buchstabenname (auch „i con tilde“, „uve doble“) oder ein Kurzstück aus
+# 1–3 Buchstaben (Vokal, Silbe). Drei oder mehr davon, durch Komma getrennt = Buchstabier-Liste → jedes Element
+# wird ein eigener Hörbaustein mit Wortpause. Großbuchstaben mit Bindestrich (L-U-C-Í-A) = buchstabiert.
+BUCHSTABE_ES = {'A': 'a', 'B': 'be', 'C': 'ce', 'D': 'de', 'E': 'e', 'F': 'efe', 'G': 'ge', 'H': 'hache', 'I': 'i',
+                'J': 'jota', 'K': 'ka', 'L': 'ele', 'M': 'eme', 'N': 'ene', 'Ñ': 'eñe', 'O': 'o', 'P': 'pe', 'Q': 'cu',
+                'R': 'erre', 'S': 'ese', 'T': 'te', 'U': 'u', 'V': 'uve', 'W': 'uve doble', 'X': 'equis', 'Y': 'ye',
+                'Z': 'zeta', 'Á': 'a con tilde', 'É': 'e con tilde', 'Í': 'i con tilde', 'Ó': 'o con tilde',
+                'Ú': 'u con tilde', 'Ü': 'u con diéresis'}
+_BS_ITEM = r'(?:i griega|uve doble|doble (?:ele|erre)|hache|jota|erre|equis|zeta|[^\W\d_]{1,3})(?:\s+con\s+(?:tilde|diéresis))?'
+_BS_LISTE = re.compile(r'(?<!\w)(' + _BS_ITEM + r'(?:\s*,\s*' + _BS_ITEM + r'){2,})(?!\w)', re.I)
+_BS_GROSS = re.compile(r'(?<!\w)([A-ZÁÉÍÓÚÑÜ](?:[-‐‑][A-ZÁÉÍÓÚÑÜ]){2,})(?!\w)')
+
+def _buchstabiert(t):
+    """L-U-C-Í-A → ele, u, ce, i con tilde, a (dann greift die Buchstabier-Liste)."""
+    return _BS_GROSS.sub(lambda m: ', '.join(BUCHSTABE_ES.get(c, c.lower()) for c in re.split(r'[-‐‑]', m.group(1))), t)
+
 def _sauber(t):
     t = strip_tags(t)
     t = re.sub(r'\([^)]*\)', ' ', t)                       # Klammern = Erklärung, nicht sprechen
     t = re.sub(r'[«»„“”"]', '', t)
+    t = _buchstabiert(t)                                      # VOR dem Zusammenziehen: L-U-C-Í-A bleibt buchstabiert
     t = re.sub(r"(?<=\w)[-‐‑](?=\w)", "", t)               # Silbentrennung bue-no, pa-e-lla → bueno, paella (auch 1-Buchstaben-Silben)
     t = re.sub(r'\s*[·|/→=]\s*', ' | ', t)                  # Notation trennt Bausteine
     t = re.sub(r'^\s*(…|\.\.\.)\s*', '', t)
@@ -149,6 +168,19 @@ def bausteine(text, art=None):
         if re.search(r'[.!?…]', teil):
             for satz in re.findall(r'[^.!?…]+[.!?…]+|[^.!?…]+$', teil):
                 satz = satz.strip(' ,;:–-')
+                m = _BS_LISTE.search(satz)
+                if m and len({w.strip().lower() for w in m.group(1).split(',')}) == 1:
+                    m = None    # „¡Ay, ay, ay!“ = Ausruf, kein Buchstabieren
+                if m:   # Buchstabier-Liste im Satz: davor als Satz, jedes Element einzeln, danach als Satz
+                    vor, nach = satz[:m.start()].strip(' ,;:–-'), satz[m.end():].strip(' ,;:–-.!?…')
+                    if len(re.sub(r'[^\wáéíóúñü]', '', vor)) >= 2:
+                        out.append({'t': vor.rstrip('.') + '.', 'p': PAUSE[art or 'satz']})
+                    for w in m.group(1).split(','):
+                        if w.strip():
+                            out.append({'t': w.strip() + '.', 'p': PAUSE[art or 'wort']})
+                    if len(re.sub(r'[^\wáéíóúñü]', '', nach)) >= 2:
+                        out.append({'t': nach + '.', 'p': PAUSE[art or 'satz']})
+                    continue
                 if len(re.sub(r'[^\wáéíóúñü]', '', satz)) >= 2:
                     out.append({'t': satz.replace('…', '.'), 'p': PAUSE[art or 'satz']})
         elif teil.count(',') >= 1 and len(teil.split()) <= 3 * (teil.count(',') + 1):

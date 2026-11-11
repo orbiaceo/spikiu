@@ -292,7 +292,7 @@ async function speakWithPiper(text, zielsprache, gen) {
     await playBlob(blob);
     if (gen !== speakGen) return;                   // während der Wiedergabe abgebrochen
     if (pauseNach[i]) {
-      await new Promise((r) => setTimeout(r, 450));
+      await new Promise((r) => setTimeout(r, 700));
       if (gen !== speakGen) return;
     }
   }
@@ -322,25 +322,42 @@ function speakWithBrowser(text, zielsprache) {
 // ── Sprech-Ebene ≠ Lese-Ebene (Leo, 07.11.2026: „Bue-no es lo visual. Lo que lee la voz debe ser: bueno.“) ──
 // Silbentrennung, die man SIEHT (mur-cié-la-go, pa-e-lla), wird für die Stimme zum ganzen Wort zusammengezogen –
 // sonst klingt es wie gestottert. Nur Bindestriche ZWISCHEN zwei Buchstaben; Endungen wie „-ar“ bleiben unberührt.
-// Vokal-Listen (Leo, 11.11.2026: „a, e, i, o, u“ klang wie „Tate, Tito, Tu“): drei oder mehr einzeln
-// stehende Vokale hintereinander werden zu eigenen Sätzen mit PAUSE dazwischen → langsam und klar.
+// ── Buchstabieren (Leo, 11.11.2026: „a, e, i, o, u“ klang wie „Tate, Tito, Tu“; „Ele, u, ce … werden so schnell
+//    und verbunden vorgelesen wie wenn es ein Satz wäre … für alle Fälle“) ──────────────────────────────────────
+// Buchstabier-Element = Buchstabenname (auch „i con tilde“, „uve doble“) oder Kurzstück aus 1–3 Buchstaben.
+// Fälle: (1) ≥3 Elemente mit Komma/·/; / „/“ getrennt  (2) ≥3 einzelne Vokale nur mit Leerzeichen („a e i o u“)
+//        (3) Großbuchstaben mit Bindestrich (L-U-C-Í-A) → auf Spanisch die Buchstabennamen.
+// Jedes Element wird ein eigener Satz, PAUSE davor/dazwischen/danach. Gleiche Elemente („¡Ay, ay, ay!“) = Ausruf, bleibt.
 const PAUSE = '⏸';
-function vokalListen(t) {
-  // Trenner: Leerzeichen, Komma, Mittelpunkt, Semikolon, Schrägstrich – KEIN Bindestrich (sonst wäre „e-u-ro-pa“ eine Liste)
-  return t.replace(/(^|[^\p{L}\-‐‑])([aeiouáéíóú])((?:[\s,·;\/]+[aeiouáéíóú]){2,})(?![\p{L}\-‐‑])/giu,
-    (m, vor, erster, rest) => {
-      const v = [erster].concat(rest.split(/[\s,·;\/]+/).filter(Boolean));
-      return vor + ' ' + PAUSE + ' ' + v.map((x) => x.toLowerCase() + '.').join(' ' + PAUSE + ' ') + ' ' + PAUSE + ' ';
-    }).replace(new RegExp(PAUSE + '\\s*[.,;:!?…]+', 'g'), PAUSE);   // kein verwaister Satzpunkt nach der letzten Pause
+const BUCHSTABE_ES = { A: 'a', B: 'be', C: 'ce', D: 'de', E: 'e', F: 'efe', G: 'ge', H: 'hache', I: 'i', J: 'jota', K: 'ka',
+  L: 'ele', M: 'eme', N: 'ene', 'Ñ': 'eñe', O: 'o', P: 'pe', Q: 'cu', R: 'erre', S: 'ese', T: 'te', U: 'u', V: 'uve',
+  W: 'uve doble', X: 'equis', Y: 'ye', Z: 'zeta', 'Á': 'a con tilde', 'É': 'e con tilde', 'Í': 'i con tilde',
+  'Ó': 'o con tilde', 'Ú': 'u con tilde', 'Ü': 'u con diéresis' };
+const BS_ITEM = '(?:i griega|uve doble|doble (?:ele|erre)|hache|jota|erre|equis|zeta|\\p{L}{1,3})(?:\\s+con\\s+(?:tilde|diéresis))?';
+const BS_LISTE = new RegExp('(^|[^\\p{L}])(' + BS_ITEM + '(?:\\s*[,·;\\/]\\s*' + BS_ITEM + '){2,})(?![\\p{L}])', 'giu');
+const BS_VOKALE = /(^|[^\p{L}\-‐‑])([aeiouáéíóú](?:\s+[aeiouáéíóú]){2,})(?![\p{L}\-‐‑])/giu;
+const BS_GROSS = /(^|[^\p{L}])(\p{Lu}(?:[-‐‑]\p{Lu}){2,})(?![\p{L}])/gu;
+
+function alsListe(vor, elemente) {
+  const e = elemente.map((x) => x.trim()).filter(Boolean);
+  if (new Set(e.map((x) => x.toLowerCase())).size === 1) return null;   // Ausruf, kein Buchstabieren
+  return vor + ' ' + PAUSE + ' ' + e.map((x) => x + '.').join(' ' + PAUSE + ' ') + ' ' + PAUSE + ' ';
 }
-function sprechText(text) {
-  // erst Vokal-Listen (bevor „a-e-i“ zu einem Wort zusammengezogen würde), dann Silben-Bindestriche
-  return vokalListen(String(text)).replace(/(\p{L})[-‐‑](?=\p{L})/gu, '$1');   // ohne Lookbehind: läuft auch auf älterem Safari
+function buchstabieren(t, zielsprache) {
+  t = t.replace(BS_GROSS, (m, vor, folge) => vor + folge.split(/[-‐‑]/)
+    .map((c) => (zielsprache === 'es' ? (BUCHSTABE_ES[c] || c.toLowerCase()) : c)).join(', '));
+  t = t.replace(BS_LISTE, (m, vor, liste) => alsListe(vor, liste.split(/[,·;\/]/)) || m);
+  t = t.replace(BS_VOKALE, (m, vor, liste) => alsListe(vor, liste.split(/\s+/)) || m);
+  return t.replace(new RegExp(PAUSE + '\\s*[.,;:!?…]+', 'g'), PAUSE);   // kein verwaister Satzpunkt nach der letzten Pause
+}
+function sprechText(text, zielsprache) {
+  // erst Buchstabieren (bevor „L-U-C“ / „a-e-i“ zusammengezogen würde), dann Silben-Bindestriche zum ganzen Wort
+  return buchstabieren(String(text), zielsprache).replace(/(\p{L})[-‐‑](?=\p{L})/gu, '$1');   // ohne Lookbehind: älteres Safari
 }
 
 async function speak(text, zielsprache) {
   if (!text || !String(text).trim()) return;
-  text = sprechText(text);
+  text = sprechText(text, zielsprache);
   const gen = ++speakGen;          // dieser Aufruf ist ab jetzt der aktuelle
   stopPlayback();                  // altes Audio SOFORT aus — nie zwei Stimmen übereinander
   // Geräte-Stimme direkt (Griechisch immer; auf iOS ALLE Sprachen): kein stummes Piper.
