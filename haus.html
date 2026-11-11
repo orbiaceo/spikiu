@@ -261,14 +261,13 @@ button{font-family:inherit}
  .door .lb{font-size:.95rem}
  .subbar{font-size:.92rem;max-width:640px}
  .stage{max-width:760px;padding:2rem 2rem calc(3rem + env(safe-area-inset-bottom))}
- .k-two,.k-four,.k-tri{max-width:640px;gap:1rem}
- /* Alle Kacheln gleich groß (Leo, 12.11. 00:12): Zweier- und Vierergruppe teilen dasselbe
-    4-Spalten-Raster; zwei Kacheln sitzen in den mittleren Spalten 2 + 3. */
- .k-two,.k-four{grid-template-columns:repeat(4,minmax(0,1fr))}
- .k-two>.tile:first-child:nth-last-child(2){grid-column:2}
- .k-two .tile,.k-four .tile{height:140px;border-radius:20px;box-shadow:4px 5px 0 var(--ink)}
- .k-two .tile .em,.k-four .tile .em{font-size:2.05rem}
- .k-kompakt{gap:1rem}
+ /* Alle Kacheln gleich groß und QUADRATISCH (Leo, 12.11. 00:12: „Lieber als Quadrate, Höhe und
+    Länge gleich"). Jede Gruppe (2, 3, 4, 6 Kacheln) fließt zentriert, höchstens 4 pro Reihe. */
+ .k-two,.k-four,.k-tri{--kw:156px;--kg:1rem;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--kg);max-width:calc(4 * var(--kw) + 3 * var(--kg))}
+ .k-two .tile,.k-four .tile,.k-tri .tile,.k-kompakt .tile{width:var(--kw);height:var(--kw);flex:0 0 var(--kw);border-radius:20px;box-shadow:4px 5px 0 var(--ink)}
+ .k-tri .k-top,.k-kompakt.k-tri .k-top{max-width:none;width:var(--kw);justify-self:auto}
+ .k-two .tile .em,.k-four .tile .em,.k-tri .tile .em{font-size:2.05rem}
+ .tile .tt{white-space:normal;line-height:1.15}
  .tile .tt{font-size:.95rem}
  .k-label{font-size:.78rem}
 }
@@ -286,9 +285,8 @@ button{font-family:inherit}
  .hilfe-knopf{position:static;grid-column:3;grid-row:1;justify-self:end}
  .subbar{grid-column:1/-1;grid-row:2;max-width:none;padding:.55rem 0 .7rem}
  .stage{max-width:1040px;padding:2.4rem 2.5rem calc(3rem + env(safe-area-inset-bottom))}
- .k-two,.k-four{max-width:none}
- .k-two .tile,.k-four .tile{height:170px}
- .k-two .tile .em,.k-four .tile .em{font-size:2.3rem}
+ .k-two,.k-four,.k-tri{--kw:190px;--kg:1.3rem}
+ .k-two .tile .em,.k-four .tile .em,.k-tri .tile .em{font-size:2.4rem}
 }
 @media (min-width:1100px) and (hover:hover) and (pointer:fine){
  .door:hover:not(.on){background:#fff}
