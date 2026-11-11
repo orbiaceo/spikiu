@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 11.11.2026 · BILD 4.2 EINGEBAUT (**Leo, 23:09: „4.2“**) — `buch/bilder/04-02.png` (Kellner bringt die Rechnung, drei Gäste zeigen im Kreis aufeinander). Blasen: Kellner „Aquí tiene su cuenta.“ · Gast „¿Su cuenta? ¿De quién?“. Glosse: „su cuenta seine, ihre oder Ihre Rechnung – su passt für alle · la cuenta die Rechnung“. Überlauf 0. Bilder eingebaut: **Kap. 1–3 komplett, 4.1–4.2**.
+
 Stand: 08.11.2026 · BILD 4.1 EINGEBAUT (**Leo, 13:16: „Chocolate“**) — `buch/bilder/04-01.png` (Mutter mit verschränkten Armen, Kind voller Schokolade zeigt auf den Hund). Blasen: „¿Quién es el culpable?“ · „¡Yo no! ¡Es él!“. Glosse: „yo ich · él er – nur zum Betonen: ¡Yo no! · el culpable der Schuldige“. Überlauf 0. Bilder eingebaut: **Kap. 1–3 komplett, 4.1**.
 
 Stand: 08.11.2026 · BILD 3.5 EINGEBAUT – KAPITEL 3 KOMPLETT BEBILDERT (**Leo, 13:11: „3.5“**) — `buch/bilder/03-05.png` (junger Mann mit Einkaufstüten auf der Treppe, Nachbarin mit Lockenwicklern mustert ihn). Blasen: Nachbarin „¿Qué tal, vecino?“ (statt „Jonas“) · Mann „¡Muy bueno, gracias!“ · Nachbarin „Ya lo veo, hijo.“. Glosse: „¿Qué tal? → Muy bien. (mir geht’s gut) · Muy bueno heißt: Ich bin sehr gut … oder sehr attraktiv“. Überlauf 0. **Kapitel 1–3: alle 19 Bilder eingebaut.**

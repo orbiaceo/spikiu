@@ -288,7 +288,27 @@
      }
     ],
     "gloss": "<es>la cuenta</es> die Rechnung",
-    "prompt": "SCENE: A small restaurant table after a big family dinner, empty plates and wine glasses everywhere. On the far left, a polite elderly WAITER in a white shirt and black vest bows slightly and holds out a small plate with the bill to PILAR. At the table sit PILAR, LUCÍA and DANI. In a perfect chain, each of them points at the next person with an innocent face: Pilar points at Dani, Dani points at Lucía, Lucía points back at Pilar. Nobody touches the bill. The waiter's smile is frozen. Leave clear empty space above the waiter (top left) and above the three at the table (top right) for two speech bubbles."
+    "prompt": "SCENE: A small restaurant table after a big family dinner, empty plates and wine glasses everywhere. On the far left, a polite elderly WAITER in a white shirt and black vest bows slightly and holds out a small plate with the bill to PILAR. At the table sit PILAR, LUCÍA and DANI. In a perfect chain, each of them points at the next person with an innocent face: Pilar points at Dani, Dani points at Lucía, Lucía points back at Pilar. Nobody touches the bill. The waiter's smile is frozen. Leave clear empty space above the waiter (top left) and above the three at the table (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "04-02.png",
+     "bubbles": [
+      {
+       "x": 44,
+       "y": 5,
+       "w": 54,
+       "tail": "bc",
+       "text": "Aquí tiene su cuenta."
+      },
+      {
+       "x": 3,
+       "y": 24,
+       "w": 44,
+       "tail": "bl",
+       "text": "¿Su cuenta?<br>¿De quién?"
+      }
+     ],
+     "gloss": "<es>su cuenta</es> seine, ihre oder Ihre Rechnung – <es>su</es> passt für alle · <es>la cuenta</es> die Rechnung"
+    }
    },
    "gramatica": [
     [
