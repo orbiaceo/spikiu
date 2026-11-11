@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spikiu · Gerätestufen — Prototyp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* PROTOTYP (Leo, 11.11.2026): Spikiu passt sich dem Gerät an — Handy · Tablet · Laptop · E-Ink.
+   Das Innere jedes Rahmens ist EIN Dokument mit echten Media-Queries (geraet.css-Entwurf);
+   nur die Rahmenbreite ändert sich. So sieht man den echten Mechanismus, keine Attrappe. */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:#eef7f1;color:#15163a;font-family:'DM Sans',system-ui,sans-serif;min-height:100dvh;padding:1rem .8rem 2rem}
+.wrap{max-width:1500px;margin:0 auto}
+h1{font:400 1.35rem/1.15 'Archivo Black',sans-serif;margin:.2rem 0 .2rem;text-align:center}
+.sub{text-align:center;color:#5f7068;font-weight:600;font-size:.9rem;margin:0 0 .9rem}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;margin-bottom:.9rem}
+.chip{font:800 .88rem/1 'DM Sans';padding:.6rem .85rem;border-radius:999px;border:2.5px solid #15163a;background:#fff;color:#15163a;cursor:pointer;box-shadow:2px 3px 0 #15163a}
+.chip.on{background:#ff6b5a;color:#fff}
+.chip.alt{background:#fff;border-style:dashed}
+.chip.alt.on{background:#15163a;color:#fff;border-style:solid}
+.chip:active{transform:translate(2px,2px);box-shadow:0 1px 0 #15163a}
+.stagebox{display:flex;justify-content:center;align-items:flex-start;min-height:200px}
+.frame{position:relative;border:2.5px solid #15163a;border-radius:18px;background:#15163a;box-shadow:5px 6px 0 rgba(21,22,58,.25);overflow:hidden;flex:0 0 auto}
+.frame iframe{border:0;transform-origin:0 0;display:block;background:#fff}
+.dim{text-align:center;font:500 .72rem/1 'DM Mono',monospace;letter-spacing:.08em;color:#5f7068;margin:.55rem 0 .2rem}
+.note{max-width:620px;margin:.8rem auto 0;background:#fff;border:2.5px solid #15163a;border-radius:18px;box-shadow:3px 4px 0 #15163a;padding:.9rem 1rem}
+.note .eb{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;color:#ff6b5a;text-transform:uppercase;margin-bottom:.45rem}
+.note h2{font:800 1.08rem/1.25 'DM Sans';margin:0 0 .35rem}
+.note p{margin:.25rem 0;font-size:.95rem;line-height:1.45}
+.note ul{margin:.4rem 0 0;padding-left:1.1rem;font-size:.92rem;line-height:1.45}
+.live-hint{display:none;text-align:center;font-size:.85rem;color:#5f7068;font-weight:600;margin:-.4rem 0 .6rem}
+</style></head>
+<body><div class="wrap">
+<h1>Spikiu passt sich an</h1>
+<p class="sub">Ein Haus, vier Geräte. Tipp oben, was du sehen willst — in jedem Rahmen kannst du die Türen antippen.</p>
+<div class="chips" id="chips"></div>
+<p class="live-hint" id="liveHint">Am Mac: Fenster schmaler und breiter ziehen — Spikiu springt live zwischen Handy, Tablet und Laptop.</p>
+<div class="stagebox" id="stagebox"></div>
+<div class="dim" id="dim"></div>
+<div class="note" id="note"></div>
+</div>
+
+<script>
+/* ===== Kanonischer Spikiu (aus haus.html, nie neu erfunden) ===== */
+var CAPY='<svg viewBox="0 0 80 80" fill="none" style="width:100%;height:100%">'
++'<ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>'
++'<ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>'
++'<circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>'
++'<circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>'
++'<circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>'
++'<ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>'
++'<ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>'
++'<ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>'
++'<path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var ICO_PRAXIS='<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M8 13 h24 a4 4 0 0 1 4 4 v11 a4 4 0 0 1 -4 4 h-12 l-7 6 v-6 h-5 a4 4 0 0 1 -4 -4 v-11 a4 4 0 0 1 4 -4 z" fill="#ffd24a"/><path d="M36 20 h4 a3 3 0 0 1 3 3 v9 a3 3 0 0 1 -3 3 h-2 v5 l-6 -5 h-6" fill="#cdddb3"/></g><g fill="#20271f"><circle cx="14" cy="22.5" r="1.9"/><circle cx="20" cy="22.5" r="1.9"/><circle cx="26" cy="22.5" r="1.9"/></g></svg>';
+var ICO_BOOK='<svg viewBox="0 0 48 48" style="width:100%;height:100%"><g stroke="#20271f" stroke-width="2.6" stroke-linejoin="round"><path d="M24 14 C20 11 13 11 9 13 L9 36 C13 34 20 34 24 37 C28 34 35 34 39 36 L39 13 C35 11 28 11 24 14 Z" fill="#e9cf93"/><path d="M24 14 L24 37" fill="none"/></g></svg>';
+
+/* ===== Das Innere: ein Dokument, echte Media-Queries ===== */
+function innen(modus){
+var css=`
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+html{font-size:16px}
+body{--bg:#eef7f1;--ink:#15163a;--acc:#ff6b5a;--muted:#5f7068;--ow:2.5px;
+ background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5}
+button{font-family:inherit}
+.app{display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);position:relative}
+/* Kopf (Handy) */
+.nav{flex:0 0 auto;background:rgba(255,255,255,.86);border-bottom:2.5px solid var(--ink);padding:.5rem .5rem 0;position:relative}
+.brand{display:none}
+.hilfe{position:absolute;top:.45rem;right:.6rem;width:32px;height:32px;border-radius:999px;border:2px solid var(--ink);background:#fff;font:800 .95rem/1 'DM Sans';color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.doors{display:flex;gap:.4rem;max-width:560px;margin:0 auto}
+.door{flex:1;background:transparent;border:none;cursor:pointer;padding:.5rem .2rem .6rem;border-radius:14px 14px 0 0;display:flex;flex-direction:column;align-items:center;gap:.25rem;position:relative;min-height:72px}
+.door .ic{width:42px;height:42px}
+.door .lb{font:800 .82rem/1 'DM Sans';color:var(--muted)}
+.door .ds{display:none}
+.door.on .lb{color:var(--ink)}
+.door.on:after{content:'';position:absolute;left:16%;right:16%;bottom:-2.5px;height:4px;border-radius:3px;background:var(--acc)}
+.subbar{max-width:560px;margin:.15rem auto 0;text-align:center;font-size:.8rem;line-height:1.3;color:var(--muted);padding:.4rem 1.1rem .6rem;font-weight:600}
+.side{display:none}
+.stage{flex:1;min-height:0;overflow:auto;max-width:560px;width:100%;margin:0 auto;padding:1.1rem 1.15rem 2.2rem;display:flex;flex-direction:column;justify-content:center;gap:1.1rem}
+.k-label{font:800 .72rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:.45rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;width:100%;max-width:340px;margin:0 auto}
+.tile{height:96px;min-width:0;overflow:hidden;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.6rem;gap:.12rem;transition:transform .12s,box-shadow .12s}
+.tile:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
+.tile .em{font-size:1.6rem;line-height:1}
+.tile .tt{font:800 .82rem/1.1 'DM Sans';color:var(--ink);white-space:nowrap}
+.tile .ss{display:none;font-size:.78rem;color:rgba(21,22,58,.7);line-height:1.25;font-weight:600}
+.tile .pill{font:800 .56rem 'DM Sans';border:2px solid var(--ink);border-radius:999px;padding:.08rem .4rem;margin-top:.15rem;background:#ffd24a}
+.tile .key{display:none}
+.wieder{display:none}
+.kb{display:none}
+.toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;font:700 .85rem/1 'DM Mono',monospace;padding:.6rem .9rem;border-radius:999px;transition:.25s;pointer-events:none;z-index:9}
+.toast.on{opacity:1;transform:translateX(-50%)}
+
+/* ── HEUTE: so sieht haus.html jetzt am Laptop aus ── */
+@media (min-width:700px) and (min-height:560px){
+ .heute{display:flex;align-items:center;justify-content:center;background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px}
+ .heute .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;overflow:hidden;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink)}
+}
+
+/* ── NEU · STUFE TABLET (ab 700 px) ── */
+@media (min-width:700px){
+ .neu{font-size:17px}
+ .neu .nav{padding-top:.8rem}
+ .neu .doors{max-width:520px}
+ .neu .door .ic{width:48px;height:48px}
+ .neu .door .lb{font-size:.95rem}
+ .neu .subbar{font-size:.92rem;max-width:640px}
+ .neu .stage{max-width:760px;padding:2rem 2rem 3rem;gap:1.8rem}
+ .neu .grid{max-width:640px;gap:1rem}
+ .neu .grid.four{grid-template-columns:repeat(4,1fr)}
+ .neu .tile{height:150px;border-radius:20px;box-shadow:4px 5px 0 var(--ink)}
+ .neu .tile .em{font-size:2.1rem}
+ .neu .tile .tt{font-size:.98rem}
+ .neu .tile .ss{display:block}
+ .neu .k-label{font-size:.78rem}
+}
+
+/* ── NEU · STUFE LAPTOP A — Ruhige Bühne (ab 1100 px) ── */
+@media (min-width:1100px){
+ .neu.a{font-size:18px}
+ .neu.a .nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 2.2rem;gap:2rem}
+ .neu.a .brand{display:flex;align-items:center;gap:.6rem;font:400 1.25rem/1 'Archivo Black';flex:0 0 220px}
+ .neu.a .brand i{width:44px;height:44px;display:block}
+ .neu.a .doors{margin:0;flex:0 0 auto;gap:.6rem;max-width:none}
+ .neu.a .door{flex-direction:row;min-height:0;padding:.55rem 1.1rem;border-radius:999px;border:2.5px solid transparent;gap:.55rem}
+ .neu.a .door .ic{width:34px;height:34px}
+ .neu.a .door.on{border-color:var(--ink);background:#fff;box-shadow:2px 3px 0 var(--ink)}
+ .neu.a .door.on:after{display:none}
+ .neu.a .door:hover{background:#fff}
+ .neu.a .hilfe{position:static;flex:0 0 auto;margin-left:auto}
+ .neu.a .navR{flex:0 0 220px;display:flex;justify-content:flex-end}
+ .neu.a .subbar{display:none}
+ .neu.a .stage{max-width:1040px;padding:2.6rem 2.5rem 3rem;justify-content:flex-start;gap:2.2rem}
+ .neu.a .lead{display:block!important;text-align:center;font:800 1.5rem/1.25 'DM Sans';margin:.4rem 0 0}
+ .neu.a .lead small{display:block;font:600 1rem/1.4 'DM Sans';color:var(--muted);margin-top:.3rem}
+ .neu.a .grid{max-width:none}
+ .neu.a .grid.two{max-width:720px}
+ .neu.a .grid.two .tile{height:170px}
+ .neu.a .tile{height:180px;cursor:pointer;position:relative}
+ .neu.a .tile:hover{transform:translate(-2px,-3px);box-shadow:7px 9px 0 var(--ink)}
+ .neu.a .tile .key{display:block;position:absolute;top:.55rem;left:.65rem;font:700 .7rem/1 'DM Mono';border:1.5px solid rgba(21,22,58,.5);border-radius:6px;padding:.18rem .35rem;color:rgba(21,22,58,.7);background:rgba(255,255,255,.6)}
+ .neu.a .kb{display:block;text-align:center;font:600 .82rem/1 'DM Sans';color:var(--muted);margin-top:auto;padding-top:1rem}
+}
+
+/* ── NEU · STUFE LAPTOP B — Großansicht mit Seitenleiste (ab 1100 px) ── */
+@media (min-width:1100px){
+ .neu.b{font-size:18px}
+ .neu.b .app{display:grid;grid-template-columns:300px 1fr;grid-template-rows:1fr}
+ .neu.b .nav{display:none}
+ .neu.b .side{display:flex;flex-direction:column;gap:1rem;background:#fff;border-right:2.5px solid var(--ink);padding:1.6rem 1.3rem;overflow:auto}
+ .neu.b .side .brand{display:flex;align-items:center;gap:.6rem;font:400 1.3rem/1 'Archivo Black';margin-bottom:.6rem}
+ .neu.b .side .brand i{width:46px;height:46px;display:block}
+ .neu.b .side .doors{flex-direction:column;gap:.5rem;margin:0}
+ .neu.b .side .door{flex-direction:row;align-items:center;min-height:0;padding:.75rem .85rem;border-radius:16px;border:2.5px solid transparent;gap:.75rem;text-align:left}
+ .neu.b .side .door .ic{width:40px;height:40px;flex:0 0 40px}
+ .neu.b .side .door .tx{display:flex;flex-direction:column;gap:.2rem}
+ .neu.b .side .door .tx{align-items:flex-start}
+ .neu.b .side .door .lb{font-size:1rem}
+ .neu.b .side .door .ds{display:block;font:600 .78rem/1.3 'DM Sans';color:var(--muted)}
+ .neu.b .side .door.on{border-color:var(--ink);background:var(--bg);box-shadow:3px 4px 0 var(--ink)}
+ .neu.b .side .door.on:after{display:none}
+ .neu.b .side .door:hover{background:var(--bg)}
+ .neu.b .weiter{margin-top:auto;background:var(--bg);border:2.5px solid var(--ink);border-radius:18px;padding:1rem;box-shadow:3px 4px 0 var(--ink)}
+ .neu.b .weiter .cap{width:54px;height:54px;margin:-2.2rem auto .3rem;background:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:4px}
+ .neu.b .weiter p{margin:0 0 .6rem;font:600 .88rem/1.4 'DM Sans';text-align:center}
+ .neu.b .weiter button{width:100%;padding:.7rem;border-radius:999px;border:2.5px solid var(--ink);background:var(--acc);color:#fff;font:800 .9rem 'DM Sans';cursor:pointer;box-shadow:2px 3px 0 var(--ink)}
+ .neu.b .side .hilfe{position:static;align-self:flex-start;width:auto;height:auto;padding:.4rem .8rem;font-size:.8rem}
+ .neu.b .stage{max-width:1100px;padding:2.6rem 3rem 3rem;justify-content:flex-start;gap:2rem}
+ .neu.b .lead{display:block!important;font:800 1.6rem/1.2 'DM Sans';margin:.2rem 0 0}
+ .neu.b .lead small{display:block;font:600 1rem/1.4 'DM Sans';color:var(--muted);margin-top:.3rem}
+ .neu.b .k-label{text-align:left}
+ .neu.b .grid{max-width:none;margin:0}
+ .neu.b .grid.two{grid-template-columns:1fr 1fr}
+ .neu.b .grid.two .tile{height:150px;flex-direction:row;justify-content:flex-start;text-align:left;gap:1rem;padding:1rem 1.4rem}
+ .neu.b .grid.two .tile .em{font-size:2.6rem}
+ .neu.b .grid.two .tile .tx{align-items:flex-start}
+ .neu.b .tile{height:165px}
+ .neu.b .tile:hover{transform:translate(-2px,-3px);box-shadow:7px 9px 0 var(--ink)}
+ .neu.b .wieder{display:block}
+ .neu.b .wrow{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+ .neu.b .wcard{background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:.9rem 1rem;box-shadow:3px 4px 0 var(--ink)}
+ .neu.b .wcard b{display:block;font:400 1.25rem/1.2 'Archivo Black'}
+ .neu.b .wcard span{font:600 .85rem/1.3 'DM Sans';color:var(--muted)}
+}
+.tx{display:flex;flex-direction:column;align-items:center;gap:.12rem;min-width:0}
+.lead{display:none}
+
+/* ── E-INK: Lesegerät (im echten Code: @media (update:slow)) ── */
+.eink{--bg:#fff;--acc:#000;--muted:#333;--ink:#000}
+.eink *{animation:none!important;transition:none!important}
+.eink .nav{background:#fff}
+.eink .tile{background:#fff!important;box-shadow:none;border-width:2px}
+.eink .tile .em,.eink .door .ic{filter:grayscale(1) contrast(1.4)}
+.eink .tile .pill{background:#fff}
+.eink .tile .ss{color:#000}
+.eink .door.on:after{height:5px}
+.eink .tile:active{transform:none;background:#000!important}
+.eink .tile:active *{color:#fff}
+`;
+var cls=(modus==='heute'?'heute':'neu '+(modus==='b'?'b':'a'))+(modus==='eink'?' eink':'');
+var html='<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
++'<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">'
++'<style>'+css+'</style></head><body class="'+cls+'">'
++'<div class="app">'
++ '<aside class="side"><div class="brand"><i>'+CAPY+'</i>Spikiu</div><div class="doors" data-doors></div>'
++  '<div class="weiter"><div class="cap">'+CAPY+'</div><p>Weiter, wo du warst:<br><b>Am Bahnhof</b> · Geführtes Gespräch</p><button data-go="gefuehrt.html">Weiter ›</button></div>'
++  '<button class="hilfe">? Hilfe</button></aside>'
++ '<header class="nav"><div class="brand"><i>'+CAPY+'</i>Spikiu</div><div class="doors" data-doors></div><div class="navR"><button class="hilfe">?</button></div><div class="subbar" id="subbar"></div></header>'
++ '<main class="stage" id="stage"></main>'
++'</div><div class="toast" id="toast"></div>'
++'<script>var ICO='+JSON.stringify({uebung:ICO_PRAXIS,bibliothek:ICO_BOOK}).replace(/<\//g,'<\\/')+';('+innenJS.toString()+')();<\/script></body></html>';
+return html;
+}
+
+/* Läuft IM Rahmen */
+function innenJS(){
+ var DOORS=[{id:'uebung',lb:'Übung',ds:'Sprechen und trainieren'},{id:'bibliothek',lb:'Bibliothek',ds:'Lesen und entdecken'}];
+ var ROOMS={
+  uebung:{sub:'Weiter: Am Bahnhof — Geführtes Gespräch',lead:'Was machen wir heute?',leadS:'Sprechen mit Spikiu oder ein bisschen trainieren.',
+   groups:[{label:'Sprechen',cls:'two',items:[
+     {em:'🎭',tt:'Geführtes Gespräch',ss:'Szenen üben — Schritt für Schritt',bg:'#ffd24a',go:'gefuehrt.html'},
+     {em:'💬',tt:'Freies Gespräch',ss:'Frei reden, in deinem Tempo',pill:'Premium',bg:'#c7e89a',go:'szene.html'}]},
+    {label:'Trainieren',cls:'four',items:[
+     {em:'🃏',tt:'Wortschatz',ss:'Deine Wörter und Wendungen',bg:'#ffd0b0',go:'wortschatz.html'},
+     {em:'🪅',tt:'Spiele',ss:'Piñata, Globos & Co.',bg:'#ffe08a',go:'spiele.html'},
+     {em:'✍️',tt:'Schreiben',ss:'Die Schreibwerkstatt',pill:'Premium',bg:'#cdbdf2',go:'schreibwerkstatt.html'},
+     {em:'👓',tt:'Leseverstehen',ss:'Texte verstehen',pill:'Premium',bg:'#f7bcd8',go:'taller.html'}]}]},
+  bibliothek:{sub:'Dein Lernroman wartet — lies weiter, wo du warst.',lead:'Deine Bibliothek',leadS:'Lesen und entdecken — in deinem Tempo.',
+   groups:[{label:'Lesen',cls:'four',items:[
+     {em:'📖',tt:'Lernroman',ss:'Kapitel für Kapitel',bg:'#d3eef6',go:'learnroman.html'},
+     {em:'🗺️',tt:'Regionalismen',ss:'Wie man woanders spricht',bg:'#ffe0b3',go:'regional.html'},
+     {em:'📘',tt:'Gramática',ss:'Lesen und üben',bg:'#cdbdf2',go:'buch/Gramatica-Karten.html'},
+     {em:'🧺',tt:'Dein Regal',ss:'Schatzkiste, Lektionen, Garten',bg:'#ffd24a',go:'regal'}]}]}
+ };
+ var cur='uebung',flat=[];
+ function toast(t){var el=document.getElementById('toast');el.textContent='→ '+t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('on');},1100);}
+ document.addEventListener('click',function(e){var g=e.target.closest('[data-go]');if(g)toast(g.getAttribute('data-go'));});
+ function doors(){document.querySelectorAll('[data-doors]').forEach(function(box){box.innerHTML='';DOORS.forEach(function(D){
+  var b=document.createElement('button');b.className='door'+(D.id===cur?' on':'');
+  b.innerHTML='<span class="ic">'+ICO[D.id]+'</span><span class="tx"><span class="lb">'+D.lb+'</span><span class="ds">'+D.ds+'</span></span>';
+  b.onclick=function(){cur=D.id;render();};box.appendChild(b);});});}
+ function render(){doors();var R=ROOMS[cur];document.getElementById('subbar').textContent=R.sub;
+  var st=document.getElementById('stage');st.innerHTML='<h2 class="lead">'+R.lead+'<small>'+R.leadS+'</small></h2>';flat=[];
+  R.groups.forEach(function(G){var w=document.createElement('section');w.innerHTML='<div class="k-label">'+G.label+'</div>';
+   var g=document.createElement('div');g.className='grid '+G.cls;
+   G.items.forEach(function(it){flat.push(it);var t=document.createElement('button');t.className='tile';t.style.background=it.bg;t.setAttribute('data-go',it.go);
+    t.innerHTML='<span class="key">'+flat.length+'</span><span class="em">'+it.em+'</span><span class="tx"><span class="tt">'+it.tt+'</span><span class="ss">'+it.ss+'</span>'+(it.pill?'<span class="pill">'+it.pill+'</span>':'')+'</span>';
+    g.appendChild(t);});w.appendChild(g);st.appendChild(w);});
+  if(cur==='uebung'){var wd=document.createElement('section');wd.className='wieder';
+   wd.innerHTML='<div class="k-label">Wiedersehen</div><div class="wrow"><div class="wcard"><b>la madrugada</b><span>die Stunden vor Sonnenaufgang</span></div><div class="wcard"><b>el andén</b><span>der Bahnsteig, das Gleis</span></div><div class="wcard"><b>amable</b><span>freundlich, nett</span></div></div>';st.appendChild(wd);}
+  var kb=document.createElement('div');kb.className='kb';kb.textContent='Tastatur: 1–'+flat.length+' öffnet eine Kachel · ← → wechselt die Tür';st.appendChild(kb);}
+ document.addEventListener('keydown',function(e){var n=parseInt(e.key,10);
+  if(n>=1&&n<=flat.length&&innerWidth>=1100){toast(flat[n-1].go);}
+  if((e.key==='ArrowRight'||e.key==='ArrowLeft')&&innerWidth>=1100){cur=cur==='uebung'?'bibliothek':'uebung';render();}});
+ render();
+}
+
+/* ===== Außen: Rahmen und Auswahl ===== */
+var MODI=[
+ {id:'heute',lb:'Laptop heute',w:1440,h:900,m:'heute',alt:true,eb:'So ist es jetzt',t:'Laptop heute: ein Handy-Rähmchen',
+  p:'haus.html steckt am Mac in einem kleinen Handy-Rahmen auf dunklem Punktegrund. Die anderen Räume haben nicht einmal den — sie werden einfach eine schmale Spalte in viel leerer Fläche.',
+  li:[]},
+ {id:'handy',lb:'Handy',w:390,h:844,m:'a',eb:'Stufe 1 · unter 700 px',t:'Handy: bleibt genau wie jetzt',
+  p:'Dein Galaxy merkt nichts. Alle Maße, Kacheln und Türen bleiben so, wie du sie getestet hast.',li:[]},
+ {id:'tablet',lb:'Tablet',w:820,h:1180,m:'a',eb:'Stufe 2 · 700–1099 px',t:'Tablet: mehr Luft, kein Rahmen',
+  p:'Der Inhalt nutzt den Bildschirm, statt in einem Rähmchen zu sitzen.',
+  li:['Schrift eine Stufe größer','Trainieren: alle vier Kacheln in einer Reihe','Kacheln zeigen jetzt ihren Untertitel']},
+ {id:'a',lb:'Laptop A',w:1440,h:900,m:'a',eb:'Stufe 3 · ab 1100 px · Variante A',t:'Laptop A: Ruhige Bühne',
+  p:'Eine Spalte wie am Handy, nur erwachsen: Die Türen wandern in eine Kopfleiste, der Inhalt steht mittig.',
+  li:['Kacheln heben sich unter der Maus','Tasten 1–6 öffnen Kacheln, ← → wechselt die Tür','Wenig Aufwand: gilt für alle Räume gleich']},
+ {id:'b',lb:'Laptop B',w:1440,h:900,m:'b',eb:'Stufe 3 · ab 1100 px · Variante B',t:'Laptop B: Großansicht mit Seitenleiste',
+  p:'Links eine feste Leiste mit den Türen und Spikiu („Weiter, wo du warst“). Rechts die Kacheln — und darunter Platz für das, was am Handy keinen hat: deine Wörter zum Wiedersehen.',
+  li:['Nutzt den Platz wirklich','Mehr Arbeit: jeder Raum braucht eine eigene Großansicht','Lohnt sich vor allem für Gespräch und Lesen']},
+ {id:'eink',lb:'E-Ink',w:758,h:1024,m:'eink',eb:'Sonderstufe · Lesegerät',t:'E-Ink: Kindle, Tolino & Co.',
+  p:'Das Gerät meldet selbst, dass sein Bildschirm langsam ist (update: slow). Spikiu schaltet dann um:',
+  li:['Keine Farbflächen, keine Schatten, keine Animation','Harte Schwarz-Weiß-Kontraste','Gut für Lernroman und Bibliothek']},
+ {id:'live',lb:'Live ↔',w:0,h:0,m:'a',alt:true,eb:'Zum Ausprobieren am Mac',t:'Live: Fenster ziehen',
+  p:'Hier gibt es keinen Rahmen — Spikiu bekommt die ganze Fensterbreite. Ziehst du das Browserfenster schmaler, springt es von Laptop A über Tablet zum Handy. Genau so würde es in echt funktionieren.',li:[]}
+];
+var aktiv='a';
+var chips=document.getElementById('chips');
+MODI.forEach(function(M){var b=document.createElement('button');b.className='chip'+(M.alt?' alt':'');b.textContent=M.lb;b.dataset.id=M.id;b.onclick=function(){aktiv=M.id;zeige();try{history.replaceState(null,'','#'+M.id);}catch(e){}};chips.appendChild(b);});
+function zeige(){
+ var M=MODI.filter(function(x){return x.id===aktiv;})[0];
+ chips.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('on',c.dataset.id===aktiv);});
+ var box=document.getElementById('stagebox');box.innerHTML='';
+ document.getElementById('liveHint').style.display=M.id==='live'?'block':'none';
+ var fr=document.createElement('div');fr.className='frame';var ifr=document.createElement('iframe');
+ if(M.id==='live'){
+  var w=Math.min(document.querySelector('.wrap').clientWidth,1500),h=Math.round(innerHeight*.78);
+  fr.style.width=w+'px';fr.style.height=h+'px';ifr.style.width=w+'px';ifr.style.height=h+'px';
+  document.getElementById('dim').textContent='volle Fensterbreite · '+w+' px';
+ }else{
+  var maxW=document.querySelector('.wrap').clientWidth-6,maxH=Math.max(420,innerHeight*.72);
+  var s=Math.min(1,maxW/M.w,maxH/M.h);
+  fr.style.width=Math.round(M.w*s)+'px';fr.style.height=Math.round(M.h*s)+'px';
+  ifr.style.width=M.w+'px';ifr.style.height=M.h+'px';ifr.style.transform='scale('+s+')';
+  document.getElementById('dim').textContent=M.w+' × '+M.h+' px'+(s<1?' · verkleinert auf '+Math.round(s*100)+' %':'');
+ }
+ ifr.srcdoc=innen(M.m);fr.appendChild(ifr);box.appendChild(fr);
+ document.getElementById('note').innerHTML='<div class="eb">'+M.eb+'</div><h2>'+M.t+'</h2><p>'+M.p+'</p>'+(M.li.length?'<ul><li>'+M.li.join('</li><li>')+'</li></ul>':'');
+}
+var h0=(location.hash||'').slice(1);if(MODI.some(function(m){return m.id===h0;}))aktiv=h0;
+var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(zeige,150);});
+zeige();
+</script>
+</body></html>
