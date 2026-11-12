@@ -256,6 +256,33 @@ html.ed-reel .sheet .foot a{background:#fff;color:var(--ink);border:var(--ow) so
 .cardx.kbild .cgloss{font-size:13px;color:var(--muted)}
 .bildfuss{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .cardx.kbild .hint.swipe{margin-top:-4px}
+
+/* ── Kartendeck: alle Theorie-Karten gleich groß, feste Zonen (12.11.2026) ── */
+.cardx.deck{height:100%;max-height:100%;overflow:hidden;gap:12px}
+.cardx.deck > .eyebrow{flex:0 0 auto}
+.cardx.deck .kmitte{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:14px;overflow:hidden}
+.cardx.deck .kmitte > :first-child{margin-top:auto}.cardx.deck .kmitte > :last-child{margin-bottom:auto}   /* sicher zentriert: Überlauf geht nach unten, wird messbar */
+.cardx.deck .kfuss{flex:0 0 auto;display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.cardx.deck .kfuss:empty{display:none}
+.cardx.deck .kfuss .play{align-self:flex-start}
+.cardx.deck .kfuss .hint.swipe{text-align:center}
+.cardx.kbild.deck .kmitte{justify-content:flex-start}
+.cardx.kbild.deck .kmitte > :first-child{margin-top:0}
+.cardx.deck .kmitte > *{flex:0 0 auto}
+.cardx.kbild.deck .kmitte > .bild{flex:1 1 auto}
+.cardx.deck .kmitte.scrollt{overflow-y:auto;-webkit-mask-image:linear-gradient(#000 88%,transparent);mask-image:linear-gradient(#000 88%,transparent)}
+.cardx.kbild.deck .kmitte > .bild{flex:1 1 auto}
+.cardx.deck .box .tag{display:none}
+html.ed-reel .cardx.kojo .kk{color:#b23a2c}
+html.ed-reel .cardx.kreg .kk{color:#2b7a5c}
+html.ed-reel .cardx.kspk .kk{color:#9a6a00}
+.slide[data-part="u"] .cardx,.slide[data-part="e"] .cardx{height:100%}
+
+/* Deck: kurze Inhalte größer, damit die feste Karte gefüllt wirkt */
+.cardx.deck .kmitte .box,.cardx.deck .kmitte .spk{font-size:19px;line-height:1.55}
+.cardx.deck .kmitte .examples > .es{font-size:21px;line-height:1.35}
+.cardx.deck .kmitte .examples > .de{font-size:16px;margin-bottom:16px}
+.cardx.deck.dark .kmitte .big{font-size:23px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -281,6 +308,50 @@ function secIdx(id){ for(var i=0;i<DATA.secs.length;i++) if(DATA.secs[i].id===id
 function addSay(l){ if(!l||!l.length) return -1; SAYS.push(l); return SAYS.length-1; }
 function play(l,lab){ var i=addSay(l); return i<0?'':'<button class="play" data-say="'+i+'">▶ '+(lab||'Anhören')+'</button>'; }
 function slide(inner,cls,part){ var s=document.createElement('section'); s.className='slide'; s.dataset.part=part; s.innerHTML='<div class="cardx '+(cls||'')+'">'+inner+'</div>'; return s; }
+/* ── Kartendeck (Leo, 12.11.2026: „Jede Karte oder Gesamtbild anders. Das ist nicht gut.“) ──
+   Jede Theorie-Karte gleich groß (volle Höhe), drei feste Zonen: Kopf oben · Inhalt mittig · Fußleiste mit ▶ unten.
+   Zu lange Inhalte werden auf Folgekarten verteilt statt in der Karte zu scrollen. */
+function kartenKopf(sec,art){ return '<div class="eyebrow kk"><b>'+sec.id+'</b>'+esc(art||'')+'</div>'; }
+function kartenArt(c){
+  var h=c.html||'', m=h.match(/<span class="tag">([^<]*)<\/span>/);
+  if(m) return m[1].replace(/&amp;/g,'&');
+  if(/<table/.test(h)) return 'Auf einen Blick';
+  if(/class="examples"/.test(h)) return 'Beispiele';
+  return '';
+}
+function deck(s){
+  var card=s.firstChild, kids=Array.prototype.slice.call(card.childNodes);
+  var kopfEl=(kids[0]&&kids[0].classList&&kids[0].classList.contains('eyebrow'))?kids.shift():null;
+  var fuss=[];
+  while(kids.length){ var l=kids[kids.length-1];
+    if(l.nodeType===1&&(l.classList.contains('play')||l.classList.contains('bildfuss')||l.classList.contains('swipe')||l.classList.contains('btns'))){ fuss.unshift(kids.pop()); } else break; }
+  var mitte=document.createElement('div'); mitte.className='kmitte'; kids.forEach(function(k){ mitte.appendChild(k); });
+  card.innerHTML=''; if(kopfEl) card.appendChild(kopfEl); card.appendChild(mitte);
+  var f=document.createElement('div'); f.className='kfuss'; fuss.forEach(function(k){ f.appendChild(k); }); card.appendChild(f);
+  card.classList.add('deck'); return s;
+}
+function zuVoll(s){ var m=s.querySelector('.kmitte'); return m && m.scrollHeight>m.clientHeight+2; }
+function teileUeberlauf(){
+  Array.prototype.slice.call(reel.querySelectorAll('.slide[data-part="t"]')).forEach(function(s){
+    var schutz=0;
+    while(zuVoll(s) && schutz++<6){
+      var tb=s.querySelector('.kmitte table'), ex=s.querySelector('.kmitte .examples'), liste, kopfzeilen=0;
+      if(tb){ liste=Array.prototype.slice.call(tb.querySelectorAll('tr')); kopfzeilen=liste.length&&liste[0].querySelector('th')?1:0; }
+      else if(ex){ liste=Array.prototype.slice.call(ex.children); }
+      else { s.querySelector('.kmitte').classList.add('scrollt'); return; }   // nicht teilbar (z. B. Lesetext): ausnahmsweise in der Karte scrollen
+      var schritt=ex?2:1, rest=liste.slice(kopfzeilen); if(rest.length<2*schritt){ s.querySelector('.kmitte').classList.add('scrollt'); return; }
+      var neu=s.cloneNode(true); s.parentNode.insertBefore(neu,s.nextSibling);
+      var nl=neu.querySelector(tb?'.kmitte table':'.kmitte .examples'), nliste=Array.prototype.slice.call(nl.querySelectorAll(tb?'tr':':scope > *')).slice(kopfzeilen);
+      // Original: von hinten wegnehmen, bis es passt (mind. ein Element bleibt)
+      var weg=0; while(zuVoll(s) && rest.length-weg>schritt){ for(var i=0;i<schritt;i++){ rest[rest.length-1-weg].style.display='none'; weg++; } }
+      for(var j=0;j<rest.length-weg;j++){ nliste[j].remove(); }
+      for(var k=rest.length-weg;k<rest.length;k++){ rest[k].remove(); }
+      var kk=neu.querySelector('.kk'); if(kk && !/ · Fortsetzung$/.test(kk.textContent)) kk.insertAdjacentHTML('beforeend',' · Fortsetzung');
+      s=neu; schutz=0;
+    }
+  });
+  baueDots();
+}
 function kopf(sec,extra){ return '<div class="eyebrow"><b>'+sec.id+'</b>'+esc(sec.topic)+(extra?' · '+extra:'')+'</div>'; }
 function norm(x){return String(x).replace(/<[^>]+>/g,'').trim().toLowerCase().replace(/\s+/g,' ').replace(/[.!¡?¿,;]+$/,'');}
 function ohneAkz(x){return norm(x).normalize('NFD').replace(/[̀-ͯ]/g,'');}
@@ -306,12 +377,13 @@ function theorie(sec){
     } else if(c.k==='hook'){
       var bild='<div class="icons">'+c.icons.map(function(u){return '<img alt="" src="icons/'+u+'.svg">';}).join('')+'</div><div class="ph">Platzhalter · Bild folgt</div>';
       h=kopf(sec,sec.baum)+'<p class="hook-es">'+c.es+'</p><div class="hook-de">'+c.de+'</div>'+(n===0&&sec.ex.length?'<button class="uebhin" data-act="ueben">✏️ '+sec.ex.length+(sec.ex.length===1?' Übung':' Übungen')+' zu diesem Thema <span>›</span></button>':'')+(c.nobild?'':'<div class="cartoonx"><div class="bubs">'+c.bubbles.map(function(b){return '<div class="bubx">'+b+'</div>';}).join('')+'</div>'+bild+'</div>'+(c.gloss?'<div class="gloss">'+c.gloss+'</div>':''))+play(c.say)+(n===0?'<div class="hint swipe">Wisch nach oben ↑</div>':'');
-    } else if(c.k==='dark'){ cls='dark'; h='<div class="eyebrow">In einem Satz</div><div class="big">'+c.html+'</div>'; }
-    else { cls=c.cls||''; h=(c.title?'<h2 class="ctitle">'+c.title+'</h2>':'')+c.html+play(c.say); }
-    reel.appendChild(slide(h,cls,'t'));
+    } else if(c.k==='dark'){ cls='dark'; h=kartenKopf(sec,'In einem Satz')+'<div class="big">'+c.html+'</div>'; }
+    else { cls=c.cls||''; h=kartenKopf(sec,kartenArt(c))+(c.title?'<h2 class="ctitle">'+c.title+'</h2>':'')+c.html+play(c.say); }
+    reel.appendChild(deck(slide(h,cls,'t')));
   });
   var nxt=DATA.secs[secIdx(sec.id)+1];
-  reel.appendChild(slide(kopf(sec)+'<h2 class="ctitle" style="font-size:25px">Willst du das üben?</h2><p class="task">Übungen aus dem Cuaderno – mit Antwort sofort.</p><div class="btns"><button class="btn primary" data-act="ueben">Ja, üben <small>'+sec.ex.length+' Karten</small></button>'+(nxt?'<button class="btn second" data-act="weiter">Weiter lesen <small>'+esc(nxt.id+' '+nxt.topic)+'</small></button>':'')+'</div>','','d'));
+  reel.appendChild(deck(slide(kartenKopf(sec,'Weiter')+'<h2 class="ctitle" style="font-size:25px">Willst du das üben?</h2><p class="task">Übungen aus dem Cuaderno – mit Antwort sofort.</p><div class="btns"><button class="btn primary" data-act="ueben">Ja, üben <small>'+sec.ex.length+' Karten</small></button>'+(nxt?'<button class="btn second" data-act="weiter">Weiter lesen <small>'+esc(nxt.id+' '+nxt.topic)+'</small></button>':'')+'</div>','','d')));
+  teileUeberlauf();
 }
 
 /* ── Übungen ── */
