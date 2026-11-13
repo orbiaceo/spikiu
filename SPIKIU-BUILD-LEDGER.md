@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 13.11.2026 · BILD 8.3 EINGEBAUT – KAPITEL 8 KOMPLETT BEBILDERT (**Leo, 21:58: „8.3“**) — `buch/bilder/08-03.png` (Familienessen: Mutter misstrauisch, Paar hält Händchen, Kind auf dem Stuhl hält den leeren Teller hoch). Blasen ohne feste Namen: Mutter „Hija, ¿quieres a este chico?“ · Tochter „Sí, mamá. Quiero a Pablo.“ · Kind „¡Y yo quiero pizza!“. Glosse: „querer a alguien jemanden lieben – mit a · querer algo etwas wollen – ohne a“. Überlauf 0. **Kapitel 1–8: alle 36 Bilder eingebaut.**
+
 Stand: 13.11.2026 · BILD 7.2 HOCHKANT ERSETZT (**Leo, 18:32: neues Bild, nach „Ich korrigiere es“**) — `buch/bilder/07-02.png` jetzt 1024×1536 (2:3). Blasen wieder lang: Mutter „Cariño, ¿dónde está la tarta?“ · Kind „No sé nada. ¡No veo nada!“. Überlauf 0. Offener Punkt 7.2-Querformat erledigt. Bilder eingebaut: **Kap. 1–7 komplett, 8.1–8.2**.
 
 Stand: 13.11.2026 · BILD 8.2 EINGEBAUT (**Leo, 16:37: „8.2“**) — `buch/bilder/08-02.png` (Floristin bindet einen Strauß mit wissendem Blick, Mann schaut nervös auf die Uhr, Stempelkarte fast voll). Blasen: „¿Para quién son las flores?“ · „Para mi novia. Por llegar tarde. Otra vez.“. Glosse: „para für wen? wozu? · por warum? · otra vez schon wieder“. Überlauf 0. Bilder eingebaut: **Kap. 1–7 komplett, 8.1–8.2**.

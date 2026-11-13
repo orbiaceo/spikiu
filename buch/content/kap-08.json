@@ -523,7 +523,34 @@
      }
     ],
     "gloss": "<es>querer a alguien</es> jemanden lieben · <es>querer algo</es> etwas wollen",
-    "prompt": "SCENE: Sunday lunch at PILAR's dining table. On the left PILAR leans forward over the table with an intense, probing, very serious look at her daughter, like a detective in an interrogation. In the middle LUCÍA, a bit embarrassed but sincere, holds DANI's hand on the tablecloth; DANI smiles calmly and a little proudly. On the right NICO stands on his chair, holding up an empty plate with both hands, mouth wide open, shouting with total enthusiasm. A big pot of stew in the centre of the table. Leave clear empty space above Pilar (top left), above Lucía (top right) and to the right of Nico (middle right) for three speech bubbles."
+    "prompt": "SCENE: Sunday lunch at PILAR's dining table. On the left PILAR leans forward over the table with an intense, probing, very serious look at her daughter, like a detective in an interrogation. In the middle LUCÍA, a bit embarrassed but sincere, holds DANI's hand on the tablecloth; DANI smiles calmly and a little proudly. On the right NICO stands on his chair, holding up an empty plate with both hands, mouth wide open, shouting with total enthusiasm. A big pot of stew in the centre of the table. Leave clear empty space above Pilar (top left), above Lucía (top right) and to the right of Nico (middle right) for three speech bubbles.",
+    "bild": {
+     "datei": "08-03.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 11,
+       "w": 44,
+       "tail": "bl",
+       "text": "Hija, ¿quieres<br>a este chico?"
+      },
+      {
+       "x": 14,
+       "y": 24,
+       "w": 40,
+       "tail": "br",
+       "text": "Sí, mamá.<br>Quiero a Pablo."
+      },
+      {
+       "x": 58,
+       "y": 20,
+       "w": 40,
+       "tail": "br",
+       "text": "¡Y yo quiero<br>pizza!"
+      }
+     ],
+     "gloss": "<es>querer a alguien</es> jemanden lieben – mit <es>a</es> · <es>querer algo</es> etwas wollen – ohne <es>a</es>"
+    }
    },
    "gramatica": [
     [
