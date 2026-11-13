@@ -39,7 +39,27 @@
      }
     ],
     "gloss": "<es>los brazos</es> die Arme · <es>porque sí</es> darum",
-    "prompt": "SCENE: The dinosaur hall of a natural history museum. A huge T-Rex skeleton towers in the background, its comically tiny arms clearly visible. In the foreground DANI sits slumped on a museum bench, completely drained, staring blankly into the distance, one hand on his forehead. NICO stands right next to him on tiptoe, tugging at Dani's sleeve with both hands, looking up with enormous, bright, endlessly curious eyes, pointing at the skeleton's tiny arms. A museum guard in the far background suppresses a smile. Leave clear empty space top left, top right and middle left for three speech bubbles."
+    "prompt": "SCENE: The dinosaur hall of a natural history museum. A huge T-Rex skeleton towers in the background, its comically tiny arms clearly visible. In the foreground DANI sits slumped on a museum bench, completely drained, staring blankly into the distance, one hand on his forehead. NICO stands right next to him on tiptoe, tugging at Dani's sleeve with both hands, looking up with enormous, bright, endlessly curious eyes, pointing at the skeleton's tiny arms. A museum guard in the far background suppresses a smile. Leave clear empty space top left, top right and middle left for three speech bubbles.",
+    "bild": {
+     "datei": "07-01.png",
+     "bubbles": [
+      {
+       "x": 52,
+       "y": 1,
+       "w": 46,
+       "tail": "bl",
+       "text": "Papá, ¿por qué<br>tiene los brazos<br>tan cortos?"
+      },
+      {
+       "x": 2,
+       "y": 40,
+       "w": 32,
+       "tail": "bc",
+       "text": "Porque sí."
+      }
+     ],
+     "gloss": "<es>¿por qué?</es> warum? · <es>porque</es> weil · <es>los brazos</es> die Arme · <es>porque sí</es> darum"
+    }
    },
    "gramatica": [
     [
