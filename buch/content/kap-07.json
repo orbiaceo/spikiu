@@ -265,7 +265,27 @@
      }
     ],
     "gloss": "<es>la tarta</es> die Torte",
-    "prompt": "SCENE: A family kitchen. On the left LUCÍA stands with her arms crossed, one eyebrow raised, looking down at NICO. On the kitchen table there is a large, completely empty cake plate with only a few crumbs and one lonely cherry left. NICO stands in front of the table, his face, hands and dinosaur T-shirt smeared all over with chocolate cream, shrugging with both palms up and the most innocent wide-eyed expression in the world, a fork hidden badly behind his back. Under the table a small dog licks chocolate off the floor. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles."
+    "prompt": "SCENE: A family kitchen. On the left LUCÍA stands with her arms crossed, one eyebrow raised, looking down at NICO. On the kitchen table there is a large, completely empty cake plate with only a few crumbs and one lonely cherry left. NICO stands in front of the table, his face, hands and dinosaur T-shirt smeared all over with chocolate cream, shrugging with both palms up and the most innocent wide-eyed expression in the world, a fork hidden badly behind his back. Under the table a small dog licks chocolate off the floor. Leave clear empty space above Lucía (top left) and above Nico (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "07-02.png",
+     "bubbles": [
+      {
+       "x": 22,
+       "y": 2,
+       "w": 32,
+       "tail": "bl",
+       "text": "¿Y la tarta?"
+      },
+      {
+       "x": 58,
+       "y": 2,
+       "w": 40,
+       "tail": "bc",
+       "text": "No sé nada.<br>¡No veo nada!"
+      }
+     ],
+     "gloss": "<es>No sé nada.</es> Ich weiß nichts. – Im Spanischen gehören zwei Nein zusammen · <es>la tarta</es> die Torte"
+    }
    },
    "gramatica": [
     [

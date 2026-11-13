@@ -28,6 +28,8 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 13.11.2026 · BILD 7.2 EINGEBAUT (**Leo, 16:26: „7.2“**) — `buch/bilder/07-02.png` (Mutter mit leerem Teller schaut misstrauisch, Kind mit Schokomund versteckt die Gabel). **Querformat 1536×1024** (statt 2:3 hoch) → auf der Handy-Karte klein mit viel Weißraum; daher kurze Blasen: Mutter „¿Y la tarta?“ · Kind „No sé nada. ¡No veo nada!“. Glosse: „No sé nada. Ich weiß nichts. – Im Spanischen gehören zwei Nein zusammen · la tarta die Torte“. Überlauf 0. **OFFEN:** Leo ggf. Bild 7.2 hochkant (2:3) neu erzeugen. Bilder eingebaut: **Kap. 1–6 komplett, 7.1–7.2**.
+
 Stand: 13.11.2026 · BILD 7.1 EINGEBAUT (**Leo, 14:45: „7.1“**) — `buch/bilder/07-01.png` (Kind zeigt im Museum auf die Ärmchen des T-Rex-Skeletts, Vater verzweifelt auf der Bank). Blasen: Kind „Papá, ¿por qué tiene los brazos tan cortos?“ (rechts oben, frei neben dem Skelett) · Vater „Porque sí.“. Dritte Blase entfällt (kein Platz). Glosse: „¿por qué? warum? · porque weil · los brazos die Arme · porque sí darum“. Überlauf 0. Bilder eingebaut: **Kap. 1–6 komplett, 7.1**.
 
 Stand: 12.11.2026 · KARTENDECK FREIGEGEBEN (**Leo, 12:24: „Ist perfekt! Zu repo!“**) — Kartendeck (Commit 492b44f) von Leo am Gerät abgenommen; gilt jetzt als Standard für alle Grammatik-Karten.
