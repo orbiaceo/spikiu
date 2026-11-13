@@ -270,16 +270,16 @@
      "datei": "07-02.png",
      "bubbles": [
       {
-       "x": 22,
-       "y": 2,
-       "w": 32,
-       "tail": "bl",
-       "text": "¿Y la tarta?"
+       "x": 4,
+       "y": 20,
+       "w": 52,
+       "tail": "bc",
+       "text": "Cariño, ¿dónde<br>está la tarta?"
       },
       {
-       "x": 58,
-       "y": 2,
-       "w": 40,
+       "x": 50,
+       "y": 30,
+       "w": 48,
        "tail": "bc",
        "text": "No sé nada.<br>¡No veo nada!"
       }
