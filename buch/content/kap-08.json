@@ -276,7 +276,27 @@
      }
     ],
     "gloss": "<es>otra vez</es> schon wieder",
-    "prompt": "SCENE: A small, colourful flower shop in Madrid. On the left behind the counter a florist in an apron wraps an enormous bouquet with a knowing, amused smile, as if she has done this many times for this customer. On the counter lies a customer loyalty card completely full of stamps. On the right DANI stands in front of the counter, a little sheepish, glancing nervously at his wristwatch, his wallet already open. Leave clear empty space above the florist (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: A small, colourful flower shop in Madrid. On the left behind the counter a florist in an apron wraps an enormous bouquet with a knowing, amused smile, as if she has done this many times for this customer. On the counter lies a customer loyalty card completely full of stamps. On the right DANI stands in front of the counter, a little sheepish, glancing nervously at his wristwatch, his wallet already open. Leave clear empty space above the florist (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "08-02.png",
+     "bubbles": [
+      {
+       "x": 4,
+       "y": 22,
+       "w": 46,
+       "tail": "bc",
+       "text": "¿Para quién son<br>las flores?"
+      },
+      {
+       "x": 48,
+       "y": 28,
+       "w": 50,
+       "tail": "bc",
+       "text": "Para mi novia.<br>Por llegar tarde.<br>Otra vez."
+      }
+     ],
+     "gloss": "<es>para</es> für wen? wozu? · <es>por</es> warum? · <es>otra vez</es> schon wieder"
+    }
    },
    "gramatica": [
     [
