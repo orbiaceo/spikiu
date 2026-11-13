@@ -497,7 +497,27 @@
      }
     ],
     "gloss": "<es>quedamos</es> wir sind verabredet",
-    "prompt": "SCENE: A cosy restaurant in Madrid in the evening. On the left LUCÍA sits alone at a table set for two, tapping her wristwatch furiously with one finger, eyes narrowed. On her table an empty bread basket, two empty wine glasses and a napkin folded into a tiny angry bird show that she has been waiting a long time. On the right DANI has just come through the door, totally relaxed and smiling warmly, holding out a small bouquet of slightly wilted flowers. Behind him a waiter rolls his eyes. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles."
+    "prompt": "SCENE: A cosy restaurant in Madrid in the evening. On the left LUCÍA sits alone at a table set for two, tapping her wristwatch furiously with one finger, eyes narrowed. On her table an empty bread basket, two empty wine glasses and a napkin folded into a tiny angry bird show that she has been waiting a long time. On the right DANI has just come through the door, totally relaxed and smiling warmly, holding out a small bouquet of slightly wilted flowers. Behind him a waiter rolls his eyes. Leave clear empty space above Lucía (top left) and above Dani (top right) for two speech bubbles.",
+    "bild": {
+     "datei": "07-03.png",
+     "bubbles": [
+      {
+       "x": 2,
+       "y": 12,
+       "w": 60,
+       "tail": "bl",
+       "text": "¡Son las nueve!<br>¡Quedamos a las ocho!"
+      },
+      {
+       "x": 50,
+       "y": 24,
+       "w": 48,
+       "tail": "bc",
+       "text": "Tranquila,<br>solo es una hora."
+      }
+     ],
+     "gloss": "<es>son las nueve</es> es ist neun Uhr · <es>a las ocho</es> um acht · <es>quedamos</es> wir sind verabredet"
+    }
    },
    "gramatica": [
     [
