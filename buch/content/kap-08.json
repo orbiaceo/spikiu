@@ -36,7 +36,27 @@
      }
     ],
     "gloss": "<es>a caballo</es> zu Pferd · <es>la tía</es> die Tante",
-    "prompt": "SCENE: A sunny park path in Madrid. In the centre DANI walks along with NICO sitting on his shoulders. Nico wears a toy cowboy hat, holds Dani's ears like reins with one hand and waves a plastic dinosaur in the air with the other, shouting with pure joy. DANI looks straight ahead with a completely dry, patient, slightly long-suffering face, his hair messed up by Nico's grip. On the right LUCÍA walks next to them, laughing and filming the scene with her phone. A pigeon flees in the foreground. Leave clear empty space above Nico (top left) and on the top right for two speech bubbles."
+    "prompt": "SCENE: A sunny park path in Madrid. In the centre DANI walks along with NICO sitting on his shoulders. Nico wears a toy cowboy hat, holds Dani's ears like reins with one hand and waves a plastic dinosaur in the air with the other, shouting with pure joy. DANI looks straight ahead with a completely dry, patient, slightly long-suffering face, his hair messed up by Nico's grip. On the right LUCÍA walks next to them, laughing and filming the scene with her phone. A pigeon flees in the foreground. Leave clear empty space above Nico (top left) and on the top right for two speech bubbles.",
+    "bild": {
+     "datei": "08-01.png",
+     "bubbles": [
+      {
+       "x": 56,
+       "y": 3,
+       "w": 42,
+       "tail": "bl",
+       "text": "¡Mira, mamá!<br>¡Voy a caballo!"
+      },
+      {
+       "x": 62,
+       "y": 43,
+       "w": 36,
+       "tail": "l",
+       "text": "No, hijo.<br>Vas en papá."
+      }
+     ],
+     "gloss": "<es>a caballo</es> zu Pferd · <es>en coche, en tren</es> mit dem Auto, mit dem Zug – <es>en</es> wie in einer Kiste"
+    }
    },
    "gramatica": [
     [
