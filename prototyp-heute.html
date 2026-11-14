@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Prototyp „Heute“</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<!--
+  PROTOTYP „Heute“ (Leo, 14.11.2026, 02:16: „Hazme el prototipo“).
+  Nur Prototyp — Live-System unberührt. Eine Datei, kein Netz außer Schriften, keine KI.
+  Idee: eine Hauptpforte („Heute mit Spikiu“: Gespräch → deine Wörter → ein Spiel),
+  darunter „Selbst wählen“ mit 4 Absichten; jede zweite Ebene höchstens 4 Wege, jeder mit einer Zeile Erklärung.
+  Stufe kommt aus dem Einstufungstest, nicht mehr aus Chips in jedem Raum. Premium erst sichtbar, wo es gilt.
+-->
+<style>
+:root{--navy:#15163a;--terra:#ff6b5a;--pink:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--plum:#9b7bff;--cyan:#2bb3d4;--sky:#d3eef6;
+ --bg:#eef7f1;--ink:#15163a;--bubS:#fff;--you:#ffd24a;--youtx:#15163a;--acc:#ff6b5a;--acctx:#fff;
+ --ow:2.5px;--shb:3px 4px;--shs:3px 3px;--muted:#5f7068;--eb:#ff6b5a;--ok:#9bd14a;--teal:#1f93b0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;overflow:hidden}
+button{font-family:inherit;color:var(--ink)}
+.app{height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto;position:relative}
+.screen{display:none;flex:1;min-height:0;flex-direction:column}
+.screen.on{display:flex}
+.stage{flex:1;min-height:0;overflow:auto;padding:1rem 1.15rem 1.6rem;display:flex;flex-direction:column}
+
+/* Kopf Haus */
+.hk{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:calc(.7rem + env(safe-area-inset-top)) 1rem .3rem}
+.proto{font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.08em;background:rgba(255,255,255,.92);border:2px solid var(--ink);padding:.3rem .55rem;border-radius:999px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.hilfe{width:32px;height:32px;border-radius:999px;border:2px solid var(--ink);background:#fff;font:800 .95rem/1 'DM Sans';cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+
+/* Spikiu spricht */
+.row{display:flex;gap:.6rem;align-items:flex-start;margin:.2rem 0 .9rem}
+.av{flex:0 0 40px;height:40px}
+.says{flex:1;min-width:0;font-size:1.02rem;background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:.65rem .85rem;line-height:1.35}
+.says .z{font-family:'Lora',serif;font-size:1.3rem;font-weight:600;line-height:1.25;display:block}
+.says .na{display:block;font-size:.84rem;color:var(--muted);font-weight:600;margin-top:.2rem}
+.you{display:flex;justify-content:flex-end;margin:.1rem 0 .9rem}
+.you span{max-width:84%;background:var(--you);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:.55rem .85rem;font:600 1.15rem/1.25 'Lora',serif}
+
+/* Heute-Karte */
+.heute{background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:1.05rem 1.1rem 1.15rem;text-align:left}
+.eyebrow{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);opacity:.75}
+.heute h1{font:800 1.75rem/1.1 'DM Sans';margin:.4rem 0 .15rem;letter-spacing:-.01em}
+.heute .zs{font:italic 500 1.12rem/1.3 'Lora',serif;margin-bottom:.85rem}
+.weg{display:flex;align-items:center;gap:.3rem;margin-bottom:1rem;flex-wrap:nowrap}
+.weg .st{flex:1;min-width:0;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.45rem .2rem;text-align:center;font:800 .74rem/1.15 'DM Sans'}
+.weg .st b{display:block;font-size:1.25rem;line-height:1.1;margin-bottom:.1rem}
+.weg .pf{flex:0 0 auto;font-weight:800;font-size:.9rem}
+.los{width:100%;padding:.85rem 1rem;border-radius:999px;border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;font:800 1.08rem/1 'DM Sans';cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.los:active,.end:active,.tile:active,.big:active,.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.heute.done{background:#c7e89a}
+.heute .klein{display:block;margin:.7rem auto 0;background:none;border:none;font:700 .86rem 'DM Sans';text-decoration:underline;cursor:pointer}
+
+/* Selbst wählen */
+.k-label{font:800 .72rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;margin:1.6rem 0 .8rem}
+.k4{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.tile{height:92px;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;background:#fff;padding:.4rem}
+.tile .em{font-size:1.6rem;line-height:1}
+.tile .tt{font:800 .9rem/1.1 'DM Sans'}
+.tile .ss{font:600 .7rem/1.15 'DM Sans';color:rgba(21,22,58,.7)}
+
+/* Raumkopf */
+.rk{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;padding:calc(.7rem + env(safe-area-inset-top)) .9rem .6rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.9)}
+.back{flex:0 0 38px;height:38px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font:800 1.2rem/1 'DM Sans';cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.rk .t{flex:1;min-width:0}
+.rk .t small{display:block;font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+.rk .t b{font:900 1.15rem/1.2 'Archivo Black',sans-serif}
+
+/* Liste zweite Ebene */
+.list{display:flex;flex-direction:column;gap:.75rem}
+.big{display:flex;align-items:center;gap:.85rem;text-align:left;border:var(--ow) solid var(--ink);border-radius:18px;padding:.85rem 1rem;cursor:pointer;box-shadow:var(--shb) 0 var(--ink);background:#fff;width:100%}
+.big .em{flex:0 0 auto;font-size:1.7rem;line-height:1;width:40px;text-align:center}
+.big .tx{flex:1;min-width:0}
+.big .tt{font:800 1.05rem/1.2 'DM Sans';display:block}
+.big .ss{font:600 .84rem/1.3 'DM Sans';color:rgba(21,22,58,.72);display:block}
+.big .chev{font-size:1.4rem;font-weight:800}
+.big .pill{display:inline-block;font:800 .58rem 'DM Sans';border:2px solid var(--ink);border-radius:999px;padding:.05rem .4rem;margin-left:.35rem;background:#c7e89a;vertical-align:2px}
+.big.tag{background:#ffd0b0}
+.big .tg{display:block;font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem}
+
+/* Sitzung */
+.weg2{flex:0 0 auto;display:flex;gap:.35rem;padding:.55rem .9rem .6rem;background:rgba(255,255,255,.9);border-bottom:2px solid var(--ink)}
+.weg2 span{flex:1;text-align:center;font:800 .72rem/1 'DM Sans';padding:.45rem .2rem;border-radius:999px;border:2px solid var(--ink);background:#fff;opacity:.45}
+.weg2 span.on{opacity:1;background:var(--mustard)}
+.weg2 span.ok{opacity:1;background:#c7e89a}
+.chips{display:flex;flex-direction:column;gap:.55rem;align-items:flex-end;margin:.2rem 0 1rem}
+.chip{max-width:90%;text-align:right;background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;padding:.55rem .85rem;cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.chip .z{display:block;font:600 1.08rem/1.25 'Lora',serif}
+.chip .na{display:block;font:600 .76rem/1.2 'DM Sans';color:var(--muted)}
+.hint{font:600 .8rem/1.3 'DM Sans';color:var(--muted);text-align:right;margin:-.4rem 0 .5rem}
+.end{display:block;margin:.6rem auto 0;font:800 1rem/1 'DM Sans';padding:.8rem 1.3rem;border-radius:999px;cursor:pointer;border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;box-shadow:var(--shs) 0 var(--ink)}
+.end.sec{background:#fff;color:var(--ink)}
+.fade{animation:fd .35s ease both}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Wortkarten */
+.flipc{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;min-height:96px;box-shadow:var(--shb) 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem;cursor:pointer;text-align:center;margin-bottom:.75rem;width:100%}
+.flipc .w{font:600 1.35rem/1.2 'Lora',serif}
+.flipc .m{font:700 .95rem/1.2 'DM Sans';color:var(--teal);display:none;margin-top:.25rem}
+.flipc.f .m{display:block}
+.flipc .tp{font:700 .6rem/1 'DM Mono',monospace;letter-spacing:.14em;color:var(--muted);margin-top:.4rem;text-transform:uppercase}
+.flipc.f .tp{display:none}
+.buch{display:none;align-items:center;gap:.5rem;justify-content:center;font:700 .88rem 'DM Sans';margin:.2rem 0 .4rem}
+.buch.on{display:flex}
+
+/* Gemelos */
+.gm{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.gm button{min-height:58px;border:var(--ow) solid var(--ink);border-radius:14px;background:#fff;box-shadow:2px 3px 0 var(--ink);cursor:pointer;padding:.4rem;font:600 1rem/1.2 'DM Sans'}
+.gm button.z{font:600 1.05rem/1.2 'Lora',serif}
+.gm button.sel{background:var(--sky)}
+.gm button.ok{background:#c7e89a;box-shadow:none;transform:translate(2px,3px);cursor:default}
+.gm button.no{background:#ffb27a}
+
+/* Ende */
+.fertig{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.6rem}
+.fertig .cap{width:120px;height:120px;animation:float 4s ease-in-out infinite}
+.fertig h2{font:900 1.6rem/1.15 'Archivo Black',sans-serif}
+.fertig p{font:600 1rem/1.4 'DM Sans';max-width:300px}
+.morgen{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.55rem .9rem;font:700 .9rem 'DM Sans';box-shadow:2px 2px 0 var(--ink)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* Leiste unten (wie bottomnav.js) */
+.bnav{flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-around;padding:.5rem .8rem calc(.5rem + env(safe-area-inset-bottom));background:#fff;border-top:2.5px solid var(--ink)}
+.tab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.15rem;color:#5f7068;font:700 .68rem 'DM Sans'}
+.tab .tic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.tab.center{flex:0 0 auto}
+.tab.center .ball{width:62px;height:62px;border-radius:999px;background:#fff;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:3px 4px 0 var(--ink);transform:translateY(-14px);animation:bfl 4s ease-in-out infinite}
+.tab.center .ball svg{width:48px;height:48px}
+.tab.center .lbl{transform:translateY(-12px);color:var(--ink)}
+@keyframes bfl{0%,100%{transform:translateY(-14px)}50%{transform:translateY(-22px)}}
+
+/* Toast + Blatt */
+.pop{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;font:600 .9rem/1.35 'DM Sans';padding:.6rem .9rem;border-radius:12px;box-shadow:3px 3px 0 rgba(0,0,0,.3);display:none;max-width:86%;text-align:center}
+.pop.on{display:block}
+.sheetbg{position:fixed;inset:0;background:rgba(21,22,58,.45);z-index:95;display:none;align-items:flex-end;justify-content:center}
+.sheetbg.on{display:flex}
+.sheet{width:100%;max-width:560px;max-height:86%;overflow:auto;background:#fff;border:var(--ow) solid var(--ink);border-bottom:0;border-radius:22px 22px 0 0;box-shadow:0 -4px 0 var(--ink);padding:1.1rem 1.2rem calc(1.3rem + env(safe-area-inset-bottom))}
+.sheet h3{font:900 1.2rem/1.2 'Archivo Black',sans-serif;margin-bottom:.7rem}
+.sheet ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:.55rem;font:500 .95rem/1.4 'DM Sans'}
+.sheet b{font-weight:800}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ============ HAUS ============ -->
+<section class="screen on" id="s-haus">
+ <div class="hk">
+  <button class="proto" onclick="neu()">PROTOTYP · WAS IST NEU?</button>
+  <button class="hilfe" onclick="neu()" aria-label="Hilfe">?</button>
+ </div>
+ <div class="stage" id="haus-stage">
+  <div class="row">
+   <div class="av" data-capy></div>
+   <div class="says" id="gruss">Hola, Leo. Heute gehen wir zusammen ins Café.</div>
+  </div>
+
+  <div class="heute" id="heute">
+   <div class="eyebrow">Heute mit Spikiu · etwa 10 Minuten</div>
+   <h1>Im Café</h1>
+   <div class="zs">Un café con leche, por favor.</div>
+   <div class="weg">
+    <div class="st"><b>🎭</b>Gespräch</div><span class="pf">›</span>
+    <div class="st"><b>🃏</b>Deine Wörter</div><span class="pf">›</span>
+    <div class="st"><b>🪅</b>Ein Spiel</div>
+   </div>
+   <button class="los" onclick="starte()">Los geht’s</button>
+  </div>
+
+  <div class="k-label">Oder selbst wählen</div>
+  <div class="k4">
+   <button class="tile" style="background:#ffd24a" onclick="raum('sprechen')"><span class="em">🎭</span><span class="tt">Sprechen</span><span class="ss">Gespräch, Schreiben</span></button>
+   <button class="tile" style="background:#ffd0b0" onclick="raum('woerter')"><span class="em">🃏</span><span class="tt">Wörter</span><span class="ss">Karten, Hören</span></button>
+   <button class="tile" style="background:#ffe08a" onclick="raum('spielen')"><span class="em">🪅</span><span class="tt">Spielen</span><span class="ss">Kurz und leicht</span></button>
+   <button class="tile" style="background:#d3eef6" onclick="raum('lesen')"><span class="em">📖</span><span class="tt">Lesen</span><span class="ss">Roman, Grammatik</span></button>
+  </div>
+ </div>
+ <nav class="bnav">
+  <button class="tab" onclick="toast('Mein Regal bleibt wie bisher: alles, was du gemacht hast.')"><span class="tic" id="regal-ic"></span><span>Mein Regal</span></button>
+  <button class="tab center" onclick="zumHaus()"><span class="ball" data-capy></span><span class="lbl">Spikiu</span></button>
+  <button class="tab" onclick="toast('Mein bleibt wie bisher. Hier ändert man auch die Stufe.')"><span class="tic">👤</span><span>Mein</span></button>
+ </nav>
+</section>
+
+<!-- ============ ZWEITE EBENE ============ -->
+<section class="screen" id="s-raum">
+ <div class="rk"><button class="back" onclick="zumHaus()">‹</button><div class="t"><small>Selbst wählen</small><b id="raum-t"></b></div></div>
+ <div class="stage">
+  <div class="row"><div class="av" data-capy></div><div class="says" id="raum-says"></div></div>
+  <div class="list" id="raum-list"></div>
+ </div>
+</section>
+
+<!-- ============ HEUTE: SITZUNG ============ -->
+<section class="screen" id="s-sitz">
+ <div class="rk"><button class="back" onclick="zumHaus()">‹</button><div class="t"><small>Heute mit Spikiu</small><b>Im Café</b></div></div>
+ <div class="weg2"><span id="w1">🎭 Gespräch</span><span id="w2">🃏 Wörter</span><span id="w3">🪅 Spiel</span></div>
+ <div class="stage" id="sitz"></div>
+</section>
+
+</div>
+
+<div class="pop" id="pop"></div>
+<div class="sheetbg" id="sheetbg" onclick="if(event.target===this)this.classList.remove('on')">
+ <div class="sheet">
+  <h3>Was ist anders?</h3>
+  <ol>
+   <li><b>Eine Hauptpforte.</b> „Heute mit Spikiu“ sagt sofort, was zu tun ist: ein Gespräch, deine Wörter daraus, ein Spiel. Ein Knopf.</li>
+   <li><b>Selbst wählen nach Absicht</b>, nicht nach Fertigkeit: Sprechen · Wörter · Spielen · Lesen. Die Bibliothek-Tür geht darin auf.</li>
+   <li><b>Höchstens 4 Wege pro Bildschirm</b>, jeder mit einer Zeile Erklärung. Nichts doppelt: Akrostichon und Garten wohnen nur noch im Regal.</li>
+   <li><b>Keine Stufen-Chips</b> (Samen/Stamm/…) in den Räumen. Die Stufe kommt aus dem Einstufungstest und lässt sich in „Mein“ ändern.</li>
+   <li><b>Premium erst, wo es gilt</b>: nicht mehr auf der Startseite, nur als kleines Schild in der Liste.</li>
+  </ol>
+  <button class="end sec" style="margin-top:1rem" onclick="document.getElementById('sheetbg').classList.remove('on')">Schließen</button>
+ </div>
+</div>
+
+<script>
+var CAPY='<svg viewBox="0 0 80 80" fill="none" width="100%" height="100%"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var REGAL='<svg viewBox="0 0 32 32" width="26" height="26" fill="none"><g stroke="#15163a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="11" width="4" height="12" rx="1" fill="#ffd24a"/><rect x="8.5" y="9" width="4" height="14" rx="1" fill="#1f93b0"/><rect x="13" y="12" width="3.6" height="11" rx="1" fill="#f7bcd8" transform="rotate(-8 14.8 17.5)"/><path d="M22 23 v-5"/><path d="M22 18 c-3 0-4-2-4-4 c2 0 4 1 4 4z" fill="#9bd14a"/><path d="M22 19 c2.5 0 3.6-1.8 3.6-3.6 c-1.8 0-3.6 1-3.6 3.6z" fill="#9bd14a"/><path d="M19.5 23 h5 l-.6 3 h-3.8z" fill="#c9956a"/><path d="M2.5 23.5 h27" stroke-width="2.2"/></g></svg>';
+function capys(root){(root||document).querySelectorAll('[data-capy]').forEach(function(e){if(!e.innerHTML)e.innerHTML=CAPY;});}
+capys();document.getElementById('regal-ic').innerHTML=REGAL;
+var RED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id);});}
+var tt;function toast(t){var p=document.getElementById('pop');p.textContent=t;p.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){p.classList.remove('on');},2600);}
+function neu(){document.getElementById('sheetbg').classList.add('on');}
+function zumHaus(){show('s-haus');}
+
+/* ---------- Zweite Ebene: höchstens 4 Wege ---------- */
+var RAEUME={
+ sprechen:{t:'Sprechen',s:'Wie möchtest du sprechen?',items:[
+  {em:'🎭',tt:'Geführtes Gespräch',ss:'Spikiu gibt dir Sätze zur Auswahl. Gut zum Anfangen.'},
+  {em:'💬',tt:'Freies Gespräch',ss:'Du sagst, was du willst. Spikiu antwortet.',pr:1},
+  {em:'✍️',tt:'Schreiben',ss:'Eine kurze Nachricht schreiben, Spikiu schaut drauf.',pr:1}]},
+ woerter:{t:'Wörter',s:'Deine Wörter, auf vier Arten.',items:[
+  {em:'🃏',tt:'Karten',ss:'Umdrehen, anhören, weiter. Schritt für Schritt.'},
+  {em:'👂',tt:'Feines Ohr',ss:'Du hörst ein Wort und tippst das Bild an.'},
+  {em:'🥁',tt:'Der Schlag',ss:'Wo liegt die starke Silbe?'},
+  {em:'🧺',tt:'Der Korb',ss:'Hör ein Wort und leg es in den richtigen Korb.'}]},
+ spielen:{t:'Spielen',s:'Kurz und leicht. Ohne Punkte.',items:[
+  {em:'🪅',tt:'Piñata',ss:'Schlag zu und fang den Eindringling.',tag:'Spiel des Tages'},
+  {em:'🎈',tt:'Luftballons',ss:'Lass die Wörter in der richtigen Reihenfolge platzen.'},
+  {em:'🔗',tt:'Wortkette',ss:'Errate das Wort, Buchstabe für Buchstabe.'},
+  {em:'🃏',tt:'Memory',ss:'Finde die Paare: Wort und Bild.'}]},
+ lesen:{t:'Lesen',s:'Was möchtest du lesen?',items:[
+  {em:'📖',tt:'Lernroman',ss:'Eine Geschichte, die mit dir mitwächst.'},
+  {em:'👓',tt:'Leseverstehen',ss:'Ein kurzer Text aus dem Alltag, drei Fragen.',pr:1},
+  {em:'📘',tt:'Gramática',ss:'Grammatik ohne Schnickschnack, Karte für Karte.'},
+  {em:'🗺️',tt:'Regional',ss:'Wie man in Madrid, Sevilla oder México sagt.'}]}
+};
+function raum(k){var R=RAEUME[k];document.getElementById('raum-t').textContent=R.t;document.getElementById('raum-says').textContent=R.s;
+ var L=document.getElementById('raum-list');L.innerHTML='';
+ R.items.forEach(function(it){var b=document.createElement('button');b.className='big'+(it.tag?' tag':'');
+  b.innerHTML='<span class="em">'+it.em+'</span><span class="tx">'+(it.tag?'<span class="tg">'+it.tag+'</span>':'')+'<span class="tt">'+it.tt+(it.pr?'<span class="pill">Premium</span>':'')+'</span><span class="ss">'+it.ss+'</span></span><span class="chev">›</span>';
+  b.onclick=function(){toast(it.tt+' öffnet sich wie bisher, nur ohne Stufen-Auswahl.');};L.appendChild(b);});
+ show('s-raum');}
+
+/* ---------- Heute: Gespräch → Wörter → Spiel ---------- */
+var S,gewaehlt;
+var DIALOG=[
+ {sp:'¡Hola! ¿Qué te pongo?',na:'Er fragt, was du möchtest.',ch:[
+   {z:'Un café con leche, por favor.',na:'Einen Milchkaffee, bitte.',k:{z:'un café con leche',na:'ein Milchkaffee'}},
+   {z:'Un zumo de naranja, por favor.',na:'Einen Orangensaft, bitte.',k:{z:'un zumo de naranja',na:'ein Orangensaft'}},
+   {z:'Un té, por favor.',na:'Einen Tee, bitte.',k:{z:'un té',na:'ein Tee'}}]},
+ {sp:'Muy bien. ¿Algo más?',na:'Noch etwas?',ch:[
+   {z:'Sí, una tostada con tomate.',na:'Ja, ein Toast mit Tomate.',k:{z:'una tostada',na:'ein Toast'}},
+   {z:'No, nada más, gracias.',na:'Nein, sonst nichts, danke.',k:{z:'nada más',na:'sonst nichts'}}]},
+ {sp:'Aquí tienes.',na:'Bitte schön. (Später willst du zahlen.)',ch:[
+   {z:'¿Me cobras, por favor?',na:'Ich möchte zahlen, bitte.',k:{z:'¿Me cobras?',na:'Ich möchte zahlen.'}},
+   {z:'La cuenta, por favor.',na:'Die Rechnung, bitte.',k:{z:'la cuenta',na:'die Rechnung'}}]},
+ {sp:'Son tres euros con cincuenta.',na:'Das macht drei Euro fünfzig.',ende:1}
+];
+function weg(n){['w1','w2','w3'].forEach(function(id,i){var e=document.getElementById(id);e.className=i+1<n?'ok':(i+1===n?'on':'');});}
+function sitz(){return document.getElementById('sitz');}
+function unten(){var s=sitz();setTimeout(function(){s.scrollTo({top:s.scrollHeight,behavior:RED?'auto':'smooth'});},30);}
+function add(html,cls){var d=document.createElement('div');d.className=(cls||'')+' fade';d.innerHTML=html;sitz().appendChild(d);capys(d);unten();return d;}
+function spikiuSagt(z,na){return add('<div class="row"><div class="av" data-capy></div><div class="says"><span class="z">'+z+'</span>'+(na?'<span class="na">'+na+'</span>':'')+'</div></div>');}
+
+function starte(){S=0;gewaehlt=[{z:'¿Qué te pongo?',na:'Was darf’s sein?'}];sitz().innerHTML='';weg(1);show('s-sitz');
+ add('<div class="hint" style="text-align:left;margin:0 0 .8rem">Spikiu ist der Kellner. Tipp an, was du sagen möchtest.</div>');zug();}
+function zug(){var D=DIALOG[S];spikiuSagt(D.sp,D.na);
+ if(D.ende){setTimeout(function(){var b=add('<button class="end">Weiter: deine Wörter ›</button>');b.querySelector('button').onclick=woerter;},RED?0:450);return;}
+ setTimeout(function(){var c=add('<div class="chips"></div>').firstChild;
+  D.ch.forEach(function(o){var b=document.createElement('button');b.className='chip';b.innerHTML='<span class="z">'+o.z+'</span><span class="na">'+o.na+'</span>';
+   b.onclick=function(){c.parentNode.remove();add('<div class="you"><span>'+o.z+'</span></div>');gewaehlt.push(o.k);S++;setTimeout(zug,RED?0:600);};c.appendChild(b);});
+ },RED?0:500);}
+
+function woerter(){weg(2);sitz().innerHTML='';
+ var W=gewaehlt.slice(0,4);
+ spikiuSagt('Diese Wörter kamen in deinem Gespräch vor.','Tipp jede Karte einmal an.');
+ var umgedreht=0;
+ W.forEach(function(w){var d=add('<button class="flipc"><span class="w">'+w.z+'</span><span class="m">'+w.na+'</span><span class="tp">antippen</span></button>');
+  var b=d.querySelector('button');b.onclick=function(){if(b.classList.contains('f'))return;b.classList.add('f');umgedreht++;
+   if(umgedreht===W.length){setTimeout(function(){add('<div class="buch on">📗 Sie liegen jetzt in deinem Buch. Du musst nichts tun.</div>');
+    var e=add('<button class="end">Weiter: ein Spiel ›</button>');e.querySelector('button').onclick=spiel;},RED?0:300);}};});
+}
+
+function mische(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function spiel(){weg(3);sitz().innerHTML='';
+ var W=gewaehlt.slice(0,4);
+ spikiuSagt('Gemelos: Finde die Paare.','Links Spanisch, rechts Deutsch.');
+ var g=add('<div class="gm"></div>').firstChild;var L=W.map(function(w,i){return{i:i,t:w.z};}),R=mische(W.map(function(w,i){return{i:i,t:w.na};}));
+ var selL=null,selR=null,fertig=0;
+ function knopf(o,seite){var b=document.createElement('button');b.textContent=o.t;if(seite==='l')b.className='z';
+  b.onclick=function(){if(b.classList.contains('ok'))return;
+   if(seite==='l'){if(selL)selL.b.classList.remove('sel');selL={o:o,b:b};}else{if(selR)selR.b.classList.remove('sel');selR={o:o,b:b};}
+   b.classList.add('sel');
+   if(selL&&selR){var a=selL,c=selR;selL=selR=null;
+    if(a.o.i===c.o.i){a.b.className=(a.b.className.indexOf('z')>-1?'z ':'')+'ok';c.b.className='ok';fertig++;
+     if(fertig===W.length)setTimeout(ende,RED?0:500);}
+    else{a.b.classList.add('no');c.b.classList.add('no');setTimeout(function(){a.b.classList.remove('no','sel');c.b.classList.remove('no','sel');},450);}}};
+  return b;}
+ for(var i=0;i<W.length;i++){g.appendChild(knopf(L[i],'l'));g.appendChild(knopf(R[i],'r'));}
+}
+
+function ende(){sitz().innerHTML='';['w1','w2','w3'].forEach(function(id){document.getElementById(id).className='ok';});
+ var d=add('<div class="fertig"><div class="cap" data-capy></div><h2>Fertig für heute.</h2><p>Deine Wörter kommen in einem anderen Gespräch wieder. Du musst sie nicht lernen.</p><div class="morgen">Morgen: 🚉 Am Bahnhof</div><button class="end" id="zh">Zurück ins Haus</button><button class="end sec" id="mehr">Ich will noch mehr</button></div>');
+ d.style.flex='1';d.style.display='flex';
+ document.getElementById('zh').onclick=function(){heuteErledigt();zumHaus();};
+ document.getElementById('mehr').onclick=function(){heuteErledigt();zumHaus();var s=document.getElementById('haus-stage');setTimeout(function(){s.scrollTo({top:s.scrollHeight,behavior:RED?'auto':'smooth'});},50);};
+}
+function heuteErledigt(){var h=document.getElementById('heute');h.classList.add('done');
+ h.innerHTML='<div class="eyebrow">Heute mit Spikiu · erledigt</div><h1>Bis morgen.</h1><div class="zs">Mañana vamos a la estación.</div><button class="los" onclick="starte()">Café noch einmal</button><button class="klein" onclick="toast(\'Hier ginge es direkt mit Am Bahnhof weiter.\')">Schon heute weiter: Am Bahnhof</button>';
+ document.getElementById('gruss').textContent='Schön, dass du da warst. Wenn du magst: selbst wählen.';}
+</script>
+</body>
+</html>
