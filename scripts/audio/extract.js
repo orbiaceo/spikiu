@@ -65,8 +65,11 @@ for (const [l, [f, g]] of Object.entries(LERNPFAD)) alleStrings(lade([f])[g], ne
   const vorlesen = (t) => String(t).replace(/^\s*—\s*/, '').replace(/\s—\s?/g, ', ');
   for (const z of SPRACHEN) for (const m of SPRACHEN) {
     if (m === z) continue;
-    let buch = null; try { buch = ctx.spikiuLearnroman(z, m); } catch (e) { buch = null; }
-    const liste = buch ? (Array.isArray(buch) ? buch : [buch]) : [];
+    // ALLE Bücher dieser Sprachkombination (learnroman.html: spikiuLearnroman(z, m, buchWunsch) + .alle)
+    let liste = [];
+    try { liste = (ctx.spikiuLearnroman.alle ? ctx.spikiuLearnroman.alle(z, m) : []) || []; } catch (e) { liste = []; }
+    try { const b0 = ctx.spikiuLearnroman(z, m); if (b0) liste.push(b0); } catch (e) {}
+    liste = liste.map((b) => { try { return (b && b.kapitel) ? b : ctx.spikiuLearnroman(z, m, b.buch); } catch (e) { return null; } }).filter(Boolean);
     for (const b of liste) for (const k of (b.kapitel || [])) for (const bl of (k.body || [])) {
       if (bl.z) nimm(b.zielsprache || z, vorlesen(/^\s*—/.test(bl.z) ? bl.z.replace(/^\s*—\s*/, '') : bl.z));
       if (bl.p) nimm(b.zielsprache || z, vorlesen(bl.p));
