@@ -31,7 +31,7 @@ const _grenze = 5;
 const _zaehler = new Map();
 
 function _zuOft(req) {
-  const roh = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unbekannt';
+  const roh = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || 'unbekannt';
   const ip = String(roh).split(',')[0].trim();
   const jetzt = Date.now();
 
@@ -54,6 +54,25 @@ function _zuOft(req) {
 const SONNET_ERLAUBT = ['claude-sonnet-4-5', 'claude-sonnet-5-5'];
 const SONNET = SONNET_ERLAUBT.includes(process.env.SPIKIU_SONNET_MODEL) ? process.env.SPIKIU_SONNET_MODEL : 'claude-sonnet-4-5';
 
+/* ══════════════════════════════════════════════════════════════
+   DECKEL (14.11.2026) — die Anfrage selbst begrenzen.
+   Ohne ihn konnte man beliebig lange Verläufe schicken und damit
+   Eingabe-Token in jeder Menge verbrauchen. 60.000 Zeichen und 60
+   Nachrichten liegen weit über jedem echten Gespräch.
+   Nur die Rollen user/assistant — kein eingeschmuggelter system-Eintrag.
+   ══════════════════════════════════════════════════════════════ */
+function _anfrageZuGross(body) {
+  let n = 0;
+  try { n = JSON.stringify(body || {}).length; } catch (e) { n = Infinity; }
+  if (n > 60000) return { status: 413, error: 'zu_gross' };
+  if (body && Array.isArray(body.messages)) {
+    const m = body.messages;
+    if (m.length > 60) return { status: 400, error: 'zu_viele_nachrichten' };
+    if (m.some(x => !x || (x.role !== 'user' && x.role !== 'assistant'))) return { status: 400, error: 'messages_ungueltig' };
+  }
+  return null;
+}
+
 export default async function handler(req, res) {
   /* ══════════════════════════════════════════════════════════════
      WACHE (01.09.2026) — siehe api/rueckmeldung.js für dasselbe Muster.
@@ -74,8 +93,14 @@ export default async function handler(req, res) {
     'http://127.0.0.1:3000'
   ];
   const herkunft = req.headers.origin || '';
-  const eigen = ERLAUBT.includes(herkunft) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(herkunft);
-  if (herkunft && !eigen) return res.status(403).json({ error: 'origin_not_allowed' });
+  /* 14.11.2026: NICHT mehr jede *.vercel.app — die kann sich jeder anlegen.
+     Erlaubt: Liste oben + der EIGENE Ursprung dieser Bereitstellung
+     (Origin == Host, so laufen die dev-Vorschauen). Ohne Origin → 403:
+     ein Browser schickt bei POST immer einen. */
+  const _host = String(req.headers.host || '').toLowerCase();
+  const eigen = ERLAUBT.includes(herkunft)
+    || (!!herkunft && !!_host && herkunft.toLowerCase() === 'https://' + _host);
+  if (!eigen) return res.status(403).json({ error: 'origin_not_allowed' });
   if (eigen) {
     res.setHeader('Access-Control-Allow-Origin', herkunft);
     res.setHeader('Vary', 'Origin');
@@ -92,6 +117,10 @@ export default async function handler(req, res) {
     res.setHeader('Retry-After', String(_warte));
     return res.status(429).json({ error: 'zu_viele_anfragen', retryAfter: _warte });
   }
+
+  /* DECKEL (14.11.2026): Größe und Form der Anfrage, bevor etwas Geld kostet. */
+  const _deckel = _anfrageZuGross(req.body);
+  if (_deckel) return res.status(_deckel.status).json({ error: _deckel.error });
 
 
   const { messages } = req.body;
