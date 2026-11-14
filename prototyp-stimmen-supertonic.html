@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spikiu · Neue Stimmen wählen</title>
+<style>
+@font-face{font-family:"Cormorant Garamond";src:url(fonts/cormorant-garamond_normal_latin.woff2) format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(fonts/dm-sans_normal_latin.woff2) format("woff2");font-weight:300 700;font-display:swap}
+:root{--papier:#f5f1e7;--gruen:#2d6a4f;--gold:#a87b2e;--tinte:#2b2a26;--leise:#7a7466;--linie:#e3dccb;--karte:#fffdf8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--papier);color:var(--tinte);font:16px/1.45 "DM Sans",system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:20px 16px 120px}
+h1{font:600 30px/1.1 "Cormorant Garamond",Georgia,serif;margin:4px 0 6px}
+.unter{color:var(--leise);font-size:14px;margin:0 0 18px}
+.reiter{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.reiter button{flex:1 0 auto;border:1px solid var(--linie);background:var(--karte);border-radius:999px;padding:9px 14px;font:inherit;font-size:15px;color:var(--tinte)}
+.reiter button[aria-selected=true]{background:var(--gruen);border-color:var(--gruen);color:#fff}
+.reiter button .haken{color:var(--gold);margin-left:4px}
+.reiter button[aria-selected=true] .haken{color:#ffe6a8}
+.saetze{background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.saetze p{margin:4px 0;font:500 19px/1.3 "Cormorant Garamond",Georgia,serif}
+.saetze small{color:var(--gold);font-weight:600;margin-right:6px;font-family:"DM Sans"}
+.geschlecht{display:flex;background:var(--karte);border:1px solid var(--linie);border-radius:12px;padding:3px;margin-bottom:12px}
+.geschlecht button{flex:1;border:0;background:none;border-radius:9px;padding:10px;font:inherit;font-size:16px;color:var(--leise)}
+.geschlecht button[aria-pressed=true]{background:var(--papier);color:var(--tinte);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.stimme{display:flex;align-items:center;gap:8px;background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:10px 10px 10px 14px;margin-bottom:8px}
+.stimme.gewaehlt{border-color:var(--gruen);box-shadow:0 0 0 2px var(--gruen) inset}
+.stimme.alt{background:transparent;border-style:dashed}
+.stimme b{min-width:64px;font-size:15px}
+.stimme .nebentext{font-size:12px;color:var(--leise);display:block;font-weight:400}
+.abspielen{width:44px;height:44px;border-radius:50%;border:1px solid var(--linie);background:var(--papier);font:600 14px "DM Sans";color:var(--gruen);display:grid;place-items:center}
+.abspielen.laeuft{background:var(--gruen);color:#fff;border-color:var(--gruen)}
+.abspielen:disabled{opacity:.35}
+.waehlen{margin-left:auto;border:1px solid var(--gruen);background:none;color:var(--gruen);border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:600}
+.gewaehlt .waehlen{background:var(--gruen);color:#fff}
+.fuss{position:fixed;left:0;right:0;bottom:0;background:rgba(245,241,231,.96);border-top:1px solid var(--linie);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.fuss div{max-width:560px;margin:0 auto;display:flex;gap:10px;align-items:center}
+.fuss p{margin:0;font-size:13px;color:var(--leise);flex:1}
+.fuss button{border:0;background:var(--gold);color:#fff;border-radius:999px;padding:11px 16px;font:inherit;font-weight:600;font-size:14px}
+.hinweis{font-size:13px;color:var(--leise);margin:14px 2px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Neue Stimmen für Spikiu</h1>
+  <p class="unter">Supertonic 3, fertig aufgenommen. Wähle pro Sprache eine Frauen- und eine Männerstimme. Ganz oben steht die heutige Piper-Stimme zum Vergleich.</p>
+  <div class="reiter" id="reiter" role="tablist"></div>
+  <div class="saetze" id="saetze"></div>
+  <div class="geschlecht" id="geschlecht">
+    <button data-g="F" aria-pressed="true">♀ Frauen</button>
+    <button data-g="M" aria-pressed="false">♂ Männer</button>
+  </div>
+  <div id="liste"></div>
+  <p class="hinweis">Alle Proben haben dieselbe Lautstärke. Jede Stimme spricht beide Sätze; tippe 1 oder 2.</p>
+</main>
+<div class="fuss"><div><p id="stand"></p><button id="kopieren">Wahl kopieren</button></div></div>
+
+<script>
+var SPRACHEN = [
+  { k:'es', name:'Español', saetze:['Buenos días. ¿Me pone un café con leche y una tostada, por favor?','¿Tienes tiempo esta tarde? Podemos tomar algo en la plaza.'] },
+  { k:'de', name:'Deutsch', saetze:['Guten Morgen! Ich hätte gern einen Kaffee und ein Brötchen, bitte.','Hast du heute Abend Zeit? Wir könnten zusammen ins Kino gehen.'] },
+  { k:'en', name:'English', saetze:['Good morning! Could I have a coffee and a piece of toast, please?','Are you free this evening? We could go to the cinema together.'] },
+  { k:'el', name:'Ελληνικά', saetze:['Καλημέρα! Θα ήθελα έναν καφέ και μια φρυγανιά, παρακαλώ.','Έχεις χρόνο απόψε; Μπορούμε να πάμε μαζί σινεμά.'] }
+];
+var PIPER = { es:'davefx', de:'thorsten', en:'lessac', el:'rapunzelina' };
+var ORDNER = 'audio/proben-supertonic/';
+var SPEICHER = 'spikiu_stimmenwahl_supertonic';
+
+var wahl = {};
+try { wahl = JSON.parse(localStorage.getItem(SPEICHER) || '{}') || {}; } catch (e) { wahl = {}; }
+var aktiv = 'es', geschl = 'F';
+var spieler = new Audio(); spieler.preload = 'auto';
+var laufenderKnopf = null;
+
+function datei(sprache, satz, stimme) { return ORDNER + sprache + '-' + satz + '-' + stimme + '.mp3'; }
+function speichern() { try { localStorage.setItem(SPEICHER, JSON.stringify(wahl)); } catch (e) {} }
+
+function spiele(knopf, url) {
+  if (laufenderKnopf === knopf && !spieler.paused) { spieler.pause(); knopf.classList.remove('laeuft'); laufenderKnopf = null; return; }
+  if (laufenderKnopf) laufenderKnopf.classList.remove('laeuft');
+  laufenderKnopf = knopf; knopf.classList.add('laeuft');
+  spieler.src = url; spieler.currentTime = 0;
+  spieler.play().catch(function () { knopf.classList.remove('laeuft'); knopf.disabled = true; });
+}
+spieler.addEventListener('ended', function () { if (laufenderKnopf) laufenderKnopf.classList.remove('laeuft'); laufenderKnopf = null; });
+spieler.addEventListener('error', function () { if (laufenderKnopf) { laufenderKnopf.classList.remove('laeuft'); laufenderKnopf.disabled = true; } laufenderKnopf = null; });
+
+function zeile(titel, neben, stimmeId, waehlbar) {
+  var el = document.createElement('div');
+  el.className = 'stimme' + (waehlbar ? '' : ' alt');
+  var w = wahl[aktiv] || {};
+  if (waehlbar && w[geschl] === stimmeId) el.classList.add('gewaehlt');
+  var t = document.createElement('b'); t.innerHTML = titel + (neben ? '<span class="nebentext">' + neben + '</span>' : '');
+  el.appendChild(t);
+  [1, 2].forEach(function (s) {
+    var k = document.createElement('button'); k.className = 'abspielen'; k.textContent = '▶ ' + s;
+    k.setAttribute('aria-label', titel + ', Satz ' + s);
+    k.onclick = function () { spiele(k, datei(aktiv, s, stimmeId)); };
+    el.appendChild(k);
+  });
+  if (waehlbar) {
+    var b = document.createElement('button'); b.className = 'waehlen';
+    b.textContent = (w[geschl] === stimmeId) ? 'Gewählt ✓' : 'Wählen';
+    b.onclick = function () {
+      wahl[aktiv] = wahl[aktiv] || {};
+      wahl[aktiv][geschl] = (wahl[aktiv][geschl] === stimmeId) ? undefined : stimmeId;
+      speichern(); zeichne();
+    };
+    el.appendChild(b);
+  }
+  return el;
+}
+
+function zeichne() {
+  var r = document.getElementById('reiter'); r.innerHTML = '';
+  SPRACHEN.forEach(function (sp) {
+    var b = document.createElement('button'); b.setAttribute('role', 'tab');
+    b.setAttribute('aria-selected', sp.k === aktiv ? 'true' : 'false');
+    var w = wahl[sp.k] || {};
+    b.innerHTML = sp.name + ((w.F && w.M) ? '<span class="haken">✓</span>' : '');
+    b.onclick = function () { aktiv = sp.k; zeichne(); };
+    r.appendChild(b);
+  });
+  var sp = SPRACHEN.filter(function (x) { return x.k === aktiv; })[0];
+  document.getElementById('saetze').innerHTML = sp.saetze.map(function (s, i) { return '<p><small>' + (i + 1) + '</small>' + s + '</p>'; }).join('');
+  document.querySelectorAll('#geschlecht button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.g === geschl ? 'true' : 'false'); });
+  var l = document.getElementById('liste'); l.innerHTML = '';
+  l.appendChild(zeile('Heute', 'Piper · ' + PIPER[aktiv], 'piper', false));
+  [1, 2, 3, 4, 5].forEach(function (n) { l.appendChild(zeile(geschl + n, null, geschl + n, true)); });
+  var fertig = SPRACHEN.filter(function (x) { var w = wahl[x.k] || {}; return w.F && w.M; }).length;
+  document.getElementById('stand').textContent = fertig + ' von 4 Sprachen gewählt';
+}
+document.querySelectorAll('#geschlecht button').forEach(function (b) { b.onclick = function () { geschl = b.dataset.g; zeichne(); }; });
+
+function wahlText() {
+  return 'Stimmenwahl Spikiu: ' + SPRACHEN.map(function (sp) { var w = wahl[sp.k] || {}; return sp.k + ' ' + (w.F || '–') + '/' + (w.M || '–'); }).join(' · ');
+}
+document.getElementById('kopieren').onclick = function () {
+  var t = wahlText(), knopf = this;
+  var ok = function () { knopf.textContent = 'Kopiert ✓'; setTimeout(function () { knopf.textContent = 'Wahl kopieren'; }, 1600); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, function () { prompt('Kopieren:', t); });
+  else prompt('Kopieren:', t);
+};
+zeichne();
+</script>
+</body>
+</html>
