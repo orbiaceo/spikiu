@@ -139,8 +139,8 @@ function wahlText() {
 document.getElementById('kopieren').onclick = function () {
   var t = wahlText(), knopf = this;
   var ok = function () { knopf.textContent = 'Kopiert ✓'; setTimeout(function () { knopf.textContent = 'Wahl kopieren'; }, 1600); };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, function () { prompt('Kopieren:', t); });
-  else prompt('Kopieren:', t);
+  var zeige = function () { document.getElementById('stand').textContent = t; };
+  try { navigator.clipboard.writeText(t).then(ok, zeige); } catch (e) { zeige(); }
 };
 zeichne();
 </script>
