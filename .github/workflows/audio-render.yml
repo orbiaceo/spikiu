@@ -1,0 +1,85 @@
+# Vorher aufgenommenes Audio (Leo, 14.11.2026: Supertonic 3 statt Piper, wie in iuspik).
+# Stimmen von Leo gewählt (prototyp-stimmen-supertonic.html): alle vier Sprachen F3 (♀) / M2 (♂).
+# Nimmt jeden Text der Satzliste (scripts/audio/extract.js) auf, der noch keine MP3 hat,
+# löscht MP3s, die keine Satzliste mehr braucht, schreibt index.json je Stimme und committet
+# audio/<sprache>/<stimme>/ in den auslösenden Branch. Auslöser: Push auf audio/… oder manuell.
+# Öffentliches Repo → Standard-Runner kosten nichts.
+name: Audio-Aufnahme
+on:
+  workflow_dispatch:
+  push:
+    branches: ["audio/**"]
+permissions:
+  contents: write
+concurrency:
+  group: audio-render-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        # 4 Teile je Stimme: kein Job kommt in die Nähe des Zeitlimits.
+        stimme: ["es F3", "es M2", "de F3", "de M2", "en F3", "en M2", "el F3", "el M2"]
+        teil: [0, 1, 2, 3]
+    env:
+      SPRACHE: ${{ startsWith(matrix.stimme, 'es') && 'es' || startsWith(matrix.stimme, 'de') && 'de' || startsWith(matrix.stimme, 'en') && 'en' || 'el' }}
+      STIMME: ${{ endsWith(matrix.stimme, 'F3') && 'F3' || 'M2' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Werkzeug (acorn, onnxruntime-node)
+        env: { ONNXRUNTIME_NODE_INSTALL_CUDA: skip }
+        run: mkdir -p /tmp/rt && (cd /tmp/rt && npm init -y >/dev/null && npm i acorn@8.14.0 onnxruntime-node@1.22.0 >/dev/null)
+      - name: Satzliste
+        run: NODE_PATH=/tmp/rt/node_modules node scripts/audio/extract.js ${{ env.SPRACHE }} einheiten.json
+      - name: Aufnehmen
+        run: |
+          cp scripts/audio/render.mjs /tmp/rt/
+          mkdir -p "audio/${{ env.SPRACHE }}/${{ env.STIMME }}"
+          node /tmp/rt/render.mjs "$PWD/einheiten.json" ${{ env.SPRACHE }} ${{ env.STIMME }} "$PWD/audio/${{ env.SPRACHE }}/${{ env.STIMME }}" "$PWD/wav" ${{ matrix.teil }} 4
+      - name: MP3 (mono, 24 kHz, 40 kb/s, loudnorm -16)
+        run: |
+          mkdir -p neu/${{ env.SPRACHE }}/${{ env.STIMME }}
+          if [ -d wav ]; then
+            ls wav/*.wav | xargs -P 4 -I{} sh -c 'f="{}"; k=$(basename "$f" .wav); ffmpeg -loglevel error -y -i "$f" -af "loudnorm=I=-16:TP=-1.5:LRA=11,aresample=24000" -ac 1 -codec:a libmp3lame -b:a 40k "neu/${{ env.SPRACHE }}/${{ env.STIMME }}/$k.mp3"'
+          fi
+          ls neu/${{ env.SPRACHE }}/${{ env.STIMME }} | wc -l
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audio-${{ env.SPRACHE }}-${{ env.STIMME }}-${{ matrix.teil }}
+          path: neu/
+          if-no-files-found: ignore
+          retention-days: 3
+  commit:
+    needs: render
+    # Behält alles, was fertig wurde, auch wenn ein Teil scheitert.
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: mkdir -p /tmp/rt && (cd /tmp/rt && npm init -y >/dev/null && npm i acorn@8.14.0 >/dev/null)
+      - uses: actions/download-artifact@v4
+        with: { path: neu, pattern: "audio-*", merge-multiple: true }
+      - name: Neue Aufnahmen übernehmen, unbenutzte löschen, index.json schreiben
+        run: |
+          mkdir -p audio
+          [ -d neu ] && cp -r neu/* audio/ || true
+          NODE_PATH=/tmp/rt/node_modules node scripts/audio/extract.js alle /tmp/einheiten.json
+          node scripts/audio/aufraeumen.js /tmp/einheiten.json
+          du -sh audio/es audio/de audio/en audio/el 2>/dev/null || true
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A audio/es audio/de audio/en audio/el
+          git commit -qm "Audio: Supertonic-3-Aufnahmen (F3/M2)" || { echo "nichts Neues"; exit 0; }
+          git pull --rebase -q || true
+          git push
