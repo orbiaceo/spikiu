@@ -36,9 +36,17 @@
     return t.replace(new RegExp(PAUSE + '\\s*[.,;:!?…]+', 'g'), PAUSE);
   }
 
-  /** Was die Stimme liest: Buchstabieren, Silben-Bindestriche zum Wort, Leerraum glätten. */
+  // ── Herkunfts-/Erklär-Klammer am Ende wird nicht gesprochen (Leo, 14.11.2026, 18:00, Screenshot
+  //    „Reconocer palabras“: „Hier sollten nur die Wörter Jänner und Servus gehört werden, nicht
+  //    Österreich und Bayern.“) — „der Jänner (Österreich)“ → „der Jänner“, „Moin! (Hamburg)“ → „Moin!“,
+  //    „washroom (Canada).“ → „washroom.“. Nur wenn die Klammer groß beginnt oder „en/in/στην + Ort“ ist;
+  //    Klammern, die zum Ausdruck gehören („to pass (the salt)“, „alrededor (de)“), bleiben.
+  var KLAMMER_ENDE = /\s+\((?:\p{Lu}|(?:en|in|im|στην?|στο)\s+\p{Lu})[^()]*\)(\s*[.!?…]*)\s*$/u;
+  function ohneHerkunft(t) { return t.replace(KLAMMER_ENDE, '$1'); }
+
+  /** Was die Stimme liest: Herkunfts-Klammer weg, Buchstabieren, Silben-Bindestriche zum Wort, Leerraum glätten. */
   function sprechText(text, zielsprache) {
-    return buchstabieren(String(text == null ? '' : text), zielsprache)
+    return buchstabieren(ohneHerkunft(String(text == null ? '' : text)), zielsprache)
       .replace(/(\p{L})[-‐‑](?=\p{L})/gu, '$1')
       .replace(/\s+/g, ' ')
       .trim();
