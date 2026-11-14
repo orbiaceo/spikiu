@@ -42,7 +42,12 @@
   //    „washroom (Canada).“ → „washroom.“. Nur wenn die Klammer groß beginnt oder „en/in/στην + Ort“ ist;
   //    Klammern, die zum Ausdruck gehören („to pass (the salt)“, „alrededor (de)“), bleiben.
   var KLAMMER_ENDE = /\s+\((?:\p{Lu}|(?:en|in|im|στην?|στο)\s+\p{Lu})[^()]*\)(\s*[.!?…]*)\s*$/u;
-  function ohneHerkunft(t) { return t.replace(KLAMMER_ENDE, '$1'); }
+  // Formhinweis (Leo, 18:15 „Ja!“ zu: Hinweis weg, Teil des Ausdrucks bleibt): EIN kleines Wort ab 3 Buchstaben
+  // in der Klammer am Ende = andere Form desselben Wortes → „teurer (teuer)“ → „teurer“, „ich sang (singen)“ → „ich sang“,
+  // „novio (novia)“ → „novio“. Mehrere Wörter oder kurze Partikel bleiben gesprochen: „to pass (the salt)“,
+  // „rectificar (de sal)“, „alrededor (de)“, „μπουγάτσα (με μυζήθρα)“.
+  var FORMHINWEIS_ENDE = /\s+\(\p{Ll}{3,}\)([.!?]?)\s*$/u;   // nicht vor „…“: „she said (that) …“ bleibt
+  function ohneHerkunft(t) { return t.replace(KLAMMER_ENDE, '$1').replace(FORMHINWEIS_ENDE, '$1'); }
 
   /** Was die Stimme liest: Herkunfts-Klammer weg, Buchstabieren, Silben-Bindestriche zum Wort, Leerraum glätten. */
   function sprechText(text, zielsprache) {
