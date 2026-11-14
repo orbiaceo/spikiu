@@ -89,7 +89,7 @@ button{font-family:inherit}
 <script>
 (function(){
  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
- function say(t,lang){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=({es:'es-ES',de:'de-DE',en:'en-US',el:'el-GR'})[lang]||'es-ES';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
+ function say(t,lang){if(window.sprich){try{window.sprich(t,lang);return;}catch(e){}}try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=({es:'es-ES',de:'de-DE',en:'en-US',el:'el-GR'})[lang]||'es-ES';u.rate=.95;speechSynthesis.speak(u);}catch(e){}}
 
  // ── Profil defensiv (1:1 wie echte taller.html) ──
  var userObj={},stored={};
@@ -215,4 +215,5 @@ button{font-family:inherit}
 })();
 </script>
 <script src="/feedback-spikiu.js" defer></script>
+<script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 </body></html>

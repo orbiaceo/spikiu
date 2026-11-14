@@ -90,7 +90,9 @@
       uiSprache: (function () { try { return localStorage.getItem('spikiu_lang'); } catch (e) { return null; } })(),
       karte: karte ? karte.text : null,
       element: karte ? karte.pfad : null,
-      sitzungen: sitzungen()
+      sitzungen: sitzungen(),
+      // Sätze ohne Aufnahme (audio.js notiert die letzten 100; Leo 14.11.2026: Supertonic 3)
+      audioFehlt: (function () { try { return JSON.parse(localStorage.getItem('spikiu_audio_fehlt') || '[]').slice(-100); } catch (e) { return []; } })()
     };
   }
 

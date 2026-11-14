@@ -264,6 +264,8 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 
   var stage = document.getElementById('stage'), fussEl = document.getElementById('fuss');
   function sprich(t) { if (!t) return; try { if (window.sprich) window.sprich(t, ZS); } catch (e) {} }
+  /* „Besser“ aus /api/rueckmeldung gibt es vorher nicht → Aufnahme, sonst Gerätestimme (Leo 14.11.2026: B). */
+  function sprichLive(t) { if (!t) return; try { if (window.sprich) window.sprich(t, ZS, { live: true }); } catch (e) {} }
   function stumm() { try { if (window.spikiuAudioStop) window.spikiuAudioStop(); } catch (e) {} }
   function inSprache(o) { if (!o) return ''; if (typeof o === 'string') return o; return o[MU] || o.de || o.en || o.es || ''; }
   function mitPunkt(t) { t = String(t || '').trim(); return (!t || /[.!?…:;]$/.test(t)) ? t : t + '.'; }
@@ -799,7 +801,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     liste.forEach(function (kor, i) {
       var meins = zeilen[kor.nr - 1] || '';
       var b = O.el('button', 'fz-zeile', '<span class="a" aria-hidden="true">🔊</span><span class="t">' + (meins ? '<span class="x">' + esc(meins) + '</span>' : '') + '<span class="w" lang="' + esc(ZS) + '">' + esc(kor.richtig) + '</span></span>');
-      b.type = 'button'; b.id = 'kor-' + i; b.onclick = function () { sprich(kor.richtig); }; L.appendChild(b);
+      b.type = 'button'; b.id = 'kor-' + i; b.onclick = function () { sprichLive(kor.richtig); }; L.appendChild(b);
     });
     O.fb(k, '');
     O.fuss(fussEl, null, { t: U.weiter, pri: true, go: function () { ernte(); } });

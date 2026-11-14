@@ -61,6 +61,8 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
 
     <div class="sec-lbl" id="modusLbl"></div>
     <div class="card" id="modusCard"><div class="seg"><button id="modG" type="button"></button><button id="modF" type="button"></button></div><div class="seg-er" id="modEr"></div></div>
+    <div class="sec-lbl" id="stimmeLbl"></div>
+    <div class="card" id="stimmeCard"><div class="seg"><button id="stF" type="button"></button><button id="stM" type="button"></button></div></div>
 
     <div class="sec-lbl" data-t="lernen">Lernen</div>
     <div class="rowcard">
@@ -129,6 +131,20 @@ document.getElementById('logout').onclick=function(){ toast(MT.abmeldenSoon); };
     document.getElementById('modEr').textContent= m==='gefuehrt' ? t.modusGs : t.modusFs; }
   g.onclick=function(){ F.setzeModus('gefuehrt'); try{sessionStorage.removeItem('spk_selbst_heute');}catch(e){} zeige(); toast(t.modusOkG); };
   f.onclick=function(){ F.setzeModus('frei'); zeige(); toast(t.modusOkF); };
+  zeige();
+})();
+/* Spikius Stimme ♀/♂ (Leo, 14.11.2026: Supertonic 3, Stimmen F3/M2 in allen vier Sprachen). audio.js liest profile.stimme. */
+(function(){
+  var T={de:['Spikius Stimme','♀ Frau','♂ Mann'],es:['La voz de Spikiu','♀ Mujer','♂ Hombre'],en:['Spikiu’s voice','♀ Woman','♂ Man'],el:['Η φωνή του Spikiu','♀ Γυναίκα','♂ Άντρας']}[ML]||['Spikius Stimme','♀ Frau','♂ Mann'];
+  var GR={es:'¡Hola!',de:'Hallo!',en:'Hi!',el:'Γεια!'};
+  document.getElementById('stimmeLbl').textContent=T[0];
+  var f=document.getElementById('stF'), m=document.getElementById('stM');
+  f.textContent=T[1]; m.textContent=T[2];
+  function lies(){ try{ return (JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}); }catch(e){ return {}; } }
+  function zeige(){ var g=lies().stimme==='M'?'M':'F'; f.classList.toggle('on',g==='F'); m.classList.toggle('on',g==='M'); }
+  function setze(g){ try{ var u=JSON.parse(localStorage.getItem('spikiu_user')||'{}'); u.profile=u.profile||{}; u.profile.stimme=g; localStorage.setItem('spikiu_user',JSON.stringify(u)); }catch(e){}
+    zeige(); var z=lies().zielsprache||'es'; try{ if(window.sprich) window.sprich(GR[z]||GR.es, z); }catch(e){} }
+  f.onclick=function(){ setze('F'); }; m.onclick=function(){ setze('M'); };
   zeige();
 })();
 </script>
