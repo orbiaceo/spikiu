@@ -252,7 +252,7 @@ var SPK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5
 // ── Audio (🔊) ──
 var voiceReady = false;
 function speakText(text){
-  if (window.spkSpeak){ try { return window.spkSpeak(text, ZIEL); } catch(e){} }
+  if (window.spkSpeak){ try { return window.spkSpeak(text, ZIEL, { live: true }); } catch(e){} }   // erzeugte Lektionen (Leo 14.11.: B)
   try { var s = window.speechSynthesis;
     if (s && typeof SpeechSynthesisUtterance !== 'undefined'){
       var bcp = { de:'de-DE', es:'es-ES', en:'en-US', el:'el-GR' }[ZIEL] || 'en-US';
@@ -278,7 +278,7 @@ function lpSpeakBtn(zieltext){
   return '<button type="button" class="lp-speak" data-speak="' + lpAttr(t) + '" aria-label="Vorlesen">' + LP_SPK_ICON + '</button>';
 }
 function dashSpeak(text, ziel){
-  if (window.spkSpeak){ try { return window.spkSpeak(text, ziel); } catch(e){} }
+  if (window.spkSpeak){ try { return window.spkSpeak(text, ziel, { live: true }); } catch(e){} }
   try {
     var synth = window.speechSynthesis;
     if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){

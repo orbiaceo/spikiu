@@ -685,7 +685,7 @@ var INPUT_PH = input.getAttribute('placeholder') || '';
 // in audio.js; greift der Import gar nicht, hält diese Mini-Notbremse den Knopf
 // trotzdem hörbar (nie stummer Knopf). ──
 function speakText(text, zielsprache){
-  if (window.spkSpeak) { try { return window.spkSpeak(text, zielsprache); } catch(e){} }
+  if (window.spkSpeak) { try { return window.spkSpeak(text, zielsprache, { live: true }); } catch(e){} }   // Spikius Antworten gibt es vorher nicht (Leo 14.11.: B)
   try {
     var synth = window.speechSynthesis;
     if (synth && typeof SpeechSynthesisUtterance !== 'undefined'){
