@@ -36,7 +36,7 @@
     // Café · Restaurant · Essen
     'coffee':'☕', 'tea':'🍵', 'milk':'🥛', 'cup':'☕', 'glass':'🥃', 'bill':'🧾',
     'check':'🧾', 'receipt':'🧾', 'menu':'📋', 'bread':'🍞', 'breakfast':'🥐',
-    'cheese':'🧀', 'apple':'🍎', 'apples':'🍎', 'tomato':'🍅', 'chicken':'🍗',
+    'cheese':'🧀', 'apple':'🍎', 'apples':'🍎', 'tomato':'🍅', 'chicken':'sp-brathaehnchen', 'roast chicken':'sp-brathaehnchen',
     'fish':'🐟', 'salad':'🥗', 'soup':'🍲', 'dessert':'🍰', 'ribs':'🍖',
     'nuts':'🥜', 'spicy':'🌶️', 'plate':'🍽️', 'main course':'🍽️', 'tip':'🪙',
     'keep the change':'🪙', 'change':'🪙',
@@ -69,7 +69,7 @@
     'square':'⛲', 'size':'📏', 'discount':'🏷️', 'stop':'🚏', 'detour':'🚧',
     'cleaning':'🧹', 'prescription':'📝', 'antibiotic':'💊', 'appointment':'📅',
     // Spielzimmer (11.10.): mehr sichtbare Dinge für Oído fino + Memoria (OpenMoji, self-hosted)
-    'banana':'🍌', 'grape':'🍇', 'pear':'🍐', 'cherry':'🍒', 'strawberry':'🍓', 'lemon':'🍋', 'orange':'🍊', 'peach':'🍑', 'pineapple':'🍍', 'melon':'🍈', 'watermelon':'🍉', 'carrot':'🥕', 'potato':'🥔', 'onion':'🧅', 'garlic':'🧄', 'egg':'🥚', 'rice':'🍚', 'pasta':'🍝', 'pizza':'🍕', 'hamburger':'🍔', 'ice cream':'🍨', 'cake':'🍰', 'cookie':'🍪', 'chocolate':'🍫', 'honey':'🍯', 'butter':'🧈', 'wine':'🍷', 'beer':'🍺', 'juice':'🧃', 'knife':'🔪', 'fork':'🍴', 'spoon':'🥄', 'bottle':'🍾', 'salt':'🧂', 'shrimp':'🦐', 'squid':'🦑', 'octopus':'🐙', 'avocado':'🥑', 'corn':'🌽', 'mushroom':'🍄', 'bell pepper':'🫑', 'cucumber':'🥒', 'olive':'🫒', 'sandwich':'🥪', 'croissant':'🥐', 'meat':'🍖', 'bus':'🚌', 'tram':'🚋', 'hotel':'🏨', 'bed':'🛏', 'ice':'🧊', 'sausage':'🌭', 'salmon':'🐟', 'cereal':'🥣',
+    'banana':'🍌', 'grape':'🍇', 'pear':'🍐', 'cherry':'🍒', 'strawberry':'🍓', 'lemon':'🍋', 'orange':'🍊', 'peach':'🍑', 'pineapple':'🍍', 'melon':'🍈', 'watermelon':'🍉', 'carrot':'🥕', 'potato':'🥔', 'onion':'🧅', 'garlic':'🧄', 'egg':'🥚', 'rice':'🍚', 'pasta':'🍝', 'pizza':'🍕', 'hamburger':'🍔', 'ice cream':'🍨', 'cake':'🍰', 'cookie':'🍪', 'chocolate':'🍫', 'honey':'🍯', 'butter':'🧈', 'wine':'🍷', 'beer':'🍺', 'juice':'🧃', 'knife':'🔪', 'fork':'🍴', 'spoon':'🥄', 'bottle':'🍾', 'salt':'🧂', 'shrimp':'🦐', 'squid':'🦑', 'octopus':'🐙', 'avocado':'🥑', 'corn':'🌽', 'mushroom':'🍄', 'bell pepper':'🫑', 'cucumber':'🥒', 'olive':'🫒', 'sandwich':'🥪', 'croissant':'🥐', 'meat':'🥩', 'steak':'🥩', 'beef':'🥩', 'bus':'🚌', 'tram':'🚋', 'hotel':'🏨', 'bed':'🛏', 'ice':'🧊', 'sausage':'🌭', 'salmon':'🐟', 'cereal':'🥣',
     // Krone (b1) · Lateinamerika (Leo, 16.10.2026): nur aus den vorhandenen
     // OpenMoji-Bildern; was nicht trägt (Curiara, Cempasúchil, Kerze), bleibt leer.
     'espresso with a dash of milk':'☕', 'small sweet croissants':'🥐', 'cv':'📝',
