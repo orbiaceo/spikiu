@@ -235,7 +235,10 @@ function autoSprich(text, knopf, karte){
 }
 // Richtig / nicht ganz: dieselben Dateien wie Feines Ohr (audio/spiel/).
 var ohrCtx = null, ohrBuf = {}, OHR_KLANG = { ok:'/audio/spiel/richtig.wav', no:'/audio/spiel/nicht-ganz.wav' };
+// AUS (Leo, 14.11.2026, 18:06: „Ich möchte das Audio-Feedback beim Richtig oder Falsch wegnehmen … Es reicht das visuelle Feedback.“) — beide Funktionen bleiben, tun aber nichts.
+var OHR_KLANG_AN = false;
 function ohrKlangWecken(){
+  if (!OHR_KLANG_AN) return;
   var AC = window.AudioContext || window.webkitAudioContext; if (!AC || ohrCtx || !window.fetch) return;
   try { ohrCtx = new AC(); } catch(e){ return; }
   Object.keys(OHR_KLANG).forEach(function(k){
@@ -245,6 +248,7 @@ function ohrKlangWecken(){
   });
 }
 function ohrKlang(ok){
+  if (!OHR_KLANG_AN) return;
   var k = ok ? 'ok' : 'no';
   if (ohrCtx && ohrBuf[k]){ try { if (ohrCtx.state === 'suspended') ohrCtx.resume(); var q = ohrCtx.createBufferSource(); q.buffer = ohrBuf[k]; q.connect(ohrCtx.destination); q.start(0); return; } catch(e){} }
   try { new Audio(OHR_KLANG[k]).play().catch(function(){}); } catch(e){}

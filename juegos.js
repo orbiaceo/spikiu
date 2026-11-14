@@ -391,6 +391,9 @@
     b.addEventListener('click', function () { try { opts.sprich(text); } catch (e) {} });
     return b;
   }
+  /* AUS (Leo, 14.11.2026, 18:06: „Ich möchte das Audio-Feedback beim Richtig oder Falsch wegnehmen … Es reicht das visuelle Feedback.“) — Dur/Moll/falsches Paar schweigen in allen Spielen.
+     KLANG.kontext() bleibt: das Klatschen in „Golpe“ ist Spielinhalt (Betonung hören), keine Rückmeldung. */
+  var RUECKMELDE_KLANG = false;
   /* ── KLANG (Leo, 02.10.): Dur bei Erfolg, Moll bei Fehltipp — höchstens
      EINMAL Moll pro Runde. WAV (kein MP3-Vorlauf → exakt synchron), einmal
      vorgeladen und per Web Audio dekodiert; der Ton startet im selben
@@ -420,7 +423,7 @@
       } catch (e) {}
     }
     function vorladen() {
-      if (geladen || !w.fetch) return; geladen = true;
+      if (!RUECKMELDE_KLANG || geladen || !w.fetch) return; geladen = true;
       Object.keys(PFAD).forEach(function (k) {
         fetch(PFAD[k]).then(function (r) { return r.ok ? r.arrayBuffer() : null; })
           .then(function (ab) { if (ab) { roh[k] = ab; dekodiere(k); } }).catch(function () {});
@@ -432,6 +435,7 @@
       Object.keys(roh).forEach(dekodiere);
     }
     function spiele(k) {
+      if (!RUECKMELDE_KLANG) return;
       var c = kontext();
       if (c && buf[k]) {
         try {

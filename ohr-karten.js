@@ -130,12 +130,15 @@
     if (KL.state === 'suspended' && KL.resume) { try { KL.resume(); } catch (e) {} }
     Object.keys(KL_ROH).forEach(klDekodiere);
   }
-  if (w.fetch) Object.keys(KL_PFAD).forEach(function (k) {
+  /* AUS (Leo, 14.11.2026, 18:06: „Ich möchte das Audio-Feedback beim Richtig oder Falsch wegnehmen … Es reicht das visuelle Feedback.“) — klang(ok) bleibt als stille Funktion (szene.html ruft O.klang), nichts wird geladen. */
+  var KLANG_AN = false;
+  if (KLANG_AN && w.fetch) Object.keys(KL_PFAD).forEach(function (k) {
     fetch(KL_PFAD[k]).then(function (r) { return r.ok ? r.arrayBuffer() : null; })
       .then(function (ab) { if (ab) { KL_ROH[k] = ab; klDekodiere(k); } }).catch(function () {});
   });
-  try { w.addEventListener('pointerdown', klWecken, { capture: true, passive: true }); } catch (e) {}
+  if (KLANG_AN) try { w.addEventListener('pointerdown', klWecken, { capture: true, passive: true }); } catch (e) {}
   function klang(ok) {
+    if (!KLANG_AN) return;
     var k = ok ? 'ok' : 'no';
     klWecken();
     if (KL && KL_BUF[k]) { try { var q = KL.createBufferSource(); q.buffer = KL_BUF[k]; q.connect(KL.destination); q.start(0); return; } catch (e) {} }
