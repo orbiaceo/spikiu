@@ -1,0 +1,48 @@
+# Hörproben für prototyp-stimmen-supertonic.html (Leo, 14.11.2026: Piper → Supertonic 3,
+# wie in iuspik). Rechnet NICHT im Handy: alle Proben entstehen hier als MP3 und werden
+# in den auslösenden Branch committet (audio/proben-supertonic/). Fasst die App nicht an.
+# Auslöser: Push auf einen Branch tts/… oder manuell.
+name: TTS-Hörproben
+on:
+  workflow_dispatch:
+  push:
+    branches: ["tts/**"]
+permissions:
+  contents: write
+jobs:
+  proben:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg jq
+      - name: Supertonic 3 (10 Stimmen)
+        continue-on-error: true
+        env: { ONNXRUNTIME_NODE_INSTALL_CUDA: skip }
+        run: |
+          mkdir -p /tmp/st && (cd /tmp/st && npm init -y >/dev/null && npm i onnxruntime-node@1.22.0 >/dev/null)
+          cp scripts/tts-proben/supertonic.mjs /tmp/st/
+          node /tmp/st/supertonic.mjs "$PWD/scripts/tts-proben/saetze.json" "$PWD/wav"
+      - name: Piper (heutige Stimmen, zum Vergleich)
+        continue-on-error: true
+        run: |
+          pip install piper-tts
+          bash scripts/tts-proben/piper.sh "$PWD/scripts/tts-proben/saetze.json" "$PWD/wav"
+      - name: MP3 (mono, 24 kHz, 40 kb/s, loudnorm -16)
+        run: |
+          mkdir -p audio/proben-supertonic
+          for f in wav/*.wav; do
+            ffmpeg -loglevel error -y -i "$f" -af "loudnorm=I=-16:TP=-1.5:LRA=11,aresample=24000" -ac 1 -codec:a libmp3lame -b:a 40k "audio/proben-supertonic/$(basename "${f%.wav}").mp3"
+          done
+          ls audio/proben-supertonic | wc -l
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audio/proben-supertonic
+          git commit -m "TTS-Hörproben: Supertonic 3 (10 Stimmen) + Piper, 4 Sprachen" || { echo "nichts Neues"; exit 0; }
+          git push
