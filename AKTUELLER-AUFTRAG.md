@@ -1,106 +1,49 @@
-# AKTUELLER AUFTRAG — DIE SPIELKISTE
+# AKTUELLER AUFTRAG — GEFÜHRT ODER FREI (neue Startseite)
 
-**ERLEDIGT am 01.10.2026 (von Claude direkt im Repo gebaut) · kein offener Auftrag.** Abweichung: Garten und Akrostichon kamen als 3. und 4. Tür in `spiele.html` dazu (Leo, 01.10.). Rest-Scope: Spiel am Sitzungsende des Geführten Gesprächs — eigener späterer Auftrag. Details im Ledger.
+**ERLEDIGT am 14.11.2026 (von Claude direkt im Repo gebaut) · kein offener Auftrag.** Offen bleiben nur die zwei Punkte unter „Nicht in diesem Auftrag“. Details im Ledger.
 
-Stand: 01.10.2026 · Erteilt von claude.ai · Für Claude Code (Terminal)
+Stand: 14.11.2026 · Erteilt von claude.ai (Leo, 02:54: „Genehmigt. Schreibe den Auftrag und lass ihn sofort umsetzen.") · Umsetzung: Claude direkt im Repo
 
-**Ein Auftrag, ein Durchlauf.** Frag nichts, melde am Ende, was gebaut wurde.
-(Der Schattenlauf vom 29.08. ist erledigt: gescheitert, ersetzt, siehe Ledger 30.08.)
+**Vorlage für Aussehen und Verhalten:** `prototyp-zwei-modi.html` (Root, dev). Begründung und Varianten: `prototyp-heute.html`, `prototyp-drei-wege.html`, Ledger 14.11.
 
 ---
 
 ## Warum
 
-Leo hat am 29.09.–01.10. im Prototyp **`giros-spielplatz-prototyp.html`** (Root, dev)
-sieben kleine Spiele getestet. Vier bleiben: **Piñata, Globos, Al pie de la letra,
-Gemelos.** Sie lockern jede Einheit auf. Alle laufen mit **null Token** aus Daten,
-die schon im Repo liegen. **Der Prototyp ist die Vorlage für Aussehen und Verhalten.**
-Öffne ihn zuerst und spiel jedes der vier Spiele einmal durch.
-
----
+Leo, 13.11.: „Die scheinbare Einfachheit verschwindet, sobald man einen Raum betritt. Es wirkt zu viel.“
+Die Startseite bot etwa 11 gleichrangige Entscheidungen. Hinter jeder Kachel kam wieder ein Menü, und manches stand doppelt da.
+Entschieden (Leo, 02:47): **Modell 2 „Neugierig“** als Grundordnung, **Zeitangaben** aus Modell 3, dazu ein **geführter Modus** aus Modell 1, frei wählbar.
 
 ## Was gebaut wird
 
-### A. `juegos.js` (NEU, Root) — ein Motor, drei Orte
+### A. `fuehrung.js` (NEU, Root) — der Reiseleiter
+- `modus()` → `'gefuehrt' | 'frei' | null` aus `spikiu_user.profile.modus`; `setzeModus(m)`.
+- `heute()` → was Spikiu heute vorschlägt, nur aus vorhandenen Daten (`SpikiuPfad.palette()`, Status, `beruehrt`):
+  - `wiedersehen`: eine Station ist durchschritten (vor heute), aber noch nicht gesetzt → Karten (`gym.html`)
+  - `ruhe`: heute schon eine Station berührt → „Bis morgen“, mit „Trotzdem weiter“
+  - `neu`: nächste offene Station → `gefuehrt.html?thema=…`
+  - `stufe`: alle Stationen der Stufe sitzen → nächste Stufe anbieten
+- Nichts wird verschlossen. Harte Schleifen bleiben iuspik.
 
-Muster wie `uebung.js`: IIFE, `window.spikiuJuegos`, eigener CSS-Namensraum `jg-`
-(CSS injiziert das Modul selbst, einmal). Kein Netz, keine KI.
+### B. `haus.html` — eine Startseite statt zwei Türen
+- Die Türen Übung und Bibliothek entfallen. Alte Ziele (`?tuer=uebung|bibliothek`, `spk_haus_tuer`) landen auf der Startseite. Regal bleibt (Leiste unten), mit Zurück zur Startseite.
+- **Erster Besuch ohne Modus:** Spikiu fragt „Führ mich“ / „Ich schau mich selbst um“, mit dem Hinweis „jederzeit in Mein änderbar“.
+- **Geführt:** Spikiu-Satz, Karte nächste Station + „Weiter“ + Pfad der Stufe (✓ / Wiedersehen / jetzt / später). Eine andere Station antippen → „Ich empfehle erst X. Trotzdem?“. Darunter der Link „Heute lieber selbst wählen“.
+- **Frei:** Karte „Heute mit Spikiu“ (derselbe Vorschlag), darunter „Oder selbst wählen“ mit vier Türen: Eintauchen · Ausprobieren · Ergründen · Spielen. Jede Tür zeigt höchstens 4 Wege mit einer Zeile Erklärung und „≈ N Min.“. Spielen geht direkt nach `spiele.html`.
+- Alle Texte in de / es / en / el. Laptop-Tasten 1–9 bleiben nutzbar.
 
-```js
-var el = window.spikiuJuegos.pinata(daten, opts);   // → DOM-Element
-el.addEventListener('jg-done', function(e){ /* e.detail.ok */ });
-el.stop();   // rAF-Schleifen beenden, wenn die Karte verlassen wird
-```
+### C. `mein.html` — Umschalter „Wie lernst du?“ (Geführt / Frei)
 
-Vier Funktionen: `pinata`, `globos`, `literal`, `gemelos`.
-`opts = { nativeLang:'de'|'es'|'en' }` → **alle Anweisungen in der Muttersprache**
-(dreisprachige UI-Tabelle wie in `uebung.js`). Die Spielwörter selbst stehen in
-Lora (Zielsprache), Anweisungen in DM Sans.
-
-| Spiel | `daten` | Verhalten (wie Prototyp) |
-|---|---|---|
-| `pinata` | `{ satz, intruso, intrusoDe }` | „¡Dale!" → Stern-Piñata platzt, Konfetti, Wörter des Satzes + 1 Eindringling fallen **langsam**. Tippen auf Eindringling = richtig. Erreicht er den Boden, **fängt Spikiu ihn auf** (kein Verlieren). Danach: Satz setzt sich zusammen, darunter „*X* gehört zu *intrusoDe*" (wenn vorhanden). |
-| `globos` | `{ satz }` | Wörter steigen in Ballons auf, schlängeln leicht, kommen unten wieder. In Satzreihenfolge antippen. Falsch = Ballon wackelt, sanfter Hinweis. |
-| `literal` | `{ text, woertlich, bedeutung, falsch:[2], icon }` | Oben das OpenMoji-Icon (`bilder/om-*.svg`, wie `proverbios.html`) + der Satz + „wörtlich: …". Drei Bedeutungen zur Wahl. Falsche Wahl wird ausgegraut, mit Hinweis, wem sie gehört. |
-| `gemelos` | `[{ z, na }] × 4` | Zwei Spalten (Zielsprache / Muttersprache, rechts gemischt). Links + rechts antippen → Paar wird grün, sonst kurz orange. |
-
-**Eiserne Regeln für alle vier:** kein Punktestand, kein Timer-Zähler, kein „Game over",
-keine Glückwunsch-Feuerwerke außer dem Piñata-Konfetti. `prefers-reduced-motion`
-respektieren (Fallen/Steigen → Wörter erscheinen ruhig an ihrem Platz).
-Das Maskottchen heißt in jedem Text **Spikiu**. SVG kanonisch aus `index.html` kopieren.
-
-### B. Übung → 4. Kachel „Spiele" (`haus.html` + `spiele.html` NEU)
-
-- `haus.html` `roomUebung()`: vierte Kachel **„Spiele"** · ss „Kurz und leicht" ·
-  Farbe aus der vorhandenen Palette, die noch frei ist. Ziel `spiele.html`.
-  Layout: die vier Kacheln im 2×2-Raster (prüfen, dass `tileEl`/Grid das trägt).
-- `spiele.html`: Raum mit Zurück-Pfeil (keine Bottom-Nav). Zwei Türen:
-  **Piñata · Globos.** Jede Runde zieht einen Satz für die Zielsprache des Profils:
-  - aus `sprichwort.js` (Sprichwörter + `wendungen`) **und**
-  - aus `wortschatz.js` (die Beispielsätze `text`).
-  - Eindringling = ein Inhaltswort (≥4 Buchstaben) aus einem **anderen** Satz derselben
-    Zielsprache; bei Wendungen `intrusoDe` = dieser andere Satz.
-- Nach jeder Runde: „seguir ›" (nächster Satz) und „Genug für heute".
-- **Sitzungs-Persistenz** über `sitzung.js` (Schlüssel `spikiu_sitzung:spiele`), wie in CLAUDE.md.
-- Sprachwache wie in `gym.html`: nur Daten der eigenen Zielsprache.
-
-### C. Bibliothek → Wendungen & Sprichwörter (`proverbios.html`)
-
-Heute folgt auf jede Karte eine `uebung.js`-Übung. Neu: **jede dritte Übung ist ein
-Spiel**, abwechselnd `literal` und `gemelos`.
-- `literal` aus dem aktuellen Eintrag: `woertlich = w[native]`, `bedeutung = t[native]`,
-  zwei falsche = `t[native]` zweier anderer Einträge, `icon` wie die Karte.
-- `gemelos`: aktueller Eintrag + 3 zufällige derselben Zielsprache, `z = text`, `na = t[native]`.
-- Swipe/Weiter-Regeln der Raumseite unverändert; `el.stop()` beim Verlassen.
-
----
-
-## Was NICHT gebaut wird
-
-- **Kein Eingriff in `chat.html` oder `gefuehrt.html`.** Das Spiel am Sitzungsende
-  (Tür „¿Una piñata para cerrar?" mit der Ernte) ist ein eigener späterer Auftrag.
-- Keine neuen Daten erfinden. Fehlt einem Eintrag `w` oder `t[native]`, wird er für
-  `literal`/`gemelos` übersprungen.
-- `giros-spielplatz-prototyp.html` bleibt unangetastet.
+### D. Rückwege
+`gym.html` und `spiele.html` verstehen `zurueck=haus`, damit Wege aus dem Haus auch ins Haus zurückführen.
 
 ## Abnahme
+- Neuer Nutzer sieht die Frage. Nach der Wahl erscheint die passende Startseite, Umschalten in Mein wirkt sofort.
+- Geführt: „Weiter“ öffnet das Geführte Gespräch der vorgeschlagenen Station. Nach dem Abschluss zeigt die Startseite „Bis morgen“.
+- Frei: vier Türen, keine zeigt mehr als 4 Wege, jede mit Zeitangabe.
+- Ohne Lernpfad-Daten (Zielsprache ohne Stationen) fällt die Startseite still auf die vier Türen zurück, ohne Fehler.
+- Handy unverändert gut. Keine JS-Fehler (headless geprüft). `node --check` grün.
 
-1. `node --check juegos.js` + alle Inline-Scripts grün.
-2. Haus → Übung zeigt vier Kacheln; „Spiele" öffnet `spiele.html`; Piñata und Globos
-   laufen für `es` und `de` als Zielsprache, UI in der Muttersprache.
-3. In `proverbios.html` erscheint spätestens bei der dritten Übung ein Spiel.
-4. Am Handy (360 px): kein horizontales Scrollen, Wörter bleiben im Feld.
-5. grep: kein „Capy" in sichtbarem Text der neuen/angefassten Dateien.
-
-## Was du meldest
-
-Dateien + Größen · Anker (Funktionsnamen) in `haus.html`/`proverbios.html` · Syntaxcheck ·
-alles, was nicht zum Auftrag passte (als „FRAGE AN DESIGN").
-Danach Commit, `git pull --rebase origin dev`, `git push origin dev`, Ledger-Eintrag,
-diesen Auftrag auf „erledigt" setzen.
-
----
-
-## Der Satz, mit dem Leonardo dich startet
-
-> Lies AKTUELLER-AUFTRAG.md und arbeite ihn komplett durch. Frag mich nichts.
+## Nicht in diesem Auftrag (FRAGE AN DESIGN)
+- Stufen-Chips in den Räumen (Samen/Stamm …) bleiben vorerst stehen.
+- `wortschatz.html` ist aus dem Haus nicht mehr verlinkt (Wege liegen jetzt in den Türen), bleibt aber erreichbar.

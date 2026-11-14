@@ -560,6 +560,7 @@ function oeffne(id, zustand){
 
 document.getElementById('btnZurueck').onclick = function(){
   raeumeSitzung();
+  if (/[?&]zurueck=haus\b/.test(window.location.search)) { location.href = 'haus.html'; return; }   // 14.11.: aus einer Haus-Tür geöffnet
   if (VON_WS) { location.href = 'wortschatz.html'; return; }
   if (ansicht === 'tueren' || herkunftHaus) location.href = 'haus.html'; else tueren();
 };

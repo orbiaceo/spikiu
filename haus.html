@@ -248,6 +248,54 @@ button{font-family:inherit}
 .meta{flex:0 0 auto;display:flex;justify-content:center;gap:1.3rem;padding:.55rem 0 calc(.7rem + env(safe-area-inset-bottom));border-top:2px solid var(--ink);background:rgba(255,255,255,.55)}
 .meta a{font:600 .72rem/1 'DM Sans',sans-serif;color:var(--muted);text-decoration:none;cursor:pointer}
 .meta a:active{color:var(--ink)}
+/* ===== STARTSEITE „Geführt oder frei“ (Leo, 14.11.2026, Vorlage prototyp-zwei-modi.html) ===== */
+.subbar:empty{display:none}
+.doors:empty{display:none}
+.st-row{display:flex;gap:.6rem;align-items:flex-start;margin:.1rem 0 1rem}
+.st-row .av{flex:0 0 40px;height:40px;margin-top:.15rem}
+.st-karte{background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:1.05rem 1.1rem 1.15rem}
+.st-karte.ruhe{background:#c7e89a}
+.st-karte.wieder{background:#ffd0b0}
+.st-eb{font:700 .62rem/1.2 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);opacity:.75}
+.st-h{font:800 1.7rem/1.1 'DM Sans',sans-serif;margin:.4rem 0 .15rem;letter-spacing:-.01em;color:var(--ink)}
+.st-zs{font:italic 500 1.08rem/1.35 'Lora',serif;margin-bottom:.85rem;color:var(--ink)}
+.st-zs.na{font:600 .95rem/1.35 'DM Sans',sans-serif;font-style:normal}
+.st-weg{display:flex;align-items:center;gap:.3rem;margin-bottom:1rem}
+.st-weg .st{flex:1;min-width:0;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.45rem .2rem;text-align:center;font:800 .74rem/1.15 'DM Sans',sans-serif;color:var(--ink)}
+.st-weg .st b{display:block;font-size:1.2rem;line-height:1.1;margin-bottom:.1rem}
+.st-weg .pf{flex:0 0 auto;font-weight:800;color:var(--ink)}
+.st-los{width:100%;padding:.85rem 1rem;border-radius:999px;border:var(--ow) solid var(--ink);background:var(--acc);color:var(--acctx);font:800 1.08rem/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.st-los:active,.st-k:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.st-klein{display:block;margin:.75rem auto 0;background:none;border:none;font:700 .88rem 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer;color:var(--ink);text-align:center}
+.st-pfad{display:flex;flex-direction:column;margin:1.1rem 0 .3rem;padding-left:.3rem}
+.st-pf{display:flex;align-items:center;gap:.75rem;position:relative;padding:.35rem .2rem;background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;color:var(--ink);border-radius:12px}
+.st-pf:before{content:'';position:absolute;left:17px;top:-50%;height:100%;width:3px;background:var(--ink);opacity:.22}
+.st-pf:first-child:before{display:none}
+.st-pf .pt{position:relative;z-index:1;flex:0 0 33px;height:33px;border-radius:999px;border:2.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font:800 .9rem 'DM Sans',sans-serif}
+.st-pf.gesetzt .pt{background:#c7e89a}
+.st-pf.durch .pt{background:#ffd0b0}
+.st-pf.jetzt .pt{background:var(--mustard);box-shadow:2px 2px 0 var(--ink)}
+.st-pf .pl{font:700 .95rem/1.2 'DM Sans',sans-serif}
+.st-pf.jetzt .pl{font-weight:800;font-size:1.04rem}
+.st-pf.offen{opacity:.62}
+.st-pf .pk{margin-left:auto;font:600 .74rem 'DM Sans',sans-serif;color:var(--muted)}
+.st-regel{font:600 .8rem/1.35 'DM Sans',sans-serif;color:var(--muted);text-align:center;margin:.7rem .4rem 0}
+.st-liste{display:flex;flex-direction:column;gap:.75rem}
+.st-k{display:flex;align-items:center;gap:.85rem;text-align:left;border:var(--ow) solid var(--ink);border-radius:18px;padding:.85rem 1rem;cursor:pointer;box-shadow:var(--shb) 0 var(--ink);background:#fff;width:100%;font-family:inherit;color:var(--ink)}
+.st-k .em{flex:0 0 auto;font-size:1.7rem;line-height:1;width:40px;text-align:center;display:flex;align-items:center;justify-content:center}
+.st-k .tx{flex:1;min-width:0}
+.st-k .tt{display:block;font:800 1.05rem/1.2 'DM Sans',sans-serif}
+.st-k .ss{display:block;font:600 .84rem/1.3 'DM Sans',sans-serif;color:rgba(21,22,58,.72)}
+.st-k .mn{flex:0 0 auto;font:700 .66rem/1 'DM Mono',monospace;color:var(--muted)}
+.st-k .chev{flex:0 0 auto;font-size:1.4rem;font-weight:800}
+.st-k .pill{display:inline-block;font:800 .58rem 'DM Sans',sans-serif;border:2px solid var(--ink);border-radius:999px;padding:.05rem .4rem;margin-left:.35rem;background:#c7e89a;vertical-align:2px}
+.st-label{font:800 .72rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;margin:1.5rem 0 .8rem}
+.st-zur{align-self:flex-start;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.4rem .8rem;font:800 .85rem 'DM Sans',sans-serif;cursor:pointer;box-shadow:2px 2px 0 var(--ink);margin-bottom:.9rem;color:var(--ink)}
+.st-wahl{display:flex;flex-direction:column;gap:.9rem}
+.st-wahl .st-k{padding:1rem 1.05rem;border-radius:20px;box-shadow:4px 5px 0 var(--ink)}
+.st-wahl .st-k .em{font-size:2rem}
+.st-ov{position:fixed;inset:0;z-index:95;background:rgba(21,22,58,.45);display:flex;align-items:flex-end;justify-content:center}
+.st-ov .lxs{display:flex;flex-direction:column;gap:.6rem}
 /* ===== GERÄTESTUFEN (Leo, 12.11.2026: „Ja. Deine Empfehlung." → Laptop A „Ruhige Bühne").
    Kein Handy-Rähmchen mehr. Handy (<700) bleibt unverändert; Grundregeln in geraet.css,
    das Haus regelt seine Stufen hier selbst (body.g-voll). Prototyp: geraete-prototyp.html ===== */
@@ -329,6 +377,14 @@ button{font-family:inherit}
 <script src="woerter.js"></script>
 <script src="mosaik.js"></script>
 <script src="szenen.js"></script>
+<!-- Reiseleiter (Leo, 14.11.2026: „Geführt oder frei“): Lernpfad-Daten + fuehrung.js -->
+<script src="lernpfad-daten.js"></script>
+<script src="lernpfad-daten-de.js"></script>
+<script src="lernpfad-daten-en.js"></script>
+<script src="lernpfad-daten-el.js"></script>
+<script src="lernpfad-sprache.js"></script>
+<script src="lernpfad.js"></script>
+<script src="fuehrung.js"></script>
 <script>
 /* ── SPIKIU · CAPY VIVO (wiederverwendbarer Helfer) ──────────────────
    Macht ein bereits gerendertes Capy-<svg> lebendig — ohne Abhängigkeiten,
@@ -647,15 +703,14 @@ function showPop(el,txt){var p=document.getElementById('pop');p.innerHTML='<b>'+
    Praxis = Sprechen (Geführtes + Freies Gespräch) und Trainieren (Wortschatz, Spiele,
    Wendungen, Schreiben). Bibliothek = Lesen & Entdecken (Lernroman, Lesen, Regional).
    Das Regal wohnt unten in der Leiste (bottomnav.js), Hilfe als „?" oben rechts. */
-var DOORS=[
- {id:'uebung',ic:icoPraxis,lb:H().d3,sub:H().d3s},
- {id:'bibliothek',ic:icoBook,lb:H().d2,sub:H().d2s}
-];
+/* 14.11.2026 (Leo, „Geführt oder frei“, genehmigt 02:54): Die Türen Übung + Bibliothek entfallen.
+   Eine Startseite (roomStart) — geführt oder frei, je nach profile.modus. Alte Ziele landen dort. */
+var DOORS=[];
 function buildNav(){var d=document.getElementById('doors');d.innerHTML='';
  DOORS.forEach(function(D){var b=document.createElement('button');b.className='door';b.id='door-'+D.id;
   b.innerHTML='<span class="ic">'+D.ic()+'</span><span class="lb">'+D.lb+'</span>';
   b.onclick=function(){loadRoom(D.id);};d.appendChild(b);});}
-function loadRoom(id){if(id==='eintauchen')id='uebung';   // alte Tür „Abenteuer" → Praxis
+function loadRoom(id){if(id==='eintauchen'||id==='uebung'||id==='bibliothek')id='start';   // alte Türen → Startseite (14.11.)
  CUR=id;try{sessionStorage.setItem('spk_haus_tuer',id);}catch(e){}S=document.getElementById('stage');S.innerHTML='';
  DOORS.forEach(function(D){document.getElementById('door-'+D.id).classList.toggle('on',D.id===id);});
  var tuer=DOORS.filter(function(D){return D.id===id;})[0];
@@ -669,6 +724,8 @@ function loadRoom(id){if(id==='eintauchen')id='uebung';   // alte Tür „Abente
  if(id==='bibliothek')roomBibliothek();
  if(id==='uebung')roomUebung();
  if(id==='regal')roomRegal();
+ if(id==='start')roomStart();
+ if(id.indexOf('tuer-')===0)roomTuer(id.slice(5));
  try{document.dispatchEvent(new CustomEvent('spk-haus-raum',{detail:id}));}catch(e){}}
 /* Die Leiste unten öffnet das Regal direkt, wenn wir schon im Haus sind. */
 window.spikiuZumRegal=function(){if(document.getElementById('house').classList.contains('active'))loadRoom('regal');else location.href='haus.html?tuer=regal';};
@@ -838,6 +895,7 @@ function roomBibliothek(){
 function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0;
  /* 16:31: erst die Themen als Kacheln (wie überall im Haus), Antippen → Liste (mosaik.js). */
  var T=window.spikiuMosaikText?window.spikiuMosaikText(HL):{gespr:'Gespräche',lesen:'Lesen'};
+ stZurueck();   /* 14.11.: ohne Türen braucht das Regal einen Weg zurück zur Startseite */
  kacheln({greet:{title:H().regal},layout:'four',kompakt:true,items:[
   {em:'🎭',tt:T.gespr,bg:'#ffd24a',go:function(){regalListe('gespr');}},
   {em:SCHATZ_SVG,tt:H().buch,bg:'#c7e89a',go:renderBook},
@@ -985,7 +1043,7 @@ window.addEventListener('keydown',function(e){
  var t=e.target&&e.target.tagName;if(t==='INPUT'||t==='TEXTAREA'||(e.target&&e.target.isContentEditable))return;
  if(!document.getElementById('house').classList.contains('active'))return;
  var n=parseInt(e.key,10);
- if(n>=1&&n<=9){var k=document.querySelectorAll('#stage .tile')[n-1];if(k){e.preventDefault();k.click();}return;}
+ if(n>=1&&n<=9){var k=document.querySelectorAll('#stage .tile, #stage .st-k')[n-1];if(k){e.preventDefault();k.click();}return;}
  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var ds=[].slice.call(document.querySelectorAll('#doors .door'));
   var i=ds.findIndex(function(d){return d.classList.contains('on');});if(i<0||!ds.length)return;
   i=(i+(e.key==='ArrowRight'?1:ds.length-1))%ds.length;e.preventDefault();ds[i].click();}
@@ -999,6 +1057,165 @@ window.addEventListener('keydown',function(e){var ov=document.getElementById('bo
 /* ===== RAUM: ÜBUNG ===== */
 var UWORDS=[{w:'madrugada',m:'die Stunden vor Sonnenaufgang'},{w:'el andén',m:'der Bahnsteig / das Gleis'},{w:'amable',m:'freundlich, nett'}];
 /* Neue Ordnung (11.10.): Übung = Wörter & Spiel. Lese-/Schreibwerkstatt wohnen jetzt in der Bibliothek. */
+/* ===== RAUM: STARTSEITE „Geführt oder frei“ (Leo, 14.11.2026, 02:54 „Genehmigt“) =====
+   Vorlage: prototyp-zwei-modi.html. Der Reiseleiter (fuehrung.js) sagt, WAS vorgeschlagen wird;
+   hier wird es nur gezeigt. Geführt = nächste Station + Pfad. Frei = „Heute“ + vier Türen nach Lust
+   (Eintauchen · Ausprobieren · Ergründen · Spielen), jede mit höchstens 4 Wegen und Zeitangabe.
+   Nichts ist verschlossen. Ohne Lernpfad-Daten: still nur die vier Türen. */
+var STUFE_NAME={
+ de:{a1:'🌱 Samen',a2:'🌿 Stamm',b1:'🌳 Krone',b2:'🌸 Blüte'},
+ es:{a1:'🌱 Semilla',a2:'🌿 Tronco',b1:'🌳 Copa',b2:'🌸 Flor'},
+ en:{a1:'🌱 Seed',a2:'🌿 Trunk',b1:'🌳 Crown',b2:'🌸 Blossom'},
+ el:{a1:'🌱 Σπόρος',a2:'🌿 Κορμός',b1:'🌳 Φυλλωσιά',b2:'🌸 Άνθος'}};
+var TUER_T={
+ de:{ein:['Eintauchen','Zuhören und lesen, ohne Druck.','Zuhören und lesen. Du musst nichts leisten.'],
+  aus:['Ausprobieren','Selbst etwas sagen oder schreiben.','Etwas wagen. Fehler sind hier Zwischenschritte.'],
+  erg:['Ergründen','Verstehen, warum es so ist.','Wissen wollen, warum. Kurz und ohne Fachwörter.'],
+  spi:['Spielen','Locker, nebenbei, ohne Punkte.'],
+  n:{karten:'Karten',oido:'Feines Ohr',korb:'Der Korb',golpe:'Der Schlag'},
+  s:{roman:'Eine Geschichte, die mit dir mitwächst.',oido:'Hör ein Wort, tipp das Bild.',korb:'Hör ein Wort, leg es in den richtigen Korb.',regio:'Wie man es in verschiedenen Gegenden sagt.',
+   gef:'Spikiu gibt dir Sätze zur Auswahl. Gut zum Anfangen.',frei:'Du sagst, was du willst. Spikiu antwortet.',schreib:'Eine kurze Nachricht, Spikiu schaut drauf.',
+   karten:'Deine Wörter wiedersehen, Karte für Karte.',gram:'Grammatik ohne Schnickschnack, Karte für Karte.',lese:'Ein kurzer Text aus dem Alltag, drei Fragen.',golpe:'Wo liegt der Schlag? Tipp die starke Silbe.'}},
+ es:{ein:['Sumergirte','Escuchar y leer, sin presión.','Escuchar y leer. No tienes que demostrar nada.'],
+  aus:['Probar','Decir o escribir algo tú.','Atreverse. Aquí los errores son pasos intermedios.'],
+  erg:['Entender','Saber por qué es así.','Querer saber por qué. Breve y sin tecnicismos.'],
+  spi:['Jugar','Sin presión, de paso, sin puntos.'],
+  n:{karten:'Tarjetas',oido:'Oído fino',korb:'La cesta',golpe:'El golpe'},
+  s:{roman:'Una historia que crece contigo.',oido:'Escucha una palabra, toca la imagen.',korb:'Escucha una palabra y ponla en su cesta.',regio:'Cómo se dice en distintos lugares.',
+   gef:'Spikiu te da frases para elegir. Ideal para empezar.',frei:'Dices lo que quieras. Spikiu te responde.',schreib:'Un mensaje corto; Spikiu le echa un vistazo.',
+   karten:'Vuelve a ver tus palabras, tarjeta a tarjeta.',gram:'Gramática, directo al grano, tarjeta a tarjeta.',lese:'Un texto corto del día a día, tres preguntas.',golpe:'¿Dónde cae el golpe? Toca la sílaba fuerte.'}},
+ en:{ein:['Immerse','Listen and read, no pressure.','Listen and read. Nothing to prove.'],
+  aus:['Try it out','Say or write something yourself.','Have a go. Mistakes are steps along the way.'],
+  erg:['Dig deeper','Understand why it works that way.','Want to know why? Short and jargon-free.'],
+  spi:['Play','Light and easy, no points.'],
+  n:{karten:'Cards',oido:'Sharp Ear',korb:'The basket',golpe:'The Beat'},
+  s:{roman:'A story that grows with you.',oido:'Hear a word, tap the picture.',korb:'Hear a word, put it in the right basket.',regio:'How people say it in different places.',
+   gef:'Spikiu gives you sentences to choose from. Good for starting.',frei:'Say whatever you like. Spikiu answers.',schreib:'A short message; Spikiu takes a look.',
+   karten:'See your words again, card by card.',gram:'Simple grammar, card by card.',lese:'A short everyday text, three questions.',golpe:'Where is the beat? Tap the strong syllable.'}},
+ el:{ein:['Βουτιά','Άκου και διάβασε, χωρίς πίεση.','Άκου και διάβασε. Δεν χρειάζεται να αποδείξεις τίποτα.'],
+  aus:['Δοκίμασε','Πες ή γράψε κάτι μόνος σου.','Τόλμησε. Εδώ τα λάθη είναι ενδιάμεσα βήματα.'],
+  erg:['Κατάλαβε','Μάθε γιατί είναι έτσι.','Θέλεις να μάθεις γιατί; Σύντομα και χωρίς ορολογία.'],
+  spi:['Παίξε','Χαλαρά, στο περιθώριο, χωρίς πόντους.'],
+  n:{karten:'Κάρτες',oido:'Λεπτό αυτί',korb:'Το καλάθι',golpe:'Ο τόνος'},
+  s:{roman:'Μια ιστορία που μεγαλώνει μαζί σου.',oido:'Άκου μια λέξη, πάτα την εικόνα.',korb:'Άκου μια λέξη, βάλ’ την στο σωστό καλάθι.',regio:'Πώς το λένε σε διάφορα μέρη.',
+   gef:'Ο Spikiu σού δίνει φράσεις για να διαλέξεις. Ιδανικό για αρχή.',frei:'Λες ό,τι θέλεις. Ο Spikiu απαντά.',schreib:'Ένα σύντομο μήνυμα· ο Spikiu του ρίχνει μια ματιά.',
+   karten:'Ξαναδές τις λέξεις σου, κάρτα κάρτα.',gram:'Γραμματική χωρίς περιττά, κάρτα κάρτα.',lese:'Ένα σύντομο καθημερινό κείμενο, τρεις ερωτήσεις.',golpe:'Πού πέφτει ο τόνος; Πάτα την τονισμένη συλλαβή.'}}
+};
+function TT(){return TUER_T[HL]||TUER_T.de;}
+function FT(){return window.spikiuFuehrung?window.spikiuFuehrung.text():null;}
+/* Die Wege hinter den Türen: höchstens 4, je eine Zeile, mit Zeitangabe (Modell 3). */
+function tuerWege(k){var t=TT(),n=t.n,s=t.s,WS='&von=wortschatz&zurueck=haus';
+ if(k==='ein')return [
+  {em:'📖',tt:H().roman,ss:s.roman,min:12,go:'learnroman.html'},
+  {em:'👂',tt:n.oido,ss:s.oido,min:4,go:'spiele.html?spiel=oido'+WS},
+  {em:'<img src="bilder/sp-korb.svg" alt="" style="width:1.8rem;height:1.8rem">',tt:n.korb,ss:s.korb,min:4,go:'spiele.html?spiel=mercado'+WS},
+  {em:'🗺️',tt:H().regio,ss:s.regio,min:5,go:'regional.html'}];
+ if(k==='aus')return [
+  {em:'🎭',tt:H().gef,ss:s.gef,min:10,go:'gefuehrt.html'},
+  {em:'💬',tt:H().frei,ss:s.frei,min:10,pr:1,go:'szene.html'},
+  {em:'✍️',tt:H().schreib,ss:s.schreib,min:8,pr:1,go:'schreibwerkstatt.html'}];
+ if(k==='erg'){var w=[{em:'🃏',tt:n.karten,ss:s.karten,min:5,go:'gym.html?zurueck=haus'}];
+  /* Gramática erklärt auf Deutsch für Spanisch-Lernende (23.10.) → nur Ziel es + Muttersprache de. */
+  if(bkZiel()==='es'&&bkMutter()==='de')w.push({em:'📘',tt:'Gramática',ss:s.gram,min:6,go:'buch/Gramatica-Karten.html'});
+  w.push({em:BRILLE,tt:H().lese,ss:s.lese,min:6,pr:1,go:'taller.html'});
+  w.push({em:'🥁',tt:n.golpe,ss:s.golpe,min:4,go:'spiele.html?spiel=golpe'+WS});
+  return w;}
+ return [];}
+function stEl(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function stSagt(text){var r=stEl('div','st-row','<div class="av">'+capy()+'</div><div class="says"></div>');r.querySelector('.says').textContent=text;S.appendChild(r);}
+function stKachel(it){var b=stEl('button','st-k');if(it.bg)b.style.background=it.bg;
+ b.innerHTML='<span class="em">'+it.em+'</span><span class="tx"><span class="tt"></span><span class="ss"></span></span>'+(it.min?'<span class="mn"></span>':'')+'<span class="chev">›</span>';
+ b.querySelector('.tt').textContent=it.tt;if(it.pr){var p=stEl('span','pill');p.textContent='Premium';b.querySelector('.tt').appendChild(p);}
+ b.querySelector('.ss').textContent=it.ss||'';if(it.min)b.querySelector('.mn').textContent=FT()?FT().min(it.min):'';
+ b.onclick=typeof it.go==='function'?it.go:function(){location.href=it.go;};return b;}
+function stZurueck(txt,ziel){var b=stEl('button','st-zur');b.textContent=txt||(FT()?FT().zurueck:'‹');b.onclick=function(){loadRoom(ziel||'start');};S.appendChild(b);}
+function stSelbstHeute(an){try{if(an)sessionStorage.setItem('spk_selbst_heute',new Date().toISOString().slice(0,10));else sessionStorage.removeItem('spk_selbst_heute');}catch(e){}}
+function stIstSelbstHeute(){try{return sessionStorage.getItem('spk_selbst_heute')===new Date().toISOString().slice(0,10);}catch(e){return false;}}
+
+function roomStart(){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
+ var F=window.spikiuFuehrung;if(!F){stTueren();return;}
+ var m=F.modus();
+ if(!m){stFrage();return;}
+ if(m==='gefuehrt'&&!stIstSelbstHeute()&&F.bereit())stGefuehrt();else stFrei();}
+
+/* Erster Besuch: wie möchtest du lernen? Einmal gefragt, jederzeit in Mein änderbar. */
+function stFrage(){var F=window.spikiuFuehrung,t=F.text();
+ stSagt(t.frage);
+ var w=stEl('div','st-wahl');
+ w.appendChild(stKachel({em:'🧭',tt:t.fuehrMich,ss:t.fuehrMichS,bg:'#ffd24a',go:function(){F.setzeModus('gefuehrt');roomStart();}}));
+ w.appendChild(stKachel({em:'🔍',tt:t.selbst,ss:t.selbstS,bg:'#d3eef6',go:function(){F.setzeModus('frei');roomStart();}}));
+ w.querySelectorAll('.chev').forEach(function(c){c.remove();});
+ S.appendChild(w);S.appendChild(stEl('div','st-regel',kEsc(t.jederzeit)));}
+
+/* Die Vorschlagskarte — dieselbe für beide Modi; nur Überschrift und Knopf unterscheiden sich. */
+function stKarte(h,gefuehrt){var F=window.spikiuFuehrung,t=F.text(),k=stEl('div','st-karte');
+ var x=h.station;
+ if(h.art==='neu'){var vg=F.vorgeschmack(x);
+  k.innerHTML='<div class="st-eb"></div><div class="st-h"></div>'+(vg?'<div class="st-zs"></div>':(x.schritt?'<div class="st-zs na"></div>':''))
+   +'<div class="st-weg"><div class="st"><b>🃏</b></div><span class="pf">›</span><div class="st"><b>🎧</b></div><span class="pf">›</span><div class="st"><b>🗣️</b></div></div><button class="st-los"></button>';
+  k.querySelector('.st-eb').textContent=(gefuehrt?t.ebNaechste:t.ebHeute)+' · '+t.min(10);
+  k.querySelector('.st-h').textContent=(x.em?x.em+' ':'')+x.titel;
+  var zs=k.querySelector('.st-zs');if(zs){if(vg){zs.textContent=vg;zs.lang=bkZiel();}else zs.textContent=x.schritt[HL]||x.schritt.en||x.schritt.de||'';}
+  var sts=k.querySelectorAll('.st-weg .st');[t.schrWoerter,t.schrHoeren,t.schrSprechen].forEach(function(l,i){sts[i].appendChild(document.createTextNode(l));});
+  var b=k.querySelector('.st-los');b.textContent=gefuehrt?t.weiter:t.los;b.onclick=function(){location.href=F.ziel('neu',x);};}
+ else if(h.art==='wiedersehen'){k.className+=' wieder';
+  k.innerHTML='<div class="st-eb"></div><div class="st-h"></div><div class="st-zs na"></div><button class="st-los"></button>';
+  k.querySelector('.st-eb').textContent=t.ebWieder+' · '+t.min(5);k.querySelector('.st-h').textContent=t.wiederT(x.titel);
+  k.querySelector('.st-zs').textContent=t.wiederZs;var b2=k.querySelector('.st-los');b2.textContent=gefuehrt?t.weiter:t.los;b2.onclick=function(){location.href=F.ziel('wiedersehen',x);};}
+ else if(h.art==='ruhe'){k.className+=' ruhe';
+  k.innerHTML='<div class="st-eb"></div><div class="st-h"></div><div class="st-zs na"></div>';
+  k.querySelector('.st-eb').textContent=t.ebRuhe;k.querySelector('.st-h').textContent=t.ruheT;k.querySelector('.st-zs').textContent=t.ruheZs(x.titel);
+  if(h.danach){var d=h.danach,b3=stEl('button','st-klein');b3.textContent=t.trotzWeiter(d.titel);
+   b3.onclick=function(){location.href=F.ziel(d.status==='durchschritten'?'wiedersehen':'neu',d);};k.appendChild(b3);}}
+ else if(h.art==='stufe'){k.className+=' ruhe';
+  k.innerHTML='<div class="st-eb"></div><div class="st-h"></div><div class="st-zs na"></div>';
+  k.querySelector('.st-eb').textContent=t.ebStufe;
+  if(h.stufe){var sn=(STUFE_NAME[HL]||STUFE_NAME.de)[h.stufe]||h.stufe;k.querySelector('.st-h').textContent=t.stufeT(sn);k.querySelector('.st-zs').textContent=t.stufeZs;
+   var b4=stEl('button','st-los');b4.textContent=t.stufeLos;b4.onclick=function(){try{window.SpikiuPfad.setzeStufe(h.stufe);}catch(e){}roomStart();};k.appendChild(b4);}
+  else{k.querySelector('.st-h').textContent=t.ruheT;k.querySelector('.st-zs').textContent=t.stufeEnde;}}
+ S.appendChild(k);}
+
+/* GEFÜHRT: nächste Station + ruhiger Pfad. Andere Stationen fragen nur „trotzdem?“. */
+function stGefuehrt(){var F=window.spikiuFuehrung,t=F.text(),h=F.heute();
+ if(!h){stFrei();return;}
+ stSagt(h.art==='ruhe'?t.grussRuhe:t.grussG);
+ stKarte(h,true);
+ var empf=h.station||null,pf=stEl('div','st-pfad');
+ h.pfad.forEach(function(x){var jetzt=empf&&x.id===empf.id&&h.art!=='ruhe';
+  var cls=x.status==='gesetzt'?'gesetzt':(jetzt?'jetzt':(x.status==='durchschritten'?'durch':'offen'));
+  var b=stEl('button','st-pf '+cls,'<span class="pt"></span><span class="pl"></span>'+(cls==='offen'||cls==='durch'?'<span class="pk"></span>':''));
+  b.querySelector('.pt').textContent=x.status==='gesetzt'?'✓':(x.em||'•');b.querySelector('.pl').textContent=x.titel;
+  if(cls==='offen')b.querySelector('.pk').textContent=t.spaeter;if(cls==='durch')b.querySelector('.pk').textContent=t.wiedersehenTag;
+  b.onclick=function(){var art=x.status==='durchschritten'?'wiedersehen':'neu';
+   if(jetzt||x.status==='gesetzt'||!empf||h.art==='stufe')location.href=F.ziel(art,x);else stTrotz(empf,x,art);};
+  pf.appendChild(b);});
+ S.appendChild(pf);
+ S.appendChild(stEl('div','st-regel',kEsc(t.pfadRegel)));
+ var sb=stEl('button','st-klein');sb.textContent=t.lieberSelbst;sb.onclick=function(){stSelbstHeute(true);roomStart();};S.appendChild(sb);}
+function stTrotz(empf,x,art){var F=window.spikiuFuehrung,t=F.text();
+ var ov=stEl('div','st-ov'),sh=stEl('div','lxs');ov.appendChild(sh);
+ var r=stEl('div','st-row','<div class="av">'+capy()+'</div><div class="says"></div>');r.querySelector('.says').textContent=t.trotzFrage(empf.titel,x.titel);sh.appendChild(r);
+ sh.appendChild(stKachel({em:x.em||'•',tt:t.trotzJa,go:function(){location.href=F.ziel(art,x);}}));
+ sh.appendChild(stKachel({em:empf.em||'•',tt:t.trotzNein(empf.titel),go:function(){ov.remove();}}));
+ ov.onclick=function(e){if(e.target===ov)ov.remove();};document.body.appendChild(ov);}
+
+/* FREI: „Heute mit Spikiu“ oben, darunter vier Türen nach Lust. */
+function stFrei(){var F=window.spikiuFuehrung,t=F?F.text():null,h=F?F.heute():null;
+ if(F&&F.modus()==='gefuehrt'&&F.bereit()){stSelbstHeute(true);stZurueck(t.zurFuehrung,'start');S.lastChild.onclick=function(){stSelbstHeute(false);roomStart();};}
+ if(t)stSagt(t.grussF(vorname()));
+ if(h)stKarte(h,false);
+ stTueren(!!h);}
+function stTueren(mitLabel){var t=FT(),T=TT();
+ if(mitLabel&&t)S.appendChild(stEl('div','st-label',kEsc(t.oderSelbst)));
+ var l=stEl('div','st-liste');
+ [['ein','👂','#d3eef6'],['aus','💬','#ffd24a'],['erg','🔍','#cdbdf2'],['spi','🪅','#ffe08a']].forEach(function(d){
+  l.appendChild(stKachel({em:d[1],tt:T[d[0]][0],ss:T[d[0]][1],bg:d[2],go:d[0]==='spi'?'spiele.html':function(){loadRoom('tuer-'+d[0]);}}));});
+ S.appendChild(l);}
+function roomTuer(k){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
+ var T=TT();if(!T[k]||k==='spi'){loadRoom('start');return;}
+ stZurueck();stSagt(T[k][2]);
+ var l=stEl('div','st-liste');tuerWege(k).forEach(function(it){l.appendChild(stKachel(it));});S.appendChild(l);}
+
 function roomUebung(){
  /* Praxis (16.10.): Begrüßung wie früher im Abenteuer, dann zwei Gruppen. */
  kacheln({label:H().gHablar,layout:'two',kompakt:true,items:[
@@ -1046,8 +1263,8 @@ function submitName(){var v=(document.getElementById('nameIn').value||'').trim()
  var lr=document.getElementById('langrow');lr.style.display='flex';lr.innerHTML='';
  [['Español',true],['Deutsch',false]].forEach(function(p){var b=document.createElement('button');b.textContent=p[0];
   b.onclick=function(){enterHouse();};lr.appendChild(b);});}
-function startTuer(){var m=(location.search||'').match(/[?&]tuer=(regal|bibliothek|uebung)\b/);if(m)return m[1];
- try{var t=sessionStorage.getItem('spk_haus_tuer');if(t==='eintauchen')return 'uebung';if(t&&['bibliothek','uebung','regal'].indexOf(t)>-1)return t;}catch(e){}return 'uebung';}
+function startTuer(){var m=(location.search||'').match(/[?&]tuer=(regal|bibliothek|uebung)\b/);if(m)return m[1]==='regal'?'regal':'start';
+ try{var t=sessionStorage.getItem('spk_haus_tuer');if(t==='regal')return t;if(t&&t.indexOf('tuer-')===0)return t;}catch(e){}return 'start';}
 function enterHouse(){try{document.getElementById('hilfeKnopf').setAttribute('aria-label',H().hilfe);document.getElementById('hilfeKnopf').title=H().hilfe;}catch(e){}
  document.getElementById('welcome').classList.remove('active');
  document.getElementById('house').classList.add('active');buildNav();loadRoom(startTuer());}

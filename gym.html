@@ -709,7 +709,7 @@ window.addEventListener('load', function(){
   // Raum Wortschatz (wortschatz.html) → Kasten „Karten" (Leo, 17.10.2026)
   document.getElementById('roomEyebrow').textContent = u.eyebrow;
   document.getElementById('roomTitle').textContent = u.karten;
-  document.getElementById('btnHaus').onclick = function(){ location.href='wortschatz.html'; };
+  document.getElementById('btnHaus').onclick = function(){ location.href = /[?&]zurueck=haus\b/.test(location.search) ? 'haus.html' : 'wortschatz.html'; };   // 14.11.: aus dem Haus geöffnet → zurück ins Haus
   WORDS = buildWords();
   AUS = buildAusdruecke();
   SAETZE = buildSaetze();

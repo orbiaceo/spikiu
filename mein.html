@@ -35,6 +35,12 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
 .row .tag{font:800 .6rem 'DM Sans';padding:.2rem .5rem;border-radius:999px;border:2px solid var(--ink);background:var(--mustard);color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:6rem;transform:translateX(-50%);z-index:400;background:var(--ink);color:#fff;font-weight:700;font-size:.82rem;padding:.5rem .85rem;border-radius:999px;box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
+/* Wie lernst du? (Leo, 14.11.2026: Geführt oder frei) */
+.seg{display:flex;border:var(--ow) solid var(--ink);border-radius:999px;overflow:hidden;margin:.2rem 0 .1rem}
+.seg button{flex:1;border:none;background:#fff;padding:.65rem .3rem;font:800 .92rem 'DM Sans',sans-serif;cursor:pointer;color:var(--ink)}
+.seg button+button{border-left:var(--ow) solid var(--ink)}
+.seg button.on{background:var(--mustard)}
+.seg-er{font:600 .82rem/1.35 'DM Sans',sans-serif;color:var(--muted);margin-top:.6rem}
 
 /* Raum-Regel: Zurueck-Pfeil oben, keine Bottom-Nav (Ebene 2). */
 .rnav{display:flex;align-items:center;gap:.7rem;padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;background:#eef7f1;border-bottom:2.5px solid #15163a}
@@ -52,6 +58,9 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
       <div class="uc-mono" id="mono">S</div>
       <div class="uc-mail" id="umail">—</div>
     </div>
+
+    <div class="sec-lbl" id="modusLbl"></div>
+    <div class="card" id="modusCard"><div class="seg"><button id="modG" type="button"></button><button id="modF" type="button"></button></div><div class="seg-er" id="modEr"></div></div>
 
     <div class="sec-lbl" data-t="lernen">Lernen</div>
     <div class="rowcard">
@@ -73,6 +82,7 @@ body{--bg:#eef7f1;--ink:#15163a;--acc:#1f93b0;--muted:#5f7068;--de:#f1faf5;--ow:
   
 </div>
 <div class="toast" id="toast"></div>
+<script src="fuehrung.js"></script>
 <script>
 /* ===== Sprache (10.10.2026): Muttersprache des Lerners → spikiu_lang → de ===== */
 var ML=(function(){try{var m=(JSON.parse(localStorage.getItem('spikiu_user')||'{}').profile||{}).muttersprache;if(['de','es','en','el'].indexOf(m)>-1)return m;}catch(e){}
@@ -108,6 +118,19 @@ function toast(t){var el=document.getElementById('toast');el.textContent=t;el.cl
 document.querySelectorAll('.row[data-go]').forEach(function(b){ b.onclick=function(){ location.href=b.getAttribute('data-go'); }; });
 document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=function(){ toast(b.getAttribute('data-soon')); }; });
 document.getElementById('logout').onclick=function(){ toast(MT.abmeldenSoon); };
+/* Wie lernst du? Geführt oder frei (14.11.2026). Texte und Speicherort aus fuehrung.js. */
+(function(){
+  var F=window.spikiuFuehrung; if(!F){ document.getElementById('modusCard').style.display='none'; return; }
+  var t=F.text();
+  document.getElementById('modusLbl').textContent=t.modusLbl;
+  var g=document.getElementById('modG'), f=document.getElementById('modF');
+  g.textContent='🧭 '+t.modusG; f.textContent='🔍 '+t.modusF;
+  function zeige(){ var m=F.modus()||'frei'; g.classList.toggle('on',m==='gefuehrt'); f.classList.toggle('on',m==='frei');
+    document.getElementById('modEr').textContent= m==='gefuehrt' ? t.modusGs : t.modusFs; }
+  g.onclick=function(){ F.setzeModus('gefuehrt'); try{sessionStorage.removeItem('spk_selbst_heute');}catch(e){} zeige(); toast(t.modusOkG); };
+  f.onclick=function(){ F.setzeModus('frei'); zeige(); toast(t.modusOkF); };
+  zeige();
+})();
 </script>
 <script type="module">import {speak} from './audio.js'; window.sprich = speak;</script>
 <script src="/feedback-spikiu.js" defer></script>
