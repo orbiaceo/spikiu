@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Geführt oder frei</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<!--
+  PROTOTYP „Geführt oder frei“ (Leo, 14.11.2026, 02:47–02:48: Modell 2 + Zeitangaben aus 3 + „willst du ganz geführt werden?“).
+  Zwei Modi, ein System: dieselben Räume, ein „Reiseleiter“ wählt im geführten Modus die Folge.
+  Frage beim ersten Start · zwei Startseiten · Umschalter in „Mein“. Geführt = Spikiu wählt, nichts verschlossen
+  (harte Schleifen bleiben iuspik). Nur Prototyp, Live-System unberührt.
+-->
+<style>
+
+
+:root{--navy:#15163a;--terra:#ff6b5a;--pink:#ff4f9a;--sage:#9bd14a;--mustard:#ffd24a;--plum:#9b7bff;--cyan:#2bb3d4;--sky:#d3eef6;
+ --bg:#eef7f1;--ink:#15163a;--bubS:#fff;--you:#ffd24a;--youtx:#15163a;--acc:#ff6b5a;--acctx:#fff;
+ --ow:2.5px;--shb:3px 4px;--shs:3px 3px;--muted:#5f7068;--eb:#ff6b5a;--ok:#9bd14a;--teal:#1f93b0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;overflow:hidden}
+button{font-family:inherit;color:var(--ink)}
+.app{height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto;position:relative}
+.screen{display:none;flex:1;min-height:0;flex-direction:column}
+.screen.on{display:flex}
+.stage{flex:1;min-height:0;overflow:auto;padding:1rem 1.15rem 1.6rem;display:flex;flex-direction:column}
+
+/* Kopf Haus */
+.hk{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:calc(.7rem + env(safe-area-inset-top)) 1rem .3rem}
+.proto{font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.08em;background:rgba(255,255,255,.92);border:2px solid var(--ink);padding:.3rem .55rem;border-radius:999px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.hilfe{width:32px;height:32px;border-radius:999px;border:2px solid var(--ink);background:#fff;font:800 .95rem/1 'DM Sans';cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+
+/* Spikiu spricht */
+.row{display:flex;gap:.6rem;align-items:flex-start;margin:.2rem 0 .9rem}
+.av{flex:0 0 40px;height:40px}
+.says{flex:1;min-width:0;font-size:1.02rem;background:var(--bubS);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:.65rem .85rem;line-height:1.35}
+.says .z{font-family:'Lora',serif;font-size:1.3rem;font-weight:600;line-height:1.25;display:block}
+.says .na{display:block;font-size:.84rem;color:var(--muted);font-weight:600;margin-top:.2rem}
+.you{display:flex;justify-content:flex-end;margin:.1rem 0 .9rem}
+.you span{max-width:84%;background:var(--you);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:.55rem .85rem;font:600 1.15rem/1.25 'Lora',serif}
+
+/* Heute-Karte */
+.heute{background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:1.05rem 1.1rem 1.15rem;text-align:left}
+.eyebrow{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);opacity:.75}
+.heute h1{font:800 1.75rem/1.1 'DM Sans';margin:.4rem 0 .15rem;letter-spacing:-.01em}
+.heute .zs{font:italic 500 1.12rem/1.3 'Lora',serif;margin-bottom:.85rem}
+.weg{display:flex;align-items:center;gap:.3rem;margin-bottom:1rem;flex-wrap:nowrap}
+.weg .st{flex:1;min-width:0;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.45rem .2rem;text-align:center;font:800 .74rem/1.15 'DM Sans'}
+.weg .st b{display:block;font-size:1.25rem;line-height:1.1;margin-bottom:.1rem}
+.weg .pf{flex:0 0 auto;font-weight:800;font-size:.9rem}
+.los{width:100%;padding:.85rem 1rem;border-radius:999px;border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;font:800 1.08rem/1 'DM Sans';cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.los:active,.end:active,.tile:active,.big:active,.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.heute.done{background:#c7e89a}
+.heute .klein{display:block;margin:.7rem auto 0;background:none;border:none;font:700 .86rem 'DM Sans';text-decoration:underline;cursor:pointer}
+
+/* Selbst wählen */
+.k-label{font:800 .72rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;margin:1.6rem 0 .8rem}
+.k4{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.tile{height:92px;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;background:#fff;padding:.4rem}
+.tile .em{font-size:1.6rem;line-height:1}
+.tile .tt{font:800 .9rem/1.1 'DM Sans'}
+.tile .ss{font:600 .7rem/1.15 'DM Sans';color:rgba(21,22,58,.7)}
+
+/* Raumkopf */
+.rk{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;padding:calc(.7rem + env(safe-area-inset-top)) .9rem .6rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.9)}
+.back{flex:0 0 38px;height:38px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font:800 1.2rem/1 'DM Sans';cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.rk .t{flex:1;min-width:0}
+.rk .t small{display:block;font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+.rk .t b{font:900 1.15rem/1.2 'Archivo Black',sans-serif}
+
+/* Liste zweite Ebene */
+.list{display:flex;flex-direction:column;gap:.75rem}
+.big{display:flex;align-items:center;gap:.85rem;text-align:left;border:var(--ow) solid var(--ink);border-radius:18px;padding:.85rem 1rem;cursor:pointer;box-shadow:var(--shb) 0 var(--ink);background:#fff;width:100%}
+.big .em{flex:0 0 auto;font-size:1.7rem;line-height:1;width:40px;text-align:center}
+.big .tx{flex:1;min-width:0}
+.big .tt{font:800 1.05rem/1.2 'DM Sans';display:block}
+.big .ss{font:600 .84rem/1.3 'DM Sans';color:rgba(21,22,58,.72);display:block}
+.big .chev{font-size:1.4rem;font-weight:800}
+.big .pill{display:inline-block;font:800 .58rem 'DM Sans';border:2px solid var(--ink);border-radius:999px;padding:.05rem .4rem;margin-left:.35rem;background:#c7e89a;vertical-align:2px}
+.big.tag{background:#ffd0b0}
+.big .tg{display:block;font:700 .56rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem}
+
+/* Sitzung */
+.weg2{flex:0 0 auto;display:flex;gap:.35rem;padding:.55rem .9rem .6rem;background:rgba(255,255,255,.9);border-bottom:2px solid var(--ink)}
+.weg2 span{flex:1;text-align:center;font:800 .72rem/1 'DM Sans';padding:.45rem .2rem;border-radius:999px;border:2px solid var(--ink);background:#fff;opacity:.45}
+.weg2 span.on{opacity:1;background:var(--mustard)}
+.weg2 span.ok{opacity:1;background:#c7e89a}
+.chips{display:flex;flex-direction:column;gap:.55rem;align-items:flex-end;margin:.2rem 0 1rem}
+.chip{max-width:90%;text-align:right;background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;padding:.55rem .85rem;cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.chip .z{display:block;font:600 1.08rem/1.25 'Lora',serif}
+.chip .na{display:block;font:600 .76rem/1.2 'DM Sans';color:var(--muted)}
+.hint{font:600 .8rem/1.3 'DM Sans';color:var(--muted);text-align:right;margin:-.4rem 0 .5rem}
+.end{display:block;margin:.6rem auto 0;font:800 1rem/1 'DM Sans';padding:.8rem 1.3rem;border-radius:999px;cursor:pointer;border:var(--ow) solid var(--ink);background:var(--acc);color:#fff;box-shadow:var(--shs) 0 var(--ink)}
+.end.sec{background:#fff;color:var(--ink)}
+.fade{animation:fd .35s ease both}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Wortkarten */
+.flipc{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;min-height:96px;box-shadow:var(--shb) 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem;cursor:pointer;text-align:center;margin-bottom:.75rem;width:100%}
+.flipc .w{font:600 1.35rem/1.2 'Lora',serif}
+.flipc .m{font:700 .95rem/1.2 'DM Sans';color:var(--teal);display:none;margin-top:.25rem}
+.flipc.f .m{display:block}
+.flipc .tp{font:700 .6rem/1 'DM Mono',monospace;letter-spacing:.14em;color:var(--muted);margin-top:.4rem;text-transform:uppercase}
+.flipc.f .tp{display:none}
+.buch{display:none;align-items:center;gap:.5rem;justify-content:center;font:700 .88rem 'DM Sans';margin:.2rem 0 .4rem}
+.buch.on{display:flex}
+
+/* Gemelos */
+.gm{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.gm button{min-height:58px;border:var(--ow) solid var(--ink);border-radius:14px;background:#fff;box-shadow:2px 3px 0 var(--ink);cursor:pointer;padding:.4rem;font:600 1rem/1.2 'DM Sans'}
+.gm button.z{font:600 1.05rem/1.2 'Lora',serif}
+.gm button.sel{background:var(--sky)}
+.gm button.ok{background:#c7e89a;box-shadow:none;transform:translate(2px,3px);cursor:default}
+.gm button.no{background:#ffb27a}
+
+/* Ende */
+.fertig{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.6rem}
+.fertig .cap{width:120px;height:120px;animation:float 4s ease-in-out infinite}
+.fertig h2{font:900 1.6rem/1.15 'Archivo Black',sans-serif}
+.fertig p{font:600 1rem/1.4 'DM Sans';max-width:300px}
+.morgen{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.55rem .9rem;font:700 .9rem 'DM Sans';box-shadow:2px 2px 0 var(--ink)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* Leiste unten (wie bottomnav.js) */
+.bnav{flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-around;padding:.5rem .8rem calc(.5rem + env(safe-area-inset-bottom));background:#fff;border-top:2.5px solid var(--ink)}
+.tab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.15rem;color:#5f7068;font:700 .68rem 'DM Sans'}
+.tab .tic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.tab.center{flex:0 0 auto}
+.tab.center .ball{width:62px;height:62px;border-radius:999px;background:#fff;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:3px 4px 0 var(--ink);transform:translateY(-14px);animation:bfl 4s ease-in-out infinite}
+.tab.center .ball svg{width:48px;height:48px}
+.tab.center .lbl{transform:translateY(-12px);color:var(--ink)}
+@keyframes bfl{0%,100%{transform:translateY(-14px)}50%{transform:translateY(-22px)}}
+
+/* Toast + Blatt */
+.pop{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;font:600 .9rem/1.35 'DM Sans';padding:.6rem .9rem;border-radius:12px;box-shadow:3px 3px 0 rgba(0,0,0,.3);display:none;max-width:86%;text-align:center}
+.pop.on{display:block}
+.sheetbg{position:fixed;inset:0;background:rgba(21,22,58,.45);z-index:95;display:none;align-items:flex-end;justify-content:center}
+.sheetbg.on{display:flex}
+.sheet{width:100%;max-width:560px;max-height:86%;overflow:auto;background:#fff;border:var(--ow) solid var(--ink);border-bottom:0;border-radius:22px 22px 0 0;box-shadow:0 -4px 0 var(--ink);padding:1.1rem 1.2rem calc(1.3rem + env(safe-area-inset-bottom))}
+.sheet h3{font:900 1.2rem/1.2 'Archivo Black',sans-serif;margin-bottom:.7rem}
+.sheet ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:.55rem;font:500 .95rem/1.4 'DM Sans'}
+.sheet b{font-weight:800}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Umschalter */
+.vw{flex:0 0 auto;display:flex;align-items:center;gap:.4rem;padding:calc(.55rem + env(safe-area-inset-top)) .7rem .5rem;background:var(--ink)}
+.vw button.v{flex:1;border:2px solid #fff;border-radius:999px;background:transparent;color:#fff;font:800 .74rem/1 'DM Sans';padding:.5rem .2rem;cursor:pointer}
+.vw button.v.on{background:#fff;color:var(--ink)}
+.vw .hilfe{flex:0 0 32px;border-color:#fff}
+.hk{padding-top:.6rem}
+.rk{padding-top:.6rem}
+/* Variante 1: Weg */
+.pfad{display:flex;flex-direction:column;gap:0;margin:1rem 0 .4rem;padding-left:.4rem}
+.pf1{display:flex;align-items:center;gap:.75rem;position:relative;padding:.35rem 0}
+.pf1:before{content:'';position:absolute;left:15px;top:-50%;height:100%;width:3px;background:var(--ink);opacity:.25;z-index:0}
+.pf1:first-child:before{display:none}
+.pf1 .pt{position:relative;z-index:1;flex:0 0 33px;height:33px;border-radius:999px;border:2.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font:800 .85rem 'DM Sans'}
+.pf1.ok .pt{background:#c7e89a}
+.pf1.jetzt .pt{background:var(--mustard);box-shadow:2px 2px 0 var(--ink)}
+.pf1 .pl{font:700 .95rem/1.2 'DM Sans'}
+.pf1.zu{opacity:.45}
+.pf1.jetzt .pl{font-weight:800;font-size:1.05rem}
+.regel{font:600 .8rem/1.35 'DM Sans';color:var(--muted);text-align:center;margin:.8rem .4rem 0}
+.punkte{display:flex;gap:.4rem;justify-content:center;padding:.6rem 0 .5rem;background:rgba(255,255,255,.9);border-bottom:2px solid var(--ink)}
+.punkte span{width:10px;height:10px;border-radius:999px;border:2px solid var(--ink);background:#fff}
+.punkte span.ok{background:#c7e89a}.punkte span.on{background:var(--mustard);transform:scale(1.25)}
+.schritt{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);text-align:center;margin:.3rem 0 .9rem}
+.hoer{display:flex;flex-direction:column;align-items:center;gap:.8rem;margin:1rem 0}
+.hoer .kn{width:84px;height:84px;border-radius:999px;border:var(--ow) solid var(--ink);background:var(--pink);color:#fff;font-size:2rem;cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.hoer .zz{font:600 1.5rem/1.25 'Lora',serif;text-align:center}
+.hoer .nn{font:700 .95rem 'DM Sans';color:var(--teal);visibility:hidden}
+.opts{display:flex;flex-direction:column;gap:.6rem}
+.opt{border:var(--ow) solid var(--ink);border-radius:16px;background:#fff;padding:.75rem 1rem;font:700 1rem/1.25 'DM Sans';text-align:left;cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.opt.ok{background:#c7e89a}.opt.no{background:#ffb27a;opacity:.6}
+.sanft{font:600 .88rem/1.35 'DM Sans';margin-top:.7rem;text-align:center;min-height:1.2em}
+.bau{min-height:64px;border:2.5px dashed var(--ink);border-radius:16px;background:#fff;padding:.6rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;justify-content:center;font:600 1.15rem 'Lora',serif;margin-bottom:.9rem}
+.teile{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
+.teile button{border:var(--ow) solid var(--ink);border-radius:12px;background:var(--sky);padding:.45rem .7rem;font:600 1.1rem 'Lora',serif;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.teile button.weg{visibility:hidden}
+.teile button.wackel{animation:wk .35s}
+@keyframes wk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+/* Variante 2: Neugier */
+.spur{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;font:700 .7rem/1 'DM Mono',monospace;letter-spacing:.06em;color:var(--muted);margin:-.2rem 0 .8rem}
+.spur b{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.25rem .5rem;color:var(--ink)}
+.lesen{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:1rem 1.1rem;font:500 1.35rem/1.55 'Lora',serif}
+.lesen .w{border-bottom:2px dotted var(--acc);cursor:pointer}
+.lesen .w.gesammelt{background:#c7e89a;border-bottom-color:transparent;border-radius:4px}
+.lesen .erz{display:block;font:500 1rem/1.4 'DM Sans';color:var(--muted);margin-top:.6rem}
+.abzw{display:flex;flex-direction:column;gap:.55rem;margin-top:.9rem}
+.abzw button{display:flex;gap:.6rem;align-items:center;text-align:left;border:var(--ow) solid var(--ink);border-radius:14px;background:#fff;padding:.6rem .8rem;font:700 .95rem/1.25 'DM Sans';cursor:pointer;box-shadow:var(--shs) 0 var(--ink)}
+.abzw button .em{font-size:1.3rem}
+.sheet .wz{font:600 1.6rem/1.2 'Lora',serif}
+.sheet .wn{font:700 1rem 'DM Sans';color:var(--teal);margin:.2rem 0 .6rem}
+.erkl{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:1rem 1.1rem}
+.erkl .eb{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--eb);margin-bottom:.5rem}
+.erkl p{font:500 1rem/1.45 'DM Sans';margin-bottom:.5rem}
+.erkl .bsp{font:600 1.2rem/1.35 'Lora',serif;margin:.3rem 0}
+.erkl .bsp i{color:var(--acc);font-style:normal;text-decoration:underline}
+/* Variante 3: Kraft */
+.kraft{display:flex;flex-direction:column;gap:.85rem}
+.kr{display:flex;gap:.9rem;align-items:center;text-align:left;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);padding:1rem 1.05rem;cursor:pointer;width:100%}
+.kr:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.kr .em{font-size:2.1rem;line-height:1;flex:0 0 auto}
+.kr .tt{display:block;font:800 1.15rem/1.15 'DM Sans'}
+.kr .ss{display:block;font:600 .84rem/1.3 'DM Sans';color:rgba(21,22,58,.75);margin-top:.15rem}
+.kr .bars{flex:0 0 auto;display:flex;gap:3px;align-items:flex-end;margin-left:auto}
+.kr .bars i{width:7px;border:2px solid var(--ink);border-radius:3px;background:#fff}
+.kr .bars i.f{background:var(--ink)}
+.kr.vorschlag{outline:3px dashed var(--acc);outline-offset:4px}
+.big .min{flex:0 0 auto;font:700 .66rem/1 'DM Mono',monospace;color:var(--muted);margin-left:.3rem}
+.warum{font:600 .82rem/1.35 'DM Sans';color:var(--muted);text-align:center;margin:1rem .5rem 0}
+.sheet .pc{font:500 .92rem/1.4 'DM Sans';margin:.15rem 0}
+.sheet h4{font:800 .9rem 'DM Sans';margin:.8rem 0 .2rem}
+
+.hk{padding-top:calc(.7rem + env(safe-area-inset-top))}
+.wahl{display:flex;flex-direction:column;gap:.9rem;margin-top:.4rem}
+.wahl .kr .em{font-size:2rem}
+.leise{display:block;margin:1rem auto 0;background:none;border:none;font:700 .9rem 'DM Sans';text-decoration:underline;cursor:pointer;color:var(--ink)}
+.pf1{cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:inherit}
+.pf1.spaeter{opacity:.6}
+.pf1 .pk{font:600 .74rem 'DM Sans';color:var(--muted);margin-left:auto;padding-right:.3rem}
+.mz{background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:var(--shb) 0 var(--ink);padding:1rem 1.05rem;margin-bottom:.9rem}
+.mz .lb{font:700 .62rem/1 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.seg{display:flex;border:var(--ow) solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{flex:1;border:none;background:#fff;padding:.65rem .3rem;font:800 .92rem 'DM Sans';cursor:pointer}
+.seg button+button{border-left:var(--ow) solid var(--ink)}
+.seg button.on{background:var(--mustard)}
+.mz .er{font:600 .84rem/1.35 'DM Sans';color:var(--muted);margin-top:.6rem}
+.mz .zl{display:flex;justify-content:space-between;font:700 .95rem 'DM Sans';padding:.35rem 0}
+.mz .zl span{color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+
+ <!-- ===== Erste Frage ===== -->
+ <section class="screen" id="s-frage">
+  <div class="stage" style="justify-content:center">
+   <div class="row"><div class="av" data-capy></div><div class="says">Hola. Eine Frage, bevor wir loslegen: Wie möchtest du lernen?</div></div>
+   <div class="wahl">
+    <button class="kr" style="background:#ffd24a" onclick="setzeModus('gefuehrt',true)"><span class="em">🧭</span><span><span class="tt">Führ mich</span><span class="ss">Ich sage dir jeden Tag, was dran ist. Du tippst nur auf „Weiter“.</span></span></button>
+    <button class="kr" style="background:#d3eef6" onclick="setzeModus('frei',true)"><span class="em">🔍</span><span><span class="tt">Ich schau mich selbst um</span><span class="ss">Du wählst nach Lust. Ich schlage dir trotzdem etwas vor.</span></span></button>
+   </div>
+   <div class="warum">Du kannst das jederzeit in „Mein“ ändern.</div>
+  </div>
+ </section>
+
+ <!-- ===== Startseite GEFÜHRT ===== -->
+ <section class="screen" id="g-haus">
+  <div class="hk"><button class="proto" onclick="idee()">PROTOTYP · WIE GEHT DAS?</button><button class="hilfe" onclick="idee()">?</button></div>
+  <div class="stage">
+   <div class="row"><div class="av" data-capy></div><div class="says" id="g-gruss">Ich führe dich. Du musst nichts auswählen.</div></div>
+   <div class="heute" id="g-karte"></div>
+   <div class="pfad" id="g-pfad"></div>
+   <div class="regel">Spikiu empfiehlt die Reihenfolge. Verschlossen ist nichts.</div>
+   <button class="leise" onclick="zeige('f-haus');fZeige()">Heute lieber selbst wählen ›</button>
+  </div>
+  <nav class="bnav" data-bnav></nav>
+ </section>
+
+ <!-- ===== Startseite FREI ===== -->
+ <section class="screen" id="f-haus">
+  <div class="hk"><button class="proto" onclick="idee()">PROTOTYP · WIE GEHT DAS?</button><button class="hilfe" onclick="idee()">?</button></div>
+  <div class="stage" id="f-stage">
+   <div class="row"><div class="av" data-capy></div><div class="says" id="f-gruss">Hola, Leo. Worauf hast du Lust?</div></div>
+   <div class="heute" id="f-karte"></div>
+   <div class="k-label">Oder selbst wählen</div>
+   <div class="list">
+    <button class="big" style="background:#d3eef6" onclick="v2Raum('ein')"><span class="em">👂</span><span class="tx"><span class="tt">Eintauchen</span><span class="ss">Zuhören und lesen, ohne Druck.</span></span><span class="chev">›</span></button>
+    <button class="big" style="background:#ffd24a" onclick="v2Raum('aus')"><span class="em">💬</span><span class="tx"><span class="tt">Ausprobieren</span><span class="ss">Selbst etwas sagen oder schreiben.</span></span><span class="chev">›</span></button>
+    <button class="big" style="background:#cdbdf2" onclick="v2Raum('erg')"><span class="em">🔍</span><span class="tx"><span class="tt">Ergründen</span><span class="ss">Verstehen, warum es so ist.</span></span><span class="chev">›</span></button>
+    <button class="big" style="background:#ffe08a" onclick="v2Raum('spi')"><span class="em">🪅</span><span class="tx"><span class="tt">Spielen</span><span class="ss">Locker, nebenbei, ohne Punkte.</span></span><span class="chev">›</span></button>
+   </div>
+  </div>
+  <nav class="bnav" data-bnav></nav>
+ </section>
+
+ <!-- ===== Sitzung (gemeinsam für beide Modi) ===== -->
+ <section class="screen" id="v1-sitz">
+  <div class="rk"><button class="back" onclick="heim()">‹</button><div class="t"><small id="sitz-eb">Station</small><b>Im Café</b></div></div>
+  <div class="punkte" id="v1-punkte"><span></span><span></span><span></span><span></span></div>
+  <div class="stage" id="v1-stage"></div>
+ </section>
+
+ <!-- ===== Türen (frei) ===== -->
+ <section class="screen" id="v2-raum">
+  <div class="rk"><button class="back" onclick="heim()">‹</button><div class="t"><small>Selbst wählen</small><b id="v2-t"></b></div></div>
+  <div class="stage"><div class="row"><div class="av" data-capy></div><div class="says" id="v2-says"></div></div><div class="list" id="v2-list"></div></div>
+ </section>
+ <section class="screen" id="v2-lesen">
+  <div class="rk"><button class="back" onclick="heim()">‹</button><div class="t"><small>Eintauchen</small><b>Ein Stück Geschichte</b></div></div>
+  <div class="stage" id="v2-stage"></div>
+ </section>
+
+ <!-- ===== Mein ===== -->
+ <section class="screen" id="s-mein">
+  <div class="rk"><button class="back" onclick="heim()">‹</button><div class="t"><small>Profil</small><b>Mein</b></div></div>
+  <div class="stage">
+   <div class="mz">
+    <div class="lb">Wie lernst du?</div>
+    <div class="seg"><button id="m-g" onclick="setzeModus('gefuehrt')">🧭 Geführt</button><button id="m-f" onclick="setzeModus('frei')">🔍 Frei</button></div>
+    <div class="er" id="m-er"></div>
+   </div>
+   <div class="mz">
+    <div class="lb">Du</div>
+    <div class="zl">Deine Sprache <span>Deutsch</span></div>
+    <div class="zl">Du lernst <span>Spanisch</span></div>
+    <div class="zl">Deine Stufe <span>🌱 Samen</span></div>
+   </div>
+   <button class="leise" onclick="neuStart()">Prototyp: erste Frage noch einmal zeigen</button>
+  </div>
+ </section>
+</div>
+
+<div class="pop" id="pop"></div>
+<div class="sheetbg" id="sheetbg" onclick="if(event.target===this)zu()"><div class="sheet" id="sheet"></div></div>
+
+<script>
+var CAPY='<svg viewBox="0 0 80 80" fill="none" width="100%" height="100%"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var REGAL='<svg viewBox="0 0 32 32" width="26" height="26" fill="none"><g stroke="#15163a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="11" width="4" height="12" rx="1" fill="#ffd24a"/><rect x="8.5" y="9" width="4" height="14" rx="1" fill="#1f93b0"/><rect x="13" y="12" width="3.6" height="11" rx="1" fill="#f7bcd8" transform="rotate(-8 14.8 17.5)"/><path d="M22 23 v-5"/><path d="M22 18 c-3 0-4-2-4-4 c2 0 4 1 4 4z" fill="#9bd14a"/><path d="M22 19 c2.5 0 3.6-1.8 3.6-3.6 c-1.8 0-3.6 1-3.6 3.6z" fill="#9bd14a"/><path d="M19.5 23 h5 l-.6 3 h-3.8z" fill="#c9956a"/><path d="M2.5 23.5 h27" stroke-width="2.2"/></g></svg>';
+
+var RED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var MODUS=null,ERLEDIGT=false;
+try{MODUS=localStorage.getItem('proto_modus');}catch(e){}
+function capys(root){(root||document).querySelectorAll('[data-capy]').forEach(function(e){if(!e.innerHTML)e.innerHTML=CAPY;});}
+document.querySelectorAll('[data-bnav]').forEach(function(n){
+ n.innerHTML='<button class="tab" onclick="toast(\'Mein Regal bleibt wie bisher.\')"><span class="tic">'+REGAL+'</span><span>Mein Regal</span></button><button class="tab center" onclick="heim()"><span class="ball" data-capy></span><span class="lbl">Spikiu</span></button><button class="tab" onclick="mein()"><span class="tic">👤</span><span>Mein</span></button>';});
+capys();
+function zeige(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id);});}
+var tt;function toast(t){var p=document.getElementById('pop');p.textContent=t;p.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){p.classList.remove('on');},2600);}
+function blatt(html){document.getElementById('sheet').innerHTML=html;document.getElementById('sheetbg').classList.add('on');capys(document.getElementById('sheet'));}
+function zu(){document.getElementById('sheetbg').classList.remove('on');}
+function liste(el,items){el.innerHTML='';items.forEach(function(it){var b=document.createElement('button');b.className='big';
+ b.innerHTML='<span class="em">'+it.em+'</span><span class="tx"><span class="tt">'+it.tt+(it.pr?'<span class="pill">Premium</span>':'')+'</span><span class="ss">'+it.ss+'</span></span>'+(it.min?'<span class="min">'+it.min+'</span>':'')+'<span class="chev">›</span>';
+ b.onclick=it.go||function(){toast(it.tt+' öffnet sich wie bisher.');};el.appendChild(b);});}
+
+/* ---------- Modus ---------- */
+function setzeModus(m,ersterStart){MODUS=m;try{localStorage.setItem('proto_modus',m);}catch(e){}
+ if(ersterStart){heim();toast(m==='gefuehrt'?'Gut. Ich führe dich.':'Gut. Schau dich um, ich bin da.');}else{meinZeige();toast(m==='gefuehrt'?'Ab jetzt führe ich dich.':'Ab jetzt wählst du selbst.');}}
+function heim(){if(!MODUS){zeige('s-frage');return;}if(MODUS==='gefuehrt'){gZeige();zeige('g-haus');}else{fZeige();zeige('f-haus');}}
+function mein(){meinZeige();zeige('s-mein');}
+function meinZeige(){document.getElementById('m-g').classList.toggle('on',MODUS==='gefuehrt');document.getElementById('m-f').classList.toggle('on',MODUS==='frei');
+ document.getElementById('m-er').textContent=MODUS==='gefuehrt'?'Spikiu sagt dir jeden Tag, was dran ist. Alle Räume bleiben trotzdem offen.':'Du wählst selbst. Oben schlägt Spikiu dir „Heute“ vor.';}
+function neuStart(){MODUS=null;ERLEDIGT=false;try{localStorage.removeItem('proto_modus');}catch(e){}zeige('s-frage');}
+
+/* ---------- Reiseleiter: dieselbe Station für beide Modi ---------- */
+var STATIONEN=[{em:'👋',t:'Hallo sagen',z:'ok'},{em:'🙂',t:'Wer bist du?',z:'ok'},{em:'☕',t:'Im Café',z:'jetzt'},{em:'🚉',t:'Am Bahnhof'},{em:'🩺',t:'Beim Arzt'},{em:'🛒',t:'Auf dem Markt'}];
+function karteHtml(eb,titel,zs,knopf){return '<div class="eyebrow">'+eb+'</div><h1>'+titel+'</h1><div class="zs">'+zs+'</div><div class="weg"><div class="st"><b>👂</b>Hören</div><span class="pf">›</span><div class="st"><b>🧩</b>Bauen</div><span class="pf">›</span><div class="st"><b>🃏</b>Wörter</div></div><button class="los" onclick="sitzung()">'+knopf+'</button>';}
+function gZeige(){var k=document.getElementById('g-karte');
+ if(!ERLEDIGT){k.className='heute';k.innerHTML=karteHtml('Deine nächste Station · ≈ 8 Min.','Im Café','Un café con leche, por favor.','Weiter');document.getElementById('g-gruss').textContent='Ich führe dich. Du musst nichts auswählen.';}
+ else{k.className='heute done';k.innerHTML='<div class="eyebrow">Heute erledigt</div><h1>Bis morgen.</h1><div class="zs">Morgen: Wiedersehen mit deinen Café-Wörtern, dann Am Bahnhof.</div><button class="los" onclick="toast(\'Hier ginge es mit dem Wiedersehen weiter.\')">Trotzdem schon weiter</button>';document.getElementById('g-gruss').textContent='Schön gemacht. Für heute reicht das.';}
+ var p=document.getElementById('g-pfad');p.innerHTML='';
+ STATIONEN.forEach(function(s,i){var z=s.z;if(ERLEDIGT&&i===2)z='ok';
+  var b=document.createElement('button');b.className='pf1 '+(z==='ok'?'ok':z==='jetzt'?'jetzt':'spaeter');
+  b.innerHTML='<span class="pt">'+(z==='ok'?'✓':s.em)+'</span><span class="pl">'+s.t+'</span>'+(z?'':'<span class="pk">später</span>');
+  b.onclick=function(){if(z==='jetzt')sitzung();else if(z==='ok')toast(s.t+': schon gemacht. Antippen öffnet die Station noch einmal.');else spaeter(s);};p.appendChild(b);});}
+function spaeter(s){blatt('<div class="row"><div class="av" data-capy></div><div class="says">Ich empfehle erst das Café. Willst du trotzdem zu „'+s.t+'“?</div></div><div class="abzw"><button onclick="zu();toast(\''+s.t+' öffnet sich.\')"><span class="em">'+s.em+'</span>Ja, trotzdem</button><button onclick="zu()"><span class="em">☕</span>Nein, erst das Café</button></div>');}
+function fZeige(){var k=document.getElementById('f-karte');
+ if(!ERLEDIGT){k.className='heute';k.innerHTML=karteHtml('Heute mit Spikiu · ≈ 8 Min.','Im Café','Un café con leche, por favor.','Los geht’s');}
+ else{k.className='heute done';k.innerHTML='<div class="eyebrow">Heute mit Spikiu · erledigt</div><h1>Bis morgen.</h1><div class="zs">Mañana vamos a la estación.</div>';}}
+function sitzung(){document.getElementById('sitz-eb').textContent=MODUS==='gefuehrt'?'Station':'Heute mit Spikiu';v1Start();}
+
+/* =============== 1 GEFÜHRT =============== */
+var v1n=0;
+function v1Punkte(n){var p=document.querySelectorAll('#v1-punkte span');p.forEach(function(s,i){s.className=i<n?'ok':(i===n?'on':'');});}
+function v1Stage(html){var s=document.getElementById('v1-stage');s.innerHTML='<div class="fade">'+html+'</div>';capys(s);s.scrollTop=0;return s;}
+function v1Start(){zeige('v1-sitz');v1Hoeren();}
+function v1Hoeren(){v1Punkte(0);var s=v1Stage('<div class="schritt">Hören</div><div class="row"><div class="av" data-capy></div><div class="says">Der Kellner sagt etwas. Hör zu.</div></div><div class="hoer"><button class="kn" id="v1k">🔊</button><div class="zz">¿Qué te pongo?</div><div class="nn" id="v1n">Was darf’s sein?</div></div><button class="end" id="v1w" style="display:none">Weiter</button>');
+ document.getElementById('v1k').onclick=function(){toast('(Hier liest Piper den Satz vor.)');document.getElementById('v1n').style.visibility='visible';document.getElementById('v1w').style.display='block';};
+ document.getElementById('v1w').onclick=v1Verstehen;}
+function v1Verstehen(){v1Punkte(1);v1Stage('<div class="schritt">Verstehen</div><div class="row"><div class="av" data-capy></div><div class="says"><span class="z">¿Qué te pongo?</span><span class="na">Was möchte der Kellner wissen?</span></div></div><div class="opts" id="v1o"></div><div class="sanft" id="v1s"></div>');
+ var O=[['Wie du heißt.',0],['Was du trinken oder essen möchtest.',1],['Wo du wohnst.',0]];var o=document.getElementById('v1o');
+ O.forEach(function(x){var b=document.createElement('button');b.className='opt';b.textContent=x[0];b.onclick=function(){
+  if(x[1]){b.classList.add('ok');document.getElementById('v1s').textContent='Genau. „Poner“ heißt hier: hinstellen, servieren.';setTimeout(v1Bauen,RED?0:1100);}
+  else{b.classList.add('no');b.disabled=true;document.getElementById('v1s').textContent='Noch nicht ganz. Er steht mit dem Block am Tisch …';}};o.appendChild(b);});}
+function v1Bauen(){v1Punkte(2);var Z=['Un','café','con','leche,','por','favor.'];var i=0;
+ v1Stage('<div class="schritt">Selbst bauen</div><div class="row"><div class="av" data-capy></div><div class="says">Jetzt du: Bestell einen Milchkaffee. Tipp die Teile in der richtigen Reihenfolge.</div></div><div class="bau" id="v1b"></div><div class="teile" id="v1t"></div><div class="sanft" id="v1s"></div>');
+ var t=document.getElementById('v1t');var gem=Z.map(function(w,k){return{w:w,k:k};}).sort(function(){return Math.random()-.5;});
+ gem.forEach(function(x){var b=document.createElement('button');b.textContent=x.w;b.onclick=function(){
+  if(x.k===i){i++;b.classList.add('weg');var sp=document.createElement('span');sp.textContent=x.w;document.getElementById('v1b').appendChild(sp);
+   if(i===Z.length){document.getElementById('v1s').textContent='¡Perfecto!';setTimeout(v1Wieder,RED?0:900);}}
+  else{b.classList.remove('wackel');void b.offsetWidth;b.classList.add('wackel');document.getElementById('v1s').textContent='Was kommt zuerst? Denk an „ein Kaffee“ …';}};t.appendChild(b);});}
+function v1Wieder(){v1Punkte(3);var W=[['¿Qué te pongo?','Was darf’s sein?'],['un café con leche','ein Milchkaffee'],['por favor','bitte']];var n=0;
+ var s=v1Stage('<div class="schritt">Wiedersehen</div><div class="row"><div class="av" data-capy></div><div class="says">Diese drei nimmst du mit. Tipp jede Karte an.</div></div><div id="v1c"></div>');
+ var c=document.getElementById('v1c');W.forEach(function(w){var b=document.createElement('button');b.className='flipc';b.innerHTML='<span class="w">'+w[0]+'</span><span class="m">'+w[1]+'</span><span class="tp">antippen</span>';
+  b.onclick=function(){if(b.classList.contains('f'))return;b.classList.add('f');n++;if(n===W.length)setTimeout(v1Ende,RED?0:700);};c.appendChild(b);});}
+function v1Ende(){document.querySelectorAll('#v1-punkte span').forEach(function(x){x.className='ok';});
+ v1Stage('<div class="fertig" style="min-height:60vh"><div class="cap" data-capy></div><h2>Für heute fertig.</h2><p>Morgen frage ich dich die drei noch einmal. Sitzen sie, geht es weiter zum Bahnhof.</p><button class="end" onclick="ERLEDIGT=true;heim()">Zurück</button></div>');}
+
+/* =============== 2 NEUGIERIG =============== */
+var V2={
+ ein:{t:'Eintauchen',s:'Zuhören und lesen. Du musst nichts leisten.',items:[
+  {em:'📖',tt:'Ein Stück Geschichte',ss:'Kurze Szene zum Lesen. Tipp Wörter an, wenn du magst.',go:function(){v2Lesen();}},
+  {em:'📚',tt:'Lernroman',ss:'Eine Geschichte, die mit dir mitwächst.'},
+  {em:'👂',tt:'Feines Ohr',ss:'Nur hören und das Bild finden.'},
+  {em:'🗺️',tt:'Regional',ss:'Wie man in Madrid, Sevilla oder México sagt.'}]},
+ aus:{t:'Ausprobieren',s:'Etwas wagen. Fehler sind hier Zwischenschritte.',items:[
+  {em:'🎭',tt:'Geführtes Gespräch',ss:'Sätze zur Auswahl, Spikiu spielt mit.'},
+  {em:'💬',tt:'Freies Gespräch',ss:'Du sagst, was du willst.',pr:1},
+  {em:'✍️',tt:'Schreiben',ss:'Eine kurze Nachricht, Spikiu schaut drauf.',pr:1}]},
+ erg:{t:'Ergründen',s:'Wissen wollen, warum. Kurz und ohne Fachwörter.',items:[
+  {em:'📘',tt:'Gramática',ss:'Grammatik ohne Schnickschnack, Karte für Karte.'},
+  {em:'👓',tt:'Leseverstehen',ss:'Genau hinschauen: ein Text, drei Fragen.',pr:1},
+  {em:'🥁',tt:'Der Schlag',ss:'Wo liegt die starke Silbe — und warum?'}]},
+ spi:{t:'Spielen',s:'Locker, nebenbei.',items:[
+  {em:'🪅',tt:'Piñata',ss:'Spiel des Tages.'},{em:'🎈',tt:'Luftballons',ss:'Wörter in der richtigen Reihenfolge.'},
+  {em:'🔗',tt:'Wortkette',ss:'Buchstabe für Buchstabe.'},{em:'🃏',tt:'Memory',ss:'Wort und Bild.'}]}
+};
+function v2Raum(k){var R=V2[k];document.getElementById('v2-t').textContent=R.t;document.getElementById('v2-says').textContent=R.s;liste(document.getElementById('v2-list'),R.items);zeige('v2-raum');}
+var v2spur=[];
+function spurHtml(){return '<div class="spur">'+v2spur.map(function(x,i){return (i?'› ':'')+'<b>'+x+'</b>';}).join(' ')+'</div>';}
+var WORT={tarta:['la tarta','die Torte'],nada:['nada','nichts'],veo:['veo','ich sehe (ver = sehen)'],donde:['¿dónde?','wo?']};
+function v2Lesen(){v2spur=['Eintauchen'];zeige('v2-lesen');var s=document.getElementById('v2-stage');
+ s.innerHTML='<div class="fade">'+spurHtml()+'<div class="lesen">—Cariño, ¿<span class="w" data-w="donde">dónde</span> está la <span class="w" data-w="tarta">tarta</span>?<br>—No sé <span class="w" data-w="nada">nada</span>. ¡No <span class="w" data-w="veo">veo</span> <span class="w" data-w="nada">nada</span>!<span class="erz">Die Mutter steht vor dem leeren Teller. Das Kind hat Schokolade am Mund.</span></div><div class="warum">Tipp ein unterstrichenes Wort an.</div></div>';
+ s.querySelectorAll('.w').forEach(function(w){w.onclick=function(){v2Wort(w.getAttribute('data-w'));};});}
+function v2Wort(k){var w=WORT[k];document.querySelectorAll('#v2-stage .w[data-w="'+k+'"]').forEach(function(x){x.classList.add('gesammelt');});
+ var ab='';
+ if(k==='nada')ab='<button onclick="zu();v2Warum()"><span class="em">🔍</span>Warum zweimal Nein? „No sé nada“</button>';
+ ab+='<button onclick="zu();v2Sagen()"><span class="em">💬</span>Selbst sagen: Ich sehe nichts!</button>';
+ blatt('<div class="wz">'+w[0]+'</div><div class="wn">'+w[1]+'</div><div class="buch on" style="justify-content:flex-start">📗 Liegt jetzt in deinem Buch.</div><div style="font:700 .62rem/1 \'DM Mono\',monospace;letter-spacing:.18em;color:var(--muted);margin:.8rem 0 .2rem">NEUGIERIG? BIEG AB:</div><div class="abzw">'+ab+'<button onclick="zu()"><span class="em">📖</span>Weiterlesen</button></div>');}
+function v2Warum(){if(v2spur.indexOf('Warum?')<0)v2spur.push('Warum?');var s=document.getElementById('v2-stage');
+ s.innerHTML='<div class="fade">'+spurHtml()+'<div class="erkl"><div class="eb">Grammatik ohne Schnickschnack</div><p>Im Deutschen reicht ein Nein. Im Spanischen gehören zwei zusammen: <b>no</b> vor dem Verb, <b>nada</b> danach.</p><div class="bsp"><i>No</i> sé <i>nada</i>.</div><div class="bsp"><i>No</i> veo <i>nada</i>.</div><p style="margin-top:.5rem">Das ist kein Fehler, das ist doppelt sicher.</p></div><div class="abzw"><button onclick="v2Sagen()"><span class="em">💬</span>Jetzt selbst sagen</button><button onclick="v2Lesen()"><span class="em">📖</span>Zurück zur Geschichte</button></div></div>';s.scrollTop=0;}
+function v2Sagen(){if(v2spur.indexOf('Selbst sagen')<0)v2spur.push('Selbst sagen');var s=document.getElementById('v2-stage');
+ s.innerHTML='<div class="fade">'+spurHtml()+'<div class="row"><div class="av" data-capy></div><div class="says"><span class="z">¿Has visto mis gafas?</span><span class="na">Hast du meine Brille gesehen? Antworte: Ich sehe nichts!</span></div></div><div class="chips" id="v2c"></div><div class="sanft" id="v2s"></div></div>';s.scrollTop=0;
+ [['¡No veo nada!',1],['¡Veo nada!',0]].forEach(function(x){var b=document.createElement('button');b.className='chip';b.innerHTML='<span class="z">'+x[0]+'</span>';
+  b.onclick=function(){var q=document.getElementById('v2s');if(x[1]){b.style.background='#c7e89a';q.innerHTML='¡Eso es! Zwei Nein, wie das Kind in der Geschichte.<br><button class="end sec" style="margin-top:.8rem" onclick="v2Lesen()">Zurück zur Geschichte</button>';}
+   else{b.style.background='#ffb27a';q.textContent='Fast. Im Spanischen fehlt da noch ein Nein vorne …';}};document.getElementById('v2c').appendChild(b);});}
+
+
+
+/* Zeitangaben aus Modell 3 */
+var MIN={'Ein Stück Geschichte':'≈ 3 Min.','Lernroman':'≈ 10 Min.','Feines Ohr':'≈ 4 Min.','Regional':'≈ 5 Min.','Geführtes Gespräch':'≈ 8 Min.','Freies Gespräch':'≈ 10 Min.','Schreiben':'≈ 8 Min.','Gramática':'≈ 6 Min.','Leseverstehen':'≈ 6 Min.','Der Schlag':'≈ 4 Min.','Piñata':'≈ 3 Min.','Luftballons':'≈ 3 Min.','Wortkette':'≈ 3 Min.','Memory':'≈ 3 Min.'};
+Object.keys(V2).forEach(function(k){V2[k].items.forEach(function(it){it.min=MIN[it.tt];});});
+document.querySelectorAll('#v2-raum .back, #v2-lesen .back').forEach(function(b){b.onclick=function(){zeige('f-haus');};});
+
+var IDEE='<h3>Geführt oder frei</h3><p class="pc">Zwei Modi, ein System. Beim ersten Start fragt Spikiu, wie du lernen willst. Umstellen geht jederzeit in „Mein“.</p><h4>Geführt</h4><p class="pc">Startseite = nächste Station + „Weiter“ + Pfad. Ein kleiner Reiseleiter (fuehrung.js) wählt die Folge aus den Stationen und der Zwei-Tage-Regel. Nichts ist verschlossen: spätere Stationen fragen nur „trotzdem?“. Harte Schleifen bleiben iuspik.</p><h4>Frei</h4><p class="pc">Oben „Heute mit Spikiu“, darunter vier Türen nach Lust (Modell 2), jede Aktivität mit Zeitangabe (aus Modell 3).</p><h4>Gemeinsam</h4><p class="pc">Die Sitzung „Im Café“ ist in beiden Modi dieselbe. Die Räume bekommen nur zwei Dinge dazu: mit Vorgabe öffnen (?station=cafe) und „fertig“ zurückmelden.</p><p class="pc"><b>Probier:</b> Modus wählen → Café durchspielen → in „Mein“ umschalten.</p><button class="end sec" style="margin-top:1rem" onclick="zu()">Schließen</button>';
+function idee(){blatt(IDEE);}
+heim();
+</script>
+</body>
+</html>
