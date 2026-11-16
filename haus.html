@@ -281,6 +281,21 @@ button{font-family:inherit}
 .st-pf .pk{margin-left:auto;font:600 .74rem 'DM Sans',sans-serif;color:var(--muted)}
 .st-regel{font:600 .8rem/1.35 'DM Sans',sans-serif;color:var(--muted);text-align:center;margin:.7rem .4rem 0}
 .st-liste{display:flex;flex-direction:column;gap:.75rem}
+/* 16.11.2026 (Leo, Screenshot „1“ + „2“): Heute-Karte im freien Modus kleiner, die vier Türen als gleichmäßiges 2×2-Raster — weniger Scrollen, ruhiger fürs Auge. */
+.st-karte.kompakt{padding:.8rem .95rem .9rem;border-radius:20px}
+.st-karte.kompakt .st-h{font-size:1.35rem;margin:.3rem 0 .1rem}
+.st-karte.kompakt .st-zs{font-size:.98rem;margin-bottom:.6rem}
+.st-karte.kompakt .st-weg{margin-bottom:.7rem}
+.st-karte.kompakt .st-weg .st{padding:.32rem .2rem;font-size:.7rem;display:flex;align-items:center;justify-content:center;gap:.25rem}
+.st-karte.kompakt .st-weg .st b{display:inline;font-size:.95rem;margin:0}
+.st-karte.kompakt .st-los{padding:.68rem 1rem;font-size:1rem}
+.st-gitter{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.st-k.st-kq{flex-direction:column;justify-content:center;text-align:center;gap:.3rem;min-height:128px;padding:.85rem .6rem}
+.st-kq .em{width:auto;font-size:2rem}
+.st-kq .tx{flex:0 0 auto}
+.st-kq .tt{font-size:1rem}
+.st-kq .ss{font-size:.74rem;line-height:1.25}
+.st-kq .chev{display:none}
 .st-k{display:flex;align-items:center;gap:.85rem;text-align:left;border:var(--ow) solid var(--ink);border-radius:18px;padding:.85rem 1rem;cursor:pointer;box-shadow:var(--shb) 0 var(--ink);background:#fff;width:100%;font-family:inherit;color:var(--ink)}
 .st-k .em{flex:0 0 auto;font-size:1.7rem;line-height:1;width:40px;text-align:center;display:flex;align-items:center;justify-content:center}
 .st-k .tx{flex:1;min-width:0}
@@ -1148,7 +1163,7 @@ function stFrage(){var F=window.spikiuFuehrung,t=F.text();
  S.appendChild(w);S.appendChild(stEl('div','st-regel',kEsc(t.jederzeit)));}
 
 /* Die Vorschlagskarte — dieselbe für beide Modi; nur Überschrift und Knopf unterscheiden sich. */
-function stKarte(h,gefuehrt){var F=window.spikiuFuehrung,t=F.text(),k=stEl('div','st-karte');
+function stKarte(h,gefuehrt){var F=window.spikiuFuehrung,t=F.text(),k=stEl('div','st-karte'+(gefuehrt?'':' kompakt'));
  var x=h.station;
  if(h.art==='neu'){var vg=F.vorgeschmack(x);
   k.innerHTML='<div class="st-eb"></div><div class="st-h"></div>'+(vg?'<div class="st-zs"></div>':(x.schritt?'<div class="st-zs na"></div>':''))
@@ -1207,9 +1222,9 @@ function stFrei(){var F=window.spikiuFuehrung,t=F?F.text():null,h=F?F.heute():nu
  stTueren(!!h);}
 function stTueren(mitLabel){var t=FT(),T=TT();
  if(mitLabel&&t)S.appendChild(stEl('div','st-label',kEsc(t.oderSelbst)));
- var l=stEl('div','st-liste');
+ var l=stEl('div','st-gitter');
  [['ein','👂','#d3eef6'],['aus','💬','#ffd24a'],['erg','🔍','#cdbdf2'],['spi','🪅','#ffe08a']].forEach(function(d){
-  l.appendChild(stKachel({em:d[1],tt:T[d[0]][0],ss:T[d[0]][1],bg:d[2],go:d[0]==='spi'?'spiele.html':function(){loadRoom('tuer-'+d[0]);}}));});
+  var k=stKachel({em:d[1],tt:T[d[0]][0],ss:T[d[0]][1],bg:d[2],go:d[0]==='spi'?'spiele.html':function(){loadRoom('tuer-'+d[0]);}});k.classList.add('st-kq');l.appendChild(k);});
  S.appendChild(l);}
 function roomTuer(k){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
  var T=TT();if(!T[k]||k==='spi'){loadRoom('start');return;}
