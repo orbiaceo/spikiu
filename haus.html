@@ -290,12 +290,18 @@ button{font-family:inherit}
 .st-karte.kompakt .st-weg .st b{display:inline;font-size:.95rem;margin:0}
 .st-karte.kompakt .st-los{padding:.68rem 1rem;font-size:1rem}
 .st-gitter{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-.st-k.st-kq{flex-direction:column;justify-content:center;text-align:center;gap:.3rem;min-height:128px;padding:.85rem .6rem}
-.st-kq .em{width:auto;font-size:2rem}
-.st-kq .tx{flex:0 0 auto}
-.st-kq .tt{font-size:1rem}
-.st-kq .ss{font-size:.74rem;line-height:1.25}
+.st-gitter{gap:.85rem}
+/* Kachel wie in spiele.html (Leo, 16.11. 09:59 „In der Art“): Farbe, Icon, Name, eine Zeile, zentriert */
+.st-k.st-kq{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.25rem;min-height:9.2rem;padding:.8rem .6rem;border-radius:20px;box-shadow:4px 5px 0 var(--ink)}
+.st-kq .em{width:auto;font-size:2.3rem;height:2.9rem}
+.st-kq .em img,.st-kq .em svg{width:2.6rem;height:2.6rem}
+.st-kq .tx{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.st-kq .tt{font-size:.98rem}
+.st-kq .tt .pill{display:table;margin:.25rem auto 0}
+.st-kq .ss{font-size:.74rem;line-height:1.2;color:rgba(21,22,58,.72)}
+.st-kq .mn{font-size:.62rem;margin-top:.1rem}
 .st-kq .chev{display:none}
+.st-gitter .st-kq.breit{grid-column:1 / -1;min-height:7.5rem}
 .st-k{display:flex;align-items:center;gap:.85rem;text-align:left;border:var(--ow) solid var(--ink);border-radius:18px;padding:.85rem 1rem;cursor:pointer;box-shadow:var(--shb) 0 var(--ink);background:#fff;width:100%;font-family:inherit;color:var(--ink)}
 .st-k .em{flex:0 0 auto;font-size:1.7rem;line-height:1;width:40px;text-align:center;display:flex;align-items:center;justify-content:center}
 .st-k .tx{flex:1;min-width:0}
@@ -1121,19 +1127,19 @@ function FT(){return window.spikiuFuehrung?window.spikiuFuehrung.text():null;}
 /* Die Wege hinter den Türen: höchstens 4, je eine Zeile, mit Zeitangabe (Modell 3). */
 function tuerWege(k){var t=TT(),n=t.n,s=t.s,WS='&von=wortschatz&zurueck=haus';
  if(k==='ein')return [
-  {em:'📖',tt:H().roman,ss:s.roman,min:12,go:'learnroman.html'},
-  {em:'👂',tt:n.oido,ss:s.oido,min:4,go:'spiele.html?spiel=oido'+WS},
-  {em:'<img src="bilder/sp-korb.svg" alt="" style="width:1.8rem;height:1.8rem">',tt:n.korb,ss:s.korb,min:4,go:'spiele.html?spiel=mercado'+WS},
-  {em:'🗺️',tt:H().regio,ss:s.regio,min:5,go:'regional.html'}];
+  {em:'📖',tt:H().roman,ss:s.roman,min:12,bg:'#d3eef6',go:'learnroman.html'},
+  {em:'👂',tt:n.oido,ss:s.oido,min:4,bg:'#ffd0b0',go:'spiele.html?spiel=oido'+WS},
+  {em:'<img src="bilder/sp-korb.svg" alt="">',tt:n.korb,ss:s.korb,min:4,bg:'#c7e89a',go:'spiele.html?spiel=mercado'+WS},
+  {em:'🗺️',tt:H().regio,ss:s.regio,min:5,bg:'#ffe08a',go:'regional.html'}];
  if(k==='aus')return [
-  {em:'🎭',tt:H().gef,ss:s.gef,min:10,go:'gefuehrt.html'},
-  {em:'💬',tt:H().frei,ss:s.frei,min:10,pr:1,go:'szene.html'},
-  {em:'✍️',tt:H().schreib,ss:s.schreib,min:8,pr:1,go:'schreibwerkstatt.html'}];
- if(k==='erg'){var w=[{em:'🃏',tt:n.karten,ss:s.karten,min:5,go:'gym.html?zurueck=haus'}];
+  {em:'🎭',tt:H().gef,ss:s.gef,min:10,bg:'#ffd24a',go:'gefuehrt.html'},
+  {em:'💬',tt:H().frei,ss:s.frei,min:10,pr:1,bg:'#c7e89a',go:'szene.html'},
+  {em:'✍️',tt:H().schreib,ss:s.schreib,min:8,pr:1,bg:'#cdbdf2',go:'schreibwerkstatt.html'}];
+ if(k==='erg'){var w=[{em:'🃏',tt:n.karten,ss:s.karten,min:5,bg:'#ffd0b0',go:'gym.html?zurueck=haus'}];
   /* Gramática erklärt auf Deutsch für Spanisch-Lernende (23.10.) → nur Ziel es + Muttersprache de. */
-  if(bkZiel()==='es'&&bkMutter()==='de')w.push({em:'📘',tt:'Gramática',ss:s.gram,min:6,go:'buch/Gramatica-Karten.html'});
-  w.push({em:BRILLE,tt:H().lese,ss:s.lese,min:6,pr:1,go:'taller.html'});
-  w.push({em:'🥁',tt:n.golpe,ss:s.golpe,min:4,go:'spiele.html?spiel=golpe'+WS});
+  if(bkZiel()==='es'&&bkMutter()==='de')w.push({em:'📘',tt:'Gramática',ss:s.gram,min:6,bg:'#d3eef6',go:'buch/Gramatica-Karten.html'});
+  w.push({em:BRILLE,tt:H().lese,ss:s.lese,min:6,pr:1,bg:'#f7bcd8',go:'taller.html'});
+  w.push({em:'🥁',tt:n.golpe,ss:s.golpe,min:4,bg:'#ffe08a',go:'spiele.html?spiel=golpe'+WS});
   return w;}
  return [];}
 function stEl(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
@@ -1229,7 +1235,7 @@ function stTueren(mitLabel){var t=FT(),T=TT();
 function roomTuer(k){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
  var T=TT();if(!T[k]||k==='spi'){loadRoom('start');return;}
  stZurueck();stSagt(T[k][2]);
- var l=stEl('div','st-liste');tuerWege(k).forEach(function(it){l.appendChild(stKachel(it));});S.appendChild(l);}
+ var l=stEl('div','st-gitter'),W=tuerWege(k);W.forEach(function(it,i){var b=stKachel(it);b.classList.add('st-kq');if(W.length%2&&i===0)b.classList.add('breit');l.appendChild(b);});S.appendChild(l);}
 
 function roomUebung(){
  /* Praxis (16.10.): Begrüßung wie früher im Abenteuer, dann zwei Gruppen. */
