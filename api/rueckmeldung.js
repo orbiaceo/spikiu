@@ -33,6 +33,13 @@
 //
 // KOSTEN: rund ein Zehntel Cent je Szene auf Haiku.
 
+// HÖCHSTENS SO VIELE ZÜGE JE ANFRAGE (16.11.2026). Eine Szene hat wenige
+// Züge, und max_tokens reicht ohnehin nur für eine Handvoll berichtigter
+// Zeilen. Ohne Grenze konnte jeder beliebig viele Zeilen schicken und damit
+// Eingabe-Token auf unsere Rechnung erzeugen. Was darüber liegt, wird
+// abgelehnt, nicht stillschweigend gekürzt: der Client soll es merken.
+const MAX_ZUEGE = 8;
+
 const SPRACHE = { de: 'Deutsch', es: 'Spanisch', en: 'Englisch', el: 'Griechisch' };
 
 // Überschrift und der Satz für den fehlerfreien Fall stehen HIER, nicht im
@@ -121,7 +128,11 @@ export default async function handler(req, res) {
   // (die Café-Formel). Dass sie früher schadete, lag daran, dass DAS MODELL
   // den Vergleich machte; das tut jetzt der Code, und die kurzen gültigen
   // Antworten schützt das Sicherheitsnetz weiter unten.
-  const zuege = (Array.isArray(body.zuege) ? body.zuege : [])
+  const roheZuege = Array.isArray(body.zuege) ? body.zuege : [];
+  if (roheZuege.length > MAX_ZUEGE) {
+    return res.status(413).json({ error: 'zu_viele_zuege', max: MAX_ZUEGE });
+  }
+  const zuege = roheZuege
     .map(z => ({
       gesagt:  String((z && z.gesagt) || '').slice(0, 200),
       aufgabe: String((z && z.aufgabe) || '').slice(0, 120),
