@@ -122,6 +122,8 @@ document.querySelectorAll('.row[data-soon]').forEach(function(b){ b.onclick=func
 document.getElementById('logout').onclick=function(){ toast(MT.abmeldenSoon); };
 /* Wie lernst du? Geführt oder frei (14.11.2026). Texte und Speicherort aus fuehrung.js. */
 (function(){
+  /* 22.11.2026: Das Inhaltsverzeichnis führt selbst — der Umschalter Geführt/Frei entfällt. */
+  document.getElementById('modusCard').style.display='none'; document.getElementById('modusLbl').style.display='none'; return;
   var F=window.spikiuFuehrung; if(!F){ document.getElementById('modusCard').style.display='none'; return; }
   var t=F.text();
   document.getElementById('modusLbl').textContent=t.modusLbl;

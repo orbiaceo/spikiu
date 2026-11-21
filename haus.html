@@ -317,6 +317,28 @@ button{font-family:inherit}
 .st-wahl .st-k .em{font-size:2rem}
 .st-ov{position:fixed;inset:0;z-index:95;background:rgba(21,22,58,.45);display:flex;align-items:flex-end;justify-content:center}
 .st-ov .lxs{display:flex;flex-direction:column;gap:.6rem}
+/* ===== INHALTSVERZEICHNIS (22.11.2026, Vorlage prototyp-inhalt-spikiu.html) ===== */
+.ih-inhalt{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;gap:.6rem}
+.ih-lz{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;min-height:6.6rem;padding:.55rem .6rem .6rem;text-align:left;background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);cursor:pointer;font-family:inherit;color:var(--ink)}
+.ih-lz:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.ih-lz .nr{width:30px;height:30px;border-radius:999px;border:var(--ow) solid var(--ink);display:flex;align-items:center;justify-content:center;font:900 .85rem 'Archivo Black',sans-serif;background:#fff}
+.ih-lz.ok .nr{background:#c7e89a}
+.ih-lz.jetzt{background:var(--mustard);box-shadow:4px 5px 0 var(--ink)}
+.ih-lz .em{position:absolute;top:.5rem;right:.6rem;font-size:1.45rem;line-height:1}
+.ih-lz .tt{font:800 .95rem/1.15 'DM Sans',sans-serif}
+.ih-lz .es{font:italic 500 .8rem/1.2 'Lora',serif;color:rgba(21,22,58,.72)}
+.ih-stufe{margin:.9rem 0 0;background:rgba(255,255,255,.6);border:2px dashed rgba(21,22,58,.35);border-radius:18px;padding:.7rem .9rem;font:700 .9rem/1.35 'DM Sans',sans-serif;color:var(--muted)}
+.ih-lk{background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:4px 5px 0 var(--ink);padding:.9rem 1rem;margin-bottom:1rem}
+.ih-lk.fertig{background:#c7e89a}
+.ih-lk .eb{font:700 .62rem/1.2 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;opacity:.75}
+.ih-lk h2{font:900 1.45rem/1.15 'Archivo Black',sans-serif;margin:.25rem 0 .1rem}
+.ih-lk .es{font:italic 500 .98rem 'Lora',serif}
+.st-kq .knr{position:absolute;top:.5rem;left:.6rem;font:900 .75rem 'Archivo Black',sans-serif;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.05rem .4rem}
+.st-kq .kok{position:absolute;top:.45rem;right:.55rem;width:24px;height:24px;border-radius:999px;background:#fff;border:2px solid var(--ink);font:800 .8rem/20px 'DM Sans',sans-serif;text-align:center}
+.st-k.st-kq{position:relative}
+.st-kq.ih-next{outline:3px dashed var(--acc);outline-offset:4px}
+.st-kq.ih-bald{opacity:.55}
+.ih-los{margin-top:1.1rem}
 /* ===== GERÄTESTUFEN (Leo, 12.11.2026: „Ja. Deine Empfehlung." → Laptop A „Ruhige Bühne").
    Kein Handy-Rähmchen mehr. Handy (<700) bleibt unverändert; Grundregeln in geraet.css,
    das Haus regelt seine Stufen hier selbst (body.g-voll). Prototyp: geraete-prototyp.html ===== */
@@ -592,7 +614,7 @@ var HUI={
  de:{wegR:'Dein Lernweg',wegLeer:'Noch keine Szene geübt — dein Baum wartet.',etS:'🌱 Samen',etSt:'🌿 Stamm',etK:'🌳 Krone',d1:'Abenteuer',d1s:'Hören und sprechen — mit Spikiu, Schritt für Schritt.',d2:'Bibliothek',d2s:'Lesen und entdecken.',gHablar:'Sprechen',gTrain:'Trainieren',hilfe:'Hilfe',anfang:'Fang mit dem Geführten Gespräch an — dort triffst du deine ersten Wörter.',regal:'Dein Regal',regals:'Deine Schatzkiste, deine Lektionen, dein Garten',regalKr:'Deine Lernstationen. Tipp an, was du wiedersehen willst.',garten:'Dein Garten',gartens:'Von A bis Z',akro:'Deine Akrosticha',akros:'Zu jedem Buchstaben ein Wort',zurBib:'‹ zurück zur Bibliothek',d3:'Übung',d3s:'Sprechen und trainieren.',bibRoman:'Dein Lernroman wartet — lies weiter, wo du warst.',bibRegio:'Deine Regionalismen warten — mach weiter, wo du warst.',bibAnfang:'Fang mit dem Lernroman an — eine Geschichte, Kapitel für Kapitel.',
   gef:'Geführtes Gespräch',gefs:'Szenen üben',frei:'Freies Gespräch',freis:'Frei reden',gratis:'gratis',
   zuletzt:function(t){return 'Zuletzt: «'+t+'» — weiter?';},gesammelt:function(z){return 'Du hast schon '+z+' gesammelt. 🍃';},
-  roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen',regio:'Regionalismen',wends:'Sprache & Kultur',lek:'Deine Lektionen',buch:'Meine Schatzkiste',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
+  roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen',regio:'Regionalismen',wends:'Sprache & Kultur',lek:'Deine Lektionen',buch:'Mein Wortschatz',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
   wort:'Wortschatz',worts:'Dein Deck',lese:'Leseverstehen',leses:'Leseverstehen',schreib:'Schreiben',schreibs:'Schreiben',spiele:'Spiele',spieles:'Kurz und leicht',
   zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n+'s Schatzkiste';},buchSub:'Was du gefunden hast — Stück für Stück.',geschrieben:'gehütet von Spikiu',
   mitgenommen:'Mitgenommen',deineW:'Deine Wörter',deineA:'Deine Wendungen',wendungen:function(n){return n+' '+(n===1?'Wendung':'Wendungen');},leer:'Noch leer',leerSub:'Sprich mit mir oder üb ein paar Wörter — dann füllt sich diese Kiste von selbst.',
@@ -600,7 +622,7 @@ var HUI={
  es:{wegR:'Tu camino',wegLeer:'Aún no has practicado ninguna escena — tu árbol te espera.',etS:'🌱 Semilla',etSt:'🌿 Tronco',etK:'🌳 Copa',d1:'Aventura',d1s:'Escuchar y hablar — con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Leer y descubrir.',gHablar:'Hablar',gTrain:'Entrenar',hilfe:'Ayuda',anfang:'Empieza con la Conversación guiada — ahí conoces tus primeras palabras.',regal:'Tu estante',regals:'Tu cofre, tus lecciones, tu huerto',regalKr:'Tus estaciones. Toca lo que quieras volver a ver.',garten:'Tu huerto',gartens:'De la A a la Z',akro:'Tus acrósticos',akros:'Una palabra por letra',zurBib:'‹ volver a la biblioteca',d3:'Práctica',d3s:'Hablar y entrenar.',bibRoman:'Tu novela te espera — sigue leyendo donde lo dejaste.',bibRegio:'Tus regionalismos te esperan — sigue donde lo dejaste.',bibAnfang:'Empieza con la Novela para aprender — una historia, capítulo a capítulo.',
   gef:'Conversación guiada',gefs:'Practicar escenas',frei:'Conversación libre',freis:'Hablar libremente',gratis:'gratis',
   zuletzt:function(t){return 'Lo último: «'+t+'». ¿Seguimos?';},gesammelt:function(z){return 'Ya has reunido '+z+'. 🍃';},
-  roman:'Novela para aprender',romans:'Lectura inmersiva',wend:'Giros',regio:'Regionalismos',wends:'Lengua y cultura',lek:'Tus lecciones',buch:'Mi cofre',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
+  roman:'Novela para aprender',romans:'Lectura inmersiva',wend:'Giros',regio:'Regionalismos',wends:'Lengua y cultura',lek:'Tus lecciones',buch:'Mi vocabulario',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
   wort:'Vocabulario',worts:'Tu mazo',lese:'Comprensión lectora',leses:'Comprensión lectora',schreib:'Escritura',schreibs:'Escribir',spiele:'Juegos',spieles:'Cortos y ligeros',
   zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return 'El cofre de '+n;},buchSub:'Lo que has encontrado, pieza a pieza.',geschrieben:'guardado por Spikiu',
   mitgenommen:'Lo que te llevas',deineW:'Tus palabras',deineA:'Tus expresiones',wendungen:function(n){return n+' '+(n===1?'expresión':'expresiones');},leer:'Todavía vacío',leerSub:'Habla conmigo o practica unas palabras, y este cofre se llena solo.',
@@ -608,7 +630,7 @@ var HUI={
  en:{wegR:'Your path',wegLeer:'No scene practiced yet — your tree is waiting.',etS:'🌱 Seed',etSt:'🌿 Trunk',etK:'🌳 Crown',d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and discover.',gHablar:'Speak',gTrain:'Train',hilfe:'Help',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your treasure chest, your lessons, your garden',regalKr:'Your learning stops. Tap whatever you want to see again.',garten:'Your garden',gartens:'From A to Z',akro:'Your acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'Speak and train.',bibRoman:'Your learning novel is waiting — read on where you left off.',bibRegio:'Your regionalisms are waiting — carry on where you left off.',bibAnfang:'Start with the Learning Novel — one story, chapter by chapter.',
   gef:'Guided conversation',gefs:'Practice scenes',frei:'Free conversation',freis:'Talk freely',gratis:'free',
   zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(z){return 'You’ve already collected '+z+'. 🍃';},
-  roman:'Learning Novel',romans:'Immersive reading',wend:'Expressions',regio:'Regionalisms',wends:'Language & culture',lek:'Your lessons',buch:'My treasure chest',woerter:function(n){return n+' '+(n===1?'word':'words');},
+  roman:'Learning Novel',romans:'Immersive reading',wend:'Expressions',regio:'Regionalisms',wends:'Language & culture',lek:'Your lessons',buch:'My vocabulary',woerter:function(n){return n+' '+(n===1?'word':'words');},
   wort:'Vocabulary',worts:'Your deck',lese:'Reading comprehension',leses:'Reading comprehension',schreib:'Writing',schreibs:'Writing',spiele:'Games',spieles:'Short and light',
   zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s treasure chest';},buchSub:'What you’ve found — piece by piece.',geschrieben:'kept by Spikiu',
   mitgenommen:'Taken with you',deineW:'Your words',deineA:'Your phrases',wendungen:function(n){return n+' '+(n===1?'phrase':'phrases');},leer:'Still empty',leerSub:'Talk with me or practise a few words — and this chest fills itself.',
@@ -616,7 +638,7 @@ var HUI={
  el:{wegR:'Η διαδρομή σου',wegLeer:'Δεν έχεις εξασκηθεί ακόμα σε καμία σκηνή — το δέντρο σου περιμένει.',etS:'🌱 Σπόρος',etSt:'🌿 Κορμός',etK:'🌳 Φυλλωσιά',d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και ανακάλυψε.',gHablar:'Μίλα',gTrain:'Προπόνηση',hilfe:'Βοήθεια',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Ο θησαυρός σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Οι σταθμοί σου. Πάτα ό,τι θέλεις να ξαναδείς.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Μίλα και προπονήσου.',bibRoman:'Το μυθιστόρημά σου σε περιμένει — συνέχισε από εκεί που σταμάτησες.',bibRegio:'Οι τοπικισμοί σου σε περιμένουν — συνέχισε από εκεί που σταμάτησες.',bibAnfang:'Ξεκίνα με το Μυθιστόρημα — μία ιστορία, κεφάλαιο με κεφάλαιο.',
   gef:'Καθοδηγούμενη συζήτηση',gefs:'Εξάσκηση σε σκηνές',frei:'Ελεύθερη συζήτηση',freis:'Μίλα ελεύθερα',gratis:'δωρεάν',
   zuletzt:function(t){return 'Τελευταία φορά: «'+t+'» — συνεχίζουμε;';},gesammelt:function(z){return 'Έχεις ήδη μαζέψει '+z+'. 🍃';},
-  roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',regio:'Τοπικισμοί',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Ο θησαυρός μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
+  roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',regio:'Τοπικισμοί',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Το λεξιλόγιό μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
   wort:'Λεξιλόγιο',worts:'Η τράπουλά σου',lese:'Κατανόηση κειμένου',leses:'Κατανόηση κειμένου',schreib:'Γραφή',schreibs:'Γραφή',spiele:'Παιχνίδια',spieles:'Σύντομα κι ανάλαφρα',
   zurueck:'πίσω',weiter:'συνέχεια',vorlesen:'Άκου',buchVon:function(n){return 'Ο θησαυρός · '+n;},buchSub:'Ό,τι βρήκες — κομμάτι κομμάτι.',geschrieben:'φυλαγμένος από τον Spikiu',
   mitgenommen:'Τα πήρες μαζί σου',deineW:'Οι λέξεις σου',deineA:'Οι φράσεις σου',wendungen:function(n){return n+' '+(n===1?'φράση':'φράσεις');},leer:'Ακόμα άδειος',leerSub:'Μίλα μαζί μου ή εξασκήσου σε λίγες λέξεις — και ο θησαυρός σου μεγαλώνει μόνος του.',
@@ -746,6 +768,8 @@ function loadRoom(id){if(id==='eintauchen'||id==='uebung'||id==='bibliothek')id=
  if(id==='uebung')roomUebung();
  if(id==='regal')roomRegal();
  if(id==='start')roomStart();
+ if(id.indexOf('lek-')===0)roomLektion(id.slice(4));
+ if(id.indexOf('anh-')===0)roomAnhang(+id.slice(4));
  if(id.indexOf('tuer-')===0)roomTuer(id.slice(5));
  try{document.dispatchEvent(new CustomEvent('spk-haus-raum',{detail:id}));}catch(e){}}
 /* Die Leiste unten öffnet das Regal direkt, wenn wir schon im Haus sind. */
@@ -918,8 +942,9 @@ function roomRegal(){S.innerHTML='';document.getElementById('stage').scrollTop=0
  var T=window.spikiuMosaikText?window.spikiuMosaikText(HL):{gespr:'Gespräche',lesen:'Lesen'};
  stZurueck();   /* 14.11.: ohne Türen braucht das Regal einen Weg zurück zur Startseite */
  kacheln({greet:{title:H().regal},layout:'four',kompakt:true,items:[
-  {em:'🎭',tt:T.gespr,bg:'#ffd24a',go:function(){regalListe('gespr');}},
+  /* 22.11.2026 (Leo): „Meine Schatzkiste“ heißt jetzt „Mein Wortschatz“ und steht an erster Stelle */
   {em:SCHATZ_SVG,tt:H().buch,bg:'#c7e89a',go:renderBook},
+  {em:'🎭',tt:T.gespr,bg:'#ffd24a',go:function(){regalListe('gespr');}},
   {em:'📓',tt:H().lek,pill:'Premium',pillBg:'#9bd14a',bg:'#ffd24a',go:function(){regalListe('lek');}},
   {em:'📖',tt:T.lesen,bg:'#d3eef6',go:function(){regalListe('lesen');}},
   {em:'🌿',tt:H().garten,bg:'#bfe6d5',go:function(){location.href='spiele.html?spiel=huerto';}},
@@ -1153,11 +1178,111 @@ function stZurueck(txt,ziel){var b=stEl('button','st-zur');b.textContent=txt||(F
 function stSelbstHeute(an){try{if(an)sessionStorage.setItem('spk_selbst_heute',new Date().toISOString().slice(0,10));else sessionStorage.removeItem('spk_selbst_heute');}catch(e){}}
 function stIstSelbstHeute(){try{return sessionStorage.getItem('spk_selbst_heute')===new Date().toISOString().slice(0,10);}catch(e){return false;}}
 
+/* ===== INHALTSVERZEICHNIS (Leo, 21./22.11.2026: „Führe den Auftrag aus! Ins Repo damit!“ · Vorlage prototyp-inhalt-spikiu.html) =====
+   Lektionen = Lernstationen der aktuellen Stufe (SpikiuPfad), zwei Spalten, erste Hälfte links. Jede Lektion hat dieselben
+   8 Kapitel an derselben Stelle; sie führen in die bestehenden Räume. ✓ = schon betreten (Spikiu führt Buch, nichts verschlossen).
+   Darunter: Ausblick auf die nächste Stufe + Anhang „Alle Zimmer“ A1–A6. Texte de/es/en/el. */
+var IH_T={
+ de:{gruss:function(n){return (n?n+', h':'H')+'ier ist dein Inhaltsverzeichnis. Die gelbe Lektion ist die nächste.';},stufe:function(s){return s+' · deine Stufe';},
+  weiter:'Weiter',naechsteStufe:function(s){return 'Danach: '+s+'. Dieselben Orte, eine Stufe tiefer.';},anhang:'Anhang · Alle Zimmer zum freien Üben',
+  lek:function(n){return 'Lektion '+n;},acht:'acht Kapitel',lekSagt:'Jede Lektion hat dieselben acht Kapitel, immer an derselben Stelle.',lekFertig:'Diese Lektion sitzt. Jedes Kapitel bleibt offen.',
+  los:function(n){return 'Los geht’s: '+n+'.1 Wörter';},weiterMit:function(k,t){return 'Weiter mit '+k+' '+t;},vonVorn:'Noch einmal von vorn',kommt:'kommt bald',zurInhalt:'‹ Inhalt',
+  kap:[['Wörter','Die neuen Wörter'],['Hören','Die Szene anhören'],['Geführtes Gespräch','Sätze zur Auswahl'],['Selbst sprechen','Dieselbe Szene, deine Sätze'],['Aussprache','Wo liegt der Schlag?'],['Grammatik','Eine Regel, kurz'],['Lesen','Ein Stück Geschichte'],['Spiel','Zum Abschluss']],
+  anh:[['Wortschatz','Feines Ohr · Korb · Regionalismen · Wendungen'],['Aussprache','Der Schlag, später mehr'],['Lesen','Lernroman · Grammatik'],['Konversation','Frei sprechen'],['Werkstatt','Leseverstehen · Schreiben'],['Spiele','Kurz und leicht']],
+  sub:{oido:['Feines Ohr','Bilder, Audio und Text verbinden'],korb:['Der Korb','Erst hören, dann zuordnen'],regio:['Regionalismen','Wörter aus verschiedenen Gegenden'],wend:['Wendungen','Wendungen und Sprichwörter'],golpe:['Der Schlag','Wo liegt die starke Silbe?'],roman:['Lernroman','Wörter und Sätze im Zusammenhang'],gram:['Gramática','Grammatik ohne Schnickschnack'],frei:['Freies Gespräch','Eine klare Rolle, ein paar Hürden'],lese:['Leseverstehen','Ein Text, drei Fragen'],schreib:['Schreiben','Spikiu schaut drauf']}},
+ es:{gruss:function(n){return (n?n+', a':'A')+'quí tienes tu índice. La lección amarilla es la siguiente.';},stufe:function(s){return s+' · tu etapa';},
+  weiter:'Seguir',naechsteStufe:function(s){return 'Después: '+s+'. Los mismos lugares, un paso más allá.';},anhang:'Anexo · Todos los espacios para practicar',
+  lek:function(n){return 'Lección '+n;},acht:'ocho capítulos',lekSagt:'Cada lección tiene los mismos ocho capítulos, siempre en el mismo sitio.',lekFertig:'Esta lección ya está. Todos los capítulos siguen abiertos.',
+  los:function(n){return '¡Vamos! '+n+'.1 Palabras';},weiterMit:function(k,t){return 'Seguir con '+k+' '+t;},vonVorn:'Otra vez desde el principio',kommt:'muy pronto',zurInhalt:'‹ Índice',
+  kap:[['Palabras','Las palabras nuevas'],['Escuchar','Escucha la escena'],['Conversación guiada','Frases para elegir'],['Habla tú','La misma escena, tus frases'],['Pronunciación','¿Dónde cae el golpe?'],['Gramática','Una regla, breve'],['Leer','Un trozo de historia'],['Juego','Para terminar']],
+  anh:[['Vocabulario','Oído fino · Cesta · Regionalismos · Giros'],['Pronunciación','El golpe, y más pronto'],['Leer','Novela · Gramática'],['Conversación','Hablar libremente'],['Taller','Comprensión lectora · Escribir'],['Juegos','Cortos y ligeros']],
+  sub:{oido:['Oído fino','Imagen, audio y texto'],korb:['La cesta','Primero escuchar, luego ordenar'],regio:['Regionalismos','Palabras de distintos lugares'],wend:['Giros','Giros y refranes'],golpe:['El golpe','¿Dónde está la sílaba fuerte?'],roman:['Novela para aprender','Palabras y frases en contexto'],gram:['Gramática','Directo al grano'],frei:['Conversación libre','Un papel claro, algunos retos'],lese:['Comprensión lectora','Un texto, tres preguntas'],schreib:['Escribir','Spikiu le echa un vistazo']}},
+ en:{gruss:function(n){return (n?n+', h':'H')+'ere is your table of contents. The yellow lesson is the next one.';},stufe:function(s){return s+' · your stage';},
+  weiter:'Continue',naechsteStufe:function(s){return 'Then: '+s+'. The same places, one stage deeper.';},anhang:'Appendix · All rooms for free practice',
+  lek:function(n){return 'Lesson '+n;},acht:'eight chapters',lekSagt:'Every lesson has the same eight chapters, always in the same place.',lekFertig:'This lesson is settled. Every chapter stays open.',
+  los:function(n){return 'Let’s go: '+n+'.1 Words';},weiterMit:function(k,t){return 'Continue with '+k+' '+t;},vonVorn:'Once more from the start',kommt:'coming soon',zurInhalt:'‹ Contents',
+  kap:[['Words','The new words'],['Listen','Listen to the scene'],['Guided conversation','Sentences to choose from'],['Speak yourself','The same scene, your sentences'],['Pronunciation','Where is the beat?'],['Grammar','One rule, short'],['Read','A piece of story'],['Game','To finish']],
+  anh:[['Vocabulary','Sharp Ear · Basket · Regionalisms · Expressions'],['Pronunciation','The Beat, more to come'],['Read','Novel · Grammar'],['Conversation','Speak freely'],['Workshop','Reading · Writing'],['Games','Short and light']],
+  sub:{oido:['Sharp Ear','Picture, audio and text'],korb:['The basket','Listen first, then sort'],regio:['Regionalisms','Words from different places'],wend:['Expressions','Expressions and sayings'],golpe:['The Beat','Where is the strong syllable?'],roman:['Learning Novel','Words and sentences in context'],gram:['Gramática','Simple grammar'],frei:['Free conversation','A clear role, a few hurdles'],lese:['Reading','One text, three questions'],schreib:['Writing','Spikiu takes a look']}},
+ el:{gruss:function(n){return (n?n+', ν':'Ν')+'α τα περιεχόμενά σου. Το κίτρινο μάθημα είναι το επόμενο.';},stufe:function(s){return s+' · το στάδιό σου';},
+  weiter:'Συνέχεια',naechsteStufe:function(s){return 'Μετά: '+s+'. Τα ίδια μέρη, ένα στάδιο πιο βαθιά.';},anhang:'Παράρτημα · Όλοι οι χώροι για ελεύθερη εξάσκηση',
+  lek:function(n){return 'Μάθημα '+n;},acht:'οκτώ κεφάλαια',lekSagt:'Κάθε μάθημα έχει τα ίδια οκτώ κεφάλαια, πάντα στην ίδια θέση.',lekFertig:'Αυτό το μάθημα κάθισε. Όλα τα κεφάλαια μένουν ανοιχτά.',
+  los:function(n){return 'Πάμε: '+n+'.1 Λέξεις';},weiterMit:function(k,t){return 'Συνέχεια με '+k+' '+t;},vonVorn:'Ξανά από την αρχή',kommt:'έρχεται σύντομα',zurInhalt:'‹ Περιεχόμενα',
+  kap:[['Λέξεις','Οι νέες λέξεις'],['Άκου','Άκου τη σκηνή'],['Καθοδηγούμενη συζήτηση','Φράσεις για να διαλέξεις'],['Μίλα εσύ','Η ίδια σκηνή, οι φράσεις σου'],['Προφορά','Πού πέφτει ο τόνος;'],['Γραμματική','Ένας κανόνας, σύντομα'],['Διάβασε','Ένα κομμάτι ιστορίας'],['Παιχνίδι','Για το τέλος']],
+  anh:[['Λεξιλόγιο','Λεπτό αυτί · Καλάθι · Τοπικισμοί · Εκφράσεις'],['Προφορά','Ο τόνος, και άλλα σύντομα'],['Διάβασε','Μυθιστόρημα · Γραμματική'],['Συζήτηση','Μίλα ελεύθερα'],['Εργαστήρι','Κατανόηση κειμένου · Γραφή'],['Παιχνίδια','Σύντομα και ανάλαφρα']],
+  sub:{oido:['Λεπτό αυτί','Εικόνα, ήχος και κείμενο'],korb:['Το καλάθι','Πρώτα άκου, μετά ταξινόμησε'],regio:['Τοπικισμοί','Λέξεις από διάφορα μέρη'],wend:['Εκφράσεις','Εκφράσεις και παροιμίες'],golpe:['Ο τόνος','Πού είναι η τονισμένη συλλαβή;'],roman:['Μυθιστόρημα','Λέξεις και φράσεις στο πλαίσιο'],gram:['Gramática','Γραμματική χωρίς περιττά'],frei:['Ελεύθερη συζήτηση','Ένας σαφής ρόλος, λίγα εμπόδια'],lese:['Κατανόηση κειμένου','Ένα κείμενο, τρεις ερωτήσεις'],schreib:['Γραφή','Ο Spikiu ρίχνει μια ματιά']}}
+};
+function IT(){return IH_T[HL]||IH_T.de;}
+/* Spanische Titel der Lernstationen (Ziel es) als Untertitel, wie im Prototyp */
+var IH_ES={cafe:'En la cafetería',restaurant:'En el restaurante',einkaufen:'De compras',wegbeschreibung:'Preguntar el camino',taxi:'En el taxi',familie:'La familia',hotel:'En el hotel',bahnhof:'En la estación',arzt:'En el médico',wetter:'El tiempo'};
+var IH_KAP_EM=['🃏','🎧','🎭','🗣️','🥁','📘','📖','🪅'],IH_KAP_BG=['#ffd0b0','#d3eef6','#ffd24a','#c7e89a','#ffe08a','#cdbdf2','#f7bcd8','#ffb27a'];
+var IH_ANH_EM=['🃏','🥁','📖','💬','✍️','🪅'],IH_ANH_BG=['#ffd0b0','#ffe08a','#f7bcd8','#c7e89a','#cdbdf2','#ffe08a'];
+/* Welche Kapitel schon betreten wurden — nur fürs Auge, nichts wird gesperrt */
+function ihKapLade(){try{return JSON.parse(localStorage.getItem('spikiu_kapitel')||'{}')||{};}catch(e){return {};}}
+function ihKapMerke(key,z){var d=ihKapLade();d[key]=d[key]||{};d[key][z]=new Date().toISOString().slice(0,10);try{localStorage.setItem('spikiu_kapitel',JSON.stringify(d));}catch(e){}}
+function ihGramOk(){return bkZiel()==='es'&&bkMutter()==='de';}
+function ihKapZiel(x,z){var q='thema='+encodeURIComponent(x.id)+(x.stufe&&x.stufe!=='a1'?'&stufe='+x.stufe:'');
+ return ['gefuehrt.html?'+q,'gefuehrt.html?'+q+'&phase=hoeren','gefuehrt.html?'+q+'&phase=sprechen','szene.html','spiele.html?spiel=golpe&von=wortschatz&zurueck=haus',ihGramOk()?'buch/Gramatica-Karten.html':null,'learnroman.html','spiele.html?zurueck=haus'][z];}
+function ihPfad(){var F=window.spikiuFuehrung;if(!F||!F.bereit())return null;try{return F.pfad();}catch(e){return null;}}
+function ihNaechste(p){var o=p.filter(function(x){return x.status!=='gesetzt';});return o.length?o[0]:null;}
+function ihKachel(em,tt,ss,bg,go,extra){var b=stEl('button','st-k st-kq');b.style.background=bg;
+ b.innerHTML='<span class="em">'+em+'</span><span class="tx"><span class="tt"></span><span class="ss"></span></span>'+(extra||'');
+ b.querySelector('.tt').textContent=tt;b.querySelector('.ss').textContent=ss||'';b.onclick=go;return b;}
+
+function ihInhalt(){var t=IT(),p=ihPfad();stSagt(t.gruss(vorname()));
+ if(!p||!p.length){ihAnhang();return;}
+ var st=p[0].stufe,sn=(STUFE_NAME[HL]||STUFE_NAME.de)[st]||st,nx=ihNaechste(p);
+ S.appendChild(stEl('div','st-label',kEsc(t.stufe(sn))));
+ var g=stEl('div','ih-inhalt');g.style.gridTemplateRows='repeat('+Math.ceil(p.length/2)+',auto)';
+ p.forEach(function(x,i){var cls=x.status==='gesetzt'?'ok':(nx&&x.id===nx.id?'jetzt':'');
+  var b=stEl('button','ih-lz '+cls,'<span class="nr"></span><span class="em"></span><span class="tt"></span>'+(bkZiel()==='es'&&IH_ES[x.id]?'<span class="es"></span>':''));
+  b.querySelector('.nr').textContent=x.status==='gesetzt'?'✓':String(i+1);b.querySelector('.em').textContent=x.em||'';b.querySelector('.tt').textContent=x.titel;
+  var es=b.querySelector('.es');if(es){es.textContent=IH_ES[x.id];es.lang='es';}
+  b.onclick=function(){loadRoom('lek-'+x.id);};g.appendChild(b);});
+ S.appendChild(g);
+ var D=window.SpikiuLernpfad,i2=D&&D.stufen?D.stufen.indexOf(st):-1,folge=i2>-1?D.stufen[i2+1]:null;
+ if(folge){var fn=(STUFE_NAME[HL]||STUFE_NAME.de)[folge]||folge;S.appendChild(stEl('div','ih-stufe',kEsc(t.naechsteStufe(fn))));}
+ ihAnhang(true);}
+function ihAnhang(mitLabel){var t=IT();
+ S.appendChild(stEl('div','st-label',kEsc(t.anhang)));
+ var g=stEl('div','st-gitter');
+ t.anh.forEach(function(a,i){var k=ihKachel(IH_ANH_EM[i],a[0],a[1],IH_ANH_BG[i],function(){if(i===5){location.href='spiele.html?zurueck=haus';return;}loadRoom('anh-'+i);},'<span class="knr">A'+(i+1)+'</span>');g.appendChild(k);});
+ S.appendChild(g);}
+function roomLektion(id){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
+ var t=IT(),p=ihPfad()||[],i=-1;p.forEach(function(x,k){if(x.id===id)i=k;});
+ if(i<0){loadRoom('start');return;}
+ var x=p[i],n=i+1,key=x.stufe+'.'+x.id,besucht=ihKapLade()[key]||{},fertig=x.status==='gesetzt';
+ stZurueck(t.zurInhalt,'start');
+ var k=stEl('div','ih-lk'+(fertig?' fertig':''),'<div class="eb"></div><h2></h2><div class="es"></div>');
+ k.querySelector('.eb').textContent=t.lek(n)+' · '+t.acht;k.querySelector('h2').textContent=(x.em?x.em+' ':'')+x.titel;
+ var es=k.querySelector('.es');if(bkZiel()==='es'&&IH_ES[x.id]){es.textContent=IH_ES[x.id];es.lang='es';}else es.remove();
+ S.appendChild(k);
+ stSagt(fertig?t.lekFertig:t.lekSagt);
+ var naechstes=-1;for(var z=0;z<8;z++){if(!besucht[z]&&ihKapZiel(x,z)){naechstes=z;break;}}
+ var g=stEl('div','st-gitter');
+ t.kap.forEach(function(K,z){var ziel=ihKapZiel(x,z),ok=!!besucht[z];
+  var b=ihKachel(IH_KAP_EM[z],K[0],ziel?K[1]:t.kommt,IH_KAP_BG[z],function(){if(!ziel){stSagt(K[0]+' · '+t.kommt);document.getElementById('stage').scrollTop=1e6;return;}ihKapMerke(key,z);location.href=ziel;},'<span class="knr">'+n+'.'+(z+1)+'</span>'+(ok?'<span class="kok">✓</span>':''));
+  if(z===naechstes&&!fertig)b.classList.add('ih-next');if(!ziel)b.classList.add('ih-bald');g.appendChild(b);});
+ S.appendChild(g);
+ var los=stEl('button','st-los ih-los');var z0=naechstes<0?0:naechstes;
+ los.textContent=naechstes<0||fertig?t.vonVorn:(naechstes===0?t.los(n):t.weiterMit(n+'.'+(naechstes+1),t.kap[naechstes][0]));
+ los.onclick=function(){ihKapMerke(key,z0);location.href=ihKapZiel(x,z0);};S.appendChild(los);}
+function roomAnhang(i){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
+ var t=IT(),u=t.sub,WS='&von=wortschatz&zurueck=haus';
+ var R=[[['👂',u.oido,'#ffd0b0','spiele.html?spiel=oido'+WS],['<img src="bilder/sp-korb.svg" alt="">',u.korb,'#c7e89a','spiele.html?spiel=mercado'+WS],['🗺️',u.regio,'#ffe08a','regional.html'],['💬',u.wend,'#d3eef6','gym.html?zurueck=haus']],
+  [['🥁',u.golpe,'#ffe08a','spiele.html?spiel=golpe'+WS]],
+  [['📚',u.roman,'#d3eef6','learnroman.html']].concat(ihGramOk()?[['📘',u.gram,'#cdbdf2','buch/Gramatica-Karten.html']]:[]),
+  [['💬',u.frei,'#c7e89a','szene.html']],
+  [[BRILLE,u.lese,'#f7bcd8','taller.html'],['✍️',u.schreib,'#cdbdf2','schreibwerkstatt.html']]][i];
+ if(!R){loadRoom('start');return;}
+ stZurueck(t.zurInhalt,'start');stSagt(t.anh[i][0]+' — '+t.anh[i][1]);
+ var g=stEl('div','st-gitter');
+ R.forEach(function(r,k){var b=ihKachel(r[0],r[1][0],r[1][1],r[2],function(){location.href=r[3];});if(R.length%2&&k===0&&R.length>1)b.classList.add('breit');if(R.length===1)b.style.gridColumn='1 / -1';g.appendChild(b);});
+ S.appendChild(g);}
+
 function roomStart(){S.innerHTML='';document.getElementById('stage').scrollTop=0;document.getElementById('subbar').textContent='';
- var F=window.spikiuFuehrung;if(!F){stTueren();return;}
- var m=F.modus();
- if(!m){stFrage();return;}
- if(m==='gefuehrt'&&!stIstSelbstHeute()&&F.bereit())stGefuehrt();else stFrei();}
+ /* 22.11.2026: Startseite = Inhaltsverzeichnis (löst „Geführt oder frei“ vom 14.11. ab; die Modus-Frage entfällt, das Inhaltsverzeichnis führt selbst) */
+ ihInhalt();}
 
 /* Erster Besuch: wie möchtest du lernen? Einmal gefragt, jederzeit in Mein änderbar. */
 function stFrage(){var F=window.spikiuFuehrung,t=F.text();
@@ -1285,7 +1410,7 @@ function submitName(){var v=(document.getElementById('nameIn').value||'').trim()
  [['Español',true],['Deutsch',false]].forEach(function(p){var b=document.createElement('button');b.textContent=p[0];
   b.onclick=function(){enterHouse();};lr.appendChild(b);});}
 function startTuer(){var m=(location.search||'').match(/[?&]tuer=(regal|bibliothek|uebung)\b/);if(m)return m[1]==='regal'?'regal':'start';
- try{var t=sessionStorage.getItem('spk_haus_tuer');if(t==='regal')return t;if(t&&t.indexOf('tuer-')===0)return t;}catch(e){}return 'start';}
+ try{var t=sessionStorage.getItem('spk_haus_tuer');if(t==='regal')return t;if(t&&(t.indexOf('lek-')===0||t.indexOf('anh-')===0))return t;}catch(e){}return 'start';}
 function enterHouse(){try{document.getElementById('hilfeKnopf').setAttribute('aria-label',H().hilfe);document.getElementById('hilfeKnopf').title=H().hilfe;}catch(e){}
  document.getElementById('welcome').classList.remove('active');
  document.getElementById('house').classList.add('active');buildNav();loadRoom(startTuer());}

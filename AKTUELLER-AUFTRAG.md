@@ -1,5 +1,7 @@
 # AKTUELLER AUFTRAG — INHALTSVERZEICHNIS + GARTEN/AKROSTICHON (Produktion)
 
+**ERLEDIGT am 22.11.2026 (Claude direkt im Repo) · kein offener Auftrag.** Offen bleiben nur die Punkte unter „Nicht in diesem Auftrag“. Details im Ledger.
+
 Stand: 22.11.2026 · Erteilt: Leo, 00:44 („Führe den Auftrag aus! Ins Repo damit!“) · Umsetzung: Claude direkt im Repo
 
 Vorlagen: `prototyp-inhalt-spikiu.html` (Inhalt, Regal, Anhang) · `prototyp-garten.html` · `prototyp-akrostichon.html` (jeweils mit größerer Schrift vom 22.11. 00:41). Entscheidungen: Ledger 21./22.11.

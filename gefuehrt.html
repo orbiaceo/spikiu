@@ -772,6 +772,12 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     var lab = t ? (t.na[MUT] || t.na.en || t.na.de) : (sz ? (sz[MUT] || sz.de) : id);
     TOPIC_ID = id; HAP = ladeStoff(); if (!HAP) { TOPIC_ID = null; return false; }
     sitzRaeumen();
+    /* 22.11.2026 (Inhaltsverzeichnis): Kapitel einer Lektion öffnen direkt die passende Phase — ?phase=hoeren|sprechen */
+    var ph = (such.match(/[?&]phase=(hoeren|sprechen)\b/) || [])[1];
+    if (ph) {
+      betrete(id, lab, function () { markiereBesuch(); WS = null; ERG = { hoeren: 0, sprechen: 0 }; if (ph === 'hoeren') { HS = null; hoeren(); } else sprechen(0); });
+      return true;
+    }
     betrete(id, lab);
     return true;
   }
