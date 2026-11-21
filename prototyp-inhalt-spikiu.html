@@ -166,6 +166,7 @@ button{font-family:inherit;color:var(--ink)}
 .kap .tt{font:800 .98rem/1.15 'DM Sans'}
 .kap .ss{font:600 .74rem/1.2 'DM Sans';color:rgba(21,22,58,.72)}
 .kap.next{outline:3px dashed var(--terra);outline-offset:4px}
+.kap.breit{grid-column:1 / -1;min-height:7.4rem}
 .los{display:block;width:100%;margin:1.1rem 0 .2rem;border:var(--ow) solid var(--ink);border-radius:999px;background:var(--terra);color:#fff;padding:.8rem 1rem;font:800 1.02rem 'DM Sans';cursor:pointer;box-shadow:3px 4px 0 var(--ink)}
 .los.sek{background:#fff;color:var(--ink)}
 /* Zimmer */
@@ -188,7 +189,7 @@ button{font-family:inherit;color:var(--ink)}
  <header id="kopf"></header>
  <div class="stage" id="stage"></div>
  <nav class="bnav">
-  <button class="tab" onclick="zeigeFrei()"><span class="tic">🚪</span><span>Alle Zimmer</span></button>
+  <button class="tab" onclick="zeigeRegal()"><span class="tic"><svg viewBox="0 0 32 32" width="26" height="26" fill="none"><g stroke="#15163a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="11" width="4" height="12" rx="1" fill="#ffd24a"/><rect x="8.5" y="9" width="4" height="14" rx="1" fill="#1f93b0"/><rect x="13" y="12" width="3.6" height="11" rx="1" fill="#f7bcd8" transform="rotate(-8 14.8 17.5)"/><path d="M22 23 v-5"/><path d="M22 18 c-3 0-4-2-4-4 c2 0 4 1 4 4z" fill="#9bd14a"/><path d="M22 19 c2.5 0 3.6-1.8 3.6-3.6 c-1.8 0-3.6 1-3.6 3.6z" fill="#9bd14a"/><path d="M19.5 23 h5 l-.6 3 h-3.8z" fill="#c9956a"/><path d="M2.5 23.5 h27" stroke-width="2.2"/></g></svg></span><span>Mein Regal</span></button>
   <button class="tab center" onclick="zeigeHome()"><span class="ball" data-capy></span><span class="lbl">Spikiu</span></button>
   <button class="tab" onclick="toast('Mein bleibt wie bisher.')"><span class="tic">👤</span><span>Mein</span></button>
  </nav>
@@ -341,7 +342,12 @@ var T={
   LEK.forEach(function(L,i){var st=lekFertig(i)?'ok':(i===j?'jetzt':'zu');
    h+='<button class="lz '+st+'" data-i="'+i+'"><span class="nr">'+(st==='ok'?'✓':(i+1))+'</span><span class="em">'+L.em+'</span><span class="tx"><span class="tt">'+L.t+'</span><span class="es">'+L.es+'</span></span>'+(st==='jetzt'?'<span class="st">Weiter</span>':'')+'<span class="chev">›</span></button>';});
   h+='</div><div class="k-label">🌿 Stamm · zweite Stufe</div><div class="stufe-zu">🌿 Dieselben zehn Orte, eine Stufe tiefer. Kommt nach der zehnten Lektion.</div>';
-  w.innerHTML=h;w.querySelectorAll('.lz').forEach(function(b){b.onclick=function(){zeigeLektion(+b.dataset.i);};});},
+  /* 22.11. (Leo, 00:25 „Ja“): „Alle Zimmer“ als Anhang am Ende des Inhalts */
+  h+='<div class="k-label">Anhang · Alle Zimmer zum freien Üben</div><div class="kapitel">';
+  FREI.forEach(function(f,i){h+='<button class="kap fr" data-f="'+i+'" style="background:'+f[3]+'"><span class="knr">A'+(i+1)+'</span><span class="em">'+f[0]+'</span><span class="tt">'+f[1]+'</span><span class="ss">'+f[2]+'</span></button>';});
+  h+='</div>';
+  w.innerHTML=h;w.querySelectorAll('.lz').forEach(function(b){b.onclick=function(){zeigeLektion(+b.dataset.i);};});
+  w.querySelectorAll('.kap.fr').forEach(function(b){b.onclick=function(){zeigeFreiRaum(+b.dataset.f);};});},
  kopfLektion:function(l){return kopfHtml('Inhalt · Lektion '+(l+1),LEK[l].em+' '+LEK[l].t,'zeigeHome()',(l+1));},
  lektion:function(w,l){var n=naechstesZimmer(l),fertig=lekFertig(l);
   var h='<div class="lk-karte'+(fertig?' fertig':'')+'"><div class="eb">Lektion '+(l+1)+' · acht Kapitel</div><h2>'+LEK[l].em+' '+LEK[l].t+'</h2><div class="es">'+LEK[l].es+'</div></div>';
@@ -364,6 +370,27 @@ var T={
   w.innerHTML=h+'</div>';w.querySelectorAll('.kap').forEach(function(b){b.onclick=function(){toast(FREI[+b.dataset.i][1]+' öffnet sich.');};});}
 };
 
+
+/* ===== Mein Regal (wie heute auf dev; Schatzkiste heißt jetzt „Mein Wortschatz“, an erster Stelle) ===== */
+var REGAL_K=[['🗃️','Mein Wortschatz','Alle deine gesammelten Wörter','#c7e89a'],['🎭','Gespräche','Deine Lernstationen','#ffd24a'],
+ ['📓','Deine Lektionen','Was du schon gemacht hast','#ffe08a',1],['📖','Lesen','Lernroman, wo du aufgehört hast','#d3eef6'],
+ ['🌿','Dein Garten','Wörter, die wachsen','#cfe8d8'],['🔤','Deine Akrosticha','Deine eigenen Gedichte','#cdbdf2']];
+function zeigeRegal(){AKT={frei:1};kopf(kopfHtml('Mein Regal','Dein Regal','zeigeHome()',''));var w=leere();
+ var h=sagt('Alles, was du gemacht und gesammelt hast. Ganz vorn: dein Wortschatz.')+'<div class="kapitel">';
+ REGAL_K.forEach(function(r){h+='<button class="kap" style="background:'+r[3]+'"><span class="em">'+r[0]+'</span><span class="tt">'+r[1]+'</span><span class="ss">'+r[2]+'</span>'+(r[4]?'<span class="st" style="font:800 .58rem DM Sans;border:2px solid var(--ink);border-radius:999px;padding:.05rem .4rem;background:#ffd24a">Premium</span>':'')+'</button>';});
+ w.innerHTML=h+'</div>';capys(w);w.querySelectorAll('.kap').forEach(function(b,i){b.onclick=function(){toast(REGAL_K[i][1]+' öffnet sich wie bisher.');};});}
+/* ===== Anhang: jedes Zimmer mit seinen eigenen Kacheln ===== */
+var FREI_SUB=[
+ [['👂','Feines Ohr','Bilder, Audio und Text verbinden','#ffd0b0'],['🧺','Der Korb','Erst hören, dann zuordnen','#c7e89a'],['🗺️','Regionalismen','Wörter und Klang aus verschiedenen Gegenden','#ffe08a'],['💬','Wendungen','Wendungen und Sprichwörter','#d3eef6']],
+ [['🥁','Der Schlag','Wo liegt die starke Silbe?','#ffe08a']],
+ [['📚','Lernroman','Wörter und Sätze im Zusammenhang','#d3eef6'],['📘','Gramática','Grammatik ohne Schnickschnack','#cdbdf2']],
+ [['💬','Konversation mit KI','Kommt später · Premium','#c7e89a']],
+ [['👓','Leseverstehen','Ein Text, drei Fragen','#f7bcd8'],['✍️','Schreiben','Spikiu schaut drauf','#cdbdf2']],
+ [['🪅','Piñata','Spiel des Tages','#ffd0b0'],['🎈','Luftballons','Wörter in der richtigen Reihenfolge','#d3eef6'],['🔗','Wortkette','Buchstabe für Buchstabe','#ffe08a'],['🃏','Memory','Wort und Bild','#cdbdf2']]];
+function zeigeFreiRaum(i){AKT={frei:1};var F=FREI[i];kopf(kopfHtml('Anhang · A'+(i+1),F[0]+' '+F[1],'zeigeHome()','A'+(i+1)));var w=leere();
+ var S=FREI_SUB[i],h=sagt(F[2])+'<div class="kapitel">';
+ S.forEach(function(x,k){h+='<button class="kap'+(S.length%2&&k===0&&S.length>1?' breit':'')+'" style="background:'+x[3]+(S.length===1?';grid-column:1 / -1':'')+'"><span class="em">'+x[0]+'</span><span class="tt">'+x[1]+'</span><span class="ss">'+x[2]+'</span></button>';});
+ w.innerHTML=h+'</div>';capys(w);w.querySelectorAll('.kap').forEach(function(b,k){b.onclick=function(){toast(S[k][1]+' öffnet sich.');};});}
 capys();zeigeHome();
 </script>
 </body>
