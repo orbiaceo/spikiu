@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Spikiu · Inhalt · Kreide und Tafel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&family=Patrick+Hand&display=swap" rel="stylesheet">
+<!--
+  PROTOTYP Inhaltsverzeichnis · Farbvariante, zweite Runde (Leo, 22.11.2026, 00:01: „Bau die 3“ — drei weitere, bis eine überzeugt).
+  4 · Kreide und Tafel: dunkelgrüner Grund, Kreideschrift (Patrick Hand), Icons wie mit Kreide skizziert.
+  Ablauf identisch mit prototyp-inhalt.html. Eigene Icon-Zeichnungen. Nur Prototyp, Live-System unberührt. Keine KI.
+-->
+<style>
+:root{--ink:#15163a;--bg:#eef7f1;--acc:#ff6b5a;--mustard:#ffd24a;--sage:#c7e89a;--sky:#d3eef6;--muted:#5f7068;--teal:#1f93b0;--ow:2.5px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;overflow:hidden}
+button{font-family:inherit;color:var(--ink)}
+.app{height:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column;position:relative}
+#kopf{flex:0 0 auto}
+.stage{flex:1;min-height:0;overflow:auto;padding:1rem 1.1rem 1.8rem}
+.fade{animation:fd .35s ease both}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.eb{font:700 .62rem/1.25 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.es{font:italic 500 .92rem/1.25 'Lora',serif;color:rgba(21,22,58,.72)}
+.back{flex:0 0 38px;height:38px;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font:800 1.2rem 'DM Sans';cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.pulse{animation:pl 1.8s ease-in-out infinite}
+@keyframes pl{0%,100%{box-shadow:0 0 0 0 rgba(255,107,90,.55)}50%{box-shadow:0 0 0 9px rgba(255,107,90,0)}}
+/* Spikiu spricht */
+.row{display:flex;gap:.6rem;align-items:flex-start;margin:.2rem 0 .9rem}
+.av{flex:0 0 38px;height:38px}
+.says{flex:1;min-width:0;background:#fff;border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);padding:.6rem .85rem}
+.says .z{display:block;font:600 1.22rem/1.25 'Lora',serif}
+.says .na{display:block;font:600 .9rem/1.35 'DM Sans'}
+.says .z+.na{color:var(--muted);font-size:.82rem;margin-top:.15rem}
+.you{display:flex;justify-content:flex-end;margin:.1rem 0 .9rem}
+.you span{max-width:86%;background:var(--mustard);border:var(--ow) solid var(--ink);border-radius:18px;box-shadow:3px 4px 0 var(--ink);padding:.5rem .85rem;font:600 1.1rem/1.25 'Lora',serif}
+.hinweis-l{font:600 .84rem/1.35 'DM Sans';color:var(--muted);margin:0 0 .9rem}
+.beispiel{font:700 .6rem/1.3 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:.7rem}
+.sanft{font:600 .86rem/1.35 'DM Sans';min-height:1.2em;margin-top:.5rem;text-align:center}
+.buch{font:700 .88rem 'DM Sans';text-align:center;margin:.8rem 0 0}
+/* Wörter */
+.wkarten{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.wk{min-height:118px;border:var(--ow) solid var(--ink);border-radius:16px;background:#fff;box-shadow:3px 4px 0 var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;padding:.5rem;text-align:center}
+.wk .em{font-size:1.8rem}
+.wk .z{font:600 1.1rem/1.2 'Lora',serif}
+.wk .na{font:700 .85rem 'DM Sans';color:var(--teal);display:none}
+.wk.f{background:#f3fbe9}
+.wk.f .na{display:block}
+/* Hören */
+.dialog{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem}
+.zeile{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.5rem .75rem;max-width:88%}
+.zeile.du{align-self:flex-end;background:#fff7dc}
+.zeile .wer{display:block;font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.zeile .z{display:block;font:600 1.05rem/1.25 'Lora',serif}
+.zeile .na{display:block;font:600 .78rem 'DM Sans';color:var(--muted)}
+.play{display:block;margin:.2rem auto 0;border:var(--ow) solid var(--ink);border-radius:999px;background:#fff;padding:.6rem 1.1rem;font:800 .95rem 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+/* Auswahl */
+.frage{margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem}
+.frage .q{font:800 1rem/1.3 'DM Sans';margin-bottom:.2rem}
+.frage .q.z{font:600 1.25rem/1.3 'Lora',serif}
+.opt{border:var(--ow) solid var(--ink);border-radius:14px;background:#fff;padding:.65rem .9rem;font:700 1rem/1.25 'DM Sans';text-align:left;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.opt.ok{background:var(--sage)}
+.opt.no{background:#ffb27a;opacity:.6}
+.chips{display:flex;flex-direction:column;gap:.5rem;align-items:flex-end;margin:.2rem 0 .9rem}
+.chip{max-width:90%;text-align:right;background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;padding:.5rem .8rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.chip .z{display:block;font:600 1.05rem/1.25 'Lora',serif}
+.chip .na{display:block;font:600 .74rem/1.2 'DM Sans';color:var(--muted)}
+/* Selbst sprechen */
+.eingabe{margin:0 0 1rem}
+.eingabe .auf{font:700 .9rem/1.35 'DM Sans';margin-bottom:.5rem}
+.eingabe input{width:100%;border:var(--ow) solid var(--ink);border-radius:14px;padding:.7rem .85rem;font:600 1.1rem 'Lora',serif;background:#fff;color:var(--ink)}
+.eingabe .pruef{display:block;margin:.55rem 0 0 auto;border:var(--ow) solid var(--ink);border-radius:999px;background:var(--acc);color:#fff;padding:.55rem 1.2rem;font:800 .95rem 'DM Sans';cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.spiegel{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:.6rem .8rem}
+.spiegel .wort{font:600 1.1rem/1.6 'Lora',serif;margin:.3rem 0}
+.spiegel .da{background:var(--sage);border-radius:4px;padding:0 .2rem}
+.spiegel .fehlt{border-bottom:2px dashed var(--acc);color:var(--muted)}
+.spiegel .muster{font:600 .86rem 'DM Sans'}
+.spiegel .muster b{font:600 1rem 'Lora',serif}
+.spiegel .gut{font:700 .85rem 'DM Sans';margin-top:.3rem;color:var(--teal)}
+/* Aussprache */
+.silben-box{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:.7rem;margin-bottom:.8rem;text-align:center}
+.silben-box .na{font:700 .8rem 'DM Sans';color:var(--muted);margin-bottom:.4rem}
+.silben{display:flex;justify-content:center;gap:.4rem}
+.silbe{min-width:62px;border:var(--ow) solid var(--ink);border-radius:12px;background:var(--sky);padding:.55rem .6rem;font:600 1.3rem 'Lora',serif;cursor:pointer;box-shadow:2px 3px 0 var(--ink)}
+.silbe.ok{background:var(--mustard);transform:scale(1.12)}
+.silbe.no{background:#ffb27a;opacity:.6}
+/* Grammatik */
+.regel{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:.8rem .9rem;margin-bottom:.6rem}
+.regel .eb{color:var(--acc);margin-bottom:.4rem}
+.regel p{font:500 .95rem/1.4 'DM Sans';margin-bottom:.4rem}
+.regel table{border-collapse:collapse;width:100%}
+.regel td{padding:.25rem .2rem;font:600 1rem 'Lora',serif;border-top:1px solid rgba(21,22,58,.12)}
+/* Lesen */
+.lesetext{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:.9rem 1rem;font:500 1.2rem/1.6 'Lora',serif}
+.lesetext .w{border-bottom:2px dotted var(--acc);cursor:pointer}
+.lesetext .w.gesammelt{background:var(--sage);border-bottom-color:transparent;border-radius:4px}
+/* Spiel */
+.gm{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.gm button{min-height:56px;border:var(--ow) solid var(--ink);border-radius:14px;background:#fff;box-shadow:2px 3px 0 var(--ink);cursor:pointer;padding:.4rem;font:600 .95rem/1.2 'DM Sans'}
+.gm button.z{font:600 1rem/1.2 'Lora',serif}
+.gm button.sel{background:var(--sky)}
+.gm button.ok{background:var(--sage);box-shadow:none;transform:translate(2px,3px)}
+.gm button.no{background:#ffb27a}
+/* Weiter */
+.fuss{margin-top:1.1rem}
+.weiter{width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;border:var(--ow) solid var(--ink);border-radius:999px;background:var(--acc);color:#fff;padding:.8rem 1rem;font:800 1rem/1.2 'DM Sans';cursor:pointer;box-shadow:3px 4px 0 var(--ink)}
+.weiter:active,.opt:active,.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+/* Leiste */
+.bnav{flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-around;padding:.45rem .8rem calc(.45rem + env(safe-area-inset-bottom));background:#fff;border-top:2.5px solid var(--ink)}
+.tab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.12rem;color:#5f7068;font:700 .68rem 'DM Sans'}
+.tab .tic{font-size:1.25rem;height:26px;display:flex;align-items:center}
+.tab.center{flex:0 0 auto}
+.tab.center .ball{width:58px;height:58px;border-radius:999px;background:#fff;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:3px 4px 0 var(--ink);transform:translateY(-12px)}
+.tab.center .ball svg{width:44px;height:44px}
+.tab.center .lbl{transform:translateY(-10px);color:var(--ink)}
+.pop{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;font:600 .88rem/1.35 'DM Sans';padding:.55rem .9rem;border-radius:12px;display:none;max-width:86%;text-align:center}
+.pop.on{display:block}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+body{background:var(--grund)}
+.papier{background:var(--papier);border:var(--ow) solid var(--ink);border-radius:6px 18px 18px 6px;box-shadow:4px 5px 0 var(--ink);padding:1.1rem 1rem 1rem 1.6rem;position:relative}
+.papier:before{content:'';position:absolute;left:12px;top:0;bottom:0;border-left:2px solid var(--rand)}
+.papier h2{font:900 1.55rem/1.05 'Archivo Black',sans-serif;margin:0 0 .2rem}
+.papier .eb{margin-bottom:.8rem}
+.ixh{font:800 .7rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin:1rem 0 .35rem;color:var(--teal)}
+.ix{display:flex;align-items:baseline;gap:.55rem;width:100%;background:none;border:none;text-align:left;cursor:pointer;padding:.45rem .3rem;border-radius:8px}
+.ix:active{background:var(--hl)}
+.ix .nr{flex:0 0 auto;min-width:1.7rem;font:900 1.2rem/1 'Archivo Black',sans-serif}
+.ix .tx{flex:0 1 auto;min-width:0}
+.ix .tt{font:800 1rem/1.2 'DM Sans'}
+.ix .dots{flex:1 1 auto;border-bottom:2px dotted rgba(21,22,58,.3);transform:translateY(-4px);min-width:14px}
+.ix .st{flex:0 0 auto;font:700 .74rem 'DM Mono',monospace}
+.ix.jetzt{background:var(--hl)}
+.ix.zu .tt,.ix.zu .nr{opacity:.55}
+.ix .em{font-size:1rem;margin-right:.2rem}
+.kp{display:flex;align-items:center;gap:.7rem;padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;background:var(--papier);border-bottom:var(--ow) solid var(--ink)}
+.kp .t{flex:1;min-width:0}
+.kp .t b{display:block;font:900 1.12rem/1.15 'Archivo Black',sans-serif}
+.kp .sz{font:900 1.05rem 'Archivo Black';opacity:.25}
+.zimmer-box{background:var(--papier);border:var(--ow) solid var(--ink);border-radius:6px 18px 18px 6px;box-shadow:4px 5px 0 var(--ink);padding:1rem .9rem 1rem 1.5rem;position:relative}
+.zimmer-box:before{content:'';position:absolute;left:11px;top:0;bottom:0;border-left:2px solid var(--rand)}
+.weiter{background:var(--knopf);color:var(--knopftx)}
+.weiter .nr{font:900 .95rem 'Archivo Black'}
+.los{display:block;width:100%;margin:.9rem 0 .2rem;border:var(--ow) solid var(--ink);border-radius:999px;background:var(--knopf);color:var(--knopftx);padding:.75rem 1rem;font:800 1rem 'DM Sans';cursor:pointer;box-shadow:3px 4px 0 var(--ink)}
+.ende-stempel{display:inline-block;border:3px solid #c2410c;color:#c2410c;border-radius:10px;padding:.3rem .7rem;font:900 1rem 'Archivo Black';transform:rotate(-6deg);margin:.4rem 0 .8rem}
+.frei-li .tt{font-weight:800}
+.fussnote{font:600 .8rem/1.35 'DM Sans';color:var(--muted);margin-top:.8rem}
+
+.ic{width:1.15em;height:1.15em;display:inline-block;vertical-align:-.18em}
+.ix .em .ic{width:1.05em;height:1.05em}
+.you span{background:var(--du)}
+.ende-stempel{border-color:var(--acc);color:var(--acc)}
+.ix .st{color:var(--acc)}
+.ixh{color:var(--teal)}
+#ih{color:var(--ink)!important}
+
+
+:root{--grund:#1f3a2e;--papier:#264536;--rand:rgba(244,241,230,.25);--ink:#f1eee4;--acc:#f7e08a;--mustard:#f7e08a;--sage:rgba(168,216,160,.28);--sky:rgba(168,216,232,.2);--teal:#a8d8e8;--muted:#b9c9bd;--hl:rgba(247,224,138,.16);--knopf:#f7e08a;--knopftx:#1f3a2e;--du:rgba(247,224,138,.2)}
+body{background:var(--grund);background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:6px 6px}
+.says,.wk,.zeile,.opt,.chip,.regel,.lesetext,.silben-box,.spiegel,.gm button,.eingabe input,.back,.play,#ih,.bnav,.tab.center .ball{background:#2c4d3d!important;color:var(--ink)}
+.kp{background:#18301f;border-bottom-color:rgba(244,241,230,.4)}
+.papier,.zimmer-box,.says,.los,.weiter,.wk,.opt,.chip,.regel,.lesetext,.spiegel,.gm button,.silben-box,.zeile,.you span,.back,.tab.center .ball,.eingabe input{border-color:rgba(244,241,230,.75)!important;box-shadow:3px 4px 0 rgba(0,0,0,.35)!important}
+.papier h2,.kp .t b,.ix .tt,.ix .nr,.says .z,.wk .z,.zeile .z,.chip .z,.you span,.lesetext,.regel td,.silbe,.frage .q.z,.spiegel .wort,.endst h2{font-family:'Patrick Hand',cursive!important;font-weight:400!important;letter-spacing:.01em}
+.papier h2{font-size:2rem}.kp .t b{font-size:1.35rem}.ix .tt{font-size:1.15rem}.ix .nr{font-size:1.4rem;color:var(--acc)}
+.es{color:#cfe0d2}.eb{color:#b9c9bd}
+.weiter,.los:not(#ih){color:#1f3a2e!important}
+.wk.f{background:#335a46!important}.zeile.du{background:#335a46!important}
+.silbe{background:#2c4d3d!important;color:var(--ink)}.silbe.ok{background:rgba(247,224,138,.35)!important}
+.opt.ok,.gm button.ok{background:rgba(168,216,160,.35)!important}.opt.no,.gm button.no,.silbe.no{background:rgba(244,166,184,.3)!important}
+.gm button.sel{background:rgba(168,216,232,.3)!important}
+.spiegel .da{background:rgba(168,216,160,.35)}
+.pop{background:#f7e08a;color:#1f3a2e}
+.tab{color:#cfe0d2}.tab.center .lbl{color:var(--ink)}
+.wk .na{color:#a8d8e8}.zeile .na,.chip .na,.says .z+.na{color:#b9c9bd}
+.ix.jetzt{background:var(--hl)}
+.eingabe .pruef{background:#f4a6b8;color:#1f3a2e;border-color:rgba(244,241,230,.75)}
+.lesetext .w{border-bottom-color:#f7e08a}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="kreide"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.1"/></filter></svg>
+<div class="app">
+ <header id="kopf"></header>
+ <div class="stage" id="stage"></div>
+ <nav class="bnav">
+  <button class="tab" onclick="zeigeFrei()"><span class="tic" id="tic-frei"></span><span>Alle Zimmer</span></button>
+  <button class="tab center" onclick="zeigeHome()"><span class="ball" data-capy></span><span class="lbl">Spikiu</span></button>
+  <button class="tab" onclick="toast('Mein bleibt wie bisher.')"><span class="tic" id="tic-mein"></span><span>Mein</span></button>
+ </nav>
+</div>
+<div class="pop" id="pop"></div>
+<script>
+var STIL='kreide';
+function IKON_X(name,i,art){var f=['#f4f1e6','#f7e08a','#f4a6b8','#a8d8e8'][i%4];return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="'+f+'" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" filter="url(#kreide)">'+GLYPH[name]+'</svg>';}
+/* ===== GEMEINSAMER ABLAUF (beide Prototypen) =====
+   Lektion antippen → Lektionsübersicht → 8 Zimmer nacheinander → Lektionsende → zurück, Fortschritt sichtbar.
+   Beispielinhalt: Lektion 3 „Einkaufen“ (Spanien-Formen). Andere Lektionen zeigen denselben Beispielinhalt.
+   Alles deterministisch, null Token. Die Themen-Funktionen (T.*) zeichnen den Rahmen im jeweiligen Stil. */
+var CAPY='<svg viewBox="0 0 80 80" fill="none" width="100%" height="100%"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+var RED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function capys(r){(r||document).querySelectorAll('[data-capy]').forEach(function(e){if(!e.innerHTML)e.innerHTML=CAPY;});}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function mk(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function sagt(t,z){return '<div class="row"><div class="av" data-capy></div><div class="says">'+(z?'<span class="z">'+z+'</span>':'')+(t?'<span class="na">'+t+'</span>':'')+'</div></div>';}
+var tt;function toast(t){var p=document.getElementById('pop');p.textContent=t;p.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){p.classList.remove('on');},2400);}
+function mische(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}return a;}
+
+var LEK=[
+ {em:'☕',t:'Im Café',es:'En la cafetería'},{em:'🍽️',t:'Im Restaurant',es:'En el restaurante'},
+ {em:'🛒',t:'Einkaufen',es:'De compras'},{em:'🧭',t:'Nach dem Weg fragen',es:'Preguntar el camino'},
+ {em:'🚕',t:'Im Taxi',es:'En el taxi'},{em:'👪',t:'Über die Familie',es:'La familia'},
+ {em:'🏨',t:'Im Hotel',es:'En el hotel'},{em:'🚉',t:'Am Bahnhof',es:'En la estación'},
+ {em:'🩺',t:'Beim Arzt',es:'En el médico'},{em:'🌤️',t:'Über das Wetter',es:'El tiempo'}];
+var ZI=[
+ {k:'woerter',em:'🃏',t:'Wörter',s:'Die neuen Wörter',bg:'#ffd0b0'},
+ {k:'hoeren',em:'🎧',t:'Hören',s:'Die Szene anhören',bg:'#d3eef6'},
+ {k:'gefuehrt',em:'🎭',t:'Geführtes Gespräch',s:'Sätze zur Auswahl',bg:'#ffd24a'},
+ {k:'selbst',em:'🗣️',t:'Selbst sprechen',s:'Dieselbe Szene, deine Sätze',bg:'#c7e89a'},
+ {k:'aussprache',em:'🥁',t:'Aussprache',s:'Wo liegt der Schlag?',bg:'#ffe08a'},
+ {k:'grammatik',em:'📘',t:'Grammatik',s:'Eine Regel, kurz',bg:'#cdbdf2'},
+ {k:'lesen',em:'📖',t:'Lesen',s:'Ein Stück Geschichte',bg:'#f7bcd8'},
+ {k:'spiel',em:'🪅',t:'Spiel',s:'Zum Abschluss',bg:'#ffb27a'}];
+
+/* Beispielinhalt Lektion 3 „Einkaufen“ */
+var C={
+ woerter:[{z:'la fruta',na:'das Obst',em:'🍎'},{z:'el pan',na:'das Brot',em:'🥖'},{z:'¿Cuánto cuesta?',na:'Wie viel kostet das?',em:'💶'},{z:'una bolsa',na:'eine Tüte',em:'🛍️'}],
+ hoeren:[{w:'Verkäuferin',z:'¡Hola! ¿Qué le pongo?',na:'Hallo! Was darf’s sein?'},{w:'Du',z:'Un kilo de manzanas, por favor.',na:'Ein Kilo Äpfel, bitte.'},
+  {w:'Verkäuferin',z:'Aquí tiene. ¿Algo más?',na:'Bitte schön. Sonst noch etwas?'},{w:'Du',z:'No, gracias. ¿Cuánto es?',na:'Nein, danke. Was macht das?'},
+  {w:'Verkäuferin',z:'Son dos euros con cincuenta.',na:'Das macht zwei Euro fünfzig.'}],
+ hoerFrage:{q:'Was kauft man in der Szene?',o:[['Äpfel',1],['Brot',0],['Orangen',0]]},
+ gefuehrt:[{sp:'¡Buenos días! ¿Qué le pongo?',na:'Guten Morgen! Was darf’s sein?',ch:[['Medio kilo de tomates, por favor.','Ein halbes Kilo Tomaten, bitte.'],['Una barra de pan, por favor.','Ein Baguette, bitte.']]},
+  {sp:'Muy bien. ¿Algo más?',na:'Sehr gut. Sonst noch etwas?',ch:[['Sí, una bolsa, por favor.','Ja, eine Tüte, bitte.'],['No, nada más, gracias.','Nein, sonst nichts, danke.']]},
+  {sp:'Son tres euros.',na:'Das macht drei Euro.',ch:[['Aquí tiene. ¡Gracias!','Bitte schön. Danke!'],['¿Puedo pagar con tarjeta?','Kann ich mit Karte zahlen?']]},
+  {sp:'¡Claro! Hasta luego.',na:'Klar! Bis bald.',ende:1}],
+ selbst:[{sp:'¡Hola! ¿Qué le pongo?',auf:'Bestell ein Kilo Orangen.',soll:['Un kilo de naranjas, por favor.','Un kilo de naranjas.']},
+  {sp:'¿Algo más?',auf:'Sag, dass du nichts mehr brauchst, und frag nach dem Preis.',soll:['No, gracias. ¿Cuánto es?','Nada más, gracias. ¿Cuánto cuesta?','No, gracias. ¿Cuánto cuesta?']}],
+ aussprache:[{w:['na','ran','jas'],s:1,na:'Orangen'},{w:['plá','ta','no'],s:0,na:'Banane'},{w:['to','ma','te'],s:1,na:'Tomate'}],
+ grammatik:{eb:'Grammatik ohne Schnickschnack',regel:'„Wie viel?“ heißt cuánto. Es passt sich dem Wort danach an:',tab:[['el pan','¿Cuánto pan?'],['la fruta','¿Cuánta fruta?'],['los tomates','¿Cuántos tomates?'],['las naranjas','¿Cuántas naranjas?']],
+  ueb:[{q:'¿___ cuesta el pan?',o:['Cuánto','Cuánta'],r:0},{q:'¿___ naranjas quiere?',o:['Cuántos','Cuántas'],r:1}]},
+ lesen:{t:[['Lucía va al '],['mercado','Markt'],[' los '],['sábados','samstags'],['. Compra fruta, pan y '],['queso','Käse'],['. En la frutería pide un kilo de naranjas. Siempre '],['lleva','nimmt mit'],[' su bolsa.']],
+  q:'Wann geht Lucía zum Markt?',o:[['Samstags',1],['Sonntags',0],['Jeden Tag',0]]}
+};
+
+/* Fortschritt (Beispiel): Lektion 1–2 fertig, Lektion 3 frisch */
+var FERTIG={0:8,1:8};
+function zimmerFertig(l,z){return (FERTIG[l]||0)>z;}
+function lekFertig(l){return (FERTIG[l]||0)>=ZI.length;}
+function jetzt(){for(var i=0;i<LEK.length;i++)if(!lekFertig(i))return i;return LEK.length-1;}
+function naechstesZimmer(l){return Math.min(FERTIG[l]||0,ZI.length-1);}
+function markiere(l,z){if((FERTIG[l]||0)===z)FERTIG[l]=z+1;}
+
+/* Bildschirme */
+function stage(){return document.getElementById('stage');}
+function leere(){var s=stage();s.innerHTML='';s.scrollTop=0;var w=mk('div','fade');s.appendChild(w);return w;}
+function unten(){var s=stage();setTimeout(function(){s.scrollTo({top:s.scrollHeight,behavior:RED?'auto':'smooth'});},40);}
+function kopf(html){document.getElementById('kopf').innerHTML=html;capys(document.getElementById('kopf'));}
+
+function zeigeHome(){AKT=null;kopf(T.kopfHome());var w=leere();T.home(w);capys(w);}
+function zeigeLektion(l){AKT={l:l};kopf(T.kopfLektion(l));var w=leere();T.lektion(w,l);capys(w);}
+function zeigeZimmer(l,z){AKT={l:l,z:z};kopf(T.kopfZimmer(l,z));var w=leere();
+ var box=mk('div','zimmer-box');w.appendChild(box);
+ if(l!==2)box.appendChild(mk('div','beispiel','Beispielinhalt aus Lektion 3 · Einkaufen'));
+ var fuss=mk('div','fuss');w.appendChild(fuss);
+ function fertig(){markiere(l,z);fuss.innerHTML='';
+  var b=mk('button','weiter');
+  if(z<ZI.length-1){b.innerHTML=T.weiterText(l,z+1);b.onclick=function(){zeigeZimmer(l,z+1);};}
+  else{b.innerHTML=T.endeText(l);b.onclick=function(){zeigeEnde(l);};}
+  fuss.appendChild(b);capys(fuss);unten();}
+ RAUM[ZI[z].k](box,fertig);capys(w);}
+function zeigeEnde(l){AKT={l:l};kopf(T.kopfLektion(l));var w=leere();T.ende(w,l);capys(w);}
+function zurueck(){if(AKT&&AKT.z!=null)zeigeLektion(AKT.l);else zeigeHome();}
+var AKT=null;
+
+/* Alle Zimmer zum freien Üben */
+var FREI=[['🃏','Wortschatz','Feines Ohr · Korb · Regionalismen · Wendungen','#ffd0b0'],['🥁','Aussprache','Der Schlag, später mehr','#ffe08a'],
+ ['📖','Lesen','Lernroman · Grammatik','#f7bcd8'],['💬','Konversation','Mit KI · später · Premium','#c7e89a'],['✍️','Werkstatt','Leseverstehen · Schreiben','#cdbdf2'],['🪅','Spiele','Piñata · Luftballons · Wortkette · Memory','#ffe08a']];
+function zeigeFrei(){AKT={frei:1};kopf(T.kopfFrei());var w=leere();T.frei(w);capys(w);}
+
+/* ===== Die acht Zimmer ===== */
+var RAUM={};
+RAUM.woerter=function(b,fertig){var n=0;b.insertAdjacentHTML('beforeend',sagt('Vier neue Wörter. Tipp jede Karte an, dann dreht sie sich um.'));
+ var g=mk('div','wkarten');b.appendChild(g);
+ C.woerter.forEach(function(w){var k=mk('button','wk','<span class="em">'+w.em+'</span><span class="z">'+w.z+'</span><span class="na">'+w.na+'</span>');
+  k.onclick=function(){if(k.classList.contains('f'))return;k.classList.add('f');toast('🔊 '+w.z);n++;if(n===C.woerter.length){b.insertAdjacentHTML('beforeend','<div class="buch">📗 Sie liegen jetzt in deinem Buch.</div>');fertig();}};g.appendChild(k);});};
+RAUM.hoeren=function(b,fertig){var i=0;b.insertAdjacentHTML('beforeend',sagt('Hör zu. Tipp auf ▶ für die nächste Zeile.'));
+ var d=mk('div','dialog');b.appendChild(d);var k=mk('button','play','▶ Nächste Zeile');b.appendChild(k);
+ k.onclick=function(){var L=C.hoeren[i];var r=mk('div','zeile'+(L.w==='Du'?' du':''),'<span class="wer">'+L.w+'</span><span class="z">'+L.z+'</span><span class="na">'+L.na+'</span>');d.appendChild(r);i++;unten();
+  if(i===C.hoeren.length){k.remove();frage(b,C.hoerFrage,fertig);}};};
+function frage(b,F,fertig){var f=mk('div','frage','<div class="q">'+F.q+'</div>');b.appendChild(f);var s=mk('div','sanft');
+ F.o.forEach(function(o){var x=mk('button','opt',o[0]);x.onclick=function(){if(f.dataset.ok)return;if(o[1]){x.classList.add('ok');f.dataset.ok=1;s.textContent='Genau.';fertig();}else{x.classList.add('no');x.disabled=true;s.textContent='Noch nicht. Schau noch einmal hin.';}};f.appendChild(x);});
+ f.appendChild(s);unten();}
+RAUM.gefuehrt=function(b,fertig){var i=0;b.insertAdjacentHTML('beforeend','<div class="hinweis-l">Du bist Kunde, Spikiu verkauft. Tipp an, was du sagen möchtest.</div>');
+ function zug(){var D=C.gefuehrt[i];b.insertAdjacentHTML('beforeend',sagt(D.na,D.sp));capys(b);unten();
+  if(D.ende){fertig();return;}
+  var c=mk('div','chips');b.appendChild(c);
+  D.ch.forEach(function(o){var x=mk('button','chip','<span class="z">'+o[0]+'</span><span class="na">'+o[1]+'</span>');x.onclick=function(){c.remove();b.insertAdjacentHTML('beforeend','<div class="you"><span>'+o[0]+'</span></div>');i++;setTimeout(zug,RED?0:450);};c.appendChild(x);});unten();}
+ zug();};
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[¿?¡!.,]/g,' ').split(/\s+/).filter(Boolean);}
+RAUM.selbst=function(b,fertig){var i=0;b.insertAdjacentHTML('beforeend','<div class="hinweis-l">Dieselbe Szene — jetzt sagst du es selbst. Spikiu vergleicht ohne KI mit den Mustersätzen.</div>');
+ function zug(){var A=C.selbst[i];b.insertAdjacentHTML('beforeend',sagt('',A.sp));capys(b);
+  var f=mk('div','eingabe','<div class="auf">✍️ '+A.auf+'</div><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Schreib deinen Satz …"><button class="pruef">Sagen</button>');b.appendChild(f);unten();
+  var inp=f.querySelector('input');
+  f.querySelector('.pruef').onclick=function(){var v=inp.value.trim();if(!v){inp.focus();return;}
+   var ich=norm(v),best=null;A.soll.forEach(function(s){var w=norm(s),tr=w.filter(function(x){return ich.indexOf(x)>-1;}).length/w.length;if(!best||tr>best.tr)best={s:s,w:w,tr:tr};});
+   var spiegel=best.w.map(function(x){return '<span class="'+(ich.indexOf(x)>-1?'da':'fehlt')+'">'+x+'</span>';}).join(' ');
+   f.innerHTML='<div class="auf">✍️ '+A.auf+'</div><div class="you"><span>'+esc(v)+'</span></div><div class="spiegel"><div class="eb">Spiegel</div><div class="wort">'+spiegel+'</div><div class="muster">Mustersatz: <b>'+best.s+'</b></div>'+(best.tr===1?'<div class="gut">Alles drin. ¡Muy bien!</div>':'<div class="gut">Grün ist schon da. Der Mustersatz zeigt den Rest.</div>')+'</div>';
+   i++;unten();setTimeout(function(){if(i<C.selbst.length)zug();else fertig();},RED?0:700);};
+  inp.onkeydown=function(e){if(e.key==='Enter')f.querySelector('.pruef').click();};}
+ zug();};
+RAUM.aussprache=function(b,fertig){var i=0;b.insertAdjacentHTML('beforeend',sagt('Jedes Wort hat eine starke Silbe. Tipp sie an.'));
+ function wort(){var W=C.aussprache[i];var f=mk('div','silben-box','<div class="na">'+W.na+'</div><div class="silben"></div><div class="sanft"></div>');b.appendChild(f);
+  W.w.forEach(function(sl,k){var x=mk('button','silbe',sl);x.onclick=function(){if(f.dataset.ok)return;
+   if(k===W.s){x.classList.add('ok');f.dataset.ok=1;f.querySelector('.sanft').textContent='¡Eso es! '+W.w.map(function(q,j){return j===W.s?q.toUpperCase():q;}).join('-');i++;setTimeout(function(){if(i<C.aussprache.length)wort();else fertig();},RED?0:700);}
+   else{x.classList.add('no');f.querySelector('.sanft').textContent='Hör noch einmal hin …';}};f.querySelector('.silben').appendChild(x);});unten();}
+ wort();};
+RAUM.grammatik=function(b,fertig){var G=C.grammatik;
+ b.insertAdjacentHTML('beforeend','<div class="regel"><div class="eb">'+G.eb+'</div><p>'+G.regel+'</p><table>'+G.tab.map(function(r){return '<tr><td>'+r[0]+'</td><td>→</td><td><b>'+r[1]+'</b></td></tr>';}).join('')+'</table></div>');
+ var i=0;function ueb(){var U=G.ueb[i];var f=mk('div','frage','<div class="q z">'+U.q+'</div>');b.appendChild(f);var s=mk('div','sanft');
+  U.o.forEach(function(o,k){var x=mk('button','opt',o);x.onclick=function(){if(f.dataset.ok)return;if(k===U.r){x.classList.add('ok');f.dataset.ok=1;s.textContent='Genau.';i++;setTimeout(function(){if(i<G.ueb.length)ueb();else fertig();},RED?0:500);}else{x.classList.add('no');s.textContent='Schau aufs Wort danach.';}};f.appendChild(x);});f.appendChild(s);unten();}
+ ueb();};
+RAUM.lesen=function(b,fertig){var L=C.lesen;b.insertAdjacentHTML('beforeend',sagt('Ein kurzes Stück. Tipp unterstrichene Wörter an, wenn du magst.'));
+ var t=mk('div','lesetext');L.t.forEach(function(p){if(p[1]){var w=mk('span','w',p[0]);w.onclick=function(){w.classList.add('gesammelt');toast(p[0]+' = '+p[1]+' · liegt in deinem Buch');};t.appendChild(w);}else t.appendChild(document.createTextNode(p[0]));});b.appendChild(t);
+ frage(b,{q:L.q,o:L.o},fertig);};
+RAUM.spiel=function(b,fertig){var W=C.woerter;b.insertAdjacentHTML('beforeend',sagt('Gemelos: Finde die Paare. Links Spanisch, rechts Deutsch.'));
+ var g=mk('div','gm');b.appendChild(g);var R=mische(W.map(function(w,i){return{i:i,t:w.na};})),sl=null,sr=null,n=0;
+ function knopf(o,seite){var x=mk('button',seite==='l'?'z':'',o.t);x.onclick=function(){if(x.classList.contains('ok'))return;
+  if(seite==='l'){if(sl)sl.x.classList.remove('sel');sl={o:o,x:x};}else{if(sr)sr.x.classList.remove('sel');sr={o:o,x:x};}x.classList.add('sel');
+  if(sl&&sr){var a=sl,c=sr;sl=sr=null;if(a.o.i===c.o.i){a.x.classList.add('ok');c.x.classList.add('ok');a.x.classList.remove('sel');c.x.classList.remove('sel');n++;if(n===W.length)fertig();}
+   else{a.x.classList.add('no');c.x.classList.add('no');setTimeout(function(){a.x.classList.remove('no','sel');c.x.classList.remove('no','sel');},450);}}};return x;}
+ for(var i=0;i<W.length;i++){g.appendChild(knopf({i:i,t:W[i].z},'l'));g.appendChild(knopf(R[i],'r'));}};
+
+/* Eigene Icon-Zeichnungen (24×24, Linien). Je Variante anders dargestellt:
+   1 Papier = feine Tintenlinie · 2 Mittelmeer = runde Fliese, zweifarbig · 3 Nacht = geometrische Zeichen + Ziffern */
+var GLYPH={
+ woerter:'<rect x="3" y="6" width="12" height="15" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v13"/>',
+ hoeren:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>',
+ gefuehrt:'<path d="M3 4h12v9H8l-4 3v-3H3z"/><path d="M15 8h6v9h-1v3l-4-3h-5v-4"/>',
+ selbst:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c1-4 3.6-6 6.5-6s5.5 2 6.5 6"/><path d="M17 6c1.4 1.2 1.4 3.8 0 5M19.8 4c2.8 2.6 2.8 6.4 0 9"/>',
+ aussprache:'<path d="M2 12h3l2-6 3 12 3-9 2 6 2-3h5"/>',
+ grammatik:'<path d="M5 3h11a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3z"/><path d="M5 18a3 3 0 0 1 3-3h11M9 7h6M9 10h4"/>',
+ lesen:'<path d="M2 5c3-1 6-1 10 1v14c-4-2-7-2-10-1z"/><path d="M22 5c-3-1-6-1-10 1v14c4-2 7-2 10-1z"/>',
+ spiel:'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5l-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>',
+ blase:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/>',
+ stift:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
+ cafe:'<path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2M8 3v3M12 3v3"/>',
+ restaurant:'<path d="M5 3v5a2 2 0 0 0 4 0V3M7 10v11"/><path d="M17 3c-2.2 2-2.2 6 0 8v10"/>',
+ einkaufen:'<path d="M3 9h18l-2 11H5z"/><path d="M8 9l4-6 4 6M9 13v4M15 13v4"/>',
+ weg:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+ taxi:'<path d="M3 16v-4l2-5h14l2 5v4z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M10 4h4"/>',
+ familie:'<circle cx="8" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-4 3-6 6-6s6 2 6 6M14 20c0-3 1.5-5 3-5s4 2 4 5"/>',
+ hotel:'<path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-8v5"/><circle cx="6.5" cy="11" r="1.5"/>',
+ bahnhof:'<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/>',
+ arzt:'<path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/>',
+ wetter:'<circle cx="9" cy="9" r="3.5"/><path d="M9 2v1.5M2 9h1.5M4 4l1 1M14 4l-1 1"/><path d="M8 20h10a3 3 0 0 0 0-6 5 5 0 0 0-9 1 3 3 0 0 0-1 5z"/>'
+};
+var LEK_ICON=['cafe','restaurant','einkaufen','weg','taxi','familie','hotel','bahnhof','arzt','wetter'];
+var ZI_ICON=['woerter','hoeren','gefuehrt','selbst','aussprache','grammatik','lesen','spiel'];
+var FREI_ICON=['woerter','aussprache','lesen','blase','stift','spiel'];
+/* geometrische Zeichen für Variante 3 */
+var FORMEN=[
+ '<circle cx="12" cy="12" r="8"/>','<path d="M12 4l8.5 15h-17z"/>','<rect x="4.5" y="4.5" width="15" height="15"/>','<path d="M12 3l9 9-9 9-9-9z"/>',
+ '<path d="M12 3l8.6 6.2-3.3 10.1H6.7L3.4 9.2z"/>','<path d="M7 4h10l5 8-5 8H7l-5-8z"/>','<path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="8"/>','<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5l-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>'];
+function ikon(name,i,art){if(window.IKON_X)return IKON_X(name,i,art);
+ if(STIL==='papier')return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+GLYPH[name]+'</svg>';
+ if(STIL==='meer'){var hell=i%2===1;return '<svg class="ic" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="'+(hell?'#ffd23f':'#1f4fd1')+'"/><g transform="translate(4 4)" fill="none" stroke="'+(hell?'#1f4fd1':'#fff')+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+GLYPH[name]+'</g></svg>';}
+ /* nacht */
+ if(art==='lek')return '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#e8b54a" stroke-width="1.8"/><text x="12" y="16.2" text-anchor="middle" font-family="Archivo Black,sans-serif" font-size="11" fill="#e8b54a">'+(i+1)+'</text></svg>';
+ return '<svg class="ic" viewBox="0 0 24 24" fill="'+(i%2?'none':'#ff7a6b')+'" stroke="'+(i%2?'#e8b54a':'#ff7a6b')+'" stroke-width="2" stroke-linejoin="round">'+FORMEN[i%FORMEN.length]+'</svg>';}
+LEK.forEach(function(L,i){L.em=ikon(LEK_ICON[i],i,'lek');});
+ZI.forEach(function(Z,i){Z.em=ikon(ZI_ICON[i],i,'zi');});
+FREI.forEach(function(F,i){F[0]=ikon(FREI_ICON[i],i,'frei');});
+
+
+var T={
+ kopfHome:function(){return '<div class="kp"><div class="t"><div class="eb">Spikiu · Spanisch</div><b>Inhalt</b></div><span class="sz">§</span></div>';},
+ home:function(w){var j=jetzt();
+  var h=sagt('Hier ist dein Inhaltsverzeichnis. Die markierte Lektion ist die nächste.')+'<div class="papier"><h2>Inhalt</h2><div class="eb">Erste Stufe · 🌱 Samen</div>';
+  LEK.forEach(function(L,i){var st=lekFertig(i)?'ok':(i===j?'jetzt':'zu');h+='<button class="ix '+st+'" data-i="'+i+'"><span class="nr">'+(i+1)+'</span><span class="tx"><span class="tt">'+L.t+'</span><br><span class="es">'+L.es+'</span></span><span class="dots"></span><span class="st">'+(st==='ok'?'✓':(st==='jetzt'?'jetzt':''))+'</span></button>';});
+  h+='<div class="ixh">🌿 Stamm · zweite Stufe</div><div class="fussnote">Dieselben zehn Orte, eine Stufe tiefer.</div></div>';
+  w.innerHTML=h;w.querySelectorAll('.ix').forEach(function(b){b.onclick=function(){zeigeLektion(+b.dataset.i);};});},
+ kopfLektion:function(l){return '<div class="kp"><button class="back" onclick="zeigeHome()">‹</button><div class="t"><div class="eb">Lektion '+(l+1)+'</div><b>'+LEK[l].em+' '+LEK[l].t+'</b></div><span class="sz">'+(l+1)+'</span></div>';},
+ lektion:function(w,l){var n=naechstesZimmer(l),fertig=lekFertig(l);
+  var h=sagt(fertig?'Diese Lektion hast du schon gemacht. Jedes Kapitel bleibt offen.':'Jede Lektion hat dieselben acht Kapitel, in derselben Reihenfolge.')+'<div class="papier"><h2>'+LEK[l].t+'</h2><div class="es" style="margin-bottom:.8rem">'+LEK[l].es+'</div>';
+  ZI.forEach(function(Z,z){var f=zimmerFertig(l,z),st=f?'ok':(z===n&&!fertig?'jetzt':'zu');
+   h+='<button class="ix '+st+'" data-z="'+z+'"><span class="nr" style="font-size:.95rem">'+(l+1)+'.'+(z+1)+'</span><span class="tx"><span class="tt"><span class="em">'+Z.em+'</span>'+Z.t+'</span><br><span class="es" style="font-style:normal;font-family:DM Sans;font-size:.78rem;font-weight:600">'+Z.s+'</span></span><span class="dots"></span><span class="st">'+(f?'✓':(st==='jetzt'?'→':''))+'</span></button>';});
+  h+='</div><button class="los">'+(fertig?'Noch einmal von vorn':(n===0?'Lektion beginnen: '+(l+1)+'.1 Wörter':'Weiter mit '+(l+1)+'.'+(n+1)+' '+ZI[n].t))+'</button>';
+  w.innerHTML=h;w.querySelectorAll('.ix').forEach(function(b){b.onclick=function(){zeigeZimmer(l,+b.dataset.z);};});
+  w.querySelector('.los').onclick=function(){zeigeZimmer(l,fertig?0:n);};},
+ kopfZimmer:function(l,z){return '<div class="kp"><button class="back" onclick="zeigeLektion('+l+')">‹</button><div class="t"><div class="eb">Lektion '+(l+1)+' · Kapitel '+(l+1)+'.'+(z+1)+'</div><b>'+ZI[z].em+' '+ZI[z].t+'</b></div><span class="sz">'+(l+1)+'.'+(z+1)+'</span></div>';},
+ weiterText:function(l,z){return 'Weiter: <span class="nr">'+(l+1)+'.'+(z+1)+'</span> '+ZI[z].t+' ›';},
+ endeText:function(l){return 'Lektion '+(l+1)+' abschließen ›';},
+ ende:function(w,l){var nx=l+1<LEK.length?l+1:null;
+  var h='<div class="papier" style="text-align:left"><div class="eb">Lektion '+(l+1)+'</div><h2>'+LEK[l].t+'</h2><div class="ende-stempel">✓ Gelesen &amp; gesprochen</div>'+sagt('Alle acht Kapitel. Deine Wörter liegen im Buch und kommen in anderen Lektionen wieder.');
+  ZI.forEach(function(Z,z){h+='<div class="ix ok" style="cursor:default"><span class="nr" style="font-size:.9rem">'+(l+1)+'.'+(z+1)+'</span><span class="tx"><span class="tt">'+Z.t+'</span></span><span class="dots"></span><span class="st">✓</span></div>';});
+  h+='</div>'+(nx!=null?'<button class="los" id="nx">Weiter zu Lektion '+(nx+1)+': '+LEK[nx].t+'</button>':'')+'<button class="los" id="ih" style="background:#fff">Zum Inhalt</button>';
+  w.innerHTML=h;if(nx!=null)w.querySelector('#nx').onclick=function(){zeigeLektion(nx);};w.querySelector('#ih').onclick=zeigeHome;},
+ kopfFrei:function(){return '<div class="kp"><button class="back" onclick="zeigeHome()">‹</button><div class="t"><div class="eb">Anhang</div><b>Alle Zimmer</b></div><span class="sz">A</span></div>';},
+ frei:function(w){var h=sagt('Zum freien Üben, quer durch alle Lektionen.')+'<div class="papier"><h2>Anhang</h2><div class="eb" style="margin-bottom:.6rem">Zimmer zum freien Üben</div>';
+  FREI.forEach(function(f,i){h+='<button class="ix frei-li" data-i="'+i+'"><span class="nr" style="font-size:.95rem">A'+(i+1)+'</span><span class="tx"><span class="tt"><span class="em">'+f[0]+'</span>'+f[1]+'</span><br><span class="es" style="font-style:normal;font-family:DM Sans;font-size:.78rem;font-weight:600">'+f[2]+'</span></span><span class="dots"></span><span class="st"></span></button>';});
+  w.innerHTML=h+'</div>';w.querySelectorAll('.ix').forEach(function(b){b.onclick=function(){toast(FREI[+b.dataset.i][1]+' öffnet sich.');};});}
+};
+
+document.getElementById('tic-frei').innerHTML=ikon('woerter',0,'zi');
+document.getElementById('tic-mein').innerHTML='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>';
+capys();zeigeHome();
+</script>
+</body>
+</html>
