@@ -54,9 +54,9 @@
       gemelosDone: 'Alle Paare sind zusammen.', ziel: 'ZIELSPRACHE', mutter: 'DEINE SPRACHE',
       hoeren: 'Anhören',
       // Garten
-      gIntro: 'Das ist mein Garten. Jeder Buchstabe ist ein Beet. Wähl ein Thema, tipp ein Beet an und pflanz ein Wort, das dir einfällt. Nicht der Reihe nach, einfach wie es kommt.',
+      gIntro: 'Jeder Buchstabe ist ein Beet. Tipp eins an und pflanz ein Wort — wie es kommt, nicht der Reihe nach.',
       gWieder: 'Dein Garten vom letzten Mal wächst noch. Pflanz einfach weiter.',
-      gWrite: 'Wort mit', gPlant: 'pflanzen', gSow: 'Spikiu sät',
+      gWrite: 'Wort mit', gPlant: 'pflanzen', gSow: 'Spikiu sät', thWechsel: 'wechseln', gBeet: function (L) { return 'Beet ' + L; }, gLeer: function (L) { return 'Noch leer. Was fällt dir mit ' + L + ' ein?'; }, gTippWeg: 'Tipp ein Wort an, um es zu entfernen.', gWaechst: '🌱 🌿 🌳 wächst', hilfBei: function (L) { return 'Spikiu, hilf mir bei ' + L; },
       gKnown: 'kenne ich', gYou: 'dein Wort', gLent: 'von Spikiu gesät',
       gUnknown: 'Kenne ich noch nicht. Es bleibt in deinem Garten.',
       gSowed: function (x, t) { return 'Spikiu sät: <em>' + x + '</em> (' + t + '). Jetzt du.'; },
@@ -81,7 +81,7 @@
       meTask: 'Deck zwei Karten auf: Wort und Bild gehören zusammen.', meFertig: 'Alle Paare gefunden.',
       aIntro: 'So sieht ein Akrostichon aus. Zu jedem Buchstaben ein Wort, das zum Thema passt.',
       aPick: 'Wähl ein Wort', aThema: 'Thema',
-      aHint: 'Jedes Wort zählt, das zum Thema passt — auch aus dem Umfeld (Essen, Unterwegs …). Hängst du? Tipp auf Spikiu: Er verrät Buchstabe für Buchstabe.', aDone: 'Fertig',
+      aHint: 'Zu jedem Buchstaben ein Wort zum Thema. Hängst du, hilft Spikiu unten — Buchstabe für Buchstabe.', aDone: 'Fertig',
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> passt nicht zum Thema „' + th + '". Such ein anderes.'; },
       aRaus: 'Wörter, die nicht zum Thema passen, bleiben draußen.', aKeine: 'Für dieses Thema habe ich gerade kein Wort. Wähl ein anderes Thema.',
       aSaved: 'Deine Akrosticha', aYours: 'Dein Akrostichon', aNew: 'Neues Akrostichon', aSpikiu: 'Spikius Akrostichon'
@@ -100,9 +100,9 @@
       gemelosTask: 'Une cada pareja.', gemelosNo: 'No son pareja. Prueba otra.',
       gemelosDone: 'Todas las parejas juntas.', ziel: 'IDIOMA META', mutter: 'TU IDIOMA',
       hoeren: 'Escuchar',
-      gIntro: 'Este es mi huerto. Cada letra es un bancal. Elige un tema, toca un bancal y planta una palabra que se te ocurra. No hace falta ir en orden: como salga.',
+      gIntro: 'Cada letra es un bancal. Toca uno y planta una palabra, como salga, sin orden.',
       gWieder: 'Tu huerto de la última vez sigue creciendo. Sigue plantando.',
-      gWrite: 'Palabra con', gPlant: 'plantar', gSow: 'Spikiu siembra',
+      gWrite: 'Palabra con', gPlant: 'plantar', gSow: 'Spikiu siembra', thWechsel: 'cambiar', gBeet: function (L) { return 'Bancal ' + L; }, gLeer: function (L) { return 'Todavía vacío. ¿Qué se te ocurre con la ' + L + '?'; }, gTippWeg: 'Toca una palabra para quitarla.', gWaechst: '🌱 🌿 🌳 crece', hilfBei: function (L) { return 'Spikiu, ayúdame con la ' + L; },
       gKnown: 'la conozco', gYou: 'tu palabra', gLent: 'sembrada por Spikiu',
       gUnknown: 'Todavía no la conozco. Se queda en tu huerto.',
       gSowed: function (x, t) { return 'Spikiu siembra: <em>' + x + '</em> (' + t + '). Ahora tú.'; },
@@ -126,7 +126,7 @@
       meTask: 'Da la vuelta a dos cartas: palabra e imagen van juntas.', meFertig: 'Todas las parejas encontradas.',
       aIntro: 'Así es un acróstico. Para cada letra, una palabra que tenga que ver con el tema.',
       aPick: 'Elige una palabra', aThema: 'Tema',
-      aHint: 'Vale cualquier palabra que tenga que ver con el tema, también de su entorno (comida, viajes …). ¿Atascado? Toca a Spikiu: te da la palabra letra a letra.', aDone: 'Hecho',
+      aHint: 'Para cada letra, una palabra del tema. Si te atascas, Spikiu te ayuda abajo, letra a letra.', aDone: 'Hecho',
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> no tiene que ver con «' + th + '». Busca otra.'; },
       aRaus: 'Las palabras que no son del tema se quedan fuera.', aKeine: 'Para este tema no tengo palabra ahora. Elige otro tema.',
       aSaved: 'Tus acrósticos', aYours: 'Tu acróstico', aNew: 'Nuevo acróstico', aSpikiu: 'El acróstico de Spikiu'
@@ -145,9 +145,9 @@
       gemelosTask: 'Match each pair.', gemelosNo: 'Not a pair. Try another.',
       gemelosDone: 'All pairs are together.', ziel: 'TARGET', mutter: 'YOUR LANGUAGE',
       hoeren: 'Listen',
-      gIntro: 'This is my garden. Every letter is a bed. Pick a topic, tap a bed and plant a word that comes to mind. No need to go in order.',
+      gIntro: 'Every letter is a bed. Tap one and plant a word — as it comes, in any order.',
       gWieder: 'Your garden from last time is still growing. Keep planting.',
-      gWrite: 'Word with', gPlant: 'plant', gSow: 'Spikiu sows',
+      gWrite: 'Word with', gPlant: 'plant', gSow: 'Spikiu sows', thWechsel: 'change', gBeet: function (L) { return 'Bed ' + L; }, gLeer: function (L) { return 'Still empty. What comes to mind with ' + L + '?'; }, gTippWeg: 'Tap a word to remove it.', gWaechst: '🌱 🌿 🌳 grows', hilfBei: function (L) { return 'Spikiu, help me with ' + L; },
       gKnown: 'I know it', gYou: 'your word', gLent: 'sown by Spikiu',
       gUnknown: 'I don’t know it yet. It stays in your garden.',
       gSowed: function (x, t) { return 'Spikiu sows: <em>' + x + '</em> (' + t + '). Your turn.'; },
@@ -171,7 +171,7 @@
       meTask: 'Turn over two cards: word and picture belong together.', meFertig: 'All pairs found.',
       aIntro: 'This is an acrostic. For each letter, a word that fits the topic.',
       aPick: 'Pick a word', aThema: 'Topic',
-      aHint: 'Any word that fits the topic counts, its wider field too (food, travel …). Stuck? Tap Spikiu: he reveals the word letter by letter.', aDone: 'Done',
+      aHint: 'For each letter, a word that fits the topic. Stuck? Spikiu helps below, letter by letter.', aDone: 'Done',
       aNichtFeld: function (x, th) { return '<em>' + x + '</em> doesn\u2019t fit \u201c' + th + '\u201d. Try another one.'; },
       aRaus: 'Words that don\u2019t fit the topic stay out.', aKeine: 'I have no word for this topic right now. Pick another topic.',
       aSaved: 'Your acrostics', aYours: 'Your acrostic', aNew: 'New acrostic', aSpikiu: 'Spikiu’s acrostic'
@@ -190,9 +190,9 @@
       gemelosTask: 'Ένωσε κάθε ζευγάρι.', gemelosNo: 'Δεν είναι ζευγάρι. Δοκίμασε άλλο.',
       gemelosDone: 'Όλα τα ζευγάρια μαζί.', ziel: 'ΓΛΩΣΣΑ ΠΟΥ ΜΑΘΑΙΝΕΙΣ', mutter: 'Η ΓΛΩΣΣΑ ΣΟΥ',
       hoeren: 'Άκου',
-      gIntro: 'Αυτός είναι ο κήπος μου. Κάθε γράμμα είναι ένα παρτέρι. Διάλεξε ένα θέμα, πάτα ένα παρτέρι και φύτεψε μια λέξη που σου έρχεται στο μυαλό. Δεν χρειάζεται να πας με τη σειρά.',
+      gIntro: 'Κάθε γράμμα είναι ένα παρτέρι. Πάτα ένα και φύτεψε μια λέξη, όπως έρθει.',
       gWieder: 'Ο κήπος σου από την προηγούμενη φορά μεγαλώνει ακόμα. Συνέχισε να φυτεύεις.',
-      gWrite: 'Λέξη με', gPlant: 'φύτεψε', gSow: 'Ο Spikiu σπέρνει',
+      gWrite: 'Λέξη με', gPlant: 'φύτεψε', gSow: 'Ο Spikiu σπέρνει', thWechsel: 'αλλαγή', gBeet: function (L) { return 'Παρτέρι ' + L; }, gLeer: function (L) { return 'Ακόμα άδειο. Τι σου έρχεται στο μυαλό με ' + L + ';'; }, gTippWeg: 'Πάτα μια λέξη για να την αφαιρέσεις.', gWaechst: '🌱 🌿 🌳 μεγαλώνει', hilfBei: function (L) { return 'Spikiu, βοήθησέ με με το ' + L; },
       gKnown: 'την ξέρω', gYou: 'η λέξη σου', gLent: 'σπαρμένη από τον Spikiu',
       gUnknown: 'Δεν την ξέρω ακόμα. Μένει στον κήπο σου.',
       gSowed: function (x, t) { return 'Ο Spikiu σπέρνει: <em>' + x + '</em> (' + t + '). Σειρά σου.'; },
@@ -216,7 +216,7 @@
       meTask: 'Γύρισε δύο κάρτες: η λέξη και η εικόνα πάνε μαζί.', meFertig: 'Βρήκες όλα τα ζευγάρια.',
       aIntro: 'Αυτή είναι μια ακροστιχίδα. Για κάθε γράμμα, μια λέξη που ταιριάζει στο θέμα.',
       aPick: 'Διάλεξε μια λέξη', aThema: 'Θέμα',
-      aHint: 'Μετράει κάθε λέξη που ταιριάζει στο θέμα, και από το ευρύτερο πεδίο του (φαγητό, ταξίδια …). Κόλλησες; Πάτα τον Spikiu: σου αποκαλύπτει τη λέξη γράμμα γράμμα.', aDone: 'Έτοιμο',
+      aHint: 'Για κάθε γράμμα, μια λέξη του θέματος. Αν κολλήσεις, ο Spikiu βοηθάει από κάτω, γράμμα γράμμα.', aDone: 'Έτοιμο',
       aNichtFeld: function (x, th) { return 'Το <em>' + x + '</em> δεν ταιριάζει στο «' + th + '». Δοκίμασε άλλη.'; },
       aRaus: 'Οι λέξεις που δεν ταιριάζουν στο θέμα μένουν έξω.', aKeine: 'Δεν έχω λέξη γι’ αυτό το θέμα τώρα. Διάλεξε άλλο θέμα.',
       aSaved: 'Οι ακροστιχίδες σου', aYours: 'Η ακροστιχίδα σου', aNew: 'Νέα ακροστιχίδα', aSpikiu: 'Η ακροστιχίδα του Spikiu'
@@ -311,6 +311,47 @@
     '.jg-legend{display:flex;flex-wrap:wrap;gap:.7rem;font-size:.75rem;color:var(--jg-mid);width:100%}',
     '.jg-legend i{display:inline-block;width:11px;height:11px;border-radius:4px;border:1.5px solid var(--jg-ink);vertical-align:-1px;margin-right:4px}',
     '.jg-whisper{font-size:.88rem;color:var(--jg-mid);min-height:1.3em;width:100%;text-align:left}',
+    /* 22.11.2026 (Leo: „Ästhetik und Einheit“, Vorlage prototyp-garten/akrostichon.html): Themen-Raster, Beete-Raster, Blatt, eine Hilfe */
+    '.jg-thw{width:100%}',
+    '.jg-schild{display:flex;align-items:center;gap:.5rem;width:100%;border:2.5px solid var(--jg-ink);border-radius:100px;background:#fff;padding:.4rem .5rem .4rem .85rem;box-shadow:2px 3px 0 var(--jg-ink);cursor:pointer;color:var(--jg-ink);font-family:"DM Sans",sans-serif}',
+    '.jg-schild .em{font-size:1.4rem;line-height:1}.jg-schild b{flex:1;text-align:left;font:800 1.02rem "DM Sans",sans-serif}',
+    '.jg-schild .w{font:700 .8rem "DM Sans",sans-serif;border:2px solid var(--jg-ink);border-radius:100px;padding:.12rem .6rem;background:var(--jg-yel)}',
+    '.jg-thg{display:none;grid-template-columns:repeat(3,1fr);gap:.65rem;width:100%;margin-top:.8rem}',
+    '.jg-thw.auf .jg-thg{display:grid}',
+    '.jg-th{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;min-height:6.2rem;border:2.5px solid var(--jg-ink);border-radius:16px;box-shadow:3px 4px 0 var(--jg-ink);cursor:pointer;padding:.5rem .3rem;text-align:center;color:var(--jg-ink)}',
+    '.jg-th .em{font-size:2.2rem;line-height:1}.jg-th .tt{font:800 .98rem/1.15 "DM Sans",sans-serif}',
+    '.jg-th.on{outline:3px dashed var(--jg-acc);outline-offset:3px}',
+    '.jg-th:active,.jg-beet:active,.jg-wahl:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--jg-ink)}',
+    '.jg-beete{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;width:100%}',
+    '.jg-beet{position:relative;aspect-ratio:1/1.05;border:2px solid var(--jg-ink);border-radius:12px;background:#fff;box-shadow:2px 3px 0 var(--jg-ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;color:var(--jg-ink)}',
+    '.jg-beet .L{font:900 1.3rem/1 "Archivo Black",sans-serif}.jg-beet .p{font-size:1.1rem;line-height:1;margin-top:.12rem;height:1.15rem}',
+    '.jg-beet.leer{background:rgba(255,255,255,.55);border-style:dashed;box-shadow:none}.jg-beet.leer .L{opacity:.55}',
+    '.jg-beet.k{background:var(--jg-ok)}.jg-beet.d{background:#fff3c4}.jg-beet.s{background:#eceee9}.jg-beet.mix{background:linear-gradient(135deg,var(--jg-ok) 50%,#fff3c4 50%)}',
+    '.jg-legend{justify-content:center;font-size:.84rem}',
+    '.jg-ov{position:fixed;inset:0;z-index:80;background:rgba(21,22,58,.4);display:flex;align-items:flex-end;justify-content:center}',
+    '.jg-blatt{width:100%;max-width:560px;background:#fff;border:2.5px solid var(--jg-ink);border-bottom:0;border-radius:22px 22px 0 0;padding:1rem 1rem calc(1.1rem + env(safe-area-inset-bottom));box-shadow:0 -4px 0 var(--jg-ink);max-height:80%;overflow:auto;text-align:left;color:var(--jg-ink)}',
+    '.jg-griff{width:46px;height:5px;border-radius:9px;background:rgba(21,22,58,.25);margin:-.3rem auto .7rem}',
+    '.jg-bkopf{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem}',
+    '.jg-bkopf .L{flex:0 0 56px;height:56px;border:2.5px solid var(--jg-ink);border-radius:14px;background:var(--jg-yel);display:flex;align-items:center;justify-content:center;font:900 1.7rem "Archivo Black",sans-serif;box-shadow:2px 3px 0 var(--jg-ink)}',
+    '.jg-bkopf .t{font:800 1.12rem/1.25 "DM Sans",sans-serif}.jg-bkopf .t small{display:block;font:600 .9rem "DM Sans",sans-serif;color:var(--jg-mid)}',
+    '.jg-blatt .jg-ent{margin-bottom:.8rem}.jg-blatt .jg-w{font-size:1.15rem}.jg-blatt .jg-in input{font-size:1.15rem}',
+    '.jg-bfuss{display:flex;justify-content:space-between;gap:.5rem;margin-top:.5rem}',
+    '.jg-blatt .jg-whisper{font-size:.98rem;margin:.5rem 0 .2rem}',
+    '.jg-wahlen{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;width:100%}',
+    '.jg-wahl{border:2.5px solid var(--jg-ink);border-radius:16px;box-shadow:3px 4px 0 var(--jg-ink);cursor:pointer;padding:.65rem .4rem;display:flex;justify-content:center;flex-wrap:wrap;gap:.22rem}',
+    '.jg-wahl i{font-style:normal;width:1.9rem;height:2.2rem;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--jg-ink);border-radius:7px;font:900 1.1rem "Archivo Black",sans-serif;color:var(--jg-ink)}',
+    '.jg-kawa{background:none;border:none;box-shadow:none;padding:0;gap:.5rem}',
+    '.jg-kl{background:#fff;border:2.5px solid var(--jg-ink);border-radius:16px;box-shadow:3px 4px 0 var(--jg-ink);padding:.45rem .55rem .45rem .45rem;flex-wrap:wrap}',
+    '.jg-kl .jg-kb{width:52px;height:52px;border-radius:12px;font:900 1.6rem "Archivo Black",sans-serif;border-width:2.5px}',
+    '.jg-kawa.lang .jg-kb{width:44px;height:44px;font-size:1.35rem}',
+    '.jg-kl input{font-size:1.25rem}',
+    '.jg-kl .tr{font-size:.88rem;max-width:40%}',
+    '.jg-kl.aktiv{background:#fffbea;outline:3px solid var(--jg-yel);outline-offset:0}',
+    '.jg-kl.ok{background:#f1fae6}',
+    '.jg-kh{display:flex;align-items:center;gap:.5rem;width:100%;margin-top:.2rem}',
+    '.jg-kh svg{width:38px;height:38px;flex:none}',
+    '.jg-kh button{flex:1;border:2.5px solid var(--jg-ink);border-radius:100px;background:#fff;padding:.7rem 1rem;font:800 1rem "DM Sans",sans-serif;cursor:pointer;box-shadow:3px 4px 0 var(--jg-ink);color:var(--jg-ink)}',
+    '.jg-bub{font-size:1.05rem}',
     /* Akrostichon */
     '.jg-kawa{width:100%;background:#fff;border:2.5px solid var(--jg-ink);border-radius:20px;box-shadow:4px 5px 0 var(--jg-ink);padding:.7rem .7rem;display:flex;flex-direction:column;gap:.3rem}',
     '.jg-kl{display:flex;align-items:center;gap:.55rem}',
@@ -729,77 +770,112 @@
      cfg = { themen:[{id,t}], woerterVon:function(id)→[{z,tr}], lexikon:[{z,tr}],
              lade:function(id)→{L:[…]}, speichere:function(id, daten), thema:id,
              beiThema:function(id) }                                          */
+
+  /* Themen-Wähler (22.11.2026): Schild „Thema · wechseln“ + 3-spaltiges Raster statt Wischleiste */
+  var TH_FARBEN = ['#ffd0b0', '#ffe08a', '#ffd24a', '#c7e89a', '#d3eef6', '#ffe08a', '#f7bcd8', '#cdbdf2', '#d3eef6', '#c7e89a', '#ffd0b0', '#ffe08a'];
+  function themaTeile(t) { var m = String(t).match(/^([^\p{L}\p{N}]+)\s*(.*)$/u); return m ? { em: m[1].trim(), tt: m[2] } : { em: '', tt: String(t) }; }
+  function themenWahl(cfg, thema, U, offen) {
+    var w = el('div', 'jg-thw' + (offen ? ' auf' : ''));
+    var akt = (cfg.themen.filter(function (x) { return x.id === thema; })[0] || cfg.themen[0] || { t: '' });
+    var at = themaTeile(akt.t);
+    var sch = el('button', 'jg-schild'); sch.type = 'button';
+    sch.innerHTML = '<span class="em">' + esc(at.em) + '</span><b>' + esc(at.tt) + '</b><span class="w">' + esc(U.thWechsel || '…') + '</span>';
+    sch.addEventListener('click', function () { w.classList.toggle('auf'); });
+    var g = el('div', 'jg-thg');
+    cfg.themen.forEach(function (x, i) {
+      var tx = themaTeile(x.t), b = el('button', 'jg-th' + (x.id === thema ? ' on' : '')); b.type = 'button';
+      b.style.background = TH_FARBEN[i % TH_FARBEN.length];
+      b.innerHTML = '<span class="em">' + esc(tx.em) + '</span><span class="tt">' + esc(tx.tt) + '</span>';
+      b.addEventListener('click', function () { try { sessionStorage.setItem('jg_thema_gewaehlt', '1'); } catch (e) {} if (x.id === thema) { w.classList.remove('auf'); return; } if (cfg.beiThema) cfg.beiThema(x.id); });
+      g.appendChild(b);
+    });
+    w.appendChild(sch); w.appendChild(g);
+    return w;
+  }
+
   function huerto(cfg, opts) {
     var U = T(opts), root = wurzel(), ziel = (opts && opts.zielLang) || 'es';
     var thema = cfg.thema || (cfg.themen[0] && cfg.themen[0].id);
     var daten = cfg.lade(thema) || {};
     var hatte = Object.keys(daten).some(function (k) { return daten[k] && daten[k].length; });
+    var schonGewaehlt = false; try { schonGewaehlt = !!sessionStorage.getItem('jg_thema_gewaehlt'); } catch (e) {}
+    root.appendChild(themenWahl(cfg, thema, U, !hatte && !schonGewaehlt));
     root.appendChild(spikiuSagt(hatte ? U.gWieder : U.gIntro));
-    var th = el('div', 'jg-themes');
-    cfg.themen.forEach(function (x) {
-      var p = el('button', 'jg-pill' + (x.id === thema ? ' on' : ''), x.t); p.type = 'button';
-      p.addEventListener('click', function () { if (cfg.beiThema) cfg.beiThema(x.id); });
-      th.appendChild(p);
-    });
-    root.appendChild(th);
-    setTimeout(function () { var on = th.querySelector('.on'); if (on && on.scrollIntoView) try { on.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) {} }, 30);
     var themenIdx = lexIndex(cfg.woerterVon(thema)), allesIdx = lexIndex(cfg.lexikon);
-    var box = el('div', 'jg-abc'); root.appendChild(box);
+    /* 22.11.2026: alle Beete auf einem Bildschirm (6er-Raster); antippen öffnet ein Blatt von unten */
+    var box = el('div', 'jg-beete'); root.appendChild(box);
     var leg = el('div', 'jg-legend');
-    leg.innerHTML = '<span><i style="background:#c7e89a"></i>' + esc(U.gKnown) + '</span><span><i style="background:#fff3c4"></i>' + esc(U.gYou) + '</span><span><i style="background:#eceee9;border-style:dashed"></i>' + esc(U.gLent) + '</span>';
+    leg.innerHTML = '<span><i style="background:#c7e89a"></i>' + esc(U.gKnown) + '</span><span><i style="background:#fff3c4"></i>' + esc(U.gYou) + '</span><span><i style="background:#eceee9;border-style:dashed"></i>' + esc(U.gLent) + '</span><span>' + esc(U.gWaechst || '') + '</span>';
     root.appendChild(leg);
-    var whisper = el('div', 'jg-whisper'); root.appendChild(whisper);
-    var offen = null, zeilen = {};
+    var zellen = {};
     function sichern() { cfg.speichere(thema, daten); }
-    (ABC[ziel] || ABC.es).forEach(function (L) {
-      var r = el('div', 'jg-row'), b = el('button', 'jg-let', L), e = el('div', 'jg-ent');
-      b.type = 'button'; b.setAttribute('aria-label', U.gWrite + ' ' + L);
-      r.appendChild(b); r.appendChild(e); box.appendChild(r);
-      function zeichne() {
-        e.innerHTML = ''; var eintr = daten[L] || [];
-        r.classList.toggle('full', eintr.length > 0);
+    function art(e) {
+      if (!e.length) return 'leer';
+      var eig = e.some(function (x) { return !x.k; }), kenn = e.some(function (x) { return x.k && !x.l; });
+      if (e.every(function (x) { return x.l; })) return 's';
+      if (eig && kenn) return 'mix';
+      return eig ? 'd' : 'k';
+    }
+    function zelle(L) {
+      var e = daten[L] || [], b = zellen[L];
+      b.className = 'jg-beet ' + art(e);
+      b.innerHTML = '<span class="L">' + esc(L) + '</span><span class="p">' + (e.length === 0 ? '' : (e.length === 1 ? '🌱' : (e.length === 2 ? '🌿' : '🌳'))) + '</span>';
+    }
+    function beet(L) {
+      var ov = el('div', 'jg-ov'), bl = el('div', 'jg-blatt'); ov.appendChild(bl);
+      function schliesse() { ov.remove(); zelle(L); }
+      function zeichne(meldung) {
+        var eintr = daten[L] || [];
+        bl.innerHTML = '';
+        bl.appendChild(el('div', 'jg-griff'));
+        var k = el('div', 'jg-bkopf');
+        k.innerHTML = '<span class="L">' + esc(L) + '</span><span class="t">' + esc(U.gBeet ? U.gBeet(L) : L) + '<small>' + esc(eintr.length ? (U.gTippWeg || U.gRemove) : (U.gLeer ? U.gLeer(L) : '')) + '</small></span>';
+        bl.appendChild(k);
+        var e = el('div', 'jg-ent');
         eintr.forEach(function (x, ix) {
           var c = el('button', 'jg-w' + (x.k ? ' known' : '') + (x.l ? ' lent' : ''), x.z); c.type = 'button'; c.title = U.gRemove;
           if (x.tr) c.appendChild(el('small', null, x.tr));
-          c.addEventListener('click', function () { eintr.splice(ix, 1); sichern(); zeichne(); whisper.textContent = ''; });
+          c.addEventListener('click', function () { eintr.splice(ix, 1); sichern(); zeichne(''); });
           e.appendChild(c);
         });
-        if (offen === L) {
-          var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-huerto-in'; inp.placeholder = U.gWrite + ' ' + L + ' …';
-          inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('autocomplete', 'off'); inp.spellcheck = false;
-          var go = el('button', null, U.gPlant), saat = el('button', 'ghost', U.gSow); go.type = saat.type = 'button';
-          ir.appendChild(inp); ir.appendChild(go); ir.appendChild(saat); e.appendChild(ir);
-          var pflanze = function () {
-            var v = inp.value.trim(); if (!v) return;
-            if (anfang(v, ziel) !== L) { whisper.textContent = U.gWrong(L); return; }
-            var f = finde(v, themenIdx) || finde(v, allesIdx);
-            (daten[L] = daten[L] || []).push(f ? { z: f.z, tr: f.tr, k: 1 } : { z: v });
-            whisper.innerHTML = f ? '<em>' + esc(f.z) + '</em> = ' + esc(f.tr) : esc(U.gUnknown);
-            sichern(); zeichne();
-            var ni = document.getElementById('jg-huerto-in'); if (ni) ni.focus();
-          };
-          go.addEventListener('click', pflanze);
-          inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') pflanze(); });
-          saat.addEventListener('click', function () {
-            var schon = (daten[L] || []).map(function (x) { return norm(ohneArtikel(x.z)); });
-            var kand = themenIdx.filter(function (x) { return anfang(x.z, ziel) === L && schon.indexOf(x.key) < 0; });
-            if (!kand.length) { whisper.textContent = U.gNoSeed; return; }
-            var f = kand[Math.floor(Math.random() * kand.length)];
-            (daten[L] = daten[L] || []).push({ z: f.z, tr: f.tr, k: 1, l: 1 });
-            sichern(); whisper.innerHTML = U.gSowed(esc(f.z), esc(f.tr)); zeichne();
-          });
-          setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (x) { inp.focus(); } }, 30);
-        } else {
-          var a = el('button', 'jg-add', '+'); a.type = 'button'; a.setAttribute('aria-label', U.gWrite + ' ' + L);
-          a.addEventListener('click', oeffne); e.appendChild(a);
-        }
+        bl.appendChild(e);
+        var ir = el('div', 'jg-in'), inp = el('input'); inp.id = 'jg-huerto-in'; inp.placeholder = U.gWrite + ' ' + L + ' …';
+        inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('autocomplete', 'off'); inp.spellcheck = false;
+        var go = el('button', null, U.gPlant); go.type = 'button';
+        ir.appendChild(inp); ir.appendChild(go); bl.appendChild(ir);
+        var wh = el('div', 'jg-whisper'); wh.innerHTML = meldung || ''; bl.appendChild(wh);
+        var f = el('div', 'jg-bfuss'), saat = el('button', 'jg-btn ghost', '🌰 ' + U.gSow), fertig = el('button', 'jg-btn ghost', U.aDone);
+        saat.type = fertig.type = 'button'; f.appendChild(saat); f.appendChild(fertig); bl.appendChild(f);
+        var pflanze = function () {
+          var v = inp.value.trim(); if (!v) return;
+          if (anfang(v, ziel) !== L) { zeichne(esc(U.gWrong(L))); return; }
+          var fu = finde(v, themenIdx) || finde(v, allesIdx);
+          (daten[L] = daten[L] || []).push(fu ? { z: fu.z, tr: fu.tr, k: 1 } : { z: v });
+          sichern(); zeichne(fu ? '<em>' + esc(fu.z) + '</em> = ' + esc(fu.tr) : esc(U.gUnknown));
+          var ni = document.getElementById('jg-huerto-in'); if (ni) try { ni.focus({ preventScroll: true }); } catch (x) { ni.focus(); }
+        };
+        go.addEventListener('click', pflanze);
+        inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') pflanze(); });
+        saat.addEventListener('click', function () {
+          var schon = (daten[L] || []).map(function (x) { return norm(ohneArtikel(x.z)); });
+          var kand = themenIdx.filter(function (x) { return anfang(x.z, ziel) === L && schon.indexOf(x.key) < 0; });
+          if (!kand.length) { zeichne(esc(U.gNoSeed)); return; }
+          var fs = kand[Math.floor(Math.random() * kand.length)];
+          (daten[L] = daten[L] || []).push({ z: fs.z, tr: fs.tr, k: 1, l: 1 });
+          sichern(); zeichne(U.gSowed(esc(fs.z), esc(fs.tr)));
+        });
+        fertig.addEventListener('click', schliesse);
+        if (!meldung) setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (x) { inp.focus(); } }, 60);
       }
-      function oeffne() {
-        var vorher = offen; offen = (offen === L ? null : L); whisper.textContent = '';
-        if (vorher && zeilen[vorher]) zeilen[vorher](); zeichne();
-      }
-      b.addEventListener('click', oeffne);
-      zeilen[L] = zeichne; zeichne();
+      ov.addEventListener('click', function (ev) { if (ev.target === ov) schliesse(); });
+      var alt = root.stop; root.stop = function () { try { ov.remove(); } catch (e) {} if (alt) alt(); };
+      root.appendChild(ov); zeichne('');
+    }
+    (ABC[ziel] || ABC.es).forEach(function (L) {
+      var b = el('button', 'jg-beet'); b.type = 'button'; b.setAttribute('aria-label', U.gWrite + ' ' + L);
+      zellen[L] = b; zelle(L);
+      b.addEventListener('click', function () { beet(L); });
+      box.appendChild(b);
     });
     var foot = el('div', 'jg-foot'), neu = el('button', 'jg-btn ghost', U.gNew), scharf = false; neu.type = 'button';
     neu.addEventListener('click', function () {
@@ -898,9 +974,8 @@
     }
     function uebersicht() {
       leeren(); if (cfg.beiEntwurf) cfg.beiEntwurf(null);
+      root.appendChild(themenWahl(cfg, thema, U, false));
       root.appendChild(spikiuSagt(esc(U.aIntro)));
-      root.appendChild(el('p', 'jg-h', U.aThema));
-      root.appendChild(themenLeiste());
       var kand = kandidaten();
       if (!kand.length) { root.appendChild(el('div', 'jg-whisper', U.aKeine)); return; }
       // Spikius Beispiel: ein lösbares Wort, gefüllt aus dem Feld (Stufe des Lerners zuerst)
@@ -913,9 +988,12 @@
       });
       root.appendChild(karte(gross(bsp.nackt), bspA, U.aSpikiu + ' · ' + themaTitel));
       root.appendChild(el('p', 'jg-h', U.aPick));
-      var ws = el('div', 'jg-words');
-      kand.slice(1, 7).forEach(function (x) {
-        var p = el('button', 'jg-pill', gross(x.nackt)); p.type = 'button';
+      var ws = el('div', 'jg-wahlen');
+      kand.slice(1, 7).forEach(function (x, wi) {
+        var p = el('button', 'jg-wahl'); p.type = 'button';
+        p.style.background = TH_FARBEN[(wi * 3 + 1) % TH_FARBEN.length];
+        p.innerHTML = gross(x.nackt).split('').map(function (c) { return '<i>' + esc(c) + '</i>'; }).join('');
+        p.setAttribute('aria-label', gross(x.nackt));
         p.addEventListener('click', function () { bauen(gross(x.nackt), []); });
         ws.appendChild(p);
       });
@@ -939,7 +1017,7 @@
     }
     function bauen(wort, vorher) {
       leeren(); root.appendChild(spikiuSagt(esc(U.aHint)));
-      var k = el('div', 'jg-kawa' + (wort.length > 7 ? ' lang' : '')), felder = [], whisper = el('div', 'jg-whisper');
+      var k = el('div', 'jg-kawa' + (wort.length > 7 ? ' lang' : '')), felder = [], whisper = el('div', 'jg-whisper'), aktiv = null;
       var wortKey = norm(wort);
       function entwurf() { if (cfg.beiEntwurf) cfg.beiEntwurf({ thema: thema, wort: wort, a: felder.map(function (x) { return x.inp.value; }) }); }
       function bewerte(fx, laut) {
@@ -958,8 +1036,8 @@
         inp.value = (vorher && vorher[ix]) || '';
         var fx = { L: L, inp: inp, tr: tr, line: line, ziel: null, k: 0 };
         h.type = 'button'; h.innerHTML = SPIKIU; h.setAttribute('aria-label', U.gSow);
-        // Buchstabe für Buchstabe — folgt dem, was schon dasteht
-        h.addEventListener('click', function () {
+        // Buchstabe für Buchstabe — folgt dem, was schon dasteht (22.11.: EIN Hilfeknopf unten ruft fx.hilfe der aktiven Zeile)
+        fx.hilfe = function () {
           var getippt = norm(ohneArtikel(inp.value));
           var schon = felder.filter(function (o) { return o !== fx; }).map(function (o) { return norm(ohneArtikel(o.inp.value)); });
           var passt = function (x) { return norm(x.nackt).indexOf(getippt) === 0 && schon.indexOf(x.key) < 0; };
@@ -983,15 +1061,25 @@
           }
           entwurf();
           try { inp.focus({ preventScroll: true }); } catch (x) { inp.focus(); }
-        });
+        };
+        inp.addEventListener('focus', function () { setzeAktiv(fx); });
         inp.addEventListener('input', function () { fx.line.classList.remove('lent'); bewerte(fx, false); entwurf(); });
         inp.addEventListener('blur', function () { if (inp.value.trim()) bewerte(fx, true); });
         inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { bewerte(fx, true); var n = felder[ix + 1]; if (n) n.inp.focus(); else inp.blur(); } });
-        line.appendChild(big); line.appendChild(inp); line.appendChild(tr); line.appendChild(h); k.appendChild(line);
+        line.appendChild(big); line.appendChild(inp); line.appendChild(tr); k.appendChild(line);
         felder.push(fx);
         if (inp.value) bewerte(fx, false);
       });
-      root.appendChild(k); root.appendChild(whisper);
+      root.appendChild(k);
+      var kh = el('div', 'jg-kh'), khb = el('button'); khb.type = 'button'; kh.innerHTML = SPIKIU; kh.appendChild(khb);
+      function setzeAktiv(fx) { aktiv = fx; felder.forEach(function (o) { o.line.classList.toggle('aktiv', o === fx); }); khb.textContent = U.hilfBei ? U.hilfBei(fx.L) : U.gSow; }
+      khb.addEventListener('mousedown', function (ev) { ev.preventDefault(); });
+      khb.addEventListener('click', function () {
+        var fx = aktiv;
+        if (!fx || (fx.line.classList.contains('ok') && fx.inp.value.trim())) { var frei = felder.filter(function (o) { return !o.line.classList.contains('ok'); })[0]; if (frei) fx = frei; }
+        if (!fx) return; setzeAktiv(fx); fx.hilfe();
+      });
+      root.appendChild(kh); root.appendChild(whisper);
       var foot = el('div', 'jg-foot'), fertig = el('button', 'jg-btn', U.aDone); fertig.type = 'button';
       fertig.addEventListener('click', function () {
         var raus = false;
@@ -1005,6 +1093,7 @@
       });
       foot.appendChild(fertig); root.appendChild(foot);
       entwurf();
+      if (felder[0]) setzeAktiv(felder.filter(function (o) { return !o.line.classList.contains('ok'); })[0] || felder[0]);
       setTimeout(function () { var i = felder[0] && felder[0].inp; if (i) try { i.focus({ preventScroll: true }); } catch (x) { i.focus(); } }, 30);
     }
     if (cfg.entwurf && cfg.entwurf.wort) bauen(cfg.entwurf.wort, cfg.entwurf.a || []); else uebersicht();

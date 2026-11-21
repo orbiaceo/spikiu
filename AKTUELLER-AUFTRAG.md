@@ -1,49 +1,24 @@
-# AKTUELLER AUFTRAG — GEFÜHRT ODER FREI (neue Startseite)
+# AKTUELLER AUFTRAG — INHALTSVERZEICHNIS + GARTEN/AKROSTICHON (Produktion)
 
-**ERLEDIGT am 14.11.2026 (von Claude direkt im Repo gebaut) · kein offener Auftrag.** Offen bleiben nur die zwei Punkte unter „Nicht in diesem Auftrag“. Details im Ledger.
+Stand: 22.11.2026 · Erteilt: Leo, 00:44 („Führe den Auftrag aus! Ins Repo damit!“) · Umsetzung: Claude direkt im Repo
 
-Stand: 14.11.2026 · Erteilt von claude.ai (Leo, 02:54: „Genehmigt. Schreibe den Auftrag und lass ihn sofort umsetzen.") · Umsetzung: Claude direkt im Repo
+Vorlagen: `prototyp-inhalt-spikiu.html` (Inhalt, Regal, Anhang) · `prototyp-garten.html` · `prototyp-akrostichon.html` (jeweils mit größerer Schrift vom 22.11. 00:41). Entscheidungen: Ledger 21./22.11.
 
-**Vorlage für Aussehen und Verhalten:** `prototyp-zwei-modi.html` (Root, dev). Begründung und Varianten: `prototyp-heute.html`, `prototyp-drei-wege.html`, Ledger 14.11.
+## Teil A — Garten + Akrostichon (`juegos.js`, nur Darstellung)
+- Spielregeln, Wortfelder, Speicher, Hilfe-Logik bleiben. Nur die Darstellung ändert sich.
+- Themen: keine Wischleiste mehr. Ein Schild „Thema · wechseln“ klappt ein 3-spaltiges Kachelraster auf (Emoji groß, Name). Im Garten ist es offen, solange der Garten noch leer ist.
+- Garten: alle Beete als 6er-Raster auf einem Bildschirm. Die Farbe zeigt, wie das Wort ins Beet kam (kenne ich / dein Wort / von Spikiu gesät), die Pflanze wächst 🌱🌿🌳. Beet antippen → Blatt von unten (Wörter, Eingabe, Spikiu sät, Fertig). Kurzer Spikiu-Satz.
+- Akrostichon: Wörter als Buchstaben-Kacheln (2 Spalten, farbig). Beim Schreiben eine Karte pro Buchstabe, die aktive Zeile ist hervorgehoben, und es gibt EINEN Hilfeknopf unten („Spikiu, hilf mir bei G“). Die Ergebniskarte bleibt.
+- Alle neuen Texte in de / es / en / el. Schriftgröße wie im Prototyp.
 
----
-
-## Warum
-
-Leo, 13.11.: „Die scheinbare Einfachheit verschwindet, sobald man einen Raum betritt. Es wirkt zu viel.“
-Die Startseite bot etwa 11 gleichrangige Entscheidungen. Hinter jeder Kachel kam wieder ein Menü, und manches stand doppelt da.
-Entschieden (Leo, 02:47): **Modell 2 „Neugierig“** als Grundordnung, **Zeitangaben** aus Modell 3, dazu ein **geführter Modus** aus Modell 1, frei wählbar.
-
-## Was gebaut wird
-
-### A. `fuehrung.js` (NEU, Root) — der Reiseleiter
-- `modus()` → `'gefuehrt' | 'frei' | null` aus `spikiu_user.profile.modus`; `setzeModus(m)`.
-- `heute()` → was Spikiu heute vorschlägt, nur aus vorhandenen Daten (`SpikiuPfad.palette()`, Status, `beruehrt`):
-  - `wiedersehen`: eine Station ist durchschritten (vor heute), aber noch nicht gesetzt → Karten (`gym.html`)
-  - `ruhe`: heute schon eine Station berührt → „Bis morgen“, mit „Trotzdem weiter“
-  - `neu`: nächste offene Station → `gefuehrt.html?thema=…`
-  - `stufe`: alle Stationen der Stufe sitzen → nächste Stufe anbieten
-- Nichts wird verschlossen. Harte Schleifen bleiben iuspik.
-
-### B. `haus.html` — eine Startseite statt zwei Türen
-- Die Türen Übung und Bibliothek entfallen. Alte Ziele (`?tuer=uebung|bibliothek`, `spk_haus_tuer`) landen auf der Startseite. Regal bleibt (Leiste unten), mit Zurück zur Startseite.
-- **Erster Besuch ohne Modus:** Spikiu fragt „Führ mich“ / „Ich schau mich selbst um“, mit dem Hinweis „jederzeit in Mein änderbar“.
-- **Geführt:** Spikiu-Satz, Karte nächste Station + „Weiter“ + Pfad der Stufe (✓ / Wiedersehen / jetzt / später). Eine andere Station antippen → „Ich empfehle erst X. Trotzdem?“. Darunter der Link „Heute lieber selbst wählen“.
-- **Frei:** Karte „Heute mit Spikiu“ (derselbe Vorschlag), darunter „Oder selbst wählen“ mit vier Türen: Eintauchen · Ausprobieren · Ergründen · Spielen. Jede Tür zeigt höchstens 4 Wege mit einer Zeile Erklärung und „≈ N Min.“. Spielen geht direkt nach `spiele.html`.
-- Alle Texte in de / es / en / el. Laptop-Tasten 1–9 bleiben nutzbar.
-
-### C. `mein.html` — Umschalter „Wie lernst du?“ (Geführt / Frei)
-
-### D. Rückwege
-`gym.html` und `spiele.html` verstehen `zurueck=haus`, damit Wege aus dem Haus auch ins Haus zurückführen.
-
-## Abnahme
-- Neuer Nutzer sieht die Frage. Nach der Wahl erscheint die passende Startseite, Umschalten in Mein wirkt sofort.
-- Geführt: „Weiter“ öffnet das Geführte Gespräch der vorgeschlagenen Station. Nach dem Abschluss zeigt die Startseite „Bis morgen“.
-- Frei: vier Türen, keine zeigt mehr als 4 Wege, jede mit Zeitangabe.
-- Ohne Lernpfad-Daten (Zielsprache ohne Stationen) fällt die Startseite still auf die vier Türen zurück, ohne Fehler.
-- Handy unverändert gut. Keine JS-Fehler (headless geprüft). `node --check` grün.
+## Teil B — Inhaltsverzeichnis im Haus (`haus.html`, `gefuehrt.html`)
+- Die Startseite ist das Inhaltsverzeichnis: Lektionen = Lernstationen der aktuellen Stufe aus `SpikiuPfad.palette()`, in zwei Spalten (erste Hälfte links). ✓ = gesetzt, senfgelb = nächste (`naechste()`). Darunter der Ausblick auf die nächste Stufe und der Anhang „Alle Zimmer“ A1–A6 mit eigenen Kachel-Seiten.
+- Die Lektionsseite hat 8 Kapitel als farbige Kacheln N.1–N.8 und führt in die bestehenden Räume: Wörter / Hören / Geführtes Gespräch → `gefuehrt.html?thema=…&phase=…` (neu: `phase`-Parameter) · Selbst sprechen → `szene.html` · Aussprache → Der Schlag · Grammatik → Gramática (nur es+de, sonst „kommt“) · Lesen → `learnroman.html` · Spiel → `spiele.html`. Ein ✓ heißt: dieses Kapitel wurde schon betreten. Spikiu führt Buch, nichts wird verschlossen.
+- Mein Regal: „Meine Schatzkiste“ heißt jetzt **„Mein Wortschatz“** und steht an erster Stelle.
+- Die Frage nach dem Modus (geführt/frei) und der Umschalter in Mein entfallen, weil das Inhaltsverzeichnis selbst führt.
+- Texte in de / es / en / el.
 
 ## Nicht in diesem Auftrag (FRAGE AN DESIGN)
-- Stufen-Chips in den Räumen (Samen/Stamm …) bleiben vorerst stehen.
-- `wortschatz.html` ist aus dem Haus nicht mehr verlinkt (Wege liegen jetzt in den Türen), bleibt aber erreichbar.
+- Die Szene-Rückmeldung deterministisch statt KI (entschieden 21.11.) ist ein eigener Auftrag.
+- Lernroman und Szene öffnen noch nicht direkt beim Kapitel der Lektion (kein `thema`-Parameter).
+- Konversation: Aufbau der letzten zwei Karten und Zurückwischen bei Lernkarten sind ein eigener kleiner Auftrag.
