@@ -58,6 +58,11 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 .bz-t span{font:600 .88rem/1.25 'DM Sans',sans-serif;color:var(--muted)}
 .bz-h{flex:0 0 auto;font:800 1rem 'DM Sans',sans-serif;color:#2f6b3a}
 @media (max-height:720px){.kopf .ttl{font-size:1.12rem}.kopf .back{width:36px;height:36px}}
+/* 22.11.2026 Daumen vor/zurück: waagrechte Wischer gehören der Karte, nicht dem Browser (sonst „zurück zur vorigen Seite“);
+   gesperrte Kacheln lassen den Daumen durch (auf gesperrten Knöpfen kommen Wischer sonst nicht an). */
+html,body{overscroll-behavior-x:none}
+main.stage{touch-action:pan-y}
+.oh-karte button:disabled{pointer-events:none}
 </style>
 <link rel="stylesheet" href="geraet.css"></head>
 <body>
@@ -247,8 +252,11 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     var box = O.el('div', ''); box.innerHTML = v.grid; var g = box.firstChild; k.appendChild(g);
     g.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
     O.fb(k, v.fb);
-    O.fuss(fussEl, { t: U.genug, go: genug }, null);
-    wisch(function () { if (BLICK < VERLAUF.length - 1) { BLICK++; zeigeBlick(); } else { BLICK = -1; if (LIVE) LIVE(); } }, zurueckBlick);
+    /* 22.11.2026 (Leo: „wenn ich zurückgehe, muss ich wieder zurückkehren können zu dem Punkt, wo ich vorher war“):
+       vor geht Karte um Karte bis zur Stelle, an der man war — per Daumen UND per Knopf „weiter ›“. */
+    var vor = function () { if (BLICK < VERLAUF.length - 1) { BLICK++; zeigeBlick(); } else { BLICK = -1; if (LIVE) LIVE(); } };
+    O.fuss(fussEl, { t: U.genug, go: genug }, { t: U.weiter, pri: true, go: vor });
+    wisch(vor, zurueckBlick);
   }
   (function () {
     var x0 = null, y0 = 0;

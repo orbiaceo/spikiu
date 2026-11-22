@@ -28,6 +28,12 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 22.11.2026 · LEKTION: ZURÜCKSPULEN UND WIEDER NACH VORN (**Leo, 09:40: „wenn ich zurückgehe, dann muss ich wieder zurückkehren können zu dem Punkt, wo ich vorher war … die Karte steht da und bewegt sich nicht“**)
+- Ursache (headless mit echten Touch-Gesten nachgestellt): (1) waagrechte Wischer gehörten dem Browser — Chrome deutete sie als „Seite zurück“ und verließ die Lektion; (2) im Rückblick sind die Kacheln gesperrt, und auf gesperrten Knöpfen kommen Wischer nicht an → genau auf der zurückgespulten Karte ging es nicht mehr vor; (3) im Rückblick gab es keinen Knopf nach vorn.
+- `gefuehrt.html`: `main.stage{touch-action:pan-y}` + `overscroll-behavior-x:none` (Wischer gehören der Karte); `.oh-karte button:disabled{pointer-events:none}` (Daumen geht durch); Rückblick-Karte hat jetzt rechts „weiter ›“ (de/es/en/el, vorhandener Text), der Karte um Karte bis zur Stelle führt, an der man war — Daumen nach links tut dasselbe.
+- Geprüft: Hören (Café) 3 Karten lösen → 2× zurück → 2× vor (auf Kacheln gewischt) → wieder auf der offenen Karte 4/4; zurück + Knopf „weiter ›“ → 4/4. 0 JS-Fehler, node --check grün.
+- Lehre: Wisch-Bedienung braucht immer `touch-action:pan-y` auf der Fläche, sonst nimmt der Browser die Geste.
+
 Stand: 22.11.2026 · PRODUKTION: PASTELL MINZE + LEISTE „MEIN KURS · RÄUME · REGAL · MEIN“ (**Leo, 09:27: „Ja! Umsetzen“** · Vorlage `prototyp-kurs-unten4.html`)
 - `haus.html`: Pastell-Minze-Gestaltung (Nunito, Minzgrund, weiße Karten mit zarter Linie, weiche Schatten, Türkis). Neue Kopfzeile (Augenbraue + Titel + ‹ zurück + „?“) statt Türen/Unterzeile.
   - **Mein Kurs** (`start`): Inhaltsblatt wie im Prototyp, eine Spalte, Nummer · Titel · spanischer Untertitel · ✓/„jetzt“; darunter die nächste Stufe. Der Anhang „Alle Zimmer“ entfällt (→ Räume; alte `anh-*`-Ziele landen in Räume).
