@@ -28,6 +28,13 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 22.11.2026 · PHASE 3 ERLEDIGT: KONVERSATION — ENDE IN ZWEI KARTEN + VOR/ZURÜCK (**Leo, 10:41: „3!“**)
+- `szene.html` (Konversation/Freies Gespräch): die vorletzte Karte zeigt **nur das Ende des Gesprächs** („Ende des Gesprächs“ + Spikius letzte Blase mit 🔊, Knopf „Deine Sätze ›“); die letzte Karte ist **„Deine Sätze“** (antippen = ändern, „Rückmeldung ›“ → Spiegel → Ernte). Ohne Schlusszeile (abgebrochen) direkt „Deine Sätze“. Ändern kehrt zu „Deine Sätze“ zurück. Texte de/es/en/el.
+- **Vor und zurück auf jeder Karte:** jede verlassene Karte wird als Bild gemerkt (nur ansehen, das Geschriebene bleibt sichtbar). Daumen nach rechts = eine Karte zurück; Daumen nach links oder Knopf „weiter ›“ = wieder vor bis zur lebendigen Karte, die unverändert wartet (dieselben Knöpfe, dasselbe Feld). Das Gespräch selbst spult nicht zurück (Spikius Zeilen bleiben Skript). `touch-action:pan-y`, `overscroll-behavior-x:none`, gesperrte Knöpfe lassen den Daumen durch; im Textfeld zählt kein Wischer.
+- Stand Zurückwischen auf Lernkarten: Geführtes Gespräch (seit 09:40) · Konversation (jetzt) · Karten/Wendungen (Knopf „‹ zurück“ schon vorhanden).
+- Geprüft headless mit echten Touch-Gesten: Szene „Café“ gespielt → Ende → Deine Sätze → 3× zurück (Ende, Aufgabe 3, Aufgabe 2) → vor per Daumen, per Knopf, per Daumen → lebendig „Deine Sätze“, Satz ändern + zurück funktionieren; Spiegel weiter 0 Anfragen an /api; 0 JS-Fehler.
+- Nächste Phase: **4 · „Mein“ → Einstellungen: Sprache/Muttersprache umstellbar.**
+
 Stand: 22.11.2026 · PHASE 2 ERLEDIGT: LERNROMAN UND SZENE ÖFFNEN DAS THEMA DER LEKTION (**Leo, 10:18: „2! Sí!“**)
 - `haus.html` (`ihKapZiel`): Kapitel N.4 „Selbst sprechen“ → `szene.html?thema=<id>[&stufe=]`, Kapitel N.7 „Lesen“ → `learnroman.html?thema=<id>[&stufe=]`. Die Räume-Kacheln öffnen weiter frei (ohne Thema).
 - `szene.html` konnte `?thema=&stufe=` schon — jetzt wird es genutzt (Wiederkommen-Karte nur, wenn die gespeicherte Szene dasselbe Thema hat).
@@ -47,7 +54,7 @@ Stand: 22.11.2026 · PASTELL MINZE ABGENOMMEN — DAS IST DER SPIKIU-STIL (**Leo
 - **Nächste Phasen (Reihenfolge entscheidet Leo):**
   1. ~~Szene-Feedback deterministisch (zero token).~~ erledigt 22.11. (Spiegel)
   2. ~~Lernroman und Szene je Thema öffnen.~~ erledigt 22.11.
-  3. Konversation: vorletzte Karte nur das Dialogende, letzte Karte „Deine Sätze“; Zurückwischen überall auf Lernkarten (Muster aus `gefuehrt.html`: `touch-action:pan-y`, Knopf „weiter ›“ im Rückblick).
+  3. ~~Konversation: Ende in zwei Karten, Zurückwischen.~~ erledigt 22.11.
   4. „Mein“ → Einstellungen: Sprache/Muttersprache direkt umstellbar (heute „kommt bald“).
   5. Grammatik für weitere Sprachpaare (heute nur Ziel es + Muttersprache de; sonst „kommt bald“).
 

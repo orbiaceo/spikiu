@@ -137,6 +137,12 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 .fz-spiegel .muster .m{font:700 .78rem 'Nunito',sans-serif;color:var(--muted)}
 .fz-spiegel .muster b{font:600 1rem/1.3 'Lora',Georgia,serif}
 .fz-spiegel .urteil{font:800 .84rem/1.3 'Nunito',sans-serif;color:#1f7f99}
+/* Vor/zurück: Rückblick-Karten nur ansehen; waagrechte Wischer gehören der Karte (22.11.2026) */
+html,body{overscroll-behavior-x:none}
+#stage{touch-action:pan-y}
+.oh-karte button:disabled{pointer-events:none}
+.fz-blick{opacity:.92}
+.fz-blick button,.fz-blick textarea{pointer-events:none}
 </style>
 <link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -211,7 +217,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       feldPh:'Schreib oder diktiere …', diktieren:'🎙️ Diktieren', hoertZu:'🎙️ Ich höre …', senden:'Senden ›', vorschlaege:'‹ Vorschläge',
       du:function(z){ return 'Du: <em>' + z + '</em>'; }, nochmalSp:'Spikiu sagt es noch einmal.',
       weiter:'weiter ›', genug:'Genug für heute',
-      deineSaetze:'Deine Sätze', deineSaetzeKlein:'Tipp einen an, um ihn noch zu ändern.', uebernehmen:'Übernehmen ›', zurueck:'‹ Zurück',
+      deineSaetze:'Deine Sätze', zuSaetzen:'Deine Sätze ›', ende:'Ende des Gesprächs', deineSaetzeKlein:'Tipp einen an, um ihn noch zu ändern.', uebernehmen:'Übernehmen ›', zurueck:'‹ Zurück',
       rueckmeldung:'Rückmeldung ›', warte:'Spikiu liest deine Sätze …', korrTitel:'Deine Sätze, berichtigt', sauber:'Sehr gut!', spiegelTitel:'Dein Spiegel', spiegelKlein:'Grün ist schon da · gelb fast · gestrichelt fehlt noch.', muster:'So sagt man es oft:', allesDrin:'Alles drin.', gruenDa:'Grün ist schon da. Der Mustersatz zeigt den Rest.', fastDa:'Fast — schau auf die gelben Wörter.', keinGruen:'Hör dir den Mustersatz an — so sagt man es oft.',
       geuebt:'Das hast du geübt', wendungen:'Wendungen und Sätze', woerter:'Wörter',
       nichtsGeerntet:'Noch nichts eingesammelt.', nichtsGeerntetText:'Beim nächsten Mal steht hier, was ihr wirklich gesagt habt.',
@@ -229,7 +235,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       feldPh:'Escribe o dicta …', diktieren:'🎙️ Dictar', hoertZu:'🎙️ Te escucho …', senden:'Enviar ›', vorschlaege:'‹ Propuestas',
       du:function(z){ return 'Tú: <em>' + z + '</em>'; }, nochmalSp:'Spikiu lo repite.',
       weiter:'seguir ›', genug:'Ya está bien por hoy',
-      deineSaetze:'Tus frases', deineSaetzeKlein:'Toca una para cambiarla todavía.', uebernehmen:'Aceptar ›', zurueck:'‹ Atrás',
+      deineSaetze:'Tus frases', zuSaetzen:'Tus frases ›', ende:'Fin de la conversación', deineSaetzeKlein:'Toca una para cambiarla todavía.', uebernehmen:'Aceptar ›', zurueck:'‹ Atrás',
       rueckmeldung:'Comentarios ›', warte:'Spikiu lee tus frases …', korrTitel:'Tus frases, corregidas', sauber:'¡Muy bien!', spiegelTitel:'Tu espejo', spiegelKlein:'Verde ya está · amarillo casi · discontinuo falta.', muster:'Así se suele decir:', allesDrin:'Está todo.', gruenDa:'Lo verde ya está. La frase modelo muestra el resto.', fastDa:'Casi: mira las palabras amarillas.', keinGruen:'Escucha la frase modelo: así se suele decir.',
       geuebt:'Esto has practicado', wendungen:'Frases', woerter:'Palabras',
       nichtsGeerntet:'Todavía nada recogido.', nichtsGeerntetText:'La próxima vez aparecerá aquí lo que de verdad hayáis dicho.',
@@ -247,7 +253,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       feldPh:'Type or dictate …', diktieren:'🎙️ Dictate', hoertZu:'🎙️ Listening …', senden:'Send ›', vorschlaege:'‹ Suggestions',
       du:function(z){ return 'You: <em>' + z + '</em>'; }, nochmalSp:'Spikiu says it again.',
       weiter:'next ›', genug:'Enough for today',
-      deineSaetze:'Your sentences', deineSaetzeKlein:'Tap one to change it.', uebernehmen:'Done ›', zurueck:'‹ Back',
+      deineSaetze:'Your sentences', zuSaetzen:'Your sentences ›', ende:'End of the conversation', deineSaetzeKlein:'Tap one to change it.', uebernehmen:'Done ›', zurueck:'‹ Back',
       rueckmeldung:'Feedback ›', warte:'Spikiu is reading your sentences …', korrTitel:'Your sentences, corrected', sauber:'Very good!', spiegelTitel:'Your mirror', spiegelKlein:'Green is there · yellow almost · dashed still missing.', muster:'This is how people often say it:', allesDrin:'Everything is there.', gruenDa:'Green is already there. The model sentence shows the rest.', fastDa:'Almost: look at the yellow words.', keinGruen:'Listen to the model sentence: this is how people often say it.',
       geuebt:'This is what you practised', wendungen:'Phrases and sentences', woerter:'Words',
       nichtsGeerntet:'Nothing collected yet.', nichtsGeerntetText:'Next time this is where what you actually said will appear.',
@@ -265,7 +271,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       feldPh:'Γράψε ή υπαγόρευσε …', diktieren:'🎙️ Υπαγόρευση', hoertZu:'🎙️ Σε ακούω …', senden:'Αποστολή ›', vorschlaege:'‹ Προτάσεις',
       du:function(z){ return 'Εσύ: <em>' + z + '</em>'; }, nochmalSp:'Ο Spikiu το ξαναλέει.',
       weiter:'συνέχεια ›', genug:'Αρκετά για σήμερα',
-      deineSaetze:'Οι φράσεις σου', deineSaetzeKlein:'Πάτα μία για να την αλλάξεις.', uebernehmen:'Εντάξει ›', zurueck:'‹ Πίσω',
+      deineSaetze:'Οι φράσεις σου', zuSaetzen:'Οι φράσεις σου ›', ende:'Τέλος της συζήτησης', deineSaetzeKlein:'Πάτα μία για να την αλλάξεις.', uebernehmen:'Εντάξει ›', zurueck:'‹ Πίσω',
       rueckmeldung:'Σχόλια ›', warte:'Ο Spikiu διαβάζει τις φράσεις σου …', korrTitel:'Οι φράσεις σου, διορθωμένες', sauber:'Πολύ καλά!', spiegelTitel:'Ο καθρέφτης σου', spiegelKlein:'Πράσινο υπάρχει · κίτρινο σχεδόν · διακεκομμένο λείπει.', muster:'Έτσι το λένε συνήθως:', allesDrin:'Τα έχεις όλα.', gruenDa:'Το πράσινο το έχεις ήδη. Η φράση-πρότυπο δείχνει τα υπόλοιπα.', fastDa:'Σχεδόν: κοίτα τις κίτρινες λέξεις.', keinGruen:'Άκου τη φράση-πρότυπο: έτσι το λένε συνήθως.',
       geuebt:'Αυτό εξασκήθηκες', wendungen:'Εκφράσεις και προτάσεις', woerter:'Λέξεις',
       nichtsGeerntet:'Δεν μάζεψες τίποτα ακόμα.', nichtsGeerntetText:'Την επόμενη φορά εδώ θα εμφανιστεί ό,τι είπατε πραγματικά.',
@@ -305,7 +311,63 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   document.getElementById('eb').textContent = U.titel;
   var railEl = document.getElementById('rail');
   railEl.innerHTML = U.rail.map(function (s) { return '<div class="step"><i></i><b>' + esc(s) + '</b></div>'; }).join('');
+  /* ── VOR UND ZURÜCK (Phase 3, Leo 21./22.11.2026: „Zurückwischen muss immer möglich sein“) ──
+     Jede verlassene Karte wird als Bild gemerkt (nur ansehen). Daumen nach rechts = eine Karte zurück,
+     nach links oder Knopf „weiter ›“ = wieder vor, bis zur lebendigen Karte — die wartet unverändert
+     (dieselben Knöpfe, dasselbe Feld). Das Gespräch selbst spult nicht zurück. */
+  var VERLAUF = [], BLICK = -1, LEBEND = null, KOPF = { ttl: '', idx: 0 };
+  function merkeKarte() {
+    if (BLICK >= 0) { BLICK = -1; LEBEND = null; return; }   // die Szene ging von selbst weiter: Rückblick endet
+    var kk = stage.querySelector('.oh-karte'); if (!kk) return;
+    kk.querySelectorAll('textarea').forEach(function (t) { t.textContent = t.value; });   // das Geschriebene bleibt im Bild
+    VERLAUF.push({ html: kk.outerHTML, ttl: KOPF.ttl, idx: KOPF.idx });
+    if (VERLAUF.length > 40) VERLAUF.shift();
+  }
+  function zeigeKopf(ttl, idx) {
+    document.getElementById('ttl').textContent = ttl || U.titel;
+    railEl.querySelectorAll('.step').forEach(function (s, i) { s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx); });
+  }
+  function zurueckBlick() {
+    if (!VERLAUF.length) return;
+    if (BLICK < 0) {
+      LEBEND = { s: [].slice.call(stage.childNodes), f: [].slice.call(fussEl.childNodes), fk: fussEl.className, ttl: KOPF.ttl, idx: KOPF.idx };
+      BLICK = VERLAUF.length - 1;
+    } else if (BLICK > 0) BLICK--;
+    else return;
+    stumm(); zeigeBlick();
+  }
+  function zeigeBlick() {
+    var v = VERLAUF[BLICK];
+    zeigeKopf(v.ttl, v.idx);
+    stage.innerHTML = v.html;
+    var kk = stage.firstChild; kk.classList.add('fz-blick'); kk.classList.remove('oh-pop');
+    kk.querySelectorAll('button,textarea,input').forEach(function (b) { b.disabled = true; b.tabIndex = -1; });
+    O.fuss(fussEl, null, { t: U.weiter, pri: true, go: vorBlick });
+  }
+  function vorBlick() {
+    if (BLICK < 0) return;
+    if (BLICK < VERLAUF.length - 1) { BLICK++; zeigeBlick(); return; }
+    var L = LEBEND; BLICK = -1; LEBEND = null;
+    stage.replaceChildren.apply(stage, L.s); fussEl.replaceChildren.apply(fussEl, L.f); fussEl.className = L.fk;
+    zeigeKopf(L.ttl, L.idx);
+  }
+  (function () {
+    var x0 = null, y0 = 0;
+    stage.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1 || /^(TEXTAREA|INPUT)$/.test(e.target.tagName)) { x0 = null; return; }
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+      if (dx > 0) zurueckBlick(); else vorBlick();
+    }, { passive: true });
+  })();
+
   function kopf(ttl, idx) {
+    merkeKarte();
+    KOPF = { ttl: ttl, idx: idx };
     stumm();
     document.getElementById('ttl').textContent = ttl || U.titel;
     railEl.querySelectorAll('.step').forEach(function (s, i) { s.classList.toggle('done', i < idx); s.classList.toggle('on', i === idx); });
@@ -731,9 +793,21 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       geerntet.gehoert.push(SCHLUSS.z);
     }
     PHASE = 'schluss'; speichern();
+    /* Phase 3 (Leo, 21./22.11.2026): die vorletzte Karte zeigt NUR das Ende des Gesprächs,
+       die letzte „Deine Sätze“. Ohne Schlusszeile (abgebrochen) gleich zu den Sätzen. */
+    if (!SCHLUSS.z) { deineSaetze(); return; }
+    kopf(THEMA_NA, 2);
+    var k = O.karte(stage);
+    O.task(k, U.ende);
+    O.blase(k, { capy: CAPY, z: SCHLUSS.z, lang: ZS, lt: SCHLUSS.tr, tr: SCHLUSS.na, trLabel: U.ueb, mini: { label: U.anhoeren, fn: function () { sprich(SCHLUSS.z); } } });
+    O.fb(k, '');
+    O.fuss(fussEl, null, { t: U.zuSaetzen, pri: true, go: function () { deineSaetze(); } });
+    setTimeout(function () { sprich(SCHLUSS.z); }, 380);
+  }
+  function deineSaetze() {
+    PHASE = 'schluss'; speichern();
     kopf(THEMA_NA, 3);
     var k = O.karte(stage);
-    if (SCHLUSS.z) O.blase(k, { capy: CAPY, z: SCHLUSS.z, lang: ZS, lt: SCHLUSS.tr, tr: SCHLUSS.na, trLabel: U.ueb, mini: { label: U.anhoeren, fn: function () { sprich(SCHLUSS.z); } } });
     O.task(k, U.deineSaetze, U.deineSaetzeKlein);
     var liste = O.el('div', 'fz-liste'); k.appendChild(liste);
     protokoll.forEach(function (p, i) {
@@ -743,7 +817,6 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     if (!protokoll.length) liste.innerHTML = '<p class="fz-leer">' + esc(U.nichtsGeerntet) + '</p>';
     O.fb(k, '');
     O.fuss(fussEl, null, { t: U.rueckmeldung, pri: true, go: function () { try { automat.abbrechen(); } catch (e) {} rueckmeldung(); } });
-    if (SCHLUSS.z) setTimeout(function () { sprich(SCHLUSS.z); }, 380);
   }
   function aendern(i) {
     kopf(THEMA_NA, 3);
@@ -754,11 +827,11 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
     box.innerHTML = '<textarea class="fz-feld" id="fz-feld" lang="' + esc(ZS) + '"></textarea>';
     k.appendChild(box); O.fb(k, '');
     var f = box.querySelector('textarea'); f.value = p.gesagt;
-    O.fuss(fussEl, { t: U.zurueck, go: function () { schluss(); } }, { t: U.uebernehmen, pri: true, go: function () {
+    O.fuss(fussEl, { t: U.zurueck, go: function () { deineSaetze(); } }, { t: U.uebernehmen, pri: true, go: function () {
       var alt = p.gesagt, neu = f.value.trim() || alt;
       var j = geerntet.gesagt.indexOf(alt); if (j > -1) geerntet.gesagt[j] = neu;
       p.gesagt = neu; if (neu !== alt) { p.geaendert = true; p.getippt = false; }
-      speichern(); schluss();
+      speichern(); deineSaetze();
     } });
     setTimeout(function () { try { f.focus(); } catch (e) {} }, 60);
   }
