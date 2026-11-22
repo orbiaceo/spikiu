@@ -21,6 +21,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
 .back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .tt{flex:1;text-align:center;padding-right:36px;min-width:0}
+.kopf:has(#spk-kursknopf) .tt{padding-right:0}   /* 22.11.2026: rechts sitzt der Kurs-Knopf */
 .tt .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--acc);text-transform:uppercase}
 .tt h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;text-wrap:balance}
 .punkte{display:flex;gap:5px;justify-content:center;margin-top:.35rem}
@@ -542,5 +543,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 })();
 </script>
 <script src="/feedback-spikiu.js" defer></script>
+<script src="kursknopf.js" data-kursknopf-in=".app > .kopf" defer></script>
 </body>
 </html>

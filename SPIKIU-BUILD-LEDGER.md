@@ -28,6 +28,20 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 22.11.2026 · PRODUKTION: PASTELL MINZE + LEISTE „MEIN KURS · RÄUME · REGAL · MEIN“ (**Leo, 09:27: „Ja! Umsetzen“** · Vorlage `prototyp-kurs-unten4.html`)
+- `haus.html`: Pastell-Minze-Gestaltung (Nunito, Minzgrund, weiße Karten mit zarter Linie, weiche Schatten, Türkis). Neue Kopfzeile (Augenbraue + Titel + ‹ zurück + „?“) statt Türen/Unterzeile.
+  - **Mein Kurs** (`start`): Inhaltsblatt wie im Prototyp, eine Spalte, Nummer · Titel · spanischer Untertitel · ✓/„jetzt“; darunter die nächste Stufe. Der Anhang „Alle Zimmer“ entfällt (→ Räume; alte `anh-*`-Ziele landen in Räume).
+  - **Lektion** (`lek-<id>`): Blatt mit 8 Kapiteln N.1–N.8 (Linien-Icons, ✓ besucht, → nächstes, „kommt bald“ ausgegraut) + Knopf „Los geht’s / Weiter mit …“. Ziele unverändert (`ihKapZiel`).
+  - **Räume** (`raeume`, `kat-0…3`): Wörter & Klang (Feines Ohr, Der Korb, Regionalismen, Wendungen, Der Schlag) · Lesen (Lernroman, Gramática nur es+de, Leseverstehen) · Sprechen & Schreiben (Konversation = szene.html, Schreiben) · Spielen (Piñata, Luftballons, Wortkette, Memory, Garten, Akrostichon → `spiele.html?spiel=…&zurueck=haus`).
+  - **Regal**: Mein Wortschatz zuerst, Deine Lektionen (Premium), Gespräche, Lesen, Garten, Akrosticha. Listen (mosaik.js) mit Kopfzeile ‹ zurück zum Regal.
+  - `?tuer=kurs|raeume|regal`; `kurs` öffnet die zuletzt offene Lektion, sonst das Inhaltsblatt. Texte de/es/en/el (`KR_T`).
+- `bottomnav.js` neu: vier Knöpfe **Mein Kurs · Räume · Regal · Mein** (Tu curso · Espacios · Estante · Perfil / Your course · Rooms · Shelf · Profile / Το μάθημά μου · Χώροι · Ράφι · Προφίλ). Im Haus über `window.spikiuHausBereich`, Markierung folgt dem Raum (`spk-haus-raum`). Spikiu in der Mitte entfällt (Spikiu spricht weiter in den Blasen).
+- `glyphen.js` neu: Spikius Linien-Icons (aus den Prototypen) für Haus und Leiste.
+- `kursknopf.js` neu: Pille „Kurs“ oben rechts in jedem Raum (gefuehrt, szene, learnroman, gym, spiele, taller, schreibwerkstatt, regional, Gramática) → `haus.html?tuer=kurs`, auch mitten im Spiel. Gramática: in der Leiste vor „Lesen | Üben“; Regionalismen: in der Kopfzeile. Räume sichern sich weiter selbst über sitzung.js; nav.js unangetastet.
+- Geprüft headless 390×844 de/es/en/el: Kurs → Lektion → Kapitel → Kurs-Knopf → zurück in dieselbe Lektion; Räume → Spielen → Piñata → Kurs-Knopf → Inhaltsblatt; Regal + Listen; alte Prototypen mit bottomnav.js und mein.html laufen. 0 JS-Fehler, node --check grün.
+- Lehre: Der Auftrag nannte „zweispaltig wie heute“, der genehmigte Prototyp zeigt eine Spalte → gebaut wie der Prototyp (Abnahme „sieht aus wie prototyp-kurs-unten4.html“).
+- OFFEN: andere Räume behalten ihren eigenen (kräftigen) Stil — FRAGE AN DESIGN: sollen die Räume selbst auch Pastell Minze bekommen? · Szene-Feedback deterministisch · Lernroman/Szene je Thema · Konversation-Karten + Zurückwischen.
+
 Stand: 22.11.2026 · VERTEILUNG 1 GEWÄHLT („Mein Kurs · Räume · Regal · Mein“ unten) + NAMENSREGEL „KURS“ ANGEPASST
 - Leo, 09:11: „1! Perfekt gelöst!“ → `prototyp-kurs-unten4.html` ist die Vorlage. Verteilungen 2 (Reiter) und 3 (Mitte) verworfen.
 - CLAUDE.md + spikiu-seele.md: „Kurs“ ist nur als Bereichsname „Mein Kurs · tu curso · your course“ erlaubt, sonst weiter „Lernabenteuer“. FRAGE AN DESIGN damit erledigt.
