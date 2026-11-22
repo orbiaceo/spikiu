@@ -6,29 +6,29 @@
 <title>Spikiu · Spiele</title>
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
-:root{--bg:#eef7f1;--ink:#15163a;--mid:#5f7068;--green:#1f93b0;--ow:2.5px;}
+:root{--bg:#eef7f1;--ink:#15163a;--mid:#5f7068;--green:#1f93b0;--ow:1.5px;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;height:100%;}
-body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5;display:flex;align-items:center;justify-content:center;min-height:100dvh;-webkit-font-smoothing:antialiased;}
+body{background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.5;display:flex;align-items:center;justify-content:center;min-height:100dvh;-webkit-font-smoothing:antialiased;}
 @media (min-width:700px) and (min-height:560px){
  html{font-size:17px;}
  body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:22px 22px;padding:24px;}
- .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:2.5px solid var(--ink);}
+ .app{width:min(460px,94vw);height:min(880px,90vh);border-radius:28px;box-shadow:9px 11px 0 rgba(0,0,0,.22);border:1.5px solid #dcebe1;}
 }
 .app{position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;background:var(--bg);overflow:hidden;}
-.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:var(--ow) solid var(--ink);padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem;}
-.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);color:var(--ink);}
-.back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink);}
+.top{flex:0 0 auto;background:rgba(255,255,255,.72);border-bottom:1.5px solid #dcebe1;padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;display:flex;align-items:center;gap:.6rem;}
+.back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:1.5px solid #dcebe1;background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07);color:var(--ink);}
+.back:active{transform:translate(1px,1px);box-shadow:0 6px 18px rgba(21,22,58,.07);}
 .tt-wrap{flex:1;text-align:center;min-width:0;}
 .tt-wrap .rk{font:500 .58rem/1 'DM Mono',monospace;letter-spacing:.2em;color:var(--green);text-transform:uppercase;}
-.tt-wrap h1{font-family:'Archivo Black',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
+.tt-wrap h1{font-weight:800;font-family:'Nunito',sans-serif;font-size:1.12rem;margin:.1rem 0 0;}
 .stage{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1rem 1rem calc(1.4rem + env(safe-area-inset-bottom));}
 .inner{max-width:30rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
 .doors{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
-.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;text-align:center;min-height:9.2rem;padding:.8rem .6rem;border:var(--ow) solid var(--ink);border-radius:20px;box-shadow:4px 5px 0 var(--ink);cursor:pointer;color:var(--ink);font-family:inherit;}
-.door:active{transform:translate(2px,2px);box-shadow:2px 3px 0 var(--ink);}
+.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;text-align:center;min-height:9.2rem;padding:.8rem .6rem;border:1.5px solid #dcebe1;border-radius:20px;box-shadow:0 6px 18px rgba(21,22,58,.07);cursor:pointer;color:var(--ink);font-family:inherit;}
+.door:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07);}
 .door svg,.door img{width:2.9rem;height:2.9rem;}
-.door b{font:800 .98rem/1.1 'DM Sans',sans-serif;}
+.door b{font:800 .98rem/1.1 'Nunito',sans-serif;}
 .door span{font-size:.74rem;line-height:1.2;font-weight:600;color:rgba(21,22,58,.72);}
 .regal{font:500 .62rem/1 'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin:.6rem 0 -.4rem .2rem;}
 .door .emo{font-size:2.3rem;line-height:1;}
@@ -42,13 +42,14 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .probe{font-size:.8rem;color:var(--mid);text-align:center;margin:0;}
 .note{font-size:.76rem;color:var(--mid);line-height:1.45;text-align:center;margin:.4rem 0 0;}
 .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;}
-.end{background:#fff;color:var(--ink);border:var(--ow) solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--ink);}
-.end.primary{background:var(--green);color:#fff;}
-.end:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
-.card{background:#fff;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem .9rem;}
+.end{background:#fff;color:var(--ink);border:1.5px solid #dcebe1;border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07);}
+.end.primary{background:#c9ecd9;color:#15163a;}
+.end:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07);}
+.card{background:#fff;border:1.5px solid #dcebe1;border-radius:22px;box-shadow:0 6px 18px rgba(21,22,58,.07);padding:1rem .9rem;}
 .empty{text-align:center;color:var(--mid);}
 </style>
-<link rel="stylesheet" href="geraet.css"></head>
+<link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
 <body>
 
 <div class="app">

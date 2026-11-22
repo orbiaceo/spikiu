@@ -6,34 +6,34 @@
 <title>Spikiu — Schreibwerkstatt</title>
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
-  :root{--paper:#eef7f1;--page:#fff;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--green:#1f93b0;--gold:#a87b2e;--red:#e05252;--sage:#9bd14a;--de:#fbf8f0;--line:#e6dec9;--ow:2.5px;}
+  :root{--paper:#eef7f1;--page:#fff;--ink:#15163a;--read:#2b2621;--muted:#6b6154;--green:#1f93b0;--gold:#a87b2e;--red:#e05252;--sage:#9bd14a;--de:#fbf8f0;--line:#e6dec9;--ow:1.5px;}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{background:var(--paper);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
   @media (min-width:700px){body{background:#15163a;background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1px);background-size:22px 22px}}
-  .bar{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;padding:calc(.7rem + env(safe-area-inset-top)) 1.1rem .7rem;border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.92)}
-  .back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:var(--ow) solid var(--ink);background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
-  .back:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+  .bar{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;padding:calc(.7rem + env(safe-area-inset-top)) 1.1rem .7rem;border-bottom:1.5px solid #dcebe1;background:rgba(255,255,255,.92)}
+  .back{width:36px;height:36px;flex:0 0 auto;border-radius:999px;border:1.5px solid #dcebe1;background:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07)}
+  .back:active{transform:translate(1px,1px);box-shadow:0 6px 18px rgba(21,22,58,.07)}
   .room{flex:1;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-  .room-name{font-family:'Archivo Black',sans-serif;font-size:1.05rem;color:var(--ink)}
+  .room-name{font-weight:800;font-family:'Nunito',sans-serif;font-size:1.05rem;color:var(--ink)}
   .controls{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--muted);flex-wrap:wrap}
   .controls label{display:flex;align-items:center;gap:.35rem}
-  select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:10px;padding:.28rem .55rem;cursor:pointer}
+  select{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid #dcebe1;border-radius:10px;padding:.28rem .55rem;cursor:pointer}
   select:focus{outline:none;border-color:var(--green)}
-  .dev-tag{font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:#ffd24a;border:2px solid var(--ink);border-radius:999px;padding:.14rem .5rem}
+  .dev-tag{font:700 .58rem/1 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#15163a;background:#c9ecd9;border:1.5px solid #dcebe1;border-radius:999px;padding:.14rem .5rem}
   .bench{flex:1;width:100%;max-width:980px;margin:0 auto;padding:1.8rem 1.2rem 1.6rem;display:flex;flex-direction:column;background:var(--paper)}
-  @media (min-width:700px){.bench{margin:1.2rem auto;border:var(--ow) solid var(--ink);border-radius:22px;box-shadow:7px 8px 0 rgba(0,0,0,.25);max-width:940px}}
+  @media (min-width:700px){.bench{margin:1.2rem auto;border:1.5px solid #dcebe1;border-radius:22px;box-shadow:7px 8px 0 rgba(0,0,0,.25);max-width:940px}}
   .aufgabe-label{font:700 .66rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted,#5f7068);margin-bottom:.4rem}
   .aufgabe-input{display:block;width:100%;font-family:'Lora',serif;font-size:1.08rem;font-style:italic;color:var(--muted);line-height:1.4;border-bottom:2px dashed var(--line);padding:0 0 .5rem;margin-bottom:1.6rem}
   .aufgabe-input:focus{outline:none;border-bottom-color:var(--green);color:var(--ink)}
   .stage{display:grid;grid-template-columns:1fr;gap:1.1rem;align-items:start}
   @media(min-width:760px){.stage{grid-template-columns:1.35fr 1fr;gap:1.5rem}}
-  .werkstueck{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);padding:1.5rem 1.6rem;min-height:170px;font-family:'Lora',serif;font-size:1.4rem;line-height:1.6;color:var(--read);white-space:pre-wrap;transition:box-shadow .3s}
+  .werkstueck{background:#fff;border:1.5px solid #dcebe1;border-radius:16px;box-shadow:0 6px 18px rgba(21,22,58,.07);padding:1.5rem 1.6rem;min-height:170px;font-family:'Lora',serif;font-size:1.4rem;line-height:1.6;color:var(--read);white-space:pre-wrap;transition:box-shadow .3s}
   .werkstueck.empty{color:#bcae93;font-style:italic}
   .werkstueck.fertig{box-shadow:3px 4px 0 var(--green);border-color:var(--green)}
   .spot{background:linear-gradient(var(--ink) 0 0) bottom left/0% 3px no-repeat;padding-bottom:2px;transition:background-size .5s ease}
   .spot.lit{background-size:100% 3px}
-  .lektor{background:var(--de);border:2.5px solid var(--ink);border-left:6px solid var(--ink);border-radius:14px;padding:.9rem 1rem;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;box-shadow:3px 4px 0 var(--ink)}
+  .lektor{background:var(--de);border:1.5px solid #dcebe1;border-left:1.5px solid #dcebe1;border-radius:14px;padding:.9rem 1rem;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;box-shadow:0 6px 18px rgba(21,22,58,.07)}
   .lektor.show{opacity:1;transform:none}
   .lektor.treffer{border-left-color:var(--green)}
   .lek-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
@@ -45,21 +45,21 @@
   .lek-form{font-family:'Lora',serif;font-size:1.3rem;color:var(--green);margin:.7rem 0 .1rem}
   .lek-laut{font-size:.86rem;color:var(--muted);font-style:italic;margin-bottom:.2rem}
   .lek-status{font-weight:700}.lek-status.t{color:var(--green)}.lek-status.b{color:var(--muted,#5f7068)}
-  .uebernehmen{margin-top:.7rem;font:800 .82rem 'DM Sans';color:#fff;background:var(--green);border:var(--ow) solid var(--ink);border-radius:999px;padding:.5rem 1rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
-  .uebernehmen:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
-  .lesson-btn{margin-top:.9rem;font:800 .9rem 'DM Sans';color:var(--ink);background:var(--sage);border:var(--ow) solid var(--ink);border-radius:999px;padding:.6rem 1.1rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
-  .lesson-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .uebernehmen{margin-top:.7rem;font:800 .82rem 'Nunito';color:#15163a;background:#c9ecd9;border:1.5px solid #dcebe1;border-radius:999px;padding:.5rem 1rem;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07)}
+  .uebernehmen:active{transform:translate(1px,1px);box-shadow:0 6px 18px rgba(21,22,58,.07)}
+  .lesson-btn{margin-top:.9rem;font:800 .9rem 'Nunito';color:var(--ink);background:var(--sage);border:1.5px solid #dcebe1;border-radius:999px;padding:.6rem 1.1rem;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07)}
+  .lesson-btn:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07)}
   .lek-error{font-size:.95rem;color:var(--muted,#5f7068);line-height:1.5}
-  .retry{margin-top:.6rem;font:700 .82rem 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+  .retry{margin-top:.6rem;font:700 .82rem 'Nunito';color:var(--ink);background:#fff;border:1.5px solid #dcebe1;border-radius:999px;padding:.35rem .8rem;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07)}
   .hands{margin-top:1.6rem}
   .hands-label{font:700 .68rem/1 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-  textarea{width:100%;font-family:'Lora',serif;font-size:1.3rem;line-height:1.5;color:var(--read);background:#fff;border:var(--ow) solid var(--ink);border-radius:14px;padding:1rem 1.1rem;resize:vertical;min-height:90px;box-shadow:3px 3px 0 var(--ink)}
+  textarea{width:100%;font-family:'Lora',serif;font-size:1.3rem;line-height:1.5;color:var(--read);background:#fff;border:1.5px solid #dcebe1;border-radius:14px;padding:1rem 1.1rem;resize:vertical;min-height:90px;box-shadow:0 6px 18px rgba(21,22,58,.07)}
   textarea:focus{outline:none;border-color:var(--green)}
   .hands-row{display:flex;align-items:center;gap:.9rem;margin-top:.9rem;flex-wrap:wrap}
-  .primary{font:800 .95rem 'DM Sans';color:#fff;background:var(--green);border:var(--ow) solid var(--ink);border-radius:999px;padding:.65rem 1.4rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
-  .primary:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .primary{font:800 .95rem 'Nunito';color:#15163a;background:#c9ecd9;border:1.5px solid #dcebe1;border-radius:999px;padding:.65rem 1.4rem;cursor:pointer;box-shadow:0 6px 18px rgba(21,22,58,.07)}
+  .primary:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07)}
   .primary:disabled{opacity:.45;cursor:default;box-shadow:none}
-  .restart{font:600 .82rem 'DM Sans';color:var(--muted);background:transparent;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .restart{font:600 .82rem 'Nunito';color:var(--muted);background:transparent;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   .hint{font-size:.78rem;color:var(--muted);margin-top:.6rem;font-style:italic}
   /* Abschluss + Lektion (02.10.2026): Hände klappen weg, die Lektor-Karte führt. */
   .werk-label{font:700 .66rem/1 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
@@ -71,14 +71,14 @@
   .lektor.bereit{background:#fff;border-color:var(--green);border-left-color:var(--green);box-shadow:3px 4px 0 var(--green)}
   .lek-leise{font-size:.88rem;line-height:1.5;color:var(--muted);margin-top:.55rem}
   .lek-status.e{color:#b94a3a}
-  .lek-titel{font-family:'Archivo Black',sans-serif;font-size:1.2rem;line-height:1.2;text-wrap:balance}
+  .lek-titel{font-weight:800;font-family:'Nunito',sans-serif;font-size:1.2rem;line-height:1.2;text-wrap:balance}
   .lek-ziel{font-family:'Lora',serif;font-size:1rem;line-height:1.5;color:var(--read);margin-top:.45rem}
   .lek-ort{margin-top:.8rem;font-size:.85rem;color:var(--muted)}
   .lek-ort b{color:var(--ink)}
   .lek-aktionen{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:1rem}
   .lek-aktionen .lesson-btn{margin-top:0}
-  .lesson-btn.blau{background:var(--green);color:#fff}
-  .btn-leise{font:700 .88rem 'DM Sans';color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:.5rem .95rem;cursor:pointer}
+  .lesson-btn.blau{background:#c9ecd9;color:#15163a}
+  .btn-leise{font:700 .88rem 'Nunito';color:var(--ink);background:#fff;border:1.5px solid #dcebe1;border-radius:999px;padding:.5rem .95rem;cursor:pointer}
   .lesson-btn:focus-visible,.btn-leise:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
   .punkte{display:inline-flex;gap:.3rem;margin-left:.2rem;vertical-align:middle}
   .punkte i{width:7px;height:7px;border-radius:50%;background:var(--green);opacity:.25;animation:atmen 1.2s ease-in-out infinite}
@@ -87,7 +87,8 @@
   [hidden]{display:none !important}
   @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
 </style>
-<link rel="stylesheet" href="geraet.css"></head>
+<link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
 <body>
 
 <header class="bar">

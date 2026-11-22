@@ -28,6 +28,15 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 22.11.2026 · PASTELL MINZE IN ALLEN RÄUMEN (**Leo, 09:52: „Ich möchte den Stil nach den ersten zwei Screenshots haben. Dass überall dieselbe Typographie und farbliche Nuancen sind … ruhig und ausbalanciert.“**)
+- Ein Umbau-Skript (`werkzeug-pastell-minze.py`, deterministisch, wiederholbar) auf alle Lernräume und ihre Module: `gefuehrt`, `szene`, `learnroman`, `gym`, `spiele`, `taller`, `schreibwerkstatt`, `regional`, `buch/Gramatica-Karten`, `mein`, `haus` (Buch-Overlay, Altteile) + `ohr-karten.js`, `juegos.js`, `karten-engine.js`, `mosaik.js`, `lesebegleiter.js`, `uebung.js`. `nav.js` unangetastet.
+  - Ränder in Tinte (2–3,5 px) → **1,5 px Minzlinie `#dcebe1`**; `--ow` → 1,5 px.
+  - Harte Versatzschatten → **weicher Schatten `0 6px 18px rgba(21,22,58,.07)`** (Akzent: türkis 16 %).
+  - **Archivo Black / DM Sans → Nunito** (Titel 800); Nunito 600–900 in jeder Seite geladen. **Lora** (Zielsprache) und **DM Mono** (Augenbrauen) bleiben.
+  - Dunkel oder kräftig gefüllte Knöpfe mit weißer Schrift → **Minze `#c9ecd9` mit Tinte** (seguir, Entregar, Gramática-Leiste, Toasts …). Senf `#ffd24a` als Fläche → **`#ffe7a3`**. Memory-Rückseite Minze mit türkisem „?“.
+- Geprüft headless 390×844: 12 Ansichten (Sprechen, Freies Gespräch, Lernroman, Karten, Memory, Garten, Leseverstehen, Schreiben, Regionalismen, Gramática, Mein, Regal) — 0 JS-Fehler; node --check aller Module + Inline-Scripts grün; Regression Haus/Leiste, Kurs-Knopf, Zurückspulen grün.
+- Bewusst nicht angefasst: Bild-Icons und Themen-Kacheln der Spiele behalten ihre Farben; SVG-Striche bleiben in Tinte.
+
 Stand: 22.11.2026 · LEKTION: ZURÜCKSPULEN UND WIEDER NACH VORN (**Leo, 09:40: „wenn ich zurückgehe, dann muss ich wieder zurückkehren können zu dem Punkt, wo ich vorher war … die Karte steht da und bewegt sich nicht“**)
 - Ursache (headless mit echten Touch-Gesten nachgestellt): (1) waagrechte Wischer gehörten dem Browser — Chrome deutete sie als „Seite zurück“ und verließ die Lektion; (2) im Rückblick sind die Kacheln gesperrt, und auf gesperrten Knöpfen kommen Wischer nicht an → genau auf der zurückgespulten Karte ging es nicht mehr vor; (3) im Rückblick gab es keinen Knopf nach vorn.
 - `gefuehrt.html`: `main.stage{touch-action:pan-y}` + `overscroll-behavior-x:none` (Wischer gehören der Karte); `.oh-karte button:disabled{pointer-events:none}` (Daumen geht durch); Rückblick-Karte hat jetzt rechts „weiter ›“ (de/es/en/el, vorhandener Text), der Karte um Karte bis zur Stelle führt, an der man war — Daumen nach links tut dasselbe.
@@ -46,7 +55,7 @@ Stand: 22.11.2026 · PRODUKTION: PASTELL MINZE + LEISTE „MEIN KURS · RÄUME �
 - `kursknopf.js` neu: Pille „Kurs“ oben rechts in jedem Raum (gefuehrt, szene, learnroman, gym, spiele, taller, schreibwerkstatt, regional, Gramática) → `haus.html?tuer=kurs`, auch mitten im Spiel. Gramática: in der Leiste vor „Lesen | Üben“; Regionalismen: in der Kopfzeile. Räume sichern sich weiter selbst über sitzung.js; nav.js unangetastet.
 - Geprüft headless 390×844 de/es/en/el: Kurs → Lektion → Kapitel → Kurs-Knopf → zurück in dieselbe Lektion; Räume → Spielen → Piñata → Kurs-Knopf → Inhaltsblatt; Regal + Listen; alte Prototypen mit bottomnav.js und mein.html laufen. 0 JS-Fehler, node --check grün.
 - Lehre: Der Auftrag nannte „zweispaltig wie heute“, der genehmigte Prototyp zeigt eine Spalte → gebaut wie der Prototyp (Abnahme „sieht aus wie prototyp-kurs-unten4.html“).
-- OFFEN: andere Räume behalten ihren eigenen (kräftigen) Stil — FRAGE AN DESIGN: sollen die Räume selbst auch Pastell Minze bekommen? · Szene-Feedback deterministisch · Lernroman/Szene je Thema · Konversation-Karten + Zurückwischen.
+- OFFEN: andere Räume behalten ihren eigenen (kräftigen) Stil — (erledigt: Räume in Pastell Minze, 22.11.) · Szene-Feedback deterministisch · Lernroman/Szene je Thema · Konversation-Karten + Zurückwischen.
 
 Stand: 22.11.2026 · VERTEILUNG 1 GEWÄHLT („Mein Kurs · Räume · Regal · Mein“ unten) + NAMENSREGEL „KURS“ ANGEPASST
 - Leo, 09:11: „1! Perfekt gelöst!“ → `prototyp-kurs-unten4.html` ist die Vorlage. Verteilungen 2 (Reiter) und 3 (Mitte) verworfen.

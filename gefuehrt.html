@@ -10,28 +10,28 @@
 /* ═══ Geführtes Gespräch im „Feines Ohr"-Design (Leo, 19.10.2026: „Lasst uns geführt und freies
    Gespräch nach diesem Prototyp reformieren"). Vorlage: prototyp-gespraech-ohr.html.
    Karten-Bausteine: ohr-karten.js. Nur die Lektion rendert weiter karten-engine.js. ═══ */
-:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0; --faint:#dfe6e0; --ow:2.5px; }
+:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0; --faint:#dfe6e0; --ow:1.5px; }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;overflow:hidden}
+body{background:var(--minz);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;overflow:hidden}
 button{font:inherit;cursor:pointer}
 .app{display:flex;flex-direction:column;height:100dvh;max-width:560px;margin:0 auto;background:var(--minz)}
 
 .kopf{flex:0 0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px;
   padding:calc(.55rem + env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) .55rem max(14px,env(safe-area-inset-left));
-  border-bottom:var(--ow) solid var(--ink);background:rgba(255,255,255,.55)}
-.kopf .back{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;box-shadow:2px 3px 0 var(--ink);
+  border-bottom:1.5px solid #dcebe1;background:rgba(255,255,255,.55)}
+.kopf .back{width:40px;height:40px;border-radius:50%;border:1.5px solid #dcebe1;background:#fff;box-shadow:0 6px 18px rgba(21,22,58,.07);
   font-size:1.15rem;display:grid;place-items:center}
 .kopf .back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
 .kopf .mitte{text-align:center;min-width:0}
 .kopf .eb{font:600 .64rem/1 'DM Mono',ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
-.kopf .ttl{font:900 1.3rem/1.15 'Archivo Black','DM Sans',sans-serif;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kopf .ttl{font:900 1.3rem/1.15 'Nunito','Nunito',sans-serif;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .rail{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:8px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
 .rail .step{display:flex;flex-direction:column;gap:4px}
 .rail .step i{display:block;height:5px;border-radius:9px;background:var(--faint)}
-.rail .step b{font:700 .58rem/1 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#9aa49f;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .step b{font:700 .58rem/1 'Nunito',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#9aa49f;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rail .step.done i,.rail .step.on i{background:var(--acc)}
 .rail .step.on b{color:var(--acc)} .rail .step.done b{color:var(--ink)}
 
@@ -42,21 +42,21 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 
 /* Spiel zum Schluss (01.10.): eigenes Blatt über der Bühne, scrollt. */
 .spiel-ende{position:absolute;inset:0;z-index:5;overflow-y:auto;background:var(--minz);padding:1rem 1rem calc(1.4rem + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:1rem}
-.spiel-ende .karte{background:#fff;border:2.5px solid var(--ink);border-radius:22px;box-shadow:5px 6px 0 var(--ink);padding:1rem .9rem;max-width:30rem;width:100%;margin:0 auto}
+.spiel-ende .karte{background:#fff;border:1.5px solid #dcebe1;border-radius:22px;box-shadow:0 6px 18px rgba(21,22,58,.07);padding:1rem .9rem;max-width:30rem;width:100%;margin:0 auto}
 .spiel-ende .ends{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;max-width:30rem;width:100%;margin:0 auto}
-.spiel-ende .end{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'DM Sans',sans-serif;box-shadow:3px 3px 0 var(--ink)}
-.spiel-ende .end.primary{background:var(--acc);color:#fff}
+.spiel-ende .end{background:#fff;color:var(--ink);border:1.5px solid #dcebe1;border-radius:999px;padding:.6rem 1rem;font:800 .9rem/1 'Nunito',sans-serif;box-shadow:0 6px 18px rgba(21,22,58,.07)}
+.spiel-ende .end.primary{background:#c9ecd9;color:#15163a}
 /* Unterzeile der Station (je Stufe anders) — auch auf kleinen Handys sichtbar */
-.oh-tile .schritt{font:600 .8rem/1.25 'DM Sans',sans-serif;color:var(--muted);text-wrap:balance}
+.oh-tile .schritt{font:600 .8rem/1.25 'Nunito',sans-serif;color:var(--muted);text-wrap:balance}
 /* Abschluss-Bilanz: flach, ohne Rand/Schatten — reine Information, kein Knopf */
 .bilanz{flex:1 1 0;min-height:0;width:100%;display:flex;flex-direction:column;justify-content:center;gap:2px;background:var(--minz);border-radius:18px;padding:8px 16px}
 .bz{flex:1 1 0;max-height:84px;display:flex;align-items:center;gap:14px;text-align:left;border-bottom:1.5px dashed var(--faint)}
 .bz:last-child{border-bottom:0}
 .bz-e{flex:0 0 auto;font-size:1.7rem;line-height:1}
 .bz-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.bz-t b{font:800 1.05rem/1.2 'DM Sans',sans-serif}
-.bz-t span{font:600 .88rem/1.25 'DM Sans',sans-serif;color:var(--muted)}
-.bz-h{flex:0 0 auto;font:800 1rem 'DM Sans',sans-serif;color:#2f6b3a}
+.bz-t b{font:800 1.05rem/1.2 'Nunito',sans-serif}
+.bz-t span{font:600 .88rem/1.25 'Nunito',sans-serif;color:var(--muted)}
+.bz-h{flex:0 0 auto;font:800 1rem 'Nunito',sans-serif;color:#2f6b3a}
 @media (max-height:720px){.kopf .ttl{font-size:1.12rem}.kopf .back{width:36px;height:36px}}
 /* 22.11.2026 Daumen vor/zurück: waagrechte Wischer gehören der Karte, nicht dem Browser (sonst „zurück zur vorigen Seite“);
    gesperrte Kacheln lassen den Daumen durch (auf gesperrten Knöpfen kommen Wischer sonst nicht an). */
@@ -64,7 +64,8 @@ html,body{overscroll-behavior-x:none}
 main.stage{touch-action:pan-y}
 .oh-karte button:disabled{pointer-events:none}
 </style>
-<link rel="stylesheet" href="geraet.css"></head>
+<link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
 <body>
 <div class="app">
   <header class="kopf">
