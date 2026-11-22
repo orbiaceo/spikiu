@@ -59,7 +59,7 @@ komplett (Ohren + 4 Beine), heißt nach außen IMMER „Spikiu", nie „Capy".
   mit `window.history` → `history.push is not a function`, NUR im Browser, curl lief.)
   Nimm sprechende Namen wie `verlauf`, `ort`, `zustand`.
 - **NIE Asterisks** für Betonung in HTML — immer `<em>`.
-- **Naming nach außen:** nie „Kurs" (→ Lernabenteuer), „Level" (→ Etappe), „KI" (→ Spikiu),
+- **Naming nach außen:** „Kurs" NUR als Name des Bereichs „Mein Kurs · tu curso · your course" (Leo, 22.11.2026), sonst nie „Kurs" (→ Lernabenteuer); nie „Level" (→ Etappe), „KI" (→ Spikiu),
   „Atelier". Reifegrad nur als Baum (Samen/Stamm/Krone/Blüte), nie CEFR (A1/B2). Details: Seele.
 - **SITZUNGS-PERSISTENZ (Pflicht für jeden Raum):** Keine Arbeit darf durch einen Fehl-Tipp
   verloren gehen. Jeder Raum sichert seinen Zustand laufend über `sitzung.js`
