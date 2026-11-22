@@ -1259,7 +1259,8 @@ function ihKapLade(){try{return JSON.parse(localStorage.getItem('spikiu_kapitel'
 function ihKapMerke(key,z){var d=ihKapLade();d[key]=d[key]||{};d[key][z]=new Date().toISOString().slice(0,10);try{localStorage.setItem('spikiu_kapitel',JSON.stringify(d));}catch(e){}}
 function ihGramOk(){return bkZiel()==='es'&&bkMutter()==='de';}
 function ihKapZiel(x,z){var q='thema='+encodeURIComponent(x.id)+(x.stufe&&x.stufe!=='a1'?'&stufe='+x.stufe:'');
- return ['gefuehrt.html?'+q,'gefuehrt.html?'+q+'&phase=hoeren','gefuehrt.html?'+q+'&phase=sprechen','szene.html','spiele.html?spiel=golpe&von=wortschatz&zurueck=haus',ihGramOk()?'buch/Gramatica-Karten.html':null,'learnroman.html','spiele.html?zurueck=haus'][z];}
+ return ['gefuehrt.html?'+q,'gefuehrt.html?'+q+'&phase=hoeren','gefuehrt.html?'+q+'&phase=sprechen','szene.html?'+q,'spiele.html?spiel=golpe&von=wortschatz&zurueck=haus',ihGramOk()?'buch/Gramatica-Karten.html':null,'learnroman.html?'+q,   /* Phase 2 (22.11.): Szene + Lernroman öffnen das Thema der Lektion */
+ 'spiele.html?zurueck=haus'][z];}
 function ihPfad(){var F=window.spikiuFuehrung;if(!F||!F.bereit())return null;try{return F.pfad();}catch(e){return null;}}
 function ihNaechste(p){var o=p.filter(function(x){return x.status!=='gesetzt';});return o.length?o[0]:null;}
 function ihKachel(em,tt,ss,bg,go,extra){var b=stEl('button','st-k st-kq');b.style.background=bg;

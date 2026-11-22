@@ -651,6 +651,38 @@ function start(){
   renderList();
   warmVoice();
 
+  /* Aus der Lektion (Leo, 22.11.2026, Phase 2): learnroman.html?thema=<id>[&stufe=a2] öffnet direkt die Station
+     zum Thema der Lektion — Etappe passend zur Stufe (a1 Fundament · a2 Aufbau · b1/b2 Anwendung), sonst die erste.
+     Hat dieses Buch das Thema nicht, schaut es in den anderen Büchern des Sprachpaars. */
+  var wunschThema = (window.location.search.match(/[?&]thema=([a-z]+)/) || [])[1];
+  if (wunschThema && BUCH) {
+    var wunschEt = { a1:'fundament', a2:'aufbau', b1:'anwendung', b2:'anwendung' }[(window.location.search.match(/[?&]stufe=([a-z0-9]+)/) || [])[1] || 'a1'];
+    var stufeQ = (window.location.search.match(/[?&]stufe=([a-z0-9]+)/) || [])[1] || 'a1';
+    var treffer = function (B, genau) {
+      for (var i = 0; i < B.kapitel.length; i++) { var c = B.kapitel[i]; if (c.thema === wunschThema && (!genau || c.level === wunschEt)) return i; }
+      return -1;
+    };
+    var anderswo = function (genau) {   /* dasselbe Thema in einem anderen Buch des Sprachpaars → dorthin */
+      if (/[?&]buch=/.test(window.location.search)) return false;
+      for (var bi = 0; bi < ANDERE_BUECHER.length; bi++) {
+        var B2 = window.spikiuLearnroman(PROFIL.zielsprache, PROFIL.muttersprache, ANDERE_BUECHER[bi].buch);
+        if (B2 && treffer(B2, genau) > -1) { window.location.replace('learnroman.html?buch=' + encodeURIComponent(B2.buch) + '&thema=' + wunschThema + '&stufe=' + stufeQ); return true; }
+      }
+      return false;
+    };
+    /* Reihenfolge: passende Etappe hier → passende Etappe in einem anderen Buch → irgendeine Etappe hier → anderswo */
+    var ti = treffer(BUCH, true);
+    if (ti < 0 && anderswo(true)) return;
+    if (ti < 0) ti = treffer(BUCH, false);
+    if (ti < 0 && anderswo(false)) return;
+    if (ti > -1) {
+      offenBis = Math.max(offenBis, etIdx(BUCH.kapitel[ti].level));   // die Lektion ist seine Stufe → die Station ist offen
+      var sv0 = sitzLaden();
+      oeffne(ti, (sv0 && sv0.buch === BUCH.buch && sv0.i === ti) ? (sv0.y || 0) : 0);
+      return;
+    }
+  }
+
   // Wiederkommen: nur bei einer wirklich angefangenen, unfertigen Station.
   var sv = sitzLaden();
   if (BUCH && sv && sv.buch === BUCH.buch && BUCH.kapitel[sv.i] && istOffen(BUCH.kapitel[sv.i]) && (sv.y || 0) > 120

@@ -28,6 +28,13 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 22.11.2026 · PHASE 2 ERLEDIGT: LERNROMAN UND SZENE ÖFFNEN DAS THEMA DER LEKTION (**Leo, 10:18: „2! Sí!“**)
+- `haus.html` (`ihKapZiel`): Kapitel N.4 „Selbst sprechen“ → `szene.html?thema=<id>[&stufe=]`, Kapitel N.7 „Lesen“ → `learnroman.html?thema=<id>[&stufe=]`. Die Räume-Kacheln öffnen weiter frei (ohne Thema).
+- `szene.html` konnte `?thema=&stufe=` schon — jetzt wird es genutzt (Wiederkommen-Karte nur, wenn die gespeicherte Szene dasselbe Thema hat).
+- `learnroman.html`: `?thema=<id>[&stufe=a1|a2|b1|b2]` öffnet direkt die passende Station. Suche: passende Etappe (a1 Fundament · a2 Aufbau · b1/b2 Anwendung) im aktuellen Buch → in einem anderen Buch des Sprachpaars (Weiterleitung mit `?buch=`) → irgendeine Etappe hier → anderswo; unbekanntes Thema → Liste wie bisher. Die Station ist offen, auch wenn `koennen` sie sonst noch nicht freigäbe (die Lektion ist seine Stufe). Angefangene Stelle derselben Station wird wieder angesprungen.
+- Geprüft headless: Lektion „Im Hotel“ → 7.4 Szene „Im Hotel“, 7.7 Lernroman Station 9 „Dos noches“ (de→es, en→es); es→de „Auf den Namen Ruiz“; a2 → Station 12, b1 Wetter → Station 24; 0 JS-Fehler, node --check grün.
+- Nächste Phase: **3 · Konversation** (vorletzte Karte nur Dialogende, letzte „Deine Sätze“; Zurückwischen überall auf Lernkarten).
+
 Stand: 22.11.2026 · PHASE 1 ERLEDIGT: SZENE-RÜCKMELDUNG OHNE KI — DER SPIEGEL (**Leo, 10:07: „Vamos una por una. Empieza con el número 1.“**)
 - `szene.html`: der einzige Modellaufruf der Szene (`/api/rueckmeldung`) ist ersetzt durch den **Spiegel** (Vorlage Prototyp „Selbst sprechen“). Jeder selbst gebaute Satz (angetippte Vorschläge nicht) wird Wort für Wort mit der üblichen Skriptzeile verglichen: **grün** = steht da, **gelb** = fast (Akzent fehlt oder ein Buchstabe anders/zu viel/zu wenig, ab 4 Buchstaben), **gestrichelt** = fehlt noch. Darunter „So sagt man es oft:“ + Mustersatz zum Anhören (fehlt, wenn alles grün). Urteil: „Alles drin.“ / „Fast — schau auf die gelben Wörter.“ / „Grün ist schon da …“ / „Hör dir den Mustersatz an …“. Alles grün → „Sehr gut!“ über der Ernte. Texte de/es/en/el, Pastell Minze.
 - **Null Token pro Szene.** `api/rueckmeldung.js` bleibt im Repo, wird von der Szene nicht mehr aufgerufen.
@@ -39,7 +46,7 @@ Stand: 22.11.2026 · PASTELL MINZE ABGENOMMEN — DAS IST DER SPIKIU-STIL (**Leo
 - **Regel für neue Räume:** im Stil bauen oder einmal `python3 werkzeuge/pastell-minze.py <datei>` laufen lassen; keine dicken Tinten-Ränder, keine harten Versatzschatten, kein Archivo Black.
 - **Nächste Phasen (Reihenfolge entscheidet Leo):**
   1. ~~Szene-Feedback deterministisch (zero token).~~ erledigt 22.11. (Spiegel)
-  2. Lernroman und Szene je Thema öffnen (Kapitel 3.4 und 3.7 der Lektion führen ins passende Thema).
+  2. ~~Lernroman und Szene je Thema öffnen.~~ erledigt 22.11.
   3. Konversation: vorletzte Karte nur das Dialogende, letzte Karte „Deine Sätze“; Zurückwischen überall auf Lernkarten (Muster aus `gefuehrt.html`: `touch-action:pan-y`, Knopf „weiter ›“ im Rückblick).
   4. „Mein“ → Einstellungen: Sprache/Muttersprache direkt umstellbar (heute „kommt bald“).
   5. Grammatik für weitere Sprachpaare (heute nur Ziel es + Muttersprache de; sonst „kommt bald“).
