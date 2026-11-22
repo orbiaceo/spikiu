@@ -25,8 +25,8 @@
   - NULL TOKEN während der Szene. Spikius Zeile ist IMMER die nächste
     Skriptzeile — die Szene kann nicht entgleisen.
   - ES WIRD NICHTS GEPRÜFT (31.08.): jede offene Antwort rückt die Aufgabe vor;
-    nur eine Rückfrage („¿Cómo?") nicht (Sieb, R13). Beurteilt wird EINMAL am
-    Ende von /api/rueckmeldung — nur die selbst gebauten Sätze.
+    nur eine Rückfrage („¿Cómo?") nicht (Sieb, R13). Am Ende zeigt der SPIEGEL
+    (0 Token, 22.11.2026) jeden selbst gebauten Satz neben der üblichen Zeile.
   - Vor der Rückmeldung kann er jeden eigenen Satz noch ändern (Stift, 30.08.).
   - Die Ernte zeigt nur, was vorkam. Sitzung über sitzung.js ('szene').
 
@@ -124,6 +124,19 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
 .fz-leer{font:600 .95rem/1.4 'Nunito',sans-serif;color:var(--muted);text-align:center;margin:auto 0}
 .fz-punkte{font:800 1.6rem 'Nunito',sans-serif;color:var(--muted);letter-spacing:.3em;margin:auto 0}
 @media (max-height:720px){.kopf .ttl{font-size:1.12rem}.kopf .back{width:36px;height:36px}.fz-selbst{min-height:130px}}
+.fz-spiegel{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;text-align:left;background:#fff;border:1.5px solid #dcebe1;border-radius:16px;box-shadow:0 6px 18px rgba(21,22,58,.07);padding:.7rem .85rem}
+.fz-spiegel.sauber{background:#f3fbf6}
+.fz-spiegel .u{font:700 .76rem/1.3 'Nunito',sans-serif;color:var(--muted)}
+.fz-spiegel .x{font:500 1rem/1.35 'Lora',Georgia,serif;color:var(--muted)}
+.fz-spiegel .spur{font:600 1.12rem/1.7 'Lora',Georgia,serif}
+.fz-spiegel .spur span{padding:0 .18rem;border-radius:5px}
+.sp-da{background:#d6efc0}
+.sp-fast{background:#fff0c4}
+.sp-fehlt{border-bottom:2px dashed #ff8a7d;color:var(--muted)}
+.fz-spiegel .muster{align-self:flex-start;display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem;border:1.5px solid #dcebe1;border-radius:12px;background:#eef7f1;padding:.4rem .6rem;text-align:left;color:var(--ink)}
+.fz-spiegel .muster .m{font:700 .78rem 'Nunito',sans-serif;color:var(--muted)}
+.fz-spiegel .muster b{font:600 1rem/1.3 'Lora',Georgia,serif}
+.fz-spiegel .urteil{font:800 .84rem/1.3 'Nunito',sans-serif;color:#1f7f99}
 </style>
 <link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -199,7 +212,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       du:function(z){ return 'Du: <em>' + z + '</em>'; }, nochmalSp:'Spikiu sagt es noch einmal.',
       weiter:'weiter ›', genug:'Genug für heute',
       deineSaetze:'Deine Sätze', deineSaetzeKlein:'Tipp einen an, um ihn noch zu ändern.', uebernehmen:'Übernehmen ›', zurueck:'‹ Zurück',
-      rueckmeldung:'Rückmeldung ›', warte:'Spikiu liest deine Sätze …', korrTitel:'Deine Sätze, berichtigt', sauber:'Sehr gut!',
+      rueckmeldung:'Rückmeldung ›', warte:'Spikiu liest deine Sätze …', korrTitel:'Deine Sätze, berichtigt', sauber:'Sehr gut!', spiegelTitel:'Dein Spiegel', spiegelKlein:'Grün ist schon da · gelb fast · gestrichelt fehlt noch.', muster:'So sagt man es oft:', allesDrin:'Alles drin.', gruenDa:'Grün ist schon da. Der Mustersatz zeigt den Rest.', fastDa:'Fast — schau auf die gelben Wörter.', keinGruen:'Hör dir den Mustersatz an — so sagt man es oft.',
       geuebt:'Das hast du geübt', wendungen:'Wendungen und Sätze', woerter:'Wörter',
       nichtsGeerntet:'Noch nichts eingesammelt.', nichtsGeerntetText:'Beim nächsten Mal steht hier, was ihr wirklich gesagt habt.',
       nachHause:'Nach Hause ›', nochmal:'‹ Nochmal',
@@ -217,7 +230,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       du:function(z){ return 'Tú: <em>' + z + '</em>'; }, nochmalSp:'Spikiu lo repite.',
       weiter:'seguir ›', genug:'Ya está bien por hoy',
       deineSaetze:'Tus frases', deineSaetzeKlein:'Toca una para cambiarla todavía.', uebernehmen:'Aceptar ›', zurueck:'‹ Atrás',
-      rueckmeldung:'Comentarios ›', warte:'Spikiu lee tus frases …', korrTitel:'Tus frases, corregidas', sauber:'¡Muy bien!',
+      rueckmeldung:'Comentarios ›', warte:'Spikiu lee tus frases …', korrTitel:'Tus frases, corregidas', sauber:'¡Muy bien!', spiegelTitel:'Tu espejo', spiegelKlein:'Verde ya está · amarillo casi · discontinuo falta.', muster:'Así se suele decir:', allesDrin:'Está todo.', gruenDa:'Lo verde ya está. La frase modelo muestra el resto.', fastDa:'Casi: mira las palabras amarillas.', keinGruen:'Escucha la frase modelo: así se suele decir.',
       geuebt:'Esto has practicado', wendungen:'Frases', woerter:'Palabras',
       nichtsGeerntet:'Todavía nada recogido.', nichtsGeerntetText:'La próxima vez aparecerá aquí lo que de verdad hayáis dicho.',
       nachHause:'A casa ›', nochmal:'‹ Otra vez',
@@ -235,7 +248,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       du:function(z){ return 'You: <em>' + z + '</em>'; }, nochmalSp:'Spikiu says it again.',
       weiter:'next ›', genug:'Enough for today',
       deineSaetze:'Your sentences', deineSaetzeKlein:'Tap one to change it.', uebernehmen:'Done ›', zurueck:'‹ Back',
-      rueckmeldung:'Feedback ›', warte:'Spikiu is reading your sentences …', korrTitel:'Your sentences, corrected', sauber:'Very good!',
+      rueckmeldung:'Feedback ›', warte:'Spikiu is reading your sentences …', korrTitel:'Your sentences, corrected', sauber:'Very good!', spiegelTitel:'Your mirror', spiegelKlein:'Green is there · yellow almost · dashed still missing.', muster:'This is how people often say it:', allesDrin:'Everything is there.', gruenDa:'Green is already there. The model sentence shows the rest.', fastDa:'Almost: look at the yellow words.', keinGruen:'Listen to the model sentence: this is how people often say it.',
       geuebt:'This is what you practised', wendungen:'Phrases and sentences', woerter:'Words',
       nichtsGeerntet:'Nothing collected yet.', nichtsGeerntetText:'Next time this is where what you actually said will appear.',
       nachHause:'Home ›', nochmal:'‹ Again',
@@ -253,7 +266,7 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
       du:function(z){ return 'Εσύ: <em>' + z + '</em>'; }, nochmalSp:'Ο Spikiu το ξαναλέει.',
       weiter:'συνέχεια ›', genug:'Αρκετά για σήμερα',
       deineSaetze:'Οι φράσεις σου', deineSaetzeKlein:'Πάτα μία για να την αλλάξεις.', uebernehmen:'Εντάξει ›', zurueck:'‹ Πίσω',
-      rueckmeldung:'Σχόλια ›', warte:'Ο Spikiu διαβάζει τις φράσεις σου …', korrTitel:'Οι φράσεις σου, διορθωμένες', sauber:'Πολύ καλά!',
+      rueckmeldung:'Σχόλια ›', warte:'Ο Spikiu διαβάζει τις φράσεις σου …', korrTitel:'Οι φράσεις σου, διορθωμένες', sauber:'Πολύ καλά!', spiegelTitel:'Ο καθρέφτης σου', spiegelKlein:'Πράσινο υπάρχει · κίτρινο σχεδόν · διακεκομμένο λείπει.', muster:'Έτσι το λένε συνήθως:', allesDrin:'Τα έχεις όλα.', gruenDa:'Το πράσινο το έχεις ήδη. Η φράση-πρότυπο δείχνει τα υπόλοιπα.', fastDa:'Σχεδόν: κοίτα τις κίτρινες λέξεις.', keinGruen:'Άκου τη φράση-πρότυπο: έτσι το λένε συνήθως.',
       geuebt:'Αυτό εξασκήθηκες', wendungen:'Εκφράσεις και προτάσεις', woerter:'Λέξεις',
       nichtsGeerntet:'Δεν μάζεψες τίποτα ακόμα.', nichtsGeerntetText:'Την επόμενη φορά εδώ θα εμφανιστεί ό,τι είπατε πραγματικά.',
       nachHause:'Στο σπίτι ›', nochmal:'‹ Ξανά',
@@ -751,61 +764,62 @@ main.stage{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direct
   }
 
   /* ══════════════════════════════════════════════════════════
-     5 · DIE RÜCKMELDUNG — der EINZIGE Modellaufruf einer Szene
-     Nur seine Zeilen (die Musterzeile geht als „üblich" mit, nicht als
-     Lösung, 31.08.). Nennt NUR, wo es natürlicher geht. Fällt der Aufruf
-     aus, geht es ohne ihn weiter — die Ernte bleibt ihm.
+     5 · DIE RÜCKMELDUNG — DER SPIEGEL, NULL TOKEN (Leo, 21./22.11.2026: „Szene-Feedback
+     deterministisch, zero token“ · Vorlage: Prototyp „Selbst sprechen“, Spiegel + Mustersatz)
+     Seine eigenen Sätze (angetippte Vorschläge nicht) werden Wort für Wort mit der
+     üblichen Zeile des Skripts verglichen: grün = steht schon da, gelb = fast (Akzent
+     oder ein Buchstabe), gestrichelt = fehlt noch. Darunter der Mustersatz zum Anhören.
+     Kein Modellaufruf, nichts wird „berichtigt“ — Spikiu zeigt, wie man es oft sagt.
      ══════════════════════════════════════════════════════════ */
-  async function rueckmeldung() {
-    /* Angetippte Vorschläge sind Skriptzeilen — sie gehen nicht in die Rückmeldung (spart Token, nichts zu berichtigen). */
-    var zuege = protokoll.filter(function (p) { return p.gesagt && p.gesagt.trim() && !p.getippt; })
-      .map(function (p) { return { gesagt: p.gesagt, aufgabe: p.auftrag || '', vorher: p.vorher || '', ueblich: p.erwartet || '' }; });
-    var zeilen = zuege.map(function (z) { return z.gesagt; });
-    if (!zuege.length) { ernte(); return; }
-
+  function spWoerter(t) {
+    return String(t || '').toLowerCase().replace(/[¿¡?!.,;:"«»“”„()…–—]/g, ' ').replace(/[’']/g, "'").split(/\s+/).filter(Boolean);
+  }
+  function spOhneAkzent(w) { return w.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function spNah(a, b) {   /* ein Buchstabe anders, zu viel oder zu wenig (ab 4 Buchstaben) */
+    if (Math.min(a.length, b.length) < 4 || Math.abs(a.length - b.length) > 1) return false;
+    var i = 0, j = 0, d = 0;
+    while (i < a.length && j < b.length) {
+      if (a[i] === b[j]) { i++; j++; continue; }
+      if (++d > 1) return false;
+      if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; }
+    }
+    return d + (a.length - i) + (b.length - j) <= 1;
+  }
+  function spiegel(meins, muster) {
+    var ich = spWoerter(meins), soll = spWoerter(muster), frei = ich.slice(), da = 0, fast = 0;
+    var teile = soll.map(function (w) {
+      var k = frei.indexOf(w);
+      if (k > -1) { frei.splice(k, 1); da++; return { w: w, art: 'da' }; }
+      for (var n = 0; n < frei.length; n++) {
+        if (spOhneAkzent(frei[n]) === spOhneAkzent(w) || spNah(spOhneAkzent(frei[n]), spOhneAkzent(w))) { frei.splice(n, 1); fast++; return { w: w, art: 'fast' }; }
+      }
+      return { w: w, art: 'fehlt' };
+    });
+    return { teile: teile, alles: soll.length > 0 && da === soll.length, ohneFehlt: da + fast === soll.length, nichts: da + fast === 0 };
+  }
+  function rueckmeldung() {
+    var eigene = protokoll.filter(function (p) { return p.gesagt && p.gesagt.trim() && !p.getippt && p.erwartet; });
+    if (!eigene.length) { ernte(); return; }
     kopf(THEMA_NA, 3);
-    var k = O.karte(stage);
-    O.task(k, U.warte);
-    k.appendChild(O.el('div', 'fz-punkte', '• • •'));
-    O.fuss(fussEl, null, null);
-
-    var d = null;
-    try {
-      var r = await fetch('/api/rueckmeldung', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          zielsprache: ZS, muttersprache: MU, koennen: PROFIL.koennen || 'anfang',
-          /* BEIDE Rollen und die Rollenfakten — sonst ist „¿Teno manzanas?" in zwei Richtungen reparierbar (31.08.). */
-          szene: [
-            THEMA_NA + ' — ' + inSprache(ROLLE && ROLLE.ort),
-            'Spikiu spielt: ' + inSprache(ROLLE && ROLLE.spikiu),
-            'Der Lerner ist: ' + inSprache(ROLLE && ROLLE.lerner),
-            LP.rolleFaktenVon ? LP.rolleFaktenVon(STUFE, THEMA, MU) : ''
-          ].filter(Boolean).join(' · '),
-          zuege: zuege
-        })
-      });
-      d = await r.json();
-      if (!r.ok) { console.error('rueckmeldung ' + r.status, d); d = null; }
-      else if (d && (!d.korrekturen || !d.korrekturen.length)) console.log('[Rückmeldung] keine Korrektur. Antwort:', d.roh);
-    } catch (e) { console.error('rueckmeldung', e); d = null; }
-
-    if (!d) { ernte(); return; }
-    var w = d.worte || { titel: U.korrTitel, sauber: U.sauber };
-    var liste = d.korrekturen || [];
-    /* Nichts zu berichtigen: KEINE eigene Karte — der Gruß steht über der Ernte (31.08.). */
-    if (!liste.length) { ernte(w.sauber || U.sauber); return; }
-
-    k = O.karte(stage);
-    O.task(k, w.titel || U.korrTitel);
+    var k = O.karte(stage), allesSauber = true;
+    O.task(k, U.spiegelTitel, U.spiegelKlein);
     var L = O.el('div', 'fz-liste'); k.appendChild(L);
-    liste.forEach(function (kor, i) {
-      var meins = zeilen[kor.nr - 1] || '';
-      var b = O.el('button', 'fz-zeile', '<span class="a" aria-hidden="true">🔊</span><span class="t">' + (meins ? '<span class="x">' + esc(meins) + '</span>' : '') + '<span class="w" lang="' + esc(ZS) + '">' + esc(kor.richtig) + '</span></span>');
-      b.type = 'button'; b.id = 'kor-' + i; b.onclick = function () { sprichLive(kor.richtig); }; L.appendChild(b);
+    eigene.forEach(function (p, i) {
+      var s = spiegel(p.gesagt, p.erwartet);
+      if (!s.alles) allesSauber = false;
+      var spur = s.teile.map(function (t) { return '<span class="sp-' + t.art + '">' + esc(t.w) + '</span>'; }).join(' ');
+      var urteil = s.alles ? U.allesDrin : (s.ohneFehlt ? U.fastDa : (s.nichts ? U.keinGruen : U.gruenDa));
+      var b = O.el('div', 'fz-spiegel' + (s.alles ? ' sauber' : ''),
+        '<span class="u">' + esc(mitPunkt(p.auftrag)) + '</span>'
+        + '<span class="x" lang="' + esc(ZS) + '">' + esc(p.gesagt) + '</span>'
+        + '<span class="spur" lang="' + esc(ZS) + '">' + spur + '</span>'
+        + (s.alles ? '' : '<button type="button" class="muster" id="muster-' + i + '"><span aria-hidden="true">🔊</span> <span class="m">' + esc(U.muster) + '</span> <b lang="' + esc(ZS) + '"></b></button>')
+        + '<span class="urteil">' + esc(urteil) + '</span>');
+      var m = b.querySelector('.muster'); if (m) { m.querySelector('b').textContent = p.erwartet; m.onclick = function () { sprich(p.erwartet); }; }
+      L.appendChild(b);
     });
     O.fb(k, '');
-    O.fuss(fussEl, null, { t: U.weiter, pri: true, go: function () { ernte(); } });
+    O.fuss(fussEl, null, { t: U.weiter, pri: true, go: function () { ernte(allesSauber ? U.sauber : ''); } });
   }
 
   /* ══════════════════════════════════════════════════════════

@@ -28,11 +28,17 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 22.11.2026 · PHASE 1 ERLEDIGT: SZENE-RÜCKMELDUNG OHNE KI — DER SPIEGEL (**Leo, 10:07: „Vamos una por una. Empieza con el número 1.“**)
+- `szene.html`: der einzige Modellaufruf der Szene (`/api/rueckmeldung`) ist ersetzt durch den **Spiegel** (Vorlage Prototyp „Selbst sprechen“). Jeder selbst gebaute Satz (angetippte Vorschläge nicht) wird Wort für Wort mit der üblichen Skriptzeile verglichen: **grün** = steht da, **gelb** = fast (Akzent fehlt oder ein Buchstabe anders/zu viel/zu wenig, ab 4 Buchstaben), **gestrichelt** = fehlt noch. Darunter „So sagt man es oft:“ + Mustersatz zum Anhören (fehlt, wenn alles grün). Urteil: „Alles drin.“ / „Fast — schau auf die gelben Wörter.“ / „Grün ist schon da …“ / „Hör dir den Mustersatz an …“. Alles grün → „Sehr gut!“ über der Ernte. Texte de/es/en/el, Pastell Minze.
+- **Null Token pro Szene.** `api/rueckmeldung.js` bleibt im Repo, wird von der Szene nicht mehr aufgerufen.
+- Geprüft: ganze Szene „Café“ headless gespielt (eigene Sätze, Spiegel mit 3 Karten, weiter → Ernte), 0 Anfragen an /api, 0 JS-Fehler; Vergleich als Einheitstest (café/cafe → gelb, lece/leche → gelb, fehlende Wörter gestrichelt); node --check grün.
+- Nächste Phase: **2 · Lernroman und Szene je Thema öffnen.**
+
 Stand: 22.11.2026 · PASTELL MINZE ABGENOMMEN — DAS IST DER SPIKIU-STIL (**Leo, 10:01: „Ahora sí que lo hemos logrado perfectamente. No tengo nada que agregar, que modificar … Este diseño es el que estaba buscando de alguna manera, pero no lograba expresar.“**)
 - **Verbindlich ab heute:** Pastell Minze ist der Stil der ganzen App. Werte: Nunito (Titel 800, Text 600–700), Lora für die Zielsprache, DM Mono für Augenbrauen; Grund `#eef7f1`, Karten weiß, Linie 1,5 px `#dcebe1`, weicher Schatten `0 6px 18px rgba(21,22,58,.07)`, Türkis `#1f93b0`/`#1f7f99`, Hervorhebung `#dff3e7`, Knopf `#c9ecd9` mit Rand `#a9dcc1` und Tinte `#15163a`; Kachelfarben Senf `#fff0c4`, Himmel `#e1f3f8`, Koralle `#ffe0da`, Salbei `#d6efc0`, Lavendel `#efe6fb`; Linien-Icons 1,8 px (`glyphen.js`). Navigation: Mein Kurs · Räume · Regal · Mein; „Kurs“-Pille in jedem Raum.
 - **Regel für neue Räume:** im Stil bauen oder einmal `python3 werkzeuge/pastell-minze.py <datei>` laufen lassen; keine dicken Tinten-Ränder, keine harten Versatzschatten, kein Archivo Black.
 - **Nächste Phasen (Reihenfolge entscheidet Leo):**
-  1. Szene-Feedback deterministisch (zero token).
+  1. ~~Szene-Feedback deterministisch (zero token).~~ erledigt 22.11. (Spiegel)
   2. Lernroman und Szene je Thema öffnen (Kapitel 3.4 und 3.7 der Lektion führen ins passende Thema).
   3. Konversation: vorletzte Karte nur das Dialogende, letzte Karte „Deine Sätze“; Zurückwischen überall auf Lernkarten (Muster aus `gefuehrt.html`: `touch-action:pan-y`, Knopf „weiter ›“ im Rückblick).
   4. „Mein“ → Einstellungen: Sprache/Muttersprache direkt umstellbar (heute „kommt bald“).
