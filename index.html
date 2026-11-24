@@ -18,9 +18,9 @@ html { scroll-behavior: smooth; }
   --warm:    #d4cdc6;
   --accent:  #1f93b0;
   --terra:   #ff6b5a;
-  --mustard: #ffd24a;
+  --mustard:#ffe7a3;
   --sky:     #d3eef6;
-  --ow:      2.5px;
+  --ow:1.5px;
   --accent2: #e8f2ed;
   --accent3: #1f93b0;
   --capy:    #c9956a;
@@ -30,7 +30,7 @@ html { scroll-behavior: smooth; }
 body {
   background: #eef7f1;
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -49,7 +49,7 @@ nav {
 }
 
 .logo {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--ink);
@@ -89,7 +89,7 @@ nav {
 }
 
 .hero h1 {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
   font-weight: 700;
   line-height: 1.08;
@@ -141,7 +141,7 @@ nav {
   padding: 0.25rem 0.8rem;
   border-radius: 100px;
   margin-bottom: 1rem;
- border:2px solid var(--ink); border-radius:100px; padding:.15rem .6rem; font-weight:800;}
+ border:1.5px solid #dcebe1; border-radius:100px; padding:.15rem .6rem; font-weight:800;}
 
 .split-col.free .split-tag {
   background: var(--accent);
@@ -154,7 +154,7 @@ nav {
 }
 
 .split-col h3 {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--ink);
@@ -198,7 +198,7 @@ nav {
   color: var(--ink);
 }
 .price span {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.82rem;
   color: var(--mid);
   font-weight: 400;
@@ -222,7 +222,7 @@ nav {
   text-decoration: none;
   transition: all 0.2s;
   border: 2px solid var(--accent);
- border:var(--ow) solid var(--ink); box-shadow:3px 4px 0 var(--ink); font-weight:800;}
+ border:1.5px solid #dcebe1; box-shadow:0 6px 18px rgba(21,22,58,.07); font-weight:800;}
 .btn-primary:hover {
   background: var(--accent3);
   border-color: var(--accent3);
@@ -267,7 +267,7 @@ nav {
   color: var(--mid);
   padding: 0.35rem 0.65rem;
   border-radius: 100px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -299,7 +299,7 @@ nav {
 }
 
 .how h2 {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 700;
   text-align: center;
@@ -324,7 +324,7 @@ nav {
   padding: 2rem 1.5rem;
   text-align: center;
   position: relative;
- border:var(--ow) solid var(--ink); border-radius:18px; box-shadow:3px 4px 0 var(--ink);}
+ border:1.5px solid #dcebe1; border-radius:18px; box-shadow:0 6px 18px rgba(21,22,58,.07);}
 
 .step-num {
   width: 36px;
@@ -342,7 +342,7 @@ nav {
 }
 
 .step h4 {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--ink);
@@ -399,7 +399,7 @@ blockquote::before {
 }
 
 .final h2 {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
   color: var(--white);
@@ -425,7 +425,7 @@ blockquote::before {
   text-decoration: none;
   display: inline-block;
   transition: all 0.2s;
- border:var(--ow) solid var(--ink); box-shadow:3px 4px 0 var(--ink); font-weight:800;}
+ border:1.5px solid #dcebe1; box-shadow:0 6px 18px rgba(21,22,58,.07); font-weight:800;}
 .btn-white:hover {
   background: var(--off);
   transform: translateY(-2px);
@@ -443,7 +443,7 @@ footer {
   gap: 1rem;
 }
 .footer-logo {
-  font-family: 'Archivo Black', sans-serif;
+  font-weight:800;font-family:'Nunito', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--white);
@@ -455,7 +455,7 @@ footer {
 @media (max-width: 640px) {
   .split { grid-template-columns: 1fr; }
   .split-divider { display: none; }
-  .split-col { padding: 1.5rem; background:#fff; border:var(--ow) solid var(--ink); border-radius:20px; box-shadow:4px 5px 0 var(--ink); }
+  .split-col { padding: 1.5rem; background:#fff; border:1.5px solid #dcebe1; border-radius:20px; box-shadow:0 6px 18px rgba(21,22,58,.07); }
   .steps { grid-template-columns: 1fr 1fr; }
   .hero { padding: 3.5rem 1.5rem 2.5rem; }
   .how { padding: 3.5rem 1.5rem; }
@@ -463,52 +463,55 @@ footer {
 }
 
 /* ═══ ÜBERNOMMEN 1:1 AUS spikiu-products.html (Abonnement) ═══ */
-:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffd24a;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:2.5px}
-body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.5}
+:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#e1f3f8;--mint:#cdeee2;--mustard:#ffe7a3;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:1.5px}
+body{background:var(--minz);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.5}
 /* Kopf wie .top */
-nav{background:rgba(255,255,255,.85) !important;border-bottom:var(--ow) solid var(--ink) !important;box-shadow:none !important}
-.logo{font-family:'DM Sans' !important;font-weight:800 !important;font-size:1.05rem !important;color:var(--ink) !important}
+nav{background:rgba(255,255,255,.85) !important;border-bottom:1.5px solid #dcebe1 !important;box-shadow:none !important}
+.logo{font-family:'Nunito' !important;font-weight:800 !important;font-size:1.05rem !important;color:var(--ink) !important}
 .logo em{font-style:italic;color:var(--cyan) !important}
-.lang-btn{border:2px solid var(--ink) !important;background:#fff !important;color:var(--ink) !important;font:800 .72rem 'DM Sans',sans-serif !important;border-radius:999px !important;padding:.24rem .6rem !important}
-.lang-btn.active{background:var(--sky) !important;box-shadow:2px 2px 0 var(--ink)}
+.lang-btn{border:1.5px solid #dcebe1 !important;background:#fff !important;color:var(--ink) !important;font:800 .72rem 'Nunito',sans-serif !important;border-radius:999px !important;padding:.24rem .6rem !important}
+.lang-btn.active{background:var(--sky) !important;box-shadow:0 6px 18px rgba(21,22,58,.07)}
 /* Knöpfe wie .btn */
-.btn-start{background:var(--cyan) !important;color:#fff !important;border:var(--ow) solid var(--ink) !important;box-shadow:3px 3px 0 var(--ink) !important;border-radius:100px !important;font:700 .88rem 'DM Sans' !important;padding:.5rem 1.1rem !important}
-.btn-primary,.btn-white{border:var(--ow) solid var(--ink) !important;box-shadow:4px 4px 0 var(--ink) !important;border-radius:100px !important;font:700 1rem 'DM Sans' !important;padding:.85rem 2rem !important;display:inline-block;text-decoration:none}
-.btn-start:active,.btn-primary:active,.btn-white:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink) !important}
+.btn-start{background:#c9ecd9 !important;color:#15163a !important;border:1.5px solid #dcebe1 !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;border-radius:100px !important;font:700 .88rem 'Nunito' !important;padding:.5rem 1.1rem !important}
+.btn-primary,.btn-white{border:1.5px solid #dcebe1 !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;border-radius:100px !important;font:700 1rem 'Nunito' !important;padding:.85rem 2rem !important;display:inline-block;text-decoration:none}
+.btn-start:active,.btn-primary:active,.btn-white:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
 /* Überschriften wie h2 der Abo-Karten */
-.hero h1,.how h2,.final h2{font-family:'DM Sans' !important;font-weight:800 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
+.hero h1,.how h2,.final h2{font-family:'Nunito' !important;font-weight:800 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
 .hero h1 em,.final h2 em{font-style:normal;color:var(--cyan) !important}
-.price{font-family:'Archivo Black',sans-serif !important;color:var(--ink) !important}
-.price span{font-family:'DM Sans' !important;font-weight:500 !important;color:var(--muted) !important}
+.price{font-weight:800;font-family:'Nunito',sans-serif !important;color:var(--ink) !important}
+.price span{font-family:'Nunito' !important;font-weight:500 !important;color:var(--muted) !important}
 /* Karten wie .card */
-.split-col{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:24px !important;box-shadow:5px 6px 0 var(--ink) !important;padding:1.6rem 1.4rem !important}
-.split-tag{font:800 .62rem/1 'DM Sans' !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:var(--ink) !important;border:2px solid var(--ink) !important;border-radius:999px !important;padding:.24rem .6rem !important;box-shadow:2px 2px 0 var(--ink) !important;margin-bottom:1rem !important}
+.split-col{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:24px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;padding:1.6rem 1.4rem !important}
+.split-tag{font:800 .62rem/1 'Nunito' !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important;padding:.24rem .6rem !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;margin-bottom:1rem !important}
 .split-col.free .split-tag{background:var(--sky) !important}
-.split-col.premium .split-tag{background:#c7e89a !important}
+.split-col.premium .split-tag{background:#d6efc0 !important}
 .split-col.free h3 em{color:var(--cyan) !important}
 .split-col.premium h3 em{color:#4e7a2e !important}
-.split-col h3{font-family:'DM Sans' !important;font-weight:800 !important;color:var(--ink) !important}
+.split-col h3{font-family:'Nunito' !important;font-weight:800 !important;color:var(--ink) !important}
 .split-list li::before{color:var(--cyan) !important}
 /* Schritt-Karten wie .item */
-.step{background:#fff !important;border:2px solid var(--ink) !important;border-radius:18px !important;box-shadow:3px 4px 0 var(--ink) !important}
-.step-num{background:var(--sky) !important;color:var(--ink) !important;border:2px solid var(--ink) !important;border-radius:9px !important;font-family:'DM Sans' !important;font-weight:800 !important}
-.step h4{font-family:'DM Sans' !important;font-weight:700 !important;color:var(--ink) !important}
-.hero-note{background:#fff !important;color:var(--ink) !important;border:2px solid var(--ink) !important;border-radius:999px !important;font-weight:700 !important}
+.step{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:18px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
+.step-num{background:var(--sky) !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;border-radius:9px !important;font-family:'Nunito' !important;font-weight:800 !important}
+.step h4{font-family:'Nunito' !important;font-weight:700 !important;color:var(--ink) !important}
+.hero-note{background:#fff !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important;font-weight:700 !important}
 blockquote::before{color:var(--cyan) !important}
 /* Fuß wie .foot */
-footer{background:#fff !important;border-top:var(--ow) solid var(--ink) !important}
-.footer-logo{font-family:'DM Sans' !important;font-weight:800 !important;color:var(--ink) !important}
+footer{background:#fff !important;border-top:1.5px solid #dcebe1 !important}
+.footer-logo{font-family:'Nunito' !important;font-weight:800 !important;color:var(--ink) !important}
 .footer-logo em{color:var(--cyan) !important;font-style:italic !important}
 footer a,footer span,footer p{color:var(--muted) !important}
 
 
 
 
-.btn-primary,.btn-white{background:var(--cyan) !important;color:#fff !important}
-.split-col.free{background:var(--sky) !important}
-.split-col.premium{background:#c7e89a !important}
+.btn-primary,.btn-white{background:#c9ecd9 !important;color:#15163a !important}
+.split-col.free{background:#e1f3f8 !important}
+.split-col.premium{background:#d6efc0 !important}
+/* Pastell Minze (Leo, 24.11.2026): zwei getrennte Karten mit Luft, weiche Linie */
+.split{gap:.9rem !important;background:none !important;border:none !important;box-shadow:none !important;overflow:visible !important}
+.split-col{border:1.5px solid #dcebe1 !important;border-radius:22px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
 .split-col.free .split-tag,.split-col.premium .split-tag{background:#fff !important}
-.final{background:#fff !important;border-top:var(--ow) solid var(--ink)}
+.final{background:#fff !important;border-top:1.5px solid #dcebe1}
 .final h2,.final p{color:var(--ink) !important}
 .how{background:var(--minz) !important}
 
@@ -536,6 +539,7 @@ nav > *{ min-width:0 }
   .btn-start{ padding:.45rem .85rem !important; font-size:.75rem !important }
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 

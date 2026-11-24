@@ -11,7 +11,7 @@
     --warm:#d4cdc6; --accent:#1f93b0; --accent2:#e7f4f8; --accent3:#1f93b0; --gold:#a07830;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
-  body{ background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; }
+  body{ background:var(--paper); color:var(--ink); font-family:'Nunito',sans-serif; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; }
 
   header{ display:flex; align-items:center; gap:.8rem; padding:1rem 1.2rem; }
   .btn-back{ background:none; border:none; font-size:1.4rem; color:var(--mid); cursor:pointer; padding:.2rem .5rem; }
@@ -46,7 +46,7 @@
   #content{ width:100%; }
   .options{ display:flex; flex-direction:column; gap:.6rem; }
   .option{ background:var(--white); border:1.5px solid var(--faint); border-radius:14px; padding:1rem 1.2rem;
-    font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:500; color:var(--ink); cursor:pointer;
+    font-family:'Nunito',sans-serif; font-size:1rem; font-weight:500; color:var(--ink); cursor:pointer;
     transition:all .18s; text-align:left; display:flex; align-items:center; gap:.8rem; width:100%; }
   .option:hover{ border-color:var(--accent); background:var(--accent2); }
   .option.sel{ border-color:var(--accent); background:var(--accent2); }
@@ -54,96 +54,97 @@
   .option-sub{ font-size:.82rem; color:var(--mid); margin-top:.15rem; }
 
   input,textarea{ width:100%; background:var(--white); border:1.5px solid var(--faint); border-radius:14px;
-    padding:1rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink); }
+    padding:1rem 1.2rem; font-family:'Nunito',sans-serif; font-size:1rem; color:var(--ink); }
   input:focus,textarea:focus{ outline:none; border-color:var(--accent); }
   textarea{ min-height:84px; resize:vertical; margin-top:.5rem; }
   .field-label{ font-size:.9rem; font-weight:600; margin:1rem 0 .5rem; }
   .field-label .opt{ font-weight:400; color:var(--mid); }
   .chips{ display:flex; flex-wrap:wrap; gap:.5rem; }
   .chip{ background:var(--white); border:1.5px solid var(--faint); border-radius:100px; padding:.5rem 1rem;
-    font-family:'DM Sans',sans-serif; font-size:.92rem; color:var(--ink); cursor:pointer; transition:all .15s; }
+    font-family:'Nunito',sans-serif; font-size:.92rem; color:var(--ink); cursor:pointer; transition:all .15s; }
   .chip:hover{ border-color:var(--accent); }
-  .chip.sel{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .chip.sel{ background:#c9ecd9; border-color:var(--accent); color:#15163a; }
 
   .actions{ display:flex; flex-direction:column; gap:.6rem; margin-top:1.2rem; align-items:center; }
-  .btn-next{ background:var(--accent); color:#fff; border:none; border-radius:100px; padding:.9rem 2.4rem;
-    font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; transition:all .18s; }
+  .btn-next{ background:#c9ecd9; color:#15163a; border:none; border-radius:100px; padding:.9rem 2.4rem;
+    font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; transition:all .18s; }
   .btn-next:hover:not(:disabled){ background:var(--accent3); transform:translateY(-1px); }
   .btn-next:disabled{ background:var(--warm); color:#8a8580; cursor:not-allowed; }
-  .btn-ghost{ background:none; border:none; color:var(--mid); font-family:'DM Sans',sans-serif; font-size:.92rem;
+  .btn-ghost{ background:none; border:none; color:var(--mid); font-family:'Nunito',sans-serif; font-size:.92rem;
     cursor:pointer; padding:.5rem; text-decoration:underline; }
   .btn-ghost:hover{ color:var(--ink); }
-    .summary-hint{ font:500 .88rem/1.45 'DM Sans',sans-serif; color:var(--mid); text-align:center; margin:.2rem 0 0; max-width:30ch; }
+    .summary-hint{ font:500 .88rem/1.45 'Nunito',sans-serif; color:var(--mid); text-align:center; margin:.2rem 0 0; max-width:30ch; }
 
 /* ═══ Abo-Design (spikiu-products) — Cyan + Senf, Pop, Minz ═══ */
-:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffd24a;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:2.5px;
-  --paper:#eef7f1;--white:#fff;--mid:#5f7068;--faint:#e6efe8;--warm:#cddcd3;--accent:#1f93b0;--accent2:#e7f4f8;--accent3:#1f93b0;--gold:#ffd24a}
-body{background:var(--minz) !important;color:var(--ink) !important;font-family:'DM Sans',system-ui,sans-serif !important}
+:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffe7a3;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:1.5px;
+  --paper:#eef7f1;--white:#fff;--mid:#5f7068;--faint:#e6efe8;--warm:#cddcd3;--accent:#1f93b0;--accent2:#e7f4f8;--accent3:#1f93b0;--gold:#ffe7a3}
+body{background:var(--minz) !important;color:var(--ink) !important;font-family:'Nunito',system-ui,sans-serif !important}
 /* Kopf wie .top der Abo-Seite */
-header,.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96) !important;border-bottom:var(--ow) solid var(--ink) !important;backdrop-filter:saturate(180%) blur(6px)}
-.btn-back{width:36px;height:36px;border-radius:999px !important;border:2.5px solid var(--ink) !important;background:#fff !important;
-  color:var(--ink) !important;font-size:1.2rem !important;box-shadow:2px 2px 0 var(--ink);padding:0 !important;
+header,.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96) !important;border-bottom:1.5px solid #dcebe1 !important;backdrop-filter:saturate(180%) blur(6px)}
+.btn-back{width:36px;height:36px;border-radius:999px !important;border:1.5px solid #dcebe1 !important;background:#fff !important;
+  color:var(--ink) !important;font-size:1.2rem !important;box-shadow:0 6px 18px rgba(21,22,58,.07);padding:0 !important;
   display:flex;align-items:center;justify-content:center}
 .btn-back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
 /* Fortschritt: Pop-Balken */
-.progress{height:10px !important;background:#fff !important;border:2px solid var(--ink) !important;border-radius:999px !important}
+.progress{height:10px !important;background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important}
 .progress-fill{background:var(--cyan) !important}
 /* Spikius Sprechblase wie .card */
-.bubble{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:20px !important;
-  box-shadow:5px 6px 0 var(--ink) !important;padding:1.2rem 1.3rem !important}
-.bubble p{font-family:'DM Sans',sans-serif !important;font-weight:700 !important;font-size:1.12rem !important;line-height:1.45 !important;color:var(--ink) !important}
+.bubble{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:20px !important;
+  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;padding:1.2rem 1.3rem !important}
+.bubble p{font-family:'Nunito',sans-serif !important;font-weight:700 !important;font-size:1.12rem !important;line-height:1.45 !important;color:var(--ink) !important}
 .bubble strong{color:var(--cyan)}
 .okayq{font-style:normal !important;font-weight:600 !important;color:var(--muted) !important}
 /* Antwort-Karten wie .item + Pop */
-.option{background:#fff !important;border:2px solid var(--ink) !important;border-radius:16px !important;
-  box-shadow:3px 3px 0 var(--ink) !important;font-weight:700 !important;padding:.95rem 1.1rem !important}
+.option{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:16px !important;
+  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;font-weight:700 !important;padding:.95rem 1.1rem !important}
 .option:hover{background:#fff !important;border-color:var(--ink) !important}
-.option:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink) !important}
+.option:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
 .option.sel{background:var(--sky) !important;border-color:var(--ink) !important}
 .option-sub{color:var(--muted) !important;font-weight:600 !important}
 /* Chips im Pop */
-.chip{background:#fff !important;border:2px solid var(--ink) !important;border-radius:999px !important;
-  box-shadow:2px 2px 0 var(--ink) !important;font-weight:700 !important;padding:.5rem 1rem !important}
+.chip{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important;
+  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;font-weight:700 !important;padding:.5rem 1rem !important}
 .chip:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink) !important}
 .chip.sel{background:var(--mustard) !important;border-color:var(--ink) !important;color:var(--ink) !important}
 /* Eingaben */
-input,textarea{background:#fff !important;border:2px solid var(--ink) !important;border-radius:16px !important;
+input,textarea{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:16px !important;
   font-weight:600 !important;color:var(--ink) !important}
-input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:2px 2px 0 var(--ink)}
+input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:0 6px 18px rgba(21,22,58,.07)}
 .field-label{font-weight:800 !important}
 /* Knöpfe wie .btn der Abo-Seite */
-.btn-next{background:var(--cyan) !important;color:#fff !important;border:var(--ow) solid var(--ink) !important;
-  box-shadow:4px 4px 0 var(--ink) !important;border-radius:100px !important;font:700 1rem 'DM Sans' !important;padding:.85rem 2rem !important}
-.btn-next:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink) !important}
-.btn-next.ghost,.btn-skip{background:#fff !important;color:var(--ink) !important;border:2px solid var(--ink) !important;box-shadow:2px 2px 0 var(--ink) !important}
+.btn-next{background:#c9ecd9 !important;color:#15163a !important;border:1.5px solid #dcebe1 !important;
+  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;border-radius:100px !important;font:700 1rem 'Nunito' !important;padding:.85rem 2rem !important}
+.btn-next:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
+.btn-next.ghost,.btn-skip{background:#fff !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
 /* Zusammenfassung/Resümee-Karten */
-.summary,.resume,.card{background:#fff !important;border:var(--ow) solid var(--ink) !important;border-radius:24px !important;box-shadow:5px 6px 0 var(--ink) !important}
+.summary,.resume,.card{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:24px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
 /* ═══ Sprach-AUSWAHLLISTE (10.10.2026, Leo: „eher als Auswahlmenü" — Vorbild: klassische
    Listbox mit Rollbalken). Fester, kleiner Kasten: immer genau 3 Zeilen sichtbar, egal ob
    3 oder 50 Sprachen. Eigener, IMMER sichtbarer Rollbalken mit ▲ ▼ (Handy-Browser blenden
    ihre eigenen aus). Zeile antippen = markieren; „Weiter" bestätigt. ═══ */
-.lb{--row:3rem;display:flex;width:100%;background:#fff;border:2.5px solid var(--ink);border-radius:16px;
-  box-shadow:4px 4px 0 var(--ink);overflow:hidden;outline:none}
-.lb:focus-visible{box-shadow:4px 4px 0 var(--ink),0 0 0 3px var(--sky)}
+.lb{--row:3rem;display:flex;width:100%;background:#fff;border:1.5px solid #dcebe1;border-radius:16px;
+  box-shadow:0 6px 18px rgba(21,22,58,.07);overflow:hidden;outline:none}
+.lb:focus-visible{box-shadow:0 6px 18px rgba(21,22,58,.07),0 0 0 3px var(--sky)}
 .lb-list{flex:1;height:calc(var(--row) * 3);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
   scrollbar-width:none;scroll-snap-type:y mandatory}
 .lb-list::-webkit-scrollbar{display:none}
 .lb-row{height:var(--row);display:flex;align-items:center;gap:.75rem;padding:0 1rem;cursor:pointer;scroll-snap-align:start;
-  font:700 1.02rem 'DM Sans',sans-serif;color:var(--ink);border-bottom:1.5px solid var(--faint);user-select:none}
+  font:700 1.02rem 'Nunito',sans-serif;color:var(--ink);border-bottom:1.5px solid var(--faint);user-select:none}
 .lb-row:last-child{border-bottom:0}
 .lb-row .fl{font-size:1.25rem;line-height:1}
-.lb-row.sel{background:var(--cyan);color:#fff;border-bottom-color:var(--cyan)}
-.lb-bar{flex:0 0 2.1rem;display:flex;flex-direction:column;border-left:2px solid var(--ink);background:var(--minz)}
+.lb-row.sel{background:#c9ecd9;color:#15163a;border-bottom-color:var(--cyan)}
+.lb-bar{flex:0 0 2.1rem;display:flex;flex-direction:column;border-left:1.5px solid #dcebe1;background:var(--minz)}
 .lb-btn{flex:0 0 2.1rem;border:0;background:var(--sky);color:var(--ink);font-size:.8rem;cursor:pointer;display:flex;
   align-items:center;justify-content:center;padding:0}
-.lb-btn:first-child{border-bottom:2px solid var(--ink)}
-.lb-btn:last-child{border-top:2px solid var(--ink)}
+.lb-btn:first-child{border-bottom:1.5px solid #dcebe1}
+.lb-btn:last-child{border-top:1.5px solid #dcebe1}
 .lb-btn:disabled{color:#a9b8b0;cursor:default}
 .lb-track{flex:1;position:relative;touch-action:none}
-.lb-thumb{position:absolute;left:5px;right:5px;top:0;min-height:1.4rem;background:#fff;border:2px solid var(--ink);border-radius:999px;cursor:grab}
+.lb-thumb{position:absolute;left:5px;right:5px;top:0;min-height:1.4rem;background:#fff;border:1.5px solid #dcebe1;border-radius:999px;cursor:grab}
 .lb + .actions{margin-top:1.1rem}
 </style>
-<link rel="stylesheet" href="geraet.css"></head>
+<link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
 <body>
 <header>
   <button class="btn-back hidden" id="btn-back" onclick="goBack()" aria-label="Ein Schritt zurück" title="Ein Schritt zurück">‹</button>

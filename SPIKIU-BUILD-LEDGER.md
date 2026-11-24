@@ -28,6 +28,12 @@ gelistete Version ist die Wahrheit. Claude pflegt diese Liste bei JEDEM Schritt.
 
 > **ENTSCHIEDEN für die SPIELE (Leo, 11.10.: „Es passt so! Einverstanden!“):** 14 Tage alles frei → danach ohne Abo frei: das *Spiel des Tages* (täglich wechselnd, unbegrenzt) + das Spiel am Ende des Geführten Gesprächs; alle Spiele im Abo (1,50 €/Monat, Null-Token-Stufe). Keine Zähler/Limits/Herzen. Technisch `zugang.js`, Schalter `AKTIV = false` bis Phase 2 (Konten + Zahlung).
 
+Stand: 24.11.2026 · STARTSEITE + EINGANG IN PASTELL MINZE (**Leo, 24.11. 21:10: „Die Startseite muss an das neue Layout angepasst werden.“**)
+- `index.html` (Startseite), `assessment.html` (erster Besuch), `faq.html` (Hilfe „?“), `sprachen.html` (Sprachen umschalten) mit `werkzeuge/pastell-minze.py` umgestellt: Minzlinien, weiche Schatten, Nunito, Minzknöpfe; Startseite zusätzlich: Sprachknöpfe zart, „Weiter lernen“ Minze, Preis-Karten getrennt mit Luft in Himmel `#e1f3f8` / Salbei `#d6efc0`; Senf als Fläche überall `#ffe7a3`. Das Werkzeug macht Senf jetzt selbst mit.
+- Geprüft headless 390×844, 0 JS-Fehler, node --check grün.
+- Noch im alten Stil (nicht im Hauptweg, bei Bedarf mit dem Werkzeug): `chat.html`, `lektionen.html`, `wortschatz.html`, `proverbios.html`, `dashboard.html`, `sessions.html`, `spikiu-products.html`, `lexikon-explorer.html`, `cap*-v2.html` und die alten Prototypen.
+- FRAGE AN DESIGN: Auf der Startseite steht ein Zitat „Michael T., Munich“. Ist das ein echtes Nutzerzitat? Wenn nicht, sollte es raus oder als Beispiel erkennbar sein.
+
 Stand: 22.11.2026 · PHASE 3 ERLEDIGT: KONVERSATION — ENDE IN ZWEI KARTEN + VOR/ZURÜCK (**Leo, 10:41: „3!“**)
 - `szene.html` (Konversation/Freies Gespräch): die vorletzte Karte zeigt **nur das Ende des Gesprächs** („Ende des Gesprächs“ + Spikius letzte Blase mit 🔊, Knopf „Deine Sätze ›“); die letzte Karte ist **„Deine Sätze“** (antippen = ändern, „Rückmeldung ›“ → Spiegel → Ernte). Ohne Schlusszeile (abgebrochen) direkt „Deine Sätze“. Ändern kehrt zu „Deine Sätze“ zurück. Texte de/es/en/el.
 - **Vor und zurück auf jeder Karte:** jede verlassene Karte wird als Bild gemerkt (nur ansehen, das Geschriebene bleibt sichtbar). Daumen nach rechts = eine Karte zurück; Daumen nach links oder Knopf „weiter ›“ = wieder vor bis zur lebendigen Karte, die unverändert wartet (dieselben Knöpfe, dasselbe Feld). Das Gespräch selbst spult nicht zurück (Spikius Zeilen bleiben Skript). `touch-action:pan-y`, `overscroll-behavior-x:none`, gesperrte Knöpfe lassen den Daumen durch; im Textfeld zählt kein Wischer.

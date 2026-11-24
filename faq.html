@@ -6,33 +6,34 @@
 <title>Spikiu · Hilfe</title>
 <link rel="stylesheet" href="/fonts/spikiu-fonts.css">
 <style>
-:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0; --ow:2.5px; }
+:root{ --minz:#eef7f1; --ink:#15163a; --muted:#5f7068; --acc:#1f93b0; --ow:1.5px; }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{background:var(--minz);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+body{background:var(--minz);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 button{font:inherit;cursor:pointer}
 .rnav{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;
   padding:calc(.6rem + env(safe-area-inset-top)) .9rem .6rem;
-  background:var(--minz);border-bottom:var(--ow) solid var(--ink)}
-.rnav .back{width:36px;height:36px;flex:0 0 36px;border-radius:999px;border:2.5px solid var(--ink);
-  background:#fff;font-size:1.15rem;line-height:1;box-shadow:2px 2px 0 var(--ink);
+  background:var(--minz);border-bottom:1.5px solid #dcebe1}
+.rnav .back{width:36px;height:36px;flex:0 0 36px;border-radius:999px;border:1.5px solid #dcebe1;
+  background:#fff;font-size:1.15rem;line-height:1;box-shadow:0 6px 18px rgba(21,22,58,.07);
   display:flex;align-items:center;justify-content:center}
 .rnav .back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
-.rnav .title{font:800 1.05rem 'DM Sans',sans-serif}
+.rnav .title{font:800 1.05rem 'Nunito',sans-serif}
 .wrap{flex:1;min-height:0;overflow-y:auto;padding:1.2rem 1.1rem 2rem;max-width:620px;margin:0 auto;width:100%}
-h2{font:800 1.3rem 'DM Sans',sans-serif;margin-bottom:1rem}
-details{background:#fff;border:var(--ow) solid var(--ink);border-radius:16px;box-shadow:3px 4px 0 var(--ink);
+h2{font:800 1.3rem 'Nunito',sans-serif;margin-bottom:1rem}
+details{background:#fff;border:1.5px solid #dcebe1;border-radius:16px;box-shadow:0 6px 18px rgba(21,22,58,.07);
   margin-bottom:.8rem;overflow:hidden}
 summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:.6rem;
-  padding:.95rem 1.05rem;font:700 .98rem 'DM Sans',sans-serif;cursor:pointer}
+  padding:.95rem 1.05rem;font:700 .98rem 'Nunito',sans-serif;cursor:pointer}
 summary::-webkit-details-marker{display:none}
 summary .pfeil{transition:transform .2s;flex:0 0 auto}
 details[open] summary .pfeil{transform:rotate(90deg)}
-.antwort{padding:0 1.05rem 1rem;font:500 .92rem/1.55 'DM Sans',sans-serif;color:var(--muted)}
-.kontakt{margin-top:1.4rem;text-align:center;font:600 .88rem 'DM Sans',sans-serif;color:var(--muted)}
+.antwort{padding:0 1.05rem 1rem;font:500 .92rem/1.55 'Nunito',sans-serif;color:var(--muted)}
+.kontakt{margin-top:1.4rem;text-align:center;font:600 .88rem 'Nunito',sans-serif;color:var(--muted)}
 .kontakt a{color:var(--acc);font-weight:800;text-decoration:none}
 </style>
-<link rel="stylesheet" href="geraet.css"></head>
+<link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
 <body>
 <header class="rnav">
   <button class="back" id="back" onclick="window.location.href='haus.html'" aria-label="zurück">‹</button>

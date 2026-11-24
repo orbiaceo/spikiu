@@ -31,6 +31,8 @@ def umbau(s):
             b=re.sub(r"(?<![-\w])color\s*:\s*(?:#fff(?:fff)?\b|white|var\(--bg\)|#eef7f1|var\(--acctx\))","color:#15163a",b)
         return b
     s=re.sub(r"\{[^{}]*\}",block,s)
+    sub('senf',r"(background(?:-color)?\s*:\s*)#ffd24a",r"\1#ffe7a3")
+    sub('senfVar',r"(--(?:jg-)?(?:mustard|you|gold|gelb|acc))\s*:\s*#ffd24a",r"\1:#ffe7a3")
     return s,n
 if __name__=='__main__':
     dry='--dry' in sys.argv
