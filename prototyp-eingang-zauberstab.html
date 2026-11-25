@@ -7,117 +7,134 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* VOICE: ein Augenblick, ein Klick — Spikiu sagt nur das Nötigste
-   IDEA: der Eingang als Zauberstab: antippen, und schon ist man drin
+   IDEA: der Eingang als Zauberstab (Leo, 25.11.: Vorschlag B, drei Tipps)
    PICTURE: kleine Icon-Kacheln wie die acht Kapitel auf der Startseite
    COLOUR and TYPE: Pastell Minze, Nunito, Senf für Gewähltes
-   LAYOUT: alles auf einem Handy-Bildschirm, Knopf immer sichtbar, kein Scrollen */
+   LAYOUT: jeder Schritt auf einem Bildschirm; Muttersprache oben als Zeile mit Auswahl-Maske */
 :root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#e1f3f8;--mustard:#ffe7a3;--cyan:#1f93b0;--line:#dcebe1;--shadow:0 6px 18px rgba(21,22,58,.07)}
 *{box-sizing:border-box;min-width:0}
 html,body{margin:0}
 body{background:#dfe9e3;color:var(--ink);font:16px/1.4 'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.tabs{display:flex;gap:6px;justify-content:center;padding:12px 10px 10px;flex-wrap:wrap}
-.tabs button{font:800 .85rem 'Nunito',system-ui,sans-serif;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:9px 14px;min-height:40px;cursor:pointer}
-.tabs button.on{background:var(--mustard)}
-.phone{width:min(390px,100%);height:min(740px,calc(100dvh - 70px));margin:0 auto 16px;background:var(--minz);border-radius:28px;box-shadow:0 10px 40px rgba(21,22,58,.12);overflow:hidden;display:flex;flex-direction:column;position:relative}
-@media(max-width:430px){body{background:var(--minz)}.phone{border-radius:0;box-shadow:none;height:calc(100dvh - 64px)}}
+.phone{width:min(390px,100%);height:min(740px,100dvh);margin:0 auto;background:var(--minz);overflow:hidden;display:flex;flex-direction:column;position:relative}
+@media(min-width:431px){.phone{margin:16px auto;border-radius:28px;box-shadow:0 10px 40px rgba(21,22,58,.12);height:min(740px,calc(100dvh - 32px))}}
 .top{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border-bottom:1.5px solid var(--line);flex:none}
-.back{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font:800 1.1rem 'Nunito';color:var(--ink);cursor:pointer;visibility:hidden}
+.back{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font:800 1.1rem 'Nunito',system-ui;color:var(--ink);cursor:pointer;visibility:hidden}
 .dots{flex:1;display:flex;gap:6px}
 .dots i{height:6px;flex:1;border-radius:9px;background:var(--line)}.dots i.on{background:var(--cyan)}
 .logo{font-weight:900}.logo em{color:var(--cyan)}
 .body{flex:1;display:flex;flex-direction:column;padding:14px 16px 16px;gap:12px;overflow:hidden}
+.mutter{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:10px 14px;box-shadow:var(--shadow);font:inherit;color:var(--ink);cursor:pointer;text-align:left;min-height:48px}
+.mutter small{color:var(--muted);font-weight:800;font-size:.82rem}
+.mutter b{font-weight:900}
+.mutter .pf{color:var(--cyan);font-weight:900;font-size:1.1rem}
 .say{display:flex;gap:10px;align-items:center}
 .capy{width:52px;height:52px;flex:none;border-radius:50%;background:var(--mustard);display:grid;place-items:center}
 .capy svg{width:44px;height:44px}
 .bub{background:#fff;border:1.5px solid var(--line);border-radius:18px 18px 18px 6px;padding:9px 13px;font-weight:800;font-size:1.05rem;box-shadow:var(--shadow)}
-.lbl{font-weight:800;font-size:.82rem;color:var(--muted);margin:2px 2px -4px}
-.grid{display:grid;gap:7px}
+.grid{display:grid;gap:8px}
 .g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
-.tile{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:8px 2px 7px;text-align:center;box-shadow:var(--shadow);cursor:pointer;font:inherit;color:var(--ink);transition:transform .1s,background .15s}
+.tile{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:9px 2px 8px;text-align:center;box-shadow:var(--shadow);cursor:pointer;font:inherit;color:var(--ink);transition:transform .1s,background .15s}
 .tile:active{transform:scale(.96)}
-.tile i{display:grid;place-items:center;width:34px;height:34px;margin:0 auto 4px;border-radius:11px;font-style:normal;font-size:1.15rem}
-.tile span{display:block;font-size:.7rem;font-weight:800;line-height:1.12}
+.tile i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 5px;border-radius:14px;font-style:normal;font-size:1.5rem}
+.tile span{display:block;font-size:.76rem;font-weight:800;line-height:1.12}
+.g5 .tile i{width:38px;height:38px;font-size:1.25rem;border-radius:12px}.g5 .tile span{font-size:.7rem}
 .tile.sel{background:var(--mustard);border-color:#e9cf7a}
-.tile.big i{width:44px;height:44px;font-size:1.5rem;border-radius:14px}.tile.big span{font-size:.8rem}
-.mini{font-size:.82rem;font-weight:700;color:var(--muted);text-align:center}
-.mini button{border:0;background:none;color:var(--cyan);font:800 .82rem 'Nunito';cursor:pointer;padding:4px}
 .foot{margin-top:auto}
 .go{display:block;width:100%;font:800 1.05rem 'Nunito',system-ui,sans-serif;color:var(--ink);background:#c9ecd9;border:1.5px solid var(--line);border-radius:999px;padding:14px;box-shadow:var(--shadow);cursor:pointer}
-.go:disabled{opacity:.45}
-.skip{display:block;margin:8px auto 0;border:0;background:none;color:var(--muted);font:800 .85rem 'Nunito';cursor:pointer}
+.skip{display:block;margin:8px auto 0;border:0;background:none;color:var(--muted);font:800 .88rem 'Nunito',system-ui;cursor:pointer;padding:8px}
+/* Auswahl-Maske */
+.veil{position:absolute;inset:0;background:rgba(21,22,58,.28);opacity:0;pointer-events:none;transition:opacity .2s}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:10px 16px 18px;transform:translateY(102%);transition:transform .25s ease-out;max-height:62%;display:flex;flex-direction:column}
+.open .veil{opacity:1;pointer-events:auto}.open .sheet{transform:none}
+.grip{width:40px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 10px}
+.sheet h3{margin:0 0 8px;font-size:1rem;font-weight:900}
+.list{overflow-y:auto;border-top:1.5px solid var(--line)}
+.row{display:flex;align-items:center;gap:12px;width:100%;border:0;border-bottom:1.5px solid var(--line);background:none;font:inherit;color:var(--ink);padding:12px 4px;cursor:pointer;min-height:52px;text-align:left}
+.row .fl{font-size:1.4rem}.row b{flex:1;font-weight:800}.row .ck{color:var(--cyan);font-weight:900;visibility:hidden}
+.row.sel{background:var(--sky)}.row.sel .ck{visibility:visible}
 .done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:20px}
 .done .capy{width:84px;height:84px}.done .capy svg{width:72px;height:72px}
 .done b{font-size:1.3rem;font-weight:900}
 .done p{margin:0;color:var(--muted);font-weight:700}
 .fade{animation:f .22s ease-out}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.fade{animation:none}}
-.note{text-align:center;font-size:.78rem;color:var(--muted);font-weight:700;margin:-6px 0 12px}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}.sheet,.veil{transition:none}}
 </style>
 </head>
 <body>
-<div class="tabs"><button data-v="A" class="on">A · Ein Blick</button><button data-v="B">B · Drei Tipps</button></div>
-<p class="note" id="note"></p>
-<div class="phone">
-  <div class="top"><button class="back" id="back" aria-label="zurück">‹</button><div class="dots" id="dots"></div><div class="logo">Spi<em>k</em>iu</div></div>
+<div class="phone" id="phone">
+  <div class="top"><button class="back" id="back" aria-label="‹">‹</button><div class="dots" id="dots"></div><div class="logo">Spi<em>k</em>iu</div></div>
   <div class="body fade" id="body"></div>
+  <div class="veil" id="veil"></div>
+  <div class="sheet" role="dialog" aria-modal="true"><div class="grip"></div><h3 id="sheetH"></h3><div class="list" id="list"></div></div>
 </div>
 <script>
 {
 const CAPY='<svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
-const SPR=[['de','🇩🇪','Deutsch','#ffe08a'],['es','🇪🇸','Spanisch','#ffd0b0'],['en','🇬🇧','Englisch','#d3eef6'],['el','🇬🇷','Griechisch','#cdbdf2']];
-const STAND=[['A0','🌱','Bei Null','#c7e89a'],['A1','👋','Ein paar Wörter','#ffe08a'],['A2','💬','Einfache Gespräche','#d3eef6'],['B1','🚶','Ich komme durch','#ffd0b0'],['B2','🗣️','Ziemlich sicher','#cdbdf2']];
-const WOFUER=[['travel','✈️','Reisen','#d3eef6'],['work','💼','Arbeit','#ffd0b0'],['exam','📝','Prüfung','#ffe08a'],['family','👪','Familie','#f7bcd8'],['study','🎓','Studium','#cdbdf2'],['interest','✨','Neugier','#c7e89a'],['daily','☕','Alltag','#ffb27a']];
-const NOTE={A:'Ein Bildschirm. „Ich spreche“ ist schon gelb (vom Handy erkannt) — meist nur zwei Tipps und der Knopf.',B:'Drei kurze Bildschirme. Jeder Tipp springt von selbst weiter, Wofür kann man überspringen.'};
+/* Sprachen: Name in der eigenen Sprache (für die Maske) + Name je Oberfläche */
+const SPR={de:{f:'🇩🇪',self:'Deutsch',bg:'#ffe08a',n:{de:'Deutsch',es:'Alemán',en:'German',el:'Γερμανικά'}},
+ es:{f:'🇪🇸',self:'Español',bg:'#ffd0b0',n:{de:'Spanisch',es:'Español',en:'Spanish',el:'Ισπανικά'}},
+ en:{f:'🇬🇧',self:'English',bg:'#d3eef6',n:{de:'Englisch',es:'Inglés',en:'English',el:'Αγγλικά'}},
+ el:{f:'🇬🇷',self:'Ελληνικά',bg:'#cdbdf2',n:{de:'Griechisch',es:'Griego',en:'Greek',el:'Ελληνικά'}}};
+const STAND=[['A0','🌱','#c7e89a'],['A1','👋','#ffe08a'],['A2','💬','#d3eef6'],['B1','🚶','#ffd0b0'],['B2','🗣️','#cdbdf2']];
+const WOFUER=[['travel','✈️','#d3eef6'],['work','💼','#ffd0b0'],['exam','📝','#ffe08a'],['family','👪','#f7bcd8'],['study','🎓','#cdbdf2'],['interest','✨','#c7e89a'],['daily','☕','#ffb27a']];
+const T={
+ de:{mutter:'Meine Muttersprache',s1:'¡Hola! Was lernst du?',s2:'Wie viel kannst du schon?',s3:'Wofür? Gern mehrere.',go:'Los geht’s →',skip:'Überspringen',again:'Noch mal ansehen',fertig:(z)=>z+' · Lektion 1 wartet.',
+  stand:['Bei Null','Ein paar Wörter','Einfache Gespräche','Ich komme durch','Ziemlich sicher'],wofuer:['Reisen','Arbeit','Prüfung','Familie','Studium','Neugier','Alltag']},
+ es:{mutter:'Mi lengua materna',s1:'¡Hola! ¿Qué aprendes?',s2:'¿Cuánto sabes ya?',s3:'¿Para qué? Puedes elegir varias.',go:'¡Vamos! →',skip:'Saltar',again:'Ver otra vez',fertig:(z)=>z+' · La lección 1 te espera.',
+  stand:['Desde cero','Unas palabras','Charlas sencillas','Me defiendo','Bastante seguro'],wofuer:['Viajes','Trabajo','Examen','Familia','Estudios','Curiosidad','Día a día']},
+ en:{mutter:'My mother tongue',s1:'¡Hola! What are you learning?',s2:'How much do you know already?',s3:'What for? Pick as many as you like.',go:'Let’s go →',skip:'Skip',again:'See again',fertig:(z)=>z+' · Lesson 1 is waiting.',
+  stand:['From zero','A few words','Simple chats','I get by','Fairly confident'],wofuer:['Travel','Work','Exam','Family','Studies','Curiosity','Everyday life']},
+ el:{mutter:'Η μητρική μου γλώσσα',s1:'¡Hola! Τι μαθαίνεις;',s2:'Πόσα ξέρεις ήδη;',s3:'Για ποιο λόγο; Διάλεξε όσα θες.',go:'Πάμε →',skip:'Παράλειψη',again:'Ξανά',fertig:(z)=>z+' · Το μάθημα 1 σε περιμένει.',
+  stand:['Από το μηδέν','Λίγες λέξεις','Απλές κουβέντες','Τα βγάζω πέρα','Αρκετά σίγουρα'],wofuer:['Ταξίδια','Δουλειά','Εξετάσεις','Οικογένεια','Σπουδές','Περιέργεια','Καθημερινότητα']}};
 const $=id=>document.getElementById(id);
-let V='A',st,step;
-function reset(){st={mutter:'de',ziel:null,stand:null,wofuer:[]};step=0;draw()}
-const name=c=>SPR.find(s=>s[0]===c)[2];
-function tiles(list,cls,key,multi,big){
-  return '<div class="grid '+cls+'">'+list.map(([v,em,t,bg])=>{
-    const on=multi?st[key].includes(v):st[key]===v;
-    return '<button class="tile'+(on?' sel':'')+(big?' big':'')+'" data-k="'+key+'" data-v="'+v+'"'+(multi?' data-m="1"':'')+'><i style="background:'+bg+'">'+em+'</i><span>'+t+'</span></button>'}).join('')+'</div>';
+const erkannt=()=>{const n=(navigator.language||'de').slice(0,2);return SPR[n]?n:'de'};
+let st,step;
+function reset(){st={mutter:erkannt(),ziel:null,stand:null,wofuer:[]};step=0;draw()}
+const t=()=>T[st.mutter];
+function tile(key,v,em,bg,label,multi){
+  const on=multi?st[key].includes(v):st[key]===v;
+  return '<button class="tile'+(on?' sel':'')+'" data-k="'+key+'" data-v="'+v+'"'+(multi?' data-m="1"':'')+'><i style="background:'+bg+'">'+em+'</i><span>'+label+'</span></button>';
 }
-function say(t){return '<div class="say"><div class="capy">'+CAPY+'</div><div class="bub">'+t+'</div></div>'}
-function zielListe(){return SPR.filter(s=>s[0]!==st.mutter)}
-function dots(n,i){$('dots').innerHTML=Array.from({length:n},(_,k)=>'<i class="'+(k<=i?'on':'')+'"></i>').join('')}
+const say=s=>'<div class="say"><div class="capy">'+CAPY+'</div><div class="bub">'+s+'</div></div>';
 function draw(){
   const b=$('body');b.classList.remove('fade');void b.offsetWidth;b.classList.add('fade');
-  $('note').textContent=NOTE[V];
+  document.documentElement.lang=st.mutter;
   if(step==='fertig'){
     $('dots').innerHTML='';$('back').style.visibility='hidden';
-    b.innerHTML='<div class="done"><div class="capy">'+CAPY+'</div><b>¡Vamos!</b><p>'+name(st.ziel)+' · Lektion 1 wartet.</p><button class="go" id="again" style="max-width:260px">Noch mal ansehen</button></div>';
+    b.innerHTML='<div class="done"><div class="capy">'+CAPY+'</div><b>¡Vamos!</b><p>'+t().fertig(SPR[st.ziel].n[st.mutter])+'</p><button class="go" id="again" style="max-width:260px">'+t().again+'</button></div>';
     return;
   }
-  if(V==='A'){
-    dots(1,0);$('back').style.visibility='hidden';
-    b.innerHTML=say('¡Hola! Ich bin Spikiu. Zwei Tipps, und los.')
-      +'<div class="lbl">Ich spreche</div>'+tiles(SPR,'g4','mutter')
-      +'<div class="lbl">Ich lerne</div>'+tiles(zielListe(),'g'+zielListe().length,'ziel')
-      +'<div class="lbl">Ich kann schon</div>'+tiles(STAND,'g5','stand')
-      +'<div class="foot"><button class="go" id="go" '+(st.ziel&&st.stand?'':'disabled')+'>Los geht’s →</button></div>';
-  }else{
-    dots(3,step);$('back').style.visibility=step?'visible':'hidden';
-    if(step===0)b.innerHTML=say('¡Hola! Was lernst du?')+tiles(zielListe(),'g'+zielListe().length,'ziel',false,true)
-      +'<div class="mini">Ich spreche '+name(st.mutter)+' · <button id="mut">ändern</button></div>';
-    if(step===1)b.innerHTML=say('Wie viel kannst du schon?')+tiles(STAND,'g5','stand',false,true);
-    if(step===2)b.innerHTML=say('Wofür? Gern mehrere.')+tiles(WOFUER,'g4','wofuer',true,true)
-      +'<div class="foot"><button class="go" id="go">Los geht’s →</button><button class="skip" id="go2">Überspringen</button></div>';
+  $('dots').innerHTML=[0,1,2].map(k=>'<i class="'+(k<=step?'on':'')+'"></i>').join('');
+  $('back').style.visibility=step?'visible':'hidden';
+  if(step===0){
+    const ziele=Object.keys(SPR).filter(k=>k!==st.mutter);
+    b.innerHTML='<button class="mutter" id="mut"><span style="font-size:1.4rem">'+SPR[st.mutter].f+'</span><span><small>'+t().mutter+':</small><br><b>'+SPR[st.mutter].self+'</b></span><span style="flex:1"></span><span class="pf">▾</span></button>'
+      +say(t().s1)+'<div class="grid g'+ziele.length+'">'+ziele.map(k=>tile('ziel',k,SPR[k].f,SPR[k].bg,SPR[k].n[st.mutter])).join('')+'</div>';
   }
+  if(step===1)b.innerHTML=say(t().s2)+'<div class="grid g5">'+STAND.map(([v,em,bg],i)=>tile('stand',v,em,bg,t().stand[i])).join('')+'</div>';
+  if(step===2)b.innerHTML=say(t().s3)+'<div class="grid g4">'+WOFUER.map(([v,em,bg],i)=>tile('wofuer',v,em,bg,t().wofuer[i],true)).join('')+'</div>'
+      +'<div class="foot"><button class="go" id="go">'+t().go+'</button><button class="skip" id="go2">'+t().skip+'</button></div>';
+}
+function maske(auf){
+  if(auf){
+    $('sheetH').textContent=t().mutter;
+    $('list').innerHTML=Object.entries(SPR).map(([k,s])=>'<button class="row'+(k===st.mutter?' sel':'')+'" data-mut="'+k+'"><span class="fl">'+s.f+'</span><b>'+s.self+'</b><span class="ck">✓</span></button>').join('');
+  }
+  $('phone').classList.toggle('open',auf);
 }
 document.addEventListener('click',e=>{
-  const t=e.target.closest('button');if(!t)return;
-  if(t.dataset.v&&t.parentElement.classList.contains('tabs')){V=t.dataset.v;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===t));reset();return}
-  if(t.id==='again'){reset();return}
-  if(t.id==='back'){step=Math.max(0,step-1);draw();return}
-  if(t.id==='mut'){const i=SPR.findIndex(s=>s[0]===st.mutter);st.mutter=SPR[(i+1)%SPR.length][0];if(st.ziel===st.mutter)st.ziel=null;draw();return}
-  if(t.id==='go'||t.id==='go2'){step='fertig';draw();return}
-  if(t.dataset.k){
-    const k=t.dataset.k,v=t.dataset.v;
-    if(t.dataset.m){const i=st[k].indexOf(v);i>-1?st[k].splice(i,1):st[k].push(v);t.classList.toggle('sel');return}
-    st[k]=v;
-    if(k==='mutter'&&st.ziel===v)st.ziel=null;
-    if(V==='B'){t.classList.add('sel');setTimeout(()=>{step++;draw()},220);return}
-    draw();
+  if(e.target.id==='veil'){maske(false);return}
+  const btn=e.target.closest('button');if(!btn)return;
+  if(btn.id==='mut'){maske(true);return}
+  if(btn.dataset.mut){st.mutter=btn.dataset.mut;if(st.ziel===st.mutter)st.ziel=null;maske(false);draw();return}
+  if(btn.id==='again'){reset();return}
+  if(btn.id==='back'){step=Math.max(0,step-1);draw();return}
+  if(btn.id==='go'||btn.id==='go2'){step='fertig';draw();return}
+  if(btn.dataset.k){
+    const k=btn.dataset.k,v=btn.dataset.v;
+    if(btn.dataset.m){const i=st[k].indexOf(v);i>-1?st[k].splice(i,1):st[k].push(v);btn.classList.toggle('sel');return}
+    st[k]=v;btn.classList.add('sel');
+    setTimeout(()=>{step++;draw()},220);
   }
 });
 reset();
