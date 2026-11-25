@@ -1,827 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spikiu — Speak Without Fear</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spikiu — Sprechen, jetzt</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-:root {
-  --white:   #ffffff;
-  --off:     #f6fbf8;
-  --ink:     #15163a;
-  --mid:     #6b6560;
-  --faint:   #e8e4df;
-  --warm:    #d4cdc6;
-  --accent:  #1f93b0;
-  --terra:   #ff6b5a;
-  --mustard:#ffe7a3;
-  --sky:     #d3eef6;
-  --ow:1.5px;
-  --accent2: #e8f2ed;
-  --accent3: #1f93b0;
-  --capy:    #c9956a;
-  --gold:    #a07830;
-}
-
-body {
-  background: #eef7f1;
-  color: var(--ink);
-  font-family: 'Nunito', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* ── NAV ── */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.1rem 5vw;
-  border-bottom: 1px solid var(--faint);
-  background: var(--white);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.logo {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--ink);
-  text-decoration: none;
-  letter-spacing: -0.02em;
-}
-.logo em { color: var(--accent); font-style: italic; }
-
-.btn-start {
-  background: var(--accent);
-  color: var(--white);
-  padding: 0.6rem 1.5rem;
-  border-radius: 100px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-.btn-start:hover { background: var(--accent3); }
-
-/* ── HERO ── */
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 5rem 5vw 3rem;
-}
-
-.capy-wrap {
-  margin-bottom: 2rem;
-  animation: float 4s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.hero h1 {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  max-width: 700px;
-  margin-bottom: 1.2rem;
-}
-.hero h1 em { color: var(--accent); font-style: italic; }
-
-.hero-sub {
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  color: var(--mid);
-  max-width: 560px;
-  line-height: 1.75;
-  margin-bottom: 2.5rem;
-}
-
-/* ── FREE / PAID SPLIT ── */
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: 0;
-  max-width: 680px;
-  width: 100%;
-  margin-bottom: 2rem;
-  border: 1.5px solid var(--faint);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.split-divider {
-  background: var(--faint);
-}
-
-.split-col {
-  padding: 2rem 2.2rem;
-  background: var(--white);
-}
-
-.split-col.free { background: var(--sky); }
-
-.split-tag {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.8rem;
-  border-radius: 100px;
-  margin-bottom: 1rem;
- border:1.5px solid #dcebe1; border-radius:100px; padding:.15rem .6rem; font-weight:800;}
-
-.split-col.free .split-tag {
-  background: var(--accent);
-  color: var(--white);
-}
-
-.split-col.premium .split-tag {
-  background: var(--faint);
-  color: var(--mid);
-}
-
-.split-col h3 {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 0.8rem;
-  line-height: 1.2;
-}
-
-.split-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.split-list li {
-  font-size: 0.88rem;
-  color: var(--mid);
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  line-height: 1.5;
-}
-
-.split-list li::before {
-  content: "✓";
-  color: var(--accent);
-  font-weight: 700;
-  flex-shrink: 0;
-  margin-top: 0.05rem;
-}
-
-.split-col.premium .split-list li::before {
-  color: var(--capy);
-}
-
-.price {
-  margin-top: 1.2rem;
-  font-family: 'Lora', serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--ink);
-}
-.price span {
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.82rem;
-  color: var(--mid);
-  font-weight: 400;
-}
-
-/* ── CTA BUTTONS ── */
-.cta-group {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: var(--white);
-  padding: 1rem 2.5rem;
-  border-radius: 100px;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s;
-  border: 2px solid var(--accent);
- border:1.5px solid #dcebe1; box-shadow:0 6px 18px rgba(21,22,58,.07); font-weight:800;}
-.btn-primary:hover {
-  background: var(--accent3);
-  border-color: var(--accent3);
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--ink);
-  padding: 1rem 2rem;
-  border-radius: 100px;
-  font-size: 1rem;
-  font-weight: 500;
-  text-decoration: none;
-  border: 2px solid var(--faint);
-  transition: all 0.2s;
-}
-.btn-secondary:hover { border-color: var(--ink); }
-
-.hero-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.2rem;
-  padding: 0.5rem 1.1rem;
-  background: var(--accent2);
-  color: var(--accent);
-  font-size: 0.92rem;
-  font-weight: 600;
-  border-radius: 100px;
-  border: 1.5px solid rgba(45,106,79,0.2);
-}
-.hero-note::before {
-  content: "🌍";
-  font-size: 1rem;
-}
-
-/* Language Switcher */
-.lang-btn {
-  background: transparent;
-  border: 1px solid var(--faint);
-  color: var(--mid);
-  padding: 0.35rem 0.65rem;
-  border-radius: 100px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: all 0.18s;
-}
-.lang-btn:hover { color: var(--ink); border-color: var(--warm); }
-.lang-btn.active {
-  background: var(--accent);
-  color: var(--white);
-  border-color: var(--accent);
-}
-
-/* ── HOW IT WORKS ── */
-.how {
-  background: var(--off);
-  padding: 5rem 5vw;
-}
-
-.section-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--capy);
-  margin-bottom: 0.8rem;
-  text-align: center;
-}
-
-.how h2 {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 700;
-  text-align: center;
-  letter-spacing: -0.02em;
-  margin-bottom: 3rem;
-  color: var(--ink);
-}
-
-.steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--faint);
-  border-radius: 16px;
-  overflow: hidden;
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.step {
-  background: var(--white);
-  padding: 2rem 1.5rem;
-  text-align: center;
-  position: relative;
- border:1.5px solid #dcebe1; border-radius:18px; box-shadow:0 6px 18px rgba(21,22,58,.07);}
-
-.step-num {
-  width: 36px;
-  height: 36px;
-  background: var(--accent2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Lora', serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--accent);
-  margin: 0 auto 1rem;
-}
-
-.step h4 {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 0.4rem;
-}
-
-.step p {
-  font-size: 0.82rem;
-  color: var(--mid);
-  line-height: 1.6;
-}
-
-/* ── TESTIMONIAL ── */
-.testimonial {
-  padding: 5rem 5vw;
-  max-width: 680px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-blockquote {
-  font-family: 'Lora', serif;
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  font-style: italic;
-  color: var(--ink);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-blockquote::before {
-  content: '"';
-  color: var(--accent);
-  font-size: 3rem;
-  line-height: 0;
-  vertical-align: -0.4em;
-  margin-right: 0.1em;
-}
-
-.testimonial-author {
-  font-size: 0.85rem;
-  color: var(--mid);
-}
-.testimonial-author strong {
-  color: var(--ink);
-  font-weight: 600;
-  display: block;
-}
-
-/* ── FINAL CTA ── */
-.final {
-  background: var(--accent);
-  padding: 5rem 5vw;
-  text-align: center;
-}
-
-.final h2 {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-}
-.final h2 em { font-style: italic; color: #a8d5be; }
-
-.final p {
-  color: rgba(255,255,255,0.7);
-  font-size: 1rem;
-  margin-bottom: 2rem;
-}
-
-.btn-white {
-  background: var(--white);
-  color: var(--accent3);
-  padding: 1rem 2.8rem;
-  border-radius: 100px;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
- border:1.5px solid #dcebe1; box-shadow:0 6px 18px rgba(21,22,58,.07); font-weight:800;}
-.btn-white:hover {
-  background: var(--off);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-/* ── FOOTER ── */
-footer {
-  background: var(--ink);
-  padding: 2rem 5vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-.footer-logo {
-  font-weight:800;font-family:'Nunito', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--white);
-}
-.footer-logo em { color: var(--cyan); font-style: italic; }
-.footer-copy { font-size: 0.78rem; color: #555; }
-
-/* ── MOBILE ── */
-@media (max-width: 640px) {
-  .split { grid-template-columns: 1fr; }
-  .split-divider { display: none; }
-  .split-col { padding: 1.5rem; background:#fff; border:1.5px solid #dcebe1; border-radius:20px; box-shadow:0 6px 18px rgba(21,22,58,.07); }
-  .steps { grid-template-columns: 1fr 1fr; }
-  .hero { padding: 3.5rem 1.5rem 2.5rem; }
-  .how { padding: 3.5rem 1.5rem; }
-  footer { flex-direction: column; text-align: center; }
-}
-
-/* ═══ ÜBERNOMMEN 1:1 AUS spikiu-products.html (Abonnement) ═══ */
-:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#e1f3f8;--mint:#cdeee2;--mustard:#ffe7a3;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:1.5px}
-body{background:var(--minz);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.5}
-/* Kopf wie .top */
-nav{background:rgba(255,255,255,.85) !important;border-bottom:1.5px solid #dcebe1 !important;box-shadow:none !important}
-.logo{font-family:'Nunito' !important;font-weight:800 !important;font-size:1.05rem !important;color:var(--ink) !important}
-.logo em{font-style:italic;color:var(--cyan) !important}
-.lang-btn{border:1.5px solid #dcebe1 !important;background:#fff !important;color:var(--ink) !important;font:800 .72rem 'Nunito',sans-serif !important;border-radius:999px !important;padding:.24rem .6rem !important}
-.lang-btn.active{background:var(--sky) !important;box-shadow:0 6px 18px rgba(21,22,58,.07)}
-/* Knöpfe wie .btn */
-.btn-start{background:#c9ecd9 !important;color:#15163a !important;border:1.5px solid #dcebe1 !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;border-radius:100px !important;font:700 .88rem 'Nunito' !important;padding:.5rem 1.1rem !important}
-.btn-primary,.btn-white{border:1.5px solid #dcebe1 !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;border-radius:100px !important;font:700 1rem 'Nunito' !important;padding:.85rem 2rem !important;display:inline-block;text-decoration:none}
-.btn-start:active,.btn-primary:active,.btn-white:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-/* Überschriften wie h2 der Abo-Karten */
-.hero h1,.how h2,.final h2{font-family:'Nunito' !important;font-weight:800 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
-.hero h1 em,.final h2 em{font-style:normal;color:var(--cyan) !important}
-.price{font-weight:800;font-family:'Nunito',sans-serif !important;color:var(--ink) !important}
-.price span{font-family:'Nunito' !important;font-weight:500 !important;color:var(--muted) !important}
-/* Karten wie .card */
-.split-col{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:24px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;padding:1.6rem 1.4rem !important}
-.split-tag{font:800 .62rem/1 'Nunito' !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important;padding:.24rem .6rem !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important;margin-bottom:1rem !important}
-.split-col.free .split-tag{background:var(--sky) !important}
-.split-col.premium .split-tag{background:#d6efc0 !important}
-.split-col.free h3 em{color:var(--cyan) !important}
-.split-col.premium h3 em{color:#4e7a2e !important}
-.split-col h3{font-family:'Nunito' !important;font-weight:800 !important;color:var(--ink) !important}
-.split-list li::before{color:var(--cyan) !important}
-/* Schritt-Karten wie .item */
-.step{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:18px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-.step-num{background:var(--sky) !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;border-radius:9px !important;font-family:'Nunito' !important;font-weight:800 !important}
-.step h4{font-family:'Nunito' !important;font-weight:700 !important;color:var(--ink) !important}
-.hero-note{background:#fff !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important;font-weight:700 !important}
-blockquote::before{color:var(--cyan) !important}
-/* Fuß wie .foot */
-footer{background:#fff !important;border-top:1.5px solid #dcebe1 !important}
-.footer-logo{font-family:'Nunito' !important;font-weight:800 !important;color:var(--ink) !important}
-.footer-logo em{color:var(--cyan) !important;font-style:italic !important}
-footer a,footer span,footer p{color:var(--muted) !important}
-
-
-
-
-.btn-primary,.btn-white{background:#c9ecd9 !important;color:#15163a !important}
-.split-col.free{background:#e1f3f8 !important}
-.split-col.premium{background:#d6efc0 !important}
-/* Pastell Minze (Leo, 24.11.2026): zwei getrennte Karten mit Luft, weiche Linie */
-.split{gap:.9rem !important;background:none !important;border:none !important;box-shadow:none !important;overflow:visible !important}
-.split-col{border:1.5px solid #dcebe1 !important;border-radius:22px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-.split-col.free .split-tag,.split-col.premium .split-tag{background:#fff !important}
-.final{background:#fff !important;border-top:1.5px solid #dcebe1}
-.final h2,.final p{color:var(--ink) !important}
-.how{background:var(--minz) !important}
-
-
-
-
-
-
-
-/* ── Nav: im Hochformat nie überlappen (umbruchfähig + kompakt) ── */
-nav{ flex-wrap:wrap; row-gap:.55rem; column-gap:.9rem }
-nav > *{ min-width:0 }
-.logo{ flex:0 0 auto }
-.nav-right{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:flex-end }
-.lang-switcher{ display:flex; gap:.4rem; flex:0 0 auto }
-@media (max-width:600px){
-  nav{ padding:.8rem 4vw }
-  .logo{ font-size:1.15rem }
-  .nav-right{ gap:.55rem }
-  .lang-btn{ padding:.28rem .5rem !important; font-size:.68rem !important }
-  .btn-start{ padding:.5rem 1rem !important; font-size:.8rem !important }
-}
-@media (max-width:380px){
-  .lang-btn{ padding:.24rem .42rem !important; font-size:.63rem !important }
-  .btn-start{ padding:.45rem .85rem !important; font-size:.75rem !important }
-}
+/* VOICE: ruhig, warm, wenig Worte — Spikiu flüstert statt zu werben
+   IDEA: die Startseite ist schon das Café — man bestellt, bevor man liest
+   PICTURE: Café-Szene aus Lektion 1 mit Spikiu als Kellner, live antippbar
+   COLOUR and TYPE: Pastell Minze (Minzgrund, Himmel, Salbei, Senf), Nunito
+   LAYOUT: eine Spalte; Szene im ersten Bildschirm, Preise darunter, aufklappbar */
+:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#e1f3f8;--sage:#d6efc0;--mustard:#ffe7a3;--cyan:#1f93b0;--line:#dcebe1;--ok:#c7e89a;--shadow:0 6px 18px rgba(21,22,58,.07)}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--minz);color:var(--ink);font:16px/1.5 'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.wrap{max-width:460px;margin:0 auto;padding:0 18px 40px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px}
+.logo{font-weight:900;font-size:1.15rem;letter-spacing:-.01em}.logo em{color:var(--cyan)}
+.langs{display:flex;gap:5px}
+.langs button{font:800 .72rem 'Nunito',system-ui,sans-serif;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:6px 9px;min-height:32px;cursor:pointer}
+.langs button.on{background:var(--sky)}
+h1{font-size:clamp(1.6rem,7vw,2.1rem);line-height:1.12;font-weight:900;letter-spacing:-.015em;margin:18px 0 6px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--cyan)}
+.lead{color:var(--muted);font-weight:600;margin:0 0 16px}
+/* Szene */
+.scene{background:#fff;border:1.5px solid var(--line);border-radius:26px;box-shadow:var(--shadow);overflow:hidden}
+.pic{position:relative;background:#fbf6ee;aspect-ratio:16/9;overflow:hidden}
+.pic img{position:absolute;inset:-12% 0 auto;width:100%;height:auto}
+.tag{position:absolute;left:12px;top:12px;background:#fff;border:1.5px solid var(--line);border-radius:999px;font:800 .7rem 'Nunito',system-ui,sans-serif;padding:4px 10px}
+.talk{padding:14px 14px 16px}
+.row{display:flex;gap:10px;align-items:flex-end;margin-bottom:10px}
+.capy{width:46px;height:46px;flex:none;border-radius:50%;background:var(--mustard);border:1.5px solid var(--line);display:grid;place-items:center}
+.capy svg{width:40px;height:40px}
+.bub{background:var(--sky);border-radius:18px 18px 18px 6px;padding:9px 13px;font-weight:800;font-size:1.08rem;position:relative}
+.bub small{display:block;font-weight:600;font-size:.8rem;color:var(--muted)}
+.say{border:0;background:transparent;font-size:1rem;cursor:pointer;padding:0 0 0 6px;vertical-align:middle}
+.me{display:flex;justify-content:flex-end;margin:0 0 10px}
+.me span{background:var(--ok);border-radius:18px 18px 6px 18px;padding:9px 13px;font-weight:800}
+.opts{display:grid;gap:8px}
+.opts button{font:800 1rem 'Nunito',system-ui,sans-serif;text-align:left;background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;min-height:48px;cursor:pointer;box-shadow:var(--shadow);transition:transform .12s}
+.opts button:active{transform:translate(1px,1px)}
+.opts button.no{opacity:.4}
+.hint{font-size:.85rem;color:var(--muted);font-weight:700;margin:8px 2px 0;min-height:1.2em}
+.done{display:none;text-align:center;padding:4px 4px 2px}
+.done b{display:block;font-size:1.15rem;font-weight:900;margin-bottom:2px}
+.done p{margin:0 0 12px;color:var(--muted);font-weight:600}
+.btn{display:block;text-align:center;text-decoration:none;font:800 1.02rem 'Nunito',system-ui,sans-serif;color:var(--ink);background:#c9ecd9;border:1.5px solid var(--line);border-radius:999px;padding:14px 18px;box-shadow:var(--shadow)}
+.skip{display:block;text-align:center;margin:12px 0 0;font-weight:700;font-size:.9rem;color:var(--cyan);text-decoration:none}
+/* Blick in eine Lektion */
+.peek{margin:26px 0 0}
+.peek h2,.plans h2{font-size:1.2rem;font-weight:900;margin:0 0 4px;letter-spacing:-.01em}
+.peek p{margin:0 0 12px;color:var(--muted);font-weight:600;font-size:.95rem}
+.kaps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.kap{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:10px 4px 8px;text-align:center;box-shadow:var(--shadow)}
+.kap i{display:grid;place-items:center;width:38px;height:38px;margin:0 auto 4px;border-radius:12px;font-style:normal;font-size:1.25rem}
+.kap span{font-size:.72rem;font-weight:800;line-height:1.15;display:block}
+.myth{margin:24px 0 0;background:var(--mustard);border-radius:22px;padding:16px 18px;font-weight:700}
+.myth b{font-weight:900}
+/* Preise */
+.plans{margin:28px 0 0}
+.plan{background:#fff;border:1.5px solid var(--line);border-radius:22px;box-shadow:var(--shadow);margin:0 0 10px;overflow:hidden}
+.plan summary{list-style:none;display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:14px 16px;cursor:pointer}
+.plan summary::-webkit-details-marker{display:none}
+.plan .nm{font-weight:900;font-size:1.05rem}
+.plan .pr{font-weight:900;font-size:1.05rem;text-align:right;white-space:nowrap}
+.plan .ln{color:var(--muted);font-weight:600;font-size:.88rem}
+.plan .per{color:var(--muted);font-weight:700;font-size:.78rem;text-align:right;white-space:nowrap}
+.plan ul{margin:0;padding:0 16px 14px 34px;font-weight:600;font-size:.92rem}
+.plan li{margin:3px 0}.plan li b{font-weight:900}
+.plan .more{grid-column:1/-1;font-size:.8rem;font-weight:800;color:var(--cyan)}
+.plan[open] .more{display:none}
+.p0{border-left:6px solid var(--sky)}.p1{border-left:6px solid var(--sage)}.p2{border-left:6px solid var(--mustard)}
+.soon{display:inline-block;font:800 .65rem 'Nunito',system-ui,sans-serif;background:var(--mustard);border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+.final{margin:30px 0 0;text-align:center}
+.final h2{font-size:1.5rem;font-weight:900;line-height:1.15;margin:0 0 4px}
+.final p{color:var(--muted);font-weight:700;margin:0 0 14px;font-size:.92rem}
+footer{text-align:center;color:var(--muted);font-size:.8rem;font-weight:700;margin-top:28px}
+.note{font-size:.75rem;color:var(--muted);text-align:center;margin:6px 0 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="wrap">
+  <nav><div class="logo">Spi<em>k</em>iu</div><div class="langs" id="langs"></div></nav>
 
+  <h1 id="h1"></h1>
+  <p class="lead" id="lead"></p>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="logo">Spi<em>k</em>iu</a>
-  <div class="nav-right">
-    <div class="lang-switcher">
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
-      <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
-      <button class="lang-btn" data-lang="el" onclick="setLang('el')">ΕΛ</button>
+  <section class="scene" aria-live="polite">
+    <div class="pic"><img src="/bilder/spikiu-szene-cafe.webp" alt=""><span class="tag" id="tag"></span></div>
+    <div class="talk">
+      <div id="chat"></div>
+      <div class="opts" id="opts"></div>
+      <div class="hint" id="hint"></div>
+      <div class="done" id="done"><b id="doneT"></b><p id="doneP"></p><a class="btn" href="assessment.html" id="go"></a></div>
     </div>
-    <a href="assessment.html" class="btn-start" data-i18n="nav.cta">Start free →</a>
-  </div>
-</nav>
+  </section>
+  <a class="skip" href="#plans" id="skip"></a>
 
-<!-- HERO -->
-<section class="hero">
+  <section class="peek">
+    <h2 id="peekH"></h2>
+    <p id="peekP"></p>
+    <div class="kaps" id="kaps"></div>
+  </section>
 
-  <!-- Capybara -->
-  <div class="capy-wrap">
-    <svg width="88" height="88" viewBox="0 0 80 80" fill="none">
-      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/>
-      <ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
-      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/>
-      <ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
-      <circle cx="38" cy="33" r="1" fill="#6b4226"/>
-      <circle cx="42" cy="33" r="1" fill="#6b4226"/>
-      <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/>
-      <circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
-      <circle cx="34" cy="23" r="1.2" fill="white"/>
-      <circle cx="48" cy="23" r="1.2" fill="white"/>
-      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/>
-      <ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
-      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
-      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-    </svg>
-  </div>
+  <div class="myth" id="myth"></div>
 
-  <p style="font-family:'Lora',serif; font-style:italic; font-size:clamp(0.9rem,1.8vw,1.1rem); color:var(--mid); margin-bottom:1.5rem; letter-spacing:0.01em;" data-i18n="hero.tagline">
-    In a world of noise — one place to speak and learn with calm.
-  </p>
+  <section class="plans" id="plans">
+    <h2 id="planH"></h2>
+    <div id="planList"></div>
+    <p class="note" id="note"></p>
+  </section>
 
-  <h1 data-i18n="hero.title">Don't wait any longer.<br><em>Start speaking now.</em></h1>
-
-  <p class="hero-sub" data-i18n="hero.sub">
-    Most people study languages for years and wait too long to feel “ready”. They never speak.<br><br>
-    Spikiu does not expect perfection. Only the courage to begin.<br><br>
-    The words are already inside you. Spikiu helps you bring them into conversation.
-  </p>
-
-  <!-- FREE vs PREMIUM SPLIT -->
-  <div class="split">
-    <div class="split-col free">
-      <span class="split-tag" data-i18n="split.freeTag">For Free</span>
-      <h3 data-i18n="split.freeTitle">Start today</h3>
-      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;" data-i18n="split.freeDesc">Guided conversation · Your path · Learning Novel · Vocabulary · Phrases &amp; Proverbs · Games</p>
-      <a href="spikiu-products.html#free" style="font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:600;" data-i18n="split.included">What's included →</a>
-      <div class="price" style="margin-top:1rem;">€0 <span data-i18n="split.freePrice">no card needed</span></div>
-    </div>
-
-    <div class="split-divider"></div>
-
-    <div class="split-col premium">
-      <span class="split-tag" data-i18n="split.premiumTag">Premium</span>
-      <h3 data-i18n="split.premiumTitle">Made for you</h3>
-      <p style="font-size:0.88rem;color:var(--mid);margin:0.5rem 0 1rem;line-height:1.6;" data-i18n="split.premiumDesc">Free conversation · Reading & writing workshop · Your lessons · Spikiu answers you</p>
-      <a href="spikiu-products.html#premium" style="font-size:0.8rem;color:var(--accent);text-decoration:none;font-weight:600;" data-i18n="split.included2">What's included →</a>
-      <div class="price" style="margin-top:1rem;">€5,90 <span data-i18n="split.premiumPrice">/ month · cancel anytime</span></div>
-    </div>
-  </div>
-
-  <div class="cta-group">
-    <a href="haus.html" class="btn-primary" data-i18n="hero.cta">Start talking — it's free →</a>
-  </div>
-
-  <span class="hero-note" data-i18n="hero.note">Available in Spanish, German & English · No registration needed</span>
-
-</section>
-
-<!-- TESTIMONIAL -->
-<section class="testimonial">
-  <blockquote data-i18n="testimonial.quote">
-    After 20 minutes with Spikiu I spoke more Spanish than in three years with other Apps. It doesn't feel like learning. It feels like talking.
-  </blockquote>
-  <div class="testimonial-author">
-    <strong>Michael T.</strong>
-    <span data-i18n="testimonial.location">Munich, Germany</span>
-  </div>
-</section>
-
-
-<!-- FINAL CTA -->
-<section class="final">
-  <h2 data-i18n="final.title">Just speak.<br><em>Now. Don't wait.</em></h2>
-  <p data-i18n="final.sub">No registration. No credit card. Just open the chat.</p>
-  <a href="haus.html" class="btn-white" data-i18n="final.cta">Start talking — it's free →</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <span class="footer-logo">Spi<em>k</em>iu</span>
-  <span class="footer-copy">© 2026 Spikiu · spikiu.com</span>
-</footer>
+  <section class="final">
+    <h2 id="finH"></h2>
+    <p id="finP"></p>
+    <a class="btn" href="assessment.html" id="finB"></a>
+  </section>
+  <footer>© 2026 Spikiu · spikiu.com</footer>
+</div>
 
 <script>
-// ── TRANSLATIONS ───────────────────────────────────────
-const TRANSLATIONS = {
-  en: {
-    'nav.cta': 'Start free →', 'nav.ctaBack': 'Continue →', 'hero.ctaBack': 'Keep going →', 'final.ctaBack': 'Keep going →',
-    'hero.tagline': 'In a world of noise — one place to speak and learn with calm.',
-    'hero.title': 'Don\'t wait any longer.<br><em>Start speaking now.</em>',
-    'hero.sub': 'Most people study languages for years and wait too long to feel “ready”. They never speak.<br><br>Spikiu does not expect perfection. Only the courage to begin.<br><br>The words are already inside you. Spikiu helps you bring them into conversation.',
-    'hero.cta': 'Start talking — it\'s free →',
-    'hero.note': 'Available in Spanish, German & English · No registration needed',
-    'split.freeTag': 'For Free',
-    'split.freeTitle': 'Start today',
-    'split.freeDesc': 'Guided conversation · Your path · Learning Novel · Vocabulary · Phrases &amp; Proverbs · Games',
-    'split.freePrice': 'no card needed',
-    'split.premiumTag': 'Premium',
-    'split.premiumTitle': 'Made for you',
-    'split.premiumDesc': 'Free conversation · Reading & writing workshop · Your lessons · Spikiu answers you',
-    'split.premiumPrice': '/ month · cancel anytime',
-    'split.included': 'What\'s included →',
-    'split.included2': 'What\'s included →',
-    'testimonial.quote': 'After 20 minutes with Spikiu I spoke more Spanish than in three years with other Apps. It doesn\'t feel like learning. It feels like talking.',
-    'testimonial.location': 'Munich, Germany',
-    'final.title': 'Just speak.<br><em>Now. Don\'t wait.</em>',
-    'final.sub': 'No registration. No credit card. Just open the chat.',
-    'final.cta': 'Start talking — it\'s free →'
-  },
-  de: {
-    'nav.cta': 'Kostenlos starten →', 'nav.ctaBack': 'Weiter lernen →', 'hero.ctaBack': 'Weiter lernen →', 'final.ctaBack': 'Weiter lernen →',
-    'hero.tagline': 'In einer Welt voller Lärm — ein Ort, um in Ruhe zu sprechen und zu lernen.',
-    'hero.title': 'Warte nicht länger.<br><em>Fang jetzt an zu sprechen.</em>',
-    'hero.sub': 'Die meisten lernen jahrelang Sprachen und warten zu lange, bis sie sich „bereit“ fühlen. Sie sprechen nie.<br><br>Spikiu erwartet keine Perfektion. Nur den Mut anzufangen.<br><br>Die Worte sind schon in dir. Spikiu hilft dir, sie ins Gespräch zu bringen.',
-    'hero.cta': 'Jetzt sprechen — kostenlos →',
-    'hero.note': 'Verfügbar auf Spanisch, Deutsch & Englisch · Keine Anmeldung nötig',
-    'split.freeTag': 'Kostenlos',
-    'split.freeTitle': 'Heute starten',
-    'split.freeDesc': 'Geführtes Gespräch · Dein Lernweg · Lernroman · Wortschatz · Wendungen &amp; Sprichwörter · Spiele',
-    'split.freePrice': 'Keine Kreditkarte',
-    'split.premiumTag': 'Premium',
-    'split.premiumTitle': 'Für dich gemacht',
-    'split.premiumDesc': 'Freies Gespräch · Lese- & Schreibwerkstatt · Deine Lektionen · Spikiu antwortet dir',
-    'split.premiumPrice': '/ Monat · jederzeit kündbar',
-    'split.included': 'Was enthalten ist →',
-    'split.included2': 'Was enthalten ist →',
-    'testimonial.quote': 'Nach 20 Minuten mit Spikiu habe ich mehr Spanisch gesprochen als in drei Jahren mit anderen Apps. Es fühlt sich nicht nach Lernen an. Es fühlt sich nach Reden an.',
-    'testimonial.location': 'München, Deutschland',
-    'final.title': 'Einfach sprechen.<br><em>Jetzt. Nicht warten.</em>',
-    'final.sub': 'Keine Anmeldung. Keine Kreditkarte. Einfach den Chat öffnen.',
-    'final.cta': 'Jetzt sprechen — kostenlos →'
-  },
-  es: {
-    'nav.cta': 'Empieza gratis →', 'nav.ctaBack': 'Seguir aprendiendo →', 'hero.ctaBack': 'Seguir aprendiendo →', 'final.ctaBack': 'Seguir aprendiendo →',
-    'hero.tagline': 'En un mundo de ruido — un lugar para hablar y aprender con calma.',
-    'hero.title': 'No esperes más.<br><em>Empieza a hablar ahora.</em>',
-    'hero.sub': 'La mayoría estudia idiomas durante años y espera demasiado para sentirse «preparado». Nunca habla.<br><br>Spikiu no espera perfección. Solo el valor de empezar.<br><br>Las palabras ya están en ti. Spikiu te ayuda a llevarlas a la conversación.',
-    'hero.cta': 'Empieza a hablar — es gratis →',
-    'hero.note': 'Disponible en español, alemán e inglés · Sin registro',
-    'split.freeTag': 'Gratis',
-    'split.freeTitle': 'Empieza hoy',
-    'split.freeDesc': 'Conversación guiada · Tu ruta · Novela para aprender · Vocabulario · Giros &amp; Proverbios · Juegos',
-    'split.freePrice': 'Sin tarjeta',
-    'split.premiumTag': 'Premium',
-    'split.premiumTitle': 'Hecho para ti',
-    'split.premiumDesc': 'Conversación libre · Taller de lectura y escritura · Tus lecciones · Spikiu te responde',
-    'split.premiumPrice': '/ mes · cancela cuando quieras',
-    'split.included': 'Qué incluye →',
-    'split.included2': 'Qué incluye →',
-    'testimonial.quote': 'En 20 minutos con Spikiu he hablado más español que en tres años con otras apps. No tengo la sensación de estar aprendiendo. Tengo la sensación de estar hablando.',
-    'testimonial.location': 'Múnich, Alemania',
-    'final.title': 'Solo habla.<br><em>Ahora. No esperes.</em>',
-    'final.sub': 'Sin registro. Sin tarjeta. Solo abre el chat.',
-    'final.cta': 'Empieza a hablar — es gratis →'
-  },
-  el: {
-    'nav.cta': 'Ξεκίνα δωρεάν →', 'nav.ctaBack': 'Συνέχισε →', 'hero.ctaBack': 'Συνέχισε →', 'final.ctaBack': 'Συνέχισε →',
-    'hero.tagline': 'Σε έναν κόσμο γεμάτο θόρυβο — ένα μέρος για να μιλάς και να μαθαίνεις με ηρεμία.',
-    'hero.title': 'Μην περιμένεις άλλο.<br><em>Ξεκίνα να μιλάς τώρα.</em>',
-    'hero.sub': 'Οι περισσότεροι μαθαίνουν γλώσσες για χρόνια και περιμένουν πολύ μέχρι να νιώσουν «έτοιμοι». Δεν μιλούν ποτέ.<br><br>Ο Spikiu δεν περιμένει τελειότητα. Μόνο το θάρρος να ξεκινήσεις.<br><br>Οι λέξεις είναι ήδη μέσα σου. Ο Spikiu σε βοηθά να τις φέρεις στη συζήτηση.',
-    'hero.cta': 'Ξεκίνα να μιλάς — είναι δωρεάν →',
-    'hero.note': 'Διαθέσιμο στα ισπανικά, γερμανικά, αγγλικά & ελληνικά · Χωρίς εγγραφή',
-    'split.freeTag': 'Δωρεάν',
-    'split.freeTitle': 'Ξεκίνα σήμερα',
-    'split.freeDesc': 'Καθοδηγούμενη συζήτηση · Η διαδρομή σου · Μυθιστόρημα για να μαθαίνεις · Λεξιλόγιο · Εκφράσεις &amp; Παροιμίες · Παιχνίδια',
-    'split.freePrice': 'χωρίς κάρτα',
-    'split.premiumTag': 'Premium',
-    'split.premiumTitle': 'Φτιαγμένο για σένα',
-    'split.premiumDesc': 'Ελεύθερη συζήτηση · Εργαστήρι ανάγνωσης & γραφής · Τα μαθήματά σου · Ο Spikiu σού απαντά',
-    'split.premiumPrice': '/ μήνα · ακύρωση οποτεδήποτε',
-    'split.included': 'Τι περιλαμβάνει →',
-    'split.included2': 'Τι περιλαμβάνει →',
-    'testimonial.quote': 'Μετά από 20 λεπτά με τον Spikiu μίλησα περισσότερα ισπανικά απ’ ό,τι σε τρία χρόνια με άλλες εφαρμογές. Δεν νιώθω ότι μαθαίνω. Νιώθω ότι κουβεντιάζω.',
-    'testimonial.location': 'Μόναχο, Γερμανία',
-    'final.title': 'Απλώς μίλα.<br><em>Τώρα. Μην περιμένεις.</em>',
-    'final.sub': 'Χωρίς εγγραφή. Χωρίς πιστωτική κάρτα. Απλώς άνοιξε τη συζήτηση.',
-    'final.cta': 'Ξεκίνα να μιλάς — είναι δωρεάν →'
-  }
+{
+const CAPY='<svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+
+/* Die Mini-Szene: Lektion 1 · Im Café. Zielsprache folgt der Muttersprache. */
+const SZENE={
+ es:{voice:'es-ES',steps:[
+  {sp:'¡Hola! ¿Qué le pongo?',ok:'Un café, por favor.',no:'Una ventana, por favor.'},
+  {sp:'¿Con leche?',ok:'Sí, con leche.',no:'Sí, con zapatos.'}],end:'Aquí tiene. ¡Gracias!'},
+ de:{voice:'de-DE',steps:[
+  {sp:'Hallo! Was darf’s sein?',ok:'Einen Kaffee, bitte.',no:'Ein Fenster, bitte.'},
+  {sp:'Mit Milch?',ok:'Ja, mit Milch.',no:'Ja, mit Schuhen.'}],end:'Bitte schön. Danke!'}
 };
+const GLOSS={
+ de:['Was darf’s sein?','Mit Milch?','Bitte sehr. Danke!'],
+ en:['What can I get you?','With milk?','Here you are. Thanks!'],
+ el:['Τι να σας φέρω;','Με γάλα;','Ορίστε. Ευχαριστώ!'],
+ es:['¿Qué le pongo?','¿Con leche?','Aquí tiene. ¡Gracias!']
+};
+const KAP_EM=['🃏','🎧','🎭','🗣️','🥁','📘','📖','🪅'],KAP_BG=['#ffd0b0','#d3eef6','#ffe7a3','#c7e89a','#ffe08a','#cdbdf2','#f7bcd8','#ffb27a'];
 
-// ── LANGUAGE SWITCHER ──────────────────────────────────
-/* ── Wiederkehrer-Weiche: wer das Assessment schon gemacht hat, wird nicht
-      erneut hindurchgeschickt — die CTAs führen dann direkt ins Haus. ── */
-function hatProfil() {
-  try {
-    var u = JSON.parse(localStorage.getItem('spikiu_user') || '{}');
-    var p = u.profile || {};
-    return !!(p.zielsprache || p.muttersprache || u.targetLang);
-  } catch (e) { return false; }
+const T={
+de:{doneZ:{es:'Du hast gerade auf Spanisch bestellt.',de:'Du hast gerade auf Deutsch bestellt.'},back:'Weiter lernen →',h1:'In einer Welt voller Lärm:<br>ein ruhiger Ort zum <em>Sprechen</em>.',lead:'Nicht lesen. Probier’s. Spikiu bedient dich gleich.',
+ tag:'Lektion 1 · Im Café',lang:'Spanisch',tip:'Tippe deine Antwort.',nope:'Hm, Spikiu schaut verwirrt. Noch mal?',
+ doneT:'Du hast gerade auf Spanisch bestellt.',doneP:'Das war ein Stück aus Lektion 1. Worauf wartest du?',go:'Weiter in Lektion 1 →',skip:'Erst mal nur schauen ↓',
+ peekH:'So sieht jede Lektion aus',peekP:'Acht Kapitel, immer am selben Platz. Kein Suchen, kein Labyrinth.',
+ kap:['Wörter','Hören','Geführtes Gespräch','Selbst sprechen','Aussprache','Grammatik','Lesen','Spiel'],
+ myth:'Die meisten lernen jahrelang und warten, bis sie sich „bereit“ fühlen. <b>Hier sprichst du ab dem ersten Satz.</b>',
+ planH:'Was es kostet',more:'Was drin ist ›',per:'/ Monat',soon:'bald',
+ plans:[
+  {c:'p0',nm:'Frei',pr:'0 €',per:'für immer',ln:'Dein Einstieg: drei Lektionen auf deiner Stufe. Ohne Uhr.',li:['<b>Dein Einstieg:</b> nach der Einstufung drei ganze Lektionen auf deiner Stufe, mit allen acht Kapiteln','Das PDF deiner ersten Lektion, einmal geschenkt','<b>Immer offen:</b> die Grammatik zum Lesen, das Spiel des Tages, die Wendung des Tages','Die Grammatik als PDF oder Buch gibt es beim Paredes Verlag']},
+  {c:'p1',nm:'Kurs',pr:'2,90 €',ln:'Der ganze Weg von A1 bis B2. Oder 24 € im Jahr.',li:['Alle Lektionen von A1 bis B2','Nach jeder Lektion dein PDF zum Mitnehmen','Alle Räume: Feines Ohr, Korb, Wendungen, Der Schlag …','Alle Lernromane und alle Spiele']},
+  {c:'p2',nm:'Coach',pr:'8,90 €',ln:'Spikiu als dein privater Sprachcoach.',li:['Alles aus „Kurs“','Freie Konversation, die sich dir anpasst','Schreibwerkstatt mit Rückmeldung','Lektionen aus deinen eigenen Sätzen']}],
+ note:'Jederzeit kündbar · keine Kreditkarte für „Frei“',
+ finH:'Einfach sprechen.<br>Jetzt.',finP:'Keine Anmeldung. Keine Kreditkarte.',finB:'Kostenlos starten →'},
+es:{doneZ:{es:'Acabas de pedir en español.',de:'Acabas de pedir en alemán.'},back:'Seguir aprendiendo →',h1:'En un mundo lleno de ruido:<br>un lugar tranquilo para <em>hablar</em>.',lead:'No leas. Pruébalo. Spikiu te atiende ahora mismo.',
+ tag:'Lección 1 · En el café',lang:'alemán',tip:'Toca tu respuesta.',nope:'Hm, Spikiu pone cara rara. ¿Otra vez?',
+ doneT:'Acabas de pedir en alemán.',doneP:'Esto era un trocito de la lección 1. ¿A qué esperas?',go:'Seguir con la lección 1 →',skip:'Primero solo mirar ↓',
+ peekH:'Así es cada lección',peekP:'Ocho capítulos, siempre en el mismo sitio. Sin buscar, sin laberinto.',
+ kap:['Palabras','Escuchar','Conversación guiada','Habla tú','Pronunciación','Gramática','Leer','Juego'],
+ myth:'Casi todos estudian idiomas durante años y esperan a sentirse «preparados». <b>Aquí hablas desde la primera frase.</b>',
+ planH:'Lo que cuesta',more:'Qué incluye ›',per:'/ mes',soon:'pronto',
+ plans:[
+  {c:'p0',nm:'Libre',pr:'0 €',per:'para siempre',ln:'Tu comienzo: tres lecciones de tu nivel. Sin reloj.',li:['<b>Tu comienzo:</b> después de la prueba de nivel, tres lecciones completas de tu nivel, con sus ocho capítulos','El PDF de tu primera lección, de regalo','<b>Siempre abierto:</b> la gramática para leer, el juego del día, el giro del día','La gramática en PDF o en libro, en Paredes Verlag']},
+  {c:'p1',nm:'Curso',pr:'2,90 €',ln:'Todo el camino de A1 a B2. O 24 € al año.',li:['Todas las lecciones de A1 a B2','Después de cada lección, tu PDF para llevar','Todos los espacios: Oído fino, Cesta, Giros, El golpe…','Todas las novelas y todos los juegos']},
+  {c:'p2',nm:'Coach',pr:'8,90 €',ln:'Spikiu como tu profesor particular.',li:['Todo lo de «Curso»','Conversación libre que se adapta a ti','Taller de escritura con comentarios','Lecciones hechas con tus propias frases']}],
+ note:'Cancela cuando quieras · sin tarjeta para «Libre»',
+ finH:'Simplemente habla.<br>Ya.',finP:'Sin registro. Sin tarjeta.',finB:'Empezar gratis →'},
+en:{doneZ:{es:'You just ordered in Spanish.',de:'You just ordered in German.'},back:'Keep learning →',h1:'In a world full of noise:<br>a calm place to <em>speak</em>.',lead:'Don’t read. Try it. Spikiu is about to serve you.',
+ tag:'Lesson 1 · At the café',lang:'Spanish',tip:'Tap your answer.',nope:'Hm, Spikiu looks puzzled. Again?',
+ doneT:'You just ordered in Spanish.',doneP:'That was a piece of Lesson 1. What are you waiting for?',go:'Continue with Lesson 1 →',skip:'Just looking for now ↓',
+ peekH:'Every lesson looks like this',peekP:'Eight chapters, always in the same place. No searching, no maze.',
+ kap:['Words','Listen','Guided conversation','Speak yourself','Pronunciation','Grammar','Read','Game'],
+ myth:'Most people study for years and wait until they feel “ready”. <b>Here you speak from the first sentence.</b>',
+ planH:'What it costs',more:'What’s included ›',per:'/ month',soon:'soon',
+ plans:[
+  {c:'p0',nm:'Free',pr:'€0',per:'forever',ln:'Your start: three lessons at your level. No clock.',li:['<b>Your start:</b> after the placement, three complete lessons at your level, with all eight chapters','The PDF of your first lesson, as a gift','<b>Always open:</b> the grammar to read, the game of the day, the expression of the day','The grammar as PDF or book from Paredes Verlag']},
+  {c:'p1',nm:'Course',pr:'€2.90',ln:'The whole way from A1 to B2. Or €24 a year.',li:['All lessons from A1 to B2','After every lesson, your PDF to take away','All rooms: Sharp Ear, Basket, Expressions, The Beat …','All learning novels and all games']},
+  {c:'p2',nm:'Coach',pr:'€8.90',ln:'Spikiu as your private language coach.',li:['Everything in “Course”','Free conversation that adapts to you','Writing workshop with feedback','Lessons made from your own sentences']}],
+ note:'Cancel anytime · no card for “Free”',
+ finH:'Just speak.<br>Now.',finP:'No sign-up. No credit card.',finB:'Start free →'},
+el:{doneZ:{es:'Μόλις παράγγειλες στα ισπανικά.',de:'Μόλις παράγγειλες στα γερμανικά.'},back:'Συνέχισε να μαθαίνεις →',h1:'Σε έναν κόσμο γεμάτο θόρυβο:<br>ένα ήσυχο μέρος για να <em>μιλάς</em>.',lead:'Μη διαβάζεις. Δοκίμασε. Ο Spikiu σε εξυπηρετεί αμέσως.',
+ tag:'Μάθημα 1 · Στο καφέ',lang:'ισπανικά',tip:'Πάτησε την απάντησή σου.',nope:'Χμ, ο Spikiu απορεί. Ξανά;',
+ doneT:'Μόλις παράγγειλες στα ισπανικά.',doneP:'Αυτό ήταν ένα κομμάτι από το μάθημα 1. Τι περιμένεις;',go:'Συνέχεια στο μάθημα 1 →',skip:'Πρώτα μόνο μια ματιά ↓',
+ peekH:'Έτσι είναι κάθε μάθημα',peekP:'Οκτώ κεφάλαια, πάντα στην ίδια θέση. Χωρίς ψάξιμο, χωρίς λαβύρινθο.',
+ kap:['Λέξεις','Άκου','Καθοδηγούμενη συζήτηση','Μίλα εσύ','Προφορά','Γραμματική','Διάβασε','Παιχνίδι'],
+ myth:'Οι περισσότεροι μαθαίνουν χρόνια και περιμένουν να νιώσουν «έτοιμοι». <b>Εδώ μιλάς από την πρώτη φράση.</b>',
+ planH:'Πόσο κοστίζει',more:'Τι περιλαμβάνει ›',per:'/ μήνα',soon:'σύντομα',
+ plans:[
+  {c:'p0',nm:'Δωρεάν',pr:'0 €',per:'για πάντα',ln:'Η αρχή σου: τρία μαθήματα στο επίπεδό σου. Χωρίς ρολόι.',li:['<b>Η αρχή σου:</b> μετά την κατάταξη, τρία ολόκληρα μαθήματα στο στάδιό σου, με όλα τα οκτώ κεφάλαια','Το PDF του πρώτου σου μαθήματος, δώρο','<b>Πάντα ανοιχτά:</b> η γραμματική για διάβασμα, το παιχνίδι της ημέρας, η έκφραση της ημέρας','Η γραμματική σε PDF ή βιβλίο από τον Paredes Verlag']},
+  {c:'p1',nm:'Μάθημα',pr:'2,90 €',ln:'Όλος ο δρόμος από A1 έως B2. Ή 24 € τον χρόνο.',li:['Όλα τα μαθήματα από A1 έως B2','Μετά από κάθε μάθημα, το PDF σου','Όλοι οι χώροι: Λεπτό αυτί, Καλάθι, Εκφράσεις, Ο τόνος …','Όλα τα μυθιστορήματα και όλα τα παιχνίδια']},
+  {c:'p2',nm:'Coach',pr:'8,90 €',ln:'Ο Spikiu ως ιδιωτικός σου προπονητής γλώσσας.',li:['Όλα από το «Μάθημα»','Ελεύθερη συζήτηση που προσαρμόζεται σε σένα','Εργαστήρι γραφής με σχόλια','Μαθήματα από τις δικές σου φράσεις']}],
+ note:'Ακύρωση οποτεδήποτε · χωρίς κάρτα για το «Δωρεάν»',
+ finH:'Απλώς μίλα.<br>Τώρα.',finP:'Χωρίς εγγραφή. Χωρίς κάρτα.',finB:'Ξεκίνα δωρεάν →'}
+};
+const LANGS=[['de','DE'],['es','ES'],['en','EN'],['el','ΕΛ']];
+const $=id=>document.getElementById(id);
+let L;try{L=localStorage.getItem('spikiu_lang')}catch(e){}
+if(!T[L]){const n=(navigator.language||'de').slice(0,2);L=T[n]?n:'de'}
+let step=0,touched=false;
+
+/* Ton: audio.js (Aufnahme, sonst Gerätestimme über { live:true }); Rückfall Browser-Stimme */
+function speak(txt){
+  if(!touched)return;
+  if(window.spkSpeak){try{window.spkSpeak(txt,ZIEL(),{live:true});return}catch(e){}}
+  if(!window.speechSynthesis)return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=sz().voice;u.rate=.92;speechSynthesis.speak(u)}catch(e){}
 }
-function ctaWeiche(lang) {
-  if (!hatProfil()) return;                       // neuer Besucher: alles bleibt wie es ist
-  var T = TRANSLATIONS[lang] || {};
-  var paare = [
-    ['.btn-start',   'nav.ctaBack'],
-    ['.btn-primary', 'hero.ctaBack'],
-    ['.btn-white',   'final.ctaBack']
-  ];
-  paare.forEach(function (pair) {
-    document.querySelectorAll(pair[0]).forEach(function (a) {
-      a.setAttribute('href', 'haus.html');
-      if (T[pair[1]]) a.innerHTML = T[pair[1]];
-    });
-  });
+/* Wer schon ein Profil hat: CTAs führen ins Haus („Weiter lernen“), die Szene spricht seine Zielsprache */
+let PROF={};try{const u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');PROF=u.profile||{};if(!PROF.zielsprache&&u.targetLang)PROF.zielsprache=u.targetLang}catch(e){}
+const hatProfil=!!(PROF.zielsprache||PROF.muttersprache);
+const ZIEL=()=>SZENE[PROF.zielsprache]&&PROF.zielsprache!==L?PROF.zielsprache:(L==='es'?'de':'es');
+const sz=()=>SZENE[ZIEL()];
+function bubble(txt,i){
+  const g=L==='es'?GLOSS.es:GLOSS[L];
+  return '<div class="row"><div class="capy">'+CAPY+'</div><div class="bub">'+txt+'<button class="say" data-t="'+txt+'" aria-label="🔊">🔊</button><small>'+g[i]+'</small></div></div>';
 }
-
-function setLang(lang) {
-  if (!TRANSLATIONS[lang]) lang = 'en';
-  document.documentElement.lang = lang;
-  localStorage.setItem('spikiu_lang', lang);
-
-  // Update text
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (TRANSLATIONS[lang][key]) {
-      el.innerHTML = TRANSLATIONS[lang][key];
-    }
-  });
-
-  // Update active button
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-  });
-
-  ctaWeiche(lang);
+function render(){
+  const t=T[L];document.documentElement.lang=L;
+  $('langs').innerHTML=LANGS.map(([k,v])=>'<button data-l="'+k+'" class="'+(k===L?'on':'')+'">'+v+'</button>').join('');
+  for(const k of ['h1','tag','go','skip','peekH','peekP','myth','planH','note','finH','finP','finB','doneT','doneP'])$(k).innerHTML=t[k];
+  $('doneT').textContent=t.doneZ[ZIEL()];
+  $('lead').textContent=t.lead;
+  if(hatProfil){for(const id of ['go','finB']){$(id).href='haus.html';$(id).textContent=t.back}}
+  $('kaps').innerHTML=t.kap.map((k,i)=>'<div class="kap"><i style="background:'+KAP_BG[i]+'">'+KAP_EM[i]+'</i><span>'+(i+1)+' · '+k+'</span></div>').join('');
+  $('planList').innerHTML=t.plans.map((p,i)=>'<details class="plan '+p.c+'"><summary><span class="nm">'+p.nm+(i===2?'<span class="soon">'+t.soon+'</span>':'')+'</span><span class="pr">'+p.pr+'</span><span class="ln">'+p.ln+'</span><span class="per">'+(p.per||t.per)+'</span><span class="more">'+t.more+'</span></summary><ul>'+p.li.map(x=>'<li>'+x+'</li>').join('')+'</ul></details>').join('');
+  restart();
 }
-
-// ── AUTO-DETECT ON LOAD ────────────────────────────────
-(function() {
-  // 1. Check localStorage
-  let lang = localStorage.getItem('spikiu_lang');
-
-  // 2. Detect browser language if no saved preference
-  if (!lang) {
-    const browserLang = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    if (['en', 'de', 'es', 'el'].includes(browserLang)) {
-      lang = browserLang;
-    } else {
-      lang = 'en';
-    }
-  }
-
-  setLang(lang);
-})();
-
-function showReader(type) {
-  ['biz','travel','family'].forEach(t => {
-    document.getElementById('reader-' + t).style.display = t === type ? 'block' : 'none';
-    const tab = document.getElementById('tab-' + t);
-    tab.style.background = t === type ? 'var(--accent)' : 'transparent';
-    tab.style.color = t === type ? 'white' : 'var(--accent)';
-  });
+function restart(){step=0;$('chat').innerHTML='';$('done').style.display='none';$('opts').style.display='grid';showStep()}
+function showStep(){
+  const s=sz().steps[step];
+  $('chat').insertAdjacentHTML('beforeend',bubble(s.sp,step));
+  const pair=Math.random()<.5?[s.ok,s.no]:[s.no,s.ok];
+  $('opts').innerHTML=pair.map(x=>'<button data-a="'+(x===s.ok?1:0)+'">'+x+'</button>').join('');
+  $('hint').textContent=T[L].tip;
+  speak(s.sp);
+}
+function answer(btn){
+  touched=true;
+  const s=sz().steps[step];
+  if(btn.dataset.a!=='1'){btn.classList.add('no');$('hint').textContent=T[L].nope;return}
+  $('chat').insertAdjacentHTML('beforeend','<div class="me"><span>'+s.ok+'</span></div>');
+  step++;
+  if(step<sz().steps.length){showStep();return}
+  $('opts').style.display='none';$('hint').textContent='';
+  $('chat').insertAdjacentHTML('beforeend',bubble(sz().end,2));
+  speak(sz().end);
+  $('done').style.display='block';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.l){L=b.dataset.l;try{localStorage.setItem('spikiu_lang',L)}catch(x){}render();return}
+  if(b.dataset.t){touched=true;speak(b.dataset.t);return}
+  if(b.dataset.a!==undefined)answer(b);
+});
+render();
 }
 </script>
-
+<script type="module">
+try{const m=await import('/audio.js');window.spkSpeak=m.speak;}catch(e){}
+</script>
 <script src="/feedback-spikiu.js" defer></script>
 </body>
 </html>
