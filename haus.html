@@ -10,7 +10,7 @@
    dann im Assessment „Hola, soy Spikiu, tu compañero…"). Wer noch kein Profil hat, kommt gar nicht erst
    ins Haus: sofort weiter ins Assessment — dort stellt Spikiu sich EINMAL vor. location.replace, damit
    „Zurück" nicht wieder hier landet. Das Assessment verlangt den Vornamen, also keine Schleife. */
-try{var _u=JSON.parse(localStorage.getItem('spikiu_user')||'null');if(_u&&_u.name)document.documentElement.classList.add('hat-profil');else location.replace('assessment.html');}catch(e){location.replace('assessment.html');}
+try{var _u=JSON.parse(localStorage.getItem('spikiu_user')||'null');if(_u&&(_u.name||_u.profile))document.documentElement.classList.add('hat-profil');else location.replace('assessment.html');}catch(e){location.replace('assessment.html');}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Nunito:wght@600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
@@ -669,7 +669,7 @@ var HUI={
   zuletzt:function(t){return 'Zuletzt: «'+t+'» — weiter?';},gesammelt:function(z){return 'Du hast schon '+z+' gesammelt. 🍃';},
   roman:'Lernroman',romans:'Immersiv lesen',wend:'Wendungen',regio:'Regionalismen',wends:'Sprache & Kultur',lek:'Deine Lektionen',buch:'Mein Wortschatz',woerter:function(n){return n+' '+(n===1?'Wort':'Wörter');},
   wort:'Wortschatz',worts:'Dein Deck',lese:'Leseverstehen',leses:'Leseverstehen',schreib:'Schreiben',schreibs:'Schreiben',spiele:'Spiele',spieles:'Kurz und leicht',
-  zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n+'s Schatzkiste';},buchSub:'Was du gefunden hast — Stück für Stück.',geschrieben:'gehütet von Spikiu',
+  zurueck:'zurück',weiter:'weiter',vorlesen:'Vorlesen',buchVon:function(n){return n?n+'s Schatzkiste':'Meine Schatzkiste';},buchSub:'Was du gefunden hast — Stück für Stück.',geschrieben:'gehütet von Spikiu',
   mitgenommen:'Mitgenommen',deineW:'Deine Wörter',deineA:'Deine Wendungen',wendungen:function(n){return n+' '+(n===1?'Wendung':'Wendungen');},leer:'Noch leer',leerSub:'Sprich mit mir oder üb ein paar Wörter — dann füllt sich diese Kiste von selbst.',
   hook:'Kein Zertifikat.<br>Dein Schatz.',hookSub:'Andere sammeln Streaks. Bei Spikiu wächst ein Schatz, der nur dir gehört — Stück für Stück, in deinem Tempo.',druck:'Gedruckte Edition · bald'},
  es:{wegR:'Tu camino',wegLeer:'Aún no has practicado ninguna escena — tu árbol te espera.',etS:'🌱 Semilla',etSt:'🌿 Tronco',etK:'🌳 Copa',d1:'Aventura',d1s:'Escuchar y hablar — con Spikiu, paso a paso.',d2:'Biblioteca',d2s:'Leer y descubrir.',gHablar:'Hablar',gTrain:'Entrenar',hilfe:'Ayuda',anfang:'Empieza con la Conversación guiada — ahí conoces tus primeras palabras.',regal:'Tu estante',regals:'Tu cofre, tus lecciones, tu huerto',regalKr:'Tus estaciones. Toca lo que quieras volver a ver.',garten:'Tu huerto',gartens:'De la A a la Z',akro:'Tus acrósticos',akros:'Una palabra por letra',zurBib:'‹ volver a la biblioteca',d3:'Práctica',d3s:'Hablar y entrenar.',bibRoman:'Tu novela te espera — sigue leyendo donde lo dejaste.',bibRegio:'Tus regionalismos te esperan — sigue donde lo dejaste.',bibAnfang:'Empieza con la Novela para aprender — una historia, capítulo a capítulo.',
@@ -677,7 +677,7 @@ var HUI={
   zuletzt:function(t){return 'Lo último: «'+t+'». ¿Seguimos?';},gesammelt:function(z){return 'Ya has reunido '+z+'. 🍃';},
   roman:'Novela para aprender',romans:'Lectura inmersiva',wend:'Giros',regio:'Regionalismos',wends:'Lengua y cultura',lek:'Tus lecciones',buch:'Mi vocabulario',woerter:function(n){return n+' '+(n===1?'palabra':'palabras');},
   wort:'Vocabulario',worts:'Tu mazo',lese:'Comprensión lectora',leses:'Comprensión lectora',schreib:'Escritura',schreibs:'Escribir',spiele:'Juegos',spieles:'Cortos y ligeros',
-  zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return 'El cofre de '+n;},buchSub:'Lo que has encontrado, pieza a pieza.',geschrieben:'guardado por Spikiu',
+  zurueck:'atrás',weiter:'siguiente',vorlesen:'Escuchar',buchVon:function(n){return n?'El cofre de '+n:'Mi cofre';},buchSub:'Lo que has encontrado, pieza a pieza.',geschrieben:'guardado por Spikiu',
   mitgenommen:'Lo que te llevas',deineW:'Tus palabras',deineA:'Tus expresiones',wendungen:function(n){return n+' '+(n===1?'expresión':'expresiones');},leer:'Todavía vacío',leerSub:'Habla conmigo o practica unas palabras, y este cofre se llena solo.',
   hook:'Sin certificado.<br>Tu tesoro.',hookSub:'Otros acumulan rachas. En Spikiu crece un tesoro que es solo tuyo, pieza a pieza, a tu ritmo.',druck:'Edición impresa · pronto'},
  en:{wegR:'Your path',wegLeer:'No scene practiced yet — your tree is waiting.',etS:'🌱 Seed',etSt:'🌿 Trunk',etK:'🌳 Crown',d1:'Adventure',d1s:'Listen and speak — with Spikiu, step by step.',d2:'Library',d2s:'Read and discover.',gHablar:'Speak',gTrain:'Train',hilfe:'Help',anfang:'Start with the Guided conversation — that’s where you meet your first words.',regal:'Your shelf',regals:'Your treasure chest, your lessons, your garden',regalKr:'Your learning stops. Tap whatever you want to see again.',garten:'Your garden',gartens:'From A to Z',akro:'Your acrostics',akros:'One word for each letter',zurBib:'‹ back to the library',d3:'Practice',d3s:'Speak and train.',bibRoman:'Your learning novel is waiting — read on where you left off.',bibRegio:'Your regionalisms are waiting — carry on where you left off.',bibAnfang:'Start with the Learning Novel — one story, chapter by chapter.',
@@ -685,7 +685,7 @@ var HUI={
   zuletzt:function(t){return 'Last time: “'+t+'” — carry on?';},gesammelt:function(z){return 'You’ve already collected '+z+'. 🍃';},
   roman:'Learning Novel',romans:'Immersive reading',wend:'Expressions',regio:'Regionalisms',wends:'Language & culture',lek:'Your lessons',buch:'My vocabulary',woerter:function(n){return n+' '+(n===1?'word':'words');},
   wort:'Vocabulary',worts:'Your deck',lese:'Reading comprehension',leses:'Reading comprehension',schreib:'Writing',schreibs:'Writing',spiele:'Games',spieles:'Short and light',
-  zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n+'’s treasure chest';},buchSub:'What you’ve found — piece by piece.',geschrieben:'kept by Spikiu',
+  zurueck:'back',weiter:'next',vorlesen:'Listen',buchVon:function(n){return n?n+'’s treasure chest':'My treasure chest';},buchSub:'What you’ve found — piece by piece.',geschrieben:'kept by Spikiu',
   mitgenommen:'Taken with you',deineW:'Your words',deineA:'Your phrases',wendungen:function(n){return n+' '+(n===1?'phrase':'phrases');},leer:'Still empty',leerSub:'Talk with me or practise a few words — and this chest fills itself.',
   hook:'No certificate.<br>Your treasure.',hookSub:'Others collect streaks. With Spikiu, a treasure grows that belongs only to you — piece by piece, at your pace.',druck:'Printed edition · soon'},
  el:{wegR:'Η διαδρομή σου',wegLeer:'Δεν έχεις εξασκηθεί ακόμα σε καμία σκηνή — το δέντρο σου περιμένει.',etS:'🌱 Σπόρος',etSt:'🌿 Κορμός',etK:'🌳 Φυλλωσιά',d1:'Περιπέτεια',d1s:'Άκου και μίλα — με τον Spikiu, βήμα βήμα.',d2:'Βιβλιοθήκη',d2s:'Διάβασε και ανακάλυψε.',gHablar:'Μίλα',gTrain:'Προπόνηση',hilfe:'Βοήθεια',anfang:'Ξεκίνα με την Καθοδηγούμενη συζήτηση — εκεί θα γνωρίσεις τις πρώτες σου λέξεις.',regal:'Το ράφι σου',regals:'Ο θησαυρός σου, τα μαθήματά σου, ο κήπος σου',regalKr:'Οι σταθμοί σου. Πάτα ό,τι θέλεις να ξαναδείς.',garten:'Ο κήπος σου',gartens:'Από το Α ως το Ω',akro:'Οι ακροστιχίδες σου',akros:'Μια λέξη για κάθε γράμμα',zurBib:'‹ πίσω στη βιβλιοθήκη',d3:'Εξάσκηση',d3s:'Μίλα και προπονήσου.',bibRoman:'Το μυθιστόρημά σου σε περιμένει — συνέχισε από εκεί που σταμάτησες.',bibRegio:'Οι τοπικισμοί σου σε περιμένουν — συνέχισε από εκεί που σταμάτησες.',bibAnfang:'Ξεκίνα με το Μυθιστόρημα — μία ιστορία, κεφάλαιο με κεφάλαιο.',
@@ -693,7 +693,7 @@ var HUI={
   zuletzt:function(t){return 'Τελευταία φορά: «'+t+'» — συνεχίζουμε;';},gesammelt:function(z){return 'Έχεις ήδη μαζέψει '+z+'. 🍃';},
   roman:'Μυθιστόρημα',romans:'Ανάγνωση με εμβύθιση',wend:'Εκφράσεις',regio:'Τοπικισμοί',wends:'Γλώσσα & πολιτισμός',lek:'Τα μαθήματά σου',buch:'Το λεξιλόγιό μου',woerter:function(n){return n+' '+(n===1?'λέξη':'λέξεις');},
   wort:'Λεξιλόγιο',worts:'Η τράπουλά σου',lese:'Κατανόηση κειμένου',leses:'Κατανόηση κειμένου',schreib:'Γραφή',schreibs:'Γραφή',spiele:'Παιχνίδια',spieles:'Σύντομα κι ανάλαφρα',
-  zurueck:'πίσω',weiter:'συνέχεια',vorlesen:'Άκου',buchVon:function(n){return 'Ο θησαυρός · '+n;},buchSub:'Ό,τι βρήκες — κομμάτι κομμάτι.',geschrieben:'φυλαγμένος από τον Spikiu',
+  zurueck:'πίσω',weiter:'συνέχεια',vorlesen:'Άκου',buchVon:function(n){return n?'Ο θησαυρός · '+n:'Ο θησαυρός μου';},buchSub:'Ό,τι βρήκες — κομμάτι κομμάτι.',geschrieben:'φυλαγμένος από τον Spikiu',
   mitgenommen:'Τα πήρες μαζί σου',deineW:'Οι λέξεις σου',deineA:'Οι φράσεις σου',wendungen:function(n){return n+' '+(n===1?'φράση':'φράσεις');},leer:'Ακόμα άδειος',leerSub:'Μίλα μαζί μου ή εξασκήσου σε λίγες λέξεις — και ο θησαυρός σου μεγαλώνει μόνος του.',
   hook:'Κανένα πιστοποιητικό.<br>Ο θησαυρός σου.',hookSub:'Άλλοι μαζεύουν σερί. Στον Spikiu μεγαλώνει ένας θησαυρός που ανήκει μόνο σε σένα — κομμάτι κομμάτι, με τον δικό σου ρυθμό.',druck:'Έντυπη έκδοση · σύντομα'}
 };
@@ -1535,7 +1535,8 @@ document.documentElement.lang=HL;
 (function boot(){
  var _bc=document.getElementById('brandCapy');if(_bc)_bc.innerHTML=CAPY_SMALL.replace('width="20" height="20" ','');
  try{var u=JSON.parse(localStorage.getItem('spikiu_user')||'null');
-  if(u&&u.name){NAME=u.name;enterHouse();return;}}catch(e){}
+  /* Profil reicht (Eingang ohne Namen seit 25.11.2026) */
+  if(u&&(u.name||u.profile)){NAME=u.name||'';enterHouse();return;}}catch(e){}
  /* ══════════════════════════════════════════════════════════════
     NEU HIER? Dann fragt das ASSESSMENT nach dem Namen, nicht diese Seite.
     Das Namensfeld ist längst durch einen Knopf ersetzt — die Überschrift

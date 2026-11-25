@@ -4,601 +4,201 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spikiu — Los geht's</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="geraet.css">
 <style>
-  :root{
-    --paper:#faf9f7; --white:#fff; --ink:#1a1816; --mid:#6b6560; --faint:#e8e4df;
-    --warm:#d4cdc6; --accent:#1f93b0; --accent2:#e7f4f8; --accent3:#1f93b0; --gold:#a07830;
-  }
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  body{ background:var(--paper); color:var(--ink); font-family:'Nunito',sans-serif; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; }
-
-  header{ display:flex; align-items:center; gap:.8rem; padding:1rem 1.2rem; }
-  .btn-back{ background:none; border:none; font-size:1.4rem; color:var(--mid); cursor:pointer; padding:.2rem .5rem; }
-  .btn-back.hidden{ visibility:hidden; }
-  .progress{ flex:1; height:4px; background:var(--faint); border-radius:100px; overflow:hidden; }
-  .progress-fill{ height:100%; width:12%; background:var(--accent); border-radius:100px; transition:width .35s ease; }
-  .logo{ font-family:'Lora',serif; font-size:1.2rem; font-weight:700; color:var(--ink); text-decoration:none; }
-  .logo em{ color:var(--accent); font-style:italic; }
-
-  main{ flex:1; display:flex; flex-direction:column; align-items:center; padding:.5rem 1.2rem 2rem; }
-  .wrap{ width:100%; max-width:440px; display:flex; flex-direction:column; align-items:center; }
-
-  /* Spikiu bleibt stehen, atmet — der Gastgeber des ganzen Flows */
-  .spikiu-stage{ margin:.4rem 0 .2rem; }
-  .spikiu-stage svg{ width:96px; height:96px; display:block; }
-  .spikiu-breathe{ transform-origin:50% 80%; animation:breathe 3.6s ease-in-out infinite; }
-  @keyframes breathe{ 0%,100%{ transform:translateY(0) scale(1);} 50%{ transform:translateY(-3px) scale(1.03);} }
-  .spk-capy-eyes{ animation:blink 5.5s infinite; transform-origin:center; }
-  @keyframes blink{ 0%,95%,100%{ transform:scaleY(1);} 97.5%{ transform:scaleY(.1);} }
-
-  /* Sprechblase = Spikius Frage (Du-Form, kein Audio) */
-  .bubble{ position:relative; background:var(--white); border:1.5px solid var(--faint); border-radius:18px;
-    padding:1.1rem 1.3rem; margin:.4rem auto 1.3rem; width:100%; box-shadow:0 6px 22px rgba(26,24,22,.05); }
-  .bubble::after{ content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(45deg);
-    width:16px; height:16px; background:var(--white); border-left:1.5px solid var(--faint); border-top:1.5px solid var(--faint); }
-  .bubble p{ font-family:'Lora',serif; font-size:1.18rem; line-height:1.55; color:var(--ink); text-align:center; }
-  .bubble strong{ color:var(--accent); font-weight:700; }
-  .bubble .okayq{ display:block; margin-top:.6rem; font-style:italic; color:var(--mid); font-size:1rem; }
-  .fade{ animation:fade .3s ease both; }
-  @keyframes fade{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none; } }
-
-  #content{ width:100%; }
-  .options{ display:flex; flex-direction:column; gap:.6rem; }
-  .option{ background:var(--white); border:1.5px solid var(--faint); border-radius:14px; padding:1rem 1.2rem;
-    font-family:'Nunito',sans-serif; font-size:1rem; font-weight:500; color:var(--ink); cursor:pointer;
-    transition:all .18s; text-align:left; display:flex; align-items:center; gap:.8rem; width:100%; }
-  .option:hover{ border-color:var(--accent); background:var(--accent2); }
-  .option.sel{ border-color:var(--accent); background:var(--accent2); }
-  .option-flag{ font-size:1.4rem; line-height:1; }
-  .option-sub{ font-size:.82rem; color:var(--mid); margin-top:.15rem; }
-
-  input,textarea{ width:100%; background:var(--white); border:1.5px solid var(--faint); border-radius:14px;
-    padding:1rem 1.2rem; font-family:'Nunito',sans-serif; font-size:1rem; color:var(--ink); }
-  input:focus,textarea:focus{ outline:none; border-color:var(--accent); }
-  textarea{ min-height:84px; resize:vertical; margin-top:.5rem; }
-  .field-label{ font-size:.9rem; font-weight:600; margin:1rem 0 .5rem; }
-  .field-label .opt{ font-weight:400; color:var(--mid); }
-  .chips{ display:flex; flex-wrap:wrap; gap:.5rem; }
-  .chip{ background:var(--white); border:1.5px solid var(--faint); border-radius:100px; padding:.5rem 1rem;
-    font-family:'Nunito',sans-serif; font-size:.92rem; color:var(--ink); cursor:pointer; transition:all .15s; }
-  .chip:hover{ border-color:var(--accent); }
-  .chip.sel{ background:#c9ecd9; border-color:var(--accent); color:#15163a; }
-
-  .actions{ display:flex; flex-direction:column; gap:.6rem; margin-top:1.2rem; align-items:center; }
-  .btn-next{ background:#c9ecd9; color:#15163a; border:none; border-radius:100px; padding:.9rem 2.4rem;
-    font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; transition:all .18s; }
-  .btn-next:hover:not(:disabled){ background:var(--accent3); transform:translateY(-1px); }
-  .btn-next:disabled{ background:var(--warm); color:#8a8580; cursor:not-allowed; }
-  .btn-ghost{ background:none; border:none; color:var(--mid); font-family:'Nunito',sans-serif; font-size:.92rem;
-    cursor:pointer; padding:.5rem; text-decoration:underline; }
-  .btn-ghost:hover{ color:var(--ink); }
-    .summary-hint{ font:500 .88rem/1.45 'Nunito',sans-serif; color:var(--mid); text-align:center; margin:.2rem 0 0; max-width:30ch; }
-
-/* ═══ Abo-Design (spikiu-products) — Cyan + Senf, Pop, Minz ═══ */
-:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#d3eef6;--mint:#cdeee2;--mustard:#ffe7a3;--cyan:#1f93b0;--pink:#ff4f9a;--terra:#ff6b5a;--sage:#9bd14a;--ow:1.5px;
-  --paper:#eef7f1;--white:#fff;--mid:#5f7068;--faint:#e6efe8;--warm:#cddcd3;--accent:#1f93b0;--accent2:#e7f4f8;--accent3:#1f93b0;--gold:#ffe7a3}
-body{background:var(--minz) !important;color:var(--ink) !important;font-family:'Nunito',system-ui,sans-serif !important}
-/* Kopf wie .top der Abo-Seite */
-header,.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96) !important;border-bottom:1.5px solid #dcebe1 !important;backdrop-filter:saturate(180%) blur(6px)}
-.btn-back{width:36px;height:36px;border-radius:999px !important;border:1.5px solid #dcebe1 !important;background:#fff !important;
-  color:var(--ink) !important;font-size:1.2rem !important;box-shadow:0 6px 18px rgba(21,22,58,.07);padding:0 !important;
-  display:flex;align-items:center;justify-content:center}
-.btn-back:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
-/* Fortschritt: Pop-Balken */
-.progress{height:10px !important;background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important}
-.progress-fill{background:var(--cyan) !important}
-/* Spikius Sprechblase wie .card */
-.bubble{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:20px !important;
-  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;padding:1.2rem 1.3rem !important}
-.bubble p{font-family:'Nunito',sans-serif !important;font-weight:700 !important;font-size:1.12rem !important;line-height:1.45 !important;color:var(--ink) !important}
-.bubble strong{color:var(--cyan)}
-.okayq{font-style:normal !important;font-weight:600 !important;color:var(--muted) !important}
-/* Antwort-Karten wie .item + Pop */
-.option{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:16px !important;
-  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;font-weight:700 !important;padding:.95rem 1.1rem !important}
-.option:hover{background:#fff !important;border-color:var(--ink) !important}
-.option:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-.option.sel{background:var(--sky) !important;border-color:var(--ink) !important}
-.option-sub{color:var(--muted) !important;font-weight:600 !important}
-/* Motivation ohne Kacheln (Leo, 25.11.: „eleganter wie der Rest des Designs“): Wörter im Fluss,
-   gewählt = Text dunkel + Senf-Marker darunter, nur Luft dazwischen */
-.chips{gap:0 1.35rem !important;margin:.2rem 0 1.2rem !important;align-items:center}
-.chip{background:none !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;
-  font:700 1.12rem/1.2 'Nunito',system-ui,sans-serif !important;color:var(--muted) !important;
-  padding:.6rem .15rem !important;min-height:44px;cursor:pointer;transition:color .15s}
-.chip span{padding:0 .1em;background:linear-gradient(transparent 60%,transparent 60%);transition:background .2s;border-radius:2px}
-.chip.sel{color:var(--ink) !important}
-.chip.sel span{background:linear-gradient(transparent 58%,var(--mustard) 58%)}
-.chip:active{transform:none !important}
-/* Eingaben */
-input,textarea{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:16px !important;
-  font-weight:600 !important;color:var(--ink) !important}
-input:focus,textarea:focus{border-color:var(--cyan) !important;box-shadow:0 6px 18px rgba(21,22,58,.07)}
-.field-label{font-weight:800 !important}
-/* Knöpfe wie .btn der Abo-Seite */
-.btn-next{background:#c9ecd9 !important;color:#15163a !important;border:1.5px solid #dcebe1 !important;
-  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;border-radius:100px !important;font:700 1rem 'Nunito' !important;padding:.85rem 2rem !important}
-.btn-next:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-.btn-next.ghost,.btn-skip{background:#fff !important;color:var(--ink) !important;border:1.5px solid #dcebe1 !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-/* Zusammenfassung/Resümee-Karten */
-.summary,.resume,.card{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:24px !important;box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
-/* ═══ Sprach-AUSWAHLLISTE (10.10.2026, Leo: „eher als Auswahlmenü" — Vorbild: klassische
-   Listbox mit Rollbalken). Fester, kleiner Kasten: immer genau 3 Zeilen sichtbar, egal ob
-   3 oder 50 Sprachen. Eigener, IMMER sichtbarer Rollbalken mit ▲ ▼ (Handy-Browser blenden
-   ihre eigenen aus). Zeile antippen = markieren; „Weiter" bestätigt. ═══ */
-.lb{--row:3rem;display:flex;width:100%;background:#fff;border:1.5px solid #dcebe1;border-radius:16px;
-  box-shadow:0 6px 18px rgba(21,22,58,.07);overflow:hidden;outline:none}
-.lb:focus-visible{box-shadow:0 6px 18px rgba(21,22,58,.07),0 0 0 3px var(--sky)}
-.lb-list{flex:1;height:calc(var(--row) * 3);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;scroll-snap-type:y mandatory}
-.lb-list::-webkit-scrollbar{display:none}
-.lb-row{height:var(--row);display:flex;align-items:center;gap:.75rem;padding:0 1rem;cursor:pointer;scroll-snap-align:start;
-  font:700 1.02rem 'Nunito',sans-serif;color:var(--ink);border-bottom:1.5px solid var(--faint);user-select:none}
-.lb-row:last-child{border-bottom:0}
-.lb-row .fl{font-size:1.25rem;line-height:1}
-.lb-row.sel{background:#c9ecd9;color:#15163a;border-bottom-color:var(--cyan)}
-.lb-bar{flex:0 0 2.1rem;display:flex;flex-direction:column;border-left:1.5px solid #dcebe1;background:var(--minz)}
-.lb-btn{flex:0 0 2.1rem;border:0;background:var(--sky);color:var(--ink);font-size:.8rem;cursor:pointer;display:flex;
-  align-items:center;justify-content:center;padding:0}
-.lb-btn:first-child{border-bottom:1.5px solid #dcebe1}
-.lb-btn:last-child{border-top:1.5px solid #dcebe1}
-.lb-btn:disabled{color:#a9b8b0;cursor:default}
-.lb-track{flex:1;position:relative;touch-action:none}
-.lb-thumb{position:absolute;left:5px;right:5px;top:0;min-height:1.4rem;background:#fff;border:1.5px solid #dcebe1;border-radius:999px;cursor:grab}
-.lb + .actions{margin-top:1.1rem}
+/* ── EINGANG „ZAUBERSTAB“ (Leo, 25.11.2026: Vorschlag B aus prototyp-eingang-zauberstab.html) ──
+   Drei kurze Bildschirme, jeder passt ohne Scrollen auf das Handy, jeder Tipp springt von selbst weiter:
+   1 Muttersprache (Zeile, aus dem Browser erkannt, ▾ öffnet die Auswahl-Maske) + Zielsprache
+   2 Wie viel kannst du schon?   3 Wofür? (mehrere, überspringbar) → Haus.
+   Name, Wochenzeit, Zieldatum und Freitext fallen weg (Spikiu kann den Namen später fragen).
+   Pastell Minze, Nunito, kleine Icon-Kacheln wie die acht Kapitel der Startseite. */
+:root{--minz:#eef7f1;--ink:#15163a;--muted:#5f7068;--sky:#e1f3f8;--mustard:#ffe7a3;--cyan:#1f93b0;--line:#dcebe1;--shadow:0 6px 18px rgba(21,22,58,.07)}
+*{box-sizing:border-box;min-width:0;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--minz);color:var(--ink);font:16px/1.4 'Nunito',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.app{max-width:460px;height:100%;height:100dvh;margin:0 auto;display:flex;flex-direction:column;position:relative;overflow:hidden}
+header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border-bottom:1.5px solid var(--line);flex:none}
+.back{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font:800 1.1rem 'Nunito',system-ui,sans-serif;color:var(--ink);cursor:pointer;visibility:hidden}
+.dots{flex:1;display:flex;gap:6px}
+.dots i{height:6px;flex:1;border-radius:9px;background:var(--line)}.dots i.on{background:var(--cyan)}
+.logo{font-weight:900;color:var(--ink);text-decoration:none;font-size:1.05rem}.logo em{color:var(--cyan)}
+main{flex:1;display:flex;flex-direction:column;padding:14px 16px 18px;gap:12px;overflow:hidden}
+.mutter{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:10px 14px;box-shadow:var(--shadow);font:inherit;color:var(--ink);cursor:pointer;text-align:left;min-height:52px}
+.mutter .fl{font-size:1.4rem}
+.mutter small{color:var(--muted);font-weight:800;font-size:.82rem}
+.mutter b{font-weight:900}
+.mutter .pf{margin-left:auto;color:var(--cyan);font-weight:900;font-size:1.1rem}
+.say{display:flex;gap:10px;align-items:center}
+.capy{width:52px;height:52px;flex:none;border-radius:50%;background:var(--mustard);display:grid;place-items:center}
+.capy svg{width:44px;height:44px}
+.bub{background:#fff;border:1.5px solid var(--line);border-radius:18px 18px 18px 6px;padding:9px 13px;font-weight:800;font-size:1.05rem;box-shadow:var(--shadow)}
+.grid{display:grid;gap:8px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.tile{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:9px 2px 8px;text-align:center;box-shadow:var(--shadow);cursor:pointer;font:inherit;color:var(--ink);transition:transform .1s,background .15s}
+.tile:active{transform:scale(.96)}
+.tile i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 5px;border-radius:14px;font-style:normal;font-size:1.5rem}
+.tile span{display:block;font-size:.76rem;font-weight:800;line-height:1.12}
+.g5 .tile i{width:38px;height:38px;font-size:1.25rem;border-radius:12px}.g5 .tile span{font-size:.7rem}
+.tile.sel{background:var(--mustard);border-color:#e9cf7a}
+.foot{margin-top:auto}
+.go{display:block;width:100%;font:800 1.05rem 'Nunito',system-ui,sans-serif;color:var(--ink);background:#c9ecd9;border:1.5px solid var(--line);border-radius:999px;padding:14px;box-shadow:var(--shadow);cursor:pointer}
+.skip{display:block;margin:8px auto 0;border:0;background:none;color:var(--muted);font:800 .88rem 'Nunito',system-ui,sans-serif;cursor:pointer;padding:8px 14px}
+/* Auswahl-Maske Muttersprache: jede Sprache in ihrer eigenen Schrift, scrollt bei vielen Sprachen */
+.veil{position:absolute;inset:0;background:rgba(21,22,58,.28);opacity:0;pointer-events:none;transition:opacity .2s;z-index:5}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:10px 16px 18px;transform:translateY(102%);transition:transform .25s ease-out;max-height:62%;display:flex;flex-direction:column;z-index:6}
+.open .veil{opacity:1;pointer-events:auto}.open .sheet{transform:none}
+.grip{width:40px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 10px}
+.sheet h3{margin:0 0 8px;font-size:1rem;font-weight:900}
+.list{overflow-y:auto;overscroll-behavior:contain;border-top:1.5px solid var(--line)}
+.row{display:flex;align-items:center;gap:12px;width:100%;border:0;border-bottom:1.5px solid var(--line);background:none;font:inherit;color:var(--ink);padding:12px 4px;cursor:pointer;min-height:52px;text-align:left}
+.row .fl{font-size:1.4rem}.row b{flex:1;font-weight:800}.row .ck{color:var(--cyan);font-weight:900;visibility:hidden}
+.row.sel{background:var(--sky)}.row.sel .ck{visibility:visible}
+.fade{animation:f .22s ease-out}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}.sheet,.veil{transition:none}}
 </style>
-<link rel="stylesheet" href="geraet.css"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-  <button class="btn-back hidden" id="btn-back" onclick="goBack()" aria-label="Ein Schritt zurück" title="Ein Schritt zurück">‹</button>
-  <div class="progress"><div class="progress-fill" id="progress"></div></div>
-  <a class="logo" href="index.html">Spi<em>k</em>iu</a>
-</header>
-
-<main>
-<div class="wrap">
-  <div class="spikiu-stage">
-    <svg class="spikiu-breathe" viewBox="0 0 80 80" fill="none">
-      <ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/>
-      <ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/>
-      <circle cx="38" cy="33" r="1" fill="#6b4226"/><circle cx="42" cy="33" r="1" fill="#6b4226"/>
-      <g class="spk-capy-eyes">
-        <circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/>
-        <circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/>
-      </g>
-      <ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/>
-      <ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/>
-      <ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/>
-      <path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-    </svg>
-  </div>
-
-  <div class="bubble"><p id="bubble">…</p><span class="okayq" id="okayq" style="display:none"></span></div>
-  <div id="content"></div>
+<div class="app" id="app">
+  <header>
+    <button class="back" id="back" type="button">‹</button>
+    <div class="dots" id="dots"></div>
+    <a class="logo" href="index.html">Spi<em>k</em>iu</a>
+  </header>
+  <main id="main"></main>
+  <div class="veil" id="veil"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetH"><div class="grip"></div><h3 id="sheetH"></h3><div class="list" id="list"></div></div>
 </div>
-</main>
 
 <script>
-/* ── Spikiu-geführtes Assessment (Du-Form), DREISPRACHIG (10.10.2026), seit 15.10.2026 auch Griechisch (el) als Muttersprache.
-   Reihenfolge: Muttersprache → Name → Zielsprache → Motivation → Level → Zeit →
-   Deadline → Resümee. Die Muttersprache kommt ZUERST (Leo, 10.10.: „Si la persona
-   elige español, el assessment tiene que ir en español"). Startsprache der Oberfläche
-   = spikiu_lang aus der Landing → sonst Browsersprache → sonst Deutsch. Ab dem Klick
-   auf die Muttersprache spricht ALLES in dieser Sprache, auch beim Zurückgehen.
-
-   NEUE SPRACHE HINZUFÜGEN:
-   - als ZIELSPRACHE: eine Zeile in LANGS (+ Code in TARGET_CODE in finish()).
-   - als MUTTERSPRACHE: zusätzlich ein Block in UI (alle Texte) + Name in LANGS[x].n.
-   Beide Listen sind eine Auswahlliste mit festem Kasten — sie wachsen ohne Layout-Umbau.
-   Die gespeicherten Werte (nativeLang 'Deutsch'/'Español'/'English'/'Ελληνικά', targetLang
-   'Spanish'/…) bleiben exakt wie vorher — Vertrag mit haus/chat unverändert. ── */
-
-// Ein Register für alle Sprachen. v = gespeicherter Wert als Zielsprache,
-// native = gespeicherter Wert als Muttersprache, self = Eigenname, n = Name je Oberfläche.
+/* ── Daten-Vertrag mit haus/chat/szene UNVERÄNDERT: spikiu_user { name?, nativeLang 'Deutsch'|'Español'|'English'|'Ελληνικά',
+   targetLangDisplay, profile{ targetLang 'Spanish'|…, level A0–B2, motivation[], muttersprache, zielsprache, koennen, … } },
+   spikiu_lang, spikiu_pfad (nur anlegen, Stationen nie anfassen). Name ist jetzt optional (haus prüft profile).
+   NEUE SPRACHE: eine Zeile in LANGS; als Muttersprache zusätzlich ein Block in UI. Die Maske wächst ohne Umbau. ── */
 var LANGS = [
-  { code:'es', v:'Spanish', native:'Español', f:'🇪🇸', self:'Español', n:{ de:'Spanisch', es:'Español', en:'Spanish', el:'Ισπανικά' } },
-  { code:'de', v:'German',  native:'Deutsch', f:'🇩🇪', self:'Deutsch', n:{ de:'Deutsch',  es:'Alemán',  en:'German',  el:'Γερμανικά' } },
-  { code:'en', v:'English', native:'English', f:'🇬🇧', self:'English', n:{ de:'Englisch', es:'Inglés',  en:'English', el:'Αγγλικά' } },
-  { code:'el', v:'Greek',   native:'Ελληνικά', f:'🇬🇷', self:'Ελληνικά', n:{ de:'Griechisch', es:'Griego', en:'Greek', el:'Ελληνικά' } }
+  { code:'es', v:'Spanish', native:'Español',  f:'🇪🇸', bg:'#ffd0b0', n:{ de:'Spanisch',   es:'Español', en:'Spanish', el:'Ισπανικά' } },
+  { code:'de', v:'German',  native:'Deutsch',  f:'🇩🇪', bg:'#ffe08a', n:{ de:'Deutsch',    es:'Alemán',  en:'German',  el:'Γερμανικά' } },
+  { code:'en', v:'English', native:'English',  f:'🇬🇧', bg:'#d3eef6', n:{ de:'Englisch',   es:'Inglés',  en:'English', el:'Αγγλικά' } },
+  { code:'el', v:'Greek',   native:'Ελληνικά', f:'🇬🇷', bg:'#cdbdf2', n:{ de:'Griechisch', es:'Griego',  en:'Greek',   el:'Ελληνικά' } }
 ];
-
+var STAND = [['A0','🌱','#c7e89a'],['A1','👋','#ffe08a'],['A2','💬','#d3eef6'],['B1','🚶','#ffd0b0'],['B2','🗣️','#cdbdf2']];
+var WOFUER = [['travel','✈️','#d3eef6'],['work','💼','#ffd0b0'],['exam','📝','#ffe08a'],['family','👪','#f7bcd8'],['study','🎓','#cdbdf2'],['interest','✨','#c7e89a'],['daily','☕','#ffb27a']];
 var UI = {
-  de: {
-    title:"Spikiu — Los geht's", back:'Ein Schritt zurück', next:'Weiter', firstName:'Vorname',
-    bNative:'Hallo, ich bin Spikiu, dein Sprachpartner in deinem Lernabenteuer. In welcher Sprache reden wir am besten miteinander?',
-    bName:'Schön! Und wie heißt du?',
-    bTarget:function(n){ return (n? 'Freut mich, '+n+'! ':'') + 'Welche Sprache möchtest du lernen?'; },
-    bMotiv:function(t){ return 'Was motiviert dich, <strong>'+t+'</strong> zu lernen?'; }, theLang:'die Sprache',
-    bLevel:'Wo stehst du gerade? Ganz ehrlich — kein richtig oder falsch.',
-    bTime:'Wie viel Zeit hast du pro Woche?', bDeadline:'Hast du ein Datum im Kopf?',
-    fits:'Was passt?', more:'Erzähl ruhig mehr.', opt:'(optional)',
-    ph:'z.B. „mit meiner Schwiegermutter quatschen, ohne mich zu blamieren“',
-    chips:{ travel:'Reisen', work:'Arbeit', exam:'Prüfung', family:'Familie', study:'Studium', interest:'Interesse', daily:'Alltag' },
-    levels:{ A0:['Ganz von vorne','Ich fange bei Null an'], A1:['Ein paar Wörter','Hallo, Danke, ein paar Sätze'],
-      A2:['Einfache Gespräche','Vorstellen, einkaufen, fragen'], B1:['Ich komme durch','Verstehe das Meiste, mache noch Fehler'],
-      B2:['Ziemlich sicher','Ich folge Diskussionen und mache mit'] },
-    times:{ '<1':'Weniger als 1 Stunde', '1-3':'1–3 Stunden', '3-5':'3–5 Stunden', '5-10':'5–10 Stunden', '10+':'Mehr als 10 Stunden' },
-    deadlines:{ '3m':'In 3 Monaten', '6m':'In 6 Monaten', '1y':'In einem Jahr', 'none':'Kein festes Datum' },
-    summary:function(n,l,t,z){ return 'Du heißt <strong>'+n+'</strong>, sprichst <strong>'+l+'</strong> und möchtest <strong>'+t+'</strong> lernen — für <strong>'+z+'</strong>.'; },
-    open:'noch offen', okq:'Passt das so?', go:'Okay — los geht’s →', hint:'Möchtest du etwas ändern? Nutze den Pfeil oben links.'
-  },
-  es: {
-    title:'Spikiu — Empezamos', back:'Un paso atrás', next:'Siguiente', firstName:'Tu nombre',
-    bNative:'Hola, soy Spikiu, tu compañero en esta aventura de aprendizaje. ¿En qué idioma hablamos mejor tú y yo?',
-    bName:'¡Perfecto! ¿Y cómo te llamas?',
-    bTarget:function(n){ return (n? '¡Mucho gusto, '+n+'! ':'') + '¿Qué idioma quieres aprender?'; },
-    bMotiv:function(t){ return '¿Qué te motiva a aprender <strong>'+t+'</strong>?'; }, theLang:'el idioma',
-    bLevel:'¿Dónde estás ahora? Con toda sinceridad: aquí no hay respuestas buenas ni malas.',
-    bTime:'¿Cuánto tiempo tienes a la semana?', bDeadline:'¿Tienes una fecha en mente?',
-    fits:'¿Qué encaja contigo?', more:'Cuéntame más, si quieres.', opt:'(opcional)',
-    ph:'p. ej. «charlar con mi suegra sin hacer el ridículo»',
-    chips:{ travel:'Viajes', work:'Trabajo', exam:'Examen', family:'Familia', study:'Estudios', interest:'Curiosidad', daily:'Día a día' },
-    levels:{ A0:['Desde cero','Empiezo sin saber nada'], A1:['Unas cuantas palabras','Hola, gracias, alguna frase'],
-      A2:['Conversaciones sencillas','Presentarme, comprar, preguntar'], B1:['Me defiendo','Entiendo casi todo, todavía me equivoco'],
-      B2:['Bastante seguro','Sigo discusiones y participo'] },
-    times:{ '<1':'Menos de 1 hora', '1-3':'1–3 horas', '3-5':'3–5 horas', '5-10':'5–10 horas', '10+':'Más de 10 horas' },
-    deadlines:{ '3m':'En 3 meses', '6m':'En 6 meses', '1y':'En un año', 'none':'Sin fecha fija' },
-    summary:function(n,l,t,z){ return 'Te llamas <strong>'+n+'</strong>, hablas <strong>'+l+'</strong> y quieres aprender <strong>'+t+'</strong> — para <strong>'+z+'</strong>.'; },
-    open:'todavía por ver', okq:'¿Te parece bien así?', go:'¡Listo, vamos! →', hint:'¿Quieres cambiar algo? Usa la flecha de arriba a la izquierda.'
-  },
-  en: {
-    title:"Spikiu — Let's go", back:'One step back', next:'Next', firstName:'First name',
-    bNative:"Hi, I'm Spikiu, your language partner on this learning adventure. Which language should we talk in?",
-    bName:'Great! And what’s your name?',
-    bTarget:function(n){ return (n? 'Nice to meet you, '+n+'! ':'') + 'Which language would you like to learn?'; },
-    bMotiv:function(t){ return 'What makes you want to learn <strong>'+t+'</strong>?'; }, theLang:'the language',
-    bLevel:'Where are you right now? Be honest — there’s no right or wrong.',
-    bTime:'How much time do you have per week?', bDeadline:'Do you have a date in mind?',
-    fits:'What fits?', more:'Feel free to tell me more.', opt:'(optional)',
-    ph:'e.g. “chat with my mother-in-law without embarrassing myself”',
-    chips:{ travel:'Travel', work:'Work', exam:'Exam', family:'Family', study:'Studies', interest:'Curiosity', daily:'Everyday life' },
-    levels:{ A0:['From scratch','I’m starting at zero'], A1:['A few words','Hello, thanks, a few sentences'],
-      A2:['Simple conversations','Introducing myself, shopping, asking'], B1:['I get by','I understand most things, still make mistakes'],
-      B2:['Fairly confident','I follow discussions and join in'] },
-    times:{ '<1':'Less than 1 hour', '1-3':'1–3 hours', '3-5':'3–5 hours', '5-10':'5–10 hours', '10+':'More than 10 hours' },
-    deadlines:{ '3m':'In 3 months', '6m':'In 6 months', '1y':'In a year', 'none':'No fixed date' },
-    summary:function(n,l,t,z){ return 'Your name is <strong>'+n+'</strong>, you speak <strong>'+l+'</strong> and want to learn <strong>'+t+'</strong> — for <strong>'+z+'</strong>.'; },
-    open:'still open', okq:'Does that look right?', go:'Okay — let’s go →', hint:'Want to change something? Use the arrow at the top left.'
-  },
-  el: {
-    title:'Spikiu — Ξεκινάμε', back:'Ένα βήμα πίσω', next:'Συνέχεια', firstName:'Μικρό όνομα',
-    bNative:'Γεια σου, είμαι ο Spikiu, ο σύντροφός σου σε αυτή τη μαθησιακή περιπέτεια. Σε ποια γλώσσα να μιλάμε οι δυο μας;',
-    bName:'Τέλεια! Και πώς σε λένε;',
-    bTarget:function(n){ return (n? 'Χάρηκα, '+n+'! ':'') + 'Ποια γλώσσα θέλεις να μάθεις;'; },
-    bMotiv:function(t){ return 'Τι σε κάνει να θέλεις να μάθεις <strong>'+t+'</strong>;'; }, theLang:'τη γλώσσα',
-    bLevel:'Πού βρίσκεσαι τώρα; Με ειλικρίνεια — δεν υπάρχει σωστό ή λάθος.',
-    bTime:'Πόσο χρόνο έχεις την εβδομάδα;', bDeadline:'Έχεις κάποια ημερομηνία στο μυαλό σου;',
-    fits:'Τι σου ταιριάζει;', more:'Πες μου κι άλλα, αν θέλεις.', opt:'(προαιρετικό)',
-    ph:'π.χ. «να κουβεντιάζω με την πεθερά μου χωρίς να γίνομαι ρεζίλι»',
-    chips:{ travel:'Ταξίδια', work:'Δουλειά', exam:'Εξετάσεις', family:'Οικογένεια', study:'Σπουδές', interest:'Περιέργεια', daily:'Καθημερινότητα' },
-    levels:{ A0:['Από το μηδέν','Ξεκινάω χωρίς να ξέρω τίποτα'], A1:['Λίγες λέξεις','Γεια, ευχαριστώ, μερικές φράσεις'],
-      A2:['Απλές συζητήσεις','Συστήνομαι, ψωνίζω, ρωτάω'], B1:['Τα βγάζω πέρα','Καταλαβαίνω τα περισσότερα, ακόμα κάνω λάθη'],
-      B2:['Αρκετά σίγουρος/η','Παρακολουθώ συζητήσεις και συμμετέχω'] },
-    times:{ '<1':'Λιγότερο από 1 ώρα', '1-3':'1–3 ώρες', '3-5':'3–5 ώρες', '5-10':'5–10 ώρες', '10+':'Πάνω από 10 ώρες' },
-    deadlines:{ '3m':'Σε 3 μήνες', '6m':'Σε 6 μήνες', '1y':'Σε έναν χρόνο', 'none':'Χωρίς σταθερή ημερομηνία' },
-    summary:function(n,l,t,z){ return 'Σε λένε <strong>'+n+'</strong>, μιλάς <strong>'+l+'</strong> και θέλεις να μάθεις <strong>'+t+'</strong> — για <strong>'+z+'</strong>.'; },
-    open:'ακόμα ανοιχτό', okq:'Σου φαίνεται σωστό;', go:'Εντάξει — πάμε! →', hint:'Θέλεις να αλλάξεις κάτι; Πάτα το βελάκι πάνω αριστερά.'
-  }
+  de:{ title:"Spikiu — Los geht's", back:'Ein Schritt zurück', mutter:'Meine Muttersprache',
+    s1:'¡Hola! Was lernst du?', s2:'Wie viel kannst du schon?', s3:'Wofür? Gern mehrere.', go:'Los geht’s →', skip:'Überspringen',
+    stand:['Bei Null','Ein paar Wörter','Einfache Gespräche','Ich komme durch','Ziemlich sicher'],
+    wofuer:['Reisen','Arbeit','Prüfung','Familie','Studium','Neugier','Alltag'] },
+  es:{ title:'Spikiu — Empezamos', back:'Un paso atrás', mutter:'Mi lengua materna',
+    s1:'¡Hola! ¿Qué aprendes?', s2:'¿Cuánto sabes ya?', s3:'¿Para qué? Puedes elegir varias.', go:'¡Vamos! →', skip:'Saltar',
+    stand:['Desde cero','Unas palabras','Charlas sencillas','Me defiendo','Bastante seguro'],
+    wofuer:['Viajes','Trabajo','Examen','Familia','Estudios','Curiosidad','Día a día'] },
+  en:{ title:"Spikiu — Let's go", back:'One step back', mutter:'My mother tongue',
+    s1:'¡Hola! What are you learning?', s2:'How much do you know already?', s3:'What for? Pick as many as you like.', go:'Let’s go →', skip:'Skip',
+    stand:['From zero','A few words','Simple chats','I get by','Fairly confident'],
+    wofuer:['Travel','Work','Exam','Family','Studies','Curiosity','Everyday life'] },
+  el:{ title:'Spikiu — Πάμε', back:'Ένα βήμα πίσω', mutter:'Η μητρική μου γλώσσα',
+    s1:'¡Hola! Τι μαθαίνεις;', s2:'Πόσα ξέρεις ήδη;', s3:'Για ποιο λόγο; Διάλεξε όσα θες.', go:'Πάμε →', skip:'Παράλειψη',
+    stand:['Από το μηδέν','Λίγες λέξεις','Απλές κουβέντες','Τα βγάζω πέρα','Αρκετά σίγουρα'],
+    wofuer:['Ταξίδια','Δουλειά','Εξετάσεις','Οικογένεια','Σπουδές','Περιέργεια','Καθημερινότητα'] }
 };
+var CAPY = '<svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28" ry="20" fill="#c9956a"/><ellipse cx="40" cy="28" rx="18" ry="15" fill="#c9956a"/><ellipse cx="40" cy="36" rx="10" ry="7" fill="#b8845a"/><ellipse cx="40" cy="33" rx="4" ry="2.5" fill="#8b5e3c"/><circle cx="33" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="47" cy="24" r="3.5" fill="#3d2b1f"/><circle cx="34" cy="23" r="1.2" fill="white"/><circle cx="48" cy="23" r="1.2" fill="white"/><ellipse cx="26" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="54" cy="17" rx="6" ry="5" fill="#b8845a"/><ellipse cx="22" cy="66" rx="7" ry="5" fill="#b8845a"/><ellipse cx="34" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="46" cy="68" rx="7" ry="5" fill="#b8845a"/><ellipse cx="58" cy="66" rx="7" ry="5" fill="#b8845a"/><path d="M36 38 Q40 41 44 38" stroke="#8b5e3c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
 
-// Startsprache: Landing (spikiu_lang) → Browser → Deutsch.
+function langBy(key,val){ for (var i=0;i<LANGS.length;i++){ if (LANGS[i][key]===val) return LANGS[i]; } return null; }
+function bisher(){ try { return JSON.parse(localStorage.getItem('spikiu_user')||'{}') || {}; } catch(e){ return {}; } }
+// Muttersprache: früheres Profil → Startseite (spikiu_lang) → Browser → Deutsch.
 function startSprache(){
-  var l = null;
-  try { l = localStorage.getItem('spikiu_lang'); } catch(e){}
+  var u = bisher(), p = u.profile || {};
+  if (UI[p.muttersprache]) return p.muttersprache;
+  var l = null; try { l = localStorage.getItem('spikiu_lang'); } catch(e){}
   if (!UI[l]) { var b = (navigator.language||'').slice(0,2).toLowerCase(); l = UI[b] ? b : 'de'; }
   return l;
 }
-var ui = startSprache();
-function T(){ return UI[ui]; }
-
-function langBy(key,val){ for (var i=0;i<LANGS.length;i++){ if (LANGS[i][key]===val) return LANGS[i]; } return null; }
-// Name einer Sprache in der aktuellen Oberfläche; im Fließtext auf Spanisch klein („aprender alemán").
-function tname(code, imSatz){
-  var L = langBy('code',code); if (!L) return '';
-  var s = L.n[ui] || L.self;
-  return (imSatz && (ui==='es' || ui==='el')) ? s.toLowerCase() : s;   // el: „μιλάς ελληνικά“
-}
-
-// Für finish(): Anzeige-Namen der Zielsprache je Muttersprache (aus dem Register erzeugt).
-var NATIVE_UI = {}; LANGS.forEach(function(L){ if (L.native) NATIVE_UI[L.native] = L.code; });
-var TARGET_NAMES = {};
-Object.keys(NATIVE_UI).forEach(function(nat){
-  var c = NATIVE_UI[nat]; TARGET_NAMES[nat] = {};
-  LANGS.forEach(function(L){ TARGET_NAMES[nat][L.v] = L.n[c] || L.self; });
-});
-
-function nativeOptions(){
-  return LANGS.filter(function(L){ return L.native && UI[L.code]; })
-              .map(function(L){ return { v:L.native, f:L.f, t:(L.n[ui]||L.self) }; });   // in der gewählten Sprache (Leo, 10.10.)
-}
-function targetOptions(){
-  return LANGS.map(function(L){ return { v:L.v, f:L.f, t:(L.n[ui]||L.self) }; });
-}
-function levelOptions(){ return ['A0','A1','A2','B1','B2'].map(function(k){ return { v:k, t:T().levels[k][0], s:T().levels[k][1] }; }); }
-function timeOptions(){ return ['<1','1-3','3-5','5-10','10+'].map(function(k){ return { v:k, t:T().times[k] }; }); }
-function deadlineOptions(){ return ['3m','6m','1y','none'].map(function(k){ return { v:k, t:T().deadlines[k] }; }); }
-var CHIP_KEYS = ['travel','work','exam','family','study','interest','daily'];
-
-var STEPS = [
-  { id:'nativeLang', type:'liste', field:'nativeLang', options:nativeOptions,
-    bubble:function(d){ return T().bNative; } },
-  { id:'name', type:'name',
-    bubble:function(d){ return T().bName; } },
-  { id:'targetLang', type:'liste', field:'targetLang', options:targetOptions,
-    bubble:function(d){ return T().bTarget(d.name? esc(d.name):''); } },
-  { id:'motivation', type:'chips',
-    bubble:function(d){ var L=langBy('v',d.targetLang); return T().bMotiv(L? tname(L.code,true) : T().theLang); } },
-  { id:'level', type:'select', field:'level', options:levelOptions, sub:true, auto:true,
-    bubble:function(d){ return T().bLevel; } },
-  { id:'weeklyTime', type:'select', field:'weeklyTime', options:timeOptions, auto:true,
-    bubble:function(d){ return T().bTime; } },
-  { id:'deadline', type:'select', field:'deadline', options:deadlineOptions, auto:true,
-    bubble:function(d){ return T().bDeadline; } },
-  { id:'summary', type:'summary',
-    bubble:function(d){ return summaryText(d); } }
-];
-
+var st = { mutter: startSprache(), ziel: null, stand: null, wofuer: [] };
 var step = 0;
-var data = { motivation: [] };
-// Muttersprache vormerken, passend zur Startsprache (nur markiert, nicht weitergesprungen).
-(function(){ var L = langBy('code',ui); if (L && L.native) data.nativeLang = L.native; })();
+function T(){ return UI[st.mutter]; }
+function $(id){ return document.getElementById(id); }
 
-function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];}); }
-
-// Oberfläche auf eine Sprache stellen (Seitentitel, lang-Attribut, Zurück-Knopf).
-function setUi(code){
-  if (!UI[code]) return;
-  ui = code;
-  document.documentElement.lang = code;
-  document.title = T().title;
-  var bb = document.getElementById('btn-back');
-  bb.setAttribute('aria-label', T().back); bb.title = T().back;
+function tile(key,v,em,bg,label,multi){
+  var on = multi ? st[key].indexOf(v)>-1 : st[key]===v;
+  return '<button type="button" class="tile'+(on?' sel':'')+'" data-k="'+key+'" data-v="'+v+'"'+(multi?' data-m="1" aria-pressed="'+on+'"':'')+'><i style="background:'+bg+'">'+em+'</i><span>'+label+'</span></button>';
 }
+function say(s){ return '<div class="say"><div class="capy">'+CAPY+'</div><div class="bub">'+s+'</div></div>'; }
 
 function render(){
-  var S = STEPS[step];
-  document.getElementById('progress').style.width = Math.round(((step+1)/STEPS.length)*100) + '%';
-  document.getElementById('btn-back').classList.toggle('hidden', step===0);
-
-  var bubble = document.getElementById('bubble');
-  bubble.innerHTML = S.bubble(data);
-  var bp = bubble.parentNode; bp.classList.remove('fade'); void bp.offsetWidth; bp.classList.add('fade');
-
-  var okayq = document.getElementById('okayq');
-  okayq.style.display = (S.type==='summary') ? 'block' : 'none';
-  okayq.textContent = (S.type==='summary') ? T().okq : '';
-
-  var c = document.getElementById('content');
-  c.innerHTML = '';
-  c.classList.remove('fade'); void c.offsetWidth; c.classList.add('fade');
-
-  if (S.type==='name'){
-    var inp = el('input'); inp.type='text'; inp.id='nameInput'; inp.placeholder=T().firstName; inp.value=data.name||''; inp.autocomplete='given-name';
-    inp.oninput = function(){ document.getElementById('nx').disabled = !inp.value.trim(); };
-    inp.onkeydown = function(e){ if (e.key==='Enter' && inp.value.trim()){ data.name=inp.value.trim(); go(1); } };
-    c.appendChild(inp);
-    var act = el('div','actions');
-    var nx = btn(T().next, function(){ if(!inp.value.trim()) return; data.name = inp.value.trim(); go(1); }, 'btn-next'); nx.id='nx'; nx.disabled = !inp.value.trim();
-    act.appendChild(nx); c.appendChild(act);
-    setTimeout(function(){ inp.focus(); }, 60);
-  }
-  else if (S.type==='select'){
-    var box = el('div','options');
-    var gewaehlt = null;
-    S.options().forEach(function(o){
-      var b = el('button','option'); if (data[S.field]===o.v){ b.className+=' sel'; gewaehlt = b; }
-      if (S.flags){ var fl=el('span','option-flag'); fl.textContent=o.f; b.appendChild(fl); }
-      if (S.sub){ var w=el('span'); var t1=el('div'); t1.textContent=o.t; var t2=el('div','option-sub'); t2.textContent=o.s; w.appendChild(t1); w.appendChild(t2); b.appendChild(w); }
-      else { var s=el('span'); s.textContent=o.t; b.appendChild(s); }
-      b.onclick = function(){
-        data[S.field]=o.v;
-        box.querySelectorAll('.option').forEach(function(x){ x.classList.remove('sel'); });
-        b.classList.add('sel');
-        if (S.auto) setTimeout(function(){ go(1); }, 300);   // Ruhe-Atemzug, dann selbst weiter
-      };
-      box.appendChild(b);
-    });
-    c.appendChild(box);
-  }
-  else if (S.type==='liste'){
-    /* Auswahlliste (Listbox). Antippen markiert nur; „Weiter" bestätigt.
-       Bei der Muttersprache wechselt die ganze Seite sofort in die markierte Sprache. */
-    var opts = S.options();
-    var lb = el('div','lb'); lb.setAttribute('role','listbox'); lb.tabIndex = 0;
-    var liste = el('div','lb-list');
-    var bar = el('div','lb-bar');
-    var hoch = el('button','lb-btn'); hoch.type='button'; hoch.textContent='▲'; hoch.setAttribute('aria-hidden','true'); hoch.tabIndex=-1;
-    var spur = el('div','lb-track'); var griff = el('div','lb-thumb'); spur.appendChild(griff);
-    var runter = el('button','lb-btn'); runter.type='button'; runter.textContent='▼'; runter.setAttribute('aria-hidden','true'); runter.tabIndex=-1;
-    bar.appendChild(hoch); bar.appendChild(spur); bar.appendChild(runter);
-    lb.appendChild(liste); lb.appendChild(bar);
-    var zeilen = [];
-    function waehle(i, bringIn){
-      var o = opts[i]; data[S.field] = o.v;
-      zeilen.forEach(function(z,k){ z.classList.toggle('sel', k===i); z.setAttribute('aria-selected', k===i?'true':'false'); });
-      if (bringIn) zeilen[i].scrollIntoView({block:'nearest'});
-      document.getElementById('nx').disabled = false;
-      if (S.field==='nativeLang'){
-        var L = langBy('native',o.v);
-        if (L && L.code!==ui){ setUi(L.code); render(); }   // ganze Seite in seiner Sprache
-      }
-    }
-    opts.forEach(function(o,i){
-      var z = el('div','lb-row'); z.setAttribute('role','option');
-      var fl = el('span','fl'); fl.textContent = o.f; var t = el('span'); t.textContent = o.t;
-      z.appendChild(fl); z.appendChild(t);
-      if (data[S.field]===o.v){ z.classList.add('sel'); z.setAttribute('aria-selected','true'); }
-      z.onclick = function(){ waehle(i,false); };
-      zeilen.push(z); liste.appendChild(z);
-    });
-    c.appendChild(lb);
-    // Rollbalken: Griff folgt der Liste; ▲ ▼ rollen eine Zeile; Griff ziehbar.
-    function zeilenH(){ return zeilen.length ? zeilen[0].offsetHeight : 48; }
-    function balken(){
-      var sh = liste.scrollHeight, ch = liste.clientHeight, th = spur.clientHeight;
-      var gh = Math.max(22, th * Math.min(1, ch / sh));
-      var weg = sh - ch;
-      griff.style.height = gh + 'px';
-      griff.style.top = (weg > 0 ? (liste.scrollTop / weg) * (th - gh) : 0) + 'px';
-      hoch.disabled = liste.scrollTop <= 1;
-      runter.disabled = liste.scrollTop >= weg - 1;
-    }
-    liste.addEventListener('scroll', balken);
-    hoch.onclick = function(){ liste.scrollBy({top:-zeilenH(), behavior:'smooth'}); };
-    runter.onclick = function(){ liste.scrollBy({top:zeilenH(), behavior:'smooth'}); };
-    var ziehY = null, startTop = 0;
-    griff.addEventListener('pointerdown', function(e){ ziehY = e.clientY; startTop = liste.scrollTop; griff.setPointerCapture(e.pointerId); e.preventDefault(); });
-    griff.addEventListener('pointermove', function(e){
-      if (ziehY===null) return;
-      var th = spur.clientHeight, gh = griff.offsetHeight, weg = liste.scrollHeight - liste.clientHeight;
-      if (th - gh > 0) liste.scrollTop = startTop + (e.clientY - ziehY) * weg / (th - gh);
-    });
-    griff.addEventListener('pointerup', function(){ ziehY = null; });
-    spur.addEventListener('pointerdown', function(e){
-      if (e.target===griff) return;
-      var r = griff.getBoundingClientRect();
-      liste.scrollBy({top:(e.clientY < r.top ? -1 : 1) * liste.clientHeight, behavior:'smooth'});
-    });
-    // Tastatur: ↑ ↓ wählen, Enter bestätigt
-    lb.addEventListener('keydown', function(e){
-      var i = -1; opts.forEach(function(o,k){ if (data[S.field]===o.v) i = k; });
-      if (e.key==='ArrowDown'){ e.preventDefault(); waehle(Math.min(opts.length-1, i+1), true); }
-      else if (e.key==='ArrowUp'){ e.preventDefault(); waehle(Math.max(0, i-1), true); }
-      else if (e.key==='Enter' && i>-1){ e.preventDefault(); go(1); }
-    });
-    var act = el('div','actions');
-    var nx = btn(T().next, function(){ if (data[S.field]) go(1); }, 'btn-next'); nx.id='nx'; nx.disabled = !data[S.field];
-    act.appendChild(nx); c.appendChild(act);
-    setTimeout(function(){
-      var sel = liste.querySelector('.lb-row.sel');
-      if (sel) liste.scrollTop = Math.max(0, sel.offsetTop - liste.clientHeight/2 + sel.offsetHeight/2);
-      balken();
-    }, 0);
-  }
-  else if (S.type==='chips'){
-    var lbl = el('div','field-label'); lbl.innerHTML=esc(T().fits)+' <span class="opt">'+esc(T().opt)+'</span>'; c.appendChild(lbl);
-    var ch = el('div','chips');
-    CHIP_KEYS.forEach(function(k){
-      var b=el('button','chip'); var w=document.createElement('span'); w.textContent=T().chips[k]; b.appendChild(w); b.setAttribute('aria-pressed', data.motivation.indexOf(k)>-1?'true':'false'); if (data.motivation.indexOf(k)>-1) b.className+=' sel';
-      b.onclick=function(){
-        var i=data.motivation.indexOf(k);
-        if (i>-1){ data.motivation.splice(i,1); b.classList.remove('sel'); } else { data.motivation.push(k); b.classList.add('sel'); }
-        b.setAttribute('aria-pressed', b.classList.contains('sel')?'true':'false');
-      };
-      ch.appendChild(b);
-    });
-    c.appendChild(ch);
-    var lbl2=el('div','field-label'); lbl2.innerHTML=esc(T().more)+' <span class="opt">'+esc(T().opt)+'</span>'; c.appendChild(lbl2);
-    var ta=el('textarea'); ta.id='driveText'; ta.placeholder=T().ph; ta.value=data.driveText||''; c.appendChild(ta);
-    var act=el('div','actions');
-    act.appendChild(btn(T().next, function(){ data.driveText=ta.value.trim(); go(1); }, 'btn-next'));
-    c.appendChild(act);
-  }
-  else if (S.type==='summary'){
-    var act=el('div','actions');
-    act.appendChild(btn(T().go, function(){ finish(); }, 'btn-next'));
-    var hinweis = el('p','summary-hint');
-    hinweis.textContent = T().hint;
-    act.appendChild(hinweis);
-    c.appendChild(act);
+  var m = $('main'); m.classList.remove('fade'); void m.offsetWidth; m.classList.add('fade');
+  document.documentElement.lang = st.mutter; document.title = T().title;
+  $('back').setAttribute('aria-label', T().back); $('back').title = T().back;
+  $('back').style.visibility = step ? 'visible' : 'hidden';
+  $('dots').innerHTML = [0,1,2].map(function(k){ return '<i class="'+(k<=step?'on':'')+'"></i>'; }).join('');
+  if (step===0){
+    var M = langBy('code', st.mutter);
+    var ziele = LANGS.filter(function(L){ return L.code!==st.mutter; });
+    m.innerHTML = '<button type="button" class="mutter" id="mut" aria-haspopup="dialog"><span class="fl">'+M.f+'</span><span><small>'+T().mutter+':</small><br><b>'+M.native+'</b></span><span class="pf">▾</span></button>'
+      + say(T().s1)
+      + '<div class="grid g'+ziele.length+'">'+ziele.map(function(L){ return tile('ziel',L.code,L.f,L.bg,L.n[st.mutter]); }).join('')+'</div>';
+  } else if (step===1){
+    m.innerHTML = say(T().s2) + '<div class="grid g5">'+STAND.map(function(s,i){ return tile('stand',s[0],s[1],s[2],T().stand[i]); }).join('')+'</div>';
+  } else {
+    m.innerHTML = say(T().s3) + '<div class="grid g4">'+WOFUER.map(function(s,i){ return tile('wofuer',s[0],s[1],s[2],T().wofuer[i],true); }).join('')+'</div>'
+      + '<div class="foot"><button type="button" class="go" id="go">'+T().go+'</button><button type="button" class="skip" id="skip">'+T().skip+'</button></div>';
   }
 }
 
-function summaryText(d){
-  var ziele = (d.motivation||[]).map(function(m){ var c=T().chips[m]||m; return (ui==='es' || ui==='el')? c.toLowerCase() : c; });   // es: „para viajes“, el: „για ταξίδια“
-  var zielText = ziele.length ? ziele.join(', ') : (d.driveText ? d.driveText : T().open);
-  var nat = langBy('native', d.nativeLang), tgt = langBy('v', d.targetLang);
-  return T().summary(esc(d.name||'—'), nat? esc(tname(nat.code,true)) : '—', tgt? esc(tname(tgt.code,true)) : '—', esc(zielText));
+function maske(auf){
+  if (auf){
+    $('sheetH').textContent = T().mutter;
+    $('list').innerHTML = LANGS.filter(function(L){ return UI[L.code]; }).map(function(L){
+      return '<button type="button" class="row'+(L.code===st.mutter?' sel':'')+'" data-mut="'+L.code+'"><span class="fl">'+L.f+'</span><b>'+L.native+'</b><span class="ck">✓</span></button>';
+    }).join('');
+  }
+  $('app').classList.toggle('open', auf);
 }
 
-function go(dir){ step += dir; if (step<0) step=0; if (step>STEPS.length-1) step=STEPS.length-1; render(); }
-function goBack(){ go(-1); }
+document.addEventListener('click', function(e){
+  if (e.target.id==='veil'){ maske(false); return; }
+  var b = e.target.closest('button'); if (!b) return;
+  if (b.id==='mut'){ maske(true); return; }
+  if (b.dataset.mut){ st.mutter=b.dataset.mut; try{ localStorage.setItem('spikiu_lang', st.mutter); }catch(x){} if (st.ziel===st.mutter) st.ziel=null; maske(false); render(); return; }
+  if (b.id==='back'){ step=Math.max(0,step-1); render(); return; }
+  if (b.id==='go'){ finish(); return; }
+  if (b.id==='skip'){ st.wofuer=[]; finish(); return; }
+  if (b.dataset.k){
+    var k=b.dataset.k, v=b.dataset.v;
+    if (b.dataset.m){ var i=st[k].indexOf(v); if (i>-1) st[k].splice(i,1); else st[k].push(v); b.classList.toggle('sel'); b.setAttribute('aria-pressed', b.classList.contains('sel')); return; }
+    st[k]=v; b.classList.add('sel');
+    setTimeout(function(){ step++; render(); }, 220);
+  }
+});
+document.addEventListener('keydown', function(e){ if (e.key==='Escape') maske(false); });
 
-function el(tag,cls){ var e=document.createElement(tag); if (cls) e.className=cls; return e; }
-function btn(label,fn,cls){ var b=el('button',cls); b.textContent=label; b.onclick=fn; return b; }
-
-/* ── Profil speichern und DIREKT ins Dashboard. Den Lernweg baut das Dashboard
-   im Hintergrund (roadmapPending). Vertrag 1:1 wie zuvor — NICHT anfassen. ── */
 function finish(){
-  var names = TARGET_NAMES[data.nativeLang] || TARGET_NAMES['Deutsch'];
-  var targetDisplay = names[data.targetLang] || data.targetLang;
-
-  var NATIVE_CODE = { 'Deutsch':'de', 'Español':'es', 'English':'en', 'Ελληνικά':'el' };
-  var TARGET_CODE = { Spanish:'es', German:'de', English:'en', Greek:'el' };
-  var muttersprache = NATIVE_CODE[data.nativeLang] || 'de';
-  var zielsprache   = TARGET_CODE[data.targetLang] || 'es';
-
+  var M = langBy('code', st.mutter), Z = langBy('code', st.ziel) || LANGS[0];
   var KOENNEN = { A0:'anfang', A1:'anfang', A2:'mittel', B1:'mittel', B2:'fortgeschritten' };
-  var koennen = KOENNEN[data.level] || 'anfang';
-
-  var profile = {
-    targetLang: data.targetLang,
-    targetLangDisplay: targetDisplay,
-    level: data.level || 'A0',
-    motivation: data.motivation,
-    driveText: data.driveText || '',
-    weeklyTime: data.weeklyTime || '',
-    deadline: data.deadline || 'none',
-    muttersprache: muttersprache,
-    zielsprache: zielsprache,
-    koennen: koennen,
-    fremde_schrift: zielsprache === 'el',
-    etappe: 'samen'
-  };
+  var level = st.stand || 'A0', koennen = KOENNEN[level] || 'anfang';
+  var u = bisher(), alt = u.profile || {};
+  // Bestehende Felder (Name, Stimme, E-Mail …) bleiben erhalten — nur die Einstufung wird neu gesetzt.
+  var profile = Object.assign({}, alt, {
+    targetLang: Z.v, targetLangDisplay: Z.n[st.mutter] || Z.native, level: level, motivation: st.wofuer.slice(),
+    driveText: alt.driveText || '', weeklyTime: alt.weeklyTime || '', deadline: alt.deadline || 'none',
+    muttersprache: st.mutter, zielsprache: Z.code, koennen: koennen, fremde_schrift: Z.code==='el', etappe: alt.etappe || 'samen'
+  });
   try {
-    localStorage.setItem('spikiu_user', JSON.stringify({
-      name: data.name,
-      nativeLang: data.nativeLang,
-      targetLangDisplay: targetDisplay,
-      profile: profile,
-      roadmapPending: true,
-      createdAt: new Date().toISOString(),
-      lastSeenAt: new Date().toISOString()
-    }));
-    localStorage.setItem('spikiu_lang', muttersprache);
-
-    /* ══════════════════════════════════════════════════════════════
-       DEN WEG ANLEGEN (01.09.2026)
-
-       Bis heute schrieb das Assessment nur `spikiu_user.profile.koennen`.
-       Der WEG (`spikiu_pfad`) blieb leer, und die Szene stand fest auf a1 —
-       egal wie sich jemand einstufte, er landete in A1 (Leo, 01.09.).
-
-       Hier wird der Weg EINMAL angelegt, mit der Stufe aus der Einstufung.
-       A0/A1 → a1 · A2/B1/B2 → a2, dieselbe Zuordnung wie bei `koennen`.
-
-       WICHTIG: Die STATIONEN eines bestehenden Weges werden NIE angefasst (seit 19.10.
-       wird nur seine Stufe auf das neue Ergebnis gesetzt). Er trägt den
-       Fortschritt des Lerners — welche Stationen er durchschritten hat und
-       wo er wirklich steht. Der Test darf ihn nicht zurücksetzen, auch nicht,
-       wenn jemand die Einstufung wiederholt. Deshalb: nur anlegen, nie
-       überschreiben. Die Struktur stammt aus lernpfad.js (leer()). */
+    u.nativeLang = M.native; u.targetLangDisplay = profile.targetLangDisplay; u.profile = profile;
+    u.roadmapPending = true; if (!u.createdAt) u.createdAt = new Date().toISOString(); u.lastSeenAt = new Date().toISOString();
+    localStorage.setItem('spikiu_user', JSON.stringify(u));
+    localStorage.setItem('spikiu_lang', st.mutter);
+    /* DEN WEG ANLEGEN (01.09.2026, Neu-Einstufung 19.10.): nur anlegen, nie überschreiben;
+       ein bestehender Weg behält seine Stationen und bekommt nur die neue Stufe. */
     try {
+      var neueStufe = (koennen==='anfang') ? 'a1' : (level==='B2' ? 'b2' : (level==='B1' ? 'b1' : 'a2'));
       var wegDa = localStorage.getItem('spikiu_pfad');
-      var neueStufe = (koennen === 'anfang') ? 'a1' : (data.level === 'B2' ? 'b2' : (data.level === 'B1' ? 'b1' : 'a2'));
-      /* B2 → Blüte (20.10.2026). Hat die Zielsprache keine Blüte, gilt in lernpfad.js stufe() die Krone. */
-      /* Neu-Einstufung (Leo, 19.10.: „egal wie man sich einstufen lässt … tauchen nur diese Themen"):
-         ein bestehender Weg behält seine Stationen, bekommt aber die Stufe aus dem neuen Test. */
-      if (wegDa) {
-        var weg = JSON.parse(wegDa);
-        if (weg && weg.stationen) { weg.stufe = neueStufe; localStorage.setItem('spikiu_pfad', JSON.stringify(weg)); }
-      }
-      if (!wegDa) {
-        localStorage.setItem('spikiu_pfad', JSON.stringify({
-          zielsprache: zielsprache,
-          // b1 = Krone: seit 16.10.2026 in allen vier Zielsprachen.
-          stufe: neueStufe,
-          stationen: {}
-        }));
-      }
+      if (wegDa){ var weg = JSON.parse(wegDa); if (weg && weg.stationen){ weg.stufe = neueStufe; localStorage.setItem('spikiu_pfad', JSON.stringify(weg)); } }
+      else localStorage.setItem('spikiu_pfad', JSON.stringify({ zielsprache: Z.code, stufe: neueStufe, stationen: {} }));
     } catch (e) { console.error('Weg konnte nicht angelegt werden', e); }
   } catch (e) { console.error('Storage failed', e); }
   window.location.href = 'haus.html';
 }
 
-setUi(ui);
 render();
 </script>
 <script src="/feedback-spikiu.js" defer></script>
