@@ -67,7 +67,7 @@ const CAPY='<svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="50" rx="28
 const SPR=[['de','🇩🇪','Deutsch','#ffe08a'],['es','🇪🇸','Spanisch','#ffd0b0'],['en','🇬🇧','Englisch','#d3eef6'],['el','🇬🇷','Griechisch','#cdbdf2']];
 const STAND=[['A0','🌱','Bei Null','#c7e89a'],['A1','👋','Ein paar Wörter','#ffe08a'],['A2','💬','Einfache Gespräche','#d3eef6'],['B1','🚶','Ich komme durch','#ffd0b0'],['B2','🗣️','Ziemlich sicher','#cdbdf2']];
 const WOFUER=[['travel','✈️','Reisen','#d3eef6'],['work','💼','Arbeit','#ffd0b0'],['exam','📝','Prüfung','#ffe08a'],['family','👪','Familie','#f7bcd8'],['study','🎓','Studium','#cdbdf2'],['interest','✨','Neugier','#c7e89a'],['daily','☕','Alltag','#ffb27a']];
-const NOTE={A:'Ein Bildschirm, zwei Tipps, ein Knopf. Muttersprache ist vorgewählt (vom Handy).',B:'Drei kurze Bildschirme. Jeder Tipp springt von selbst weiter, Wofür kann man überspringen.'};
+const NOTE={A:'Ein Bildschirm. „Ich spreche“ ist schon gelb (vom Handy erkannt) — meist nur zwei Tipps und der Knopf.',B:'Drei kurze Bildschirme. Jeder Tipp springt von selbst weiter, Wofür kann man überspringen.'};
 const $=id=>document.getElementById(id);
 let V='A',st,step;
 function reset(){st={mutter:'de',ziel:null,stand:null,wofuer:[]};step=0;draw()}
@@ -91,9 +91,9 @@ function draw(){
   if(V==='A'){
     dots(1,0);$('back').style.visibility='hidden';
     b.innerHTML=say('¡Hola! Ich bin Spikiu. Zwei Tipps, und los.')
+      +'<div class="lbl">Ich spreche</div>'+tiles(SPR,'g4','mutter')
       +'<div class="lbl">Ich lerne</div>'+tiles(zielListe(),'g'+zielListe().length,'ziel')
       +'<div class="lbl">Ich kann schon</div>'+tiles(STAND,'g5','stand')
-      +'<div class="mini">Ich spreche '+name(st.mutter)+' · <button id="mut">ändern</button></div>'
       +'<div class="foot"><button class="go" id="go" '+(st.ziel&&st.stand?'':'disabled')+'>Los geht’s →</button></div>';
   }else{
     dots(3,step);$('back').style.visibility=step?'visible':'hidden';
@@ -115,6 +115,7 @@ document.addEventListener('click',e=>{
     const k=t.dataset.k,v=t.dataset.v;
     if(t.dataset.m){const i=st[k].indexOf(v);i>-1?st[k].splice(i,1):st[k].push(v);t.classList.toggle('sel');return}
     st[k]=v;
+    if(k==='mutter'&&st.ziel===v)st.ziel=null;
     if(V==='B'){t.classList.add('sel');setTimeout(()=>{step++;draw()},220);return}
     draw();
   }
