@@ -21,9 +21,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0
 .langs{display:flex;gap:5px}
 .langs button{font:800 .72rem 'Nunito',system-ui,sans-serif;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:6px 9px;min-height:32px;cursor:pointer}
 .langs button.on{background:var(--sky)}
-h1{font-size:clamp(1.6rem,7vw,2.1rem);line-height:1.12;font-weight:900;letter-spacing:-.015em;margin:18px 0 6px;text-wrap:balance}
+/* Der Lärm leise, die Ruhe groß (Leo, 25.11.: „más estético“) */
+.pre{margin:26px 0 2px;font-weight:600;font-size:1.05rem;color:var(--muted);letter-spacing:.005em}
+h1{font-size:clamp(1.85rem,8.4vw,2.35rem);line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance}
 h1 em{font-style:normal;color:var(--cyan)}
-.lead{color:var(--muted);font-weight:600;margin:0 0 16px}
+.lead{color:var(--muted);font-weight:600;margin:0 0 20px;font-size:.98rem;text-wrap:balance;max-width:30ch}
 /* Szene */
 .scene{background:#fff;border:1.5px solid var(--line);border-radius:26px;box-shadow:var(--shadow);overflow:hidden}
 .pic{position:relative;background:#fbf6ee;aspect-ratio:16/9;overflow:hidden}
@@ -85,6 +87,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;font-weight:700;marg
 <div class="wrap">
   <nav><div class="logo">Spi<em>k</em>iu</div><div class="langs" id="langs"></div></nav>
 
+  <p class="pre" id="pre"></p>
   <h1 id="h1"></h1>
   <p class="lead" id="lead"></p>
 
@@ -143,7 +146,7 @@ const GLOSS={
 const KAP_EM=['🃏','🎧','🎭','🗣️','🥁','📘','📖','🪅'],KAP_BG=['#ffd0b0','#d3eef6','#ffe7a3','#c7e89a','#ffe08a','#cdbdf2','#f7bcd8','#ffb27a'];
 
 const T={
-de:{h1:'In einer Welt voller Lärm:<br>ein ruhiger Ort zum <em>Sprechen</em>.',lead:'Nicht lesen. Probier’s. Spikiu bedient dich gleich.',
+de:{pre:'In einer Welt voller Lärm:',h1:'ein ruhiger Ort<br>zum <em>Sprechen</em>.',lead:'Nicht lesen. Probier’s. Spikiu bedient dich gleich.',
  tag:'Lektion 1 · Im Café',lang:'Spanisch',tip:'Tippe deine Antwort.',nope:'Hm, Spikiu schaut verwirrt. Noch mal?',
  doneT:'Du hast gerade auf Spanisch bestellt.',doneP:'Das war ein Stück aus Lektion 1. Worauf wartest du?',go:'Weiter in Lektion 1 →',skip:'Erst mal nur schauen ↓',
  peekH:'So sieht jede Lektion aus',peekP:'Acht Kapitel, immer am selben Platz. Kein Suchen, kein Labyrinth.',
@@ -156,7 +159,7 @@ de:{h1:'In einer Welt voller Lärm:<br>ein ruhiger Ort zum <em>Sprechen</em>.',l
   {c:'p2',nm:'Coach',pr:'8,90 €',ln:'Spikiu als dein privater Sprachcoach.',li:['Alles aus „Kurs“','Freie Konversation, die sich dir anpasst','Schreibwerkstatt mit Rückmeldung','Lektionen aus deinen eigenen Sätzen']}],
  note:'Jederzeit kündbar · keine Kreditkarte für „Frei“',
  finH:'Einfach sprechen.<br>Jetzt.',finP:'Keine Anmeldung. Keine Kreditkarte.',finB:'Kostenlos starten →'},
-es:{h1:'En un mundo lleno de ruido:<br>un lugar tranquilo para <em>hablar</em>.',lead:'No leas. Pruébalo. Spikiu te atiende ahora mismo.',
+es:{pre:'En un mundo lleno de ruido:',h1:'un lugar tranquilo<br>para <em>hablar</em>.',lead:'No leas. Pruébalo. Spikiu te atiende ahora mismo.',
  tag:'Lección 1 · En el café',lang:'alemán',tip:'Toca tu respuesta.',nope:'Hm, Spikiu pone cara rara. ¿Otra vez?',
  doneT:'Acabas de pedir en alemán.',doneP:'Esto era un trocito de la lección 1. ¿A qué esperas?',go:'Seguir con la lección 1 →',skip:'Primero solo mirar ↓',
  peekH:'Así es cada lección',peekP:'Ocho capítulos, siempre en el mismo sitio. Sin buscar, sin laberinto.',
@@ -169,7 +172,7 @@ es:{h1:'En un mundo lleno de ruido:<br>un lugar tranquilo para <em>hablar</em>.'
   {c:'p2',nm:'Coach',pr:'8,90 €',ln:'Spikiu como tu profesor particular.',li:['Todo lo de «Curso»','Conversación libre que se adapta a ti','Taller de escritura con comentarios','Lecciones hechas con tus propias frases']}],
  note:'Cancela cuando quieras · sin tarjeta para «Libre»',
  finH:'Simplemente habla.<br>Ya.',finP:'Sin registro. Sin tarjeta.',finB:'Empezar gratis →'},
-en:{h1:'In a world full of noise:<br>a calm place to <em>speak</em>.',lead:'Don’t read. Try it. Spikiu is about to serve you.',
+en:{pre:'In a world full of noise:',h1:'a calm place<br>to <em>speak</em>.',lead:'Don’t read. Try it. Spikiu is about to serve you.',
  tag:'Lesson 1 · At the café',lang:'Spanish',tip:'Tap your answer.',nope:'Hm, Spikiu looks puzzled. Again?',
  doneT:'You just ordered in Spanish.',doneP:'That was a piece of Lesson 1. What are you waiting for?',go:'Continue with Lesson 1 →',skip:'Just looking for now ↓',
  peekH:'Every lesson looks like this',peekP:'Eight chapters, always in the same place. No searching, no maze.',
@@ -182,7 +185,7 @@ en:{h1:'In a world full of noise:<br>a calm place to <em>speak</em>.',lead:'Don�
   {c:'p2',nm:'Coach',pr:'€8.90',ln:'Spikiu as your private language coach.',li:['Everything in “Course”','Free conversation that adapts to you','Writing workshop with feedback','Lessons made from your own sentences']}],
  note:'Cancel anytime · no card for “Free”',
  finH:'Just speak.<br>Now.',finP:'No sign-up. No credit card.',finB:'Start free →'},
-el:{h1:'Σε έναν κόσμο γεμάτο θόρυβο:<br>ένα ήσυχο μέρος για να <em>μιλάς</em>.',lead:'Μη διαβάζεις. Δοκίμασε. Ο Spikiu σε εξυπηρετεί αμέσως.',
+el:{pre:'Σε έναν κόσμο γεμάτο θόρυβο:',h1:'ένα ήσυχο μέρος<br>για να <em>μιλάς</em>.',lead:'Μη διαβάζεις. Δοκίμασε. Ο Spikiu σε εξυπηρετεί αμέσως.',
  tag:'Μάθημα 1 · Στο καφέ',lang:'ισπανικά',tip:'Πάτησε την απάντησή σου.',nope:'Χμ, ο Spikiu απορεί. Ξανά;',
  doneT:'Μόλις παράγγειλες στα ισπανικά.',doneP:'Αυτό ήταν ένα κομμάτι από το μάθημα 1. Τι περιμένεις;',go:'Συνέχεια στο μάθημα 1 →',skip:'Πρώτα μόνο μια ματιά ↓',
  peekH:'Έτσι είναι κάθε μάθημα',peekP:'Οκτώ κεφάλαια, πάντα στην ίδια θέση. Χωρίς ψάξιμο, χωρίς λαβύρινθο.',
@@ -214,7 +217,7 @@ function bubble(txt,i){
 function render(){
   const t=T[L];document.documentElement.lang=L;
   $('langs').innerHTML=LANGS.map(([k,v])=>'<button data-l="'+k+'" class="'+(k===L?'on':'')+'">'+v+'</button>').join('');
-  for(const k of ['h1','tag','go','skip','peekH','peekP','myth','planH','note','finH','finP','finB','doneT','doneP'])$(k).innerHTML=t[k];
+  for(const k of ['pre','h1','tag','go','skip','peekH','peekP','myth','planH','note','finH','finP','finB','doneT','doneP'])$(k).innerHTML=t[k];
   $('lead').textContent=t.lead;
   $('kaps').innerHTML=t.kap.map((k,i)=>'<div class="kap"><i style="background:'+KAP_BG[i]+'">'+KAP_EM[i]+'</i><span>'+(i+1)+' · '+k+'</span></div>').join('');
   $('planList').innerHTML=t.plans.map((p,i)=>'<details class="plan '+p.c+'"><summary><span class="nm">'+p.nm+(i===2?'<span class="soon">'+t.soon+'</span>':'')+'</span><span class="pr">'+p.pr+'</span><span class="ln">'+p.ln+'</span><span class="per">'+(p.per||t.per)+'</span><span class="more">'+t.more+'</span></summary><ul>'+p.li.map(x=>'<li>'+x+'</li>').join('')+'</ul></details>').join('');
