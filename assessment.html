@@ -101,11 +101,16 @@ header,.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96) !i
 .option:active{transform:translate(2px,2px);box-shadow:0 6px 18px rgba(21,22,58,.07) !important}
 .option.sel{background:var(--sky) !important;border-color:var(--ink) !important}
 .option-sub{color:var(--muted) !important;font-weight:600 !important}
-/* Chips im Pop */
-.chip{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:999px !important;
-  box-shadow:0 6px 18px rgba(21,22,58,.07) !important;font-weight:700 !important;padding:.5rem 1rem !important}
-.chip:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink) !important}
-.chip.sel{background:var(--mustard) !important;border-color:var(--ink) !important;color:var(--ink) !important}
+/* Motivation ohne Kacheln (Leo, 25.11.: „eleganter wie der Rest des Designs“): Wörter im Fluss,
+   gewählt = Text dunkel + Senf-Marker darunter, nur Luft dazwischen */
+.chips{gap:0 1.35rem !important;margin:.2rem 0 1.2rem !important;align-items:center}
+.chip{background:none !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;
+  font:700 1.12rem/1.2 'Nunito',system-ui,sans-serif !important;color:var(--muted) !important;
+  padding:.6rem .15rem !important;min-height:44px;cursor:pointer;transition:color .15s}
+.chip span{padding:0 .1em;background:linear-gradient(transparent 60%,transparent 60%);transition:background .2s;border-radius:2px}
+.chip.sel{color:var(--ink) !important}
+.chip.sel span{background:linear-gradient(transparent 58%,var(--mustard) 58%)}
+.chip:active{transform:none !important}
 /* Eingaben */
 input,textarea{background:#fff !important;border:1.5px solid #dcebe1 !important;border-radius:16px !important;
   font-weight:600 !important;color:var(--ink) !important}
@@ -476,10 +481,11 @@ function render(){
     var lbl = el('div','field-label'); lbl.innerHTML=esc(T().fits)+' <span class="opt">'+esc(T().opt)+'</span>'; c.appendChild(lbl);
     var ch = el('div','chips');
     CHIP_KEYS.forEach(function(k){
-      var b=el('button','chip'); b.textContent=T().chips[k]; if (data.motivation.indexOf(k)>-1) b.className+=' sel';
+      var b=el('button','chip'); var w=document.createElement('span'); w.textContent=T().chips[k]; b.appendChild(w); b.setAttribute('aria-pressed', data.motivation.indexOf(k)>-1?'true':'false'); if (data.motivation.indexOf(k)>-1) b.className+=' sel';
       b.onclick=function(){
         var i=data.motivation.indexOf(k);
         if (i>-1){ data.motivation.splice(i,1); b.classList.remove('sel'); } else { data.motivation.push(k); b.classList.add('sel'); }
+        b.setAttribute('aria-pressed', b.classList.contains('sel')?'true':'false');
       };
       ch.appendChild(b);
     });
