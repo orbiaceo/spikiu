@@ -201,6 +201,15 @@ const inline = (html) => [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*
 for (const f of RAEUME) if (gibt(f)) inline(datei(f)).forEach((s) => raumTexte(s, f));
 for (const f of RAUM_JS) if (gibt(f)) raumTexte(datei(f), f);
 
+// 8b · Startseite (index.html): Mini-Szene im Café — Spikius Sätze (Leo, 25.11.2026; Stimme dort immer M2)
+if (gibt('index.html')) {
+  const m = datei('index.html').match(/const SZENE=(\{[\s\S]*?\n\});/);
+  if (m) {
+    const sz = vm.runInNewContext('(' + m[1] + ')');
+    for (const [l, s] of Object.entries(sz)) { (s.steps || []).forEach((x) => nimm(l, x.sp)); nimm(l, s.end); }
+  } else console.error('index.html: SZENE nicht gefunden');
+}
+
 // 9 · Bücher Gramática A / Cuaderno A / Karten: Hör-Spuren (window.SAY …) — Spanisch
 for (const f of ['buch/Gramatica-A.html', 'buch/Cuaderno-A.html', 'buch/Gramatica-Karten.html']) if (gibt(f)) {
   for (const s of inline(datei(f))) ernte(s, 'es', new Set(['t']), { name: f });

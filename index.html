@@ -202,12 +202,10 @@ let L;try{L=localStorage.getItem('spikiu_lang')}catch(e){}
 if(!T[L]){const n=(navigator.language||'de').slice(0,2);L=T[n]?n:'de'}
 let step=0,touched=false;
 
-/* Ton: audio.js (Aufnahme, sonst Gerätestimme über { live:true }); Rückfall Browser-Stimme */
+/* Ton: NUR Aufnahmen über audio.js, immer Spikius Männerstimme M2 (Leo, 25.11.: „die original männliche Stimme für alle Sprachen“). Keine Gerätestimme. */
 function speak(txt){
-  if(!touched)return;
-  if(window.spkSpeak){try{window.spkSpeak(txt,ZIEL(),{live:true});return}catch(e){}}
-  if(!window.speechSynthesis)return;
-  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=sz().voice;u.rate=.92;speechSynthesis.speak(u)}catch(e){}
+  if(!touched||!window.spkSpeak)return;
+  try{window.spkSpeak(txt,ZIEL(),{stimme:'M'})}catch(e){}
 }
 /* Wer schon ein Profil hat: CTAs führen ins Haus („Weiter lernen“), die Szene spricht seine Zielsprache */
 let PROF={};try{const u=JSON.parse(localStorage.getItem('spikiu_user')||'{}');PROF=u.profile||{};if(!PROF.zielsprache&&u.targetLang)PROF.zielsprache=u.targetLang}catch(e){}

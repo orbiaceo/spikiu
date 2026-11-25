@@ -172,7 +172,7 @@ function plane(gesprochen, vorhanden) {
   return [{ stumm: gesprochen }];
 }
 
-// ── Öffentlich: speak(text, zielsprache, { live }) ──────────────────────────
+// ── Öffentlich: speak(text, zielsprache, { live, stimme }) ──────────────────────────
 let speakGen = 0;
 let statusCb = null;
 function emit(info) { try { statusCb && statusCb(info); } catch (_) {} }
@@ -184,7 +184,8 @@ async function speak(text, zielsprache, opts) {
   const gen = ++speakGen;
   stopPlayback();
   const gesprochen = ST.sprechText(text, zielsprache);
-  const stimme = stimmeJetzt();
+  // { stimme: 'M' | 'F' } legt die Stimme für diesen Satz fest, ohne das Profil zu ändern (Startseite: ♂ M2, Leo 25.11.)
+  const stimme = (opts && STIMMEN[opts.stimme]) || stimmeJetzt();
   const vorhanden = await index(zielsprache, stimme);
   if (gen !== speakGen) return;
   const plan = plane(gesprochen, vorhanden);
